@@ -1,12 +1,21 @@
 package dev.toma.gunsrpg.common;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.baked.PistolBakedModel;
+import dev.toma.gunsrpg.client.render.item.PistolRenderer;
+import dev.toma.gunsrpg.common.entity.EntityBullet;
+import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.builder.GunBuilder;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.IRegistry;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
@@ -21,18 +30,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class ModRegistry {
-
-    @GameRegistry.ObjectHolder(GunsRPG.MODID)
-    public static final class GRPGItems {
-
-    }
-
-    @GameRegistry.ObjectHolder(GunsRPG.MODID)
-    public static final class GRPGBlocks {
-
-    }
 
     public static void registerItemBlock(Block block) {
         ItemBlock itemBlock = new ItemBlock(block);
@@ -40,10 +40,22 @@ public class ModRegistry {
         Handler.queue.add(itemBlock);
     }
 
+    @GameRegistry.ObjectHolder(GunsRPG.MODID)
+    public static final class GRPGItems {
+
+        public static final GunItem PISTOL = null;
+    }
+
+    @GameRegistry.ObjectHolder(GunsRPG.MODID)
+    public static final class GRPGBlocks {
+
+    }
+
     @Mod.EventBusSubscriber
     public static final class Handler {
 
         private static List<ItemBlock> queue = new ArrayList<>();
+        private static int id = -1;
 
         @SubscribeEvent
         public static void onBlockRegister(RegistryEvent.Register<Block> event) {
@@ -55,6 +67,15 @@ public class ModRegistry {
         public static void onItemRegister(RegistryEvent.Register<Item> event) {
             IForgeRegistry<Item> registry = event.getRegistry();
             registry.registerAll(
+                    GunBuilder.create()
+                            // TODO replace with shoot action
+                            .makeBullet(EntityBullet::new)
+                            .statBuilder()
+                                .withDamage(3.0F)
+                                .withVelocity(14.0F)
+                                .withGravity(0.05F, 3)
+                            .createStats()
+                            .build("pistol")
             );
             queue.forEach(registry::register);
             queue = null;
@@ -64,8 +85,6 @@ public class ModRegistry {
         public static void onEntityRegister(RegistryEvent.Register<EntityEntry> event) {
 
         }
-
-        private static int id = -1;
 
         protected static <T extends Entity> EntityEntryBuilder<T> makeBuilder(String name, Class<T> tClass) {
             EntityEntryBuilder<T> builder = EntityEntryBuilder.create();
@@ -85,6 +104,18 @@ public class ModRegistry {
             ForgeRegistries.ITEMS.getValuesCollection().stream()
                     .filter(i -> i.getRegistryName().getResourceDomain().equals(GunsRPG.MODID))
                     .forEach(ClientHandler::register);
+
+            GRPGItems.PISTOL.setTileEntityItemStackRenderer(new PistolRenderer());
+        }
+
+        @SubscribeEvent
+        public static void onModelBake(ModelBakeEvent event) {
+            IRegistry<ModelResourceLocation, IBakedModel> registry = event.getModelRegistry();
+            registry.putObject(getGunModelResourceLocation(GRPGItems.PISTOL), new PistolBakedModel());
+        }
+
+        protected static ModelResourceLocation getGunModelResourceLocation(GunItem gunItem) {
+            return new ModelResourceLocation(gunItem.getRegistryName(), "inventory");
         }
 
         protected static void register(Item item) {

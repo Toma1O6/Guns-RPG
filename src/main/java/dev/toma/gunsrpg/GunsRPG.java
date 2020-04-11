@@ -3,6 +3,7 @@ package dev.toma.gunsrpg;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
+import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.sided.SideManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -27,6 +28,7 @@ public class GunsRPG {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         sideManager.preInit(event);
+        NetworkManager.init();
         CapabilityManager.INSTANCE.register(PlayerData.class, new PlayerDataStorage(), PlayerDataFactory::new);
     }
 

@@ -17,5 +17,6 @@ public class GRPGItem extends Item {
     public GRPGItem(String name) {
         this.setUnlocalizedName(name);
         this.setRegistryName(GunsRPG.makeResource(name));
+        this.setCreativeTab(ITEMS);
     }
 }
