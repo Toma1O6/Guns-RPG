@@ -10,9 +10,9 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
-version = "1.1-lights"
-group = "dev.toma.vehiclemod"
-archivesBaseName = "vehiclemod"
+version = "0.2-dev"
+group = "dev.toma.gunsrpg"
+archivesBaseName = "gunsrpg"
 
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {

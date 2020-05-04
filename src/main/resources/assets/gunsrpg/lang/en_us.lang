@@ -1,0 +1,12 @@
+item.amethyst.name=Amethyst
+item.antidotum_pills.name=Antidotum Pills
+item.vaccine.name=Vaccine
+item.plaster_cast.name=Plaster Cast
+
+tile.amethyst_ore.name=Amethyst Ore
+
+death.attack.poison=%1$s has died from poisoning
+death.attack.infection=%1$s has died from infection
+
+itemGroup.grpg.items=Items
+itemGroup.grpg.blocks=Blocks

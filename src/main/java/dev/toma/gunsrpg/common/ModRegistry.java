@@ -3,13 +3,16 @@ package dev.toma.gunsrpg.common;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.baked.PistolBakedModel;
 import dev.toma.gunsrpg.client.render.item.PistolRenderer;
+import dev.toma.gunsrpg.common.block.GRPGOre;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
+import dev.toma.gunsrpg.common.item.GRPGItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.builder.GunBuilder;
+import dev.toma.gunsrpg.common.item.util.DebuffHeal;
+import dev.toma.gunsrpg.config.GRPGConfig;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -27,10 +30,10 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.registries.IForgeRegistry;
+import toma.config.util.RegisterConfigEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 public class ModRegistry {
 
@@ -44,14 +47,18 @@ public class ModRegistry {
     public static final class GRPGItems {
 
         public static final GunItem PISTOL = null;
+        public static final GRPGItem AMETHYST = null;
+        public static final DebuffHeal ANTIDOTUM_PILLS = null;
+        public static final DebuffHeal VACCINE = null;
+        public static final DebuffHeal PLASTER_CAST = null;
     }
 
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
     public static final class GRPGBlocks {
-
+        public static final GRPGOre AMETHYST_ORE = null;
     }
 
-    @Mod.EventBusSubscriber
+    @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
     public static final class Handler {
 
         private static List<ItemBlock> queue = new ArrayList<>();
@@ -60,6 +67,7 @@ public class ModRegistry {
         @SubscribeEvent
         public static void onBlockRegister(RegistryEvent.Register<Block> event) {
             event.getRegistry().registerAll(
+                    new GRPGOre("amethyst_ore", () -> GRPGItems.AMETHYST)
             );
         }
 
@@ -67,6 +75,10 @@ public class ModRegistry {
         public static void onItemRegister(RegistryEvent.Register<Item> event) {
             IForgeRegistry<Item> registry = event.getRegistry();
             registry.registerAll(
+                    new GRPGItem("amethyst"),
+                    new DebuffHeal("antidotum_pills", 32, data -> data.getDebuffs()[0].isActive(), data -> data.getDebuffs()[0].heal(60)),
+                    new DebuffHeal("vaccine", 32, data -> data.getDebuffs()[1].isActive(), data -> data.getDebuffs()[1].heal(50)),
+                    new DebuffHeal("plaster_cast", 32, data -> data.getDebuffs()[2].isActive(), data -> data.getDebuffs()[2].heal(30)),
                     GunBuilder.create()
                             // TODO replace with shoot action
                             .makeBullet(EntityBullet::new)
@@ -83,7 +95,14 @@ public class ModRegistry {
 
         @SubscribeEvent
         public static void onEntityRegister(RegistryEvent.Register<EntityEntry> event) {
+            event.getRegistry().registerAll(
+                    makeBuilder("bullet", EntityBullet.class).tracker(32, 1, true).build()
+            );
+        }
 
+        @SubscribeEvent
+        public static void configRegister(RegisterConfigEvent event) {
+            event.register(GunsRPG.class, GRPGConfig::new);
         }
 
         protected static <T extends Entity> EntityEntryBuilder<T> makeBuilder(String name, Class<T> tClass) {
@@ -93,7 +112,7 @@ public class ModRegistry {
         }
     }
 
-    @Mod.EventBusSubscriber(Side.CLIENT)
+    @Mod.EventBusSubscriber(value = Side.CLIENT, modid = GunsRPG.MODID)
     public static final class ClientHandler {
 
         @SubscribeEvent

@@ -17,7 +17,7 @@ public class PlayerDataManager implements ICapabilitySerializable<NBTTagCompound
     private PlayerData instance;
 
     public PlayerDataManager(EntityPlayer player) {
-        instance = new PlayerDataFactory();
+        instance = new PlayerDataFactory(player);
     }
 
     @Override

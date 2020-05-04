@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.sided.SideManager;
+import dev.toma.gunsrpg.world.ore.WorldOreGen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
@@ -12,10 +13,11 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "0.1-dev", acceptedMinecraftVersions = "[1.12.2]")
+@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "0.2-dev", acceptedMinecraftVersions = "[1.12.2]")
 public class GunsRPG {
 
     public static final String MODID = "gunsrpg";
@@ -35,6 +37,7 @@ public class GunsRPG {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         sideManager.init(event);
+        GameRegistry.registerWorldGenerator(new WorldOreGen(), 0);
     }
 
     @Mod.EventHandler

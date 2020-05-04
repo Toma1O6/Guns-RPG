@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.capability;
 
 import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 
@@ -16,6 +17,6 @@ public class PlayerDataStorage implements Capability.IStorage<PlayerData> {
 
     @Override
     public void readNBT(Capability<PlayerData> capability, PlayerData instance, EnumFacing side, NBTBase nbt) {
-
+        instance.deserializeNBT(nbt instanceof NBTTagCompound ? (NBTTagCompound) nbt : new NBTTagCompound());
     }
 }
