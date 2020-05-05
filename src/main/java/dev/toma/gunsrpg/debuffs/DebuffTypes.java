@@ -64,8 +64,9 @@ public class DebuffTypes {
             .when(86, 99)
             .executes(player -> {
                 if (!player.world.isRemote) {
-                    player.addPotionEffect(new PotionEffect(MobEffects.POISON, 60, 2, false, false));
+                    player.addPotionEffect(new PotionEffect(MobEffects.POISON, 60, 1, false, false));
                     player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 120, 0, false, false));
+                    player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 120, 0, false, false));
                 }
             })
             .pop()
@@ -78,6 +79,10 @@ public class DebuffTypes {
     public static final DebuffType<InfectionDebuff> INFECTION = DebuffType.TypeBuilder.create(InfectionDebuff::new)
             .name("infection")
             .cap(200)
+            .addHitData()
+            .condition(entityPredicate(EntityZombieVillager.class))
+            .chance(0.06F)
+            .pop()
             .addHitData()
             .condition(entityPredicate(EntityEnderman.class))
             .chance(0.02F)
@@ -112,15 +117,30 @@ public class DebuffTypes {
             .pop()
             .effectBuilder()
             .when(36, 60)
-            .executes(addEffect(() -> new PotionEffect(MobEffects.WITHER, 60, 0, false, false)))
+            .executes(player -> {
+                if(!player.world.isRemote) {
+                    player.addPotionEffect(new PotionEffect(MobEffects.WITHER, 60, 0, false, false));
+                    player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 60, 4, false, false));
+                }
+            })
             .pop()
             .effectBuilder()
             .when(61, 85)
-            .executes(addEffect(() -> new PotionEffect(MobEffects.WITHER, 60, 1, false, false)))
+            .executes(player -> {
+                if(!player.world.isRemote) {
+                    player.addPotionEffect(new PotionEffect(MobEffects.WITHER, 60, 1, false, false));
+                    player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 60, 10, false, false));
+                }
+            })
             .pop()
             .effectBuilder()
             .when(86, 99)
-            .executes(addEffect(() -> new PotionEffect(MobEffects.WITHER, 60, 2, false, false)))
+            .executes(player -> {
+                if(!player.world.isRemote) {
+                    player.addPotionEffect(new PotionEffect(MobEffects.WITHER, 60, 2, false, false));
+                    player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 60, 15, false, false));
+                }
+            })
             .pop()
             .effectBuilder()
             .when(100)
@@ -133,7 +153,7 @@ public class DebuffTypes {
             .cap(240)
             .addHitData()
             .condition(src -> src instanceof EntityDamageSource && !src.isExplosion())
-            .chance(0.02F)
+            .chance(0.01F)
             .pop()
             .addHitData()
             .condition(src -> src.getDamageType().equals("fall"))
@@ -149,7 +169,12 @@ public class DebuffTypes {
             .pop()
             .effectBuilder()
             .when(31, 55)
-            .executes(addEffect(() -> new PotionEffect(MobEffects.SLOWNESS, 60, 1, false, false)))
+            .executes(player -> {
+                if(!player.world.isRemote) {
+                    player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 60, 1, false, false));
+                    player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 60, 0, false, false));
+                }
+            })
             .pop()
             .effectBuilder()
             .when(56, 75)

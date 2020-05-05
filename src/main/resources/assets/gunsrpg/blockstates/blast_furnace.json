@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "burning=false,facing=north": {"model": "gunsrpg:blast_furnace", "y": 0},
+        "burning=false,facing=east": {"model": "gunsrpg:blast_furnace", "y": 90},
+        "burning=false,facing=south": {"model": "gunsrpg:blast_furnace", "y": 180},
+        "burning=false,facing=west": {"model": "gunsrpg:blast_furnace", "y": 270},
+        "burning=true,facing=north": {"model": "gunsrpg:blast_furnace_lit", "y": 0},
+        "burning=true,facing=east": {"model": "gunsrpg:blast_furnace_lit", "y": 90},
+        "burning=true,facing=south": {"model": "gunsrpg:blast_furnace_lit", "y": 180},
+        "burning=true,facing=west": {"model": "gunsrpg:blast_furnace_lit", "y": 270}
+    }
+}

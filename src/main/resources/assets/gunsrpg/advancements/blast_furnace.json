@@ -1,0 +1,21 @@
+{
+    "parent": "minecraft:recipes/root",
+    "rewards": {
+        "recipes": [
+            "gunsrpg:blast_furnace"
+        ]
+    },
+    "criteria": {
+        "has_furnace": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+                "recipe": "furnace"
+            }
+        }
+    },
+    "requirements": [
+        [
+            "has_furnace"
+        ]
+    ]
+}

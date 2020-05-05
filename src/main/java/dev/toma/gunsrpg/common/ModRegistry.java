@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.baked.PistolBakedModel;
 import dev.toma.gunsrpg.client.render.item.PistolRenderer;
+import dev.toma.gunsrpg.common.block.BlockBlastFurnace;
 import dev.toma.gunsrpg.common.block.GRPGOre;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.item.GRPGItem;
@@ -56,6 +57,7 @@ public class ModRegistry {
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
     public static final class GRPGBlocks {
         public static final GRPGOre AMETHYST_ORE = null;
+        public static final BlockBlastFurnace BLAST_FURNACE = null;
     }
 
     @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
@@ -67,7 +69,8 @@ public class ModRegistry {
         @SubscribeEvent
         public static void onBlockRegister(RegistryEvent.Register<Block> event) {
             event.getRegistry().registerAll(
-                    new GRPGOre("amethyst_ore", () -> GRPGItems.AMETHYST)
+                    new GRPGOre("amethyst_ore", () -> GRPGItems.AMETHYST),
+                    new BlockBlastFurnace("blast_furnace")
             );
         }
 
@@ -76,9 +79,9 @@ public class ModRegistry {
             IForgeRegistry<Item> registry = event.getRegistry();
             registry.registerAll(
                     new GRPGItem("amethyst"),
-                    new DebuffHeal("antidotum_pills", 32, data -> data.getDebuffs()[0].isActive(), data -> data.getDebuffs()[0].heal(60)),
+                    new DebuffHeal("antidotum_pills", 32, data -> data.getDebuffs()[0].isActive(), data -> data.getDebuffs()[0].heal(40)),
                     new DebuffHeal("vaccine", 32, data -> data.getDebuffs()[1].isActive(), data -> data.getDebuffs()[1].heal(50)),
-                    new DebuffHeal("plaster_cast", 32, data -> data.getDebuffs()[2].isActive(), data -> data.getDebuffs()[2].heal(30)),
+                    new DebuffHeal("plaster_cast", 32, data -> data.getDebuffs()[2].isActive(), data -> data.getDebuffs()[2].heal(35)),
                     GunBuilder.create()
                             // TODO replace with shoot action
                             .makeBullet(EntityBullet::new)
@@ -96,7 +99,7 @@ public class ModRegistry {
         @SubscribeEvent
         public static void onEntityRegister(RegistryEvent.Register<EntityEntry> event) {
             event.getRegistry().registerAll(
-                    makeBuilder("bullet", EntityBullet.class).tracker(32, 1, true).build()
+                    makeBuilder("bullet", EntityBullet.class).tracker(256, 1, true).build()
             );
         }
 

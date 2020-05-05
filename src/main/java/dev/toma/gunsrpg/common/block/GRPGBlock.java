@@ -9,15 +9,11 @@ import net.minecraft.block.material.Material;
 
 public class GRPGBlock extends Block {
 
-    public GRPGBlock(String name) {
-        super(Material.ROCK);
+    public GRPGBlock(String name, Material material) {
+        super(material);
         this.setCreativeTab(ModTabs.BLOCK_TAB);
         this.setUnlocalizedName(name);
         this.setRegistryName(GunsRPG.makeResource(name));
-        this.setSoundType(SoundType.STONE);
-        this.setHarvestLevel("pickaxe", 2);
-        this.setHardness(2.3F);
-        this.setResistance(12.0F);
         ModRegistry.registerItemBlock(this);
     }
 }

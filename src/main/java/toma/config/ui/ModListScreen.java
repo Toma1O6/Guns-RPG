@@ -28,6 +28,7 @@ import java.util.List;
 
 public class ModListScreen extends GuiScreen {
 
+    private GuiScreen parent;
     public int displayedEntryAmount;
     public List<ModContainer> mods;
     public ModContainer[] displayList;
@@ -37,7 +38,8 @@ public class ModListScreen extends GuiScreen {
     private int modIdx = 0;
     private int infoIdx = 0;
 
-    public ModListScreen() {
+    public ModListScreen(GuiScreen parent) {
+        this.parent = parent;
         mods = Loader.instance().getModList();
     }
 
@@ -54,6 +56,13 @@ public class ModListScreen extends GuiScreen {
         tessellator.draw();
         GlStateManager.disableBlend();
         GlStateManager.enableTexture2D();
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        if(keyCode == 1) {
+            mc.displayGuiScreen(this.parent);
+        }
     }
 
     @Override
@@ -165,7 +174,7 @@ public class ModListScreen extends GuiScreen {
         displayedEntryAmount = (height - 40) / 20;
         updateDisplayList();
         int w = (width - 220) / 3;
-        addButton(new ActionButton(0, 170, 10 + displayedEntryAmount * 20, w + 5, 20, "Back to menu", b -> mc.displayGuiScreen(new GuiMainMenu())));
+        addButton(new ActionButton(0, 170, 10 + displayedEntryAmount * 20, w + 5, 20, "Back", b -> mc.displayGuiScreen(this.parent)));
         addButton(config = new ActionButton(0, 185 + w, 10 + displayedEntryAmount * 20, w + 5, 20, TextFormatting.GREEN + "Config", b -> openConfig()));
         config.enabled = selected != null && (Config.configs().get(selected.getModId()) != null || FMLClientHandler.instance().getGuiFactoryFor(selected) != null);
         config.displayString = (config.enabled ? TextFormatting.GREEN + "Config" : TextFormatting.RED + "Config");

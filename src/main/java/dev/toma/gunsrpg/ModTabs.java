@@ -9,7 +9,7 @@ public class ModTabs {
     public static final CreativeTabs ITEM_TAB = new CreativeTabs("grpg.items") {
         @Override
         public ItemStack getTabIconItem() {
-            return new ItemStack(ModRegistry.GRPGItems.AMETHYST);
+            return new ItemStack(ModRegistry.GRPGItems.VACCINE);
         }
     };
 

@@ -47,10 +47,6 @@ public class ModConfigScreen extends GuiScreen {
     }
 
     @Override
-    public void onGuiClosed() {
-    }
-
-    @Override
     public void initGui() {
         this.typeList.clear();
         this.renderList.clear();

@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.block;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 
@@ -21,7 +22,7 @@ public class GRPGOre extends GRPGBlock {
     }
 
     public GRPGOre(String name, Supplier<Item> dropItem, int min, int max, int addedFortune) {
-        super(name);
+        super(name, Material.ROCK);
         this.supplier = dropItem;
         this.min = min;
         this.max = max;

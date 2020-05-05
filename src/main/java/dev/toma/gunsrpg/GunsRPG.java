@@ -3,8 +3,11 @@ package dev.toma.gunsrpg;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
+import dev.toma.gunsrpg.common.tileentity.TileEntityBlastFurnace;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.sided.SideManager;
+import dev.toma.gunsrpg.util.GuiHandler;
+import dev.toma.gunsrpg.util.recipes.BlastFurnaceRecipe;
 import dev.toma.gunsrpg.world.ore.WorldOreGen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -13,11 +16,12 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "0.2-dev", acceptedMinecraftVersions = "[1.12.2]")
+@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "0.2.1-private", acceptedMinecraftVersions = "[1.12.2]")
 public class GunsRPG {
 
     public static final String MODID = "gunsrpg";
@@ -32,6 +36,8 @@ public class GunsRPG {
         sideManager.preInit(event);
         NetworkManager.init();
         CapabilityManager.INSTANCE.register(PlayerData.class, new PlayerDataStorage(), PlayerDataFactory::new);
+        NetworkRegistry.INSTANCE.registerGuiHandler(modInstance, new GuiHandler());
+        GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, makeResource("blast_furnace"));
     }
 
     @Mod.EventHandler
@@ -43,6 +49,7 @@ public class GunsRPG {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         sideManager.postInit(event);
+        BlastFurnaceRecipe.init();
     }
 
     public static ResourceLocation makeResource(String path) {

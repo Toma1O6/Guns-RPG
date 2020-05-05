@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class InfectionDebuff extends Debuff {
 
-    public static final DamageSource INFECTION_DAMAGE = new DamageSource("infection").setDamageBypassesArmor();
+    public static final DamageSource INFECTION_DAMAGE = new DamageSource("infection").setDamageBypassesArmor().setDamageIsAbsolute();
     private static final ResourceLocation INFECTION = GunsRPG.makeResource("textures/icons/infection.png");
 
     public InfectionDebuff() {
