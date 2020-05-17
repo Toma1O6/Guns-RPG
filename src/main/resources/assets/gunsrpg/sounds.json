@@ -1,0 +1,7 @@
+{
+    "use_antidotum_pills": {"category": "player", "sounds": [{"name": "gunsrpg:use_antidotum_pills", "stream": true}]},
+    "use_vaccine": {"category": "player", "sounds": [{"name": "gunsrpg:use_vaccine", "stream": true}]},
+    "use_plaster_cast": {"category": "player", "sounds": [{"name": "gunsrpg:use_plaster_cast", "stream": true}]},
+    "use_bandage": {"category": "player", "sounds": [{"name": "gunsrpg:use_bandage", "stream": true}]},
+    "plane_fly_by": {"category": "master", "sounds": [{"name": "gunsrpg:plane_fly_by", "stream": true}]}
+}

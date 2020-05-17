@@ -1,0 +1,13 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "particle": "gunsrpg:blocks/airdrop_bottom",
+        "down": "gunsrpg:blocks/airdrop_bottom",
+        "up": "gunsrpg:blocks/airdrop_top",
+        "east": "gunsrpg:blocks/airdrop_side",
+        "west": "gunsrpg:blocks/airdrop_side",
+        "north": "gunsrpg:blocks/airdrop_side",
+        "south": "gunsrpg:blocks/airdrop_side"
+
+    }
+}
