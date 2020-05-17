@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.DebuffTypes;
 import dev.toma.gunsrpg.util.object.EntitySpawnManager;
+import dev.toma.gunsrpg.world.BloodmoonEntitySpawnEntryList;
 import dev.toma.gunsrpg.world.cap.WorldCapProvider;
 import dev.toma.gunsrpg.world.cap.WorldDataCap;
 import dev.toma.gunsrpg.world.cap.WorldDataFactory;
@@ -193,6 +194,16 @@ public class CommonEventHandler {
     public static void entityJoinWorld(EntityJoinWorldEvent event) {
         if(event.getEntity() instanceof IMob || event.getEntity() instanceof EntityWolf) {
             EntityLivingBase entity = (EntityLivingBase) event.getEntity();
+            World world = event.getWorld();
+            boolean bloodmoon = WorldDataFactory.isBloodMoon(world);
+            if(bloodmoon) {
+                EntityLivingBase replacement = BloodmoonEntitySpawnEntryList.createEntity(entity, world);
+                if(replacement != null) {
+                    event.setCanceled(true);
+                    world.spawnEntity(replacement);
+                    return;
+                }
+            }
             int modifier = random.nextDouble() <= 0.2 ? 3 : random.nextDouble() <= 0.5 ? 2 : 1;
             EntitySpawnManager manager = HEALTH_MAP.get(entity.getClass());
             if(manager == null) return;
@@ -202,8 +213,7 @@ public class CommonEventHandler {
             double value = manager.getHealthBase() * modifier;
             entity.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(value);
             if(!entity.world.isRemote) entity.setHealth((float) value);
-            if(WorldDataFactory.get(event.getWorld()) != null && WorldDataFactory.get(event.getWorld()).isBloodmoon()) {
-                World world = event.getWorld();
+            if(bloodmoon) {
                 IAttributeInstance instance = entity.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
                 if(instance == null) return;
                 double v = instance.getAttributeValue();
