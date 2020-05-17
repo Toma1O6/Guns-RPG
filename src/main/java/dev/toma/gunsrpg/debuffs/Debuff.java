@@ -32,11 +32,9 @@ public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
                 timer = 0;
                 PlayerDataFactory.get(player).sync();
             }
-            if(active && player.world.getWorldTime() % 50 == 0) {
-                for(Pair<Predicate<Integer>, Consumer<EntityPlayer>> entry : type.effectList) {
-                    if(entry.getLeft().test(level)) {
-                        entry.getRight().accept(player);
-                    }
+            for(Pair<Predicate<Integer>, Consumer<EntityPlayer>> entry : type.effectList) {
+                if(isActive() && entry.getLeft().test(level)) {
+                    entry.getRight().accept(player);
                 }
             }
         }

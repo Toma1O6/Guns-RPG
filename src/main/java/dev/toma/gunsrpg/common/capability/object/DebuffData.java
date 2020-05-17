@@ -13,7 +13,8 @@ public class DebuffData implements INBTSerializable<NBTTagCompound> {
     private Debuff[] debuffs = {
             DebuffTypes.POISON.createInstance(),
             DebuffTypes.INFECTION.createInstance(),
-            DebuffTypes.BROKEN_BONE.createInstance()
+            DebuffTypes.BROKEN_BONE.createInstance(),
+            DebuffTypes.BLEED.createInstance()
     };
 
     public Debuff[] getDebuffs() {
@@ -36,6 +37,7 @@ public class DebuffData implements INBTSerializable<NBTTagCompound> {
         nbt.setTag("poison", debuffs[0].serializeNBT());
         nbt.setTag("infection", debuffs[1].serializeNBT());
         nbt.setTag("brokenBone", debuffs[2].serializeNBT());
+        nbt.setTag("bleed", debuffs[3].serializeNBT());
         return nbt;
     }
 
@@ -44,5 +46,6 @@ public class DebuffData implements INBTSerializable<NBTTagCompound> {
         debuffs[0].deserializeNBT(nbt.hasKey("poison") ? nbt.getCompoundTag("poison") : new NBTTagCompound());
         debuffs[1].deserializeNBT(nbt.hasKey("infection") ? nbt.getCompoundTag("infection") : new NBTTagCompound());
         debuffs[2].deserializeNBT(nbt.hasKey("brokenBone") ? nbt.getCompoundTag("brokenBone") : new NBTTagCompound());
+        debuffs[3].deserializeNBT(nbt.hasKey("bleed") ? nbt.getCompoundTag("bleed") : new NBTTagCompound());
     }
 }

@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.entity;
 
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -28,7 +29,7 @@ public class EntityBullet extends Entity implements IEntityAdditionalSpawnData {
 
     public EntityBullet(World world) {
         super(world);
-        this.setSize(0.1F, 0.1F);
+        this.setSize(0.01F, 0.01F);
     }
 
     public EntityBullet(World world, EntityLivingBase shooter, ItemStack stack) {
@@ -42,23 +43,15 @@ public class EntityBullet extends Entity implements IEntityAdditionalSpawnData {
 
     @Override
     public void writeSpawnData(ByteBuf buffer) {
-        try {
-            buffer.writeInt(shooter.getEntityId());
-            ByteBufUtils.writeItemStack(buffer, gun);
-        } catch (Exception e) {
-            System.err.println("Error writing");
-        }
+        buffer.writeInt(shooter != null ? shooter.getEntityId() : 0);
+        ByteBufUtils.writeItemStack(buffer, gun);
     }
 
     @Override
     public void readSpawnData(ByteBuf additionalData) {
-        try {
-            Entity entity = world.getEntityByID(additionalData.readInt());
-            if(entity instanceof EntityLivingBase) shooter = (EntityLivingBase) entity;
-            gun = ByteBufUtils.readItemStack(additionalData);
-        } catch (Exception e) {
-            System.err.println("Error reading");
-        }
+        Entity entity = world.getEntityByID(additionalData.readInt());
+        if(entity instanceof EntityLivingBase) shooter = (EntityLivingBase) entity;
+        gun = ByteBufUtils.readItemStack(additionalData);
     }
 
     @Override
@@ -67,7 +60,7 @@ public class EntityBullet extends Entity implements IEntityAdditionalSpawnData {
             setDead();
             return;
         }
-        GunItem.GunStats stats = this.getGun().getStats();
+        WeaponConfiguration stats = this.getGun().getWeaponConfig();
         float velocity = 0.8F;
         Vec3d lookVec = this.getLookVec();
         this.motionX = lookVec.x * stats.velocity;
@@ -76,6 +69,7 @@ public class EntityBullet extends Entity implements IEntityAdditionalSpawnData {
         this.checkForCollisions();
         super.onUpdate();
         this.move(MoverType.SELF, motionX, motionY, motionZ);
+        if(!world.isRemote && collided) setDead();
     }
 
     protected void checkForCollisions() {
@@ -92,9 +86,7 @@ public class EntityBullet extends Entity implements IEntityAdditionalSpawnData {
                         this.checkForCollisions();
                     } else setDead();
                 } else {
-                    if(isGlass) {
-
-                    } else {
+                    if(!isGlass) {
                         int id = Block.getIdFromBlock(world.getBlockState(traceResult.getBlockPos()).getBlock());
                         Vec3d vec = traceResult.hitVec;
                         for(int i = 0; i < 50; i++) {
@@ -140,11 +132,11 @@ public class EntityBullet extends Entity implements IEntityAdditionalSpawnData {
             Vec3d hit = entityRay.hitVec;
             boolean canHeadshot = hitEntity.getEyeHeight() > 1.25D;
             boolean isHeadshot = hit.y >= hitEntity.posY + hitEntity.getEyeHeight() - 0.1F;
-            float damage = 8.0F;
+            float damage = this.getGun().getWeaponConfig().damage;
             if(!world.isRemote) {
-                hitEntity.attackEntityFrom(DamageSource.GENERIC, canHeadshot && isHeadshot ? damage * 2.5F : damage);
+                hitEntity.attackEntityFrom(DamageSource.causeMobDamage(shooter), canHeadshot && isHeadshot ? damage * 2.5F : damage);
                 hitEntity.hurtResistantTime = 0;
-                this.checkForCollisions();
+                this.setDead();
             } else {
                 world.spawnParticle(EnumParticleTypes.FLAME, hit.x, hit.y, hit.z, 0, 0, 0);
             }
@@ -153,12 +145,21 @@ public class EntityBullet extends Entity implements IEntityAdditionalSpawnData {
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound compound) {
-
+        NBTTagCompound stack = new NBTTagCompound();
+        gun.writeToNBT(stack);
+        compound.setTag("stack", stack);
+        compound.setInteger("entID", shooter != null ? shooter.getEntityId() : 0);
     }
 
     @Override
     protected void readEntityFromNBT(NBTTagCompound compound) {
-
+        gun = new ItemStack(compound.getCompoundTag("stack"));
+        Entity entity = world.getEntityByID(compound.getInteger("entID"));
+        if(!(entity instanceof EntityLivingBase)) {
+            this.setDead();
+            return;
+        }
+        shooter = (EntityLivingBase) entity;
     }
 
     @Override

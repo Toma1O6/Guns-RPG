@@ -40,7 +40,7 @@ public class ConfigImplementation implements IConfig {
                 .addString(aString).name("string").add(t -> aString = t.value())
                 .stringList(stringList).name("string list").add(t -> stringList = t.value())
                 .list(objList).name("obj list").saveElement(Obj::save).loadElement(Obj::load).factory(Obj::new).add(t -> objList = t.value())
-                .exec(obj::init)
+                .run(obj::init)
                 .build();
     }
 

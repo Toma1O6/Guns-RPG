@@ -12,8 +12,12 @@ import dev.toma.gunsrpg.network.packet.SPacketShoot;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.ResourceLocation;
@@ -32,16 +36,25 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void renderOverlay(RenderGameOverlayEvent.Post event) {
         if(event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-            PlayerData data = PlayerDataFactory.get(Minecraft.getMinecraft().player);
+            Minecraft mc = Minecraft.getMinecraft();
+            EntityPlayer player = mc.player;
+            FontRenderer renderer = mc.fontRenderer;
+            long day = player.world.getWorldTime() / 24000L;
+            boolean b = day % 7 == 0 && day > 0;
+            long l = b ? 1 : 8 - day % 7;
+            ScaledResolution resolution = event.getResolution();
+            mc.fontRenderer.drawStringWithShadow(l + "", resolution.getScaledWidth() - 10, 6, b ? 0xff0000 : l > 1 && l < 4 ? 0xffff00 : 0xffffff);
+            PlayerData data = PlayerDataFactory.get(player);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             if(data != null) {
                 DebuffData debuffData = data.getDebuffData();
                 int offset = 0;
                 for(Debuff debuff : debuffData.getDebuffs()) {
                     if(!debuff.isActive()) continue;
-                    int yStart = event.getResolution().getScaledHeight() + GRPGConfig.client.debuffs.y;
+                    int yStart = event.getResolution().getScaledHeight() + GRPGConfig.client.debuffs.y - 50;
                     ModUtils.renderTexture(GRPGConfig.client.debuffs.x, yStart + offset * 18, 50, yStart + (1 + offset) * 18, ICON_BACKGROUND);
                     ModUtils.renderTexture(GRPGConfig.client.debuffs.x + 2, yStart + 1 + offset * 18, 18, yStart + 1 + offset * 18 + 16, debuff.getIconTexture());
-                    Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(debuff.getLevel() + "%", 20, yStart + 5 + offset * 18, 0xFFFFFF);
+                    renderer.drawStringWithShadow(debuff.getLevel() + "%", 20, yStart + 5 + offset * 18, 0xFFFFFF);
                     ++offset;
                 }
             }
@@ -65,11 +78,19 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase == TickEvent.Phase.START) {
+        if (event.phase == TickEvent.Phase.END) {
             Minecraft mc = Minecraft.getMinecraft();
             EntityPlayerSP player = mc.player;
             if (player != null) {
                 GameSettings settings = mc.gameSettings;
+                ItemStack stack = player.getHeldItemMainhand();
+                if(settings.keyBindAttack.isKeyDown() && stack.getItem() instanceof GunItem) {
+                    CooldownTracker tracker = player.getCooldownTracker();
+                    if(!tracker.hasCooldown(stack.getItem())) {
+                        player.playSound(SoundEvents.BLOCK_LEVER_CLICK, 1.0F, 1.0F);
+                        NetworkManager.toServer(new SPacketShoot((GunItem) stack.getItem()));
+                    }
+                }
             }
         }
     }

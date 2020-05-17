@@ -40,7 +40,7 @@ public class SPacketShoot implements IMessage {
                 Item item = stack.getItem();
                 if(item instanceof GunItem) {
                     GunItem gun = (GunItem) item;
-                    playerMP.world.spawnEntity(gun.getBulletSpawner().createBulletEntity(playerMP.world, playerMP, stack));
+                    gun.shoot(playerMP.world, playerMP, stack);
                 }
             });
             return null;

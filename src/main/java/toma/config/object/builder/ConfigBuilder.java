@@ -141,11 +141,11 @@ public class ConfigBuilder {
         return this.parent;
     }
 
-    public ConfigBuilder exec(Function<ConfigBuilder, ConfigBuilder> function) {
+    public ConfigBuilder run(Function<ConfigBuilder, ConfigBuilder> function) {
         return function.apply(this);
     }
 
-    public ConfigBuilder exec(ConfigSubcategory configSubcategory) {
+    public ConfigBuilder run(ConfigSubcategory configSubcategory) {
         return configSubcategory.toConfigFormat(this);
     }
 

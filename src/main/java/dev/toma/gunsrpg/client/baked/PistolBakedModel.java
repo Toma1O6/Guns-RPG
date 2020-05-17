@@ -15,15 +15,15 @@ public class PistolBakedModel extends GunBakedModel {
         Matrix4f matrix4f = new Matrix4f();
         matrix4f.setIdentity();
         TRSRTransformation trsrTransformation = new TRSRTransformation(matrix4f);
-        GlStateManager.translate(0, 0.55, -0.1);
+        GlStateManager.translate(0, 0.8, -0.5);
         GlStateManager.scale(0.02, 0.02, 0.02);
         GlStateManager.rotate(180, 1, 0, 0);
         GlStateManager.rotate(180, 0, 1, 0);
         switch (cameraTransformType) {
             case GUI: {
+                GlStateManager.translate(-8, 15, 0);
                 GlStateManager.rotate(90, 0, -1, 0);
                 GlStateManager.rotate(30, -1, 0, 0);
-                GlStateManager.translate(0, 0, 6);
             }
             default: break;
         }

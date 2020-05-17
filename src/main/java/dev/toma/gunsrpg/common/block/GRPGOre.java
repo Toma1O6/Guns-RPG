@@ -27,6 +27,9 @@ public class GRPGOre extends GRPGBlock {
         this.min = min;
         this.max = max;
         this.addedFortune = addedFortune;
+        this.setHardness(2.5F);
+        this.setResistance(10.0F);
+        this.setHarvestLevel("pickaxe", 2);
     }
 
     @Override

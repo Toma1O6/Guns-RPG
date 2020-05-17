@@ -65,7 +65,9 @@ public class DebuffType<T extends Debuff> {
         }
 
         public DebuffType<T> build() {
-            return new DebuffType<>(this);
+            DebuffType<T> debuffType = new DebuffType<>(this);
+            DebuffTypes.TYPES.add(debuffType);
+            return debuffType;
         }
 
         public List<DamageResult> conditions() {

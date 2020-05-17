@@ -12,7 +12,7 @@ public class ClientConfiguration extends ConfigSubcategory {
     public ConfigBuilder toConfigFormat(ConfigBuilder builder) {
         return builder
                 .push().name("Client Config").init()
-                .exec(debuffs::asConfig)
+                .run(debuffs::asConfig)
                 .pop();
     }
 }

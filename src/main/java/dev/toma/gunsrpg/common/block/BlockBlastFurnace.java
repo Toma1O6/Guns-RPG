@@ -11,15 +11,21 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BlockBlastFurnace extends GRPGBlock {
 
@@ -35,6 +41,37 @@ public class BlockBlastFurnace extends GRPGBlock {
         IBlockState currentState = world.getBlockState(pos);
         if(currentState.getBlock() != ModRegistry.GRPGBlocks.BLAST_FURNACE) return;
         world.setBlockState(pos, currentState.withProperty(BURN, lit));
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+        if(stateIn.getValue(BURN)) {
+            EnumFacing facing = stateIn.getValue(FACING);
+            worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 0.0, 0.0, 0.0);
+            double rng = (rand.nextDouble() - rand.nextDouble()) / 3;
+            if(rand.nextDouble() <= 0.2) {
+                worldIn.playSound((double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+            }
+            switch (facing) {
+                case NORTH: {
+                    worldIn.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5 + rng, pos.getY() + 0.25, pos.getZ() - 0.05, 0, 0, 0);
+                    break;
+                }
+                case EAST: {
+                    worldIn.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 1.05, pos.getY() + 0.25, pos.getZ() + 0.5 + rng, 0, 0, 0);
+                    break;
+                }
+                case SOUTH: {
+                    worldIn.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5 + rng, pos.getY() + 0.25, pos.getZ() + 1.05, 0, 0, 0);
+                    break;
+                }
+                case WEST: {
+                    worldIn.spawnParticle(EnumParticleTypes.FLAME, pos.getX() - 0.05, pos.getY() + 0.25, pos.getZ() + 0.5 + rng, 0, 0, 0);
+                    break;
+                }
+            }
+        }
     }
 
     @Override
