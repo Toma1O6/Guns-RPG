@@ -10,7 +10,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
-version = "0.2.1-private"
+version = "0.2.5-private"
 group = "dev.toma.gunsrpg"
 archivesBaseName = "gunsrpg"
 
@@ -29,6 +29,12 @@ dependencies {
 
 }
 
+jar {
+    manifest {
+        attributes 'FMLAT': 'gunsrpg_at.cfg'
+    }
+}
+
 processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
@@ -39,4 +45,5 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+    rename '(.+_at.cfg)', 'META-INF/$1'
 }
