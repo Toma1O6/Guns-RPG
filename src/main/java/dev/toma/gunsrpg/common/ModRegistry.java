@@ -19,6 +19,7 @@ import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
 import dev.toma.gunsrpg.common.item.GRPGItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.util.DebuffHeal;
+import dev.toma.gunsrpg.common.item.util.ItemAmmoBag;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -101,6 +102,7 @@ public class ModRegistry {
         public static final GRPGItem AMETHYST_AMMO_556MM = null;
         public static final GRPGItem AMETHYST_AMMO_762MM = null;
         public static final GRPGItem AMETHYST_AMMO_12G = null;
+        public static final ItemAmmoBag AMMO_BAG = null;
     }
 
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
@@ -192,7 +194,8 @@ public class ModRegistry {
                             .build("sniper_rifle"),
                     GunItem.GunBuilder.create()
                             .stats(GRPGConfig.weapon.shotgun)
-                            .build("shotgun")
+                            .build("shotgun"),
+                    new ItemAmmoBag("ammo_bag")
             );
             queue.forEach(registry::register);
             queue = null;
