@@ -48,9 +48,9 @@ public class SkillData {
         killCount.clear();
         skillTree.read(nbt.hasKey("tree") ? nbt.getCompoundTag("tree") : new NBTTagCompound());
         NBTTagCompound map = nbt.hasKey("map") ? nbt.getCompoundTag("map") : new NBTTagCompound();
-        for(String key : map.getKeySet()) {
+        for (String key : map.getKeySet()) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
-            if(!(item instanceof GunItem)) {
+            if (!(item instanceof GunItem)) {
                 continue;
             }
             killCount.put((GunItem) item, map.getInteger(key));

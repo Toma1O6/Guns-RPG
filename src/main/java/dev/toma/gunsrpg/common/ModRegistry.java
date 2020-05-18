@@ -18,8 +18,8 @@ import dev.toma.gunsrpg.common.entity.EntityExplosiveArrow;
 import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
 import dev.toma.gunsrpg.common.item.GRPGItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.ItemAmmo;
 import dev.toma.gunsrpg.common.item.util.DebuffHeal;
-import dev.toma.gunsrpg.common.item.util.ItemAmmoBag;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -67,42 +67,41 @@ public class ModRegistry {
         public static final DebuffHeal VACCINE = null;
         public static final DebuffHeal PLASTER_CAST = null;
         public static final DebuffHeal BANDAGE = null;
-        public static final GRPGItem WOODEN_AMMO_9MM = null;
-        public static final GRPGItem WOODEN_AMMO_45ACP = null;
-        public static final GRPGItem WOODEN_AMMO_556MM = null;
-        public static final GRPGItem WOODEN_AMMO_762MM = null;
-        public static final GRPGItem WOODEN_AMMO_12G = null;
-        public static final GRPGItem STONE_AMMO_9MM = null;
-        public static final GRPGItem STONE_AMMO_45ACP = null;
-        public static final GRPGItem STONE_AMMO_556MM = null;
-        public static final GRPGItem STONE_AMMO_762MM = null;
-        public static final GRPGItem STONE_AMMO_12G = null;
-        public static final GRPGItem IRON_AMMO_9MM = null;
-        public static final GRPGItem IRON_AMMO_45ACP = null;
-        public static final GRPGItem IRON_AMMO_556MM = null;
-        public static final GRPGItem IRON_AMMO_762MM = null;
-        public static final GRPGItem IRON_AMMO_12G = null;
-        public static final GRPGItem GOLD_AMMO_9MM = null;
-        public static final GRPGItem GOLD_AMMO_45ACP = null;
-        public static final GRPGItem GOLD_AMMO_556MM = null;
-        public static final GRPGItem GOLD_AMMO_762MM = null;
-        public static final GRPGItem GOLD_AMMO_12G = null;
-        public static final GRPGItem DIAMOND_AMMO_9MM = null;
-        public static final GRPGItem DIAMOND_AMMO_45ACP = null;
-        public static final GRPGItem DIAMOND_AMMO_556MM = null;
-        public static final GRPGItem DIAMOND_AMMO_762MM = null;
-        public static final GRPGItem DIAMOND_AMMO_12G = null;
-        public static final GRPGItem EMERALD_AMMO_9MM = null;
-        public static final GRPGItem EMERALD_AMMO_45ACP = null;
-        public static final GRPGItem EMERALD_AMMO_556MM = null;
-        public static final GRPGItem EMERALD_AMMO_762MM = null;
-        public static final GRPGItem EMERALD_AMMO_12G = null;
-        public static final GRPGItem AMETHYST_AMMO_9MM = null;
-        public static final GRPGItem AMETHYST_AMMO_45ACP = null;
-        public static final GRPGItem AMETHYST_AMMO_556MM = null;
-        public static final GRPGItem AMETHYST_AMMO_762MM = null;
-        public static final GRPGItem AMETHYST_AMMO_12G = null;
-        public static final ItemAmmoBag AMMO_BAG = null;
+        public static final ItemAmmo WOODEN_AMMO_9MM = null;
+        public static final ItemAmmo WOODEN_AMMO_45ACP = null;
+        public static final ItemAmmo WOODEN_AMMO_556MM = null;
+        public static final ItemAmmo WOODEN_AMMO_762MM = null;
+        public static final ItemAmmo WOODEN_AMMO_12G = null;
+        public static final ItemAmmo STONE_AMMO_9MM = null;
+        public static final ItemAmmo STONE_AMMO_45ACP = null;
+        public static final ItemAmmo STONE_AMMO_556MM = null;
+        public static final ItemAmmo STONE_AMMO_762MM = null;
+        public static final ItemAmmo STONE_AMMO_12G = null;
+        public static final ItemAmmo IRON_AMMO_9MM = null;
+        public static final ItemAmmo IRON_AMMO_45ACP = null;
+        public static final ItemAmmo IRON_AMMO_556MM = null;
+        public static final ItemAmmo IRON_AMMO_762MM = null;
+        public static final ItemAmmo IRON_AMMO_12G = null;
+        public static final ItemAmmo GOLD_AMMO_9MM = null;
+        public static final ItemAmmo GOLD_AMMO_45ACP = null;
+        public static final ItemAmmo GOLD_AMMO_556MM = null;
+        public static final ItemAmmo GOLD_AMMO_762MM = null;
+        public static final ItemAmmo GOLD_AMMO_12G = null;
+        public static final ItemAmmo DIAMOND_AMMO_9MM = null;
+        public static final ItemAmmo DIAMOND_AMMO_45ACP = null;
+        public static final ItemAmmo DIAMOND_AMMO_556MM = null;
+        public static final ItemAmmo DIAMOND_AMMO_762MM = null;
+        public static final ItemAmmo DIAMOND_AMMO_12G = null;
+        public static final ItemAmmo EMERALD_AMMO_9MM = null;
+        public static final ItemAmmo EMERALD_AMMO_45ACP = null;
+        public static final ItemAmmo EMERALD_AMMO_556MM = null;
+        public static final ItemAmmo EMERALD_AMMO_762MM = null;
+        public static final ItemAmmo EMERALD_AMMO_12G = null;
+        public static final ItemAmmo AMETHYST_AMMO_9MM = null;
+        public static final ItemAmmo AMETHYST_AMMO_45ACP = null;
+        public static final ItemAmmo AMETHYST_AMMO_556MM = null;
+        public static final ItemAmmo AMETHYST_AMMO_762MM = null;
+        public static final ItemAmmo AMETHYST_AMMO_12G = null;
     }
 
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
@@ -145,41 +144,41 @@ public class ModRegistry {
                     new DebuffHeal("vaccine", 32, () -> GRPGSounds.USE_VACCINE, "This vaccine heals 50% of infection", data -> data.getDebuffs()[1].isActive(), data -> data.getDebuffs()[1].heal(50)),
                     new DebuffHeal("plaster_cast", 32, () -> GRPGSounds.USE_PLASTER_CAST, "Plaster cast heals 35% of broken bones", data -> data.getDebuffs()[2].isActive(), data -> data.getDebuffs()[2].heal(35)),
                     new DebuffHeal("bandage", 50, () -> GRPGSounds.USE_BANDAGE, "Bandages can stop 25% of bleeding", data -> data.getDebuffs()[3].isActive(), data -> data.getDebuffs()[3].heal(25)),
-                    new GRPGItem("wooden_ammo_9mm"),
-                    new GRPGItem("wooden_ammo_45acp"),
-                    new GRPGItem("wooden_ammo_556mm"),
-                    new GRPGItem("wooden_ammo_762mm"),
-                    new GRPGItem("wooden_ammo_12g"),
-                    new GRPGItem("stone_ammo_9mm"),
-                    new GRPGItem("stone_ammo_45acp"),
-                    new GRPGItem("stone_ammo_556mm"),
-                    new GRPGItem("stone_ammo_762mm"),
-                    new GRPGItem("stone_ammo_12g"),
-                    new GRPGItem("iron_ammo_9mm"),
-                    new GRPGItem("iron_ammo_45acp"),
-                    new GRPGItem("iron_ammo_556mm"),
-                    new GRPGItem("iron_ammo_762mm"),
-                    new GRPGItem("iron_ammo_12g"),
-                    new GRPGItem("gold_ammo_9mm"),
-                    new GRPGItem("gold_ammo_45acp"),
-                    new GRPGItem("gold_ammo_556mm"),
-                    new GRPGItem("gold_ammo_762mm"),
-                    new GRPGItem("gold_ammo_12g"),
-                    new GRPGItem("diamond_ammo_9mm"),
-                    new GRPGItem("diamond_ammo_45acp"),
-                    new GRPGItem("diamond_ammo_556mm"),
-                    new GRPGItem("diamond_ammo_762mm"),
-                    new GRPGItem("diamond_ammo_12g"),
-                    new GRPGItem("emerald_ammo_9mm"),
-                    new GRPGItem("emerald_ammo_45acp"),
-                    new GRPGItem("emerald_ammo_556mm"),
-                    new GRPGItem("emerald_ammo_762mm"),
-                    new GRPGItem("emerald_ammo_12g"),
-                    new GRPGItem("amethyst_ammo_9mm"),
-                    new GRPGItem("amethyst_ammo_45acp"),
-                    new GRPGItem("amethyst_ammo_556mm"),
-                    new GRPGItem("amethyst_ammo_762mm"),
-                    new GRPGItem("amethyst_ammo_12g"),
+                    new ItemAmmo("wooden_ammo_9mm"),
+                    new ItemAmmo("wooden_ammo_45acp"),
+                    new ItemAmmo("wooden_ammo_556mm"),
+                    new ItemAmmo("wooden_ammo_762mm"),
+                    new ItemAmmo("wooden_ammo_12g"),
+                    new ItemAmmo("stone_ammo_9mm"),
+                    new ItemAmmo("stone_ammo_45acp"),
+                    new ItemAmmo("stone_ammo_556mm"),
+                    new ItemAmmo("stone_ammo_762mm"),
+                    new ItemAmmo("stone_ammo_12g"),
+                    new ItemAmmo("iron_ammo_9mm"),
+                    new ItemAmmo("iron_ammo_45acp"),
+                    new ItemAmmo("iron_ammo_556mm"),
+                    new ItemAmmo("iron_ammo_762mm"),
+                    new ItemAmmo("iron_ammo_12g"),
+                    new ItemAmmo("gold_ammo_9mm"),
+                    new ItemAmmo("gold_ammo_45acp"),
+                    new ItemAmmo("gold_ammo_556mm"),
+                    new ItemAmmo("gold_ammo_762mm"),
+                    new ItemAmmo("gold_ammo_12g"),
+                    new ItemAmmo("diamond_ammo_9mm"),
+                    new ItemAmmo("diamond_ammo_45acp"),
+                    new ItemAmmo("diamond_ammo_556mm"),
+                    new ItemAmmo("diamond_ammo_762mm"),
+                    new ItemAmmo("diamond_ammo_12g"),
+                    new ItemAmmo("emerald_ammo_9mm"),
+                    new ItemAmmo("emerald_ammo_45acp"),
+                    new ItemAmmo("emerald_ammo_556mm"),
+                    new ItemAmmo("emerald_ammo_762mm"),
+                    new ItemAmmo("emerald_ammo_12g"),
+                    new ItemAmmo("amethyst_ammo_9mm"),
+                    new ItemAmmo("amethyst_ammo_45acp"),
+                    new ItemAmmo("amethyst_ammo_556mm"),
+                    new ItemAmmo("amethyst_ammo_762mm"),
+                    new ItemAmmo("amethyst_ammo_12g"),
                     GunItem.GunBuilder.create()
                             .stats(GRPGConfig.weapon.pistol)
                             .build("pistol"),
@@ -194,8 +193,7 @@ public class ModRegistry {
                             .build("sniper_rifle"),
                     GunItem.GunBuilder.create()
                             .stats(GRPGConfig.weapon.shotgun)
-                            .build("shotgun"),
-                    new ItemAmmoBag("ammo_bag")
+                            .build("shotgun")
             );
             queue.forEach(registry::register);
             queue = null;
