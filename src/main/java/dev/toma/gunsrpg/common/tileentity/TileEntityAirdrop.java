@@ -53,12 +53,12 @@ public class TileEntityAirdrop extends IInventoryFactory {
 
     private enum LootRarity {
 
-        COMMON(38, 33),
+        COMMON(39, 33),
         UNCOMMON(25, 25),
         RARE(17, 16),
         VERY_RARE(11, 11),
         EPIC(6, 9),
-        LEGENDARY(3, 6);
+        LEGENDARY(2, 6);
 
         private final int ammoWeight, medsWeight;
 
