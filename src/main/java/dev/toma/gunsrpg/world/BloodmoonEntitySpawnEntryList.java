@@ -36,14 +36,14 @@ public class BloodmoonEntitySpawnEntryList {
             spider.setPosition(entity.posX, entity.posY, entity.posZ);
             return spider;
         });
-        register(EntityZombie.class, 10, (world, entity) -> {
+        register(EntityZombie.class, 3, (world, entity) -> {
             EntityBlaze blaze = new EntityBlaze(world);
             blaze.setPosition(entity.posX, entity.posY, entity.posZ);
             return blaze;
         });
-        register(EntityCreeper.class, 15, (world, entity) -> {
+        register(EntityCreeper.class, 30, (world, entity) -> {
             EntityGhast ghast = new EntityGhast(world);
-            ghast.setPosition(entity.posX, entity.posY + 5, entity.posZ);
+            ghast.setPosition(entity.posX, Math.max(world.getSeaLevel(), entity.posY + 5), entity.posZ);
             return ghast;
         });
     }

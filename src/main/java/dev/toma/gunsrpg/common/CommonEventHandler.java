@@ -102,8 +102,8 @@ public class CommonEventHandler {
             RayTraceResult result = event.getRayTraceResult();
             if(result != null && result.typeOfHit == RayTraceResult.Type.BLOCK && arrow.shootingEntity instanceof EntityExplosiveSkeleton) {
                 arrow.setDead();
-                BlockPos pos = result.getBlockPos();
                 EnumFacing facing = result.sideHit;
+                BlockPos pos = result.getBlockPos().offset(facing);
                 switch (facing) {
                     case NORTH: case SOUTH: {
                         for(int y = -1; y < 2; y++) {

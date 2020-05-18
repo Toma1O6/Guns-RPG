@@ -169,16 +169,21 @@ public class EntityExplosiveSkeleton extends EntityMob implements IRangedAttackM
         double d0 = target.posX - this.posX;
         double d1 = target.getEntityBoundingBox().minY + (double) (target.height / 3.0F) - entityarrow.posY;
         double d2 = target.posZ - this.posZ;
-        double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
-        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getDifficultyId() * 4));
+        double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
+        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (28 - this.world.getDifficulty().getDifficultyId() * 4));
         this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.world.spawnEntity(entityarrow);
     }
 
     protected EntityArrow getArrow(float p_190726_1_) {
-        EntityExplosiveArrow entitytippedarrow = new EntityExplosiveArrow(this.world, this);
-        entitytippedarrow.setEnchantmentEffectsFromEntity(this, p_190726_1_);
-        return entitytippedarrow;
+        EntityExplosiveArrow arrow = new EntityExplosiveArrow(this.world, this);
+        arrow.setEnchantmentEffectsFromEntity(this, p_190726_1_);
+        return arrow;
+    }
+
+    @Override
+    public boolean isEntityInvulnerable(DamageSource source) {
+        return this.getIsInvulnerable() && source != DamageSource.OUT_OF_WORLD && !source.isExplosion() && !source.isCreativePlayer();
     }
 
     @Override
