@@ -1,9 +1,13 @@
 package dev.toma.gunsrpg.util.object;
 
+import dev.toma.gunsrpg.ai.EntityAIFindClosestPlayer;
+import dev.toma.gunsrpg.ai.EntityAIGhastFireballAttack;
 import dev.toma.gunsrpg.world.cap.WorldDataFactory;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +20,7 @@ import java.util.function.Consumer;
 
 public class EntitySpawnManager {
 
-    private static Map<Class<? extends Entity>, Consumer<? extends Entity>> tempMap = new HashMap<>();
+    private static final Map<Class<? extends Entity>, Consumer<? extends Entity>> tempMap = new HashMap<>();
     private double healthBase;
     private Consumer<Entity> consumer;
 
@@ -73,6 +77,12 @@ public class EntitySpawnManager {
             creeper.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(creeper, EntityPlayer.class, false));
             if(WorldDataFactory.isBloodMoon(creeper.world)) creeper.fuseTime = 1;
         });
-
+        registerEntityConsumer(EntityGhast.class, ghast -> {
+            if(ghast.world.isRemote) return;
+            ghast.tasks.taskEntries.removeIf(entry -> entry.priority == 7 && entry.action instanceof EntityGhast.AIFireballAttack);
+            ghast.tasks.addTask(7, new EntityAIGhastFireballAttack(ghast));
+            ghast.targetTasks.taskEntries.removeIf(entry -> entry.priority == 1 && entry.action instanceof EntityAIFindEntityNearestPlayer);
+            ghast.targetTasks.addTask(1, new EntityAIFindClosestPlayer(ghast));
+        });
     }
 }

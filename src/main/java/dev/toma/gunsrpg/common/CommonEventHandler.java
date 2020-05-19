@@ -35,6 +35,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -229,6 +230,16 @@ public class CommonEventHandler {
         WorldDataCap cap = WorldDataFactory.get(event.world);
         if(cap == null) return;
         WorldDataFactory.get(event.world).tick(event.world);
+    }
+
+    @SubscribeEvent
+    public static void trySleepInBed(PlayerSleepInBedEvent event) {
+        EntityPlayer player = event.getEntityPlayer();
+        BlockPos pos = event.getPos();
+        if(WorldDataFactory.isBloodMoon(player.world) && !player.world.provider.isDaytime()) {
+            player.setSpawnPoint(pos.up(), true);
+            event.setResult(EntityPlayer.SleepResult.NOT_SAFE);
+        }
     }
 
     private static EntityPlayer findNearestPlayer(Entity entity, World world) {

@@ -205,7 +205,7 @@ public class ModRegistry {
                     makeBuilder("bullet", EntityBullet.class).tracker(256, 1, true).build(),
                     makeBuilder("airdrop", EntityAirdrop.class).tracker(256, 1, true).build(),
                     makeBuilder("explosive_skeleton", EntityExplosiveSkeleton.class).tracker(80, 3, true).egg(0xB46F67, 0x494949).spawn(GRPGConfig.world.explosiveSkeleton.type, GRPGConfig.world.explosiveSkeleton.weight, GRPGConfig.world.explosiveSkeleton.min, GRPGConfig.world.explosiveSkeleton.max, ForgeRegistries.BIOMES).build(),
-                    makeBuilder("explosive_arrow", EntityExplosiveArrow.class).tracker(64, 20, false).build()
+                    makeBuilder("explosive_arrow", EntityExplosiveArrow.class).tracker(64, 20, true).build()
             );
         }
 

@@ -29,12 +29,15 @@ import java.util.Random;
 
 public class BlockBlastFurnace extends GRPGBlock {
 
-    private static PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-    private static PropertyBool BURN = PropertyBool.create("burning");
+    private static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    private static final PropertyBool BURN = PropertyBool.create("burning");
 
     public BlockBlastFurnace(String name) {
         super(name, Material.ROCK);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURN, false));
+        this.setHarvestLevel("pickaxe", 1);
+        this.setHardness(2.2F);
+        this.setResistance(16.0F);
     }
 
     public static void updateBurnState(BlockPos pos, World world, boolean lit) {

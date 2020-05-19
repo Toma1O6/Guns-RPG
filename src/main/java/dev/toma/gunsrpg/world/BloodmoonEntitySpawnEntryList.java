@@ -46,5 +46,10 @@ public class BloodmoonEntitySpawnEntryList {
             ghast.setPosition(entity.posX, Math.max(world.getSeaLevel(), entity.posY + 5), entity.posZ);
             return ghast;
         });
+        register(EntitySkeleton.class, 10, (world, entity) -> {
+            EntityWitherSkeleton witherSkeleton = new EntityWitherSkeleton(world);
+            witherSkeleton.setPosition(entity.posX, entity.posY, entity.posZ);
+            return witherSkeleton;
+        });
     }
 }
