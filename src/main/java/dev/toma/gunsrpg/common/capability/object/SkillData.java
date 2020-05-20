@@ -70,7 +70,7 @@ public class SkillData {
         private int skills;
 
         public void kill() {
-            this.kills += 256;
+            this.kills++;
         }
 
         public void clearKillCount() {
