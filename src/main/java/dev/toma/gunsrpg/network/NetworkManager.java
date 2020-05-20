@@ -2,8 +2,10 @@ package dev.toma.gunsrpg.network;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.network.packet.CPacketUpdateCap;
+import dev.toma.gunsrpg.network.packet.SPacketAbilityUpdate;
 import dev.toma.gunsrpg.network.packet.SPacketRequestDataUpdate;
 import dev.toma.gunsrpg.network.packet.SPacketShoot;
+import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -27,6 +29,8 @@ public class NetworkManager {
         c_register(CPacketUpdateCap.Handler.class, CPacketUpdateCap.class);
         s_register(SPacketShoot.Handler.class, SPacketShoot.class);
         s_register(SPacketRequestDataUpdate.Handler.class, SPacketRequestDataUpdate.class);
+        s_register(ShootingManager.Update.Handler.class, ShootingManager.Update.class);
+        s_register(SPacketAbilityUpdate.Handler.class, SPacketAbilityUpdate.class);
     }
 
     private static <A extends IMessage, B extends IMessage> void c_register(Class<? extends IMessageHandler<A, B>> hClass, Class<A> pClass) {

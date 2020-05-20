@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.skilltree;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.math.Vec2Di;
 import net.minecraft.util.ResourceLocation;
@@ -9,6 +10,9 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+import static dev.toma.gunsrpg.common.ModRegistry.GRPGItems.*;
 
 public class Ability {
 
@@ -49,13 +53,40 @@ public class Ability {
     public static final Type SG_DIAMOND_AMMO = registerStatic("sg_diamond_ammo");
     public static final Type SG_EMERALD_AMMO = registerStatic("sg_emerald_ammo");
     public static final Type SG_AMETHYST_AMMO = registerStatic("sg_amethyst_ammo");
-    public static final UnlockableType PISTOL_QUICKDRAW = registerUnlockable("pistol_quickdraw", "Quickdraw", "30% faster pistol reload speed").requires(list -> needsLevel("pistol_1", list)).save();
-    public static final UnlockableType PISTOL_EXTENDED = registerUnlockable("pistol_extended", "Extended Mag", "Increase pistol magazine kapacity to 13").requires(list -> needsLevel("pistol_1", list)).save();
-    public static final UnlockableType PISTOL_TOUGH_SPRING = registerUnlockable("pistol_tough_spring", "Tought Spring", "Increases pistol firerate").requires(list -> needsLevel("pistol_5", list)).save();
-    public static final UnlockableType PISTOL_CARBON_BARREL = registerUnlockable("pistol_carbon_barrel", "Carbon Barrel", "Decreases recoil").requires(list -> needsLevel("pistol_5", list)).save();
-    public static final UnlockableType PISTOL_SUPPRESSOR = registerUnlockable("pistol_suppressor", "Suppressor", "Mobs won't be able to hear you").requires(list -> needsLevel("pistol_5", list)).save();
-    public static final UnlockableType PISTOL_HEAVY_BULLETS = registerUnlockable("pistol_heavy_bullets", "Heavy Bullets", "Can slow down mobs on hit").requires(list -> needsLevel("pistol_5", list)).save();
-    public static final UnlockableType DUAL_WIELD = registerUnlockable("dual_wield", "Dual Wielding", "Allows you to carry pistol in both hands").requires(list -> needsLevel("pistol_8", list)).save();
+    public static final UnlockableType PISTOL_QUICKDRAW = registerDynamic("pistol_quickdraw", "Quickdraw", "30% faster pistol reload speed").icon("quickdraw").pos(124, 30).requires(list -> needsLevel("pistol_1", list)).gun(() -> PISTOL).save();
+    public static final UnlockableType PISTOL_EXTENDED = registerDynamic("pistol_extended", "Extended Mag", "Increase pistol magazine capacity to 13").icon("extended").pos(164, 30).requires(list -> needsLevel("pistol_1", list)).gun(() -> PISTOL).save();
+    public static final UnlockableType PISTOL_TOUGH_SPRING = registerDynamic("pistol_tough_spring", "Tough Spring", "Increases pistol firerate").icon("tough_spring").pos(204, 30).requires(list -> needsLevel("pistol_5", list)).gun(() -> PISTOL).save();
+    public static final UnlockableType PISTOL_CARBON_BARREL = registerDynamic("pistol_carbon_barrel", "Carbon Barrel", "Decreases recoil").icon("carbon_barrel").pos(244, 30).requires(list -> needsLevel("pistol_5", list)).gun(() -> PISTOL).save();
+    public static final UnlockableType PISTOL_SUPPRESSOR = registerDynamic("pistol_suppressor", "Suppressor", "Adds suppressor on your weapon").icon("suppressor").pos(284, 30).requires(list -> needsLevel("pistol_5", list)).gun(() -> PISTOL).save();
+    public static final UnlockableType PISTOL_HEAVY_BULLETS = registerDynamic("heavy_bullets", "Heavy Bullets", "Can slow down mobs on hit").pos(324, 30).requires(list -> needsLevel("pistol_5", list)).gun(() -> PISTOL).save();
+    public static final UnlockableType DUAL_WIELD = registerDynamic("dual_wield", "Dual Wielding", "Allows you to carry pistol in both hands").pos(364, 30).requires(list -> needsLevel("pistol_8", list)).gun(() -> PISTOL).save();
+    public static final UnlockableType SMG_QUICKDRAW = registerDynamic("smg_quickdraw", "Quickdraw", "20% faster SMG reload speed").icon("quickdraw").pos(376, 222).requires(list -> needsLevel("smg_1", list)).gun(() -> SMG).save();
+    public static final UnlockableType SMG_EXTENDED = registerDynamic("smg_extended", "Extended Mag", "Increases SMG magaine capacity to 30").icon("extended").pos(416, 222).requires(list -> needsLevel("smg_1", list)).gun(() -> SMG).save();
+    public static final UnlockableType SMG_VERTICAL_GRIP = registerDynamic("smg_vertical_grip", "Vertical Grip", "Decreases vertical recoil").icon("vertical_grip").pos(456, 222).requires(list -> needsLevel("smg_1", list)).gun(() -> SMG).save();
+    public static final UnlockableType SMG_TOUGH_SPRING = registerDynamic("smg_tough_spring", "Tough Spring", "Increases firerate").icon("tough_spring").pos(496, 222).requires(list -> needsLevel("smg_5", list)).gun(() -> SMG).save();
+    public static final UnlockableType SMG_RED_DOT = registerDynamic("smg_red_dot", "Red Dot Sight", "Adds red dot sight on your weapon").icon("red_dot").pos(536, 222).requires(list -> needsLevel("smg_5", list)).gun(() -> SMG).save();
+    public static final UnlockableType SMG_SUPPRESSOR = registerDynamic("smg_suppressor", "Suppressor", "Adds suppressor on your weapon").icon("suppressor").pos(576, 222).requires(list -> needsLevel("smg_5", list)).gun(() -> SMG).save();
+    public static final UnlockableType COMMANDO = registerDynamic("commando", "Commando", "Grants following buffs after each kill:", "> 5s speed boost", "> 3s regeneration II").pos(616, 222).requires(list -> needsLevel("smg_8", list)).gun(() -> SMG).save();
+    public static final UnlockableType AR_TOUGH_SPRING = registerDynamic("ar_tough_spring", "Tough Spring", "Increases firerate").icon("tough_spring").pos(628, 414).requires(list -> needsLevel("ar_1", list)).gun(() -> ASSAULT_RIFLE).save();
+    public static final UnlockableType AR_VERTICAL_GRIP = registerDynamic("ar_vertical_grip", "Vertical Grip", "Decreases vertical recoil").icon("vertical_grip").pos(668, 414).requires(list -> needsLevel("ar_1", list)).gun(() -> ASSAULT_RIFLE).save();
+    public static final UnlockableType AR_EXTENDED = registerDynamic("ar_extended", "Extended Mag", "Increases magazine capacity to 20").icon("extended").pos(708, 414).requires(list -> needsLevel("ar_5", list)).gun(() -> ASSAULT_RIFLE).save();
+    public static final UnlockableType AR_RED_DOT = registerDynamic("ar_red_dot", "Red Dot Sight", "Adds red dot sight on your weapon").icon("red_dot").pos(748, 414).requires(list -> needsLevel("ar_5", list)).gun(() -> ASSAULT_RIFLE).save();
+    public static final UnlockableType AR_SUPPRESSOR = registerDynamic("ar_suppressor", "Suppressor", "Adds suppressor on your weapon").icon("suppressor").pos(788, 414).requires(list -> needsLevel("ar_5", list)).gun(() -> ASSAULT_RIFLE).save();
+    public static final UnlockableType AR_CHEEKPAD = registerDynamic("ar_cheekpad", "Cheekpad", "Decreases recoil").icon("cheekpad").pos(828, 414).requires(list -> needsLevel("ar_5", list)).gun(() -> ASSAULT_RIFLE).save();
+    public static final UnlockableType ADAPTIVE_CHAMBERING = registerDynamic("adaptive_chambering", "Adaptive Chambering", "Unlocks FULL-AUTO Firemode").pos(868, 414).requires(list -> needsLevel("ar_8", list)).gun(() -> ASSAULT_RIFLE).save();
+    public static final UnlockableType SCOPE = registerDynamic("scope", "Scope", "Adds 6x scope on your weapon").pos(880, 606).requires(list -> needsLevel("sr_1", list)).gun(() -> SNIPER_RIFLE).save();
+    public static final UnlockableType SR_CHEEKPAD = registerDynamic("sr_cheekpad", "Cheekpad", "Decreases recoil").icon("cheekpad").pos(920, 606).requires(list -> needsLevel("sr_1", list)).gun(() -> SNIPER_RIFLE).save();
+    public static final UnlockableType SR_EXTENDED = registerDynamic("sr_extended", "Extended Mag", "Increases magazine capacity to 10").icon("extended").pos(960, 606).requires(list -> needsLevel("sr_5", list)).gun(() -> SNIPER_RIFLE).save();
+    public static final UnlockableType SR_SUPPRESSOR = registerDynamic("sr_suppressor", "Suppressor", "Adds suppressor on your weapon").icon("suppressor").pos(1000, 606).requires(list -> needsLevel("sr_5", list)).gun(() -> SNIPER_RIFLE).save();
+    public static final UnlockableType FAST_HANDS = registerDynamic("fast_hands", "Fast Hands", "40% faster reload speed").pos(1040, 606).requires(list -> needsLevel("sr_5", list)).gun(() -> SNIPER_RIFLE).save();
+    public static final UnlockableType PENETRATOR = registerDynamic("penetrator", "Penetrator", "Bullets can penetrate multiple enemies").pos(1080, 606).requires(list -> needsLevel("sr_5", list)).gun(() -> SNIPER_RIFLE).save();
+    public static final UnlockableType DEAD_EYE = registerDynamic("dead_eye", "Dead Eye", "+50% headshot damage").pos(1120, 606).requires(list -> needsLevel("sr_8", list)).gun(() -> SNIPER_RIFLE).save();
+    public static final UnlockableType BULLET_LOOPS = registerDynamic("bullet_loops", "Bullet Loops", "Increases reload speed by 20%").pos(1132, 798).requires(list -> needsLevel("sg_1", list)).gun(() -> SHOTGUN).save();
+    public static final UnlockableType SG_EXTENDED = registerDynamic("sg_extended", "Extended Mag", "Increases magazine capacity to 8").icon("extended").pos(1172, 798).requires(list -> needsLevel("sg_1", list)).gun(() -> SHOTGUN).save();
+    public static final UnlockableType PUMP_IN_ACTION = registerDynamic("pump_in_action", "Pump In Action", "Increases firerate").pos(1212, 798).requires(list -> needsLevel("sg_5", list)).gun(() -> SHOTGUN).save();
+    public static final UnlockableType CHOKE = registerDynamic("choke", "Choke", "Decreases pellet spread").pos(1252, 798).requires(list -> needsLevel("sg_5", list)).gun(() -> SHOTGUN).save();
+    public static final UnlockableType NEVER_GIVE_UP = registerDynamic("never_give_up", "Never Give Up", "Grants following buffs after kill:", "5s of Resistance I").pos(1292, 798).requires(list -> needsLevel("sg_5", list)).gun(() -> SHOTGUN).save();
+    public static final UnlockableType EXTENDED_BARREL = registerDynamic("extended_barrel", "Extended Barrel", "Increases pellet velocity").pos(1332, 798).requires(list -> needsLevel("sg_8", list)).gun(() -> SHOTGUN).save();
 
     public boolean enabled;
     public final Type type;
@@ -97,7 +128,7 @@ public class Ability {
         return null;
     }
 
-    private static UnlockableBuilder registerUnlockable(String name, String key, String... lines) {
+    private static UnlockableBuilder registerDynamic(String name, String key, String... lines) {
         return new UnlockableBuilder(name, key, lines);
     }
 
@@ -108,7 +139,7 @@ public class Ability {
     }
 
     private static boolean needsLevel(String treeEntryName, List<EntryInstance> list) {
-        return ModUtils.contains(treeEntryName, list, (s, i) -> i.getType().registryName.toString().equals(s));
+        return ModUtils.contains(treeEntryName, list, (s, i) -> i.getType().registryName.getResourcePath().equals(s));
     }
 
     private static ResourceLocation getIcon(String name) {
@@ -138,31 +169,43 @@ public class Ability {
 
     public static class UnlockableType extends Type {
 
-        public final int price;
+        public final Supplier<GunItem> gun;
+        public final int price = 1;
         public final Predicate<List<EntryInstance>> levelRequirement;
         public final Vec2Di skillTreeVec;
 
         public UnlockableType(UnlockableBuilder builder) {
-            super(builder.name, true, new ResourceLocation(GunsRPG.MODID, builder.name), builder.key, builder.lines);
+            super(builder.name, true, builder.icon != null ? builder.icon : Ability.getIcon(builder.name), builder.key, builder.lines);
+            this.gun = builder.gun;
             this.levelRequirement = builder.predicate;
             this.skillTreeVec = builder.location;
-            this.price = builder.price;
             UNLOCKABLE_ABILITY_TYPES.add(this);
         }
     }
 
     private static class UnlockableBuilder {
-        private String name;
-        private String key;
-        private String[] lines;
+        private final String name;
+        private final String key;
+        private final String[] lines;
         private Predicate<List<EntryInstance>> predicate = l -> true;
         private Vec2Di location;
-        private int price;
+        private ResourceLocation icon;
+        private Supplier<GunItem> gun;
 
         private UnlockableBuilder(String name, String key, String... lines) {
             this.name = name;
             this.key = key;
             this.lines = lines;
+        }
+
+        private UnlockableBuilder gun(Supplier<GunItem> supplier) {
+            this.gun = supplier;
+            return this;
+        }
+
+        private UnlockableBuilder icon(String key) {
+            this.icon = Ability.getIcon(key);
+            return this;
         }
 
         private UnlockableBuilder requires(Predicate<List<EntryInstance>> predicate) {
@@ -172,11 +215,6 @@ public class Ability {
 
         private UnlockableBuilder pos(int x, int y) {
             this.location = new Vec2Di(x, y);
-            return this;
-        }
-
-        private UnlockableBuilder costs(int i) {
-            this.price = i;
             return this;
         }
 

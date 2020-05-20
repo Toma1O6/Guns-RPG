@@ -64,6 +64,11 @@ public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
         this.timer = 0;
     }
 
+    public void toggle() {
+        this.active = !active;
+        this.level = 0;
+    }
+
     public boolean isActive() {
         return active;
     }

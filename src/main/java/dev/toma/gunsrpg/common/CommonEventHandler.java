@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.DebuffTypes;
 import dev.toma.gunsrpg.util.object.EntitySpawnManager;
+import dev.toma.gunsrpg.util.object.ShootingManager;
 import dev.toma.gunsrpg.world.BloodmoonEntitySpawnEntryList;
 import dev.toma.gunsrpg.world.cap.WorldCapProvider;
 import dev.toma.gunsrpg.world.cap.WorldDataCap;
@@ -35,6 +36,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -176,15 +178,18 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if(event.phase == TickEvent.Phase.END) {
-            PlayerDataFactory.get(event.player).tick();
-            if(!event.player.world.isRemote && event.player.world.getWorldTime() % 200 == 0) {
-                for(int i = 0; i < event.player.world.loadedTileEntityList.size(); i++) {
-                    TileEntity te = event.player.world.loadedTileEntityList.get(i);
+            EntityPlayer player = event.player;
+            World world = player.world;
+            PlayerDataFactory.get(player).tick();
+            if(!world.isRemote && world.getWorldTime() % 200 == 0) {
+                for(int i = 0; i < world.loadedTileEntityList.size(); i++) {
+                    TileEntity te = world.loadedTileEntityList.get(i);
                     if(te instanceof TileEntityMobSpawner) {
-                        event.player.world.destroyBlock(te.getPos(), false);
+                        world.destroyBlock(te.getPos(), false);
                     }
                 }
             }
+            ShootingManager.updateAllShooting(world);
         }
     }
 
@@ -239,6 +244,13 @@ public class CommonEventHandler {
         if(WorldDataFactory.isBloodMoon(player.world) && !player.world.provider.isDaytime()) {
             player.setSpawnPoint(pos.up(), true);
             event.setResult(EntityPlayer.SleepResult.NOT_SAFE);
+        }
+    }
+
+    @SubscribeEvent
+    public static void leftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+        if(event.getEntityPlayer().getHeldItemMainhand().getItem() instanceof GunItem) {
+            event.setCanceled(true);
         }
     }
 

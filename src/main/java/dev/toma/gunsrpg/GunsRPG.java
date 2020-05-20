@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.common.CommonEventHandler;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
+import dev.toma.gunsrpg.common.command.CommandGRPG;
 import dev.toma.gunsrpg.common.skilltree.SkillTreeEntry;
 import dev.toma.gunsrpg.common.tileentity.TileEntityAirdrop;
 import dev.toma.gunsrpg.common.tileentity.TileEntityBlastFurnace;
@@ -75,6 +76,7 @@ public class GunsRPG {
 
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
+        event.registerServerCommand(new CommandGRPG());
         CommonEventHandler.HEALTH_MAP.clear();
         World world = event.getServer().getWorld(0);
         for(EntityEntry entry : ForgeRegistries.ENTITIES) {

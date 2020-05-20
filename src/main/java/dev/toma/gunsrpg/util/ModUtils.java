@@ -47,7 +47,7 @@ public class ModUtils {
         GlStateManager.disableBlend();
     }
 
-    public static void renderColor(int x, int y, int x2, int y2, float r, float b, float g, float a) {
+    public static void renderColor(int x, int y, int x2, int y2, float r, float g, float b, float a) {
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);

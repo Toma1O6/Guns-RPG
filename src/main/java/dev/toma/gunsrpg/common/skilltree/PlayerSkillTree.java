@@ -29,6 +29,10 @@ public class PlayerSkillTree {
     public PlayerSkillTree(EntityPlayer player, SkillData data) {
         this.player = player;
         this.data = data;
+        this.setDefault();
+    }
+
+    public void setDefault() {
         this.obtained = ModUtils.newList(SkillTreeEntry.List.root.makeInstance());
         this.locked = ModUtils.newList(ModUtils.convert(SkillTreeEntry.List.root.child, SkillTreeEntry::makeInstance));
     }
@@ -39,9 +43,16 @@ public class PlayerSkillTree {
         while (iterator.hasNext()) {
             EntryInstance instance = iterator.next();
             if(instance.canUnlock(data.killCount)) {
+                SkillTreeEntry entry = instance.getType();
+                SkillData.KillData killData = data.killCount.get(entry.gun);
+                killData.clearKillCount();
+                entry.onObtain.accept(data.killCount);
+                Ability.Type type = entry.type;
+                if(type != null) {
+                    data.getAbilityData().unlockProperty(type);
+                }
                 obtained.add(instance);
                 unlocked.add(instance);
-                data.killCount.put(instance.getType().gun, 0);
                 if(player instanceof EntityPlayerMP) {
                     player.sendStatusMessage(new TextComponentString(TextFormatting.GREEN + "You have reached new weapon level!"), true);
                     ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, player.posX, player.posY, player.posZ, 0.75F, 1.0F));

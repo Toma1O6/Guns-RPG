@@ -14,18 +14,18 @@ import java.util.Map;
 
 public class SkillData {
 
-    private final EntityPlayer owner;
     private final PlayerSkillTree skillTree;
-    public final Map<GunItem, Integer> killCount = new HashMap<>();
+    private final AbilityData abilityData;
+    public final Map<GunItem, KillData> killCount = new HashMap<>();
 
     public SkillData(EntityPlayer player) {
-        this.owner = player;
         this.skillTree = new PlayerSkillTree(player, this);
+        this.abilityData = new AbilityData(this);
     }
 
     public void kill(Entity entity, GunItem item) {
-        int value = killCount.computeIfAbsent(item, gun -> 0);
-        killCount.put(item, value + 1);
+        KillData data = killCount.computeIfAbsent(item, gun -> new KillData());
+        data.kill();
         skillTree.updateEntries();
     }
 
@@ -33,14 +33,19 @@ public class SkillData {
         return skillTree;
     }
 
+    public AbilityData getAbilityData() {
+        return abilityData;
+    }
+
     public NBTTagCompound write() {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setTag("tree", skillTree.write());
         NBTTagCompound map = new NBTTagCompound();
-        for(Map.Entry<GunItem, Integer> entry : killCount.entrySet()) {
-            map.setInteger(entry.getKey().getRegistryName().toString(), entry.getValue());
+        for(Map.Entry<GunItem, KillData> entry : killCount.entrySet()) {
+            map.setTag(entry.getKey().getRegistryName().toString(), entry.getValue().write());
         }
         nbt.setTag("map", map);
+        nbt.setTag("abilities", abilityData.write());
         return nbt;
     }
 
@@ -53,7 +58,51 @@ public class SkillData {
             if (!(item instanceof GunItem)) {
                 continue;
             }
-            killCount.put((GunItem) item, map.getInteger(key));
+            KillData data = new KillData();
+            data.read(map.hasKey(key) ? map.getCompoundTag(key) : new NBTTagCompound());
+            killCount.put((GunItem) item, data);
+        }
+        abilityData.read(nbt.hasKey("abilities") ? nbt.getCompoundTag("abilities") : new NBTTagCompound());
+    }
+
+    public static class KillData {
+        private int kills;
+        private int skills;
+
+        public void kill() {
+            this.kills += 256;
+        }
+
+        public void clearKillCount() {
+            this.kills = 0;
+        }
+
+        public void addPoints(int n) {
+            this.skills += n;
+        }
+
+        public void removePoints(int n) {
+            this.skills -= n;
+        }
+
+        public int getKillCount() {
+            return kills;
+        }
+
+        public int getSkillPoints() {
+            return skills;
+        }
+
+        public NBTTagCompound write() {
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setInteger("kills", kills);
+            nbt.setInteger("skillPoints", skills);
+            return nbt;
+        }
+
+        public void read(NBTTagCompound nbt) {
+            kills = nbt.getInteger("kills");
+            skills = nbt.getInteger("skillPoints");
         }
     }
 }

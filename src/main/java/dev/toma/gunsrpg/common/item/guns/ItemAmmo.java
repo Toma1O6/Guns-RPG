@@ -4,7 +4,15 @@ import dev.toma.gunsrpg.common.item.GRPGItem;
 
 public class ItemAmmo extends GRPGItem implements IAmmoProvider {
 
-    public ItemAmmo(String name) {
+    private final AmmoType ammoType;
+
+    public ItemAmmo(String name, AmmoType ammoType) {
         super(name);
+        this.ammoType = ammoType;
+    }
+
+    @Override
+    public AmmoType getAmmoType() {
+        return ammoType;
     }
 }

@@ -2,26 +2,33 @@ package dev.toma.gunsrpg.client.gui;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.object.AbilityData;
 import dev.toma.gunsrpg.common.capability.object.SkillData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.common.skilltree.EntryInstance;
 import dev.toma.gunsrpg.common.skilltree.PlayerSkillTree;
 import dev.toma.gunsrpg.common.skilltree.SkillTreeEntry;
+import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.SPacketAbilityUpdate;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.math.Vec2Di;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +36,11 @@ import java.util.Map;
 public class GuiSkillTree extends GuiScreen {
 
     private static final ResourceLocation SKILL_TREE_TEXTURES = GunsRPG.makeResource("textures/icons/skill_tree_bg.png");
-    private List<DisplayObject> objectList = new ArrayList<>();
-    private List<Pair<DisplayObject, DisplayObject>> lines = new ArrayList<>();
+    private final List<DisplayObject> objectList = new ArrayList<>();
+    private final List<Pair<DisplayObject, DisplayObject>> lines = new ArrayList<>();
+    private final List<SkillWidget> skillWidgets = new ArrayList<>();
     private SkillData skillData;
     private int x, y;
-    private int maxX = 1300, maxY = 1000;
 
     private String cachedHeaderText;
     private int headerWidth;
@@ -74,6 +81,12 @@ public class GuiSkillTree extends GuiScreen {
         }
     }
 
+    private void drawUnlockables() {
+        for(SkillWidget widget : skillWidgets) {
+            widget.draw();
+        }
+    }
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         GlStateManager.color(1F, 1F, 1F, 1F);
@@ -109,31 +122,42 @@ public class GuiSkillTree extends GuiScreen {
             GlStateManager.enableTexture2D();
             GlStateManager.glLineWidth(1);
         }
-        drawTree();
+        this.drawTree();
+        this.drawUnlockables();
         ModUtils.renderColor(0, 0, width, 25, 0, 0, 0, 0.4f);
         FontRenderer renderer = mc.fontRenderer;
-        renderer.drawStringWithShadow(cachedHeaderText, (width - headerWidth) / 2, 8, 0xFFFFFFFF);
-        Map<GunItem, Integer> killData = skillData.killCount;
+        renderer.drawStringWithShadow(cachedHeaderText, (width - headerWidth) / 2f, 8, 0xFFFFFFFF);
+        Map<GunItem, SkillData.KillData> killData = skillData.killCount;
         int count = killData.size();
         int killDataY = height - 5 - 12 * count;
         int id = 0;
-        for(Map.Entry<GunItem, Integer> entry : killData.entrySet()) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0, 0, 101);
+        for(Map.Entry<GunItem, SkillData.KillData> entry : killData.entrySet()) {
             String name = entry.getKey().getRegistryName().getResourcePath();
             name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
-            String text = String.format("%s - %d kills", name, entry.getValue());
+            SkillData.KillData data = entry.getValue();
+            String text = String.format("%s - %d kills / %d points", name, data.getKillCount(), data.getSkillPoints());
             mc.fontRenderer.drawStringWithShadow(text, 10, killDataY + id * 12, 0xFFFFFF);
             ++id;
         }
+        GlStateManager.popMatrix();
         int mx = x + mouseX;
         int my = y + mouseY - 25;
         for(DisplayObject object : objectList) {
             Vec2Di c = object.coord;
             if(mx >= c.x && mx <= c.x + 32 && my >= c.y && my <= c.y + 32) {
                 GlStateManager.pushMatrix();
-                GlStateManager.translate(0, 0, 101);
+                GlStateManager.translate(0, 0, 102);
                 drawHovereredInfo(object, mouseX, mouseY);
                 GlStateManager.popMatrix();
                 break;
+            }
+        }
+        for(SkillWidget widget : skillWidgets) {
+            Vec2Di c = widget.type.skillTreeVec;
+            if(mx >= c.x && mx <= c.x + 32 && my >= c.y && my <= c.y + 32) {
+                widget.renderHoveredInfo(mx, my, width, height);
             }
         }
         if(time - lastTime > 1000) {
@@ -142,9 +166,19 @@ public class GuiSkillTree extends GuiScreen {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if(mouseButton == 0) {
             this.setLastClickedPos(mouseX, mouseY);
+            int mx = x + mouseX;
+            int my = y + mouseY - 25;
+            for(SkillWidget widget : skillWidgets) {
+                Vec2Di c = widget.type.skillTreeVec;
+                if(mx >= c.x && mx <= c.x + 32 && my >= c.y && my <= c.y + 32) {
+                    boolean sound = widget.handleClicked();
+                    if(sound) mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                    break;
+                }
+            }
         }
     }
 
@@ -153,8 +187,8 @@ public class GuiSkillTree extends GuiScreen {
         if(clickedMouseButton == 0) {
             int x = lastClickX - mouseX;
             int y = lastClickY - mouseY;
-            this.x = ModUtils.wrap(this.x + x, 0, maxX);
-            this.y = ModUtils.wrap(this.y + y, 0, maxY);
+            this.x = ModUtils.wrap(this.x + x, 0, 1000);
+            this.y = ModUtils.wrap(this.y + y, 0, 1500);
             this.setLastClickedPos(mouseX, mouseY);
         }
     }
@@ -165,12 +199,11 @@ public class GuiSkillTree extends GuiScreen {
         FontRenderer renderer = mc.fontRenderer;
         cachedHeaderText = String.format("\u00a7l%s's skill tree", mc.player.getName());
         headerWidth = renderer.getStringWidth(cachedHeaderText);
-        maxX = 400;
-        maxY = 700;
     }
 
     public void onDataUpdate() {
         this.skillData = PlayerDataFactory.get(mc.player).getSkillData();
+        this.skillWidgets.clear();
         objectList.clear();
         PlayerSkillTree tree = skillData.getSkillTree();
         SkillTreeEntry entry = tree.getObtained().get(0).getType();
@@ -180,6 +213,11 @@ public class GuiSkillTree extends GuiScreen {
         objectList.add(object);
         for(SkillTreeEntry treeEntry : entry.child) {
             populate(treeEntry, row + 1, column, ModUtils.contains(treeEntry.registryName, tree.getObtained(), this::eq), tree, object);
+        }
+        for(Ability.UnlockableType type : Ability.UNLOCKABLE_ABILITY_TYPES) {
+            if(type.levelRequirement.test(skillData.getSkillTree().getObtained())) {
+                skillWidgets.add(this.new SkillWidget(type));
+            }
         }
     }
 
@@ -233,14 +271,121 @@ public class GuiSkillTree extends GuiScreen {
 
     private static class DisplayObject {
 
-        private SkillTreeEntry entry;
-        private Vec2Di coord;
-        private boolean obtained;
+        private final SkillTreeEntry entry;
+        private final Vec2Di coord;
+        private final boolean obtained;
 
         public DisplayObject(SkillTreeEntry entry, Vec2Di coord, boolean obtained) {
             this.entry = entry;
             this.coord = coord;
             this.obtained = obtained;
+        }
+    }
+
+    private class SkillWidget {
+
+        private final Ability.UnlockableType type;
+        // 0 = locked, 1 = disabled, 2 = active
+        private int state = 0;
+        int width;
+        int height;
+        String price;
+
+        public SkillWidget(Ability.UnlockableType type) {
+            this.type = type;
+            update();
+            boolean f = type.price == 1;
+            price = type.price == 0 ? "This skill can be unlocked for free" : "Costs " + type.price + (f ? " skillpoint" : " skillpoints");
+            String title = type.title;
+            String[] desc = type.lines;
+            width = checkWidth(price);
+            width = checkWidth(title);
+            for(String line : desc) {
+                width = checkWidth(line);
+            }
+            height = desc.length + 1;
+        }
+
+        int checkWidth(String line) {
+            FontRenderer renderer = Minecraft.getMinecraft().fontRenderer;
+            return Math.max(width, renderer.getStringWidth(line));
+        }
+
+        public boolean handleClicked() {
+            AbilityData data = GuiSkillTree.this.skillData.getAbilityData();
+            switch (state) {
+                case 0: {
+                    boolean b = data.canPurchase(type);
+                    if(b) NetworkManager.toServer(new SPacketAbilityUpdate(SPacketAbilityUpdate.PacketInfoType.UNLOCK, type));
+                    update();
+                    return b;
+                }
+                case 1: case 2: {
+                    NetworkManager.toServer(new SPacketAbilityUpdate(SPacketAbilityUpdate.PacketInfoType.TOGGLE, type));
+                    update();
+                    return true;
+                }
+                default: return false;
+            }
+        }
+
+        public void draw() {
+            Vec2Di coord = type.skillTreeVec;
+            int x = coord.x - GuiSkillTree.this.x;
+            int y = 25 + coord.y - GuiSkillTree.this.y;
+            if(x < -32 || y < -32) return;
+            ModUtils.renderColor(x, y, x + 32, y + 32, 0, 0, 0, 1.0F);
+            switch (state) {
+                case 0: {
+                    ModUtils.renderColor(x + 1, y + 1, x + 31, y + 31, 0.2F, 0.2F, 0.2F, 1.0F);
+                    break;
+                }
+                case 1: {
+                    ModUtils.renderColor(x + 1, y + 1, x + 31, y + 31, 0.75F, 0.75F, 0.75F, 1.0F);
+                    break;
+                }
+                case 2: {
+                    ModUtils.renderColor(x + 1, y + 1, x + 31, y + 31, 0.0F, 0.8F, 0.2F, 1.0F);
+                    break;
+                }
+            }
+            if(type.icon != null) {
+                ModUtils.renderTexture(x + 8, y + 8, x + 24, y + 24, type.icon);
+            }
+        }
+
+        public void renderHoveredInfo(int mx, int my, int width, int height) {
+            float r = state == 0 ? 0.25F : state == 1 ? 0.65F : 0.0F;
+            float g = state == 0 ? 0.25F : state == 1 ? 0.65F : 0.8F;
+            float b = state == 0 ? 0.25F : state == 1 ? 0.65F : 0.1F;
+            float a = 1.0F;
+            int x = mx - GuiSkillTree.this.x;
+            int y = my - GuiSkillTree.this.y;
+            FontRenderer renderer = Minecraft.getMinecraft().fontRenderer;
+            if(x + this.width > width) {
+                ModUtils.renderTextureWithColor(x - this.width - 9, y + 35, x, y + 47 + 14 * this.height, SKILL_TREE_TEXTURES, Math.max(0.0F, r - 0.1F), Math.max(0.0F, g - 0.1F), Math.max(0.0F, b - 0.1F), a);
+                ModUtils.renderTextureWithColor(x - this.width - 9, y + 25, x, y + 45, SKILL_TREE_TEXTURES, r, g, b, a);
+                renderer.drawStringWithShadow(type.title, x - this.width - 3, y + 31, 0xFFFFFF);
+                for(int i = 0; i < type.lines.length; i++) {
+                    renderer.drawStringWithShadow(type.lines[i], x - this.width - 3, y + 50 + i * 12, 0xFFFFFF);
+                }
+                renderer.drawStringWithShadow(price, x - this.width - 3, y + 50 + (this.height - 1) * 12, 0xFFFFFF);
+            } else {
+                ModUtils.renderTextureWithColor(x + 3, y + 35, x + 12 + this.width, y + 47 + 14 * this.height, SKILL_TREE_TEXTURES, Math.max(0.0F, r - 0.1F), Math.max(0.0F, g - 0.1F), Math.max(0.0F, b - 0.1F), a);
+                ModUtils.renderTextureWithColor(x + 3, y + 25, x + 12 + this.width, y + 45, SKILL_TREE_TEXTURES, r, g, b, a);
+                renderer.drawStringWithShadow(type.title, x + 9, y + 31, 0xFFFFFF);
+                for(int i = 0; i < type.lines.length; i++) {
+                    renderer.drawStringWithShadow(type.lines[i], x + 9, y + 50 + i * 12, 0xFFFFFF);
+                }
+                renderer.drawStringWithShadow(price, x + 9, y + 50 + (this.height - 1) * 12, 0xFFFFFF);
+            }
+        }
+
+        public void update() {
+            EntityPlayer player = Minecraft.getMinecraft().player;
+            AbilityData data = PlayerDataFactory.get(player).getSkillData().getAbilityData();
+            Ability ability = data.unlockedSkills.get(type);
+            state = ability == null ? 0 : ability.enabled ? 2 : 1;
         }
     }
 }

@@ -30,6 +30,10 @@ public class DebuffType<T extends Debuff> {
         return this.factory.get();
     }
 
+    public String getName() {
+        return name;
+    }
+
     public static class TypeBuilder<T extends Debuff> {
 
         private String name;

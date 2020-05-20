@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.capability;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.SkillData;
+import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketUpdateCap;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +27,11 @@ public class PlayerDataFactory implements PlayerData {
         this.player = player;
         this.debuffData = new DebuffData();
         this.skillData = new SkillData(player);
+    }
+
+    public static boolean hasActiveSkill(EntityPlayer player, Ability.UnlockableType type) {
+        Ability ability = get(player).getSkillData().getAbilityData().unlockedSkills.get(type);
+        return ability != null && ability.enabled;
     }
 
     public static PlayerData get(EntityPlayer player) {

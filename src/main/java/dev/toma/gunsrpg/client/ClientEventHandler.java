@@ -7,25 +7,19 @@ import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.Debuff;
-import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.SPacketShoot;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = GunsRPG.MODID)
@@ -62,35 +56,14 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public static void onMouseInput(InputEvent.MouseInputEvent event) {
+    public static void mouseInputEvent(InputEvent.MouseInputEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
-        GameSettings settings = mc.gameSettings;
         EntityPlayer player = mc.player;
-        if (player == null) return;
-        ItemStack stack = player.getHeldItemMainhand();
-        if (stack.getItem() instanceof GunItem && settings.keyBindAttack.isPressed()) {
-            CooldownTracker cooldownTracker = player.getCooldownTracker();
-            if (!cooldownTracker.hasCooldown(stack.getItem())) {
-                NetworkManager.toServer(new SPacketShoot((GunItem) stack.getItem()));
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            Minecraft mc = Minecraft.getMinecraft();
-            EntityPlayerSP player = mc.player;
-            if (player != null) {
-                GameSettings settings = mc.gameSettings;
-                ItemStack stack = player.getHeldItemMainhand();
-                if(settings.keyBindAttack.isKeyDown() && stack.getItem() instanceof GunItem) {
-                    CooldownTracker tracker = player.getCooldownTracker();
-                    if(!tracker.hasCooldown(stack.getItem())) {
-                        player.playSound(SoundEvents.BLOCK_LEVER_CLICK, 1.0F, 1.0F);
-                        NetworkManager.toServer(new SPacketShoot((GunItem) stack.getItem()));
-                    }
-                }
+        GameSettings settings = mc.gameSettings;
+        if(player != null) {
+            GunItem item = ShootingManager.getGunFrom(player);
+            if(item != null && settings.keyBindAttack.isPressed()) {
+                ShootingManager.shootSingle(player, player.getHeldItemMainhand());
             }
         }
     }
