@@ -5,6 +5,8 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.IAmmoProvider;
+import dev.toma.gunsrpg.common.item.guns.ItemAmmo;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.Debuff;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -15,6 +17,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -40,6 +43,32 @@ public class ClientEventHandler {
             mc.fontRenderer.drawStringWithShadow(l + "", resolution.getScaledWidth() - 10, 6, b ? 0xff0000 : l > 1 && l < 4 ? 0xffff00 : 0xffffff);
             PlayerData data = PlayerDataFactory.get(player);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            ItemStack stack = player.getHeldItemMainhand();
+            if(stack.getItem() instanceof GunItem) {
+                GunItem gun = (GunItem) stack.getItem();
+                int ammo = gun.getAmmo(stack);
+                int max = gun.getMaxAmmo(player);
+                float f = Math.min(ammo / (float) max, 1.0F);
+                ItemAmmo itemAmmo = ItemAmmo.getAmmoFor(gun, stack);
+                int x = resolution.getScaledWidth() - 155;
+                int y = resolution.getScaledHeight() - 20;
+                ModUtils.renderColor(x, y, x + 140, y + 7, 0.0F, 0.0F, 0.0F, 1.0F);
+                ModUtils.renderColor(x + 2, y + 2, x + (int)(138*f), y + 5, 0.0F, 1.0F, 1.0F, 1.0F);
+                if(itemAmmo != null) {
+                    mc.getRenderItem().renderItemIntoGUI(new ItemStack(itemAmmo), x, y - 20);
+                    int c = 0;
+                    for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
+                        ItemStack itemStack = player.inventory.getStackInSlot(i);
+                        if(itemStack.getItem() instanceof IAmmoProvider) {
+                            IAmmoProvider ammoProvider = (IAmmoProvider) itemStack.getItem();
+                            if(ammoProvider.getMaterial() == itemAmmo.getMaterial() && ammoProvider.getAmmoType() == itemAmmo.getAmmoType()) {
+                                c += itemStack.getCount();
+                            }
+                        }
+                    }
+                    mc.fontRenderer.drawStringWithShadow(ammo + " / " + c, x + 20, y - 14, 0xffffff);
+                }
+            }
             if(data != null) {
                 DebuffData debuffData = data.getDebuffData();
                 int offset = 0;

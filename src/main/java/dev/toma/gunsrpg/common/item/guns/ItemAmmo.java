@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item.guns;
 import dev.toma.gunsrpg.common.item.GRPGItem;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.util.ModUtils;
+import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +41,18 @@ public class ItemAmmo extends GRPGItem implements IAmmoProvider {
     @Override
     public AmmoMaterial getMaterial() {
         return material;
+    }
+
+    public static ItemAmmo getAmmoFor(GunItem item, ItemStack stack) {
+        AmmoMaterial material = item.getMaterialFromNBT(stack);
+        if(material == null) return null;
+        AmmoType type = item.getAmmoType();
+        for(ItemAmmo ia : GUN_TO_ITEM_MAP.get(item)) {
+            if(ia.getAmmoType() == type && ia.getMaterial() == material) {
+                return ia;
+            }
+        }
+        return null;
     }
 
     public static void init() {
