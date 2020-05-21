@@ -122,5 +122,6 @@ public class AbilityData {
         for(Ability.UnlockableType skill : Ability.UNLOCKABLE_ABILITY_TYPES) {
             lockedSkills.put(skill, skill.newAbilityInstance());
         }
+        unlockProperty(Ability.PISTOL_WOOD_AMMO);
     }
 }

@@ -1,12 +1,24 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import net.minecraft.util.text.TextFormatting;
+
 public enum AmmoMaterial {
 
-    WOOD,
-    STONE,
-    IRON,
-    GOLD,
-    DIAMOND,
-    EMERALD,
-    AMETHYST
+    WOOD(TextFormatting.GOLD),
+    STONE(TextFormatting.DARK_GRAY),
+    IRON(TextFormatting.GRAY),
+    GOLD(TextFormatting.YELLOW),
+    DIAMOND(TextFormatting.AQUA),
+    EMERALD(TextFormatting.GREEN),
+    AMETHYST(TextFormatting.DARK_PURPLE);
+
+    private final TextFormatting color;
+
+    AmmoMaterial(TextFormatting color) {
+        this.color = color;
+    }
+
+    public TextFormatting getColor() {
+        return color;
+    }
 }

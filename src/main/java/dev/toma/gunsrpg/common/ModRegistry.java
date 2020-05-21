@@ -17,10 +17,9 @@ import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.entity.EntityExplosiveArrow;
 import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
 import dev.toma.gunsrpg.common.item.GRPGItem;
-import dev.toma.gunsrpg.common.item.guns.AmmoType;
-import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ItemAmmo;
+import dev.toma.gunsrpg.common.item.guns.*;
 import dev.toma.gunsrpg.common.item.util.DebuffHeal;
+import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -145,56 +144,46 @@ public class ModRegistry {
                     new DebuffHeal("vaccine", 32, () -> GRPGSounds.USE_VACCINE, "This vaccine heals 50% of infection", data -> data.getDebuffs()[1].isActive(), data -> data.getDebuffs()[1].heal(50)),
                     new DebuffHeal("plaster_cast", 32, () -> GRPGSounds.USE_PLASTER_CAST, "Plaster cast heals 35% of broken bones", data -> data.getDebuffs()[2].isActive(), data -> data.getDebuffs()[2].heal(35)),
                     new DebuffHeal("bandage", 50, () -> GRPGSounds.USE_BANDAGE, "Bandages can stop 25% of bleeding", data -> data.getDebuffs()[3].isActive(), data -> data.getDebuffs()[3].heal(25)),
-                    new ItemAmmo("wooden_ammo_9mm", AmmoType._9MM),
-                    new ItemAmmo("wooden_ammo_45acp", AmmoType._45ACP),
-                    new ItemAmmo("wooden_ammo_556mm", AmmoType._556MM),
-                    new ItemAmmo("wooden_ammo_762mm", AmmoType._762MM),
-                    new ItemAmmo("wooden_ammo_12g", AmmoType._12G),
-                    new ItemAmmo("stone_ammo_9mm", AmmoType._9MM),
-                    new ItemAmmo("stone_ammo_45acp", AmmoType._45ACP),
-                    new ItemAmmo("stone_ammo_556mm", AmmoType._556MM),
-                    new ItemAmmo("stone_ammo_762mm", AmmoType._762MM),
-                    new ItemAmmo("stone_ammo_12g", AmmoType._12G),
-                    new ItemAmmo("iron_ammo_9mm", AmmoType._9MM),
-                    new ItemAmmo("iron_ammo_45acp", AmmoType._45ACP),
-                    new ItemAmmo("iron_ammo_556mm", AmmoType._556MM),
-                    new ItemAmmo("iron_ammo_762mm", AmmoType._762MM),
-                    new ItemAmmo("iron_ammo_12g", AmmoType._12G),
-                    new ItemAmmo("gold_ammo_9mm", AmmoType._9MM),
-                    new ItemAmmo("gold_ammo_45acp", AmmoType._45ACP),
-                    new ItemAmmo("gold_ammo_556mm", AmmoType._556MM),
-                    new ItemAmmo("gold_ammo_762mm", AmmoType._762MM),
-                    new ItemAmmo("gold_ammo_12g", AmmoType._12G),
-                    new ItemAmmo("diamond_ammo_9mm", AmmoType._9MM),
-                    new ItemAmmo("diamond_ammo_45acp", AmmoType._45ACP),
-                    new ItemAmmo("diamond_ammo_556mm", AmmoType._556MM),
-                    new ItemAmmo("diamond_ammo_762mm", AmmoType._762MM),
-                    new ItemAmmo("diamond_ammo_12g", AmmoType._12G),
-                    new ItemAmmo("emerald_ammo_9mm", AmmoType._9MM),
-                    new ItemAmmo("emerald_ammo_45acp", AmmoType._45ACP),
-                    new ItemAmmo("emerald_ammo_556mm", AmmoType._556MM),
-                    new ItemAmmo("emerald_ammo_762mm", AmmoType._762MM),
-                    new ItemAmmo("emerald_ammo_12g", AmmoType._12G),
-                    new ItemAmmo("amethyst_ammo_9mm", AmmoType._9MM),
-                    new ItemAmmo("amethyst_ammo_45acp", AmmoType._45ACP),
-                    new ItemAmmo("amethyst_ammo_556mm", AmmoType._556MM),
-                    new ItemAmmo("amethyst_ammo_762mm", AmmoType._762MM),
-                    new ItemAmmo("amethyst_ammo_12g", AmmoType._12G),
-                    GunItem.GunBuilder.create()
-                            .stats(GRPGConfig.weapon.pistol)
-                            .build("pistol"),
-                    GunItem.GunBuilder.create()
-                            .stats(GRPGConfig.weapon.smg)
-                            .build("smg"),
-                    GunItem.GunBuilder.create()
-                            .stats(GRPGConfig.weapon.ar)
-                            .build("assault_rifle"),
-                    GunItem.GunBuilder.create()
-                            .stats(GRPGConfig.weapon.sr)
-                            .build("sniper_rifle"),
-                    GunItem.GunBuilder.create()
-                            .stats(GRPGConfig.weapon.shotgun)
-                            .build("shotgun")
+                    new ItemAmmo("wooden_ammo_9mm", AmmoType._9MM, AmmoMaterial.WOOD, Ability.PISTOL_WOOD_AMMO, () -> GRPGItems.PISTOL),
+                    new ItemAmmo("wooden_ammo_45acp", AmmoType._45ACP, AmmoMaterial.WOOD, Ability.SMG_WOOD_AMMO, () -> GRPGItems.SMG),
+                    new ItemAmmo("wooden_ammo_556mm", AmmoType._556MM, AmmoMaterial.WOOD, Ability.AR_WOOD_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
+                    new ItemAmmo("wooden_ammo_762mm", AmmoType._762MM, AmmoMaterial.WOOD, Ability.SR_WOOD_AMMO, () -> GRPGItems.SNIPER_RIFLE),
+                    new ItemAmmo("wooden_ammo_12g", AmmoType._12G, AmmoMaterial.WOOD, Ability.SG_WOOD_AMMO, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("stone_ammo_9mm", AmmoType._9MM, AmmoMaterial.STONE, Ability.PISTOL_STONE_AMMO, () -> GRPGItems.PISTOL),
+                    new ItemAmmo("stone_ammo_45acp", AmmoType._45ACP, AmmoMaterial.STONE, Ability.SMG_STONE_AMMO, () -> GRPGItems.SMG),
+                    new ItemAmmo("stone_ammo_556mm", AmmoType._556MM, AmmoMaterial.STONE, Ability.AR_STONE_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
+                    new ItemAmmo("stone_ammo_762mm", AmmoType._762MM, AmmoMaterial.STONE, Ability.SR_STONE_AMMO, () -> GRPGItems.SNIPER_RIFLE),
+                    new ItemAmmo("stone_ammo_12g", AmmoType._12G, AmmoMaterial.STONE, Ability.SG_STONE_AMMO, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("iron_ammo_9mm", AmmoType._9MM, AmmoMaterial.IRON, Ability.PISTOL_IRON_AMMO, () -> GRPGItems.PISTOL),
+                    new ItemAmmo("iron_ammo_45acp", AmmoType._45ACP, AmmoMaterial.IRON, Ability.SMG_IRON_AMMO, () -> GRPGItems.SMG),
+                    new ItemAmmo("iron_ammo_556mm", AmmoType._556MM, AmmoMaterial.IRON, Ability.AR_IRON_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
+                    new ItemAmmo("iron_ammo_762mm", AmmoType._762MM, AmmoMaterial.IRON, Ability.SR_IRON_AMMO, () -> GRPGItems.SNIPER_RIFLE),
+                    new ItemAmmo("iron_ammo_12g", AmmoType._12G, AmmoMaterial.IRON, Ability.SG_IRON_AMMO, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("gold_ammo_9mm", AmmoType._9MM, AmmoMaterial.GOLD, Ability.PISTOL_GOLD_AMMO, () -> GRPGItems.PISTOL),
+                    new ItemAmmo("gold_ammo_45acp", AmmoType._45ACP, AmmoMaterial.GOLD, Ability.SMG_GOLD_AMMO, () -> GRPGItems.SMG),
+                    new ItemAmmo("gold_ammo_556mm", AmmoType._556MM, AmmoMaterial.GOLD, Ability.AR_GOLD_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
+                    new ItemAmmo("gold_ammo_762mm", AmmoType._762MM, AmmoMaterial.GOLD, Ability.SR_GOLD_AMMO, () -> GRPGItems.SNIPER_RIFLE),
+                    new ItemAmmo("gold_ammo_12g", AmmoType._12G, AmmoMaterial.GOLD, Ability.SG_GOLD_AMMO, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("diamond_ammo_9mm", AmmoType._9MM, AmmoMaterial.DIAMOND, Ability.PISTOL_DIAMOND_AMMO, () -> GRPGItems.PISTOL),
+                    new ItemAmmo("diamond_ammo_45acp", AmmoType._45ACP, AmmoMaterial.DIAMOND, Ability.SMG_DIAMOND_AMMO, () -> GRPGItems.SMG),
+                    new ItemAmmo("diamond_ammo_556mm", AmmoType._556MM, AmmoMaterial.DIAMOND, Ability.AR_DIAMOND_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
+                    new ItemAmmo("diamond_ammo_762mm", AmmoType._762MM, AmmoMaterial.DIAMOND, Ability.SR_DIAMOND_AMMO, () -> GRPGItems.SNIPER_RIFLE),
+                    new ItemAmmo("diamond_ammo_12g", AmmoType._12G, AmmoMaterial.DIAMOND, Ability.SG_DIAMOND_AMMO, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("emerald_ammo_9mm", AmmoType._9MM, AmmoMaterial.EMERALD, Ability.PISTOL_EMERALD_AMMO, () -> GRPGItems.PISTOL),
+                    new ItemAmmo("emerald_ammo_45acp", AmmoType._45ACP, AmmoMaterial.EMERALD, Ability.SMG_EMERALD_AMMO, () -> GRPGItems.SMG),
+                    new ItemAmmo("emerald_ammo_556mm", AmmoType._556MM, AmmoMaterial.EMERALD, Ability.AR_EMERALD_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
+                    new ItemAmmo("emerald_ammo_762mm", AmmoType._762MM, AmmoMaterial.EMERALD, Ability.SR_EMERALD_AMMO, () -> GRPGItems.SNIPER_RIFLE),
+                    new ItemAmmo("emerald_ammo_12g", AmmoType._12G, AmmoMaterial.EMERALD, Ability.SG_EMERALD_AMMO, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("amethyst_ammo_9mm", AmmoType._9MM, AmmoMaterial.AMETHYST, Ability.PISTOL_AMETHYST_AMMO, () -> GRPGItems.PISTOL),
+                    new ItemAmmo("amethyst_ammo_45acp", AmmoType._45ACP, AmmoMaterial.AMETHYST, Ability.SMG_AMETHYST_AMMO, () -> GRPGItems.SMG),
+                    new ItemAmmo("amethyst_ammo_556mm", AmmoType._556MM, AmmoMaterial.AMETHYST, Ability.AR_AMETHYST_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
+                    new ItemAmmo("amethyst_ammo_762mm", AmmoType._762MM, AmmoMaterial.AMETHYST, Ability.SR_AMETHYST_AMMO, () -> GRPGItems.SNIPER_RIFLE),
+                    new ItemAmmo("amethyst_ammo_12g", AmmoType._12G, AmmoMaterial.AMETHYST, Ability.SG_AMETHYST_AMMO, () -> GRPGItems.SHOTGUN),
+                    new PistolItem("pistol"),
+                    new SMGItem("smg"),
+                    new ARItem("assault_rifle"),
+                    new SRItem("sniper_rifle"),
+                    new SGItem("shotgun")
             );
             queue.forEach(registry::register);
             queue = null;

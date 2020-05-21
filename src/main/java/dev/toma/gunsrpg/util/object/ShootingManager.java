@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.item.guns.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.ItemAmmo;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketShoot;
@@ -61,11 +62,15 @@ public class ShootingManager {
         if(!tracker.hasCooldown(stack.getItem())) {
             AmmoType ammoType = item.getAmmoType();
             AmmoMaterial material = item.getMaterialFromNBT(stack);
-            if(material == null) return false;
-            Ability.Type type = ammoType.getData().get(material).getLeft();
-            if(item.hasAmmo(stack) && abilityData.hasProperty(type)) {
-                return true;
+            Ability.Type type = null;
+            for(ItemAmmo a : ItemAmmo.GUN_TO_ITEM_MAP.get(item)) {
+                if(a.getAmmoType() == ammoType && a.getMaterial() == material) {
+                    type = a.getRequiredProperty();
+                    break;
+                }
             }
+            if(material == null || type == null) return false;
+            return (item.hasAmmo(stack) || player.isCreative()) && abilityData.hasProperty(type);
         }
         return false;
     }
@@ -80,8 +85,7 @@ public class ShootingManager {
 
     @SideOnly(Side.CLIENT)
     public static void shootSingle(EntityPlayer player, ItemStack stack) {
-        // TODO
-        if(/*canShoot(player, stack)*/true) {
+        if(canShoot(player, stack)) {
             NetworkManager.toServer(new SPacketShoot((GunItem) stack.getItem()));
         }
     }

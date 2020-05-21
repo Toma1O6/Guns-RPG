@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.DebuffTypes;
 import dev.toma.gunsrpg.util.object.EntitySpawnManager;
+import dev.toma.gunsrpg.util.object.ReloadTracker;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import dev.toma.gunsrpg.world.BloodmoonEntitySpawnEntryList;
 import dev.toma.gunsrpg.world.cap.WorldCapProvider;
@@ -181,11 +182,14 @@ public class CommonEventHandler {
             EntityPlayer player = event.player;
             World world = player.world;
             PlayerDataFactory.get(player).tick();
-            if(!world.isRemote && world.getWorldTime() % 200 == 0) {
-                for(int i = 0; i < world.loadedTileEntityList.size(); i++) {
-                    TileEntity te = world.loadedTileEntityList.get(i);
-                    if(te instanceof TileEntityMobSpawner) {
-                        world.destroyBlock(te.getPos(), false);
+            if(!world.isRemote) {
+                ReloadTracker.update(player);
+                if(world.getWorldTime() % 200 == 0) {
+                    for(int i = 0; i < world.loadedTileEntityList.size(); i++) {
+                        TileEntity te = world.loadedTileEntityList.get(i);
+                        if(te instanceof TileEntityMobSpawner) {
+                            world.destroyBlock(te.getPos(), false);
+                        }
                     }
                 }
             }

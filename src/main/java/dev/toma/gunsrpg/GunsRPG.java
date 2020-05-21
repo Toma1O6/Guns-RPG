@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
 import dev.toma.gunsrpg.common.command.CommandGRPG;
+import dev.toma.gunsrpg.common.item.guns.ItemAmmo;
 import dev.toma.gunsrpg.common.skilltree.SkillTreeEntry;
 import dev.toma.gunsrpg.common.tileentity.TileEntityAirdrop;
 import dev.toma.gunsrpg.common.tileentity.TileEntityBlastFurnace;
@@ -21,6 +22,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -66,6 +68,7 @@ public class GunsRPG {
         sideManager.init(event);
         GameRegistry.registerWorldGenerator(new WorldOreGen(), 0);
         SkillTreeEntry.List.init();
+        ItemAmmo.init();
     }
 
     @Mod.EventHandler
@@ -80,6 +83,7 @@ public class GunsRPG {
         CommonEventHandler.HEALTH_MAP.clear();
         World world = event.getServer().getWorld(0);
         for(EntityEntry entry : ForgeRegistries.ENTITIES) {
+            if(entry.getEntityClass().equals(EntitySlime.class)) continue;
             Entity entity = EntityList.newEntity(entry.getEntityClass(), world);
             if(entity instanceof EntityLivingBase && !(entity instanceof EntityPlayer)) {
                 EntityLivingBase e = (EntityLivingBase) entity;
