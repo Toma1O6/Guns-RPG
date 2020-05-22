@@ -31,6 +31,7 @@ public abstract class GunItem extends GRPGItem {
     public GunItem(String name, GunType type) {
         super(name);
         this.gunType = type;
+        this.setMaxStackSize(1);
         this.fillAmmoMaterialData(materialDamageBonusMap = new HashMap<>());
     }
 
@@ -40,6 +41,10 @@ public abstract class GunItem extends GRPGItem {
 
     public IReloadManager getReloadManager() {
         return ReloadManagerMagazine.MANAGER;
+    }
+
+    public boolean isSilenced(EntityPlayer player) {
+        return false;
     }
 
     public int getFirerate(EntityPlayer player) {
@@ -71,10 +76,12 @@ public abstract class GunItem extends GRPGItem {
     }
 
     public void shootBullet(World world, EntityLivingBase entity, ItemStack stack) {
-        world.spawnEntity(new EntityBullet(world, entity, stack));
+        EntityBullet bullet = new EntityBullet(world, entity, this, stack);
+        bullet.fire(entity.rotationPitch, entity.rotationYaw, getWeaponConfig().velocity);
+        world.spawnEntity(bullet);
     }
 
-    public void shoot(World world, EntityLivingBase entity, ItemStack stack) {
+    public final void shoot(World world, EntityLivingBase entity, ItemStack stack) {
         Item item = stack.getItem();
         CooldownTracker tracker = null;
         if (entity instanceof EntityPlayer) {
@@ -91,8 +98,10 @@ public abstract class GunItem extends GRPGItem {
         }
     }
 
-    public final int getDamageBonus(AmmoMaterial material) {
-        return materialDamageBonusMap.get(material);
+    public final int getDamageBonus(ItemStack stack) {
+        AmmoMaterial material = this.getMaterialFromNBT(stack);
+        Integer v = material != null ? materialDamageBonusMap.get(material) : 0;
+        return v == null ? 0 : v;
     }
 
     public AmmoType getAmmoType() {

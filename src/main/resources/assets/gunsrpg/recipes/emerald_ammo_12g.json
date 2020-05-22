@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "W  ",
+        "GGG",
+        "C  "
+    ],
+    "key": {
+        "G": {
+            "item": "minecraft:gunpowder"
+        },
+        "C": {
+            "item": "gunsrpg:shotgun_shell"
+        },
+        "W": {
+            "item": "minecraft:emerald"
+        }
+    },
+    "result": {
+        "item": "gunsrpg:emerald_ammo_12g",
+        "count": 1
+    }
+}

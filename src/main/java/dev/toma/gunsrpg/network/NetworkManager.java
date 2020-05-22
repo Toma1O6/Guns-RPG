@@ -14,6 +14,10 @@ public class NetworkManager {
 
     private static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(GunsRPG.MODID);
 
+    public static void toDimension(IMessage packet, int dimension) {
+        INSTANCE.sendToDimension(packet, dimension);
+    }
+
     public static void toClient(EntityPlayerMP user, IMessage packet) {
         INSTANCE.sendTo(packet, user);
     }
@@ -25,6 +29,7 @@ public class NetworkManager {
     public static void init() {
         c_register(CPacketUpdateCap.Handler.class, CPacketUpdateCap.class);
         c_register(CPacketCancelReload.Handler.class, CPacketCancelReload.class);
+        c_register(CPacketParticle.Handler.class, CPacketParticle.class);
         s_register(SPacketShoot.Handler.class, SPacketShoot.class);
         s_register(SPacketRequestDataUpdate.Handler.class, SPacketRequestDataUpdate.class);
         s_register(ShootingManager.Update.Handler.class, ShootingManager.Update.class);

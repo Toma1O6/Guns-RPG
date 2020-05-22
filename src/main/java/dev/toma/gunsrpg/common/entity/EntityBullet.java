@@ -1,173 +1,265 @@
 package dev.toma.gunsrpg.common.entity;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
-import io.netty.buffer.ByteBuf;
+import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.CPacketParticle;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import java.util.List;
 
-public class EntityBullet extends Entity implements IEntityAdditionalSpawnData {
+public class EntityBullet extends Entity {
 
+    private static final Predicate<Entity> ARROW_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, Entity::canBeCollidedWith);
     private EntityLivingBase shooter;
-    private ItemStack gun;
+    private ItemStack stack;
+    private RayTraceResult entityRaytrace;
 
-    public EntityBullet(World world) {
-        super(world);
-        this.setSize(0.01F, 0.01F);
+    private int effect;
+    private float damage;
+
+    public EntityBullet(World worldIn) {
+        super(worldIn);
+        this.setSize(0.1f, 0.1f);
+        preventEntitySpawning = true;
     }
 
-    public EntityBullet(World world, EntityLivingBase shooter, ItemStack stack) {
-        super(world);
+    public EntityBullet(World worldIn, EntityLivingBase shooter, GunItem gun, ItemStack stack) {
+        this(worldIn);
+        this.setSize(0.1f, 0.1f);
+        this.noClip = true;
         this.shooter = shooter;
-        this.setSize(0.1F, 0.1F);
-        this.setRotation(shooter.rotationYaw, shooter.rotationPitch);
+        this.stack = stack;
+        WeaponConfiguration config = gun.getWeaponConfig();
+        this.effect = config.effect;
+        this.damage = config.damage + gun.getDamageBonus(stack);
+        Vec3d direct = getVectorForRotation(shooter.rotationPitch, shooter.getRotationYawHead());
         this.setPosition(shooter.posX, shooter.posY + shooter.getEyeHeight(), shooter.posZ);
-        this.gun = stack;
     }
 
-    @Override
-    public void writeSpawnData(ByteBuf buffer) {
-        buffer.writeInt(shooter != null ? shooter.getEntityId() : 0);
-        ByteBufUtils.writeItemStack(buffer, gun);
+    public void fire(float pitch, float yaw, float velocity) {
+        Vec3d vec = getVectorForRotation(pitch, yaw);
+        this.motionX = velocity * vec.x;
+        this.motionY = velocity * vec.y;
+        this.motionZ = velocity * vec.z;
+        updateHeading();
+        if(!world.isRemote && shooter instanceof EntityPlayer && !((GunItem) stack.getItem()).isSilenced((EntityPlayer) shooter)) {
+            List<EntityLivingBase> entityList = world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(30));
+            for(EntityLivingBase entityLivingBase : entityList) {
+                if (entityLivingBase == shooter) continue;
+                entityLivingBase.setRevengeTarget(shooter);
+            }
+        }
     }
 
-    @Override
-    public void readSpawnData(ByteBuf additionalData) {
-        Entity entity = world.getEntityByID(additionalData.readInt());
-        if(entity instanceof EntityLivingBase) shooter = (EntityLivingBase) entity;
-        gun = ByteBufUtils.readItemStack(additionalData);
+    public EntityLivingBase getShooter() {
+        return shooter;
+    }
+
+    public void onBulletCollided(RayTraceResult rayTraceResult) {
+        if(rayTraceResult == null) {
+            return;
+        }
+        Entity entity = rayTraceResult.entityHit;
+        if(entity != null && !world.isRemote) {
+            boolean isHeadshot = this.canEntityGetHeadshot(entity) && entityRaytrace.hitVec.y >= entity.getPosition().getY() + entity.getEyeHeight() - 0.15f;
+            Vec3d vec = rayTraceResult.hitVec;
+            Block block = Blocks.REDSTONE_BLOCK;
+            if(isHeadshot) {
+                damage *= 2.5;
+            }
+            if(entity instanceof EntityLivingBase) {
+                NetworkManager.toDimension(CPacketParticle.multipleParticles(EnumParticleTypes.BLOCK_CRACK, vec.x, entityRaytrace.hitVec.y, vec.z, Block.getIdFromBlock(block), 2*Math.round(damage), 0), this.dimension);
+            }
+            this.onEntityHit(isHeadshot, entity);
+            entity.hurtResistantTime = 0;
+            this.setDead();
+        } else if(rayTraceResult.getBlockPos() != null && !world.isRemote) {
+            BlockPos pos = rayTraceResult.getBlockPos();
+            IBlockState state = world.getBlockState(pos);
+            Block block = state.getBlock();
+            boolean canPenetrate = false;
+            if(state.getMaterial() == Material.GLASS) {
+                world.setBlockToAir(pos);
+                world.playSound(null, posX, posY, posZ, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 3.0F, 1.0F);
+                canPenetrate = true;
+            } else if(!block.isReplaceable(world, pos)) {
+                Vec3d vec = rayTraceResult.hitVec;
+                NetworkManager.toDimension(CPacketParticle.multipleParticles(EnumParticleTypes.BLOCK_CRACK, vec.x, vec.y, vec.z, Block.getIdFromBlock(block), 10, 0), this.dimension);
+                world.playSound(null, posX, posY, posZ, block.getSoundType().getBreakSound(), SoundCategory.BLOCKS, 0.5F, block.getSoundType().getPitch() * 0.8F);
+                this.setDead();
+            }
+
+            if(canPenetrate && damage > 0) {
+                Vec3d startVec = new Vec3d(posX, posY, posZ);
+                Vec3d nextPos = new Vec3d(motionX, motionY, motionZ).add(startVec);
+                RayTraceResult trace = world.rayTraceBlocks(nextPos, startVec, false, true, false);
+                Entity e = this.findEntityOnPath(nextPos, startVec, trace);
+                if(e != null) {
+                    trace = new RayTraceResult(e);
+                }
+                if(trace != null && rayTraceResult.entityHit instanceof EntityPlayer) {
+                    EntityPlayer player = (EntityPlayer) rayTraceResult.entityHit;
+                    if(shooter instanceof EntityPlayer && !((EntityPlayer)shooter).canAttackPlayer(player)) {
+                        trace = null;
+                    }
+                }
+                if(trace != null) {
+                    this.onBulletCollided(trace);
+                }
+            }
+        }
     }
 
     @Override
     public void onUpdate() {
-        if(gun == null) {
-            setDead();
-            return;
-        }
-        WeaponConfiguration stats = this.getGun().getWeaponConfig();
-        float velocity = 0.8F;
-        Vec3d lookVec = this.getLookVec();
-        this.motionX = lookVec.x * stats.velocity;
-        this.motionY = lookVec.y * stats.velocity;
-        this.motionZ = lookVec.z * stats.velocity;
-        this.checkForCollisions();
         super.onUpdate();
-        this.move(MoverType.SELF, motionX, motionY, motionZ);
-        if(!world.isRemote && collided) setDead();
+        updateHeading();
+
+        Vec3d vec3d1 = new Vec3d(this.posX, this.posY, this.posZ);
+        Vec3d vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        RayTraceResult raytraceresult = this.world.rayTraceBlocks(vec3d1, vec3d, false, true, false);
+        //Gravity
+        if (this.ticksExisted > effect && !world.isRemote) {
+            this.motionY -= 0.05;
+        }
+
+        if (this.ticksExisted >= 80) {
+            this.setDead();
+        }
+
+        /*if (this.ticksExisted > 2 && this.ticksExisted % 2 == 0) {
+            world.playSound(null, posX, posY, posZ, PMCSounds.bullet_whizz, SoundCategory.PLAYERS, 0.1f, 1f);
+        }*/
+        Entity entity = this.findEntityOnPath(vec3d1, vec3d, raytraceresult);
+        if (entity != null) {
+            raytraceresult = new RayTraceResult(entity);
+        }
+        if (raytraceresult != null && raytraceresult.entityHit instanceof EntityPlayer) {
+            EntityPlayer entityplayer = (EntityPlayer) raytraceresult.entityHit;
+            if (this.shooter instanceof EntityPlayer && !((EntityPlayer) this.shooter).canAttackPlayer(entityplayer)) {
+                raytraceresult = null;
+            }
+        }
+        if (raytraceresult != null && !ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
+            this.onBulletCollided(raytraceresult);
+        }
+
+        move(MoverType.SELF, motionX, motionY, motionZ);
     }
 
-    protected void checkForCollisions() {
-        Vec3d position = new Vec3d(posX, posY, posZ);
-        Vec3d motion = position.addVector(motionX, motionY, motionZ);
-        RayTraceResult traceResult = world.rayTraceBlocks(position, motion, false, true, false);
-        if(traceResult != null) {
-            if(traceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
-                IBlockState state = world.getBlockState(traceResult.getBlockPos());
-                boolean isGlass = state.getMaterial() == Material.GLASS;
-                if(!world.isRemote) {
-                    if(isGlass) {
-                        world.destroyBlock(traceResult.getBlockPos(), false);
-                        this.checkForCollisions();
-                    } else setDead();
-                } else {
-                    if(!isGlass) {
-                        int id = Block.getIdFromBlock(world.getBlockState(traceResult.getBlockPos()).getBlock());
-                        Vec3d vec = traceResult.hitVec;
-                        for(int i = 0; i < 50; i++) {
-                            double x = vec.x + (rand.nextDouble() - rand.nextDouble()) / 5;
-                            double y = vec.y + (rand.nextDouble() - rand.nextDouble()) / 5;
-                            double z = vec.z + (rand.nextDouble() - rand.nextDouble()) / 5;
-                            double sx = (rand.nextDouble() - rand.nextDouble()) / 2;
-                            double sy = (rand.nextDouble() - rand.nextDouble()) / 2;
-                            double sz = (rand.nextDouble() - rand.nextDouble()) / 2;
-                            world.spawnParticle(EnumParticleTypes.BLOCK_DUST, true, x, y, z, sx, sy, sz, id);
+    @Override
+    public boolean isInRangeToRenderDist(double distance) {
+        return false;
+    }
+
+    protected Entity findEntityOnPath(Vec3d start, Vec3d end, RayTraceResult trace) {
+        Entity entity = null;
+        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D), ARROW_TARGETS);
+        double d0 = 0.0D;
+        for (int i = 0; i < list.size(); ++i) {
+            Entity entity1 = list.get(i);
+            if (entity1 != this.shooter) {
+                AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox();
+                RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(start, end);
+                if (raytraceresult != null) {
+                    if (trace != null) {
+                        if (this.getDistanceTo(trace.hitVec) < this.getDistanceTo(raytraceresult.hitVec)) {
+                            return entity;
                         }
                     }
-                }
-            }
-        }
-        RayTraceResult entityRay = null;
-        Entity hitEntity = null;
-        List<Entity> list = world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(motionX, motionY, motionZ).grow(1.0F), entity -> entity.isEntityAlive() && entity.canBeCollidedWith());
-        double distance = 0.0;
-        for(Entity e : list) {
-            if(e == shooter) continue;
-            AxisAlignedBB aabb = e.getEntityBoundingBox();
-            RayTraceResult ray = aabb.calculateIntercept(position, motion);
-            if(ray != null) {
-                if(traceResult != null && traceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
-                    Vec3d blockHit = traceResult.hitVec;
-                    Vec3d entityHit = ray.hitVec;
-                    RayTraceResult verification = world.rayTraceBlocks(entityHit, blockHit, false, true, false);
-                    if(verification != null && verification.typeOfHit == RayTraceResult.Type.BLOCK) {
-                        continue;
+                    double d1 = start.squareDistanceTo(raytraceresult.hitVec);
+                    entityRaytrace = raytraceresult;
+
+                    if (d1 < d0 || d0 == 0.0D) {
+                        entity = entity1;
+                        d0 = d1;
                     }
                 }
-                double d = position.squareDistanceTo(ray.hitVec);
-                if(d < distance || distance == 0) {
-                    entityRay = ray;
-                    hitEntity = e;
-                    distance = d;
+            }
+        }
+        return entity;
+    }
+
+    protected void onEntityHit(boolean isHeadshot, Entity entity) {
+        if (entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
+            boolean dead = entityLivingBase.getHealth() - damage <= 0;
+            entity.attackEntityFrom(DamageSource.causeMobDamage(shooter), damage);
+            if(stack.getItem() instanceof GunItem) {
+                if(dead) {
+                    ((GunItem) stack.getItem()).onKillEntity(this, entityLivingBase, stack, shooter);
+                } else {
+                    ((GunItem) stack.getItem()).onHitEntity(this, entityLivingBase, stack, shooter);
                 }
             }
         }
-        if(entityRay != null) {
-            RayTraceResult entityRayTrace = new RayTraceResult(hitEntity);
-            Vec3d hit = entityRay.hitVec;
-            boolean canHeadshot = hitEntity.getEyeHeight() > 1.25D;
-            boolean isHeadshot = hit.y >= hitEntity.posY + hitEntity.getEyeHeight() - 0.1F;
-            float damage = this.getGun().getWeaponConfig().damage;
-            if(!world.isRemote) {
-                hitEntity.attackEntityFrom(DamageSource.causeMobDamage(shooter), canHeadshot && isHeadshot ? damage * 2.5F : damage);
-                hitEntity.hurtResistantTime = 0;
-                this.setDead();
-            } else {
-                world.spawnParticle(EnumParticleTypes.FLAME, hit.x, hit.y, hit.z, 0, 0, 0);
-            }
-        }
-    }
-
-    @Override
-    protected void writeEntityToNBT(NBTTagCompound compound) {
-        NBTTagCompound stack = new NBTTagCompound();
-        gun.writeToNBT(stack);
-        compound.setTag("stack", stack);
-        compound.setInteger("entID", shooter != null ? shooter.getEntityId() : 0);
-    }
-
-    @Override
-    protected void readEntityFromNBT(NBTTagCompound compound) {
-        gun = new ItemStack(compound.getCompoundTag("stack"));
-        Entity entity = world.getEntityByID(compound.getInteger("entID"));
-        if(!(entity instanceof EntityLivingBase)) {
-            this.setDead();
-            return;
-        }
-        shooter = (EntityLivingBase) entity;
     }
 
     @Override
     protected void entityInit() {
-
     }
 
-    protected GunItem getGun() {
-        return (GunItem) gun.getItem();
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound compound) {
+        compound.setFloat("bullet_damage", this.damage);
+        compound.setInteger("effect", effect);
+        NBTTagCompound nbt = new NBTTagCompound();
+        stack.writeToNBT(nbt);
+        compound.setTag("stack", nbt);
+    }
+
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound compound) {
+        damage = compound.getFloat("bullet_damage");
+        effect = compound.getInteger("effect");
+        stack = new ItemStack(compound.hasKey("stack") ? compound.getCompoundTag("stack") : new NBTTagCompound());
+    }
+
+    private boolean canEntityGetHeadshot(Entity e) {
+        double ratio = e.height / e.width;
+        return ratio > 1.0F;
+    }
+
+    private void updateHeading() {
+        float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+        this.rotationYaw = (float) (MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
+        this.rotationPitch = (float) (MathHelper.atan2(this.motionY, f) * (180D / Math.PI));
+        this.prevRotationYaw = this.rotationYaw;
+        this.prevRotationPitch = this.rotationPitch;
+    }
+
+    public float getDamage() {
+        return damage;
+    }
+
+    public double getDistanceTo(Vec3d vec3d) {
+        double x = posX - vec3d.x;
+        double y = posY - vec3d.y;
+        double z = posZ - vec3d.z;
+        return Math.sqrt(x * x + y * y + z * z);
+    }
+
+    private void executeIfPlayer(Entity entity, Runnable runnable) {
+        if(entity instanceof EntityPlayer) runnable.run();
     }
 }

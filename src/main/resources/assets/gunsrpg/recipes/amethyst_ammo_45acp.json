@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "W ",
+        "GG",
+        "C "
+    ],
+    "key": {
+        "G": {
+            "item": "minecraft:gunpowder"
+        },
+        "C": {
+            "item": "gunsrpg:small_bullet_casing"
+        },
+        "W": {
+            "item": "gunsrpg:amethyst"
+        }
+    },
+    "result": {
+        "item": "gunsrpg:amethyst_ammo_45acp",
+        "count": 1
+    }
+}

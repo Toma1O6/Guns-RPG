@@ -36,6 +36,11 @@ public class PistolItem extends GunItem {
     }
 
     @Override
+    public boolean isSilenced(EntityPlayer player) {
+        return PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_SUPPRESSOR);
+    }
+
+    @Override
     public void onHitEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
         if(shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Ability.PISTOL_HEAVY_BULLETS) && random.nextDouble() <= 0.35) {
             victim.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1, false, false));

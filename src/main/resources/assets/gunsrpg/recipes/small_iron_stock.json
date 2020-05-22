@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "BI",
+        "IF"
+    ],
+    "key": {
+        "B": {
+            "item": "minecraft:iron_block"
+        },
+        "I": {
+            "item": "minecraft:iron_ingot"
+        },
+        "F": {
+            "item": "minecraft:flint_and_steel"
+        }
+    },
+    "result": {
+        "item": "gunsrpg:small_iron_stock",
+        "count": 1
+    }
+}

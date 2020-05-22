@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "DCP"
+    ],
+    "key": {
+        "D": {
+            "item": "minecraft:dye",
+            "data": 1
+        },
+        "C": {
+            "item": "gunsrpg:large_bullet_casing"
+        },
+        "P": {
+            "item": "minecraft:paper"
+        }
+    },
+    "result": {
+        "item": "gunsrpg:shotgun_shell",
+        "count": 1
+    }
+}

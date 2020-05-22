@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "CIG"
+    ],
+    "key": {
+        "C": {
+            "item": "minecraft:coal",
+            "data": 0
+        },
+        "I": {
+            "item": "minecraft:iron_ingot"
+        },
+        "G": {
+            "item": "minecraft:gold_ingot"
+        }
+    },
+    "result": {
+        "item": "gunsrpg:small_bullet_casing",
+        "count": 16
+    }
+}

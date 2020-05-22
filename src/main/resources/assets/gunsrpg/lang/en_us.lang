@@ -43,6 +43,16 @@ item.gold_ammo_12g.name=Gold Ammo (12g)
 item.diamond_ammo_12g.name=Diamond Ammo (12g)
 item.emerald_ammo_12g.name=Emerald Ammo (12g)
 item.amethyst_ammo_12g.name=Amethyst Ammo (12g)
+item.small_bullet_casing.name=Small Bullet Casing
+item.large_bullet_casing.name=Large Bullet Casing
+item.shotgun_shell.name=Shotgun Shell
+item.barrel.name=Barrel
+item.long_barrel.name=Long Barrel
+item.small_iron_stock.name=Small Iron Stock
+item.iron_stock.name=Iron Stock
+item.wooden_stock.name=Wooden Stock
+item.magazine.name=Magazine
+item.gun_parts.name=Gun Parts
 
 tile.amethyst_ore.name=Amethyst Ore
 tile.blast_furnace.name=Blast Furnace

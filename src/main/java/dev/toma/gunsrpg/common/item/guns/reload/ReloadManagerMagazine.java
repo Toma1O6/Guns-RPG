@@ -26,6 +26,10 @@ public class ReloadManagerMagazine implements IReloadManager {
             int max = item.getMaxAmmo(player);
             int left = max - item.getAmmo(stack);
             for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
+                if(player.isCreative()) {
+                    left = 0;
+                    break;
+                }
                 ItemStack ammoStack = player.inventory.getStackInSlot(i);
                 if(ammoStack.getItem() instanceof IAmmoProvider) {
                     IAmmoProvider ammoProvider = (IAmmoProvider) ammoStack.getItem();

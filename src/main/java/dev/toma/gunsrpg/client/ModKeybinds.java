@@ -5,7 +5,7 @@ import dev.toma.gunsrpg.client.gui.GuiSkillTree;
 import dev.toma.gunsrpg.common.item.guns.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ItemAmmo;
+import dev.toma.gunsrpg.common.item.guns.IAmmoProvider;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketRequestDataUpdate;
 import net.minecraft.client.Minecraft;
@@ -45,11 +45,14 @@ public class ModKeybinds {
                 if(material != null) {
                     int ammo = gun.getAmmo(stack);
                     int max = gun.getMaxAmmo(player);
-                    if(ammo < max) {
+                    boolean skip = player.isCreative();
+                    if(skip) {
+                        gun.getReloadManager().startReloading(player, gun, stack);
+                    } else if(ammo < max) {
                         for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
                             ItemStack itemStack = player.inventory.getStackInSlot(i);
-                            if(itemStack.getItem() instanceof ItemAmmo) {
-                                ItemAmmo itemAmmo = (ItemAmmo) itemStack.getItem();
+                            if(itemStack.getItem() instanceof IAmmoProvider) {
+                                IAmmoProvider itemAmmo = (IAmmoProvider) itemStack.getItem();
                                 if(itemAmmo.getAmmoType() == ammoType && itemAmmo.getMaterial() == material) {
                                     gun.getReloadManager().startReloading(player, gun, stack);
                                     break;

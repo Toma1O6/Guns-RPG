@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.util.object;
 
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.AbilityData;
-import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.item.guns.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
@@ -46,8 +45,7 @@ public class ShootingManager {
                 LIST.remove(player);
                 continue;
             }
-            EntityBullet bullet = new EntityBullet(world, player, stack);
-            world.spawnEntity(bullet);
+            item.shoot(world, player, stack);
         }
     }
 
@@ -70,7 +68,7 @@ public class ShootingManager {
                 }
             }
             if(material == null || type == null) return false;
-            return (item.hasAmmo(stack) || player.isCreative()) && abilityData.hasProperty(type);
+            return item.hasAmmo(stack) && abilityData.hasProperty(type);
         }
         return false;
     }

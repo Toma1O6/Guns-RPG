@@ -1,14 +1,8 @@
 package dev.toma.gunsrpg.common;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.baked.ARBakedModel;
-import dev.toma.gunsrpg.client.baked.PistolBakedModel;
-import dev.toma.gunsrpg.client.baked.SMGBakedModel;
-import dev.toma.gunsrpg.client.baked.SRBakedModel;
-import dev.toma.gunsrpg.client.render.item.ARRenderer;
-import dev.toma.gunsrpg.client.render.item.PistolRenderer;
-import dev.toma.gunsrpg.client.render.item.SMGRenderer;
-import dev.toma.gunsrpg.client.render.item.SRRenderer;
+import dev.toma.gunsrpg.client.baked.*;
+import dev.toma.gunsrpg.client.render.item.*;
 import dev.toma.gunsrpg.common.block.BlockAirdrop;
 import dev.toma.gunsrpg.common.block.BlockBlastFurnace;
 import dev.toma.gunsrpg.common.block.GRPGOre;
@@ -102,6 +96,16 @@ public class ModRegistry {
         public static final ItemAmmo AMETHYST_AMMO_556MM = null;
         public static final ItemAmmo AMETHYST_AMMO_762MM = null;
         public static final ItemAmmo AMETHYST_AMMO_12G = null;
+        public static final GRPGItem SMALL_BULLET_CASING = null;
+        public static final GRPGItem LARGE_BULLET_CASING = null;
+        public static final GRPGItem SHOTGUN_SHELL = null;
+        public static final GRPGItem BARREL = null;
+        public static final GRPGItem LONG_BARREL = null;
+        public static final GRPGItem IRON_STOCK = null;
+        public static final GRPGItem SMALL_IRON_STOCK = null;
+        public static final GRPGItem WOODEN_STOCK = null;
+        public static final GRPGItem MAGAZINE = null;
+        public static final GRPGItem GUN_PARTS = null;
     }
 
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
@@ -183,7 +187,17 @@ public class ModRegistry {
                     new SMGItem("smg"),
                     new ARItem("assault_rifle"),
                     new SRItem("sniper_rifle"),
-                    new SGItem("shotgun")
+                    new SGItem("shotgun"),
+                    new GRPGItem("small_bullet_casing"),
+                    new GRPGItem("large_bullet_casing"),
+                    new GRPGItem("shotgun_shell"),
+                    new GRPGItem("barrel"),
+                    new GRPGItem("long_barrel"),
+                    new GRPGItem("iron_stock"),
+                    new GRPGItem("small_iron_stock"),
+                    new GRPGItem("wooden_stock"),
+                    new GRPGItem("magazine"),
+                    new GRPGItem("gun_parts")
             );
             queue.forEach(registry::register);
             queue = null;
@@ -243,6 +257,7 @@ public class ModRegistry {
             GRPGItems.SMG.setTileEntityItemStackRenderer(new SMGRenderer());
             GRPGItems.ASSAULT_RIFLE.setTileEntityItemStackRenderer(new ARRenderer());
             GRPGItems.SNIPER_RIFLE.setTileEntityItemStackRenderer(new SRRenderer());
+            GRPGItems.SHOTGUN.setTileEntityItemStackRenderer(new SGRenderer());
         }
 
         @SubscribeEvent
@@ -252,6 +267,7 @@ public class ModRegistry {
             registry.putObject(getGunModelResourceLocation(GRPGItems.SMG), new SMGBakedModel());
             registry.putObject(getGunModelResourceLocation(GRPGItems.ASSAULT_RIFLE), new ARBakedModel());
             registry.putObject(getGunModelResourceLocation(GRPGItems.SNIPER_RIFLE), new SRBakedModel());
+            registry.putObject(getGunModelResourceLocation(GRPGItems.SHOTGUN), new SGBakedModel());
         }
 
         protected static ModelResourceLocation getGunModelResourceLocation(GunItem gunItem) {

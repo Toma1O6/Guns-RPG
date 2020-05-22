@@ -20,21 +20,18 @@ import java.util.List;
 
 public class GuiChooseAmmo extends GuiScreen {
 
-    private final GunItem item;
     private final ItemAmmo[] items;
     private final List<Pair<Vec2Di, AmmoInformation>> ammoList = new ArrayList<>();
     private Pair<Vec2Di, AmmoInformation> hoveredEntry;
-    private int scale;
 
     public GuiChooseAmmo(GunItem item) {
-        this.item = item;
         this.items = ItemAmmo.GUN_TO_ITEM_MAP.get(item);
     }
 
     @Override
     public void initGui() {
         ammoList.clear();
-        scale = this.width / 6;
+        int scale = this.width / 6;
         double diff = 1.0D / items.length;
         int y = (int)(height / 3.5);
         for(int i = 0; i < items.length; i++) {
@@ -98,9 +95,9 @@ public class GuiChooseAmmo extends GuiScreen {
 
     private static class AmmoInformation {
 
-        private ItemAmmo ammo;
+        private final ItemAmmo ammo;
         private int totalCount;
-        private boolean canUse;
+        private final boolean canUse;
 
         public AmmoInformation(ItemAmmo ammo, EntityPlayer player) {
             this.ammo = ammo;

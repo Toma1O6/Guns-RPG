@@ -1,0 +1,46 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "W",
+        "G",
+        "C"
+    ],
+    "key": {
+        "G": {
+            "item": "minecraft:gunpowder"
+        },
+        "C": {
+            "item": "gunsrpg:small_bullet_casing"
+        },
+        "W": [
+            {
+                "item": "minecraft:planks",
+                "data": 0
+            },
+            {
+                "item": "minecraft:planks",
+                "data": 1
+            },
+            {
+                "item": "minecraft:planks",
+                "data": 2
+            },
+            {
+                "item": "minecraft:planks",
+                "data": 3
+            },
+            {
+                "item": "minecraft:planks",
+                "data": 4
+            },
+            {
+                "item": "minecraft:planks",
+                "data": 5
+            }
+        ]
+    },
+    "result": {
+        "item": "gunsrpg:wooden_ammo_9mm",
+        "count": 1
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " D ",
+        "QBQ",
+        " E "
+    ],
+    "key": {
+        "D": {
+            "item": "minecraft:diamond"
+        },
+        "Q": {
+            "item": "minecraft:quartz"
+        },
+        "B": {
+            "item": "minecraft:blaze_powder"
+        },
+        "E": {
+            "item": "minecraft:emerald"
+        }
+    },
+    "result": {
+        "item": "gunsrpg:amethyst",
+        "count": 1
+    }
+}

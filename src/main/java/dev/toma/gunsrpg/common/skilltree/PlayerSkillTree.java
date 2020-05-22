@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.skilltree;
 
+import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.SkillData;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,6 +59,7 @@ public class PlayerSkillTree {
                     ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, player.posX, player.posY, player.posZ, 0.75F, 1.0F));
                 }
                 iterator.remove();
+                PlayerDataFactory.get(player).sync();
             }
         }
         if(!unlocked.isEmpty()) {
