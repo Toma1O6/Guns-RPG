@@ -5,6 +5,11 @@ import dev.toma.gunsrpg.common.item.GRPGItem;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerMagazine;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,8 +18,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.CooldownTracker;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -33,6 +41,39 @@ public abstract class GunItem extends GRPGItem {
         this.gunType = type;
         this.setMaxStackSize(1);
         this.fillAmmoMaterialData(materialDamageBonusMap = new HashMap<>());
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void renderRightArm() {
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void renderLeftArm() {
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    public final void renderArm(EnumHandSide side) {
+        Minecraft mc = Minecraft.getMinecraft();
+        mc.getTextureManager().bindTexture(mc.player.getLocationSkin());
+        Render<AbstractClientPlayer> render = mc.getRenderManager().getEntityRenderObject(mc.player);
+        RenderPlayer renderplayer = (RenderPlayer)render;
+        GlStateManager.pushMatrix();
+        float f = side == EnumHandSide.RIGHT ? 1.0F : -1.0F;
+        GlStateManager.rotate(40.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+        if (side == EnumHandSide.RIGHT) {
+            GlStateManager.translate(0.8F, -0.3F, -0.4F);
+            GlStateManager.rotate(-41.0F, 0.0F, 0.0F, 1.0F);
+            renderplayer.renderRightArm(mc.player);
+        } else {
+            GlStateManager.translate(-0.5F, 0.6F, -0.36F);
+            GlStateManager.rotate(-41.0F, 0.0F, 0.0F, 1.0F);
+            renderplayer.renderLeftArm(mc.player);
+        }
+
+        GlStateManager.popMatrix();
     }
 
     public abstract WeaponConfiguration getWeaponConfig();
@@ -72,6 +113,10 @@ public abstract class GunItem extends GRPGItem {
     }
 
     public void onKillEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
+
+    }
+
+    public void updateBullet(EntityBullet bullet) {
 
     }
 

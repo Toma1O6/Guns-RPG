@@ -12,14 +12,19 @@ import dev.toma.gunsrpg.debuffs.Debuff;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -50,12 +55,7 @@ public class ClientEventHandler {
                 int max = gun.getMaxAmmo(player);
                 float f = Math.min(ammo / (float) max, 1.0F);
                 ItemAmmo itemAmmo = ItemAmmo.getAmmoFor(gun, stack);
-                int x = resolution.getScaledWidth() - 155;
-                int y = resolution.getScaledHeight() - 20;
-                ModUtils.renderColor(x, y, x + 140, y + 7, 0.0F, 0.0F, 0.0F, 1.0F);
-                ModUtils.renderColor(x + 2, y + 2, x + (int)(138*f), y + 5, 0.0F, 1.0F, 1.0F, 1.0F);
                 if(itemAmmo != null) {
-                    mc.getRenderItem().renderItemIntoGUI(new ItemStack(itemAmmo), x, y - 20);
                     int c = 0;
                     for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
                         ItemStack itemStack = player.inventory.getStackInSlot(i);
@@ -66,7 +66,14 @@ public class ClientEventHandler {
                             }
                         }
                     }
-                    mc.fontRenderer.drawStringWithShadow(ammo + " / " + c, x + 20, y - 14, 0xffffff);
+                    String text = ammo + " / " + c;
+                    int width = renderer.getStringWidth(text);
+                    int x = resolution.getScaledWidth() - width - 34;
+                    int y = resolution.getScaledHeight() - 22;
+                    ModUtils.renderColor(x, y, x + width + 22, y + 7, 0.0F, 0.0F, 0.0F, 1.0F);
+                    ModUtils.renderColor(x + 2, y + 2, x + (int)(f * (width + 20)), y + 5, 0.0F, 1.0F, 1.0F, 1.0F);
+                    mc.getRenderItem().renderItemIntoGUI(new ItemStack(itemAmmo), x, y - 18);
+                    mc.fontRenderer.drawStringWithShadow(text, x + 19, y - 14, 0xffffff);
                 }
             }
             if(data != null) {
@@ -95,5 +102,57 @@ public class ClientEventHandler {
                 ShootingManager.shootSingle(player, player.getHeldItemMainhand());
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void renderHandEvent(RenderSpecificHandEvent event) {
+        if(event.getItemStack().getItem() instanceof GunItem) {
+            GlStateManager.pushMatrix();
+            renderGunFirstPerson(event.getEquipProgress(), (GunItem) event.getItemStack().getItem());
+            GlStateManager.popMatrix();
+        }
+    }
+
+    private static void renderGunFirstPerson(float equipProgress, GunItem item)
+    {
+        float yOff = 0.5F * equipProgress;
+        GlStateManager.pushMatrix();
+        GlStateManager.disableCull();
+        {
+            GlStateManager.translate(0, -yOff, 0);
+            GlStateManager.pushMatrix();
+            {
+                item.renderRightArm();
+            }
+            GlStateManager.popMatrix();
+            GlStateManager.pushMatrix();
+            {
+                item.renderLeftArm();
+            }
+            GlStateManager.popMatrix();
+        }
+        GlStateManager.popMatrix();
+        GlStateManager.enableCull();
+    }
+
+    private static void renderArm(EnumHandSide side) {
+        Minecraft mc = Minecraft.getMinecraft();
+        mc.getTextureManager().bindTexture(mc.player.getLocationSkin());
+        Render<AbstractClientPlayer> render = mc.getRenderManager().getEntityRenderObject(mc.player);
+        RenderPlayer renderplayer = (RenderPlayer)render;
+        GlStateManager.pushMatrix();
+        float f = side == EnumHandSide.RIGHT ? 1.0F : -1.0F;
+        GlStateManager.rotate(92.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(45.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(f * -41.0F, 0.0F, 0.0F, 1.0F);
+        GlStateManager.translate(f * 0.3F, -1.1F, 0.45F);
+
+        if (side == EnumHandSide.RIGHT) {
+            renderplayer.renderRightArm(mc.player);
+        } else {
+            renderplayer.renderLeftArm(mc.player);
+        }
+
+        GlStateManager.popMatrix();
     }
 }

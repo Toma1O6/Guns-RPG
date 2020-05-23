@@ -5,11 +5,13 @@ import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumHandSide;
 
 import java.util.Map;
 
@@ -61,5 +63,21 @@ public class PistolItem extends GunItem {
     @Override
     public int getReloadTime(EntityPlayer player) {
         return PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_QUICKDRAW) ? 35 : 60;
+    }
+
+    @Override
+    public void renderRightArm() {
+        GlStateManager.translate(-0.05F, -0.02F, 0.0F);
+        GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(-10F, 0F, 1.0F, 0.0F);
+        renderArm(EnumHandSide.RIGHT);
+    }
+
+    @Override
+    public void renderLeftArm() {
+        GlStateManager.translate(0.35F, -0.08F, 0.05F);
+        GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(-30.0F, 0.0F, 1.0F, 0.0F);
+        renderArm(EnumHandSide.LEFT);
     }
 }

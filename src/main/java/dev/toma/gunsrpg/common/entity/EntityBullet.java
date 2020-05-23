@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.entity;
 
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -27,14 +26,16 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import java.util.List;
 
+@SuppressWarnings("Guava")
 public class EntityBullet extends Entity {
 
-    private static final Predicate<Entity> ARROW_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, Entity::canBeCollidedWith);
+    private static final Predicate<Entity> ARROW_TARGETS = e -> EntitySelectors.NOT_SPECTATING.apply(e) && EntitySelectors.IS_ALIVE.apply(e) && e.canBeCollidedWith();
     private EntityLivingBase shooter;
     private ItemStack stack;
     private RayTraceResult entityRaytrace;
 
     private int effect;
+    private float ogDamage;
     private float damage;
 
     public EntityBullet(World worldIn) {
@@ -51,7 +52,8 @@ public class EntityBullet extends Entity {
         this.stack = stack;
         WeaponConfiguration config = gun.getWeaponConfig();
         this.effect = config.effect;
-        this.damage = config.damage + gun.getDamageBonus(stack);
+        this.ogDamage = config.damage + gun.getDamageBonus(stack);
+        this.damage = ogDamage;
         Vec3d direct = getVectorForRotation(shooter.rotationPitch, shooter.getRotationYawHead());
         this.setPosition(shooter.posX, shooter.posY + shooter.getEyeHeight(), shooter.posZ);
     }
@@ -146,7 +148,9 @@ public class EntityBullet extends Entity {
         if (this.ticksExisted >= 80) {
             this.setDead();
         }
-
+        if (!world.isRemote && stack.getItem() instanceof GunItem) {
+            ((GunItem) stack.getItem()).updateBullet(this);
+        }
         /*if (this.ticksExisted > 2 && this.ticksExisted % 2 == 0) {
             world.playSound(null, posX, posY, posZ, PMCSounds.bullet_whizz, SoundCategory.PLAYERS, 0.1f, 1f);
         }*/
@@ -174,7 +178,7 @@ public class EntityBullet extends Entity {
 
     protected Entity findEntityOnPath(Vec3d start, Vec3d end, RayTraceResult trace) {
         Entity entity = null;
-        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D), ARROW_TARGETS);
+        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D), ARROW_TARGETS::test);
         double d0 = 0.0D;
         for (int i = 0; i < list.size(); ++i) {
             Entity entity1 = list.get(i);
@@ -222,6 +226,7 @@ public class EntityBullet extends Entity {
     @Override
     protected void writeEntityToNBT(NBTTagCompound compound) {
         compound.setFloat("bullet_damage", this.damage);
+        compound.setFloat("damage", this.ogDamage);
         compound.setInteger("effect", effect);
         NBTTagCompound nbt = new NBTTagCompound();
         stack.writeToNBT(nbt);
@@ -231,6 +236,7 @@ public class EntityBullet extends Entity {
     @Override
     protected void readEntityFromNBT(NBTTagCompound compound) {
         damage = compound.getFloat("bullet_damage");
+        ogDamage = compound.getFloat("damage");
         effect = compound.getInteger("effect");
         stack = new ItemStack(compound.hasKey("stack") ? compound.getCompoundTag("stack") : new NBTTagCompound());
     }
@@ -246,6 +252,14 @@ public class EntityBullet extends Entity {
         this.rotationPitch = (float) (MathHelper.atan2(this.motionY, f) * (180D / Math.PI));
         this.prevRotationYaw = this.rotationYaw;
         this.prevRotationPitch = this.rotationPitch;
+    }
+
+    public void setDamage(float damage) {
+        this.damage = damage;
+    }
+
+    public float getOriginalDamage() {
+        return ogDamage;
     }
 
     public float getDamage() {

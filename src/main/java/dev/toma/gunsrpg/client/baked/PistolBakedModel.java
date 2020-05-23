@@ -20,10 +20,15 @@ public class PistolBakedModel extends GunBakedModel {
         GlStateManager.rotate(180, 1, 0, 0);
         GlStateManager.rotate(180, 0, 1, 0);
         switch (cameraTransformType) {
+            case FIRST_PERSON_RIGHT_HAND: {
+                GlStateManager.translate(1.5F, 0.0F, 2.0F);
+                break;
+            }
             case GUI: {
                 GlStateManager.translate(-8, 15, 0);
                 GlStateManager.rotate(90, 0, -1, 0);
                 GlStateManager.rotate(30, -1, 0, 0);
+                break;
             }
             default: break;
         }

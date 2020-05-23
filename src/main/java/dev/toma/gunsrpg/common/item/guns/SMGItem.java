@@ -5,11 +5,13 @@ import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumHandSide;
 
 import java.util.Map;
 
@@ -61,5 +63,20 @@ public class SMGItem extends GunItem {
             shooter.addPotionEffect(new PotionEffect(MobEffects.SPEED, 100, 0, false, false));
             shooter.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 60, 2, false, false));
         }
+    }
+
+    @Override
+    public void renderRightArm() {
+        GlStateManager.translate(0.15F, -0.3F, 0.25F);
+        GlStateManager.rotate(10.0F, 1.0F, 0.0F, 0.0F);
+        renderArm(EnumHandSide.RIGHT);
+    }
+
+    @Override
+    public void renderLeftArm() {
+        GlStateManager.translate(0.4F, -0.25F, -0.2F);
+        GlStateManager.rotate(10.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(-30.0F, 0.0F, 1.0F, 0.0F);
+        renderArm(EnumHandSide.LEFT);
     }
 }

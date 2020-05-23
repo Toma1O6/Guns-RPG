@@ -10,6 +10,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
 import java.util.Map;
 
@@ -54,6 +56,33 @@ public class SGItem extends GunItem {
     public void onKillEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
         if(!shooter.world.isRemote && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Ability.NEVER_GIVE_UP)) {
             shooter.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 100, 0, false, false));
+        }
+    }
+
+    @Override
+    public void shootBullet(World world, EntityLivingBase entity, ItemStack stack) {
+        boolean choke = entity instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) entity, Ability.CHOKE);
+        float modifier = 3.0F;
+        float velocity = this.getWeaponConfig().velocity;
+        for(int i = 0; i < 6; i++) {
+            EntityBullet bullet = new EntityBullet(world, entity, this, stack);
+            float pitch = choke ? entity.rotationPitch + (random.nextFloat() * modifier - random.nextFloat() * modifier) : entity.rotationPitch + (random.nextFloat() * modifier * 2 - random.nextFloat() * modifier * 2);
+            float yaw = choke ? entity.rotationYaw + (random.nextFloat() * modifier - random.nextFloat() * modifier) : entity.rotationYaw + (random.nextFloat() * modifier * 2 - random.nextFloat() * modifier * 2);
+            bullet.fire(pitch, yaw, velocity);
+            world.spawnEntity(bullet);
+        }
+    }
+
+    @Override
+    public void updateBullet(EntityBullet bullet) {
+        boolean f = bullet.getShooter() instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) bullet.getShooter(), Ability.EXTENDED_BARREL);
+        bullet.motionY -= f ? 0.35 : 0.8;
+        double max = f ? 20 : 13;
+        if(bullet.getShooter() == null) return;
+        double v = 1.0F - (Math.min(1.0F, Math.abs(bullet.getDistanceTo(new Vec3d(bullet.getShooter().posX, bullet.getShooter().posY, bullet.getShooter().posZ))) / max));
+        bullet.setDamage(bullet.getOriginalDamage() * (float) v);
+        if(bullet.getDamage() <= 1.0F) {
+            bullet.setDead();
         }
     }
 }
