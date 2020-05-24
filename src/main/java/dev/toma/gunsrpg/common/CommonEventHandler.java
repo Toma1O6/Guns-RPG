@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.DebuffTypes;
+import dev.toma.gunsrpg.util.object.AimTracker;
 import dev.toma.gunsrpg.util.object.EntitySpawnManager;
 import dev.toma.gunsrpg.util.object.ReloadTracker;
 import dev.toma.gunsrpg.util.object.ShootingManager;
@@ -182,6 +183,7 @@ public class CommonEventHandler {
             EntityPlayer player = event.player;
             World world = player.world;
             PlayerDataFactory.get(player).tick();
+            AimTracker.update(player);
             if(!world.isRemote) {
                 ReloadTracker.update(player);
                 if(world.getWorldTime() % 200 == 0) {

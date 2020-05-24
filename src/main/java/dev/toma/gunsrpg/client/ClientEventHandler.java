@@ -9,7 +9,10 @@ import dev.toma.gunsrpg.common.item.guns.IAmmoProvider;
 import dev.toma.gunsrpg.common.item.guns.ItemAmmo;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.Debuff;
+import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.object.AimTracker;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -98,8 +101,13 @@ public class ClientEventHandler {
         GameSettings settings = mc.gameSettings;
         if(player != null) {
             GunItem item = ShootingManager.getGunFrom(player);
-            if(item != null && settings.keyBindAttack.isPressed()) {
-                ShootingManager.shootSingle(player, player.getHeldItemMainhand());
+            if(item != null) {
+                if(settings.keyBindAttack.isPressed()) {
+                    ShootingManager.shootSingle(player, player.getHeldItemMainhand());
+                } else if(settings.keyBindUseItem.isPressed()) {
+                    boolean aim = !AimTracker.isAiming(player);
+                    NetworkManager.toServer(new SPacketSetAiming(aim));
+                }
             }
         }
     }

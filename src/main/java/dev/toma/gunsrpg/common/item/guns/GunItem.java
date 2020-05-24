@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.common.item.GRPGItem;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerMagazine;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import dev.toma.gunsrpg.util.object.AimTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -122,7 +123,10 @@ public abstract class GunItem extends GRPGItem {
 
     public void shootBullet(World world, EntityLivingBase entity, ItemStack stack) {
         EntityBullet bullet = new EntityBullet(world, entity, this, stack);
-        bullet.fire(entity.rotationPitch, entity.rotationYaw, getWeaponConfig().velocity);
+        boolean aim = entity instanceof EntityPlayer && AimTracker.isAiming((EntityPlayer) entity);
+        float pitch = entity.rotationPitch + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 5);
+        float yaw = entity.rotationYaw + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 5);
+        bullet.fire(pitch, yaw, getWeaponConfig().velocity);
         world.spawnEntity(bullet);
     }
 

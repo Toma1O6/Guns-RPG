@@ -30,12 +30,14 @@ public class NetworkManager {
         c_register(CPacketUpdateCap.Handler.class, CPacketUpdateCap.class);
         c_register(CPacketCancelReload.Handler.class, CPacketCancelReload.class);
         c_register(CPacketParticle.Handler.class, CPacketParticle.class);
+        c_register(CPacketSetAiming.Handler.class, CPacketSetAiming.class);
         s_register(SPacketShoot.Handler.class, SPacketShoot.class);
         s_register(SPacketRequestDataUpdate.Handler.class, SPacketRequestDataUpdate.class);
         s_register(ShootingManager.Update.Handler.class, ShootingManager.Update.class);
         s_register(SPacketAbilityUpdate.Handler.class, SPacketAbilityUpdate.class);
         s_register(SPacketSelectAmmo.Handler.class, SPacketSelectAmmo.class);
         s_register(SPacketStartReloading.Handler.class, SPacketStartReloading.class);
+        s_register(SPacketSetAiming.Handler.class, SPacketSetAiming.class);
     }
 
     private static <A extends IMessage, B extends IMessage> void c_register(Class<? extends IMessageHandler<A, B>> hClass, Class<A> pClass) {
