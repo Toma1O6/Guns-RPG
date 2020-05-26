@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataManager;
@@ -9,9 +10,7 @@ import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.DebuffTypes;
-import dev.toma.gunsrpg.util.object.AimTracker;
 import dev.toma.gunsrpg.util.object.EntitySpawnManager;
-import dev.toma.gunsrpg.util.object.ReloadTracker;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import dev.toma.gunsrpg.world.BloodmoonEntitySpawnEntryList;
 import dev.toma.gunsrpg.world.cap.WorldCapProvider;
@@ -183,9 +182,7 @@ public class CommonEventHandler {
             EntityPlayer player = event.player;
             World world = player.world;
             PlayerDataFactory.get(player).tick();
-            AimTracker.update(player);
             if(!world.isRemote) {
-                ReloadTracker.update(player);
                 if(world.getWorldTime() % 200 == 0) {
                     for(int i = 0; i < world.loadedTileEntityList.size(); i++) {
                         TileEntity te = world.loadedTileEntityList.get(i);
@@ -194,6 +191,8 @@ public class CommonEventHandler {
                         }
                     }
                 }
+            } else {
+                AnimationManager.tick();
             }
             ShootingManager.updateAllShooting(world);
         }

@@ -109,6 +109,7 @@ public class AbilityData {
             lockedSkills.put(skill, skill.newAbilityInstance());
         }
         unlockedSkills = new HashMap<>();
+        this.unlockProperty(Ability.PISTOL_WOOD_AMMO);
     }
 
     public void reset() {

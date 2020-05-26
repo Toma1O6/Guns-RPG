@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.item.guns;
+package dev.toma.gunsrpg.common.item.guns.ammo;
 
 import net.minecraft.util.text.TextFormatting;
 

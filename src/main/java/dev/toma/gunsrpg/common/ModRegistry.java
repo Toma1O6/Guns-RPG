@@ -12,6 +12,9 @@ import dev.toma.gunsrpg.common.entity.EntityExplosiveArrow;
 import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
 import dev.toma.gunsrpg.common.item.GRPGItem;
 import dev.toma.gunsrpg.common.item.guns.*;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.item.util.DebuffHeal;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
@@ -19,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
@@ -122,6 +126,15 @@ public class ModRegistry {
         public static final SoundEvent USE_PLASTER_CAST = null;
         public static final SoundEvent USE_BANDAGE = null;
         public static final SoundEvent PLANE_FLY_BY = null;
+        public static final SoundEvent P1911 = null;
+        public static final SoundEvent P1911_SILENT = null;
+        public static final SoundEvent UMP45 = null;
+        public static final SoundEvent UMP45_SILENT = null;
+        public static final SoundEvent SKS = null;
+        public static final SoundEvent SKS_SILENT = null;
+        public static final SoundEvent KAR98K = null;
+        public static final SoundEvent KAR98K_SILENT = null;
+        public static final SoundEvent S1897 = null;
     }
 
     @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
@@ -208,7 +221,7 @@ public class ModRegistry {
             event.getRegistry().registerAll(
                     makeBuilder("bullet", EntityBullet.class).tracker(256, 1, true).build(),
                     makeBuilder("airdrop", EntityAirdrop.class).tracker(256, 1, true).build(),
-                    makeBuilder("explosive_skeleton", EntityExplosiveSkeleton.class).tracker(80, 3, true).egg(0xB46F67, 0x494949).spawn(GRPGConfig.world.explosiveSkeleton.type, GRPGConfig.world.explosiveSkeleton.weight, GRPGConfig.world.explosiveSkeleton.min, GRPGConfig.world.explosiveSkeleton.max, ForgeRegistries.BIOMES).build(),
+                    makeBuilder("explosive_skeleton", EntityExplosiveSkeleton.class).tracker(80, 3, true).egg(0xB46F67, 0x494949).spawn(EnumCreatureType.MONSTER, 15, 1, 3, ForgeRegistries.BIOMES).build(),
                     makeBuilder("explosive_arrow", EntityExplosiveArrow.class).tracker(64, 20, true).build()
             );
         }
@@ -220,7 +233,16 @@ public class ModRegistry {
                     sound("use_vaccine"),
                     sound("use_plaster_cast"),
                     sound("use_bandage"),
-                    sound("plane_fly_by")
+                    sound("plane_fly_by"),
+                    sound("p1911"),
+                    sound("p1911_silent"),
+                    sound("ump45"),
+                    sound("ump45_silent"),
+                    sound("sks"),
+                    sound("sks_silent"),
+                    sound("kar98k"),
+                    sound("kar98k_silent"),
+                    sound("s1897")
             );
         }
 

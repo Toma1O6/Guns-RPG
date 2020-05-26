@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.item.guns;
+package dev.toma.gunsrpg.common.item.guns.ammo;
 
 import dev.toma.gunsrpg.common.skilltree.Ability;
 

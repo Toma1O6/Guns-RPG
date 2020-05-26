@@ -1,7 +1,11 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.client.animation.AimingAnimation;
+import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
@@ -12,6 +16,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.SoundEvent;
 
 import java.util.Map;
 
@@ -51,6 +56,11 @@ public class PistolItem extends GunItem {
     }
 
     @Override
+    public SoundEvent getShootSound(EntityLivingBase entity) {
+        return entity instanceof EntityPlayer && this.isSilenced((EntityPlayer) entity) ? ModRegistry.GRPGSounds.P1911_SILENT : ModRegistry.GRPGSounds.P1911;
+    }
+
+    @Override
     public int getMaxAmmo(EntityPlayer player) {
         return PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_EXTENDED) ? 13 : 7;
     }
@@ -63,6 +73,35 @@ public class PistolItem extends GunItem {
     @Override
     public int getReloadTime(EntityPlayer player) {
         return PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_QUICKDRAW) ? 35 : 60;
+    }
+
+    @Override
+    public float getVerticalRecoil(EntityPlayer player) {
+        float f = super.getVerticalRecoil(player);
+        float mod = PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_CARBON_BARREL) ? GRPGConfig.weapon.general.carbonBarrel : 1.0F;
+        return mod * f;
+    }
+
+    @Override
+    public float getHorizontalRecoil(EntityPlayer player) {
+        float f = super.getHorizontalRecoil(player);
+        float mod = PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_CARBON_BARREL) ? GRPGConfig.weapon.general.carbonBarrel : 1.0F;
+        return mod * f;
+    }
+
+    @Override
+    public AimingAnimation createAimAnimation() {
+        return new AimingAnimation(-0.54F, 0.06F, 0.0F).animateRight(animation -> {
+            float f = animation.smooth;
+            GlStateManager.translate(-0.18F * f, 0.0F, 0.1F * f);
+            GlStateManager.rotate(3.0F * f, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(20.0F * f, 0.0F, 1.0F, 0.0F);
+        }).animateLeft(animation -> {
+            float f = animation.smooth;
+            GlStateManager.translate(-0.2F * f, 0.0F, 0.0F);
+            GlStateManager.rotate(3.0F * f, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(15.0F * f, 0.0F, 1.0F, 0.0F);
+        });
     }
 
     @Override

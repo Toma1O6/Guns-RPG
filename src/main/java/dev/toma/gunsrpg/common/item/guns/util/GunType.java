@@ -1,4 +1,6 @@
-package dev.toma.gunsrpg.common.item.guns;
+package dev.toma.gunsrpg.common.item.guns.util;
+
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 
 public enum GunType {
 

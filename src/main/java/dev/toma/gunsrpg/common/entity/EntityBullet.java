@@ -1,7 +1,10 @@
 package dev.toma.gunsrpg.common.entity;
 
 import com.google.common.base.Predicate;
+import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketParticle;
@@ -83,11 +86,13 @@ public class EntityBullet extends Entity {
         }
         Entity entity = rayTraceResult.entityHit;
         if(entity != null && !world.isRemote) {
-            boolean isHeadshot = this.canEntityGetHeadshot(entity) && entityRaytrace.hitVec.y >= entity.getPosition().getY() + entity.getEyeHeight() - 0.15f;
+            boolean validPlayer = shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Ability.DEAD_EYE);
+            boolean validWeapon = stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE;
+            boolean isHeadshot = validWeapon && validPlayer && this.canEntityGetHeadshot(entity) && entityRaytrace.hitVec.y >= entity.getPosition().getY() + entity.getEyeHeight() - 0.15f;
             Vec3d vec = rayTraceResult.hitVec;
             Block block = Blocks.REDSTONE_BLOCK;
             if(isHeadshot) {
-                damage *= 2.5;
+                damage *= 1.5;
             }
             if(entity instanceof EntityLivingBase) {
                 NetworkManager.toDimension(CPacketParticle.multipleParticles(EnumParticleTypes.BLOCK_CRACK, vec.x, entityRaytrace.hitVec.y, vec.z, Block.getIdFromBlock(block), 2*Math.round(damage), 0), this.dimension);
@@ -140,7 +145,6 @@ public class EntityBullet extends Entity {
         Vec3d vec3d1 = new Vec3d(this.posX, this.posY, this.posZ);
         Vec3d vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
         RayTraceResult raytraceresult = this.world.rayTraceBlocks(vec3d1, vec3d, false, true, false);
-        //Gravity
         if (this.ticksExisted > effect && !world.isRemote) {
             this.motionY -= 0.05;
         }
@@ -151,9 +155,6 @@ public class EntityBullet extends Entity {
         if (!world.isRemote && stack.getItem() instanceof GunItem) {
             ((GunItem) stack.getItem()).updateBullet(this);
         }
-        /*if (this.ticksExisted > 2 && this.ticksExisted % 2 == 0) {
-            world.playSound(null, posX, posY, posZ, PMCSounds.bullet_whizz, SoundCategory.PLAYERS, 0.1f, 1f);
-        }*/
         Entity entity = this.findEntityOnPath(vec3d1, vec3d, raytraceresult);
         if (entity != null) {
             raytraceresult = new RayTraceResult(entity);

@@ -27,8 +27,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -191,6 +193,19 @@ public class GuiSkillTree extends GuiScreen {
             this.y = ModUtils.wrap(this.y + y, 0, 1500);
             this.setLastClickedPos(mouseX, mouseY);
         }
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException {
+        int i = -Integer.signum(Mouse.getEventDWheel());
+        if(i != 0) {
+            if(GuiScreen.isShiftKeyDown()) {
+                this.x = ModUtils.wrap(this.x + i * 25, 0, 1000);
+            } else {
+                this.y = ModUtils.wrap(this.y + i * 25, 0, 1500);
+            }
+        }
+        super.handleMouseInput();
     }
 
     @Override

@@ -1,7 +1,12 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
+import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerSingle;
+import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
@@ -10,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -35,6 +41,16 @@ public class SGItem extends GunItem {
         data.put(AmmoMaterial.DIAMOND, 5);
         data.put(AmmoMaterial.EMERALD, 6);
         data.put(AmmoMaterial.AMETHYST, 8);
+    }
+
+    @Override
+    public IReloadManager getReloadManager() {
+        return ReloadManagerSingle.SINGLE;
+    }
+
+    @Override
+    public SoundEvent getShootSound(EntityLivingBase entity) {
+        return ModRegistry.GRPGSounds.S1897;
     }
 
     @Override

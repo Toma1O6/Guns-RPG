@@ -5,15 +5,21 @@ import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.AbilityData;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.SkillData;
+import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.common.skilltree.PlayerSkillTree;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 public class CommandGRPG extends CommandBase {
 
@@ -28,12 +34,24 @@ public class CommandGRPG extends CommandBase {
     }
 
     @Override
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+        if(args.length == 2) {
+            switch (args[0]) {
+                case "debuff": return getListOfStringsMatchingLastWord(args, "poison", "infection", "broken_bone", "bleeding");
+                case "skillTree": return getListOfStringsMatchingLastWord(args, "lockAll", "unlockAll");
+                default: return Collections.emptyList();
+            }
+        }
+        return getListOfStringsMatchingLastWord(args, "debuff", "bloodmoon", "skillTree");
+    }
+
+    @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if(args.length == 0) {
             this.sendMessage(sender, TextFormatting.GREEN + "Subcommands:");
             this.sendMessage(sender, TextFormatting.GREEN + "debuff - manage your debuffs");
             this.sendMessage(sender, TextFormatting.GREEN + "bloodmoon - starts bloodmoon");
-            this.sendMessage(sender, TextFormatting.GREEN + "resetSkillTree - manage your skills");
+            this.sendMessage(sender, TextFormatting.GREEN + "skillTree - manage your skills");
         } else {
             World world = sender.getEntityWorld();
             if(!(sender instanceof EntityPlayerMP)) return;
@@ -57,7 +75,7 @@ public class CommandGRPG extends CommandBase {
                             sendMessage(sender, TextFormatting.GREEN + "Debuff toggled");
                             break;
                         }
-                        case "broken_leg": {
+                        case "broken_bone": {
                             toggleDebuff(data, debuffData, 2);
                             sendMessage(sender, TextFormatting.GREEN + "Debuff toggled");
                             break;
@@ -68,7 +86,7 @@ public class CommandGRPG extends CommandBase {
                             break;
                         }
                         default: {
-                            sendMessage(sender, TextFormatting.RED + "Unknown debuff type! Known types: [poison, infection, broken_leg, bleeding]");
+                            sendMessage(sender, TextFormatting.RED + "Unknown debuff type! Known types: [poison, infection, broken_bone, bleeding]");
                             break;
                         }
                     }
@@ -79,14 +97,29 @@ public class CommandGRPG extends CommandBase {
                     sendMessage(sender, TextFormatting.GREEN + "Enjoy the bloodmoon...");
                     break;
                 }
-                case "resetSkillTree": {
+                case "skillTree": {
+                    if(args.length < 2) {
+                        this.sendMessage(sender, TextFormatting.RED + "Unknown argument! Valid arguments: [lockAll, unlockAll]");
+                        return;
+                    }
+                    boolean reset = args[1].equals("lockAll");
                     SkillData skillData = data.getSkillData();
                     PlayerSkillTree skillTree = skillData.getSkillTree();
                     AbilityData abilityData = skillData.getAbilityData();
-                    skillTree.setDefault();
-                    abilityData.reset();
-                    skillData.killCount.clear();
-                    sendMessage(sender, TextFormatting.GREEN + "All your progress has been deleted");
+                    if(args[1].equals("lockAll")) {
+                        skillTree.setDefault();
+                        abilityData.reset();
+                        skillData.killCount.clear();
+                        sendMessage(sender, TextFormatting.GREEN + "All your progress has been deleted");
+                    } else if("unlockAll".equals(args[1])) {
+                        for(Ability.Type type : Ability.LEVEL_REWARD_TYPES) {
+                            abilityData.unlockProperty(type);
+                        }
+                        skillTree.updateEntries(true);
+                        sendMessage(sender, TextFormatting.GREEN + "You have unlocked all skills!");
+                    } else {
+                        this.sendMessage(sender, TextFormatting.RED + "Unknown argument! Valid arguments: [lockAll, unlockAll]");
+                    }
                     break;
                 }
                 default: {

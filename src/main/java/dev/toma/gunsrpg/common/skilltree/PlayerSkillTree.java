@@ -38,14 +38,14 @@ public class PlayerSkillTree {
         this.locked = ModUtils.newList(ModUtils.convert(SkillTreeEntry.List.root.child, SkillTreeEntry::makeInstance));
     }
 
-    public void updateEntries() {
+    public void updateEntries(boolean forceUnlock) {
         Iterator<EntryInstance> iterator = locked.iterator();
         List<EntryInstance> unlocked = new ArrayList<>();
         while (iterator.hasNext()) {
             EntryInstance instance = iterator.next();
-            if(instance.canUnlock(data.killCount)) {
+            if(forceUnlock || instance.canUnlock(data.killCount)) {
                 SkillTreeEntry entry = instance.getType();
-                SkillData.KillData killData = data.killCount.get(entry.gun);
+                SkillData.KillData killData = data.killCount.computeIfAbsent(entry.gun, k -> new SkillData.KillData());
                 killData.clearKillCount();
                 entry.onObtain.accept(data.killCount);
                 Ability.Type type = entry.type;
@@ -56,7 +56,7 @@ public class PlayerSkillTree {
                 unlocked.add(instance);
                 if(player instanceof EntityPlayerMP) {
                     player.sendStatusMessage(new TextComponentString(TextFormatting.GREEN + "You have reached new weapon level!"), true);
-                    ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, player.posX, player.posY, player.posZ, 0.75F, 1.0F));
+                    if(!forceUnlock) ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, player.posX, player.posY, player.posZ, 0.75F, 1.0F));
                 }
                 iterator.remove();
                 PlayerDataFactory.get(player).sync();
@@ -70,7 +70,7 @@ public class PlayerSkillTree {
                     locked.add(child.makeInstance());
                 }
             }
-            updateEntries();
+            updateEntries(forceUnlock);
         }
     }
 

@@ -2,10 +2,10 @@ package dev.toma.gunsrpg.util.object;
 
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.AbilityData;
-import dev.toma.gunsrpg.common.item.guns.AmmoMaterial;
-import dev.toma.gunsrpg.common.item.guns.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ItemAmmo;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketShoot;
@@ -84,6 +84,9 @@ public class ShootingManager {
     @SideOnly(Side.CLIENT)
     public static void shootSingle(EntityPlayer player, ItemStack stack) {
         if(canShoot(player, stack)) {
+            GunItem gun = (GunItem) stack.getItem();
+            player.rotationPitch -= gun.getVerticalRecoil(player);
+            player.rotationYaw += gun.getHorizontalRecoil(player);
             NetworkManager.toServer(new SPacketShoot((GunItem) stack.getItem()));
         }
     }

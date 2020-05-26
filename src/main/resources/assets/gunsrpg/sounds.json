@@ -3,5 +3,14 @@
     "use_vaccine": {"category": "player", "sounds": [{"name": "gunsrpg:use_vaccine", "stream": true}]},
     "use_plaster_cast": {"category": "player", "sounds": [{"name": "gunsrpg:use_plaster_cast", "stream": true}]},
     "use_bandage": {"category": "player", "sounds": [{"name": "gunsrpg:use_bandage", "stream": true}]},
+    "p1911": {"category": "master", "sounds": [{"name": "gunsrpg:p1911", "stream": true}]},
+    "p1911_silent": {"category": "master", "sounds": [{"name": "gunsrpg:p1911_silent", "stream": true}]},
+    "ump45": {"category": "master", "sounds": [{"name": "gunsrpg:ump45", "stream": true}]},
+    "ump45_silent": {"category": "master", "sounds": [{"name": "gunsrpg:ump45_silent", "stream": true}]},
+    "sks": {"category": "master", "sounds": [{"name": "gunsrpg:sks", "stream": true}]},
+    "sks_silent": {"category": "master", "sounds": [{"name": "gunsrpg:sks_silent", "stream": true}]},
+    "kar98k": {"category": "master", "sounds": [{"name": "gunsrpg:kar98k", "stream": true}]},
+    "kar98k_silent": {"category": "master", "sounds": [{"name": "gunsrpg:kar98k_silent", "stream": true}]},
+    "s1897": {"category": "master", "sounds": [{"name": "gunsrpg:s1897", "stream": true}]},
     "plane_fly_by": {"category": "master", "sounds": [{"name": "gunsrpg:plane_fly_by", "stream": true}]}
 }

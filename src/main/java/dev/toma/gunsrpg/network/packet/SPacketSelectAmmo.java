@@ -1,9 +1,9 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.common.item.guns.AmmoMaterial;
-import dev.toma.gunsrpg.common.item.guns.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ItemAmmo;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;

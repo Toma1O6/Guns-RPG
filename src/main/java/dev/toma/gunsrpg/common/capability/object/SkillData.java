@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skilltree.PlayerSkillTree;
 import net.minecraft.entity.Entity;
@@ -14,11 +15,13 @@ import java.util.Map;
 
 public class SkillData {
 
+    private final EntityPlayer player;
     private final PlayerSkillTree skillTree;
     private final AbilityData abilityData;
     public final Map<GunItem, KillData> killCount = new HashMap<>();
 
     public SkillData(EntityPlayer player) {
+        this.player = player;
         this.skillTree = new PlayerSkillTree(player, this);
         this.abilityData = new AbilityData(this);
     }
@@ -26,7 +29,8 @@ public class SkillData {
     public void kill(Entity entity, GunItem item) {
         KillData data = killCount.computeIfAbsent(item, gun -> new KillData());
         data.kill();
-        skillTree.updateEntries();
+        skillTree.updateEntries(false);
+        PlayerDataFactory.get(player).sync();
     }
 
     public PlayerSkillTree getSkillTree() {
@@ -68,6 +72,10 @@ public class SkillData {
     public static class KillData {
         private int kills;
         private int skills;
+
+        public static KillData empty() {
+            return new KillData();
+        }
 
         public void kill() {
             this.kills++;

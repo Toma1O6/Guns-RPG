@@ -1,11 +1,16 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.client.animation.AimingAnimation;
+import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.item.GRPGItem;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerMagazine;
+import dev.toma.gunsrpg.common.item.guns.util.Firemode;
+import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
-import dev.toma.gunsrpg.util.object.AimTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -21,6 +26,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -42,6 +48,14 @@ public abstract class GunItem extends GRPGItem {
         this.gunType = type;
         this.setMaxStackSize(1);
         this.fillAmmoMaterialData(materialDamageBonusMap = new HashMap<>());
+    }
+
+    public SoundEvent getShootSound(EntityLivingBase entity) {
+        return SoundEvents.BLOCK_LEVER_CLICK;
+    }
+
+    public Firemode getFiremode(EntityPlayer player) {
+        return Firemode.SINGLE;
     }
 
     @SideOnly(Side.CLIENT)
@@ -77,6 +91,11 @@ public abstract class GunItem extends GRPGItem {
         GlStateManager.popMatrix();
     }
 
+    @SideOnly(Side.CLIENT)
+    public AimingAnimation createAimAnimation() {
+        return new AimingAnimation(-0.54F, 0.06F, 0.0F);
+    }
+
     public abstract WeaponConfiguration getWeaponConfig();
 
     public abstract void fillAmmoMaterialData(Map<AmmoMaterial, Integer> data);
@@ -102,11 +121,13 @@ public abstract class GunItem extends GRPGItem {
     }
 
     public float getVerticalRecoil(EntityPlayer player) {
-        return 0.0F;
+        return this.getWeaponConfig().recoilVertical;
     }
 
     public float getHorizontalRecoil(EntityPlayer player) {
-        return 0.0F;
+        boolean f = random.nextBoolean();
+        float v = this.getWeaponConfig().recoilHorizontal;
+        return f ? v : -v;
     }
 
     public void onHitEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
@@ -123,7 +144,7 @@ public abstract class GunItem extends GRPGItem {
 
     public void shootBullet(World world, EntityLivingBase entity, ItemStack stack) {
         EntityBullet bullet = new EntityBullet(world, entity, this, stack);
-        boolean aim = entity instanceof EntityPlayer && AimTracker.isAiming((EntityPlayer) entity);
+        boolean aim = entity instanceof EntityPlayer && PlayerDataFactory.get((EntityPlayer) entity).getAimInfo().isAiming();
         float pitch = entity.rotationPitch + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 5);
         float yaw = entity.rotationYaw + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 5);
         bullet.fire(pitch, yaw, getWeaponConfig().velocity);
@@ -141,7 +162,7 @@ public abstract class GunItem extends GRPGItem {
         }
         this.shootBullet(world, entity, stack);
         this.setAmmoCount(stack, this.getAmmo(stack) - 1);
-        world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.MASTER, 0.5F, 1.0F);
+        world.playSound(null, entity.posX, entity.posY, entity.posZ, this.getShootSound(entity), SoundCategory.MASTER, 15.0F, 1.0F);
         if (tracker != null) {
             tracker.setCooldown(item, this.getFirerate((EntityPlayer) entity));
         }
@@ -196,6 +217,11 @@ public abstract class GunItem extends GRPGItem {
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return false;
+    }
+
+    @Override
+    public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
         return false;
     }
 }

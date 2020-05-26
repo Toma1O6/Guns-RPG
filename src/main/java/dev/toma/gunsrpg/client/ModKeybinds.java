@@ -2,12 +2,13 @@ package dev.toma.gunsrpg.client;
 
 import dev.toma.gunsrpg.client.gui.GuiChooseAmmo;
 import dev.toma.gunsrpg.client.gui.GuiSkillTree;
-import dev.toma.gunsrpg.common.item.guns.AmmoMaterial;
-import dev.toma.gunsrpg.common.item.guns.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.IAmmoProvider;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketRequestDataUpdate;
+import dev.toma.gunsrpg.network.packet.SPacketSetReloading;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class ModKeybinds {
 
-    private static List<ModKeyBind> keyBinds = new ArrayList<>(2);
+    private static final List<ModKeyBind> keyBinds = new ArrayList<>(2);
 
     public static void registerKeybinds() {
         register("reload", Keyboard.KEY_R, ModKeybinds::reloadPressed);
@@ -47,14 +48,16 @@ public class ModKeybinds {
                     int max = gun.getMaxAmmo(player);
                     boolean skip = player.isCreative();
                     if(skip) {
-                        gun.getReloadManager().startReloading(player, gun, stack);
+                        gun.getReloadManager().startReloading(player, gun.getReloadTime(player), stack);
                     } else if(ammo < max) {
                         for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
                             ItemStack itemStack = player.inventory.getStackInSlot(i);
                             if(itemStack.getItem() instanceof IAmmoProvider) {
                                 IAmmoProvider itemAmmo = (IAmmoProvider) itemStack.getItem();
                                 if(itemAmmo.getAmmoType() == ammoType && itemAmmo.getMaterial() == material) {
-                                    gun.getReloadManager().startReloading(player, gun, stack);
+                                    int time = gun.getReloadTime(player);
+                                    gun.getReloadManager().startReloading(player, time, stack);
+                                    NetworkManager.toServer(new SPacketSetReloading(true, time));
                                     break;
                                 }
                             }

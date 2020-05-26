@@ -1,6 +1,7 @@
-package dev.toma.gunsrpg.common.item.guns;
+package dev.toma.gunsrpg.common.item.guns.ammo;
 
 import dev.toma.gunsrpg.common.item.GRPGItem;
+import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.item.ItemStack;
