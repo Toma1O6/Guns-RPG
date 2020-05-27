@@ -2,6 +2,8 @@ package dev.toma.gunsrpg.client;
 
 import dev.toma.gunsrpg.client.gui.GuiChooseAmmo;
 import dev.toma.gunsrpg.client.gui.GuiSkillTree;
+import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
@@ -33,6 +35,7 @@ public class ModKeybinds {
     private static void reloadPressed() {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.player;
+        ReloadInfo info = PlayerDataFactory.get(player).getReloadInfo();
         if(player.isSneaking()) {
             if(player.getHeldItemMainhand().getItem() instanceof GunItem) {
                 mc.displayGuiScreen(new GuiChooseAmmo((GunItem) player.getHeldItemMainhand().getItem()));
@@ -41,6 +44,13 @@ public class ModKeybinds {
             if(player.getHeldItemMainhand().getItem() instanceof GunItem) {
                 ItemStack stack = player.getHeldItemMainhand();
                 GunItem gun = (GunItem) stack.getItem();
+                if(info.isReloading()) {
+                    if(gun.getReloadManager().canBeInterrupted()) {
+                        info.cancelReload();
+                        NetworkManager.toServer(new SPacketSetReloading(false, 0));
+                        return;
+                    }
+                }
                 AmmoType ammoType = gun.getAmmoType();
                 AmmoMaterial material = gun.getMaterialFromNBT(stack);
                 if(material != null) {

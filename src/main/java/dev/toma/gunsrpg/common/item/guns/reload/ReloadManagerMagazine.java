@@ -12,10 +12,10 @@ public class ReloadManagerMagazine implements IReloadManager {
     public static final ReloadManagerMagazine MANAGER = new ReloadManagerMagazine();
 
     @Override
-    public boolean finishReload(EntityPlayer player, GunItem item, ItemStack stack) {
+    public void finishReload(EntityPlayer player, GunItem item, ItemStack stack) {
         AmmoType type = item.getAmmoType();
         AmmoMaterial material = item.getMaterialFromNBT(stack);
-        if(material == null) return true;
+        if(material == null) return;
         int max = item.getMaxAmmo(player);
         int left = max - item.getAmmo(stack);
         for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
@@ -35,6 +35,10 @@ public class ReloadManagerMagazine implements IReloadManager {
             }
         }
         item.setAmmoCount(stack, max - left);
-        return true;
+    }
+
+    @Override
+    public boolean canBeInterrupted() {
+        return false;
     }
 }

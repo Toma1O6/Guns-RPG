@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
@@ -10,11 +11,13 @@ import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -100,5 +103,30 @@ public class SGItem extends GunItem {
         if(bullet.getDamage() <= 1.0F) {
             bullet.setDead();
         }
+    }
+
+    @Override
+    public void renderRightArm() {
+        GlStateManager.translate(0.16F, -0.1F, 0.35F);
+        GlStateManager.rotate(15.0F, 0.0F, 1.0F, 0.0F);
+        renderArm(EnumHandSide.RIGHT);
+    }
+
+    @Override
+    public void renderLeftArm() {
+        GlStateManager.translate(0.3F, -0.1F, -0.15F);
+        GlStateManager.rotate(-20.0F, 0.0F, 1.0F, 0.0F);
+        renderArm(EnumHandSide.LEFT);
+    }
+
+    @Override
+    public AimingAnimation createAimAnimation() {
+        return new AimingAnimation(-0.267F, 0.22F, 0.1F).animateRight(animation -> {
+            float f = animation.smooth;
+            GlStateManager.translate(-0.267F * f, 0.22F * f, 0.1F * f);
+        }).animateLeft(animation -> {
+            float f = animation.smooth;
+            GlStateManager.translate(-0.267F * f, 0.22F * f, 0.2F * f);
+        });
     }
 }

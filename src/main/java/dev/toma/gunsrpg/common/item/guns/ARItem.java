@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
-import dev.toma.gunsrpg.client.animation.AimingAnimation;
+import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
@@ -56,7 +56,7 @@ public class ARItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.AR_TOUGH_SPRING) ? 2 : 3;
+        return PlayerDataFactory.hasActiveSkill(player, Ability.AR_TOUGH_SPRING) ? 3 : 4;
     }
 
     @Override

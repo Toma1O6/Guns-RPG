@@ -17,4 +17,6 @@ public interface Animation {
     void animateItem(float partialTicks);
 
     void clientTick();
+
+    boolean isFinished();
 }

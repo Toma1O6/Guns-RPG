@@ -1,10 +1,8 @@
-package dev.toma.gunsrpg.client.animation;
+package dev.toma.gunsrpg.client.animation.impl;
 
-import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.client.animation.AbstractAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -12,12 +10,9 @@ import javax.vecmath.Vector3f;
 import java.util.function.Consumer;
 
 @SideOnly(Side.CLIENT)
-public class AimingAnimation implements Animation {
+public class AimingAnimation extends AbstractAnimation {
 
-    private final EntityPlayer player;
     private final Vector3f animation;
-    private float current, prev;
-    public float smooth;
     private Consumer<AimingAnimation> leftArm = animation -> {};
     private Consumer<AimingAnimation> rightArm = animation -> {};
 
@@ -26,7 +21,6 @@ public class AimingAnimation implements Animation {
     }
 
     public AimingAnimation(Vector3f animation) {
-        this.player = Minecraft.getMinecraft().player;
         this.animation = animation;
     }
 
@@ -41,10 +35,13 @@ public class AimingAnimation implements Animation {
     }
 
     @Override
+    public float getCurrentProgress() {
+        return PlayerDataFactory.get(player).getAimInfo().getProgress();
+    }
+
+    @Override
     public void animateItemHands(float partialTicks) {
-        PlayerData data = PlayerDataFactory.get(player);
-        this.current = data.getAimInfo().getProgress();
-        this.smooth = this.prev + (this.current - this.prev) * partialTicks;
+        this.calculateSmooth(partialTicks);
     }
 
     @Override
@@ -67,7 +64,12 @@ public class AimingAnimation implements Animation {
     }
 
     @Override
-    public void clientTick() {
-        prev = current;
+    public void update() {
+
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false;
     }
 }

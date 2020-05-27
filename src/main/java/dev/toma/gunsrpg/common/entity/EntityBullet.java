@@ -14,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
+import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -217,6 +218,8 @@ public class EntityBullet extends Entity {
                     ((GunItem) stack.getItem()).onHitEntity(this, entityLivingBase, stack, shooter);
                 }
             }
+        } else if(entity instanceof MultiPartEntityPart) {
+            entity.attackEntityFrom(DamageSource.causeMobDamage(shooter), damage);
         }
     }
 

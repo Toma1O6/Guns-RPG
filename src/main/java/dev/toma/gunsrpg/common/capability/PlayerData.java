@@ -19,6 +19,10 @@ public interface PlayerData extends INBTSerializable<NBTTagCompound> {
 
     ReloadInfo getReloadInfo();
 
+    void setShooting(boolean shooting);
+
+    boolean isShooting();
+
     void readPermanentData(NBTTagCompound nbt);
 
     void tick();

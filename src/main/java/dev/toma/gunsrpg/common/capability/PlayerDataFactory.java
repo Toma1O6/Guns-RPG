@@ -5,13 +5,18 @@ import dev.toma.gunsrpg.common.capability.object.AimInfo;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.capability.object.SkillData;
+import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketUpdateCap;
+import dev.toma.gunsrpg.network.packet.SPacketSetShooting;
+import dev.toma.gunsrpg.util.object.ShootingManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 public class PlayerDataFactory implements PlayerData {
 
@@ -21,6 +26,7 @@ public class PlayerDataFactory implements PlayerData {
     private final AimInfo aimInfo;
     private final ReloadInfo reloadInfo;
 
+    private boolean shooting;
     private boolean logged = false;
 
     public PlayerDataFactory() {
@@ -46,9 +52,36 @@ public class PlayerDataFactory implements PlayerData {
 
     @Override
     public void tick() {
+        World world = player.world;
         this.debuffData.onTick(player);
         this.aimInfo.update();
         this.reloadInfo.update();
+        if(shooting) {
+            ItemStack stack = player.getHeldItemMainhand();
+            boolean gun = stack.getItem() instanceof GunItem;
+            if(gun && ShootingManager.canShoot(player, stack)) {
+                GunItem gunItem = (GunItem) stack.getItem();
+                if(world.isRemote) {
+                    ShootingManager.shootSingle(player, stack);
+                }
+            }
+            if(!world.isRemote && gun && ((GunItem) stack.getItem()).getAmmo(stack) <= 0) {
+                setShooting(false);
+                sync();
+            }
+        }
+        if(world.isRemote) {
+            this.clientTick();
+        }
+    }
+
+    protected void clientTick() {
+        if(shooting) {
+            if(!Minecraft.getMinecraft().gameSettings.keyBindAttack.isKeyDown()) {
+                setShooting(false);
+                NetworkManager.toServer(new SPacketSetShooting(false));
+            }
+        }
     }
 
     @Override
@@ -69,6 +102,16 @@ public class PlayerDataFactory implements PlayerData {
     @Override
     public ReloadInfo getReloadInfo() {
         return reloadInfo;
+    }
+
+    @Override
+    public void setShooting(boolean shooting) {
+        this.shooting = shooting;
+    }
+
+    @Override
+    public boolean isShooting() {
+        return shooting;
     }
 
     @Override

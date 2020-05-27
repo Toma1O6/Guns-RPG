@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.client;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.animation.AnimationManager;
+import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
@@ -9,12 +10,14 @@ import dev.toma.gunsrpg.common.capability.object.SkillData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
+import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skilltree.EntryInstance;
 import dev.toma.gunsrpg.common.skilltree.SkillTreeEntry;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.Debuff;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
+import dev.toma.gunsrpg.network.packet.SPacketSetShooting;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.client.Minecraft;
@@ -48,7 +51,7 @@ public class ClientEventHandler {
     public static void cancelOverlays(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
             if (Minecraft.getMinecraft().player.getHeldItemMainhand().getItem() instanceof GunItem) {
-                //event.setCanceled(true);
+                event.setCanceled(true);
             }
         }
     }
@@ -129,10 +132,16 @@ public class ClientEventHandler {
             GunItem item = ShootingManager.getGunFrom(player);
             if (item != null) {
                 if (settings.keyBindAttack.isPressed()) {
-                    ShootingManager.shootSingle(player, player.getHeldItemMainhand());
+                    if(item.getFiremode(player) == Firemode.FULL_AUTO) {
+                        //ShootingManager.shootSingle(player, player.getHeldItemMainhand());
+                        PlayerDataFactory.get(player).setShooting(true);
+                        NetworkManager.toServer(new SPacketSetShooting(true));
+                    } else {
+                        ShootingManager.shootSingle(player, player.getHeldItemMainhand());
+                    }
                 } else if (settings.keyBindUseItem.isPressed()) {
                     boolean aim = !PlayerDataFactory.get(player).getAimInfo().aiming;
-                    if (aim) AnimationManager.sendNewAnimation(item.createAimAnimation());
+                    if (aim) AnimationManager.sendNewAnimation(Animations.AIMING, item.createAimAnimation());
                     NetworkManager.toServer(new SPacketSetAiming(aim));
                 }
             }

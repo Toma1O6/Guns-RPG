@@ -12,10 +12,10 @@ public class ReloadManagerSingle implements IReloadManager {
     public static final ReloadManagerSingle SINGLE = new ReloadManagerSingle();
 
     @Override
-    public boolean finishReload(EntityPlayer player, GunItem item, ItemStack stack) {
+    public void finishReload(EntityPlayer player, GunItem item, ItemStack stack) {
         AmmoType ammoType = item.getAmmoType();
         AmmoMaterial material = item.getMaterialFromNBT(stack);
-        if(material == null) return true;
+        if(material == null) return;
         int ammo = item.getAmmo(stack);
         int max = item.getMaxAmmo(player);
         boolean continueReload = max - ammo > 1;
@@ -25,7 +25,7 @@ public class ReloadManagerSingle implements IReloadManager {
                 if(continueReload) {
                     this.startReloading(player, item.getReloadTime(player), stack);
                 }
-                return !continueReload;
+                return;
             }
             for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
                 ItemStack itemStack = player.inventory.getStackInSlot(i);
@@ -36,13 +36,16 @@ public class ReloadManagerSingle implements IReloadManager {
                         item.setAmmoCount(stack, ammo + 1);
                         if(continueReload) {
                             this.startReloading(player, item.getReloadTime(player), stack);
-                            return !continueReload;
                         }
                         break;
                     }
                 }
             }
         }
+    }
+
+    @Override
+    public boolean canBeInterrupted() {
         return true;
     }
 }

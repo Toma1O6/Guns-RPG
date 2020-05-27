@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
@@ -9,8 +10,10 @@ import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundEvent;
 
 import java.util.Map;
@@ -54,12 +57,12 @@ public class SRItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? 30 : 17;
+        return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? 40 : 25;
     }
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? 35 : 65;
+        return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? 15 : 25;
     }
 
     @Override
@@ -79,5 +82,30 @@ public class SRItem extends GunItem {
         float f = super.getHorizontalRecoil(player);
         float mod = PlayerDataFactory.hasActiveSkill(player, Ability.SR_CHEEKPAD) ? GRPGConfig.weapon.general.cheekpad : 1.0F;
         return mod * f;
+    }
+
+    @Override
+    public void renderRightArm() {
+        GlStateManager.translate(0.25F, -0.02F, 0.45F);
+        GlStateManager.rotate(20.0F, 0.0F, 1.0F, 0.0F);
+        renderArm(EnumHandSide.RIGHT);
+    }
+
+    @Override
+    public void renderLeftArm() {
+        GlStateManager.translate(0.3F, -0.05F, -0.1F);
+        GlStateManager.rotate(-20.0F, 0.0F, 1.0F, 0.0F);
+        renderArm(EnumHandSide.LEFT);
+    }
+
+    @Override
+    public AimingAnimation createAimAnimation() {
+        return new AimingAnimation(-0.265F, 0.175F, 0.3F).animateRight(animation -> {
+            float f = animation.smooth;
+            GlStateManager.translate(-0.265F * f, 0.175F * f, 0.3F * f);
+        }).animateLeft(animation -> {
+            float f = animation.smooth;
+            GlStateManager.translate(-0.265F * f, 0.175F * f, 0.3F * f);
+        });
     }
 }

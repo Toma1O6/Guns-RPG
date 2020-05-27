@@ -1,13 +1,20 @@
 package dev.toma.gunsrpg.util.object;
 
+import dev.toma.gunsrpg.client.animation.AnimationManager;
+import dev.toma.gunsrpg.client.animation.Animations;
+import dev.toma.gunsrpg.client.animation.impl.RecoilAnimation;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.AbilityData;
+import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
+import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.SPacketSetReloading;
 import dev.toma.gunsrpg.network.packet.SPacketShoot;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,8 +62,11 @@ public class ShootingManager {
 
     public static boolean canShoot(EntityPlayer player, ItemStack stack) {
         CooldownTracker tracker = player.getCooldownTracker();
-        AbilityData abilityData = PlayerDataFactory.get(player).getSkillData().getAbilityData();
+        PlayerData data = PlayerDataFactory.get(player);
+        ReloadInfo reloadInfo = data.getReloadInfo();
+        AbilityData abilityData = data.getSkillData().getAbilityData();
         GunItem item = (GunItem) stack.getItem();
+        IReloadManager reloadManager = item.getReloadManager();
         if(!tracker.hasCooldown(stack.getItem())) {
             AmmoType ammoType = item.getAmmoType();
             AmmoMaterial material = item.getMaterialFromNBT(stack);
@@ -68,6 +78,18 @@ public class ShootingManager {
                 }
             }
             if(material == null || type == null) return false;
+            if(reloadInfo.isReloading()) {
+                if(reloadManager.canBeInterrupted()) {
+                    reloadInfo.cancelReload();
+                    if(!player.world.isRemote) {
+                        data.sync();
+                    } else {
+                        NetworkManager.toServer(new SPacketSetReloading(false, 0));
+                    }
+                    return item.hasAmmo(stack) && abilityData.hasProperty(type);
+                }
+                return false;
+            }
             return item.hasAmmo(stack) && abilityData.hasProperty(type);
         }
         return false;
@@ -88,6 +110,7 @@ public class ShootingManager {
             player.rotationPitch -= gun.getVerticalRecoil(player);
             player.rotationYaw += gun.getHorizontalRecoil(player);
             NetworkManager.toServer(new SPacketShoot((GunItem) stack.getItem()));
+            AnimationManager.sendNewAnimation(Animations.RECOIL, RecoilAnimation.newInstance(5));
         }
     }
 
