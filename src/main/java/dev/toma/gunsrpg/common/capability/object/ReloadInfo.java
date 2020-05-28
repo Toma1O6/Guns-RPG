@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.SoundCategory;
 
 public class ReloadInfo {
 
@@ -40,6 +41,13 @@ public class ReloadInfo {
     }
 
     public void startReloading(int slot, int time) {
+        if(!reloading) {
+            EntityPlayer player = factory.getPlayer();
+            ItemStack stack = player.getHeldItemMainhand();
+            if(stack.getItem() instanceof GunItem) {
+                player.world.playSound(null, player.posX, player.posY, player.posZ, ((GunItem) stack.getItem()).getReloadSound(player), SoundCategory.MASTER, 1.0F, 1.0F);
+            }
+        }
         this.reloading = true;
         this.slot = slot;
         this.total = time;

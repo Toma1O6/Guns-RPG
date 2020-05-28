@@ -1,7 +1,5 @@
 package dev.toma.gunsrpg.client.animation;
 
-import dev.toma.gunsrpg.util.object.OptionalObject;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -9,10 +7,17 @@ import java.util.Map;
 public class AnimationManager {
 
     private static final Map<Integer, Animation> ANIMATIONS = new HashMap<>();
-    private static final OptionalObject<Animation> currentAnimation = OptionalObject.empty();
 
     public static void sendNewAnimation(int ID, Animation animation) {
         ANIMATIONS.put(ID, animation);
+    }
+
+    public static void cancelAnimation(int ID) {
+        ANIMATIONS.remove(ID);
+    }
+
+    public static Animation getAnimationByID(int ID) {
+        return ANIMATIONS.get(ID);
     }
 
     public static void animateItemHands(float partialTicks) {

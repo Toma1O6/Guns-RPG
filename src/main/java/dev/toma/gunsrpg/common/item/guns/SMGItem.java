@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,6 +50,11 @@ public class SMGItem extends GunItem {
     }
 
     @Override
+    public SoundEvent getReloadSound(EntityPlayer player) {
+        return PlayerDataFactory.hasActiveSkill(player, Ability.SMG_QUICKDRAW) ? ModRegistry.GRPGSounds.SMG_RELOAD_SHORT : ModRegistry.GRPGSounds.SMG_RELOAD;
+    }
+
+    @Override
     public int getMaxAmmo(EntityPlayer player) {
         return PlayerDataFactory.hasActiveSkill(player, Ability.SMG_EXTENDED) ? 40 : 25;
     }
@@ -85,7 +91,8 @@ public class SMGItem extends GunItem {
 
     @Override
     public AimingAnimation createAimAnimation() {
-        return new AimingAnimation(-0.57F, 0.2F, 0.2F).animateRight(animation -> {
+        boolean rds = PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Ability.SMG_RED_DOT);
+        return new AimingAnimation(-0.57F, rds ? 0.144F : 0.2F, 0.2F).animateRight(animation -> {
             float f = animation.smooth;
             GlStateManager.translate(-0.25F * f, 0.2F * f, 0.2F * f);
             GlStateManager.rotate(20.0F * f, 0.0F, 1.0F, 0.0F);

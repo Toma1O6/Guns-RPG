@@ -51,6 +51,11 @@ public class SRItem extends GunItem {
     }
 
     @Override
+    public SoundEvent getReloadSound(EntityPlayer player) {
+        return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? ModRegistry.GRPGSounds.SR_RELOAD_SHORT : ModRegistry.GRPGSounds.SR_RELOAD;
+    }
+
+    @Override
     public int getMaxAmmo(EntityPlayer player) {
         return PlayerDataFactory.hasActiveSkill(player, Ability.SR_EXTENDED) ? 10 : 5;
     }

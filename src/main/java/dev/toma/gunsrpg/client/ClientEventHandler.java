@@ -51,7 +51,7 @@ public class ClientEventHandler {
     public static void cancelOverlays(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
             if (Minecraft.getMinecraft().player.getHeldItemMainhand().getItem() instanceof GunItem) {
-                event.setCanceled(true);
+                //event.setCanceled(true);
             }
         }
     }

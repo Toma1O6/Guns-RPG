@@ -57,6 +57,11 @@ public class SGItem extends GunItem {
     }
 
     @Override
+    public SoundEvent getReloadSound(EntityPlayer player) {
+        return PlayerDataFactory.hasActiveSkill(player, Ability.BULLET_LOOPS) ? ModRegistry.GRPGSounds.SG_RELOAD_SHORT : ModRegistry.GRPGSounds.SG_RELOAD;
+    }
+
+    @Override
     public int getReloadTime(EntityPlayer player) {
         return PlayerDataFactory.hasActiveSkill(player, Ability.BULLET_LOOPS) ? 20 : 30;
     }

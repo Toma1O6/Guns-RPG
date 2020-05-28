@@ -45,6 +45,11 @@ public class ARItem extends GunItem {
     }
 
     @Override
+    public SoundEvent getReloadSound(EntityPlayer player) {
+        return ModRegistry.GRPGSounds.AR_RELOAD;
+    }
+
+    @Override
     public boolean isSilenced(EntityPlayer player) {
         return PlayerDataFactory.hasActiveSkill(player, Ability.AR_SUPPRESSOR);
     }

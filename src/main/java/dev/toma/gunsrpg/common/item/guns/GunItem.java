@@ -54,6 +54,10 @@ public abstract class GunItem extends GRPGItem {
         return SoundEvents.BLOCK_LEVER_CLICK;
     }
 
+    public SoundEvent getReloadSound(EntityPlayer player) {
+        return SoundEvents.BLOCK_LEVER_CLICK;
+    }
+
     public Firemode getFiremode(EntityPlayer player) {
         return Firemode.SINGLE;
     }

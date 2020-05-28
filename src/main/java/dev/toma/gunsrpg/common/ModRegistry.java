@@ -135,6 +135,15 @@ public class ModRegistry {
         public static final SoundEvent KAR98K = null;
         public static final SoundEvent KAR98K_SILENT = null;
         public static final SoundEvent S1897 = null;
+        public static final SoundEvent P1911_RELOAD = null;
+        public static final SoundEvent P1911_RELOAD_SHORT = null;
+        public static final SoundEvent SMG_RELOAD = null;
+        public static final SoundEvent SMG_RELOAD_SHORT = null;
+        public static final SoundEvent AR_RELOAD = null;
+        public static final SoundEvent SR_RELOAD = null;
+        public static final SoundEvent SR_RELOAD_SHORT = null;
+        public static final SoundEvent SG_RELOAD = null;
+        public static final SoundEvent SG_RELOAD_SHORT = null;
     }
 
     @Mod.EventBusSubscriber(modid = GunsRPG.MODID)

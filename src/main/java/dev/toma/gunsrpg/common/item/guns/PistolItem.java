@@ -61,6 +61,11 @@ public class PistolItem extends GunItem {
     }
 
     @Override
+    public SoundEvent getReloadSound(EntityPlayer player) {
+        return PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_QUICKDRAW) ? ModRegistry.GRPGSounds.P1911_RELOAD_SHORT : ModRegistry.GRPGSounds.P1911_RELOAD;
+    }
+
+    @Override
     public int getMaxAmmo(EntityPlayer player) {
         return PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_EXTENDED) ? 13 : 7;
     }
