@@ -251,7 +251,16 @@ public class ModRegistry {
                     sound("sks_silent"),
                     sound("kar98k"),
                     sound("kar98k_silent"),
-                    sound("s1897")
+                    sound("s1897"),
+                    sound("p1911_reload"),
+                    sound("p1911_reload_short"),
+                    sound("smg_reload"),
+                    sound("smg_reload_short"),
+                    sound("ar_reload"),
+                    sound("sr_reload"),
+                    sound("sr_reload_short"),
+                    sound("sg_reload"),
+                    sound("sg_reload_short")
             );
         }
 

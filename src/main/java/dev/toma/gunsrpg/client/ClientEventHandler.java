@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.client;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.client.animation.Animations;
+import dev.toma.gunsrpg.client.animation.impl.SprintingAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
@@ -37,12 +38,22 @@ import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.List;
+import java.util.function.Function;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = GunsRPG.MODID)
 public class ClientEventHandler {
+
+    private static final RisingEdgeChecker startSprintListener = new RisingEdgeChecker(() -> {
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        ItemStack stack = player.getHeldItemMainhand();
+        if(stack.getItem() instanceof GunItem) {
+            AnimationManager.sendNewAnimation(Animations.SPRINT, new SprintingAnimation());
+        }
+    }, EntityPlayer::isSprinting);
 
     private static final ResourceLocation ICON_BACKGROUND = GunsRPG.makeResource("textures/icons/background.png");
     static float prevAimingProgress;
@@ -161,6 +172,14 @@ public class ClientEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        if(event.phase == TickEvent.Phase.END && player != null) {
+            startSprintListener.update(player);
+        }
+    }
+
     private static void renderGunFirstPerson(float equipProgress, GunItem item, float partial) {
         float yOff = 0.5F * equipProgress;
         GlStateManager.pushMatrix();
@@ -203,5 +222,25 @@ public class ClientEventHandler {
         }
 
         GlStateManager.popMatrix();
+    }
+
+    private static class RisingEdgeChecker {
+
+        private boolean lastState;
+        private final Function<EntityPlayer, Boolean> stateGetter;
+        private final Runnable onChange;
+
+        public RisingEdgeChecker(Runnable onChange, Function<EntityPlayer, Boolean> stateGetter) {
+            this.onChange = onChange;
+            this.stateGetter = stateGetter;
+        }
+
+        public void update(EntityPlayer player) {
+            boolean current = stateGetter.apply(player);
+            if(!lastState && current) {
+                onChange.run();
+            }
+            lastState = current;
+        }
     }
 }
