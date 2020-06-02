@@ -8,10 +8,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
@@ -121,5 +118,10 @@ public class ModUtils {
             if (array[i] == null) return i;
         }
         return array.length - 1;
+    }
+
+    public static <K, V> V getNonnullFromMap(Map<K, V> map, K key, V def) {
+        V v = map.get(key);
+        return v != null ? v : Objects.requireNonNull(def);
     }
 }

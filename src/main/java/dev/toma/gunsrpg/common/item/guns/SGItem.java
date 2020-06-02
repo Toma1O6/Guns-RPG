@@ -145,6 +145,6 @@ public class SGItem extends GunItem {
     @SideOnly(Side.CLIENT)
     @Override
     public Animation createReloadAnimation(EntityPlayer player) {
-        return new MultiStepAnimation.SG(this.getReloadTime(player));
+        return new MultiStepAnimation.Configurable(this.getReloadTime(player), "sg_reload");
     }
 }

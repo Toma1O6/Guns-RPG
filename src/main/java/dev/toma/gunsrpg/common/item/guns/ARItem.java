@@ -121,7 +121,7 @@ public class ARItem extends GunItem {
     @SideOnly(Side.CLIENT)
     @Override
     public Animation createReloadAnimation(EntityPlayer player) {
-        return new MultiStepAnimation.Pistol(this.getReloadTime(player));
+        return new MultiStepAnimation.Configurable(this.getReloadTime(player), "ar_reload");
     }
 
     @Override

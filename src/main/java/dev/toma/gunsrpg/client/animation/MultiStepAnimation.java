@@ -1,12 +1,16 @@
 package dev.toma.gunsrpg.client.animation;
 
+import com.google.gson.*;
 import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
-import net.minecraft.client.renderer.GlStateManager;
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class MultiStepAnimation extends TickableAnimation {
 
@@ -16,15 +20,21 @@ public abstract class MultiStepAnimation extends TickableAnimation {
 
     public MultiStepAnimation(int length) {
         super(length);
+    }
+
+    public final void init() {
         this.createAnimationSteps();
-        if(steps.isEmpty()) throw new IllegalArgumentException("Animation cannot be empty!");
-        current = steps.get(index);
+        current = steps.get(0);
     }
 
     public abstract void createAnimationSteps();
 
     public final void addStep(float from, float to, Animation animation) {
         this.steps.add(Pair.of(new Range(from, to), animation));
+    }
+
+    public final void addStep(Range range, Supplier<SimpleAnimation> animation) {
+        this.steps.add(Pair.of(range, animation.get()));
     }
 
     @Override
@@ -79,64 +89,27 @@ public abstract class MultiStepAnimation extends TickableAnimation {
         return index == steps.size() - 1;
     }
 
-    public static SimpleAnimation.Builder animation() {
-        return SimpleAnimation.newSimpleAnimation();
-    }
+    public static class Configurable extends MultiStepAnimation {
+        private final String fileName;
 
-    public static class SR extends MultiStepAnimation {
-        public SR(int time) {
+        public Configurable(int time, String fileName) {
             super(time);
-        }
-        @Override
-        public void createAnimationSteps() {
-
-        }
-    }
-
-    public static class SG extends MultiStepAnimation {
-        public SG(int time) {
-            super(time);
-        }
-        @Override
-        public void createAnimationSteps() {
-
-        }
-    }
-
-    public static class Pistol extends MultiStepAnimation {
-
-        public Pistol(int time) {
-            super(time);
+            this.fileName = fileName;
+            this.init();
         }
 
         @Override
         public void createAnimationSteps() {
-            addStep(0.0F, 0.1F, animation()
-                    .itemHand(f -> GlStateManager.rotate(15.0F * f, 1.0F, 0.0F, 0.0F))
-                    .create());
-
-            addStep(0.1F, 0.2F, animation()
-                    .itemHand(f -> GlStateManager.rotate(15.0F, 1.0F, 0.0F, 0.0F))
-                    .leftHand(f -> GlStateManager.rotate(-60.0F * f, 1.0F, 0.0F, 0.0F))
-                    .create());
-
-            addStep(0.2F, 0.7F, animation()
-                    .itemHand(f -> GlStateManager.rotate(15.0F, 1.0F, 0.0F, 0.0F))
-                    .leftHand(f -> GlStateManager.rotate(-60.0F, 1.0F, 0.0F, 0.0F))
-                    .create());
-
-            addStep(0.7F, 0.8F, animation()
-                    .itemHand(f -> GlStateManager.rotate(15.0F, 1.0F, 0.0F, 0.0F))
-                    .leftHand(f -> GlStateManager.rotate(-60.0F + 60.0F * f, 1.0F, 0.0F, 0.0F))
-                    .create());
-
-            addStep(0.8F, 0.85F, animation()
-                    .itemHand(f -> GlStateManager.rotate(15.0F + 5.0F * f, 1.0F, 0.0F, 0.0F))
-                    .create());
-
-            addStep(0.85F, 1.0F, animation()
-                    .itemHand(f -> GlStateManager.rotate(20.0F - 20.0F * f, 1.0F, 0.0F, 0.0F))
-                    .create());
+            List<Pair<Range, Supplier<SimpleAnimation>>> list = ModUtils.getNonnullFromMap(AnimationManager.SCRIPT_ANIMATIONS, this.fileName, Collections.emptyList());
+            for(Pair<Range, Supplier<SimpleAnimation>> pair : ModUtils.getNonnullFromMap(AnimationManager.SCRIPT_ANIMATIONS, this.fileName, Collections.emptyList())) {
+                this.addStep(pair.getLeft(), pair.getRight());
+            }
+//            addStep(0.0F, 0.3F, SimpleAnimation.newSimpleAnimation().rightHand(f -> GlStateManager.translate(0.9F*f, -0.2F*f, 0.4F * f)).create());
+//            addStep(0.3F, 0.4F, SimpleAnimation.newSimpleAnimation().rightHand(f -> GlStateManager.translate(0.9F, -0.2F, 0.4F)).create());
+//            addStep(0.4F, 0.65F, SimpleAnimation.newSimpleAnimation().rightHand(f -> GlStateManager.translate(0.9F - 1.0F * f, -0.2F + 0.4*f, 0.4F - 0.5F *f)).create());
+//            addStep(0.65F, 0.75F, SimpleAnimation.newSimpleAnimation().rightHand(f -> GlStateManager.translate(-0.1F, 0.2F - 0.1F * f, -0.1F)).create());
+//            addStep(0.75F, 0.85F, SimpleAnimation.newSimpleAnimation().rightHand(f -> GlStateManager.translate(-0.1F + 0.2F * f, 0.1F + 0.2F * f, -0.1F + 0.1F * f)).create());
+//            addStep(0.85F, 1.0F, SimpleAnimation.newSimpleAnimation().rightHand(f -> GlStateManager.translate(0.1F - 0.1F * f, 0.3F - 0.3F * f, 0.0F)).create());
         }
     }
 
@@ -167,6 +140,14 @@ public abstract class MultiStepAnimation extends TickableAnimation {
                     "min=" + min +
                     ", max=" + max +
                     '}';
+        }
+
+        public static class Deserializer implements JsonDeserializer<Range> {
+            @Override
+            public Range deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                JsonObject obj = json.getAsJsonObject();
+                return new Range(obj.get("from").getAsFloat(), obj.get("to").getAsFloat());
+            }
         }
     }
 }

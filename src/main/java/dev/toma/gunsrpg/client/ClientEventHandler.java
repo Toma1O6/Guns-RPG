@@ -55,7 +55,7 @@ public class ClientEventHandler {
     private static final RisingEdgeChecker startSprintListener = new RisingEdgeChecker(() -> {
         EntityPlayer player = Minecraft.getMinecraft().player;
         ItemStack stack = player.getHeldItemMainhand();
-        if(stack.getItem() instanceof GunItem) {
+        if(stack.getItem() instanceof GunItem && !PlayerDataFactory.get(player).getReloadInfo().isReloading()) {
             AnimationManager.sendNewAnimation(Animations.SPRINT, new SprintingAnimation());
         }
     }, EntityPlayer::isSprinting);

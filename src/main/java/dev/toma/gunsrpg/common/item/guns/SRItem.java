@@ -71,7 +71,7 @@ public class SRItem extends GunItem {
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? 10 : 33;
+        return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? 20 : 33;
     }
 
     @Override
@@ -124,6 +124,6 @@ public class SRItem extends GunItem {
     @SideOnly(Side.CLIENT)
     @Override
     public Animation createReloadAnimation(EntityPlayer player) {
-        return new MultiStepAnimation.SR(this.getReloadTime(player));
+        return new MultiStepAnimation.Configurable(this.getReloadTime(player), "sr_reload");
     }
 }

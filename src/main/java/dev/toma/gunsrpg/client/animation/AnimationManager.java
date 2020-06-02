@@ -1,13 +1,18 @@
 package dev.toma.gunsrpg.client.animation;
 
+import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class AnimationManager {
 
+    public static final Map<String, List<Pair<MultiStepAnimation.Range, Supplier<SimpleAnimation>>>> SCRIPT_ANIMATIONS = new HashMap<>();
     private static final Map<Integer, Animation> ANIMATIONS = new HashMap<>();
 
     public static void sendNewAnimation(int ID, Animation animation) {

@@ -110,6 +110,7 @@ public class ShootingManager {
             player.rotationPitch -= gun.getVerticalRecoil(player);
             player.rotationYaw += gun.getHorizontalRecoil(player);
             NetworkManager.toServer(new SPacketShoot((GunItem) stack.getItem()));
+            AnimationManager.cancelAnimation(Animations.RELOAD);
             AnimationManager.sendNewAnimation(Animations.RECOIL, RecoilAnimation.newInstance(5));
         }
     }

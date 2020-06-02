@@ -43,7 +43,7 @@ public class ModKeybinds {
                 mc.displayGuiScreen(new GuiChooseAmmo((GunItem) player.getHeldItemMainhand().getItem()));
             }
         } else {
-            if(player.getHeldItemMainhand().getItem() instanceof GunItem) {
+            if(player.getHeldItemMainhand().getItem() instanceof GunItem && !player.isSprinting()) {
                 ItemStack stack = player.getHeldItemMainhand();
                 GunItem gun = (GunItem) stack.getItem();
                 if(info.isReloading()) {
@@ -60,9 +60,12 @@ public class ModKeybinds {
                     int ammo = gun.getAmmo(stack);
                     int max = gun.getMaxAmmo(player);
                     boolean skip = player.isCreative();
-                    if(skip) {
-                        gun.getReloadManager().startReloading(player, gun.getReloadTime(player), stack);
-                    } else if(ammo < max) {
+                    boolean reloading = PlayerDataFactory.get(player).getReloadInfo().isReloading();
+                    if(!reloading && ammo < max) {
+                        if(skip) {
+                            gun.getReloadManager().startReloading(player, gun.getReloadTime(player), stack);
+                            return;
+                        }
                         for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
                             ItemStack itemStack = player.inventory.getStackInSlot(i);
                             if(itemStack.getItem() instanceof IAmmoProvider) {

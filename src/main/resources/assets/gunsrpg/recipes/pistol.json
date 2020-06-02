@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BPS"
+  ],
+  "key": {
+    "P": {
+      "item": "gunsrpg:gun_parts"
+    },
+    "B": {
+      "item": "gunsrpg:barrel"
+    },
+    "S": {
+      "item": "gunsrpg:small_iron_stock"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:pistol",
+    "count": 1
+  }
+}

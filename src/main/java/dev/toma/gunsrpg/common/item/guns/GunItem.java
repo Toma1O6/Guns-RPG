@@ -104,7 +104,7 @@ public abstract class GunItem extends GRPGItem {
 
     @SideOnly(Side.CLIENT)
     public Animation createReloadAnimation(EntityPlayer player) {
-        return new MultiStepAnimation.Pistol(this.getReloadTime(player));
+        return new MultiStepAnimation.Configurable(this.getReloadTime(player), "pistol_reload");
     }
 
     public abstract WeaponConfiguration getWeaponConfig();
