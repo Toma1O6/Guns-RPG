@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.client;
 
+import dev.toma.gunsrpg.client.animation.AnimationManager;
+import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.gui.GuiChooseAmmo;
 import dev.toma.gunsrpg.client.gui.GuiSkillTree;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
@@ -47,6 +49,7 @@ public class ModKeybinds {
                 if(info.isReloading()) {
                     if(gun.getReloadManager().canBeInterrupted()) {
                         info.cancelReload();
+                        AnimationManager.cancelAnimation(Animations.RELOAD);
                         NetworkManager.toServer(new SPacketSetReloading(false, 0));
                         return;
                     }

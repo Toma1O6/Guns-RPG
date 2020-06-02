@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.client.animation;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -18,12 +19,12 @@ public abstract class AbstractAnimation implements Animation {
 
     public abstract float getCurrentProgress();
 
-    public abstract void update();
-
-    public final void calculateSmooth(float partialTicks) {
-        this.current = this.getCurrentProgress();
-        this.smooth = this.prev + (this.current - this.prev) * partialTicks;
+    @Override
+    public void setProgress(float progress) {
+        this.current = progress;
     }
+
+    public abstract void update();
 
     @Override
     public final void clientTick() {
@@ -54,5 +55,20 @@ public abstract class AbstractAnimation implements Animation {
     @Override
     public void animateItemHands(float partialTicks) {
 
+    }
+
+    @Override
+    public void renderTick(float partialTicks, TickEvent.Phase phase) {
+        if(phase == TickEvent.Phase.END) return;
+        this.calculateSmoothValue(partialTicks);
+    }
+
+    public EntityPlayer getPlayer() {
+        return player;
+    }
+
+    private void calculateSmoothValue(float partialTicks) {
+        this.current = this.getCurrentProgress();
+        this.smooth = this.prev + (this.current - this.prev) * partialTicks;
     }
 }

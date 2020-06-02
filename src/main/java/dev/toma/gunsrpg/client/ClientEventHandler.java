@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.impl.SprintingAnimation;
+import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
@@ -12,6 +13,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
+import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.common.skilltree.EntryInstance;
 import dev.toma.gunsrpg.common.skilltree.SkillTreeEntry;
 import dev.toma.gunsrpg.config.GRPGConfig;
@@ -25,9 +27,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -61,8 +66,29 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void cancelOverlays(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
-            if (Minecraft.getMinecraft().player.getHeldItemMainhand().getItem() instanceof GunItem) {
-                //event.setCanceled(true);
+            EntityPlayer player = Minecraft.getMinecraft().player;
+            ScaledResolution resolution = event.getResolution();
+            ItemStack stack = player.getHeldItemMainhand();
+            if (stack.getItem() instanceof GunItem) {
+                event.setCanceled(true);
+                if(PlayerDataFactory.get(player).getAimInfo().progress >= 0.9F) {
+                    if((PlayerDataFactory.hasActiveSkill(player, Ability.SMG_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.SMG)) {
+                        float left = resolution.getScaledWidth() / 2f - 1.5F;
+                        float top = resolution.getScaledHeight() / 2f - 2.0F;
+                        float x2 = left + 4;
+                        float y2 = top + 4;
+                        GlStateManager.disableTexture2D();
+                        Tessellator tessellator = Tessellator.getInstance();
+                        BufferBuilder builder = tessellator.getBuffer();
+                        builder.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                        builder.pos(left, y2, 0).color(1.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                        builder.pos(x2, y2, 0).color(1.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                        builder.pos(x2, top, 0).color(1.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                        builder.pos(left, top, 0).color(1.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                        tessellator.draw();
+                        GlStateManager.enableTexture2D();
+                    }
+                }
             }
         }
     }
@@ -178,6 +204,11 @@ public class ClientEventHandler {
         if(event.phase == TickEvent.Phase.END && player != null) {
             startSprintListener.update(player);
         }
+    }
+
+    @SubscribeEvent
+    public static void onRenderTick(TickEvent.RenderTickEvent event) {
+        AnimationManager.renderTick(event.renderTickTime, event.phase);
     }
 
     private static void renderGunFirstPerson(float equipProgress, GunItem item, float partial) {

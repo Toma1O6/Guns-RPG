@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
@@ -19,6 +21,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Map;
 
@@ -71,7 +75,7 @@ public class SMGItem extends GunItem {
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.SMG_QUICKDRAW) ? 30 : 44;
+        return PlayerDataFactory.hasActiveSkill(player, Ability.SMG_QUICKDRAW) ? 40 : 52;
     }
 
     @Override
@@ -89,6 +93,7 @@ public class SMGItem extends GunItem {
         return mod * f;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
         boolean rds = PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Ability.SMG_RED_DOT);
@@ -103,6 +108,13 @@ public class SMGItem extends GunItem {
         });
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    public Animation createReloadAnimation(EntityPlayer player) {
+        return new MultiStepAnimation.Pistol(this.getReloadTime(player));
+    }
+
+    @SideOnly(Side.CLIENT)
     @Override
     public void renderRightArm() {
         GlStateManager.translate(0.15F, -0.3F, 0.25F);
@@ -110,6 +122,7 @@ public class SMGItem extends GunItem {
         renderArm(EnumHandSide.RIGHT);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void renderLeftArm() {
         GlStateManager.translate(0.4F, -0.25F, -0.2F);

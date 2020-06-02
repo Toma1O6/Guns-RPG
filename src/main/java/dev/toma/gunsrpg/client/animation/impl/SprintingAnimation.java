@@ -22,7 +22,6 @@ public class SprintingAnimation extends AbstractAnimation {
 
     @Override
     public void animateItemHands(float partialTicks) {
-        this.calculateSmooth(partialTicks);
         GlStateManager.rotate(30.0F * smooth, 1.0F, 0.0F, 0.0F);
         GlStateManager.translate(0.0F, 0.0F, 0.2F * smooth);
     }

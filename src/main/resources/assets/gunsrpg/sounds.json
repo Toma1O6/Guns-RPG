@@ -12,5 +12,14 @@
     "kar98k": {"category": "master", "sounds": [{"name": "gunsrpg:kar98k", "stream": true}]},
     "kar98k_silent": {"category": "master", "sounds": [{"name": "gunsrpg:kar98k_silent", "stream": true}]},
     "s1897": {"category": "master", "sounds": [{"name": "gunsrpg:s1897", "stream": true}]},
-    "plane_fly_by": {"category": "master", "sounds": [{"name": "gunsrpg:plane_fly_by", "stream": true}]}
+    "plane_fly_by": {"category": "master", "sounds": [{"name": "gunsrpg:plane_fly_by", "stream": true}]},
+    "p1911_reload": {"category": "master", "sounds": [{"name": "gunsrpg:p1911_reload", "stream": true}]},
+    "p1911_reload_short": {"category": "master", "sounds": [{"name": "gunsrpg:p1911_reload_short", "stream": true}]},
+    "smg_reload": {"category": "master", "sounds": [{"name": "gunsrpg:smg_reload", "stream": true}]},
+    "smg_reload_short": {"category": "master", "sounds": [{"name": "gunsrpg:smg_reload_short", "stream": true}]},
+    "ar_reload": {"category": "master", "sounds": [{"name": "gunsrpg:ar_reload", "stream": true}]},
+    "sr_reload": {"category": "master", "sounds": [{"name": "gunsrpg:sr_reload", "stream": true}]},
+    "sr_reload_short": {"category": "master", "sounds": [{"name": "gunsrpg:sr_reload_short", "stream": true}]},
+    "sg_reload": {"category": "master", "sounds": [{"name": "gunsrpg:sg_reload", "stream": true}]},
+    "sg_reload_short": {"category": "master", "sounds": [{"name": "gunsrpg:sg_reload_short", "stream": true}]}
 }

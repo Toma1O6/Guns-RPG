@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
@@ -15,6 +17,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Map;
 
@@ -62,12 +66,12 @@ public class SRItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? 40 : 25;
+        return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? 25 : 40;
     }
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? 15 : 25;
+        return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? 10 : 33;
     }
 
     @Override
@@ -89,6 +93,7 @@ public class SRItem extends GunItem {
         return mod * f;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void renderRightArm() {
         GlStateManager.translate(0.25F, -0.02F, 0.45F);
@@ -96,6 +101,7 @@ public class SRItem extends GunItem {
         renderArm(EnumHandSide.RIGHT);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void renderLeftArm() {
         GlStateManager.translate(0.3F, -0.05F, -0.1F);
@@ -103,6 +109,7 @@ public class SRItem extends GunItem {
         renderArm(EnumHandSide.LEFT);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
         return new AimingAnimation(-0.265F, 0.175F, 0.3F).animateRight(animation -> {
@@ -112,5 +119,11 @@ public class SRItem extends GunItem {
             float f = animation.smooth;
             GlStateManager.translate(-0.265F * f, 0.175F * f, 0.3F * f);
         });
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public Animation createReloadAnimation(EntityPlayer player) {
+        return new MultiStepAnimation.SR(this.getReloadTime(player));
     }
 }

@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.util.object;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class OptionalObject<T> {
 
@@ -26,8 +27,26 @@ public class OptionalObject<T> {
         return t;
     }
 
-    public void put(T t) {
+    public void map(T t) {
         this.t = t;
+    }
+
+    public T orMap(T value) {
+        if(t == null) {
+            map(value);
+        }
+        return t;
+    }
+
+    public T or(T value) {
+        if(t == null) return value;
+        else return t;
+    }
+
+    public <EX extends Exception> T orThrow(Supplier<EX> exceptionSupplier) throws EX {
+        if(t != null) {
+            return t;
+        } else throw exceptionSupplier.get();
     }
 
     public void ifPresent(Consumer<T> action) {

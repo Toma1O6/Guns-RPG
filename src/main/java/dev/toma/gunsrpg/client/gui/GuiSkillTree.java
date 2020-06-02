@@ -43,6 +43,7 @@ public class GuiSkillTree extends GuiScreen {
     private final List<SkillWidget> skillWidgets = new ArrayList<>();
     private SkillData skillData;
     private int x, y;
+    private int scaleDivider = 1;
 
     private String cachedHeaderText;
     private int headerWidth;
@@ -197,7 +198,7 @@ public class GuiSkillTree extends GuiScreen {
 
     @Override
     public void handleMouseInput() throws IOException {
-        int i = -Integer.signum(Mouse.getEventDWheel());
+        int i = Integer.signum(Mouse.getEventDWheel());
         if(i != 0) {
             if(GuiScreen.isShiftKeyDown()) {
                 this.x = ModUtils.wrap(this.x + i * 25, 0, 1000);

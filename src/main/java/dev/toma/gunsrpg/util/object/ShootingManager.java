@@ -67,7 +67,7 @@ public class ShootingManager {
         AbilityData abilityData = data.getSkillData().getAbilityData();
         GunItem item = (GunItem) stack.getItem();
         IReloadManager reloadManager = item.getReloadManager();
-        if(!player.isSprinting() && !tracker.hasCooldown(stack.getItem())) {
+        if(!player.isSprinting() && !tracker.hasCooldown(item)) {
             AmmoType ammoType = item.getAmmoType();
             AmmoMaterial material = item.getMaterialFromNBT(stack);
             Ability.Type type = null;

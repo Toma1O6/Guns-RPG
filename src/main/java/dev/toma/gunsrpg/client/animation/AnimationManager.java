@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.client.animation;
 
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -38,6 +40,10 @@ public class AnimationManager {
 
     public static void animateItem(float partialTicks) {
         ANIMATIONS.forEach((id, animation) -> animation.animateItem(partialTicks));
+    }
+
+    public static void renderTick(float partialTicks, TickEvent.Phase phase) {
+        ANIMATIONS.forEach((id, animation) -> animation.renderTick(partialTicks, phase));
     }
 
     public static void tick() {

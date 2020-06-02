@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
@@ -21,6 +23,8 @@ import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Map;
 
@@ -110,6 +114,7 @@ public class SGItem extends GunItem {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void renderRightArm() {
         GlStateManager.translate(0.16F, -0.1F, 0.35F);
@@ -117,6 +122,7 @@ public class SGItem extends GunItem {
         renderArm(EnumHandSide.RIGHT);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void renderLeftArm() {
         GlStateManager.translate(0.3F, -0.1F, -0.15F);
@@ -124,6 +130,7 @@ public class SGItem extends GunItem {
         renderArm(EnumHandSide.LEFT);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
         return new AimingAnimation(-0.267F, 0.22F, 0.1F).animateRight(animation -> {
@@ -133,5 +140,11 @@ public class SGItem extends GunItem {
             float f = animation.smooth;
             GlStateManager.translate(-0.267F * f, 0.22F * f, 0.2F * f);
         });
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public Animation createReloadAnimation(EntityPlayer player) {
+        return new MultiStepAnimation.SG(this.getReloadTime(player));
     }
 }

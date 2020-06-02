@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
@@ -14,6 +16,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Map;
 
@@ -65,6 +69,11 @@ public class ARItem extends GunItem {
     }
 
     @Override
+    public int getReloadTime(EntityPlayer player) {
+        return 32;
+    }
+
+    @Override
     public float getVerticalRecoil(EntityPlayer player) {
         float f = super.getVerticalRecoil(player);
         float mod = PlayerDataFactory.hasActiveSkill(player, Ability.AR_VERTICAL_GRIP) ? GRPGConfig.weapon.general.verticalGrip : 1.0F;
@@ -79,6 +88,7 @@ public class ARItem extends GunItem {
         return mod * f;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void renderRightArm() {
         GlStateManager.translate(-0.1F, -0.05F, 0.6F);
@@ -86,6 +96,7 @@ public class ARItem extends GunItem {
         renderArm(EnumHandSide.RIGHT);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void renderLeftArm() {
         GlStateManager.translate(0.32F, -0.1F, -0.1F);
@@ -94,6 +105,7 @@ public class ARItem extends GunItem {
         renderArm(EnumHandSide.LEFT);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
         return new AimingAnimation(-0.265F, 0.07F, 0.2F).animateRight(animation -> {
@@ -104,6 +116,12 @@ public class ARItem extends GunItem {
             float f = animation.smooth;
             GlStateManager.translate(-0.33F * f, 0.1F * f, 0.2F * f);
         });
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public Animation createReloadAnimation(EntityPlayer player) {
+        return new MultiStepAnimation.Pistol(this.getReloadTime(player));
     }
 
     @Override

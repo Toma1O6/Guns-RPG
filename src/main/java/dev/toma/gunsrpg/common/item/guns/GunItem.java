@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
@@ -98,6 +100,11 @@ public abstract class GunItem extends GRPGItem {
     @SideOnly(Side.CLIENT)
     public AimingAnimation createAimAnimation() {
         return new AimingAnimation(-0.54F, 0.06F, 0.0F);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public Animation createReloadAnimation(EntityPlayer player) {
+        return new MultiStepAnimation.Pistol(this.getReloadTime(player));
     }
 
     public abstract WeaponConfiguration getWeaponConfig();

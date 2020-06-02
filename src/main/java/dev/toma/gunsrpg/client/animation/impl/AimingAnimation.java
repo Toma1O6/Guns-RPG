@@ -41,7 +41,7 @@ public class AimingAnimation extends AbstractAnimation {
 
     @Override
     public void animateItemHands(float partialTicks) {
-        this.calculateSmooth(partialTicks);
+
     }
 
     @Override

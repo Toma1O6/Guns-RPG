@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.client.animation;
 
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -18,5 +19,9 @@ public interface Animation {
 
     void clientTick();
 
+    void renderTick(float partialTicks, TickEvent.Phase phase);
+
     boolean isFinished();
+
+    void setProgress(float progress);
 }

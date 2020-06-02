@@ -29,6 +29,7 @@ public class NetworkManager {
     public static void init() {
         c_register(CPacketUpdateCap.Handler.class, CPacketUpdateCap.class);
         c_register(CPacketParticle.Handler.class, CPacketParticle.class);
+        c_register(CPacketSendAnimation.Handler.class, CPacketSendAnimation.class);
         s_register(SPacketShoot.Handler.class, SPacketShoot.class);
         s_register(SPacketRequestDataUpdate.Handler.class, SPacketRequestDataUpdate.class);
         s_register(ShootingManager.Update.Handler.class, ShootingManager.Update.class);

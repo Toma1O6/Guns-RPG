@@ -42,7 +42,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.function.Consumer;
 
-@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "0.2.5-private", acceptedMinecraftVersions = "[1.12.2]")
+@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "0.0.3-private", acceptedMinecraftVersions = "[1.12.2]")
 public class GunsRPG {
 
     public static final String MODID = "gunsrpg";

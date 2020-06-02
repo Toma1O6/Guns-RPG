@@ -15,7 +15,6 @@ public class RecoilAnimation extends TickableAnimation {
 
     @Override
     public void animateItemHands(float partialTicks) {
-        calculateSmooth(partialTicks);
         GlStateManager.rotate(3.0F * smooth, 1.0F, 0.0F, 0.0F);
         GlStateManager.translate(0.0F, 0.0F, 0.1F * smooth);
     }

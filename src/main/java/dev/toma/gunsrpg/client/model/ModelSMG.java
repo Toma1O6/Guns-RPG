@@ -225,7 +225,6 @@ public class ModelSMG extends ModelWeapon {
         rds.cubeList.add(new ModelBox(rds, 140, 140, -2.0F, -15.5F, -2.0F, 4, 1, 3, 0.0F, false));
         rds.cubeList.add(new ModelBox(rds, 140, 140, -2.0F, -15.5F, -12.0F, 4, 1, 2, 0.0F, false));
         rds.cubeList.add(new ModelBox(rds, 140, 140, -3.0F, -20.5F, -12.0F, 6, 1, 2, 0.0F, false));
-        rds.cubeList.add(new ModelBox(rds, 245, 255, -0.5F, -18.15F, -11.0F, 1, 1, 0, 0.0F, false));
         rds.cubeList.add(new ModelBox(rds, 140, 140, 2.0F, -19.5F, -12.0F, 1, 3, 2, 0.0F, false));
         rds.cubeList.add(new ModelBox(rds, 140, 140, -3.0F, -19.5F, -12.0F, 1, 3, 2, 0.0F, false));
 
