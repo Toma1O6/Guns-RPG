@@ -45,7 +45,7 @@ public class ReloadManagerSingle implements IReloadManager {
     }
 
     @Override
-    public boolean canBeInterrupted() {
+    public boolean canBeInterrupted(GunItem item, ItemStack stack) {
         return true;
     }
 }

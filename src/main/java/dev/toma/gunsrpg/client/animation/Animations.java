@@ -6,4 +6,5 @@ public class Animations {
     public static final int RECOIL = 0x1;
     public static final int SPRINT = 0x2;
     public static final int RELOAD = 0x3;
+    public static final int REBOLT = 0x4;
 }

@@ -6,10 +6,7 @@ import dev.toma.gunsrpg.client.render.item.*;
 import dev.toma.gunsrpg.common.block.BlockAirdrop;
 import dev.toma.gunsrpg.common.block.BlockBlastFurnace;
 import dev.toma.gunsrpg.common.block.GRPGOre;
-import dev.toma.gunsrpg.common.entity.EntityAirdrop;
-import dev.toma.gunsrpg.common.entity.EntityBullet;
-import dev.toma.gunsrpg.common.entity.EntityExplosiveArrow;
-import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
+import dev.toma.gunsrpg.common.entity.*;
 import dev.toma.gunsrpg.common.item.GRPGItem;
 import dev.toma.gunsrpg.common.item.guns.*;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
@@ -231,7 +228,8 @@ public class ModRegistry {
                     makeBuilder("bullet", EntityBullet.class).tracker(256, 1, true).build(),
                     makeBuilder("airdrop", EntityAirdrop.class).tracker(256, 1, true).build(),
                     makeBuilder("explosive_skeleton", EntityExplosiveSkeleton.class).tracker(80, 3, true).egg(0xB46F67, 0x494949).spawn(EnumCreatureType.MONSTER, 15, 1, 3, ForgeRegistries.BIOMES).build(),
-                    makeBuilder("explosive_arrow", EntityExplosiveArrow.class).tracker(64, 20, true).build()
+                    makeBuilder("explosive_arrow", EntityExplosiveArrow.class).tracker(64, 20, true).build(),
+                    makeBuilder("zombie_gunner", EntityZombieGunner.class).tracker(80, 3, true).egg(0x00aa00, 0xdbdb00).spawn(EnumCreatureType.MONSTER, 35, 2, 5, ForgeRegistries.BIOMES).build()
             );
         }
 

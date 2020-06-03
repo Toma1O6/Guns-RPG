@@ -38,6 +38,7 @@ public class NetworkManager {
         s_register(SPacketSetAiming.Handler.class, SPacketSetAiming.class);
         s_register(SPacketSetReloading.Handler.class, SPacketSetReloading.class);
         s_register(SPacketSetShooting.Handler.class, SPacketSetShooting.class);
+        s_register(SPacketUpdateSightData.Handler.class, SPacketUpdateSightData.class);
     }
 
     private static <A extends IMessage, B extends IMessage> void c_register(Class<? extends IMessageHandler<A, B>> hClass, Class<A> pClass) {

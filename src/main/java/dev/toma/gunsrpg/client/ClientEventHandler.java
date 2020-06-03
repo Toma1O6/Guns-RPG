@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
+import dev.toma.gunsrpg.common.capability.object.ScopeData;
 import dev.toma.gunsrpg.common.capability.object.SkillData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
@@ -71,22 +72,30 @@ public class ClientEventHandler {
             ItemStack stack = player.getHeldItemMainhand();
             if (stack.getItem() instanceof GunItem) {
                 event.setCanceled(true);
-                if(PlayerDataFactory.get(player).getAimInfo().progress >= 0.9F) {
+                PlayerData data = PlayerDataFactory.get(player);
+                if(data.getAimInfo().progress >= 0.9F) {
                     if((PlayerDataFactory.hasActiveSkill(player, Ability.SMG_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.SMG)) {
-                        float left = resolution.getScaledWidth() / 2f - 1.5F;
-                        float top = resolution.getScaledHeight() / 2f - 2.0F;
-                        float x2 = left + 4;
-                        float y2 = top + 4;
-                        GlStateManager.disableTexture2D();
+                        ScopeData scopeData = data.getScopeData();
+                        float left = resolution.getScaledWidth() / 2f - 8f;
+                        float top = resolution.getScaledHeight() / 2f - 8f;
+                        float x2 = left + 16;
+                        float y2 = top + 16;
+                        double us = scopeData.getTexStartX();
+                        double vs = scopeData.getTexStartY();
+                        double ue = scopeData.getTexEndX();
+                        double ve = scopeData.getTexEndY();
+                        //draw reddot
+                        Minecraft.getMinecraft().getTextureManager().bindTexture(ScopeData.TEXTURES);
+                        GlStateManager.enableBlend();
                         Tessellator tessellator = Tessellator.getInstance();
                         BufferBuilder builder = tessellator.getBuffer();
-                        builder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-                        builder.pos(left, y2, 0).color(1.0F, 0.0F, 0.0F, 1.0F).endVertex();
-                        builder.pos(x2, y2, 0).color(1.0F, 0.0F, 0.0F, 1.0F).endVertex();
-                        builder.pos(x2, top, 0).color(1.0F, 0.0F, 0.0F, 1.0F).endVertex();
-                        builder.pos(left, top, 0).color(1.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                        builder.begin(7, DefaultVertexFormats.POSITION_TEX);
+                        builder.pos(left, y2, 0).tex(us, ve).endVertex();
+                        builder.pos(x2, y2, 0).tex(ue, ve).endVertex();
+                        builder.pos(x2, top, 0).tex(ue, vs).endVertex();
+                        builder.pos(left, top, 0).tex(us, vs).endVertex();
                         tessellator.draw();
-                        GlStateManager.enableTexture2D();
+                        GlStateManager.disableBlend();
                     }
                 }
             }
@@ -176,7 +185,7 @@ public class ClientEventHandler {
                     } else {
                         ShootingManager.shootSingle(player, player.getHeldItemMainhand());
                     }
-                } else if (settings.keyBindUseItem.isPressed()) {
+                } else if (settings.keyBindUseItem.isPressed() && AnimationManager.getAnimationByID(Animations.REBOLT) == null) {
                     boolean aim = !PlayerDataFactory.get(player).getAimInfo().aiming;
                     if (aim) AnimationManager.sendNewAnimation(Animations.AIMING, item.createAimAnimation());
                     NetworkManager.toServer(new SPacketSetAiming(aim));

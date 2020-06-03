@@ -2,84 +2,35 @@
     "steps": [
         {
             "from": 0.0,
-            "to": 0.1,
+            "to": 0.35,
             "animation": {
-                "item_hand": {
-                    "rotate": {
-                        "smooth": [ 15.0, 1.0, 0.0, 0.0 ]
-                    }
-                }
-            }
-        },
-        {
-            "from": 0.1,
-            "to": 0.2,
-            "animation": {
-                "item_hand": {
-                    "rotate": {
-                        "value": [ 15.0, 1.0, 0.0, 0.0 ]
-                    }
-                },
                 "left_hand": {
-                    "rotate": {
-                        "smooth": [ -60.0, 1.0, 0.0, 0.0 ]
+                    "translate": {
+                        "smooth": [ -0.3, 0.0, 1.1 ]
                     }
                 }
             }
         },
         {
-            "from": 0.2,
-            "to": 0.7,
+            "from": 0.35,
+            "to": 0.75,
             "animation": {
-                "item_hand": {
-                    "rotate": {
-                        "value": [ 15.0, 1.0, 0.0, 0.0 ]
-                    }
-                },
                 "left_hand": {
-                    "rotate": {
-                        "value": [ -60.0, 1.0, 0.0, 0.0 ]
+                    "translate": {
+                        "value": [ -0.3, 0.0, 1.1 ],
+                        "smooth": [ 0.35, 0.0, -0.9 ]
                     }
                 }
             }
         },
         {
-            "from": 0.7,
-            "to": 0.8,
-            "animation": {
-                "item_hand": {
-                    "rotate": {
-                        "value": [ 15.0, 1.0, 0.0, 0.0 ]
-                    }
-                },
-                "left_hand": {
-                    "rotate": {
-                        "value": [ -60.0, 1.0, 0.0, 0.0 ],
-                        "smooth": [ 60.0, 1.0, 0.0, 0.0 ]
-                    }
-                }
-            }
-        },
-        {
-            "from": 0.8,
-            "to": 0.85,
-            "animation": {
-                "item_hand": {
-                    "rotate": {
-                        "value": [ 15.0, 1.0, 0.0, 0.0 ],
-                        "smooth": [ 5.0, 1.0, 0.0, 0.0 ]
-                    }
-                }
-            }
-        },
-        {
-            "from": 0.85,
+            "from": 0.75,
             "to": 1.0,
             "animation": {
-                "item_hand": {
-                    "rotate": {
-                        "value": [ 20.0, 1.0, 0.0, 0.0 ],
-                        "smooth": [ -20.0, 1.0, 0.0, 0.0 ]
+                "left_hand": {
+                    "translate": {
+                        "value": [ 0.05, 0.0, 0.2 ],
+                        "smooth": [ -0.05, 0.0, -0.2 ]
                     }
                 }
             }

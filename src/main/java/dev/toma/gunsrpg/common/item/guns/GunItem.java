@@ -1,8 +1,11 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.client.animation.AnimationManager;
+import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
+import dev.toma.gunsrpg.client.animation.impl.RecoilAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.item.GRPGItem;
@@ -107,6 +110,12 @@ public abstract class GunItem extends GRPGItem {
         return new MultiStepAnimation.Configurable(this.getReloadTime(player), "pistol_reload");
     }
 
+    @SideOnly(Side.CLIENT)
+    public void onShoot(EntityPlayer player, ItemStack stack) {
+        AnimationManager.cancelAnimation(Animations.RELOAD);
+        AnimationManager.sendNewAnimation(Animations.RECOIL, RecoilAnimation.newInstance(5));
+    }
+
     public abstract WeaponConfiguration getWeaponConfig();
 
     public abstract void fillAmmoMaterialData(Map<AmmoMaterial, Integer> data);
@@ -187,6 +196,10 @@ public abstract class GunItem extends GRPGItem {
 
     public AmmoType getAmmoType() {
         return gunType.getAmmoType();
+    }
+
+    public GunType getGunType() {
+        return gunType;
     }
 
     public void createNBT(ItemStack stack) {

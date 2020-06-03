@@ -24,6 +24,10 @@ public class SRBakedModel extends GunBakedModel {
                 GlStateManager.translate(30F, -5F, 20F);
                 break;
             }
+            case THIRD_PERSON_RIGHT_HAND: {
+                GlStateManager.translate(0.0F, 15F, 5f);
+                break;
+            }
             case GUI: {
                 GlStateManager.translate(0, 10, 0);
                 GlStateManager.rotate(90, 0, -1, 0);

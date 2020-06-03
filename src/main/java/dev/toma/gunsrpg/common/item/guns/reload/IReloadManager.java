@@ -21,5 +21,5 @@ public interface IReloadManager {
 
     void finishReload(EntityPlayer player, GunItem item, ItemStack stack);
 
-    boolean canBeInterrupted();
+    boolean canBeInterrupted(GunItem gun, ItemStack stack);
 }

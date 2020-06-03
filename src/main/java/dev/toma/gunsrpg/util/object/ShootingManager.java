@@ -1,8 +1,5 @@
 package dev.toma.gunsrpg.util.object;
 
-import dev.toma.gunsrpg.client.animation.AnimationManager;
-import dev.toma.gunsrpg.client.animation.Animations;
-import dev.toma.gunsrpg.client.animation.impl.RecoilAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.AbilityData;
@@ -79,7 +76,7 @@ public class ShootingManager {
             }
             if(material == null || type == null) return false;
             if(reloadInfo.isReloading()) {
-                if(reloadManager.canBeInterrupted()) {
+                if(reloadManager.canBeInterrupted(item, stack)) {
                     reloadInfo.cancelReload();
                     if(!player.world.isRemote) {
                         data.sync();
@@ -110,8 +107,7 @@ public class ShootingManager {
             player.rotationPitch -= gun.getVerticalRecoil(player);
             player.rotationYaw += gun.getHorizontalRecoil(player);
             NetworkManager.toServer(new SPacketShoot((GunItem) stack.getItem()));
-            AnimationManager.cancelAnimation(Animations.RELOAD);
-            AnimationManager.sendNewAnimation(Animations.RECOIL, RecoilAnimation.newInstance(5));
+            gun.onShoot(player, stack);
         }
     }
 

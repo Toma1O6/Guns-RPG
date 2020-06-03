@@ -1,20 +1,25 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.client.animation.AnimationManager;
+import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
-import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerSingle;
+import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerClipOrSingle;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -46,7 +51,7 @@ public class SRItem extends GunItem {
 
     @Override
     public IReloadManager getReloadManager() {
-        return ReloadManagerSingle.SINGLE;
+        return ReloadManagerClipOrSingle.CLIP_OR_SINGLE;
     }
 
     @Override
@@ -71,7 +76,10 @@ public class SRItem extends GunItem {
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? 20 : 33;
+        // it's safe to assume player is holding the weapon when this is called. Maybe
+        boolean empty = this.getAmmo(player.getHeldItemMainhand()) == 0;
+        boolean magSkill = PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS);
+        return magSkill ? empty ? 40 : 20 : empty ? 66 : 33;
     }
 
     @Override
@@ -125,5 +133,12 @@ public class SRItem extends GunItem {
     @Override
     public Animation createReloadAnimation(EntityPlayer player) {
         return new MultiStepAnimation.Configurable(this.getReloadTime(player), "sr_reload");
+    }
+
+    @Override
+    public void onShoot(EntityPlayer player, ItemStack stack) {
+        super.onShoot(player, stack);
+        AnimationManager.sendNewAnimation(Animations.REBOLT, new MultiStepAnimation.ReboltSR(this.getFirerate(player)));
+        NetworkManager.toServer(new SPacketSetAiming(false));
     }
 }

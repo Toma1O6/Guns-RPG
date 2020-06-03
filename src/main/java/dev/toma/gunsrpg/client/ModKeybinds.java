@@ -32,6 +32,8 @@ public class ModKeybinds {
     public static void registerKeybinds() {
         register("reload", Keyboard.KEY_R, ModKeybinds::reloadPressed);
         register("class_list", Keyboard.KEY_L, ModKeybinds::showClassesPressed);
+        register("sight_type", Keyboard.KEY_PRIOR, () -> PlayerDataFactory.get(Minecraft.getMinecraft().player).getScopeData().updateType());
+        register("sight_color", Keyboard.KEY_NEXT, () -> PlayerDataFactory.get(Minecraft.getMinecraft().player).getScopeData().updateColor());
     }
 
     private static void reloadPressed() {
@@ -43,11 +45,11 @@ public class ModKeybinds {
                 mc.displayGuiScreen(new GuiChooseAmmo((GunItem) player.getHeldItemMainhand().getItem()));
             }
         } else {
-            if(player.getHeldItemMainhand().getItem() instanceof GunItem && !player.isSprinting()) {
+            if(player.getHeldItemMainhand().getItem() instanceof GunItem && !player.isSprinting() && AnimationManager.getAnimationByID(Animations.REBOLT) == null) {
                 ItemStack stack = player.getHeldItemMainhand();
                 GunItem gun = (GunItem) stack.getItem();
                 if(info.isReloading()) {
-                    if(gun.getReloadManager().canBeInterrupted()) {
+                    if(gun.getReloadManager().canBeInterrupted(gun, stack)) {
                         info.cancelReload();
                         AnimationManager.cancelAnimation(Animations.RELOAD);
                         NetworkManager.toServer(new SPacketSetReloading(false, 0));

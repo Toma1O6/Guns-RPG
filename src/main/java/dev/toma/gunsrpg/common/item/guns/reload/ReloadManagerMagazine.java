@@ -38,7 +38,7 @@ public class ReloadManagerMagazine implements IReloadManager {
     }
 
     @Override
-    public boolean canBeInterrupted() {
+    public boolean canBeInterrupted(GunItem item, ItemStack stack) {
         return false;
     }
 }

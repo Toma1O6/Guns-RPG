@@ -1,10 +1,7 @@
 package dev.toma.gunsrpg.common.capability;
 
 import dev.toma.gunsrpg.common.ModRegistry;
-import dev.toma.gunsrpg.common.capability.object.AimInfo;
-import dev.toma.gunsrpg.common.capability.object.DebuffData;
-import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
-import dev.toma.gunsrpg.common.capability.object.SkillData;
+import dev.toma.gunsrpg.common.capability.object.*;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -25,6 +22,7 @@ public class PlayerDataFactory implements PlayerData {
     private final SkillData skillData;
     private final AimInfo aimInfo;
     private final ReloadInfo reloadInfo;
+    private final ScopeData scopeData;
 
     private boolean shooting;
     private boolean logged = false;
@@ -39,6 +37,7 @@ public class PlayerDataFactory implements PlayerData {
         this.skillData = new SkillData(player);
         this.aimInfo = new AimInfo(this);
         this.reloadInfo = new ReloadInfo(this);
+        this.scopeData = new ScopeData();
     }
 
     public static boolean hasActiveSkill(EntityPlayer player, Ability.UnlockableType type) {
@@ -105,6 +104,11 @@ public class PlayerDataFactory implements PlayerData {
     }
 
     @Override
+    public ScopeData getScopeData() {
+        return scopeData;
+    }
+
+    @Override
     public void setShooting(boolean shooting) {
         this.shooting = shooting;
     }
@@ -158,6 +162,7 @@ public class PlayerDataFactory implements PlayerData {
         nbt.setTag("skills", skillData.write());
         nbt.setTag("aimData", aimInfo.write());
         nbt.setTag("reloadData", reloadInfo.write());
+        nbt.setTag("scopeData", scopeData.write());
         return nbt;
     }
 
@@ -168,6 +173,7 @@ public class PlayerDataFactory implements PlayerData {
         skillData.read(nbt.hasKey("skills") ? nbt.getCompoundTag("skills") : new NBTTagCompound());
         aimInfo.read(this.findNBTTag("aimData", nbt));
         reloadInfo.read(this.findNBTTag("reloadData", nbt));
+        scopeData.read(this.findNBTTag("scopeData", nbt));
     }
 
     private NBTTagCompound findNBTTag(String key, NBTTagCompound nbt) {

@@ -65,7 +65,7 @@ public class ARItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.AR_TOUGH_SPRING) ? 3 : 4;
+        return PlayerDataFactory.hasActiveSkill(player, Ability.AR_TOUGH_SPRING) ? 4 : 5;
     }
 
     @Override
