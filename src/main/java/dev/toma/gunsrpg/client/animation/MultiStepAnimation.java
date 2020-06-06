@@ -127,6 +127,23 @@ public abstract class MultiStepAnimation extends TickableAnimation {
         }
     }
 
+    public static class ReboltSG extends MultiStepAnimation {
+
+        public ReboltSG(int time) {
+            super(time);
+            init();
+        }
+
+        @Override
+        public void createAnimationSteps() {
+            addStep(0.0F, 0.2F, SimpleAnimation.newSimpleAnimation().create());
+            addStep(0.2F, 0.4F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F * f, 1.0F, 0.0F, 0.0F)).create());
+            addStep(0.4F, 0.6F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F)).leftHand(f -> GlStateManager.translate(0.0F, 0.0F, 0.2F * f)).create());
+            addStep(0.6F, 0.8F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F)).leftHand(f -> GlStateManager.translate(0.0F, 0.0F, 0.2F - 0.2F * f)).create());
+            addStep(0.0F, 1.0F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F - 5.0F * f, 1.0F, 0.0F, 0.0F)).create());
+        }
+    }
+
     public static class Range {
 
         public final float min, max;

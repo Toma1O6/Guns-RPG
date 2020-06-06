@@ -179,7 +179,6 @@ public class ClientEventHandler {
             if (item != null) {
                 if (settings.keyBindAttack.isPressed()) {
                     if(item.getFiremode(player) == Firemode.FULL_AUTO) {
-                        //ShootingManager.shootSingle(player, player.getHeldItemMainhand());
                         PlayerDataFactory.get(player).setShooting(true);
                         NetworkManager.toServer(new SPacketSetShooting(true));
                     } else {

@@ -21,7 +21,7 @@ public class SGBakedModel extends GunBakedModel {
         GlStateManager.rotate(180, 0, 1, 0);
         switch (cameraTransformType) {
             case FIRST_PERSON_RIGHT_HAND: {
-                GlStateManager.translate(20F, -5F, 5F);
+                GlStateManager.translate(20F, -5F, 20F);
                 break;
             }
             case THIRD_PERSON_RIGHT_HAND: {

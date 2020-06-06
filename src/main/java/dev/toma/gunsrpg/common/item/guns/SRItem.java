@@ -135,6 +135,7 @@ public class SRItem extends GunItem {
         return new MultiStepAnimation.Configurable(this.getReloadTime(player), "sr_reload");
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void onShoot(EntityPlayer player, ItemStack stack) {
         super.onShoot(player, stack);

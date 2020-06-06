@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.client.animation.AnimationManager;
+import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.common.ModRegistry;
@@ -133,7 +135,7 @@ public class SGItem extends GunItem {
     @SideOnly(Side.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
-        return new AimingAnimation(-0.267F, 0.22F, 0.1F).animateRight(animation -> {
+        return new AimingAnimation(-0.267F, 0.22F, -0.1F).animateRight(animation -> {
             float f = animation.smooth;
             GlStateManager.translate(-0.267F * f, 0.22F * f, 0.1F * f);
         }).animateLeft(animation -> {
@@ -146,5 +148,12 @@ public class SGItem extends GunItem {
     @Override
     public Animation createReloadAnimation(EntityPlayer player) {
         return new MultiStepAnimation.Configurable(this.getReloadTime(player), "sg_reload");
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void onShoot(EntityPlayer player, ItemStack stack) {
+        super.onShoot(player, stack);
+        AnimationManager.sendNewAnimation(Animations.REBOLT, new MultiStepAnimation.ReboltSG(this.getFirerate(player)));
     }
 }
