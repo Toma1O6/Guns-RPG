@@ -24,4 +24,6 @@ public interface Animation {
     boolean isFinished();
 
     void setProgress(float progress);
+
+    boolean cancelsItemRender();
 }

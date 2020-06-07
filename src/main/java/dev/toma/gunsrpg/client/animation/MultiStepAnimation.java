@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.client.animation;
 import com.google.gson.*;
 import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
 import dev.toma.gunsrpg.util.ModUtils;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -104,43 +103,6 @@ public abstract class MultiStepAnimation extends TickableAnimation {
             for(Pair<Range, Supplier<SimpleAnimation>> pair : ModUtils.getNonnullFromMap(AnimationManager.SCRIPT_ANIMATIONS, this.fileName, Collections.emptyList())) {
                 this.addStep(pair.getLeft(), pair.getRight());
             }
-        }
-    }
-
-    public static class ReboltSR extends MultiStepAnimation {
-
-        public ReboltSR(int time) {
-            super(time);
-            this.init();
-        }
-
-        @Override
-        public void createAnimationSteps() {
-            addStep(0.0F, 0.2F, SimpleAnimation.newSimpleAnimation().create());
-            addStep(0.2F, 0.3F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F * f, 1.0F, 0.0F, 0.0F)).create());
-            addStep(0.3F, 0.5F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F)).rightHand(f -> GlStateManager.translate(0.1F * f, 0.1f * f, 0.2F * f)).create());
-            addStep(0.5F, 0.6F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F)).rightHand(f -> GlStateManager.translate(0.1F, 0.1f, 0.2F)).create());
-            addStep(0.6F, 0.7F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F)).rightHand(f -> GlStateManager.translate(0.1F - 0.05F * f, 0.1f + 0.1F * f, 0.2F)).create());
-            addStep(0.7F, 0.8F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F)).rightHand(f -> GlStateManager.translate(0.05F, 0.2F, 0.2F + 0.1F * f)).create());
-            addStep(0.8F, 0.9F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F)).rightHand(f -> GlStateManager.translate(0.05F, 0.2F, 0.3F - 0.1F * f)).create());
-            addStep(0.9F, 1.0F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F - 5.0F * f, 1.0F, 0.0F, 0.0F)).rightHand(f -> GlStateManager.translate(0.05F - 0.05F * f, 0.2F - 0.2F * f, 0.2F - 0.2F * f)).create());
-        }
-    }
-
-    public static class ReboltSG extends MultiStepAnimation {
-
-        public ReboltSG(int time) {
-            super(time);
-            init();
-        }
-
-        @Override
-        public void createAnimationSteps() {
-            addStep(0.0F, 0.2F, SimpleAnimation.newSimpleAnimation().create());
-            addStep(0.2F, 0.4F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F * f, 1.0F, 0.0F, 0.0F)).create());
-            addStep(0.4F, 0.6F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F)).leftHand(f -> GlStateManager.translate(0.0F, 0.0F, 0.2F * f)).create());
-            addStep(0.6F, 0.8F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F)).leftHand(f -> GlStateManager.translate(0.0F, 0.0F, 0.2F - 0.2F * f)).create());
-            addStep(0.0F, 1.0F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F - 5.0F * f, 1.0F, 0.0F, 0.0F)).create());
         }
     }
 

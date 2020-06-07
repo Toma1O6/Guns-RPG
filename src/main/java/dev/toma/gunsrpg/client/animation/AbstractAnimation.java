@@ -67,6 +67,11 @@ public abstract class AbstractAnimation implements Animation {
         return player;
     }
 
+    @Override
+    public boolean cancelsItemRender() {
+        return false;
+    }
+
     private void calculateSmoothValue(float partialTicks) {
         this.current = this.getCurrentProgress();
         this.smooth = this.prev + (this.current - this.prev) * partialTicks;

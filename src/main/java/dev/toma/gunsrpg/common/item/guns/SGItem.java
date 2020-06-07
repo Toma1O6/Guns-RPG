@@ -154,6 +154,6 @@ public class SGItem extends GunItem {
     @Override
     public void onShoot(EntityPlayer player, ItemStack stack) {
         super.onShoot(player, stack);
-        AnimationManager.sendNewAnimation(Animations.REBOLT, new MultiStepAnimation.ReboltSG(this.getFirerate(player)));
+        AnimationManager.sendNewAnimation(Animations.REBOLT, new Animations.ReboltSG(this.getFirerate(player)));
     }
 }

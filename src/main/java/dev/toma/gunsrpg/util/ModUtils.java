@@ -1,16 +1,23 @@
 package dev.toma.gunsrpg.util;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class ModUtils {
 
@@ -123,5 +130,47 @@ public class ModUtils {
     public static <K, V> V getNonnullFromMap(Map<K, V> map, K key, V def) {
         V v = map.get(key);
         return v != null ? v : Objects.requireNonNull(def);
+    }
+
+    public static RayTraceResult raytraceBlocksIgnoreGlass(World world, Vec3d start, Vec3d end, Predicate<IBlockState> statePredicate) {
+        if(Double.isNaN(start.x) || Double.isNaN(start.y) || Double.isNaN(start.z) || Double.isNaN(end.x) || Double.isNaN(end.y) || Double.isNaN(end.z)) {
+            return null;
+        }
+        BlockPos current = new BlockPos(start);
+        IBlockState currentState = world.getBlockState(current);
+        if(currentState.getCollisionBoundingBox(world, current) != Block.NULL_AABB && currentState.getBlock().canCollideCheck(currentState, false) && statePredicate.test(currentState)) {
+            RayTraceResult rayTraceResult = currentState.collisionRayTrace(world, current, start, end);
+            if(rayTraceResult != null) {
+                return rayTraceResult;
+            }
+        }
+        int checks = getPartialChecksAmount(start, end);
+        double x = (end.x - start.x) / checks;
+        double y = (end.y - start.y) / checks;
+        double z = (end.z - start.z) / checks;
+        for(int i = 1; i <= checks; i++) {
+            BlockPos pos = new BlockPos(start.x + x * i, start.y + y * i, start.z + z * i);
+            IBlockState state = world.getBlockState(pos);
+            Block block = state.getBlock();
+            if(statePredicate.test(state) && state.getCollisionBoundingBox(world, pos) != Block.NULL_AABB && block.canCollideCheck(state, false)) {
+                RayTraceResult rayTraceResult = state.collisionRayTrace(world, pos, new Vec3d(start.x + x, start.y + y, start.z + z), end);
+                if(rayTraceResult != null) {
+                    return rayTraceResult;
+                }
+            }
+        }
+        return null;
+    }
+
+    private static int getPartialChecksAmount(Vec3d start, Vec3d end) {
+        double distX = sqr(start.x - end.x);
+        double distY = sqr(start.y - end.y);
+        double distZ = sqr(start.z - end.z);
+        double distance = Math.sqrt(distX + distY + distZ);
+        return (int) Math.max(1.0D, distance * 2);
+    }
+
+    private static double sqr(double n) {
+        return n * n;
     }
 }

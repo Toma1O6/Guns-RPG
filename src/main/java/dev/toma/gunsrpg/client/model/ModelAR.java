@@ -1,5 +1,9 @@
 package dev.toma.gunsrpg.client.model;
 
+import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.skilltree.Ability;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 
@@ -62,19 +66,12 @@ public class ModelAR extends ModelWeapon {
     private final ModelRenderer bone49;
     private final ModelRenderer bone;
     private final ModelRenderer bone47;
-
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
-    }
-
-    @Override
-    public void doRender() {
-        sks.render(1f);
-        magazine.render(1f);
-        ironsights.render(1f);
-    }
+    private final ModelRenderer suppressor;
+    private final ModelRenderer supp1;
+    private final ModelRenderer supp0;
+    private final ModelRenderer rds;
+    private final ModelRenderer rds1;
+    private final ModelRenderer rds2;
 
     public ModelAR() {
         textureWidth = 128;
@@ -191,8 +188,8 @@ public class ModelAR extends ModelWeapon {
 
         bone2 = new ModelRenderer(this);
         bone2.setRotationPoint(0.0F, 0.0F, 0.0F);
-        setRotationAngle(bone2, 0.2618F, 0.0F, 0.0F);
         sks.addChild(bone2);
+        setRotationAngle(bone2, 0.2618F, 0.0F, 0.0F);
         bone2.cubeList.add(new ModelBox(bone2, 90, 16, -2.5F, -0.6718F, 2.0884F, 5, 1, 3, 0.0F, false));
         bone2.cubeList.add(new ModelBox(bone2, 90, 16, -1.5F, -9.4807F, 4.8016F, 3, 10, 1, 0.0F, false));
         bone2.cubeList.add(new ModelBox(bone2, 90, 16, -2.5F, -1.375F, -0.9116F, 5, 1, 1, 0.0F, false));
@@ -201,27 +198,27 @@ public class ModelAR extends ModelWeapon {
 
         bone4 = new ModelRenderer(this);
         bone4.setRotationPoint(0.5F, 0.0F, 0.0F);
-        setRotationAngle(bone4, 0.5236F, 0.0F, 0.0F);
         sks.addChild(bone4);
+        setRotationAngle(bone4, 0.5236F, 0.0F, 0.0F);
         bone4.cubeList.add(new ModelBox(bone4, 90, 16, -1.5F, -11.6123F, -3.8322F, 2, 1, 1, 0.0F, false));
         bone4.cubeList.add(new ModelBox(bone4, 90, 16, -1.5F, -9.2462F, -0.7341F, 2, 1, 2, 0.0F, false));
 
         bone5 = new ModelRenderer(this);
         bone5.setRotationPoint(0.0F, -8.1123F, -8.3322F);
-        setRotationAngle(bone5, 1.0472F, 0.0F, 0.0F);
         sks.addChild(bone5);
+        setRotationAngle(bone5, 1.0472F, 0.0F, 0.0F);
         bone5.cubeList.add(new ModelBox(bone5, 90, 16, -1.0F, 0.1654F, -0.872F, 2, 1, 1, 0.0F, false));
 
         bone52 = new ModelRenderer(this);
         bone52.setRotationPoint(0.0F, -8.574F, 18.9884F);
-        setRotationAngle(bone52, -0.6109F, 0.0F, 0.0F);
         sks.addChild(bone52);
+        setRotationAngle(bone52, -0.6109F, 0.0F, 0.0F);
         bone52.cubeList.add(new ModelBox(bone52, 93, 20, -1.0F, -1.5F, -1.0F, 2, 3, 6, 0.0F, true));
 
         bone51 = new ModelRenderer(this);
         bone51.setRotationPoint(0.0F, -21.8826F, 19.7188F);
-        setRotationAngle(bone51, 0.0F, 0.0F, -0.7854F);
         sks.addChild(bone51);
+        setRotationAngle(bone51, 0.0F, 0.0F, -0.7854F);
         bone51.cubeList.add(new ModelBox(bone51, 72, 19, -3.4142F, 3.6569F, -7.5F, 2, 2, 15, 0.0F, true));
         bone51.cubeList.add(new ModelBox(bone51, 72, 19, -3.4142F, 3.6569F, 8.9258F, 2, 2, 3, 0.0F, true));
         bone51.cubeList.add(new ModelBox(bone51, 72, 19, -5.6569F, 1.4142F, -7.5F, 2, 2, 15, 0.0F, true));
@@ -229,64 +226,64 @@ public class ModelAR extends ModelWeapon {
 
         bone24 = new ModelRenderer(this);
         bone24.setRotationPoint(-4.5F, 0.0F, 0.0F);
-        setRotationAngle(bone24, -0.4363F, 0.0F, 0.0F);
         sks.addChild(bone24);
+        setRotationAngle(bone24, -0.4363F, 0.0F, 0.0F);
         bone24.cubeList.add(new ModelBox(bone24, 65, 12, 1.5F, -16.12F, -5.3835F, 6, 3, 3, 0.0F, true));
 
         bone42 = new ModelRenderer(this);
         bone42.setRotationPoint(0.0F, -22.0769F, -18.6409F);
-        setRotationAngle(bone42, -0.6109F, 0.0F, 0.0F);
         sks.addChild(bone42);
+        setRotationAngle(bone42, -0.6109F, 0.0F, 0.0F);
         bone42.cubeList.add(new ModelBox(bone42, 66, 12, -2.0F, -9.4228F, 11.7137F, 4, 2, 4, 0.0F, true));
 
         bone37 = new ModelRenderer(this);
         bone37.setRotationPoint(-1.9453F, -19.5791F, -24.6409F);
-        setRotationAngle(bone37, 0.0F, 0.0F, 0.9599F);
         sks.addChild(bone37);
+        setRotationAngle(bone37, 0.0F, 0.0F, 0.9599F);
         bone37.cubeList.add(new ModelBox(bone37, 2, 12, 0.5324F, -0.0168F, -6.0F, 1, 1, 12, 0.0F, true));
         bone37.cubeList.add(new ModelBox(bone37, 2, 12, 1.8403F, -2.7633F, -6.0F, 1, 1, 12, 0.0F, true));
         bone37.cubeList.add(new ModelBox(bone37, 2, 12, 0.2643F, -1.5126F, -6.0F, 1, 1, 12, 0.0F, true));
 
         bone36 = new ModelRenderer(this);
         bone36.setRotationPoint(1.9453F, -19.5791F, -24.6409F);
-        setRotationAngle(bone36, 0.0F, 0.0F, -0.9599F);
         sks.addChild(bone36);
+        setRotationAngle(bone36, 0.0F, 0.0F, -0.9599F);
         bone36.cubeList.add(new ModelBox(bone36, 2, 12, -1.5324F, -0.0168F, -6.0F, 1, 1, 12, 0.0F, false));
         bone36.cubeList.add(new ModelBox(bone36, 2, 12, -2.8403F, -2.7633F, -6.0F, 1, 1, 12, 0.0F, false));
         bone36.cubeList.add(new ModelBox(bone36, 2, 12, -1.2643F, -1.5126F, -6.0F, 1, 1, 12, 0.0F, false));
 
         bone41 = new ModelRenderer(this);
         bone41.setRotationPoint(-3.0078F, -19.0557F, -27.6409F);
-        setRotationAngle(bone41, 0.0F, 0.0F, -0.0873F);
         sks.addChild(bone41);
+        setRotationAngle(bone41, 0.0F, 0.0F, -0.0873F);
         bone41.cubeList.add(new ModelBox(bone41, 4, 5, -2.0F, -0.5F, -0.5F, 4, 1, 1, 0.0F, true));
         bone41.cubeList.add(new ModelBox(bone41, 4, 5, -1.0089F, -0.3988F, -0.1F, 3, 1, 1, 0.0F, true));
         bone41.cubeList.add(new ModelBox(bone41, 4, 5, -1.0089F, -0.3988F, -0.9F, 3, 1, 1, 0.0F, true));
 
         bone40 = new ModelRenderer(this);
         bone40.setRotationPoint(-3.2578F, -18.9072F, -27.8042F);
-        setRotationAngle(bone40, 0.0F, 0.0F, 0.1745F);
         sks.addChild(bone40);
+        setRotationAngle(bone40, 0.0F, 0.0F, 0.1745F);
         bone40.cubeList.add(new ModelBox(bone40, 4, 5, 0.0F, -0.5F, -1.0F, 1, 1, 2, 0.0F, true));
 
         bone38 = new ModelRenderer(this);
         bone38.setRotationPoint(-4.9453F, -18.9072F, -26.6409F);
-        setRotationAngle(bone38, 0.0F, -0.5236F, 0.0F);
         sks.addChild(bone38);
+        setRotationAngle(bone38, 0.0F, -0.5236F, 0.0F);
         bone38.cubeList.add(new ModelBox(bone38, 4, 5, -2.433F, -0.5F, -1.75F, 2, 1, 1, 0.0F, true));
         bone38.cubeList.add(new ModelBox(bone38, 4, 5, 1.561F, -0.5F, -2.0352F, 2, 1, 1, 0.0F, true));
 
         bone39 = new ModelRenderer(this);
         bone39.setRotationPoint(4.9453F, -18.9072F, -26.6409F);
-        setRotationAngle(bone39, 0.0F, 0.5236F, 0.0F);
         sks.addChild(bone39);
+        setRotationAngle(bone39, 0.0F, 0.5236F, 0.0F);
         bone39.cubeList.add(new ModelBox(bone39, 4, 5, -7.0321F, -0.5F, -6.3333F, 1, 1, 1, 0.0F, false));
         bone39.cubeList.add(new ModelBox(bone39, 4, 5, -8.9985F, -0.5F, -7.1953F, 1, 1, 2, 0.0F, false));
 
         bone33 = new ModelRenderer(this);
         bone33.setRotationPoint(2.0F, -22.4307F, -5.1409F);
-        setRotationAngle(bone33, 0.0F, 0.0F, -0.5236F);
         sks.addChild(bone33);
+        setRotationAngle(bone33, 0.0F, 0.0F, -0.5236F);
         bone33.cubeList.add(new ModelBox(bone33, 32, 36, -1.817F, 1.4151F, -3.5F, 1, 1, 11, 0.0F, false));
         bone33.cubeList.add(new ModelBox(bone33, 32, 36, -1.817F, 1.4151F, -13.5F, 1, 1, 10, 0.0F, false));
         bone33.cubeList.add(new ModelBox(bone33, 32, 36, -1.817F, 1.4151F, -26.5F, 1, 1, 1, 0.0F, false));
@@ -296,24 +293,24 @@ public class ModelAR extends ModelWeapon {
 
         bone34 = new ModelRenderer(this);
         bone34.setRotationPoint(-2.0F, -22.4307F, -5.1409F);
-        setRotationAngle(bone34, 0.0F, 0.0F, 0.5236F);
         sks.addChild(bone34);
+        setRotationAngle(bone34, 0.0F, 0.0F, 0.5236F);
         bone34.cubeList.add(new ModelBox(bone34, 32, 36, 0.817F, 1.4151F, -3.5F, 1, 1, 11, 0.0F, true));
         bone34.cubeList.add(new ModelBox(bone34, 32, 36, 0.817F, 1.4151F, -13.5F, 1, 1, 10, 0.0F, true));
         bone34.cubeList.add(new ModelBox(bone34, 32, 36, 0.817F, 1.4151F, -26.5F, 1, 1, 1, 0.0F, true));
 
         bone35 = new ModelRenderer(this);
         bone35.setRotationPoint(-2.0F, -22.4307F, -5.1409F);
-        setRotationAngle(bone35, 0.0F, 0.0F, 0.5236F);
         sks.addChild(bone35);
+        setRotationAngle(bone35, 0.0F, 0.0F, 0.5236F);
         bone35.cubeList.add(new ModelBox(bone35, 32, 36, 3.2811F, -0.5849F, -3.5F, 1, 2, 11, 0.0F, true));
         bone35.cubeList.add(new ModelBox(bone35, 32, 36, 3.2811F, -0.5849F, -13.5F, 1, 2, 10, 0.0F, true));
         bone35.cubeList.add(new ModelBox(bone35, 32, 36, 3.2811F, -0.5849F, -26.5F, 1, 2, 1, 0.0F, true));
 
         bone18 = new ModelRenderer(this);
         bone18.setRotationPoint(2.0F, -5.0977F, 1.4688F);
-        setRotationAngle(bone18, 0.2618F, 0.0F, 0.0F);
         sks.addChild(bone18);
+        setRotationAngle(bone18, 0.2618F, 0.0F, 0.0F);
         bone18.cubeList.add(new ModelBox(bone18, 13, 10, -3.0F, -11.4781F, -17.4894F, 2, 5, 1, 0.0F, true));
 
         tacRail = new ModelRenderer(this);
@@ -355,8 +352,8 @@ public class ModelAR extends ModelWeapon {
 
         bone25 = new ModelRenderer(this);
         bone25.setRotationPoint(0.5F, 0.0F, 0.0F);
-        setRotationAngle(bone25, 0.0F, 0.0F, 0.5236F);
         tacRail.addChild(bone25);
+        setRotationAngle(bone25, 0.0F, 0.0F, 0.5236F);
         bone25.cubeList.add(new ModelBox(bone25, 9, 77, -8.4294F, -5.8682F, -37.6409F, 1, 1, 1, 0.0F, false));
         bone25.cubeList.add(new ModelBox(bone25, 9, 77, -8.4294F, -5.8682F, -39.6409F, 1, 1, 1, 0.0F, false));
         bone25.cubeList.add(new ModelBox(bone25, 9, 77, -8.4294F, -5.8682F, -41.6409F, 1, 1, 1, 0.0F, false));
@@ -381,8 +378,8 @@ public class ModelAR extends ModelWeapon {
 
         bone26 = new ModelRenderer(this);
         bone26.setRotationPoint(-5.5F, 0.0F, 0.0F);
-        setRotationAngle(bone26, 0.0F, 0.0F, -0.5236F);
         tacRail.addChild(bone26);
+        setRotationAngle(bone26, 0.0F, 0.0F, -0.5236F);
         bone26.cubeList.add(new ModelBox(bone26, 9, 77, 7.4294F, -5.8682F, -37.6409F, 1, 1, 1, 0.0F, true));
         bone26.cubeList.add(new ModelBox(bone26, 9, 77, 7.4294F, -5.8682F, -39.6409F, 1, 1, 1, 0.0F, true));
         bone26.cubeList.add(new ModelBox(bone26, 9, 77, 7.4294F, -5.8682F, -41.6409F, 1, 1, 1, 0.0F, true));
@@ -492,8 +489,8 @@ public class ModelAR extends ModelWeapon {
 
         bone43 = new ModelRenderer(this);
         bone43.setRotationPoint(0.5F, 0.0F, 0.0F);
-        setRotationAngle(bone43, 0.0F, 0.0F, -0.5236F);
         tacRail2.addChild(bone43);
+        setRotationAngle(bone43, 0.0F, 0.0F, -0.5236F);
         bone43.cubeList.add(new ModelBox(bone43, 9, 77, -8.4294F, 4.8682F, -37.6409F, 1, 1, 1, 0.0F, false));
         bone43.cubeList.add(new ModelBox(bone43, 9, 77, -8.4294F, 4.8682F, -33.6409F, 1, 1, 1, 0.0F, false));
         bone43.cubeList.add(new ModelBox(bone43, 9, 77, -8.4294F, 4.8682F, -29.6409F, 1, 1, 1, 0.0F, false));
@@ -548,8 +545,8 @@ public class ModelAR extends ModelWeapon {
 
         bone44 = new ModelRenderer(this);
         bone44.setRotationPoint(-5.5F, 0.0F, 0.0F);
-        setRotationAngle(bone44, 0.0F, 0.0F, 0.5236F);
         tacRail2.addChild(bone44);
+        setRotationAngle(bone44, 0.0F, 0.0F, 0.5236F);
         bone44.cubeList.add(new ModelBox(bone44, 9, 77, 7.4294F, 4.8682F, -37.6409F, 1, 1, 1, 0.0F, true));
         bone44.cubeList.add(new ModelBox(bone44, 9, 77, 7.4294F, 4.8682F, -33.6409F, 1, 1, 1, 0.0F, true));
         bone44.cubeList.add(new ModelBox(bone44, 9, 77, 7.4294F, 4.8682F, -29.6409F, 1, 1, 1, 0.0F, true));
@@ -604,15 +601,15 @@ public class ModelAR extends ModelWeapon {
 
         bone21 = new ModelRenderer(this);
         bone21.setRotationPoint(0.0F, -22.4307F, -50.1409F);
-        setRotationAngle(bone21, 0.0F, 0.0F, -0.5236F);
         sks.addChild(bone21);
+        setRotationAngle(bone21, 0.0F, 0.0F, -0.5236F);
         bone21.cubeList.add(new ModelBox(bone21, 66, 15, 0.7811F, 1.9151F, -7.5F, 1, 2, 21, 0.0F, false));
         bone21.cubeList.add(new ModelBox(bone21, 66, 15, 0.7811F, 1.9151F, 15.5F, 1, 2, 3, 0.0F, false));
 
         bone23 = new ModelRenderer(this);
         bone23.setRotationPoint(0.0F, -22.4307F, -50.1409F);
-        setRotationAngle(bone23, 0.0F, 0.0F, -0.7854F);
         sks.addChild(bone23);
+        setRotationAngle(bone23, 0.0F, 0.0F, -0.7854F);
         bone23.cubeList.add(new ModelBox(bone23, 66, 15, 0.2247F, 0.3108F, -7.5F, 1, 2, 21, 0.0F, false));
         bone23.cubeList.add(new ModelBox(bone23, 66, 15, -0.7753F, 0.3108F, 15.5F, 2, 2, 3, 0.0F, false));
         bone23.cubeList.add(new ModelBox(bone23, 66, 15, -2.3108F, -1.2247F, -7.5F, 2, 1, 21, 0.0F, false));
@@ -620,53 +617,53 @@ public class ModelAR extends ModelWeapon {
 
         bone22 = new ModelRenderer(this);
         bone22.setRotationPoint(0.0F, -22.4307F, -50.1409F);
-        setRotationAngle(bone22, 0.0F, 0.0F, 0.5236F);
         sks.addChild(bone22);
+        setRotationAngle(bone22, 0.0F, 0.0F, 0.5236F);
         bone22.cubeList.add(new ModelBox(bone22, 66, 15, -1.7811F, 1.9151F, -7.5F, 1, 2, 21, 0.0F, true));
         bone22.cubeList.add(new ModelBox(bone22, 66, 15, -1.7811F, 1.9151F, 15.5F, 1, 2, 3, 0.0F, true));
 
         bone45 = new ModelRenderer(this);
         bone45.setRotationPoint(0.0F, -21.599F, -88.5432F);
-        setRotationAngle(bone45, 1.309F, 0.0F, 0.0F);
         sks.addChild(bone45);
+        setRotationAngle(bone45, 1.309F, 0.0F, 0.0F);
         bone45.cubeList.add(new ModelBox(bone45, 33, 9, -1.0F, -2.5F, -1.0F, 2, 3, 2, 0.0F, false));
 
         bone46 = new ModelRenderer(this);
         bone46.setRotationPoint(0.0F, -18.599F, -88.5432F);
-        setRotationAngle(bone46, 0.5236F, 0.0F, 0.0F);
         sks.addChild(bone46);
+        setRotationAngle(bone46, 0.5236F, 0.0F, 0.0F);
         bone46.cubeList.add(new ModelBox(bone46, 33, 9, -1.0F, -2.9516F, 0.5607F, 2, 6, 2, 0.0F, false));
 
         bone29 = new ModelRenderer(this);
         bone29.setRotationPoint(5.0F, 0.0F, 0.0F);
-        setRotationAngle(bone29, -0.1745F, 0.0F, 0.0F);
         sks.addChild(bone29);
+        setRotationAngle(bone29, -0.1745F, 0.0F, 0.0F);
         bone29.cubeList.add(new ModelBox(bone29, 33, 9, -6.0F, -8.8808F, -94.9007F, 2, 3, 1, 0.0F, false));
 
         bone32 = new ModelRenderer(this);
-        bone32.setRotationPoint(-0.0F, -4.2528F, -94.3646F);
-        setRotationAngle(bone32, 0.1745F, 0.0F, 0.0F);
+        bone32.setRotationPoint(0.0F, -4.2528F, -94.3646F);
         sks.addChild(bone32);
+        setRotationAngle(bone32, 0.1745F, 0.0F, 0.0F);
         bone32.cubeList.add(new ModelBox(bone32, 33, 9, -1.0F, -20.0624F, 5.996F, 2, 3, 1, 0.0F, true));
 
         bone50 = new ModelRenderer(this);
         bone50.setRotationPoint(0.0F, -28.0599F, -91.4378F);
-        setRotationAngle(bone50, 0.0F, 0.0F, 0.7854F);
         sks.addChild(bone50);
-        bone50.cubeList.add(new ModelBox(bone50, 33, 9, -0.0F, 0.4142F, -0.5F, 1, 1, 1, 0.0F, false));
-        bone50.cubeList.add(new ModelBox(bone50, 33, 9, -0.0F, -0.0F, -0.5F, 1, 1, 1, 0.0F, false));
-        bone50.cubeList.add(new ModelBox(bone50, 33, 9, 0.4142F, -0.0F, -0.5F, 1, 1, 1, 0.0F, false));
+        setRotationAngle(bone50, 0.0F, 0.0F, 0.7854F);
+        bone50.cubeList.add(new ModelBox(bone50, 33, 9, 0.0F, 0.4142F, -0.5F, 1, 1, 1, 0.0F, false));
+        bone50.cubeList.add(new ModelBox(bone50, 33, 9, 0.0F, 0.0F, -0.5F, 1, 1, 1, 0.0F, false));
+        bone50.cubeList.add(new ModelBox(bone50, 33, 9, 0.4142F, 0.0F, -0.5F, 1, 1, 1, 0.0F, false));
 
         bone20 = new ModelRenderer(this);
         bone20.setRotationPoint(0.0F, -21.5794F, -84.6409F);
-        setRotationAngle(bone20, 0.6981F, 0.0F, 0.0F);
         sks.addChild(bone20);
+        setRotationAngle(bone20, 0.6981F, 0.0F, 0.0F);
         bone20.cubeList.add(new ModelBox(bone20, 42, 11, -1.5F, 10.4933F, 4.6354F, 3, 3, 8, 0.0F, false));
 
         bone19 = new ModelRenderer(this);
         bone19.setRotationPoint(5.0F, 0.0F, 0.0F);
-        setRotationAngle(bone19, 0.0F, 0.0F, 0.7854F);
         sks.addChild(bone19);
+        setRotationAngle(bone19, 0.0F, 0.0F, 0.7854F);
         bone19.cubeList.add(new ModelBox(bone19, 33, 4, -15.0407F, -5.5555F, -72.4378F, 2, 1, 14, 0.0F, false));
         bone19.cubeList.add(new ModelBox(bone19, 33, 9, -15.0407F, -5.5555F, -86.4378F, 2, 1, 14, 0.0F, false));
         bone19.cubeList.add(new ModelBox(bone19, 33, 9, -15.0407F, -5.5555F, -94.4378F, 2, 1, 8, 0.0F, false));
@@ -694,8 +691,8 @@ public class ModelAR extends ModelWeapon {
 
         bone28 = new ModelRenderer(this);
         bone28.setRotationPoint(4.5F, 0.0F, 0.0F);
-        setRotationAngle(bone28, 0.0F, 0.0F, -0.3491F);
         sks.addChild(bone28);
+        setRotationAngle(bone28, 0.0F, 0.0F, -0.3491F);
         bone28.cubeList.add(new ModelBox(bone28, 65, 12, -3.095F, -14.887F, -57.6409F, 1, 1, 23, 0.0F, false));
         bone28.cubeList.add(new ModelBox(bone28, 65, 12, -3.6191F, -13.447F, -32.1249F, 1, 1, 22, 0.0F, false));
         bone28.cubeList.add(new ModelBox(bone28, 65, 12, -3.6191F, -13.447F, -10.1249F, 1, 1, 15, 0.0F, false));
@@ -703,8 +700,8 @@ public class ModelAR extends ModelWeapon {
 
         bone27 = new ModelRenderer(this);
         bone27.setRotationPoint(-4.5F, 0.0F, 0.0F);
-        setRotationAngle(bone27, 0.0F, 0.0F, 0.3491F);
         sks.addChild(bone27);
+        setRotationAngle(bone27, 0.0F, 0.0F, 0.3491F);
         bone27.cubeList.add(new ModelBox(bone27, 65, 12, 2.095F, -14.887F, -57.6409F, 1, 1, 23, 0.0F, true));
         bone27.cubeList.add(new ModelBox(bone27, 65, 12, 2.6191F, -13.447F, -32.1249F, 1, 1, 22, 0.0F, true));
         bone27.cubeList.add(new ModelBox(bone27, 65, 12, 2.6191F, -13.447F, -10.1249F, 1, 1, 15, 0.0F, true));
@@ -712,28 +709,28 @@ public class ModelAR extends ModelWeapon {
 
         bone17 = new ModelRenderer(this);
         bone17.setRotationPoint(1.0F, 0.0F, 0.0F);
-        setRotationAngle(bone17, -0.1745F, 0.0F, 0.0F);
         sks.addChild(bone17);
+        setRotationAngle(bone17, -0.1745F, 0.0F, 0.0F);
         bone17.cubeList.add(new ModelBox(bone17, 76, 13, -4.0F, -6.6618F, -42.4425F, 6, 2, 9, 0.0F, false));
         bone17.cubeList.add(new ModelBox(bone17, 76, 13, -4.5F, -7.6466F, -42.6162F, 1, 2, 9, 0.0F, false));
         bone17.cubeList.add(new ModelBox(bone17, 76, 13, 1.5F, -7.6466F, -42.6162F, 1, 2, 9, 0.0F, true));
 
         bone30 = new ModelRenderer(this);
         bone30.setRotationPoint(3.5F, 0.0F, 0.0F);
-        setRotationAngle(bone30, 0.0F, 0.0F, -0.3491F);
         bone17.addChild(bone30);
+        setRotationAngle(bone30, 0.0F, 0.0F, -0.3491F);
         bone30.cubeList.add(new ModelBox(bone30, 76, 13, -5.5863F, -8.0423F, -42.6162F, 1, 1, 9, 0.0F, false));
 
         bone31 = new ModelRenderer(this);
         bone31.setRotationPoint(-5.5F, 0.0F, 0.0F);
-        setRotationAngle(bone31, 0.0F, 0.0F, 0.3491F);
         bone17.addChild(bone31);
+        setRotationAngle(bone31, 0.0F, 0.0F, 0.3491F);
         bone31.cubeList.add(new ModelBox(bone31, 76, 13, 4.5863F, -8.0423F, -42.6162F, 1, 1, 9, 0.0F, true));
 
         bone3 = new ModelRenderer(this);
         bone3.setRotationPoint(1.5F, 0.0F, 0.0F);
-        setRotationAngle(bone3, 0.6981F, 0.0F, 0.0F);
         sks.addChild(bone3);
+        setRotationAngle(bone3, 0.6981F, 0.0F, 0.0F);
         bone3.cubeList.add(new ModelBox(bone3, 90, 16, -3.0F, -2.6944F, -1.6553F, 3, 1, 2, 0.0F, false));
 
         magazine = new ModelRenderer(this);
@@ -756,20 +753,20 @@ public class ModelAR extends ModelWeapon {
 
         bone7 = new ModelRenderer(this);
         bone7.setRotationPoint(0.0F, 0.0F, 0.0F);
-        setRotationAngle(bone7, 0.0F, -0.1047F, 0.0F);
         magazine.addChild(bone7);
+        setRotationAngle(bone7, 0.0F, -0.1047F, 0.0F);
         bone7.cubeList.add(new ModelBox(bone7, 14, 105, -5.3762F, -14.3943F, -32.018F, 1, 2, 3, 0.0F, false));
 
         bone8 = new ModelRenderer(this);
         bone8.setRotationPoint(-2.0F, 0.0F, 0.0F);
-        setRotationAngle(bone8, 0.0F, 0.1047F, 0.0F);
         magazine.addChild(bone8);
+        setRotationAngle(bone8, 0.0F, 0.1047F, 0.0F);
         bone8.cubeList.add(new ModelBox(bone8, 14, 105, 4.3762F, -14.3943F, -32.018F, 1, 2, 3, 0.0F, true));
 
         bone6 = new ModelRenderer(this);
         bone6.setRotationPoint(-1.0F, -17.8943F, -23.9046F);
-        setRotationAngle(bone6, 0.1047F, 0.0F, 0.0F);
         magazine.addChild(bone6);
+        setRotationAngle(bone6, 0.1047F, 0.0F, 0.0F);
         bone6.cubeList.add(new ModelBox(bone6, 11, 113, -1.0F, 2.5923F, -8.8193F, 2, 1, 3, 0.0F, false));
 
         bone9 = new ModelRenderer(this);
@@ -784,14 +781,14 @@ public class ModelAR extends ModelWeapon {
 
         bone16 = new ModelRenderer(this);
         bone16.setRotationPoint(0.0F, 0.0F, 0.0F);
-        setRotationAngle(bone16, 0.1745F, 0.0F, 0.0F);
         bone9.addChild(bone16);
+        setRotationAngle(bone16, 0.1745F, 0.0F, 0.0F);
         bone16.cubeList.add(new ModelBox(bone16, 0, 69, -1.0F, -19.2941F, -32.2647F, 3, 1, 2, 0.0F, true));
 
         bone10 = new ModelRenderer(this);
         bone10.setRotationPoint(-1.5F, 10.0F, 0.0F);
-        setRotationAngle(bone10, -0.0873F, 0.0F, 0.0F);
         magazine.addChild(bone10);
+        setRotationAngle(bone10, -0.0873F, 0.0F, 0.0F);
         bone10.cubeList.add(new ModelBox(bone10, 0, 69, -2.0F, -15.4037F, -35.5571F, 5, 3, 2, 0.0F, true));
         bone10.cubeList.add(new ModelBox(bone10, 0, 69, -1.0F, -15.4037F, -36.5571F, 3, 3, 1, 0.0F, true));
         bone10.cubeList.add(new ModelBox(bone10, 0, 69, -2.0F, -15.4037F, -32.5571F, 5, 3, 2, 0.0F, true));
@@ -801,8 +798,8 @@ public class ModelAR extends ModelWeapon {
 
         bone11 = new ModelRenderer(this);
         bone11.setRotationPoint(-1.5F, 10.0F, 0.0F);
-        setRotationAngle(bone11, -0.1745F, 0.0F, 0.0F);
         magazine.addChild(bone11);
+        setRotationAngle(bone11, -0.1745F, 0.0F, 0.0F);
         bone11.cubeList.add(new ModelBox(bone11, 0, 69, -2.0F, -10.3034F, -36.5485F, 5, 3, 2, 0.0F, true));
         bone11.cubeList.add(new ModelBox(bone11, 0, 69, -1.0F, -10.3034F, -37.5485F, 3, 3, 1, 0.0F, true));
         bone11.cubeList.add(new ModelBox(bone11, 0, 69, -2.0F, -10.3034F, -33.5485F, 5, 3, 2, 0.0F, true));
@@ -812,8 +809,8 @@ public class ModelAR extends ModelWeapon {
 
         bone12 = new ModelRenderer(this);
         bone12.setRotationPoint(-1.5F, 10.0F, 0.0F);
-        setRotationAngle(bone12, -0.2618F, 0.0F, 0.0F);
         magazine.addChild(bone12);
+        setRotationAngle(bone12, -0.2618F, 0.0F, 0.0F);
         bone12.cubeList.add(new ModelBox(bone12, 0, 69, -2.0F, -5.136F, -37.0916F, 5, 3, 2, 0.0F, true));
         bone12.cubeList.add(new ModelBox(bone12, 0, 69, -1.0F, -5.136F, -38.0916F, 3, 3, 1, 0.0F, true));
         bone12.cubeList.add(new ModelBox(bone12, 0, 69, -2.0F, -5.136F, -34.0916F, 5, 3, 2, 0.0F, true));
@@ -823,8 +820,8 @@ public class ModelAR extends ModelWeapon {
 
         bone13 = new ModelRenderer(this);
         bone13.setRotationPoint(-1.5F, 10.0F, 0.0F);
-        setRotationAngle(bone13, -0.3491F, 0.0F, 0.0F);
         magazine.addChild(bone13);
+        setRotationAngle(bone13, -0.3491F, 0.0F, 0.0F);
         bone13.cubeList.add(new ModelBox(bone13, 0, 69, -2.0F, 0.059F, -37.1823F, 5, 3, 2, 0.0F, true));
         bone13.cubeList.add(new ModelBox(bone13, 0, 69, -1.0F, 0.059F, -38.1823F, 3, 3, 1, 0.0F, true));
         bone13.cubeList.add(new ModelBox(bone13, 0, 69, -2.0F, 0.059F, -34.1823F, 5, 3, 2, 0.0F, true));
@@ -834,8 +831,8 @@ public class ModelAR extends ModelWeapon {
 
         bone14 = new ModelRenderer(this);
         bone14.setRotationPoint(-1.5F, 10.0F, 0.0F);
-        setRotationAngle(bone14, -0.4363F, 0.0F, 0.0F);
         magazine.addChild(bone14);
+        setRotationAngle(bone14, -0.4363F, 0.0F, 0.0F);
         bone14.cubeList.add(new ModelBox(bone14, 0, 69, -2.0F, 5.2421F, -36.8199F, 5, 3, 2, 0.0F, true));
         bone14.cubeList.add(new ModelBox(bone14, 0, 69, -1.0F, 5.2421F, -37.8199F, 3, 3, 1, 0.0F, true));
         bone14.cubeList.add(new ModelBox(bone14, 0, 69, -2.0F, 5.2421F, -33.8199F, 5, 3, 2, 0.0F, true));
@@ -845,8 +842,8 @@ public class ModelAR extends ModelWeapon {
 
         bone15 = new ModelRenderer(this);
         bone15.setRotationPoint(-1.5F, 10.0F, 0.0F);
-        setRotationAngle(bone15, -0.5236F, 0.0F, 0.0F);
         magazine.addChild(bone15);
+        setRotationAngle(bone15, -0.5236F, 0.0F, 0.0F);
         bone15.cubeList.add(new ModelBox(bone15, 0, 69, -2.0F, 10.3739F, -36.0071F, 5, 3, 2, 0.0F, true));
         bone15.cubeList.add(new ModelBox(bone15, 0, 69, -1.0F, 10.3739F, -37.0071F, 3, 3, 1, 0.0F, true));
         bone15.cubeList.add(new ModelBox(bone15, 0, 69, -2.0F, 10.3739F, -33.0071F, 5, 3, 2, 0.0F, true));
@@ -868,8 +865,8 @@ public class ModelAR extends ModelWeapon {
 
         bone48 = new ModelRenderer(this);
         bone48.setRotationPoint(7.4142F, -28.0144F, -14.3409F);
-        setRotationAngle(bone48, 0.0F, 0.0F, -0.5236F);
         ironsights.addChild(bone48);
+        setRotationAngle(bone48, 0.0F, 0.0F, -0.5236F);
         bone48.cubeList.add(new ModelBox(bone48, 66, 12, -0.317F, 0.549F, -0.918F, 1, 1, 1, 0.0F, true));
         bone48.cubeList.add(new ModelBox(bone48, 66, 12, -2.549F, -1.317F, -0.918F, 1, 1, 1, 0.0F, true));
         bone48.cubeList.add(new ModelBox(bone48, 66, 12, 1.549F, -1.683F, -0.918F, 1, 1, 1, 0.0F, true));
@@ -877,8 +874,8 @@ public class ModelAR extends ModelWeapon {
 
         bone49 = new ModelRenderer(this);
         bone49.setRotationPoint(6.4142F, -28.0144F, -14.3409F);
-        setRotationAngle(bone49, 0.0F, 0.0F, 0.5236F);
         ironsights.addChild(bone49);
+        setRotationAngle(bone49, 0.0F, 0.0F, 0.5236F);
         bone49.cubeList.add(new ModelBox(bone49, 66, 12, -0.683F, 0.549F, -0.918F, 1, 1, 1, 0.0F, false));
         bone49.cubeList.add(new ModelBox(bone49, 66, 12, 1.549F, -1.317F, -0.918F, 1, 1, 1, 0.0F, false));
         bone49.cubeList.add(new ModelBox(bone49, 66, 12, -2.549F, -1.683F, -0.918F, 1, 1, 1, 0.0F, false));
@@ -886,14 +883,92 @@ public class ModelAR extends ModelWeapon {
 
         bone = new ModelRenderer(this);
         bone.setRotationPoint(6.9142F, -25.0144F, -16.1409F);
-        setRotationAngle(bone, 0.0F, 0.0F, 0.5236F);
         ironsights.addChild(bone);
+        setRotationAngle(bone, 0.0F, 0.0F, 0.5236F);
         bone.cubeList.add(new ModelBox(bone, 66, 12, 1.4821F, -2.433F, -0.5F, 1, 3, 4, 0.0F, true));
 
         bone47 = new ModelRenderer(this);
         bone47.setRotationPoint(6.9142F, -25.0144F, -16.1409F);
-        setRotationAngle(bone47, 0.0F, 0.0F, -0.5236F);
         ironsights.addChild(bone47);
+        setRotationAngle(bone47, 0.0F, 0.0F, -0.5236F);
         bone47.cubeList.add(new ModelBox(bone47, 66, 12, -2.4821F, -2.433F, -0.5F, 1, 3, 4, 0.0F, false));
+
+        suppressor = new ModelRenderer(this);
+        suppressor.setRotationPoint(0.0F, 9.0F, -111.0F);
+        suppressor.cubeList.add(new ModelBox(suppressor, 70, 68, -1.0F, 1.7321F, -2.1719F, 2, 2, 20, 0.0F, false));
+        suppressor.cubeList.add(new ModelBox(suppressor, 70, 68, -3.7321F, -1.0F, -2.1719F, 3, 2, 20, 0.0F, false));
+        suppressor.cubeList.add(new ModelBox(suppressor, 70, 68, 0.7321F, -1.0F, -2.1719F, 3, 2, 20, 0.0F, true));
+        suppressor.cubeList.add(new ModelBox(suppressor, 70, 68, -1.0F, -3.7321F, -2.1719F, 2, 2, 20, 0.0F, false));
+        suppressor.cubeList.add(new ModelBox(suppressor, 70, 68, -1.0F, 0.7321F, -7.1719F, 2, 3, 5, 0.0F, false));
+        suppressor.cubeList.add(new ModelBox(suppressor, 70, 68, -3.7321F, -1.0F, -7.1719F, 3, 2, 5, 0.0F, false));
+        suppressor.cubeList.add(new ModelBox(suppressor, 70, 68, 0.7321F, -1.0F, -7.1719F, 3, 2, 5, 0.0F, true));
+        suppressor.cubeList.add(new ModelBox(suppressor, 70, 68, -1.0F, -3.7321F, -7.1719F, 2, 3, 5, 0.0F, false));
+
+        supp1 = new ModelRenderer(this);
+        supp1.setRotationPoint(0.0F, 0.0F, 0.0F);
+        suppressor.addChild(supp1);
+        setRotationAngle(supp1, 0.0F, 0.0F, -0.5236F);
+        supp1.cubeList.add(new ModelBox(supp1, 70, 68, -1.0F, -0.2679F, -2.1719F, 2, 4, 20, 0.0F, false));
+        supp1.cubeList.add(new ModelBox(supp1, 70, 68, -3.7321F, -1.0F, -2.1719F, 3, 2, 20, 0.0F, false));
+        supp1.cubeList.add(new ModelBox(supp1, 70, 68, -1.0F, -3.7321F, -2.1719F, 2, 4, 20, 0.0F, true));
+        supp1.cubeList.add(new ModelBox(supp1, 70, 68, 0.7321F, -1.0F, -2.1719F, 3, 2, 20, 0.0F, true));
+        supp1.cubeList.add(new ModelBox(supp1, 70, 68, -1.0F, 0.7321F, -7.1719F, 2, 3, 5, 0.0F, false));
+        supp1.cubeList.add(new ModelBox(supp1, 70, 68, -3.7321F, -1.0F, -7.1719F, 3, 2, 5, 0.0F, false));
+        supp1.cubeList.add(new ModelBox(supp1, 70, 68, -1.0F, -3.7321F, -7.1719F, 2, 3, 5, 0.0F, true));
+        supp1.cubeList.add(new ModelBox(supp1, 70, 68, 0.7321F, -1.0F, -7.1719F, 3, 2, 5, 0.0F, true));
+
+        supp0 = new ModelRenderer(this);
+        supp0.setRotationPoint(0.0F, 0.0F, 0.0F);
+        suppressor.addChild(supp0);
+        setRotationAngle(supp0, 0.0F, 0.0F, 0.5236F);
+        supp0.cubeList.add(new ModelBox(supp0, 70, 68, -1.0F, -0.2679F, -2.1719F, 2, 4, 20, 0.0F, false));
+        supp0.cubeList.add(new ModelBox(supp0, 70, 68, 0.7321F, -1.0F, -2.1719F, 3, 2, 20, 0.0F, false));
+        supp0.cubeList.add(new ModelBox(supp0, 70, 68, -3.7321F, -1.0F, -2.1719F, 3, 2, 20, 0.0F, true));
+        supp0.cubeList.add(new ModelBox(supp0, 70, 68, -1.0F, -3.7321F, -2.1719F, 2, 4, 20, 0.0F, true));
+        supp0.cubeList.add(new ModelBox(supp0, 70, 68, -1.0F, 0.7321F, -7.1719F, 2, 3, 5, 0.0F, false));
+        supp0.cubeList.add(new ModelBox(supp0, 70, 68, 0.7321F, -1.0F, -7.1719F, 3, 2, 5, 0.0F, false));
+        supp0.cubeList.add(new ModelBox(supp0, 70, 68, -3.7321F, -1.0F, -7.1719F, 3, 2, 5, 0.0F, true));
+        supp0.cubeList.add(new ModelBox(supp0, 70, 68, -1.0F, -3.7321F, -7.1719F, 2, 3, 5, 0.0F, true));
+
+        rds = new ModelRenderer(this);
+        rds.setRotationPoint(0.0F, 24.0F, 0.0F);
+        rds.cubeList.add(new ModelBox(rds, 70, 72, -2.0F, -25.0F, -33.0F, 4, 1, 15, 0.0F, false));
+        rds.cubeList.add(new ModelBox(rds, 70, 72, -2.0F, -26.0F, -21.0F, 4, 1, 3, 0.0F, false));
+        rds.cubeList.add(new ModelBox(rds, 114, 103, -2.5F, -24.75F, -20.0F, 5, 1, 1, 0.0F, false));
+        rds.cubeList.add(new ModelBox(rds, 116, 102, -2.5F, -24.75F, -32.5F, 5, 1, 1, 0.0F, false));
+        rds.cubeList.add(new ModelBox(rds, 70, 72, -2.0F, -26.0F, -33.0F, 4, 1, 2, 0.0F, false));
+        rds.cubeList.add(new ModelBox(rds, 70, 72, -3.0F, -31.0F, -33.0F, 6, 1, 2, 0.0F, false));
+        rds.cubeList.add(new ModelBox(rds, 70, 72, -3.0F, -30.0F, -33.0F, 1, 3, 2, 0.0F, false));
+        rds.cubeList.add(new ModelBox(rds, 70, 72, 2.0F, -30.0F, -33.0F, 1, 3, 2, 0.0F, false));
+
+        rds1 = new ModelRenderer(this);
+        rds1.setRotationPoint(11.35F, -4.2F, 0.0F);
+        rds.addChild(rds1);
+        setRotationAngle(rds1, 0.0F, 0.0F, -0.5236F);
+        rds1.cubeList.add(new ModelBox(rds1, 70, 72, -1.0038F, -26.9128F, -33.0F, 1, 2, 2, 0.0F, false));
+
+        rds2 = new ModelRenderer(this);
+        rds2.setRotationPoint(-10.45F, -3.7F, 0.0F);
+        rds.addChild(rds2);
+        setRotationAngle(rds2, 0.0F, 0.0F, 0.5236F);
+        rds2.cubeList.add(new ModelBox(rds2, 70, 72, -1.0038F, -26.9128F, -33.0F, 1, 2, 2, 0.0F, false));
+    }
+
+    @Override
+    public void doRender() {
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        sks.render(1f);
+        magazine.render(1f);
+        ironsights.render(1f);
+        if(PlayerDataFactory.hasActiveSkill(player, Ability.AR_SUPPRESSOR)) suppressor.render(1f);
+        boolean f = PlayerDataFactory.hasActiveSkill(player, Ability.AR_RED_DOT);
+        if(f) rds.render(1f);
+        ironsights.offsetY = f ? 14.0F : 0.0F;
+    }
+
+    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+        modelRenderer.rotateAngleX = x;
+        modelRenderer.rotateAngleY = y;
+        modelRenderer.rotateAngleZ = z;
     }
 }

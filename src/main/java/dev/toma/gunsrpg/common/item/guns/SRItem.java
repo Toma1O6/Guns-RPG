@@ -16,6 +16,7 @@ import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -120,7 +121,8 @@ public class SRItem extends GunItem {
     @SideOnly(Side.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
-        return new AimingAnimation(-0.265F, 0.175F, 0.3F).animateRight(animation -> {
+        boolean scope = PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Ability.SCOPE);
+        return new AimingAnimation(-0.265F, scope ? 0.14F : 0.175F, 0.3F).animateRight(animation -> {
             float f = animation.smooth;
             GlStateManager.translate(-0.265F * f, 0.175F * f, 0.3F * f);
         }).animateLeft(animation -> {
@@ -139,7 +141,7 @@ public class SRItem extends GunItem {
     @Override
     public void onShoot(EntityPlayer player, ItemStack stack) {
         super.onShoot(player, stack);
-        AnimationManager.sendNewAnimation(Animations.REBOLT, new MultiStepAnimation.ReboltSR(this.getFirerate(player)));
+        AnimationManager.sendNewAnimation(Animations.REBOLT, new Animations.ReboltSR(this.getFirerate(player)));
         NetworkManager.toServer(new SPacketSetAiming(false));
     }
 }

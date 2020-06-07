@@ -2,8 +2,10 @@ package dev.toma.gunsrpg.ai;
 
 import dev.toma.gunsrpg.common.entity.EntityZombieGunner;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityAIGunAttack extends EntityAIBase {
 
@@ -41,7 +43,7 @@ public class EntityAIGunAttack extends EntityAIBase {
         double dist = Math.sqrt(entity.getDistanceSq(target));
         GunItem gun = (GunItem) entity.getHeldItemMainhand().getItem();
         double attackRange = ATTACK_RANGE_TABLE[gun.getGunType().ordinal()];
-        boolean canSee = entity.getEntitySenses().canSee(target);
+        boolean canSee = canSeeEntity(target);
         if(dist <= attackRange && canSee) {
             entity.getNavigator().clearPath();
         } else entity.getNavigator().tryMoveToEntityLiving(target, 1.0D);
@@ -55,5 +57,14 @@ public class EntityAIGunAttack extends EntityAIBase {
 
     private boolean hasGun() {
         return entity.getHeldItemMainhand().getItem() instanceof GunItem;
+    }
+
+    private boolean canSeeEntity(EntityLivingBase target) {
+        return ModUtils.raytraceBlocksIgnoreGlass(
+                entity.world,
+                new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ),
+                new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ),
+                state -> state.getBlock().isOpaqueCube(state)
+        ) == null;
     }
 }

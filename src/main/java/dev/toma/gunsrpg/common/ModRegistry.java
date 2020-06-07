@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.baked.*;
 import dev.toma.gunsrpg.client.render.item.*;
 import dev.toma.gunsrpg.common.block.BlockAirdrop;
@@ -22,6 +24,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.registry.IRegistry;
@@ -36,6 +39,7 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 import toma.config.util.RegisterConfigEvent;
 
@@ -163,10 +167,28 @@ public class ModRegistry {
             IForgeRegistry<Item> registry = event.getRegistry();
             registry.registerAll(
                     new GRPGItem("amethyst"),
-                    new DebuffHeal("antidotum_pills", 32, () -> GRPGSounds.USE_ANTIDOTUM_PILLS,"These pills heal 40% of poison", data -> data.getDebuffs()[0].isActive(), data -> data.getDebuffs()[0].heal(40)),
-                    new DebuffHeal("vaccine", 32, () -> GRPGSounds.USE_VACCINE, "This vaccine heals 50% of infection", data -> data.getDebuffs()[1].isActive(), data -> data.getDebuffs()[1].heal(50)),
-                    new DebuffHeal("plaster_cast", 32, () -> GRPGSounds.USE_PLASTER_CAST, "Plaster cast heals 35% of broken bones", data -> data.getDebuffs()[2].isActive(), data -> data.getDebuffs()[2].heal(35)),
-                    new DebuffHeal("bandage", 50, () -> GRPGSounds.USE_BANDAGE, "Bandages can stop 25% of bleeding", data -> data.getDebuffs()[3].isActive(), data -> data.getDebuffs()[3].heal(25)),
+                    new DebuffHeal("antidotum_pills", 32, () -> GRPGSounds.USE_ANTIDOTUM_PILLS, "These pills heal 40% of poison", data -> data.getDebuffs()[0].isActive(), data -> data.getDebuffs()[0].heal(40)),
+                    new DebuffHeal("vaccine", 32, () -> GRPGSounds.USE_VACCINE, "This vaccine heals 50% of infection", data -> data.getDebuffs()[1].isActive(), data -> data.getDebuffs()[1].heal(50)) {
+                        @SideOnly(Side.CLIENT)
+                        @Override
+                        public Animation getUseAnimation(ItemStack stack) {
+                            return new Animations.Vaccine(this.getMaxItemUseDuration(stack));
+                        }
+                    },
+                    new DebuffHeal("plaster_cast", 32, () -> GRPGSounds.USE_PLASTER_CAST, "Plaster cast heals 35% of broken bones", data -> data.getDebuffs()[2].isActive(), data -> data.getDebuffs()[2].heal(35)) {
+                        @SideOnly(Side.CLIENT)
+                        @Override
+                        public Animation getUseAnimation(ItemStack stack) {
+                            return new Animations.Splint(this.getMaxItemUseDuration(stack));
+                        }
+                    },
+                    new DebuffHeal("bandage", 50, () -> GRPGSounds.USE_BANDAGE, "Bandages can stop 25% of bleeding", data -> data.getDebuffs()[3].isActive(), data -> data.getDebuffs()[3].heal(25)) {
+                        @SideOnly(Side.CLIENT)
+                        @Override
+                        public Animation getUseAnimation(ItemStack stack) {
+                            return new Animations.Bandage(this.getMaxItemUseDuration(stack));
+                        }
+                    },
                     new ItemAmmo("wooden_ammo_9mm", AmmoType._9MM, AmmoMaterial.WOOD, Ability.PISTOL_WOOD_AMMO, () -> GRPGItems.PISTOL),
                     new ItemAmmo("wooden_ammo_45acp", AmmoType._45ACP, AmmoMaterial.WOOD, Ability.SMG_WOOD_AMMO, () -> GRPGItems.SMG),
                     new ItemAmmo("wooden_ammo_556mm", AmmoType._556MM, AmmoMaterial.WOOD, Ability.AR_WOOD_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
@@ -229,7 +251,8 @@ public class ModRegistry {
                     makeBuilder("airdrop", EntityAirdrop.class).tracker(256, 1, true).build(),
                     makeBuilder("explosive_skeleton", EntityExplosiveSkeleton.class).tracker(80, 3, true).egg(0xB46F67, 0x494949).spawn(EnumCreatureType.MONSTER, 15, 1, 3, ForgeRegistries.BIOMES).build(),
                     makeBuilder("explosive_arrow", EntityExplosiveArrow.class).tracker(64, 20, true).build(),
-                    makeBuilder("zombie_gunner", EntityZombieGunner.class).tracker(80, 3, true).egg(0x00aa00, 0xdbdb00).spawn(EnumCreatureType.MONSTER, 35, 2, 5, ForgeRegistries.BIOMES).build()
+                    makeBuilder("zombie_gunner", EntityZombieGunner.class).tracker(80, 3, true).egg(0x00aa00, 0xdbdb00).spawn(EnumCreatureType.MONSTER, 35, 2, 5, ForgeRegistries.BIOMES).build(),
+                    makeBuilder("bloodmoon_golem", EntityBloodmoonGolem.class).tracker(80, 3, true).egg(0x444444, 0x990000).build()
             );
         }
 

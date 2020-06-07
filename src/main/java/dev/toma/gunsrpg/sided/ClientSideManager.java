@@ -2,14 +2,8 @@ package dev.toma.gunsrpg.sided;
 
 import dev.toma.gunsrpg.client.ModKeybinds;
 import dev.toma.gunsrpg.client.animation.ScriptLoader;
-import dev.toma.gunsrpg.client.render.RenderAirdrop;
-import dev.toma.gunsrpg.client.render.RenderExplosiveArrow;
-import dev.toma.gunsrpg.client.render.RenderExplosiveSkeleton;
-import dev.toma.gunsrpg.client.render.RenderZombieGunner;
-import dev.toma.gunsrpg.common.entity.EntityAirdrop;
-import dev.toma.gunsrpg.common.entity.EntityExplosiveArrow;
-import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
-import dev.toma.gunsrpg.common.entity.EntityZombieGunner;
+import dev.toma.gunsrpg.client.render.*;
+import dev.toma.gunsrpg.common.entity.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -26,6 +20,7 @@ public class ClientSideManager extends SideManager {
         RenderingRegistry.registerEntityRenderingHandler(EntityExplosiveSkeleton.class, RenderExplosiveSkeleton::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityExplosiveArrow.class, RenderExplosiveArrow::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityZombieGunner.class, RenderZombieGunner::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBloodmoonGolem.class, RenderBloodmoonGolem::new);
         ModKeybinds.registerKeybinds();
         MinecraftForge.EVENT_BUS.register(new ModKeybinds());
         ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(scriptLoader);

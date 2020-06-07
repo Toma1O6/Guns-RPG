@@ -27,6 +27,15 @@ public class AnimationManager {
         return ANIMATIONS.get(ID);
     }
 
+    public static boolean shouldCancelItemRender() {
+        for(Animation animation : ANIMATIONS.values()) {
+            if(animation.cancelsItemRender()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void animateItemHands(float partialTicks) {
         ANIMATIONS.forEach((id, animation) -> animation.animateItemHands(partialTicks));
     }

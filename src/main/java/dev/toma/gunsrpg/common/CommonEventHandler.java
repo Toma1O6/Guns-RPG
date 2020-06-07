@@ -26,6 +26,7 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.EnumFacing;
@@ -34,6 +35,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -49,6 +51,13 @@ import java.util.*;
 
 @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
 public class CommonEventHandler {
+
+    @SubscribeEvent
+    public static void playSoundAtEntity(PlaySoundAtEntityEvent event) {
+        if(event.getSound() == SoundEvents.ITEM_ARMOR_EQUIP_GENERIC) {
+            event.setCanceled(true);
+        }
+    }
 
     @SubscribeEvent
     public static void loadChunk(ChunkEvent.Load event) {

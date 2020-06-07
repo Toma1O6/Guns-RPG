@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.client;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.client.animation.Animations;
+import dev.toma.gunsrpg.client.animation.IHandRenderer;
 import dev.toma.gunsrpg.client.animation.impl.SprintingAnimation;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -25,19 +26,15 @@ import dev.toma.gunsrpg.network.packet.SPacketSetShooting;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderSpecificHandEvent;
@@ -62,6 +59,7 @@ public class ClientEventHandler {
     }, EntityPlayer::isSprinting);
 
     private static final ResourceLocation ICON_BACKGROUND = GunsRPG.makeResource("textures/icons/background.png");
+    private static final ResourceLocation SCOPE = GunsRPG.makeResource("textures/icons/scope_overlay.png");
     static float prevAimingProgress;
 
     @SubscribeEvent
@@ -74,7 +72,11 @@ public class ClientEventHandler {
                 event.setCanceled(true);
                 PlayerData data = PlayerDataFactory.get(player);
                 if(data.getAimInfo().progress >= 0.9F) {
-                    if((PlayerDataFactory.hasActiveSkill(player, Ability.SMG_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.SMG)) {
+                    if(stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Ability.SCOPE)) {
+                        int left = resolution.getScaledWidth() / 2 - 16;
+                        int top = resolution.getScaledHeight() / 2 - 16;
+                        ModUtils.renderTexture(left, top, left + 32, top + 32, SCOPE);
+                    } else if((PlayerDataFactory.hasActiveSkill(player, Ability.SMG_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.SMG) || (PlayerDataFactory.hasActiveSkill(player, Ability.AR_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.ASSAULT_RIFLE)) {
                         ScopeData scopeData = data.getScopeData();
                         float left = resolution.getScaledWidth() / 2f - 8f;
                         float top = resolution.getScaledHeight() / 2f - 8f;
@@ -169,6 +171,8 @@ public class ClientEventHandler {
         }
     }
 
+    public static float preAimFov = 70.0F;
+
     @SubscribeEvent
     public static void mouseInputEvent(InputEvent.MouseInputEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
@@ -184,9 +188,15 @@ public class ClientEventHandler {
                     } else {
                         ShootingManager.shootSingle(player, player.getHeldItemMainhand());
                     }
-                } else if (settings.keyBindUseItem.isPressed() && AnimationManager.getAnimationByID(Animations.REBOLT) == null) {
+                } else if (settings.keyBindUseItem.isPressed() && AnimationManager.getAnimationByID(Animations.REBOLT) == null && !player.isSprinting()) {
                     boolean aim = !PlayerDataFactory.get(player).getAimInfo().aiming;
-                    if (aim) AnimationManager.sendNewAnimation(Animations.AIMING, item.createAimAnimation());
+                    if (aim) {
+                        preAimFov = settings.fovSetting;
+                        if(item == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Ability.SCOPE)) {
+                            settings.fovSetting = 15.0F;
+                        }
+                        AnimationManager.sendNewAnimation(Animations.AIMING, item.createAimAnimation());
+                    } else settings.fovSetting = preAimFov;
                     NetworkManager.toServer(new SPacketSetAiming(aim));
                 }
             }
@@ -195,14 +205,17 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void renderHandEvent(RenderSpecificHandEvent event) {
-        if (event.getItemStack().getItem() instanceof GunItem) {
+        if (event.getItemStack().getItem() instanceof IHandRenderer) {
             float partial = event.getPartialTicks();
             AnimationManager.animateItemHands(partial);
             GlStateManager.pushMatrix();
             AnimationManager.animateHands(partial);
-            renderGunFirstPerson(event.getEquipProgress(), (GunItem) event.getItemStack().getItem(), partial);
+            renderGunFirstPerson(event.getEquipProgress(), (IHandRenderer) event.getItemStack().getItem(), partial);
             GlStateManager.popMatrix();
             AnimationManager.animateItem(partial);
+            if(AnimationManager.shouldCancelItemRender()) {
+                event.setCanceled(true);
+            }
         }
     }
 
@@ -219,7 +232,7 @@ public class ClientEventHandler {
         AnimationManager.renderTick(event.renderTickTime, event.phase);
     }
 
-    private static void renderGunFirstPerson(float equipProgress, GunItem item, float partial) {
+    private static void renderGunFirstPerson(float equipProgress, IHandRenderer handRenderer, float partial) {
         float yOff = 0.5F * equipProgress;
         GlStateManager.pushMatrix();
         GlStateManager.disableCull();
@@ -228,39 +241,18 @@ public class ClientEventHandler {
             GlStateManager.pushMatrix();
             {
                 AnimationManager.animateRightArm(partial);
-                item.renderRightArm();
+                handRenderer.renderRightArm();
             }
             GlStateManager.popMatrix();
             GlStateManager.pushMatrix();
             {
                 AnimationManager.animateLeftArm(partial);
-                item.renderLeftArm();
+                handRenderer.renderLeftArm();
             }
             GlStateManager.popMatrix();
         }
         GlStateManager.popMatrix();
         GlStateManager.enableCull();
-    }
-
-    private static void renderArm(EnumHandSide side) {
-        Minecraft mc = Minecraft.getMinecraft();
-        mc.getTextureManager().bindTexture(mc.player.getLocationSkin());
-        Render<AbstractClientPlayer> render = mc.getRenderManager().getEntityRenderObject(mc.player);
-        RenderPlayer renderplayer = (RenderPlayer) render;
-        GlStateManager.pushMatrix();
-        float f = side == EnumHandSide.RIGHT ? 1.0F : -1.0F;
-        GlStateManager.rotate(92.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(45.0F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(f * -41.0F, 0.0F, 0.0F, 1.0F);
-        GlStateManager.translate(f * 0.3F, -1.1F, 0.45F);
-
-        if (side == EnumHandSide.RIGHT) {
-            renderplayer.renderRightArm(mc.player);
-        } else {
-            renderplayer.renderLeftArm(mc.player);
-        }
-
-        GlStateManager.popMatrix();
     }
 
     private static class RisingEdgeChecker {

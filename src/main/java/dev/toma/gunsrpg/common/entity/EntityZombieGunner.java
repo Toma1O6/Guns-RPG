@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -130,6 +131,19 @@ public class EntityZombieGunner extends EntityMob {
         Map.Entry<GunItem, Integer> random = list.get(rand.nextInt(list.size()));
         this.rateOfFire = random.getValue();
         setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(random.getKey()));
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setInteger("firerate", rateOfFire);
+        return compound;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        rateOfFire = compound.getInteger("firerate");
     }
 
     private static Map<GunItem, Integer> populateAndGet() {

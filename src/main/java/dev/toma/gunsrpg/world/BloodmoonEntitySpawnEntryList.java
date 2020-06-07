@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.world;
 
+import dev.toma.gunsrpg.common.entity.EntityBloodmoonGolem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.*;
@@ -50,6 +51,11 @@ public class BloodmoonEntitySpawnEntryList {
             EntityWitherSkeleton witherSkeleton = new EntityWitherSkeleton(world);
             witherSkeleton.setPosition(entity.posX, entity.posY, entity.posZ);
             return witherSkeleton;
+        });
+        register(EntityZombie.class, 7, (world, entity) -> {
+            EntityBloodmoonGolem golem = new EntityBloodmoonGolem(world);
+            golem.setPosition(entity.posX, entity.posY, entity.posZ);
+            return golem;
         });
     }
 }

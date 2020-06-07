@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.client.animation.impl;
 
 import com.google.gson.*;
 import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -77,6 +78,15 @@ public class SimpleAnimation implements Animation {
 
     private void calculateSmoothValue(float partialTicks) {
         smooth = prev + (current - prev) * partialTicks;
+    }
+
+    /**
+     * Not called, override {@link MultiStepAnimation#cancelsItemRender()}
+     * @return whether item should be rendered
+     */
+    @Override
+    public boolean cancelsItemRender() {
+        return false;
     }
 
     public static class Builder {
