@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.animation;
 
 import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
+import dev.toma.gunsrpg.common.ModRegistry;
 import net.minecraft.client.renderer.GlStateManager;
 
 public class Animations {
@@ -46,6 +47,126 @@ public class Animations {
             addStep(0.4F, 0.6F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F)).leftHand(f -> GlStateManager.translate(0.0F, 0.0F, 0.2F * f)).create());
             addStep(0.6F, 0.8F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F)).leftHand(f -> GlStateManager.translate(0.0F, 0.0F, 0.2F - 0.2F * f)).create());
             addStep(0.0F, 1.0F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.rotate(5.0F - 5.0F * f, 1.0F, 0.0F, 0.0F)).create());
+        }
+    }
+
+    public static class ReloadDual extends MultiStepAnimation {
+
+        public ReloadDual(int time) {
+            super(time);
+            init();
+        }
+
+        @Override
+        public void createAnimationSteps() {
+            addStep(0.0F, 0.05F, SimpleAnimation.newSimpleAnimation().item(f -> {
+                if(AnimationManager.renderingDualWield) {
+                    GlStateManager.rotate(-90.0F * f, 1.0F, 0.0F, 0.0F);
+                }
+            }).leftHand(f -> GlStateManager.rotate(-90.0F * f, 1.0F, 0.0F, 0.0F)).create());
+            addStep(0.05F, 0.1F, SimpleAnimation.newSimpleAnimation().item(f -> {
+                if(AnimationManager.renderingDualWield) {
+                    GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+                }
+            }).leftHand(f -> {
+                GlStateManager.translate(0.25F * f, 0.0F, 0.1F * f);
+                GlStateManager.rotate(-90.0F + 90.0F * f, 1.0F, 0.0F, 0.0F);
+                GlStateManager.rotate(-45.0F * f, 0.0F, 1.0F, 0.0F);
+            }).create());
+            addStep(0.1F, 0.2F, SimpleAnimation.newSimpleAnimation().item(f -> {
+                if(AnimationManager.renderingDualWield) {
+                    GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+                }
+            }).leftHand(f -> {
+                GlStateManager.translate(0.25F, 0.0F, 0.1F);
+                GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
+            }).itemHand(f -> {
+                GlStateManager.translate(0.0F, 0.0F, 0.1F * f);
+                GlStateManager.rotate(10.0F * f, 1.0F, 0.0F, 0.0F);
+            }).create());
+            addStep(0.2F, 0.35F, SimpleAnimation.newSimpleAnimation().item(f -> {
+                if(AnimationManager.renderingDualWield) {
+                    GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+                }
+            }).itemHand(f -> {
+                GlStateManager.translate(0.0F, 0.0F, 0.1F);
+                GlStateManager.rotate(10.0F, 1.0F, 0.0F, 0.0F);
+            }).leftHand(f -> {
+                GlStateManager.rotate(-60.0F * f, 1.0F, 0.0F, 0.0F);
+                GlStateManager.translate(0.25F, 0.0F, 0.1F);
+                GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
+            }).create());
+            addStep(0.45F, 0.55F, SimpleAnimation.newSimpleAnimation().item(f -> {
+                if(AnimationManager.renderingDualWield) {
+                    GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+                }
+            }).itemHand(f -> {
+                GlStateManager.translate(0.0F, 0.0F, 0.1F);
+                GlStateManager.rotate(10.0F, 1.0F, 0.0F, 0.0F);
+            }).leftHand(f -> {
+                GlStateManager.rotate(-60.0F + 60.0F * f, 1.0F, 0.0F, 0.0F);
+                GlStateManager.translate(0.25F, 0.0F, 0.1F);
+                GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
+            }).create());
+            addStep(0.55F, 0.6F, SimpleAnimation.newSimpleAnimation().item(f -> {
+                if(AnimationManager.renderingDualWield) {
+                    GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+                }
+            }).itemHand(f -> {
+                GlStateManager.translate(0.0F, 0.0F, 0.1F);
+                GlStateManager.rotate(10.0F - 90.0F * f, 1.0F, 0.0F, 0.0F);
+            }).leftHand(f -> {
+                GlStateManager.translate(0.25F, 0.0F, 0.1F);
+                GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
+            }).create());
+            addStep(0.6F, 0.7F, SimpleAnimation.newSimpleAnimation().item(f -> {
+                if(AnimationManager.renderingDualWield) {
+                    GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+                }
+            }).itemHand(f -> {
+                GlStateManager.translate(0.0F, 0.0F, 0.1F);
+                GlStateManager.rotate(-80.0F + 90.0F * f, 1.0F, 0.0F, 0.0F);
+            }).leftHand(f -> {
+                GlStateManager.translate(0.25F, 0.0F, 0.1F);
+                GlStateManager.rotate(-90.0F * f, 1.0F, 0.0F, 0.0F);
+                GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
+            }).create());
+            addStep(0.7F, 0.8F, SimpleAnimation.newSimpleAnimation().item(f -> {
+                if(AnimationManager.renderingDualWield) {
+                    GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+                }
+            }).itemHand(f -> {
+                GlStateManager.translate(0.0F, 0.0F, 0.1F);
+                GlStateManager.rotate(10.0F, 1.0F, 0.0F, 0.0F);
+            }).leftHand(f -> {
+                GlStateManager.translate(0.25F, 0.0F, 0.1F);
+                GlStateManager.rotate(-90.0F + 90.0F * f, 1.0F, 0.0F, 0.0F);
+                GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
+            }).create());
+            addStep(0.8F, 0.9F, SimpleAnimation.newSimpleAnimation().item(f -> {
+                if(AnimationManager.renderingDualWield) {
+                    GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+                }
+            }).itemHand(f -> {
+                GlStateManager.translate(0.0F, 0.0F, 0.1F);
+                GlStateManager.rotate(10.0F - 10.0F * f, 1.0F, 0.0F, 0.0F);
+            }).leftHand(f -> {
+                GlStateManager.translate(0.25F - 0.25F * f, 0.0F, 0.1F - 0.1F * f);
+                GlStateManager.rotate(-90.0F * f, 1.0F, 0.0F, 0.0F);
+                GlStateManager.rotate(-45.0F + 45.0F * f, 0.0F, 1.0F, 0.0F);
+            }).create());
+            addStep(0.9F, 1.0F, SimpleAnimation.newSimpleAnimation().item(f -> {
+                if(AnimationManager.renderingDualWield) {
+                    GlStateManager.rotate(-90.0F + 90.0F * f, 1.0F, 0.0F, 0.0F);
+                }
+            }).leftHand(f -> GlStateManager.rotate(-90.0F + 90.0F * f, 1.0F, 0.0F, 0.0F)).create());
+        }
+
+        @Override
+        public void onStepChanged() {
+            if(index == 4) {
+                this.getPlayer().playSound(ModRegistry.GRPGItems.PISTOL.getReloadSound(this.getPlayer()), 1.0F, 1.0F);
+            }
         }
     }
 
@@ -139,17 +260,6 @@ public class Animations {
             init();
         }
 
-        /*
-        15...20
-        25...30
-        35...40
-        45...50
-
-        55...65
-        40...75
-        45...85
-        50...95
-         */
         @Override
         public void createAnimationSteps() {
             addStep(0.0F, 0.10F, SimpleAnimation.newSimpleAnimation().rightHand(f -> {

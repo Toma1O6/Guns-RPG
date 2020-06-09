@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.animation.impl;
 
 import dev.toma.gunsrpg.client.animation.AbstractAnimation;
+import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.relauncher.Side;
@@ -46,7 +47,7 @@ public class AimingAnimation extends AbstractAnimation {
 
     @Override
     public void animateItem(float partialTicks) {
-        GlStateManager.translate(animation.x * smooth, animation.y * smooth, animation.z * smooth);
+        GlStateManager.translate(AnimationManager.renderingDualWield ? -animation.x * smooth : animation.x * smooth, animation.y * smooth, animation.z * smooth);
     }
 
     @Override

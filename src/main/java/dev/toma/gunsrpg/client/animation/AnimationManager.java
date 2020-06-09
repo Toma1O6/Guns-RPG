@@ -14,6 +14,7 @@ public class AnimationManager {
 
     public static final Map<String, List<Pair<MultiStepAnimation.Range, Supplier<SimpleAnimation>>>> SCRIPT_ANIMATIONS = new HashMap<>();
     private static final Map<Integer, Animation> ANIMATIONS = new HashMap<>();
+    public static boolean renderingDualWield = false;
 
     public static void sendNewAnimation(int ID, Animation animation) {
         ANIMATIONS.put(ID, animation);

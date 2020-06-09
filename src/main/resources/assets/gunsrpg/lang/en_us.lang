@@ -62,13 +62,24 @@ death.attack.poison=%1$s has died from poisoning
 death.attack.infection=%1$s has died from infection
 death.attack.bleeding=%1$s has bled out
 
+entity.gunsrpg:bullet.name=Bullet
+entity.gunsrpg:airdrop.name=Airdrop
 entity.gunsrpg:explosive_skeleton.name=Explosive Skeleton
+entity.gunsrpg:explosive_arrow.name=Explosive Arrow
+entity.gunsrpg:zombie_gunner.name=Zombie Gunner
+entity.gunsrpg:bloodmoon_golem.name=Bloodmoon Golem
 
 advancements.grpg.blast_furnace.title=Blast Furnace
 advancements.grpg.blast_furnace.description=Obtain Blast Furnace
 
 itemGroup.grpg.items=Items
 itemGroup.grpg.blocks=Blocks
+
+gunsrpg.category.keys=GunsRPG Binds
+gunsrpg.key.class_list=View Skill Tree
+gunsrpg.key.reload=Reload
+gunsrpg.key.sight_color=Change Sight Color
+gunsrpg.key.sight_type=Change Sight Shape
 
 container.airdrop=Airdrop
 container.blast_furnace=Blast Furnace

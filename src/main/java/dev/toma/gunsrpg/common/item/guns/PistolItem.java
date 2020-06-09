@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.common.ModRegistry;
@@ -11,6 +12,7 @@ import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -71,7 +73,8 @@ public class PistolItem extends GunItem {
 
     @Override
     public int getMaxAmmo(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_EXTENDED) ? 13 : 7;
+        boolean extended = PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_EXTENDED);
+        return PlayerDataFactory.hasActiveSkill(player, Ability.DUAL_WIELD) ? extended ? 26 : 14 : extended ? 13 : 7;
     }
 
     @Override
@@ -81,7 +84,8 @@ public class PistolItem extends GunItem {
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_QUICKDRAW) ? 25 : 35;
+        boolean quickdraw = PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_QUICKDRAW);
+        return PlayerDataFactory.hasActiveSkill(player, Ability.DUAL_WIELD) ? quickdraw ? 50 : 70 : quickdraw ? 25 : 35;
     }
 
     @Override
@@ -101,7 +105,13 @@ public class PistolItem extends GunItem {
     @SideOnly(Side.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
-        return new AimingAnimation(-0.54F, 0.06F, 0.0F).animateRight(animation -> {
+        return this.isDualWieldActive() ? new AimingAnimation(-0.3F, 0.0F, 0.0F).animateRight(animation -> {
+            float f = animation.smooth;
+            GlStateManager.rotate(16.0F * f, 0.0F, 1.0F, 0.0F);
+        }).animateLeft(animation -> {
+            float f = animation.smooth;
+            GlStateManager.rotate(-16.0F * f, 0.0F, 1.0F, 0.0F);
+        }) : new AimingAnimation(-0.54F, 0.06F, 0.0F).animateRight(animation -> {
             float f = animation.smooth;
             GlStateManager.translate(-0.18F * f, 0.0F, 0.1F * f);
             GlStateManager.rotate(3.0F * f, 1.0F, 0.0F, 0.0F);
@@ -117,7 +127,7 @@ public class PistolItem extends GunItem {
     @SideOnly(Side.CLIENT)
     @Override
     public Animation createReloadAnimation(EntityPlayer player) {
-        return new MultiStepAnimation.Configurable(this.getReloadTime(player), "pistol_reload");
+        return this.isDualWieldActive() ? new Animations.ReloadDual(this.getReloadTime(player)) : new MultiStepAnimation.Configurable(this.getReloadTime(player), "pistol_reload");
     }
 
     @SideOnly(Side.CLIENT)
@@ -132,9 +142,21 @@ public class PistolItem extends GunItem {
     @SideOnly(Side.CLIENT)
     @Override
     public void renderLeftArm() {
+        if(this.isDualWieldActive()) {
+            GlStateManager.translate(-0.05F, -0.05F, -0.15F);
+            GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(10F, 0F, 1.0F, 0.0F);
+            renderArm(EnumHandSide.LEFT);
+            return;
+        }
         GlStateManager.translate(0.35F, -0.08F, 0.05F);
         GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F);
         GlStateManager.rotate(-30.0F, 0.0F, 1.0F, 0.0F);
         renderArm(EnumHandSide.LEFT);
+    }
+
+    @SideOnly(Side.CLIENT)
+    private boolean isDualWieldActive() {
+        return PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Ability.DUAL_WIELD);
     }
 }

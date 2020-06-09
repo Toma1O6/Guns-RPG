@@ -143,6 +143,7 @@ public class ModRegistry {
         public static final SoundEvent AR_RELOAD = null;
         public static final SoundEvent SR_RELOAD = null;
         public static final SoundEvent SR_RELOAD_SHORT = null;
+        public static final SoundEvent SR_BOLT = null;
         public static final SoundEvent SG_RELOAD = null;
         public static final SoundEvent SG_RELOAD_SHORT = null;
     }
@@ -280,6 +281,7 @@ public class ModRegistry {
                     sound("ar_reload"),
                     sound("sr_reload"),
                     sound("sr_reload_short"),
+                    sound("sr_bolt"),
                     sound("sg_reload"),
                     sound("sg_reload_short")
             );

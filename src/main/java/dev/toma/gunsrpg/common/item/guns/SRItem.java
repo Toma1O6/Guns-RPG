@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.animation.Animation;
 import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.client.animation.Animations;
@@ -22,6 +23,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -143,5 +145,6 @@ public class SRItem extends GunItem {
         super.onShoot(player, stack);
         AnimationManager.sendNewAnimation(Animations.REBOLT, new Animations.ReboltSR(this.getFirerate(player)));
         NetworkManager.toServer(new SPacketSetAiming(false));
+        GunsRPG.sideManager.playDelayedSound((float) player.posX, (float) player.posY, (float) player.posZ, 1.0F, 1.0F, ModRegistry.GRPGSounds.SR_BOLT, SoundCategory.MASTER, 15);
     }
 }

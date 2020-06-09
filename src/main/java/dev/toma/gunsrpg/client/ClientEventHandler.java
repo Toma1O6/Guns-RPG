@@ -26,6 +26,7 @@ import dev.toma.gunsrpg.network.packet.SPacketSetShooting;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -35,6 +36,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderSpecificHandEvent;
@@ -205,16 +207,35 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void renderHandEvent(RenderSpecificHandEvent event) {
-        if (event.getItemStack().getItem() instanceof IHandRenderer) {
-            float partial = event.getPartialTicks();
+        ItemStack stack = event.getItemStack();
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        float partial = event.getPartialTicks();
+        if (stack.getItem() instanceof IHandRenderer) {
+            event.setCanceled(true);
+            float pitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * event.getPartialTicks();
+            float swing = event.getSwingProgress();
+            float equip = event.getEquipProgress();
+            GlStateManager.pushMatrix();
+            AnimationManager.renderingDualWield = false;
             AnimationManager.animateItemHands(partial);
             GlStateManager.pushMatrix();
             AnimationManager.animateHands(partial);
             renderGunFirstPerson(event.getEquipProgress(), (IHandRenderer) event.getItemStack().getItem(), partial);
             GlStateManager.popMatrix();
             AnimationManager.animateItem(partial);
-            if(AnimationManager.shouldCancelItemRender()) {
-                event.setCanceled(true);
+            if(!AnimationManager.shouldCancelItemRender()) Minecraft.getMinecraft().getItemRenderer().renderItemInFirstPerson(player, partial, pitch, EnumHand.MAIN_HAND, swing, stack, equip);
+            GlStateManager.popMatrix();
+            if(stack.getItem() == ModRegistry.GRPGItems.PISTOL && PlayerDataFactory.hasActiveSkill(player, Ability.DUAL_WIELD)) {
+                GlStateManager.pushMatrix();
+                AnimationManager.renderingDualWield = true;
+                AnimationManager.animateItemHands(partial);
+                GlStateManager.pushMatrix();
+                AnimationManager.animateHands(partial);
+                renderGunFirstPerson(event.getEquipProgress(), (IHandRenderer) event.getItemStack().getItem(), partial);
+                GlStateManager.popMatrix();
+                AnimationManager.animateItem(partial);
+                Minecraft.getMinecraft().getItemRenderer().renderItemInFirstPerson(player, partial, pitch, EnumHand.OFF_HAND, swing, stack, equip);
+                GlStateManager.popMatrix();
             }
         }
     }

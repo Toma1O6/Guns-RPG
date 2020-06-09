@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.entity;
 
 import com.google.common.base.Predicate;
+import dev.toma.gunsrpg.common.GunDamageSource;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
@@ -42,6 +43,9 @@ public class EntityBullet extends Entity {
     private float ogDamage;
     private float damage;
 
+    private boolean canPenetrateEntity;
+    private Entity lastHitEntity;
+
     public EntityBullet(World worldIn) {
         super(worldIn);
         this.setSize(0.1f, 0.1f);
@@ -60,6 +64,10 @@ public class EntityBullet extends Entity {
         this.damage = ogDamage;
         Vec3d direct = getVectorForRotation(shooter.rotationPitch, shooter.getRotationYawHead());
         this.setPosition(shooter.posX, shooter.posY + shooter.getEyeHeight(), shooter.posZ);
+        if(shooter instanceof EntityPlayer) {
+            EntityPlayer p = (EntityPlayer) shooter;
+            canPenetrateEntity = gun == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(p, Ability.PENETRATOR);
+        }
     }
 
     public void fire(float pitch, float yaw, float velocity) {
@@ -100,7 +108,26 @@ public class EntityBullet extends Entity {
             }
             this.onEntityHit(isHeadshot, entity);
             entity.hurtResistantTime = 0;
-            this.setDead();
+            if(canPenetrateEntity && lastHitEntity == null) {
+                lastHitEntity = entity;
+                damage /= 2;
+                Vec3d startVec = new Vec3d(posX, posY, posZ);
+                Vec3d nextPos = new Vec3d(motionX, motionY, motionZ).add(startVec);
+                RayTraceResult trace = world.rayTraceBlocks(nextPos, startVec, false, true, false);
+                Entity e = this.findEntityOnPath(nextPos, startVec, trace);
+                if(e != null) {
+                    trace = new RayTraceResult(e);
+                }
+                if(trace != null && rayTraceResult.entityHit instanceof EntityPlayer) {
+                    EntityPlayer player = (EntityPlayer) rayTraceResult.entityHit;
+                    if(shooter instanceof EntityPlayer && !((EntityPlayer)shooter).canAttackPlayer(player)) {
+                        trace = null;
+                    }
+                }
+                if(trace != null) {
+                    this.onBulletCollided(trace);
+                }
+            } else this.setDead();
         } else if(rayTraceResult.getBlockPos() != null && !world.isRemote) {
             BlockPos pos = rayTraceResult.getBlockPos();
             IBlockState state = world.getBlockState(pos);
@@ -184,7 +211,7 @@ public class EntityBullet extends Entity {
         double d0 = 0.0D;
         for (int i = 0; i < list.size(); ++i) {
             Entity entity1 = list.get(i);
-            if (entity1 != this.shooter) {
+            if (entity1 != this.shooter && entity1 != this.lastHitEntity) {
                 AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox();
                 RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(start, end);
                 if (raytraceresult != null) {
@@ -210,7 +237,7 @@ public class EntityBullet extends Entity {
         if (entity instanceof EntityLivingBase) {
             EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
             boolean dead = entityLivingBase.getHealth() - damage <= 0;
-            entity.attackEntityFrom(DamageSource.causeMobDamage(shooter), damage);
+            entity.attackEntityFrom(new GunDamageSource(shooter, this, stack), damage);
             if(stack.getItem() instanceof GunItem) {
                 if(dead) {
                     ((GunItem) stack.getItem()).onKillEntity(this, entityLivingBase, stack, shooter);

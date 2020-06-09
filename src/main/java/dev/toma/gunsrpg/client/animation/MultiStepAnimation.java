@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 public abstract class MultiStepAnimation extends TickableAnimation {
 
     protected final List<Pair<Range, Animation>> steps = new ArrayList<>();
-    private int index;
+    protected int index;
     private Pair<Range, Animation> current;
 
     public MultiStepAnimation(int length) {
@@ -81,8 +81,13 @@ public abstract class MultiStepAnimation extends TickableAnimation {
             if(!this.isAtLastStep()) {
                 ++index;
                 current = steps.get(index);
+                onStepChanged();
             }
         }
+    }
+
+    public void onStepChanged() {
+
     }
 
     public boolean isAtLastStep() {

@@ -19,6 +19,7 @@
     "smg_reload_short": {"category": "master", "sounds": [{"name": "gunsrpg:smg_reload_short", "stream": true}]},
     "ar_reload": {"category": "master", "sounds": [{"name": "gunsrpg:ar_reload", "stream": true}]},
     "sr_reload": {"category": "master", "sounds": [{"name": "gunsrpg:sr_reload", "stream": true}]},
+    "sr_bolt": {"category": "master", "sounds": [{"name": "gunsrpg:kar98k_bolt", "stream": true}]},
     "sr_reload_short": {"category": "master", "sounds": [{"name": "gunsrpg:sr_reload_short", "stream": true}]},
     "sg_reload": {"category": "master", "sounds": [{"name": "gunsrpg:sg_reload", "stream": true}]},
     "sg_reload_short": {"category": "master", "sounds": [{"name": "gunsrpg:sg_reload_short", "stream": true}]}

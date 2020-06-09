@@ -173,8 +173,8 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onEntityDeath(LivingDeathEvent event) {
-        if(event.getEntity() instanceof IMob) {
-            Entity src = event.getSource().getTrueSource();
+        if(event.getEntity() instanceof IMob && event.getSource() instanceof GunDamageSource) {
+            Entity src = ((GunDamageSource) event.getSource()).getSrc();
             if(src instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) src;
                 GunItem item = null;

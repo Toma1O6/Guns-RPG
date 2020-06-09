@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.animation.impl;
 
 import dev.toma.gunsrpg.client.animation.AbstractAnimation;
+import dev.toma.gunsrpg.client.animation.AnimationManager;
 import net.minecraft.client.renderer.GlStateManager;
 
 public class SprintingAnimation extends AbstractAnimation {
@@ -28,8 +29,10 @@ public class SprintingAnimation extends AbstractAnimation {
 
     @Override
     public void animateLeftArm(float partialTicks) {
-        GlStateManager.translate(0.0F, -0.5F * smooth, 0.8F * smooth);
-        GlStateManager.rotate(40.0F * smooth, 0.0F, 1.0F, 0.0F);
+        if(!AnimationManager.renderingDualWield) {
+            GlStateManager.translate(0.0F, -0.5F * smooth, 0.8F * smooth);
+            GlStateManager.rotate(40.0F * smooth, 0.0F, 1.0F, 0.0F);
+        }
     }
 
     @Override

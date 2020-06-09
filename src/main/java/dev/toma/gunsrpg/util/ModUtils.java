@@ -14,6 +14,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
@@ -158,6 +159,15 @@ public class ModUtils {
                     return rayTraceResult;
                 }
             }
+        }
+        return null;
+    }
+
+    @Nullable
+    @SafeVarargs
+    public static <T> T firstNonnull(T... values) {
+        for (T t : values) {
+            if (t != null) return t;
         }
         return null;
     }
