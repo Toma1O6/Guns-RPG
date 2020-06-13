@@ -14,6 +14,7 @@ import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -88,6 +89,17 @@ public class ARItem extends GunItem {
         return mod * f;
     }
 
+    @Override
+    public boolean switchFiremode(ItemStack stack, EntityPlayer player) {
+        Firemode firemode = this.getFiremode(stack);
+        int newMode = 0;
+        if(firemode == Firemode.SINGLE && PlayerDataFactory.hasActiveSkill(player, Ability.ADAPTIVE_CHAMBERING)) {
+            newMode = 2;
+        }
+        stack.getTagCompound().setInteger("firemode", newMode);
+        return firemode.ordinal() != newMode;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public void renderRightArm() {
@@ -122,10 +134,5 @@ public class ARItem extends GunItem {
     @Override
     public Animation createReloadAnimation(EntityPlayer player) {
         return new MultiStepAnimation.Configurable(this.getReloadTime(player), "ar_reload");
-    }
-
-    @Override
-    public Firemode getFiremode(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.ADAPTIVE_CHAMBERING) ? Firemode.FULL_AUTO : Firemode.SINGLE;
     }
 }

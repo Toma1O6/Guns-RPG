@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.sided;
 
 import dev.toma.gunsrpg.client.ModKeybinds;
 import dev.toma.gunsrpg.client.animation.ScriptLoader;
+import dev.toma.gunsrpg.client.animation.builder.BuilderMain;
 import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.common.entity.*;
 import net.minecraft.client.Minecraft;
@@ -12,6 +13,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class ClientSideManager extends SideManager {
@@ -28,6 +30,11 @@ public class ClientSideManager extends SideManager {
         ModKeybinds.registerKeybinds();
         MinecraftForge.EVENT_BUS.register(new ModKeybinds());
         ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(scriptLoader);
+    }
+
+    @Override
+    public void init(FMLInitializationEvent event) {
+        BuilderMain.init();
     }
 
     @Override

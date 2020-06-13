@@ -11,6 +11,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.SPacketChangeFiremode;
 import dev.toma.gunsrpg.network.packet.SPacketRequestDataUpdate;
 import dev.toma.gunsrpg.network.packet.SPacketSetReloading;
 import net.minecraft.client.Minecraft;
@@ -32,6 +33,12 @@ public class ModKeybinds {
     public static void registerKeybinds() {
         register("reload", Keyboard.KEY_R, ModKeybinds::reloadPressed);
         register("class_list", Keyboard.KEY_L, ModKeybinds::showClassesPressed);
+        register("firemode", Keyboard.KEY_B, () -> {
+            EntityPlayer player = Minecraft.getMinecraft().player;
+            if(player.getHeldItemMainhand().getItem() instanceof GunItem) {
+                NetworkManager.toServer(new SPacketChangeFiremode());
+            }
+        });
         register("sight_type", Keyboard.KEY_PRIOR, () -> PlayerDataFactory.get(Minecraft.getMinecraft().player).getScopeData().updateType());
         register("sight_color", Keyboard.KEY_NEXT, () -> PlayerDataFactory.get(Minecraft.getMinecraft().player).getScopeData().updateColor());
     }

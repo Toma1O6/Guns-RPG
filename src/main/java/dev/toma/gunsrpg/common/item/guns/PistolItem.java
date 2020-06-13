@@ -1,13 +1,16 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
+import dev.toma.gunsrpg.client.animation.impl.ImprovedAimAnimation;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
@@ -102,14 +105,34 @@ public class PistolItem extends GunItem {
         return mod * f;
     }
 
+    @Override
+    public boolean switchFiremode(ItemStack stack, EntityPlayer player) {
+        Firemode firemode = this.getFiremode(stack);
+        stack.getTagCompound().setInteger("firemode", firemode == Firemode.SINGLE ? 1 : 0);
+        return true;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
-        return this.isDualWieldActive() ? new AimingAnimation(-0.3F, 0.0F, 0.0F).animateRight(animation -> {
+        return this.isDualWieldActive() ? new ImprovedAimAnimation(-0.4F, 0.06F, 0.0F).animateItem(animation -> {
             float f = animation.smooth;
+            if(AnimationManager.renderingDualWield) {
+                GlStateManager.translate(0.0F, -0.33F * f, 0.0F);
+                GlStateManager.rotate(-30.0F * f, 0.0F, 0.0F, 1.0F);
+            } else {
+                GlStateManager.translate(0.0F, -0.33F * f, 0.0F);
+                GlStateManager.rotate(30.0F * f, 0.0F, 0.0F, 1.0F);
+            }
+        }).animateRight(animation -> {
+            float f = animation.smooth;
+            GlStateManager.translate(-0.13F * f, -0.12F * f, 0.1F * f);
+            GlStateManager.rotate(30.0F * f, 0.0F, 0.0F, 1.0F);
             GlStateManager.rotate(16.0F * f, 0.0F, 1.0F, 0.0F);
         }).animateLeft(animation -> {
             float f = animation.smooth;
+            GlStateManager.translate(0.13F * f, -0.12F * f, 0.1F * f);
+            GlStateManager.rotate(-30.0F * f, 0.0F, 0.0F, 1.0F);
             GlStateManager.rotate(-16.0F * f, 0.0F, 1.0F, 0.0F);
         }) : new AimingAnimation(-0.54F, 0.06F, 0.0F).animateRight(animation -> {
             float f = animation.smooth;

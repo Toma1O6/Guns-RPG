@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.client.animation;
 
 import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
+import dev.toma.gunsrpg.util.object.Pair;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
 import java.util.Iterator;

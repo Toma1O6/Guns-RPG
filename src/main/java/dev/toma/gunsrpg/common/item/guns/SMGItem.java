@@ -81,7 +81,7 @@ public class SMGItem extends GunItem {
     @Override
     public void onKillEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
         if(!shooter.world.isRemote && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Ability.COMMANDO)) {
-            shooter.addPotionEffect(new PotionEffect(MobEffects.SPEED, 100, 0, false, false));
+            shooter.addPotionEffect(new PotionEffect(MobEffects.SPEED, 100, 1, false, false));
             shooter.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 60, 2, false, false));
         }
     }
@@ -91,6 +91,13 @@ public class SMGItem extends GunItem {
         float f = super.getVerticalRecoil(player);
         float mod = PlayerDataFactory.hasActiveSkill(player, Ability.SMG_VERTICAL_GRIP) ? GRPGConfig.weapon.general.verticalGrip : 1.0F;
         return mod * f;
+    }
+
+    @Override
+    public boolean switchFiremode(ItemStack stack, EntityPlayer player) {
+        Firemode mode = this.getFiremode(stack);
+        stack.getTagCompound().setInteger("firemode", mode == Firemode.SINGLE ? 2 : 0);
+        return true;
     }
 
     @SideOnly(Side.CLIENT)
@@ -129,10 +136,5 @@ public class SMGItem extends GunItem {
         GlStateManager.rotate(10.0F, 1.0F, 0.0F, 0.0F);
         GlStateManager.rotate(-30.0F, 0.0F, 1.0F, 0.0F);
         renderArm(EnumHandSide.LEFT);
-    }
-
-    @Override
-    public Firemode getFiremode(EntityPlayer player) {
-        return Firemode.FULL_AUTO;
     }
 }

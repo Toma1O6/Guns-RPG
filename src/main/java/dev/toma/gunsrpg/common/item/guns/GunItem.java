@@ -54,8 +54,13 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
         return SoundEvents.BLOCK_LEVER_CLICK;
     }
 
-    public Firemode getFiremode(EntityPlayer player) {
-        return Firemode.SINGLE;
+    public final Firemode getFiremode(ItemStack stack) {
+        createNBT(stack);
+        return Firemode.get(stack.getTagCompound().getInteger("firemode"));
+    }
+
+    public boolean switchFiremode(ItemStack stack, EntityPlayer player) {
+        return false;
     }
 
     @SideOnly(Side.CLIENT)
@@ -166,6 +171,7 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
         }
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("ammo", 0);
+        nbt.setInteger("firemode", 0);
         stack.setTagCompound(nbt);
     }
 

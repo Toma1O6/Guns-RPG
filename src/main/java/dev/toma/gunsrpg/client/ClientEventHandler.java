@@ -36,6 +36,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -63,6 +64,9 @@ public class ClientEventHandler {
     private static final ResourceLocation ICON_BACKGROUND = GunsRPG.makeResource("textures/icons/background.png");
     private static final ResourceLocation SCOPE = GunsRPG.makeResource("textures/icons/scope_overlay.png");
     static float prevAimingProgress;
+
+    static boolean burst;
+    static int shotsLeft = 3;
 
     @SubscribeEvent
     public static void cancelOverlays(RenderGameOverlayEvent.Pre event) {
@@ -184,11 +188,17 @@ public class ClientEventHandler {
             GunItem item = ShootingManager.getGunFrom(player);
             if (item != null) {
                 if (settings.keyBindAttack.isPressed()) {
-                    if(item.getFiremode(player) == Firemode.FULL_AUTO) {
+                    Firemode firemode = item.getFiremode(player.getHeldItemMainhand());
+                    if(firemode == Firemode.FULL_AUTO) {
                         PlayerDataFactory.get(player).setShooting(true);
                         NetworkManager.toServer(new SPacketSetShooting(true));
-                    } else {
+                    } else if(firemode == Firemode.SINGLE) {
                         ShootingManager.shootSingle(player, player.getHeldItemMainhand());
+                    } else {
+                        if(!burst) {
+                            burst = true;
+                            shotsLeft = 3;
+                        }
                     }
                 } else if (settings.keyBindUseItem.isPressed() && AnimationManager.getAnimationByID(Animations.REBOLT) == null && !player.isSprinting()) {
                     boolean aim = !PlayerDataFactory.get(player).getAimInfo().aiming;
@@ -245,6 +255,21 @@ public class ClientEventHandler {
         EntityPlayer player = Minecraft.getMinecraft().player;
         if(event.phase == TickEvent.Phase.END && player != null) {
             startSprintListener.update(player);
+            if(burst) {
+                if(shotsLeft > 0) {
+                    ItemStack stack = player.getHeldItemMainhand();
+                    if(stack.getItem() instanceof GunItem) {
+                        GunItem gun = (GunItem) stack.getItem();
+                        CooldownTracker tracker = player.getCooldownTracker();
+                        if(!tracker.hasCooldown(gun)) {
+                            if(ShootingManager.canShoot(player, stack)) {
+                                 ShootingManager.shootSingle(player, stack);
+                                 shotsLeft--;
+                            } else burst = false;
+                        }
+                    }
+                } else burst = false;
+            }
         }
     }
 

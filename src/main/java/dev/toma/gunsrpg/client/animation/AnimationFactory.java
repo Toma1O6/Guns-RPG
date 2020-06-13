@@ -7,13 +7,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public abstract class AbstractAnimation implements Animation {
+public abstract class AnimationFactory implements Animation {
 
     protected final EntityPlayer player;
     protected float current, prev;
     public float smooth;
 
-    public AbstractAnimation() {
+    public AnimationFactory() {
         player = Minecraft.getMinecraft().player;
     }
 

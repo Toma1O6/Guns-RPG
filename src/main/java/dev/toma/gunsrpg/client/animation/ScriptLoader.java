@@ -5,12 +5,12 @@ import com.google.gson.reflect.TypeToken;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.object.Pair;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.resource.IResourceType;
 import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -59,13 +59,16 @@ public class CPacketSendAnimation implements IMessage {
             return null;
         }
 
-        @SuppressWarnings("SwitchStatementWithTooFewBranches")
+        @SideOnly(Side.CLIENT)
         private Animation createAnimationFromID(int ID, EntityPlayer player, ItemStack stack) {
             switch (ID) {
                 case Animations.RELOAD: {
                     if(stack.getItem() instanceof GunItem) {
                         return ((GunItem) stack.getItem()).createReloadAnimation(player);
                     }
+                }
+                case Animations.FIREMODE: {
+                    return new Animations.SwitchFiremode(5);
                 }
                 default: throw new IllegalArgumentException("Unknown animation ID: " + ID);
             }

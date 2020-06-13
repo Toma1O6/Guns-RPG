@@ -10,7 +10,7 @@ public abstract class AbstractTypeBuilder<A, B extends IConfigType<A>> {
     private final ConfigBuilder parent;
     private String name;
     private String comment;
-    private A value;
+    private final A value;
     private Consumer<B> assignFunction = t -> {};
 
     protected AbstractTypeBuilder(ConfigBuilder parent, A value) {

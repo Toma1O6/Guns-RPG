@@ -4,9 +4,19 @@ import dev.toma.gunsrpg.util.ModUtils;
 
 public enum Firemode {
 
-    SINGLE,
-    BURST,
-    FULL_AUTO;
+    SINGLE("Single"),
+    BURST("Burst"),
+    FULL_AUTO("Full Auto");
+
+    private final String name;
+
+    Firemode(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public static Firemode get(int id) {
         int i = ModUtils.wrap(id, 0, 2);

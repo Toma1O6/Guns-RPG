@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.client.animation;
 
-public abstract class TickableAnimation extends AbstractAnimation {
+public abstract class TickableAnimation extends AnimationFactory {
 
     protected final int length;
     protected int ticksLeft;

@@ -188,7 +188,7 @@ public class SimpleAnimation implements Animation {
             return fs;
         }
 
-        enum AnimationType {
+        public enum AnimationType {
             ITEM_HAND(Builder::itemHand),
             HANDS(Builder::hand),
             RIGHT_HAND(Builder::rightHand),

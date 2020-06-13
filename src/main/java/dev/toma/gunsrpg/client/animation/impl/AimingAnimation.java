@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.client.animation.impl;
 
-import dev.toma.gunsrpg.client.animation.AbstractAnimation;
+import dev.toma.gunsrpg.client.animation.AnimationFactory;
 import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import net.minecraft.client.renderer.GlStateManager;
@@ -11,7 +11,7 @@ import javax.vecmath.Vector3f;
 import java.util.function.Consumer;
 
 @SideOnly(Side.CLIENT)
-public class AimingAnimation extends AbstractAnimation {
+public class AimingAnimation extends AnimationFactory {
 
     private final Vector3f animation;
     private Consumer<AimingAnimation> leftArm = animation -> {};

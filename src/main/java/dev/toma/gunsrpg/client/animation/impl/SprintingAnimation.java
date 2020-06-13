@@ -1,10 +1,10 @@
 package dev.toma.gunsrpg.client.animation.impl;
 
-import dev.toma.gunsrpg.client.animation.AbstractAnimation;
+import dev.toma.gunsrpg.client.animation.AnimationFactory;
 import dev.toma.gunsrpg.client.animation.AnimationManager;
 import net.minecraft.client.renderer.GlStateManager;
 
-public class SprintingAnimation extends AbstractAnimation {
+public class SprintingAnimation extends AnimationFactory {
 
     @Override
     public float getCurrentProgress() {
@@ -23,8 +23,7 @@ public class SprintingAnimation extends AbstractAnimation {
 
     @Override
     public void animateItemHands(float partialTicks) {
-        GlStateManager.rotate(30.0F * smooth, 1.0F, 0.0F, 0.0F);
-        GlStateManager.translate(0.0F, 0.0F, 0.2F * smooth);
+        GlStateManager.rotate(-20.0F * smooth, 1.0F, 0.0F, 0.0F);
     }
 
     @Override

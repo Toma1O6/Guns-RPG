@@ -3,8 +3,8 @@ package dev.toma.gunsrpg.client.animation;
 import com.google.gson.*;
 import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.object.Pair;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -92,6 +92,10 @@ public abstract class MultiStepAnimation extends TickableAnimation {
 
     public boolean isAtLastStep() {
         return index == steps.size() - 1;
+    }
+
+    public List<Pair<Range, Animation>> getSteps() {
+        return steps;
     }
 
     public static class Configurable extends MultiStepAnimation {
