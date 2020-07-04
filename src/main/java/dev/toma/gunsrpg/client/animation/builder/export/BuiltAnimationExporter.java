@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.HoverEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -32,6 +33,7 @@ public class BuiltAnimationExporter {
             writer.close();
             TextComponentString textComponent = new TextComponentString("File has been created, path: " + file.getCanonicalPath());
             textComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, file.getParentFile().getCanonicalPath()));
+            textComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Click to open folder")));
             Minecraft.getMinecraft().player.sendMessage(textComponent);
         } catch (IOException e) {
             Minecraft.getMinecraft().player.sendMessage(new TextComponentString(TextFormatting.RED + "Could not create file: " + e.toString()));

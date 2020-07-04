@@ -69,7 +69,7 @@ public class SGItem extends GunItem {
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.BULLET_LOOPS) ? 20 : 30;
+        return PlayerDataFactory.hasActiveSkill(player, Ability.BULLET_LOOPS) ? 14 : 20;
     }
 
     @Override

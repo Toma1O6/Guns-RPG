@@ -31,7 +31,7 @@ import java.util.Map;
 public class EntityZombieGunner extends EntityMob {
 
     // loaded lazily to prevent getting null items
-    public static final OptionalObject<Map<GunItem, Integer>> GUN_EQUIPMENT = OptionalObject.empty();
+    public static final OptionalObject<Map<GunItem, GunData>> GUN_EQUIPMENT = OptionalObject.empty();
     public int rateOfFire;
 
     public EntityZombieGunner(World world) {
@@ -127,9 +127,9 @@ public class EntityZombieGunner extends EntityMob {
     @Override
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
         super.setEquipmentBasedOnDifficulty(difficulty);
-        List<Map.Entry<GunItem, Integer>> list = new ArrayList<>(GUN_EQUIPMENT.orMap(populateAndGet()).entrySet());
-        Map.Entry<GunItem, Integer> random = list.get(rand.nextInt(list.size()));
-        this.rateOfFire = random.getValue();
+        List<Map.Entry<GunItem, GunData>> list = new ArrayList<>(GUN_EQUIPMENT.orMap(populateAndGet()).entrySet());
+        Map.Entry<GunItem, GunData> random = list.get(rand.nextInt(list.size()));
+        this.rateOfFire = random.getValue().rof;
         setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(random.getKey()));
     }
 
@@ -146,13 +146,24 @@ public class EntityZombieGunner extends EntityMob {
         rateOfFire = compound.getInteger("firerate");
     }
 
-    private static Map<GunItem, Integer> populateAndGet() {
-        Map<GunItem, Integer> map = new HashMap<>();
-        map.put(ModRegistry.GRPGItems.PISTOL, 30);
-        map.put(ModRegistry.GRPGItems.SMG, 15);
-        map.put(ModRegistry.GRPGItems.ASSAULT_RIFLE, 30);
-        map.put(ModRegistry.GRPGItems.SNIPER_RIFLE, 80);
-        map.put(ModRegistry.GRPGItems.SHOTGUN, 50);
+    private static Map<GunItem, GunData> populateAndGet() {
+        Map<GunItem, GunData> map = new HashMap<>();
+        map.put(ModRegistry.GRPGItems.PISTOL, new GunData(30, ModRegistry.GRPGSounds.P92));
+        map.put(ModRegistry.GRPGItems.SMG, new GunData(15, ModRegistry.GRPGSounds.MP5));
+        map.put(ModRegistry.GRPGItems.ASSAULT_RIFLE, new GunData(30, ModRegistry.GRPGSounds.SLR));
+        map.put(ModRegistry.GRPGItems.SNIPER_RIFLE, new GunData(80, ModRegistry.GRPGSounds.M24));
+        map.put(ModRegistry.GRPGItems.SHOTGUN, new GunData(50, ModRegistry.GRPGSounds.WIN94));
         return map;
+    }
+
+    public static class GunData {
+
+        public final int rof;
+        public final SoundEvent event;
+
+        public GunData(int rof, SoundEvent event) {
+            this.rof = rof;
+            this.event = event;
+        }
     }
 }

@@ -50,7 +50,7 @@ public class EntityAIGunAttack extends EntityAIBase {
         this.entity.faceEntity(target, 30, 30);
         this.entity.getLookHelper().setLookPositionWithEntity(target, 30, 30);
         if(canSee && dist < attackRange * 3 && --timeRemaining <= 0 && !entity.world.isRemote) {
-            gun.shoot(entity.world, entity, entity.getHeldItemMainhand());
+            gun.shoot(entity.world, entity, entity.getHeldItemMainhand(), EntityZombieGunner.GUN_EQUIPMENT.get().get((GunItem) entity.getHeldItemMainhand().getItem()).event);
             timeRemaining = entity.rateOfFire;
         }
     }

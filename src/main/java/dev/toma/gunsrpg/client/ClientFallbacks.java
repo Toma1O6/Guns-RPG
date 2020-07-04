@@ -13,6 +13,7 @@ public class ClientFallbacks {
         }
         if(!PlayerDataFactory.get(mc.player).getAimInfo().aiming) {
             mc.gameSettings.fovSetting = ClientEventHandler.preAimFov;
+            if(ClientEventHandler.preAimSens >= 0) mc.gameSettings.mouseSensitivity = ClientEventHandler.preAimSens;
         }
     }
 }

@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item.guns;
 import dev.toma.gunsrpg.client.animation.*;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.client.animation.impl.RecoilAnimation;
+import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.item.GRPGItem;
@@ -12,7 +13,9 @@ import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerMagazine;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
+import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -135,6 +138,10 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
     }
 
     public final void shoot(World world, EntityLivingBase entity, ItemStack stack) {
+        shoot(world, entity, stack, getShootSound(entity));
+    }
+
+    public final void shoot(World world, EntityLivingBase entity, ItemStack stack, SoundEvent event) {
         Item item = stack.getItem();
         CooldownTracker tracker = null;
         if (entity instanceof EntityPlayer) {
@@ -145,8 +152,15 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
         }
         this.shootBullet(world, entity, stack);
         this.setAmmoCount(stack, this.getAmmo(stack) - 1);
-        world.playSound(null, entity.posX, entity.posY, entity.posZ, this.getShootSound(entity), SoundCategory.MASTER, 15.0F, 1.0F);
+        world.playSound(null, entity.posX, entity.posY, entity.posZ, event, SoundCategory.MASTER, 15.0F, 1.0F);
         if (tracker != null) {
+            if(item == ModRegistry.GRPGItems.PISTOL && PlayerDataFactory.hasActiveSkill((EntityPlayer) entity, Ability.DUAL_WIELD) && getFiremode(stack) == Firemode.BURST) {
+                if(ShootingManager.canShoot((EntityPlayer) entity, stack)) {
+                    this.shootBullet(world, entity, stack);
+                    this.setAmmoCount(stack, this.getAmmo(stack) - 1);
+                    world.playSound(null, entity.posX, entity.posY, entity.posZ, event, SoundCategory.MASTER, 15.0F, 1.0F);
+                }
+            }
             tracker.setCooldown(item, this.getFirerate((EntityPlayer) entity));
         }
     }

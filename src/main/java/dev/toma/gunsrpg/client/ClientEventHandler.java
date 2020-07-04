@@ -178,6 +178,7 @@ public class ClientEventHandler {
     }
 
     public static float preAimFov = 70.0F;
+    public static float preAimSens = -1.0F;
 
     @SubscribeEvent
     public static void mouseInputEvent(InputEvent.MouseInputEvent event) {
@@ -205,10 +206,15 @@ public class ClientEventHandler {
                     if (aim) {
                         preAimFov = settings.fovSetting;
                         if(item == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Ability.SCOPE)) {
+                            preAimSens = settings.mouseSensitivity;
+                            settings.mouseSensitivity = preAimSens * 0.3F;
                             settings.fovSetting = 15.0F;
                         }
                         AnimationManager.sendNewAnimation(Animations.AIMING, item.createAimAnimation());
-                    } else settings.fovSetting = preAimFov;
+                    } else {
+                        settings.fovSetting = preAimFov;
+                        settings.mouseSensitivity = preAimSens;
+                    }
                     NetworkManager.toServer(new SPacketSetAiming(aim));
                 }
             }

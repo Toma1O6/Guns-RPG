@@ -11,6 +11,7 @@ import dev.toma.gunsrpg.util.object.LazyLoader;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.init.SoundEvents;
+import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -118,6 +119,7 @@ public class GuiAnimationBuilder extends GuiScreen {
             for(int i = index; i < index + 3; i++) {
                 int id = i - index;
                 if(i >= BuilderData.steps.size()) break;
+                this.addComponent(new PlainTextComponent(guiLeft + 2, guiTop + 85 + id * 25, i + "."));
                 BuilderAnimationStep step = BuilderData.steps.get(i);
                 this.addComponent(new InputComponent(this, i, guiLeft + 10, guiTop + 85 + id * 25, 100, 20, step.getIntValue()));
                 this.addComponent(new UIComponent(guiLeft + 120, guiTop + 85 + id * 25, 20, 20, "P", b -> {
@@ -146,6 +148,16 @@ public class GuiAnimationBuilder extends GuiScreen {
                 }));
             }
         }
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException {
+        int i = -Integer.signum(Mouse.getEventDWheel());
+        if(i != 0 && index + i >= 0 && index + i < BuilderData.steps.size()) {
+            index += i;
+            initGui();
+        }
+        super.handleMouseInput();
     }
 
     public void addComponent(UIComponent component) {

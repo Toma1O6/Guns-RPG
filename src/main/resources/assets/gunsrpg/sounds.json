@@ -22,5 +22,10 @@
     "sr_bolt": {"category": "master", "sounds": [{"name": "gunsrpg:kar98k_bolt", "stream": true}]},
     "sr_reload_short": {"category": "master", "sounds": [{"name": "gunsrpg:sr_reload_short", "stream": true}]},
     "sg_reload": {"category": "master", "sounds": [{"name": "gunsrpg:sg_reload", "stream": true}]},
-    "sg_reload_short": {"category": "master", "sounds": [{"name": "gunsrpg:sg_reload_short", "stream": true}]}
+    "sg_reload_short": {"category": "master", "sounds": [{"name": "gunsrpg:sg_reload_short", "stream": true}]},
+    "p92": {"category": "master", "sounds": [{"name": "gunsrpg:p92", "stream": true}]},
+    "mp5": {"category": "master", "sounds": [{"name": "gunsrpg:mp5", "stream": true}]},
+    "slr": {"category": "master", "sounds": [{"name": "gunsrpg:slr", "stream": true}]},
+    "m24": {"category": "master", "sounds": [{"name": "gunsrpg:m24", "stream": true}]},
+    "win94": {"category": "master", "sounds": [{"name": "gunsrpg:win94", "stream": true}]}
 }

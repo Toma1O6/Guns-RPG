@@ -146,6 +146,11 @@ public class ModRegistry {
         public static final SoundEvent SR_BOLT = null;
         public static final SoundEvent SG_RELOAD = null;
         public static final SoundEvent SG_RELOAD_SHORT = null;
+        public static final SoundEvent P92 = null;
+        public static final SoundEvent MP5 = null;
+        public static final SoundEvent SLR = null;
+        public static final SoundEvent M24 = null;
+        public static final SoundEvent WIN94 = null;
     }
 
     @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
@@ -283,7 +288,12 @@ public class ModRegistry {
                     sound("sr_reload_short"),
                     sound("sr_bolt"),
                     sound("sg_reload"),
-                    sound("sg_reload_short")
+                    sound("sg_reload_short"),
+                    sound("p92"),
+                    sound("mp5"),
+                    sound("slr"),
+                    sound("m24"),
+                    sound("win94")
             );
         }
 

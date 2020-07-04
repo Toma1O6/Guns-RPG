@@ -412,26 +412,26 @@ public class ModelSR extends ModelWeapon {
 
         scope = new ModelRenderer(this);
         scope.setRotationPoint(0.0F, 24.0F, 0.0F);
-        scope.cubeList.add(new ModelBox(scope, 71, 70, -2.0F, -14.0F, -7.0F, 4, 1, 23, 0.0F, false));
-        scope.cubeList.add(new ModelBox(scope, 71, 70, -2.0F, -19.8F, -7.0F, 4, 1, 23, 0.0F, false));
+        scope.cubeList.add(new ModelBox(scope, 71, 70, -2.0F, -14.0F, -1.0F, 4, 1, 17, 0.0F, false));
+        scope.cubeList.add(new ModelBox(scope, 71, 70, -2.0F, -19.8F, -1.0F, 4, 1, 17, 0.0F, false));
         scope.cubeList.add(new ModelBox(scope, 71, 70, -1.0F, -13.0F, 9.0F, 2, 2, 2, 0.0F, false));
-        scope.cubeList.add(new ModelBox(scope, 71, 70, -1.0F, -13.0F, -1.0F, 2, 2, 2, 0.0F, false));
-        scope.cubeList.add(new ModelBox(scope, 71, 67, -3.4015F, -18.4142F, -7.0F, 1, 4, 23, 0.0F, false));
-        scope.cubeList.add(new ModelBox(scope, 71, 67, 2.3985F, -18.4142F, -7.0F, 1, 4, 23, 0.0F, false));
+        scope.cubeList.add(new ModelBox(scope, 71, 70, -1.0F, -13.0F, 2.0F, 2, 2, 2, 0.0F, false));
+        scope.cubeList.add(new ModelBox(scope, 71, 67, -3.4015F, -18.4142F, -1.0F, 1, 4, 17, 0.0F, false));
+        scope.cubeList.add(new ModelBox(scope, 71, 67, 2.3985F, -18.4142F, -1.0F, 1, 4, 17, 0.0F, false));
 
         bone21 = new ModelRenderer(this);
         bone21.setRotationPoint(-5.0F, -14.0F, 4.0F);
         scope.addChild(bone21);
         setRotationAngle(bone21, 0.0F, 0.0F, 0.7854F);
-        bone21.cubeList.add(new ModelBox(bone21, 71, 70, 0.8485F, -2.4142F, -11.0F, 2, 1, 23, 0.0F, false));
-        bone21.cubeList.add(new ModelBox(bone21, 71, 70, 0.8485F, -9.061F, -11.0F, 2, 1, 23, 0.0F, false));
+        bone21.cubeList.add(new ModelBox(bone21, 71, 70, 0.8485F, -2.4142F, -5.0F, 2, 1, 17, 0.0F, false));
+        bone21.cubeList.add(new ModelBox(bone21, 71, 70, 0.8485F, -9.061F, -5.0F, 2, 1, 17, 0.0F, false));
 
         bone22 = new ModelRenderer(this);
         bone22.setRotationPoint(-5.0F, -14.0F, 4.0F);
         scope.addChild(bone22);
         setRotationAngle(bone22, 0.0F, 0.0F, -0.7854F);
-        bone22.cubeList.add(new ModelBox(bone22, 71, 70, 4.2426F, -1.9899F, -11.0F, 2, 1, 23, 0.0F, false));
-        bone22.cubeList.add(new ModelBox(bone22, 71, 70, 4.2426F, 4.6569F, -11.0F, 2, 1, 23, 0.0F, false));
+        bone22.cubeList.add(new ModelBox(bone22, 71, 70, 4.2426F, -1.9899F, -5.0F, 2, 1, 17, 0.0F, false));
+        bone22.cubeList.add(new ModelBox(bone22, 71, 70, 4.2426F, 4.6569F, -5.0F, 2, 1, 17, 0.0F, false));
     }
 
     @Override
