@@ -24,6 +24,7 @@ import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
 import dev.toma.gunsrpg.network.packet.SPacketSetShooting;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -66,7 +67,7 @@ public class ClientEventHandler {
     static float prevAimingProgress;
 
     static boolean burst;
-    static int shotsLeft = 3;
+    static int shotsLeft = 2;
 
     @SubscribeEvent
     public static void cancelOverlays(RenderGameOverlayEvent.Pre event) {
@@ -78,7 +79,7 @@ public class ClientEventHandler {
                 event.setCanceled(true);
                 PlayerData data = PlayerDataFactory.get(player);
                 if(data.getAimInfo().progress >= 0.9F) {
-                    if(stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Ability.SCOPE)) {
+                    if(stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Ability.SR_SCOPE) || stack.getItem() == ModRegistry.GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, Ability.CROSSBOW_SCOPE)) {
                         int left = resolution.getScaledWidth() / 2 - 16;
                         int top = resolution.getScaledHeight() / 2 - 16;
                         ModUtils.renderTexture(left, top, left + 32, top + 32, SCOPE);
@@ -92,7 +93,7 @@ public class ClientEventHandler {
                         double vs = scopeData.getTexStartY();
                         double ue = scopeData.getTexEndX();
                         double ve = scopeData.getTexEndY();
-                        //draw reddot
+                        //draw red dot
                         Minecraft.getMinecraft().getTextureManager().bindTexture(ScopeData.TEXTURES);
                         GlStateManager.enableBlend();
                         Tessellator tessellator = Tessellator.getInstance();
@@ -177,8 +178,8 @@ public class ClientEventHandler {
         }
     }
 
-    public static float preAimFov = 70.0F;
-    public static float preAimSens = -1.0F;
+    public static OptionalObject<Float> preAimFov = OptionalObject.empty();
+    public static OptionalObject<Float> preAimSens = OptionalObject.empty();
 
     @SubscribeEvent
     public static void mouseInputEvent(InputEvent.MouseInputEvent event) {
@@ -198,22 +199,25 @@ public class ClientEventHandler {
                     } else {
                         if(!burst) {
                             burst = true;
-                            shotsLeft = 3;
+                            shotsLeft = 2;
                         }
                     }
                 } else if (settings.keyBindUseItem.isPressed() && AnimationManager.getAnimationByID(Animations.REBOLT) == null && !player.isSprinting()) {
                     boolean aim = !PlayerDataFactory.get(player).getAimInfo().aiming;
                     if (aim) {
-                        preAimFov = settings.fovSetting;
-                        if(item == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Ability.SCOPE)) {
-                            preAimSens = settings.mouseSensitivity;
-                            settings.mouseSensitivity = preAimSens * 0.3F;
+                        preAimFov.map(settings.fovSetting);
+                        preAimSens.map(settings.mouseSensitivity);
+                        if(item == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Ability.SR_SCOPE)) {
+                            settings.mouseSensitivity = preAimSens.get() * 0.3F;
                             settings.fovSetting = 15.0F;
+                        } else if(item == ModRegistry.GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, Ability.CROSSBOW_SCOPE)) {
+                            settings.mouseSensitivity = preAimSens.get() * 0.4F;
+                            settings.fovSetting = 25.0F;
                         }
                         AnimationManager.sendNewAnimation(Animations.AIMING, item.createAimAnimation());
                     } else {
-                        settings.fovSetting = preAimFov;
-                        settings.mouseSensitivity = preAimSens;
+                        preAimFov.ifPresent(value -> settings.fovSetting = value);
+                        preAimSens.ifPresent(value -> settings.mouseSensitivity = value);
                     }
                     NetworkManager.toServer(new SPacketSetAiming(aim));
                 }

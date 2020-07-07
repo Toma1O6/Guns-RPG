@@ -8,7 +8,8 @@ public enum GunType {
     SMG(AmmoType._45ACP),
     AR(AmmoType._556MM),
     SR(AmmoType._762MM),
-    SG(AmmoType._12G);
+    SG(AmmoType._12G),
+    CROSSBOW(AmmoType.CROSSBOW);
 
     private final AmmoType ammoType;
 

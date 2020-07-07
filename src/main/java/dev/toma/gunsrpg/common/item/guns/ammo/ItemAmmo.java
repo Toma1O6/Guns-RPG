@@ -62,11 +62,13 @@ public class ItemAmmo extends GRPGItem implements IAmmoProvider {
         List<ItemAmmo> ar = ModUtils.newList(WOODEN_AMMO_556MM, STONE_AMMO_556MM, IRON_AMMO_556MM, GOLD_AMMO_556MM, DIAMOND_AMMO_556MM, EMERALD_AMMO_556MM, AMETHYST_AMMO_556MM);
         List<ItemAmmo> sr = ModUtils.newList(WOODEN_AMMO_762MM, STONE_AMMO_762MM, IRON_AMMO_762MM, GOLD_AMMO_762MM, DIAMOND_AMMO_762MM, EMERALD_AMMO_762MM, AMETHYST_AMMO_762MM);
         List<ItemAmmo> sg = ModUtils.newList(WOODEN_AMMO_12G, STONE_AMMO_12G, IRON_AMMO_12G, GOLD_AMMO_12G, DIAMOND_AMMO_12G, EMERALD_AMMO_12G, AMETHYST_AMMO_12G);
+        List<ItemAmmo> cb = ModUtils.newList(WOODEN_AMMO_CROSSBOW_BOLT, STONE_AMMO_CROSSBOW_BOLT, IRON_AMMO_CROSSBOW_BOLT, GOLD_AMMO_CROSSBOW_BOLT, DIAMOND_AMMO_CROSSBOW_BOLT, EMERALD_AMMO_CROSSBOW_BOLT, AMETHYST_AMMO_CROSSBOW_BOLT);
         GUN_TO_ITEM_MAP.put(PISTOL, pistol.toArray(new ItemAmmo[0]));
         GUN_TO_ITEM_MAP.put(SMG, smg.toArray(new ItemAmmo[0]));
         GUN_TO_ITEM_MAP.put(ASSAULT_RIFLE, ar.toArray(new ItemAmmo[0]));
         GUN_TO_ITEM_MAP.put(SNIPER_RIFLE, sr.toArray(new ItemAmmo[0]));
         GUN_TO_ITEM_MAP.put(SHOTGUN, sg.toArray(new ItemAmmo[0]));
+        GUN_TO_ITEM_MAP.put(CROSSBOW, cb.toArray(new ItemAmmo[0]));
     }
 
     private static void put(GunItem item, ItemAmmo ammo) {

@@ -51,6 +51,7 @@ public class EntityBloodmoonGolem extends EntityCreature implements IAnimals {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(20.0D);
     }
 
     protected int decreaseAirSupply(int air) {

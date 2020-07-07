@@ -17,6 +17,7 @@ public class AnimationManager {
     public static boolean renderingDualWield = false;
 
     public static void sendNewAnimation(int ID, Animation animation) {
+        if(animation == null) return;
         ANIMATIONS.put(ID, animation);
     }
 

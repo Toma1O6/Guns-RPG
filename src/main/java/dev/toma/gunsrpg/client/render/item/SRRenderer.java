@@ -14,10 +14,10 @@ public class SRRenderer extends TileEntityItemStackRenderer {
     private final ModelSR model = new ModelSR();
 
     @Override
-    public void renderByItem(ItemStack p_192838_1_, float partialTicks) {
+    public void renderByItem(ItemStack p_192838_1_) {
         if(p_192838_1_.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-            model.doRender();
+            model.doRender(p_192838_1_);
         }
     }
 }

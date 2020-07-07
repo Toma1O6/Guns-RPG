@@ -14,10 +14,10 @@ public class PistolRenderer extends TileEntityItemStackRenderer {
     private final ModelPistol p1911 = new ModelPistol();
 
     @Override
-    public void renderByItem(ItemStack stack, float partialTicks) {
+    public void renderByItem(ItemStack stack) {
         if(stack.getItem() == ModRegistry.GRPGItems.PISTOL) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-            p1911.doRender();
+            p1911.doRender(stack);
         }
     }
 }

@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 public class ModelPistol extends ModelWeapon {
 
@@ -32,7 +33,7 @@ public class ModelPistol extends ModelWeapon {
     private final ModelRenderer supp1;
 
     @Override
-    public void doRender() {
+    public void doRender(ItemStack stack) {
         gunRenderer.render(1f);
         magazineRenderer.render(1f);
         EntityPlayer player = Minecraft.getMinecraft().player;

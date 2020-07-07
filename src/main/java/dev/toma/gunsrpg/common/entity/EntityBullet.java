@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.entity;
 
 import com.google.common.base.Predicate;
-import dev.toma.gunsrpg.common.GunDamageSource;
+import dev.toma.gunsrpg.common.GunDamageSourceHack;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
@@ -35,15 +35,15 @@ import java.util.List;
 public class EntityBullet extends Entity {
 
     private static final Predicate<Entity> ARROW_TARGETS = e -> EntitySelectors.NOT_SPECTATING.apply(e) && EntitySelectors.IS_ALIVE.apply(e) && e.canBeCollidedWith();
-    private EntityLivingBase shooter;
-    private ItemStack stack;
+    protected EntityLivingBase shooter;
+    protected ItemStack stack;
     private RayTraceResult entityRaytrace;
 
     private int effect;
     private float ogDamage;
-    private float damage;
+    protected float damage;
 
-    private boolean canPenetrateEntity;
+    protected boolean canPenetrateEntity;
     private Entity lastHitEntity;
 
     public EntityBullet(World worldIn) {
@@ -66,7 +66,7 @@ public class EntityBullet extends Entity {
         this.setPosition(shooter.posX, shooter.posY + shooter.getEyeHeight(), shooter.posZ);
         if(shooter instanceof EntityPlayer) {
             EntityPlayer p = (EntityPlayer) shooter;
-            canPenetrateEntity = gun == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(p, Ability.PENETRATOR);
+            canPenetrateEntity = gun == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(p, Ability.SR_PENETRATOR);
         }
     }
 
@@ -77,7 +77,7 @@ public class EntityBullet extends Entity {
         this.motionZ = velocity * vec.z;
         updateHeading();
         if(!world.isRemote && shooter instanceof EntityPlayer && !((GunItem) stack.getItem()).isSilenced((EntityPlayer) shooter)) {
-            List<EntityLivingBase> entityList = world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(30));
+            List<EntityLivingBase> entityList = world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(25));
             for(EntityLivingBase entityLivingBase : entityList) {
                 if (entityLivingBase == shooter) continue;
                 entityLivingBase.setRevengeTarget(shooter);
@@ -87,6 +87,10 @@ public class EntityBullet extends Entity {
 
     public EntityLivingBase getShooter() {
         return shooter;
+    }
+
+    protected void modifyPenetrationDamage() {
+        damage /= 2;
     }
 
     public void onBulletCollided(RayTraceResult rayTraceResult) {
@@ -110,7 +114,7 @@ public class EntityBullet extends Entity {
             entity.hurtResistantTime = 0;
             if(canPenetrateEntity && lastHitEntity == null) {
                 lastHitEntity = entity;
-                damage /= 2;
+                modifyPenetrationDamage();
                 Vec3d startVec = new Vec3d(posX, posY, posZ);
                 Vec3d nextPos = new Vec3d(motionX, motionY, motionZ).add(startVec);
                 RayTraceResult trace = world.rayTraceBlocks(nextPos, startVec, false, true, false);
@@ -165,6 +169,10 @@ public class EntityBullet extends Entity {
         }
     }
 
+    public boolean isLimitedLifetime() {
+        return true;
+    }
+
     @Override
     public void onUpdate() {
         super.onUpdate();
@@ -177,11 +185,8 @@ public class EntityBullet extends Entity {
             this.motionY -= 0.05;
         }
 
-        if (this.ticksExisted >= 80) {
+        if (isLimitedLifetime() && this.ticksExisted >= 80) {
             this.setDead();
-        }
-        if (!world.isRemote && stack.getItem() instanceof GunItem) {
-            ((GunItem) stack.getItem()).updateBullet(this);
         }
         Entity entity = this.findEntityOnPath(vec3d1, vec3d, raytraceresult);
         if (entity != null) {
@@ -233,11 +238,15 @@ public class EntityBullet extends Entity {
         return entity;
     }
 
+    protected void damageTargetEntity(Entity target, boolean isHeadshot) {
+        target.attackEntityFrom(new GunDamageSourceHack(shooter, this, stack), damage);
+    }
+
     protected void onEntityHit(boolean isHeadshot, Entity entity) {
         if (entity instanceof EntityLivingBase) {
             EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
             boolean dead = entityLivingBase.getHealth() - damage <= 0;
-            entity.attackEntityFrom(new GunDamageSource(shooter, this, stack), damage);
+            damageTargetEntity(entity, isHeadshot);
             if(stack.getItem() instanceof GunItem) {
                 if(dead) {
                     ((GunItem) stack.getItem()).onKillEntity(this, entityLivingBase, stack, shooter);
@@ -302,9 +311,5 @@ public class EntityBullet extends Entity {
         double y = posY - vec3d.y;
         double z = posZ - vec3d.z;
         return Math.sqrt(x * x + y * y + z * z);
-    }
-
-    private void executeIfPlayer(Entity entity, Runnable runnable) {
-        if(entity instanceof EntityPlayer) runnable.run();
     }
 }

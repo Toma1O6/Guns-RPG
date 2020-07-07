@@ -190,8 +190,12 @@ public class GuiSkillTree extends GuiScreen {
         if(clickedMouseButton == 0) {
             int x = lastClickX - mouseX;
             int y = lastClickY - mouseY;
-            this.x = ModUtils.wrap(this.x + x, 0, 1000);
-            this.y = ModUtils.wrap(this.y + y, 0, 1500);
+            if(GuiScreen.isShiftKeyDown()) {
+                x *= 2;
+                y *= 2;
+            }
+            this.x = ModUtils.wrap(this.x + x, 0, 1200);
+            this.y = ModUtils.wrap(this.y + y, 0, 1800);
             this.setLastClickedPos(mouseX, mouseY);
         }
     }
@@ -201,9 +205,9 @@ public class GuiSkillTree extends GuiScreen {
         int i = Integer.signum(Mouse.getEventDWheel());
         if(i != 0) {
             if(GuiScreen.isShiftKeyDown()) {
-                this.x = ModUtils.wrap(this.x + i * 25, 0, 1000);
+                this.x = ModUtils.wrap(this.x + i * 25, 0, 1200);
             } else {
-                this.y = ModUtils.wrap(this.y + i * 25, 0, 1500);
+                this.y = ModUtils.wrap(this.y + i * 25, 0, 1800);
             }
         }
         super.handleMouseInput();

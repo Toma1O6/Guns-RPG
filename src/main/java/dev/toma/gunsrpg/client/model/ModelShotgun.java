@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.client.model;
 
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.item.ItemStack;
 
 public class ModelShotgun extends ModelWeapon {
 
@@ -32,7 +33,7 @@ public class ModelShotgun extends ModelWeapon {
     private final ModelRenderer bone3;
 
     @Override
-    public void doRender() {
+    public void doRender(ItemStack stack) {
         bone.render(1f);
     }
 

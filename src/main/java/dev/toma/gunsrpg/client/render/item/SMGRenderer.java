@@ -14,10 +14,10 @@ public class SMGRenderer extends TileEntityItemStackRenderer {
     private final ModelSMG modelSMG = new ModelSMG();
 
     @Override
-    public void renderByItem(ItemStack p_192838_1_, float partialTicks) {
+    public void renderByItem(ItemStack p_192838_1_) {
         if(p_192838_1_.getItem() == ModRegistry.GRPGItems.SMG) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-            modelSMG.doRender();
+            modelSMG.doRender(p_192838_1_);
         }
     }
 }

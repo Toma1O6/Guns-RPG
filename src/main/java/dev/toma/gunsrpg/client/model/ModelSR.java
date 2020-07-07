@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 public class ModelSR extends ModelWeapon {
 
@@ -435,11 +436,11 @@ public class ModelSR extends ModelWeapon {
     }
 
     @Override
-    public void doRender() {
+    public void doRender(ItemStack stack) {
         EntityPlayer player = Minecraft.getMinecraft().player;
         kar98k.render(1f);
         if(PlayerDataFactory.hasActiveSkill(player, Ability.SR_SUPPRESSOR)) suppressor.render(1f);
-        if(PlayerDataFactory.hasActiveSkill(player, Ability.SCOPE)) scope.render(1f);
+        if(PlayerDataFactory.hasActiveSkill(player, Ability.SR_SCOPE)) scope.render(1f);
     }
 
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {

@@ -82,7 +82,7 @@ public class PistolItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_TOUGH_SPRING) ? 2 : 4;
+        return PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_TOUGH_SPRING) ? 2 : 3;
     }
 
     @Override

@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.item.ItemStack;
 
 public class ModelAR extends ModelWeapon {
 
@@ -955,7 +956,7 @@ public class ModelAR extends ModelWeapon {
     }
 
     @Override
-    public void doRender() {
+    public void doRender(ItemStack stack) {
         EntityPlayerSP player = Minecraft.getMinecraft().player;
         sks.render(1f);
         magazine.render(1f);

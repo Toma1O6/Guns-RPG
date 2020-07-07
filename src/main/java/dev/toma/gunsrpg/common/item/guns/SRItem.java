@@ -64,6 +64,11 @@ public class SRItem extends GunItem {
 
     @Override
     public SoundEvent getReloadSound(EntityPlayer player) {
+        ItemStack stack = player.getHeldItemMainhand();
+        if(stack.getItem() == this) {
+            int ammo = getAmmo(stack);
+            if(ammo == 0) return ModRegistry.GRPGSounds.KAR98K_RELOAD_CLIP;
+        }
         return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? ModRegistry.GRPGSounds.SR_RELOAD_SHORT : ModRegistry.GRPGSounds.SR_RELOAD;
     }
 
@@ -123,7 +128,7 @@ public class SRItem extends GunItem {
     @SideOnly(Side.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
-        boolean scope = PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Ability.SCOPE);
+        boolean scope = PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Ability.SR_SCOPE);
         return new AimingAnimation(-0.265F, scope ? 0.14F : 0.175F, 0.3F).animateRight(animation -> {
             float f = animation.smooth;
             GlStateManager.translate(-0.265F * f, 0.175F * f, 0.3F * f);

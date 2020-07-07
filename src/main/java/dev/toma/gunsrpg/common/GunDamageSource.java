@@ -28,7 +28,7 @@ public class GunDamageSource extends DamageSource {
     @Nullable
     @Override
     public Entity getTrueSource() {
-        return null;
+        return src;
     }
 
     @Nullable

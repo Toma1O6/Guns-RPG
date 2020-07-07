@@ -61,6 +61,7 @@ public class ModRegistry {
         public static final GunItem ASSAULT_RIFLE = null;
         public static final GunItem SNIPER_RIFLE = null;
         public static final GunItem SHOTGUN = null;
+        public static final GunItem CROSSBOW = null;
         public static final GRPGItem AMETHYST = null;
         public static final DebuffHeal ANTIDOTUM_PILLS = null;
         public static final DebuffHeal VACCINE = null;
@@ -71,36 +72,43 @@ public class ModRegistry {
         public static final ItemAmmo WOODEN_AMMO_556MM = null;
         public static final ItemAmmo WOODEN_AMMO_762MM = null;
         public static final ItemAmmo WOODEN_AMMO_12G = null;
+        public static final ItemAmmo WOODEN_AMMO_CROSSBOW_BOLT = null;
         public static final ItemAmmo STONE_AMMO_9MM = null;
         public static final ItemAmmo STONE_AMMO_45ACP = null;
         public static final ItemAmmo STONE_AMMO_556MM = null;
         public static final ItemAmmo STONE_AMMO_762MM = null;
         public static final ItemAmmo STONE_AMMO_12G = null;
+        public static final ItemAmmo STONE_AMMO_CROSSBOW_BOLT = null;
         public static final ItemAmmo IRON_AMMO_9MM = null;
         public static final ItemAmmo IRON_AMMO_45ACP = null;
         public static final ItemAmmo IRON_AMMO_556MM = null;
         public static final ItemAmmo IRON_AMMO_762MM = null;
         public static final ItemAmmo IRON_AMMO_12G = null;
+        public static final ItemAmmo IRON_AMMO_CROSSBOW_BOLT = null;
         public static final ItemAmmo GOLD_AMMO_9MM = null;
         public static final ItemAmmo GOLD_AMMO_45ACP = null;
         public static final ItemAmmo GOLD_AMMO_556MM = null;
         public static final ItemAmmo GOLD_AMMO_762MM = null;
         public static final ItemAmmo GOLD_AMMO_12G = null;
+        public static final ItemAmmo GOLD_AMMO_CROSSBOW_BOLT = null;
         public static final ItemAmmo DIAMOND_AMMO_9MM = null;
         public static final ItemAmmo DIAMOND_AMMO_45ACP = null;
         public static final ItemAmmo DIAMOND_AMMO_556MM = null;
         public static final ItemAmmo DIAMOND_AMMO_762MM = null;
         public static final ItemAmmo DIAMOND_AMMO_12G = null;
+        public static final ItemAmmo DIAMOND_AMMO_CROSSBOW_BOLT = null;
         public static final ItemAmmo EMERALD_AMMO_9MM = null;
         public static final ItemAmmo EMERALD_AMMO_45ACP = null;
         public static final ItemAmmo EMERALD_AMMO_556MM = null;
         public static final ItemAmmo EMERALD_AMMO_762MM = null;
         public static final ItemAmmo EMERALD_AMMO_12G = null;
+        public static final ItemAmmo EMERALD_AMMO_CROSSBOW_BOLT = null;
         public static final ItemAmmo AMETHYST_AMMO_9MM = null;
         public static final ItemAmmo AMETHYST_AMMO_45ACP = null;
         public static final ItemAmmo AMETHYST_AMMO_556MM = null;
         public static final ItemAmmo AMETHYST_AMMO_762MM = null;
         public static final ItemAmmo AMETHYST_AMMO_12G = null;
+        public static final ItemAmmo AMETHYST_AMMO_CROSSBOW_BOLT = null;
         public static final GRPGItem SMALL_BULLET_CASING = null;
         public static final GRPGItem LARGE_BULLET_CASING = null;
         public static final GRPGItem SHOTGUN_SHELL = null;
@@ -111,6 +119,7 @@ public class ModRegistry {
         public static final GRPGItem WOODEN_STOCK = null;
         public static final GRPGItem MAGAZINE = null;
         public static final GRPGItem GUN_PARTS = null;
+        public static final GRPGItem BOLT_FLETCHING = null;
     }
 
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
@@ -151,6 +160,7 @@ public class ModRegistry {
         public static final SoundEvent SLR = null;
         public static final SoundEvent M24 = null;
         public static final SoundEvent WIN94 = null;
+        public static final SoundEvent KAR98K_RELOAD_CLIP = null;
     }
 
     @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
@@ -200,41 +210,49 @@ public class ModRegistry {
                     new ItemAmmo("wooden_ammo_556mm", AmmoType._556MM, AmmoMaterial.WOOD, Ability.AR_WOOD_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
                     new ItemAmmo("wooden_ammo_762mm", AmmoType._762MM, AmmoMaterial.WOOD, Ability.SR_WOOD_AMMO, () -> GRPGItems.SNIPER_RIFLE),
                     new ItemAmmo("wooden_ammo_12g", AmmoType._12G, AmmoMaterial.WOOD, Ability.SG_WOOD_AMMO, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("wooden_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.WOOD, Ability.CROSSBOW_WOOD_AMMO, () -> GRPGItems.CROSSBOW),
                     new ItemAmmo("stone_ammo_9mm", AmmoType._9MM, AmmoMaterial.STONE, Ability.PISTOL_STONE_AMMO, () -> GRPGItems.PISTOL),
                     new ItemAmmo("stone_ammo_45acp", AmmoType._45ACP, AmmoMaterial.STONE, Ability.SMG_STONE_AMMO, () -> GRPGItems.SMG),
                     new ItemAmmo("stone_ammo_556mm", AmmoType._556MM, AmmoMaterial.STONE, Ability.AR_STONE_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
                     new ItemAmmo("stone_ammo_762mm", AmmoType._762MM, AmmoMaterial.STONE, Ability.SR_STONE_AMMO, () -> GRPGItems.SNIPER_RIFLE),
                     new ItemAmmo("stone_ammo_12g", AmmoType._12G, AmmoMaterial.STONE, Ability.SG_STONE_AMMO, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("stone_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.STONE, Ability.CROSSBOW_STONE_AMMO, () -> GRPGItems.CROSSBOW),
                     new ItemAmmo("iron_ammo_9mm", AmmoType._9MM, AmmoMaterial.IRON, Ability.PISTOL_IRON_AMMO, () -> GRPGItems.PISTOL),
                     new ItemAmmo("iron_ammo_45acp", AmmoType._45ACP, AmmoMaterial.IRON, Ability.SMG_IRON_AMMO, () -> GRPGItems.SMG),
                     new ItemAmmo("iron_ammo_556mm", AmmoType._556MM, AmmoMaterial.IRON, Ability.AR_IRON_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
                     new ItemAmmo("iron_ammo_762mm", AmmoType._762MM, AmmoMaterial.IRON, Ability.SR_IRON_AMMO, () -> GRPGItems.SNIPER_RIFLE),
                     new ItemAmmo("iron_ammo_12g", AmmoType._12G, AmmoMaterial.IRON, Ability.SG_IRON_AMMO, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("iron_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.IRON, Ability.CROSSBOW_IRON_AMMO, () -> GRPGItems.CROSSBOW),
                     new ItemAmmo("gold_ammo_9mm", AmmoType._9MM, AmmoMaterial.GOLD, Ability.PISTOL_GOLD_AMMO, () -> GRPGItems.PISTOL),
                     new ItemAmmo("gold_ammo_45acp", AmmoType._45ACP, AmmoMaterial.GOLD, Ability.SMG_GOLD_AMMO, () -> GRPGItems.SMG),
                     new ItemAmmo("gold_ammo_556mm", AmmoType._556MM, AmmoMaterial.GOLD, Ability.AR_GOLD_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
                     new ItemAmmo("gold_ammo_762mm", AmmoType._762MM, AmmoMaterial.GOLD, Ability.SR_GOLD_AMMO, () -> GRPGItems.SNIPER_RIFLE),
                     new ItemAmmo("gold_ammo_12g", AmmoType._12G, AmmoMaterial.GOLD, Ability.SG_GOLD_AMMO, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("gold_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.GOLD, Ability.CROSSBOW_GOLD_AMMO, () -> GRPGItems.CROSSBOW),
                     new ItemAmmo("diamond_ammo_9mm", AmmoType._9MM, AmmoMaterial.DIAMOND, Ability.PISTOL_DIAMOND_AMMO, () -> GRPGItems.PISTOL),
                     new ItemAmmo("diamond_ammo_45acp", AmmoType._45ACP, AmmoMaterial.DIAMOND, Ability.SMG_DIAMOND_AMMO, () -> GRPGItems.SMG),
                     new ItemAmmo("diamond_ammo_556mm", AmmoType._556MM, AmmoMaterial.DIAMOND, Ability.AR_DIAMOND_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
                     new ItemAmmo("diamond_ammo_762mm", AmmoType._762MM, AmmoMaterial.DIAMOND, Ability.SR_DIAMOND_AMMO, () -> GRPGItems.SNIPER_RIFLE),
                     new ItemAmmo("diamond_ammo_12g", AmmoType._12G, AmmoMaterial.DIAMOND, Ability.SG_DIAMOND_AMMO, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("diamond_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.DIAMOND, Ability.CROSSBOW_DIAMOND_AMMO, () -> GRPGItems.CROSSBOW),
                     new ItemAmmo("emerald_ammo_9mm", AmmoType._9MM, AmmoMaterial.EMERALD, Ability.PISTOL_EMERALD_AMMO, () -> GRPGItems.PISTOL),
                     new ItemAmmo("emerald_ammo_45acp", AmmoType._45ACP, AmmoMaterial.EMERALD, Ability.SMG_EMERALD_AMMO, () -> GRPGItems.SMG),
                     new ItemAmmo("emerald_ammo_556mm", AmmoType._556MM, AmmoMaterial.EMERALD, Ability.AR_EMERALD_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
                     new ItemAmmo("emerald_ammo_762mm", AmmoType._762MM, AmmoMaterial.EMERALD, Ability.SR_EMERALD_AMMO, () -> GRPGItems.SNIPER_RIFLE),
                     new ItemAmmo("emerald_ammo_12g", AmmoType._12G, AmmoMaterial.EMERALD, Ability.SG_EMERALD_AMMO, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("emerald_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.EMERALD, Ability.CROSSBOW_EMERALD_AMMO, () -> GRPGItems.CROSSBOW),
                     new ItemAmmo("amethyst_ammo_9mm", AmmoType._9MM, AmmoMaterial.AMETHYST, Ability.PISTOL_AMETHYST_AMMO, () -> GRPGItems.PISTOL),
                     new ItemAmmo("amethyst_ammo_45acp", AmmoType._45ACP, AmmoMaterial.AMETHYST, Ability.SMG_AMETHYST_AMMO, () -> GRPGItems.SMG),
                     new ItemAmmo("amethyst_ammo_556mm", AmmoType._556MM, AmmoMaterial.AMETHYST, Ability.AR_AMETHYST_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
                     new ItemAmmo("amethyst_ammo_762mm", AmmoType._762MM, AmmoMaterial.AMETHYST, Ability.SR_AMETHYST_AMMO, () -> GRPGItems.SNIPER_RIFLE),
                     new ItemAmmo("amethyst_ammo_12g", AmmoType._12G, AmmoMaterial.AMETHYST, Ability.SG_AMETHYST_AMMO, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("amethyst_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.AMETHYST, Ability.CROSSBOW_AMETHYST_AMMO, () -> GRPGItems.CROSSBOW),
                     new PistolItem("pistol"),
                     new SMGItem("smg"),
                     new ARItem("assault_rifle"),
                     new SRItem("sniper_rifle"),
                     new SGItem("shotgun"),
+                    new CrossbowItem("crossbow"),
                     new GRPGItem("small_bullet_casing"),
                     new GRPGItem("large_bullet_casing"),
                     new GRPGItem("shotgun_shell"),
@@ -244,7 +262,8 @@ public class ModRegistry {
                     new GRPGItem("small_iron_stock"),
                     new GRPGItem("wooden_stock"),
                     new GRPGItem("magazine"),
-                    new GRPGItem("gun_parts")
+                    new GRPGItem("gun_parts"),
+                    new GRPGItem("bolt_fletching")
             );
             queue.forEach(registry::register);
             queue = null;
@@ -254,6 +273,8 @@ public class ModRegistry {
         public static void onEntityRegister(RegistryEvent.Register<EntityEntry> event) {
             event.getRegistry().registerAll(
                     makeBuilder("bullet", EntityBullet.class).tracker(256, 1, true).build(),
+                    makeBuilder("sg_pellet", EntityShotgunPellet.class).tracker(128, 1, true).build(),
+                    makeBuilder("crossbow_bolt", EntityCrossbowBolt.class).tracker(256, 1, true).build(),
                     makeBuilder("airdrop", EntityAirdrop.class).tracker(256, 1, true).build(),
                     makeBuilder("explosive_skeleton", EntityExplosiveSkeleton.class).tracker(80, 3, true).egg(0xB46F67, 0x494949).spawn(EnumCreatureType.MONSTER, 15, 1, 3, ForgeRegistries.BIOMES).build(),
                     makeBuilder("explosive_arrow", EntityExplosiveArrow.class).tracker(64, 20, true).build(),
@@ -293,7 +314,8 @@ public class ModRegistry {
                     sound("mp5"),
                     sound("slr"),
                     sound("m24"),
-                    sound("win94")
+                    sound("win94"),
+                    sound("kar98k_reload_clip")
             );
         }
 
@@ -331,6 +353,7 @@ public class ModRegistry {
             GRPGItems.ASSAULT_RIFLE.setTileEntityItemStackRenderer(new ARRenderer());
             GRPGItems.SNIPER_RIFLE.setTileEntityItemStackRenderer(new SRRenderer());
             GRPGItems.SHOTGUN.setTileEntityItemStackRenderer(new SGRenderer());
+            GRPGItems.CROSSBOW.setTileEntityItemStackRenderer(new CrossbowRenderer());
         }
 
         @SubscribeEvent
@@ -341,6 +364,7 @@ public class ModRegistry {
             registry.putObject(getGunModelResourceLocation(GRPGItems.ASSAULT_RIFLE), new ARBakedModel());
             registry.putObject(getGunModelResourceLocation(GRPGItems.SNIPER_RIFLE), new SRBakedModel());
             registry.putObject(getGunModelResourceLocation(GRPGItems.SHOTGUN), new SGBakedModel());
+            registry.putObject(getGunModelResourceLocation(GRPGItems.CROSSBOW), new CrossbowBakedModel());
         }
 
         protected static ModelResourceLocation getGunModelResourceLocation(GunItem gunItem) {

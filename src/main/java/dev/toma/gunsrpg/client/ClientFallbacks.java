@@ -12,8 +12,8 @@ public class ClientFallbacks {
             ((GuiSkillTree) mc.currentScreen).onDataUpdate();
         }
         if(!PlayerDataFactory.get(mc.player).getAimInfo().aiming) {
-            mc.gameSettings.fovSetting = ClientEventHandler.preAimFov;
-            if(ClientEventHandler.preAimSens >= 0) mc.gameSettings.mouseSensitivity = ClientEventHandler.preAimSens;
+            ClientEventHandler.preAimFov.ifPresent(value -> mc.gameSettings.fovSetting = value);
+            ClientEventHandler.preAimSens.ifPresent(value -> mc.gameSettings.mouseSensitivity = value);
         }
     }
 }

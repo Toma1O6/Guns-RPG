@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.common.capability.PlayerDataManager;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.DebuffTypes;
 import dev.toma.gunsrpg.util.object.EntitySpawnManager;
@@ -27,6 +28,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.EnumFacing;
@@ -39,6 +41,7 @@ import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.ChunkEvent;
@@ -181,6 +184,18 @@ public class CommonEventHandler {
                 if(player.getHeldItemMainhand().getItem() instanceof GunItem) {
                     PlayerDataFactory.get(player).getSkillData().kill(event.getEntity(), (GunItem) player.getHeldItemMainhand().getItem());
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void getLootingLevel(LootingLevelEvent event) {
+        if(event.getDamageSource() instanceof GunDamageSource) {
+            GunDamageSource src = (GunDamageSource) event.getDamageSource();
+            ItemStack stack = src.getStacc();
+            Entity shooter = src.getSrc();
+            if(stack.getItem() == ModRegistry.GRPGItems.CROSSBOW && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Ability.HUNTER)) {
+                event.setLootingLevel(3);
             }
         }
     }

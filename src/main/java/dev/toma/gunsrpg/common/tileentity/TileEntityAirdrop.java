@@ -154,8 +154,6 @@ public class TileEntityAirdrop extends IInventoryFactory {
             );
         }
 
-        // TODO shotgun shells!
-
         private List<Supplier<ItemStack>> getCommonAmmo() {
             return listOf(
                     () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_9MM, 25),
@@ -170,7 +168,9 @@ public class TileEntityAirdrop extends IInventoryFactory {
                     () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_556MM, 25),
                     () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_556MM, 25),
                     () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_762MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_12G, 25)
+                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_12G, 25),
+                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_CROSSBOW_BOLT, 25),
+                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_CROSSBOW_BOLT, 25)
             );
         }
 
@@ -191,7 +191,10 @@ public class TileEntityAirdrop extends IInventoryFactory {
                     () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_762MM, 50),
                     () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_12G, 25),
                     () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_12G, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_12G, 50)
+                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_12G, 50),
+                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_CROSSBOW_BOLT, 50),
+                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_CROSSBOW_BOLT, 50),
+                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_CROSSBOW_BOLT, 25)
             );
         }
 
@@ -209,7 +212,10 @@ public class TileEntityAirdrop extends IInventoryFactory {
                     () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_762MM, 25),
                     () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_762MM, 50),
                     () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_12G, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_12G, 50)
+                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_12G, 50),
+                    () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_CROSSBOW_BOLT, 25),
+                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_CROSSBOW_BOLT, 25),
+                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_CROSSBOW_BOLT, 50)
             );
         }
 
@@ -225,7 +231,10 @@ public class TileEntityAirdrop extends IInventoryFactory {
                     () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_762MM, 25),
                     () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_762MM, 50),
                     () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_12G, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_12G, 50)
+                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_12G, 50),
+                    () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_CROSSBOW_BOLT, 25),
+                    () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_CROSSBOW_BOLT, 25),
+                    () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_CROSSBOW_BOLT, 50)
             );
         }
 
@@ -242,7 +251,10 @@ public class TileEntityAirdrop extends IInventoryFactory {
                     () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_12G, 25),
                     () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_12G, 25),
                     () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_12G, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_12G, 50)
+                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_12G, 50),
+                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_CROSSBOW_BOLT, 50),
+                    () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_CROSSBOW_BOLT, 50),
+                    () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_CROSSBOW_BOLT, 50)
             );
         }
 

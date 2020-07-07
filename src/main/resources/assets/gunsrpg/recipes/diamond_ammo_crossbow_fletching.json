@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "M",
+        "S",
+        "F"
+    ],
+    "key": {
+        "F": {
+            "item": "gunsrpg:bolt_fletching"
+        },
+        "S": {
+            "item": "minecraft:stick"
+        },
+        "M": {
+            "item": "minecraft:diamond"
+        }
+    },
+    "result": {
+        "item": "gunsrpg:diamond_ammo_crossbow_bolt",
+        "count": 2
+    }
+}

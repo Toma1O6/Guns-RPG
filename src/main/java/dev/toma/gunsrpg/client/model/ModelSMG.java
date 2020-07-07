@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 public class ModelSMG extends ModelWeapon {
 
@@ -242,7 +243,7 @@ public class ModelSMG extends ModelWeapon {
     }
 
     @Override
-    public void doRender() {
+    public void doRender(ItemStack stack) {
         EntityPlayer player = Minecraft.getMinecraft().player;
         receiver.render(1f);
         grip.render(1f);

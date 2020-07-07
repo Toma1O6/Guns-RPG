@@ -5,5 +5,6 @@ public enum AmmoType {
     _45ACP,
     _556MM,
     _762MM,
-    _12G;
+    _12G,
+    CROSSBOW
 }
