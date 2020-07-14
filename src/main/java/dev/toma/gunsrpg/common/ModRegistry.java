@@ -15,8 +15,11 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.item.util.DebuffHeal;
+import dev.toma.gunsrpg.common.skills.NoOperationSkill;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -41,12 +44,17 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.RegistryBuilder;
+import net.minecraftforge.registries.RegistryManager;
 import toma.config.util.RegisterConfigEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModRegistry {
+
+    public static IForgeRegistry<SkillType<?>> SKILLS;
 
     public static void registerItemBlock(Block block) {
         ItemBlock itemBlock = new ItemBlock(block);
@@ -161,6 +169,81 @@ public class ModRegistry {
         public static final SoundEvent M24 = null;
         public static final SoundEvent WIN94 = null;
         public static final SoundEvent KAR98K_RELOAD_CLIP = null;
+        public static final SoundEvent CROSSBOW_SHOOT = null;
+        public static final SoundEvent CROSSBOW_RELOAD = null;
+        public static final SoundEvent CROSSBOW_RELOAD_FAST = null;
+    }
+
+    @GameRegistry.ObjectHolder(GunsRPG.MODID)
+    public static final class Skills {
+        public static final SkillType<?> GUNPOWDER_NOVICE = null;
+        public static final SkillType<?> GUNPOWDER_EXPERT = null;
+        public static final SkillType<?> GUNPOWDER_MASTER = null;
+        public static final SkillType<?> GUN_PARTS_SMITH = null;
+        public static final SkillType<?> PISTOL_ASSEMBLY = null;
+        public static final SkillType<?> SMG_ASSEMBLY = null;
+        public static final SkillType<?> CROSSBOW_ASSEMBLY = null;
+        public static final SkillType<?> SHOTGUN_ASSEMBLY = null;
+        public static final SkillType<?> ASSAULT_RIFLE_ASSEMBLY = null;
+        public static final SkillType<?> SNIPER_RIFLE_ASSEMBLY = null;
+        public static final SkillType<?> WOODEN_AMMO_SMITH = null;
+        public static final SkillType<?> STONE_AMMO_SMITH = null;
+        public static final SkillType<?> IRON_AMMO_SMITH = null;
+        public static final SkillType<?> GOLD_AMMO_SMITH = null;
+        public static final SkillType<?> DIAMOND_AMMO_SMITH = null;
+        public static final SkillType<?> EMERALD_AMMO_SMITH = null;
+        public static final SkillType<?> AMETHYST_AMMO_SMITH = null;
+        public static final SkillType<?> AMMO_SMITHING_MASTERY = null;
+        public static final SkillType<?> GRENADES = null; // 5s fuse
+        public static final SkillType<?> MASSIVE_GRENADES = null; // +2 power
+        public static final SkillType<?> IMPACT_GRENADES = null;
+        public static final SkillType<?> MEDIC = null;
+        public static final SkillType<?> DOCTOR = null;
+        public static final SkillType<?> POISON_RESISTANCE_I = null;
+        public static final SkillType<?> POISON_RESISTANCE_II = null;
+        public static final SkillType<?> POISON_RESISTANCE_III = null;
+        public static final SkillType<?> INFECTION_RESISTANCE_I = null;
+        public static final SkillType<?> INFECTION_RESISTANCE_II = null;
+        public static final SkillType<?> INFECTION_RESISTANCE_III = null;
+        public static final SkillType<?> BROKEN_BONE_RESISTANCE_I = null;
+        public static final SkillType<?> BROKEN_BONE_RESISTANCE_II = null;
+        public static final SkillType<?> BROKEN_BONE_RESISTANCE_III = null;
+        public static final SkillType<?> BLEEDING_RESISTANCE_I = null;
+        public static final SkillType<?> BLEEDING_RESISTANCE_II = null;
+        public static final SkillType<?> BLEEDING_RESISTANCE_III = null;
+        public static final SkillType<?> SHARP_AXE_I = null;
+        public static final SkillType<?> SHARP_AXE_II = null;
+        public static final SkillType<?> SHARP_AXE_III = null;
+        public static final SkillType<?> LUMBERJACK_I = null;
+        public static final SkillType<?> LUMBERJACK_II = null;
+        public static final SkillType<?> LUMBERJACK_III = null;
+        public static final SkillType<?> HEAVY_PICKAXE_I = null;
+        public static final SkillType<?> HEAVY_PICKAXE_II = null;
+        public static final SkillType<?> HEAVY_PICKAXE_III = null;
+        public static final SkillType<?> MOTHER_LOAD_I = null;
+        public static final SkillType<?> MOTHER_LOAD_II = null;
+        public static final SkillType<?> MOTHER_LOAD_III = null;
+        public static final SkillType<?> BLACKSMITH = null;
+        public static final SkillType<?> MINERALOGIST = null;
+        public static final SkillType<?> ACROBATICS_I = null;
+        public static final SkillType<?> ACROBATICS_II = null;
+        public static final SkillType<?> ACROBATICS_III = null;
+        public static final SkillType<?> STRONG_MUSCLES_I = null;
+        public static final SkillType<?> STRONG_MUSCLES_II = null;
+        public static final SkillType<?> STRONG_MUSCLES_III = null;
+        public static final SkillType<?> AGILITY_I = null;
+        public static final SkillType<?> AGILITY_II = null;
+        public static final SkillType<?> AGILITY_III = null;
+        public static final SkillType<?> WELL_FED_I = null;
+        public static final SkillType<?> WELL_FED_II = null;
+        public static final SkillType<?> WELL_FED_III = null;
+        public static final SkillType<?> SECOND_CHANCE_I = null;
+        public static final SkillType<?> SECOND_CHANCE_II = null;
+        public static final SkillType<?> SECOND_CHANCE_III = null;
+        public static final SkillType<?> ADRENALINE_RUSH_I = null;
+        public static final SkillType<?> ADRENALINE_RUSH_II = null;
+        public static final SkillType<?> ADRENALINE_RUSH_III = null;
+        public static final SkillType<?> GOD_HELP_US = null;
     }
 
     @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
@@ -168,6 +251,88 @@ public class ModRegistry {
 
         private static List<ItemBlock> queue = new ArrayList<>();
         private static int id = -1;
+
+        @SuppressWarnings("unchecked")
+        @SubscribeEvent
+        public static void createRegistries(RegistryEvent.NewRegistry event) {
+            ResourceLocation location = GunsRPG.makeResource("skill");
+            createRegistry(location, SkillType.class).create();
+            SKILLS = RegistryManager.ACTIVE.getRegistry(location);
+        }
+
+        @SubscribeEvent
+        public static void onSkillRegister(RegistryEvent.Register<SkillType<?>> event) {
+            event.getRegistry().registerAll(
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("gunpowder_novice").requiredLevel(0).price(1).childs(() -> ModUtils.newList(Skills.GUNPOWDER_EXPERT)).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("gunpowder_expert").requiredLevel(15).price(2).childs(() -> ModUtils.newList(Skills.GUNPOWDER_MASTER)).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("gunpowder_master").requiredLevel(30).price(3).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("gun_parts_smith").requiredLevel(5).price(1).childs(() -> ModUtils.newList(Skills.PISTOL_ASSEMBLY, Skills.SMG_ASSEMBLY, Skills.CROSSBOW_ASSEMBLY, Skills.SHOTGUN_ASSEMBLY, Skills.ASSAULT_RIFLE_ASSEMBLY, Skills.SNIPER_RIFLE_ASSEMBLY)).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("pistol_assembly").requiredLevel(5).price(2).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("smg_assembly").requiredLevel(10).price(2).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("crossbow_assembly").requiredLevel(15).price(3).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("shotgun_assembly").requiredLevel(20).price(3).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("assault_rifle_assembly").requiredLevel(25).price(4).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("sniper_rifle_assembly").requiredLevel(35).price(4).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("wooden_ammo_smith").requiredLevel(0).price(1).childs(() -> ModUtils.newList(Skills.STONE_AMMO_SMITH)).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("stone_ammo_smith").requiredLevel(5).price(1).childs(() -> ModUtils.newList(Skills.IRON_AMMO_SMITH)).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("iron_ammo_smith").requiredLevel(10).price(2).childs(() -> ModUtils.newList(Skills.GOLD_AMMO_SMITH)).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("gold_ammo_smith").requiredLevel(15).price(2).childs(() -> ModUtils.newList(Skills.DIAMOND_AMMO_SMITH)).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("diamond_ammo_smith").requiredLevel(20).price(3).childs(() -> ModUtils.newList(Skills.EMERALD_AMMO_SMITH)).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("emerald_ammo_smith").requiredLevel(30).price(3).childs(() -> ModUtils.newList(Skills.AMETHYST_AMMO_SMITH)).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("amethyst_ammo_smith").requiredLevel(45).price(5).childs(() -> ModUtils.newList(Skills.AMMO_SMITHING_MASTERY)).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("ammo_smithing_mastery").requiredLevel(60).price(10).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("grenades").requiredLevel(15).price(3).childs(() -> ModUtils.newList(Skills.MASSIVE_GRENADES, Skills.IMPACT_GRENADES)).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("massive_grenades").requiredLevel(15).price(3).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("impact_grenades").requiredLevel(15).price(3).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setDebuffCategory().setRegistryName("medic").requiredLevel(10).price(3).childs(() -> ModUtils.newList(Skills.DOCTOR)).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setDebuffCategory().setRegistryName("doctor").requiredLevel(25).price(3).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setDebuffCategory().setRegistryName("poison_resistance_i").requiredLevel(0).price(1).childAndOverride(() -> Skills.POISON_RESISTANCE_II).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setDebuffCategory().setRegistryName("poison_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.POISON_RESISTANCE_III).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setDebuffCategory().setRegistryName("poison_resistance_iii").requiredLevel(30).price(3).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setDebuffCategory().setRegistryName("infection_resistance_i").requiredLevel(0).price(1).childAndOverride(() -> Skills.INFECTION_RESISTANCE_II).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setDebuffCategory().setRegistryName("infection_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.INFECTION_RESISTANCE_III).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setDebuffCategory().setRegistryName("infection_resistance_iii").requiredLevel(30).price(3).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setDebuffCategory().setRegistryName("broken_bone_resistance_i").requiredLevel(0).price(1).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_II).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setDebuffCategory().setRegistryName("broken_bone_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_III).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setDebuffCategory().setRegistryName("broken_bone_resistance_iii").requiredLevel(30).price(3).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setDebuffCategory().setRegistryName("bleeding_resistance_i").requiredLevel(0).price(1).childAndOverride(() -> Skills.BLEEDING_RESISTANCE_II).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setDebuffCategory().setRegistryName("bleeding_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.BLEEDING_RESISTANCE_III).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setDebuffCategory().setRegistryName("bleeding_resistance_iii").requiredLevel(30).price(3).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("sharp_axe_i").requiredLevel(0).price(1).childAndOverride(() -> Skills.SHARP_AXE_II).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("sharp_axe_ii").requiredLevel(5).price(2).childAndOverride(() -> Skills.SHARP_AXE_III).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("sharp_axe_iii").requiredLevel(15).price(3).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("lumberjack_i").requiredLevel(0).price(2).childAndOverride(() -> Skills.LUMBERJACK_II).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("lumberjack_ii").requiredLevel(10).price(3).childAndOverride(() -> Skills.LUMBERJACK_III).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("lumberjack_iii").requiredLevel(25).price(4).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("heavy_pickaxe_i").requiredLevel(0).price(1).childAndOverride(() -> Skills.HEAVY_PICKAXE_II).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("heavy_pickaxe_ii").requiredLevel(5).price(2).childAndOverride(() -> Skills.HEAVY_PICKAXE_III).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("heavy_pickaxe_iii").requiredLevel(15).price(3).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("mother_load_i").requiredLevel(0).price(2).childAndOverride(() -> Skills.MOTHER_LOAD_II).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("mother_load_ii").requiredLevel(15).price(3).childAndOverride(() -> Skills.MOTHER_LOAD_III).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("mother_load_iii").requiredLevel(30).price(4).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("blacksmith").requiredLevel(45).price(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("mineralogist").requiredLevel(50).price(6).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("acrobatics_i").requiredLevel(5).price(2).childAndOverride(() -> Skills.ACROBATICS_II).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("acrobatics_ii").requiredLevel(15).price(3).childAndOverride(() -> Skills.ACROBATICS_III).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("acrobatics_iii").requiredLevel(25).price(4).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("strong_muscles_i").requiredLevel(10).price(2).childAndOverride(() -> Skills.STRONG_MUSCLES_II).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("strong_muscles_ii").requiredLevel(25).price(3).childAndOverride(() -> Skills.STRONG_MUSCLES_III).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("strong_muscles_iii").requiredLevel(40).price(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("agility_i").requiredLevel(10).price(2).childAndOverride(() -> Skills.AGILITY_II).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("agility_ii").requiredLevel(20).price(3).childAndOverride(() -> Skills.AGILITY_III).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("agility_iii").requiredLevel(35).price(4).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("well_fed_i").requiredLevel(20).price(2).childAndOverride(() -> Skills.WELL_FED_II).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("well_fed_ii").requiredLevel(35).price(3).childAndOverride(() -> Skills.WELL_FED_III).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("well_fed_iii").requiredLevel(55).price(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("second_chance_i").requiredLevel(50).price(7).childAndOverride(() -> Skills.SECOND_CHANCE_II).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("second_chance_ii").requiredLevel(75).price(9).childAndOverride(() -> Skills.SECOND_CHANCE_III).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("second_chance_iii").requiredLevel(90).price(10).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("adrenaline_rush_i").requiredLevel(15).price(2).childAndOverride(() -> Skills.ADRENALINE_RUSH_II).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("adrenaline_rush_ii").requiredLevel(25).price(3).childAndOverride(() -> Skills.ADRENALINE_RUSH_III).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("adrenaline_rush_iii").requiredLevel(40).price(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("god_help_us").requiredLevel(60).price(8).build()
+            );
+        }
 
         @SubscribeEvent
         public static void onBlockRegister(RegistryEvent.Register<Block> event) {
@@ -315,7 +480,10 @@ public class ModRegistry {
                     sound("slr"),
                     sound("m24"),
                     sound("win94"),
-                    sound("kar98k_reload_clip")
+                    sound("kar98k_reload_clip"),
+                    sound("crossbow_shoot"),
+                    sound("crossbow_reload"),
+                    sound("crossbow_reload_fast")
             );
         }
 
@@ -333,6 +501,10 @@ public class ModRegistry {
         protected static SoundEvent sound(String key) {
             ResourceLocation name = GunsRPG.makeResource(key);
             return new SoundEvent(name).setRegistryName(name);
+        }
+
+        protected static <V extends IForgeRegistryEntry<V>> RegistryBuilder<V> createRegistry(ResourceLocation location, Class<V> type) {
+            return new RegistryBuilder<V>().setName(location).setType(type).setMaxID(Integer.MAX_VALUE - 1);
         }
     }
 

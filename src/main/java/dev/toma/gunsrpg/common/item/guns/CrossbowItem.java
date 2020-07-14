@@ -1,6 +1,9 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
+import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.entity.EntityCrossbowBolt;
@@ -17,6 +20,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -97,6 +101,16 @@ public class CrossbowItem extends GunItem {
         return GRPGConfig.weapon.crossbow;
     }
 
+    @Override
+    public SoundEvent getReloadSound(EntityPlayer player) {
+        return PlayerDataFactory.hasActiveSkill(player, Ability.QUIVER) ? ModRegistry.GRPGSounds.CROSSBOW_RELOAD_FAST : ModRegistry.GRPGSounds.CROSSBOW_RELOAD;
+    }
+
+    @Override
+    public SoundEvent getShootSound(EntityLivingBase entity) {
+        return ModRegistry.GRPGSounds.CROSSBOW_SHOOT;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public void renderRightArm() {
@@ -113,6 +127,7 @@ public class CrossbowItem extends GunItem {
         renderArm(EnumHandSide.LEFT);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
         boolean scoped = PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Ability.CROSSBOW_SCOPE);
@@ -124,5 +139,11 @@ public class CrossbowItem extends GunItem {
             GlStateManager.translate(-0.1F * f1, 0.15F * f1, 0.15F * f1);
             GlStateManager.rotate(20.0F * f1, 0.0F, 1.0F, 0.0F);
         });
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public Animation createReloadAnimation(EntityPlayer player) {
+        return new Animations.ReloadCrossbow(this.getReloadTime(player));
     }
 }

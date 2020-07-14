@@ -23,6 +23,7 @@ public class PlayerDataFactory implements PlayerData {
     private final AimInfo aimInfo;
     private final ReloadInfo reloadInfo;
     private final ScopeData scopeData;
+    private final PlayerSkills playerSkills;
 
     private boolean shooting;
     private boolean logged = false;
@@ -38,6 +39,7 @@ public class PlayerDataFactory implements PlayerData {
         this.aimInfo = new AimInfo(this);
         this.reloadInfo = new ReloadInfo(this);
         this.scopeData = new ScopeData();
+        this.playerSkills = new PlayerSkills(this);
     }
 
     public static boolean hasActiveSkill(EntityPlayer player, Ability.UnlockableType type) {
@@ -55,6 +57,7 @@ public class PlayerDataFactory implements PlayerData {
         this.debuffData.onTick(player);
         this.aimInfo.update();
         this.reloadInfo.update();
+        this.playerSkills.update();
         if(shooting) {
             ItemStack stack = player.getHeldItemMainhand();
             boolean gun = stack.getItem() instanceof GunItem;
@@ -106,6 +109,11 @@ public class PlayerDataFactory implements PlayerData {
     @Override
     public ScopeData getScopeData() {
         return scopeData;
+    }
+
+    @Override
+    public PlayerSkills getSkills() {
+        return playerSkills;
     }
 
     @Override
@@ -163,6 +171,7 @@ public class PlayerDataFactory implements PlayerData {
         nbt.setTag("aimData", aimInfo.write());
         nbt.setTag("reloadData", reloadInfo.write());
         nbt.setTag("scopeData", scopeData.write());
+        nbt.setTag("playerSkills", playerSkills.writeData());
         return nbt;
     }
 
@@ -174,6 +183,7 @@ public class PlayerDataFactory implements PlayerData {
         aimInfo.read(this.findNBTTag("aimData", nbt));
         reloadInfo.read(this.findNBTTag("reloadData", nbt));
         scopeData.read(this.findNBTTag("scopeData", nbt));
+        playerSkills.readData(this.findNBTTag("playerSkills", nbt));
     }
 
     private NBTTagCompound findNBTTag(String key, NBTTagCompound nbt) {

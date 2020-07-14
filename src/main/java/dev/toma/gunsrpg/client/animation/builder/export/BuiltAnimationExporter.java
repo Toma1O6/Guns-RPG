@@ -8,7 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.util.text.event.HoverEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -16,7 +15,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 @SideOnly(Side.CLIENT)
@@ -33,7 +36,6 @@ public class BuiltAnimationExporter {
             writer.close();
             TextComponentString textComponent = new TextComponentString("File has been created, path: " + file.getCanonicalPath());
             textComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, file.getParentFile().getCanonicalPath()));
-            textComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Click to open folder")));
             Minecraft.getMinecraft().player.sendMessage(textComponent);
         } catch (IOException e) {
             Minecraft.getMinecraft().player.sendMessage(new TextComponentString(TextFormatting.RED + "Could not create file: " + e.toString()));
@@ -48,25 +50,31 @@ public class BuiltAnimationExporter {
     }
 
     private static String export() {
-        DecimalFormat df = new DecimalFormat("###.##");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator('.');
+        DecimalFormat df = new DecimalFormat("###.##", symbols);
         StringBuilder builder = new StringBuilder();
         float first = 0.0F;
         for(BuilderAnimationStep step : BuilderData.steps) {
             float last = first + step.length;
-            builder.append("addStep(").append(df.format(first)).append("F, ").append(last).append("F, SimpleAnimation.newSimpleAnimation()");
+            builder.append("addStep(").append(df.format(first)).append("F, ").append(df.format(last)).append("F, SimpleAnimation.newSimpleAnimation()");
             first = last;
             for(BuilderData.Part part : BuilderData.Part.values()) {
                 BuilderAnimationStep.Data data = step.map.get(part);
                 if(data.isEmpty()) continue;
-                builder.append(getFunctionName(part)).append(generateAnimation(data)).append("})");
+                builder.append(getFunctionName(part)).append(generateAnimation(data, df)).append("})");
             }
             builder.append(".create());\n");
+        }
+        if(first > 1.0F) {
+            Minecraft.getMinecraft().player.sendMessage(new TextComponentString(TextFormatting.YELLOW + "Animation step range is over 100%! Your animation will be cut out. Got " + df.format(first)));
+        } else if(first < 1.0F) {
+            Minecraft.getMinecraft().player.sendMessage(new TextComponentString(TextFormatting.YELLOW + "Animation step range is not equal 100%! This will mess up your animation. Got " + df.format(first)));
         }
         return builder.toString();
     }
 
-    private static String generateAnimation(BuilderAnimationStep.Data data) {
-        DecimalFormat df = new DecimalFormat("###.##");
+    private static String generateAnimation(BuilderAnimationStep.Data data, DecimalFormat df) {
         StringBuilder builder = new StringBuilder();
         BuilderAnimationStep.TranslationContext tctx = data.translationContext;
         if(!tctx.isEmpty()) {
@@ -78,7 +86,9 @@ public class BuiltAnimationExporter {
         }
         BuilderAnimationStep.RotationContext ctx = data.rotationContext;
         if(!ctx.isEmpty()) {
-            for(Map.Entry<BuilderData.Axis, Pair<Float, Float>> entry : ctx.rotations.entrySet()) {
+            List<Map.Entry<BuilderData.Axis, Pair<Float, Float>>> list = new ArrayList<>(ctx.rotations.entrySet());
+            list.sort(Comparator.comparingInt(o -> o.getKey().getIndex()));
+            for(Map.Entry<BuilderData.Axis, Pair<Float, Float>> entry : list) {
                 builder.append("GlStateManager.rotate(");
                 Pair<Float, Float> sdP = entry.getValue();
                 handleTranslationValue(builder, df, sdP.getLeft(), sdP.getRight(), true);

@@ -18,6 +18,8 @@ public interface PlayerData extends INBTSerializable<NBTTagCompound> {
 
     ScopeData getScopeData();
 
+    PlayerSkills getSkills();
+
     void setShooting(boolean shooting);
 
     boolean isShooting();

@@ -63,11 +63,13 @@ public class ClientEventHandler {
     }, EntityPlayer::isSprinting);
 
     private static final ResourceLocation ICON_BACKGROUND = GunsRPG.makeResource("textures/icons/background.png");
-    private static final ResourceLocation SCOPE = GunsRPG.makeResource("textures/icons/scope_overlay.png");
+    public static final ResourceLocation SCOPE = GunsRPG.makeResource("textures/icons/scope_overlay.png");
+    public static final ResourceLocation SCOPE_OVERLAY = GunsRPG.makeResource("textures/icons/scope_full.png");
     static float prevAimingProgress;
-
     static boolean burst;
     static int shotsLeft = 2;
+    public static OptionalObject<Float> preAimFov = OptionalObject.empty();
+    public static OptionalObject<Float> preAimSens = OptionalObject.empty();
 
     @SubscribeEvent
     public static void cancelOverlays(RenderGameOverlayEvent.Pre event) {
@@ -80,9 +82,13 @@ public class ClientEventHandler {
                 PlayerData data = PlayerDataFactory.get(player);
                 if(data.getAimInfo().progress >= 0.9F) {
                     if(stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Ability.SR_SCOPE) || stack.getItem() == ModRegistry.GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, Ability.CROSSBOW_SCOPE)) {
-                        int left = resolution.getScaledWidth() / 2 - 16;
-                        int top = resolution.getScaledHeight() / 2 - 16;
-                        ModUtils.renderTexture(left, top, left + 32, top + 32, SCOPE);
+                        if(GRPGConfig.client.scopeRenderer.isTextureOverlay()) {
+                            ModUtils.renderTexture(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(), SCOPE_OVERLAY);
+                        } else {
+                            int left = resolution.getScaledWidth() / 2 - 16;
+                            int top = resolution.getScaledHeight() / 2 - 16;
+                            ModUtils.renderTexture(left, top, left + 32, top + 32, SCOPE);
+                        }
                     } else if((PlayerDataFactory.hasActiveSkill(player, Ability.SMG_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.SMG) || (PlayerDataFactory.hasActiveSkill(player, Ability.AR_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.ASSAULT_RIFLE)) {
                         ScopeData scopeData = data.getScopeData();
                         float left = resolution.getScaledWidth() / 2f - 8f;
@@ -178,9 +184,6 @@ public class ClientEventHandler {
         }
     }
 
-    public static OptionalObject<Float> preAimFov = OptionalObject.empty();
-    public static OptionalObject<Float> preAimSens = OptionalObject.empty();
-
     @SubscribeEvent
     public static void mouseInputEvent(InputEvent.MouseInputEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
@@ -227,8 +230,12 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void renderHandEvent(RenderSpecificHandEvent event) {
-        ItemStack stack = event.getItemStack();
         EntityPlayerSP player = Minecraft.getMinecraft().player;
+        ItemStack stack = event.getItemStack();
+        if(PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.client.scopeRenderer.isTextureOverlay() && (PlayerDataFactory.hasActiveSkill(player, Ability.SR_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE || PlayerDataFactory.hasActiveSkill(player, Ability.CROSSBOW_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.CROSSBOW)) {
+            event.setCanceled(true);
+            return;
+        }
         float partial = event.getPartialTicks();
         if (stack.getItem() instanceof IHandRenderer) {
             event.setCanceled(true);

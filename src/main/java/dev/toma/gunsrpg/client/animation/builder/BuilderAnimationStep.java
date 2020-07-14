@@ -213,7 +213,7 @@ public class BuilderAnimationStep implements Animation {
         public void updateValue(BuilderData.Axis axis, float f) {
             Pair<Float, Float> pair = rotations.computeIfAbsent(axis, k -> Pair.of(0.0F, f));
             pair.setRight(pair.getRight() + f);
-            if(pair.getRight() == 0.0F) rotations.remove(axis);
+            if(pair.getLeft() == 0.0F && pair.getRight() == 0.0F) rotations.remove(axis);
         }
 
         @Override

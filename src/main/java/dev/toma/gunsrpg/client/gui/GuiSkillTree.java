@@ -314,8 +314,6 @@ public class GuiSkillTree extends GuiScreen {
         public SkillWidget(Ability.UnlockableType type) {
             this.type = type;
             update();
-            boolean f = type.price == 1;
-            price = type.price == 0 ? "This skill can be unlocked for free" : "Costs " + type.price + (f ? " skillpoint" : " skillpoints");
             String title = type.title;
             String[] desc = type.lines;
             width = checkWidth(price);
@@ -323,7 +321,7 @@ public class GuiSkillTree extends GuiScreen {
             for(String line : desc) {
                 width = checkWidth(line);
             }
-            height = desc.length + 1;
+            height = desc.length;
         }
 
         int checkWidth(String line) {

@@ -185,6 +185,45 @@ public class Animations {
         }
     }
 
+    public static class ReloadCrossbow extends MultiStepAnimation {
+
+        public ReloadCrossbow(int time) {
+            super(time);
+            init();
+        }
+
+        @Override
+        public void createAnimationSteps() {
+            addStep(0F, 0.2F, SimpleAnimation.newSimpleAnimation().itemHand(f -> {
+                GlStateManager.rotate(-10F * f, 1.0F, 0.0F, 0.0F);
+            }).leftHand(f -> {
+                GlStateManager.translate(0.0F, 0.0F, +0.4F * f);
+                GlStateManager.rotate(+30F * f, 0.0F, 1.0F, 0.0F);
+            }).create());
+            addStep(0.2F, 0.5F, SimpleAnimation.newSimpleAnimation().itemHand(f -> {
+                GlStateManager.rotate(-10F, 1.0F, 0.0F, 0.0F);
+            }).leftHand(f -> {
+                GlStateManager.translate(0.0F, +0.05F * f, 0.4F - 0.3F * f);
+                GlStateManager.rotate(30F - 20F * f, 0.0F, 1.0F, 0.0F);
+                GlStateManager.rotate(+10F * f, 1.0F, 0.0F, 0.0F);
+            }).create());
+            addStep(0.5F, 0.8F, SimpleAnimation.newSimpleAnimation().itemHand(f -> {
+                GlStateManager.rotate(-10F, 1.0F, 0.0F, 0.0F);
+            }).leftHand(f -> {
+                GlStateManager.translate(-0.3F * f, 0.05F, 0.1F + 0.2F * f);
+                GlStateManager.rotate(10F - 20F * f, 0.0F, 1.0F, 0.0F);
+                GlStateManager.rotate(10F, 1.0F, 0.0F, 0.0F);
+            }).create());
+            addStep(0.8F, 1F, SimpleAnimation.newSimpleAnimation().itemHand(f -> {
+                GlStateManager.rotate(-10F + 10F * f, 1.0F, 0.0F, 0.0F);
+            }).leftHand(f -> {
+                GlStateManager.translate(-0.3F + 0.3F * f, 0.05F + 0.05F * f, 0.3F - 0.3F * f);
+                GlStateManager.rotate(-10F + 10F * f, 0.0F, 1.0F, 0.0F);
+                GlStateManager.rotate(10F - 10F * f, 1.0F, 0.0F, 0.0F);
+            }).create());
+        }
+    }
+
     public static class Antidotum extends MultiStepAnimation {
 
         public Antidotum(int time) {

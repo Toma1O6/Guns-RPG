@@ -1,0 +1,165 @@
+package dev.toma.gunsrpg.common.capability.object;
+
+import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.skills.core.ISkill;
+import dev.toma.gunsrpg.common.skills.core.SkillCategory;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.common.skills.interfaces.TickableSkill;
+import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.object.OptionalObject;
+import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class PlayerSkills {
+
+    private final PlayerDataFactory data;
+    private final Map<GunItem, Integer> gunKills = new HashMap<>();
+    private final Map<SkillCategory, List<ISkill>> unlockedSkills = new HashMap<>();
+    private int level;
+    private int requiredKills;
+    private int kills;
+    private int skillPoints;
+
+    private Map<SkillCategory, List<TickableSkill>> tickCache;
+
+    public PlayerSkills(PlayerDataFactory data) {
+        this.data = data;
+    }
+
+    public void update() {
+        if (tickCache != null) {
+            for (List<TickableSkill> skillList : tickCache.values()) {
+                for (TickableSkill skill : skillList) {
+                    skill.onUpdate(data.getPlayer());
+                }
+            }
+        } else createCache();
+    }
+
+    public void killMob(GunItem gunItem) {
+        int v = gunKills.computeIfAbsent(gunItem, it -> 0);
+        gunKills.put(gunItem, v + 1);
+        data.sync();
+    }
+
+    public void revertToDefault() {
+        gunKills.clear();
+        unlockedSkills.clear();
+        level = 0;
+        kills = 0;
+        skillPoints = 0;
+        clearCache();
+        data.sync();
+    }
+
+    public void unlockSkill(SkillType<?> skillType) {
+        unlockSkill(skillType, true);
+    }
+
+    public void unlockSkill(SkillType<?> skillType, boolean sync) {
+        SkillCategory category = skillType.category;
+        List<ISkill> list = unlockedSkills.computeIfAbsent(category, cat -> new ArrayList<>());
+        if (!ModUtils.contains(skillType, list, SkillType::areTypesEqual)) {
+            clearCache();
+            list.add(skillType.instantiate());
+            if (sync) data.sync();
+        }
+    }
+
+    public void unlockAll() {
+        level = 100;
+        skillPoints = 0;
+        kills = 0;
+        gunKills.clear();
+        for (SkillType<?> skillType : ModRegistry.SKILLS.getValuesCollection()) {
+            unlockSkill(skillType, false);
+        }
+        clearCache();
+        data.sync();
+    }
+
+    public NBTTagCompound writeData() {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setInteger("level", level);
+        nbt.setInteger("requiredKills", requiredKills);
+        nbt.setInteger("kills", kills);
+        nbt.setInteger("skillpoints", skillPoints);
+        NBTTagCompound gunData = new NBTTagCompound();
+        for (Map.Entry<GunItem, Integer> entry : gunKills.entrySet()) {
+            String k = entry.getKey().getRegistryName().toString();
+            int v = entry.getValue();
+            gunData.setInteger(k, v);
+        }
+        nbt.setTag("gunData", gunData);
+        NBTTagCompound skills = new NBTTagCompound();
+        for (Map.Entry<SkillCategory, List<ISkill>> entry : unlockedSkills.entrySet()) {
+            NBTTagList v = new NBTTagList();
+            String k = entry.getKey().ordinal() + "";
+            for (ISkill skill : entry.getValue()) {
+                v.appendTag(skill.saveData());
+            }
+            skills.setTag(k, v);
+        }
+        nbt.setTag("skills", skills);
+        return nbt;
+    }
+
+    public void readData(NBTTagCompound nbt) {
+        clearCache();
+        unlockedSkills.clear();
+        gunKills.clear();
+        level = nbt.getInteger("level");
+        requiredKills = nbt.getInteger("requiredKills");
+        kills = nbt.getInteger("kills");
+        skillPoints = nbt.getInteger("skillpoints");
+        NBTTagCompound gunData = nbt.hasKey("gunData") ? nbt.getCompoundTag("gunData") : new NBTTagCompound();
+        for (String key : gunData.getKeySet()) {
+            Item it = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
+            if (it instanceof GunItem) {
+                int v = gunData.getInteger(key);
+                gunKills.put((GunItem) it, v);
+            }
+        }
+        NBTTagCompound skills = nbt.hasKey("skills") ? nbt.getCompoundTag("skills") : new NBTTagCompound();
+        for (String id : skills.getKeySet()) {
+            NBTTagList list = nbt.getTagList(id, Constants.NBT.TAG_COMPOUND);
+            SkillCategory category = SkillCategory.values()[Integer.parseInt(id)];
+            for (NBTBase nbtBase : list) {
+                NBTTagCompound tagCompound = (NBTTagCompound) nbtBase;
+                ResourceLocation key = new ResourceLocation(tagCompound.getString("type"));
+                SkillType<?> skillType = ModRegistry.SKILLS.getValue(key);
+                if (skillType != null) {
+                    ISkill instance = skillType.instantiate();
+                    instance.readData(tagCompound);
+                    unlockedSkills.computeIfAbsent(category, c -> new ArrayList<>()).add(instance);
+                }
+            }
+        }
+    }
+
+    private void clearCache() {
+        tickCache = null;
+    }
+
+    private void createCache() {
+        tickCache = new HashMap<>();
+        for (SkillCategory category : SkillCategory.tickables()) {
+            OptionalObject<List<ISkill>> obj = OptionalObject.of(unlockedSkills.get(category));
+            if (!obj.isPresent()) continue;
+            tickCache.put(category, obj.get().stream().filter(s -> s instanceof TickableSkill).map(s -> (TickableSkill) s).collect(Collectors.toList()));
+        }
+    }
+}

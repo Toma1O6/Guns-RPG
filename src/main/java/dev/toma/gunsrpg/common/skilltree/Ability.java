@@ -77,13 +77,13 @@ public class Ability {
     public static final UnlockableType SMG_SUPPRESSOR = registerDynamic("smg_suppressor", "Suppressor", "Adds suppressor on your weapon").icon("suppressor").pos(576, 222).requires(list -> needsLevel("smg_5", list)).gun(() -> SMG).save();
     public static final UnlockableType COMMANDO = registerDynamic("commando", "Commando", "Grants following buffs after each kill:", "> 5s speed boost", "> 3s regeneration II").pos(616, 222).requires(list -> needsLevel("smg_8", list)).gun(() -> SMG).save();
     //CROSSBOW (628, 414)
-    public static final UnlockableType QUIVER = registerDynamic("crossbow_quiver", "Quiver", "40% faster reload time").pos(628, 414).requires(list -> needsLevel("crossbow_1", list)).gun(() -> CROSSBOW).save();
+    public static final UnlockableType QUIVER = registerDynamic("crossbow_quiver", "Quiver", "35% faster reload time").pos(628, 414).requires(list -> needsLevel("crossbow_1", list)).gun(() -> CROSSBOW).save();
     public static final UnlockableType POISONED_BOLTS = registerDynamic("poisoned_bolts", "Poisoned Bolt", "Poisons everything it hits!").pos(668, 414).requires(list -> needsLevel("crossbow_1", list)).gun(() -> CROSSBOW).save();
     public static final UnlockableType HUNTER = registerDynamic("hunter", "Hunter", "+4HP on kill", "Grants 2x more loot").pos(708, 414).requires(list -> needsLevel("crossbow_1", list)).gun(() -> CROSSBOW).save();
     public static final UnlockableType TOUGH_BOWSTRING = registerDynamic("tough_bowstring", "Tough Bowstring", "Increases bolt velocity").pos(748, 414).requires(list -> needsLevel("crossbow_5", list)).gun(() -> CROSSBOW).save();
     public static final UnlockableType CROSSBOW_PENETRATOR = registerDynamic("crossbow_penetrator", "Penetrator", "Arrows can penetrate multiple enemies").icon("penetrator").pos(788, 414).requires(list -> needsLevel("crossbow_5", list)).gun(() -> CROSSBOW).save();
     public static final UnlockableType CROSSBOW_SCOPE = registerDynamic("crossbow_scope", "Scope", "Adds optic with 4x magnification").pos(828, 414).icon("scope").requires(list -> needsLevel("crossbow_5", list)).gun(() -> CROSSBOW).save();
-    public static final UnlockableType CROSSBOW_REPEATER = registerDynamic("crossbow_repeater", "Repeater", "+2 bolt reload", "-25% reloading speed").pos(868, 414).requires(list -> needsLevel("crossbow_8", list)).gun(() -> CROSSBOW).save();
+    public static final UnlockableType CROSSBOW_REPEATER = registerDynamic("crossbow_repeater", "Repeater", "+2 bolt reload", "§c-25% reloading speed").pos(868, 414).requires(list -> needsLevel("crossbow_8", list)).gun(() -> CROSSBOW).save();
     //SHOTGUN (880, 606)
     public static final UnlockableType BULLET_LOOPS = registerDynamic("bullet_loops", "Bullet Loops", "Increases reload speed by 20%").pos(880, 606).requires(list -> needsLevel("sg_1", list)).gun(() -> SHOTGUN).save();
     public static final UnlockableType SG_EXTENDED = registerDynamic("sg_extended", "Extended Mag", "Increases magazine capacity to 8").icon("extended").pos(920, 606).requires(list -> needsLevel("sg_1", list)).gun(() -> SHOTGUN).save();

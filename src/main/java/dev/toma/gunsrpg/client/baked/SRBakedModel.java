@@ -1,8 +1,14 @@
 package dev.toma.gunsrpg.client.baked;
 
+import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.skilltree.Ability;
+import dev.toma.gunsrpg.config.GRPGConfig;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.model.TRSRTransformation;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -15,12 +21,17 @@ public class SRBakedModel extends GunBakedModel {
         Matrix4f matrix4f = new Matrix4f();
         matrix4f.setIdentity();
         TRSRTransformation trsrTransformation = new TRSRTransformation(matrix4f);
+        EntityPlayer player = Minecraft.getMinecraft().player;
         GlStateManager.translate(0, 0.4, -0.1);
         GlStateManager.scale(0.01, 0.01, 0.01);
         GlStateManager.rotate(180, 1, 0, 0);
         GlStateManager.rotate(180, 0, 1, 0);
         switch (cameraTransformType) {
             case FIRST_PERSON_RIGHT_HAND: {
+                if(PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.client.scopeRenderer.isTextureOverlay() && PlayerDataFactory.hasActiveSkill(player, Ability.SR_SCOPE) && player.getHeldItemMainhand().getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE) {
+                    GlStateManager.scale(0, 0, 0);
+                    return Pair.of(this, trsrTransformation.getMatrix());
+                }
                 GlStateManager.translate(30F, -5F, 20F);
                 break;
             }
