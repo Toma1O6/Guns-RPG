@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.skills.core;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
+import dev.toma.gunsrpg.common.skills.criteria.UnlockCriteria;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -17,6 +19,7 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
     public final int price;
     public final ResourceLocation icon;
     public final SkillCategory category;
+    private final UnlockCriteria criteria;
     private final IFactory<S> instanceFactory;
     private final ITextComponent textComponent;
     private final ITextComponent[] description;
@@ -31,6 +34,7 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
         this.uninitializedChildList = builder.childs;
         this.skillOverride = builder.skillOverride;
         this.category = builder.category;
+        this.criteria = builder.criteria;
         this.icon = builder.icon != null ? builder.icon : GunsRPG.makeResource(getRegistryName().getResourcePath());
         this.textComponent = builder.textComponent != null ? builder.textComponent : new TextComponentTranslation("skill." + getRegistryName().getResourcePath());
         if (builder.descriptionLines > 0) {
@@ -65,6 +69,10 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
         return description;
     }
 
+    public UnlockCriteria getCriteria() {
+        return criteria;
+    }
+
     public boolean areTypesEqual(ISkill skill) {
         return getRegistryName().equals(skill.getType().getRegistryName());
     }
@@ -89,6 +97,7 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
         private ResourceLocation registryName;
         private ResourceLocation icon;
         private ITextComponent textComponent;
+        private UnlockCriteria criteria = CriteriaTypes.getDefaultCriteria();
         private int descriptionLines = 1;
 
         private Builder(IFactory<S> factory) {
@@ -126,6 +135,11 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
 
         public Builder<S> descriptionLength(int lines) {
             this.descriptionLines = lines;
+            return this;
+        }
+
+        public Builder<S> criteria(UnlockCriteria criteria) {
+            this.criteria = criteria;
             return this;
         }
 

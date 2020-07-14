@@ -49,6 +49,12 @@ public class PlayerSkills {
         } else createCache();
     }
 
+    public boolean hasSkill(SkillType<?> type) {
+        List<ISkill> list = unlockedSkills.get(type.category);
+        if(list == null) return false;
+        return ModUtils.contains(type, list, SkillType::areTypesEqual);
+    }
+
     public void killMob(GunItem gunItem) {
         int v = gunKills.computeIfAbsent(gunItem, it -> 0);
         gunKills.put(gunItem, v + 1);
@@ -89,6 +95,26 @@ public class PlayerSkills {
         }
         clearCache();
         data.sync();
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getSkillPoints() {
+        return skillPoints;
+    }
+
+    public void setSkillPoints(int skillPoints) {
+        this.skillPoints = skillPoints;
+    }
+
+    public Map<GunItem, Integer> getGunKills() {
+        return gunKills;
+    }
+
+    public void addSkillPoints(int amount) {
+        this.skillPoints = Math.max(0, skillPoints + amount);
     }
 
     public NBTTagCompound writeData() {

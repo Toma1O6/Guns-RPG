@@ -244,6 +244,20 @@ public class ModRegistry {
         public static final SkillType<?> ADRENALINE_RUSH_II = null;
         public static final SkillType<?> ADRENALINE_RUSH_III = null;
         public static final SkillType<?> GOD_HELP_US = null;
+        public static final SkillType<?> PISTOL_QUICKDRAW = null;
+        public static final SkillType<?> PISTOL_EXTENDED = null;
+        public static final SkillType<?> PISTOL_TOUGH_BARREL = null;
+        public static final SkillType<?> PISTOL_CARBON_BARREL = null;
+        public static final SkillType<?> PISTOL_SUPPRESSOR = null;
+        public static final SkillType<?> PISTOL_HEAVY_BULLETS = null;
+        public static final SkillType<?> PISTOL_DUAL_WIELD = null;
+        public static final SkillType<?> SMG_QUICKDRAW = null;
+        public static final SkillType<?> SMG_EXTENDED = null;
+        public static final SkillType<?> SMG_VERTICAL_GRIP = null;
+        public static final SkillType<?> SMG_TOUGH_SPRING = null;
+        public static final SkillType<?> SMG_RED_DOT = null;
+        public static final SkillType<?> SMG_SUPPRESSOR = null;
+        public static final SkillType<?> SMG_COMMANDO = null;
     }
 
     @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
