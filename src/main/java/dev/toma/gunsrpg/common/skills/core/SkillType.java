@@ -90,7 +90,7 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
 
         private final IFactory<S> factory;
         private int levelRequirement;
-        private int skillPointPrice;
+        private int skillPointPrice = 1;
         private Supplier<List<SkillType<?>>> childs;
         private Supplier<SkillType<?>> skillOverride;
         private SkillCategory category;
@@ -162,6 +162,10 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
 
         public Builder<S> setSurvivalCategory() {
             return this.category(SkillCategory.SURVIVAL);
+        }
+
+        public Builder<S> setAttachmentCategory() {
+            return this.category(SkillCategory.ATTACHMENT);
         }
 
         public Builder<S> icon(ResourceLocation location) {

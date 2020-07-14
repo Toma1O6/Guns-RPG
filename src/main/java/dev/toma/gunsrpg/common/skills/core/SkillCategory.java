@@ -5,7 +5,8 @@ public enum SkillCategory {
     GUN(true),
     DEBUFF(false),
     MINING(false),
-    SURVIVAL(true);
+    SURVIVAL(true),
+    ATTACHMENT(false);
 
     private static SkillCategory[] tickableTypes;
     private final boolean containsTickableTypes;

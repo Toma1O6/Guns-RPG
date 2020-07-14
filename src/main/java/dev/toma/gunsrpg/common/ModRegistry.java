@@ -17,6 +17,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.item.util.DebuffHeal;
 import dev.toma.gunsrpg.common.skills.NoOperationSkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -246,7 +247,7 @@ public class ModRegistry {
         public static final SkillType<?> GOD_HELP_US = null;
         public static final SkillType<?> PISTOL_QUICKDRAW = null;
         public static final SkillType<?> PISTOL_EXTENDED = null;
-        public static final SkillType<?> PISTOL_TOUGH_BARREL = null;
+        public static final SkillType<?> PISTOL_TOUGH_SPRING = null;
         public static final SkillType<?> PISTOL_CARBON_BARREL = null;
         public static final SkillType<?> PISTOL_SUPPRESSOR = null;
         public static final SkillType<?> PISTOL_HEAVY_BULLETS = null;
@@ -258,6 +259,33 @@ public class ModRegistry {
         public static final SkillType<?> SMG_RED_DOT = null;
         public static final SkillType<?> SMG_SUPPRESSOR = null;
         public static final SkillType<?> SMG_COMMANDO = null;
+        public static final SkillType<?> CROSSBOW_QUIVER = null;
+        public static final SkillType<?> CROSSBOW_POISONED_BOLTS = null;
+        public static final SkillType<?> CROSSBOW_HUNTER = null;
+        public static final SkillType<?> CROSSBOW_TOUGH_BOWSTRING = null;
+        public static final SkillType<?> CROSSBOW_PENETRATOR = null;
+        public static final SkillType<?> CROSSBOW_SCOPE = null;
+        public static final SkillType<?> CROSSBOW_REPEATER = null;
+        public static final SkillType<?> SHOTGUN_BULLET_LOOPS = null;
+        public static final SkillType<?> SHOTGUN_EXTENDED = null;
+        public static final SkillType<?> SHOTGUN_PUMP_IN_ACTION = null;
+        public static final SkillType<?> SHOTGUN_CHOKE = null;
+        public static final SkillType<?> SHOTGUN_NEVER_GIVE_UP = null;
+        public static final SkillType<?> SHOTGUN_EXTENDED_BARREL = null;
+        public static final SkillType<?> AR_TOUGH_SPRING = null;
+        public static final SkillType<?> AR_VERTICAL_GRIP = null;
+        public static final SkillType<?> AR_EXTENDED = null;
+        public static final SkillType<?> AR_RED_DOT = null;
+        public static final SkillType<?> AR_SUPPRESSOR = null;
+        public static final SkillType<?> AR_CHEEKPAD = null;
+        public static final SkillType<?> AR_ADAPTIVE_CHAMBERING = null;
+        public static final SkillType<?> SR_SCOPE = null;
+        public static final SkillType<?> SR_CHEEKPAD = null;
+        public static final SkillType<?> SR_EXTENDED = null;
+        public static final SkillType<?> SR_SUPPRESSOR = null;
+        public static final SkillType<?> SR_FAST_HANDS = null;
+        public static final SkillType<?> SR_PENETRATOR = null;
+        public static final SkillType<?> SR_DEAD_EYE = null;
     }
 
     @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
@@ -274,8 +302,11 @@ public class ModRegistry {
             SKILLS = RegistryManager.ACTIVE.getRegistry(location);
         }
 
+        @SuppressWarnings({"rawtypes", "unchecked"})
         @SubscribeEvent
-        public static void onSkillRegister(RegistryEvent.Register<SkillType<?>> event) {
+        public static void onSkillRegister(RegistryEvent.Register event) {
+            // small nasty hack to get around fucking generics
+            if(!event.getRegistry().getRegistrySuperType().equals(SkillType.class)) return;
             event.getRegistry().registerAll(
                     SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("gunpowder_novice").requiredLevel(0).price(1).childs(() -> ModUtils.newList(Skills.GUNPOWDER_EXPERT)).build(),
                     SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("gunpowder_expert").requiredLevel(15).price(2).childs(() -> ModUtils.newList(Skills.GUNPOWDER_MASTER)).build(),
@@ -344,7 +375,48 @@ public class ModRegistry {
                     SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("adrenaline_rush_i").requiredLevel(15).price(2).childAndOverride(() -> Skills.ADRENALINE_RUSH_II).build(),
                     SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("adrenaline_rush_ii").requiredLevel(25).price(3).childAndOverride(() -> Skills.ADRENALINE_RUSH_III).build(),
                     SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("adrenaline_rush_iii").requiredLevel(40).price(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("god_help_us").requiredLevel(60).price(8).build()
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("god_help_us").requiredLevel(60).price(8).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("pistol_quickdraw").criteria(CriteriaTypes.getPistolCriteria()).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("pistol_extended").criteria(CriteriaTypes.getPistolCriteria()).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("pistol_tough_spring").criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("pistol_carbon_barrel").criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("pistol_suppressor").criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("pistol_heavy_barrel").criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("pistol_dual_wield").criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(8).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("smg_quickdraw").criteria(CriteriaTypes.getSmgCriteria()).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("smg_extended").criteria(CriteriaTypes.getSmgCriteria()).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("smg_vertical_grip").criteria(CriteriaTypes.getSmgCriteria()).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("smg_tough_spring").criteria(CriteriaTypes.getSmgCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("smg_red_dot").criteria(CriteriaTypes.getSmgCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("smg_suppressor").criteria(CriteriaTypes.getSmgCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("smg_commando").criteria(CriteriaTypes.getSmgCriteria()).requiredLevel(8).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("crossbow_quiver").criteria(CriteriaTypes.getCrossbowCriteria()).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("crossbow_poisoned_bolts").criteria(CriteriaTypes.getCrossbowCriteria()).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("crossbow_hunter").criteria(CriteriaTypes.getCrossbowCriteria()).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("crossbow_tough_bowstring").criteria(CriteriaTypes.getCrossbowCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("crossbow_penetrator").criteria(CriteriaTypes.getCrossbowCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("crossbow_scope").criteria(CriteriaTypes.getCrossbowCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("crossbow_repeater").criteria(CriteriaTypes.getCrossbowCriteria()).requiredLevel(8).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("shotgun_bullet_loops").criteria(CriteriaTypes.getShotgunCriteria()).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("shotgun_extended").criteria(CriteriaTypes.getShotgunCriteria()).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("shotgun_pump_in_action").criteria(CriteriaTypes.getShotgunCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("shotgun_choke").criteria(CriteriaTypes.getShotgunCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("shotgun_never_give_up").criteria(CriteriaTypes.getShotgunCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("shotgun_extended_barrel").criteria(CriteriaTypes.getShotgunCriteria()).requiredLevel(8).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("ar_tough_spring").criteria(CriteriaTypes.getAssaltRifleCriteria()).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("ar_vertical_grip").criteria(CriteriaTypes.getAssaltRifleCriteria()).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("ar_extended").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("ar_red_dot").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("ar_suppressor").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("ar_cheekpad").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("ar_adaptive_chambering").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(8).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("sr_scope").criteria(CriteriaTypes.getSniperRifleCriteria()).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("sr_cheekpad").criteria(CriteriaTypes.getSniperRifleCriteria()).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("sr_extended").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("sr_suppressor").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("sr_fast_hands").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("sr_penetrator").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("sr_dead_eye").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(8).build()
             );
         }
 
