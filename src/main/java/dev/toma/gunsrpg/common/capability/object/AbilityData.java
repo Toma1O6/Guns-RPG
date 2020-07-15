@@ -10,6 +10,7 @@ import net.minecraftforge.common.util.Constants;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class AbilityData {
 
     public final Map<Ability.Type, Ability> lockedProperties;

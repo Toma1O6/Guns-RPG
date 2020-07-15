@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.skills.criteria;
 
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.capability.object.GunData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -18,16 +19,16 @@ public class GunCriteria extends DefaultUnlockCriteria {
 
     @Override
     public boolean isUnlockAvailable(PlayerData data, SkillType<?> skillType) {
-        Map<GunItem, Integer> stats = data.getSkills().getGunKills();
-        Integer v = stats.get(gunItemSupplier.get());
-        return v != null && v >= skillType.price && data.getSkills().getLevel() >= skillType.levelRequirement;
+        Map<GunItem, GunData> stats = data.getSkills().getGunStats();
+        GunData v = stats.get(gunItemSupplier.get());
+        return v != null && v.getGunPoints() >= skillType.price && v.getLevel() >= skillType.levelRequirement;
     }
 
     @Override
     public void onActivated(PlayerData data, SkillType<?> skillType) {
         PlayerSkills skills = data.getSkills();
-        int v = skills.getGunKills().get(gunItemSupplier.get()) - skillType.price;
-        skills.getGunKills().put(gunItemSupplier.get(), v);
+        GunItem key = gunItemSupplier.get();
+        skills.getGunStats().computeIfAbsent(key, k -> new GunData()).consumePoint();
         skills.unlockSkill(skillType);
     }
 }

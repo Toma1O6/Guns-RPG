@@ -1,18 +1,61 @@
 package dev.toma.gunsrpg.common.skills.core;
 
+import java.util.function.Supplier;
+
 public enum SkillCategory {
 
-    GUN(true),
     DEBUFF(false),
     MINING(false),
     SURVIVAL(true),
-    ATTACHMENT(false);
+    ATTACHMENT(false, true),
+    GUN(true, () -> ATTACHMENT, false);
 
     private static SkillCategory[] tickableTypes;
+    private static SkillCategory[] mainCategories;
     private final boolean containsTickableTypes;
+    private final Supplier<SkillCategory> childCategory;
+    private final boolean isChild;
 
     SkillCategory(boolean containsTickableTypes) {
+        this(containsTickableTypes, false);
+    }
+
+    SkillCategory(boolean containsTickableTypes, boolean isChild) {
+        this(containsTickableTypes, null, isChild);
+    }
+
+    SkillCategory(boolean containsTickableTypes, Supplier<SkillCategory> childCategory, boolean isChild) {
         this.containsTickableTypes = containsTickableTypes;
+        this.childCategory = childCategory;
+        this.isChild = isChild;
+    }
+
+    public boolean isChild() {
+        return isChild;
+    }
+
+    public boolean hasChild() {
+        return childCategory != null;
+    }
+
+    public SkillCategory getChild() {
+        return childCategory.get();
+    }
+
+    public static SkillCategory[] mainCategories() {
+        if(mainCategories == null) {
+            SkillCategory[] temp = new SkillCategory[values().length];
+            int c = 0;
+            for(SkillCategory category : values()) {
+                if(!category.isChild()) {
+                    temp[c] = category;
+                    ++c;
+                }
+            }
+            mainCategories = new SkillCategory[c];
+            System.arraycopy(temp, 0, mainCategories, 0, c);
+        }
+        return mainCategories;
     }
 
     public static SkillCategory[] tickables() {

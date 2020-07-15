@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class SkillData {
 
     private final EntityPlayer player;

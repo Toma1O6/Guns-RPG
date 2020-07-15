@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.capability;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.object.*;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketUpdateCap;
@@ -42,6 +43,11 @@ public class PlayerDataFactory implements PlayerData {
         this.playerSkills = new PlayerSkills(this);
     }
 
+    public static boolean hasActiveSkill(EntityPlayer player, SkillType<?> type) {
+        return get(player).getSkills().hasSkill(type);
+    }
+
+    @Deprecated
     public static boolean hasActiveSkill(EntityPlayer player, Ability.UnlockableType type) {
         Ability ability = get(player).getSkillData().getAbilityData().unlockedSkills.get(type);
         return ability != null && ability.enabled;

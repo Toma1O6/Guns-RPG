@@ -3,7 +3,7 @@ package dev.toma.gunsrpg.client;
 import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.gui.GuiChooseAmmo;
-import dev.toma.gunsrpg.client.gui.GuiSkillTree;
+import dev.toma.gunsrpg.client.gui.GuiPlayerSkills;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
@@ -98,7 +98,7 @@ public class ModKeybinds {
     private static void showClassesPressed() {
         Minecraft mc = Minecraft.getMinecraft();
         NetworkManager.toServer(new SPacketRequestDataUpdate(mc.player.getUniqueID()));
-        mc.displayGuiScreen(new GuiSkillTree());
+        mc.displayGuiScreen(new GuiPlayerSkills());
     }
 
     private static void register(String name, int key, Runnable onPress) {

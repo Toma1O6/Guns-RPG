@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class PlayerSkills {
 
     private final PlayerDataFactory data;
-    private final Map<GunItem, Integer> gunKills = new HashMap<>();
+    private final Map<GunItem, GunData> gunKills = new HashMap<>();
     private final Map<SkillCategory, List<ISkill>> unlockedSkills = new HashMap<>();
     private int level;
     private int requiredKills;
@@ -56,8 +56,8 @@ public class PlayerSkills {
     }
 
     public void killMob(GunItem gunItem) {
-        int v = gunKills.computeIfAbsent(gunItem, it -> 0);
-        gunKills.put(gunItem, v + 1);
+        GunData gunData = gunKills.computeIfAbsent(gunItem, it -> new GunData());
+        gunData.awardKill();
         data.sync();
     }
 
@@ -109,7 +109,7 @@ public class PlayerSkills {
         this.skillPoints = skillPoints;
     }
 
-    public Map<GunItem, Integer> getGunKills() {
+    public Map<GunItem, GunData> getGunStats() {
         return gunKills;
     }
 
@@ -124,10 +124,10 @@ public class PlayerSkills {
         nbt.setInteger("kills", kills);
         nbt.setInteger("skillpoints", skillPoints);
         NBTTagCompound gunData = new NBTTagCompound();
-        for (Map.Entry<GunItem, Integer> entry : gunKills.entrySet()) {
+        for (Map.Entry<GunItem, GunData> entry : gunKills.entrySet()) {
             String k = entry.getKey().getRegistryName().toString();
-            int v = entry.getValue();
-            gunData.setInteger(k, v);
+            GunData v = entry.getValue();
+            gunData.setTag(k, v.saveData());
         }
         nbt.setTag("gunData", gunData);
         NBTTagCompound skills = new NBTTagCompound();
@@ -155,8 +155,10 @@ public class PlayerSkills {
         for (String key : gunData.getKeySet()) {
             Item it = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
             if (it instanceof GunItem) {
-                int v = gunData.getInteger(key);
-                gunKills.put((GunItem) it, v);
+                NBTTagCompound v = gunData.getCompoundTag(key);
+                GunData data = new GunData();
+                data.readData(v);
+                gunKills.put((GunItem) it, data);
             }
         }
         NBTTagCompound skills = nbt.hasKey("skills") ? nbt.getCompoundTag("skills") : new NBTTagCompound();

@@ -35,12 +35,12 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
         this.skillOverride = builder.skillOverride;
         this.category = builder.category;
         this.criteria = builder.criteria;
-        this.icon = builder.icon != null ? builder.icon : GunsRPG.makeResource(getRegistryName().getResourcePath());
-        this.textComponent = builder.textComponent != null ? builder.textComponent : new TextComponentTranslation("skill." + getRegistryName().getResourcePath());
+        this.icon = builder.icon != null ? builder.icon : GunsRPG.makeResource(builder.registryName.getResourcePath());
+        this.textComponent = builder.textComponent != null ? builder.textComponent : new TextComponentTranslation("skill." + builder.registryName.getResourcePath());
         if (builder.descriptionLines > 0) {
             description = new ITextComponent[builder.descriptionLines];
             for (int i = 0; i < builder.descriptionLines; i++) {
-                description[i] = new TextComponentTranslation(this.getRegistryName().getResourcePath() + ".description.line_" + (i + 1));
+                description[i] = new TextComponentTranslation(builder.registryName.getResourcePath() + ".description.line_" + (i + 1));
             }
         } else description = new ITextComponent[0];
     }
