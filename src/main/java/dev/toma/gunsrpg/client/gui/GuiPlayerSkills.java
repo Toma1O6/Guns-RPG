@@ -114,9 +114,9 @@ public class GuiPlayerSkills extends GuiScreen {
         public void draw(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
             super.draw(mc, mouseX, mouseY, partialTicks);
             if(selected) {
-                ModUtils.renderLine(x, y, x, y + h, 1.0F, 1.0F, 1.0F, 1.0F, 4);
-                ModUtils.renderLine(x, y + h, x + w, y + h, 1.0F, 1.0F, 1.0F, 1.0F, 4);
-                ModUtils.renderLine(x + w, y + h, x + w, y, 1.0F, 1.0F, 1.0F, 1.0F, 4);
+                ModUtils.renderColor(x, y, x + 2, y + h, 1.0F, 1.0F, 1.0F, 1.0F);
+                ModUtils.renderColor(x, y + h - 2, x + w, y + h, 1.0F, 1.0F, 1.0F, 1.0F);
+                ModUtils.renderColor(x + w - 2, y + h, x + w, y, 1.0F, 1.0F, 1.0F, 1.0F);
             }
             this.drawCenteredString(mc.fontRenderer, this.category.name(), this.x + this.w / 2, this.y + (this.h - 8) / 2, hovered ? 0xffff88 : 0xffffff);
         }
