@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg;
 
+import dev.toma.gunsrpg.client.gui.skills.SkillTreePlacement;
 import dev.toma.gunsrpg.common.CommonEventHandler;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
@@ -68,6 +69,7 @@ public class GunsRPG {
         sideManager.init(event);
         GameRegistry.registerWorldGenerator(new WorldOreGen(), 0);
         SkillTreeEntry.List.init();
+        SkillTreePlacement.generatePlacement();
         ItemAmmo.init();
     }
 

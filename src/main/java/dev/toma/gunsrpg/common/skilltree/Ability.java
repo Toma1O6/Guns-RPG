@@ -14,6 +14,7 @@ import java.util.function.Supplier;
 
 import static dev.toma.gunsrpg.common.ModRegistry.GRPGItems.*;
 
+@Deprecated
 public class Ability {
 
     public static final List<Type> LEVEL_REWARD_TYPES = new ArrayList<>();

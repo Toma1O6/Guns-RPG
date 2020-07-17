@@ -3,7 +3,7 @@ package dev.toma.gunsrpg.client;
 import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.gui.GuiChooseAmmo;
-import dev.toma.gunsrpg.client.gui.GuiPlayerSkills;
+import dev.toma.gunsrpg.client.gui.skills.GuiPlayerSkills;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.item.guns.GunItem;

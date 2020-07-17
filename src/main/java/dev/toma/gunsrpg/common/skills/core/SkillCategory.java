@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 public enum SkillCategory {
 
-    DEBUFF(false),
+    RESISTANCE(false),
     MINING(false),
     SURVIVAL(true),
     ATTACHMENT(false, true),
@@ -46,7 +46,8 @@ public enum SkillCategory {
         if(mainCategories == null) {
             SkillCategory[] temp = new SkillCategory[values().length];
             int c = 0;
-            for(SkillCategory category : values()) {
+            for(int i = values().length - 1; i >= 0; i--) {
+                SkillCategory category = values()[i];
                 if(!category.isChild()) {
                     temp[c] = category;
                     ++c;

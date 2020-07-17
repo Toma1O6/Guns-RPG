@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.capability;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.object.*;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -45,6 +46,10 @@ public class PlayerDataFactory implements PlayerData {
 
     public static boolean hasActiveSkill(EntityPlayer player, SkillType<?> type) {
         return get(player).getSkills().hasSkill(type);
+    }
+
+    public static <S extends ISkill> S getSkill(EntityPlayer player, SkillType<S> type) {
+        return get(player).getSkills().getSkill(type);
     }
 
     @Deprecated

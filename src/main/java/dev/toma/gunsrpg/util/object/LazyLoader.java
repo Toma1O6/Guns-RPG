@@ -12,7 +12,7 @@ public class LazyLoader<T> implements Supplier<T> {
     }
 
     public T get() {
-        if(value == null) {
+        if(value == null && supplier != null) {
             value = supplier.get();
             supplier = null;
         }

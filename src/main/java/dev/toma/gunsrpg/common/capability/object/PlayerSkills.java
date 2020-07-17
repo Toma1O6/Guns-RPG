@@ -29,7 +29,7 @@ public class PlayerSkills {
     private final Map<GunItem, GunData> gunKills = new HashMap<>();
     private final Map<SkillCategory, List<ISkill>> unlockedSkills = new HashMap<>();
     private int level;
-    private int requiredKills;
+    private int requiredKills = 10;
     private int kills;
     private int skillPoints;
 
@@ -53,6 +53,19 @@ public class PlayerSkills {
         List<ISkill> list = unlockedSkills.get(type.category);
         if(list == null) return false;
         return ModUtils.contains(type, list, SkillType::areTypesEqual);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <S extends ISkill> S getSkill(SkillType<S> type) {
+        SkillCategory category = type.category;
+        List<ISkill> list = unlockedSkills.get(category);
+        if(list == null) return null;
+        for(ISkill skill : list) {
+            if(type.areTypesEqual(skill)) {
+                return (S) skill;
+            }
+        }
+        return null;
     }
 
     public void killMob(GunItem gunItem) {
@@ -109,8 +122,20 @@ public class PlayerSkills {
         this.skillPoints = skillPoints;
     }
 
+    public int getKills() {
+        return kills;
+    }
+
+    public int getRequiredKills() {
+        return requiredKills;
+    }
+
     public Map<GunItem, GunData> getGunStats() {
         return gunKills;
+    }
+
+    public GunData getGunData(GunItem item) {
+        return gunKills.computeIfAbsent(item, k -> new GunData());
     }
 
     public void addSkillPoints(int amount) {
@@ -148,7 +173,7 @@ public class PlayerSkills {
         unlockedSkills.clear();
         gunKills.clear();
         level = nbt.getInteger("level");
-        requiredKills = nbt.getInteger("requiredKills");
+        requiredKills = Math.max(10, nbt.getInteger("requiredKills"));
         kills = nbt.getInteger("kills");
         skillPoints = nbt.getInteger("skillpoints");
         NBTTagCompound gunData = nbt.hasKey("gunData") ? nbt.getCompoundTag("gunData") : new NBTTagCompound();

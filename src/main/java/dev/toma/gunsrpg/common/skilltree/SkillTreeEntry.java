@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+@Deprecated
 public class SkillTreeEntry {
 
     public SkillTreeEntry[] child = new SkillTreeEntry[0];

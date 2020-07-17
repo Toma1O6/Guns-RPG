@@ -10,6 +10,7 @@ public class ClientConfiguration extends ConfigSubcategory {
     public Coord2Di debuffs = new Coord2Di("Debuff offset", 0, -60);
     public boolean loadAnimationTool = false;
     public ScopeRenderer scopeRenderer = ScopeRenderer.IN_MODEL;
+    public Coord2Di skillTreeSpacings = new Coord2Di("Skill spacings", 45, 45);
 
     @Override
     public ConfigBuilder toConfigFormat(ConfigBuilder builder) {
@@ -18,6 +19,7 @@ public class ClientConfiguration extends ConfigSubcategory {
                 .addBoolean(loadAnimationTool).name("Load animation tool").add(t -> loadAnimationTool = t.value())
                 .addEnum(scopeRenderer).name("Scope render").add(t -> scopeRenderer = t.value())
                 .run(debuffs::asConfig)
+                .run(skillTreeSpacings::asConfig)
                 .pop();
     }
 }
