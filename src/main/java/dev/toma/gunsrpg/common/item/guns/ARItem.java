@@ -8,7 +8,6 @@ import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
-import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import net.minecraft.client.renderer.GlStateManager;
@@ -56,17 +55,17 @@ public class ARItem extends GunItem {
 
     @Override
     public boolean isSilenced(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.AR_SUPPRESSOR);
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_SUPPRESSOR);
     }
 
     @Override
     public int getMaxAmmo(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.AR_EXTENDED) ? 20 : 10;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_EXTENDED) ? 20 : 10;
     }
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.AR_TOUGH_SPRING) ? 4 : 5;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_TOUGH_SPRING) ? 4 : 5;
     }
 
     @Override
@@ -77,15 +76,15 @@ public class ARItem extends GunItem {
     @Override
     public float getVerticalRecoil(EntityPlayer player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, Ability.AR_VERTICAL_GRIP) ? GRPGConfig.weapon.general.verticalGrip : 1.0F;
-        float mod2 = PlayerDataFactory.hasActiveSkill(player, Ability.AR_CHEEKPAD) ? GRPGConfig.weapon.general.cheekpad : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_VERTICAL_GRIP) ? GRPGConfig.weapon.general.verticalGrip : 1.0F;
+        float mod2 = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_CHEEKPAD) ? GRPGConfig.weapon.general.cheekpad : 1.0F;
         return mod * mod2 * f;
     }
 
     @Override
     public float getHorizontalRecoil(EntityPlayer player) {
         float f = super.getHorizontalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, Ability.AR_CHEEKPAD) ? GRPGConfig.weapon.general.cheekpad : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_CHEEKPAD) ? GRPGConfig.weapon.general.cheekpad : 1.0F;
         return mod * f;
     }
 
@@ -93,7 +92,7 @@ public class ARItem extends GunItem {
     public boolean switchFiremode(ItemStack stack, EntityPlayer player) {
         Firemode firemode = this.getFiremode(stack);
         int newMode = 0;
-        if(firemode == Firemode.SINGLE && PlayerDataFactory.hasActiveSkill(player, Ability.ADAPTIVE_CHAMBERING)) {
+        if(firemode == Firemode.SINGLE && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_ADAPTIVE_CHAMBERING)) {
             newMode = 2;
         }
         stack.getTagCompound().setInteger("firemode", newMode);

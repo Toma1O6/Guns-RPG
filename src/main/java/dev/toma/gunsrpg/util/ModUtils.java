@@ -7,6 +7,9 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -33,6 +36,21 @@ public class ModUtils {
         builder.pos(x2, y2, 0).tex(1, 1).endVertex();
         builder.pos(x2, y, 0).tex(1, 0).endVertex();
         builder.pos(x, y, 0).tex(0, 0).endVertex();
+        tessellator.draw();
+        GlStateManager.disableBlend();
+    }
+
+    public static void renderTexture(int x, int y, int x2, int y2, double uMin, double vMin, double uMax, double vMax, ResourceLocation location) {
+        Minecraft.getMinecraft().getTextureManager().bindTexture(location);
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder builder = tessellator.getBuffer();
+        builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        builder.pos(x, y2, 0).tex(uMin, vMax).endVertex();
+        builder.pos(x2, y2, 0).tex(uMax, vMax).endVertex();
+        builder.pos(x2, y, 0).tex(uMax, vMin).endVertex();
+        builder.pos(x, y, 0).tex(uMin, vMin).endVertex();
         tessellator.draw();
         GlStateManager.disableBlend();
     }
@@ -100,9 +118,36 @@ public class ModUtils {
         return arr;
     }
 
+    public static <A> boolean contains(A lookingFor, Collection<A> collection) {
+        for(A a : collection) {
+            if(a == lookingFor) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static <A, B> boolean contains(A a, Collection<B> collection, BiPredicate<A, B> comparator) {
         for (B b : collection) {
             if (comparator.test(a, b)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static <A> boolean contains(A obj, A[] array) {
+        for(A a : array) {
+            if(a == obj) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static <A, B> boolean contains(A obj, B[] array, BiPredicate<A, B> comparator) {
+        for(B b : array) {
+            if(comparator.test(obj, b)) {
                 return true;
             }
         }
@@ -119,6 +164,17 @@ public class ModUtils {
 
     public static double wrap(double n, double min, double max) {
         return n < min ? min : n > max ? max : n;
+    }
+
+    public static int getItemCountInInventory(Item item, IInventory inventory) {
+        int count = 0;
+        for(int i = 0; i < inventory.getSizeInventory(); i++) {
+            ItemStack stack = inventory.getStackInSlot(i);
+            if(stack.getItem() == item) {
+                count += stack.getCount();
+            }
+        }
+        return count;
     }
 
     public static int getLastIndexOfArray(Object[] array) {

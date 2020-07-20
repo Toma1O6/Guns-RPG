@@ -64,7 +64,7 @@ public class ContainerBlastFurnace extends Container {
                 }
             }
         }
-        return ItemStack.EMPTY;
+        return itemStack;
     }
 
     @Override

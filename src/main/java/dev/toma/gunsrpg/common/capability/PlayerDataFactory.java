@@ -5,7 +5,6 @@ import dev.toma.gunsrpg.common.capability.object.*;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketUpdateCap;
 import dev.toma.gunsrpg.network.packet.SPacketSetShooting;
@@ -21,7 +20,6 @@ public class PlayerDataFactory implements PlayerData {
 
     private final EntityPlayer player;
     private final DebuffData debuffData;
-    private final SkillData skillData;
     private final AimInfo aimInfo;
     private final ReloadInfo reloadInfo;
     private final ScopeData scopeData;
@@ -37,7 +35,6 @@ public class PlayerDataFactory implements PlayerData {
     public PlayerDataFactory(EntityPlayer player) {
         this.player = player;
         this.debuffData = new DebuffData();
-        this.skillData = new SkillData(player);
         this.aimInfo = new AimInfo(this);
         this.reloadInfo = new ReloadInfo(this);
         this.scopeData = new ScopeData();
@@ -50,12 +47,6 @@ public class PlayerDataFactory implements PlayerData {
 
     public static <S extends ISkill> S getSkill(EntityPlayer player, SkillType<S> type) {
         return get(player).getSkills().getSkill(type);
-    }
-
-    @Deprecated
-    public static boolean hasActiveSkill(EntityPlayer player, Ability.UnlockableType type) {
-        Ability ability = get(player).getSkillData().getAbilityData().unlockedSkills.get(type);
-        return ability != null && ability.enabled;
     }
 
     public static PlayerData get(EntityPlayer player) {
@@ -100,11 +91,6 @@ public class PlayerDataFactory implements PlayerData {
     @Override
     public DebuffData getDebuffData() {
         return debuffData;
-    }
-
-    @Override
-    public SkillData getSkillData() {
-        return skillData;
     }
 
     @Override
@@ -178,7 +164,6 @@ public class PlayerDataFactory implements PlayerData {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setTag("permanent", writePermanentData());
         nbt.setTag("debuffs", debuffData.serializeNBT());
-        nbt.setTag("skills", skillData.write());
         nbt.setTag("aimData", aimInfo.write());
         nbt.setTag("reloadData", reloadInfo.write());
         nbt.setTag("scopeData", scopeData.write());
@@ -190,7 +175,6 @@ public class PlayerDataFactory implements PlayerData {
     public void deserializeNBT(NBTTagCompound nbt) {
         if(nbt.hasKey("permanent")) readPermanentData(nbt.getCompoundTag("permanent"));
         debuffData.deserializeNBT(nbt.hasKey("debuffs") ? nbt.getCompoundTag("debuffs") : new NBTTagCompound());
-        skillData.read(nbt.hasKey("skills") ? nbt.getCompoundTag("skills") : new NBTTagCompound());
         aimInfo.read(this.findNBTTag("aimData", nbt));
         reloadInfo.read(this.findNBTTag("reloadData", nbt));
         scopeData.read(this.findNBTTag("scopeData", nbt));

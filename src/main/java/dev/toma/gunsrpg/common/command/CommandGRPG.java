@@ -2,13 +2,9 @@ package dev.toma.gunsrpg.common.command;
 
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import dev.toma.gunsrpg.common.capability.object.AbilityData;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
-import dev.toma.gunsrpg.common.capability.object.SkillData;
-import dev.toma.gunsrpg.common.skilltree.Ability;
-import dev.toma.gunsrpg.common.skilltree.PlayerSkillTree;
+import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -46,7 +42,7 @@ public class CommandGRPG extends CommandBase {
     }
 
     @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
         if(args.length == 0) {
             this.sendMessage(sender, TextFormatting.GREEN + "Subcommands:");
             this.sendMessage(sender, TextFormatting.GREEN + "debuff - manage your debuffs");
@@ -103,19 +99,12 @@ public class CommandGRPG extends CommandBase {
                         return;
                     }
                     boolean reset = args[1].equals("lockAll");
-                    SkillData skillData = data.getSkillData();
-                    PlayerSkillTree skillTree = skillData.getSkillTree();
-                    AbilityData abilityData = skillData.getAbilityData();
+                    PlayerSkills skills = data.getSkills();
                     if(args[1].equals("lockAll")) {
-                        skillTree.setDefault();
-                        abilityData.reset();
-                        skillData.killCount.clear();
+                        skills.revertToDefault();
                         sendMessage(sender, TextFormatting.GREEN + "All your progress has been deleted");
                     } else if("unlockAll".equals(args[1])) {
-                        for(Ability.Type type : Ability.LEVEL_REWARD_TYPES) {
-                            abilityData.unlockProperty(type);
-                        }
-                        skillTree.updateEntries(true);
+                        skills.unlockAll();
                         sendMessage(sender, TextFormatting.GREEN + "You have unlocked all skills!");
                     } else {
                         this.sendMessage(sender, TextFormatting.RED + "Unknown argument! Valid arguments: [lockAll, unlockAll]");

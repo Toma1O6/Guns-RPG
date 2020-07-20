@@ -9,7 +9,6 @@ import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
-import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import net.minecraft.client.Minecraft;
@@ -55,32 +54,32 @@ public class SMGItem extends GunItem {
 
     @Override
     public SoundEvent getReloadSound(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.SMG_QUICKDRAW) ? ModRegistry.GRPGSounds.SMG_RELOAD_SHORT : ModRegistry.GRPGSounds.SMG_RELOAD;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_QUICKDRAW) ? ModRegistry.GRPGSounds.SMG_RELOAD_SHORT : ModRegistry.GRPGSounds.SMG_RELOAD;
     }
 
     @Override
     public int getMaxAmmo(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.SMG_EXTENDED) ? 40 : 25;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_EXTENDED) ? 40 : 25;
     }
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.SMG_TOUGH_SPRING) ? 2 : 3;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_TOUGH_SPRING) ? 2 : 3;
     }
 
     @Override
     public boolean isSilenced(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.SMG_SUPPRESSOR);
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_SUPPRESSOR);
     }
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.SMG_QUICKDRAW) ? 40 : 52;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_QUICKDRAW) ? 40 : 52;
     }
 
     @Override
     public void onKillEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
-        if(!shooter.world.isRemote && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Ability.COMMANDO)) {
+        if(!shooter.world.isRemote && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, ModRegistry.Skills.SMG_COMMANDO)) {
             shooter.addPotionEffect(new PotionEffect(MobEffects.SPEED, 100, 1, false, false));
             shooter.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 60, 2, false, false));
         }
@@ -89,7 +88,7 @@ public class SMGItem extends GunItem {
     @Override
     public float getVerticalRecoil(EntityPlayer player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, Ability.SMG_VERTICAL_GRIP) ? GRPGConfig.weapon.general.verticalGrip : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_VERTICAL_GRIP) ? GRPGConfig.weapon.general.verticalGrip : 1.0F;
         return mod * f;
     }
 
@@ -103,7 +102,7 @@ public class SMGItem extends GunItem {
     @SideOnly(Side.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
-        boolean rds = PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Ability.SMG_RED_DOT);
+        boolean rds = PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, ModRegistry.Skills.SMG_RED_DOT);
         return new AimingAnimation(-0.57F, rds ? 0.144F : 0.2F, 0.2F).animateRight(animation -> {
             float f = animation.smooth;
             GlStateManager.translate(-0.25F * f, 0.2F * f, 0.2F * f);

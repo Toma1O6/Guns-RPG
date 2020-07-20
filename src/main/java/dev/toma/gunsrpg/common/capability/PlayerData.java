@@ -6,8 +6,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public interface PlayerData extends INBTSerializable<NBTTagCompound> {
 
-    SkillData getSkillData();
-
     DebuffData getDebuffData();
 
     NBTTagCompound writePermanentData();

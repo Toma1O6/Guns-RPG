@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.common.item.guns.ammo;
 
 import dev.toma.gunsrpg.common.item.GRPGItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.item.ItemStack;
 
@@ -18,20 +17,13 @@ public class ItemAmmo extends GRPGItem implements IAmmoProvider {
     public static Map<GunItem, ItemAmmo[]> GUN_TO_ITEM_MAP = new HashMap<>();
     private final AmmoType ammoType;
     private final AmmoMaterial material;
-    private final Ability.Type type;
     private final Supplier<GunItem> item;
 
-    public ItemAmmo(String name, AmmoType ammoType, AmmoMaterial material, Ability.Type type, Supplier<GunItem> item) {
+    public ItemAmmo(String name, AmmoType ammoType, AmmoMaterial material, Supplier<GunItem> item) {
         super(name);
         this.material = material;
         this.ammoType = ammoType;
-        this.type = type;
         this.item = item;
-    }
-
-    @Override
-    public Ability.Type getRequiredProperty() {
-        return type;
     }
 
     @Override

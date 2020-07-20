@@ -7,6 +7,8 @@ import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.SPacketUnlockSkill;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.math.Vec2Di;
 import dev.toma.gunsrpg.util.object.OptionalObject;
@@ -19,6 +21,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -48,13 +51,17 @@ public class GuiPlayerSkills extends GuiScreen {
         headerText = String.format("%s's skill tree", mc.player.getName());
         headerWidth = mc.fontRenderer.getStringWidth(headerText);
         Tree tree = SkillTreePlacement.treeMap.get(displayedCategory);
+        EntityPlayer player = mc.player;
+        skills = PlayerDataFactory.get(player).getSkills();
+        int level = skills.getLevel();
         for(Branch branch : tree.branches) {
             for(PlacementContext ctx : branch.getPlacements()) {
-                addComponent(new SkillComponent(ctx));
+                if(ctx.type.levelRequirement <= level || ctx.parent != null && skills.hasSkill(ctx.parent)) {
+                    addComponent(new SkillComponent(ctx));
+                }
             }
         }
         this.placeCategoryButtons();
-        skills = PlayerDataFactory.get(mc.player).getSkills();
     }
 
     @Override
@@ -75,12 +82,12 @@ public class GuiPlayerSkills extends GuiScreen {
         int level = skills.getLevel();
         int killed = skills.getKills();
         int required = skills.getRequiredKills();
-        float decimal = killed / (float) required;
-        String foot = String.format("Level: %d (%d%%) - %d / %d kills", level, (int)(decimal * 100), killed, required);
+        float decimal = skills.isMaxLevel() ? 1.0F : killed / (float) required;
+        String foot = skills.isMaxLevel() ? String.format("Level: %d - %d kills", level, killed) : String.format("Level: %d (%d%%) - %d / %d kills", level, (int)(decimal * 100), killed, required);
         // level progress
         int length = width / 2;
         ModUtils.renderColor(15, height - 15, length, height - 5, 0.0F, 0.0F, 0.0F, 1.0F);
-        ModUtils.renderColor(17, height - 13, (int)(17 + decimal * (length - 2)), height - 7, 0.0F, 1.0F, 1.0F, 1.0F);
+        ModUtils.renderColor(17, height - 13, (int)(decimal * (length - 2)), height - 7, 0.0F, 1.0F, 1.0F, 1.0F);
         renderer.drawStringWithShadow(foot, 4 + length, height - 14, 0xffffff);
         String text2 = skills.getSkillPoints() + " pts";
         renderer.drawStringWithShadow(text2, width - renderer.getStringWidth(text2) - 5, height - 14, 0xffff00);
@@ -105,6 +112,12 @@ public class GuiPlayerSkills extends GuiScreen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if(mouseButton == 0) setClickPos(mouseX, mouseY);
+        if(display.isPresent()) {
+            if(display.get().isMouseOver(mouseX + posX, mouseY + posY)) {
+                display.get().mouseClicked(mouseX, mouseY, posX, posY, mouseButton);
+                return;
+            }
+        }
         for(Component component : uiComponents) {
             if(component.isMouseOver(mouseX, mouseY, posX, posY) && component.onClick(mouseButton)) {
                 Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
@@ -179,7 +192,7 @@ public class GuiPlayerSkills extends GuiScreen {
         private final PlacementContext ctx;
         private final SkillType<?> type;
         private final List<Pair<Vec2Di, Vec2Di>> lines = new ArrayList<>();
-        private final boolean obtained;
+        private boolean obtained;
         private long hoverStartTime;
         private boolean hasStartedCounting;
         private final ITextComponent[] comments;
@@ -232,6 +245,20 @@ public class GuiPlayerSkills extends GuiScreen {
             if(mouseButton == 1 && type.hasCustomRenderFactory()) {
                 GuiPlayerSkills.this.display.map(new GunDisplay(ctx));
                 return true;
+            } else if(mouseButton == 0 && !obtained) {
+                // TODO toggleable skills
+                EntityPlayer player = Minecraft.getMinecraft().player;
+                if(ctx.parent != null) {
+                    if(PlayerDataFactory.hasActiveSkill(player, ctx.parent) && type.getCriteria().isUnlockAvailable(PlayerDataFactory.get(player), type)) {
+                        NetworkManager.toServer(new SPacketUnlockSkill(type, ctx.parent));
+                        obtained = true;
+                        return true;
+                    }
+                } else if(type.getCriteria().isUnlockAvailable(PlayerDataFactory.get(player), type)) {
+                    NetworkManager.toServer(new SPacketUnlockSkill(type));
+                    obtained = true;
+                    return true;
+                }
             }
             return false;
         }
@@ -356,6 +383,20 @@ public class GuiPlayerSkills extends GuiScreen {
             init();
         }
 
+        public boolean isMouseOver(int mouseX, int mouseY) {
+            return mouseX >= this.x && mouseX <= this.x + this.w && mouseY >= this.y && mouseY <= this.y + this.h;
+        }
+
+        public void mouseClicked(int mouseX, int mouseY, int xOff, int yOff, int mouseButton) {
+            for(Component component : list) {
+                if(component.isMouseOver(mouseX, mouseY, xOff, yOff) && component.onClick(mouseButton)) {
+                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                    GuiPlayerSkills.this.initGui();
+                    break;
+                }
+            }
+        }
+
         public void init() {
             list.clear();
             int width = ctx.type.getChilds().size() * 25 + 15;
@@ -389,6 +430,8 @@ public class GuiPlayerSkills extends GuiScreen {
             mc.fontRenderer.drawStringWithShadow(txt2, px + w - 10 - mc.fontRenderer.getStringWidth(txt2), py + h - 24, 0xffff00);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             ModUtils.renderColor(px + 10, py + h - 15, px + w - 10, py + h - 5, 0.0F, 0.0F, 0.0F, 1.0F);
+            float levelPrg = gunData.isAtMaxLevel() ? 1.0F : ((float) gunData.getKills() / gunData.getRequiredKills());
+            ModUtils.renderColor(px + 12, py + h - 13, (int)(px + (w - 12) * levelPrg), py + h - 7, 1.0F, 1.0F, 0.0F, 1.0F);
             list.forEach(component -> component.draw(mc, mouseX, mouseY, partialTicks, xOffset, yOffset));
         }
     }

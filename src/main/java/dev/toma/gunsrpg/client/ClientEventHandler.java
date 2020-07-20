@@ -9,15 +9,13 @@ import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
+import dev.toma.gunsrpg.common.capability.object.GunData;
+import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.capability.object.ScopeData;
-import dev.toma.gunsrpg.common.capability.object.SkillData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
-import dev.toma.gunsrpg.common.skilltree.Ability;
-import dev.toma.gunsrpg.common.skilltree.EntryInstance;
-import dev.toma.gunsrpg.common.skilltree.SkillTreeEntry;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.Debuff;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -48,7 +46,6 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.List;
 import java.util.function.Function;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = GunsRPG.MODID)
@@ -81,7 +78,7 @@ public class ClientEventHandler {
                 event.setCanceled(true);
                 PlayerData data = PlayerDataFactory.get(player);
                 if(data.getAimInfo().progress >= 0.9F) {
-                    if(stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Ability.SR_SCOPE) || stack.getItem() == ModRegistry.GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, Ability.CROSSBOW_SCOPE)) {
+                    if(stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) || stack.getItem() == ModRegistry.GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE)) {
                         if(GRPGConfig.client.scopeRenderer.isTextureOverlay()) {
                             ModUtils.renderTexture(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(), SCOPE_OVERLAY);
                         } else {
@@ -89,7 +86,7 @@ public class ClientEventHandler {
                             int top = resolution.getScaledHeight() / 2 - 16;
                             ModUtils.renderTexture(left, top, left + 32, top + 32, SCOPE);
                         }
-                    } else if((PlayerDataFactory.hasActiveSkill(player, Ability.SMG_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.SMG) || (PlayerDataFactory.hasActiveSkill(player, Ability.AR_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.ASSAULT_RIFLE)) {
+                    } else if((PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.SMG) || (PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.ASSAULT_RIFLE)) {
                         ScopeData scopeData = data.getScopeData();
                         float left = resolution.getScaledWidth() / 2f - 8f;
                         float top = resolution.getScaledHeight() / 2f - 8f;
@@ -131,22 +128,19 @@ public class ClientEventHandler {
             mc.fontRenderer.drawStringWithShadow(l + "", resolution.getScaledWidth() - 10, 6, b ? 0xff0000 : l > 1 && l < 4 ? 0xffff00 : 0xffffff);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             ItemStack stack = player.getHeldItemMainhand();
+            int width = 26;
+            int x = resolution.getScaledWidth() - width - 34;
+            int y = resolution.getScaledHeight() - 22;
+            PlayerSkills skills = data.getSkills();
             if (stack.getItem() instanceof GunItem) {
                 GunItem gun = (GunItem) stack.getItem();
-                SkillData skillData = data.getSkillData();
-                int kills = skillData.killCount.getOrDefault(gun, SkillData.KillData.empty()).getKillCount();
-                int required = kills;
-                List<EntryInstance> list = skillData.getSkillTree().getObtained();
-                for(EntryInstance instance : list) {
-                    SkillTreeEntry entry = instance.getType();
-                    if(entry.child.length > 0 && entry.gun == gun && !ModUtils.contains(entry.child[0], list, (e, i) -> i.getType() == e)) {
-                        required = entry.child[0].requiredKillCount;
-                        break;
-                    }
-                }
+                GunData gunData = skills.getGunData((GunItem) stack.getItem());
+                int gunKills = gunData.getKills();
+                int gunRequiredKills = gunData.getRequiredKills();
+
                 int ammo = gun.getAmmo(stack);
                 int max = gun.getMaxAmmo(player);
-                float f = kills / (float) required;
+                float f = gunData.isAtMaxLevel() ? 1.0F : gunKills / (float) gunRequiredKills;
                 ItemAmmo itemAmmo = ItemAmmo.getAmmoFor(gun, stack);
                 if (itemAmmo != null) {
                     int c = 0;
@@ -160,15 +154,19 @@ public class ClientEventHandler {
                         }
                     }
                     String text = ammo + " / " + c;
-                    int width = renderer.getStringWidth(text);
-                    int x = resolution.getScaledWidth() - width - 34;
-                    int y = resolution.getScaledHeight() - 22;
+                    width = renderer.getStringWidth(text);
+                    x = resolution.getScaledWidth() - width - 34;
                     ModUtils.renderColor(x, y, x + width + 22, y + 7, 0.0F, 0.0F, 0.0F, 1.0F);
-                    ModUtils.renderColor(x + 2, y + 2, x + (int) (f * (width + 20)), y + 5, 0.0F, 1.0F, 1.0F, 1.0F);
+                    ModUtils.renderColor(x + 2, y + 2, x + (int) (f * (width + 20)), y + 5, 1.0F, 1.0F, 0.0F, 1.0F);
                     mc.getRenderItem().renderItemIntoGUI(new ItemStack(itemAmmo), x, y - 18);
                     mc.fontRenderer.drawStringWithShadow(text, x + 19, y - 14, 0xffffff);
                 }
             }
+            int kills = skills.getKills();
+            int required = skills.getRequiredKills();
+            float levelProgress = skills.isMaxLevel() ? 1.0F : kills / (float) required;
+            ModUtils.renderColor(x, y + 10, x + width + 22, y + 17, 0.0F, 0.0F, 0.0F, 1.0F);
+            ModUtils.renderColor(x + 2, y + 12, x + (int)(levelProgress * (width + 20)), y + 15, 0.0F, 1.0F, 1.0F, 1.0F);
             if (data != null) {
                 DebuffData debuffData = data.getDebuffData();
                 int offset = 0;
@@ -210,10 +208,10 @@ public class ClientEventHandler {
                     if (aim) {
                         preAimFov.map(settings.fovSetting);
                         preAimSens.map(settings.mouseSensitivity);
-                        if(item == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Ability.SR_SCOPE)) {
+                        if(item == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE)) {
                             settings.mouseSensitivity = preAimSens.get() * 0.3F;
                             settings.fovSetting = 15.0F;
-                        } else if(item == ModRegistry.GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, Ability.CROSSBOW_SCOPE)) {
+                        } else if(item == ModRegistry.GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE)) {
                             settings.mouseSensitivity = preAimSens.get() * 0.4F;
                             settings.fovSetting = 25.0F;
                         }
@@ -232,7 +230,7 @@ public class ClientEventHandler {
     public static void renderHandEvent(RenderSpecificHandEvent event) {
         EntityPlayerSP player = Minecraft.getMinecraft().player;
         ItemStack stack = event.getItemStack();
-        if(PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.client.scopeRenderer.isTextureOverlay() && (PlayerDataFactory.hasActiveSkill(player, Ability.SR_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE || PlayerDataFactory.hasActiveSkill(player, Ability.CROSSBOW_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.CROSSBOW)) {
+        if(PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.client.scopeRenderer.isTextureOverlay() && (PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE || PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.CROSSBOW)) {
             event.setCanceled(true);
             return;
         }
@@ -252,7 +250,7 @@ public class ClientEventHandler {
             AnimationManager.animateItem(partial);
             if(!AnimationManager.shouldCancelItemRender()) Minecraft.getMinecraft().getItemRenderer().renderItemInFirstPerson(player, partial, pitch, EnumHand.MAIN_HAND, swing, stack, equip);
             GlStateManager.popMatrix();
-            if(stack.getItem() == ModRegistry.GRPGItems.PISTOL && PlayerDataFactory.hasActiveSkill(player, Ability.DUAL_WIELD)) {
+            if(stack.getItem() == ModRegistry.GRPGItems.PISTOL && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_DUAL_WIELD)) {
                 GlStateManager.pushMatrix();
                 AnimationManager.renderingDualWield = true;
                 AnimationManager.animateItemHands(partial);

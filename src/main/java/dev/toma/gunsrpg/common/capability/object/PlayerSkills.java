@@ -6,14 +6,25 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.common.skills.criteria.GunCriteria;
 import dev.toma.gunsrpg.common.skills.interfaces.TickableSkill;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.OptionalObject;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -32,6 +43,8 @@ public class PlayerSkills {
     private int requiredKills = 10;
     private int kills;
     private int skillPoints;
+
+    private int gunpowderCraftYield;
 
     private Map<SkillCategory, List<TickableSkill>> tickCache;
 
@@ -68,10 +81,102 @@ public class PlayerSkills {
         return null;
     }
 
+    public void onKillEntity(Entity entity, ItemStack stack) {
+        if(!(entity instanceof IMob)) return;
+        ++kills;
+        if(!isMaxLevel() && kills >= requiredKills) {
+            ++level;
+            this.onLevelUp();
+            kills = 0;
+            EntityPlayer player = data.getPlayer();
+            player.sendMessage(new TextComponentString("§e=====[ LEVEL UP ]====="));
+            player.sendMessage(new TextComponentString("§eCurrent level: " + level));
+            int count = 0;
+            for(SkillType<?> type : ModRegistry.SKILLS) {
+                if(!(type.getCriteria() instanceof GunCriteria) && type.levelRequirement == level) count++;
+            }
+            if(count > 0) player.sendMessage(new TextComponentString(String.format("§eNew skills available: %d", count)));
+            ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, player.posX, player.posY, player.posZ, 0.75F, 1.0F));
+        }
+        if(stack.getItem() instanceof GunItem) {
+            this.killMob((GunItem) stack.getItem());
+        }
+        data.sync();
+    }
+
+    public void onLevelUp() {
+        if(level == 100) addSkillPoints(10);
+        if(level >= 95 && !isMaxLevel()) {
+            if(level == 95) {
+                addSkillPoints(2);
+            } else addSkillPoints(1);
+            requiredKills = 100;
+        } else if(level >= 90) {
+            if(level == 90) {
+                addSkillPoints(2);
+            } else addSkillPoints(1);
+            requiredKills = 85;
+        } else if(level >= 80) {
+            if(level == 80 || level == 85) {
+                addSkillPoints(2);
+            } else addSkillPoints(1);
+            requiredKills = 70;
+        } else if(level >= 70) {
+            if(level == 70) {
+                addSkillPoints(2);
+            } else if(level == 75) {
+                addSkillPoints(5);
+            } else addSkillPoints(1);
+            requiredKills = 60;
+        } else if(level >= 60) {
+            if(level == 60 || level == 65) {
+                addSkillPoints(2);
+            } else addSkillPoints(1);
+            requiredKills = 50;
+        } else if(level >= 50) {
+            if(level == 50) {
+                addSkillPoints(10);
+            } else if(level == 55) {
+                addSkillPoints(2);
+            } else addSkillPoints(1);
+            requiredKills = 45;
+        } else if(level >= 40) {
+            if(level == 40 || level == 45) {
+                addSkillPoints(2);
+            } else addSkillPoints(1);
+            requiredKills = 35;
+        } else if(level >= 30) {
+            if(level == 30 || level == 35) {
+                addSkillPoints(2);
+            } else addSkillPoints(1);
+            requiredKills = 30;
+        } else if(level >= 20) {
+            if(level == 25) {
+                addSkillPoints(5);
+            } else if(level == 20) {
+                addSkillPoints(2);
+            } else addSkillPoints(1);
+            requiredKills = 25;
+        } else if(level >= 10) {
+            if(level == 10 || level == 15) {
+                addSkillPoints(2);
+            } else addSkillPoints(1);
+            requiredKills = 15;
+        } else {
+            if(level == 5) {
+                addSkillPoints(2);
+            } else addSkillPoints(1);
+            requiredKills = 10;
+        }
+    }
+
     public void killMob(GunItem gunItem) {
         GunData gunData = gunKills.computeIfAbsent(gunItem, it -> new GunData());
-        gunData.awardKill();
-        data.sync();
+        gunData.awardKill(data.getPlayer());
+    }
+
+    public boolean isMaxLevel() {
+        return level == 100;
     }
 
     public void revertToDefault() {
@@ -80,6 +185,8 @@ public class PlayerSkills {
         level = 0;
         kills = 0;
         skillPoints = 0;
+        requiredKills = 10;
+        gunpowderCraftYield = SkillUtil.getGunpowderCraftAmount(data.getPlayer());
         clearCache();
         data.sync();
     }
@@ -93,7 +200,9 @@ public class PlayerSkills {
         List<ISkill> list = unlockedSkills.computeIfAbsent(category, cat -> new ArrayList<>());
         if (!ModUtils.contains(skillType, list, SkillType::areTypesEqual)) {
             clearCache();
-            list.add(skillType.instantiate());
+            ISkill skill = skillType.instantiate();
+            skill.onPurchase(data.getPlayer());
+            list.add(skill);
             if (sync) data.sync();
         }
     }
@@ -105,6 +214,9 @@ public class PlayerSkills {
         gunKills.clear();
         for (SkillType<?> skillType : ModRegistry.SKILLS.getValuesCollection()) {
             unlockSkill(skillType, false);
+        }
+        for(GunItem item : ForgeRegistries.ITEMS.getValuesCollection().stream().filter(item -> item instanceof GunItem).map(item -> (GunItem) item).collect(Collectors.toList())) {
+            getGunData(item).unlockAll();
         }
         clearCache();
         data.sync();
@@ -142,6 +254,14 @@ public class PlayerSkills {
         this.skillPoints = Math.max(0, skillPoints + amount);
     }
 
+    public void setGunpowderCraftYield(int gunpowderCraftYield) {
+        this.gunpowderCraftYield = gunpowderCraftYield;
+    }
+
+    public int getGunpowderCraftYield() {
+        return gunpowderCraftYield;
+    }
+
     public NBTTagCompound writeData() {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("level", level);
@@ -165,6 +285,7 @@ public class PlayerSkills {
             skills.setTag(k, v);
         }
         nbt.setTag("skills", skills);
+        nbt.setInteger("gunpowderYield", gunpowderCraftYield);
         return nbt;
     }
 
@@ -188,7 +309,7 @@ public class PlayerSkills {
         }
         NBTTagCompound skills = nbt.hasKey("skills") ? nbt.getCompoundTag("skills") : new NBTTagCompound();
         for (String id : skills.getKeySet()) {
-            NBTTagList list = nbt.getTagList(id, Constants.NBT.TAG_COMPOUND);
+            NBTTagList list = skills.getTagList(id, Constants.NBT.TAG_COMPOUND);
             SkillCategory category = SkillCategory.values()[Integer.parseInt(id)];
             for (NBTBase nbtBase : list) {
                 NBTTagCompound tagCompound = (NBTTagCompound) nbtBase;
@@ -201,6 +322,7 @@ public class PlayerSkills {
                 }
             }
         }
+        gunpowderCraftYield = nbt.getInteger("gunpowderYield");
     }
 
     private void clearCache() {

@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.client.baked;
 
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -28,7 +27,7 @@ public class CrossbowBakedModel extends GunBakedModel {
         GlStateManager.rotate(180, 0, 1, 0);
         switch (cameraTransformType) {
             case FIRST_PERSON_RIGHT_HAND: {
-                if(PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.client.scopeRenderer.isTextureOverlay() && PlayerDataFactory.hasActiveSkill(player, Ability.CROSSBOW_SCOPE) && player.getHeldItemMainhand().getItem() == ModRegistry.GRPGItems.CROSSBOW) {
+                if(PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.client.scopeRenderer.isTextureOverlay() && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE) && player.getHeldItemMainhand().getItem() == ModRegistry.GRPGItems.CROSSBOW) {
                     GlStateManager.scale(0, 0, 0);
                     return Pair.of(this, trsrTransformation.getMatrix());
                 }

@@ -12,7 +12,6 @@ import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
-import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import net.minecraft.client.Minecraft;
@@ -53,12 +52,12 @@ public class PistolItem extends GunItem {
 
     @Override
     public boolean isSilenced(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_SUPPRESSOR);
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_SUPPRESSOR);
     }
 
     @Override
     public void onHitEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
-        if(shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Ability.PISTOL_HEAVY_BULLETS) && random.nextDouble() <= 0.35) {
+        if(shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, ModRegistry.Skills.PISTOL_HEAVY_BULLETS) && random.nextDouble() <= 0.35) {
             victim.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1, false, false));
             victim.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 100, 0, false, false));
         }
@@ -71,37 +70,37 @@ public class PistolItem extends GunItem {
 
     @Override
     public SoundEvent getReloadSound(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_QUICKDRAW) ? ModRegistry.GRPGSounds.P1911_RELOAD_SHORT : ModRegistry.GRPGSounds.P1911_RELOAD;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_QUICKDRAW) ? ModRegistry.GRPGSounds.P1911_RELOAD_SHORT : ModRegistry.GRPGSounds.P1911_RELOAD;
     }
 
     @Override
     public int getMaxAmmo(EntityPlayer player) {
-        boolean extended = PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_EXTENDED);
-        return PlayerDataFactory.hasActiveSkill(player, Ability.DUAL_WIELD) ? extended ? 26 : 14 : extended ? 13 : 7;
+        boolean extended = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_EXTENDED);
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_DUAL_WIELD) ? extended ? 26 : 14 : extended ? 13 : 7;
     }
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_TOUGH_SPRING) ? 2 : 3;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_TOUGH_SPRING) ? 2 : 3;
     }
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        boolean quickdraw = PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_QUICKDRAW);
-        return PlayerDataFactory.hasActiveSkill(player, Ability.DUAL_WIELD) ? quickdraw ? 50 : 70 : quickdraw ? 25 : 35;
+        boolean quickdraw = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_QUICKDRAW);
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_DUAL_WIELD) ? quickdraw ? 50 : 70 : quickdraw ? 25 : 35;
     }
 
     @Override
     public float getVerticalRecoil(EntityPlayer player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_CARBON_BARREL) ? GRPGConfig.weapon.general.carbonBarrel : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_CARBON_BARREL) ? GRPGConfig.weapon.general.carbonBarrel : 1.0F;
         return mod * f;
     }
 
     @Override
     public float getHorizontalRecoil(EntityPlayer player) {
         float f = super.getHorizontalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, Ability.PISTOL_CARBON_BARREL) ? GRPGConfig.weapon.general.carbonBarrel : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_CARBON_BARREL) ? GRPGConfig.weapon.general.carbonBarrel : 1.0F;
         return mod * f;
     }
 
@@ -180,6 +179,6 @@ public class PistolItem extends GunItem {
 
     @SideOnly(Side.CLIENT)
     private boolean isDualWieldActive() {
-        return PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Ability.DUAL_WIELD);
+        return PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, ModRegistry.Skills.PISTOL_DUAL_WIELD);
     }
 }

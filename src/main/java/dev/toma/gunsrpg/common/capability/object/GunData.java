@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextComponentString;
 
 public class GunData {
 
@@ -9,18 +11,27 @@ public class GunData {
     private int level = 1;
     private int gunPoints;
 
-    public void awardKill() {
+    public void unlockAll() {
+        this.kills = 0;
+        this.requiredKills = 1;
+        this.level = 8;
+        this.gunPoints = 0;
+    }
+
+    public void awardKill(EntityPlayer player) {
         ++kills;
         if(!isAtMaxLevel()) {
             if(kills >= requiredKills) {
                 kills = 0;
                 ++level;
                 onLevelUp();
+                player.sendMessage(new TextComponentString("§aReached next weapon level!"));
             }
         }
     }
 
     public void onLevelUp() {
+        requiredKills = getRequiredKills(level);
         switch (level) {
             case 8: awardPoints(2); break;
             case 3: case 5: case 7: awardPoints(1); break;

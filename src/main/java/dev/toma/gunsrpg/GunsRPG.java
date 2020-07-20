@@ -7,14 +7,15 @@ import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
 import dev.toma.gunsrpg.common.command.CommandGRPG;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
-import dev.toma.gunsrpg.common.skilltree.SkillTreeEntry;
 import dev.toma.gunsrpg.common.tileentity.TileEntityAirdrop;
 import dev.toma.gunsrpg.common.tileentity.TileEntityBlastFurnace;
+import dev.toma.gunsrpg.common.tileentity.TileEntitySmithingTable;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.sided.SideManager;
 import dev.toma.gunsrpg.util.GuiHandler;
 import dev.toma.gunsrpg.util.object.EntitySpawnManager;
 import dev.toma.gunsrpg.util.recipes.BlastFurnaceRecipe;
+import dev.toma.gunsrpg.util.recipes.SmithingTableRecipes;
 import dev.toma.gunsrpg.world.cap.WorldDataCap;
 import dev.toma.gunsrpg.world.cap.WorldDataFactory;
 import dev.toma.gunsrpg.world.cap.WorldDataStorage;
@@ -62,14 +63,15 @@ public class GunsRPG {
         NetworkRegistry.INSTANCE.registerGuiHandler(modInstance, new GuiHandler());
         GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, makeResource("blast_furnace"));
         GameRegistry.registerTileEntity(TileEntityAirdrop.class, makeResource("airdrop"));
+        GameRegistry.registerTileEntity(TileEntitySmithingTable.class, makeResource("smithing_table"));
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         sideManager.init(event);
         GameRegistry.registerWorldGenerator(new WorldOreGen(), 0);
-        SkillTreeEntry.List.init();
         SkillTreePlacement.generatePlacement();
+        SmithingTableRecipes.register();
         ItemAmmo.init();
     }
 

@@ -9,7 +9,6 @@ import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.entity.EntityCrossbowBolt;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
-import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import net.minecraft.client.Minecraft;
@@ -40,7 +39,7 @@ public class CrossbowItem extends GunItem {
 
     @Override
     public int getMaxAmmo(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.CROSSBOW_REPEATER) ? 3 : 1;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_REPEATER) ? 3 : 1;
     }
 
     @Override
@@ -51,10 +50,10 @@ public class CrossbowItem extends GunItem {
     @Override
     public int getReloadTime(EntityPlayer player) {
         int base = 60;
-        if(PlayerDataFactory.hasActiveSkill(player, Ability.QUIVER)) {
+        if(PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_QUIVER)) {
             base = (int) (base * 0.65);
         }
-        if(PlayerDataFactory.hasActiveSkill(player, Ability.CROSSBOW_REPEATER)) {
+        if(PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_REPEATER)) {
             base = (int) (base * 1.25);
         }
         return base;
@@ -67,21 +66,21 @@ public class CrossbowItem extends GunItem {
         float pitch = entity.rotationPitch + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 5);
         float yaw = entity.rotationYaw + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 5);
         float baseVelocity = getWeaponConfig().velocity;
-        float velocity = entity instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) entity, Ability.TOUGH_BOWSTRING) ? 1.5F * baseVelocity : baseVelocity;
+        float velocity = entity instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) entity, ModRegistry.Skills.CROSSBOW_TOUGH_BOWSTRING) ? 1.5F * baseVelocity : baseVelocity;
         bolt.fire(pitch, yaw, velocity);
         world.spawnEntity(bolt);
     }
 
     @Override
     public void onHitEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
-        if(!bullet.world.isRemote && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Ability.POISONED_BOLTS)) {
+        if(!bullet.world.isRemote && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, ModRegistry.Skills.CROSSBOW_POISONED_BOLTS)) {
             victim.addPotionEffect(new PotionEffect(MobEffects.WITHER, 140, 1, false, false));
         }
     }
 
     @Override
     public void onKillEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
-        if(!bullet.world.isRemote && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Ability.HUNTER)) {
+        if(!bullet.world.isRemote && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, ModRegistry.Skills.CROSSBOW_HUNTER)) {
             shooter.heal(4.0F);
         }
     }
@@ -103,7 +102,7 @@ public class CrossbowItem extends GunItem {
 
     @Override
     public SoundEvent getReloadSound(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.QUIVER) ? ModRegistry.GRPGSounds.CROSSBOW_RELOAD_FAST : ModRegistry.GRPGSounds.CROSSBOW_RELOAD;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_QUIVER) ? ModRegistry.GRPGSounds.CROSSBOW_RELOAD_FAST : ModRegistry.GRPGSounds.CROSSBOW_RELOAD;
     }
 
     @Override
@@ -130,7 +129,7 @@ public class CrossbowItem extends GunItem {
     @SideOnly(Side.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
-        boolean scoped = PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Ability.CROSSBOW_SCOPE);
+        boolean scoped = PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, ModRegistry.Skills.CROSSBOW_SCOPE);
         return new AimingAnimation(-0.265F, scoped ? 0.14F : 0.18F, -0.1F).animateRight(f -> {
             float f1 = f.smooth;
             GlStateManager.translate(-0.265F * f1, 0.16F * f1, -0.1F * f1);

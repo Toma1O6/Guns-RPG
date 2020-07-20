@@ -12,7 +12,6 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerClipOrSingle;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
-import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -69,43 +68,43 @@ public class SRItem extends GunItem {
             int ammo = getAmmo(stack);
             if(ammo == 0) return ModRegistry.GRPGSounds.KAR98K_RELOAD_CLIP;
         }
-        return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? ModRegistry.GRPGSounds.SR_RELOAD_SHORT : ModRegistry.GRPGSounds.SR_RELOAD;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_FAST_HANDS) ? ModRegistry.GRPGSounds.SR_RELOAD_SHORT : ModRegistry.GRPGSounds.SR_RELOAD;
     }
 
     @Override
     public int getMaxAmmo(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.SR_EXTENDED) ? 10 : 5;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_EXTENDED) ? 10 : 5;
     }
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS) ? 25 : 40;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_FAST_HANDS) ? 25 : 40;
     }
 
     @Override
     public int getReloadTime(EntityPlayer player) {
         // it's safe to assume player is holding the weapon when this is called. Maybe
         boolean empty = this.getAmmo(player.getHeldItemMainhand()) == 0;
-        boolean magSkill = PlayerDataFactory.hasActiveSkill(player, Ability.FAST_HANDS);
+        boolean magSkill = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_FAST_HANDS);
         return magSkill ? empty ? 40 : 20 : empty ? 66 : 33;
     }
 
     @Override
     public boolean isSilenced(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.SR_SUPPRESSOR);
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SUPPRESSOR);
     }
 
     @Override
     public float getVerticalRecoil(EntityPlayer player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, Ability.SR_CHEEKPAD) ? GRPGConfig.weapon.general.cheekpad : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_CHEEKPAD) ? GRPGConfig.weapon.general.cheekpad : 1.0F;
         return mod * f;
     }
 
     @Override
     public float getHorizontalRecoil(EntityPlayer player) {
         float f = super.getHorizontalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, Ability.SR_CHEEKPAD) ? GRPGConfig.weapon.general.cheekpad : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_CHEEKPAD) ? GRPGConfig.weapon.general.cheekpad : 1.0F;
         return mod * f;
     }
 
@@ -128,7 +127,7 @@ public class SRItem extends GunItem {
     @SideOnly(Side.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
-        boolean scope = PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Ability.SR_SCOPE);
+        boolean scope = PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, ModRegistry.Skills.SR_SCOPE);
         return new AimingAnimation(-0.265F, scope ? 0.14F : 0.175F, 0.3F).animateRight(animation -> {
             float f = animation.smooth;
             GlStateManager.translate(-0.265F * f, 0.175F * f, 0.3F * f);

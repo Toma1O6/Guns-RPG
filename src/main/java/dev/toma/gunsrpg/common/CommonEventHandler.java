@@ -8,7 +8,6 @@ import dev.toma.gunsrpg.common.capability.PlayerDataManager;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.DebuffTypes;
 import dev.toma.gunsrpg.util.object.EntitySpawnManager;
@@ -176,14 +175,16 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onEntityDeath(LivingDeathEvent event) {
-        if(event.getEntity() instanceof IMob && event.getSource() instanceof GunDamageSource) {
-            Entity src = ((GunDamageSource) event.getSource()).getSrc();
-            if(src instanceof EntityPlayer) {
-                EntityPlayer player = (EntityPlayer) src;
-                GunItem item = null;
-                if(player.getHeldItemMainhand().getItem() instanceof GunItem) {
-                    PlayerDataFactory.get(player).getSkillData().kill(event.getEntity(), (GunItem) player.getHeldItemMainhand().getItem());
-                }
+        boolean flag = event.getSource() instanceof GunDamageSource;
+        if(flag) {
+            Entity source = ((GunDamageSource) event.getSource()).getSrc();
+            if(source instanceof EntityPlayer) {
+                PlayerDataFactory.get((EntityPlayer) source).getSkills().onKillEntity(event.getEntity(), ((GunDamageSource) event.getSource()).getStacc());
+            }
+        } else {
+            Entity source = event.getSource().getTrueSource();
+            if(source instanceof EntityPlayer) {
+                PlayerDataFactory.get((EntityPlayer) source).getSkills().onKillEntity(event.getEntity(), ItemStack.EMPTY);
             }
         }
     }
@@ -194,7 +195,7 @@ public class CommonEventHandler {
             GunDamageSource src = (GunDamageSource) event.getDamageSource();
             ItemStack stack = src.getStacc();
             Entity shooter = src.getSrc();
-            if(stack.getItem() == ModRegistry.GRPGItems.CROSSBOW && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Ability.HUNTER)) {
+            if(stack.getItem() == ModRegistry.GRPGItems.CROSSBOW && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, ModRegistry.Skills.CROSSBOW_HUNTER)) {
                 event.setLootingLevel(3);
             }
         }

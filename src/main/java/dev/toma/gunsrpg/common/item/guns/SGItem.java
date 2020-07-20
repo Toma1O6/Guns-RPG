@@ -13,7 +13,6 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerSingle;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
-import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import net.minecraft.client.renderer.GlStateManager;
@@ -64,34 +63,34 @@ public class SGItem extends GunItem {
 
     @Override
     public SoundEvent getReloadSound(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.BULLET_LOOPS) ? ModRegistry.GRPGSounds.SG_RELOAD_SHORT : ModRegistry.GRPGSounds.SG_RELOAD;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SHOTGUN_BULLET_LOOPS) ? ModRegistry.GRPGSounds.SG_RELOAD_SHORT : ModRegistry.GRPGSounds.SG_RELOAD;
     }
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.BULLET_LOOPS) ? 12 : 17;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SHOTGUN_BULLET_LOOPS) ? 12 : 17;
     }
 
     @Override
     public int getMaxAmmo(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.SG_EXTENDED) ? 8 : 5;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SHOTGUN_EXTENDED) ? 8 : 5;
     }
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Ability.PUMP_IN_ACTION) ? 15 : 25;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SHOTGUN_PUMP_IN_ACTION) ? 15 : 25;
     }
 
     @Override
     public void onKillEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
-        if(!shooter.world.isRemote && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Ability.NEVER_GIVE_UP)) {
+        if(!shooter.world.isRemote && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, ModRegistry.Skills.SHOTGUN_NEVER_GIVE_UP)) {
             shooter.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 100, 0, false, false));
         }
     }
 
     @Override
     public void shootBullet(World world, EntityLivingBase entity, ItemStack stack) {
-        boolean choke = entity instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) entity, Ability.CHOKE);
+        boolean choke = entity instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) entity, ModRegistry.Skills.SHOTGUN_CHOKE);
         float modifier = 3.0F;
         float velocity = this.getWeaponConfig().velocity;
         for(int i = 0; i < 6; i++) {

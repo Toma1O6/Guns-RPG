@@ -5,7 +5,6 @@ import dev.toma.gunsrpg.common.GunDamageSourceHack;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketParticle;
@@ -66,7 +65,7 @@ public class EntityBullet extends Entity {
         this.setPosition(shooter.posX, shooter.posY + shooter.getEyeHeight(), shooter.posZ);
         if(shooter instanceof EntityPlayer) {
             EntityPlayer p = (EntityPlayer) shooter;
-            canPenetrateEntity = gun == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(p, Ability.SR_PENETRATOR);
+            canPenetrateEntity = gun == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(p, ModRegistry.Skills.SR_PENETRATOR);
         }
     }
 
@@ -99,7 +98,7 @@ public class EntityBullet extends Entity {
         }
         Entity entity = rayTraceResult.entityHit;
         if(entity != null && !world.isRemote) {
-            boolean validPlayer = shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Ability.DEAD_EYE);
+            boolean validPlayer = shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, ModRegistry.Skills.SR_DEAD_EYE);
             boolean validWeapon = stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE;
             boolean isHeadshot = validWeapon && validPlayer && this.canEntityGetHeadshot(entity) && entityRaytrace.hitVec.y >= entity.getPosition().getY() + entity.getEyeHeight() - 0.15f;
             Vec3d vec = rayTraceResult.hitVec;

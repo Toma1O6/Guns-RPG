@@ -135,7 +135,7 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
             this.factory = factory;
         }
 
-        public static <S extends ISkill> Builder<S> newBuilder(IFactory<S> factory) {
+        public static <S extends ISkill> Builder<S> create(IFactory<S> factory) {
             return new Builder<>(factory);
         }
 

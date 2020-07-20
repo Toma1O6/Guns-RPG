@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.client.baked.*;
 import dev.toma.gunsrpg.client.render.item.*;
 import dev.toma.gunsrpg.common.block.BlockAirdrop;
 import dev.toma.gunsrpg.common.block.BlockBlastFurnace;
+import dev.toma.gunsrpg.common.block.BlockSmithingTable;
 import dev.toma.gunsrpg.common.block.GRPGOre;
 import dev.toma.gunsrpg.common.entity.*;
 import dev.toma.gunsrpg.common.item.GRPGItem;
@@ -15,10 +16,11 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.item.util.DebuffHeal;
+import dev.toma.gunsrpg.common.skills.BasicSkill;
+import dev.toma.gunsrpg.common.skills.CraftingSkill;
 import dev.toma.gunsrpg.common.skills.NoOperationSkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
-import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.block.Block;
@@ -136,6 +138,7 @@ public class ModRegistry {
         public static final GRPGOre AMETHYST_ORE = null;
         public static final BlockBlastFurnace BLAST_FURNACE = null;
         public static final BlockAirdrop AIRDROP = null;
+        public static final BlockSmithingTable SMITHING_TABLE = null;
     }
 
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
@@ -177,27 +180,27 @@ public class ModRegistry {
 
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
     public static final class Skills {
-        public static final SkillType<?> GUNPOWDER_NOVICE = null;
-        public static final SkillType<?> GUNPOWDER_EXPERT = null;
-        public static final SkillType<?> GUNPOWDER_MASTER = null;
-        public static final SkillType<?> GUN_PARTS_SMITH = null;
-        public static final SkillType<?> PISTOL_ASSEMBLY = null;
-        public static final SkillType<?> SMG_ASSEMBLY = null;
-        public static final SkillType<?> CROSSBOW_ASSEMBLY = null;
-        public static final SkillType<?> SHOTGUN_ASSEMBLY = null;
-        public static final SkillType<?> ASSAULT_RIFLE_ASSEMBLY = null;
-        public static final SkillType<?> SNIPER_RIFLE_ASSEMBLY = null;
-        public static final SkillType<?> WOODEN_AMMO_SMITH = null;
-        public static final SkillType<?> STONE_AMMO_SMITH = null;
-        public static final SkillType<?> IRON_AMMO_SMITH = null;
-        public static final SkillType<?> GOLD_AMMO_SMITH = null;
-        public static final SkillType<?> DIAMOND_AMMO_SMITH = null;
-        public static final SkillType<?> EMERALD_AMMO_SMITH = null;
-        public static final SkillType<?> AMETHYST_AMMO_SMITH = null;
-        public static final SkillType<?> AMMO_SMITHING_MASTERY = null;
-        public static final SkillType<?> GRENADES = null; // 5s fuse
-        public static final SkillType<?> MASSIVE_GRENADES = null; // +2 power
-        public static final SkillType<?> IMPACT_GRENADES = null;
+        public static final SkillType<CraftingSkill> GUNPOWDER_NOVICE = null;
+        public static final SkillType<CraftingSkill> GUNPOWDER_EXPERT = null;
+        public static final SkillType<CraftingSkill> GUNPOWDER_MASTER = null;
+        public static final SkillType<BasicSkill> GUN_PARTS_SMITH = null;
+        public static final SkillType<BasicSkill> PISTOL_ASSEMBLY = null;
+        public static final SkillType<BasicSkill> SMG_ASSEMBLY = null;
+        public static final SkillType<BasicSkill> CROSSBOW_ASSEMBLY = null;
+        public static final SkillType<BasicSkill> SHOTGUN_ASSEMBLY = null;
+        public static final SkillType<BasicSkill> ASSAULT_RIFLE_ASSEMBLY = null;
+        public static final SkillType<BasicSkill> SNIPER_RIFLE_ASSEMBLY = null;
+        public static final SkillType<BasicSkill> WOODEN_AMMO_SMITH = null;
+        public static final SkillType<BasicSkill> STONE_AMMO_SMITH = null;
+        public static final SkillType<BasicSkill> IRON_AMMO_SMITH = null;
+        public static final SkillType<BasicSkill> GOLD_AMMO_SMITH = null;
+        public static final SkillType<BasicSkill> DIAMOND_AMMO_SMITH = null;
+        public static final SkillType<BasicSkill> EMERALD_AMMO_SMITH = null;
+        public static final SkillType<BasicSkill> AMETHYST_AMMO_SMITH = null;
+        public static final SkillType<BasicSkill> AMMO_SMITHING_MASTERY = null;
+        public static final SkillType<BasicSkill> GRENADES = null; // 5s fuse
+        public static final SkillType<BasicSkill> MASSIVE_GRENADES = null; // +2 power
+        public static final SkillType<BasicSkill> IMPACT_GRENADES = null;
         public static final SkillType<?> MEDIC = null;
         public static final SkillType<?> DOCTOR = null;
         public static final SkillType<?> POISON_RESISTANCE_I = null;
@@ -245,47 +248,47 @@ public class ModRegistry {
         public static final SkillType<?> ADRENALINE_RUSH_II = null;
         public static final SkillType<?> ADRENALINE_RUSH_III = null;
         public static final SkillType<?> GOD_HELP_US = null;
-        public static final SkillType<?> PISTOL_QUICKDRAW = null;
-        public static final SkillType<?> PISTOL_EXTENDED = null;
-        public static final SkillType<?> PISTOL_TOUGH_SPRING = null;
-        public static final SkillType<?> PISTOL_CARBON_BARREL = null;
-        public static final SkillType<?> PISTOL_SUPPRESSOR = null;
-        public static final SkillType<?> PISTOL_HEAVY_BULLETS = null;
-        public static final SkillType<?> PISTOL_DUAL_WIELD = null;
-        public static final SkillType<?> SMG_QUICKDRAW = null;
-        public static final SkillType<?> SMG_EXTENDED = null;
-        public static final SkillType<?> SMG_VERTICAL_GRIP = null;
-        public static final SkillType<?> SMG_TOUGH_SPRING = null;
-        public static final SkillType<?> SMG_RED_DOT = null;
-        public static final SkillType<?> SMG_SUPPRESSOR = null;
-        public static final SkillType<?> SMG_COMMANDO = null;
-        public static final SkillType<?> CROSSBOW_QUIVER = null;
-        public static final SkillType<?> CROSSBOW_POISONED_BOLTS = null;
-        public static final SkillType<?> CROSSBOW_HUNTER = null;
-        public static final SkillType<?> CROSSBOW_TOUGH_BOWSTRING = null;
-        public static final SkillType<?> CROSSBOW_PENETRATOR = null;
-        public static final SkillType<?> CROSSBOW_SCOPE = null;
-        public static final SkillType<?> CROSSBOW_REPEATER = null;
-        public static final SkillType<?> SHOTGUN_BULLET_LOOPS = null;
-        public static final SkillType<?> SHOTGUN_EXTENDED = null;
-        public static final SkillType<?> SHOTGUN_PUMP_IN_ACTION = null;
-        public static final SkillType<?> SHOTGUN_CHOKE = null;
-        public static final SkillType<?> SHOTGUN_NEVER_GIVE_UP = null;
-        public static final SkillType<?> SHOTGUN_EXTENDED_BARREL = null;
-        public static final SkillType<?> AR_TOUGH_SPRING = null;
-        public static final SkillType<?> AR_VERTICAL_GRIP = null;
-        public static final SkillType<?> AR_EXTENDED = null;
-        public static final SkillType<?> AR_RED_DOT = null;
-        public static final SkillType<?> AR_SUPPRESSOR = null;
-        public static final SkillType<?> AR_CHEEKPAD = null;
-        public static final SkillType<?> AR_ADAPTIVE_CHAMBERING = null;
-        public static final SkillType<?> SR_SCOPE = null;
-        public static final SkillType<?> SR_CHEEKPAD = null;
-        public static final SkillType<?> SR_EXTENDED = null;
-        public static final SkillType<?> SR_SUPPRESSOR = null;
-        public static final SkillType<?> SR_FAST_HANDS = null;
-        public static final SkillType<?> SR_PENETRATOR = null;
-        public static final SkillType<?> SR_DEAD_EYE = null;
+        public static final SkillType<BasicSkill> PISTOL_QUICKDRAW = null;
+        public static final SkillType<BasicSkill> PISTOL_EXTENDED = null;
+        public static final SkillType<BasicSkill> PISTOL_TOUGH_SPRING = null;
+        public static final SkillType<BasicSkill> PISTOL_CARBON_BARREL = null;
+        public static final SkillType<BasicSkill> PISTOL_SUPPRESSOR = null;
+        public static final SkillType<BasicSkill> PISTOL_HEAVY_BULLETS = null;
+        public static final SkillType<BasicSkill> PISTOL_DUAL_WIELD = null;
+        public static final SkillType<BasicSkill> SMG_QUICKDRAW = null;
+        public static final SkillType<BasicSkill> SMG_EXTENDED = null;
+        public static final SkillType<BasicSkill> SMG_VERTICAL_GRIP = null;
+        public static final SkillType<BasicSkill> SMG_TOUGH_SPRING = null;
+        public static final SkillType<BasicSkill> SMG_RED_DOT = null;
+        public static final SkillType<BasicSkill> SMG_SUPPRESSOR = null;
+        public static final SkillType<BasicSkill> SMG_COMMANDO = null;
+        public static final SkillType<BasicSkill> CROSSBOW_QUIVER = null;
+        public static final SkillType<BasicSkill> CROSSBOW_POISONED_BOLTS = null;
+        public static final SkillType<BasicSkill> CROSSBOW_HUNTER = null;
+        public static final SkillType<BasicSkill> CROSSBOW_TOUGH_BOWSTRING = null;
+        public static final SkillType<BasicSkill> CROSSBOW_PENETRATOR = null;
+        public static final SkillType<BasicSkill> CROSSBOW_SCOPE = null;
+        public static final SkillType<BasicSkill> CROSSBOW_REPEATER = null;
+        public static final SkillType<BasicSkill> SHOTGUN_BULLET_LOOPS = null;
+        public static final SkillType<BasicSkill> SHOTGUN_EXTENDED = null;
+        public static final SkillType<BasicSkill> SHOTGUN_PUMP_IN_ACTION = null;
+        public static final SkillType<BasicSkill> SHOTGUN_CHOKE = null;
+        public static final SkillType<BasicSkill> SHOTGUN_NEVER_GIVE_UP = null;
+        public static final SkillType<BasicSkill> SHOTGUN_EXTENDED_BARREL = null;
+        public static final SkillType<BasicSkill> AR_TOUGH_SPRING = null;
+        public static final SkillType<BasicSkill> AR_VERTICAL_GRIP = null;
+        public static final SkillType<BasicSkill> AR_EXTENDED = null;
+        public static final SkillType<BasicSkill> AR_RED_DOT = null;
+        public static final SkillType<BasicSkill> AR_SUPPRESSOR = null;
+        public static final SkillType<BasicSkill> AR_CHEEKPAD = null;
+        public static final SkillType<BasicSkill> AR_ADAPTIVE_CHAMBERING = null;
+        public static final SkillType<BasicSkill> SR_SCOPE = null;
+        public static final SkillType<BasicSkill> SR_CHEEKPAD = null;
+        public static final SkillType<BasicSkill> SR_EXTENDED = null;
+        public static final SkillType<BasicSkill> SR_SUPPRESSOR = null;
+        public static final SkillType<BasicSkill> SR_FAST_HANDS = null;
+        public static final SkillType<BasicSkill> SR_PENETRATOR = null;
+        public static final SkillType<BasicSkill> SR_DEAD_EYE = null;
     }
 
     @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
@@ -308,115 +311,115 @@ public class ModRegistry {
             // small nasty hack to get around fucking generics
             if(!event.getRegistry().getRegistrySuperType().equals(SkillType.class)) return;
             event.getRegistry().registerAll(
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("gunpowder_novice").setTreeStartPoint().requiredLevel(0).price(1).childs(() -> ModUtils.newList(Skills.GUNPOWDER_EXPERT)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("gunpowder_expert").requiredLevel(15).price(2).childs(() -> ModUtils.newList(Skills.GUNPOWDER_MASTER)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("gunpowder_master").requiredLevel(30).price(3).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("wooden_ammo_smith").setTreeStartPoint().requiredLevel(0).price(1).childs(() -> ModUtils.newList(Skills.STONE_AMMO_SMITH)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("stone_ammo_smith").requiredLevel(5).price(1).childs(() -> ModUtils.newList(Skills.IRON_AMMO_SMITH)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("iron_ammo_smith").requiredLevel(10).price(2).childs(() -> ModUtils.newList(Skills.GOLD_AMMO_SMITH)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("gold_ammo_smith").requiredLevel(15).price(2).childs(() -> ModUtils.newList(Skills.DIAMOND_AMMO_SMITH)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("diamond_ammo_smith").requiredLevel(20).price(3).childs(() -> ModUtils.newList(Skills.EMERALD_AMMO_SMITH)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("emerald_ammo_smith").requiredLevel(30).price(3).childs(() -> ModUtils.newList(Skills.AMETHYST_AMMO_SMITH)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("amethyst_ammo_smith").requiredLevel(45).price(5).childs(() -> ModUtils.newList(Skills.AMMO_SMITHING_MASTERY)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("ammo_smithing_mastery").requiredLevel(60).price(10).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("grenades").setTreeStartPoint().requiredLevel(15).price(3).childs(() -> ModUtils.newList(Skills.MASSIVE_GRENADES, Skills.IMPACT_GRENADES)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("massive_grenades").requiredLevel(15).price(3).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("impact_grenades").requiredLevel(15).price(3).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("gun_parts_smith").setTreeStartPoint().requiredLevel(5).price(1).childs(() -> ModUtils.newList(Skills.PISTOL_ASSEMBLY, Skills.SMG_ASSEMBLY, Skills.CROSSBOW_ASSEMBLY, Skills.SHOTGUN_ASSEMBLY, Skills.ASSAULT_RIFLE_ASSEMBLY, Skills.SNIPER_RIFLE_ASSEMBLY)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("pistol_assembly").requiredLevel(5).price(2).setCustomDisplay().renderFactory(() -> GRPGItems.PISTOL).childs(() -> ModUtils.newList(Skills.PISTOL_QUICKDRAW, Skills.PISTOL_EXTENDED, Skills.PISTOL_TOUGH_SPRING, Skills.PISTOL_CARBON_BARREL, Skills.PISTOL_SUPPRESSOR, Skills.PISTOL_HEAVY_BULLETS, Skills.PISTOL_DUAL_WIELD)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("smg_assembly").requiredLevel(10).price(2).setCustomDisplay().renderFactory(() -> GRPGItems.SMG).childs(() -> ModUtils.newList(Skills.SMG_QUICKDRAW, Skills.SMG_EXTENDED, Skills.SMG_VERTICAL_GRIP, Skills.SMG_TOUGH_SPRING, Skills.SMG_RED_DOT, Skills.SMG_SUPPRESSOR, Skills.SMG_COMMANDO)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("crossbow_assembly").requiredLevel(15).price(3).setCustomDisplay().renderFactory(() -> GRPGItems.CROSSBOW).childs(() -> ModUtils.newList(Skills.CROSSBOW_QUIVER, Skills.CROSSBOW_POISONED_BOLTS, Skills.CROSSBOW_HUNTER, Skills.CROSSBOW_TOUGH_BOWSTRING, Skills.CROSSBOW_PENETRATOR, Skills.CROSSBOW_SCOPE, Skills.CROSSBOW_REPEATER)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("shotgun_assembly").requiredLevel(20).price(3).setCustomDisplay().renderFactory(() -> GRPGItems.SHOTGUN).childs(() -> ModUtils.newList(Skills.SHOTGUN_BULLET_LOOPS, Skills.SHOTGUN_EXTENDED, Skills.SHOTGUN_PUMP_IN_ACTION, Skills.SHOTGUN_CHOKE, Skills.SHOTGUN_NEVER_GIVE_UP, Skills.SHOTGUN_EXTENDED_BARREL)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("assault_rifle_assembly").requiredLevel(25).price(4).setCustomDisplay().renderFactory(() -> GRPGItems.ASSAULT_RIFLE).childs(() -> ModUtils.newList(Skills.AR_TOUGH_SPRING, Skills.AR_VERTICAL_GRIP, Skills.AR_EXTENDED, Skills.AR_RED_DOT, Skills.AR_SUPPRESSOR, Skills.AR_CHEEKPAD, Skills.AR_ADAPTIVE_CHAMBERING)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setGunCategory().setRegistryName("sniper_rifle_assembly").requiredLevel(35).price(4).setCustomDisplay().renderFactory(() -> GRPGItems.SNIPER_RIFLE).childs(() -> ModUtils.newList(Skills.SR_SCOPE, Skills.SR_CHEEKPAD, Skills.SR_EXTENDED, Skills.SR_SUPPRESSOR, Skills.SR_FAST_HANDS, Skills.SR_PENETRATOR, Skills.SR_DEAD_EYE)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setResistanceCategory().setRegistryName("medic").setTreeStartPoint().requiredLevel(10).price(3).childs(() -> ModUtils.newList(Skills.DOCTOR)).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setResistanceCategory().setRegistryName("doctor").requiredLevel(25).price(3).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setResistanceCategory().setRegistryName("poison_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.POISON_RESISTANCE_II).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setResistanceCategory().setRegistryName("poison_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.POISON_RESISTANCE_III).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setResistanceCategory().setRegistryName("poison_resistance_iii").requiredLevel(30).price(3).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setResistanceCategory().setRegistryName("infection_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.INFECTION_RESISTANCE_II).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setResistanceCategory().setRegistryName("infection_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.INFECTION_RESISTANCE_III).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setResistanceCategory().setRegistryName("infection_resistance_iii").requiredLevel(30).price(3).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setResistanceCategory().setRegistryName("broken_bone_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_II).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setResistanceCategory().setRegistryName("broken_bone_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_III).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setResistanceCategory().setRegistryName("broken_bone_resistance_iii").requiredLevel(30).price(3).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setResistanceCategory().setRegistryName("bleeding_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.BLEEDING_RESISTANCE_II).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setResistanceCategory().setRegistryName("bleeding_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.BLEEDING_RESISTANCE_III).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setResistanceCategory().setRegistryName("bleeding_resistance_iii").requiredLevel(30).price(3).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("sharp_axe_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.SHARP_AXE_II).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("sharp_axe_ii").requiredLevel(5).price(2).childAndOverride(() -> Skills.SHARP_AXE_III).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("sharp_axe_iii").requiredLevel(15).price(3).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("lumberjack_i").descriptionLength(3).setTreeStartPoint().requiredLevel(0).price(2).childAndOverride(() -> Skills.LUMBERJACK_II).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("lumberjack_ii").descriptionLength(3).requiredLevel(10).price(3).childAndOverride(() -> Skills.LUMBERJACK_III).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("lumberjack_iii").descriptionLength(3).requiredLevel(25).price(4).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("heavy_pickaxe_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.HEAVY_PICKAXE_II).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("heavy_pickaxe_ii").requiredLevel(5).price(2).childAndOverride(() -> Skills.HEAVY_PICKAXE_III).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("heavy_pickaxe_iii").requiredLevel(15).price(3).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("mother_lode_i").setTreeStartPoint().requiredLevel(0).price(2).childAndOverride(() -> Skills.MOTHER_LODE_II).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("mother_lode_ii").requiredLevel(15).price(3).childAndOverride(() -> Skills.MOTHER_LODE_III).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("mother_lode_iii").requiredLevel(30).price(4).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("blacksmith").setTreeStartPoint().requiredLevel(45).price(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setMiningCategory().setRegistryName("mineralogist").setTreeStartPoint().requiredLevel(50).price(6).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("acrobatics_i").descriptionLength(3).setTreeStartPoint().requiredLevel(5).price(2).childAndOverride(() -> Skills.ACROBATICS_II).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("acrobatics_ii").descriptionLength(3).requiredLevel(15).price(3).childAndOverride(() -> Skills.ACROBATICS_III).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("acrobatics_iii").descriptionLength(3).requiredLevel(25).price(4).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("strong_muscles_i").setTreeStartPoint().requiredLevel(10).price(2).childAndOverride(() -> Skills.STRONG_MUSCLES_II).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("strong_muscles_ii").requiredLevel(25).price(3).childAndOverride(() -> Skills.STRONG_MUSCLES_III).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("strong_muscles_iii").requiredLevel(40).price(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("agility_i").setTreeStartPoint().requiredLevel(10).price(2).childAndOverride(() -> Skills.AGILITY_II).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("agility_ii").requiredLevel(20).price(3).childAndOverride(() -> Skills.AGILITY_III).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("agility_iii").requiredLevel(35).price(4).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("well_fed_i").descriptionLength(2).setTreeStartPoint().requiredLevel(20).price(2).childAndOverride(() -> Skills.WELL_FED_II).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("well_fed_ii").descriptionLength(2).requiredLevel(35).price(3).childAndOverride(() -> Skills.WELL_FED_III).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("well_fed_iii").descriptionLength(2).requiredLevel(55).price(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("second_chance_i").descriptionLength(2).setTreeStartPoint().requiredLevel(50).price(7).childAndOverride(() -> Skills.SECOND_CHANCE_II).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("second_chance_ii").descriptionLength(2).requiredLevel(75).price(9).childAndOverride(() -> Skills.SECOND_CHANCE_III).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("second_chance_iii").descriptionLength(2).requiredLevel(90).price(10).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("adrenaline_rush_i").descriptionLength(3).setTreeStartPoint().requiredLevel(15).price(2).childAndOverride(() -> Skills.ADRENALINE_RUSH_II).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("adrenaline_rush_ii").descriptionLength(3).requiredLevel(25).price(3).childAndOverride(() -> Skills.ADRENALINE_RUSH_III).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("adrenaline_rush_iii").descriptionLength(3).requiredLevel(40).price(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setSurvivalCategory().setRegistryName("god_help_us").descriptionLength(2).setTreeStartPoint().requiredLevel(60).price(8).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("pistol_quickdraw").iconPathNormal("quickdraw").criteria(CriteriaTypes.getPistolCriteria()).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("pistol_extended").iconPathNormal("extended").criteria(CriteriaTypes.getPistolCriteria()).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("pistol_tough_spring").iconPathNormal("tough_spring").criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("pistol_carbon_barrel").criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("pistol_suppressor").iconPathNormal("suppressor").criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("pistol_heavy_bullets").descriptionLength(3).criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("pistol_dual_wield").criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(8).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("smg_quickdraw").iconPathNormal("quickdraw").criteria(CriteriaTypes.getSmgCriteria()).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("smg_extended").iconPathNormal("extended").criteria(CriteriaTypes.getSmgCriteria()).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("smg_vertical_grip").iconPathNormal("vertical_grip").criteria(CriteriaTypes.getSmgCriteria()).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("smg_tough_spring").iconPathNormal("tough_spring").criteria(CriteriaTypes.getSmgCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("smg_red_dot").iconPathNormal("red_dot").criteria(CriteriaTypes.getSmgCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("smg_suppressor").iconPathNormal("suppressor").criteria(CriteriaTypes.getSmgCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("smg_commando").descriptionLength(3).criteria(CriteriaTypes.getSmgCriteria()).requiredLevel(8).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("crossbow_quiver").criteria(CriteriaTypes.getCrossbowCriteria()).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("crossbow_poisoned_bolts").criteria(CriteriaTypes.getCrossbowCriteria()).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("crossbow_hunter").criteria(CriteriaTypes.getCrossbowCriteria()).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("crossbow_tough_bowstring").criteria(CriteriaTypes.getCrossbowCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("crossbow_penetrator").iconPathNormal("penetrator").criteria(CriteriaTypes.getCrossbowCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("crossbow_scope").iconPathNormal("scope").criteria(CriteriaTypes.getCrossbowCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("crossbow_repeater").descriptionLength(2).criteria(CriteriaTypes.getCrossbowCriteria()).requiredLevel(8).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("shotgun_bullet_loops").criteria(CriteriaTypes.getShotgunCriteria()).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("shotgun_extended").iconPathNormal("extended").criteria(CriteriaTypes.getShotgunCriteria()).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("shotgun_pump_in_action").criteria(CriteriaTypes.getShotgunCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("shotgun_choke").criteria(CriteriaTypes.getShotgunCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("shotgun_never_give_up").criteria(CriteriaTypes.getShotgunCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("shotgun_extended_barrel").criteria(CriteriaTypes.getShotgunCriteria()).requiredLevel(8).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("ar_tough_spring").iconPathNormal("tough_spring").criteria(CriteriaTypes.getAssaltRifleCriteria()).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("ar_vertical_grip").iconPathNormal("vertical_grip").criteria(CriteriaTypes.getAssaltRifleCriteria()).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("ar_extended").iconPathNormal("extended").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("ar_red_dot").iconPathNormal("red_dot").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("ar_suppressor").iconPathNormal("suppressor").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("ar_cheekpad").iconPathNormal("cheekpad").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("ar_adaptive_chambering").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(8).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("sr_scope").iconPathNormal("scope").criteria(CriteriaTypes.getSniperRifleCriteria()).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("sr_cheekpad").iconPathNormal("cheekpad").criteria(CriteriaTypes.getSniperRifleCriteria()).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("sr_extended").iconPathNormal("extended").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("sr_suppressor").iconPathNormal("suppressor").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("sr_fast_hands").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("sr_penetrator").iconPathNormal("penetrator").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.newBuilder(NoOperationSkill::new).setAttachmentCategory().setRegistryName("sr_dead_eye").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(8).build()
+                    SkillType.Builder.create(type -> new CraftingSkill(type, 2, CraftingSkill::getGunpowderYield)).setGunCategory().setRegistryName("gunpowder_novice").setTreeStartPoint().requiredLevel(0).price(1).childs(() -> ModUtils.newList(Skills.GUNPOWDER_EXPERT)).build(),
+                    SkillType.Builder.create(type -> new CraftingSkill(type, 4, CraftingSkill::getGunpowderYield)).setGunCategory().setRegistryName("gunpowder_expert").requiredLevel(15).price(2).childs(() -> ModUtils.newList(Skills.GUNPOWDER_MASTER)).build(),
+                    SkillType.Builder.create(type -> new CraftingSkill(type, 6, CraftingSkill::getGunpowderYield)).setGunCategory().setRegistryName("gunpowder_master").requiredLevel(30).price(3).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("wooden_ammo_smith").setTreeStartPoint().requiredLevel(0).price(1).childs(() -> ModUtils.newList(Skills.STONE_AMMO_SMITH)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("stone_ammo_smith").requiredLevel(5).price(1).childs(() -> ModUtils.newList(Skills.IRON_AMMO_SMITH)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("iron_ammo_smith").requiredLevel(10).price(2).childs(() -> ModUtils.newList(Skills.GOLD_AMMO_SMITH)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("gold_ammo_smith").requiredLevel(15).price(2).childs(() -> ModUtils.newList(Skills.DIAMOND_AMMO_SMITH)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("diamond_ammo_smith").requiredLevel(20).price(3).childs(() -> ModUtils.newList(Skills.EMERALD_AMMO_SMITH)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("emerald_ammo_smith").requiredLevel(30).price(3).childs(() -> ModUtils.newList(Skills.AMETHYST_AMMO_SMITH)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("amethyst_ammo_smith").requiredLevel(45).price(5).childs(() -> ModUtils.newList(Skills.AMMO_SMITHING_MASTERY)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("ammo_smithing_mastery").requiredLevel(60).price(10).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("gun_parts_smith").setTreeStartPoint().requiredLevel(5).price(1).childs(() -> ModUtils.newList(Skills.PISTOL_ASSEMBLY, Skills.SMG_ASSEMBLY, Skills.CROSSBOW_ASSEMBLY, Skills.SHOTGUN_ASSEMBLY, Skills.ASSAULT_RIFLE_ASSEMBLY, Skills.SNIPER_RIFLE_ASSEMBLY)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("pistol_assembly").requiredLevel(5).price(2).setCustomDisplay().renderFactory(() -> GRPGItems.PISTOL).childs(() -> ModUtils.newList(Skills.PISTOL_QUICKDRAW, Skills.PISTOL_EXTENDED, Skills.PISTOL_TOUGH_SPRING, Skills.PISTOL_CARBON_BARREL, Skills.PISTOL_SUPPRESSOR, Skills.PISTOL_HEAVY_BULLETS, Skills.PISTOL_DUAL_WIELD)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("smg_assembly").requiredLevel(10).price(2).setCustomDisplay().renderFactory(() -> GRPGItems.SMG).childs(() -> ModUtils.newList(Skills.SMG_QUICKDRAW, Skills.SMG_EXTENDED, Skills.SMG_VERTICAL_GRIP, Skills.SMG_TOUGH_SPRING, Skills.SMG_RED_DOT, Skills.SMG_SUPPRESSOR, Skills.SMG_COMMANDO)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("crossbow_assembly").requiredLevel(15).price(3).setCustomDisplay().renderFactory(() -> GRPGItems.CROSSBOW).childs(() -> ModUtils.newList(Skills.CROSSBOW_QUIVER, Skills.CROSSBOW_POISONED_BOLTS, Skills.CROSSBOW_HUNTER, Skills.CROSSBOW_TOUGH_BOWSTRING, Skills.CROSSBOW_PENETRATOR, Skills.CROSSBOW_SCOPE, Skills.CROSSBOW_REPEATER)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("shotgun_assembly").requiredLevel(20).price(3).setCustomDisplay().renderFactory(() -> GRPGItems.SHOTGUN).childs(() -> ModUtils.newList(Skills.SHOTGUN_BULLET_LOOPS, Skills.SHOTGUN_EXTENDED, Skills.SHOTGUN_PUMP_IN_ACTION, Skills.SHOTGUN_CHOKE, Skills.SHOTGUN_NEVER_GIVE_UP, Skills.SHOTGUN_EXTENDED_BARREL)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("assault_rifle_assembly").requiredLevel(25).price(4).setCustomDisplay().renderFactory(() -> GRPGItems.ASSAULT_RIFLE).childs(() -> ModUtils.newList(Skills.AR_TOUGH_SPRING, Skills.AR_VERTICAL_GRIP, Skills.AR_EXTENDED, Skills.AR_RED_DOT, Skills.AR_SUPPRESSOR, Skills.AR_CHEEKPAD, Skills.AR_ADAPTIVE_CHAMBERING)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("sniper_rifle_assembly").requiredLevel(35).price(4).setCustomDisplay().renderFactory(() -> GRPGItems.SNIPER_RIFLE).childs(() -> ModUtils.newList(Skills.SR_SCOPE, Skills.SR_CHEEKPAD, Skills.SR_EXTENDED, Skills.SR_SUPPRESSOR, Skills.SR_FAST_HANDS, Skills.SR_PENETRATOR, Skills.SR_DEAD_EYE)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("grenades").setTreeStartPoint().requiredLevel(15).price(3).childs(() -> ModUtils.newList(Skills.MASSIVE_GRENADES, Skills.IMPACT_GRENADES)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("massive_grenades").requiredLevel(15).price(3).build(),
+                    SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("impact_grenades").requiredLevel(15).price(3).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setResistanceCategory().setRegistryName("poison_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.POISON_RESISTANCE_II).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setResistanceCategory().setRegistryName("poison_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.POISON_RESISTANCE_III).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setResistanceCategory().setRegistryName("poison_resistance_iii").requiredLevel(30).price(3).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setResistanceCategory().setRegistryName("infection_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.INFECTION_RESISTANCE_II).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setResistanceCategory().setRegistryName("infection_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.INFECTION_RESISTANCE_III).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setResistanceCategory().setRegistryName("infection_resistance_iii").requiredLevel(30).price(3).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setResistanceCategory().setRegistryName("broken_bone_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_II).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setResistanceCategory().setRegistryName("broken_bone_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_III).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setResistanceCategory().setRegistryName("broken_bone_resistance_iii").requiredLevel(30).price(3).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setResistanceCategory().setRegistryName("bleeding_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.BLEEDING_RESISTANCE_II).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setResistanceCategory().setRegistryName("bleeding_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.BLEEDING_RESISTANCE_III).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setResistanceCategory().setRegistryName("bleeding_resistance_iii").requiredLevel(30).price(3).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setResistanceCategory().setRegistryName("medic").setTreeStartPoint().requiredLevel(10).price(3).childs(() -> ModUtils.newList(Skills.DOCTOR)).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setResistanceCategory().setRegistryName("doctor").requiredLevel(25).price(3).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setMiningCategory().setRegistryName("sharp_axe_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.SHARP_AXE_II).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setMiningCategory().setRegistryName("sharp_axe_ii").requiredLevel(5).price(2).childAndOverride(() -> Skills.SHARP_AXE_III).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setMiningCategory().setRegistryName("sharp_axe_iii").requiredLevel(15).price(3).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setMiningCategory().setRegistryName("lumberjack_i").descriptionLength(3).setTreeStartPoint().requiredLevel(0).price(2).childAndOverride(() -> Skills.LUMBERJACK_II).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setMiningCategory().setRegistryName("lumberjack_ii").descriptionLength(3).requiredLevel(10).price(3).childAndOverride(() -> Skills.LUMBERJACK_III).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setMiningCategory().setRegistryName("lumberjack_iii").descriptionLength(3).requiredLevel(25).price(4).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setMiningCategory().setRegistryName("heavy_pickaxe_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.HEAVY_PICKAXE_II).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setMiningCategory().setRegistryName("heavy_pickaxe_ii").requiredLevel(5).price(2).childAndOverride(() -> Skills.HEAVY_PICKAXE_III).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setMiningCategory().setRegistryName("heavy_pickaxe_iii").requiredLevel(15).price(3).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setMiningCategory().setRegistryName("mother_lode_i").setTreeStartPoint().requiredLevel(5).price(2).childAndOverride(() -> Skills.MOTHER_LODE_II).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setMiningCategory().setRegistryName("mother_lode_ii").requiredLevel(15).price(3).childAndOverride(() -> Skills.MOTHER_LODE_III).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setMiningCategory().setRegistryName("mother_lode_iii").requiredLevel(30).price(4).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setMiningCategory().setRegistryName("blacksmith").setTreeStartPoint().requiredLevel(45).price(5).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setMiningCategory().setRegistryName("mineralogist").setTreeStartPoint().requiredLevel(50).price(6).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("acrobatics_i").descriptionLength(3).setTreeStartPoint().requiredLevel(5).price(2).childAndOverride(() -> Skills.ACROBATICS_II).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("acrobatics_ii").descriptionLength(3).requiredLevel(15).price(3).childAndOverride(() -> Skills.ACROBATICS_III).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("acrobatics_iii").descriptionLength(3).requiredLevel(25).price(4).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("strong_muscles_i").setTreeStartPoint().requiredLevel(10).price(2).childAndOverride(() -> Skills.STRONG_MUSCLES_II).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("strong_muscles_ii").requiredLevel(25).price(3).childAndOverride(() -> Skills.STRONG_MUSCLES_III).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("strong_muscles_iii").requiredLevel(40).price(5).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("agility_i").setTreeStartPoint().requiredLevel(10).price(2).childAndOverride(() -> Skills.AGILITY_II).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("agility_ii").requiredLevel(20).price(3).childAndOverride(() -> Skills.AGILITY_III).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("agility_iii").requiredLevel(35).price(4).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("adrenaline_rush_i").descriptionLength(3).setTreeStartPoint().requiredLevel(15).price(2).childAndOverride(() -> Skills.ADRENALINE_RUSH_II).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("adrenaline_rush_ii").descriptionLength(3).requiredLevel(25).price(3).childAndOverride(() -> Skills.ADRENALINE_RUSH_III).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("adrenaline_rush_iii").descriptionLength(3).requiredLevel(40).price(5).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("well_fed_i").descriptionLength(2).setTreeStartPoint().requiredLevel(20).price(2).childAndOverride(() -> Skills.WELL_FED_II).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("well_fed_ii").descriptionLength(2).requiredLevel(35).price(3).childAndOverride(() -> Skills.WELL_FED_III).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("well_fed_iii").descriptionLength(2).requiredLevel(55).price(5).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("second_chance_i").descriptionLength(2).setTreeStartPoint().requiredLevel(50).price(7).childAndOverride(() -> Skills.SECOND_CHANCE_II).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("second_chance_ii").descriptionLength(2).requiredLevel(75).price(9).childAndOverride(() -> Skills.SECOND_CHANCE_III).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("second_chance_iii").descriptionLength(2).requiredLevel(90).price(10).build(),
+                    SkillType.Builder.create(NoOperationSkill::new).setSurvivalCategory().setRegistryName("god_help_us").descriptionLength(2).setTreeStartPoint().requiredLevel(60).price(8).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("pistol_quickdraw").iconPathNormal("quickdraw").criteria(CriteriaTypes.getPistolCriteria()).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("pistol_extended").iconPathNormal("extended").criteria(CriteriaTypes.getPistolCriteria()).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("pistol_tough_spring").iconPathNormal("tough_spring").criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("pistol_carbon_barrel").criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("pistol_suppressor").iconPathNormal("suppressor").criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("pistol_heavy_bullets").descriptionLength(3).criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("pistol_dual_wield").criteria(CriteriaTypes.getPistolCriteria()).requiredLevel(8).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("smg_quickdraw").iconPathNormal("quickdraw").criteria(CriteriaTypes.getSmgCriteria()).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("smg_extended").iconPathNormal("extended").criteria(CriteriaTypes.getSmgCriteria()).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("smg_vertical_grip").iconPathNormal("vertical_grip").criteria(CriteriaTypes.getSmgCriteria()).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("smg_tough_spring").iconPathNormal("tough_spring").criteria(CriteriaTypes.getSmgCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("smg_red_dot").iconPathNormal("red_dot").criteria(CriteriaTypes.getSmgCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("smg_suppressor").iconPathNormal("suppressor").criteria(CriteriaTypes.getSmgCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("smg_commando").descriptionLength(3).criteria(CriteriaTypes.getSmgCriteria()).requiredLevel(8).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("crossbow_quiver").criteria(CriteriaTypes.getCrossbowCriteria()).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("crossbow_poisoned_bolts").criteria(CriteriaTypes.getCrossbowCriteria()).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("crossbow_hunter").criteria(CriteriaTypes.getCrossbowCriteria()).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("crossbow_tough_bowstring").criteria(CriteriaTypes.getCrossbowCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("crossbow_penetrator").iconPathNormal("penetrator").criteria(CriteriaTypes.getCrossbowCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("crossbow_scope").iconPathNormal("scope").criteria(CriteriaTypes.getCrossbowCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("crossbow_repeater").descriptionLength(2).criteria(CriteriaTypes.getCrossbowCriteria()).requiredLevel(8).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("shotgun_bullet_loops").criteria(CriteriaTypes.getShotgunCriteria()).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("shotgun_extended").iconPathNormal("extended").criteria(CriteriaTypes.getShotgunCriteria()).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("shotgun_pump_in_action").criteria(CriteriaTypes.getShotgunCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("shotgun_choke").criteria(CriteriaTypes.getShotgunCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("shotgun_never_give_up").criteria(CriteriaTypes.getShotgunCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("shotgun_extended_barrel").criteria(CriteriaTypes.getShotgunCriteria()).requiredLevel(8).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("ar_tough_spring").iconPathNormal("tough_spring").criteria(CriteriaTypes.getAssaltRifleCriteria()).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("ar_vertical_grip").iconPathNormal("vertical_grip").criteria(CriteriaTypes.getAssaltRifleCriteria()).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("ar_extended").iconPathNormal("extended").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("ar_red_dot").iconPathNormal("red_dot").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("ar_suppressor").iconPathNormal("suppressor").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("ar_cheekpad").iconPathNormal("cheekpad").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("ar_adaptive_chambering").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(8).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sr_scope").iconPathNormal("scope").criteria(CriteriaTypes.getSniperRifleCriteria()).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sr_cheekpad").iconPathNormal("cheekpad").criteria(CriteriaTypes.getSniperRifleCriteria()).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sr_extended").iconPathNormal("extended").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sr_suppressor").iconPathNormal("suppressor").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sr_fast_hands").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sr_penetrator").iconPathNormal("penetrator").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sr_dead_eye").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(8).build()
             );
         }
 
@@ -425,7 +428,8 @@ public class ModRegistry {
             event.getRegistry().registerAll(
                     new GRPGOre("amethyst_ore", () -> GRPGItems.AMETHYST),
                     new BlockBlastFurnace("blast_furnace"),
-                    new BlockAirdrop("airdrop")
+                    new BlockAirdrop("airdrop"),
+                    new BlockSmithingTable("smithing_table")
             );
         }
 
@@ -456,48 +460,48 @@ public class ModRegistry {
                             return new Animations.Bandage(this.getMaxItemUseDuration(stack));
                         }
                     },
-                    new ItemAmmo("wooden_ammo_9mm", AmmoType._9MM, AmmoMaterial.WOOD, Ability.PISTOL_WOOD_AMMO, () -> GRPGItems.PISTOL),
-                    new ItemAmmo("wooden_ammo_45acp", AmmoType._45ACP, AmmoMaterial.WOOD, Ability.SMG_WOOD_AMMO, () -> GRPGItems.SMG),
-                    new ItemAmmo("wooden_ammo_556mm", AmmoType._556MM, AmmoMaterial.WOOD, Ability.AR_WOOD_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
-                    new ItemAmmo("wooden_ammo_762mm", AmmoType._762MM, AmmoMaterial.WOOD, Ability.SR_WOOD_AMMO, () -> GRPGItems.SNIPER_RIFLE),
-                    new ItemAmmo("wooden_ammo_12g", AmmoType._12G, AmmoMaterial.WOOD, Ability.SG_WOOD_AMMO, () -> GRPGItems.SHOTGUN),
-                    new ItemAmmo("wooden_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.WOOD, Ability.CROSSBOW_WOOD_AMMO, () -> GRPGItems.CROSSBOW),
-                    new ItemAmmo("stone_ammo_9mm", AmmoType._9MM, AmmoMaterial.STONE, Ability.PISTOL_STONE_AMMO, () -> GRPGItems.PISTOL),
-                    new ItemAmmo("stone_ammo_45acp", AmmoType._45ACP, AmmoMaterial.STONE, Ability.SMG_STONE_AMMO, () -> GRPGItems.SMG),
-                    new ItemAmmo("stone_ammo_556mm", AmmoType._556MM, AmmoMaterial.STONE, Ability.AR_STONE_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
-                    new ItemAmmo("stone_ammo_762mm", AmmoType._762MM, AmmoMaterial.STONE, Ability.SR_STONE_AMMO, () -> GRPGItems.SNIPER_RIFLE),
-                    new ItemAmmo("stone_ammo_12g", AmmoType._12G, AmmoMaterial.STONE, Ability.SG_STONE_AMMO, () -> GRPGItems.SHOTGUN),
-                    new ItemAmmo("stone_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.STONE, Ability.CROSSBOW_STONE_AMMO, () -> GRPGItems.CROSSBOW),
-                    new ItemAmmo("iron_ammo_9mm", AmmoType._9MM, AmmoMaterial.IRON, Ability.PISTOL_IRON_AMMO, () -> GRPGItems.PISTOL),
-                    new ItemAmmo("iron_ammo_45acp", AmmoType._45ACP, AmmoMaterial.IRON, Ability.SMG_IRON_AMMO, () -> GRPGItems.SMG),
-                    new ItemAmmo("iron_ammo_556mm", AmmoType._556MM, AmmoMaterial.IRON, Ability.AR_IRON_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
-                    new ItemAmmo("iron_ammo_762mm", AmmoType._762MM, AmmoMaterial.IRON, Ability.SR_IRON_AMMO, () -> GRPGItems.SNIPER_RIFLE),
-                    new ItemAmmo("iron_ammo_12g", AmmoType._12G, AmmoMaterial.IRON, Ability.SG_IRON_AMMO, () -> GRPGItems.SHOTGUN),
-                    new ItemAmmo("iron_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.IRON, Ability.CROSSBOW_IRON_AMMO, () -> GRPGItems.CROSSBOW),
-                    new ItemAmmo("gold_ammo_9mm", AmmoType._9MM, AmmoMaterial.GOLD, Ability.PISTOL_GOLD_AMMO, () -> GRPGItems.PISTOL),
-                    new ItemAmmo("gold_ammo_45acp", AmmoType._45ACP, AmmoMaterial.GOLD, Ability.SMG_GOLD_AMMO, () -> GRPGItems.SMG),
-                    new ItemAmmo("gold_ammo_556mm", AmmoType._556MM, AmmoMaterial.GOLD, Ability.AR_GOLD_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
-                    new ItemAmmo("gold_ammo_762mm", AmmoType._762MM, AmmoMaterial.GOLD, Ability.SR_GOLD_AMMO, () -> GRPGItems.SNIPER_RIFLE),
-                    new ItemAmmo("gold_ammo_12g", AmmoType._12G, AmmoMaterial.GOLD, Ability.SG_GOLD_AMMO, () -> GRPGItems.SHOTGUN),
-                    new ItemAmmo("gold_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.GOLD, Ability.CROSSBOW_GOLD_AMMO, () -> GRPGItems.CROSSBOW),
-                    new ItemAmmo("diamond_ammo_9mm", AmmoType._9MM, AmmoMaterial.DIAMOND, Ability.PISTOL_DIAMOND_AMMO, () -> GRPGItems.PISTOL),
-                    new ItemAmmo("diamond_ammo_45acp", AmmoType._45ACP, AmmoMaterial.DIAMOND, Ability.SMG_DIAMOND_AMMO, () -> GRPGItems.SMG),
-                    new ItemAmmo("diamond_ammo_556mm", AmmoType._556MM, AmmoMaterial.DIAMOND, Ability.AR_DIAMOND_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
-                    new ItemAmmo("diamond_ammo_762mm", AmmoType._762MM, AmmoMaterial.DIAMOND, Ability.SR_DIAMOND_AMMO, () -> GRPGItems.SNIPER_RIFLE),
-                    new ItemAmmo("diamond_ammo_12g", AmmoType._12G, AmmoMaterial.DIAMOND, Ability.SG_DIAMOND_AMMO, () -> GRPGItems.SHOTGUN),
-                    new ItemAmmo("diamond_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.DIAMOND, Ability.CROSSBOW_DIAMOND_AMMO, () -> GRPGItems.CROSSBOW),
-                    new ItemAmmo("emerald_ammo_9mm", AmmoType._9MM, AmmoMaterial.EMERALD, Ability.PISTOL_EMERALD_AMMO, () -> GRPGItems.PISTOL),
-                    new ItemAmmo("emerald_ammo_45acp", AmmoType._45ACP, AmmoMaterial.EMERALD, Ability.SMG_EMERALD_AMMO, () -> GRPGItems.SMG),
-                    new ItemAmmo("emerald_ammo_556mm", AmmoType._556MM, AmmoMaterial.EMERALD, Ability.AR_EMERALD_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
-                    new ItemAmmo("emerald_ammo_762mm", AmmoType._762MM, AmmoMaterial.EMERALD, Ability.SR_EMERALD_AMMO, () -> GRPGItems.SNIPER_RIFLE),
-                    new ItemAmmo("emerald_ammo_12g", AmmoType._12G, AmmoMaterial.EMERALD, Ability.SG_EMERALD_AMMO, () -> GRPGItems.SHOTGUN),
-                    new ItemAmmo("emerald_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.EMERALD, Ability.CROSSBOW_EMERALD_AMMO, () -> GRPGItems.CROSSBOW),
-                    new ItemAmmo("amethyst_ammo_9mm", AmmoType._9MM, AmmoMaterial.AMETHYST, Ability.PISTOL_AMETHYST_AMMO, () -> GRPGItems.PISTOL),
-                    new ItemAmmo("amethyst_ammo_45acp", AmmoType._45ACP, AmmoMaterial.AMETHYST, Ability.SMG_AMETHYST_AMMO, () -> GRPGItems.SMG),
-                    new ItemAmmo("amethyst_ammo_556mm", AmmoType._556MM, AmmoMaterial.AMETHYST, Ability.AR_AMETHYST_AMMO, () -> GRPGItems.ASSAULT_RIFLE),
-                    new ItemAmmo("amethyst_ammo_762mm", AmmoType._762MM, AmmoMaterial.AMETHYST, Ability.SR_AMETHYST_AMMO, () -> GRPGItems.SNIPER_RIFLE),
-                    new ItemAmmo("amethyst_ammo_12g", AmmoType._12G, AmmoMaterial.AMETHYST, Ability.SG_AMETHYST_AMMO, () -> GRPGItems.SHOTGUN),
-                    new ItemAmmo("amethyst_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.AMETHYST, Ability.CROSSBOW_AMETHYST_AMMO, () -> GRPGItems.CROSSBOW),
+                    new ItemAmmo("wooden_ammo_9mm", AmmoType._9MM, AmmoMaterial.WOOD, () -> GRPGItems.PISTOL),
+                    new ItemAmmo("wooden_ammo_45acp", AmmoType._45ACP, AmmoMaterial.WOOD, () -> GRPGItems.SMG),
+                    new ItemAmmo("wooden_ammo_556mm", AmmoType._556MM, AmmoMaterial.WOOD, () -> GRPGItems.ASSAULT_RIFLE),
+                    new ItemAmmo("wooden_ammo_762mm", AmmoType._762MM, AmmoMaterial.WOOD, () -> GRPGItems.SNIPER_RIFLE),
+                    new ItemAmmo("wooden_ammo_12g", AmmoType._12G, AmmoMaterial.WOOD, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("wooden_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.WOOD, () -> GRPGItems.CROSSBOW),
+                    new ItemAmmo("stone_ammo_9mm", AmmoType._9MM, AmmoMaterial.STONE, () -> GRPGItems.PISTOL),
+                    new ItemAmmo("stone_ammo_45acp", AmmoType._45ACP, AmmoMaterial.STONE, () -> GRPGItems.SMG),
+                    new ItemAmmo("stone_ammo_556mm", AmmoType._556MM, AmmoMaterial.STONE, () -> GRPGItems.ASSAULT_RIFLE),
+                    new ItemAmmo("stone_ammo_762mm", AmmoType._762MM, AmmoMaterial.STONE, () -> GRPGItems.SNIPER_RIFLE),
+                    new ItemAmmo("stone_ammo_12g", AmmoType._12G, AmmoMaterial.STONE, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("stone_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.STONE, () -> GRPGItems.CROSSBOW),
+                    new ItemAmmo("iron_ammo_9mm", AmmoType._9MM, AmmoMaterial.IRON, () -> GRPGItems.PISTOL),
+                    new ItemAmmo("iron_ammo_45acp", AmmoType._45ACP, AmmoMaterial.IRON, () -> GRPGItems.SMG),
+                    new ItemAmmo("iron_ammo_556mm", AmmoType._556MM, AmmoMaterial.IRON, () -> GRPGItems.ASSAULT_RIFLE),
+                    new ItemAmmo("iron_ammo_762mm", AmmoType._762MM, AmmoMaterial.IRON, () -> GRPGItems.SNIPER_RIFLE),
+                    new ItemAmmo("iron_ammo_12g", AmmoType._12G, AmmoMaterial.IRON, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("iron_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.IRON, () -> GRPGItems.CROSSBOW),
+                    new ItemAmmo("gold_ammo_9mm", AmmoType._9MM, AmmoMaterial.GOLD, () -> GRPGItems.PISTOL),
+                    new ItemAmmo("gold_ammo_45acp", AmmoType._45ACP, AmmoMaterial.GOLD, () -> GRPGItems.SMG),
+                    new ItemAmmo("gold_ammo_556mm", AmmoType._556MM, AmmoMaterial.GOLD, () -> GRPGItems.ASSAULT_RIFLE),
+                    new ItemAmmo("gold_ammo_762mm", AmmoType._762MM, AmmoMaterial.GOLD, () -> GRPGItems.SNIPER_RIFLE),
+                    new ItemAmmo("gold_ammo_12g", AmmoType._12G, AmmoMaterial.GOLD, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("gold_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.GOLD, () -> GRPGItems.CROSSBOW),
+                    new ItemAmmo("diamond_ammo_9mm", AmmoType._9MM, AmmoMaterial.DIAMOND, () -> GRPGItems.PISTOL),
+                    new ItemAmmo("diamond_ammo_45acp", AmmoType._45ACP, AmmoMaterial.DIAMOND, () -> GRPGItems.SMG),
+                    new ItemAmmo("diamond_ammo_556mm", AmmoType._556MM, AmmoMaterial.DIAMOND, () -> GRPGItems.ASSAULT_RIFLE),
+                    new ItemAmmo("diamond_ammo_762mm", AmmoType._762MM, AmmoMaterial.DIAMOND, () -> GRPGItems.SNIPER_RIFLE),
+                    new ItemAmmo("diamond_ammo_12g", AmmoType._12G, AmmoMaterial.DIAMOND, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("diamond_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.DIAMOND, () -> GRPGItems.CROSSBOW),
+                    new ItemAmmo("emerald_ammo_9mm", AmmoType._9MM, AmmoMaterial.EMERALD, () -> GRPGItems.PISTOL),
+                    new ItemAmmo("emerald_ammo_45acp", AmmoType._45ACP, AmmoMaterial.EMERALD, () -> GRPGItems.SMG),
+                    new ItemAmmo("emerald_ammo_556mm", AmmoType._556MM, AmmoMaterial.EMERALD, () -> GRPGItems.ASSAULT_RIFLE),
+                    new ItemAmmo("emerald_ammo_762mm", AmmoType._762MM, AmmoMaterial.EMERALD, () -> GRPGItems.SNIPER_RIFLE),
+                    new ItemAmmo("emerald_ammo_12g", AmmoType._12G, AmmoMaterial.EMERALD, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("emerald_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.EMERALD, () -> GRPGItems.CROSSBOW),
+                    new ItemAmmo("amethyst_ammo_9mm", AmmoType._9MM, AmmoMaterial.AMETHYST, () -> GRPGItems.PISTOL),
+                    new ItemAmmo("amethyst_ammo_45acp", AmmoType._45ACP, AmmoMaterial.AMETHYST, () -> GRPGItems.SMG),
+                    new ItemAmmo("amethyst_ammo_556mm", AmmoType._556MM, AmmoMaterial.AMETHYST, () -> GRPGItems.ASSAULT_RIFLE),
+                    new ItemAmmo("amethyst_ammo_762mm", AmmoType._762MM, AmmoMaterial.AMETHYST, () -> GRPGItems.SNIPER_RIFLE),
+                    new ItemAmmo("amethyst_ammo_12g", AmmoType._12G, AmmoMaterial.AMETHYST, () -> GRPGItems.SHOTGUN),
+                    new ItemAmmo("amethyst_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.AMETHYST, () -> GRPGItems.CROSSBOW),
                     new PistolItem("pistol"),
                     new SMGItem("smg"),
                     new ARItem("assault_rifle"),

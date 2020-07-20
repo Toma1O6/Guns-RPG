@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.client.model;
 
+import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import dev.toma.gunsrpg.common.skilltree.Ability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
@@ -178,7 +178,7 @@ public class ModelCrossbow extends ModelWeapon {
     public void doRender(ItemStack stack) {
         crossbow.render(1f);
         if(stack.hasTagCompound() && stack.getTagCompound().getInteger("ammo") > 0) arrow.render(1f);
-        if(PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Ability.CROSSBOW_SCOPE)) scope.render(1f);
+        if(PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, ModRegistry.Skills.CROSSBOW_SCOPE)) scope.render(1f);
     }
 
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {

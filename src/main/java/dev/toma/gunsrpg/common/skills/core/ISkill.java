@@ -9,6 +9,10 @@ public interface ISkill {
 
     boolean apply(EntityPlayer user);
 
+    default void onPurchase(EntityPlayer player) {
+
+    }
+
     NBTTagCompound saveData();
 
     void readData(NBTTagCompound nbt);

@@ -2,14 +2,12 @@ package dev.toma.gunsrpg.util.object;
 
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import dev.toma.gunsrpg.common.capability.object.AbilityData;
+import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
-import dev.toma.gunsrpg.common.skilltree.Ability;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetReloading;
 import dev.toma.gunsrpg.network.packet.SPacketShoot;
@@ -61,20 +59,13 @@ public class ShootingManager {
         CooldownTracker tracker = player.getCooldownTracker();
         PlayerData data = PlayerDataFactory.get(player);
         ReloadInfo reloadInfo = data.getReloadInfo();
-        AbilityData abilityData = data.getSkillData().getAbilityData();
+        PlayerSkills skills = data.getSkills();
         GunItem item = (GunItem) stack.getItem();
         IReloadManager reloadManager = item.getReloadManager();
         if(!player.isSprinting() && !tracker.hasCooldown(item)) {
             AmmoType ammoType = item.getAmmoType();
             AmmoMaterial material = item.getMaterialFromNBT(stack);
-            Ability.Type type = null;
-            for(ItemAmmo a : ItemAmmo.GUN_TO_ITEM_MAP.get(item)) {
-                if(a.getAmmoType() == ammoType && a.getMaterial() == material) {
-                    type = a.getRequiredProperty();
-                    break;
-                }
-            }
-            if(material == null || type == null) return false;
+            if(material == null) return false;
             if(reloadInfo.isReloading()) {
                 if(reloadManager.canBeInterrupted(item, stack)) {
                     reloadInfo.cancelReload();
@@ -83,11 +74,11 @@ public class ShootingManager {
                     } else {
                         NetworkManager.toServer(new SPacketSetReloading(false, 0));
                     }
-                    return item.hasAmmo(stack) && abilityData.hasProperty(type);
+                    return item.hasAmmo(stack) && skills.getGunData(item).getLevel() >= material.ordinal() + 1;
                 }
                 return false;
             }
-            return item.hasAmmo(stack) && abilityData.hasProperty(type);
+            return item.hasAmmo(stack) && skills.getGunData(item).getLevel() >= material.ordinal() + 1;
         }
         return false;
     }
