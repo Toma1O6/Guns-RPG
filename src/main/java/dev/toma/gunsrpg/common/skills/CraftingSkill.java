@@ -41,7 +41,11 @@ public class CraftingSkill extends BasicSkill {
         }
     }
 
-    public static void getGunpowderYield(CraftingSkill skill, PlayerSkills skills) {
-        skills.setGunpowderCraftYield(Math.max(skills.getGunpowderCraftYield(), skill.outputAmount));
+    public void getGunpowderYield(PlayerSkills skills) {
+        skills.setGunpowderCraftYield(Math.max(skills.getGunpowderCraftYield(), outputAmount));
+    }
+
+    public void getBonemealYield(PlayerSkills skills) {
+        skills.setBonemealCraftYield(Math.max(skills.getBonemealCraftYield(), outputAmount));
     }
 }

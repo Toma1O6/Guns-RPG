@@ -45,6 +45,7 @@ public class PlayerSkills {
     private int skillPoints;
 
     private int gunpowderCraftYield;
+    private int bonemealCraftYield;
 
     private Map<SkillCategory, List<TickableSkill>> tickCache;
 
@@ -206,6 +207,14 @@ public class PlayerSkills {
         return gunpowderCraftYield;
     }
 
+    public void setBonemealCraftYield(int bonemealCraftYield) {
+        this.bonemealCraftYield = bonemealCraftYield;
+    }
+
+    public int getBonemealCraftYield() {
+        return bonemealCraftYield;
+    }
+
     public NBTTagCompound writeData() {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("level", level);
@@ -230,6 +239,7 @@ public class PlayerSkills {
         }
         nbt.setTag("skills", skills);
         nbt.setInteger("gunpowderYield", gunpowderCraftYield);
+        nbt.setInteger("bonemealYield", bonemealCraftYield);
         return nbt;
     }
 
@@ -267,6 +277,7 @@ public class PlayerSkills {
             }
         }
         gunpowderCraftYield = nbt.getInteger("gunpowderYield");
+        bonemealCraftYield = nbt.getInteger("bonemealYield");
     }
 
     private void clearCache() {

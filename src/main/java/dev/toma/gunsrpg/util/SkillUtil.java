@@ -13,7 +13,11 @@ import net.minecraft.item.ItemPickaxe;
 public class SkillUtil {
 
     public static int getGunpowderCraftAmount(EntityPlayer player) {
-        return getCraftingAmount(PlayerDataFactory.get(player).getSkills(), new SkillType[] {ModRegistry.Skills.GUNPOWDER_MASTER, ModRegistry.Skills.GUNPOWDER_EXPERT, ModRegistry.Skills.GUNPOWDER_NOVICE});
+        return getCraftingAmount(PlayerDataFactory.get(player).getSkills(), ModRegistry.Skills.GUNPOWDER_MASTER, ModRegistry.Skills.GUNPOWDER_EXPERT, ModRegistry.Skills.GUNPOWDER_NOVICE);
+    }
+
+    public static int getBonemealCraftAmount(EntityPlayer player) {
+        return getCraftingAmount(PlayerDataFactory.get(player).getSkills(), ModRegistry.Skills.BONE_GRINDER_III, ModRegistry.Skills.BONE_GRINDER_II, ModRegistry.Skills.BONE_GRINDER_I);
     }
 
     public static int getAmmoAmount(EntityPlayer player) {
@@ -32,7 +36,7 @@ public class SkillUtil {
         return input;
     }
 
-    private static int getCraftingAmount(PlayerSkills skills, SkillType<? extends CraftingSkill>[] array) {
+    private static int getCraftingAmount(PlayerSkills skills, SkillType<? extends CraftingSkill>... array) {
         for (SkillType<? extends CraftingSkill> skillType : array) {
             int count = getOutputAmount(skills, skillType);
             if (count > 0) {
