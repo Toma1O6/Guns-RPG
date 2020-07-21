@@ -16,6 +16,14 @@ public class SkillUtil {
         return getCraftingAmount(PlayerDataFactory.get(player).getSkills(), new SkillType[] {ModRegistry.Skills.GUNPOWDER_MASTER, ModRegistry.Skills.GUNPOWDER_EXPERT, ModRegistry.Skills.GUNPOWDER_NOVICE});
     }
 
+    public static int getAmmoAmount(EntityPlayer player) {
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AMMO_SMITHING_MASTERY) ? 2 : 1;
+    }
+
+    public static int getCrossbowBoltAmount(EntityPlayer player) {
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AMMO_SMITHING_MASTERY) ? 3 : 2;
+    }
+
     public static float getAxeSpeedModifier(float input, ItemAxe axe, EntityPlayer player) {
         return input;
     }

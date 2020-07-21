@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.item.util;
+package dev.toma.gunsrpg.common.item;
 
 import dev.toma.gunsrpg.client.animation.Animation;
 import dev.toma.gunsrpg.client.animation.AnimationManager;
@@ -7,7 +7,6 @@ import dev.toma.gunsrpg.client.animation.IHandRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
-import dev.toma.gunsrpg.common.item.GRPGItem;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;

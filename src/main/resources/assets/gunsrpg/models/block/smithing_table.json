@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "gunsrpg:blocks/smithing_table_front",
+        "down": "gunsrpg:blocks/smithing_table_bottom",
+        "up": "gunsrpg:blocks/smithing_table_top",
+        "north": "gunsrpg:blocks/smithing_table_front",
+        "east": "gunsrpg:blocks/smithing_table_side",
+        "south": "gunsrpg:blocks/smithing_table_side",
+        "west": "gunsrpg:blocks/smithing_table_front"
+    }
+}

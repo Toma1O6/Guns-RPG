@@ -62,10 +62,14 @@ item.wooden_stock.name=Wooden Stock
 item.magazine.name=Magazine
 item.gun_parts.name=Gun Parts
 item.bolt_fletching.name=Bolt Fletching
+item.grenade.name=Grenade
+item.massive_grenade.name=Massive Grenade
+item.impact_grenade.name=Impact Grenade
 
 tile.amethyst_ore.name=Amethyst Ore
 tile.blast_furnace.name=Blast Furnace
 tile.airdrop.name=Airdrop
+tile.smithing_table.name=Smithing Table
 
 death.attack.poison=%1$s has died from poisoning
 death.attack.infection=%1$s has died from infection

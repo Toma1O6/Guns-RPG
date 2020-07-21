@@ -105,69 +105,13 @@ public class PlayerSkills {
     }
 
     public void onLevelUp() {
-        if(level == 100) addSkillPoints(10);
-        if(level >= 95 && !isMaxLevel()) {
-            if(level == 95) {
-                addSkillPoints(2);
-            } else addSkillPoints(1);
-            requiredKills = 100;
-        } else if(level >= 90) {
-            if(level == 90) {
-                addSkillPoints(2);
-            } else addSkillPoints(1);
-            requiredKills = 85;
-        } else if(level >= 80) {
-            if(level == 80 || level == 85) {
-                addSkillPoints(2);
-            } else addSkillPoints(1);
-            requiredKills = 70;
-        } else if(level >= 70) {
-            if(level == 70) {
-                addSkillPoints(2);
-            } else if(level == 75) {
-                addSkillPoints(5);
-            } else addSkillPoints(1);
-            requiredKills = 60;
-        } else if(level >= 60) {
-            if(level == 60 || level == 65) {
-                addSkillPoints(2);
-            } else addSkillPoints(1);
-            requiredKills = 50;
-        } else if(level >= 50) {
-            if(level == 50) {
-                addSkillPoints(10);
-            } else if(level == 55) {
-                addSkillPoints(2);
-            } else addSkillPoints(1);
-            requiredKills = 45;
-        } else if(level >= 40) {
-            if(level == 40 || level == 45) {
-                addSkillPoints(2);
-            } else addSkillPoints(1);
-            requiredKills = 35;
-        } else if(level >= 30) {
-            if(level == 30 || level == 35) {
-                addSkillPoints(2);
-            } else addSkillPoints(1);
-            requiredKills = 30;
-        } else if(level >= 20) {
-            if(level == 25) {
-                addSkillPoints(5);
-            } else if(level == 20) {
-                addSkillPoints(2);
-            } else addSkillPoints(1);
-            requiredKills = 25;
-        } else if(level >= 10) {
-            if(level == 10 || level == 15) {
-                addSkillPoints(2);
-            } else addSkillPoints(1);
-            requiredKills = 15;
-        } else {
-            if(level == 5) {
-                addSkillPoints(2);
-            } else addSkillPoints(1);
-            requiredKills = 10;
-        }
+        if(level == 100) {
+            addSkillPoints(25);
+        } else if(level == 50) {
+            addSkillPoints(20);
+        } else if(level % 5 == 0) {
+            addSkillPoints(3);
+        } else addSkillPoints(1);
     }
 
     public void killMob(GunItem gunItem) {

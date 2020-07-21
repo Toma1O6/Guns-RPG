@@ -56,7 +56,7 @@ public class GuiPlayerSkills extends GuiScreen {
         int level = skills.getLevel();
         for(Branch branch : tree.branches) {
             for(PlacementContext ctx : branch.getPlacements()) {
-                if(ctx.type.levelRequirement <= level || ctx.parent != null && skills.hasSkill(ctx.parent)) {
+                if(ctx.type.levelRequirement <= level) {
                     addComponent(new SkillComponent(ctx));
                 }
             }

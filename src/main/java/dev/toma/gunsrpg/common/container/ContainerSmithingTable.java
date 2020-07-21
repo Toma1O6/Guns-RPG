@@ -10,7 +10,7 @@ public class ContainerSmithingTable extends ModContainer {
     public ContainerSmithingTable(EntityPlayer player, TileEntitySmithingTable tileEntity) {
         super(tileEntity);
         // input
-        addSlots(tileEntity, 3, 3, 116, 8);
+        addSlots(tileEntity, 3, 3, 62, 8);
         // player
         addPlayerInventory(player.inventory, 90);
     }
