@@ -46,6 +46,10 @@ public class PlayerSkills {
 
     private int gunpowderCraftYield;
     private int bonemealCraftYield;
+    public int poisonResistance;
+    public int infectionResistance;
+    public int brokenBoneResistance;
+    public int bleedResistance;
 
     private Map<SkillCategory, List<TickableSkill>> tickCache;
 
@@ -132,6 +136,11 @@ public class PlayerSkills {
         skillPoints = 0;
         requiredKills = 10;
         gunpowderCraftYield = SkillUtil.getGunpowderCraftAmount(data.getPlayer());
+        bonemealCraftYield = 0;
+        poisonResistance = 0;
+        infectionResistance = 0;
+        brokenBoneResistance = 0;
+        bleedResistance = 0;
         clearCache();
         data.sync();
     }
@@ -215,6 +224,22 @@ public class PlayerSkills {
         return bonemealCraftYield;
     }
 
+    public void setPoisonResistance(int poisonResistance) {
+        this.poisonResistance = Math.max(poisonResistance, this.poisonResistance);
+    }
+
+    public void setInfectionResistance(int infectionResistance) {
+        this.infectionResistance = Math.max(infectionResistance, this.infectionResistance);
+    }
+
+    public void setBrokenBoneResistance(int brokenBoneResistance) {
+        this.brokenBoneResistance = Math.max(brokenBoneResistance, this.brokenBoneResistance);
+    }
+
+    public void setBleedResistance(int bleedResistance) {
+        this.bleedResistance = Math.max(bleedResistance, this.bleedResistance);
+    }
+
     public NBTTagCompound writeData() {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("level", level);
@@ -240,6 +265,10 @@ public class PlayerSkills {
         nbt.setTag("skills", skills);
         nbt.setInteger("gunpowderYield", gunpowderCraftYield);
         nbt.setInteger("bonemealYield", bonemealCraftYield);
+        nbt.setInteger("poisonResistance", poisonResistance);
+        nbt.setInteger("infectionResistance", infectionResistance);
+        nbt.setInteger("brokenBoneResistance", brokenBoneResistance);
+        nbt.setInteger("bleedingResistance", bleedResistance);
         return nbt;
     }
 
@@ -278,6 +307,10 @@ public class PlayerSkills {
         }
         gunpowderCraftYield = nbt.getInteger("gunpowderYield");
         bonemealCraftYield = nbt.getInteger("bonemealYield");
+        poisonResistance = nbt.getInteger("poisonResistance");
+        infectionResistance = nbt.getInteger("infectionResistance");
+        brokenBoneResistance = nbt.getInteger("brokenBoneResistance");
+        bleedResistance = nbt.getInteger("bleedingResistance");
     }
 
     private void clearCache() {

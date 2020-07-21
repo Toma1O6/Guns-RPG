@@ -19,6 +19,8 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.skills.BasicSkill;
 import dev.toma.gunsrpg.common.skills.CraftingSkill;
+import dev.toma.gunsrpg.common.skills.DebuffResistanceSkill;
+import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
 import dev.toma.gunsrpg.config.GRPGConfig;
@@ -211,18 +213,18 @@ public class ModRegistry {
         public static final SkillType<BasicSkill> MEDIC = null;
         public static final SkillType<BasicSkill> DOCTOR = null;
         public static final SkillType<BasicSkill> EFFICIENT_MEDS = null;
-        public static final SkillType<BasicSkill> POISON_RESISTANCE_I = null;
-        public static final SkillType<BasicSkill> POISON_RESISTANCE_II = null;
-        public static final SkillType<BasicSkill> POISON_RESISTANCE_III = null;
-        public static final SkillType<BasicSkill> INFECTION_RESISTANCE_I = null;
-        public static final SkillType<BasicSkill> INFECTION_RESISTANCE_II = null;
-        public static final SkillType<BasicSkill> INFECTION_RESISTANCE_III = null;
-        public static final SkillType<BasicSkill> BROKEN_BONE_RESISTANCE_I = null;
-        public static final SkillType<BasicSkill> BROKEN_BONE_RESISTANCE_II = null;
-        public static final SkillType<BasicSkill> BROKEN_BONE_RESISTANCE_III = null;
-        public static final SkillType<BasicSkill> BLEEDING_RESISTANCE_I = null;
-        public static final SkillType<BasicSkill> BLEEDING_RESISTANCE_II = null;
-        public static final SkillType<BasicSkill> BLEEDING_RESISTANCE_III = null;
+        public static final SkillType<DebuffResistanceSkill> POISON_RESISTANCE_I = null;
+        public static final SkillType<DebuffResistanceSkill> POISON_RESISTANCE_II = null;
+        public static final SkillType<DebuffResistanceSkill> POISON_RESISTANCE_III = null;
+        public static final SkillType<DebuffResistanceSkill> INFECTION_RESISTANCE_I = null;
+        public static final SkillType<DebuffResistanceSkill> INFECTION_RESISTANCE_II = null;
+        public static final SkillType<DebuffResistanceSkill> INFECTION_RESISTANCE_III = null;
+        public static final SkillType<DebuffResistanceSkill> BROKEN_BONE_RESISTANCE_I = null;
+        public static final SkillType<DebuffResistanceSkill> BROKEN_BONE_RESISTANCE_II = null;
+        public static final SkillType<DebuffResistanceSkill> BROKEN_BONE_RESISTANCE_III = null;
+        public static final SkillType<DebuffResistanceSkill> BLEEDING_RESISTANCE_I = null;
+        public static final SkillType<DebuffResistanceSkill> BLEEDING_RESISTANCE_II = null;
+        public static final SkillType<DebuffResistanceSkill> BLEEDING_RESISTANCE_III = null;
         public static final SkillType<BasicSkill> ACROBATICS_I = null;
         public static final SkillType<BasicSkill> ACROBATICS_II = null;
         public static final SkillType<BasicSkill> ACROBATICS_III = null;
@@ -257,9 +259,9 @@ public class ModRegistry {
         public static final SkillType<BasicSkill> WELL_FED_I = null;
         public static final SkillType<BasicSkill> WELL_FED_II = null;
         public static final SkillType<BasicSkill> WELL_FED_III = null;
-        public static final SkillType<BasicSkill> SECOND_CHANCE_I = null;
-        public static final SkillType<BasicSkill> SECOND_CHANCE_II = null;
-        public static final SkillType<BasicSkill> SECOND_CHANCE_III = null;
+        public static final SkillType<SecondChanceSkill> SECOND_CHANCE_I = null;
+        public static final SkillType<SecondChanceSkill> SECOND_CHANCE_II = null;
+        public static final SkillType<SecondChanceSkill> SECOND_CHANCE_III = null;
         public static final SkillType<BasicSkill> ADRENALINE_RUSH_I = null;
         public static final SkillType<BasicSkill> ADRENALINE_RUSH_II = null;
         public static final SkillType<BasicSkill> ADRENALINE_RUSH_III = null;
@@ -362,18 +364,18 @@ public class ModRegistry {
                     SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("medic").setTreeStartPoint().requiredLevel(10).price(3).childs(() -> ModUtils.newList(Skills.DOCTOR)).build(),
                     SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("doctor").requiredLevel(25).price(3).build(),
                     SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("efficient_meds").setTreeStartPoint().requiredLevel(20).price(2).build(),
-                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("poison_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.POISON_RESISTANCE_II).build(),
-                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("poison_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.POISON_RESISTANCE_III).build(),
-                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("poison_resistance_iii").requiredLevel(30).price(3).build(),
-                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("infection_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.INFECTION_RESISTANCE_II).build(),
-                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("infection_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.INFECTION_RESISTANCE_III).build(),
-                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("infection_resistance_iii").requiredLevel(30).price(3).build(),
-                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("broken_bone_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_II).build(),
-                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("broken_bone_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_III).build(),
-                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("broken_bone_resistance_iii").requiredLevel(30).price(3).build(),
-                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("bleeding_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.BLEEDING_RESISTANCE_II).build(),
-                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("bleeding_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.BLEEDING_RESISTANCE_III).build(),
-                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("bleeding_resistance_iii").requiredLevel(30).price(3).build(),
+                    SkillType.Builder.create(type -> new DebuffResistanceSkill(type, skills -> skills.setPoisonResistance(20))).setResistanceCategory().setRegistryName("poison_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.POISON_RESISTANCE_II).build(),
+                    SkillType.Builder.create(type -> new DebuffResistanceSkill(type, skills -> skills.setPoisonResistance(40))).setResistanceCategory().setRegistryName("poison_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.POISON_RESISTANCE_III).build(),
+                    SkillType.Builder.create(type -> new DebuffResistanceSkill(type, skills -> skills.setPoisonResistance(60))).setResistanceCategory().setRegistryName("poison_resistance_iii").requiredLevel(30).price(3).build(),
+                    SkillType.Builder.create(type -> new DebuffResistanceSkill(type, skills -> skills.setInfectionResistance(20))).setResistanceCategory().setRegistryName("infection_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.INFECTION_RESISTANCE_II).build(),
+                    SkillType.Builder.create(type -> new DebuffResistanceSkill(type, skills -> skills.setInfectionResistance(40))).setResistanceCategory().setRegistryName("infection_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.INFECTION_RESISTANCE_III).build(),
+                    SkillType.Builder.create(type -> new DebuffResistanceSkill(type, skills -> skills.setInfectionResistance(60))).setResistanceCategory().setRegistryName("infection_resistance_iii").requiredLevel(30).price(3).build(),
+                    SkillType.Builder.create(type -> new DebuffResistanceSkill(type, skills -> skills.setBrokenBoneResistance(20))).setResistanceCategory().setRegistryName("broken_bone_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_II).build(),
+                    SkillType.Builder.create(type -> new DebuffResistanceSkill(type, skills -> skills.setBrokenBoneResistance(40))).setResistanceCategory().setRegistryName("broken_bone_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_III).build(),
+                    SkillType.Builder.create(type -> new DebuffResistanceSkill(type, skills -> skills.setBrokenBoneResistance(60))).setResistanceCategory().setRegistryName("broken_bone_resistance_iii").requiredLevel(30).price(3).build(),
+                    SkillType.Builder.create(type -> new DebuffResistanceSkill(type, skills -> skills.setBleedResistance(20))).setResistanceCategory().setRegistryName("bleeding_resistance_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.BLEEDING_RESISTANCE_II).build(),
+                    SkillType.Builder.create(type -> new DebuffResistanceSkill(type, skills -> skills.setBleedResistance(40))).setResistanceCategory().setRegistryName("bleeding_resistance_ii").requiredLevel(15).price(2).childAndOverride(() -> Skills.BLEEDING_RESISTANCE_III).build(),
+                    SkillType.Builder.create(type -> new DebuffResistanceSkill(type, skills -> skills.setBleedResistance(60))).setResistanceCategory().setRegistryName("bleeding_resistance_iii").requiredLevel(30).price(3).build(),
                     SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("acrobatics_i").descriptionLength(3).setTreeStartPoint().requiredLevel(5).price(2).childAndOverride(() -> Skills.ACROBATICS_II).build(),
                     SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("acrobatics_ii").descriptionLength(3).requiredLevel(15).price(3).childAndOverride(() -> Skills.ACROBATICS_III).build(),
                     SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("acrobatics_iii").descriptionLength(3).requiredLevel(25).price(4).build(),
@@ -411,9 +413,9 @@ public class ModRegistry {
                     SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("well_fed_i").descriptionLength(2).setTreeStartPoint().requiredLevel(20).price(2).childAndOverride(() -> Skills.WELL_FED_II).build(),
                     SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("well_fed_ii").descriptionLength(2).requiredLevel(35).price(3).childAndOverride(() -> Skills.WELL_FED_III).build(),
                     SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("well_fed_iii").descriptionLength(2).requiredLevel(55).price(5).build(),
-                    SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("second_chance_i").descriptionLength(2).setTreeStartPoint().requiredLevel(50).price(7).childAndOverride(() -> Skills.SECOND_CHANCE_II).build(),
-                    SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("second_chance_ii").descriptionLength(2).requiredLevel(75).price(9).childAndOverride(() -> Skills.SECOND_CHANCE_III).build(),
-                    SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("second_chance_iii").descriptionLength(2).requiredLevel(90).price(10).build(),
+                    SkillType.Builder.create(type -> new SecondChanceSkill(type, 14400, 10)).setSurvivalCategory().setRegistryName("second_chance_i").descriptionLength(2).setTreeStartPoint().requiredLevel(50).price(7).childAndOverride(() -> Skills.SECOND_CHANCE_II).build(),
+                    SkillType.Builder.create(type -> new SecondChanceSkill(type, 10800, 15)).setSurvivalCategory().setRegistryName("second_chance_ii").descriptionLength(2).requiredLevel(75).price(9).childAndOverride(() -> Skills.SECOND_CHANCE_III).build(),
+                    SkillType.Builder.create(type -> new SecondChanceSkill(type, 7200, 20)).setSurvivalCategory().setRegistryName("second_chance_iii").descriptionLength(2).requiredLevel(90).price(10).build(),
                     SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("god_help_us").descriptionLength(2).setTreeStartPoint().requiredLevel(60).price(8).build(),
                     SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("skull_crusher_i").setTreeStartPoint().requiredLevel(20).price(2).childs(() -> Collections.singletonList(Skills.SKULL_CRUSHER_II)).build(),
                     SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("skull_crusher_ii").requiredLevel(35).price(4).childs(() -> Collections.singletonList(Skills.SKULL_CRUSHER_III)).build(),

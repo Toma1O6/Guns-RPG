@@ -27,7 +27,7 @@ public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
 
     public final void onTick(EntityPlayer player) {
         if(!player.world.isRemote) {
-            if(active && level < 100 && ++timer >= type.timecap) {
+            if(active && level < 100 && ++timer >= type.timecap + type.extraTime.apply(PlayerDataFactory.get(player).getSkills())) {
                 ++level;
                 timer = 0;
                 PlayerDataFactory.get(player).sync();

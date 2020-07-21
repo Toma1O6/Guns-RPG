@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "IGI",
+        "ICI",
+        "IPI"
+    ],
+    "key": {
+        "G": {
+            "item": "minecraft:light_weighted_pressure_plate"
+        },
+        "C": {
+            "item": "minecraft:crafting_table"
+        },
+        "I": {
+            "item": "minecraft:iron_ingot"
+        },
+        "P": {
+            "item": "minecraft:piston"
+        }
+    },
+    "result": {
+        "item": "gunsrpg:smithing_table",
+        "count": 1
+    }
+}

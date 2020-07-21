@@ -23,7 +23,7 @@ public class DebuffTypes {
     public static List<DebuffType<?>> TYPES = new ArrayList<>();
     public static final DebuffType<PoisonDebuff> POISON = DebuffType.TypeBuilder.create(PoisonDebuff::new)
             .name("poison")
-            .cap(140)
+            .cap(140, skills -> skills.poisonResistance)
             .addHitData()
             .condition(entityPredicate(EntitySpider.class))
             .chance(0.15F)
@@ -86,7 +86,7 @@ public class DebuffTypes {
 
     public static final DebuffType<InfectionDebuff> INFECTION = DebuffType.TypeBuilder.create(InfectionDebuff::new)
             .name("infection")
-            .cap(200)
+            .cap(200, skills -> skills.infectionResistance)
             .addHitData()
             .condition(entityPredicate(EntityZombieVillager.class))
             .chance(0.06F)
@@ -154,7 +154,7 @@ public class DebuffTypes {
 
     public static final DebuffType<BrokenBoneDebuff> BROKEN_BONE = DebuffType.TypeBuilder.create(BrokenBoneDebuff::new)
             .name("broken_bone")
-            .cap(240)
+            .cap(240, skills -> skills.brokenBoneResistance)
             .addHitData()
             .condition(src -> src instanceof EntityDamageSource && !src.isExplosion() && !src.isProjectile())
             .chance(0.01F)
@@ -219,7 +219,7 @@ public class DebuffTypes {
 
     public static final DebuffType<BleedDebuff> BLEED = DebuffType.TypeBuilder.create(BleedDebuff::new)
             .name("bleeding")
-            .cap(120)
+            .cap(120, skills -> skills.bleedResistance)
             .addHitData()
             .condition(entityPredicate(EntitySpider.class))
             .chance(0.05F)

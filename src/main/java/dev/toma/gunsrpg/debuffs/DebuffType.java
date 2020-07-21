@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.debuffs;
 
+import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import net.minecraft.entity.player.EntityPlayer;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -17,6 +19,7 @@ public class DebuffType<T extends Debuff> {
     protected List<Pair<Predicate<Integer>, Consumer<EntityPlayer>>> effectList;
     protected Supplier<T> factory;
     protected int timecap;
+    protected Function<PlayerSkills, Integer> extraTime;
 
     protected DebuffType(TypeBuilder<T> builder) {
         this.name = builder.name;
@@ -24,6 +27,7 @@ public class DebuffType<T extends Debuff> {
         this.factory = builder.factory;
         this.timecap = builder.tickCap;
         this.effectList = builder.effectList;
+        this.extraTime = builder.extraTime;
     }
 
     public T createInstance() {
@@ -37,10 +41,11 @@ public class DebuffType<T extends Debuff> {
     public static class TypeBuilder<T extends Debuff> {
 
         private String name;
-        private List<DamageResult> activationConditionList = new ArrayList<>();
-        private List<Pair<Predicate<Integer>, Consumer<EntityPlayer>>> effectList = new ArrayList<>();
-        private Supplier<T> factory;
+        private final List<DamageResult> activationConditionList = new ArrayList<>();
+        private final List<Pair<Predicate<Integer>, Consumer<EntityPlayer>>> effectList = new ArrayList<>();
+        private final Supplier<T> factory;
         private int tickCap;
+        private Function<PlayerSkills, Integer> extraTime;
 
         private TypeBuilder(Supplier<T> factory) {
             this.factory = factory;
@@ -55,8 +60,9 @@ public class DebuffType<T extends Debuff> {
             return this;
         }
 
-        public TypeBuilder<T> cap(int ticks) {
+        public TypeBuilder<T> cap(int ticks, Function<PlayerSkills, Integer> extraTime) {
             this.tickCap = ticks;
+            this.extraTime = extraTime;
             return this;
         }
 

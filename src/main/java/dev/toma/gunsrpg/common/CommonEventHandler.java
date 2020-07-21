@@ -6,8 +6,10 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataManager;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
+import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.DebuffTypes;
 import dev.toma.gunsrpg.util.object.EntitySpawnManager;
@@ -16,6 +18,7 @@ import dev.toma.gunsrpg.world.BloodmoonEntitySpawnEntryList;
 import dev.toma.gunsrpg.world.cap.WorldCapProvider;
 import dev.toma.gunsrpg.world.cap.WorldDataCap;
 import dev.toma.gunsrpg.world.cap.WorldDataFactory;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,8 +29,10 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.EnumFacing;
@@ -185,6 +190,39 @@ public class CommonEventHandler {
             Entity source = event.getSource().getTrueSource();
             if(source instanceof EntityPlayer) {
                 PlayerDataFactory.get((EntityPlayer) source).getSkills().onKillEntity(event.getEntity(), ItemStack.EMPTY);
+            }
+        }
+        if(event.getEntity() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntity();
+            PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
+            if(skills.hasSkill(ModRegistry.Skills.AVENGE_ME_FRIENDS) && !player.world.isRemote) {
+                List<EntityPlayer> players = player.world.getEntitiesWithinAABB(EntityPlayer.class, Block.FULL_BLOCK_AABB.offset(player.getPosition()).grow(30));
+                players.forEach(p -> {
+                    p.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 300, 2));
+                    p.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 500, 1));
+                });
+            }
+            if(skills.hasSkill(ModRegistry.Skills.SECOND_CHANCE_III)) {
+                SecondChanceSkill skill = skills.getSkill(ModRegistry.Skills.SECOND_CHANCE_III);
+                if(skill.apply(player)) {
+                    event.setCanceled(true);
+                    skill.setOnCooldown();
+                    skill.onUse(player);
+                }
+            } else if(skills.hasSkill(ModRegistry.Skills.SECOND_CHANCE_II)) {
+                SecondChanceSkill skill = skills.getSkill(ModRegistry.Skills.SECOND_CHANCE_II);
+                if(skill.apply(player)) {
+                    event.setCanceled(true);
+                    skill.setOnCooldown();
+                    skill.onUse(player);
+                }
+            } else if(skills.hasSkill(ModRegistry.Skills.SECOND_CHANCE_I)) {
+                SecondChanceSkill skill = skills.getSkill(ModRegistry.Skills.SECOND_CHANCE_I);
+                if(skill.apply(player)) {
+                    event.setCanceled(true);
+                    skill.setOnCooldown();
+                    skill.onUse(player);
+                }
             }
         }
     }

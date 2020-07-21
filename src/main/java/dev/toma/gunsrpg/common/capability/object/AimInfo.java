@@ -19,7 +19,7 @@ public class AimInfo {
         EntityPlayer player = parent.getPlayer();
         boolean server = !player.world.isRemote;
         int slotIn = player.inventory.currentItem;
-        if(server && (slotIn != slot || player.isSprinting() || parent.getReloadInfo().isReloading())) {
+        if(server && aiming && (slotIn != slot || player.isSprinting() || parent.getReloadInfo().isReloading())) {
             setAiming(false);
             parent.sync();
         }
