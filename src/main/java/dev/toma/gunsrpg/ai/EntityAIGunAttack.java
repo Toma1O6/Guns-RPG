@@ -5,6 +5,8 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 
 public class EntityAIGunAttack extends EntityAIBase {
@@ -50,7 +52,10 @@ public class EntityAIGunAttack extends EntityAIBase {
         this.entity.faceEntity(target, 30, 30);
         this.entity.getLookHelper().setLookPositionWithEntity(target, 30, 30);
         if(canSee && dist < attackRange * 3 && --timeRemaining <= 0 && !entity.world.isRemote) {
-            gun.shoot(entity.world, entity, entity.getHeldItemMainhand(), EntityZombieGunner.GUN_EQUIPMENT.get().get((GunItem) entity.getHeldItemMainhand().getItem()).event);
+            ItemStack stack = entity.getHeldItemMainhand();
+            EntityZombieGunner.GunData data = EntityZombieGunner.GUN_EQUIPMENT.orMap(EntityZombieGunner.populateAndGet()).get(stack.getItem());
+            SoundEvent event = data.event;
+            gun.shoot(entity.world, entity, stack, event);
             timeRemaining = entity.rateOfFire;
         }
     }

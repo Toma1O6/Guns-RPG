@@ -16,12 +16,16 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
+import dev.toma.gunsrpg.common.skills.core.ISkill;
+import dev.toma.gunsrpg.common.skills.core.SkillCategory;
+import dev.toma.gunsrpg.common.skills.interfaces.OverlayRenderer;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.Debuff;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
 import dev.toma.gunsrpg.network.packet.SPacketSetShooting;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.client.Minecraft;
@@ -46,27 +50,28 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = GunsRPG.MODID)
 public class ClientEventHandler {
 
+    public static final ResourceLocation SCOPE = GunsRPG.makeResource("textures/icons/scope_overlay.png");
+    public static final ResourceLocation SCOPE_OVERLAY = GunsRPG.makeResource("textures/icons/scope_full.png");
     private static final RisingEdgeChecker startSprintListener = new RisingEdgeChecker(() -> {
         EntityPlayer player = Minecraft.getMinecraft().player;
         ItemStack stack = player.getHeldItemMainhand();
-        if(stack.getItem() instanceof GunItem && !PlayerDataFactory.get(player).getReloadInfo().isReloading()) {
+        if (stack.getItem() instanceof GunItem && !PlayerDataFactory.get(player).getReloadInfo().isReloading()) {
             AnimationManager.sendNewAnimation(Animations.SPRINT, new SprintingAnimation());
         }
     }, EntityPlayer::isSprinting);
-
     private static final ResourceLocation ICON_BACKGROUND = GunsRPG.makeResource("textures/icons/background.png");
-    public static final ResourceLocation SCOPE = GunsRPG.makeResource("textures/icons/scope_overlay.png");
-    public static final ResourceLocation SCOPE_OVERLAY = GunsRPG.makeResource("textures/icons/scope_full.png");
+    public static OptionalObject<Float> preAimFov = OptionalObject.empty();
+    public static OptionalObject<Float> preAimSens = OptionalObject.empty();
     static float prevAimingProgress;
     static boolean burst;
     static int shotsLeft = 2;
-    public static OptionalObject<Float> preAimFov = OptionalObject.empty();
-    public static OptionalObject<Float> preAimSens = OptionalObject.empty();
 
     @SubscribeEvent
     public static void cancelOverlays(RenderGameOverlayEvent.Pre event) {
@@ -77,16 +82,16 @@ public class ClientEventHandler {
             if (stack.getItem() instanceof GunItem) {
                 event.setCanceled(true);
                 PlayerData data = PlayerDataFactory.get(player);
-                if(data.getAimInfo().progress >= 0.9F) {
-                    if(stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) || stack.getItem() == ModRegistry.GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE)) {
-                        if(GRPGConfig.client.scopeRenderer.isTextureOverlay()) {
+                if (data.getAimInfo().progress >= 0.9F) {
+                    if (stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) || stack.getItem() == ModRegistry.GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE)) {
+                        if (GRPGConfig.client.scopeRenderer.isTextureOverlay()) {
                             ModUtils.renderTexture(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(), SCOPE_OVERLAY);
                         } else {
                             int left = resolution.getScaledWidth() / 2 - 16;
                             int top = resolution.getScaledHeight() / 2 - 16;
                             ModUtils.renderTexture(left, top, left + 32, top + 32, SCOPE);
                         }
-                    } else if((PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.SMG) || (PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.ASSAULT_RIFLE)) {
+                    } else if ((PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.SMG) || (PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.ASSAULT_RIFLE)) {
                         ScopeData scopeData = data.getScopeData();
                         float left = resolution.getScaledWidth() / 2f - 8f;
                         float top = resolution.getScaledHeight() / 2f - 8f;
@@ -166,7 +171,7 @@ public class ClientEventHandler {
             int required = skills.getRequiredKills();
             float levelProgress = skills.isMaxLevel() ? 1.0F : kills / (float) required;
             ModUtils.renderColor(x, y + 10, x + width + 22, y + 17, 0.0F, 0.0F, 0.0F, 1.0F);
-            ModUtils.renderColor(x + 2, y + 12, x + (int)(levelProgress * (width + 20)), y + 15, 0.0F, 1.0F, 1.0F, 1.0F);
+            ModUtils.renderColor(x + 2, y + 12, x + (int) (levelProgress * (width + 20)), y + 15, 0.0F, 1.0F, 1.0F, 1.0F);
             if (data != null) {
                 DebuffData debuffData = data.getDebuffData();
                 int offset = 0;
@@ -178,6 +183,22 @@ public class ClientEventHandler {
                     renderer.drawStringWithShadow(debuff.getLevel() + "%", 20, yStart + 5 + offset * 18, 0xFFFFFF);
                     ++offset;
                 }
+            }
+            int renderIndex = 0;
+            List<ISkill> list = skills.getUnlockedSkills().get(SkillCategory.SURVIVAL);
+            if (list == null) return;
+            int left = 10;
+            int top = resolution.getScaledHeight() - 25;
+            List<ISkill> renderSkills = new ArrayList<>();
+            for (ISkill skill : list) {
+                if (skill instanceof OverlayRenderer) {
+                    skill = SkillUtil.getBestSkillFromOverrides(skill, player);
+                    if(!renderSkills.contains(skill)) renderSkills.add(skill);
+                }
+            }
+            for(ISkill skill : renderSkills) {
+                ((OverlayRenderer) skill).renderInHUD(skill, renderIndex, left, top);
+                if(skill.apply(player)) ++renderIndex;
             }
         }
     }
@@ -192,13 +213,13 @@ public class ClientEventHandler {
             if (item != null) {
                 if (settings.keyBindAttack.isPressed()) {
                     Firemode firemode = item.getFiremode(player.getHeldItemMainhand());
-                    if(firemode == Firemode.FULL_AUTO) {
+                    if (firemode == Firemode.FULL_AUTO) {
                         PlayerDataFactory.get(player).setShooting(true);
                         NetworkManager.toServer(new SPacketSetShooting(true));
-                    } else if(firemode == Firemode.SINGLE) {
+                    } else if (firemode == Firemode.SINGLE) {
                         ShootingManager.shootSingle(player, player.getHeldItemMainhand());
                     } else {
-                        if(!burst) {
+                        if (!burst) {
                             burst = true;
                             shotsLeft = 2;
                         }
@@ -208,10 +229,10 @@ public class ClientEventHandler {
                     if (aim) {
                         preAimFov.map(settings.fovSetting);
                         preAimSens.map(settings.mouseSensitivity);
-                        if(item == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE)) {
+                        if (item == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE)) {
                             settings.mouseSensitivity = preAimSens.get() * 0.3F;
                             settings.fovSetting = 15.0F;
-                        } else if(item == ModRegistry.GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE)) {
+                        } else if (item == ModRegistry.GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE)) {
                             settings.mouseSensitivity = preAimSens.get() * 0.4F;
                             settings.fovSetting = 25.0F;
                         }
@@ -230,7 +251,7 @@ public class ClientEventHandler {
     public static void renderHandEvent(RenderSpecificHandEvent event) {
         EntityPlayerSP player = Minecraft.getMinecraft().player;
         ItemStack stack = event.getItemStack();
-        if(PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.client.scopeRenderer.isTextureOverlay() && (PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE || PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.CROSSBOW)) {
+        if (PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.client.scopeRenderer.isTextureOverlay() && (PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE || PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.CROSSBOW)) {
             event.setCanceled(true);
             return;
         }
@@ -248,9 +269,10 @@ public class ClientEventHandler {
             renderGunFirstPerson(event.getEquipProgress(), (IHandRenderer) event.getItemStack().getItem(), partial);
             GlStateManager.popMatrix();
             AnimationManager.animateItem(partial);
-            if(!AnimationManager.shouldCancelItemRender()) Minecraft.getMinecraft().getItemRenderer().renderItemInFirstPerson(player, partial, pitch, EnumHand.MAIN_HAND, swing, stack, equip);
+            if (!AnimationManager.shouldCancelItemRender())
+                Minecraft.getMinecraft().getItemRenderer().renderItemInFirstPerson(player, partial, pitch, EnumHand.MAIN_HAND, swing, stack, equip);
             GlStateManager.popMatrix();
-            if(stack.getItem() == ModRegistry.GRPGItems.PISTOL && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_DUAL_WIELD)) {
+            if (stack.getItem() == ModRegistry.GRPGItems.PISTOL && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_DUAL_WIELD)) {
                 GlStateManager.pushMatrix();
                 AnimationManager.renderingDualWield = true;
                 AnimationManager.animateItemHands(partial);
@@ -268,18 +290,18 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         EntityPlayer player = Minecraft.getMinecraft().player;
-        if(event.phase == TickEvent.Phase.END && player != null) {
+        if (event.phase == TickEvent.Phase.END && player != null) {
             startSprintListener.update(player);
-            if(burst) {
-                if(shotsLeft > 0) {
+            if (burst) {
+                if (shotsLeft > 0) {
                     ItemStack stack = player.getHeldItemMainhand();
-                    if(stack.getItem() instanceof GunItem) {
+                    if (stack.getItem() instanceof GunItem) {
                         GunItem gun = (GunItem) stack.getItem();
                         CooldownTracker tracker = player.getCooldownTracker();
-                        if(!tracker.hasCooldown(gun)) {
-                            if(ShootingManager.canShoot(player, stack)) {
-                                 ShootingManager.shootSingle(player, stack);
-                                 shotsLeft--;
+                        if (!tracker.hasCooldown(gun)) {
+                            if (ShootingManager.canShoot(player, stack)) {
+                                ShootingManager.shootSingle(player, stack);
+                                shotsLeft--;
                             } else burst = false;
                         }
                     }
@@ -318,9 +340,9 @@ public class ClientEventHandler {
 
     private static class RisingEdgeChecker {
 
-        private boolean lastState;
         private final Function<EntityPlayer, Boolean> stateGetter;
         private final Runnable onChange;
+        private boolean lastState;
 
         public RisingEdgeChecker(Runnable onChange, Function<EntityPlayer, Boolean> stateGetter) {
             this.onChange = onChange;
@@ -329,7 +351,7 @@ public class ClientEventHandler {
 
         public void update(EntityPlayer player) {
             boolean current = stateGetter.apply(player);
-            if(!lastState && current) {
+            if (!lastState && current) {
                 onChange.run();
             }
             lastState = current;

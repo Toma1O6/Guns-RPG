@@ -4,9 +4,9 @@ import toma.config.object.builder.ConfigBuilder;
 
 public class GeneralSettings {
 
-    public float carbonBarrel = 0.85F;
-    public float verticalGrip = 0.9F;
-    public float cheekpad = 0.9F;
+    public float carbonBarrel = 0.65F;
+    public float verticalGrip = 0.7F;
+    public float cheekpad = 0.75F;
 
     public ConfigBuilder build(ConfigBuilder builder) {
         return builder.push().name("General").init()

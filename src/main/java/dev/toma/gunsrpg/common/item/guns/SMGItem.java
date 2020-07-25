@@ -11,6 +11,7 @@ import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
@@ -64,7 +65,7 @@ public class SMGItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_TOUGH_SPRING) ? 2 : 3;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_TOUGH_SPRING) ? GRPGConfig.weapon.smg.upgraded : GRPGConfig.weapon.smg.normal;
     }
 
     @Override
@@ -74,7 +75,8 @@ public class SMGItem extends GunItem {
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_QUICKDRAW) ? 40 : 52;
+        int time = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_QUICKDRAW) ? 40 : 52;
+        return (int) (time * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override

@@ -102,6 +102,23 @@ public class ModUtils {
         GlStateManager.enableTexture2D();
     }
 
+    public static String formatTicksToTime(int ticks) {
+        StringBuilder builder = new StringBuilder();
+        int toParse = ticks / 20;
+        int hours = toParse / 3600;
+        toParse = toParse % 3600;
+        int minutes = toParse / 60;
+        toParse = toParse % 60;
+        if(hours > 0) {
+            builder.append(hours).append("h:");
+        }
+        if(hours > 0 || minutes > 0) {
+            builder.append(minutes < 10 ? "0" : "").append(minutes).append("m:");
+        }
+        builder.append(toParse < 10 ? "0" : "").append(toParse).append("s");
+        return builder.toString();
+    }
+
     @SafeVarargs
     public static <T> List<T> newList(T... ts) {
         List<T> list = new ArrayList<>();

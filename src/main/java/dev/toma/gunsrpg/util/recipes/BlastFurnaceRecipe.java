@@ -49,6 +49,8 @@ public class BlastFurnaceRecipe {
         register(Blocks.GOLD_ORE, () -> new ItemStack(Items.GOLD_INGOT, 2));
         register(Blocks.DIAMOND_ORE, () -> new ItemStack(Items.DIAMOND, 2));
         register(ModRegistry.GRPGBlocks.AMETHYST_ORE, () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST, 2));
+        register(ModRegistry.GRPGItems.IRON_ORE_CHUNK, () -> new ItemStack(Items.IRON_INGOT, 2));
+        register(ModRegistry.GRPGItems.GOLD_ORE_CHUNK, () -> new ItemStack(Items.GOLD_INGOT, 2));
     }
 
     private static void register(Item in, Supplier<ItemStack> out) {

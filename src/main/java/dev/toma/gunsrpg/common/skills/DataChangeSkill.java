@@ -7,17 +7,17 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.function.Consumer;
 
-public class DebuffResistanceSkill extends BasicSkill {
+public class DataChangeSkill extends BasicSkill {
 
-    private final Consumer<PlayerSkills> consumer;
+    private final Consumer<PlayerSkills> activationConsumer;
 
-    public DebuffResistanceSkill(SkillType<?> type, Consumer<PlayerSkills> consumer) {
+    public DataChangeSkill(SkillType<?> type, Consumer<PlayerSkills> consumer) {
         super(type);
-        this.consumer = consumer;
+        this.activationConsumer = consumer;
     }
 
     @Override
     public void onPurchase(EntityPlayer player) {
-        consumer.accept(PlayerDataFactory.get(player).getSkills());
+        activationConsumer.accept(PlayerDataFactory.get(player).getSkills());
     }
 }

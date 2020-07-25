@@ -5,7 +5,7 @@ import toma.config.object.builder.ConfigBuilder;
 
 public class WorldConfiguration extends ConfigSubcategory {
 
-    public SimpleOreGenConfig amethyst = new SimpleOreGenConfig("amethyst", 8, 0, 16);
+    public SimpleOreGenConfig amethyst = new SimpleOreGenConfig("amethyst", 7, 0, 16);
     public int bloodMoonMobAgroRange = 50;
 
     @Override

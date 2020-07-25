@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.util.object;
 
 import dev.toma.gunsrpg.ai.EntityAIFindClosestPlayer;
 import dev.toma.gunsrpg.ai.EntityAIGhastFireballAttack;
+import dev.toma.gunsrpg.common.CommonEventHandler;
 import dev.toma.gunsrpg.world.cap.WorldDataFactory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
@@ -75,7 +76,14 @@ public class EntitySpawnManager {
             if(creeper.world.isRemote) return;
             creeper.targetTasks.taskEntries.removeIf(entry -> entry.priority == 1 && entry.action instanceof EntityAINearestAttackableTarget);
             creeper.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(creeper, EntityPlayer.class, false));
-            if(WorldDataFactory.isBloodMoon(creeper.world)) creeper.fuseTime = 1;
+            if(WorldDataFactory.isBloodMoon(creeper.world)) {
+                if(CommonEventHandler.random.nextFloat() <= 0.2F) {
+                    creeper.onStruckByLightning(null);
+                    creeper.extinguish();
+                    creeper.setHealth(creeper.getMaxHealth());
+                }
+                creeper.fuseTime = 10;
+            }
         });
         registerEntityConsumer(EntityGhast.class, ghast -> {
             if(ghast.world.isRemote) return;

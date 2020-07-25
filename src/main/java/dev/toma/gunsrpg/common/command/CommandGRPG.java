@@ -38,7 +38,7 @@ public class CommandGRPG extends CommandBase {
                 default: return Collections.emptyList();
             }
         }
-        return getListOfStringsMatchingLastWord(args, "debuff", "bloodmoon", "skillTree");
+        return getListOfStringsMatchingLastWord(args, "debuff", "bloodmoon", "skillTree", "levelup");
     }
 
     @Override
@@ -48,6 +48,7 @@ public class CommandGRPG extends CommandBase {
             this.sendMessage(sender, TextFormatting.GREEN + "debuff - manage your debuffs");
             this.sendMessage(sender, TextFormatting.GREEN + "bloodmoon - starts bloodmoon");
             this.sendMessage(sender, TextFormatting.GREEN + "skillTree - manage your skills");
+            this.sendMessage(sender, TextFormatting.GREEN + "levelup [n] - level up n times");
         } else {
             World world = sender.getEntityWorld();
             if(!(sender instanceof EntityPlayerMP)) return;
@@ -111,6 +112,20 @@ public class CommandGRPG extends CommandBase {
                     }
                     break;
                 }
+                case "levelup": {
+                    if(args.length < 2) {
+                        levelUp(data, sender, 1);
+                    } else {
+                        int n = 1;
+                        try {
+                            n = Integer.parseInt(args[1]);
+                        } catch (NumberFormatException ex) {
+                            // don't care, use 1 instead of n
+                        }
+                        levelUp(data, sender, n);
+                    }
+                    break;
+                }
                 default: {
                     sendMessage(sender, TextFormatting.RED + "Unknown argument");
                     break;
@@ -118,6 +133,15 @@ public class CommandGRPG extends CommandBase {
             }
             data.sync();
         }
+    }
+
+    private void levelUp(PlayerData data, ICommandSender sender, int n) {
+        PlayerSkills skills = data.getSkills();
+        for(int i = 0; i < n; i++) {
+            if(skills.isMaxLevel()) break;
+            skills.nextLevel(false);
+        }
+        sendMessage(sender, "Obtained " + n + " levels");
     }
 
     private void sendMessage(ICommandSender sender, String message) {

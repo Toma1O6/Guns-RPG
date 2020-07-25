@@ -61,7 +61,7 @@ public class ContainerBlastFurnace extends Container {
                         return ItemStack.EMPTY;
                     }
                     slot.onSlotChange(stack, itemStack);
-                }
+                } else return ItemStack.EMPTY;
             }
         }
         return itemStack;

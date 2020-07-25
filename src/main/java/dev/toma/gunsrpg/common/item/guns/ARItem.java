@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -65,12 +66,16 @@ public class ARItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_TOUGH_SPRING) ? 4 : 5;
+        int firerate = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_TOUGH_SPRING) ? GRPGConfig.weapon.ar.upgraded : GRPGConfig.weapon.ar.normal;
+        if(PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_ADAPTIVE_CHAMBERING)) {
+            firerate -= 1;
+        }
+        return Math.max(firerate, 1);
     }
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        return 32;
+        return (int)(32 * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override

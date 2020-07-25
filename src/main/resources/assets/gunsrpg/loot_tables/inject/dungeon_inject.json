@@ -1,0 +1,45 @@
+{
+    "pools": [
+        {
+            "name": "dungeon_inject",
+            "rolls": 1,
+            "entries": [
+                {
+                    "entryName": "one",
+                    "type": "item",
+                    "name": "gunsrpg:skillpoint_book",
+                    "weight": 15
+                },
+                {
+                    "type": "item",
+                    "name": "gunsrpg:skillpoint_book",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 2,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 70
+                },
+                {
+                    "entryName": "two",
+                    "type": "item",
+                    "name": "gunsrpg:skillpoint_book",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 3,
+                                "max": 3
+                            }
+                        }
+                    ],
+                    "weight": 15
+                }
+            ]
+        }
+    ]
+}

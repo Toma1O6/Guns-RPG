@@ -16,6 +16,7 @@ import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
@@ -78,7 +79,7 @@ public class SRItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_FAST_HANDS) ? 25 : 40;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_FAST_HANDS) ? GRPGConfig.weapon.sr.upgraded : GRPGConfig.weapon.sr.normal;
     }
 
     @Override
@@ -86,7 +87,8 @@ public class SRItem extends GunItem {
         // it's safe to assume player is holding the weapon when this is called. Maybe
         boolean empty = this.getAmmo(player.getHeldItemMainhand()) == 0;
         boolean magSkill = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_FAST_HANDS);
-        return magSkill ? empty ? 40 : 20 : empty ? 66 : 33;
+        int time = magSkill ? empty ? 40 : 20 : empty ? 66 : 33;
+        return (int) (time * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override

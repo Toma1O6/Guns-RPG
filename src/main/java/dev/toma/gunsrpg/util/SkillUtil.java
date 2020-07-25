@@ -3,7 +3,9 @@ package dev.toma.gunsrpg.util;
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
+import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
 import dev.toma.gunsrpg.common.skills.CraftingSkill;
+import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
@@ -11,6 +13,23 @@ import net.minecraft.item.ItemPickaxe;
 
 @SuppressWarnings("unchecked")
 public class SkillUtil {
+
+    public static <S extends ISkill> S getBestSkillFromOverrides(S skill, EntityPlayer player) {
+        PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
+        while (skill.getType().isOverriden() && skills.hasSkill(skill.getType().getOverride())) {
+            skill = (S) skills.getSkill(skill.getType().getOverride());
+        }
+        return skill;
+    }
+
+    public static float getReloadTimeMultiplier(EntityPlayer player) {
+        PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
+        if(skills.hasSkill(ModRegistry.Skills.ADRENALINE_RUSH_I)) {
+            AdrenalineRushSkill ars = getBestSkillFromOverrides(skills.getSkill(ModRegistry.Skills.ADRENALINE_RUSH_I), player);
+            return ars.apply(player) ? ars.getReloadMultiplier() : 1.0F;
+        }
+        return 1.0F;
+    }
 
     public static int getGunpowderCraftAmount(EntityPlayer player) {
         return getCraftingAmount(PlayerDataFactory.get(player).getSkills(), ModRegistry.Skills.GUNPOWDER_MASTER, ModRegistry.Skills.GUNPOWDER_EXPERT, ModRegistry.Skills.GUNPOWDER_NOVICE);

@@ -50,6 +50,14 @@ public class PlayerSkills {
     public int infectionResistance;
     public int brokenBoneResistance;
     public int bleedResistance;
+    public int extraDamage;
+    public float instantKillChance;
+    public float axeMiningSpeed;
+    public float pickaxeMiningSpeed;
+    public float acrobaticsFallResistance;
+    public float acrobaticsExplosionResistance;
+    public float lightHunterMovementSpeed;
+    public float agilitySpeed;
 
     private Map<SkillCategory, List<TickableSkill>> tickCache;
 
@@ -86,13 +94,28 @@ public class PlayerSkills {
         return null;
     }
 
+    public Map<SkillCategory, List<ISkill>> getUnlockedSkills() {
+        return unlockedSkills;
+    }
+
     public void onKillEntity(Entity entity, ItemStack stack) {
         if(!(entity instanceof IMob)) return;
         ++kills;
         if(!isMaxLevel() && kills >= requiredKills) {
-            ++level;
-            this.onLevelUp();
-            kills = 0;
+            nextLevel(true);
+        }
+        if(stack.getItem() instanceof GunItem) {
+            this.killMob((GunItem) stack.getItem());
+        }
+        data.sync();
+    }
+
+    public void nextLevel(boolean notify) {
+        ++level;
+        awardPoints();
+        updateRequiredKills();
+        kills = 0;
+        if(notify) {
             EntityPlayer player = data.getPlayer();
             player.sendMessage(new TextComponentString("§e=====[ LEVEL UP ]====="));
             player.sendMessage(new TextComponentString("§eCurrent level: " + level));
@@ -103,17 +126,15 @@ public class PlayerSkills {
             if(count > 0) player.sendMessage(new TextComponentString(String.format("§eNew skills available: %d", count)));
             ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, player.posX, player.posY, player.posZ, 0.75F, 1.0F));
         }
-        if(stack.getItem() instanceof GunItem) {
-            this.killMob((GunItem) stack.getItem());
-        }
-        data.sync();
     }
 
-    public void onLevelUp() {
+    public void awardPoints() {
         if(level == 100) {
             addSkillPoints(25);
         } else if(level == 50) {
             addSkillPoints(20);
+        } else if(level % 10 == 0) {
+            addSkillPoints(5);
         } else if(level % 5 == 0) {
             addSkillPoints(3);
         } else addSkillPoints(1);
@@ -130,6 +151,11 @@ public class PlayerSkills {
 
     public void revertToDefault() {
         gunKills.clear();
+        for(Map.Entry<SkillCategory, List<ISkill>> entry : unlockedSkills.entrySet()) {
+            for(ISkill skill : entry.getValue()) {
+                skill.onDeactivate(data.getPlayer());
+            }
+        }
         unlockedSkills.clear();
         level = 0;
         kills = 0;
@@ -141,6 +167,14 @@ public class PlayerSkills {
         infectionResistance = 0;
         brokenBoneResistance = 0;
         bleedResistance = 0;
+        extraDamage = 0;
+        instantKillChance = 0;
+        axeMiningSpeed = 0.0F;
+        pickaxeMiningSpeed = 0.0F;
+        acrobaticsFallResistance = 0;
+        acrobaticsExplosionResistance = 0;
+        lightHunterMovementSpeed = 0;
+        agilitySpeed = 0;
         clearCache();
         data.sync();
     }
@@ -174,6 +208,30 @@ public class PlayerSkills {
         }
         clearCache();
         data.sync();
+    }
+
+    private void updateRequiredKills() {
+        if(level >= 95) {
+            requiredKills = 100;
+        } else if(level >= 90) {
+            requiredKills = 85;
+        } else if(level >= 80) {
+            requiredKills = 70;
+        } else if(level >= 70) {
+            requiredKills = 60;
+        } else if(level >= 60) {
+            requiredKills = 50;
+        } else if(level >= 50) {
+            requiredKills = 45;
+        } else if(level >= 40) {
+            requiredKills = 35;
+        } else if(level >= 30) {
+            requiredKills = 30;
+        } else if(level >= 20) {
+            requiredKills = 25;
+        } else if(level >= 10) {
+            requiredKills = 15;
+        } else requiredKills = 10;
     }
 
     public int getLevel() {
@@ -240,6 +298,38 @@ public class PlayerSkills {
         this.bleedResistance = Math.max(bleedResistance, this.bleedResistance);
     }
 
+    public void setExtraDamage(int extraDamage) {
+        this.extraDamage = Math.max(extraDamage, this.extraDamage);
+    }
+
+    public void setInstantKillChance(float instantKillChance) {
+        this.instantKillChance = Math.max(instantKillChance, this.instantKillChance);
+    }
+
+    public void setAxeMiningSpeed(float axeMiningSpeed) {
+        this.axeMiningSpeed = Math.max(axeMiningSpeed, this.axeMiningSpeed);
+    }
+
+    public void setPickaxeMiningSpeed(float pickaxeMiningSpeed) {
+        this.pickaxeMiningSpeed = Math.max(pickaxeMiningSpeed, this.pickaxeMiningSpeed);
+    }
+
+    public void setAcrobaticsFallResistance(float acrobaticsFallResistance) {
+        this.acrobaticsFallResistance = Math.max(acrobaticsFallResistance, this.acrobaticsFallResistance);
+    }
+
+    public void setAcrobaticsExplosionResistance(float acrobaticsExplosionResistance) {
+        this.acrobaticsExplosionResistance = Math.max(acrobaticsExplosionResistance, this.acrobaticsExplosionResistance);
+    }
+
+    public void setAgilitySpeed(float agilitySpeed) {
+        this.agilitySpeed = Math.max(agilitySpeed, this.agilitySpeed);
+    }
+
+    public float getMovementSpeed() {
+        return 0.1F + lightHunterMovementSpeed + agilitySpeed;
+    }
+
     public NBTTagCompound writeData() {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("level", level);
@@ -269,6 +359,14 @@ public class PlayerSkills {
         nbt.setInteger("infectionResistance", infectionResistance);
         nbt.setInteger("brokenBoneResistance", brokenBoneResistance);
         nbt.setInteger("bleedingResistance", bleedResistance);
+        nbt.setInteger("extraDamage", extraDamage);
+        nbt.setFloat("instantKill", instantKillChance);
+        nbt.setFloat("axeSpeed", axeMiningSpeed);
+        nbt.setFloat("pickaxeSpeed", pickaxeMiningSpeed);
+        nbt.setFloat("acrobaticsFallResistance", acrobaticsFallResistance);
+        nbt.setFloat("acrobaticsExplosionResistance", acrobaticsExplosionResistance);
+        nbt.setFloat("lightMovementSpeed", lightHunterMovementSpeed);
+        nbt.setFloat("agilitySpeed", agilitySpeed);
         return nbt;
     }
 
@@ -311,6 +409,20 @@ public class PlayerSkills {
         infectionResistance = nbt.getInteger("infectionResistance");
         brokenBoneResistance = nbt.getInteger("brokenBoneResistance");
         bleedResistance = nbt.getInteger("bleedingResistance");
+        extraDamage = nbt.getInteger("extraDamage");
+        instantKillChance = nbt.getFloat("instantKill");
+        axeMiningSpeed = nbt.getFloat("axeSpeed");
+        pickaxeMiningSpeed = nbt.getFloat("pickaxeSpeed");
+        acrobaticsFallResistance = nbt.getFloat("acrobaticsFallResistance");
+        acrobaticsExplosionResistance = nbt.getFloat("acrobaticsExplosionResistance");
+        lightHunterMovementSpeed = nbt.getFloat("lightMovementSpeed");
+        agilitySpeed = nbt.getFloat("agilitySpeed");
+    }
+
+    public float getTotalFallResistance() {
+        EntityPlayer player = data.getPlayer();
+        float f = hasSkill(ModRegistry.Skills.LIGHT_HUNTER) && getSkill(ModRegistry.Skills.LIGHT_HUNTER).apply(player) ? 0.1F : 0.0F;
+        return f + acrobaticsFallResistance;
     }
 
     private void clearCache() {

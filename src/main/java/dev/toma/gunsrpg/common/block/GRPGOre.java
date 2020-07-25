@@ -1,5 +1,8 @@
 package dev.toma.gunsrpg.common.block;
 
+import dev.toma.gunsrpg.ModTabs;
+import dev.toma.gunsrpg.common.ModRegistry;
+import net.minecraft.block.BlockOre;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -7,11 +10,11 @@ import net.minecraft.item.Item;
 import java.util.Random;
 import java.util.function.Supplier;
 
-public class GRPGOre extends GRPGBlock {
+public class GRPGOre extends BlockOre {
 
-    private Supplier<Item> supplier;
-    private int min, max;
-    private int addedFortune;
+    private final Supplier<Item> supplier;
+    private final int min, max;
+    private final int addedFortune;
 
     public GRPGOre(String name) {
         this(name, null);
@@ -22,7 +25,10 @@ public class GRPGOre extends GRPGBlock {
     }
 
     public GRPGOre(String name, Supplier<Item> dropItem, int min, int max, int addedFortune) {
-        super(name, Material.ROCK);
+        super(Material.ROCK.getMaterialMapColor());
+        setUnlocalizedName(name);
+        setRegistryName(name);
+        this.setCreativeTab(ModTabs.ITEM_TAB);
         this.supplier = dropItem;
         this.min = min;
         this.max = max;
@@ -30,6 +36,7 @@ public class GRPGOre extends GRPGBlock {
         this.setHardness(2.5F);
         this.setResistance(10.0F);
         this.setHarvestLevel("pickaxe", 2);
+        ModRegistry.registerItemBlock(this);
     }
 
     @Override

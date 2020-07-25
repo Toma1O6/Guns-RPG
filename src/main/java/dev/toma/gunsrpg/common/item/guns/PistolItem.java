@@ -14,6 +14,7 @@ import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
@@ -81,13 +82,14 @@ public class PistolItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_TOUGH_SPRING) ? 2 : 3;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_TOUGH_SPRING) ? GRPGConfig.weapon.pistol.upgraded : GRPGConfig.weapon.pistol.normal;
     }
 
     @Override
     public int getReloadTime(EntityPlayer player) {
         boolean quickdraw = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_QUICKDRAW);
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_DUAL_WIELD) ? quickdraw ? 50 : 70 : quickdraw ? 25 : 35;
+        int time = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_DUAL_WIELD) ? quickdraw ? 50 : 70 : quickdraw ? 25 : 35;
+        return (int)(time * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override

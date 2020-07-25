@@ -5,8 +5,11 @@ import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.GunData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.common.skills.interfaces.Clickable;
+import dev.toma.gunsrpg.common.skills.interfaces.OverlayRenderer;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketUnlockSkill;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -127,6 +130,11 @@ public class GuiPlayerSkills extends GuiScreen {
         }
     }
 
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
+    }
+
     private void setClickPos(int mouseX, int mouseY) {
         this.clickedX = mouseX;
         this.clickedY = mouseY;
@@ -197,6 +205,7 @@ public class GuiPlayerSkills extends GuiScreen {
         private boolean hasStartedCounting;
         private final ITextComponent[] comments;
         private int infoWidth;
+        private OverlayRenderer renderer;
 
         @SuppressWarnings({"UseBulkOperation", "ManualArrayToCollectionCopy"})
         public SkillComponent(PlacementContext context) {
@@ -220,17 +229,25 @@ public class GuiPlayerSkills extends GuiScreen {
             for(ITextComponent itc : type.getDescription()) {
                 components.add(itc);
             }
-            components.add(new TextComponentString("§bUnlocks at level " + type.levelRequirement));
-            components.add(new TextComponentString("§cCosts " + type.price + " points"));
-
+            components.add(new TextComponentString(TextFormatting.AQUA + "Unlocks at level " + type.levelRequirement));
+            components.add(new TextComponentString(TextFormatting.RED + "Costs " + type.price + " points"));
+            if(obtained && PlayerDataFactory.getSkill(Minecraft.getMinecraft().player, type) instanceof Clickable) {
+                components.add(new TextComponentString(TextFormatting.YELLOW + "Left-click to use this skill"));
+            }
             if(type.hasCustomRenderFactory()) {
-                components.add(new TextComponentString("§eRight-click to view unlockable skills"));
+                components.add(new TextComponentString(TextFormatting.YELLOW + "Right-click to view unlockable skills"));
             }
             this.comments = components.toArray(new ITextComponent[0]);
             for(ITextComponent component : comments) {
                 int cw = Minecraft.getMinecraft().fontRenderer.getStringWidth(component.getFormattedText());
                 if(cw > infoWidth) {
                     infoWidth = cw;
+                }
+            }
+            if(obtained) {
+                ISkill skill = PlayerDataFactory.getSkill(Minecraft.getMinecraft().player, type);
+                if(skill instanceof OverlayRenderer) {
+                    renderer = (OverlayRenderer) skill;
                 }
             }
         }
@@ -245,19 +262,26 @@ public class GuiPlayerSkills extends GuiScreen {
             if(mouseButton == 1 && type.hasCustomRenderFactory()) {
                 GuiPlayerSkills.this.display.map(new GunDisplay(ctx));
                 return true;
-            } else if(mouseButton == 0 && !obtained) {
-                // TODO toggleable skills
+            } else if(mouseButton == 0) {
                 EntityPlayer player = Minecraft.getMinecraft().player;
-                if(ctx.parent != null) {
-                    if(PlayerDataFactory.hasActiveSkill(player, ctx.parent) && type.getCriteria().isUnlockAvailable(PlayerDataFactory.get(player), type)) {
-                        NetworkManager.toServer(new SPacketUnlockSkill(type, ctx.parent));
+                if(obtained) {
+                    ISkill skill = PlayerDataFactory.getSkill(player, type);
+                    if(skill instanceof Clickable) {
+                        ((Clickable) skill).clientHandleClicked();
+                        return true;
+                    }
+                } else {
+                    if(ctx.parent != null) {
+                        if(PlayerDataFactory.hasActiveSkill(player, ctx.parent) && type.getCriteria().isUnlockAvailable(PlayerDataFactory.get(player), type)) {
+                            NetworkManager.toServer(new SPacketUnlockSkill(type, ctx.parent));
+                            obtained = true;
+                            return true;
+                        }
+                    } else if(type.getCriteria().isUnlockAvailable(PlayerDataFactory.get(player), type)) {
+                        NetworkManager.toServer(new SPacketUnlockSkill(type));
                         obtained = true;
                         return true;
                     }
-                } else if(type.getCriteria().isUnlockAvailable(PlayerDataFactory.get(player), type)) {
-                    NetworkManager.toServer(new SPacketUnlockSkill(type));
-                    obtained = true;
-                    return true;
                 }
             }
             return false;
@@ -286,6 +310,9 @@ public class GuiPlayerSkills extends GuiScreen {
                 Minecraft.getMinecraft().getRenderItem().renderItemIntoGUI(type.getRenderItem(), px + 2, py + 2);
             } else {
                 ModUtils.renderTexture(px + 2, py + 2, px + w - 2, py + h - 2, type.icon);
+            }
+            if(renderer != null) {
+                renderer.drawOnTop(px, py, w, h);
             }
             if(hovered) {
                 if(!hasStartedCounting || System.currentTimeMillis() - hoverStartTime <= 1000L) {

@@ -27,7 +27,7 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
     private final IFactory<S> instanceFactory;
     private final ITextComponent textComponent;
     private final ITextComponent[] description;
-    private final Supplier<SkillType<?>> skillOverride;
+    private final Supplier<SkillType<S>> skillOverride;
     private Supplier<List<SkillType<?>>> uninitializedChildList;
     private List<SkillType<?>> childList;
     private final Supplier<Item> customRenderFactory;
@@ -120,7 +120,7 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
         private int levelRequirement;
         private int skillPointPrice = 1;
         private Supplier<List<SkillType<?>>> childs;
-        private Supplier<SkillType<?>> skillOverride;
+        private Supplier<SkillType<S>> skillOverride;
         private SkillCategory category;
         private ResourceLocation registryName;
         private ResourceLocation icon;
@@ -154,12 +154,12 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
             return this;
         }
 
-        public Builder<S> setOverride(Supplier<SkillType<?>> skillOverride) {
+        public Builder<S> setOverride(Supplier<SkillType<S>> skillOverride) {
             this.skillOverride = skillOverride;
             return this;
         }
 
-        public Builder<S> childAndOverride(Supplier<SkillType<?>> childOverride) {
+        public Builder<S> childAndOverride(Supplier<SkillType<S>> childOverride) {
             this.childs(() -> ModUtils.newList(childOverride.get()));
             return this.setOverride(childOverride);
         }

@@ -13,6 +13,10 @@ public interface ISkill {
 
     }
 
+    default void onDeactivate(EntityPlayer player) {
+
+    }
+
     NBTTagCompound saveData();
 
     void readData(NBTTagCompound nbt);

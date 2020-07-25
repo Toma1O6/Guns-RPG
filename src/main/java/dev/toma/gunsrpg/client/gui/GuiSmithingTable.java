@@ -59,6 +59,34 @@ public class GuiSmithingTable extends GuiContainer {
     }
 
     @Override
+    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+        int scrollbarX = guiLeft + 191;
+        int scrollbarWidth = 8;
+        int scrollbarY = guiTop + 5;
+        int scroolbarHeight = 160;
+        if(mouseX >= scrollbarX && mouseX <= scrollbarX + scrollbarWidth && mouseY >= scrollbarY && mouseY <= scrollbarY + scroolbarHeight) {
+            float step = scroolbarHeight / (float) recipeList.size();
+            int barPos = (int)(scrollIndex * step);
+            int barHeight = (int)((scrollIndex + 8) * step - barPos);
+            int halfHeight = barHeight / 2;
+            int delta = mouseY - scrollbarY - barPos - halfHeight;
+            if (delta > halfHeight) {
+                int next = scrollIndex + 1;
+                if(next < recipeList.size() - 7) {
+                    scrollIndex = next;
+                    initGui();
+                }
+            } else if(delta < -halfHeight) {
+                int next = scrollIndex - 1;
+                if(next >= 0) {
+                    scrollIndex = next;
+                    initGui();
+                }
+            }
+        }
+    }
+
+    @Override
     protected void actionPerformed(GuiButton button) {
         if (button.id == 0) {
             NetworkManager.toServer(new SPacketCheckSmithingRecipe(smithingTable.getPos()));

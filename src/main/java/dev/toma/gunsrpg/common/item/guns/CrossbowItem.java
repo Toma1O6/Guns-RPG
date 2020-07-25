@@ -11,6 +11,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
@@ -44,7 +45,7 @@ public class CrossbowItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return 10;
+        return GRPGConfig.weapon.crossbow.normal;
     }
 
     @Override
@@ -56,7 +57,7 @@ public class CrossbowItem extends GunItem {
         if(PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_REPEATER)) {
             base = (int) (base * 1.25);
         }
-        return base;
+        return (int) (base * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override

@@ -146,7 +146,7 @@ public class EntityZombieGunner extends EntityMob {
         rateOfFire = compound.getInteger("firerate");
     }
 
-    private static Map<GunItem, GunData> populateAndGet() {
+    public static Map<GunItem, GunData> populateAndGet() {
         Map<GunItem, GunData> map = new HashMap<>();
         map.put(ModRegistry.GRPGItems.PISTOL, new GunData(30, ModRegistry.GRPGSounds.P92));
         map.put(ModRegistry.GRPGItems.SMG, new GunData(15, ModRegistry.GRPGSounds.MP5));

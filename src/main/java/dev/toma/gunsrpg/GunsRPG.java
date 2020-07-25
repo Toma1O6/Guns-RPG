@@ -2,6 +2,7 @@ package dev.toma.gunsrpg;
 
 import dev.toma.gunsrpg.client.gui.skills.SkillTreePlacement;
 import dev.toma.gunsrpg.common.CommonEventHandler;
+import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
@@ -26,8 +27,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -42,9 +48,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
-@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "0.0.5", acceptedMinecraftVersions = "[1.12.2]")
+@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "1.0.0", acceptedMinecraftVersions = "[1.12.2]")
 public class GunsRPG {
 
     public static final String MODID = "gunsrpg";
@@ -53,6 +61,7 @@ public class GunsRPG {
     public static SideManager sideManager;
     @Mod.Instance
     public static GunsRPG modInstance;
+    public static Map<Item, Item> oreToChunkMap = new HashMap<>();
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -73,6 +82,10 @@ public class GunsRPG {
         SkillTreePlacement.generatePlacement();
         SmithingTableRecipes.register();
         ItemAmmo.init();
+        initOresToChunks();
+        GameRegistry.addSmelting(ModRegistry.GRPGItems.IRON_ORE_CHUNK, new ItemStack(Items.IRON_INGOT), 0.7F);
+        GameRegistry.addSmelting(ModRegistry.GRPGItems.GOLD_ORE_CHUNK, new ItemStack(Items.GOLD_INGOT), 1.0F);
+        LootTableList.register(makeResource("inject/dungeon_inject"));
     }
 
     @Mod.EventHandler
@@ -104,5 +117,10 @@ public class GunsRPG {
 
     public static ResourceLocation makeResource(String path) {
         return new ResourceLocation(MODID, path);
+    }
+
+    private static void initOresToChunks() {
+        oreToChunkMap.put(Item.getItemFromBlock(Blocks.IRON_ORE), ModRegistry.GRPGItems.IRON_ORE_CHUNK);
+        oreToChunkMap.put(Item.getItemFromBlock(Blocks.GOLD_ORE), ModRegistry.GRPGItems.GOLD_ORE_CHUNK);
     }
 }

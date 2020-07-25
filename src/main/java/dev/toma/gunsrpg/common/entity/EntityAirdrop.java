@@ -13,12 +13,13 @@ public class EntityAirdrop extends Entity {
     public EntityAirdrop(World world) {
         super(world);
         this.setSize(1.0F, 1.0F);
+        ignoreFrustumCheck = true;
     }
 
     @Override
     public void onUpdate() {
         if(!onGround) {
-            this.motionY = -0.05F;
+            this.motionY = -0.075F;
         } else {
             if(!world.isRemote) {
                 BlockPos pos = this.getPosition();
@@ -28,6 +29,11 @@ public class EntityAirdrop extends Entity {
             }
         }
         this.move(MoverType.SELF, motionX, motionY, motionZ);
+    }
+
+    @Override
+    public boolean isInRangeToRenderDist(double distance) {
+        return true;
     }
 
     @Override

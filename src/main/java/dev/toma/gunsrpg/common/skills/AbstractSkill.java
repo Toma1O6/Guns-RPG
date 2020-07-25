@@ -15,7 +15,7 @@ public abstract class AbstractSkill implements ISkill {
     }
 
     @Override
-    public SkillType<?> getType() {
+    public final SkillType<?> getType() {
         return type;
     }
 

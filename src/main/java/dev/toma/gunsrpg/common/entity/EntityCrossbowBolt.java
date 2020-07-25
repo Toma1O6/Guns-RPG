@@ -28,6 +28,11 @@ public class EntityCrossbowBolt extends EntityBullet {
     }
 
     @Override
+    protected void modifyPenetrationDamage() {
+        damage = damage * 0.35F;
+    }
+
+    @Override
     protected void damageTargetEntity(Entity target, boolean isHeadshot) {
         target.attackEntityFrom(new GunDamageSource(shooter, this, stack), damage);
     }

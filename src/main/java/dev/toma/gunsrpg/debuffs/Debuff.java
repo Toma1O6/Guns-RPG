@@ -44,7 +44,7 @@ public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
         if(active) return;
         for(DamageResult result : this.type.entityChances) {
             if(!result.allows(source)) continue;
-            float chance = result.getChance();
+            float chance = result.getChance(player);
             if(new Random().nextFloat() <= chance) {
                 this.active = true;
                 PlayerDataFactory.get(player).sync();
