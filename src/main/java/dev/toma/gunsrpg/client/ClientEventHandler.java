@@ -187,7 +187,7 @@ public class ClientEventHandler {
             int renderIndex = 0;
             List<ISkill> list = skills.getUnlockedSkills().get(SkillCategory.SURVIVAL);
             if (list == null) return;
-            int left = 10;
+            int left = 5;
             int top = resolution.getScaledHeight() - 25;
             List<ISkill> renderSkills = new ArrayList<>();
             for (ISkill skill : list) {
@@ -197,8 +197,11 @@ public class ClientEventHandler {
                 }
             }
             for(ISkill skill : renderSkills) {
-                ((OverlayRenderer) skill).renderInHUD(skill, renderIndex, left, top);
-                if(skill.apply(player)) ++renderIndex;
+                OverlayRenderer overlayRenderer = (OverlayRenderer) skill;
+                if(skill.apply(player) && overlayRenderer.shouldRenderOnHUD()) {
+                    overlayRenderer.renderInHUD(skill, renderIndex, left, top);
+                    ++renderIndex;
+                }
             }
         }
     }

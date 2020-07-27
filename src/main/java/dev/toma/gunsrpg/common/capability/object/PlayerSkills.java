@@ -43,7 +43,6 @@ public class PlayerSkills {
     private int requiredKills = 10;
     private int kills;
     private int skillPoints;
-
     private int gunpowderCraftYield;
     private int bonemealCraftYield;
     public int poisonResistance;
@@ -54,6 +53,7 @@ public class PlayerSkills {
     public float instantKillChance;
     public float axeMiningSpeed;
     public float pickaxeMiningSpeed;
+    public float shovelMiningSpeed;
     public float acrobaticsFallResistance;
     public float acrobaticsExplosionResistance;
     public float lightHunterMovementSpeed;
@@ -170,6 +170,7 @@ public class PlayerSkills {
         extraDamage = 0;
         instantKillChance = 0;
         axeMiningSpeed = 0.0F;
+        shovelMiningSpeed = 0.0F;
         pickaxeMiningSpeed = 0.0F;
         acrobaticsFallResistance = 0;
         acrobaticsExplosionResistance = 0;
@@ -310,6 +311,10 @@ public class PlayerSkills {
         this.axeMiningSpeed = Math.max(axeMiningSpeed, this.axeMiningSpeed);
     }
 
+    public void setShovelMiningSpeed(float shovelMiningSpeed) {
+        this.shovelMiningSpeed = Math.max(shovelMiningSpeed, this.shovelMiningSpeed);
+    }
+
     public void setPickaxeMiningSpeed(float pickaxeMiningSpeed) {
         this.pickaxeMiningSpeed = Math.max(pickaxeMiningSpeed, this.pickaxeMiningSpeed);
     }
@@ -362,6 +367,7 @@ public class PlayerSkills {
         nbt.setInteger("extraDamage", extraDamage);
         nbt.setFloat("instantKill", instantKillChance);
         nbt.setFloat("axeSpeed", axeMiningSpeed);
+        nbt.setFloat("shovelSpeed", shovelMiningSpeed);
         nbt.setFloat("pickaxeSpeed", pickaxeMiningSpeed);
         nbt.setFloat("acrobaticsFallResistance", acrobaticsFallResistance);
         nbt.setFloat("acrobaticsExplosionResistance", acrobaticsExplosionResistance);
@@ -412,6 +418,7 @@ public class PlayerSkills {
         extraDamage = nbt.getInteger("extraDamage");
         instantKillChance = nbt.getFloat("instantKill");
         axeMiningSpeed = nbt.getFloat("axeSpeed");
+        shovelMiningSpeed = nbt.getFloat("shovelSpeed");
         pickaxeMiningSpeed = nbt.getFloat("pickaxeSpeed");
         acrobaticsFallResistance = nbt.getFloat("acrobaticsFallResistance");
         acrobaticsExplosionResistance = nbt.getFloat("acrobaticsExplosionResistance");

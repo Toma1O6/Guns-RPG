@@ -33,8 +33,8 @@ public class WeaponConfiguration {
                 .addInt(effect).name("Gravity start").range(0, Integer.MAX_VALUE).add(t -> effect = t.value())
                 .addFloat(recoilHorizontal).name("Horizontal recoil").range(0.0F, 10.0F).add(t -> recoilHorizontal = t.value())
                 .addFloat(recoilVertical).name("Vertical recoil").range(0.0F, 10.0F).add(t -> recoilVertical = t.value())
-                .addInt(normal).name("Rate of Fire").range(1, 60).add(t -> normal = t.value())
-                .addInt(upgraded).name("Upgraded Rate of Fire").range(1, 60).add(t -> upgraded = t.value())
+                .addInt(normal).name("Rate of Fire").range(1, 60).sliderRendering().add(t -> normal = t.value())
+                .addInt(upgraded).name("Upgraded Rate of Fire").range(1, 60).sliderRendering().add(t -> upgraded = t.value())
                 .pop();
     }
 }

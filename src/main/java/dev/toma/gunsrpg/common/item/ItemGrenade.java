@@ -33,7 +33,7 @@ public class ItemGrenade extends GRPGItem {
                 if(!playerIn.isCreative()) {
                     stack.shrink(1);
                 }
-                tracker.setCooldown(stack.getItem(), 40);
+                tracker.setCooldown(stack.getItem(), 60);
             }
         }
         return ActionResult.newResult(EnumActionResult.PASS, stack);

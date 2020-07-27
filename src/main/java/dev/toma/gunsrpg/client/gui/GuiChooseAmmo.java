@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.gui;
 
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -86,7 +87,9 @@ public class GuiChooseAmmo extends GuiScreen {
             ItemStack stack = player.getHeldItemMainhand();
             this.count = ModUtils.getItemCountInInventory(ammo, player.inventory);
             this.requiredLevel = ammo.getMaterial().ordinal() + 1;
-            this.enabled = stack.getItem() instanceof GunItem && PlayerDataFactory.get(player).getSkills().getGunData((GunItem) stack.getItem()).getLevel() >= requiredLevel;
+            boolean isGun = stack.getItem() instanceof GunItem;
+            PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
+            this.enabled = isGun && skills.hasSkill(((GunItem) stack.getItem()).getRequiredSkill()) && skills.getGunData((GunItem) stack.getItem()).getLevel() >= requiredLevel;
             this.stack = new ItemStack(ammo);
         }
 

@@ -180,6 +180,7 @@ public class ModRegistry {
         public static final SoundEvent M24 = null;
         public static final SoundEvent WIN94 = null;
         public static final SoundEvent KAR98K_RELOAD_CLIP = null;
+        public static final SoundEvent KAR98K_RELOAD_CLIP_FAST = null;
         public static final SoundEvent CROSSBOW_SHOOT = null;
         public static final SoundEvent CROSSBOW_RELOAD = null;
         public static final SoundEvent CROSSBOW_RELOAD_FAST = null;
@@ -241,6 +242,11 @@ public class ModRegistry {
         public static final SkillType<LumberjackSkill> LUMBERJACK_III = null;
         public static final SkillType<LumberjackSkill> LUMBERJACK_IV = null;
         public static final SkillType<LumberjackSkill> LUMBERJACK_V = null;
+        public static final SkillType<DataChangeSkill> GRAVE_DIGGER_I = null;
+        public static final SkillType<DataChangeSkill> GRAVE_DIGGER_II = null;
+        public static final SkillType<DataChangeSkill> GRAVE_DIGGER_III = null;
+        public static final SkillType<DataChangeSkill> GRAVE_DIGGER_IV = null;
+        public static final SkillType<DataChangeSkill> GRAVE_DIGGER_V = null;
         public static final SkillType<DataChangeSkill> HEAVY_PICKAXE_I = null;
         public static final SkillType<DataChangeSkill> HEAVY_PICKAXE_II = null;
         public static final SkillType<DataChangeSkill> HEAVY_PICKAXE_III = null;
@@ -390,22 +396,27 @@ public class ModRegistry {
                     SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> {
                         skills.setAcrobaticsFallResistance(0.70F);
                         skills.setAcrobaticsExplosionResistance(0.40F);
-                    })).setResistanceCategory().setRegistryName("acrobatics_iii").descriptionLength(3).requiredLevel(25).price(4).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setAxeMiningSpeed(0.15F))).setMiningCategory().setRegistryName("sharp_axe_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.SHARP_AXE_II).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setAxeMiningSpeed(0.3F))).setMiningCategory().setRegistryName("sharp_axe_ii").requiredLevel(10).price(2).childAndOverride(() -> Skills.SHARP_AXE_III).build(),
-                    SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setAxeMiningSpeed(0.45F))).setMiningCategory().setRegistryName("sharp_axe_iii").requiredLevel(20).price(3).childs(() -> Collections.singletonList(Skills.SHARP_AXE_IV)).build(),
-                    SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setAxeMiningSpeed(0.6F))).setMiningCategory().setRegistryName("sharp_axe_iv").requiredLevel(35).price(4).childs(() -> Collections.singletonList(Skills.SHARP_AXE_V)).build(),
-                    SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setAxeMiningSpeed(0.8F))).setMiningCategory().setRegistryName("sharp_axe_v").requiredLevel(50).price(5).build(),
+                    })).setResistanceCategory().setRegistryName("acrobatics_iii").descriptionLength(3).requiredLevel(35).price(4).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setAxeMiningSpeed(0.20F))).setMiningCategory().setRegistryName("sharp_axe_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.SHARP_AXE_II).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setAxeMiningSpeed(0.40F))).setMiningCategory().setRegistryName("sharp_axe_ii").requiredLevel(10).price(2).childAndOverride(() -> Skills.SHARP_AXE_III).build(),
+                    SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setAxeMiningSpeed(0.60F))).setMiningCategory().setRegistryName("sharp_axe_iii").requiredLevel(20).price(3).childs(() -> Collections.singletonList(Skills.SHARP_AXE_IV)).build(),
+                    SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setAxeMiningSpeed(0.80F))).setMiningCategory().setRegistryName("sharp_axe_iv").requiredLevel(35).price(4).childs(() -> Collections.singletonList(Skills.SHARP_AXE_V)).build(),
+                    SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setAxeMiningSpeed(1.00F))).setMiningCategory().setRegistryName("sharp_axe_v").requiredLevel(50).price(5).build(),
                     SkillType.Builder.<LumberjackSkill>create(type -> new LumberjackSkill(type, 1)).setMiningCategory().setRegistryName("lumberjack_i").descriptionLength(3).setTreeStartPoint().requiredLevel(5).price(2).childAndOverride(() -> Skills.LUMBERJACK_II).build(),
                     SkillType.Builder.<LumberjackSkill>create(type -> new LumberjackSkill(type, 2)).setMiningCategory().setRegistryName("lumberjack_ii").descriptionLength(3).requiredLevel(10).price(3).childAndOverride(() -> Skills.LUMBERJACK_III).build(),
                     SkillType.Builder.<LumberjackSkill>create(type -> new LumberjackSkill(type, 3)).setMiningCategory().setRegistryName("lumberjack_iii").descriptionLength(3).requiredLevel(25).price(4).childAndOverride(() -> Skills.LUMBERJACK_IV).build(),
                     SkillType.Builder.<LumberjackSkill>create(type -> new LumberjackSkill(type, 4)).setMiningCategory().setRegistryName("lumberjack_iv").descriptionLength(3).requiredLevel(40).price(5).childAndOverride(() -> Skills.LUMBERJACK_V).build(),
                     SkillType.Builder.<LumberjackSkill>create(type -> new LumberjackSkill(type, 5)).setMiningCategory().setRegistryName("lumberjack_v").descriptionLength(3).requiredLevel(55).price(6).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setPickaxeMiningSpeed(0.15F))).setMiningCategory().setRegistryName("heavy_pickaxe_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.HEAVY_PICKAXE_II).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setPickaxeMiningSpeed(0.3F))).setMiningCategory().setRegistryName("heavy_pickaxe_ii").requiredLevel(10).price(2).childAndOverride(() -> Skills.HEAVY_PICKAXE_III).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setPickaxeMiningSpeed(0.45F))).setMiningCategory().setRegistryName("heavy_pickaxe_iii").requiredLevel(20).price(3).childAndOverride(() -> Skills.HEAVY_PICKAXE_IV).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setPickaxeMiningSpeed(0.60F))).setMiningCategory().setRegistryName("heavy_pickaxe_iv").requiredLevel(35).price(4).childAndOverride(() -> Skills.HEAVY_PICKAXE_V).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setPickaxeMiningSpeed(0.80F))).setMiningCategory().setRegistryName("heavy_pickaxe_v").requiredLevel(50).price(5).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setShovelMiningSpeed(0.15F))).setMiningCategory().setRegistryName("grave_digger_i").setTreeStartPoint().price(1).childAndOverride(() -> Skills.GRAVE_DIGGER_II).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setShovelMiningSpeed(0.30F))).setMiningCategory().setRegistryName("grave_digger_ii").requiredLevel(10).price(2).childAndOverride(() -> Skills.GRAVE_DIGGER_III).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setShovelMiningSpeed(0.45F))).setMiningCategory().setRegistryName("grave_digger_iii").requiredLevel(15).price(3).childAndOverride(() -> Skills.GRAVE_DIGGER_IV).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setShovelMiningSpeed(0.60F))).setMiningCategory().setRegistryName("grave_digger_iv").requiredLevel(25).price(3).childAndOverride(() -> Skills.GRAVE_DIGGER_V).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setShovelMiningSpeed(0.80F))).setMiningCategory().setRegistryName("grave_digger_v").requiredLevel(40).price(4).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setPickaxeMiningSpeed(0.20F))).setMiningCategory().setRegistryName("heavy_pickaxe_i").setTreeStartPoint().requiredLevel(0).price(1).childAndOverride(() -> Skills.HEAVY_PICKAXE_II).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setPickaxeMiningSpeed(0.40F))).setMiningCategory().setRegistryName("heavy_pickaxe_ii").requiredLevel(10).price(2).childAndOverride(() -> Skills.HEAVY_PICKAXE_III).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setPickaxeMiningSpeed(0.60F))).setMiningCategory().setRegistryName("heavy_pickaxe_iii").requiredLevel(20).price(3).childAndOverride(() -> Skills.HEAVY_PICKAXE_IV).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setPickaxeMiningSpeed(0.80F))).setMiningCategory().setRegistryName("heavy_pickaxe_iv").requiredLevel(35).price(4).childAndOverride(() -> Skills.HEAVY_PICKAXE_V).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setPickaxeMiningSpeed(1.00F))).setMiningCategory().setRegistryName("heavy_pickaxe_v").requiredLevel(50).price(5).build(),
                     SkillType.Builder.<MotherlodeSkill>create(type -> new MotherlodeSkill(type, 1)).setMiningCategory().setRegistryName("mother_lode_i").setTreeStartPoint().requiredLevel(5).price(2).childAndOverride(() -> Skills.MOTHER_LODE_II).build(),
                     SkillType.Builder.<MotherlodeSkill>create(type -> new MotherlodeSkill(type, 2)).setMiningCategory().setRegistryName("mother_lode_ii").requiredLevel(15).price(3).childAndOverride(() -> Skills.MOTHER_LODE_III).build(),
                     SkillType.Builder.<MotherlodeSkill>create(type -> new MotherlodeSkill(type, 3)).setMiningCategory().setRegistryName("mother_lode_iii").requiredLevel(30).price(4).childAndOverride(() -> Skills.MOTHER_LODE_IV).build(),
@@ -578,9 +589,9 @@ public class ModRegistry {
                     new GRPGItem("magazine"),
                     new GRPGItem("gun_parts"),
                     new GRPGItem("bolt_fletching"),
-                    new ItemGrenade("grenade", 3, false),
-                    new ItemGrenade("massive_grenade", 5, false),
-                    new ItemGrenade("impact_grenade", 3, true),
+                    new ItemGrenade("grenade", 4, false),
+                    new ItemGrenade("massive_grenade", 6, false),
+                    new ItemGrenade("impact_grenade", 4, true),
                     new GRPGItem("iron_ore_chunk"),
                     new GRPGItem("gold_ore_chunk"),
                     new ItemSkillBook("skillpoint_book")
@@ -638,6 +649,7 @@ public class ModRegistry {
                     sound("m24"),
                     sound("win94"),
                     sound("kar98k_reload_clip"),
+                    sound("kar98k_reload_clip_fast"),
                     sound("crossbow_shoot"),
                     sound("crossbow_reload"),
                     sound("crossbow_reload_fast"),

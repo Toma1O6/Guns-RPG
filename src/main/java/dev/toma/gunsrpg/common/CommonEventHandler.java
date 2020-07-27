@@ -33,6 +33,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -155,6 +156,13 @@ public class CommonEventHandler {
         } else if(stack.getItem() instanceof ItemPickaxe && skills.hasSkill(ModRegistry.Skills.HEAVY_PICKAXE_I)) {
             float f = event.getOriginalSpeed();
             float f1 = skills.pickaxeMiningSpeed * 2;
+            if(f > 1.0F) {
+                float f2 = f * (1.0F + f1);
+                event.setNewSpeed(f2);
+            }
+        } else if(stack.getItem() instanceof ItemSpade && skills.hasSkill(ModRegistry.Skills.GRAVE_DIGGER_I)) {
+            float f = event.getOriginalSpeed();
+            float f1 = skills.shovelMiningSpeed * 2;
             if(f > 1.0F) {
                 float f2 = f * (1.0F + f1);
                 event.setNewSpeed(f2);
@@ -352,6 +360,12 @@ public class CommonEventHandler {
                 PlayerDataFactory.get((EntityPlayer) source).getSkills().onKillEntity(event.getEntity(), ItemStack.EMPTY);
             }
         }
+        if(event.getEntity() instanceof IMob) {
+            if(!event.getEntity().world.isRemote && random.nextFloat() <= 0.015) {
+                Entity entity = event.getEntity();
+                entity.world.spawnEntity(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, new ItemStack(ModRegistry.GRPGItems.SKILLPOINT_BOOK)));
+            }
+        }
         if(event.getEntity() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntity();
             PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
@@ -382,6 +396,7 @@ public class CommonEventHandler {
         if(skills.hasSkill(ModRegistry.Skills.WAR_MACHINE)) {
             skills.getSkill(ModRegistry.Skills.WAR_MACHINE).onPurchase(player);
         }
+        if(!event.isEndConquered()) PlayerDataFactory.get(player).setOnCooldown();
         PlayerDataFactory.get(player).sync();
     }
 

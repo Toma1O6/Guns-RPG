@@ -12,6 +12,7 @@ import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import dev.toma.gunsrpg.util.SkillUtil;
@@ -111,6 +112,11 @@ public class PistolItem extends GunItem {
         Firemode firemode = this.getFiremode(stack);
         stack.getTagCompound().setInteger("firemode", firemode == Firemode.SINGLE ? 1 : 0);
         return true;
+    }
+
+    @Override
+    public SkillType<?> getRequiredSkill() {
+        return ModRegistry.Skills.PISTOL_ASSEMBLY;
     }
 
     @SideOnly(Side.CLIENT)

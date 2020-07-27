@@ -11,4 +11,8 @@ public interface OverlayRenderer {
 
     @SideOnly(Side.CLIENT)
     void renderInHUD(ISkill skill, int renderIndex, int left, int top);
+
+    default boolean shouldRenderOnHUD() {
+        return true;
+    }
 }

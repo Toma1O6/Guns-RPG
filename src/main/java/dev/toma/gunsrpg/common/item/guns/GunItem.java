@@ -12,6 +12,7 @@ import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerMagazine;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -78,6 +79,8 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
         AnimationManager.cancelAnimation(Animations.RELOAD);
         AnimationManager.sendNewAnimation(Animations.RECOIL, RecoilAnimation.newInstance(5));
     }
+
+    public abstract SkillType<?> getRequiredSkill();
 
     public abstract WeaponConfiguration getWeaponConfig();
 

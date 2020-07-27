@@ -13,6 +13,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerSingle;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import dev.toma.gunsrpg.util.SkillUtil;
@@ -102,6 +103,11 @@ public class SGItem extends GunItem {
             bullet.fire(pitch, yaw, velocity);
             world.spawnEntity(bullet);
         }
+    }
+
+    @Override
+    public SkillType<?> getRequiredSkill() {
+        return ModRegistry.Skills.SHOTGUN_ASSEMBLY;
     }
 
     @SideOnly(Side.CLIENT)

@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.network.packet.CPacketUpdateCap;
 import dev.toma.gunsrpg.network.packet.SPacketSetShooting;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -24,6 +25,7 @@ public class PlayerDataFactory implements PlayerData {
     private final ReloadInfo reloadInfo;
     private final ScopeData scopeData;
     private final PlayerSkills playerSkills;
+    private int reducedHealthTimer;
 
     private boolean shooting;
     private boolean logged = false;
@@ -54,12 +56,31 @@ public class PlayerDataFactory implements PlayerData {
     }
 
     @Override
+    public void setOnCooldown() {
+        reducedHealthTimer = 3600;
+    }
+
+    @Override
     public void tick() {
         World world = player.world;
         this.debuffData.onTick(player);
         this.aimInfo.update();
         this.reloadInfo.update();
         this.playerSkills.update();
+        if(!world.isRemote && reducedHealthTimer > 0) {
+            --reducedHealthTimer;
+            double value = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
+            if(value != 6) {
+                player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0);
+                if(player.getHealth() > player.getMaxHealth()) {
+                    player.setHealth(player.getMaxHealth());
+                }
+            }
+            if(reducedHealthTimer == 0) {
+                double d = getSkills().hasSkill(ModRegistry.Skills.WAR_MACHINE) ? 40 : 20;
+                player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(d);
+            }
+        }
         if(shooting) {
             ItemStack stack = player.getHeldItemMainhand();
             boolean gun = stack.getItem() instanceof GunItem;
@@ -168,6 +189,7 @@ public class PlayerDataFactory implements PlayerData {
         nbt.setTag("reloadData", reloadInfo.write());
         nbt.setTag("scopeData", scopeData.write());
         nbt.setTag("playerSkills", playerSkills.writeData());
+        nbt.setInteger("healthCooldown", reducedHealthTimer);
         return nbt;
     }
 
@@ -179,6 +201,7 @@ public class PlayerDataFactory implements PlayerData {
         reloadInfo.read(this.findNBTTag("reloadData", nbt));
         scopeData.read(this.findNBTTag("scopeData", nbt));
         playerSkills.readData(this.findNBTTag("playerSkills", nbt));
+        reducedHealthTimer = nbt.getInteger("healthCooldown");
     }
 
     private NBTTagCompound findNBTTag(String key, NBTTagCompound nbt) {

@@ -29,6 +29,7 @@
     "m24": {"category": "master", "sounds": [{"name": "gunsrpg:m24", "stream": true}]},
     "win94": {"category": "master", "sounds": [{"name": "gunsrpg:win94", "stream": true}]},
     "kar98k_reload_clip": {"category": "master", "sounds": [{"name": "gunsrpg:kar98k_reload_clip", "stream": true}]},
+    "kar98k_reload_clip_fast": {"category": "master", "sounds": [{"name": "gunsrpg:kar98k_reload_clip_fast", "stream": true}]},
     "crossbow_shoot": {"category": "master", "sounds": [{"name": "gunsrpg:crossbow_shoot", "stream": true}]},
     "crossbow_reload": {"category": "master", "sounds": [{"name": "gunsrpg:crossbow_reload", "stream": true}]},
     "crossbow_reload_fast": {"category": "master", "sounds": [{"name": "gunsrpg:crossbow_reload_fast", "stream": true}]},

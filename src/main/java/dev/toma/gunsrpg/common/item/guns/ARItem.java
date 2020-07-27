@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import dev.toma.gunsrpg.util.SkillUtil;
@@ -68,7 +69,7 @@ public class ARItem extends GunItem {
     public int getFirerate(EntityPlayer player) {
         int firerate = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_TOUGH_SPRING) ? GRPGConfig.weapon.ar.upgraded : GRPGConfig.weapon.ar.normal;
         if(PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_ADAPTIVE_CHAMBERING)) {
-            firerate -= 1;
+            firerate -= 2;
         }
         return Math.max(firerate, 1);
     }
@@ -102,6 +103,11 @@ public class ARItem extends GunItem {
         }
         stack.getTagCompound().setInteger("firemode", newMode);
         return firemode.ordinal() != newMode;
+    }
+
+    @Override
+    public SkillType<?> getRequiredSkill() {
+        return ModRegistry.Skills.ASSAULT_RIFLE_ASSEMBLY;
     }
 
     @SideOnly(Side.CLIENT)

@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.entity.EntityCrossbowBolt;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import dev.toma.gunsrpg.util.SkillUtil;
@@ -109,6 +110,11 @@ public class CrossbowItem extends GunItem {
     @Override
     public SoundEvent getShootSound(EntityLivingBase entity) {
         return ModRegistry.GRPGSounds.CROSSBOW_SHOOT;
+    }
+
+    @Override
+    public SkillType<?> getRequiredSkill() {
+        return ModRegistry.Skills.CROSSBOW_ASSEMBLY;
     }
 
     @SideOnly(Side.CLIENT)

@@ -12,6 +12,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerClipOrSingle;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -67,7 +68,9 @@ public class SRItem extends GunItem {
         ItemStack stack = player.getHeldItemMainhand();
         if(stack.getItem() == this) {
             int ammo = getAmmo(stack);
-            if(ammo == 0) return ModRegistry.GRPGSounds.KAR98K_RELOAD_CLIP;
+            if(ammo == 0) {
+                return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_FAST_HANDS) ? ModRegistry.GRPGSounds.KAR98K_RELOAD_CLIP_FAST : ModRegistry.GRPGSounds.KAR98K_RELOAD_CLIP;
+            }
         }
         return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_FAST_HANDS) ? ModRegistry.GRPGSounds.SR_RELOAD_SHORT : ModRegistry.GRPGSounds.SR_RELOAD;
     }
@@ -108,6 +111,11 @@ public class SRItem extends GunItem {
         float f = super.getHorizontalRecoil(player);
         float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_CHEEKPAD) ? GRPGConfig.weapon.general.cheekpad : 1.0F;
         return mod * f;
+    }
+
+    @Override
+    public SkillType<?> getRequiredSkill() {
+        return ModRegistry.Skills.SNIPER_RIFLE_ASSEMBLY;
     }
 
     @SideOnly(Side.CLIENT)
