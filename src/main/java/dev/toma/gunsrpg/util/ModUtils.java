@@ -7,9 +7,11 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -234,6 +236,20 @@ public class ModUtils {
             }
         }
         return null;
+    }
+
+    public static EnumFacing getFacing(EntityPlayer player) {
+        float reach = getReachDistance(player);
+        Vec3d vec1 = player.getPositionEyes(1.0F);
+        Vec3d vec2 = player.getLook(1.0F);
+        Vec3d vec3 = vec1.addVector(vec2.x * reach, vec2.y * reach, vec2.z * reach);
+        RayTraceResult result = player.world.rayTraceBlocks(vec1, vec3, false, false, true);
+        return result != null && result.sideHit != null ? result.sideHit : EnumFacing.NORTH;
+    }
+
+    public static float getReachDistance(EntityPlayer player) {
+        float attrib = (float) player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
+        return player.isCreative() ? attrib : attrib - 0.5F;
     }
 
     @Nullable

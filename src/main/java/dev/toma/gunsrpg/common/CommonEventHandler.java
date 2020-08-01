@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.entity.EntityCrossbowBolt;
 import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
+import dev.toma.gunsrpg.common.item.ItemHammer;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
 import dev.toma.gunsrpg.common.skills.LightHunterSkill;
@@ -16,6 +17,7 @@ import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.DebuffTypes;
 import dev.toma.gunsrpg.event.EntityEquippedItemEvent;
+import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.EntitySpawnManager;
 import dev.toma.gunsrpg.util.object.Pair;
@@ -180,6 +182,26 @@ public class CommonEventHandler {
                 PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
                 if(value >= 14 && skills.hasSkill(ModRegistry.Skills.WELL_FED_I)) {
                     SkillUtil.getBestSkillFromOverrides(skills.getSkill(ModRegistry.Skills.WELL_FED_I), player).applyEffects(player);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void breakBlock(BlockEvent.BreakEvent event) {
+        EntityPlayer player = event.getPlayer();
+        ItemStack stack = player.getHeldItemMainhand();
+        World world = event.getWorld();
+        if(stack.getItem() instanceof ItemHammer) {
+            ItemHammer hammer = (ItemHammer) stack.getItem();
+            EnumFacing facing = ModUtils.getFacing(player);
+            for(BlockPos pos : hammer.gatherBlocks(event.getPos(), facing)) {
+                IBlockState state = world.getBlockState(pos);
+                if(hammer.canHarvestBlock(state)) {
+                    state.getBlock().harvestBlock(world, player, pos, state, world.getTileEntity(pos), stack);
+                    world.destroyBlock(pos, false);
+                    stack.damageItem(1, player);
+                    if(stack.getItemDamage() == stack.getMaxDamage()) break;
                 }
             }
         }
@@ -369,13 +391,6 @@ public class CommonEventHandler {
         if(event.getEntity() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntity();
             PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
-            if(skills.hasSkill(ModRegistry.Skills.AVENGE_ME_FRIENDS) && !player.world.isRemote) {
-                List<EntityPlayer> players = player.world.getEntitiesWithinAABB(EntityPlayer.class, Block.FULL_BLOCK_AABB.offset(player.getPosition()).grow(30));
-                players.forEach(p -> {
-                    p.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 400, 2));
-                    p.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 500, 1));
-                });
-            }
             SecondChanceSkill secondChanceSkill = skills.getSkill(ModRegistry.Skills.SECOND_CHANCE_I);
             if(secondChanceSkill != null) {
                 secondChanceSkill = SkillUtil.getBestSkillFromOverrides(secondChanceSkill, player);
@@ -385,6 +400,13 @@ public class CommonEventHandler {
                     secondChanceSkill.onUse(player);
                     PlayerDataFactory.get(player).sync();
                 }
+            }
+            if(!event.isCanceled() && skills.hasSkill(ModRegistry.Skills.AVENGE_ME_FRIENDS) && !player.world.isRemote) {
+                List<EntityPlayer> players = player.world.getEntitiesWithinAABB(EntityPlayer.class, Block.FULL_BLOCK_AABB.offset(player.getPosition()).grow(30));
+                players.forEach(p -> {
+                    p.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 400, 2));
+                    p.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 500, 1));
+                });
             }
         }
     }
@@ -421,6 +443,16 @@ public class CommonEventHandler {
             data.tick();
             player.capabilities.walkSpeed = data.getSkills().getMovementSpeed();
             if(!world.isRemote) {
+                ItemStack mainHandStack = player.getHeldItemMainhand();
+                ItemStack offHandStack = player.getHeldItemOffhand();
+                if(mainHandStack.getItem() instanceof GunItem && offHandStack.getItem() instanceof ItemShield) {
+                    if(!player.world.isRemote) {
+                        EntityItem entityItem = new EntityItem(player.world, player.posX, player.posY, player.posZ, offHandStack.copy());
+                        entityItem.setPickupDelay(0);
+                        player.world.spawnEntity(entityItem);
+                        player.inventory.removeStackFromSlot(40);
+                    }
+                }
                 if(world.getWorldTime() % 200 == 0) {
                     for(int i = 0; i < world.loadedTileEntityList.size(); i++) {
                         TileEntity te = world.loadedTileEntityList.get(i);
@@ -481,7 +513,7 @@ public class CommonEventHandler {
     public static void trySleepInBed(PlayerSleepInBedEvent event) {
         EntityPlayer player = event.getEntityPlayer();
         BlockPos pos = event.getPos();
-        if(WorldDataFactory.isBloodMoon(player.world) && !player.world.provider.isDaytime()) {
+        if(!player.world.provider.isDaytime()) {
             player.setSpawnPoint(pos.up(), true);
             event.setResult(EntityPlayer.SleepResult.NOT_SAFE);
         }

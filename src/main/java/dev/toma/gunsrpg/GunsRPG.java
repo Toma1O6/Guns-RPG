@@ -30,6 +30,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -52,7 +53,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "1.0.0", acceptedMinecraftVersions = "[1.12.2]")
+@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "0.1.0", acceptedMinecraftVersions = "[1.12.2]", updateJSON = "")
 public class GunsRPG {
 
     public static final String MODID = "gunsrpg";
@@ -86,6 +87,12 @@ public class GunsRPG {
         GameRegistry.addSmelting(ModRegistry.GRPGItems.IRON_ORE_CHUNK, new ItemStack(Items.IRON_INGOT), 0.7F);
         GameRegistry.addSmelting(ModRegistry.GRPGItems.GOLD_ORE_CHUNK, new ItemStack(Items.GOLD_INGOT), 1.0F);
         LootTableList.register(makeResource("inject/dungeon_inject"));
+        ForgeRegistries.ITEMS.getValuesCollection()
+                .stream()
+                .filter(it -> it instanceof ItemPickaxe)
+                .map(i -> (ItemPickaxe) i)
+                .forEach(pickaxe -> pickaxe.effectiveBlocks.add(ModRegistry.GRPGBlocks.AMETHYST_ORE)
+        );
     }
 
     @Mod.EventHandler

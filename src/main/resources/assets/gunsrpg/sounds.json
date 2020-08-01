@@ -34,5 +34,6 @@
     "crossbow_reload": {"category": "master", "sounds": [{"name": "gunsrpg:crossbow_reload", "stream": true}]},
     "crossbow_reload_fast": {"category": "master", "sounds": [{"name": "gunsrpg:crossbow_reload_fast", "stream": true}]},
     "flare_shoot": {"category": "master", "sounds": [{"name": "gunsrpg:flare_shoot", "stream": true}]},
-    "second_chance_use": {"category": "master", "sounds": [{"name": "gunsrpg:second_chance_use", "stream": true}]}
+    "second_chance_use": {"category": "master", "sounds": [{"name": "gunsrpg:second_chance_use", "stream": true}]},
+    "relaxed_2": {"category": "master", "sounds": [{"name": "gunsrpg:relaxed_2", "stream": true}]}
 }

@@ -76,8 +76,9 @@ public class WorldDataFactory implements WorldDataCap {
         for(EntityPlayer player : world.playerEntities) {
             if(!bloodmoonEvent.isActive()) {
                 player.sendMessage(new TextComponentString(TextFormatting.GREEN + "Bloodmoon falls"));
+                ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(ModRegistry.GRPGSounds.RELAXED_2, SoundCategory.NEUTRAL, player.posX, player.posY, player.posZ, 1.0F, 1.0F));
             } else if(bloodmoonEvent.isActive() && player instanceof EntityPlayerMP) {
-                ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.HOSTILE, player.posX, player.posY, player.posZ, 1.0F, 1.0F));
+                ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.NEUTRAL, player.posX, player.posY, player.posZ, 1.0F, 1.0F));
             }
         }
     }

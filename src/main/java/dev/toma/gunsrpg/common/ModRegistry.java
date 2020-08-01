@@ -10,10 +10,7 @@ import dev.toma.gunsrpg.common.block.BlockBlastFurnace;
 import dev.toma.gunsrpg.common.block.BlockSmithingTable;
 import dev.toma.gunsrpg.common.block.GRPGOre;
 import dev.toma.gunsrpg.common.entity.*;
-import dev.toma.gunsrpg.common.item.DebuffHeal;
-import dev.toma.gunsrpg.common.item.GRPGItem;
-import dev.toma.gunsrpg.common.item.ItemGrenade;
-import dev.toma.gunsrpg.common.item.ItemSkillBook;
+import dev.toma.gunsrpg.common.item.*;
 import dev.toma.gunsrpg.common.item.guns.*;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
@@ -138,6 +135,9 @@ public class ModRegistry {
         public static final GRPGItem IRON_ORE_CHUNK = null;
         public static final GRPGItem GOLD_ORE_CHUNK = null;
         public static final ItemSkillBook SKILLPOINT_BOOK = null;
+        public static final ItemHammer WOODEN_HAMMER = null;
+        public static final ItemHammer STONE_HAMMER = null;
+        public static final ItemHammer IRON_HAMMER = null;
     }
 
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
@@ -186,6 +186,7 @@ public class ModRegistry {
         public static final SoundEvent CROSSBOW_RELOAD_FAST = null;
         public static final SoundEvent FLARE_SHOOT = null;
         public static final SoundEvent SECOND_CHANCE_USE = null;
+        public static final SoundEvent RELAXED_2 = null;
     }
 
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
@@ -257,6 +258,9 @@ public class ModRegistry {
         public static final SkillType<MotherlodeSkill> MOTHER_LODE_III = null;
         public static final SkillType<MotherlodeSkill> MOTHER_LODE_IV = null;
         public static final SkillType<MotherlodeSkill> MOTHER_LODE_V = null;
+        public static final SkillType<BasicSkill> HAMMER_I = null;
+        public static final SkillType<BasicSkill> HAMMER_II = null;
+        public static final SkillType<BasicSkill> HAMMER_III = null;
         public static final SkillType<BasicSkill> BLACKSMITH = null;
         public static final SkillType<BasicSkill> MINERALOGIST = null;
         public static final SkillType<DataChangeSkill> STRONG_MUSCLES_I = null;
@@ -422,6 +426,9 @@ public class ModRegistry {
                     SkillType.Builder.<MotherlodeSkill>create(type -> new MotherlodeSkill(type, 3)).setMiningCategory().setRegistryName("mother_lode_iii").requiredLevel(30).price(4).childAndOverride(() -> Skills.MOTHER_LODE_IV).build(),
                     SkillType.Builder.<MotherlodeSkill>create(type -> new MotherlodeSkill(type, 4)).setMiningCategory().setRegistryName("mother_lode_iv").descriptionLength(2).requiredLevel(45).price(6).childAndOverride(() -> Skills.MOTHER_LODE_V).build(),
                     SkillType.Builder.<MotherlodeSkill>create(type -> new MotherlodeSkill(type, 5)).setMiningCategory().setRegistryName("mother_lode_v").descriptionLength(2).requiredLevel(65).price(7).build(),
+                    SkillType.Builder.create(BasicSkill::new).setMiningCategory().setRegistryName("hammer_i").descriptionLength(4).setTreeStartPoint().requiredLevel(15).price(2).childs(() -> Collections.singletonList(Skills.HAMMER_II)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setMiningCategory().setRegistryName("hammer_ii").descriptionLength(4).requiredLevel(30).price(3).childs(() -> Collections.singletonList(Skills.HAMMER_III)).build(),
+                    SkillType.Builder.create(BasicSkill::new).setMiningCategory().setRegistryName("hammer_iii").descriptionLength(4).requiredLevel(45).price(4).build(),
                     SkillType.Builder.create(BasicSkill::new).setMiningCategory().setRegistryName("blacksmith").setTreeStartPoint().requiredLevel(40).price(5).build(),
                     SkillType.Builder.create(BasicSkill::new).setMiningCategory().setRegistryName("mineralogist").setTreeStartPoint().requiredLevel(50).price(6).build(),
                     SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setExtraDamage(1))).setSurvivalCategory().setRegistryName("strong_muscles_i").setTreeStartPoint().requiredLevel(10).price(2).childAndOverride(() -> Skills.STRONG_MUSCLES_II).build(),
@@ -436,9 +443,9 @@ public class ModRegistry {
                     SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 1, 0.3F)).setSurvivalCategory().setRegistryName("well_fed_i").descriptionLength(2).setTreeStartPoint().requiredLevel(20).price(2).childAndOverride(() -> Skills.WELL_FED_II).build(),
                     SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 2, 0.4F)).setSurvivalCategory().setRegistryName("well_fed_ii").descriptionLength(2).requiredLevel(35).price(3).childAndOverride(() -> Skills.WELL_FED_III).build(),
                     SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 3, 0.55F)).setSurvivalCategory().setRegistryName("well_fed_iii").descriptionLength(2).requiredLevel(55).price(5).build(),
-                    SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, 18000, 10)).setSurvivalCategory().setRegistryName("second_chance_i").descriptionLength(2).setTreeStartPoint().requiredLevel(50).price(7).childAndOverride(() -> Skills.SECOND_CHANCE_II).build(),
-                    SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, 14400, 15)).setSurvivalCategory().setRegistryName("second_chance_ii").descriptionLength(2).requiredLevel(75).price(9).childAndOverride(() -> Skills.SECOND_CHANCE_III).build(),
-                    SkillType.Builder.create(type -> new SecondChanceSkill(type, 10800, 20)).setSurvivalCategory().setRegistryName("second_chance_iii").descriptionLength(2).requiredLevel(90).price(10).build(),
+                    SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, 18000, 10, 5)).setSurvivalCategory().setRegistryName("second_chance_i").descriptionLength(3).setTreeStartPoint().requiredLevel(50).price(7).childAndOverride(() -> Skills.SECOND_CHANCE_II).build(),
+                    SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, 14400, 15, 7)).setSurvivalCategory().setRegistryName("second_chance_ii").descriptionLength(3).requiredLevel(75).price(9).childAndOverride(() -> Skills.SECOND_CHANCE_III).build(),
+                    SkillType.Builder.create(type -> new SecondChanceSkill(type, 10800, 20, 10)).setSurvivalCategory().setRegistryName("second_chance_iii").descriptionLength(3).requiredLevel(90).price(10).build(),
                     SkillType.Builder.create(GodHelpUsSkill::new).setSurvivalCategory().setRegistryName("god_help_us").descriptionLength(2).setTreeStartPoint().requiredLevel(60).price(8).build(),
                     SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setInstantKillChance(0.01F))).setSurvivalCategory().setRegistryName("skull_crusher_i").setTreeStartPoint().requiredLevel(20).price(2).childs(() -> Collections.singletonList(Skills.SKULL_CRUSHER_II)).build(),
                     SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setInstantKillChance(0.03F))).setSurvivalCategory().setRegistryName("skull_crusher_ii").requiredLevel(35).price(4).childs(() -> Collections.singletonList(Skills.SKULL_CRUSHER_III)).build(),
@@ -482,7 +489,7 @@ public class ModRegistry {
                     SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("ar_red_dot").iconPathNormal("red_dot").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
                     SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("ar_suppressor").iconPathNormal("suppressor").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
                     SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("ar_cheekpad").iconPathNormal("cheekpad").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(5).build(),
-                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("ar_adaptive_chambering").criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(7).build(),
+                    SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("ar_adaptive_chambering").descriptionLength(2).criteria(CriteriaTypes.getAssaltRifleCriteria()).requiredLevel(7).build(),
                     SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sr_scope").iconPathNormal("scope").criteria(CriteriaTypes.getSniperRifleCriteria()).build(),
                     SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sr_cheekpad").iconPathNormal("cheekpad").criteria(CriteriaTypes.getSniperRifleCriteria()).build(),
                     SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sr_extended").iconPathNormal("extended").criteria(CriteriaTypes.getSniperRifleCriteria()).requiredLevel(5).build(),
@@ -594,7 +601,10 @@ public class ModRegistry {
                     new ItemGrenade("impact_grenade", 4, true),
                     new GRPGItem("iron_ore_chunk"),
                     new GRPGItem("gold_ore_chunk"),
-                    new ItemSkillBook("skillpoint_book")
+                    new ItemSkillBook("skillpoint_book"),
+                    new ItemHammer("wooden_hammer", ItemHammer.WOOD_HAMMER_MATERIAL),
+                    new ItemHammer("stone_hammer", ItemHammer.STONE_HAMMER_MATERIAL),
+                    new ItemHammer("iron_hammer", ItemHammer.IRON_HAMMER_MATERIAL)
             );
             queue.forEach(registry::register);
             queue = null;
@@ -654,7 +664,8 @@ public class ModRegistry {
                     sound("crossbow_reload"),
                     sound("crossbow_reload_fast"),
                     sound("flare_shoot"),
-                    sound("second_chance_use")
+                    sound("second_chance_use"),
+                    sound("relaxed_2")
             );
         }
 

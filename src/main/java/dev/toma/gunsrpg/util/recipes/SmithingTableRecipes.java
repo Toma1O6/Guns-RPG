@@ -81,6 +81,9 @@ public class SmithingTableRecipes {
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.GRENADE).withIngredient(new int[]{1, 3, 5, 7}, Items.IRON_INGOT).withIngredient(4, Blocks.TNT).withIngredient(2, Items.FLINT_AND_STEEL).requires(ModRegistry.Skills.GRENADES).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.MASSIVE_GRENADE).withIngredient(new int[]{0,2,3,5,6,7,8}, Items.GOLD_NUGGET).withIngredient(1, Blocks.TNT).withIngredient(4, ModRegistry.GRPGItems.GRENADE).requires(ModRegistry.Skills.MASSIVE_GRENADES).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.IMPACT_GRENADE).withIngredient(new int[]{0,2,6,8}, Items.REDSTONE).withIngredient(new int[]{3,7,5}, Items.GLOWSTONE_DUST).withIngredient(1, Items.BLAZE_POWDER).withIngredient(4, ModRegistry.GRPGItems.GRENADE).requires(ModRegistry.Skills.IMPACT_GRENADES).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.WOODEN_HAMMER).withIngredient(new int[]{3,0,1,2,5}, Blocks.LOG).withIngredient(new int[]{4,7}, Items.STICK).requires(ModRegistry.Skills.HAMMER_I, ModRegistry.Skills.HEAVY_PICKAXE_II, ModRegistry.Skills.MOTHER_LODE_II).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.STONE_HAMMER).withIngredient(new int[]{3,0,1,2,5}, Blocks.STONE).withIngredient(new int[]{4,7}, Items.STICK).requires(ModRegistry.Skills.HAMMER_II, ModRegistry.Skills.HEAVY_PICKAXE_III, ModRegistry.Skills.MOTHER_LODE_III).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.IRON_HAMMER).withIngredient(new int[]{3,0,1,2,5}, Items.IRON_INGOT).withIngredient(new int[]{4,7}, Items.STICK).requires(ModRegistry.Skills.HAMMER_III, ModRegistry.Skills.HEAVY_PICKAXE_IV, ModRegistry.Skills.MOTHER_LODE_IV).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.AMETHYST).withIngredient(1, Items.DIAMOND).withIngredient(new int[]{3, 5}, Items.QUARTZ).withIngredient(4, Items.BLAZE_POWDER).withIngredient(7, Items.EMERALD).requires(ModRegistry.Skills.MINERALOGIST).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.PLASTER_CAST).withIngredient(new int[]{0, 2, 6, 8}, Items.DYE, 15).withIngredient(new int[]{1, 3, 5, 7}, Blocks.CARPET).withIngredient(4, Items.DIAMOND).requires(ModRegistry.Skills.MEDIC).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.BANDAGE).withIngredient(new int[]{0, 8}, Items.DYE, 4).withIngredient(new int[]{1, 3, 5, 7}, Items.PAPER).withIngredient(new int[]{2, 6}, Items.SLIME_BALL).withIngredient(4, new ItemStack(Blocks.WOOL, 1, 0)).requires(ModRegistry.Skills.MEDIC).asRecipe());
@@ -122,26 +125,37 @@ public class SmithingTableRecipes {
 
     public static List<SmithingRecipe> getAvailableRecipes(EntityPlayer player) {
         PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
-        return RECIPES.stream().filter(recipe -> recipe.requiredType == null || skills.hasSkill(recipe.requiredType)).collect(Collectors.toList());
+        return RECIPES.stream().filter(r -> canCraftRecipe(r, skills)).collect(Collectors.toList());
+    }
+
+    public static boolean canCraftRecipe(SmithingRecipe recipe, PlayerSkills skills) {
+        if(recipe.requiredTypes != null && recipe.requiredTypes.length > 0) {
+            for (SkillType<?> type : recipe.requiredTypes) {
+                if(!skills.hasSkill(type)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public static class SmithingRecipe {
         private final SmithingIngredient[] ingredients;
         private final SmithingRecipeOutput output;
-        private final SkillType<?> requiredType;
+        private final SkillType<?>[] requiredTypes;
 
         public SmithingRecipe(RecipeBuilder builder) {
             this.ingredients = builder.ingredientList.toArray(new SmithingIngredient[0]);
             this.output = builder.output;
-            this.requiredType = builder.requiredType;
+            this.requiredTypes = builder.requiredTypes;
         }
 
         public ItemStack getOutput(EntityPlayer player) {
             return output.getResult(player);
         }
 
-        public SkillType<?> getRequiredType() {
-            return requiredType;
+        public SkillType<?>[] getRequiredTypes() {
+            return requiredTypes;
         }
 
         public SmithingIngredient[] getIngredients() {
@@ -152,7 +166,7 @@ public class SmithingTableRecipes {
     public static class RecipeBuilder {
         private final List<SmithingIngredient> ingredientList = new ArrayList<>();
         private SmithingRecipeOutput output;
-        private SkillType<?> requiredType;
+        private SkillType<?>[] requiredTypes;
 
         public RecipeBuilder withIngredient(int id, ItemStack stack) {
             if (ingredientList.size() > 8) throw new IllegalArgumentException("Added way too many ingredients!");
@@ -242,8 +256,8 @@ public class SmithingTableRecipes {
             return this;
         }
 
-        public RecipeBuilder requires(SkillType<?> type) {
-            this.requiredType = type;
+        public RecipeBuilder requires(SkillType<?>... types) {
+            this.requiredTypes = types;
             return this;
         }
 

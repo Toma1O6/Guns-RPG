@@ -50,6 +50,7 @@ public class BloodmoonEntitySpawnEntryList {
         register(EntitySkeleton.class, 10, (world, entity) -> {
             EntityWitherSkeleton witherSkeleton = new EntityWitherSkeleton(world);
             witherSkeleton.setPosition(entity.posX, entity.posY, entity.posZ);
+            witherSkeleton.onInitialSpawn(world.getDifficultyForLocation(entity.getPosition()), null);
             return witherSkeleton;
         });
         register(EntityZombie.class, 7, (world, entity) -> {

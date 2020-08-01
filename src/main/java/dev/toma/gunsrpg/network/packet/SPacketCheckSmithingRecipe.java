@@ -50,7 +50,7 @@ public class SPacketCheckSmithingRecipe implements IMessage {
                     if(tileEntity instanceof TileEntitySmithingTable) {
                         TileEntitySmithingTable smithingTable = (TileEntitySmithingTable) tileEntity;
                         SmithingTableRecipes.SmithingRecipe recipe = SmithingTableRecipes.findRecipe(smithingTable);
-                        if(recipe != null && (recipe.getRequiredType() == null || PlayerDataFactory.hasActiveSkill(player, recipe.getRequiredType()))) {
+                        if(recipe != null && SmithingTableRecipes.canCraftRecipe(recipe, PlayerDataFactory.get(player).getSkills())) {
                             ItemStack out = recipe.getOutput(player);
                             player.addItemStackToInventory(out);
                             for(SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {

@@ -121,6 +121,11 @@ public class EntityZombieGunner extends EntityMob {
     }
 
     @Override
+    protected void dropEquipment(boolean wasRecentlyHit, int lootingModifier) {
+        // don't drop anything
+    }
+
+    @Override
     protected void setEnchantmentBasedOnDifficulty(DifficultyInstance difficulty) {
     }
 

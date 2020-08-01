@@ -28,7 +28,7 @@ public class GRPGOre extends BlockOre {
         super(Material.ROCK.getMaterialMapColor());
         setUnlocalizedName(name);
         setRegistryName(name);
-        this.setCreativeTab(ModTabs.ITEM_TAB);
+        this.setCreativeTab(ModTabs.BLOCK_TAB);
         this.supplier = dropItem;
         this.min = min;
         this.max = max;
@@ -37,6 +37,11 @@ public class GRPGOre extends BlockOre {
         this.setResistance(10.0F);
         this.setHarvestLevel("pickaxe", 2);
         ModRegistry.registerItemBlock(this);
+    }
+
+    @Override
+    public Material getMaterial(IBlockState state) {
+        return Material.IRON;
     }
 
     @Override
