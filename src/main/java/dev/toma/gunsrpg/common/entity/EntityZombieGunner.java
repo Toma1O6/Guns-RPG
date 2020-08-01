@@ -157,7 +157,7 @@ public class EntityZombieGunner extends EntityMob {
         map.put(ModRegistry.GRPGItems.SMG, new GunData(15, ModRegistry.GRPGSounds.MP5));
         map.put(ModRegistry.GRPGItems.ASSAULT_RIFLE, new GunData(30, ModRegistry.GRPGSounds.SLR));
         map.put(ModRegistry.GRPGItems.SNIPER_RIFLE, new GunData(80, ModRegistry.GRPGSounds.M24));
-        map.put(ModRegistry.GRPGItems.SHOTGUN, new GunData(50, ModRegistry.GRPGSounds.WIN94));
+        map.put(ModRegistry.GRPGItems.SHOTGUN, new GunData(50, ModRegistry.GRPGSounds.S686));
         return map;
     }
 

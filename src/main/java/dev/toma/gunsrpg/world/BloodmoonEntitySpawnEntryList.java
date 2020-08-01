@@ -42,11 +42,6 @@ public class BloodmoonEntitySpawnEntryList {
             blaze.setPosition(entity.posX, entity.posY, entity.posZ);
             return blaze;
         });
-        register(EntityCreeper.class, 30, (world, entity) -> {
-            EntityGhast ghast = new EntityGhast(world);
-            ghast.setPosition(entity.posX, Math.max(world.getSeaLevel(), entity.posY + 5), entity.posZ);
-            return ghast;
-        });
         register(EntitySkeleton.class, 10, (world, entity) -> {
             EntityWitherSkeleton witherSkeleton = new EntityWitherSkeleton(world);
             witherSkeleton.setPosition(entity.posX, entity.posY, entity.posZ);

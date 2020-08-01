@@ -55,6 +55,9 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootEntry;
 import net.minecraft.world.storage.loot.LootEntryItem;
@@ -63,6 +66,7 @@ import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraft.world.storage.loot.functions.SetCount;
+import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -73,7 +77,9 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -141,6 +147,15 @@ public class CommonEventHandler {
         PlayerData data = PlayerDataFactory.get(event.player);
         data.sync();
         data.handleLogin();
+        ForgeVersion.CheckResult result = ForgeVersion.getResult(Loader.instance().activeModContainer());
+        switch (result.status) {
+            case OUTDATED: case BETA_OUTDATED: {
+                TextComponentString textComponent = new TextComponentString(TextFormatting.YELLOW + "[GunsRPG] Your mod is outdated. Click HERE to get latest update");
+                String url = "https://www.curseforge.com/minecraft/mc-mods";
+                textComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
+                event.player.sendMessage(textComponent);
+            }
+        }
     }
 
     @SubscribeEvent
@@ -207,7 +222,7 @@ public class CommonEventHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void harvestBlock(BlockEvent.HarvestDropsEvent event) {
         EntityPlayer player = event.getHarvester();
         if(player == null) return;
@@ -237,7 +252,6 @@ public class CommonEventHandler {
             Pair<Float, Float> chances = SkillUtil.getBestSkillFromOverrides(skills.getSkill(ModRegistry.Skills.MOTHER_LODE_I), player).getDropChances();
             float x3 = chances.getRight();
             float x2 = chances.getLeft();
-            int modifier = 1;
             if(random.nextFloat() < x3) {
                 replaceOres(event.getDrops(), 3);
             } else if(random.nextFloat() < x2) {

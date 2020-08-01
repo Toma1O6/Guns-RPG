@@ -178,7 +178,7 @@ public class ModRegistry {
         public static final SoundEvent MP5 = null;
         public static final SoundEvent SLR = null;
         public static final SoundEvent M24 = null;
-        public static final SoundEvent WIN94 = null;
+        public static final SoundEvent S686 = null;
         public static final SoundEvent KAR98K_RELOAD_CLIP = null;
         public static final SoundEvent KAR98K_RELOAD_CLIP_FAST = null;
         public static final SoundEvent CROSSBOW_SHOOT = null;
@@ -619,7 +619,7 @@ public class ModRegistry {
                     makeBuilder("airdrop", EntityAirdrop.class).tracker(256, 1, true).build(),
                     makeBuilder("explosive_skeleton", EntityExplosiveSkeleton.class).tracker(80, 3, true).egg(0xB46F67, 0x494949).spawn(EnumCreatureType.MONSTER, 15, 1, 3, ForgeRegistries.BIOMES).build(),
                     makeBuilder("explosive_arrow", EntityExplosiveArrow.class).tracker(64, 20, true).build(),
-                    makeBuilder("zombie_gunner", EntityZombieGunner.class).tracker(80, 3, true).egg(0x00aa00, 0xdbdb00).spawn(EnumCreatureType.MONSTER, 35, 2, 5, ForgeRegistries.BIOMES).build(),
+                    makeBuilder("zombie_gunner", EntityZombieGunner.class).tracker(80, 3, true).egg(0x00aa00, 0xdbdb00).spawn(EnumCreatureType.MONSTER, 15, 2, 5, ForgeRegistries.BIOMES).build(),
                     makeBuilder("bloodmoon_golem", EntityBloodmoonGolem.class).tracker(80, 3, true).egg(0x444444, 0x990000).build(),
                     makeBuilder("grenade", EntityGrenade.class).tracker(64, 1, true).build(),
                     makeBuilder("flare", EntityFlare.class).tracker(256, 1, true).build()
@@ -657,7 +657,7 @@ public class ModRegistry {
                     sound("mp5"),
                     sound("slr"),
                     sound("m24"),
-                    sound("win94"),
+                    sound("s686"),
                     sound("kar98k_reload_clip"),
                     sound("kar98k_reload_clip_fast"),
                     sound("crossbow_shoot"),
