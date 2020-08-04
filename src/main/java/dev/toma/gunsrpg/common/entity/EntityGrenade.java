@@ -21,7 +21,7 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData 
 
     public static final float AIR_DRAG_MODIFIER = 0.98F;
     public static final float GROUND_DRAG_MODIFIER = 0.7F;
-    public static final float BOUNCE_MODIFIER = 0.8F;
+    public static final float BOUNCE_MODIFIER = 0.25F;
     public int fuse;
     public float rotation;
     public float lastRotation;

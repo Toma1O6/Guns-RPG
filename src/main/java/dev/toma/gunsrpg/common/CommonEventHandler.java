@@ -247,15 +247,17 @@ public class CommonEventHandler {
                     }
                 }
             }
-        } else if(event.getState().getBlock() instanceof BlockOre && skills.hasSkill(ModRegistry.Skills.MOTHER_LODE_I)) {
+        } else if(event.getState().getBlock() instanceof BlockOre) {
             Block block = event.getState().getBlock();
-            Pair<Float, Float> chances = SkillUtil.getBestSkillFromOverrides(skills.getSkill(ModRegistry.Skills.MOTHER_LODE_I), player).getDropChances();
-            float x3 = chances.getRight();
-            float x2 = chances.getLeft();
-            if(random.nextFloat() < x3) {
-                replaceOres(event.getDrops(), 3);
-            } else if(random.nextFloat() < x2) {
-                replaceOres(event.getDrops(), 2);
+            if(skills.hasSkill(ModRegistry.Skills.MOTHER_LODE_I)) {
+                Pair<Float, Float> chances = SkillUtil.getBestSkillFromOverrides(skills.getSkill(ModRegistry.Skills.MOTHER_LODE_I), player).getDropChances();
+                float x3 = chances.getRight();
+                float x2 = chances.getLeft();
+                if(random.nextFloat() < x3) {
+                    replaceOres(event.getDrops(), 3);
+                } else if(random.nextFloat() < x2) {
+                    replaceOres(event.getDrops(), 2);
+                } else replaceOres(event.getDrops(), 1);
             } else replaceOres(event.getDrops(), 1);
         }
     }
