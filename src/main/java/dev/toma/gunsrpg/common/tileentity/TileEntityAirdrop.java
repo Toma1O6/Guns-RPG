@@ -47,7 +47,7 @@ public class TileEntityAirdrop extends IInventoryFactory {
         AMMO;
 
         private static LootCategory pickRandom(Random random) {
-            return random.nextFloat() <= 0.4F ? MEDICAL : AMMO;
+            return random.nextFloat() <= 0.35F ? MEDICAL : AMMO;
         }
     }
 
@@ -277,7 +277,7 @@ public class TileEntityAirdrop extends IInventoryFactory {
     }
 
     private static class SlotCount {
-        private static final SlotCount[] array = {new SlotCount(37, 4), new SlotCount(25, 5), new SlotCount(12, 6), new SlotCount(6, 7), new SlotCount(4, 8), new SlotCount(1, 9)};
+        private static final SlotCount[] array = {new SlotCount(33, 4), new SlotCount(30, 5), new SlotCount(16, 6), new SlotCount(10, 7), new SlotCount(8, 8), new SlotCount(3, 9)};
         private final int weight;
         private final int slots;
 
