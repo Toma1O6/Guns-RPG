@@ -1,19 +1,15 @@
 package dev.toma.gunsrpg.config.world;
 
-import toma.config.ConfigSubcategory;
-import toma.config.object.builder.ConfigBuilder;
+import net.minecraftforge.common.config.Config;
 
-public class WorldConfiguration extends ConfigSubcategory {
+public class WorldConfiguration {
 
-    public SimpleOreGenConfig amethyst = new SimpleOreGenConfig("amethyst", 7, 0, 16);
+    @Config.Name("Amethyst Ore")
+    @Config.Comment("Configure amethyst spawning")
+    public SimpleOreGenConfig amethyst = new SimpleOreGenConfig(7, 0, 16);
+
+    @Config.Name("Bloodmoon aggro range")
+    @Config.Comment("Defines at which range will mobs aggro on you during bloodmoon")
+    @Config.RangeInt(min = 1, max = 64)
     public int bloodMoonMobAgroRange = 50;
-
-    @Override
-    public ConfigBuilder toConfigFormat(ConfigBuilder builder) {
-        return builder
-                .push().name("World config").init()
-                .run(amethyst::toConfigFormat)
-                .addInt(bloodMoonMobAgroRange).name("Mob attack range").range(35, 128).sliderRendering().add(t -> bloodMoonMobAgroRange = t.value())
-                .pop();
-    }
 }

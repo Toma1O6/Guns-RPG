@@ -127,8 +127,8 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
     public void shootBullet(World world, EntityLivingBase entity, ItemStack stack) {
         EntityBullet bullet = new EntityBullet(world, entity, this, stack);
         boolean aim = entity instanceof EntityPlayer && PlayerDataFactory.get((EntityPlayer) entity).getAimInfo().isAiming();
-        float pitch = entity.rotationPitch + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 3);
-        float yaw = entity.rotationYaw + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 3);
+        float pitch = entity.rotationPitch + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 2);
+        float yaw = entity.rotationYaw + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 2);
         bullet.fire(pitch, yaw, getWeaponConfig().velocity);
         world.spawnEntity(bullet);
     }

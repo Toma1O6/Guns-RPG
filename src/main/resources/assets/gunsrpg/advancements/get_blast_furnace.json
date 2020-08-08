@@ -10,7 +10,7 @@
             "translate": "advancements.grpg.blast_furnace.description"
         }
     },
-    "parent": "minecraft:story/mine_stone",
+    "parent": "minecraft:story/smelt_iron",
     "criteria": {
         "crit": {
             "trigger": "minecraft:inventory_changed",

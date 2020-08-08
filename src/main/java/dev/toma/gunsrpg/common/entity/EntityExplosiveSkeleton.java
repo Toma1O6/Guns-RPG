@@ -18,6 +18,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
@@ -78,6 +79,26 @@ public class EntityExplosiveSkeleton extends EntityMob implements IRangedAttackM
     @Override
     public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.UNDEAD;
+    }
+
+    protected SoundEvent getAmbientSound()
+    {
+        return SoundEvents.ENTITY_SKELETON_AMBIENT;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
+    {
+        return SoundEvents.ENTITY_SKELETON_HURT;
+    }
+
+    protected SoundEvent getDeathSound()
+    {
+        return SoundEvents.ENTITY_SKELETON_DEATH;
+    }
+
+    protected SoundEvent getStepSound()
+    {
+        return SoundEvents.ENTITY_SKELETON_STEP;
     }
 
     @Override
@@ -176,7 +197,7 @@ public class EntityExplosiveSkeleton extends EntityMob implements IRangedAttackM
     }
 
     protected EntityArrow getArrow(float p_190726_1_) {
-        EntityExplosiveArrow arrow = new EntityExplosiveArrow(this.world, this);
+        EntityExplosiveArrow arrow = new EntityExplosiveArrow(this.world, this, 2);
         arrow.setEnchantmentEffectsFromEntity(this, p_190726_1_);
         return arrow;
     }

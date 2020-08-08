@@ -1,18 +1,18 @@
 package dev.toma.gunsrpg.config.gun;
 
-import toma.config.object.builder.ConfigBuilder;
+import net.minecraftforge.common.config.Config;
 
 public class GeneralSettings {
 
+    @Config.Name("Carbon barrel recoil multipler")
+    @Config.RangeDouble(min = 0.0, max = 1.0)
     public float carbonBarrel = 0.65F;
-    public float verticalGrip = 0.7F;
-    public float cheekpad = 0.75F;
 
-    public ConfigBuilder build(ConfigBuilder builder) {
-        return builder.push().name("General").init()
-                .addFloat(carbonBarrel).name("Carbon Barrel").range(0.0F, 1.0F).sliderRendering().add(t -> carbonBarrel = t.value())
-                .addFloat(verticalGrip).name("Vertical Grip").range(0.0F, 1.0F).sliderRendering().add(t -> verticalGrip = t.value())
-                .addFloat(cheekpad).name("Cheekpad").range(0.0F, 1.0F).sliderRendering().add(t -> cheekpad = t.value())
-                .pop();
-    }
+    @Config.Name("Vertical grip recoil multipler")
+    @Config.RangeDouble(min = 0.0, max = 1.0)
+    public float verticalGrip = 0.7F;
+
+    @Config.Name("Cheekpad recoil multipler")
+    @Config.RangeDouble(min = 0.0, max = 1.0)
+    public float cheekpad = 0.75F;
 }

@@ -27,7 +27,7 @@ public class SRBakedModel extends GunBakedModel {
         GlStateManager.rotate(180, 0, 1, 0);
         switch (cameraTransformType) {
             case FIRST_PERSON_RIGHT_HAND: {
-                if(PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.client.scopeRenderer.isTextureOverlay() && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) && player.getHeldItemMainhand().getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE) {
+                if(PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.clientConfig.scopeRenderer.isTextureOverlay() && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) && player.getHeldItemMainhand().getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE) {
                     GlStateManager.scale(0, 0, 0);
                     return Pair.of(this, trsrTransformation.getMatrix());
                 }

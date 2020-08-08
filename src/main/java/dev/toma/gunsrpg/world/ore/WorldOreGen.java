@@ -22,7 +22,7 @@ public class WorldOreGen implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        WorldConfiguration wcfg = GRPGConfig.world;
+        WorldConfiguration wcfg = GRPGConfig.worldConfig;
         gen(amethyst, world, random, chunkX, chunkZ, wcfg.amethyst.spawns, wcfg.amethyst.minHeight, wcfg.amethyst.maxHeight);
     }
 

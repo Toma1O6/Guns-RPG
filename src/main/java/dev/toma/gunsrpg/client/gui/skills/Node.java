@@ -15,8 +15,8 @@ public class Node {
     public static int currentX, currentY;
     protected static final Vec2Di startingPoint = new Vec2Di(40, 60);
     public static int furthestPoint = startingPoint.x;
-    protected static final int spacingHorizontal = GRPGConfig.client.skillTreeSpacings.x;
-    protected static final int spacingVerical = GRPGConfig.client.skillTreeSpacings.y;
+    protected static final int spacingHorizontal = GRPGConfig.clientConfig.skillTreeSpacing.x;
+    protected static final int spacingVerical = GRPGConfig.clientConfig.skillTreeSpacing.y;
 
     public Node(SkillType<?> parent, SkillType<?> type) {
         this(parent, new SkillType[] {type});

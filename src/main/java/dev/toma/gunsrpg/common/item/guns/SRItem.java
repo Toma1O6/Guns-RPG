@@ -39,7 +39,7 @@ public class SRItem extends GunItem {
 
     @Override
     public WeaponConfiguration getWeaponConfig() {
-        return GRPGConfig.weapon.sr;
+        return GRPGConfig.weaponConfig.sr;
     }
 
     @Override
@@ -82,12 +82,12 @@ public class SRItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_FAST_HANDS) ? GRPGConfig.weapon.sr.upgraded : GRPGConfig.weapon.sr.normal;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_FAST_HANDS) ? GRPGConfig.weaponConfig.sr.upgraded : GRPGConfig.weaponConfig.sr.normal;
     }
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        // it's safe to assume player is holding the weapon when this is called. Maybe
+        // it's safe to assume player is holding the weaponConfig when this is called. Maybe
         boolean empty = this.getAmmo(player.getHeldItemMainhand()) == 0;
         boolean magSkill = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_FAST_HANDS);
         int time = magSkill ? empty ? 40 : 20 : empty ? 66 : 33;
@@ -102,14 +102,14 @@ public class SRItem extends GunItem {
     @Override
     public float getVerticalRecoil(EntityPlayer player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_CHEEKPAD) ? GRPGConfig.weapon.general.cheekpad : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_CHEEKPAD) ? GRPGConfig.weaponConfig.general.cheekpad : 1.0F;
         return mod * f;
     }
 
     @Override
     public float getHorizontalRecoil(EntityPlayer player) {
         float f = super.getHorizontalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_CHEEKPAD) ? GRPGConfig.weapon.general.cheekpad : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_CHEEKPAD) ? GRPGConfig.weaponConfig.general.cheekpad : 1.0F;
         return mod * f;
     }
 

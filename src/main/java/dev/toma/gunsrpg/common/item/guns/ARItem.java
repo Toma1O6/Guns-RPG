@@ -31,7 +31,7 @@ public class ARItem extends GunItem {
 
     @Override
     public WeaponConfiguration getWeaponConfig() {
-        return GRPGConfig.weapon.ar;
+        return GRPGConfig.weaponConfig.ar;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ARItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        int firerate = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_TOUGH_SPRING) ? GRPGConfig.weapon.ar.upgraded : GRPGConfig.weapon.ar.normal;
+        int firerate = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_TOUGH_SPRING) ? GRPGConfig.weaponConfig.ar.upgraded : GRPGConfig.weaponConfig.ar.normal;
         if(PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_ADAPTIVE_CHAMBERING)) {
             firerate -= 2;
         }
@@ -82,15 +82,15 @@ public class ARItem extends GunItem {
     @Override
     public float getVerticalRecoil(EntityPlayer player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_VERTICAL_GRIP) ? GRPGConfig.weapon.general.verticalGrip : 1.0F;
-        float mod2 = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_CHEEKPAD) ? GRPGConfig.weapon.general.cheekpad : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_VERTICAL_GRIP) ? GRPGConfig.weaponConfig.general.verticalGrip : 1.0F;
+        float mod2 = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_CHEEKPAD) ? GRPGConfig.weaponConfig.general.cheekpad : 1.0F;
         return mod * mod2 * f;
     }
 
     @Override
     public float getHorizontalRecoil(EntityPlayer player) {
         float f = super.getHorizontalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_CHEEKPAD) ? GRPGConfig.weapon.general.cheekpad : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_CHEEKPAD) ? GRPGConfig.weaponConfig.general.cheekpad : 1.0F;
         return mod * f;
     }
 

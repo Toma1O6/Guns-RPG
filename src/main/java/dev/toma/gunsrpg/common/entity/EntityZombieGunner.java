@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -12,6 +13,7 @@ import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -87,6 +89,11 @@ public class EntityZombieGunner extends EntityMob {
         super.onLivingUpdate();
     }
 
+    @Override
+    public EnumCreatureAttribute getCreatureAttribute() {
+        return EnumCreatureAttribute.UNDEAD;
+    }
+
     protected SoundEvent getAmbientSound()
     {
         return SoundEvents.ENTITY_ZOMBIE_AMBIENT;
@@ -136,6 +143,7 @@ public class EntityZombieGunner extends EntityMob {
         Map.Entry<GunItem, GunData> random = list.get(rand.nextInt(list.size()));
         this.rateOfFire = random.getValue().rof;
         setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(random.getKey()));
+        setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.LEATHER_HELMET));
     }
 
     @Override

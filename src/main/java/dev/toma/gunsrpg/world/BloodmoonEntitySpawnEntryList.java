@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.world;
 
 import dev.toma.gunsrpg.common.entity.EntityBloodmoonGolem;
+import dev.toma.gunsrpg.common.entity.EntityRocketAngel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.*;
@@ -36,6 +37,11 @@ public class BloodmoonEntitySpawnEntryList {
             EntityCaveSpider spider = new EntityCaveSpider(world);
             spider.setPosition(entity.posX, entity.posY, entity.posZ);
             return spider;
+        });
+        register(EntityCreeper.class, 3, (world, entity) -> {
+            EntityRocketAngel rocketAngel = new EntityRocketAngel(world);
+            rocketAngel.setPosition(entity.posX, entity.posY, entity.posZ);
+            return rocketAngel;
         });
         register(EntityZombie.class, 3, (world, entity) -> {
             EntityBlaze blaze = new EntityBlaze(world);

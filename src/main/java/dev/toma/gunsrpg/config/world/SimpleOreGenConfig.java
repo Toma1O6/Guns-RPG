@@ -1,27 +1,29 @@
 package dev.toma.gunsrpg.config.world;
 
-import toma.config.object.builder.ConfigBuilder;
+import net.minecraftforge.common.config.Config;
 
 public class SimpleOreGenConfig {
 
-    protected final String name;
+    @Config.Name("Spawns")
+    @Config.Comment("Amount of spawn attempts per chunk")
+    @Config.RequiresMcRestart
     public int spawns;
+
+    @Config.Name("Min height")
+    @Config.Comment("Defines minimal height where ore can spawn")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 255)
     public int minHeight;
+
+    @Config.Name("Max height")
+    @Config.Comment("Defines maximum height where ore can spawn")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 255)
     public int maxHeight;
 
-    public SimpleOreGenConfig(String name, int spawns, int minHeight, int maxHeight) {
-        this.name = name;
+    public SimpleOreGenConfig(int spawns, int minHeight, int maxHeight) {
         this.spawns = spawns;
         this.minHeight = minHeight;
         this.maxHeight = maxHeight;
-    }
-
-    public ConfigBuilder toConfigFormat(ConfigBuilder builder) {
-        return builder
-                .push().name(name).init()
-                .addInt(spawns).name("Spawns/chunk").range(0, 128).sliderRendering().add(t -> spawns = t.value())
-                .addInt(minHeight).name("Min height").range(0, 255).sliderRendering().add(t -> minHeight = t.value())
-                .addInt(maxHeight).name("Max height").range(0, 255).sliderRendering().add(t -> maxHeight = t.value())
-                .pop();
     }
 }

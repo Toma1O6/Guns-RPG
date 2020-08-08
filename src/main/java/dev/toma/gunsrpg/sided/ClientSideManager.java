@@ -29,6 +29,8 @@ public class ClientSideManager extends SideManager {
         RenderingRegistry.registerEntityRenderingHandler(EntityBloodmoonGolem.class, RenderBloodmoonGolem::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityCrossbowBolt.class, CrossbowBoltRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class, RenderGrenade::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityRocketAngel.class, RenderRocketAngel::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityGoldDragon.class, RenderGoldenDragon::new);
         ModKeybinds.registerKeybinds();
         MinecraftForge.EVENT_BUS.register(new ModKeybinds());
         ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(scriptLoader);

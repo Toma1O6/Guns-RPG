@@ -29,7 +29,7 @@ public class BuilderMain {
     public static KeyBinding reset;
 
     public static void init() {
-        if(!GRPGConfig.client.loadAnimationTool) return;
+        if(!GRPGConfig.clientConfig.loadAnimationTool) return;
         MinecraftForge.EVENT_BUS.register(new Handler());
         openToolUI = register("open_ui", Keyboard.KEY_M);
         add = register("add", Keyboard.KEY_UP);

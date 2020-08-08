@@ -3,22 +3,11 @@
   "modid": "gunsrpg",
   "name": "Guns RPG",
   "description": "Mod which adds few RPG objects to Minecraft",
-  "version": "0.1.1",
+  "version": "0.1.6",
   "mcversion": "1.12.2",
   "authorList": ["Toma1O6"],
   "logoFile": "",
   "credits": "",
-  "screenshots": [],
-  "dependencies": []
-},
-{
-  "modid": "configlib",
-  "name": "Config Lib",
-  "description": "JSON based config library",
-  "version": "1.1.0",
-  "mcversion": "1.12.2",
-  "authorList": ["Toma1O6"],
-  "logoFile": "",
   "screenshots": [],
   "dependencies": []
 }

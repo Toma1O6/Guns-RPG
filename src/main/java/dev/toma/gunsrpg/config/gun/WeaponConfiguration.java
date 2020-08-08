@@ -1,17 +1,45 @@
 package dev.toma.gunsrpg.config.gun;
 
-import toma.config.object.builder.ConfigBuilder;
+import net.minecraftforge.common.config.Config;
 
 public class WeaponConfiguration {
 
-    private final String name;
-    public float damage, velocity;
-    public int effect;
-    public float recoilHorizontal, recoilVertical;
-    public int normal, upgraded;
+    @Config.Name("Damage")
+    @Config.Comment("Defines weapon damage")
+    @Config.RangeDouble(min = 1.0)
+    public float damage;
 
-    public WeaponConfiguration(String name, float damage, float velocity, int effect, float recoilHorizontal, float recoilVertical, int rof, int urof) {
-        this.name = name;
+    @Config.Name("Velocity")
+    @Config.Comment("Defines weapon velocity")
+    @Config.RangeDouble(min = 0.1, max = 100.0)
+    public float velocity;
+
+    @Config.Name("Gravity resistant time")
+    @Config.Comment("Defines how many ticks before gravity effect is applied")
+    @Config.RangeInt(min = 0)
+    public int effect;
+
+    @Config.Name("Horizonal recoil")
+    @Config.Comment("Defines weapon horizontal recoil")
+    @Config.RangeDouble(min = 0)
+    public float recoilHorizontal;
+
+    @Config.Name("Vertical recoil")
+    @Config.Comment("Defines weapon vertical recoil")
+    @Config.RangeDouble(min = 0)
+    public float recoilVertical;
+
+    @Config.Name("Normal firerate")
+    @Config.Comment("Defines delay after each shot with no firerate skill applied")
+    @Config.RangeInt(min = 1, max = 1000)
+    public int normal;
+
+    @Config.Name("Upgraded firerate")
+    @Config.Comment("Defines delay after each shot with firerate skill applied")
+    @Config.RangeInt(min = 1, max = 1000)
+    public int upgraded;
+
+    public WeaponConfiguration(float damage, float velocity, int effect, float recoilHorizontal, float recoilVertical, int rof, int urof) {
         this.damage = damage;
         this.velocity = velocity;
         this.effect = effect;
@@ -21,20 +49,7 @@ public class WeaponConfiguration {
         this.upgraded = urof;
     }
 
-    public WeaponConfiguration(String name, float damage, float velocity, int effect, float recoilHorizontal, float recoilVertical, int rof) {
-        this(name, damage, velocity, effect, recoilHorizontal, recoilVertical, rof, rof);
-    }
-
-    public ConfigBuilder build(ConfigBuilder builder) {
-        return builder
-                .push().name(name).init()
-                .addFloat(damage).name("Damage").range(0.0F, 50.0F).add(t -> damage = t.value())
-                .addFloat(velocity).name("Bullet velocity").range(0.5F, 30.0F).add(t -> velocity = t.value())
-                .addInt(effect).name("Gravity start").range(0, Integer.MAX_VALUE).add(t -> effect = t.value())
-                .addFloat(recoilHorizontal).name("Horizontal recoil").range(0.0F, 10.0F).add(t -> recoilHorizontal = t.value())
-                .addFloat(recoilVertical).name("Vertical recoil").range(0.0F, 10.0F).add(t -> recoilVertical = t.value())
-                .addInt(normal).name("Rate of Fire").range(1, 60).sliderRendering().add(t -> normal = t.value())
-                .addInt(upgraded).name("Upgraded Rate of Fire").range(1, 60).sliderRendering().add(t -> upgraded = t.value())
-                .pop();
+    public WeaponConfiguration(float damage, float velocity, int effect, float recoilHorizontal, float recoilVertical, int rof) {
+        this(damage, velocity, effect, recoilHorizontal, recoilVertical, rof, rof);
     }
 }

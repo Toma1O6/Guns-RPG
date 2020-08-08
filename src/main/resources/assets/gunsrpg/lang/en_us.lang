@@ -71,11 +71,13 @@ item.skillpoint_book.name=Skillpoint Book
 item.wooden_hammer.name=Wooden Hammer
 item.stone_hammer.name=Stone Hammer
 item.iron_hammer.name=Iron Hammer
+item.gold_egg_shard.name=Gold Egg Shard
 
 tile.amethyst_ore.name=Amethyst Ore
 tile.blast_furnace.name=Blast Furnace
 tile.airdrop.name=Airdrop
 tile.smithing_table.name=Smithing Table
+tile.gold_dragon_egg.name=Gold Dragon Egg
 
 death.attack.poison=%1$s has died from poisoning
 death.attack.infection=%1$s has died from infection
@@ -87,9 +89,17 @@ entity.gunsrpg:explosive_skeleton.name=Explosive Skeleton
 entity.gunsrpg:explosive_arrow.name=Explosive Arrow
 entity.gunsrpg:zombie_gunner.name=Zombie Gunner
 entity.gunsrpg:bloodmoon_golem.name=Bloodmoon Golem
+entity.gunsrpg:rocket_angel.name=Rocket Angel
+entity.gunsrpg:golden_dragon.name=Golden Dragon
 
 advancements.grpg.blast_furnace.title=Blast Furnace
 advancements.grpg.blast_furnace.description=Obtain Blast Furnace
+advancements.grpg.gold_egg_shard.title=What Can I Do With This?
+advancements.grpg.gold_egg_shard.description=Obtain 4 gold egg shards
+advancements.grpg.gold_dragon_egg.title=Really Expensive Egg
+advancements.grpg.gold_dragon_egg.description=Obtain gold dragon egg
+advancements.grpg.kill_gold_dragon.title=Who's The Boss Now?!
+advancements.grpg.kill_gold_dragon.description=Personally kill Gold Dragon in natural way
 
 itemGroup.grpg.items=Items
 itemGroup.grpg.blocks=Blocks

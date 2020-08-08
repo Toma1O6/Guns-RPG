@@ -8,13 +8,16 @@ import net.minecraft.world.World;
 
 public class EntityExplosiveArrow extends EntityArrow {
 
+    public int blastSize;
+
     public EntityExplosiveArrow(World world) {
         super(world);
     }
 
-    public EntityExplosiveArrow(World world, EntityLivingBase entityLivingBase) {
+    public EntityExplosiveArrow(World world, EntityLivingBase entityLivingBase, int blastSize) {
         super(world, entityLivingBase);
         this.pickupStatus = PickupStatus.DISALLOWED;
+        this.blastSize = blastSize;
     }
 
     @Override

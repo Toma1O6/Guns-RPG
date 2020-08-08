@@ -7,6 +7,8 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
 import dev.toma.gunsrpg.common.command.CommandGRPG;
+import dev.toma.gunsrpg.common.entity.EntityGoldDragon;
+import dev.toma.gunsrpg.common.entity.EntityRocketAngel;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.tileentity.TileEntityAirdrop;
 import dev.toma.gunsrpg.common.tileentity.TileEntityBlastFurnace;
@@ -25,6 +27,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -53,7 +57,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "0.1.1", acceptedMinecraftVersions = "[1.12.2]", updateJSON = "https://raw.githubusercontent.com/Toma1O6/Guns-RPG/master/update.json")
+@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "0.1.6", acceptedMinecraftVersions = "[1.12.2]", updateJSON = "https://raw.githubusercontent.com/Toma1O6/Guns-RPG/master/update.json")
 public class GunsRPG {
 
     public static final String MODID = "gunsrpg";
@@ -107,7 +111,8 @@ public class GunsRPG {
         CommonEventHandler.HEALTH_MAP.clear();
         World world = event.getServer().getWorld(0);
         for(EntityEntry entry : ForgeRegistries.ENTITIES) {
-            if(entry.getEntityClass().equals(EntitySlime.class)) continue;
+            Class<? extends Entity> cls = entry.getEntityClass();
+            if(cls.equals(EntitySlime.class) || cls.equals(EntityRocketAngel.class) || cls.equals(EntityDragon.class) || cls.equals(EntityGoldDragon.class) || cls.equals(EntityWither.class)) continue;
             Entity entity = EntityList.newEntity(entry.getEntityClass(), world);
             if(entity instanceof EntityLivingBase && !(entity instanceof EntityPlayer)) {
                 EntityLivingBase e = (EntityLivingBase) entity;

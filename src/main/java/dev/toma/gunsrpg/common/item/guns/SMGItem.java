@@ -35,7 +35,7 @@ public class SMGItem extends GunItem {
 
     @Override
     public WeaponConfiguration getWeaponConfig() {
-        return GRPGConfig.weapon.smg;
+        return GRPGConfig.weaponConfig.smg;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SMGItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_TOUGH_SPRING) ? GRPGConfig.weapon.smg.upgraded : GRPGConfig.weapon.smg.normal;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_TOUGH_SPRING) ? GRPGConfig.weaponConfig.smg.upgraded : GRPGConfig.weaponConfig.smg.normal;
     }
 
     @Override
@@ -91,7 +91,7 @@ public class SMGItem extends GunItem {
     @Override
     public float getVerticalRecoil(EntityPlayer player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_VERTICAL_GRIP) ? GRPGConfig.weapon.general.verticalGrip : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_VERTICAL_GRIP) ? GRPGConfig.weaponConfig.general.verticalGrip : 1.0F;
         return mod * f;
     }
 

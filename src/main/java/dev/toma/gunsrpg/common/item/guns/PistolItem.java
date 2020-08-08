@@ -38,7 +38,7 @@ public class PistolItem extends GunItem {
 
     @Override
     public WeaponConfiguration getWeaponConfig() {
-        return GRPGConfig.weapon.pistol;
+        return GRPGConfig.weaponConfig.pistol;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class PistolItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_TOUGH_SPRING) ? GRPGConfig.weapon.pistol.upgraded : GRPGConfig.weapon.pistol.normal;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_TOUGH_SPRING) ? GRPGConfig.weaponConfig.pistol.upgraded : GRPGConfig.weaponConfig.pistol.normal;
     }
 
     @Override
@@ -96,14 +96,14 @@ public class PistolItem extends GunItem {
     @Override
     public float getVerticalRecoil(EntityPlayer player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_CARBON_BARREL) ? GRPGConfig.weapon.general.carbonBarrel : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_CARBON_BARREL) ? GRPGConfig.weaponConfig.general.carbonBarrel : 1.0F;
         return mod * f;
     }
 
     @Override
     public float getHorizontalRecoil(EntityPlayer player) {
         float f = super.getHorizontalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_CARBON_BARREL) ? GRPGConfig.weapon.general.carbonBarrel : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_CARBON_BARREL) ? GRPGConfig.weaponConfig.general.carbonBarrel : 1.0F;
         return mod * f;
     }
 

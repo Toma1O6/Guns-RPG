@@ -84,7 +84,7 @@ public class ClientEventHandler {
                 PlayerData data = PlayerDataFactory.get(player);
                 if (data.getAimInfo().progress >= 0.9F) {
                     if (stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) || stack.getItem() == ModRegistry.GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE)) {
-                        if (GRPGConfig.client.scopeRenderer.isTextureOverlay()) {
+                        if (GRPGConfig.clientConfig.scopeRenderer.isTextureOverlay()) {
                             ModUtils.renderTexture(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(), SCOPE_OVERLAY);
                         } else {
                             int left = resolution.getScaledWidth() / 2 - 16;
@@ -177,9 +177,9 @@ public class ClientEventHandler {
                 int offset = 0;
                 for (Debuff debuff : debuffData.getDebuffs()) {
                     if (!debuff.isActive()) continue;
-                    int yStart = event.getResolution().getScaledHeight() + GRPGConfig.client.debuffs.y - 50;
-                    ModUtils.renderTexture(GRPGConfig.client.debuffs.x, yStart + offset * 18, 50, yStart + (1 + offset) * 18, ICON_BACKGROUND);
-                    ModUtils.renderTexture(GRPGConfig.client.debuffs.x + 2, yStart + 1 + offset * 18, 18, yStart + 1 + offset * 18 + 16, debuff.getIconTexture());
+                    int yStart = event.getResolution().getScaledHeight() + GRPGConfig.clientConfig.debuffOverlay.y - 50;
+                    ModUtils.renderTexture(GRPGConfig.clientConfig.debuffOverlay.x, yStart + offset * 18, 50, yStart + (1 + offset) * 18, ICON_BACKGROUND);
+                    ModUtils.renderTexture(GRPGConfig.clientConfig.debuffOverlay.x + 2, yStart + 1 + offset * 18, 18, yStart + 1 + offset * 18 + 16, debuff.getIconTexture());
                     renderer.drawStringWithShadow(debuff.getLevel() + "%", 20, yStart + 5 + offset * 18, 0xFFFFFF);
                     ++offset;
                 }
@@ -254,7 +254,7 @@ public class ClientEventHandler {
     public static void renderHandEvent(RenderSpecificHandEvent event) {
         EntityPlayerSP player = Minecraft.getMinecraft().player;
         ItemStack stack = event.getItemStack();
-        if (PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.client.scopeRenderer.isTextureOverlay() && (PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE || PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.CROSSBOW)) {
+        if (PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.clientConfig.scopeRenderer.isTextureOverlay() && (PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE || PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.CROSSBOW)) {
             event.setCanceled(true);
             return;
         }

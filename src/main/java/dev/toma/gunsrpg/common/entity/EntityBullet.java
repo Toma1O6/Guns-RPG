@@ -20,7 +20,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -254,7 +253,7 @@ public class EntityBullet extends Entity {
                 }
             }
         } else if(entity instanceof MultiPartEntityPart) {
-            entity.attackEntityFrom(DamageSource.causeMobDamage(shooter), damage);
+            entity.attackEntityFrom(new GunDamageSourceHack(shooter, this, stack), damage);
         }
     }
 

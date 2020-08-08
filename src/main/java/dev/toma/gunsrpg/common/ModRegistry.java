@@ -5,10 +5,7 @@ import dev.toma.gunsrpg.client.animation.Animation;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.baked.*;
 import dev.toma.gunsrpg.client.render.item.*;
-import dev.toma.gunsrpg.common.block.BlockAirdrop;
-import dev.toma.gunsrpg.common.block.BlockBlastFurnace;
-import dev.toma.gunsrpg.common.block.BlockSmithingTable;
-import dev.toma.gunsrpg.common.block.GRPGOre;
+import dev.toma.gunsrpg.common.block.*;
 import dev.toma.gunsrpg.common.entity.*;
 import dev.toma.gunsrpg.common.item.*;
 import dev.toma.gunsrpg.common.item.guns.*;
@@ -18,7 +15,6 @@ import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.skills.*;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
-import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -47,7 +43,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryManager;
-import toma.config.util.RegisterConfigEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -138,6 +133,7 @@ public class ModRegistry {
         public static final ItemHammer WOODEN_HAMMER = null;
         public static final ItemHammer STONE_HAMMER = null;
         public static final ItemHammer IRON_HAMMER = null;
+        public static final GRPGItem GOLD_EGG_SHARD = null;
     }
 
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
@@ -146,6 +142,7 @@ public class ModRegistry {
         public static final BlockBlastFurnace BLAST_FURNACE = null;
         public static final BlockAirdrop AIRDROP = null;
         public static final BlockSmithingTable SMITHING_TABLE = null;
+        public static final BlockGoldDragonEgg GOLD_DRAGON_EGG = null;
     }
 
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
@@ -506,7 +503,8 @@ public class ModRegistry {
                     new GRPGOre("amethyst_ore", () -> GRPGItems.AMETHYST),
                     new BlockBlastFurnace("blast_furnace"),
                     new BlockAirdrop("airdrop"),
-                    new BlockSmithingTable("smithing_table")
+                    new BlockSmithingTable("smithing_table"),
+                    new BlockGoldDragonEgg("gold_dragon_egg")
             );
         }
 
@@ -604,7 +602,8 @@ public class ModRegistry {
                     new ItemSkillBook("skillpoint_book"),
                     new ItemHammer("wooden_hammer", ItemHammer.WOOD_HAMMER_MATERIAL),
                     new ItemHammer("stone_hammer", ItemHammer.STONE_HAMMER_MATERIAL),
-                    new ItemHammer("iron_hammer", ItemHammer.IRON_HAMMER_MATERIAL)
+                    new ItemHammer("iron_hammer", ItemHammer.IRON_HAMMER_MATERIAL),
+                    new GRPGItem("gold_egg_shard")
             );
             queue.forEach(registry::register);
             queue = null;
@@ -622,7 +621,9 @@ public class ModRegistry {
                     makeBuilder("zombie_gunner", EntityZombieGunner.class).tracker(80, 3, true).egg(0x00aa00, 0xdbdb00).spawn(EnumCreatureType.MONSTER, 15, 2, 5, ForgeRegistries.BIOMES).build(),
                     makeBuilder("bloodmoon_golem", EntityBloodmoonGolem.class).tracker(80, 3, true).egg(0x444444, 0x990000).build(),
                     makeBuilder("grenade", EntityGrenade.class).tracker(64, 1, true).build(),
-                    makeBuilder("flare", EntityFlare.class).tracker(256, 1, true).build()
+                    makeBuilder("flare", EntityFlare.class).tracker(256, 1, true).build(),
+                    makeBuilder("rocket_angel", EntityRocketAngel.class).tracker(80, 3, true).egg(0xbbddff, 0xffffff).build(),
+                    makeBuilder("golden_dragon", EntityGoldDragon.class).tracker(160, 3, true).build()
             );
         }
 
@@ -667,11 +668,6 @@ public class ModRegistry {
                     sound("second_chance_use"),
                     sound("relaxed_2")
             );
-        }
-
-        @SubscribeEvent
-        public static void configRegister(RegisterConfigEvent event) {
-            event.register(GunsRPG.class, GRPGConfig::new);
         }
 
         protected static <T extends Entity> EntityEntryBuilder<T> makeBuilder(String name, Class<T> tClass) {

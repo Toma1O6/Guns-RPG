@@ -1,10 +1,16 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods",
     "promos": {
-        "1.12.2-latest": "0.1.1",
-        "1.12.2-recommended": "0.1.1"
+        "1.12.2-latest": "0.1.6",
+        "1.12.2-recommended": "0.1.6"
     },
     "1.12.2": {
-        "0.1.0": "Initial beta update"
+        "0.1.0": "Initial alpha update",
+        "0.1.1": "Hammers",
+        "0.1.2": "Rocket Angel entity",
+        "0.1.3": "Gold dragon entity",
+        "0.1.4": "Gold dragon damage rebalance, config rewrite",
+        "0.1.5": "Gold dragon gains passive regeneration effect",
+        "0.1.6": "Gold dragon spawns only 2 zombie gunners as help"
     }
 }

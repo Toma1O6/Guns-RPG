@@ -26,7 +26,7 @@ public class SkillUtil {
         PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
         if(skills.hasSkill(ModRegistry.Skills.ADRENALINE_RUSH_I)) {
             AdrenalineRushSkill ars = getBestSkillFromOverrides(skills.getSkill(ModRegistry.Skills.ADRENALINE_RUSH_I), player);
-            return ars.apply(player) ? ars.getReloadMultiplier() : 1.0F;
+            return ars.apply(player) ? 1.0F - ars.getReloadMultiplier() : 1.0F;
         }
         return 1.0F;
     }

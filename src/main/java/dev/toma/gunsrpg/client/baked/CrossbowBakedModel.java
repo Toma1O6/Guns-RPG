@@ -27,7 +27,7 @@ public class CrossbowBakedModel extends GunBakedModel {
         GlStateManager.rotate(180, 0, 1, 0);
         switch (cameraTransformType) {
             case FIRST_PERSON_RIGHT_HAND: {
-                if(PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.client.scopeRenderer.isTextureOverlay() && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE) && player.getHeldItemMainhand().getItem() == ModRegistry.GRPGItems.CROSSBOW) {
+                if(PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.clientConfig.scopeRenderer.isTextureOverlay() && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE) && player.getHeldItemMainhand().getItem() == ModRegistry.GRPGItems.CROSSBOW) {
                     GlStateManager.scale(0, 0, 0);
                     return Pair.of(this, trsrTransformation.getMatrix());
                 }

@@ -1,25 +1,27 @@
 package dev.toma.gunsrpg.config.client;
 
-import dev.toma.gunsrpg.config.util.Coord2Di;
 import dev.toma.gunsrpg.config.util.ScopeRenderer;
-import toma.config.ConfigSubcategory;
-import toma.config.object.builder.ConfigBuilder;
+import dev.toma.gunsrpg.util.math.Vec2Di;
+import net.minecraftforge.common.config.Config;
 
-public class ClientConfiguration extends ConfigSubcategory {
+public class ClientConfiguration {
 
-    public Coord2Di debuffs = new Coord2Di("Debuff offset", 0, -60);
+    @Config.Name("Debuff overlay")
+    @Config.Comment("Manage position of debuff overlay in HUD")
+    public Vec2Di debuffOverlay = new Vec2Di(0, -60);
+
+    @Config.Name("Animation tool")
+    @Config.Comment("Developer tool for animations")
+    @Config.RequiresMcRestart
     public boolean loadAnimationTool = false;
-    public ScopeRenderer scopeRenderer = ScopeRenderer.IN_MODEL;
-    public Coord2Di skillTreeSpacings = new Coord2Di("Skill spacings", 45, 45);
 
-    @Override
-    public ConfigBuilder toConfigFormat(ConfigBuilder builder) {
-        return builder
-                .push().name("Client Config").init()
-                .addBoolean(loadAnimationTool).name("Load animation tool").add(t -> loadAnimationTool = t.value())
-                .addEnum(scopeRenderer).name("Scope render").add(t -> scopeRenderer = t.value())
-                .run(debuffs::asConfig)
-                .run(skillTreeSpacings::asConfig)
-                .pop();
-    }
+    @Config.Name("Scope render type")
+    @Config.Comment("Manage scope overlay render")
+    public ScopeRenderer scopeRenderer = ScopeRenderer.IN_MODEL;
+
+    @Config.Name("Skill tree spacing")
+    @Config.Comment("Manage gap size between skills in skill tree display")
+    @Config.RequiresMcRestart
+    public Vec2Di skillTreeSpacing = new Vec2Di(45, 45);
+
 }

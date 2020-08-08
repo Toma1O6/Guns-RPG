@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.common.ModRegistry;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextComponentString;
 
@@ -20,21 +22,28 @@ public class GunData {
 
     public void awardKill(EntityPlayer player) {
         ++kills;
-        if(!isAtMaxLevel()) {
-            if(kills >= requiredKills) {
+        if (!isAtMaxLevel()) {
+            if (kills >= requiredKills) {
                 kills = 0;
                 ++level;
-                onLevelUp();
+                onLevelUp(player);
                 player.sendMessage(new TextComponentString("§aReached next weapon level!"));
             }
         }
     }
 
-    public void onLevelUp() {
+    public void onLevelUp(EntityPlayer player) {
         requiredKills = getRequiredKills(level);
         switch (level) {
-            case 8: awardPoints(2); break;
-            case 3: case 5: case 7: awardPoints(1); break;
+            case 8:
+                awardPoints(2);
+                player.addItemStackToInventory(new ItemStack(ModRegistry.GRPGItems.GOLD_EGG_SHARD));
+                break;
+            case 3:
+            case 5:
+            case 7:
+                awardPoints(1);
+                break;
         }
     }
 
@@ -87,14 +96,22 @@ public class GunData {
 
     private int getRequiredKills(int level) {
         switch (level) {
-            case 1: return 15;
-            case 2: return 30;
-            case 3: return 50;
-            case 4: return 100;
-            case 5: return 180;
-            case 6: return 240;
-            case 7: return 350;
-            default: return 0;
+            case 1:
+                return 15;
+            case 2:
+                return 30;
+            case 3:
+                return 50;
+            case 4:
+                return 100;
+            case 5:
+                return 180;
+            case 6:
+                return 240;
+            case 7:
+                return 350;
+            default:
+                return 0;
         }
     }
 }

@@ -8,7 +8,7 @@ import dev.toma.gunsrpg.common.capability.PlayerDataManager;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.entity.EntityCrossbowBolt;
-import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
+import dev.toma.gunsrpg.common.entity.EntityExplosiveArrow;
 import dev.toma.gunsrpg.common.item.ItemHammer;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
@@ -326,10 +326,11 @@ public class CommonEventHandler {
         World world = arrow.world;
         if(!world.isRemote) {
             RayTraceResult result = event.getRayTraceResult();
-            if(result != null && result.typeOfHit == RayTraceResult.Type.BLOCK && arrow.shootingEntity instanceof EntityExplosiveSkeleton) {
+            if(result != null && result.typeOfHit == RayTraceResult.Type.BLOCK && arrow instanceof EntityExplosiveArrow) {
                 arrow.setDead();
                 EnumFacing facing = result.sideHit;
                 BlockPos pos = result.getBlockPos().offset(facing);
+                int pw = ((EntityExplosiveArrow) arrow).blastSize;
                 switch (facing) {
                     case NORTH: case SOUTH: {
                         for(int y = -1; y < 2; y++) {
@@ -371,7 +372,7 @@ public class CommonEventHandler {
                 if(world.getBlockState(newPos).getBlock() == Blocks.BEDROCK) return;
                 world.destroyBlock(newPos, false);
                 IBlockState state = world.getBlockState(pos);
-                world.createExplosion(arrow, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 2.0F, true);
+                world.createExplosion(arrow, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pw, true);
             }
         }
     }
@@ -511,7 +512,7 @@ public class CommonEventHandler {
                 IAttributeInstance instance = entity.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
                 if(instance == null) return;
                 double v = instance.getAttributeValue();
-                instance.setBaseValue(v >= GRPGConfig.world.bloodMoonMobAgroRange ? v : GRPGConfig.world.bloodMoonMobAgroRange);
+                instance.setBaseValue(v >= GRPGConfig.worldConfig.bloodMoonMobAgroRange ? v : GRPGConfig.worldConfig.bloodMoonMobAgroRange);
                 EntityPlayer player = findNearestPlayer(entity, world);
                 if(player != null) entity.setRevengeTarget(player);
             }

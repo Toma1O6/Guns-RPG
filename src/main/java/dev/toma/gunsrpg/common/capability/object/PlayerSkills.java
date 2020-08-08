@@ -131,6 +131,7 @@ public class PlayerSkills {
     public void awardPoints() {
         if(level == 100) {
             addSkillPoints(25);
+            data.getPlayer().addItemStackToInventory(new ItemStack(ModRegistry.GRPGItems.GOLD_EGG_SHARD));
         } else if(level == 50) {
             addSkillPoints(20);
         } else if(level % 10 == 0) {

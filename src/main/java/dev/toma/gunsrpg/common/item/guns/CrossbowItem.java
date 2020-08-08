@@ -46,7 +46,7 @@ public class CrossbowItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return GRPGConfig.weapon.crossbow.normal;
+        return GRPGConfig.weaponConfig.crossbow.normal;
     }
 
     @Override
@@ -99,7 +99,7 @@ public class CrossbowItem extends GunItem {
 
     @Override
     public WeaponConfiguration getWeaponConfig() {
-        return GRPGConfig.weapon.crossbow;
+        return GRPGConfig.weaponConfig.crossbow;
     }
 
     @Override

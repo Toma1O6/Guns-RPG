@@ -39,7 +39,7 @@ public class SGItem extends GunItem {
 
     @Override
     public WeaponConfiguration getWeaponConfig() {
-        return GRPGConfig.weapon.shotgun;
+        return GRPGConfig.weaponConfig.shotgun;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class SGItem extends GunItem {
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SHOTGUN_PUMP_IN_ACTION) ? GRPGConfig.weapon.shotgun.upgraded : GRPGConfig.weapon.shotgun.normal;
+        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SHOTGUN_PUMP_IN_ACTION) ? GRPGConfig.weaponConfig.shotgun.upgraded : GRPGConfig.weaponConfig.shotgun.normal;
     }
 
     @Override
