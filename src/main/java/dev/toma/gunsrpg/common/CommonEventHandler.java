@@ -95,15 +95,22 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void entityEquipItem(EntityEquippedItemEvent event) {
-        if(event.getSlot() == EntityEquipmentSlot.MAINHAND && event.getEntity() instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.getEntity();
-            IAttributeInstance attributeInstance = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED);
-            attributeInstance.removeModifier(AdrenalineRushSkill.SKILL_MODIFIER);
-            AdrenalineRushSkill adrenalineRushSkill = PlayerDataFactory.getSkill(player, ModRegistry.Skills.ADRENALINE_RUSH_I);
-            if(adrenalineRushSkill != null && adrenalineRushSkill.apply(player)) {
-                adrenalineRushSkill = SkillUtil.getBestSkillFromOverrides(adrenalineRushSkill, player);
-                AttributeModifier attributeModifier = adrenalineRushSkill.getAttackSpeedBoost();
-                attributeInstance.applyModifier(attributeModifier);
+        if(event.getEntity() instanceof EntityPlayer) {
+            if(event.getSlot() == EntityEquipmentSlot.MAINHAND) {
+                EntityPlayer player = (EntityPlayer) event.getEntity();
+                IAttributeInstance attributeInstance = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED);
+                attributeInstance.removeModifier(AdrenalineRushSkill.SKILL_MODIFIER);
+                AdrenalineRushSkill adrenalineRushSkill = PlayerDataFactory.getSkill(player, ModRegistry.Skills.ADRENALINE_RUSH_I);
+                if(adrenalineRushSkill != null && adrenalineRushSkill.apply(player)) {
+                    adrenalineRushSkill = SkillUtil.getBestSkillFromOverrides(adrenalineRushSkill, player);
+                    AttributeModifier attributeModifier = adrenalineRushSkill.getAttackSpeedBoost();
+                    attributeInstance.applyModifier(attributeModifier);
+                }
+            } else if(event.getSlot() == EntityEquipmentSlot.CHEST) {
+                ItemStack stack = event.getStack();
+                if(stack.getItem() == Items.ELYTRA) {
+                    stack.setCount(0);
+                }
             }
         }
     }
@@ -400,7 +407,7 @@ public class CommonEventHandler {
             }
         }
         if(event.getEntity() instanceof IMob) {
-            if(!event.getEntity().world.isRemote && random.nextFloat() <= 0.015) {
+            if(!event.getEntity().world.isRemote && random.nextFloat() <= 0.016) {
                 Entity entity = event.getEntity();
                 entity.world.spawnEntity(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, new ItemStack(ModRegistry.GRPGItems.SKILLPOINT_BOOK)));
             }
