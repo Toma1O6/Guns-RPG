@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 public class EntityExplosiveSkeleton extends EntityMob implements IRangedAttackMob {
 
     private static final DataParameter<Boolean> SWINGING = EntityDataManager.createKey(EntityExplosiveSkeleton.class, DataSerializers.BOOLEAN);
-    private final EntityAIBowRangedAttackIgnoreSight<EntityExplosiveSkeleton> aiArrowAttack = new EntityAIBowRangedAttackIgnoreSight<>(this, 1.0D, 20, 15.0F);
+    private final EntityAIBowRangedAttackIgnoreSight<EntityExplosiveSkeleton> aiArrowAttack = new EntityAIBowRangedAttackIgnoreSight<>(this, 1.0D, 30, 15.0F);
     private final EntityAIAttackMelee aiAttackOnCollide = new EntityAIAttackMelee(this, 1.2D, false) {
 
         @Override
@@ -197,7 +197,7 @@ public class EntityExplosiveSkeleton extends EntityMob implements IRangedAttackM
     }
 
     protected EntityArrow getArrow(float p_190726_1_) {
-        EntityExplosiveArrow arrow = new EntityExplosiveArrow(this.world, this, 2);
+        EntityExplosiveArrow arrow = new EntityExplosiveArrow(this.world, this, 1);
         arrow.setEnchantmentEffectsFromEntity(this, p_190726_1_);
         return arrow;
     }

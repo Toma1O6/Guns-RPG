@@ -11,6 +11,7 @@ import dev.toma.gunsrpg.util.recipes.SmithingTableRecipes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -89,7 +90,8 @@ public class GuiSmithingTable extends GuiContainer {
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button.id == 0) {
-            NetworkManager.toServer(new SPacketCheckSmithingRecipe(smithingTable.getPos()));
+            boolean shiftKey = GuiScreen.isShiftKeyDown();
+            NetworkManager.toServer(new SPacketCheckSmithingRecipe(smithingTable.getPos(), shiftKey));
         }
     }
 

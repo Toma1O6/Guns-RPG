@@ -294,6 +294,7 @@ public class ClientEventHandler {
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         EntityPlayer player = Minecraft.getMinecraft().player;
         if (event.phase == TickEvent.Phase.END && player != null) {
+            AnimationManager.tick();
             startSprintListener.update(player);
             if (burst) {
                 if (shotsLeft > 0) {

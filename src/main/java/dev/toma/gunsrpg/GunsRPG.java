@@ -57,7 +57,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "1.0.0", acceptedMinecraftVersions = "[1.12.2]", updateJSON = "https://raw.githubusercontent.com/Toma1O6/Guns-RPG/master/update.json")
+@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "1.0.1", acceptedMinecraftVersions = "[1.12.2]", updateJSON = "https://raw.githubusercontent.com/Toma1O6/Guns-RPG/master/update.json")
 public class GunsRPG {
 
     public static final String MODID = "gunsrpg";

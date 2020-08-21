@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataManager;
@@ -161,7 +160,11 @@ public class CommonEventHandler {
                 String url = "https://www.curseforge.com/minecraft/mc-mods";
                 textComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
                 event.player.sendMessage(textComponent);
+                break;
             }
+            case UP_TO_DATE:
+                event.player.sendMessage(new TextComponentString(TextFormatting.GREEN + "[GunsRPG] Your mod is up to date, enjoy!"));
+                break;
         }
     }
 
@@ -485,8 +488,6 @@ public class CommonEventHandler {
                         }
                     }
                 }
-            } else {
-                AnimationManager.tick();
             }
             ShootingManager.updateAllShooting(world);
         }

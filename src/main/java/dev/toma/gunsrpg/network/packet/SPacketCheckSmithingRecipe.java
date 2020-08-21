@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.tileentity.TileEntitySmithingTable;
 import dev.toma.gunsrpg.util.recipes.SmithingTableRecipes;
 import io.netty.buffer.ByteBuf;
@@ -16,13 +17,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class SPacketCheckSmithingRecipe implements IMessage {
 
     private BlockPos pos;
+    private boolean shiftKey;
 
     public SPacketCheckSmithingRecipe() {
 
     }
 
-    public SPacketCheckSmithingRecipe(BlockPos pos) {
+    public SPacketCheckSmithingRecipe(BlockPos pos, boolean shiftkey) {
         this.pos = pos;
+        this.shiftKey = shiftkey;
     }
 
     @Override
@@ -30,11 +33,13 @@ public class SPacketCheckSmithingRecipe implements IMessage {
         buf.writeInt(pos.getX());
         buf.writeInt(pos.getY());
         buf.writeInt(pos.getZ());
+        buf.writeBoolean(shiftKey);
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
         pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
+        shiftKey = buf.readBoolean();
     }
 
     public static class Handler implements IMessageHandler<SPacketCheckSmithingRecipe, IMessage> {
@@ -50,11 +55,22 @@ public class SPacketCheckSmithingRecipe implements IMessage {
                     if(tileEntity instanceof TileEntitySmithingTable) {
                         TileEntitySmithingTable smithingTable = (TileEntitySmithingTable) tileEntity;
                         SmithingTableRecipes.SmithingRecipe recipe = SmithingTableRecipes.findRecipe(smithingTable);
-                        if(recipe != null && SmithingTableRecipes.canCraftRecipe(recipe, PlayerDataFactory.get(player).getSkills())) {
-                            ItemStack out = recipe.getOutput(player);
-                            player.addItemStackToInventory(out);
-                            for(SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
-                                smithingTable.getStackInSlot(ingredient.getIndex()).shrink(1);
+                        PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
+                        if(recipe != null && SmithingTableRecipes.canCraftRecipe(recipe, skills)) {
+                            if(message.shiftKey) {
+                                while (recipe == SmithingTableRecipes.findRecipe(smithingTable) && SmithingTableRecipes.canCraftRecipe(recipe, skills)) {
+                                    ItemStack out = recipe.getOutput(player);
+                                    player.addItemStackToInventory(out);
+                                    for(SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
+                                        smithingTable.getStackInSlot(ingredient.getIndex()).shrink(1);
+                                    }
+                                }
+                            } else {
+                                ItemStack out = recipe.getOutput(player);
+                                player.addItemStackToInventory(out);
+                                for(SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
+                                    smithingTable.getStackInSlot(ingredient.getIndex()).shrink(1);
+                                }
                             }
                         }
                     }

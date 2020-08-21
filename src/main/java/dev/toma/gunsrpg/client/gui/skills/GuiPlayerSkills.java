@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.gui.skills;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.gui.GuiConfirmSkillUnlock;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.GunData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
@@ -10,8 +11,6 @@ import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.interfaces.Clickable;
 import dev.toma.gunsrpg.common.skills.interfaces.OverlayRenderer;
-import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.SPacketUnlockSkill;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.math.Vec2Di;
 import dev.toma.gunsrpg.util.object.OptionalObject;
@@ -47,6 +46,14 @@ public class GuiPlayerSkills extends GuiScreen {
     private int clickedX, clickedY;
     private final OptionalObject<GunDisplay> display = OptionalObject.empty();
     private PlayerSkills skills;
+
+    public GuiPlayerSkills() {
+
+    }
+
+    public GuiPlayerSkills(SkillCategory category) {
+        this.displayedCategory = category;
+    }
 
     @Override
     public void initGui() {
@@ -200,7 +207,7 @@ public class GuiPlayerSkills extends GuiScreen {
         private final PlacementContext ctx;
         private final SkillType<?> type;
         private final List<Pair<Vec2Di, Vec2Di>> lines = new ArrayList<>();
-        private boolean obtained;
+        private final boolean obtained;
         private long hoverStartTime;
         private boolean hasStartedCounting;
         private final ITextComponent[] comments;
@@ -273,13 +280,11 @@ public class GuiPlayerSkills extends GuiScreen {
                 } else {
                     if(ctx.parent != null) {
                         if(PlayerDataFactory.hasActiveSkill(player, ctx.parent) && type.getCriteria().isUnlockAvailable(PlayerDataFactory.get(player), type)) {
-                            NetworkManager.toServer(new SPacketUnlockSkill(type, ctx.parent));
-                            obtained = true;
+                            mc.displayGuiScreen(new GuiConfirmSkillUnlock(type, ctx, GuiPlayerSkills.this.displayedCategory));
                             return true;
                         }
                     } else if(type.getCriteria().isUnlockAvailable(PlayerDataFactory.get(player), type)) {
-                        NetworkManager.toServer(new SPacketUnlockSkill(type));
-                        obtained = true;
+                        mc.displayGuiScreen(new GuiConfirmSkillUnlock(type, null, GuiPlayerSkills.this.displayedCategory));
                         return true;
                     }
                 }
