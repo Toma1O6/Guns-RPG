@@ -52,6 +52,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
@@ -206,6 +207,9 @@ public class CommonEventHandler {
                 float value = ((ItemFood) stack.getItem()).getHealAmount(stack);
                 PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
                 if(value >= 14 && skills.hasSkill(ModRegistry.Skills.WELL_FED_I)) {
+                    if(player.world.isRemote) {
+                        player.playSound(ModRegistry.GRPGSounds.USE_WELL_FED, 1.0F, 1.0F);
+                    }
                     SkillUtil.getBestSkillFromOverrides(skills.getSkill(ModRegistry.Skills.WELL_FED_I), player).applyEffects(player);
                 }
             }
@@ -433,6 +437,7 @@ public class CommonEventHandler {
                 players.forEach(p -> {
                     p.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 400, 2));
                     p.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 500, 1));
+                    p.world.playSound(p, p.posX, p.posY, p.posZ, ModRegistry.GRPGSounds.USE_AVENGE_ME_FRIENDS, SoundCategory.MASTER, 1.0F, 1.0F);
                 });
             }
         }

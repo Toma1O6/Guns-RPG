@@ -16,4 +16,26 @@ public class WorldConfiguration {
     @Config.Name("Rocket angel spawn chance")
     @Config.Comment({"Defines spawning chance for rocket angels", "0 = disable spawning"})
     public int rocketAngelSpawnChance = 2;
+
+    @Config.Name("Zombie gunner spawn")
+    @Config.Comment("Spawn chance for zombie gunner entity")
+    @Config.RequiresMcRestart
+    public int zombieGunnerSpawn = 15;
+
+    @Config.Name("Explosive skeleton spawn")
+    @Config.Comment("Spawn chance for explosive skeleton entity")
+    @Config.RequiresMcRestart
+    public int explosiveSkeletonSpawn = 15;
+
+    @Config.Name("Bloodmoon cycle")
+    @Config.Comment({"Defines bloodmoon cycle", "Set to -1 to disable"})
+    @Config.RangeInt(min = -1)
+    @Config.RequiresMcRestart
+    public int bloodmoonCycle = 7;
+
+    @Config.Name("Airdrop frequency (days)")
+    @Config.Comment({"Defines airdrop spawn frequency", "Set to -1 to disable"})
+    @Config.RangeInt(min = -1)
+    @Config.RequiresMcRestart
+    public int airdropFrequency = 3;
 }

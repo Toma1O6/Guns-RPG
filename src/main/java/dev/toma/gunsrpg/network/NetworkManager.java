@@ -31,6 +31,7 @@ public class NetworkManager {
         c_register(CPacketParticle.Handler.class, CPacketParticle.class);
         c_register(CPacketSendAnimation.Handler.class, CPacketSendAnimation.class);
         c_register(CPacketSyncTileEntity.Handler.class, CPacketSyncTileEntity.class);
+        c_register(CPacketNewSkills.Handler.class, CPacketNewSkills.class);
         s_register(SPacketShoot.Handler.class, SPacketShoot.class);
         s_register(SPacketRequestDataUpdate.Handler.class, SPacketRequestDataUpdate.class);
         s_register(ShootingManager.Update.Handler.class, ShootingManager.Update.class);

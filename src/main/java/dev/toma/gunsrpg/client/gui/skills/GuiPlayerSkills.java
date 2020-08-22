@@ -319,7 +319,13 @@ public class GuiPlayerSkills extends GuiScreen {
             if(renderer != null) {
                 renderer.drawOnTop(px, py, w, h);
             }
+            if(type.isNew) {
+                ModUtils.renderColor(px + 17, py, px + 20, py + 3, 1.0F, 1.0F, 0.0F, 1.0F);
+            }
             if(hovered) {
+                if(type.isNew) {
+                    type.isNew = false;
+                }
                 if(!hasStartedCounting || System.currentTimeMillis() - hoverStartTime <= 1000L) {
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(0, 0, 1);
@@ -364,6 +370,19 @@ public class GuiPlayerSkills extends GuiScreen {
         @Override
         public void draw(Minecraft mc, int mouseX, int mouseY, float partialTicks, int offsetX, int offsetY) {
             super.draw(mc, mouseX, mouseY, partialTicks, offsetX, offsetY);
+            Tree tree = SkillTreePlacement.treeMap.get(this.category);
+            boolean flag = false;
+            for (Branch branch : tree.branches) {
+                for (PlacementContext ctx : branch.getPlacements()) {
+                    if(ctx.type.isNew) {
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+            if(flag) {
+                ModUtils.renderColor(this.x + this.w - 3, this.y, this.x + this.w, this.y + 3, 1.0F, 1.0F, 0.0F, 1.0F);
+            }
             if(selected) {
                 fadeAway(x, y, x + 2, y + h);
                 ModUtils.renderColor(x, y + h - 2, x + w, y + h, 1.0F, 1.0F, 1.0F, 1.0F);

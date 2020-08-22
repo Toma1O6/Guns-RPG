@@ -32,6 +32,7 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
     private List<SkillType<?>> childList;
     private final Supplier<Item> customRenderFactory;
     public ItemStack cachedRenderStack;
+    public boolean isNew;
 
     private SkillType(Builder<S> builder) {
         this.instanceFactory = builder.factory;

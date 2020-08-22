@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.debuffs;
 
+import dev.toma.gunsrpg.common.CommonEventHandler;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,7 +9,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -44,11 +44,14 @@ public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
         if(active) return;
         for(DamageResult result : this.type.entityChances) {
             if(!result.allows(source)) continue;
-            float chance = result.getChance(player);
-            if(new Random().nextFloat() <= chance) {
-                this.active = true;
-                PlayerDataFactory.get(player).sync();
-                break;
+            float resistance = type.resistance.apply(PlayerDataFactory.get(player).getSkills());
+            if(CommonEventHandler.random.nextFloat() > resistance) {
+                float chance = result.getChance(player);
+                if(CommonEventHandler.random.nextFloat() <= chance) {
+                    this.active = true;
+                    PlayerDataFactory.get(player).sync();
+                    break;
+                }
             }
         }
     }

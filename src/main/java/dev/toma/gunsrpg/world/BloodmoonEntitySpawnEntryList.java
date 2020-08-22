@@ -25,7 +25,7 @@ public class BloodmoonEntitySpawnEntryList {
     public static EntityLivingBase createEntity(Entity entity, World world) {
         for(IBloodmoonSpawnEntry entry : entryList) {
             if(entry.condition().test(entity.getClass())) {
-                if(random.nextInt(entry.chance()) == 0) {
+                if(random.nextInt(20) < entry.chance()) {
                     return entry.spawn(world, entity);
                 }
             }

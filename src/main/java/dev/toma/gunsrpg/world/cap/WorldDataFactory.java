@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.world.cap;
 
 import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.entity.EntityAirdrop;
+import dev.toma.gunsrpg.config.GRPGConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
@@ -28,7 +29,7 @@ public class WorldDataFactory implements WorldDataCap {
     private final WorldEvent airdropEvent;
 
     public WorldDataFactory() {
-        bloodmoonEvent = new WorldEvent("bloodmoon", 7).changeDetected((world, event) -> {
+        bloodmoonEvent = new WorldEvent("bloodmoon", GRPGConfig.worldConfig.bloodmoonCycle).changeDetected((world, event) -> {
             sendUpdate(world);
             if(event.isActive()) {
                 this.aggroAllEntities(world);
@@ -38,7 +39,7 @@ public class WorldDataFactory implements WorldDataCap {
                 this.aggroAllEntities(world);
             }
         }).condition((world, event) -> world.getWorldTime() % 24000 >= 12500);
-        airdropEvent = new WorldEvent("airdrop", 3).changeDetected((world, event) -> {
+        airdropEvent = new WorldEvent("airdrop", GRPGConfig.worldConfig.airdropFrequency).changeDetected((world, event) -> {
             if(!event.isActive() || world.provider.getDimension() != 0) return;
             Random random = new Random();
             if(world.playerEntities.isEmpty()) return;
@@ -47,7 +48,8 @@ public class WorldDataFactory implements WorldDataCap {
             int x = random.nextInt(20) - random.nextInt(20);
             int z = random.nextInt(20) - random.nextInt(20);
             airdrop.setPosition(player.posX + x, player.posY + 75, player.posZ + z);
-            ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(ModRegistry.GRPGSounds.PLANE_FLY_BY, SoundCategory.MASTER, airdrop.posX, player.posY, airdrop.posZ, 8.0F, 1.0F));
+            world.playSound(null, airdrop.posX, airdrop.posY - 75, airdrop.posZ, ModRegistry.GRPGSounds.PLANE_FLY_BY, SoundCategory.MASTER, 10.0F, 1.0F);
+            //((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(ModRegistry.GRPGSounds.PLANE_FLY_BY, SoundCategory.MASTER, airdrop.posX, player.posY, airdrop.posZ, 8.0F, 1.0F));
             world.spawnEntity(airdrop);
         });
     }
@@ -64,6 +66,11 @@ public class WorldDataFactory implements WorldDataCap {
     @Override
     public boolean isBloodmoon() {
         return bloodmoonEvent.isActive();
+    }
+
+    @Override
+    public WorldEvent getBloodmoonEvent() {
+        return bloodmoonEvent;
     }
 
     @Override
@@ -140,6 +147,10 @@ public class WorldDataFactory implements WorldDataCap {
             }
         }
 
+        public boolean isDisabled() {
+            return day < 0;
+        }
+
         public WorldEvent changeDetected(BiConsumer<World, WorldEvent> action) {
             this.onTrigger = action;
             return this;
@@ -156,6 +167,7 @@ public class WorldDataFactory implements WorldDataCap {
         }
 
         public void update(World world, long day) {
+            if(isDisabled()) return;
             isActive = day > 0 && day % this.day == 0 && additionalCondition.test(world, this);
             if(prevTickState != isActive) {
                 onTrigger.accept(world, this);

@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
+import dev.toma.gunsrpg.config.GRPGConfig;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -90,7 +91,7 @@ public class CommandGRPG extends CommandBase {
                     break;
                 }
                 case "bloodmoon": {
-                    world.setWorldTime(181000);
+                    world.setWorldTime(GRPGConfig.worldConfig.bloodmoonCycle * 24000L + 13000L);
                     sendMessage(sender, TextFormatting.GREEN + "Enjoy the bloodmoon...");
                     break;
                 }

@@ -20,6 +20,7 @@ public class DebuffType<T extends Debuff> {
     protected Supplier<T> factory;
     protected int timecap;
     protected Function<PlayerSkills, Integer> extraTime;
+    protected Function<PlayerSkills, Float> resistance;
 
     protected DebuffType(TypeBuilder<T> builder) {
         this.name = builder.name;
@@ -28,6 +29,7 @@ public class DebuffType<T extends Debuff> {
         this.timecap = builder.tickCap;
         this.effectList = builder.effectList;
         this.extraTime = builder.extraTime;
+        this.resistance = builder.resistance;
     }
 
     public T createInstance() {
@@ -46,6 +48,7 @@ public class DebuffType<T extends Debuff> {
         private final Supplier<T> factory;
         private int tickCap;
         private Function<PlayerSkills, Integer> extraTime;
+        private Function<PlayerSkills, Float> resistance;
 
         private TypeBuilder(Supplier<T> factory) {
             this.factory = factory;
@@ -63,6 +66,11 @@ public class DebuffType<T extends Debuff> {
         public TypeBuilder<T> cap(int ticks, Function<PlayerSkills, Integer> extraTime) {
             this.tickCap = ticks;
             this.extraTime = extraTime;
+            return this;
+        }
+
+        public TypeBuilder<T> resistance(Function<PlayerSkills, Float> resistance) {
+            this.resistance = resistance;
             return this;
         }
 

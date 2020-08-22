@@ -8,6 +8,8 @@ import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.criteria.GunCriteria;
 import dev.toma.gunsrpg.common.skills.interfaces.TickableSkill;
+import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.CPacketNewSkills;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.OptionalObject;
@@ -25,6 +27,7 @@ import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -58,6 +61,10 @@ public class PlayerSkills {
     public float acrobaticsExplosionResistance;
     public float lightHunterMovementSpeed;
     public float agilitySpeed;
+    public float poisonChance;
+    public float bleedChance;
+    public float infectionChance;
+    public float brokenBoneChance;
 
     private Map<SkillCategory, List<TickableSkill>> tickCache;
 
@@ -117,13 +124,20 @@ public class PlayerSkills {
         kills = 0;
         if(notify) {
             EntityPlayer player = data.getPlayer();
-            player.sendMessage(new TextComponentString("§e=====[ LEVEL UP ]====="));
-            player.sendMessage(new TextComponentString("§eCurrent level: " + level));
+            player.sendMessage(new TextComponentString(TextFormatting.YELLOW + "=====[ LEVEL UP ]====="));
+            player.sendMessage(new TextComponentString(TextFormatting.YELLOW + "Current level: " + level));
             int count = 0;
+            List<SkillType<?>> unlockedSkills = new ArrayList<>();
             for(SkillType<?> type : ModRegistry.SKILLS) {
-                if(!(type.getCriteria() instanceof GunCriteria) && type.levelRequirement == level) count++;
+                if(!(type.getCriteria() instanceof GunCriteria) && type.levelRequirement == level) {
+                    count++;
+                    unlockedSkills.add(type);
+                }
             }
-            if(count > 0) player.sendMessage(new TextComponentString(String.format("§eNew skills available: %d", count)));
+            if(count > 0) {
+                player.sendMessage(new TextComponentString(String.format("§eNew skills available: %d", count)));
+                NetworkManager.toClient((EntityPlayerMP) player, new CPacketNewSkills(unlockedSkills));
+            }
             ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, player.posX, player.posY, player.posZ, 0.75F, 1.0F));
         }
     }
@@ -177,6 +191,10 @@ public class PlayerSkills {
         acrobaticsExplosionResistance = 0;
         lightHunterMovementSpeed = 0;
         agilitySpeed = 0;
+        poisonChance = 0;
+        bleedChance = 0;
+        infectionChance = 0;
+        brokenBoneChance = 0;
         clearCache();
         data.sync();
     }
@@ -336,6 +354,22 @@ public class PlayerSkills {
         return 0.1F + lightHunterMovementSpeed + agilitySpeed;
     }
 
+    public void setPoisonChance(float poisonChance) {
+        this.poisonChance = Math.max(this.poisonChance, poisonChance);
+    }
+
+    public void setBleedChance(float bleedChance) {
+        this.bleedChance = Math.max(this.bleedChance, bleedChance);
+    }
+
+    public void setInfectionChance(float infectionChance) {
+        this.infectionChance = Math.max(this.infectionChance, infectionChance);
+    }
+
+    public void setBrokenBoneChance(float brokenBoneChance) {
+        this.brokenBoneChance = Math.max(this.brokenBoneChance, brokenBoneChance);
+    }
+
     public NBTTagCompound writeData() {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("level", level);
@@ -374,6 +408,10 @@ public class PlayerSkills {
         nbt.setFloat("acrobaticsExplosionResistance", acrobaticsExplosionResistance);
         nbt.setFloat("lightMovementSpeed", lightHunterMovementSpeed);
         nbt.setFloat("agilitySpeed", agilitySpeed);
+        nbt.setFloat("poisonChance", poisonChance);
+        nbt.setFloat("bleedChance", bleedChance);
+        nbt.setFloat("infectionChance", infectionChance);
+        nbt.setFloat("brokenBoneChance", brokenBoneChance);
         return nbt;
     }
 
@@ -425,6 +463,10 @@ public class PlayerSkills {
         acrobaticsExplosionResistance = nbt.getFloat("acrobaticsExplosionResistance");
         lightHunterMovementSpeed = nbt.getFloat("lightMovementSpeed");
         agilitySpeed = nbt.getFloat("agilitySpeed");
+        poisonChance = nbt.getFloat("poisonChance");
+        bleedChance = nbt.getFloat("bleedChance");
+        infectionChance = nbt.getFloat("infectionChance");
+        brokenBoneChance = nbt.getFloat("brokenBoneChance");
     }
 
     public float getTotalFallResistance() {

@@ -15,6 +15,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.skills.*;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
+import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -184,6 +185,8 @@ public class ModRegistry {
         public static final SoundEvent FLARE_SHOOT = null;
         public static final SoundEvent SECOND_CHANCE_USE = null;
         public static final SoundEvent RELAXED_2 = null;
+        public static final SoundEvent USE_AVENGE_ME_FRIENDS = null;
+        public static final SoundEvent USE_WELL_FED = null;
     }
 
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
@@ -374,18 +377,54 @@ public class ModRegistry {
                     SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("medic").setTreeStartPoint().requiredLevel(10).price(3).childs(() -> ModUtils.newList(Skills.DOCTOR)).build(),
                     SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("doctor").requiredLevel(25).price(3).build(),
                     SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("efficient_meds").setTreeStartPoint().requiredLevel(30).price(2).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setPoisonResistance(20))).setResistanceCategory().setRegistryName("poison_resistance_i").setTreeStartPoint().requiredLevel(5).price(1).childAndOverride(() -> Skills.POISON_RESISTANCE_II).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setPoisonResistance(40))).setResistanceCategory().setRegistryName("poison_resistance_ii").requiredLevel(20).price(2).childAndOverride(() -> Skills.POISON_RESISTANCE_III).build(),
-                    SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setPoisonResistance(60))).setResistanceCategory().setRegistryName("poison_resistance_iii").requiredLevel(40).price(3).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setInfectionResistance(20))).setResistanceCategory().setRegistryName("infection_resistance_i").setTreeStartPoint().requiredLevel(5).price(1).childAndOverride(() -> Skills.INFECTION_RESISTANCE_II).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setInfectionResistance(40))).setResistanceCategory().setRegistryName("infection_resistance_ii").requiredLevel(20).price(2).childAndOverride(() -> Skills.INFECTION_RESISTANCE_III).build(),
-                    SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setInfectionResistance(60))).setResistanceCategory().setRegistryName("infection_resistance_iii").requiredLevel(40).price(3).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setBrokenBoneResistance(20))).setResistanceCategory().setRegistryName("broken_bone_resistance_i").setTreeStartPoint().requiredLevel(5).price(1).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_II).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setBrokenBoneResistance(40))).setResistanceCategory().setRegistryName("broken_bone_resistance_ii").requiredLevel(20).price(2).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_III).build(),
-                    SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setBrokenBoneResistance(60))).setResistanceCategory().setRegistryName("broken_bone_resistance_iii").requiredLevel(40).price(3).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setBleedResistance(20))).setResistanceCategory().setRegistryName("bleeding_resistance_i").setTreeStartPoint().requiredLevel(5).price(1).childAndOverride(() -> Skills.BLEEDING_RESISTANCE_II).build(),
-                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setBleedResistance(40))).setResistanceCategory().setRegistryName("bleeding_resistance_ii").requiredLevel(20).price(2).childAndOverride(() -> Skills.BLEEDING_RESISTANCE_III).build(),
-                    SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setBleedResistance(60))).setResistanceCategory().setRegistryName("bleeding_resistance_iii").requiredLevel(40).price(3).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> {
+                        skills.setPoisonResistance(20);
+                        skills.setPoisonChance(0.15F);
+                    })).setResistanceCategory().setRegistryName("poison_resistance_i").setTreeStartPoint().requiredLevel(5).price(1).descriptionLength(2).childAndOverride(() -> Skills.POISON_RESISTANCE_II).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> {
+                        skills.setPoisonResistance(40);
+                        skills.setPoisonChance(0.30F);
+                    })).setResistanceCategory().setRegistryName("poison_resistance_ii").requiredLevel(20).price(2).descriptionLength(2).childAndOverride(() -> Skills.POISON_RESISTANCE_III).build(),
+                    SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> {
+                        skills.setPoisonResistance(60);
+                        skills.setPoisonChance(0.45F);
+                    })).setResistanceCategory().setRegistryName("poison_resistance_iii").requiredLevel(40).price(3).descriptionLength(2).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> {
+                        skills.setInfectionResistance(20);
+                        skills.setInfectionChance(0.05F);
+                    })).setResistanceCategory().setRegistryName("infection_resistance_i").setTreeStartPoint().requiredLevel(5).price(1).descriptionLength(2).childAndOverride(() -> Skills.INFECTION_RESISTANCE_II).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> {
+                        skills.setInfectionResistance(40);
+                        skills.setInfectionChance(0.15F);
+                    })).setResistanceCategory().setRegistryName("infection_resistance_ii").requiredLevel(20).price(2).descriptionLength(2).childAndOverride(() -> Skills.INFECTION_RESISTANCE_III).build(),
+                    SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> {
+                        skills.setInfectionResistance(60);
+                        skills.setInfectionChance(0.30F);
+                    })).setResistanceCategory().setRegistryName("infection_resistance_iii").requiredLevel(40).descriptionLength(2).price(3).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> {
+                        skills.setBrokenBoneResistance(20);
+                        skills.setBrokenBoneChance(0.10F);
+                    })).setResistanceCategory().setRegistryName("broken_bone_resistance_i").setTreeStartPoint().requiredLevel(5).price(1).descriptionLength(2).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_II).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> {
+                        skills.setBrokenBoneResistance(40);
+                        skills.setBrokenBoneChance(0.20F);
+                    })).setResistanceCategory().setRegistryName("broken_bone_resistance_ii").requiredLevel(20).price(2).descriptionLength(2).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_III).build(),
+                    SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> {
+                        skills.setBrokenBoneResistance(60);
+                        skills.setBrokenBoneChance(0.35F);
+                    })).setResistanceCategory().setRegistryName("broken_bone_resistance_iii").requiredLevel(40).price(3).descriptionLength(2).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> {
+                        skills.setBleedResistance(20);
+                        skills.setBleedChance(0.15F);
+                    })).setResistanceCategory().setRegistryName("bleeding_resistance_i").setTreeStartPoint().requiredLevel(5).price(1).descriptionLength(2).childAndOverride(() -> Skills.BLEEDING_RESISTANCE_II).build(),
+                    SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> {
+                        skills.setBleedResistance(40);
+                        skills.setBleedChance(0.30F);
+                    })).setResistanceCategory().setRegistryName("bleeding_resistance_ii").requiredLevel(20).price(2).descriptionLength(2).childAndOverride(() -> Skills.BLEEDING_RESISTANCE_III).build(),
+                    SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> {
+                        skills.setBleedResistance(60);
+                        skills.setBleedChance(0.45F);
+                    })).setResistanceCategory().setRegistryName("bleeding_resistance_iii").descriptionLength(2).requiredLevel(40).price(3).build(),
                     SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> {
                         skills.setAcrobaticsFallResistance(0.20F);
                         skills.setAcrobaticsExplosionResistance(0.10F);
@@ -616,9 +655,9 @@ public class ModRegistry {
                     makeBuilder("sg_pellet", EntityShotgunPellet.class).tracker(128, 1, true).build(),
                     makeBuilder("crossbow_bolt", EntityCrossbowBolt.class).tracker(256, 1, true).build(),
                     makeBuilder("airdrop", EntityAirdrop.class).tracker(256, 1, true).build(),
-                    makeBuilder("explosive_skeleton", EntityExplosiveSkeleton.class).tracker(80, 3, true).egg(0xB46F67, 0x494949).spawn(EnumCreatureType.MONSTER, 15, 1, 3, ForgeRegistries.BIOMES).build(),
+                    makeBuilder("explosive_skeleton", EntityExplosiveSkeleton.class).tracker(80, 3, true).egg(0xB46F67, 0x494949).spawn(EnumCreatureType.MONSTER, GRPGConfig.worldConfig.explosiveSkeletonSpawn, 1, 3, ForgeRegistries.BIOMES).build(),
                     makeBuilder("explosive_arrow", EntityExplosiveArrow.class).tracker(64, 20, true).build(),
-                    makeBuilder("zombie_gunner", EntityZombieGunner.class).tracker(80, 3, true).egg(0x00aa00, 0xdbdb00).spawn(EnumCreatureType.MONSTER, 15, 2, 5, ForgeRegistries.BIOMES).build(),
+                    makeBuilder("zombie_gunner", EntityZombieGunner.class).tracker(80, 3, true).egg(0x00aa00, 0xdbdb00).spawn(EnumCreatureType.MONSTER, GRPGConfig.worldConfig.zombieGunnerSpawn, 2, 5, ForgeRegistries.BIOMES).build(),
                     makeBuilder("bloodmoon_golem", EntityBloodmoonGolem.class).tracker(80, 3, true).egg(0x444444, 0x990000).build(),
                     makeBuilder("grenade", EntityGrenade.class).tracker(64, 1, true).build(),
                     makeBuilder("flare", EntityFlare.class).tracker(256, 1, true).build(),
@@ -666,7 +705,9 @@ public class ModRegistry {
                     sound("crossbow_reload_fast"),
                     sound("flare_shoot"),
                     sound("second_chance_use"),
-                    sound("relaxed_2")
+                    sound("relaxed_2"),
+                    sound("use_avenge_me_friends"),
+                    sound("use_well_fed")
             );
         }
 
