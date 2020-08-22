@@ -85,6 +85,7 @@ public class GuiSmithingTable extends GuiContainer {
                 }
             }
         }
+        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
     }
 
     @Override
@@ -106,10 +107,6 @@ public class GuiSmithingTable extends GuiContainer {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
-        if (recipeList.isEmpty()) {
-            String text = "No known recipes";
-            mc.fontRenderer.drawString(text, guiLeft + 6 + (96 - fontRenderer.getStringWidth(text)) / 2, guiTop + 25, 0xff0000);
-        }
         clicked.ifPresent(button -> {
             int px = guiLeft + xSize;
             int py = guiTop;
