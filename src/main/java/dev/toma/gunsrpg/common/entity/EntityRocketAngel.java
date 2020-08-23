@@ -52,7 +52,7 @@ public class EntityRocketAngel extends EntityMob {
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(45.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(48.0D);
     }
@@ -210,31 +210,30 @@ public class EntityRocketAngel extends EntityMob {
 
         public void onUpdateMoveHelper() {
             if (this.action == EntityMoveHelper.Action.MOVE_TO) {
-                double d0 = this.posX - EntityRocketAngel.this.posX;
-                double d1 = this.posY - EntityRocketAngel.this.posY;
-                double d2 = this.posZ - EntityRocketAngel.this.posZ;
-                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                d3 = MathHelper.sqrt(d3);
+                double x = this.posX - EntityRocketAngel.this.posX;
+                double y = this.posY - EntityRocketAngel.this.posY;
+                double z = this.posZ - EntityRocketAngel.this.posZ;
+                double dist = x * x + y * y + z * z;
+                dist = MathHelper.sqrt(dist);
 
-                if (d3 < EntityRocketAngel.this.getEntityBoundingBox().getAverageEdgeLength()) {
+                if (dist < EntityRocketAngel.this.getEntityBoundingBox().getAverageEdgeLength()) {
                     this.action = EntityMoveHelper.Action.WAIT;
                     EntityRocketAngel.this.motionX *= 0.5D;
                     EntityRocketAngel.this.motionY *= 0.5D;
                     EntityRocketAngel.this.motionZ *= 0.5D;
                 } else {
-                    EntityRocketAngel.this.motionX += d0 / d3 * 0.05D * this.speed;
-                    EntityRocketAngel.this.motionY += d1 / d3 * 0.05D * this.speed;
-                    EntityRocketAngel.this.motionZ += d2 / d3 * 0.05D * this.speed;
+                    EntityRocketAngel.this.motionX += x / dist * 0.05D * this.speed;
+                    EntityRocketAngel.this.motionY += y / dist * 0.05D * this.speed;
+                    EntityRocketAngel.this.motionZ += z / dist * 0.05D * this.speed;
 
                     if (EntityRocketAngel.this.getAttackTarget() == null) {
                         EntityRocketAngel.this.rotationYaw = -((float) MathHelper.atan2(EntityRocketAngel.this.motionX, EntityRocketAngel.this.motionZ)) * (180F / (float) Math.PI);
-                        EntityRocketAngel.this.renderYawOffset = EntityRocketAngel.this.rotationYaw;
                     } else {
                         double d4 = EntityRocketAngel.this.getAttackTarget().posX - EntityRocketAngel.this.posX;
                         double d5 = EntityRocketAngel.this.getAttackTarget().posZ - EntityRocketAngel.this.posZ;
                         EntityRocketAngel.this.rotationYaw = -((float) MathHelper.atan2(d4, d5)) * (180F / (float) Math.PI);
-                        EntityRocketAngel.this.renderYawOffset = EntityRocketAngel.this.rotationYaw;
                     }
+                    EntityRocketAngel.this.renderYawOffset = EntityRocketAngel.this.rotationYaw;
                 }
             }
         }

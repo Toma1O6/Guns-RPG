@@ -34,7 +34,7 @@ public class BloodmoonEntitySpawnEntryList {
     }
 
     static {
-        register(EntitySpider.class, 5, (world, entity) -> {
+        register(EntitySpider.class, 7, (world, entity) -> {
             EntityCaveSpider spider = new EntityCaveSpider(world);
             spider.setPosition(entity.posX, entity.posY, entity.posZ);
             return spider;
@@ -44,7 +44,7 @@ public class BloodmoonEntitySpawnEntryList {
             rocketAngel.setPosition(entity.posX, entity.posY, entity.posZ);
             return rocketAngel;
         });
-        register(EntityZombie.class, 3, (world, entity) -> {
+        register(EntityZombie.class, 4, (world, entity) -> {
             EntityBlaze blaze = new EntityBlaze(world);
             blaze.setPosition(entity.posX, entity.posY, entity.posZ);
             return blaze;
@@ -55,7 +55,7 @@ public class BloodmoonEntitySpawnEntryList {
             witherSkeleton.onInitialSpawn(world.getDifficultyForLocation(entity.getPosition()), null);
             return witherSkeleton;
         });
-        register(EntityZombie.class, 7, (world, entity) -> {
+        register(EntityZombie.class, 4, (world, entity) -> {
             EntityBloodmoonGolem golem = new EntityBloodmoonGolem(world);
             golem.setPosition(entity.posX, entity.posY, entity.posZ);
             return golem;

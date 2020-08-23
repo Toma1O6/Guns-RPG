@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.client.render;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.ModelExplosiveSkeleton;
 import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
-import net.minecraft.client.model.ModelSkeleton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -21,8 +20,8 @@ public class RenderExplosiveSkeleton extends RenderBiped<EntityExplosiveSkeleton
         addLayer(new LayerBipedArmor(this) {
             @Override
             protected void initArmor() {
-                this.modelLeggings = new ModelSkeleton(0.5F, true);
-                this.modelArmor = new ModelSkeleton(1.0F, true);
+                this.modelLeggings = new ModelExplosiveSkeleton(0.5F, true);
+                this.modelArmor = new ModelExplosiveSkeleton(1.0F, true);
             }
         });
     }

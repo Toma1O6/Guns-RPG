@@ -135,7 +135,7 @@ public class PlayerSkills {
                 }
             }
             if(count > 0) {
-                player.sendMessage(new TextComponentString(String.format("§eNew skills available: %d", count)));
+                player.sendMessage(new TextComponentString(String.format(TextFormatting.YELLOW + "New skills available: %d", count)));
                 NetworkManager.toClient((EntityPlayerMP) player, new CPacketNewSkills(unlockedSkills));
             }
             ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, player.posX, player.posY, player.posZ, 0.75F, 1.0F));

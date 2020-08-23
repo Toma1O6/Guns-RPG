@@ -36,8 +36,9 @@ public class EntityBloodmoonGolem extends EntityCreature implements IAnimals {
         this.setSize(1.4F, 2.7F);
     }
 
+    @Override
     protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, true));
+        this.tasks.addTask(1, new MeleeAttack(this, 1.0D, true));
         this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.6D));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
@@ -46,6 +47,7 @@ public class EntityBloodmoonGolem extends EntityCreature implements IAnimals {
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
     }
 
+    @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100.0D);
@@ -54,10 +56,12 @@ public class EntityBloodmoonGolem extends EntityCreature implements IAnimals {
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(20.0D);
     }
 
+    @Override
     protected int decreaseAirSupply(int air) {
         return air;
     }
 
+    @Override
     protected void collideWithEntity(Entity entityIn) {
         if (entityIn instanceof IMob && !(entityIn instanceof EntityCreeper) && this.getRNG().nextInt(20) == 0) {
             this.setAttackTarget((EntityLivingBase) entityIn);
@@ -65,6 +69,7 @@ public class EntityBloodmoonGolem extends EntityCreature implements IAnimals {
         super.collideWithEntity(entityIn);
     }
 
+    @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
@@ -84,10 +89,11 @@ public class EntityBloodmoonGolem extends EntityCreature implements IAnimals {
         }
     }
 
+    @Override
     public boolean attackEntityAsMob(Entity entityIn) {
         this.attackTimer = 10;
         this.world.setEntityState(this, (byte) 4);
-        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) (7 + this.rand.nextInt(15)));
+        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), 12.0F);
         if (flag) {
             Vec3d vec3d = this.getLookVec();
             entityIn.motionX = vec3d.x * 1.5;
@@ -100,18 +106,30 @@ public class EntityBloodmoonGolem extends EntityCreature implements IAnimals {
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
+    public void handleStatusUpdate(byte id) {
+        if(id == 4) {
+            this.attackTimer = 10;
+            this.playSound(SoundEvents.ENTITY_IRONGOLEM_ATTACK, 1.0F, 1.0F);
+        } else super.handleStatusUpdate(id);
+    }
+
+    @SideOnly(Side.CLIENT)
     public int getAttackTimer() {
         return this.attackTimer;
     }
 
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundEvents.ENTITY_IRONGOLEM_HURT;
     }
 
+    @Override
     protected SoundEvent getDeathSound() {
         return SoundEvents.ENTITY_IRONGOLEM_DEATH;
     }
 
+    @Override
     protected void playStepSound(BlockPos pos, Block blockIn) {
         this.playSound(SoundEvents.ENTITY_IRONGOLEM_STEP, 1.0F, 1.0F);
     }
@@ -119,5 +137,18 @@ public class EntityBloodmoonGolem extends EntityCreature implements IAnimals {
     @Nullable
     protected ResourceLocation getLootTable() {
         return LootTableList.ENTITIES_IRON_GOLEM;
+    }
+
+    static class MeleeAttack extends EntityAIAttackMelee {
+
+        MeleeAttack(EntityCreature creature, double speed, boolean longMemory) {
+            super(creature, speed, longMemory);
+        }
+
+        @Override
+        protected double getAttackReachSqr(EntityLivingBase attackTarget) {
+            float f = attacker.width - 0.6F;
+            return f * 2F * f * 2F + attackTarget.width;
+        }
     }
 }

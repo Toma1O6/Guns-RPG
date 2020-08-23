@@ -15,7 +15,7 @@ public class WorldConfiguration {
 
     @Config.Name("Rocket angel spawn chance")
     @Config.Comment({"Defines spawning chance for rocket angels", "0 = disable spawning"})
-    public int rocketAngelSpawnChance = 2;
+    public int rocketAngelSpawnChance = 5;
 
     @Config.Name("Zombie gunner spawn")
     @Config.Comment("Spawn chance for zombie gunner entity")

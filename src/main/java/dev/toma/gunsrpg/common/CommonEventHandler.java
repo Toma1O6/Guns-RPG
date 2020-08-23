@@ -157,16 +157,20 @@ public class CommonEventHandler {
         ForgeVersion.CheckResult result = ForgeVersion.getResult(Loader.instance().activeModContainer());
         switch (result.status) {
             case OUTDATED: case BETA_OUTDATED: {
-                TextComponentString textComponent = new TextComponentString(TextFormatting.YELLOW + "[GunsRPG] Your mod is outdated. Click HERE to get latest update");
+                TextComponentString textComponent = new TextComponentString(getMessageLogo() + TextFormatting.GREEN + "Your mod is " + TextFormatting.RED + "outdated" + TextFormatting.GREEN + ". Click " + TextFormatting.BOLD + "HERE" + TextFormatting.RESET.toString() + TextFormatting.GREEN + " to get latest update");
                 String url = "https://www.curseforge.com/minecraft/mc-mods";
                 textComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
                 event.player.sendMessage(textComponent);
                 break;
             }
             case UP_TO_DATE:
-                event.player.sendMessage(new TextComponentString(TextFormatting.GREEN + "[GunsRPG] Your mod is up to date, enjoy!"));
+                event.player.sendMessage(new TextComponentString(getMessageLogo() + TextFormatting.GREEN + "Your mod is up to date, enjoy!"));
                 break;
         }
+    }
+
+    private static String getMessageLogo() {
+        return TextFormatting.BLUE + "[" + TextFormatting.YELLOW + "GunsRPG" + TextFormatting.BLUE + "]" + TextFormatting.RESET;
     }
 
     @SubscribeEvent

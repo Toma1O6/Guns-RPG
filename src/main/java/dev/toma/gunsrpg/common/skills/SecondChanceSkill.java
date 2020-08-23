@@ -4,23 +4,24 @@ import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.interfaces.Cooldown;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.SoundCategory;
+
+import java.util.function.Supplier;
 
 public class SecondChanceSkill extends BasicSkill implements Cooldown {
 
     private final int maxCooldown;
     private final int healAmount;
-    private final int regenTime;
+    private final Supplier<PotionEffect> effectSupplier;
     private int cooldown;
 
-    public SecondChanceSkill(SkillType<?> type, int maxCooldown, int healAmount, int regenTime) {
+    public SecondChanceSkill(SkillType<?> type, int maxCooldown, int healAmount, Supplier<PotionEffect> effectSupplier) {
         super(type);
         this.maxCooldown = maxCooldown;
         this.healAmount = healAmount;
-        this.regenTime = regenTime;
+        this.effectSupplier = effectSupplier;
     }
 
     @Override
@@ -52,7 +53,7 @@ public class SecondChanceSkill extends BasicSkill implements Cooldown {
     public void onUse(EntityPlayer player) {
         player.setHealth(this.healAmount);
         player.world.playSound(null, player.posX, player.posY, player.posZ, ModRegistry.GRPGSounds.SECOND_CHANCE_USE, SoundCategory.MASTER, 1.0F, 1.0F);
-        player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, regenTime * 20, 1));
+        player.addPotionEffect(effectSupplier.get());
     }
 
     @Override

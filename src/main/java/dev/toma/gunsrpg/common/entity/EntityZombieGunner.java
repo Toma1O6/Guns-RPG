@@ -19,6 +19,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
@@ -64,6 +65,7 @@ public class EntityZombieGunner extends EntityMob {
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
     }
 
+    @Override
     public void onLivingUpdate() {
         if (this.world.isDaytime() && !this.world.isRemote) {
             float f = this.getBrightness();
@@ -90,20 +92,28 @@ public class EntityZombieGunner extends EntityMob {
     }
 
     @Override
+    public EnumHandSide getPrimaryHand() {
+        return EnumHandSide.RIGHT;
+    }
+
+    @Override
     public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.UNDEAD;
     }
 
+    @Override
     protected SoundEvent getAmbientSound()
     {
         return SoundEvents.ENTITY_ZOMBIE_AMBIENT;
     }
 
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         return SoundEvents.ENTITY_ZOMBIE_HURT;
     }
 
+    @Override
     protected SoundEvent getDeathSound()
     {
         return SoundEvents.ENTITY_ZOMBIE_DEATH;
@@ -114,6 +124,7 @@ public class EntityZombieGunner extends EntityMob {
         return SoundEvents.ENTITY_ZOMBIE_STEP;
     }
 
+    @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
