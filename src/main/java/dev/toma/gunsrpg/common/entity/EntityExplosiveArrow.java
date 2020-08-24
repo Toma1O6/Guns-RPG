@@ -28,7 +28,7 @@ public class EntityExplosiveArrow extends EntityArrow {
     @Override
     protected void arrowHit(EntityLivingBase living) {
         if(!world.isRemote) {
-            world.createExplosion(this, living.posX, living.posY + 2, living.posZ, blastSize, true);
+            world.createExplosion(this, living.posX, living.posY, living.posZ, shootingEntity instanceof EntityExplosiveSkeleton ? 2 : 1, false);
             setDead();
         }
     }

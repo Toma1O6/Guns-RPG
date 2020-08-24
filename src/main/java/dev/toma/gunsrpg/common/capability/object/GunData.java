@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 
 public class GunData {
 
@@ -27,7 +28,7 @@ public class GunData {
                 kills = 0;
                 ++level;
                 onLevelUp(player);
-                player.sendMessage(new TextComponentString("§aReached next weapon level!"));
+                player.sendMessage(new TextComponentString(TextFormatting.GREEN + "Reached next weapon level!"));
             }
         }
     }

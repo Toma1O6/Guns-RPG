@@ -50,9 +50,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
@@ -198,6 +196,18 @@ public class CommonEventHandler {
             if(f > 1.0F) {
                 float f2 = f * (1.0F + f1);
                 event.setNewSpeed(f2);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void disableShield(PlayerInteractEvent.RightClickItem event) {
+        if(event.getHand() == EnumHand.OFF_HAND) {
+            EntityPlayer player = event.getEntityPlayer();
+            ItemStack mainHand = player.getHeldItemMainhand();
+            if(mainHand.getItem() instanceof GunItem) {
+                event.setCancellationResult(EnumActionResult.FAIL);
+                event.setCanceled(true);
             }
         }
     }
@@ -479,16 +489,6 @@ public class CommonEventHandler {
             data.tick();
             player.capabilities.walkSpeed = data.getSkills().getMovementSpeed();
             if(!world.isRemote) {
-                ItemStack mainHandStack = player.getHeldItemMainhand();
-                ItemStack offHandStack = player.getHeldItemOffhand();
-                if(mainHandStack.getItem() instanceof GunItem && offHandStack.getItem() instanceof ItemShield) {
-                    if(!player.world.isRemote) {
-                        EntityItem entityItem = new EntityItem(player.world, player.posX, player.posY, player.posZ, offHandStack.copy());
-                        entityItem.setPickupDelay(0);
-                        player.world.spawnEntity(entityItem);
-                        player.inventory.removeStackFromSlot(40);
-                    }
-                }
                 if(world.getWorldTime() % 200 == 0) {
                     for(int i = 0; i < world.loadedTileEntityList.size(); i++) {
                         TileEntity te = world.loadedTileEntityList.get(i);

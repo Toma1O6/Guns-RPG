@@ -1,8 +1,8 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods",
     "promos": {
-        "1.12.2-latest": "1.0.3",
-        "1.12.2-recommended": "1.0.3"
+        "1.12.2-latest": "1.0.4",
+        "1.12.2-recommended": "1.0.4"
     },
     "1.12.2": {
         "0.1.0": "Initial alpha update",
@@ -12,6 +12,10 @@
         "0.1.4": "Gold dragon damage rebalance, config rewrite",
         "0.1.5": "Gold dragon gains passive regeneration effect",
         "0.1.6": "Gold dragon spawns only 2 zombie gunners as help",
-        "1.0.0": "First full release"
+        "1.0.0": "First full release",
+        "1.0.1": "Balancing",
+        "1.0.2": "Balancing",
+        "1.0.3": "More config options",
+        "1.0.4": "Buff explosive skeletons"
     }
 }
