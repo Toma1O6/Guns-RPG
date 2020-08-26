@@ -1,8 +1,8 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods",
     "promos": {
-        "1.12.2-latest": "1.0.4",
-        "1.12.2-recommended": "1.0.4"
+        "1.12.2-latest": "1.0.5",
+        "1.12.2-recommended": "1.0.5"
     },
     "1.12.2": {
         "0.1.0": "Initial alpha update",
@@ -16,6 +16,7 @@
         "1.0.1": "Balancing",
         "1.0.2": "Balancing",
         "1.0.3": "More config options",
-        "1.0.4": "Buff explosive skeletons"
+        "1.0.4": "Buff explosive skeletons",
+        "1.0.5": "Some bug fixes"
     }
 }

@@ -221,9 +221,6 @@ public class CommonEventHandler {
                 float value = ((ItemFood) stack.getItem()).getHealAmount(stack);
                 PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
                 if(value >= 14 && skills.hasSkill(ModRegistry.Skills.WELL_FED_I)) {
-                    if(player.world.isRemote) {
-                        player.playSound(ModRegistry.GRPGSounds.USE_WELL_FED, 1.0F, 1.0F);
-                    }
                     SkillUtil.getBestSkillFromOverrides(skills.getSkill(ModRegistry.Skills.WELL_FED_I), player).applyEffects(player);
                 }
             }
@@ -407,7 +404,7 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onEntityDamaged(LivingHurtEvent event) {
-        if(event.getAmount() > 0 && event.getEntity() instanceof EntityPlayer) {
+        if(event.getAmount() >= 1 && event.getEntity() instanceof EntityPlayer) {
             PlayerData data = PlayerDataFactory.get((EntityPlayer) event.getEntity());
             data.getDebuffData().forEachDebuff(b -> b.onHurt(event.getSource(), (EntityPlayer) event.getEntity()));
         }

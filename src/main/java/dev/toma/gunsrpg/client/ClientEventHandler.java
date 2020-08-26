@@ -38,6 +38,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.EnumHand;
@@ -256,6 +257,11 @@ public class ClientEventHandler {
     public static void renderHandEvent(RenderSpecificHandEvent event) {
         EntityPlayerSP player = Minecraft.getMinecraft().player;
         ItemStack stack = event.getItemStack();
+        if(event.getHand() == EnumHand.OFF_HAND) {
+            if(event.getItemStack().getItem() == Items.SHIELD && player.getHeldItemMainhand().getItem() instanceof GunItem) {
+                event.setCanceled(true);
+            }
+        }
         if (PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.clientConfig.scopeRenderer.isTextureOverlay() && (PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE || PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.CROSSBOW)) {
             event.setCanceled(true);
             return;
