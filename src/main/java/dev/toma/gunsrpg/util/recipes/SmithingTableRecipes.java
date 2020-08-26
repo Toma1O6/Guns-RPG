@@ -30,7 +30,7 @@ public class SmithingTableRecipes {
     6 7 8
      */
     public static void register() {
-        register(new RecipeBuilder().outputs(Items.GUNPOWDER, SkillUtil::getGunpowderCraftAmount).withIngredient(new int[] {0, 4}, 1, Items.COAL).withIngredient(1, Items.DYE, 15).withIngredient(3, Items.SUGAR).requires(ModRegistry.Skills.GUNPOWDER_NOVICE).asRecipe());
+        register(new RecipeBuilder().outputs(Items.GUNPOWDER, SkillUtil::getGunpowderCraftAmount).withIngredient(new int[]{0, 4}, 1, Items.COAL).withIngredient(1, Items.DYE, 15).withIngredient(3, Items.SUGAR).requires(ModRegistry.Skills.GUNPOWDER_NOVICE).asRecipe());
         register(new RecipeBuilder().outputs(new ItemStack(Items.DYE, 1, 15), SkillUtil::getBonemealCraftAmount).withIngredient(0, Items.BONE).requires(ModRegistry.Skills.BONE_GRINDER_I).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.LARGE_BULLET_CASING).withIngredient(new int[]{0, 1}, ModRegistry.GRPGItems.SMALL_BULLET_CASING).requires(ModRegistry.Skills.WOODEN_AMMO_SMITH).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.SHOTGUN_SHELL).withIngredient(0, Items.DYE, 1).withIngredient(1, ModRegistry.GRPGItems.LARGE_BULLET_CASING).withIngredient(2, Items.PAPER).requires(ModRegistry.Skills.WOODEN_AMMO_SMITH).asRecipe());
@@ -79,16 +79,16 @@ public class SmithingTableRecipes {
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.EMERALD_AMMO_762MM, SkillUtil::getAmmoAmount).withIngredient(0, Items.EMERALD).withIngredient(new int[]{3, 4, 5}, Items.GUNPOWDER).withIngredient(6, ModRegistry.GRPGItems.LARGE_BULLET_CASING).requires(ModRegistry.Skills.EMERALD_AMMO_SMITH).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.AMETHYST_AMMO_762MM, SkillUtil::getAmmoAmount).withIngredient(0, ModRegistry.GRPGItems.AMETHYST).withIngredient(new int[]{3, 4, 5}, Items.GUNPOWDER).withIngredient(6, ModRegistry.GRPGItems.LARGE_BULLET_CASING).requires(ModRegistry.Skills.AMETHYST_AMMO_SMITH).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.GRENADE).withIngredient(new int[]{1, 3, 5, 7}, Items.IRON_INGOT).withIngredient(4, Blocks.TNT).withIngredient(2, Items.FLINT_AND_STEEL).requires(ModRegistry.Skills.GRENADES).asRecipe());
-        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.MASSIVE_GRENADE).withIngredient(new int[]{0,2,3,5,6,7,8}, Items.GOLD_NUGGET).withIngredient(1, Blocks.TNT).withIngredient(4, ModRegistry.GRPGItems.GRENADE).requires(ModRegistry.Skills.MASSIVE_GRENADES).asRecipe());
-        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.IMPACT_GRENADE).withIngredient(new int[]{0,2,6,8}, Items.REDSTONE).withIngredient(new int[]{3,7,5}, Items.GLOWSTONE_DUST).withIngredient(1, Items.BLAZE_POWDER).withIngredient(4, ModRegistry.GRPGItems.GRENADE).requires(ModRegistry.Skills.IMPACT_GRENADES).asRecipe());
-        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.WOODEN_HAMMER).withIngredient(new int[]{3,0,1,2,5}, Blocks.LOG).withIngredient(new int[]{4,7}, Items.STICK).requires(ModRegistry.Skills.HAMMER_I, ModRegistry.Skills.HEAVY_PICKAXE_II, ModRegistry.Skills.MOTHER_LODE_II).asRecipe());
-        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.STONE_HAMMER).withIngredient(new int[]{3,0,1,2,5}, Blocks.STONE).withIngredient(new int[]{4,7}, Items.STICK).requires(ModRegistry.Skills.HAMMER_II, ModRegistry.Skills.HEAVY_PICKAXE_III, ModRegistry.Skills.MOTHER_LODE_III).asRecipe());
-        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.IRON_HAMMER).withIngredient(new int[]{3,0,1,2,5}, Items.IRON_INGOT).withIngredient(new int[]{4,7}, Items.STICK).requires(ModRegistry.Skills.HAMMER_III, ModRegistry.Skills.HEAVY_PICKAXE_IV, ModRegistry.Skills.MOTHER_LODE_IV).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.MASSIVE_GRENADE).withIngredient(new int[]{0, 2, 3, 5, 6, 7, 8}, Items.GOLD_NUGGET).withIngredient(1, Blocks.TNT).withIngredient(4, ModRegistry.GRPGItems.GRENADE).requires(ModRegistry.Skills.MASSIVE_GRENADES).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.IMPACT_GRENADE).withIngredient(new int[]{0, 2, 6, 8}, Items.REDSTONE).withIngredient(new int[]{3, 7, 5}, Items.GLOWSTONE_DUST).withIngredient(1, Items.BLAZE_POWDER).withIngredient(4, ModRegistry.GRPGItems.GRENADE).requires(ModRegistry.Skills.IMPACT_GRENADES).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.WOODEN_HAMMER).withIngredient(new int[]{3, 0, 1, 2, 5}, Blocks.LOG).withIngredient(new int[]{4, 7}, Items.STICK).requires(ModRegistry.Skills.HAMMER_I, ModRegistry.Skills.HEAVY_PICKAXE_II, ModRegistry.Skills.MOTHER_LODE_II).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.STONE_HAMMER).withIngredient(new int[]{3, 0, 1, 2, 5}, Blocks.STONE).withIngredient(new int[]{4, 7}, Items.STICK).requires(ModRegistry.Skills.HAMMER_II, ModRegistry.Skills.HEAVY_PICKAXE_III, ModRegistry.Skills.MOTHER_LODE_III).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.IRON_HAMMER).withIngredient(new int[]{3, 0, 1, 2, 5}, Items.IRON_INGOT).withIngredient(new int[]{4, 7}, Items.STICK).requires(ModRegistry.Skills.HAMMER_III, ModRegistry.Skills.HEAVY_PICKAXE_IV, ModRegistry.Skills.MOTHER_LODE_IV).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.AMETHYST).withIngredient(1, Items.DIAMOND).withIngredient(new int[]{3, 5}, Items.QUARTZ).withIngredient(4, Items.BLAZE_POWDER).withIngredient(7, Items.EMERALD).requires(ModRegistry.Skills.MINERALOGIST).asRecipe());
-        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.PLASTER_CAST).withIngredient(new int[]{0, 2, 6, 8}, Items.DYE, 15).withIngredient(new int[]{1, 3, 5, 7}, Blocks.CARPET).withIngredient(4, Items.DIAMOND).requires(ModRegistry.Skills.MEDIC).asRecipe());
-        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.BANDAGE).withIngredient(new int[]{0, 8}, Items.DYE, 4).withIngredient(new int[]{1, 3, 5, 7}, Items.PAPER).withIngredient(new int[]{2, 6}, Items.SLIME_BALL).withIngredient(4, new ItemStack(Blocks.WOOL, 1, 0)).requires(ModRegistry.Skills.MEDIC).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.PLASTER_CAST, 2).withIngredient(new int[]{0, 2, 6, 8}, Items.DYE, 15).withIngredient(new int[]{1, 3, 5, 7}, Blocks.CARPET).withIngredient(4, Items.DIAMOND).requires(ModRegistry.Skills.MEDIC).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.BANDAGE, 2).withIngredient(new int[]{0, 8}, Items.DYE, 4).withIngredient(new int[]{1, 3, 5, 7}, Items.PAPER).withIngredient(new int[]{2, 6}, Items.SLIME_BALL).withIngredient(4, new ItemStack(Blocks.WOOL, 1, 0)).requires(ModRegistry.Skills.MEDIC).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.VACCINE).withIngredient(8, Items.GOLDEN_APPLE).withIngredient(6, Items.SPECKLED_MELON).withIngredient(4, ModRegistry.GRPGItems.AMETHYST).withIngredient(2, Items.GOLDEN_CARROT).withIngredient(0, Items.IRON_INGOT).withIngredient(new int[]{1, 3, 5, 7}, Blocks.GLASS_PANE).requires(ModRegistry.Skills.DOCTOR).asRecipe());
-        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.ANTIDOTUM_PILLS).withIngredient(new int[] {0, 2}, Items.PAPER).withIngredient(1, Items.SUGAR).withIngredient(3, new ItemStack(Blocks.RED_FLOWER, 1, 2)).withIngredient(4, Items.EMERALD).withIngredient(5, Items.DYE, 2).withIngredient(6, Blocks.YELLOW_FLOWER).withIngredient(7, new ItemStack(Blocks.RED_FLOWER, 1, 1)).withIngredient(8, Blocks.RED_FLOWER).requires(ModRegistry.Skills.DOCTOR).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.ANTIDOTUM_PILLS, 2).withIngredient(new int[]{0, 2}, Items.PAPER).withIngredient(1, Items.SUGAR).withIngredient(3, new ItemStack(Blocks.RED_FLOWER, 1, 2)).withIngredient(4, Items.EMERALD).withIngredient(5, Items.DYE, 2).withIngredient(6, Blocks.YELLOW_FLOWER).withIngredient(7, new ItemStack(Blocks.RED_FLOWER, 1, 1)).withIngredient(8, Blocks.RED_FLOWER).requires(ModRegistry.Skills.DOCTOR).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.BARREL).withIngredient(new int[]{0, 1, 2, 6, 7, 8}, Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE).requires(ModRegistry.Skills.GUN_PARTS_SMITH).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.GUN_PARTS).withIngredient(new int[]{0, 2, 6, 8}, Blocks.IRON_BARS).withIngredient(new int[]{1, 7}, Blocks.IRON_TRAPDOOR).withIngredient(new int[]{3, 5}, Items.IRON_INGOT).withIngredient(4, Items.IRON_PICKAXE).requires(ModRegistry.Skills.GUN_PARTS_SMITH).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.IRON_STOCK).withIngredient(new int[]{0, 1}, Blocks.IRON_BLOCK).withIngredient(new int[]{2, 4}, Items.IRON_INGOT).withIngredient(5, Items.FLINT_AND_STEEL).requires(ModRegistry.Skills.GUN_PARTS_SMITH).asRecipe());
@@ -98,13 +98,28 @@ public class SmithingTableRecipes {
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.WOODEN_STOCK).withIngredient(new int[]{0, 1}, Blocks.LOG, Blocks.LOG2).withIngredient(2, Items.IRON_INGOT).withIngredient(4, Blocks.WOODEN_SLAB).withIngredient(5, Items.FLINT_AND_STEEL).requires(ModRegistry.Skills.GUN_PARTS_SMITH).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.PISTOL).withIngredient(0, ModRegistry.GRPGItems.BARREL).withIngredient(1, ModRegistry.GRPGItems.GUN_PARTS).withIngredient(2, ModRegistry.GRPGItems.SMALL_IRON_STOCK).requires(ModRegistry.Skills.PISTOL_ASSEMBLY).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.SMG).withIngredient(0, ModRegistry.GRPGItems.BARREL).withIngredient(1, ModRegistry.GRPGItems.GUN_PARTS).withIngredient(2, ModRegistry.GRPGItems.IRON_STOCK).withIngredient(4, ModRegistry.GRPGItems.MAGAZINE).requires(ModRegistry.Skills.SMG_ASSEMBLY).asRecipe());
-        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.CROSSBOW).withIngredient(3, Blocks.TRIPWIRE_HOOK).withIngredient(4, ModRegistry.GRPGItems.GUN_PARTS).withIngredient(5, ModRegistry.GRPGItems.WOODEN_STOCK).withIngredient(new int[] {1, 7}, Items.BOW).requires(ModRegistry.Skills.CROSSBOW_ASSEMBLY).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.CROSSBOW).withIngredient(3, Blocks.TRIPWIRE_HOOK).withIngredient(4, ModRegistry.GRPGItems.GUN_PARTS).withIngredient(5, ModRegistry.GRPGItems.WOODEN_STOCK).withIngredient(new int[]{1, 7}, Items.BOW).requires(ModRegistry.Skills.CROSSBOW_ASSEMBLY).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.SHOTGUN).withIngredient(0, ModRegistry.GRPGItems.LONG_BARREL).withIngredient(1, ModRegistry.GRPGItems.GUN_PARTS).withIngredient(2, ModRegistry.GRPGItems.WOODEN_STOCK).withIngredient(4, ModRegistry.GRPGItems.MAGAZINE).requires(ModRegistry.Skills.SHOTGUN_ASSEMBLY).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.ASSAULT_RIFLE).withIngredient(0, ModRegistry.GRPGItems.LONG_BARREL).withIngredient(1, ModRegistry.GRPGItems.GUN_PARTS).withIngredient(2, ModRegistry.GRPGItems.IRON_STOCK).withIngredient(4, ModRegistry.GRPGItems.MAGAZINE).requires(ModRegistry.Skills.ASSAULT_RIFLE_ASSEMBLY).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.SNIPER_RIFLE).withIngredient(0, ModRegistry.GRPGItems.LONG_BARREL).withIngredient(1, ModRegistry.GRPGItems.GUN_PARTS).withIngredient(2, ModRegistry.GRPGItems.WOODEN_STOCK).requires(ModRegistry.Skills.SNIPER_RIFLE_ASSEMBLY).asRecipe());
     }
 
-    public static SmithingRecipe findRecipe(TileEntitySmithingTable table) {
+    public static SmithingRecipe findRecipe(TileEntitySmithingTable table, int selected) {
+        if (selected >= 0 && selected < RECIPES.size()) {
+            SmithingRecipe recipe = getRecipeById(selected);
+            boolean valid = true;
+            for (SmithingIngredient ingredient : recipe.getIngredients()) {
+                ItemStack stack = table.getStackInSlot(ingredient.getIndex());
+                if (!ModUtils.contains(stack, ingredient.items, ItemStack::isItemEqual)) {
+                    valid = false;
+                    break;
+                }
+            }
+            if (valid) {
+                return recipe;
+            }
+        }
+        List<SmithingRecipe> validRecipes = new ArrayList<>();
         for (SmithingRecipe recipe : RECIPES) {
             boolean valid = true;
             for (SmithingIngredient ingredient : recipe.ingredients) {
@@ -114,9 +129,35 @@ public class SmithingTableRecipes {
                     break;
                 }
             }
-            if (valid) return recipe;
+            if (valid) {
+                validRecipes.add(recipe);
+            }
+        }
+        if(!validRecipes.isEmpty()) {
+            if(validRecipes.size() == 1) {
+                return validRecipes.get(0);
+            } else {
+                SmithingRecipe matched = null;
+                for (SmithingRecipe recipe : validRecipes) {
+                    if (matched == null || recipe.ingredients.length > matched.ingredients.length) {
+                        matched = recipe;
+                    }
+                }
+                return matched;
+            }
         }
         return null;
+    }
+
+    public static int getRecipeId(SmithingRecipe recipe) {
+        return RECIPES.indexOf(recipe);
+    }
+
+    public static SmithingRecipe getRecipeById(int id) {
+        if (id >= 0 && id < RECIPES.size()) {
+            return RECIPES.get(id);
+        }
+        return RECIPES.get(0);
     }
 
     private static void register(SmithingRecipe recipe) {
@@ -129,9 +170,9 @@ public class SmithingTableRecipes {
     }
 
     public static boolean canCraftRecipe(SmithingRecipe recipe, PlayerSkills skills) {
-        if(recipe.requiredTypes != null && recipe.requiredTypes.length > 0) {
+        if (recipe.requiredTypes != null && recipe.requiredTypes.length > 0) {
             for (SkillType<?> type : recipe.requiredTypes) {
-                if(!skills.hasSkill(type)) {
+                if (!skills.hasSkill(type)) {
                     return false;
                 }
             }
@@ -148,6 +189,10 @@ public class SmithingTableRecipes {
             this.ingredients = builder.ingredientList.toArray(new SmithingIngredient[0]);
             this.output = builder.output;
             this.requiredTypes = builder.requiredTypes;
+        }
+
+        public ItemStack getOutputForDisplay() {
+            return output.item.copy();
         }
 
         public ItemStack getOutput(EntityPlayer player) {
@@ -298,6 +343,16 @@ public class SmithingTableRecipes {
 
         public ItemStack getFirstItem() {
             return items[0].copy();
+        }
+
+        public Item[] getEntries() {
+            Item[] arr = new Item[items.length];
+            int j = 0;
+            for(ItemStack stack : items) {
+                arr[j] = stack.getItem();
+                ++j;
+            }
+            return arr;
         }
     }
 

@@ -13,6 +13,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -47,9 +48,12 @@ public class WorldDataFactory implements WorldDataCap {
             EntityAirdrop airdrop = new EntityAirdrop(world);
             int x = random.nextInt(20) - random.nextInt(20);
             int z = random.nextInt(20) - random.nextInt(20);
-            airdrop.setPosition(player.posX + x, player.posY + 75, player.posZ + z);
-            world.playSound(null, airdrop.posX, airdrop.posY - 75, airdrop.posZ, ModRegistry.GRPGSounds.PLANE_FLY_BY, SoundCategory.MASTER, 10.0F, 1.0F);
-            //((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(ModRegistry.GRPGSounds.PLANE_FLY_BY, SoundCategory.MASTER, airdrop.posX, player.posY, airdrop.posZ, 8.0F, 1.0F));
+            BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos((int) player.posX + x, 255, (int) player.posZ + z);
+            while (world.isAirBlock(pos.down()) && pos.getY() > 1) {
+                pos.setY(pos.getY() - 1);
+            }
+            airdrop.setPosition(pos.getX() + 0.5, pos.getY() + 75, pos.getZ() + 0.5);
+            world.playSound(null, player.posX, player.posY, player.posZ, ModRegistry.GRPGSounds.PLANE_FLY_BY, SoundCategory.MASTER, 10.0F, 1.0F);
             world.spawnEntity(airdrop);
         });
     }

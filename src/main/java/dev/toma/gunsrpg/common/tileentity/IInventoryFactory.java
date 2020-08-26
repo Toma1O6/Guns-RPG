@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.common.tileentity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,10 +16,15 @@ public abstract class IInventoryFactory extends TileEntity implements IInventory
         this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
     }
 
+    public boolean shouldSaveInventoryContents() {
+        return true;
+    }
+
     @Override
     public final NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        ItemStackHelper.saveAllItems(compound, inventory);
+        if(shouldSaveInventoryContents())
+            ItemStackHelper.saveAllItems(compound, inventory);
         this.write(compound);
         return compound;
     }
@@ -28,7 +32,8 @@ public abstract class IInventoryFactory extends TileEntity implements IInventory
     @Override
     public final void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        ItemStackHelper.loadAllItems(compound, inventory);
+        if(shouldSaveInventoryContents())
+            ItemStackHelper.loadAllItems(compound, inventory);
         this.read(compound);
     }
 

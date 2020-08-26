@@ -19,6 +19,12 @@ public class EntityAirdrop extends Entity {
     @Override
     public void onUpdate() {
         if(!onGround) {
+            if(world.getBlockState(this.getPosition()).getMaterial().isLiquid()) {
+                BlockPos pos = this.getPosition();
+                world.setBlockState(pos, ModRegistry.GRPGBlocks.AIRDROP.getDefaultState());
+                ((TileEntityAirdrop) world.getTileEntity(pos)).generateLoot();
+                this.setDead();
+            }
             this.motionY = -0.075F;
         } else {
             if(!world.isRemote) {

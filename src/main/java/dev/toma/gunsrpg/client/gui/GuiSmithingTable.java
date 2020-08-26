@@ -1,7 +1,10 @@
 package dev.toma.gunsrpg.client.gui;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.container.ContainerSmithingTable;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.tileentity.TileEntitySmithingTable;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketCheckSmithingRecipe;
@@ -30,9 +33,10 @@ import java.util.List;
 
 public class GuiSmithingTable extends GuiContainer {
 
+    private static final int[] categoryIndexes = {0, 6, 20, 27, 41, 55, 59, 66};
     private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/gui/smithing_table.png");
     private final TileEntitySmithingTable smithingTable;
-    private final OptionalObject<RecipeObject> clicked = OptionalObject.empty();
+    private final OptionalObject<SmithingTableRecipes.SmithingRecipe> clicked = OptionalObject.empty();
     private List<SmithingTableRecipes.SmithingRecipe> recipeList = new ArrayList<>();
     private int scrollIndex;
 
@@ -47,15 +51,19 @@ public class GuiSmithingTable extends GuiContainer {
     public void initGui() {
         super.initGui();
         buttonList.clear();
-        addButton(new GuiButton(0, guiLeft + 61, guiTop + 65, 54, 20, "Craft"));
+        addButton(new GuiButton(0, guiLeft + 25, guiTop + 65, 54, 20, "Craft"));
         recipeList = SmithingTableRecipes.getAvailableRecipes(mc.player);
         for (int i = scrollIndex; i < scrollIndex + 8; i++) {
             if (i >= recipeList.size()) break;
             SmithingTableRecipes.SmithingRecipe recipe = recipeList.get(i);
             int index = i - scrollIndex;
             RecipeObject object = new RecipeObject(guiLeft + 170, guiTop + 5 + index * 20, 20, 20, recipe);
-            if(!clicked.isPresent()) clicked.map(object);
             addButton(object);
+        }
+        for(int i = 0; i < categoryIndexes.length; i++) {
+            int x = i / 4 < 1 ? guiLeft + 115 : guiLeft + 140;
+            int y = guiTop + i % 4 * 21 + 3;
+            addButton(new QuickScroll(x, y, 20, 20, categoryIndexes[i]));
         }
     }
 
@@ -92,7 +100,7 @@ public class GuiSmithingTable extends GuiContainer {
     protected void actionPerformed(GuiButton button) {
         if (button.id == 0) {
             boolean shiftKey = GuiScreen.isShiftKeyDown();
-            NetworkManager.toServer(new SPacketCheckSmithingRecipe(smithingTable.getPos(), shiftKey));
+            NetworkManager.toServer(new SPacketCheckSmithingRecipe(smithingTable.getPos(), shiftKey, clicked.isPresent() ? OptionalObject.of(clicked.get()) : OptionalObject.empty()));
         }
     }
 
@@ -107,14 +115,14 @@ public class GuiSmithingTable extends GuiContainer {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
-        clicked.ifPresent(button -> {
+        clicked.ifPresent(recipe -> {
             int px = guiLeft + xSize;
             int py = guiTop;
             RenderHelper.enableGUIStandardItemLighting();
             List<Slot> slots = inventorySlots.inventorySlots;
-            for (SmithingTableRecipes.SmithingIngredient ingredient : button.recipe.getIngredients()) {
+            for (SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
                 int position = ingredient.getIndex();
-                int ingredientX = guiLeft + 62 + (position % 3) * 18;
+                int ingredientX = guiLeft + 26 + (position % 3) * 18;
                 int ingredientY = py + 8 + (position / 3) * 18;
                 Slot slot = slots.get(position);
                 if(!slot.getHasStack()) {
@@ -194,6 +202,71 @@ public class GuiSmithingTable extends GuiContainer {
         }
     }
 
+    public void scrollTo(int index) {
+        index = recipeList.size() < 8 ? 0 : Math.min(recipeList.size() - 8, Math.max(0, index));
+        this.scrollIndex = index;
+        initGui();
+    }
+
+    class QuickScroll extends GuiButton {
+
+        private final SmithingTableRecipes.SmithingRecipe recipe;
+        private final ItemStack display;
+        private final int index;
+
+        public QuickScroll(int x, int y, int w, int h, int index) {
+            super(-1, x, y, w, h, "");
+            this.index = index;
+            this.recipe = SmithingTableRecipes.getRecipeById(index);
+            this.display = recipe.getOutputForDisplay();
+            this.enabled = hasAllSkills(recipe.getRequiredTypes(), Minecraft.getMinecraft().player);
+        }
+
+        boolean hasAllSkills(SkillType<?>[] types, EntityPlayer player) {
+            if (types != null && types.length != 0) {
+                PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
+                for (SkillType<?> type : types) {
+                    if (!skills.hasSkill(type)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        @Override
+        public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+            boolean flag = super.mousePressed(mc, mouseX, mouseY);
+            if(flag) {
+                GuiSmithingTable.this.scrollTo(GuiSmithingTable.this.recipeList.indexOf(recipe));
+                GuiSmithingTable.this.clicked.map(recipe);
+            }
+            return flag;
+        }
+
+        @Override
+        public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+            if (this.visible) {
+                FontRenderer fontrenderer = mc.fontRenderer;
+                mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
+                if(this.enabled) {
+                    GlStateManager.color(0.0F, 1.0F, 0.35F, 1.0F);
+                } else {
+                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                }
+                this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+                int i = this.getHoverState(this.hovered);
+                GlStateManager.enableBlend();
+                GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+                this.drawTexturedModalRect(this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
+                this.drawTexturedModalRect(this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                mc.getRenderItem().renderItemIntoGUI(display, x + 2, y + 2);
+            }
+        }
+    }
+
     public class RecipeObject extends GuiButton {
 
         private final SmithingTableRecipes.SmithingRecipe recipe;
@@ -209,7 +282,14 @@ public class GuiSmithingTable extends GuiContainer {
         @Override
         public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
             boolean flag = super.mousePressed(mc, mouseX, mouseY);
-            if (flag) GuiSmithingTable.this.clicked.map(this);
+            if (flag) {
+                OptionalObject<SmithingTableRecipes.SmithingRecipe> optional = GuiSmithingTable.this.clicked;
+                if(optional.isPresent()) {
+                    if(optional.get() == this.recipe) {
+                        optional.clear();
+                    } else optional.map(recipe);
+                } else optional.map(recipe);
+            }
             return flag;
         }
 

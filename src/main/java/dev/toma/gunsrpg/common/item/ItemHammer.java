@@ -74,6 +74,10 @@ public class ItemHammer extends ItemPickaxe {
     @Override
     public boolean canHarvestBlock(IBlockState blockIn) {
         Block block = blockIn.getBlock();
+        float f = block.getBlockHardness(blockIn, null, null);
+        if(f < 0) {
+            return false;
+        }
         if (block == Blocks.OBSIDIAN) {
             return this.toolMaterial.getHarvestLevel() == 3;
         } else if (block != Blocks.DIAMOND_BLOCK && block != Blocks.DIAMOND_ORE) {
