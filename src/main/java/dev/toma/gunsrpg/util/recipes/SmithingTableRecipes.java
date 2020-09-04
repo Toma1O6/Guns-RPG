@@ -149,6 +149,15 @@ public class SmithingTableRecipes {
         return null;
     }
 
+    public static SmithingRecipe getRecipeByOutput(Item output) {
+        for(SmithingRecipe recipe : RECIPES) {
+            if(recipe.output.item.getItem() == output) {
+                return recipe;
+            }
+        }
+        return RECIPES.get(0);
+    }
+
     public static int getRecipeId(SmithingRecipe recipe) {
         return RECIPES.indexOf(recipe);
     }

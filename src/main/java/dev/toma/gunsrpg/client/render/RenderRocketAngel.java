@@ -22,6 +22,6 @@ public class RenderRocketAngel extends RenderBiped<EntityRocketAngel> {
 
     @Override
     protected void preRenderCallback(EntityRocketAngel entitylivingbaseIn, float partialTickTime) {
-        GlStateManager.scale(1.0F, 1.0F, 1.0F);
+        GlStateManager.translate(0.0F, 0.4F, 0.0F);
     }
 }

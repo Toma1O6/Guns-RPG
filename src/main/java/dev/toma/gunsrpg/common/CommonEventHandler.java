@@ -13,6 +13,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
 import dev.toma.gunsrpg.common.skills.LightHunterSkill;
 import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
+import dev.toma.gunsrpg.common.tileentity.TileEntityDeathCrate;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.debuffs.DebuffTypes;
 import dev.toma.gunsrpg.event.EntityEquippedItemEvent;
@@ -443,13 +444,27 @@ public class CommonEventHandler {
                     PlayerDataFactory.get(player).sync();
                 }
             }
-            if(!event.isCanceled() && skills.hasSkill(ModRegistry.Skills.AVENGE_ME_FRIENDS) && !player.world.isRemote) {
-                List<EntityPlayer> players = player.world.getEntitiesWithinAABB(EntityPlayer.class, Block.FULL_BLOCK_AABB.offset(player.getPosition()).grow(30));
-                players.forEach(p -> {
-                    p.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 400, 2));
-                    p.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 500, 1));
-                    p.world.playSound(p, p.posX, p.posY, p.posZ, ModRegistry.GRPGSounds.USE_AVENGE_ME_FRIENDS, SoundCategory.MASTER, 1.0F, 1.0F);
-                });
+            if(!event.isCanceled()) {
+                if(GRPGConfig.worldConfig.createCrateOnPlayerDeath && !player.world.getGameRules().getBoolean("keepInventory")) {
+                    BlockPos pos = player.getPosition();
+                    World world = player.world;
+                    while (!world.getBlockState(pos).getBlock().isReplaceable(world, pos) && pos.getY() < 255) {
+                        pos = pos.up();
+                    }
+                    world.setBlockState(pos, ModRegistry.GRPGBlocks.DEATH_CRATE.getDefaultState());
+                    TileEntity tileEntity = world.getTileEntity(pos);
+                    if(tileEntity instanceof TileEntityDeathCrate) {
+                        ((TileEntityDeathCrate) tileEntity).fillInventory(player);
+                    }
+                }
+                if(skills.hasSkill(ModRegistry.Skills.AVENGE_ME_FRIENDS) && !player.world.isRemote) {
+                    List<EntityPlayer> players = player.world.getEntitiesWithinAABB(EntityPlayer.class, Block.FULL_BLOCK_AABB.offset(player.getPosition()).grow(30));
+                    players.forEach(p -> {
+                        p.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 400, 2));
+                        p.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 500, 1));
+                        p.world.playSound(p, p.posX, p.posY, p.posZ, ModRegistry.GRPGSounds.USE_AVENGE_ME_FRIENDS, SoundCategory.MASTER, 1.0F, 1.0F);
+                    });
+                }
             }
         }
     }

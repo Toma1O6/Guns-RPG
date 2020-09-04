@@ -38,4 +38,8 @@ public class WorldConfiguration {
     @Config.RangeInt(min = -1)
     @Config.RequiresMcRestart
     public int airdropFrequency = 3;
+
+    @Config.Name("Player death crates")
+    @Config.Comment({"Allow death crate spawning on player death", "Doesn't spawn if keepInventory gamerule is set to true!"})
+    public boolean createCrateOnPlayerDeath = true;
 }

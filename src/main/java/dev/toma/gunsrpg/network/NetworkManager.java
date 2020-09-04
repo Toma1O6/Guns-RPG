@@ -44,6 +44,7 @@ public class NetworkManager {
         s_register(SPacketUnlockSkill.Handler.class, SPacketUnlockSkill.class);
         s_register(SPacketCheckSmithingRecipe.Handler.class, SPacketCheckSmithingRecipe.class);
         s_register(SPacketSkillClicked.Handler.class, SPacketSkillClicked.class);
+        s_register(SPacketQuickInsertRecipe.Handler.class, SPacketQuickInsertRecipe.class);
     }
 
     private static <A extends IMessage, B extends IMessage> void c_register(Class<? extends IMessageHandler<A, B>> hClass, Class<A> pClass) {

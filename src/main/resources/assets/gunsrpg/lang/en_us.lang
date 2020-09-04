@@ -78,6 +78,7 @@ tile.blast_furnace.name=Blast Furnace
 tile.airdrop.name=Airdrop
 tile.smithing_table.name=Smithing Table
 tile.gold_dragon_egg.name=Gold Dragon Egg
+tile.death_crate.name=Death Crate
 
 death.attack.poison=%1$s has died from poisoning
 death.attack.infection=%1$s has died from infection

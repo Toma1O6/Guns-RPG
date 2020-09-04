@@ -12,6 +12,7 @@ import dev.toma.gunsrpg.common.entity.EntityRocketAngel;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.tileentity.TileEntityAirdrop;
 import dev.toma.gunsrpg.common.tileentity.TileEntityBlastFurnace;
+import dev.toma.gunsrpg.common.tileentity.TileEntityDeathCrate;
 import dev.toma.gunsrpg.common.tileentity.TileEntitySmithingTable;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.sided.SideManager;
@@ -57,7 +58,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "1.0.6", acceptedMinecraftVersions = "[1.12.2]", updateJSON = "https://raw.githubusercontent.com/Toma1O6/Guns-RPG/master/update.json")
+@Mod(modid = GunsRPG.MODID, name = "Guns RPG", version = "1.0.7", acceptedMinecraftVersions = "[1.12.2]", updateJSON = "https://raw.githubusercontent.com/Toma1O6/Guns-RPG/master/update.json")
 public class GunsRPG {
 
     public static final String MODID = "gunsrpg";
@@ -78,6 +79,7 @@ public class GunsRPG {
         GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, makeResource("blast_furnace"));
         GameRegistry.registerTileEntity(TileEntityAirdrop.class, makeResource("airdrop"));
         GameRegistry.registerTileEntity(TileEntitySmithingTable.class, makeResource("smithing_table"));
+        GameRegistry.registerTileEntity(TileEntityDeathCrate.class, makeResource("death_crate"));
     }
 
     @Mod.EventHandler

@@ -21,7 +21,6 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
     public final int price;
     public final ResourceLocation icon;
     public final SkillCategory category;
-    private final boolean isHead;
     private final boolean enableCustomChildDisplay;
     private final UnlockCriteria criteria;
     private final IFactory<S> instanceFactory;
@@ -50,7 +49,6 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
                 description[i] = new TextComponentTranslation(builder.registryName.getResourcePath() + ".description.line_" + (i + 1));
             }
         } else description = new ITextComponent[0];
-        this.isHead = builder.isHead;
         this.enableCustomChildDisplay = builder.enableCustomChildDisplay;
         this.customRenderFactory = builder.customRenderFactory;
     }
@@ -91,10 +89,6 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
         return instanceFactory.create(this);
     }
 
-    public boolean isHead() {
-        return isHead;
-    }
-
     public boolean isCustomDisplayEnabled() {
         return enableCustomChildDisplay;
     }
@@ -128,7 +122,6 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
         private ITextComponent textComponent;
         private UnlockCriteria criteria = CriteriaTypes.getDefaultCriteria();
         private int descriptionLines = 1;
-        private boolean isHead;
         private boolean enableCustomChildDisplay;
         private Supplier<Item> customRenderFactory;
 
@@ -227,11 +220,6 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
 
         public Builder<S> setRegistryName(String path) {
             this.registryName = GunsRPG.makeResource(path);
-            return this;
-        }
-
-        public Builder<S> setTreeStartPoint() {
-            this.isHead = true;
             return this;
         }
 

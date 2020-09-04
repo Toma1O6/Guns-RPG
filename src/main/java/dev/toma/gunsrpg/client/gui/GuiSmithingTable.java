@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.gui;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.container.ContainerSmithingTable;
@@ -8,7 +9,9 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.tileentity.TileEntitySmithingTable;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketCheckSmithingRecipe;
+import dev.toma.gunsrpg.network.packet.SPacketQuickInsertRecipe;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.object.LazyLoader;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.recipes.SmithingTableRecipes;
 import net.minecraft.client.Minecraft;
@@ -22,7 +25,10 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
@@ -33,7 +39,7 @@ import java.util.List;
 
 public class GuiSmithingTable extends GuiContainer {
 
-    private static final int[] categoryIndexes = {0, 6, 20, 27, 41, 55, 59, 66};
+    private static final LazyLoader<Item[]> references = new LazyLoader<>(() -> new Item[] {Items.GUNPOWDER, ModRegistry.GRPGItems.WOODEN_AMMO_9MM, ModRegistry.GRPGItems.WOODEN_AMMO_CROSSBOW_BOLT, ModRegistry.GRPGItems.WOODEN_AMMO_12G, ModRegistry.GRPGItems.WOODEN_AMMO_762MM, ModRegistry.GRPGItems.WOODEN_HAMMER, ModRegistry.GRPGItems.BANDAGE, ModRegistry.GRPGItems.GUN_PARTS});
     private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/gui/smithing_table.png");
     private final TileEntitySmithingTable smithingTable;
     private final OptionalObject<SmithingTableRecipes.SmithingRecipe> clicked = OptionalObject.empty();
@@ -52,6 +58,7 @@ public class GuiSmithingTable extends GuiContainer {
         super.initGui();
         buttonList.clear();
         addButton(new GuiButton(0, guiLeft + 25, guiTop + 65, 54, 20, "Craft"));
+        addButton(new GuiButton(1, guiLeft + 82, guiTop + 65, 20, 20, "+"));
         recipeList = SmithingTableRecipes.getAvailableRecipes(mc.player);
         for (int i = scrollIndex; i < scrollIndex + 8; i++) {
             if (i >= recipeList.size()) break;
@@ -60,10 +67,11 @@ public class GuiSmithingTable extends GuiContainer {
             RecipeObject object = new RecipeObject(guiLeft + 170, guiTop + 5 + index * 20, 20, 20, recipe);
             addButton(object);
         }
-        for(int i = 0; i < categoryIndexes.length; i++) {
+        Item[] items = references.get();
+        for(int i = 0; i < items.length; i++) {
             int x = i / 4 < 1 ? guiLeft + 115 : guiLeft + 140;
             int y = guiTop + i % 4 * 21 + 3;
-            addButton(new QuickScroll(x, y, 20, 20, categoryIndexes[i]));
+            addButton(new QuickScroll(x, y, 20, 20, items[i]));
         }
     }
 
@@ -101,7 +109,82 @@ public class GuiSmithingTable extends GuiContainer {
         if (button.id == 0) {
             boolean shiftKey = GuiScreen.isShiftKeyDown();
             NetworkManager.toServer(new SPacketCheckSmithingRecipe(smithingTable.getPos(), shiftKey, clicked.isPresent() ? OptionalObject.of(clicked.get()) : OptionalObject.empty()));
+        } else if(button.id == 1) {
+            if(clicked.isPresent()) {
+                SmithingTableRecipes.SmithingRecipe recipe = clicked.get();
+                do {
+                    if(!hasSpace(recipe) || !canCraft(recipe)) {
+                        break;
+                    }
+                    for(SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
+                        int index = ingredient.getIndex();
+                        ItemStack stack = ingredient.getFirstItem().copy();
+                        int i = mc.player.inventory.clearMatchingItems(stack.getItem(), stack.getItemDamage(), 1, null);
+                        insert(index, stack);
+                    }
+                } while (isShiftKeyDown());
+                NetworkManager.toServer(new SPacketQuickInsertRecipe(recipe, smithingTable.getPos(), isShiftKeyDown()));
+            }
         }
+    }
+
+    void insert(int slot, ItemStack stack) {
+        ItemStack st = smithingTable.getStackInSlot(slot);
+        if(st.isEmpty()) {
+            smithingTable.setInventorySlotContents(slot, stack);
+        } else {
+            if(st.getItem() != stack.getItem()) {
+                ItemStack remove = st.copy();
+                smithingTable.removeStackFromSlot(slot);
+                mc.player.addItemStackToInventory(remove);
+            }
+            int count = smithingTable.getStackInSlot(slot).getCount();
+            smithingTable.setInventorySlotContents(slot, new ItemStack(stack.getItem(), count + stack.getCount(), stack.getItemDamage()));
+        }
+    }
+
+    boolean hasSpace(SmithingTableRecipes.SmithingRecipe recipe) {
+        for(SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
+            ItemStack stack = smithingTable.getStackInSlot(ingredient.getIndex());
+            if(stack.getCount() >= 64) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    boolean canCraft(SmithingTableRecipes.SmithingRecipe recipe) {
+        for(SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
+            Item item = ingredient.getFirstItem().getItem();
+            int ingredientCount = ingredientsInRecipe(recipe, ingredient);
+            int inInventory = getFromInventory(item);
+            if(inInventory < ingredientCount) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    int ingredientsInRecipe(SmithingTableRecipes.SmithingRecipe recipe, SmithingTableRecipes.SmithingIngredient ingredient) {
+        int i = 0;
+        for(SmithingTableRecipes.SmithingIngredient ingredient1 : recipe.getIngredients()) {
+            if(ingredient.getFirstItem().getItem() == ingredient1.getFirstItem().getItem()) {
+                ++i;
+            }
+        }
+        return i;
+    }
+
+    int getFromInventory(Item item) {
+        InventoryPlayer player = mc.player.inventory;
+        int count = 0;
+        for(int i = 0; i < player.getSizeInventory(); i++) {
+            ItemStack stack = player.getStackInSlot(i);
+            if(stack.getItem() == item) {
+                count += stack.getCount();
+            }
+        }
+        return count;
     }
 
     @Override
@@ -212,14 +295,19 @@ public class GuiSmithingTable extends GuiContainer {
 
         private final SmithingTableRecipes.SmithingRecipe recipe;
         private final ItemStack display;
-        private final int index;
 
-        public QuickScroll(int x, int y, int w, int h, int index) {
+        public QuickScroll(int x, int y, int w, int h, Item reference) {
             super(-1, x, y, w, h, "");
-            this.index = index;
-            this.recipe = SmithingTableRecipes.getRecipeById(index);
-            this.display = recipe.getOutputForDisplay();
-            this.enabled = hasAllSkills(recipe.getRequiredTypes(), Minecraft.getMinecraft().player);
+            if(reference == ModRegistry.GRPGItems.GUN_PARTS) {
+                this.recipe = SmithingTableRecipes.getRecipeByOutput(reference);
+                SmithingTableRecipes.SmithingRecipe recipe = SmithingTableRecipes.getRecipeByOutput(ModRegistry.GRPGItems.PISTOL);
+                this.display = recipe.getOutputForDisplay();
+                this.enabled = hasAllSkills(this.recipe.getRequiredTypes(), Minecraft.getMinecraft().player);
+            } else {
+                this.recipe = SmithingTableRecipes.getRecipeByOutput(reference);
+                this.display = recipe.getOutputForDisplay();
+                this.enabled = hasAllSkills(recipe.getRequiredTypes(), Minecraft.getMinecraft().player);
+            }
         }
 
         boolean hasAllSkills(SkillType<?>[] types, EntityPlayer player) {
