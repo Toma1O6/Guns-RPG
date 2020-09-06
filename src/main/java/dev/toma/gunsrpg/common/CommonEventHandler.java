@@ -19,10 +19,9 @@ import dev.toma.gunsrpg.debuffs.DebuffTypes;
 import dev.toma.gunsrpg.event.EntityEquippedItemEvent;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
-import dev.toma.gunsrpg.util.object.EntitySpawnManager;
 import dev.toma.gunsrpg.util.object.Pair;
 import dev.toma.gunsrpg.util.object.ShootingManager;
-import dev.toma.gunsrpg.world.BloodmoonEntitySpawnEntryList;
+import dev.toma.gunsrpg.world.MobSpawnManager;
 import dev.toma.gunsrpg.world.cap.WorldCapProvider;
 import dev.toma.gunsrpg.world.cap.WorldDataCap;
 import dev.toma.gunsrpg.world.cap.WorldDataFactory;
@@ -90,7 +89,6 @@ import java.util.*;
 public class CommonEventHandler {
 
     public static final Random random = new Random();
-    public static Map<Class<? extends Entity>, EntitySpawnManager> HEALTH_MAP = new HashMap<>();
 
     @SubscribeEvent
     public static void entityEquipItem(EntityEquippedItemEvent event) {
@@ -514,37 +512,13 @@ public class CommonEventHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void entityJoinWorld(EntityJoinWorldEvent event) {
         if(event.getEntity() instanceof IMob || event.getEntity() instanceof EntityWolf) {
             EntityLivingBase entity = (EntityLivingBase) event.getEntity();
             World world = event.getWorld();
             boolean bloodmoon = WorldDataFactory.isBloodMoon(world);
-            if(bloodmoon) {
-                EntityLivingBase replacement = BloodmoonEntitySpawnEntryList.createEntity(entity, world);
-                if(replacement != null) {
-                    event.setCanceled(true);
-                    world.spawnEntity(replacement);
-                    return;
-                }
-            }
-            int modifier = random.nextDouble() <= 0.2 ? 3 : random.nextDouble() <= 0.5 ? 2 : 1;
-            EntitySpawnManager manager = HEALTH_MAP.get(entity.getClass());
-            if(manager == null) return;
-            if(manager.hasCustomAction()) {
-                manager.runAction(entity);
-            }
-            double value = manager.getHealthBase() * modifier;
-            entity.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(value);
-            if(!entity.world.isRemote) entity.setHealth((float) value);
-            if(bloodmoon) {
-                IAttributeInstance instance = entity.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
-                if(instance == null) return;
-                double v = instance.getAttributeValue();
-                instance.setBaseValue(v >= GRPGConfig.worldConfig.bloodMoonMobAgroRange ? v : GRPGConfig.worldConfig.bloodMoonMobAgroRange);
-                EntityPlayer player = findNearestPlayer(entity, world);
-                if(player != null) entity.setRevengeTarget(player);
-            }
+            MobSpawnManager.instance().processSpawn(entity, world, bloodmoon, event);
         }
     }
 

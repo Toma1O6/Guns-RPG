@@ -74,6 +74,11 @@ public class ModRegistry {
         public static final DebuffHeal VACCINE = null;
         public static final DebuffHeal PLASTER_CAST = null;
         public static final DebuffHeal BANDAGE = null;
+        public static final ItemHeal ANALGETICS = null;
+        public static final ItemHeal STEREOIDS = null;
+        public static final ItemHeal ADRENALINE = null;
+        public static final ItemHeal PAINKILLERS = null;
+        public static final ItemHeal MORPHINE = null;
         public static final ItemAmmo WOODEN_AMMO_9MM = null;
         public static final ItemAmmo WOODEN_AMMO_45ACP = null;
         public static final ItemAmmo WOODEN_AMMO_556MM = null;
@@ -221,6 +226,11 @@ public class ModRegistry {
         public static final SkillType<BasicSkill> MEDIC = null;
         public static final SkillType<BasicSkill> DOCTOR = null;
         public static final SkillType<BasicSkill> EFFICIENT_MEDS = null;
+        public static final SkillType<BasicSkill> PHARMACIST_I = null;
+        public static final SkillType<BasicSkill> PHARMACIST_II = null;
+        public static final SkillType<BasicSkill> PHARMACIST_III = null;
+        public static final SkillType<BasicSkill> PHARMACIST_IV = null;
+        public static final SkillType<BasicSkill> PHARMACIST_V = null;
         public static final SkillType<DataChangeSkill> POISON_RESISTANCE_I = null;
         public static final SkillType<DataChangeSkill> POISON_RESISTANCE_II = null;
         public static final SkillType<DataChangeSkill> POISON_RESISTANCE_III = null;
@@ -351,7 +361,7 @@ public class ModRegistry {
         @SuppressWarnings({"rawtypes", "unchecked"})
         @SubscribeEvent
         public static void onSkillRegister(RegistryEvent.Register event) {
-            if(!event.getRegistry().getRegistrySuperType().equals(SkillType.class)) return;
+            if (!event.getRegistry().getRegistrySuperType().equals(SkillType.class)) return;
             event.getRegistry().registerAll(
                     SkillType.Builder.create(type -> new CraftingSkill(type, 2, CraftingSkill::getGunpowderYield)).setGunCategory().setRegistryName("gunpowder_novice").requiredLevel(0).price(1).childs(() -> ModUtils.newList(Skills.GUNPOWDER_EXPERT)).build(),
                     SkillType.Builder.create(type -> new CraftingSkill(type, 4, CraftingSkill::getGunpowderYield)).setGunCategory().setRegistryName("gunpowder_expert").requiredLevel(15).price(2).childs(() -> ModUtils.newList(Skills.GUNPOWDER_MASTER)).build(),
@@ -379,7 +389,7 @@ public class ModRegistry {
                     SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("impact_grenades").requiredLevel(40).price(5).build(),
                     SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("medic").requiredLevel(10).price(3).childs(() -> ModUtils.newList(Skills.DOCTOR)).build(),
                     SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("doctor").requiredLevel(25).price(3).build(),
-                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("efficient_meds").requiredLevel(30).price(2).build(),
+                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("efficient_meds").requiredLevel(30).price(3).build(),
                     SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> {
                         skills.setPoisonResistance(20);
                         skills.setPoisonChance(0.15F);
@@ -440,6 +450,11 @@ public class ModRegistry {
                         skills.setAcrobaticsFallResistance(0.70F);
                         skills.setAcrobaticsExplosionResistance(0.40F);
                     })).setResistanceCategory().setRegistryName("acrobatics_iii").descriptionLength(3).requiredLevel(35).price(4).build(),
+                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("pharmacist_i").requiredLevel(5).price(2).childAndOverride(() -> Skills.PHARMACIST_II).build(),
+                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("pharmacist_ii").requiredLevel(20).price(3).childAndOverride(() -> Skills.PHARMACIST_III).build(),
+                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("pharmacist_iii").requiredLevel(35).price(4).childAndOverride(() -> Skills.PHARMACIST_IV).build(),
+                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("pharmacist_iv").requiredLevel(45).price(5).childAndOverride(() -> Skills.PHARMACIST_V).build(),
+                    SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("pharmacist_v").requiredLevel(65).price(7).build(),
                     SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setAxeMiningSpeed(0.20F))).setMiningCategory().setRegistryName("sharp_axe_i").requiredLevel(0).price(1).childAndOverride(() -> Skills.SHARP_AXE_II).build(),
                     SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setAxeMiningSpeed(0.40F))).setMiningCategory().setRegistryName("sharp_axe_ii").requiredLevel(10).price(2).childAndOverride(() -> Skills.SHARP_AXE_III).build(),
                     SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setAxeMiningSpeed(0.60F))).setMiningCategory().setRegistryName("sharp_axe_iii").requiredLevel(20).price(3).childs(() -> Collections.singletonList(Skills.SHARP_AXE_IV)).build(),
@@ -576,6 +591,58 @@ public class ModRegistry {
                         @Override
                         public Animation getUseAnimation(ItemStack stack) {
                             return new Animations.Bandage(this.getMaxItemUseDuration(stack));
+                        }
+                    },
+                    new ItemHeal("analgetics", 32, () -> GRPGSounds.USE_ANTIDOTUM_PILLS, player -> player.heal(5), player -> player.getHealth() < player.getMaxHealth(), "+5HP on use") {
+                        @SideOnly(Side.CLIENT)
+                        @Override
+                        public Animation getUseAnimation(int ticks) {
+                            return new Animations.Antidotum(ticks);
+                        }
+                    },
+                    new ItemHeal("stereoids", 32, () -> GRPGSounds.USE_VACCINE, player -> {
+                        if (!player.world.isRemote) {
+                            player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 0, false, false));
+                            player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 1200, 1, false, false));
+                        }
+                    }, "60s of Strength I", "60s of Jump Boost II") {
+                        @SideOnly(Side.CLIENT)
+                        @Override
+                        public Animation getUseAnimation(int ticks) {
+                            return new Animations.Vaccine(ticks);
+                        }
+                    },
+                    new ItemHeal("adrenaline", 32, () -> GRPGSounds.USE_VACCINE, player -> {
+                        if (!player.world.isRemote) {
+                            player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 400, 0, false, false));
+                            player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 1200, 0, false, false));
+                        }
+                    }, "20s of Regeneration I", "60s of Speed I") {
+                        @SideOnly(Side.CLIENT)
+                        @Override
+                        public Animation getUseAnimation(int ticks) {
+                            return new Animations.Vaccine(ticks);
+                        }
+                    },
+                    new ItemHeal("painkillers", 32, () -> GRPGSounds.USE_ANTIDOTUM_PILLS, player -> player.heal(12), player -> player.getHealth() < player.getMaxHealth(), "+12 HP on use") {
+                        @SideOnly(Side.CLIENT)
+                        @Override
+                        public Animation getUseAnimation(int ticks) {
+                            return new Animations.Antidotum(ticks);
+                        }
+                    },
+                    new ItemHeal("morphine", 32, () -> GRPGSounds.USE_VACCINE, player -> {
+                        if(!player.world.isRemote) {
+                            player.heal(14);
+                            player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 300, 1, false, false));
+                            player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 600, 1, false, false));
+                            player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 900, 0, false, false));
+                        }
+                    }, "+14HP on use", "15s of Regeneration II", "30s of Strength II", "45s of Resistance I") {
+                        @SideOnly(Side.CLIENT)
+                        @Override
+                        public Animation getUseAnimation(int ticks) {
+                            return new Animations.Vaccine(ticks);
                         }
                     },
                     new ItemAmmo("wooden_ammo_9mm", AmmoType._9MM, AmmoMaterial.WOOD, () -> GRPGItems.PISTOL),

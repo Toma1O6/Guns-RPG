@@ -208,6 +208,10 @@ public class ModUtils {
         return v != null ? v : Objects.requireNonNull(def);
     }
 
+    public static <T> Predicate<T> truePredicate() {
+        return t -> true;
+    }
+
     public static RayTraceResult raytraceBlocksIgnoreGlass(World world, Vec3d start, Vec3d end, Predicate<IBlockState> statePredicate) {
         if(Double.isNaN(start.x) || Double.isNaN(start.y) || Double.isNaN(start.z) || Double.isNaN(end.x) || Double.isNaN(end.y) || Double.isNaN(end.z)) {
             return null;
