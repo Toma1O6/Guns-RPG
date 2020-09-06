@@ -30,6 +30,10 @@ public class SmithingTableRecipes {
     6 7 8
      */
     public static void register() {
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.BACON_BURGER).withIngredient(0, Items.COOKED_BEEF).withIngredient(new int[]{1,3}, Items.BREAD).withIngredient(4, Items.COOKED_PORKCHOP).requires(ModRegistry.Skills.LOCAL_CHEF).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.FISH_AND_CHIPS).withIngredient(new int[]{3,5}, Items.BAKED_POTATO).withIngredient(4, Items.COOKED_FISH).withIngredient(7, Items.CARROT).requires(ModRegistry.Skills.LOCAL_CHEF).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.GARDEN_SOUP).withIngredient(1, Blocks.BROWN_MUSHROOM).withIngredient(new int[]{3,5}, Items.CARROT).withIngredient(4, Items.BEETROOT).withIngredient(7, Items.WATER_BUCKET).withIngredient(new int[]{6,8}, Items.POTATO).requires(ModRegistry.Skills.LOCAL_CHEF).asRecipe());
+        register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.CHICKEN_DINNER).withIngredient(new int[]{3,5}, Items.COOKED_CHICKEN).withIngredient(new int[]{4,7}, Items.BAKED_POTATO).withIngredient(new int[]{6,8}, Items.CARROT).requires(ModRegistry.Skills.LOCAL_CHEF).asRecipe());
         register(new RecipeBuilder().outputs(Items.GUNPOWDER, SkillUtil::getGunpowderCraftAmount).withIngredient(new int[]{0, 4}, 1, Items.COAL).withIngredient(1, Items.DYE, 15).withIngredient(3, Items.SUGAR).requires(ModRegistry.Skills.GUNPOWDER_NOVICE).asRecipe());
         register(new RecipeBuilder().outputs(new ItemStack(Items.DYE, 1, 15), SkillUtil::getBonemealCraftAmount).withIngredient(0, Items.BONE).requires(ModRegistry.Skills.BONE_GRINDER_I).asRecipe());
         register(new RecipeBuilder().outputs(ModRegistry.GRPGItems.LARGE_BULLET_CASING).withIngredient(new int[]{0, 1}, ModRegistry.GRPGItems.SMALL_BULLET_CASING).requires(ModRegistry.Skills.WOODEN_AMMO_SMITH).asRecipe());

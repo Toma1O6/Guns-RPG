@@ -142,6 +142,14 @@ public class ModRegistry {
         public static final ItemHammer STONE_HAMMER = null;
         public static final ItemHammer IRON_HAMMER = null;
         public static final GRPGItem GOLD_EGG_SHARD = null;
+        public static final ItemModdedFood BACON_BURGER = null;
+        public static final ItemModdedFood FISH_AND_CHIPS = null;
+        public static final ItemModdedFood GARDEN_SOUP = null;
+        public static final ItemModdedFood CHICKEN_DINNER = null; // winner winner chicken dinner!!
+        public static final ItemModdedFood DELUXE_MEAL = null;
+        public static final ItemModdedFood MEATY_STEW_XXL = null;
+        public static final ItemModdedFood RABBIT_CREAMY_SOUP = null;
+        public static final ItemModdedFood SHEPHERDS_PIE = null;
     }
 
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
@@ -285,6 +293,8 @@ public class ModRegistry {
         public static final SkillType<WellFedSkill> WELL_FED_I = null;
         public static final SkillType<WellFedSkill> WELL_FED_II = null;
         public static final SkillType<WellFedSkill> WELL_FED_III = null;
+        public static final SkillType<BasicSkill> LOCAL_CHEF = null;
+        public static final SkillType<BasicSkill> MASTER_CHEF = null;
         public static final SkillType<SecondChanceSkill> SECOND_CHANCE_I = null;
         public static final SkillType<SecondChanceSkill> SECOND_CHANCE_II = null;
         public static final SkillType<SecondChanceSkill> SECOND_CHANCE_III = null;
@@ -417,11 +427,11 @@ public class ModRegistry {
                     SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> {
                         skills.setBrokenBoneResistance(20);
                         skills.setBrokenBoneChance(0.10F);
-                    })).setResistanceCategory().setRegistryName("broken_bone_resistance_i").requiredLevel(5).price(1).descriptionLength(3).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_II).build(),
+                    })).setResistanceCategory().setRegistryName("broken_bone_resistance_i").requiredLevel(5).price(2).descriptionLength(2).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_II).build(),
                     SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> {
                         skills.setBrokenBoneResistance(40);
                         skills.setBrokenBoneChance(0.20F);
-                    })).setResistanceCategory().setRegistryName("broken_bone_resistance_ii").requiredLevel(20).price(2).descriptionLength(3).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_III).build(),
+                    })).setResistanceCategory().setRegistryName("broken_bone_resistance_ii").requiredLevel(20).price(3).descriptionLength(2).childAndOverride(() -> Skills.BROKEN_BONE_RESISTANCE_III).build(),
                     SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> {
                         skills.setBrokenBoneResistance(60);
                         skills.setBrokenBoneChance(0.35F);
@@ -497,6 +507,8 @@ public class ModRegistry {
                     SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 1, 0.3F)).setSurvivalCategory().setRegistryName("well_fed_i").descriptionLength(2).requiredLevel(20).price(2).childAndOverride(() -> Skills.WELL_FED_II).build(),
                     SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 2, 0.4F)).setSurvivalCategory().setRegistryName("well_fed_ii").descriptionLength(2).requiredLevel(35).price(3).childAndOverride(() -> Skills.WELL_FED_III).build(),
                     SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 3, 0.55F)).setSurvivalCategory().setRegistryName("well_fed_iii").descriptionLength(2).requiredLevel(55).price(5).build(),
+                    SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("local_chef").requiredLevel(20).price(2).childAndOverride(() -> Skills.MASTER_CHEF).build(),
+                    SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("master_chef").requiredLevel(50).price(5).build(),
                     SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, 18000, 10, () -> new PotionEffect(MobEffects.REGENERATION, 200, 0))).setSurvivalCategory().setRegistryName("second_chance_i").descriptionLength(3).requiredLevel(50).price(7).childAndOverride(() -> Skills.SECOND_CHANCE_II).build(),
                     SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, 14400, 15, () -> new PotionEffect(MobEffects.REGENERATION, 200, 1))).setSurvivalCategory().setRegistryName("second_chance_ii").descriptionLength(3).requiredLevel(75).price(9).childAndOverride(() -> Skills.SECOND_CHANCE_III).build(),
                     SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, 10800, 20, () -> new PotionEffect(MobEffects.REGENERATION, 200, 2))).setSurvivalCategory().setRegistryName("second_chance_iii").descriptionLength(3).requiredLevel(90).price(10).build(),
@@ -713,7 +725,24 @@ public class ModRegistry {
                     new ItemHammer("wooden_hammer", ItemHammer.WOOD_HAMMER_MATERIAL),
                     new ItemHammer("stone_hammer", ItemHammer.STONE_HAMMER_MATERIAL),
                     new ItemHammer("iron_hammer", ItemHammer.IRON_HAMMER_MATERIAL),
-                    new GRPGItem("gold_egg_shard")
+                    new GRPGItem("gold_egg_shard"),
+                    new ItemModdedFood("bacon_burger", 14, 18.0F, false),
+                    new ItemModdedFood("fish_and_chips", 12, 16, false),
+                    new ItemModdedFood("garden_soup", 11, 14, false),
+                    new ItemModdedFood("chicken_dinner", 14, 16, false),
+                    new ItemModdedFood("deluxe_meal", 18, 20, false).buff(player -> {
+                        player.heal(3);
+                        player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 400));
+                    }),
+                    new ItemModdedFood("meaty_stew_xxl", 20, 20, false).buff(player -> {
+                        player.heal(5);
+                        player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 300));
+                    }),
+                    new ItemModdedFood("rabbit_creamy_soup", 16, 19, false).buff(player -> {
+                        player.heal(3);
+                        player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 500, 1));
+                    }),
+                    new ItemModdedFood("shepherds_pie", 17, 20, false)
             );
             queue.forEach(registry::register);
             queue = null;
