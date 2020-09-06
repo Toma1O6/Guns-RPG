@@ -9,8 +9,10 @@ import java.util.function.Supplier;
 
 public class TileEntityAirdrop extends IInventoryFactory {
 
+    public static final WeightedRandom<LootCategory> CATEGORIES = new WeightedRandom<>(LootCategory::getChances, LootCategory.values());
     public static final WeightedRandom<LootRarity> AMMO_RARITY = new WeightedRandom<>(LootRarity::getAmmoWeight, LootRarity.values());
     public static final WeightedRandom<LootRarity> MEDS_RARITY = new WeightedRandom<>(LootRarity::getMedsWeight, LootRarity.values());
+    public static final WeightedRandom<LootRarity> BOOST_RARITY = new WeightedRandom<>(LootRarity::getBoostWeight, LootRarity.values());
     public static final WeightedRandom<SlotCount> SLOT_COUNT_PICKER = new WeightedRandom<>(SlotCount::getWeight, SlotCount.array);
     private final Random random;
 
@@ -32,39 +34,50 @@ public class TileEntityAirdrop extends IInventoryFactory {
         int slots = SLOT_COUNT_PICKER.getRandom().getSlots();
         LootStorage storage = LootStorage.instance();
         for(int i = 0; i < slots; i++) {
-            LootCategory category = LootCategory.pickRandom(random);
+            LootCategory category = CATEGORIES.getRandom();
             LootRarity rarity = getRarityPicker(category).getRandom();
             setInventorySlotContents(i, storage.getRandomItem(category, rarity, random));
         }
     }
 
     private WeightedRandom<LootRarity> getRarityPicker(LootCategory category) {
-        return category.ordinal() == 0 ? MEDS_RARITY : AMMO_RARITY;
+        return category.rarityFromCategory.get();
     }
 
     private enum LootCategory {
-        MEDICAL,
-        AMMO;
 
-        private static LootCategory pickRandom(Random random) {
-            return random.nextFloat() <= 0.35F ? MEDICAL : AMMO;
+        MEDICAL(() -> MEDS_RARITY, 30),
+        AMMO(() -> AMMO_RARITY, 50),
+        BOOST(() -> BOOST_RARITY, 20);
+
+        private final Supplier<WeightedRandom<LootRarity>> rarityFromCategory;
+        private final int chance;
+
+        LootCategory(Supplier<WeightedRandom<LootRarity>> rarityFromCategory, int chance) {
+            this.rarityFromCategory = rarityFromCategory;
+            this.chance = chance;
+        }
+
+        public int getChances() {
+            return chance;
         }
     }
 
     private enum LootRarity {
 
-        COMMON(39, 33),
-        UNCOMMON(25, 25),
-        RARE(17, 16),
-        VERY_RARE(11, 11),
-        EPIC(6, 9),
-        LEGENDARY(2, 6);
+        COMMON(39, 33, 33),
+        UNCOMMON(25, 25, 25),
+        RARE(17, 16, 16),
+        VERY_RARE(11, 11, 11),
+        EPIC(6, 9, 9),
+        LEGENDARY(2, 6, 6);
 
-        private final int ammoWeight, medsWeight;
+        private final int ammoWeight, medsWeight, boostWeight;
 
-        LootRarity(int ammo, int meds) {
+        LootRarity(int ammo, int meds, int boost) {
             this.ammoWeight = ammo;
             this.medsWeight = meds;
+            this.boostWeight = boost;
         }
 
         public int getAmmoWeight() {
@@ -74,11 +87,17 @@ public class TileEntityAirdrop extends IInventoryFactory {
         public int getMedsWeight() {
             return medsWeight;
         }
+
+        public int getBoostWeight() {
+            return boostWeight;
+        }
     }
 
     public static final class LootStorage {
+
         private final Map<LootCategory, Map<LootRarity, List<Supplier<ItemStack>>>> completeLootPool = new HashMap<>();
         private static final LootStorage INSTANCE = new LootStorage();
+
         private LootStorage() {
             Map<LootRarity, List<Supplier<ItemStack>>> meds = new HashMap<>();
             meds.put(LootRarity.COMMON, this.getCommonMeds());
@@ -87,9 +106,7 @@ public class TileEntityAirdrop extends IInventoryFactory {
             meds.put(LootRarity.VERY_RARE, this.getVeryRareMeds());
             meds.put(LootRarity.EPIC, this.getEpicMeds());
             meds.put(LootRarity.LEGENDARY, this.getLegendaryMeds());
-
             completeLootPool.put(LootCategory.MEDICAL, meds);
-
             Map<LootRarity, List<Supplier<ItemStack>>> ammo = new HashMap<>();
             ammo.put(LootRarity.COMMON, this.getCommonAmmo());
             ammo.put(LootRarity.UNCOMMON, this.getUncommonAmmo());
@@ -97,8 +114,15 @@ public class TileEntityAirdrop extends IInventoryFactory {
             ammo.put(LootRarity.VERY_RARE, this.getVeryRareAmmo());
             ammo.put(LootRarity.EPIC, this.getEpicAmmo());
             ammo.put(LootRarity.LEGENDARY, this.getLegendaryAmmo());
-
             completeLootPool.put(LootCategory.AMMO, ammo);
+            Map<LootRarity, List<Supplier<ItemStack>>> boosts = new HashMap<>();
+            boosts.put(LootRarity.COMMON, this.getCommonBoosts());
+            boosts.put(LootRarity.UNCOMMON, this.getUncommonBoosts());
+            boosts.put(LootRarity.RARE, this.getRareBoosts());
+            boosts.put(LootRarity.VERY_RARE, this.getVeryRareBoosts());
+            boosts.put(LootRarity.EPIC, this.getEpicBoosts());
+            boosts.put(LootRarity.LEGENDARY, this.getLegendaryBoosts());
+            completeLootPool.put(LootCategory.BOOST, boosts);
         }
 
         public static LootStorage instance() {
@@ -268,6 +292,48 @@ public class TileEntityAirdrop extends IInventoryFactory {
             );
         }
 
+        private List<Supplier<ItemStack>> getCommonBoosts() {
+            return listOf(
+                    () -> new ItemStack(ModRegistry.GRPGItems.ANALGETICS),
+                    () -> new ItemStack(ModRegistry.GRPGItems.ANALGETICS, 2)
+            );
+        }
+
+        private List<Supplier<ItemStack>> getUncommonBoosts() {
+            return listOf(
+                    () -> new ItemStack(ModRegistry.GRPGItems.STEREOIDS),
+                    () -> new ItemStack(ModRegistry.GRPGItems.ADRENALINE)
+            );
+        }
+
+        private List<Supplier<ItemStack>> getRareBoosts() {
+            return listOf(
+                    () -> new ItemStack(ModRegistry.GRPGItems.ANALGETICS, 3),
+                    () -> new ItemStack(ModRegistry.GRPGItems.PAINKILLERS)
+            );
+        }
+
+        private List<Supplier<ItemStack>> getVeryRareBoosts() {
+            return listOf(
+                    () -> new ItemStack(ModRegistry.GRPGItems.STEREOIDS, 2),
+                    () -> new ItemStack(ModRegistry.GRPGItems.ADRENALINE, 2)
+            );
+        }
+
+        private List<Supplier<ItemStack>> getEpicBoosts() {
+            return listOf(
+                    () -> new ItemStack(ModRegistry.GRPGItems.ANALGETICS, 4),
+                    () -> new ItemStack(ModRegistry.GRPGItems.PAINKILLERS, 2)
+            );
+        }
+
+        private List<Supplier<ItemStack>> getLegendaryBoosts() {
+            return listOf(
+                    () -> new ItemStack(ModRegistry.GRPGItems.PAINKILLERS, 3),
+                    () -> new ItemStack(ModRegistry.GRPGItems.MORPHINE)
+            );
+        }
+
         @SafeVarargs
         private static <V> List<V> listOf(V... values) {
             List<V> list = new ArrayList<>();
@@ -277,13 +343,13 @@ public class TileEntityAirdrop extends IInventoryFactory {
     }
 
     private static class SlotCount {
-        private static final SlotCount[] array = {new SlotCount(33, 4), new SlotCount(30, 5), new SlotCount(16, 6), new SlotCount(10, 7), new SlotCount(8, 8), new SlotCount(3, 9)};
+        private static final SlotCount[] array = {new SlotCount(32, 5), new SlotCount(26, 6), new SlotCount(18, 7), new SlotCount(15, 8), new SlotCount(6, 9)};
         private final int weight;
         private final int slots;
 
-        private SlotCount(int w, int s) {
-            this.weight = w;
-            this.slots = s;
+        private SlotCount(int weight, int slots) {
+            this.weight = weight;
+            this.slots = slots;
         }
 
         public int getWeight() {

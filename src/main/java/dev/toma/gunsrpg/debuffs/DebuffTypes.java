@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.debuffs;
 
+import dev.toma.gunsrpg.common.GunDamageSourceHack;
 import dev.toma.gunsrpg.debuffs.effect.BleedDebuff;
 import dev.toma.gunsrpg.debuffs.effect.BrokenBoneDebuff;
 import dev.toma.gunsrpg.debuffs.effect.InfectionDebuff;
@@ -262,6 +263,10 @@ public class DebuffTypes {
             .pop()
             .addHitData()
             .condition(src -> src.getDamageType().equals("fall"))
+            .chance(0.05F)
+            .pop()
+            .addHitData()
+            .condition(src -> src instanceof GunDamageSourceHack)
             .chance(0.05F)
             .pop()
             .effectBuilder()

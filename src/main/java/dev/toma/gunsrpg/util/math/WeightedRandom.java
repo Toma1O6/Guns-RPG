@@ -33,7 +33,8 @@ public class WeightedRandom<T> {
 
     private int gatherAll() {
         int i = 0;
-        for(T t : values) i += typeToValueFunction.apply(t);
+        for(T t : values)
+            i += typeToValueFunction.apply(t);
         return i;
     }
 }

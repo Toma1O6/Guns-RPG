@@ -403,7 +403,7 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onEntityDamaged(LivingHurtEvent event) {
-        if(event.getAmount() >= 1 && event.getEntity() instanceof EntityPlayer) {
+        if(event.getAmount() >= 0.2F && event.getEntity() instanceof EntityPlayer) {
             PlayerData data = PlayerDataFactory.get((EntityPlayer) event.getEntity());
             data.getDebuffData().forEachDebuff(b -> b.onHurt(event.getSource(), (EntityPlayer) event.getEntity()));
         }
