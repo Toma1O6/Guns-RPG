@@ -131,9 +131,9 @@ public class ClientEventHandler {
             int cycle = GRPGConfig.worldConfig.bloodmoonCycle;
             boolean b = day % cycle == 0 && day > 0;
             long l = b ? 1 : cycle + 1 - day % cycle;
-            String remainingDays = l + "";
+            String remainingDays = (l - 1L) + "";
             ScaledResolution resolution = event.getResolution();
-            mc.fontRenderer.drawStringWithShadow(l + "", resolution.getScaledWidth() - 10 - mc.fontRenderer.getStringWidth(remainingDays) / 2f, 6, b ? 0xff0000 : l > 1 && l < 4 ? 0xffff00 : 0xffffff);
+            mc.fontRenderer.drawStringWithShadow(remainingDays, resolution.getScaledWidth() - 10 - mc.fontRenderer.getStringWidth(remainingDays) / 2f, 6, b ? 0xff0000 : l > 1 && l < 4 ? 0xffff00 : 0xffffff);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             ItemStack stack = player.getHeldItemMainhand();
             int width = 26;

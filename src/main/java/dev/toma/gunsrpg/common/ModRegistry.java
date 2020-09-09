@@ -626,10 +626,10 @@ public class ModRegistry {
                     },
                     new ItemHeal("adrenaline", 32, () -> GRPGSounds.USE_VACCINE, player -> {
                         if (!player.world.isRemote) {
-                            player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 400, 0, false, false));
+                            player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 700, 0, false, false));
                             player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 1200, 0, false, false));
                         }
-                    }, "20s of Regeneration I", "60s of Speed I") {
+                    }, "35s of Regeneration I", "60s of Speed I") {
                         @SideOnly(Side.CLIENT)
                         @Override
                         public Animation getUseAnimation(int ticks) {
@@ -726,23 +726,23 @@ public class ModRegistry {
                     new ItemHammer("stone_hammer", ItemHammer.STONE_HAMMER_MATERIAL),
                     new ItemHammer("iron_hammer", ItemHammer.IRON_HAMMER_MATERIAL),
                     new GRPGItem("gold_egg_shard"),
-                    new ItemModdedFood("bacon_burger", 14, 18.0F, false),
-                    new ItemModdedFood("fish_and_chips", 12, 16, false),
-                    new ItemModdedFood("garden_soup", 11, 14, false),
-                    new ItemModdedFood("chicken_dinner", 14, 16, false),
-                    new ItemModdedFood("deluxe_meal", 18, 20, false).buff(player -> {
+                    new ItemModdedFood("bacon_burger", 14, 0.64285713F, false),
+                    new ItemModdedFood("fish_and_chips", 12, 0.6666667F, false),
+                    new ItemModdedFood("garden_soup", 11, 0.6363636F, false),
+                    new ItemModdedFood("chicken_dinner", 14, 0.5714286F, false),
+                    new ItemModdedFood("deluxe_meal", 18, 0.5555556F, false).buff(player -> {
                         player.heal(3);
                         player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 400));
                     }),
-                    new ItemModdedFood("meaty_stew_xxl", 20, 20, false).buff(player -> {
+                    new ItemModdedFood("meaty_stew_xxl", 20, 0.5F, false).buff(player -> {
                         player.heal(5);
                         player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 300));
                     }),
-                    new ItemModdedFood("rabbit_creamy_soup", 16, 19, false).buff(player -> {
+                    new ItemModdedFood("rabbit_creamy_soup", 16, 0.59375F, false).buff(player -> {
                         player.heal(3);
                         player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 500, 1));
                     }),
-                    new ItemModdedFood("shepherds_pie", 17, 20, false)
+                    new ItemModdedFood("shepherds_pie", 17, 0.5882353F, false)
             );
             queue.forEach(registry::register);
             queue = null;
