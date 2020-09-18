@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 
 public class DebuffData implements INBTSerializable<NBTTagCompound> {
 
-    private Debuff[] debuffs = {
+    private final Debuff[] debuffs = {
             DebuffTypes.POISON.createInstance(),
             DebuffTypes.INFECTION.createInstance(),
             DebuffTypes.BROKEN_BONE.createInstance(),

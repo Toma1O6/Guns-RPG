@@ -14,7 +14,7 @@ public class DamageResult {
     private final Predicate<DamageSource> predicate;
     private final Function<PlayerSkills, Float> chance;
 
-    private DamageResult(ResultBuilder<?> builder) {
+    private DamageResult(ResultBuilder builder) {
         this.predicate = Objects.requireNonNull(builder.predicate);
         this.chance = builder.chance;
     }
@@ -27,32 +27,32 @@ public class DamageResult {
         return this.predicate.test(source);
     }
 
-    public static class ResultBuilder<T extends Debuff> {
+    public static class ResultBuilder {
 
-        private final DebuffType.TypeBuilder<T> parent;
+        private final DebuffType.TypeBuilder parent;
         private Predicate<DamageSource> predicate;
         private Function<PlayerSkills, Float> chance;
 
-        protected ResultBuilder(DebuffType.TypeBuilder<T> parent) {
+        protected ResultBuilder(DebuffType.TypeBuilder parent) {
             this.parent = parent;
         }
 
-        public ResultBuilder<T> condition(Predicate<DamageSource> predicate) {
+        public ResultBuilder condition(Predicate<DamageSource> predicate) {
             this.predicate = predicate;
             return this;
         }
 
-        public ResultBuilder<T> chance(float chance) {
+        public ResultBuilder chance(float chance) {
             this.chance = skills -> chance;
             return this;
         }
 
-        public ResultBuilder<T> chance(Function<PlayerSkills, Float> chance) {
+        public ResultBuilder chance(Function<PlayerSkills, Float> chance) {
             this.chance = chance;
             return this;
         }
 
-        public DebuffType.TypeBuilder<T> pop() {
+        public DebuffType.TypeBuilder pop() {
             this.parent.conditions().add(new DamageResult(this));
             return this.parent;
         }

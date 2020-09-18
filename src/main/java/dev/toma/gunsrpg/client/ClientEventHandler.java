@@ -67,7 +67,6 @@ public class ClientEventHandler {
             AnimationManager.sendNewAnimation(Animations.SPRINT, new SprintingAnimation());
         }
     }, EntityPlayer::isSprinting);
-    private static final ResourceLocation ICON_BACKGROUND = GunsRPG.makeResource("textures/icons/background.png");
     public static OptionalObject<Float> preAimFov = OptionalObject.empty();
     public static OptionalObject<Float> preAimSens = OptionalObject.empty();
     static float prevAimingProgress;
@@ -130,10 +129,10 @@ public class ClientEventHandler {
             long day = player.world.getWorldTime() / 24000L;
             int cycle = GRPGConfig.worldConfig.bloodmoonCycle;
             boolean b = day % cycle == 0 && day > 0;
-            long l = b ? 1 : cycle + 1 - day % cycle;
-            String remainingDays = (l - 1L) + "";
+            long l = b ? 0 : cycle - day % cycle;
+            String remainingDays = l + "";
             ScaledResolution resolution = event.getResolution();
-            mc.fontRenderer.drawStringWithShadow(remainingDays, resolution.getScaledWidth() - 10 - mc.fontRenderer.getStringWidth(remainingDays) / 2f, 6, b ? 0xff0000 : l > 1 && l < 4 ? 0xffff00 : 0xffffff);
+            mc.fontRenderer.drawStringWithShadow(remainingDays, resolution.getScaledWidth() - 10 - mc.fontRenderer.getStringWidth(remainingDays) / 2f, 6, b ? 0xff0000 : l > 0 && l < 3 ? 0xffff00 : 0xffffff);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             ItemStack stack = player.getHeldItemMainhand();
             int width = 26;
@@ -145,7 +144,6 @@ public class ClientEventHandler {
                 GunData gunData = skills.getGunData((GunItem) stack.getItem());
                 int gunKills = gunData.getKills();
                 int gunRequiredKills = gunData.getRequiredKills();
-
                 int ammo = gun.getAmmo(stack);
                 int max = gun.getMaxAmmo(player);
                 float f = gunData.isAtMaxLevel() ? 1.0F : gunKills / (float) gunRequiredKills;
@@ -181,9 +179,7 @@ public class ClientEventHandler {
                 for (Debuff debuff : debuffData.getDebuffs()) {
                     if (!debuff.isActive()) continue;
                     int yStart = event.getResolution().getScaledHeight() + GRPGConfig.clientConfig.debuffOverlay.y - 50;
-                    ModUtils.renderTexture(GRPGConfig.clientConfig.debuffOverlay.x, yStart + offset * 18, 50, yStart + (1 + offset) * 18, ICON_BACKGROUND);
-                    ModUtils.renderTexture(GRPGConfig.clientConfig.debuffOverlay.x + 2, yStart + 1 + offset * 18, 18, yStart + 1 + offset * 18 + 16, debuff.getIconTexture());
-                    renderer.drawStringWithShadow(debuff.getLevel() + "%", 20, yStart + 5 + offset * 18, 0xFFFFFF);
+                    debuff.draw(GRPGConfig.clientConfig.debuffOverlay.x, yStart + offset * 18, 50, 18, event.getPartialTicks(), renderer);
                     ++offset;
                 }
             }

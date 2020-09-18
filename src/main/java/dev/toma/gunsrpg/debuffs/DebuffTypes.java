@@ -21,8 +21,8 @@ import java.util.function.Supplier;
 
 public class DebuffTypes {
 
-    public static List<DebuffType<?>> TYPES = new ArrayList<>();
-    public static final DebuffType<PoisonDebuff> POISON = DebuffType.TypeBuilder.create(PoisonDebuff::new)
+    public static List<DebuffType> TYPES = new ArrayList<>();
+    public static final DebuffType POISON = DebuffType.TypeBuilder.create(PoisonDebuff::new)
             .name("poison")
             .resistance(skills -> skills.poisonChance)
             .cap(140, skills -> skills.poisonResistance)
@@ -86,7 +86,7 @@ public class DebuffTypes {
             .pop()
             .build();
 
-    public static final DebuffType<InfectionDebuff> INFECTION = DebuffType.TypeBuilder.create(InfectionDebuff::new)
+    public static final DebuffType INFECTION = DebuffType.TypeBuilder.create(InfectionDebuff::new)
             .name("infection")
             .resistance(skills -> skills.infectionChance)
             .cap(200, skills -> skills.infectionResistance)
@@ -155,7 +155,7 @@ public class DebuffTypes {
             .pop()
             .build();
 
-    public static final DebuffType<BrokenBoneDebuff> BROKEN_BONE = DebuffType.TypeBuilder.create(BrokenBoneDebuff::new)
+    public static final DebuffType BROKEN_BONE = DebuffType.TypeBuilder.create(BrokenBoneDebuff::new)
             .name("broken_bone")
             .resistance(skills -> skills.brokenBoneChance)
             .cap(240, skills -> skills.brokenBoneResistance)
@@ -221,7 +221,7 @@ public class DebuffTypes {
             .pop()
             .build();
 
-    public static final DebuffType<BleedDebuff> BLEED = DebuffType.TypeBuilder.create(BleedDebuff::new)
+    public static final DebuffType BLEED = DebuffType.TypeBuilder.create(BleedDebuff::new)
             .name("bleeding")
             .resistance(skills -> skills.bleedChance)
             .cap(120, skills -> skills.bleedResistance)
