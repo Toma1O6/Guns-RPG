@@ -1,8 +1,8 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods",
     "promos": {
-        "1.12.2-latest": "1.0.8",
-        "1.12.2-recommended": "1.0.8"
+        "1.12.2-latest": "1.0.9",
+        "1.12.2-recommended": "1.0.9"
     },
     "1.12.2": {
         "0.1.0": "Initial alpha update",
@@ -20,6 +20,7 @@
         "1.0.5": "Some bug fixes",
         "1.0.6": "Crafting issues, improved airdrops",
         "1.0.7": "Smithing table quick insert fix, quick scroll edit, resistance skill balancing",
-        "1.0.8": "Pharmacist skill"
+        "1.0.8": "Pharmacist skill",
+        "1.0.9": "Some minor details"
     }
 }
