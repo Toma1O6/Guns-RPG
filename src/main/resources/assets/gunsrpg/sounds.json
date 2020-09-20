@@ -37,5 +37,6 @@
     "second_chance_use": {"category": "master", "sounds": [{"name": "gunsrpg:second_chance_use", "stream": true}]},
     "relaxed_2": {"category": "master", "sounds": [{"name": "gunsrpg:relaxed_2", "stream": true}]},
     "use_avenge_me_friends": {"category": "master", "sounds": [{"name": "gunsrpg:use_avenge_me_friends", "stream": true}]},
-    "use_well_fed": {"category": "master", "sounds": [{"name": "gunsrpg:use_well_fed", "stream": true}]}
+    "use_well_fed": {"category": "master", "sounds": [{"name": "gunsrpg:use_well_fed", "stream": true}]},
+    "bullet_whizz": {"category": "master", "sounds": [{"name": "gunsrpg:bullet_whizz", "stream": true}]}
 }

@@ -207,6 +207,7 @@ public class ModRegistry {
         public static final SoundEvent RELAXED_2 = null;
         public static final SoundEvent USE_AVENGE_ME_FRIENDS = null;
         public static final SoundEvent USE_WELL_FED = null;
+        public static final SoundEvent BULLET_WHIZZ = null;
     }
 
     @GameRegistry.ObjectHolder(GunsRPG.MODID)
@@ -896,7 +897,8 @@ public class ModRegistry {
                     sound("second_chance_use"),
                     sound("relaxed_2"),
                     sound("use_avenge_me_friends"),
-                    sound("use_well_fed")
+                    sound("use_well_fed"),
+                    sound("bullet_whizz")
             );
         }
 

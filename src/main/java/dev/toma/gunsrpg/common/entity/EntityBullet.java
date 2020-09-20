@@ -21,6 +21,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.*;
@@ -139,7 +140,7 @@ public class EntityBullet extends Entity {
                 canPenetrate = true;
             } else if (!block.isReplaceable(world, pos)) {
                 Vec3d vec = rayTraceResult.hitVec;
-                NetworkManager.toDimension(CPacketParticle.multipleParticles(EnumParticleTypes.BLOCK_CRACK, vec.x, vec.y, vec.z, Block.getIdFromBlock(block), 10, 0), this.dimension);
+                NetworkManager.toDimension(CPacketParticle.bullet(vec, Block.getIdFromBlock(block), rayTraceResult.sideHit == null ? EnumFacing.UP : rayTraceResult.sideHit), this.dimension);
                 world.playSound(null, posX, posY, posZ, block.getSoundType().getBreakSound(), SoundCategory.BLOCKS, 0.5F, block.getSoundType().getPitch() * 0.8F);
                 this.setDead();
             }
@@ -179,6 +180,10 @@ public class EntityBullet extends Entity {
         RayTraceResult raytraceresult = this.world.rayTraceBlocks(vec3d1, vec3d, false, true, false);
         if (this.ticksExisted > effect && !world.isRemote) {
             this.motionY -= 0.05;
+        }
+
+        if (ticksExisted > 1) {
+            world.playSound(null, posX, posY, posZ, ModRegistry.GRPGSounds.BULLET_WHIZZ, SoundCategory.MASTER, 0.6F, 1.0F);
         }
 
         if (isLimitedLifetime() && this.ticksExisted >= 80) {

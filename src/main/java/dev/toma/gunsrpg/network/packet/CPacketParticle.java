@@ -2,8 +2,10 @@ package dev.toma.gunsrpg.network.packet;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -33,6 +35,10 @@ public class CPacketParticle implements IMessage {
 
     public static CPacketParticle multipleParticles(EnumParticleTypes particleType, double x, double y, double z, int data, int count, int modifier) {
         return new CPacketParticle(SpawnType.MULTIPLE, particleType, new Vec3d(x, y, z), new Vec3d(0, 0, 0), data, count, modifier);
+    }
+
+    public static CPacketParticle bullet(Vec3d vec3d, int blockData, EnumFacing facing) {
+        return new CPacketParticle(SpawnType.BULLET, EnumParticleTypes.BLOCK_CRACK, vec3d, Vec3d.ZERO, blockData, facing.getIndex(), 0);
     }
 
     public CPacketParticle() {
@@ -83,7 +89,8 @@ public class CPacketParticle implements IMessage {
 
     public enum SpawnType {
         SINGLE,
-        MULTIPLE
+        MULTIPLE,
+        BULLET
     }
 
     public static class Handler implements IMessageHandler<CPacketParticle, IMessage> {
@@ -97,21 +104,36 @@ public class CPacketParticle implements IMessage {
                 Vec3d pos = message.pos;
                 Vec3d mot = message.speed;
                 switch (message.spawnType) {
-                    case SINGLE: {
+                    case SINGLE:
                         world.spawnParticle(message.particleType, pos.x, pos.y, pos.z, mot.x, mot.y, mot.z, message.data);
                         break;
-                    }
+
                     case MULTIPLE: {
-                        Random r = new Random();
+                        Random r = world.rand;
                         int mod = message.modifier;
                         boolean f = mod != 0;
-                        for(int i = 0; i < message.amount; i++) {
+                        for (int i = 0; i < message.amount; i++) {
                             double xs = f ? r.nextDouble() / mod - r.nextDouble() / mod : r.nextDouble() - r.nextDouble();
                             double ys = f ? r.nextDouble() / mod - r.nextDouble() / mod : r.nextDouble() - r.nextDouble();
                             double zs = f ? r.nextDouble() / mod - r.nextDouble() / mod : r.nextDouble() - r.nextDouble();
                             world.spawnParticle(message.particleType, pos.x, pos.y, pos.z, xs, ys, zs, message.data);
                         }
+                        break;
                     }
+
+                    case BULLET:
+                        Random random = world.rand;
+                        double mod = 5;
+                        boolean f = mod != 0;
+                        EnumFacing facing = EnumFacing.values()[message.amount];
+                        for (int i = 0; i < 10; i++) {
+                            Vec3i vec3i = facing.getDirectionVec();
+                            double xs = vec3i.getX();
+                            double ys = vec3i.getY();
+                            double zs = vec3i.getZ();
+                            world.spawnParticle(message.particleType, true, pos.x, pos.y, pos.z, xs, ys, zs, message.data);
+                        }
+                        break;
                 }
             });
             return null;
