@@ -1,7 +1,8 @@
 package dev.toma.gunsrpg.common.entity;
 
 import dev.toma.gunsrpg.ai.EntityAIGunAttack;
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.GRPGItems;
+import dev.toma.gunsrpg.common.init.GRPGSounds;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import net.minecraft.block.Block;
@@ -172,11 +173,11 @@ public class EntityZombieGunner extends EntityMob {
 
     public static Map<GunItem, GunData> populateAndGet() {
         Map<GunItem, GunData> map = new HashMap<>();
-        map.put(ModRegistry.GRPGItems.PISTOL, new GunData(30, ModRegistry.GRPGSounds.P92));
-        map.put(ModRegistry.GRPGItems.SMG, new GunData(15, ModRegistry.GRPGSounds.MP5));
-        map.put(ModRegistry.GRPGItems.ASSAULT_RIFLE, new GunData(30, ModRegistry.GRPGSounds.SLR));
-        map.put(ModRegistry.GRPGItems.SNIPER_RIFLE, new GunData(80, ModRegistry.GRPGSounds.M24));
-        map.put(ModRegistry.GRPGItems.SHOTGUN, new GunData(50, ModRegistry.GRPGSounds.S686));
+        map.put(GRPGItems.PISTOL, new GunData(30, GRPGSounds.P92));
+        map.put(GRPGItems.SMG, new GunData(15, GRPGSounds.MP5));
+        map.put(GRPGItems.ASSAULT_RIFLE, new GunData(30, GRPGSounds.SLR));
+        map.put(GRPGItems.SNIPER_RIFLE, new GunData(80, GRPGSounds.M24));
+        map.put(GRPGItems.SHOTGUN, new GunData(50, GRPGSounds.S686));
         return map;
     }
 

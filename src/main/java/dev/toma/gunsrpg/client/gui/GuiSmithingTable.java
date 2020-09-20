@@ -1,10 +1,10 @@
 package dev.toma.gunsrpg.client.gui;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.container.ContainerSmithingTable;
+import dev.toma.gunsrpg.common.init.GRPGItems;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.tileentity.TileEntitySmithingTable;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -39,7 +39,7 @@ import java.util.List;
 
 public class GuiSmithingTable extends GuiContainer {
 
-    private static final LazyLoader<Item[]> references = new LazyLoader<>(() -> new Item[] {Items.GUNPOWDER, ModRegistry.GRPGItems.WOODEN_AMMO_9MM, ModRegistry.GRPGItems.WOODEN_AMMO_CROSSBOW_BOLT, ModRegistry.GRPGItems.WOODEN_AMMO_12G, ModRegistry.GRPGItems.WOODEN_AMMO_762MM, ModRegistry.GRPGItems.WOODEN_HAMMER, ModRegistry.GRPGItems.BANDAGE, ModRegistry.GRPGItems.GUN_PARTS});
+    private static final LazyLoader<Item[]> references = new LazyLoader<>(() -> new Item[] {Items.GUNPOWDER, GRPGItems.WOODEN_AMMO_9MM, GRPGItems.WOODEN_AMMO_CROSSBOW_BOLT, GRPGItems.WOODEN_AMMO_12G, GRPGItems.WOODEN_AMMO_762MM, GRPGItems.WOODEN_HAMMER, GRPGItems.BANDAGE, GRPGItems.GUN_PARTS});
     private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/gui/smithing_table.png");
     private final TileEntitySmithingTable smithingTable;
     private final OptionalObject<SmithingTableRecipes.SmithingRecipe> clicked = OptionalObject.empty();
@@ -298,9 +298,9 @@ public class GuiSmithingTable extends GuiContainer {
 
         public QuickScroll(int x, int y, int w, int h, Item reference) {
             super(-1, x, y, w, h, "");
-            if(reference == ModRegistry.GRPGItems.GUN_PARTS) {
+            if(reference == GRPGItems.GUN_PARTS) {
                 this.recipe = SmithingTableRecipes.getRecipeByOutput(reference);
-                SmithingTableRecipes.SmithingRecipe recipe = SmithingTableRecipes.getRecipeByOutput(ModRegistry.GRPGItems.PISTOL);
+                SmithingTableRecipes.SmithingRecipe recipe = SmithingTableRecipes.getRecipeByOutput(GRPGItems.PISTOL);
                 this.display = recipe.getOutputForDisplay();
                 this.enabled = hasAllSkills(this.recipe.getRequiredTypes(), Minecraft.getMinecraft().player);
             } else {

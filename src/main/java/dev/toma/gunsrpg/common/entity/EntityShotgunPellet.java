@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.entity;
 
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.SGItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,7 +22,7 @@ public class EntityShotgunPellet extends EntityBullet {
 
     public EntityShotgunPellet(World worldIn, EntityLivingBase shooter, SGItem gun, ItemStack stack) {
         super(worldIn, shooter, gun, stack);
-        this.extendedBarrel = shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, ModRegistry.Skills.SHOTGUN_EXTENDED_BARREL);
+        this.extendedBarrel = shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Skills.SHOTGUN_EXTENDED_BARREL);
         this.effectiveRange = extendedBarrel ? 10 : 6;
         this.maxRange = extendedBarrel ? 20 : 13;
     }

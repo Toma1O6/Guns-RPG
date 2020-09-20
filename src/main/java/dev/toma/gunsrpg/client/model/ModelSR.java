@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.client.model;
 
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
@@ -439,8 +439,8 @@ public class ModelSR extends ModelWeapon {
     public void doRender(ItemStack stack) {
         EntityPlayer player = Minecraft.getMinecraft().player;
         kar98k.render(1f);
-        if(PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SUPPRESSOR)) suppressor.render(1f);
-        if(PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE)) scope.render(1f);
+        if(PlayerDataFactory.hasActiveSkill(player, Skills.SR_SUPPRESSOR)) suppressor.render(1f);
+        if(PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE)) scope.render(1f);
     }
 
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {

@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.skills;
 
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.GRPGSounds;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -28,6 +28,6 @@ public class WellFedSkill extends BasicSkill {
         int amplifier = level - 1;
         int duration = 1200 + amplifier * 600;
         player.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, duration, amplifier));
-        ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(ModRegistry.GRPGSounds.USE_WELL_FED, SoundCategory.MASTER, player.posX, player.posY, player.posZ, 1.0F, 1.0F));
+        ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(GRPGSounds.USE_WELL_FED, SoundCategory.MASTER, player.posX, player.posY, player.posZ, 1.0F, 1.0F));
     }
 }

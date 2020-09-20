@@ -1,11 +1,12 @@
 package dev.toma.gunsrpg;
 
 import dev.toma.gunsrpg.client.gui.skills.SkillTreePlacement;
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
 import dev.toma.gunsrpg.common.command.CommandGRPG;
+import dev.toma.gunsrpg.common.init.GRPGBlocks;
+import dev.toma.gunsrpg.common.init.GRPGItems;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.common.tileentity.TileEntityAirdrop;
 import dev.toma.gunsrpg.common.tileentity.TileEntityBlastFurnace;
@@ -76,14 +77,14 @@ public class GunsRPG {
         SmithingTableRecipes.register();
         ItemAmmo.init();
         initOresToChunks();
-        GameRegistry.addSmelting(ModRegistry.GRPGItems.IRON_ORE_CHUNK, new ItemStack(Items.IRON_INGOT), 0.7F);
-        GameRegistry.addSmelting(ModRegistry.GRPGItems.GOLD_ORE_CHUNK, new ItemStack(Items.GOLD_INGOT), 1.0F);
+        GameRegistry.addSmelting(GRPGItems.IRON_ORE_CHUNK, new ItemStack(Items.IRON_INGOT), 0.7F);
+        GameRegistry.addSmelting(GRPGItems.GOLD_ORE_CHUNK, new ItemStack(Items.GOLD_INGOT), 1.0F);
         LootTableList.register(makeResource("inject/dungeon_inject"));
         ForgeRegistries.ITEMS.getValuesCollection()
                 .stream()
                 .filter(it -> it instanceof ItemPickaxe)
                 .map(i -> (ItemPickaxe) i)
-                .forEach(pickaxe -> pickaxe.effectiveBlocks.add(ModRegistry.GRPGBlocks.AMETHYST_ORE)
+                .forEach(pickaxe -> pickaxe.effectiveBlocks.add(GRPGBlocks.AMETHYST_ORE)
         );
     }
 
@@ -104,7 +105,7 @@ public class GunsRPG {
     }
 
     private static void initOresToChunks() {
-        oreToChunkMap.put(Item.getItemFromBlock(Blocks.IRON_ORE), ModRegistry.GRPGItems.IRON_ORE_CHUNK);
-        oreToChunkMap.put(Item.getItemFromBlock(Blocks.GOLD_ORE), ModRegistry.GRPGItems.GOLD_ORE_CHUNK);
+        oreToChunkMap.put(Item.getItemFromBlock(Blocks.IRON_ORE), GRPGItems.IRON_ORE_CHUNK);
+        oreToChunkMap.put(Item.getItemFromBlock(Blocks.GOLD_ORE), GRPGItems.GOLD_ORE_CHUNK);
     }
 }

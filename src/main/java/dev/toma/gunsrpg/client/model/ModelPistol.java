@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.client.model;
 
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
@@ -37,7 +37,7 @@ public class ModelPistol extends ModelWeapon {
         gunRenderer.render(1f);
         magazineRenderer.render(1f);
         EntityPlayer player = Minecraft.getMinecraft().player;
-        if(PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_SUPPRESSOR)) suppressor.render(1f);
+        if(PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_SUPPRESSOR)) suppressor.render(1f);
     }
 
     public ModelPistol() {

@@ -4,10 +4,10 @@ import dev.toma.gunsrpg.client.animation.Animation;
 import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IHandRenderer;
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
+import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -103,7 +103,7 @@ public class DebuffHeal extends GRPGItem implements IHandRenderer {
             if(entityLiving instanceof EntityPlayer) {
                 PlayerData data = PlayerDataFactory.get((EntityPlayer) entityLiving);
                 debuffDataConsumer.accept(data.getDebuffData());
-                if(data.getSkills().hasSkill(ModRegistry.Skills.EFFICIENT_MEDS)) {
+                if(data.getSkills().hasSkill(Skills.EFFICIENT_MEDS)) {
                     entityLiving.heal(4.0F);
                 }
                 data.sync();

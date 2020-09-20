@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.skills;
 
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.GRPGSounds;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.interfaces.Cooldown;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,7 +52,7 @@ public class SecondChanceSkill extends BasicSkill implements Cooldown {
     @Override
     public void onUse(EntityPlayer player) {
         player.setHealth(this.healAmount);
-        player.world.playSound(null, player.posX, player.posY, player.posZ, ModRegistry.GRPGSounds.SECOND_CHANCE_USE, SoundCategory.MASTER, 1.0F, 1.0F);
+        player.world.playSound(null, player.posX, player.posY, player.posZ, GRPGSounds.SECOND_CHANCE_USE, SoundCategory.MASTER, 1.0F, 1.0F);
         player.addPotionEffect(effectSupplier.get());
     }
 

@@ -1,11 +1,11 @@
 package dev.toma.gunsrpg.common.capability.object;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.debuffs.DamageContext;
 import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.debuffs.DebuffType;
+import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
 import dev.toma.gunsrpg.util.function.ToFloatBiFunction;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +23,7 @@ public class DebuffData implements INBTSerializable<NBTTagList> {
 
     public DebuffData(PlayerData data) {
         this.data = data;
-        this.debuffs = new Debuff[ModRegistry.DEBUFFS != null ? ModRegistry.DEBUFFS.getValuesCollection().size() : 0];
+        this.debuffs = new Debuff[GunsRPGRegistries.DEBUFFS != null ? GunsRPGRegistries.DEBUFFS.getValuesCollection().size() : 0];
     }
 
     public Debuff[] getDebuffs() {
@@ -41,7 +41,7 @@ public class DebuffData implements INBTSerializable<NBTTagList> {
     }
 
     public static int getDebuffID(DebuffType type) {
-        return ((ForgeRegistry<DebuffType>) ModRegistry.DEBUFFS).getID(type);
+        return ((ForgeRegistry<DebuffType>) GunsRPGRegistries.DEBUFFS).getID(type);
     }
 
     public Debuff createInstance(DebuffType type) {
@@ -65,7 +65,7 @@ public class DebuffData implements INBTSerializable<NBTTagList> {
 
     public void onPlayerAttackedFrom(DamageContext ctx, EntityPlayer player) {
         Random random = player.world.rand;
-        types: for(DebuffType type : ModRegistry.DEBUFFS) {
+        types: for(DebuffType type : GunsRPGRegistries.DEBUFFS) {
             int i = getDebuffID(type);
             Debuff v = debuffs[i];
             if(v == null) {
@@ -113,12 +113,12 @@ public class DebuffData implements INBTSerializable<NBTTagList> {
 
     @Override
     public void deserializeNBT(NBTTagList list) {
-        debuffs = new Debuff[ModRegistry.DEBUFFS.getValuesCollection().size()];
+        debuffs = new Debuff[GunsRPGRegistries.DEBUFFS.getValuesCollection().size()];
         for (int i = 0; i < list.tagCount(); i++) {
             NBTTagCompound nbt = list.getCompoundTagAt(i);
             ResourceLocation key = new ResourceLocation(nbt.getString("key"));
             NBTTagCompound data = nbt.getCompoundTag("data");
-            DebuffType type = ModRegistry.DEBUFFS.getValue(key);
+            DebuffType type = GunsRPGRegistries.DEBUFFS.getValue(key);
             if(type == null) {
                 GunsRPG.log.error("Error loading debuff data for key {}", key.toString());
                 continue;

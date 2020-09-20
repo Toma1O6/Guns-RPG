@@ -5,7 +5,6 @@ import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IHandRenderer;
 import dev.toma.gunsrpg.client.animation.impl.SprintingAnimation;
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
@@ -13,6 +12,8 @@ import dev.toma.gunsrpg.common.capability.object.GunData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.capability.object.ScopeData;
 import dev.toma.gunsrpg.common.debuffs.Debuff;
+import dev.toma.gunsrpg.common.init.GRPGItems;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
@@ -83,7 +84,7 @@ public class ClientEventHandler {
                 event.setCanceled(true);
                 PlayerData data = PlayerDataFactory.get(player);
                 if (data.getAimInfo().progress >= 0.9F) {
-                    if (stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) || stack.getItem() == ModRegistry.GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE)) {
+                    if (stack.getItem() == GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE) || stack.getItem() == GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
                         if (GRPGConfig.clientConfig.scopeRenderer.isTextureOverlay()) {
                             ModUtils.renderTexture(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(), SCOPE_OVERLAY);
                         } else {
@@ -91,7 +92,7 @@ public class ClientEventHandler {
                             int top = resolution.getScaledHeight() / 2 - 16;
                             ModUtils.renderTexture(left, top, left + 32, top + 32, SCOPE);
                         }
-                    } else if ((PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SMG_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.SMG) || (PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_RED_DOT) && stack.getItem() == ModRegistry.GRPGItems.ASSAULT_RIFLE)) {
+                    } else if ((PlayerDataFactory.hasActiveSkill(player, Skills.SMG_RED_DOT) && stack.getItem() == GRPGItems.SMG) || (PlayerDataFactory.hasActiveSkill(player, Skills.AR_RED_DOT) && stack.getItem() == GRPGItems.ASSAULT_RIFLE)) {
                         ScopeData scopeData = data.getScopeData();
                         float left = resolution.getScaledWidth() / 2f - 8f;
                         float top = resolution.getScaledHeight() / 2f - 8f;
@@ -231,10 +232,10 @@ public class ClientEventHandler {
                     if (aim) {
                         preAimFov.map(settings.fovSetting);
                         preAimSens.map(settings.mouseSensitivity);
-                        if (item == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE)) {
+                        if (item == GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE)) {
                             settings.mouseSensitivity = preAimSens.get() * 0.3F;
                             settings.fovSetting = 15.0F;
-                        } else if (item == ModRegistry.GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE)) {
+                        } else if (item == GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
                             settings.mouseSensitivity = preAimSens.get() * 0.4F;
                             settings.fovSetting = 25.0F;
                         }
@@ -258,7 +259,7 @@ public class ClientEventHandler {
                 event.setCanceled(true);
             }
         }
-        if (PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.clientConfig.scopeRenderer.isTextureOverlay() && (PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE || PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.CROSSBOW_SCOPE) && stack.getItem() == ModRegistry.GRPGItems.CROSSBOW)) {
+        if (PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.clientConfig.scopeRenderer.isTextureOverlay() && (PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE) && stack.getItem() == GRPGItems.SNIPER_RIFLE || PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) && stack.getItem() == GRPGItems.CROSSBOW)) {
             event.setCanceled(true);
             return;
         }
@@ -279,7 +280,7 @@ public class ClientEventHandler {
             if (!AnimationManager.shouldCancelItemRender())
                 Minecraft.getMinecraft().getItemRenderer().renderItemInFirstPerson(player, partial, pitch, EnumHand.MAIN_HAND, swing, stack, equip);
             GlStateManager.popMatrix();
-            if (stack.getItem() == ModRegistry.GRPGItems.PISTOL && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_DUAL_WIELD)) {
+            if (stack.getItem() == GRPGItems.PISTOL && PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD)) {
                 GlStateManager.pushMatrix();
                 AnimationManager.renderingDualWield = true;
                 AnimationManager.animateItemHands(partial);

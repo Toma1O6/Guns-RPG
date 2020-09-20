@@ -1,7 +1,9 @@
 package dev.toma.gunsrpg.common.capability.object;
 
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.init.GRPGItems;
+import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
@@ -128,7 +130,7 @@ public class PlayerSkills {
             player.sendMessage(new TextComponentString(TextFormatting.YELLOW + "Current level: " + level));
             int count = 0;
             List<SkillType<?>> unlockedSkills = new ArrayList<>();
-            for(SkillType<?> type : ModRegistry.SKILLS) {
+            for(SkillType<?> type : GunsRPGRegistries.SKILLS) {
                 if(!(type.getCriteria() instanceof GunCriteria) && type.levelRequirement == level) {
                     count++;
                     unlockedSkills.add(type);
@@ -145,7 +147,7 @@ public class PlayerSkills {
     public void awardPoints() {
         if(level == 100) {
             addSkillPoints(25);
-            data.getPlayer().addItemStackToInventory(new ItemStack(ModRegistry.GRPGItems.GOLD_EGG_SHARD));
+            data.getPlayer().addItemStackToInventory(new ItemStack(GRPGItems.GOLD_EGG_SHARD));
         } else if(level == 50) {
             addSkillPoints(20);
         } else if(level % 10 == 0) {
@@ -220,7 +222,7 @@ public class PlayerSkills {
         skillPoints = 0;
         kills = 0;
         gunKills.clear();
-        for (SkillType<?> skillType : ModRegistry.SKILLS.getValuesCollection()) {
+        for (SkillType<?> skillType : GunsRPGRegistries.SKILLS.getValuesCollection()) {
             unlockSkill(skillType, false);
         }
         for(GunItem item : ForgeRegistries.ITEMS.getValuesCollection().stream().filter(item -> item instanceof GunItem).map(item -> (GunItem) item).collect(Collectors.toList())) {
@@ -440,7 +442,7 @@ public class PlayerSkills {
             for (NBTBase nbtBase : list) {
                 NBTTagCompound tagCompound = (NBTTagCompound) nbtBase;
                 ResourceLocation key = new ResourceLocation(tagCompound.getString("type"));
-                SkillType<?> skillType = ModRegistry.SKILLS.getValue(key);
+                SkillType<?> skillType = GunsRPGRegistries.SKILLS.getValue(key);
                 if (skillType != null) {
                     ISkill instance = skillType.instantiate();
                     instance.readData(tagCompound);
@@ -471,7 +473,7 @@ public class PlayerSkills {
 
     public float getTotalFallResistance() {
         EntityPlayer player = data.getPlayer();
-        float f = hasSkill(ModRegistry.Skills.LIGHT_HUNTER) && getSkill(ModRegistry.Skills.LIGHT_HUNTER).apply(player) ? 0.1F : 0.0F;
+        float f = hasSkill(Skills.LIGHT_HUNTER) && getSkill(Skills.LIGHT_HUNTER).apply(player) ? 0.1F : 0.0F;
         return f + acrobaticsFallResistance;
     }
 

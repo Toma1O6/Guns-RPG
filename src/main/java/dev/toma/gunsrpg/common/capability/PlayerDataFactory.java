@@ -1,7 +1,8 @@
 package dev.toma.gunsrpg.common.capability;
 
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.object.*;
+import dev.toma.gunsrpg.common.init.GRPGItems;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -79,7 +80,7 @@ public class PlayerDataFactory implements PlayerData {
                 }
             }
             if(reducedHealthTimer == 0) {
-                double d = getSkills().hasSkill(ModRegistry.Skills.WAR_MACHINE) ? 40 : 20;
+                double d = getSkills().hasSkill(Skills.WAR_MACHINE) ? 40 : 20;
                 player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(d);
             }
         }
@@ -164,10 +165,10 @@ public class PlayerDataFactory implements PlayerData {
     public void handleLogin() {
         if(!logged) {
             logged = true;
-            player.addItemStackToInventory(new ItemStack(ModRegistry.GRPGItems.ANTIDOTUM_PILLS, 2));
-            player.addItemStackToInventory(new ItemStack(ModRegistry.GRPGItems.BANDAGE, 2));
-            player.addItemStackToInventory(new ItemStack(ModRegistry.GRPGItems.VACCINE));
-            player.addItemStackToInventory(new ItemStack(ModRegistry.GRPGItems.PLASTER_CAST));
+            player.addItemStackToInventory(new ItemStack(GRPGItems.ANTIDOTUM_PILLS, 2));
+            player.addItemStackToInventory(new ItemStack(GRPGItems.BANDAGE, 2));
+            player.addItemStackToInventory(new ItemStack(GRPGItems.VACCINE));
+            player.addItemStackToInventory(new ItemStack(GRPGItems.PLASTER_CAST));
             sync();
         }
     }

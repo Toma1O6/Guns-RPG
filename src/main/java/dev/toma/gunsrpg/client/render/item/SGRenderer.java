@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.client.render.item;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.ModelShotgun;
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.GRPGItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.ItemStack;
@@ -15,7 +15,7 @@ public class SGRenderer extends TileEntityItemStackRenderer {
 
     @Override
     public void renderByItem(ItemStack itemStackIn) {
-        if(itemStackIn.getItem() == ModRegistry.GRPGItems.SHOTGUN) {
+        if(itemStackIn.getItem() == GRPGItems.SHOTGUN) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
             model.doRender(itemStackIn);
         }

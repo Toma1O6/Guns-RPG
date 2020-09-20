@@ -1,8 +1,9 @@
 package dev.toma.gunsrpg.common.block;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.init.GRPGBlocks;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.tileentity.TileEntityBlastFurnace;
 import dev.toma.gunsrpg.util.GuiHandler;
 import net.minecraft.block.material.Material;
@@ -44,7 +45,7 @@ public class BlockBlastFurnace extends GRPGBlock {
 
     public static void updateBurnState(BlockPos pos, World world, boolean lit) {
         IBlockState currentState = world.getBlockState(pos);
-        if(currentState.getBlock() != ModRegistry.GRPGBlocks.BLAST_FURNACE) return;
+        if(currentState.getBlock() != GRPGBlocks.BLAST_FURNACE) return;
         world.setBlockState(pos, currentState.withProperty(BURN, lit));
     }
 
@@ -109,7 +110,7 @@ public class BlockBlastFurnace extends GRPGBlock {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(!worldIn.isRemote) {
-            if(PlayerDataFactory.hasActiveSkill(playerIn, ModRegistry.Skills.BLACKSMITH)) {
+            if(PlayerDataFactory.hasActiveSkill(playerIn, Skills.BLACKSMITH)) {
                 playerIn.openGui(GunsRPG.modInstance, GuiHandler.BLAST_FURNACE, worldIn, pos.getX(), pos.getY(), pos.getZ());
             } else {
                 playerIn.sendStatusMessage(new TextComponentString("§cYou must have Blacksmith skill in order to use this!"), true);

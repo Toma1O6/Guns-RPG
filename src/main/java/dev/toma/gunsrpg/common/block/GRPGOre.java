@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.block;
 
 import dev.toma.gunsrpg.ModTabs;
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.CommonRegistry;
 import net.minecraft.block.BlockOre;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -36,7 +36,7 @@ public class GRPGOre extends BlockOre {
         this.setHardness(2.5F);
         this.setResistance(10.0F);
         this.setHarvestLevel("pickaxe", 2);
-        ModRegistry.registerItemBlock(this);
+        CommonRegistry.registerItemBlock(this);
     }
 
     @Override

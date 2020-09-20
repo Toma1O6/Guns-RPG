@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.entity;
 
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.GRPGBlocks;
 import dev.toma.gunsrpg.common.tileentity.TileEntityAirdrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
@@ -21,7 +21,7 @@ public class EntityAirdrop extends Entity {
         if(!onGround) {
             if(world.getBlockState(this.getPosition()).getMaterial().isLiquid()) {
                 BlockPos pos = this.getPosition();
-                world.setBlockState(pos, ModRegistry.GRPGBlocks.AIRDROP.getDefaultState());
+                world.setBlockState(pos, GRPGBlocks.AIRDROP.getDefaultState());
                 ((TileEntityAirdrop) world.getTileEntity(pos)).generateLoot();
                 this.setDead();
             }
@@ -29,7 +29,7 @@ public class EntityAirdrop extends Entity {
         } else {
             if(!world.isRemote) {
                 BlockPos pos = this.getPosition();
-                world.setBlockState(pos, ModRegistry.GRPGBlocks.AIRDROP.getDefaultState());
+                world.setBlockState(pos, GRPGBlocks.AIRDROP.getDefaultState());
                 ((TileEntityAirdrop) world.getTileEntity(pos)).generateLoot();
                 this.setDead();
             }

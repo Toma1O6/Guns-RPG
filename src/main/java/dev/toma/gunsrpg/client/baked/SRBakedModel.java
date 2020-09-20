@@ -1,7 +1,8 @@
 package dev.toma.gunsrpg.client.baked;
 
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.init.GRPGItems;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -27,7 +28,7 @@ public class SRBakedModel extends GunBakedModel {
         GlStateManager.rotate(180, 0, 1, 0);
         switch (cameraTransformType) {
             case FIRST_PERSON_RIGHT_HAND: {
-                if(PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.clientConfig.scopeRenderer.isTextureOverlay() && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SR_SCOPE) && player.getHeldItemMainhand().getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE) {
+                if(PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.clientConfig.scopeRenderer.isTextureOverlay() && PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE) && player.getHeldItemMainhand().getItem() == GRPGItems.SNIPER_RIFLE) {
                     GlStateManager.scale(0, 0, 0);
                     return Pair.of(this, trsrTransformation.getMatrix());
                 }

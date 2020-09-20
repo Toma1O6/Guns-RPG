@@ -4,9 +4,9 @@ import dev.toma.gunsrpg.client.animation.Animation;
 import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IHandRenderer;
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.util.ITooltipFlag;
@@ -95,7 +95,7 @@ public abstract class ItemHeal extends GRPGItem implements IHandRenderer {
                 EntityPlayer player = (EntityPlayer) entityLiving;
                 PlayerData data = PlayerDataFactory.get(player);
                 consumer.accept(player);
-                if(data.getSkills().hasSkill(ModRegistry.Skills.EFFICIENT_MEDS)) {
+                if(data.getSkills().hasSkill(Skills.EFFICIENT_MEDS)) {
                     entityLiving.heal(4.0F);
                 }
                 if(!((EntityPlayer) entityLiving).isCreative()) {

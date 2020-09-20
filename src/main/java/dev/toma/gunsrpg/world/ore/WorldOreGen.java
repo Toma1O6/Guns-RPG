@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.world.ore;
 
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.GRPGBlocks;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.config.world.WorldConfiguration;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +17,7 @@ public class WorldOreGen implements IWorldGenerator {
     private final SingleOreGen amethyst;
 
     public WorldOreGen() {
-        this.amethyst = new SingleOreGen(ModRegistry.GRPGBlocks.AMETHYST_ORE.getDefaultState());
+        this.amethyst = new SingleOreGen(GRPGBlocks.AMETHYST_ORE.getDefaultState());
     }
 
     @Override

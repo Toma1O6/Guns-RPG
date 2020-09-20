@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.skills;
 
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,7 +29,7 @@ public abstract class AbstractSkill implements ISkill {
 
     @Override
     public final void readData(NBTTagCompound nbt) {
-        SkillType<?> type = ModRegistry.SKILLS.getValue(new ResourceLocation(nbt.getString("type")));
+        SkillType<?> type = GunsRPGRegistries.SKILLS.getValue(new ResourceLocation(nbt.getString("type")));
         if(type != this.type) {
             throw new IllegalStateException("Loaded wrong SkillType");
         }

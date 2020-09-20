@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.client.render.item;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.ModelPistol;
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.GRPGItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.ItemStack;
@@ -15,7 +15,7 @@ public class PistolRenderer extends TileEntityItemStackRenderer {
 
     @Override
     public void renderByItem(ItemStack stack) {
-        if(stack.getItem() == ModRegistry.GRPGItems.PISTOL) {
+        if(stack.getItem() == GRPGItems.PISTOL) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
             p1911.doRender(stack);
         }

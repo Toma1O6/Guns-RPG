@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.interfaces.Clickable;
@@ -34,7 +34,7 @@ public class SPacketSkillClicked implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
         ResourceLocation location = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
-        type = ModRegistry.SKILLS.getValue(location);
+        type = GunsRPGRegistries.SKILLS.getValue(location);
     }
 
     public static class Handler implements IMessageHandler<SPacketSkillClicked, IMessage> {

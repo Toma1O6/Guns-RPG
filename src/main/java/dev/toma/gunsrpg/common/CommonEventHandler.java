@@ -8,6 +8,10 @@ import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.debuffs.DamageContext;
 import dev.toma.gunsrpg.common.entity.EntityCrossbowBolt;
 import dev.toma.gunsrpg.common.entity.EntityExplosiveArrow;
+import dev.toma.gunsrpg.common.init.GRPGBlocks;
+import dev.toma.gunsrpg.common.init.GRPGItems;
+import dev.toma.gunsrpg.common.init.GRPGSounds;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.ItemHammer;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
@@ -96,7 +100,7 @@ public class CommonEventHandler {
                 EntityPlayer player = (EntityPlayer) event.getEntity();
                 IAttributeInstance attributeInstance = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED);
                 attributeInstance.removeModifier(AdrenalineRushSkill.SKILL_MODIFIER);
-                AdrenalineRushSkill adrenalineRushSkill = PlayerDataFactory.getSkill(player, ModRegistry.Skills.ADRENALINE_RUSH_I);
+                AdrenalineRushSkill adrenalineRushSkill = PlayerDataFactory.getSkill(player, Skills.ADRENALINE_RUSH_I);
                 if(adrenalineRushSkill != null && adrenalineRushSkill.apply(player)) {
                     adrenalineRushSkill = SkillUtil.getBestSkillFromOverrides(adrenalineRushSkill, player);
                     AttributeModifier attributeModifier = adrenalineRushSkill.getAttackSpeedBoost();
@@ -174,21 +178,21 @@ public class CommonEventHandler {
         EntityPlayer player = event.getEntityPlayer();
         ItemStack stack = player.getHeldItemMainhand();
         PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
-        if(stack.getItem() instanceof ItemAxe && skills.hasSkill(ModRegistry.Skills.SHARP_AXE_I)) {
+        if(stack.getItem() instanceof ItemAxe && skills.hasSkill(Skills.SHARP_AXE_I)) {
             float f = event.getOriginalSpeed();
             float f1 = skills.axeMiningSpeed * 2;
             if(f > 1.0F) {
                 float f2 = f * (1.0F + f1);
                 event.setNewSpeed(f2);
             }
-        } else if(stack.getItem() instanceof ItemPickaxe && skills.hasSkill(ModRegistry.Skills.HEAVY_PICKAXE_I)) {
+        } else if(stack.getItem() instanceof ItemPickaxe && skills.hasSkill(Skills.HEAVY_PICKAXE_I)) {
             float f = event.getOriginalSpeed();
             float f1 = skills.pickaxeMiningSpeed * 2;
             if(f > 1.0F) {
                 float f2 = f * (1.0F + f1);
                 event.setNewSpeed(f2);
             }
-        } else if(stack.getItem() instanceof ItemSpade && skills.hasSkill(ModRegistry.Skills.GRAVE_DIGGER_I)) {
+        } else if(stack.getItem() instanceof ItemSpade && skills.hasSkill(Skills.GRAVE_DIGGER_I)) {
             float f = event.getOriginalSpeed();
             float f1 = skills.shovelMiningSpeed * 2;
             if(f > 1.0F) {
@@ -218,8 +222,8 @@ public class CommonEventHandler {
             if(stack.getItem() instanceof ItemFood) {
                 float value = ((ItemFood) stack.getItem()).getHealAmount(stack);
                 PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
-                if(value >= 14 && skills.hasSkill(ModRegistry.Skills.WELL_FED_I)) {
-                    SkillUtil.getBestSkillFromOverrides(skills.getSkill(ModRegistry.Skills.WELL_FED_I), player).applyEffects(player);
+                if(value >= 14 && skills.hasSkill(Skills.WELL_FED_I)) {
+                    SkillUtil.getBestSkillFromOverrides(skills.getSkill(Skills.WELL_FED_I), player).applyEffects(player);
                 }
             }
         }
@@ -250,7 +254,7 @@ public class CommonEventHandler {
         EntityPlayer player = event.getHarvester();
         if(player == null) return;
         PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
-        if(event.getState().getBlock() instanceof BlockLog && skills.hasSkill(ModRegistry.Skills.LUMBERJACK_I)) {
+        if(event.getState().getBlock() instanceof BlockLog && skills.hasSkill(Skills.LUMBERJACK_I)) {
             Block block = event.getState().getBlock();
             for(IRecipe recipe : ForgeRegistries.RECIPES) {
                 List<Ingredient> ingredients = recipe.getIngredients();
@@ -259,7 +263,7 @@ public class CommonEventHandler {
                     if(ingredient.apply(new ItemStack(block, 1, block.damageDropped(event.getState())))) {
                         ItemStack result = recipe.getRecipeOutput().copy();
                         result.setCount(1);
-                        Pair<Float, Float> chances = SkillUtil.getBestSkillFromOverrides(skills.getSkill(ModRegistry.Skills.LUMBERJACK_I), player).getDropChances();
+                        Pair<Float, Float> chances = SkillUtil.getBestSkillFromOverrides(skills.getSkill(Skills.LUMBERJACK_I), player).getDropChances();
                         if(random.nextFloat() < chances.getLeft()) {
                             event.getDrops().add(result);
                         }
@@ -272,8 +276,8 @@ public class CommonEventHandler {
             }
         } else if(event.getState().getBlock() instanceof BlockOre) {
             Block block = event.getState().getBlock();
-            if(skills.hasSkill(ModRegistry.Skills.MOTHER_LODE_I)) {
-                Pair<Float, Float> chances = SkillUtil.getBestSkillFromOverrides(skills.getSkill(ModRegistry.Skills.MOTHER_LODE_I), player).getDropChances();
+            if(skills.hasSkill(Skills.MOTHER_LODE_I)) {
+                Pair<Float, Float> chances = SkillUtil.getBestSkillFromOverrides(skills.getSkill(Skills.MOTHER_LODE_I), player).getDropChances();
                 float x3 = chances.getRight();
                 float x2 = chances.getLeft();
                 if(random.nextFloat() < x3) {
@@ -322,7 +326,7 @@ public class CommonEventHandler {
                 event.setAmount(event.getAmount() + skills.extraDamage);
             }
         } else if((source.getImmediateSource() instanceof EntityArrow || source.getImmediateSource() instanceof EntityCrossbowBolt) && source.getTrueSource() instanceof EntityPlayer) {
-            LightHunterSkill skill = PlayerDataFactory.getSkill((EntityPlayer) source.getTrueSource(), ModRegistry.Skills.LIGHT_HUNTER);
+            LightHunterSkill skill = PlayerDataFactory.getSkill((EntityPlayer) source.getTrueSource(), Skills.LIGHT_HUNTER);
             if(skill != null && skill.apply((EntityPlayer) source.getTrueSource())) {
                 event.setAmount(event.getAmount() * 1.2F);
             }
@@ -418,13 +422,13 @@ public class CommonEventHandler {
         if(event.getEntity() instanceof IMob) {
             if(!event.getEntity().world.isRemote && random.nextFloat() <= 0.016) {
                 Entity entity = event.getEntity();
-                entity.world.spawnEntity(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, new ItemStack(ModRegistry.GRPGItems.SKILLPOINT_BOOK)));
+                entity.world.spawnEntity(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, new ItemStack(GRPGItems.SKILLPOINT_BOOK)));
             }
         }
         if(event.getEntity() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntity();
             PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
-            SecondChanceSkill secondChanceSkill = skills.getSkill(ModRegistry.Skills.SECOND_CHANCE_I);
+            SecondChanceSkill secondChanceSkill = skills.getSkill(Skills.SECOND_CHANCE_I);
             if(secondChanceSkill != null) {
                 secondChanceSkill = SkillUtil.getBestSkillFromOverrides(secondChanceSkill, player);
                 if(secondChanceSkill.apply(player)) {
@@ -441,18 +445,18 @@ public class CommonEventHandler {
                     while (!world.getBlockState(pos).getBlock().isReplaceable(world, pos) && pos.getY() < 255) {
                         pos = pos.up();
                     }
-                    world.setBlockState(pos, ModRegistry.GRPGBlocks.DEATH_CRATE.getDefaultState());
+                    world.setBlockState(pos, GRPGBlocks.DEATH_CRATE.getDefaultState());
                     TileEntity tileEntity = world.getTileEntity(pos);
                     if(tileEntity instanceof TileEntityDeathCrate) {
                         ((TileEntityDeathCrate) tileEntity).fillInventory(player);
                     }
                 }
-                if(skills.hasSkill(ModRegistry.Skills.AVENGE_ME_FRIENDS) && !player.world.isRemote) {
+                if(skills.hasSkill(Skills.AVENGE_ME_FRIENDS) && !player.world.isRemote) {
                     List<EntityPlayer> players = player.world.getEntitiesWithinAABB(EntityPlayer.class, Block.FULL_BLOCK_AABB.offset(player.getPosition()).grow(30));
                     players.forEach(p -> {
                         p.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 400, 2));
                         p.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 500, 1));
-                        p.world.playSound(p, p.posX, p.posY, p.posZ, ModRegistry.GRPGSounds.USE_AVENGE_ME_FRIENDS, SoundCategory.MASTER, 1.0F, 1.0F);
+                        p.world.playSound(p, p.posX, p.posY, p.posZ, GRPGSounds.USE_AVENGE_ME_FRIENDS, SoundCategory.MASTER, 1.0F, 1.0F);
                     });
                 }
             }
@@ -463,8 +467,8 @@ public class CommonEventHandler {
     public static void respawnPlayer(PlayerEvent.PlayerRespawnEvent event) {
         EntityPlayer player = event.player;
         PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
-        if(skills.hasSkill(ModRegistry.Skills.WAR_MACHINE)) {
-            skills.getSkill(ModRegistry.Skills.WAR_MACHINE).onPurchase(player);
+        if(skills.hasSkill(Skills.WAR_MACHINE)) {
+            skills.getSkill(Skills.WAR_MACHINE).onPurchase(player);
         }
         if(!event.isEndConquered()) PlayerDataFactory.get(player).setOnCooldown();
         PlayerDataFactory.get(player).sync();
@@ -476,7 +480,7 @@ public class CommonEventHandler {
             GunDamageSource src = (GunDamageSource) event.getDamageSource();
             ItemStack stack = src.getStacc();
             Entity shooter = src.getSrc();
-            if(stack.getItem() == ModRegistry.GRPGItems.CROSSBOW && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, ModRegistry.Skills.CROSSBOW_HUNTER)) {
+            if(stack.getItem() == GRPGItems.CROSSBOW && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Skills.CROSSBOW_HUNTER)) {
                 event.setLootingLevel(3);
             }
         }
@@ -543,7 +547,7 @@ public class CommonEventHandler {
         String loottable = event.getName().toString();
         if(loottable.equals("minecraft:chests/abandoned_mineshaft") || loottable.equals("minecraft:chests/desert_pyramid") || loottable.equals("minecraft:chests/simple_dungeon") || loottable.equals("minecraft:chests/village_blacksmith")) {
             LootEntryItem entryItem = new LootEntryItem(
-                    ModRegistry.GRPGItems.SKILLPOINT_BOOK,
+                    GRPGItems.SKILLPOINT_BOOK,
                     3,
                     0,
                     new LootFunction[] {new SetCount(new LootCondition[0], new RandomValueRange(1, 3))},

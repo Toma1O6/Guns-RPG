@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.client.model;
 
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBox;
@@ -961,8 +961,8 @@ public class ModelAR extends ModelWeapon {
         sks.render(1f);
         magazine.render(1f);
         ironsights.render(1f);
-        if(PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_SUPPRESSOR)) suppressor.render(1f);
-        boolean f = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_RED_DOT);
+        if(PlayerDataFactory.hasActiveSkill(player, Skills.AR_SUPPRESSOR)) suppressor.render(1f);
+        boolean f = PlayerDataFactory.hasActiveSkill(player, Skills.AR_RED_DOT);
         if(f) rds.render(1f);
         ironsights.offsetY = f ? 14.0F : 0.0F;
     }

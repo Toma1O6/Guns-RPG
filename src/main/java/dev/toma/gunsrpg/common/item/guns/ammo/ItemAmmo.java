@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static dev.toma.gunsrpg.common.ModRegistry.GRPGItems.*;
+import static dev.toma.gunsrpg.common.init.GRPGItems.*;
 
 public class ItemAmmo extends GRPGItem implements IAmmoProvider {
 

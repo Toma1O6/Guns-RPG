@@ -6,9 +6,10 @@ import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.client.animation.impl.ImprovedAimAnimation;
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
+import dev.toma.gunsrpg.common.init.GRPGSounds;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
@@ -54,12 +55,12 @@ public class PistolItem extends GunItem {
 
     @Override
     public boolean isSilenced(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_SUPPRESSOR);
+        return PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_SUPPRESSOR);
     }
 
     @Override
     public void onHitEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
-        if(shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, ModRegistry.Skills.PISTOL_HEAVY_BULLETS) && random.nextDouble() <= 0.35) {
+        if(shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Skills.PISTOL_HEAVY_BULLETS) && random.nextDouble() <= 0.35) {
             victim.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1, false, false));
             victim.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 100, 0, false, false));
         }
@@ -67,43 +68,43 @@ public class PistolItem extends GunItem {
 
     @Override
     public SoundEvent getShootSound(EntityLivingBase entity) {
-        return entity instanceof EntityPlayer && this.isSilenced((EntityPlayer) entity) ? ModRegistry.GRPGSounds.P1911_SILENT : ModRegistry.GRPGSounds.P1911;
+        return entity instanceof EntityPlayer && this.isSilenced((EntityPlayer) entity) ? GRPGSounds.P1911_SILENT : GRPGSounds.P1911;
     }
 
     @Override
     public SoundEvent getReloadSound(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_QUICKDRAW) ? ModRegistry.GRPGSounds.P1911_RELOAD_SHORT : ModRegistry.GRPGSounds.P1911_RELOAD;
+        return PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_QUICKDRAW) ? GRPGSounds.P1911_RELOAD_SHORT : GRPGSounds.P1911_RELOAD;
     }
 
     @Override
     public int getMaxAmmo(EntityPlayer player) {
-        boolean extended = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_EXTENDED);
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_DUAL_WIELD) ? extended ? 26 : 14 : extended ? 13 : 7;
+        boolean extended = PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_EXTENDED);
+        return PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD) ? extended ? 26 : 14 : extended ? 13 : 7;
     }
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_TOUGH_SPRING) ? GRPGConfig.weaponConfig.pistol.upgraded : GRPGConfig.weaponConfig.pistol.normal;
+        return PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_TOUGH_SPRING) ? GRPGConfig.weaponConfig.pistol.upgraded : GRPGConfig.weaponConfig.pistol.normal;
     }
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        boolean quickdraw = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_QUICKDRAW);
-        int time = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_DUAL_WIELD) ? quickdraw ? 50 : 70 : quickdraw ? 25 : 35;
+        boolean quickdraw = PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_QUICKDRAW);
+        int time = PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD) ? quickdraw ? 50 : 70 : quickdraw ? 25 : 35;
         return (int)(time * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override
     public float getVerticalRecoil(EntityPlayer player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_CARBON_BARREL) ? GRPGConfig.weaponConfig.general.carbonBarrel : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_CARBON_BARREL) ? GRPGConfig.weaponConfig.general.carbonBarrel : 1.0F;
         return mod * f;
     }
 
     @Override
     public float getHorizontalRecoil(EntityPlayer player) {
         float f = super.getHorizontalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.PISTOL_CARBON_BARREL) ? GRPGConfig.weaponConfig.general.carbonBarrel : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_CARBON_BARREL) ? GRPGConfig.weaponConfig.general.carbonBarrel : 1.0F;
         return mod * f;
     }
 
@@ -116,7 +117,7 @@ public class PistolItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return ModRegistry.Skills.PISTOL_ASSEMBLY;
+        return Skills.PISTOL_ASSEMBLY;
     }
 
     @SideOnly(Side.CLIENT)
@@ -187,6 +188,6 @@ public class PistolItem extends GunItem {
 
     @SideOnly(Side.CLIENT)
     private boolean isDualWieldActive() {
-        return PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, ModRegistry.Skills.PISTOL_DUAL_WIELD);
+        return PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Skills.PISTOL_DUAL_WIELD);
     }
 }

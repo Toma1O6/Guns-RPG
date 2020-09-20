@@ -1,9 +1,9 @@
 package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.ModUtils;
 import io.netty.buffer.ByteBuf;
@@ -43,8 +43,8 @@ public class SPacketUnlockSkill implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
         hasParent = buf.readBoolean();
-        clicked = ModRegistry.SKILLS.getValue(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
-        if (hasParent) parent = ModRegistry.SKILLS.getValue(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
+        clicked = GunsRPGRegistries.SKILLS.getValue(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
+        if (hasParent) parent = GunsRPGRegistries.SKILLS.getValue(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
     }
 
     public static class Handler implements IMessageHandler<SPacketUnlockSkill, IMessage> {
@@ -71,7 +71,7 @@ public class SPacketUnlockSkill implements IMessage {
                     }
                 } else {
                     // iterate all skills
-                    for (SkillType<?> type : ModRegistry.SKILLS) {
+                    for (SkillType<?> type : GunsRPGRegistries.SKILLS) {
                         // check if clicked skill is child of one skill
                         if (ModUtils.contains(clicked, type.getChilds())) {
                             // type = parent

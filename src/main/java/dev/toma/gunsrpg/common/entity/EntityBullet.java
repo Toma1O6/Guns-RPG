@@ -2,8 +2,10 @@ package dev.toma.gunsrpg.common.entity;
 
 import com.google.common.base.Predicate;
 import dev.toma.gunsrpg.common.GunDamageSourceHack;
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.init.GRPGItems;
+import dev.toma.gunsrpg.common.init.GRPGSounds;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -63,7 +65,7 @@ public class EntityBullet extends Entity {
         this.setPosition(shooter.posX, shooter.posY + shooter.getEyeHeight(), shooter.posZ);
         if (shooter instanceof EntityPlayer) {
             EntityPlayer p = (EntityPlayer) shooter;
-            canPenetrateEntity = gun == ModRegistry.GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(p, ModRegistry.Skills.SR_PENETRATOR);
+            canPenetrateEntity = gun == GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(p, Skills.SR_PENETRATOR);
         }
     }
 
@@ -96,8 +98,8 @@ public class EntityBullet extends Entity {
         }
         Entity entity = rayTraceResult.entityHit;
         if (entity != null && !world.isRemote) {
-            boolean validPlayer = shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, ModRegistry.Skills.SR_DEAD_EYE);
-            boolean validWeapon = stack.getItem() == ModRegistry.GRPGItems.SNIPER_RIFLE;
+            boolean validPlayer = shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Skills.SR_DEAD_EYE);
+            boolean validWeapon = stack.getItem() == GRPGItems.SNIPER_RIFLE;
             boolean isHeadshot = validWeapon && validPlayer && this.canEntityGetHeadshot(entity) && entityRaytrace.hitVec.y >= entity.getPosition().getY() + entity.getEyeHeight() - 0.15f;
             Vec3d vec = rayTraceResult.hitVec;
             Block block = Blocks.REDSTONE_BLOCK;
@@ -183,7 +185,7 @@ public class EntityBullet extends Entity {
         }
 
         if (ticksExisted > 1) {
-            world.playSound(null, posX, posY, posZ, ModRegistry.GRPGSounds.BULLET_WHIZZ, SoundCategory.MASTER, 0.6F, 1.0F);
+            world.playSound(null, posX, posY, posZ, GRPGSounds.BULLET_WHIZZ, SoundCategory.MASTER, 0.6F, 1.0F);
         }
 
         if (isLimitedLifetime() && this.ticksExisted >= 80) {

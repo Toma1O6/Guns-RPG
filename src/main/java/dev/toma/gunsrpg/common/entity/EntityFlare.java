@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.entity;
 
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.GRPGSounds;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
@@ -84,7 +84,7 @@ public class EntityFlare extends Entity implements IEntityAdditionalSpawnData {
                     EntityAirdrop airdrop = new EntityAirdrop(world);
                     airdrop.setPosition(posX, posY - 10, posZ);
                     world.spawnEntity(airdrop);
-                    world.playSound(null, posX, posY - 130, posZ, ModRegistry.GRPGSounds.PLANE_FLY_BY, SoundCategory.MASTER, 7.0F, 1.0F);
+                    world.playSound(null, posX, posY - 130, posZ, GRPGSounds.PLANE_FLY_BY, SoundCategory.MASTER, 7.0F, 1.0F);
                 }
             }
         }

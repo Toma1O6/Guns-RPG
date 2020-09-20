@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.capability.object;
 
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.GRPGItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,7 +38,7 @@ public class GunData {
         switch (level) {
             case 8:
                 awardPoints(2);
-                player.addItemStackToInventory(new ItemStack(ModRegistry.GRPGItems.GOLD_EGG_SHARD));
+                player.addItemStackToInventory(new ItemStack(GRPGItems.GOLD_EGG_SHARD));
                 break;
             case 3:
             case 5:

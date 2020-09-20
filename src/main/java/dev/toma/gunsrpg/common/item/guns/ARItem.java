@@ -3,8 +3,9 @@ package dev.toma.gunsrpg.common.item.guns;
 import dev.toma.gunsrpg.client.animation.Animation;
 import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.init.GRPGSounds;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
@@ -47,28 +48,28 @@ public class ARItem extends GunItem {
 
     @Override
     public SoundEvent getShootSound(EntityLivingBase entity) {
-        return entity instanceof EntityPlayer && this.isSilenced((EntityPlayer) entity) ? ModRegistry.GRPGSounds.SKS_SILENT : ModRegistry.GRPGSounds.SKS;
+        return entity instanceof EntityPlayer && this.isSilenced((EntityPlayer) entity) ? GRPGSounds.SKS_SILENT : GRPGSounds.SKS;
     }
 
     @Override
     public SoundEvent getReloadSound(EntityPlayer player) {
-        return ModRegistry.GRPGSounds.AR_RELOAD;
+        return GRPGSounds.AR_RELOAD;
     }
 
     @Override
     public boolean isSilenced(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_SUPPRESSOR);
+        return PlayerDataFactory.hasActiveSkill(player, Skills.AR_SUPPRESSOR);
     }
 
     @Override
     public int getMaxAmmo(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_EXTENDED) ? 20 : 10;
+        return PlayerDataFactory.hasActiveSkill(player, Skills.AR_EXTENDED) ? 20 : 10;
     }
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        int firerate = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_TOUGH_SPRING) ? GRPGConfig.weaponConfig.ar.upgraded : GRPGConfig.weaponConfig.ar.normal;
-        if(PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_ADAPTIVE_CHAMBERING)) {
+        int firerate = PlayerDataFactory.hasActiveSkill(player, Skills.AR_TOUGH_SPRING) ? GRPGConfig.weaponConfig.ar.upgraded : GRPGConfig.weaponConfig.ar.normal;
+        if(PlayerDataFactory.hasActiveSkill(player, Skills.AR_ADAPTIVE_CHAMBERING)) {
             firerate -= 2;
         }
         return Math.max(firerate, 1);
@@ -82,15 +83,15 @@ public class ARItem extends GunItem {
     @Override
     public float getVerticalRecoil(EntityPlayer player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_VERTICAL_GRIP) ? GRPGConfig.weaponConfig.general.verticalGrip : 1.0F;
-        float mod2 = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_CHEEKPAD) ? GRPGConfig.weaponConfig.general.cheekpad : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, Skills.AR_VERTICAL_GRIP) ? GRPGConfig.weaponConfig.general.verticalGrip : 1.0F;
+        float mod2 = PlayerDataFactory.hasActiveSkill(player, Skills.AR_CHEEKPAD) ? GRPGConfig.weaponConfig.general.cheekpad : 1.0F;
         return mod * mod2 * f;
     }
 
     @Override
     public float getHorizontalRecoil(EntityPlayer player) {
         float f = super.getHorizontalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_CHEEKPAD) ? GRPGConfig.weaponConfig.general.cheekpad : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, Skills.AR_CHEEKPAD) ? GRPGConfig.weaponConfig.general.cheekpad : 1.0F;
         return mod * f;
     }
 
@@ -98,7 +99,7 @@ public class ARItem extends GunItem {
     public boolean switchFiremode(ItemStack stack, EntityPlayer player) {
         Firemode firemode = this.getFiremode(stack);
         int newMode = 0;
-        if(firemode == Firemode.SINGLE && PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.AR_ADAPTIVE_CHAMBERING)) {
+        if(firemode == Firemode.SINGLE && PlayerDataFactory.hasActiveSkill(player, Skills.AR_ADAPTIVE_CHAMBERING)) {
             newMode = 2;
         }
         stack.getTagCompound().setInteger("firemode", newMode);
@@ -107,7 +108,7 @@ public class ARItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return ModRegistry.Skills.ASSAULT_RIFLE_ASSEMBLY;
+        return Skills.ASSAULT_RIFLE_ASSEMBLY;
     }
 
     @SideOnly(Side.CLIENT)

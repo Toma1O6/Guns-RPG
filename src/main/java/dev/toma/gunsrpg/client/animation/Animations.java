@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.client.animation;
 
 import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.GRPGItems;
 import net.minecraft.client.renderer.GlStateManager;
 
 public class Animations {
@@ -180,7 +180,7 @@ public class Animations {
         @Override
         public void onStepChanged() {
             if (index == 4) {
-                this.getPlayer().playSound(ModRegistry.GRPGItems.PISTOL.getReloadSound(this.getPlayer()), 1.0F, 1.0F);
+                this.getPlayer().playSound(GRPGItems.PISTOL.getReloadSound(this.getPlayer()), 1.0F, 1.0F);
             }
         }
     }

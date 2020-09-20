@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.skills;
 
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityFlare;
+import dev.toma.gunsrpg.common.init.GRPGSounds;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.interfaces.Clickable;
 import dev.toma.gunsrpg.common.skills.interfaces.Cooldown;
@@ -39,7 +39,7 @@ public class GodHelpUsSkill extends BasicSkill implements Cooldown, Clickable {
     @Override
     public void clicked(EntityPlayer player) {
         currentCooldown = maxCooldown;
-        player.world.playSound(null, player.posX, player.posY, player.posZ, ModRegistry.GRPGSounds.FLARE_SHOOT, SoundCategory.MASTER, 10.0F, 1.0F);
+        player.world.playSound(null, player.posX, player.posY, player.posZ, GRPGSounds.FLARE_SHOOT, SoundCategory.MASTER, 10.0F, 1.0F);
         player.world.spawnEntity(new EntityFlare(player.world, player));
         PlayerDataFactory.get(player).sync();
     }

@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -38,7 +38,7 @@ public class CPacketNewSkills implements IMessage {
         int i = buf.readInt();
         for(int n = 0; n < i; n++) {
             ResourceLocation location = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
-            SkillType<?> type = ModRegistry.SKILLS.getValue(location);
+            SkillType<?> type = GunsRPGRegistries.SKILLS.getValue(location);
             unlocked.add(type);
         }
     }

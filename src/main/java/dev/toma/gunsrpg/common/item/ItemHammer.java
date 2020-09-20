@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.common.item;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.GRPGBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -81,7 +81,7 @@ public class ItemHammer extends ItemPickaxe {
         if (block == Blocks.OBSIDIAN) {
             return this.toolMaterial.getHarvestLevel() == 3;
         } else if (block != Blocks.DIAMOND_BLOCK && block != Blocks.DIAMOND_ORE) {
-            if (block != Blocks.EMERALD_ORE && block != Blocks.EMERALD_BLOCK && block != ModRegistry.GRPGBlocks.AMETHYST_ORE) {
+            if (block != Blocks.EMERALD_ORE && block != Blocks.EMERALD_BLOCK && block != GRPGBlocks.AMETHYST_ORE) {
                 if (block != Blocks.GOLD_BLOCK && block != Blocks.GOLD_ORE) {
                     if (block != Blocks.IRON_BLOCK && block != Blocks.IRON_ORE) {
                         if (block != Blocks.LAPIS_BLOCK && block != Blocks.LAPIS_ORE) {

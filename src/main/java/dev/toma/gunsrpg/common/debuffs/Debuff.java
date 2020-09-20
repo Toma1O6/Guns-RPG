@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.debuffs;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.Debuffs;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -125,7 +125,7 @@ public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
         private static final ResourceLocation ICON = GunsRPG.makeResource("textures/icons/poison.png");
 
         public Poison() {
-            super(ModRegistry.Debuffs.POISON);
+            super(Debuffs.POISON);
         }
 
         @Override
@@ -139,7 +139,7 @@ public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
         private static final ResourceLocation ICON = GunsRPG.makeResource("textures/icons/infection.png");
 
         public Infection() {
-            super(ModRegistry.Debuffs.INFECTION);
+            super(Debuffs.INFECTION);
         }
 
         @Override
@@ -153,7 +153,7 @@ public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
         private static final ResourceLocation ICON = GunsRPG.makeResource("textures/icons/fracture.png");
 
         public Fracture() {
-            super(ModRegistry.Debuffs.FRACTURE);
+            super(Debuffs.FRACTURE);
         }
 
         @Override
@@ -167,7 +167,7 @@ public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
         private static final ResourceLocation ICON = GunsRPG.makeResource("textures/icons/bleed.png");
 
         public Bleeding() {
-            super(ModRegistry.Debuffs.BLEEDING);
+            super(Debuffs.BLEEDING);
         }
 
         @Override

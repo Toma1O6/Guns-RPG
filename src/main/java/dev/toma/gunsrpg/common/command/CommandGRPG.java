@@ -1,12 +1,12 @@
 package dev.toma.gunsrpg.common.command;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.debuffs.DebuffType;
+import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -38,7 +38,7 @@ public class CommandGRPG extends CommandBase {
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
         if(args.length == 2) {
             switch (args[0]) {
-                case "debuff": return getListOfStringsMatchingLastWord(args, ModRegistry.DEBUFFS.getKeys());
+                case "debuff": return getListOfStringsMatchingLastWord(args, GunsRPGRegistries.DEBUFFS.getKeys());
                 case "skillTree": return getListOfStringsMatchingLastWord(args, "lockAll", "unlockAll");
                 default: return Collections.emptyList();
             }
@@ -68,7 +68,7 @@ public class CommandGRPG extends CommandBase {
                     }
                     boolean flag = args[1].contains(":");
                     ResourceLocation location = flag ? new ResourceLocation(args[1]) : GunsRPG.makeResource(args[1]);
-                    DebuffType type = ModRegistry.DEBUFFS.getValue(location);
+                    DebuffType type = GunsRPGRegistries.DEBUFFS.getValue(location);
                     if(type == null) {
                         sendMessage(sender, TextFormatting.RED + "No debuff exists with id " + location.toString());
                         return;

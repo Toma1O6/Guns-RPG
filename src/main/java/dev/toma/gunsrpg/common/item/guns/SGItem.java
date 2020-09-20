@@ -5,10 +5,11 @@ import dev.toma.gunsrpg.client.animation.AnimationManager;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
-import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
 import dev.toma.gunsrpg.common.entity.EntityShotgunPellet;
+import dev.toma.gunsrpg.common.init.GRPGSounds;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerSingle;
@@ -60,40 +61,40 @@ public class SGItem extends GunItem {
 
     @Override
     public SoundEvent getShootSound(EntityLivingBase entity) {
-        return ModRegistry.GRPGSounds.S1897;
+        return GRPGSounds.S1897;
     }
 
     @Override
     public SoundEvent getReloadSound(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SHOTGUN_BULLET_LOOPS) ? ModRegistry.GRPGSounds.SG_RELOAD_SHORT : ModRegistry.GRPGSounds.SG_RELOAD;
+        return PlayerDataFactory.hasActiveSkill(player, Skills.SHOTGUN_BULLET_LOOPS) ? GRPGSounds.SG_RELOAD_SHORT : GRPGSounds.SG_RELOAD;
     }
 
     @Override
     public int getReloadTime(EntityPlayer player) {
-        int time = PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SHOTGUN_BULLET_LOOPS) ? 12 : 17;
+        int time = PlayerDataFactory.hasActiveSkill(player, Skills.SHOTGUN_BULLET_LOOPS) ? 12 : 17;
         return (int) (time * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override
     public int getMaxAmmo(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SHOTGUN_EXTENDED) ? 8 : 5;
+        return PlayerDataFactory.hasActiveSkill(player, Skills.SHOTGUN_EXTENDED) ? 8 : 5;
     }
 
     @Override
     public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, ModRegistry.Skills.SHOTGUN_PUMP_IN_ACTION) ? GRPGConfig.weaponConfig.shotgun.upgraded : GRPGConfig.weaponConfig.shotgun.normal;
+        return PlayerDataFactory.hasActiveSkill(player, Skills.SHOTGUN_PUMP_IN_ACTION) ? GRPGConfig.weaponConfig.shotgun.upgraded : GRPGConfig.weaponConfig.shotgun.normal;
     }
 
     @Override
     public void onKillEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
-        if(!shooter.world.isRemote && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, ModRegistry.Skills.SHOTGUN_NEVER_GIVE_UP)) {
+        if(!shooter.world.isRemote && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Skills.SHOTGUN_NEVER_GIVE_UP)) {
             shooter.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 100, 0, false, false));
         }
     }
 
     @Override
     public void shootBullet(World world, EntityLivingBase entity, ItemStack stack) {
-        boolean choke = entity instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) entity, ModRegistry.Skills.SHOTGUN_CHOKE);
+        boolean choke = entity instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) entity, Skills.SHOTGUN_CHOKE);
         float modifier = 3.0F;
         float velocity = this.getWeaponConfig().velocity;
         for(int i = 0; i < 6; i++) {
@@ -107,7 +108,7 @@ public class SGItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return ModRegistry.Skills.SHOTGUN_ASSEMBLY;
+        return Skills.SHOTGUN_ASSEMBLY;
     }
 
     @SideOnly(Side.CLIENT)

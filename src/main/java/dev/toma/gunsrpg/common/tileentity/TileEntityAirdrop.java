@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.tileentity;
 
-import dev.toma.gunsrpg.common.ModRegistry;
+import dev.toma.gunsrpg.common.init.GRPGItems;
 import dev.toma.gunsrpg.util.math.WeightedRandom;
 import net.minecraft.item.ItemStack;
 
@@ -137,200 +137,200 @@ public class TileEntityAirdrop extends IInventoryFactory {
 
         private List<Supplier<ItemStack>> getCommonMeds() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.BANDAGE),
-                    () -> new ItemStack(ModRegistry.GRPGItems.ANTIDOTUM_PILLS),
-                    () -> new ItemStack(ModRegistry.GRPGItems.BANDAGE, 2)
+                    () -> new ItemStack(GRPGItems.BANDAGE),
+                    () -> new ItemStack(GRPGItems.ANTIDOTUM_PILLS),
+                    () -> new ItemStack(GRPGItems.BANDAGE, 2)
             );
         }
 
         private List<Supplier<ItemStack>> getUncommonMeds() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.PLASTER_CAST),
-                    () -> new ItemStack(ModRegistry.GRPGItems.VACCINE)
+                    () -> new ItemStack(GRPGItems.PLASTER_CAST),
+                    () -> new ItemStack(GRPGItems.VACCINE)
             );
         }
 
         private List<Supplier<ItemStack>> getRareMeds() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.ANTIDOTUM_PILLS, 2),
-                    () -> new ItemStack(ModRegistry.GRPGItems.BANDAGE, 3)
+                    () -> new ItemStack(GRPGItems.ANTIDOTUM_PILLS, 2),
+                    () -> new ItemStack(GRPGItems.BANDAGE, 3)
             );
         }
 
         private List<Supplier<ItemStack>> getVeryRareMeds() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.PLASTER_CAST, 2),
-                    () -> new ItemStack(ModRegistry.GRPGItems.VACCINE, 2)
+                    () -> new ItemStack(GRPGItems.PLASTER_CAST, 2),
+                    () -> new ItemStack(GRPGItems.VACCINE, 2)
             );
         }
 
         private List<Supplier<ItemStack>> getEpicMeds() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.BANDAGE, 4),
-                    () -> new ItemStack(ModRegistry.GRPGItems.ANTIDOTUM_PILLS, 3)
+                    () -> new ItemStack(GRPGItems.BANDAGE, 4),
+                    () -> new ItemStack(GRPGItems.ANTIDOTUM_PILLS, 3)
             );
         }
 
         private List<Supplier<ItemStack>> getLegendaryMeds() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.BANDAGE, 5),
-                    () -> new ItemStack(ModRegistry.GRPGItems.PLASTER_CAST, 3)
+                    () -> new ItemStack(GRPGItems.BANDAGE, 5),
+                    () -> new ItemStack(GRPGItems.PLASTER_CAST, 3)
             );
         }
 
         private List<Supplier<ItemStack>> getCommonAmmo() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_9MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_9MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_9MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_9MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_9MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_45ACP, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_45ACP, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_45ACP, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_45ACP, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_556MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_556MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_762MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_12G, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_CROSSBOW_BOLT, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_CROSSBOW_BOLT, 25)
+                    () -> new ItemStack(GRPGItems.WOODEN_AMMO_9MM, 25),
+                    () -> new ItemStack(GRPGItems.STONE_AMMO_9MM, 25),
+                    () -> new ItemStack(GRPGItems.IRON_AMMO_9MM, 25),
+                    () -> new ItemStack(GRPGItems.WOODEN_AMMO_9MM, 50),
+                    () -> new ItemStack(GRPGItems.STONE_AMMO_9MM, 50),
+                    () -> new ItemStack(GRPGItems.WOODEN_AMMO_45ACP, 25),
+                    () -> new ItemStack(GRPGItems.STONE_AMMO_45ACP, 25),
+                    () -> new ItemStack(GRPGItems.IRON_AMMO_45ACP, 25),
+                    () -> new ItemStack(GRPGItems.WOODEN_AMMO_45ACP, 50),
+                    () -> new ItemStack(GRPGItems.WOODEN_AMMO_556MM, 25),
+                    () -> new ItemStack(GRPGItems.STONE_AMMO_556MM, 25),
+                    () -> new ItemStack(GRPGItems.WOODEN_AMMO_762MM, 25),
+                    () -> new ItemStack(GRPGItems.WOODEN_AMMO_12G, 25),
+                    () -> new ItemStack(GRPGItems.WOODEN_AMMO_CROSSBOW_BOLT, 25),
+                    () -> new ItemStack(GRPGItems.STONE_AMMO_CROSSBOW_BOLT, 25)
             );
         }
 
         private List<Supplier<ItemStack>> getUncommonAmmo() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_9MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_9MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_9MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_45ACP, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_45ACP, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_45ACP, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_556MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_556MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_556MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_556MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_762MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_762MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_762MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_12G, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_12G, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_12G, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.WOODEN_AMMO_CROSSBOW_BOLT, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_CROSSBOW_BOLT, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_CROSSBOW_BOLT, 25)
+                    () -> new ItemStack(GRPGItems.GOLD_AMMO_9MM, 25),
+                    () -> new ItemStack(GRPGItems.DIAMOND_AMMO_9MM, 25),
+                    () -> new ItemStack(GRPGItems.IRON_AMMO_9MM, 50),
+                    () -> new ItemStack(GRPGItems.GOLD_AMMO_45ACP, 25),
+                    () -> new ItemStack(GRPGItems.DIAMOND_AMMO_45ACP, 25),
+                    () -> new ItemStack(GRPGItems.STONE_AMMO_45ACP, 50),
+                    () -> new ItemStack(GRPGItems.IRON_AMMO_556MM, 25),
+                    () -> new ItemStack(GRPGItems.GOLD_AMMO_556MM, 25),
+                    () -> new ItemStack(GRPGItems.WOODEN_AMMO_556MM, 50),
+                    () -> new ItemStack(GRPGItems.STONE_AMMO_556MM, 50),
+                    () -> new ItemStack(GRPGItems.STONE_AMMO_762MM, 25),
+                    () -> new ItemStack(GRPGItems.IRON_AMMO_762MM, 25),
+                    () -> new ItemStack(GRPGItems.WOODEN_AMMO_762MM, 50),
+                    () -> new ItemStack(GRPGItems.STONE_AMMO_12G, 25),
+                    () -> new ItemStack(GRPGItems.IRON_AMMO_12G, 25),
+                    () -> new ItemStack(GRPGItems.WOODEN_AMMO_12G, 50),
+                    () -> new ItemStack(GRPGItems.WOODEN_AMMO_CROSSBOW_BOLT, 50),
+                    () -> new ItemStack(GRPGItems.STONE_AMMO_CROSSBOW_BOLT, 50),
+                    () -> new ItemStack(GRPGItems.IRON_AMMO_CROSSBOW_BOLT, 25)
             );
         }
 
         private List<Supplier<ItemStack>> getRareAmmo() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_9MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_9MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_9MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_9MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_45ACP, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_45ACP, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_45ACP, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_556MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_556MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_762MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_762MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_12G, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.STONE_AMMO_12G, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_CROSSBOW_BOLT, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_CROSSBOW_BOLT, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_CROSSBOW_BOLT, 50)
+                    () -> new ItemStack(GRPGItems.EMERALD_AMMO_9MM, 25),
+                    () -> new ItemStack(GRPGItems.AMETHYST_AMMO_9MM, 25),
+                    () -> new ItemStack(GRPGItems.GOLD_AMMO_9MM, 50),
+                    () -> new ItemStack(GRPGItems.DIAMOND_AMMO_9MM, 50),
+                    () -> new ItemStack(GRPGItems.EMERALD_AMMO_45ACP, 25),
+                    () -> new ItemStack(GRPGItems.IRON_AMMO_45ACP, 50),
+                    () -> new ItemStack(GRPGItems.GOLD_AMMO_45ACP, 50),
+                    () -> new ItemStack(GRPGItems.DIAMOND_AMMO_556MM, 25),
+                    () -> new ItemStack(GRPGItems.IRON_AMMO_556MM, 50),
+                    () -> new ItemStack(GRPGItems.GOLD_AMMO_762MM, 25),
+                    () -> new ItemStack(GRPGItems.STONE_AMMO_762MM, 50),
+                    () -> new ItemStack(GRPGItems.GOLD_AMMO_12G, 25),
+                    () -> new ItemStack(GRPGItems.STONE_AMMO_12G, 50),
+                    () -> new ItemStack(GRPGItems.GOLD_AMMO_CROSSBOW_BOLT, 25),
+                    () -> new ItemStack(GRPGItems.DIAMOND_AMMO_CROSSBOW_BOLT, 25),
+                    () -> new ItemStack(GRPGItems.IRON_AMMO_CROSSBOW_BOLT, 50)
             );
         }
 
         private List<Supplier<ItemStack>> getVeryRareAmmo() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_9MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_9MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_45ACP, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_45ACP, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_556MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_556MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_762MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_762MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_762MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_12G, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.IRON_AMMO_12G, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_CROSSBOW_BOLT, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_CROSSBOW_BOLT, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_CROSSBOW_BOLT, 50)
+                    () -> new ItemStack(GRPGItems.EMERALD_AMMO_9MM, 50),
+                    () -> new ItemStack(GRPGItems.AMETHYST_AMMO_9MM, 50),
+                    () -> new ItemStack(GRPGItems.AMETHYST_AMMO_45ACP, 25),
+                    () -> new ItemStack(GRPGItems.DIAMOND_AMMO_45ACP, 50),
+                    () -> new ItemStack(GRPGItems.EMERALD_AMMO_556MM, 25),
+                    () -> new ItemStack(GRPGItems.GOLD_AMMO_556MM, 50),
+                    () -> new ItemStack(GRPGItems.DIAMOND_AMMO_762MM, 25),
+                    () -> new ItemStack(GRPGItems.EMERALD_AMMO_762MM, 25),
+                    () -> new ItemStack(GRPGItems.IRON_AMMO_762MM, 50),
+                    () -> new ItemStack(GRPGItems.DIAMOND_AMMO_12G, 25),
+                    () -> new ItemStack(GRPGItems.IRON_AMMO_12G, 50),
+                    () -> new ItemStack(GRPGItems.EMERALD_AMMO_CROSSBOW_BOLT, 25),
+                    () -> new ItemStack(GRPGItems.AMETHYST_AMMO_CROSSBOW_BOLT, 25),
+                    () -> new ItemStack(GRPGItems.GOLD_AMMO_CROSSBOW_BOLT, 50)
             );
         }
 
         private List<Supplier<ItemStack>> getEpicAmmo() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_45ACP, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_45ACP, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_556MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_556MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_556MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_762MM, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_762MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_762MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_12G, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_12G, 25),
-                    () -> new ItemStack(ModRegistry.GRPGItems.GOLD_AMMO_12G, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_12G, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.DIAMOND_AMMO_CROSSBOW_BOLT, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_CROSSBOW_BOLT, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_CROSSBOW_BOLT, 50)
+                    () -> new ItemStack(GRPGItems.EMERALD_AMMO_45ACP, 50),
+                    () -> new ItemStack(GRPGItems.AMETHYST_AMMO_45ACP, 50),
+                    () -> new ItemStack(GRPGItems.AMETHYST_AMMO_556MM, 25),
+                    () -> new ItemStack(GRPGItems.DIAMOND_AMMO_556MM, 50),
+                    () -> new ItemStack(GRPGItems.EMERALD_AMMO_556MM, 50),
+                    () -> new ItemStack(GRPGItems.AMETHYST_AMMO_762MM, 25),
+                    () -> new ItemStack(GRPGItems.GOLD_AMMO_762MM, 50),
+                    () -> new ItemStack(GRPGItems.DIAMOND_AMMO_762MM, 50),
+                    () -> new ItemStack(GRPGItems.EMERALD_AMMO_12G, 25),
+                    () -> new ItemStack(GRPGItems.AMETHYST_AMMO_12G, 25),
+                    () -> new ItemStack(GRPGItems.GOLD_AMMO_12G, 50),
+                    () -> new ItemStack(GRPGItems.DIAMOND_AMMO_12G, 50),
+                    () -> new ItemStack(GRPGItems.DIAMOND_AMMO_CROSSBOW_BOLT, 50),
+                    () -> new ItemStack(GRPGItems.EMERALD_AMMO_CROSSBOW_BOLT, 50),
+                    () -> new ItemStack(GRPGItems.AMETHYST_AMMO_CROSSBOW_BOLT, 50)
             );
         }
 
         private List<Supplier<ItemStack>> getLegendaryAmmo() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_556MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_762MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_762MM, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.EMERALD_AMMO_12G, 50),
-                    () -> new ItemStack(ModRegistry.GRPGItems.AMETHYST_AMMO_12G, 50)
+                    () -> new ItemStack(GRPGItems.AMETHYST_AMMO_556MM, 50),
+                    () -> new ItemStack(GRPGItems.EMERALD_AMMO_762MM, 50),
+                    () -> new ItemStack(GRPGItems.AMETHYST_AMMO_762MM, 50),
+                    () -> new ItemStack(GRPGItems.EMERALD_AMMO_12G, 50),
+                    () -> new ItemStack(GRPGItems.AMETHYST_AMMO_12G, 50)
             );
         }
 
         private List<Supplier<ItemStack>> getCommonBoosts() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.ANALGETICS),
-                    () -> new ItemStack(ModRegistry.GRPGItems.ANALGETICS, 2)
+                    () -> new ItemStack(GRPGItems.ANALGETICS),
+                    () -> new ItemStack(GRPGItems.ANALGETICS, 2)
             );
         }
 
         private List<Supplier<ItemStack>> getUncommonBoosts() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.STEREOIDS),
-                    () -> new ItemStack(ModRegistry.GRPGItems.ADRENALINE)
+                    () -> new ItemStack(GRPGItems.STEREOIDS),
+                    () -> new ItemStack(GRPGItems.ADRENALINE)
             );
         }
 
         private List<Supplier<ItemStack>> getRareBoosts() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.ANALGETICS, 3),
-                    () -> new ItemStack(ModRegistry.GRPGItems.PAINKILLERS)
+                    () -> new ItemStack(GRPGItems.ANALGETICS, 3),
+                    () -> new ItemStack(GRPGItems.PAINKILLERS)
             );
         }
 
         private List<Supplier<ItemStack>> getVeryRareBoosts() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.STEREOIDS, 2),
-                    () -> new ItemStack(ModRegistry.GRPGItems.ADRENALINE, 2)
+                    () -> new ItemStack(GRPGItems.STEREOIDS, 2),
+                    () -> new ItemStack(GRPGItems.ADRENALINE, 2)
             );
         }
 
         private List<Supplier<ItemStack>> getEpicBoosts() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.ANALGETICS, 4),
-                    () -> new ItemStack(ModRegistry.GRPGItems.PAINKILLERS, 2)
+                    () -> new ItemStack(GRPGItems.ANALGETICS, 4),
+                    () -> new ItemStack(GRPGItems.PAINKILLERS, 2)
             );
         }
 
         private List<Supplier<ItemStack>> getLegendaryBoosts() {
             return listOf(
-                    () -> new ItemStack(ModRegistry.GRPGItems.PAINKILLERS, 3),
-                    () -> new ItemStack(ModRegistry.GRPGItems.MORPHINE)
+                    () -> new ItemStack(GRPGItems.PAINKILLERS, 3),
+                    () -> new ItemStack(GRPGItems.MORPHINE)
             );
         }
 
