@@ -4,8 +4,8 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataManager;
-import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
+import dev.toma.gunsrpg.common.debuffs.DamageContext;
 import dev.toma.gunsrpg.common.entity.EntityCrossbowBolt;
 import dev.toma.gunsrpg.common.entity.EntityExplosiveArrow;
 import dev.toma.gunsrpg.common.item.ItemHammer;
@@ -15,7 +15,6 @@ import dev.toma.gunsrpg.common.skills.LightHunterSkill;
 import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
 import dev.toma.gunsrpg.common.tileentity.TileEntityDeathCrate;
 import dev.toma.gunsrpg.config.GRPGConfig;
-import dev.toma.gunsrpg.debuffs.DebuffTypes;
 import dev.toma.gunsrpg.event.EntityEquippedItemEvent;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
@@ -334,13 +333,6 @@ public class CommonEventHandler {
     public static void clonePlayer(net.minecraftforge.event.entity.player.PlayerEvent.Clone event) {
         PlayerData old = PlayerDataFactory.get(event.getOriginal());
         PlayerData newData = PlayerDataFactory.get(event.getEntityPlayer());
-        if(event.getOriginal().isDead) {
-            DebuffData debuffData = old.getDebuffData();
-            debuffData.getDebuffs()[0] = DebuffTypes.POISON.createInstance();
-            debuffData.getDebuffs()[1] = DebuffTypes.INFECTION.createInstance();
-            debuffData.getDebuffs()[2] = DebuffTypes.BROKEN_BONE.createInstance();
-            debuffData.getDebuffs()[3] = DebuffTypes.BLEED.createInstance();
-        }
         PlayerDataFactory.get(event.getEntityPlayer()).deserializeNBT(old.serializeNBT());
     }
 
@@ -405,7 +397,7 @@ public class CommonEventHandler {
     public static void onEntityDamaged(LivingHurtEvent event) {
         if(event.getAmount() >= 0.2F && event.getEntity() instanceof EntityPlayer) {
             PlayerData data = PlayerDataFactory.get((EntityPlayer) event.getEntity());
-            data.getDebuffData().forEachDebuff(b -> b.onHurt(event.getSource(), (EntityPlayer) event.getEntity()));
+            data.getDebuffData().onPlayerAttackedFrom(DamageContext.getContext(event.getSource(), event.getAmount()), (EntityPlayer) event.getEntity());
         }
     }
 

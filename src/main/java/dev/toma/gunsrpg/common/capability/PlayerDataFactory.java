@@ -15,7 +15,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 public class PlayerDataFactory implements PlayerData {
 
@@ -36,7 +38,7 @@ public class PlayerDataFactory implements PlayerData {
 
     public PlayerDataFactory(EntityPlayer player) {
         this.player = player;
-        this.debuffData = new DebuffData();
+        this.debuffData = new DebuffData(this);
         this.aimInfo = new AimInfo(this);
         this.reloadInfo = new ReloadInfo(this);
         this.scopeData = new ScopeData();
@@ -63,7 +65,7 @@ public class PlayerDataFactory implements PlayerData {
     @Override
     public void tick() {
         World world = player.world;
-        this.debuffData.onTick(player);
+        this.debuffData.onTick(player, this);
         this.aimInfo.update();
         this.reloadInfo.update();
         this.playerSkills.update();
@@ -196,7 +198,7 @@ public class PlayerDataFactory implements PlayerData {
     @Override
     public void deserializeNBT(NBTTagCompound nbt) {
         if(nbt.hasKey("permanent")) readPermanentData(nbt.getCompoundTag("permanent"));
-        debuffData.deserializeNBT(nbt.hasKey("debuffs") ? nbt.getCompoundTag("debuffs") : new NBTTagCompound());
+        debuffData.deserializeNBT(nbt.hasKey("debuffs", Constants.NBT.TAG_LIST) ? nbt.getTagList("debuffs", Constants.NBT.TAG_COMPOUND) : new NBTTagList());
         aimInfo.read(this.findNBTTag("aimData", nbt));
         reloadInfo.read(this.findNBTTag("reloadData", nbt));
         scopeData.read(this.findNBTTag("scopeData", nbt));

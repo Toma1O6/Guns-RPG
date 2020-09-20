@@ -6,6 +6,9 @@ import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.baked.*;
 import dev.toma.gunsrpg.client.render.item.*;
 import dev.toma.gunsrpg.common.block.*;
+import dev.toma.gunsrpg.common.debuffs.Debuff;
+import dev.toma.gunsrpg.common.debuffs.DebuffHelper;
+import dev.toma.gunsrpg.common.debuffs.DebuffType;
 import dev.toma.gunsrpg.common.entity.*;
 import dev.toma.gunsrpg.common.item.*;
 import dev.toma.gunsrpg.common.item.guns.*;
@@ -54,6 +57,7 @@ import java.util.List;
 public class ModRegistry {
 
     public static IForgeRegistry<SkillType<?>> SKILLS;
+    public static IForgeRegistry<DebuffType> DEBUFFS;
 
     public static void registerItemBlock(Block block) {
         ItemBlock itemBlock = new ItemBlock(block);
@@ -354,6 +358,14 @@ public class ModRegistry {
         public static final SkillType<BasicSkill> SR_DEAD_EYE = null;
     }
 
+    @GameRegistry.ObjectHolder(GunsRPG.MODID)
+    public static final class Debuffs {
+        public static final DebuffType POISON = null;
+        public static final DebuffType INFECTION = null;
+        public static final DebuffType FRACTURE = null;
+        public static final DebuffType BLEEDING = null;
+    }
+
     @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
     public static final class Handler {
 
@@ -366,9 +378,11 @@ public class ModRegistry {
             ResourceLocation location = GunsRPG.makeResource("skill");
             createRegistry(location, SkillType.class).create();
             SKILLS = RegistryManager.ACTIVE.getRegistry(location);
+            location = GunsRPG.makeResource("debuff");
+            DEBUFFS = createRegistry(location, DebuffType.class).create();
         }
 
-        @SuppressWarnings({"rawtypes", "unchecked"})
+        @SuppressWarnings({"unchecked"})
         @SubscribeEvent
         public static void onSkillRegister(RegistryEvent.Register event) {
             if (!event.getRegistry().getRegistrySuperType().equals(SkillType.class)) return;
@@ -567,6 +581,81 @@ public class ModRegistry {
         }
 
         @SubscribeEvent
+        public static void onDebuffRegister(RegistryEvent.Register<DebuffType> event) {
+            event.getRegistry().registerAll(
+                    DebuffType.Builder.create()
+                            .factory(Debuff.Poison::new)
+                            .progress(DebuffHelper::p_progress)
+                            .resist(DebuffHelper::p_resist)
+                            .addStage(40, DebuffHelper::none)
+                            .addStage(70, DebuffHelper::p41_70eff)
+                            .addStage(85, DebuffHelper::p71_85eff)
+                            .addStage(99, DebuffHelper::p86_99eff)
+                            .addStage(100, DebuffHelper::p100eff)
+                            .condition(DebuffHelper::pSpiderCondition)
+                            .condition(DebuffHelper::pCaveSpiderCondition)
+                            .condition(DebuffHelper::pSkeletonCondition)
+                            .condition(DebuffHelper::pGuardianCondition)
+                            .condition(DebuffHelper::pElderGuardianCondition)
+                            .condition(DebuffHelper::pSlimeCondition)
+                            .condition(DebuffHelper::pStrayCondition)
+                            .condition(DebuffHelper::pSilverfishCondition)
+                            .build().setRegistryName("poison"),
+                    DebuffType.Builder.create()
+                            .factory(Debuff.Infection::new)
+                            .progress(DebuffHelper::i_progress)
+                            .resist(DebuffHelper::i_resist)
+                            .addStage(35, DebuffHelper::none)
+                            .addStage(60, DebuffHelper::i36_60eff)
+                            .addStage(85, DebuffHelper::i61_85eff)
+                            .addStage(99, DebuffHelper::i86_99eff)
+                            .addStage(100, DebuffHelper::i100eff)
+                            .condition(DebuffHelper::iZombieVillagerCondition)
+                            .condition(DebuffHelper::iEndermanCondition)
+                            .condition(DebuffHelper::iVindicatorCondition)
+                            .condition(DebuffHelper::iWitherSkeletonCondition)
+                            .condition(DebuffHelper::iHuskCondition)
+                            .condition(DebuffHelper::iZombieCondition)
+                            .condition(DebuffHelper::iPigZombieCondition)
+                            .build().setRegistryName("infection"),
+                    DebuffType.Builder.create()
+                            .factory(Debuff.Fracture::new)
+                            .progress(DebuffHelper::f_progress)
+                            .resist(DebuffHelper::f_resist)
+                            .addStage(30, DebuffHelper::f0_30eff)
+                            .addStage(55, DebuffHelper::f31_55eff)
+                            .addStage(75, DebuffHelper::f56_75eff)
+                            .addStage(99, DebuffHelper::f76_99eff)
+                            .addStage(100, DebuffHelper::f100eff)
+                            .condition(DebuffHelper::fGenericCondition)
+                            .condition(DebuffHelper::fExplosionCondition)
+                            .condition(DebuffHelper::fFallCondition)
+                            .build().setRegistryName("fracture"),
+                    DebuffType.Builder.create()
+                            .factory(Debuff.Bleeding::new)
+                            .progress(DebuffHelper::b_progress)
+                            .resist(DebuffHelper::b_resist)
+                            .addStage(25, DebuffHelper::b0_25eff)
+                            .addStage(50, DebuffHelper::b26_50eff)
+                            .addStage(75, DebuffHelper::b51_75eff)
+                            .addStage(99, DebuffHelper::b76_99eff)
+                            .addStage(100, DebuffHelper::b100eff)
+                            .condition(DebuffHelper::bSpiderCondition)
+                            .condition(DebuffHelper::bZombieCondition)
+                            .condition(DebuffHelper::bZombieVillagerCondition)
+                            .condition(DebuffHelper::bStrayCondition)
+                            .condition(DebuffHelper::bSkeletonCondition)
+                            .condition(DebuffHelper::bEndermanCondition)
+                            .condition(DebuffHelper::bPigZombieCondition)
+                            .condition(DebuffHelper::bWitherSkeletonCondition)
+                            .condition(DebuffHelper::bExplosionCondition)
+                            .condition(DebuffHelper::bFallCondition)
+                            .condition(DebuffHelper::bGunshotWoundCondition)
+                            .build().setRegistryName("bleeding")
+            );
+        }
+
+        @SubscribeEvent
         public static void onBlockRegister(RegistryEvent.Register<Block> event) {
             event.getRegistry().registerAll(
                     new GRPGOre("amethyst_ore", () -> GRPGItems.AMETHYST),
@@ -583,22 +672,22 @@ public class ModRegistry {
             IForgeRegistry<Item> registry = event.getRegistry();
             registry.registerAll(
                     new GRPGItem("amethyst"),
-                    new DebuffHeal("antidotum_pills", 32, () -> GRPGSounds.USE_ANTIDOTUM_PILLS, "These pills heal 40% of poison", data -> data.getDebuffs()[0].isActive(), data -> data.getDebuffs()[0].heal(40)),
-                    new DebuffHeal("vaccine", 32, () -> GRPGSounds.USE_VACCINE, "This vaccine heals 50% of infection", data -> data.getDebuffs()[1].isActive(), data -> data.getDebuffs()[1].heal(50)) {
+                    new DebuffHeal("antidotum_pills", 32, () -> GRPGSounds.USE_ANTIDOTUM_PILLS, "These pills heal 40% of poison", data -> data.hasDebuff(Debuffs.POISON), data -> data.heal(Debuffs.POISON, 40)),
+                    new DebuffHeal("vaccine", 32, () -> GRPGSounds.USE_VACCINE, "This vaccine heals 50% of infection", data -> data.hasDebuff(Debuffs.INFECTION), data -> data.heal(Debuffs.INFECTION, 50)) {
                         @SideOnly(Side.CLIENT)
                         @Override
                         public Animation getUseAnimation(ItemStack stack) {
                             return new Animations.Vaccine(this.getMaxItemUseDuration(stack));
                         }
                     },
-                    new DebuffHeal("plaster_cast", 32, () -> GRPGSounds.USE_PLASTER_CAST, "Plaster cast heals 35% of broken bones", data -> data.getDebuffs()[2].isActive(), data -> data.getDebuffs()[2].heal(35)) {
+                    new DebuffHeal("plaster_cast", 32, () -> GRPGSounds.USE_PLASTER_CAST, "Plaster cast heals 35% of broken bones", data -> data.hasDebuff(Debuffs.FRACTURE), data -> data.heal(Debuffs.FRACTURE, 35)) {
                         @SideOnly(Side.CLIENT)
                         @Override
                         public Animation getUseAnimation(ItemStack stack) {
                             return new Animations.Splint(this.getMaxItemUseDuration(stack));
                         }
                     },
-                    new DebuffHeal("bandage", 50, () -> GRPGSounds.USE_BANDAGE, "Bandages can stop 25% of bleeding", data -> data.getDebuffs()[3].isActive(), data -> data.getDebuffs()[3].heal(25)) {
+                    new DebuffHeal("bandage", 50, () -> GRPGSounds.USE_BANDAGE, "Bandages can stop 25% of bleeding", data -> data.hasDebuff(Debuffs.BLEEDING), data -> data.heal(Debuffs.BLEEDING, 25)) {
                         @SideOnly(Side.CLIENT)
                         @Override
                         public Animation getUseAnimation(ItemStack stack) {

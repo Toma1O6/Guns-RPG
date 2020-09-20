@@ -12,6 +12,7 @@ import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.GunData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.capability.object.ScopeData;
+import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
@@ -20,7 +21,6 @@ import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.interfaces.OverlayRenderer;
 import dev.toma.gunsrpg.config.GRPGConfig;
-import dev.toma.gunsrpg.debuffs.Debuff;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
 import dev.toma.gunsrpg.network.packet.SPacketSetShooting;
@@ -177,7 +177,7 @@ public class ClientEventHandler {
                 DebuffData debuffData = data.getDebuffData();
                 int offset = 0;
                 for (Debuff debuff : debuffData.getDebuffs()) {
-                    if (!debuff.isActive()) continue;
+                    if (debuff == null) continue;
                     int yStart = event.getResolution().getScaledHeight() + GRPGConfig.clientConfig.debuffOverlay.y - 50;
                     debuff.draw(GRPGConfig.clientConfig.debuffOverlay.x, yStart + offset * 18, 50, 18, event.getPartialTicks(), renderer);
                     ++offset;

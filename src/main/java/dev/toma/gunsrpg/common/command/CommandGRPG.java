@@ -1,14 +1,18 @@
 package dev.toma.gunsrpg.common.command;
 
+import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.common.ModRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
+import dev.toma.gunsrpg.common.debuffs.DebuffType;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -34,7 +38,7 @@ public class CommandGRPG extends CommandBase {
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
         if(args.length == 2) {
             switch (args[0]) {
-                case "debuff": return getListOfStringsMatchingLastWord(args, "poison", "infection", "broken_bone", "bleeding");
+                case "debuff": return getListOfStringsMatchingLastWord(args, ModRegistry.DEBUFFS.getKeys());
                 case "skillTree": return getListOfStringsMatchingLastWord(args, "lockAll", "unlockAll");
                 default: return Collections.emptyList();
             }
@@ -59,35 +63,18 @@ public class CommandGRPG extends CommandBase {
                 case "debuff": {
                     DebuffData debuffData = data.getDebuffData();
                     if(args.length < 2) {
-                        this.sendMessage(sender, TextFormatting.RED + "Write the name of debuff you want to toggle, e.g. /grpg debuff poison");
+                        this.sendMessage(sender, TextFormatting.RED + "Write the name of debuff you want to toggle, e.g. /grpg debuff gunsrpg:poison");
                         return;
                     }
-                    switch (args[1]) {
-                        case "poison": {
-                            toggleDebuff(data, debuffData, 0);
-                            sendMessage(sender, TextFormatting.GREEN + "Debuff toggled");
-                            break;
-                        }
-                        case "infection": {
-                            toggleDebuff(data, debuffData, 1);
-                            sendMessage(sender, TextFormatting.GREEN + "Debuff toggled");
-                            break;
-                        }
-                        case "broken_bone": {
-                            toggleDebuff(data, debuffData, 2);
-                            sendMessage(sender, TextFormatting.GREEN + "Debuff toggled");
-                            break;
-                        }
-                        case "bleeding": {
-                            toggleDebuff(data, debuffData, 3);
-                            sendMessage(sender, TextFormatting.GREEN + "Debuff toggled");
-                            break;
-                        }
-                        default: {
-                            sendMessage(sender, TextFormatting.RED + "Unknown debuff type! Known types: [poison, infection, broken_bone, bleeding]");
-                            break;
-                        }
+                    boolean flag = args[1].contains(":");
+                    ResourceLocation location = flag ? new ResourceLocation(args[1]) : GunsRPG.makeResource(args[1]);
+                    DebuffType type = ModRegistry.DEBUFFS.getValue(location);
+                    if(type == null) {
+                        sendMessage(sender, TextFormatting.RED + "No debuff exists with id " + location.toString());
+                        return;
                     }
+                    toggleDebuff(data, debuffData, type);
+                    sendMessage(sender, TextFormatting.GREEN + "Debuff " + location.toString() + " has been toggled");
                     break;
                 }
                 case "bloodmoon": {
@@ -123,7 +110,7 @@ public class CommandGRPG extends CommandBase {
                         } catch (NumberFormatException ex) {
                             // don't care, use 1 instead of n
                         }
-                        levelUp(data, sender, n);
+                        levelUp(data, sender, Math.abs(n));
                     }
                     break;
                 }
@@ -149,8 +136,8 @@ public class CommandGRPG extends CommandBase {
         sender.sendMessage(new TextComponentString(message));
     }
 
-    private void toggleDebuff(PlayerData cap, DebuffData data, int i) {
-        data.getDebuffs()[i].toggle();
+    private void toggleDebuff(PlayerData cap, DebuffData data, DebuffType type) {
+        data.toggle(type);
         cap.sync();
     }
 }
