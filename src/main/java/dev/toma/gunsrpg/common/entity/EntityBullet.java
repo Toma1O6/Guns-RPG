@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import dev.toma.gunsrpg.common.GunDamageSourceHack;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.init.GRPGItems;
+import dev.toma.gunsrpg.common.init.GRPGPotions;
 import dev.toma.gunsrpg.common.init.GRPGSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
@@ -22,6 +23,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -61,6 +63,10 @@ public class EntityBullet extends Entity {
         this.effect = config.effect;
         this.ogDamage = config.damage + gun.getDamageBonus(stack);
         this.damage = ogDamage;
+        PotionEffect effect = shooter.getActivePotionEffect(GRPGPotions.GUN_DAMAGE_BUFF);
+        if(effect != null) {
+            damage *= 1.0F + (0.2F * (effect.getAmplifier() + 1));
+        }
         Vec3d direct = getVectorForRotation(shooter.rotationPitch, shooter.getRotationYawHead());
         this.setPosition(shooter.posX, shooter.posY + shooter.getEyeHeight(), shooter.posZ);
         if (shooter instanceof EntityPlayer) {

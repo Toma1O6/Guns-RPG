@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.animation.Animation;
 import dev.toma.gunsrpg.client.animation.Animations;
+import dev.toma.gunsrpg.common.GRPGPotion;
 import dev.toma.gunsrpg.common.block.*;
 import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.debuffs.DebuffHelper;
@@ -26,6 +27,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -358,6 +360,13 @@ public class CommonRegistry {
     }
 
     @SubscribeEvent
+    public static void onPotionRegister(RegistryEvent.Register<Potion> event) {
+        event.getRegistry().registerAll(
+                new GRPGPotion("gun_damage_buff", false, 0xff1111)
+        );
+    }
+
+    @SubscribeEvent
     public static void onBlockRegister(RegistryEvent.Register<Block> event) {
         event.getRegistry().registerAll(
                 new GRPGOre("amethyst_ore", () -> GRPGItems.AMETHYST),
@@ -440,8 +449,11 @@ public class CommonRegistry {
                         player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 300, 1, false, false));
                         player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 600, 1, false, false));
                         player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 900, 0, false, false));
+                        if(player.world.rand.nextFloat() <= 0.20f) {
+                            player.addPotionEffect(new PotionEffect(GRPGPotions.GUN_DAMAGE_BUFF, 400, 0, false, false));
+                        }
                     }
-                }, "+14HP on use", "15s of Regeneration II", "30s of Strength II", "45s of Resistance I") {
+                }, "+14HP on use", "15s of Regeneration II", "30s of Strength II", "45s of Resistance I", "20% chance of getting extra gun damage boost") {
                     @SideOnly(Side.CLIENT)
                     @Override
                     public Animation getUseAnimation(int ticks) {

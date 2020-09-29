@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.client.animation;
 
 import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
 import dev.toma.gunsrpg.util.object.Pair;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.HashMap;
@@ -63,6 +64,7 @@ public class AnimationManager {
     }
 
     public static void tick() {
+        if(Minecraft.getMinecraft().isGamePaused()) return;
         Iterator<Map.Entry<Integer, Animation>> iterator = ANIMATIONS.entrySet().iterator();
         while (iterator.hasNext()) {
             Animation animation = iterator.next().getValue();

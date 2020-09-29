@@ -9,7 +9,6 @@ import dev.toma.gunsrpg.common.entity.EntityRocketAngel;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.Pair;
-import dev.toma.gunsrpg.world.cap.WorldDataFactory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -30,16 +29,14 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
 public class MobSpawnManager {
 
     private static final MobSpawnManager INSTANCE = new MobSpawnManager();
     private final List<Class<? extends Entity>> healthExlusions = new ArrayList<>();
-    private final Map<Class<? extends Entity>, Consumer<? extends Entity>> postSpawn = new HashMap<>();
+    private final Map<Class<? extends Entity>, BooleanConsumer<? extends Entity>> postSpawn = new HashMap<>();
     private final Map<Class<? extends Entity>, List<Pair<Integer, BiFunction<World, Vec3d, EntityLiving>>>> bloodmoonEntries = new HashMap<>();
     private final AttributeModifier health2x = new AttributeModifier(UUID.fromString("80096B27-0A64-47FF-A22A-06146FC42448"), "health2x", 1.0D, 2);
     private final AttributeModifier health3x = new AttributeModifier(UUID.fromString("AF5943C6-D3BC-4AD9-8CBB-E16D17D0C245"), "health3x", 2.0D, 2);
@@ -81,33 +78,29 @@ public class MobSpawnManager {
             witherSkeleton.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(vec3d.x, vec3d.y, vec3d.z)), null);
             return witherSkeleton;
         });
-        registerPostSpawnAction(EntityZombie.class, zombie -> {
-            if(zombie.world.isRemote) return;
+        registerPostSpawnAction(EntityZombie.class, (bloodmoon, zombie) -> {
+            if(zombie.world.isRemote || !bloodmoon) return;
             zombie.targetTasks.taskEntries.removeIf(entry -> entry.priority == 2 && entry.action instanceof EntityAINearestAttackableTarget);
             zombie.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(zombie, EntityPlayer.class, false));
-            if(WorldDataFactory.isBloodMoon(zombie.world)) {
-                zombie.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 100000, 1, false, false));
-            }
+            zombie.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 100000, 1, false, false));
         });
-        registerPostSpawnAction(EntitySkeleton.class, skeleton -> {
-            if(skeleton.world.isRemote) return;
+        registerPostSpawnAction(EntitySkeleton.class, (bloodmoon, skeleton) -> {
+            if(skeleton.world.isRemote || !bloodmoon) return;
             skeleton.targetTasks.taskEntries.removeIf(entry -> entry.priority == 2 && entry.action instanceof EntityAINearestAttackableTarget);
             skeleton.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(skeleton, EntityPlayer.class, false));
         });
-        registerPostSpawnAction(EntityCreeper.class, creeper -> {
-            if(creeper.world.isRemote) return;
+        registerPostSpawnAction(EntityCreeper.class, (bloodmoon, creeper) -> {
+            if(creeper.world.isRemote || !bloodmoon) return;
             creeper.targetTasks.taskEntries.removeIf(entry -> entry.priority == 1 && entry.action instanceof EntityAINearestAttackableTarget);
             creeper.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(creeper, EntityPlayer.class, false));
-            if(WorldDataFactory.isBloodMoon(creeper.world)) {
-                if(CommonEventHandler.random.nextFloat() <= 0.2F) {
-                    creeper.onStruckByLightning(null);
-                    creeper.extinguish();
-                    creeper.setHealth(creeper.getMaxHealth());
-                }
-                creeper.fuseTime = 10;
+            if(CommonEventHandler.random.nextFloat() <= 0.2F) {
+                creeper.onStruckByLightning(null);
+                creeper.extinguish();
+                creeper.setHealth(creeper.getMaxHealth());
             }
+            creeper.fuseTime = 10;
         });
-        registerPostSpawnAction(EntityGhast.class, ghast -> {
+        registerPostSpawnAction(EntityGhast.class, (bloodmoon, ghast) -> {
             if(ghast.world.isRemote) return;
             ghast.tasks.taskEntries.removeIf(entry -> entry.priority == 7 && entry.action instanceof EntityGhast.AIFireballAttack);
             ghast.tasks.addTask(7, new EntityAIGhastFireballAttack(ghast));
@@ -148,9 +141,9 @@ public class MobSpawnManager {
             instance.applyModifier(modifier);
             entity.setHealth(entity.getMaxHealth());
         }
-        Consumer<Entity> consumer = (Consumer<Entity>) postSpawn.get(entity.getClass());
+        BooleanConsumer<Entity> consumer = (BooleanConsumer<Entity>) postSpawn.get(entity.getClass());
         if(consumer != null) {
-            consumer.accept(entity);
+            consumer.acceptBoolean(isBloodmoon, entity);
         }
     }
 
@@ -158,7 +151,7 @@ public class MobSpawnManager {
         return healthExlusions.contains(entity.getClass());
     }
 
-    private <T extends Entity> void registerPostSpawnAction(Class<T> tClass, Consumer<T> action) {
+    private <T extends Entity> void registerPostSpawnAction(Class<T> tClass, BooleanConsumer<T> action) {
         postSpawn.put(tClass, action);
     }
 
@@ -168,9 +161,14 @@ public class MobSpawnManager {
         bloodmoonEntries.put(eClass, list);
     }
 
-    @Nullable
     private AttributeModifier getRandomModifier(Random random) {
         float f = random.nextFloat();
         return f <= 0.2F ? health3x : f <= 0.5F ? health2x : null;
+    }
+
+    @FunctionalInterface
+    public interface BooleanConsumer<T> {
+
+        void acceptBoolean(boolean bool, T t);
     }
 }

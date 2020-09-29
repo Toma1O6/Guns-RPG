@@ -26,7 +26,6 @@ public class SingleOreGen extends WorldGenerator {
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position) {
-        //if(!worldIn.isBlockLoaded(position)) return false;
         IBlockState state = worldIn.getBlockState(position);
         if(state.getBlock().isReplaceableOreGen(state, worldIn, position, predicate)) {
             setBlockAndNotifyAdequately(worldIn, position, this.state);
