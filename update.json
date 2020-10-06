@@ -1,27 +1,29 @@
 {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods",
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/guns-rpg",
     "promos": {
-        "1.12.2-latest": "1.0.10",
-        "1.12.2-recommended": "1.0.10"
+        "1.12.2-latest": "1.0.0",
+        "1.12.2-recommended": "1.0.0"
     },
     "1.12.2": {
-        "0.1.0": "Initial alpha update",
-        "0.1.1": "Hammers",
-        "0.1.2": "Rocket Angel entity",
-        "0.1.3": "Gold dragon entity",
-        "0.1.4": "Gold dragon damage rebalance, config rewrite",
-        "0.1.5": "Gold dragon gains passive regeneration effect",
-        "0.1.6": "Gold dragon spawns only 2 zombie gunners as help",
-        "1.0.0": "First full release",
-        "1.0.1": "Balancing",
-        "1.0.2": "Balancing",
-        "1.0.3": "More config options",
-        "1.0.4": "Buff explosive skeletons",
-        "1.0.5": "Some bug fixes",
-        "1.0.6": "Crafting issues, improved airdrops",
-        "1.0.7": "Smithing table quick insert fix, quick scroll edit, resistance skill balancing",
-        "1.0.8": "Pharmacist skill",
-        "1.0.9": "Some minor details",
-        "1.0.10": "Added extra effect to morphine"
+        "0.0.1d": "Initial alpha update",
+        "0.0.2d": "Hammers",
+        "0.0.3d": "Rocket Angel entity",
+        "0.0.4d": "Gold dragon entity",
+        "0.0.5d": "Gold dragon damage rebalance, config rewrite",
+        "0.0.6d": "Gold dragon gains passive regeneration effect",
+        "0.0.7d": "Gold dragon spawns only 2 zombie gunners as help",
+        "0.0.8d": "Release for streaming",
+        "0.0.9d": "Balancing",
+        "0.0.10d": "Balancing",
+        "0.0.11d": "More config options",
+        "0.0.12d": "Buff explosive skeletons",
+        "0.0.13d": "Some bug fixes",
+        "0.0.14d": "Crafting issues, improved airdrops",
+        "0.0.15d": "Smithing table quick insert fix, quick scroll edit, resistance skill balancing",
+        "0.0.16d": "Pharmacist skill",
+        "0.0.17d": "Some minor details",
+        "0.0.18d": "Added extra effect to morphine",
+        "0.0.19d": "Minor fix",
+        "1.0.0": "Edited default configs, proper update URL, final version"
     }
 }

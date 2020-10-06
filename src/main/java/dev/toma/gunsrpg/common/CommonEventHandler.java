@@ -158,7 +158,7 @@ public class CommonEventHandler {
         switch (result.status) {
             case OUTDATED: case BETA_OUTDATED: {
                 TextComponentString textComponent = new TextComponentString(getMessageLogo() + TextFormatting.GREEN + " Your mod is " + TextFormatting.DARK_RED + "outdated" + TextFormatting.GREEN + ". Click " + TextFormatting.BOLD + "HERE" + TextFormatting.RESET.toString() + TextFormatting.GREEN + " to get latest update");
-                String url = "https://www.curseforge.com/minecraft/mc-mods";
+                String url = "https://www.curseforge.com/minecraft/mc-mods/guns-rpg";
                 textComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
                 event.player.sendMessage(textComponent);
                 break;

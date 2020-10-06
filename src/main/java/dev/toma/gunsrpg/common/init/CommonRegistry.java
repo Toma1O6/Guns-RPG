@@ -449,11 +449,9 @@ public class CommonRegistry {
                         player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 300, 1, false, false));
                         player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 600, 1, false, false));
                         player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 900, 0, false, false));
-                        if(player.world.rand.nextFloat() <= 0.20f) {
-                            player.addPotionEffect(new PotionEffect(GRPGPotions.GUN_DAMAGE_BUFF, 400, 0, false, false));
-                        }
+                        player.addPotionEffect(new PotionEffect(GRPGPotions.GUN_DAMAGE_BUFF, 600, 0, false, false));
                     }
-                }, "+14HP on use", "15s of Regeneration II", "30s of Strength II", "45s of Resistance I", "20% chance of getting extra gun damage boost") {
+                }, "+14HP on use", "15s of Regeneration II", "30s of Strength II", "45s of Resistance I", "30s of +20% gun damage") {
                     @SideOnly(Side.CLIENT)
                     @Override
                     public Animation getUseAnimation(int ticks) {
