@@ -147,7 +147,7 @@ public class PlayerSkills {
     public void awardPoints() {
         if(level == 100) {
             addSkillPoints(25);
-            data.getPlayer().addItemStackToInventory(new ItemStack(GRPGItems.GOLD_EGG_SHARD));
+            data.getPlayer().addItemStackToInventory(new ItemStack(GRPGItems.GOLD_EGG_SHARD, 2));
         } else if(level == 50) {
             addSkillPoints(20);
         } else if(level % 10 == 0) {

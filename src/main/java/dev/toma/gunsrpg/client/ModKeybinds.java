@@ -32,7 +32,7 @@ public class ModKeybinds {
 
     public static void registerKeybinds() {
         register("reload", Keyboard.KEY_R, ModKeybinds::reloadPressed);
-        register("class_list", Keyboard.KEY_L, ModKeybinds::showClassesPressed);
+        register("class_list", Keyboard.KEY_O, ModKeybinds::showClassesPressed);
         register("firemode", Keyboard.KEY_B, () -> {
             EntityPlayer player = Minecraft.getMinecraft().player;
             if(player.getHeldItemMainhand().getItem() instanceof GunItem) {
