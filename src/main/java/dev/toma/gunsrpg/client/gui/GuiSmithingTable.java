@@ -40,7 +40,7 @@ import java.util.List;
 public class GuiSmithingTable extends GuiContainer {
 
     private static final LazyLoader<Item[]> references = new LazyLoader<>(() -> new Item[] {Items.GUNPOWDER, GRPGItems.WOODEN_AMMO_9MM, GRPGItems.WOODEN_AMMO_CROSSBOW_BOLT, GRPGItems.WOODEN_AMMO_12G, GRPGItems.WOODEN_AMMO_762MM, GRPGItems.WOODEN_HAMMER, GRPGItems.BANDAGE, GRPGItems.GUN_PARTS});
-    private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/gui/smithing_table.png");
+    public static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/gui/smithing_table.png");
     private final TileEntitySmithingTable smithingTable;
     private final OptionalObject<SmithingTableRecipes.SmithingRecipe> clicked = OptionalObject.empty();
     private List<SmithingTableRecipes.SmithingRecipe> recipeList = new ArrayList<>();

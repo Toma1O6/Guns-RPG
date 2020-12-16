@@ -118,6 +118,10 @@ public class SmithingTableRecipes {
         register(new RecipeBuilder().out(GRPGItems.SNIPER_RIFLE).add(0, GRPGItems.LONG_BARREL).add(1, GRPGItems.GUN_PARTS).add(2, GRPGItems.WOODEN_STOCK).req(Skills.SNIPER_RIFLE_ASSEMBLY).recipe());
     }
 
+    public static List<SmithingRecipe> getRecipes() {
+        return RECIPES;
+    }
+
     public static SmithingRecipe findRecipe(TileEntitySmithingTable table, int selected) {
         if (selected >= 0 && selected < RECIPES.size()) {
             SmithingRecipe recipe = getRecipeById(selected);
@@ -379,14 +383,8 @@ public class SmithingTableRecipes {
             return items[0].copy();
         }
 
-        public Item[] getEntries() {
-            Item[] arr = new Item[items.length];
-            int j = 0;
-            for(ItemStack stack : items) {
-                arr[j] = stack.getItem();
-                ++j;
-            }
-            return arr;
+        public ItemStack[] getItems() {
+            return items;
         }
     }
 
