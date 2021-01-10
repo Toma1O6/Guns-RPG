@@ -1,8 +1,8 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/guns-rpg",
     "promos": {
-        "1.12.2-latest": "1.0.0",
-        "1.12.2-recommended": "1.0.0"
+        "1.12.2-latest": "1.0.1",
+        "1.12.2-recommended": "1.0.1"
     },
     "1.12.2": {
         "0.0.1d": "Initial alpha update",
@@ -24,6 +24,7 @@
         "0.0.17d": "Some minor details",
         "0.0.18d": "Added extra effect to morphine",
         "0.0.19d": "Minor fix",
-        "1.0.0": "Edited default configs, proper update URL, final version"
+        "1.0.0": "Edited default configs, proper update URL, final version",
+        "1.0.1": "Fixed debuffs"
     }
 }
