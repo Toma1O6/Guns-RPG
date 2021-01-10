@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataManager;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.debuffs.DamageContext;
+import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.entity.EntityCrossbowBolt;
 import dev.toma.gunsrpg.common.entity.EntityExplosiveArrow;
 import dev.toma.gunsrpg.common.init.GRPGBlocks;
@@ -427,7 +428,8 @@ public class CommonEventHandler {
         }
         if(event.getEntity() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntity();
-            PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
+            PlayerData data = PlayerDataFactory.get(player);
+            PlayerSkills skills = data.getSkills();
             SecondChanceSkill secondChanceSkill = skills.getSkill(Skills.SECOND_CHANCE_I);
             if(secondChanceSkill != null) {
                 secondChanceSkill = SkillUtil.getBestSkillFromOverrides(secondChanceSkill, player);
@@ -439,6 +441,10 @@ public class CommonEventHandler {
                 }
             }
             if(!event.isCanceled()) {
+                for (Debuff debuff : data.getDebuffData().getDebuffs()) {
+                    if(debuff != null && !debuff.isInvalid())
+                        debuff.invalidate();
+                }
                 if(GRPGConfig.worldConfig.createCrateOnPlayerDeath && !player.world.getGameRules().getBoolean("keepInventory")) {
                     BlockPos pos = player.getPosition();
                     World world = player.world;
@@ -470,7 +476,10 @@ public class CommonEventHandler {
         if(skills.hasSkill(Skills.WAR_MACHINE)) {
             skills.getSkill(Skills.WAR_MACHINE).onPurchase(player);
         }
-        if(!event.isEndConquered()) PlayerDataFactory.get(player).setOnCooldown();
+        if(!event.isEndConquered()) {
+            PlayerData data = PlayerDataFactory.get(player);
+            data.setOnCooldown();
+        }
         PlayerDataFactory.get(player).sync();
     }
 
