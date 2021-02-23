@@ -39,6 +39,7 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
@@ -381,6 +382,8 @@ public class CommonRegistry {
     @SubscribeEvent
     public static void onItemRegister(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
+        Item ironChunk;
+        Item goldChunk;
         registry.registerAll(
                 new GRPGItem("amethyst"),
                 new DebuffHeal("antidotum_pills", 32, () -> GRPGSounds.USE_ANTIDOTUM_PILLS, "These pills heal 40% of poison", data -> data.hasDebuff(Debuffs.POISON), data -> data.heal(Debuffs.POISON, 40)),
@@ -520,8 +523,8 @@ public class CommonRegistry {
                 new ItemGrenade("grenade", 4, false),
                 new ItemGrenade("massive_grenade", 6, false),
                 new ItemGrenade("impact_grenade", 4, true),
-                new GRPGItem("iron_ore_chunk"),
-                new GRPGItem("gold_ore_chunk"),
+                ironChunk = new GRPGItem("iron_ore_chunk"),
+                goldChunk = new GRPGItem("gold_ore_chunk"),
                 new ItemSkillBook("skillpoint_book"),
                 new ItemHammer("wooden_hammer", ItemHammer.WOOD_HAMMER_MATERIAL),
                 new ItemHammer("stone_hammer", ItemHammer.STONE_HAMMER_MATERIAL),
@@ -547,6 +550,8 @@ public class CommonRegistry {
         );
         queue.forEach(registry::register);
         queue = null;
+        OreDictionary.registerOre("oreIron", ironChunk);
+        OreDictionary.registerOre("oreGold", goldChunk);
     }
 
     @SubscribeEvent
