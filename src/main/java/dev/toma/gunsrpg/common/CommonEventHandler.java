@@ -53,7 +53,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -78,9 +77,9 @@ import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -120,20 +119,6 @@ public class CommonEventHandler {
     public static void playSoundAtEntity(PlaySoundAtEntityEvent event) {
         if(event.getSound() == SoundEvents.ITEM_ARMOR_EQUIP_GENERIC) {
             event.setCanceled(true);
-        }
-    }
-
-    @SubscribeEvent
-    public static void loadChunk(ChunkEvent.Load event) {
-        Map<BlockPos, TileEntity> map = event.getChunk().getTileEntityMap();
-        List<BlockPos> scheduledRemovalList = new ArrayList<>();
-        for(Map.Entry<BlockPos, TileEntity> entityEntry : map.entrySet()) {
-            if(entityEntry.getValue() instanceof TileEntityMobSpawner) {
-                scheduledRemovalList.add(entityEntry.getKey());
-            }
-        }
-        for(BlockPos pos : scheduledRemovalList) {
-            event.getWorld().destroyBlock(pos, false);
         }
     }
 
@@ -496,6 +481,14 @@ public class CommonEventHandler {
     }
 
     @SubscribeEvent
+    public static void checkEntitySpawn(LivingSpawnEvent.CheckSpawn event) {
+        if(event.isSpawner()) {
+            if(GRPGConfig.worldConfig.disableMobSpawners)
+                event.setResult(Event.Result.DENY);
+        }
+    }
+
+    @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if(event.phase == TickEvent.Phase.END) {
             EntityPlayer player = event.player;
@@ -503,16 +496,6 @@ public class CommonEventHandler {
             PlayerData data = PlayerDataFactory.get(player);
             data.tick();
             player.capabilities.walkSpeed = data.getSkills().getMovementSpeed();
-            if(!world.isRemote) {
-                if(world.getWorldTime() % 200 == 0) {
-                    for(int i = 0; i < world.loadedTileEntityList.size(); i++) {
-                        TileEntity te = world.loadedTileEntityList.get(i);
-                        if(te instanceof TileEntityMobSpawner) {
-                            world.destroyBlock(te.getPos(), false);
-                        }
-                    }
-                }
-            }
             ShootingManager.updateAllShooting(world);
         }
     }

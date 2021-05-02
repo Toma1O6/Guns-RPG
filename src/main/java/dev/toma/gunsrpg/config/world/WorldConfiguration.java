@@ -42,4 +42,8 @@ public class WorldConfiguration {
     @Config.Name("Player death crates")
     @Config.Comment({"Allow death crate spawning on player death", "Doesn't spawn if keepInventory gamerule is set to true!"})
     public boolean createCrateOnPlayerDeath = true;
+
+    @Config.Name("Disable mob spawners")
+    @Config.Comment("Disables mob spawning from spawners - prevents xp farming")
+    public boolean disableMobSpawners = true;
 }
