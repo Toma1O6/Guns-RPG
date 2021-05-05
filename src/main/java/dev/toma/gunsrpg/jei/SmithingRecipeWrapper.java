@@ -12,10 +12,10 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SmithingRecipeWrapper implements IRecipeWrapper {
@@ -35,7 +35,12 @@ public class SmithingRecipeWrapper implements IRecipeWrapper {
         List<List<ItemStack>> ingredientLists = new ArrayList<>();
         ingredients.setOutput(VanillaTypes.ITEM, recipe.getOutputForDisplay());
         for (SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
-            ingredientLists.add(Arrays.asList(ingredient.getItems()));
+            Item item = ingredient.getItem();
+            List<ItemStack> stacks = new ArrayList<>();
+            for (int i : ingredient.getSubtypes()) {
+                stacks.add(new ItemStack(item, 1, i));
+            }
+            ingredientLists.add(stacks);
         }
         ingredients.setInputLists(VanillaTypes.ITEM, ingredientLists);
     }

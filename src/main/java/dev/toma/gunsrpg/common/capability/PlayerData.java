@@ -20,10 +20,6 @@ public interface PlayerData extends INBTSerializable<NBTTagCompound> {
 
     void setOnCooldown();
 
-    void setShooting(boolean shooting);
-
-    boolean isShooting();
-
     void readPermanentData(NBTTagCompound nbt);
 
     void tick();

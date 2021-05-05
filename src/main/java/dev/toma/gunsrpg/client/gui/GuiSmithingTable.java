@@ -9,7 +9,6 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.tileentity.TileEntitySmithingTable;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketCheckSmithingRecipe;
-import dev.toma.gunsrpg.network.packet.SPacketQuickInsertRecipe;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.LazyLoader;
 import dev.toma.gunsrpg.util.object.OptionalObject;
@@ -31,6 +30,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
@@ -58,7 +58,6 @@ public class GuiSmithingTable extends GuiContainer {
         super.initGui();
         buttonList.clear();
         addButton(new GuiButton(0, guiLeft + 25, guiTop + 65, 54, 20, "Craft"));
-        addButton(new GuiButton(1, guiLeft + 82, guiTop + 65, 20, 20, "+"));
         recipeList = SmithingTableRecipes.getAvailableRecipes(mc.player);
         for (int i = scrollIndex; i < scrollIndex + 8; i++) {
             if (i >= recipeList.size()) break;
@@ -109,22 +108,6 @@ public class GuiSmithingTable extends GuiContainer {
         if (button.id == 0) {
             boolean shiftKey = GuiScreen.isShiftKeyDown();
             NetworkManager.toServer(new SPacketCheckSmithingRecipe(smithingTable.getPos(), shiftKey, clicked.isPresent() ? OptionalObject.of(clicked.get()) : OptionalObject.empty()));
-        } else if(button.id == 1) {
-            if(clicked.isPresent()) {
-                SmithingTableRecipes.SmithingRecipe recipe = clicked.get();
-                do {
-                    if(!hasSpace(recipe) || !canCraft(recipe)) {
-                        break;
-                    }
-                    for(SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
-                        int index = ingredient.getIndex();
-                        ItemStack stack = ingredient.getFirstItem().copy();
-                        int i = mc.player.inventory.clearMatchingItems(stack.getItem(), stack.getItemDamage(), 1, null);
-                        insert(index, stack);
-                    }
-                } while (isShiftKeyDown());
-                NetworkManager.toServer(new SPacketQuickInsertRecipe(recipe, smithingTable.getPos(), isShiftKeyDown()));
-            }
         }
     }
 
@@ -155,7 +138,7 @@ public class GuiSmithingTable extends GuiContainer {
 
     boolean canCraft(SmithingTableRecipes.SmithingRecipe recipe) {
         for(SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
-            Item item = ingredient.getFirstItem().getItem();
+            Item item = ingredient.getItem();
             int ingredientCount = ingredientsInRecipe(recipe, ingredient);
             int inInventory = getFromInventory(item);
             if(inInventory < ingredientCount) {
@@ -168,7 +151,7 @@ public class GuiSmithingTable extends GuiContainer {
     int ingredientsInRecipe(SmithingTableRecipes.SmithingRecipe recipe, SmithingTableRecipes.SmithingIngredient ingredient) {
         int i = 0;
         for(SmithingTableRecipes.SmithingIngredient ingredient1 : recipe.getIngredients()) {
-            if(ingredient.getFirstItem().getItem() == ingredient1.getFirstItem().getItem()) {
+            if(ingredient.getItem() == ingredient1.getItem()) {
                 ++i;
             }
         }
@@ -209,9 +192,17 @@ public class GuiSmithingTable extends GuiContainer {
                 int ingredientY = py + 8 + (position / 3) * 18;
                 Slot slot = slots.get(position);
                 if(!slot.getHasStack()) {
-                    mc.getRenderItem().renderItemIntoGUI(ingredient.getFirstItem(), ingredientX, ingredientY);
+                    int meta = 0;
+                    int[] subtypes = ingredient.getSubtypes();
+                    if(subtypes.length > 0) {
+                        int subtype = subtypes[0];
+                        if(subtype != OreDictionary.WILDCARD_VALUE) {
+                            meta = subtype;
+                        }
+                    }
+                    mc.getRenderItem().renderItemIntoGUI(new ItemStack(ingredient.getItem(), 1, meta), ingredientX, ingredientY);
                 }
-                if(!slot.getStack().isItemEqual(ingredient.getFirstItem())) {
+                if(!ingredient.test(slot.getStack())) {
                     ModUtils.renderColor(ingredientX, ingredientY, ingredientX + 16, ingredientY + 16, 1.0F, 0.0F, 0.0F, 0.5F);
                 }
             }

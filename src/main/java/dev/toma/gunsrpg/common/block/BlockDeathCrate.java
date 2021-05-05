@@ -28,6 +28,18 @@ public class BlockDeathCrate extends GRPGBlock {
     public BlockDeathCrate(String name) {
         super(name, Material.WOOD);
         setHardness(1.2F);
+        setTickRandomly(true);
+    }
+
+    @Override
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
+        TileEntity te = worldIn.getTileEntity(pos);
+        if(te instanceof TileEntityDeathCrate) {
+            TileEntityDeathCrate deathCrate = (TileEntityDeathCrate) te;
+            if(deathCrate.isEmpty()) {
+                worldIn.destroyBlock(pos, false);
+            }
+        }
     }
 
     @Override

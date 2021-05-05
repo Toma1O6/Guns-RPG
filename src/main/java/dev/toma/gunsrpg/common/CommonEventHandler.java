@@ -24,7 +24,6 @@ import dev.toma.gunsrpg.event.EntityEquippedItemEvent;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.Pair;
-import dev.toma.gunsrpg.util.object.ShootingManager;
 import dev.toma.gunsrpg.world.MobSpawnManager;
 import dev.toma.gunsrpg.world.cap.WorldCapProvider;
 import dev.toma.gunsrpg.world.cap.WorldDataCap;
@@ -496,7 +495,6 @@ public class CommonEventHandler {
             PlayerData data = PlayerDataFactory.get(player);
             data.tick();
             player.capabilities.walkSpeed = data.getSkills().getMovementSpeed();
-            ShootingManager.updateAllShooting(world);
         }
     }
 

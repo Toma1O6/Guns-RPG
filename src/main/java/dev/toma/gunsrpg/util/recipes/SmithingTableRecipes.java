@@ -6,7 +6,6 @@ import dev.toma.gunsrpg.common.init.GRPGItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.tileentity.TileEntitySmithingTable;
-import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,11 +13,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class SmithingTableRecipes {
@@ -31,15 +31,15 @@ public class SmithingTableRecipes {
     6 7 8
      */
     public static void register() {
-        register(new RecipeBuilder().out(GRPGItems.BACON_BURGER).add(0, Items.COOKED_BEEF).add(new int[]{1,3}, Items.BREAD).add(4, Items.COOKED_PORKCHOP).req(Skills.LOCAL_CHEF).recipe());
-        register(new RecipeBuilder().out(GRPGItems.FISH_AND_CHIPS).add(new int[]{3,5}, Items.BAKED_POTATO).add(4, Items.COOKED_FISH).add(7, Items.CARROT).req(Skills.LOCAL_CHEF).recipe());
-        register(new RecipeBuilder().out(GRPGItems.GARDEN_SOUP).add(1, Blocks.BROWN_MUSHROOM).add(new int[]{3,5}, Items.CARROT).add(4, Items.BEETROOT).add(7, Items.WATER_BUCKET).add(new int[]{6,8}, Items.POTATO).req(Skills.LOCAL_CHEF).bucket().recipe());
-        register(new RecipeBuilder().out(GRPGItems.CHICKEN_DINNER).add(new int[]{3,5}, Items.COOKED_CHICKEN).add(new int[]{4,7}, Items.BAKED_POTATO).add(new int[]{6,8}, Items.CARROT).req(Skills.LOCAL_CHEF).recipe());
-        register(new RecipeBuilder().out(GRPGItems.DELUXE_MEAL).add(new int[]{0, 2}, Items.BAKED_POTATO).add(1, Items.CARROT).add(3, Items.COOKED_PORKCHOP).add(4, Items.COOKED_BEEF).add(5, Items.COOKED_CHICKEN).add(new int[]{6,7,8}, Items.BREAD).req(Skills.MASTER_CHEF).recipe());
-        register(new RecipeBuilder().out(GRPGItems.MEATY_STEW_XXL).add(new int[]{0,3}, Items.COOKED_MUTTON).add(new int[]{1,4}, Items.COOKED_PORKCHOP).add(new int[]{2,5}, Items.COOKED_BEEF).add(new int[]{6,8}, Items.POTATO).add(7, Items.WATER_BUCKET).req(Skills.MASTER_CHEF).bucket().recipe());
-        register(new RecipeBuilder().out(GRPGItems.RABBIT_CREAMY_SOUP).add(new int[]{0,2}, Items.POTATO).add(1, Items.MILK_BUCKET).add(new int[]{3,5}, Items.CARROT).add(4, Blocks.BROWN_MUSHROOM).add(new int[]{6,8}, Items.BREAD).add(7, Items.COOKED_RABBIT).req(Skills.MASTER_CHEF).bucket().recipe());
-        register(new RecipeBuilder().out(GRPGItems.SHEPHERDS_PIE).add(new int[]{0,1,2}, Blocks.BROWN_MUSHROOM).add(new int[]{3,5}, Items.COOKED_MUTTON).add(4, Items.BAKED_POTATO).add(new int[]{6,7,8}, Items.BREAD).req(Skills.MASTER_CHEF).recipe());
-        register(new RecipeBuilder().out(Items.GUNPOWDER, SkillUtil::getGunpowderCraftAmount).add(new int[]{0, 4}, 1, Items.COAL).add(1, Items.DYE, 15).add(3, Items.SUGAR).req(Skills.GUNPOWDER_NOVICE).recipe());
+        register(new RecipeBuilder().out(GRPGItems.BACON_BURGER).add(0, Items.COOKED_BEEF).add(new int[]{1, 3}, Items.BREAD).add(4, Items.COOKED_PORKCHOP).req(Skills.LOCAL_CHEF).recipe());
+        register(new RecipeBuilder().out(GRPGItems.FISH_AND_CHIPS).add(new int[]{3, 5}, Items.BAKED_POTATO).add(4, Items.COOKED_FISH).add(7, Items.CARROT).req(Skills.LOCAL_CHEF).recipe());
+        register(new RecipeBuilder().out(GRPGItems.GARDEN_SOUP).add(1, Blocks.BROWN_MUSHROOM).add(new int[]{3, 5}, Items.CARROT).add(4, Items.BEETROOT).add(7, Items.WATER_BUCKET).add(new int[]{6, 8}, Items.POTATO).req(Skills.LOCAL_CHEF).bucket().recipe());
+        register(new RecipeBuilder().out(GRPGItems.CHICKEN_DINNER).add(new int[]{3, 5}, Items.COOKED_CHICKEN).add(new int[]{4, 7}, Items.BAKED_POTATO).add(new int[]{6, 8}, Items.CARROT).req(Skills.LOCAL_CHEF).recipe());
+        register(new RecipeBuilder().out(GRPGItems.DELUXE_MEAL).add(new int[]{0, 2}, Items.BAKED_POTATO).add(1, Items.CARROT).add(3, Items.COOKED_PORKCHOP).add(4, Items.COOKED_BEEF).add(5, Items.COOKED_CHICKEN).add(new int[]{6, 7, 8}, Items.BREAD).req(Skills.MASTER_CHEF).recipe());
+        register(new RecipeBuilder().out(GRPGItems.MEATY_STEW_XXL).add(new int[]{0, 3}, Items.COOKED_MUTTON).add(new int[]{1, 4}, Items.COOKED_PORKCHOP).add(new int[]{2, 5}, Items.COOKED_BEEF).add(new int[]{6, 8}, Items.POTATO).add(7, Items.WATER_BUCKET).req(Skills.MASTER_CHEF).bucket().recipe());
+        register(new RecipeBuilder().out(GRPGItems.RABBIT_CREAMY_SOUP).add(new int[]{0, 2}, Items.POTATO).add(1, Items.MILK_BUCKET).add(new int[]{3, 5}, Items.CARROT).add(4, Blocks.BROWN_MUSHROOM).add(new int[]{6, 8}, Items.BREAD).add(7, Items.COOKED_RABBIT).req(Skills.MASTER_CHEF).bucket().recipe());
+        register(new RecipeBuilder().out(GRPGItems.SHEPHERDS_PIE).add(new int[]{0, 1, 2}, Blocks.BROWN_MUSHROOM).add(new int[]{3, 5}, Items.COOKED_MUTTON).add(4, Items.BAKED_POTATO).add(new int[]{6, 7, 8}, Items.BREAD).req(Skills.MASTER_CHEF).recipe());
+        register(new RecipeBuilder().out(Items.GUNPOWDER, SkillUtil::getGunpowderCraftAmount).add(new int[]{0, 4}, Items.COAL, 1).add(1, Items.DYE, 15).add(3, Items.SUGAR).req(Skills.GUNPOWDER_NOVICE).recipe());
         register(new RecipeBuilder().out(new ItemStack(Items.DYE, 1, 15), SkillUtil::getBonemealCraftAmount).add(0, Items.BONE).req(Skills.BONE_GRINDER_I).recipe());
         register(new RecipeBuilder().out(GRPGItems.LARGE_BULLET_CASING).add(new int[]{0, 1}, GRPGItems.SMALL_BULLET_CASING).req(Skills.WOODEN_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.SHOTGUN_SHELL).add(0, Items.DYE, 1).add(1, GRPGItems.LARGE_BULLET_CASING).add(2, Items.PAPER).req(Skills.WOODEN_AMMO_SMITH).recipe());
@@ -95,21 +95,21 @@ public class SmithingTableRecipes {
         register(new RecipeBuilder().out(GRPGItems.IRON_HAMMER).add(new int[]{3, 0, 1, 2, 5}, Items.IRON_INGOT).add(new int[]{4, 7}, Items.STICK).req(Skills.HAMMER_III, Skills.HEAVY_PICKAXE_IV, Skills.MOTHER_LODE_IV).recipe());
         register(new RecipeBuilder().out(GRPGItems.AMETHYST).add(1, Items.DIAMOND).add(new int[]{3, 5}, Items.QUARTZ).add(4, Items.BLAZE_POWDER).add(7, Items.EMERALD).req(Skills.MINERALOGIST).recipe());
         register(new RecipeBuilder().out(GRPGItems.PLASTER_CAST).add(new int[]{0, 2, 6, 8}, Items.DYE, 15).add(new int[]{1, 3, 5, 7}, Blocks.CARPET).add(4, Items.DIAMOND).req(Skills.MEDIC).recipe());
-        register(new RecipeBuilder().out(GRPGItems.BANDAGE, 2).add(new int[]{0, 8}, Items.DYE, 4).add(new int[]{1, 3, 5, 7}, Items.PAPER).add(new int[]{2, 6}, Items.SLIME_BALL).add(4, new ItemStack(Blocks.WOOL, 1, 0)).req(Skills.MEDIC).recipe());
+        register(new RecipeBuilder().out(GRPGItems.BANDAGE, 2).add(new int[]{0, 8}, Items.DYE, 4).add(new int[]{1, 3, 5, 7}, Items.PAPER).add(new int[]{2, 6}, Items.SLIME_BALL).add(4, Blocks.WOOL, 0).req(Skills.MEDIC).recipe());
         register(new RecipeBuilder().out(GRPGItems.VACCINE).add(8, Items.GOLDEN_APPLE).add(6, Items.SPECKLED_MELON).add(4, GRPGItems.AMETHYST).add(2, Items.GOLDEN_CARROT).add(0, Items.IRON_INGOT).add(new int[]{1, 3, 5, 7}, Blocks.GLASS_PANE).req(Skills.DOCTOR).recipe());
-        register(new RecipeBuilder().out(GRPGItems.ANTIDOTUM_PILLS, 2).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(3, new ItemStack(Blocks.RED_FLOWER, 1, 2)).add(4, Items.EMERALD).add(5, Items.DYE, 2).add(6, Blocks.YELLOW_FLOWER).add(7, new ItemStack(Blocks.RED_FLOWER, 1, 1)).add(8, Blocks.RED_FLOWER).req(Skills.DOCTOR).recipe());
-        register(new RecipeBuilder().out(GRPGItems.ANALGETICS).add(new int[] {0, 2}, Items.PAPER).add(1, Items.SUGAR).add(3, Blocks.YELLOW_FLOWER).add(4, Items.DYE, 2).add(5, Blocks.RED_FLOWER).add(new int[] {6, 7, 8}, Items.DYE, 4).req(Skills.PHARMACIST_I).recipe());
-        register(new RecipeBuilder().out(GRPGItems.STEREOIDS).add(0, Items.IRON_INGOT).add(new int[]{1,3,5,7}, Blocks.GLASS_PANE).add(new int[]{2,6}, Items.GOLDEN_CARROT).add(4, Blocks.REDSTONE_BLOCK).add(8, Items.SUGAR).req(Skills.PHARMACIST_II).recipe());
-        register(new RecipeBuilder().out(GRPGItems.ADRENALINE).add(0, Items.IRON_INGOT).add(new int[]{1,3,5,7}, Blocks.GLASS_PANE).add(new int[]{2,6}, Items.SPECKLED_MELON).add(4, Items.FERMENTED_SPIDER_EYE).add(8, new ItemStack(Blocks.RED_FLOWER, 1, 1)).req(Skills.PHARMACIST_III).recipe());
-        register(new RecipeBuilder().out(GRPGItems.PAINKILLERS).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(new int[]{3,4,5}, Items.FERMENTED_SPIDER_EYE).add(new int[]{6,8}, Items.NETHER_WART).add(7, Blocks.REDSTONE_BLOCK).req(Skills.PHARMACIST_IV).recipe());
-        register(new RecipeBuilder().out(GRPGItems.MORPHINE).add(0, Items.IRON_INGOT).add(new int[]{1,3,5,7}, Blocks.GLASS_PANE).add(2, GRPGItems.STEREOIDS).add(4, GRPGItems.PAINKILLERS).add(6, GRPGItems.ADRENALINE).add(8, Items.ENDER_EYE).req(Skills.PHARMACIST_V).recipe());
-        register(new RecipeBuilder().out(GRPGItems.BARREL).add(new int[]{0,1,2,6,7,8}, Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE).req(Skills.GUN_PARTS_SMITH).recipe());
-        register(new RecipeBuilder().out(GRPGItems.GUN_PARTS).add(new int[]{0,2,6,8}, Blocks.IRON_BARS).add(new int[]{1, 7}, Blocks.IRON_TRAPDOOR).add(new int[]{3, 5}, Items.IRON_INGOT).add(4, Items.IRON_PICKAXE).req(Skills.GUN_PARTS_SMITH).recipe());
+        register(new RecipeBuilder().out(GRPGItems.ANTIDOTUM_PILLS, 2).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(3, Blocks.RED_FLOWER, 2).add(4, Items.EMERALD).add(5, Items.DYE, 2).add(6, Blocks.YELLOW_FLOWER).add(7, Blocks.RED_FLOWER, 1).add(8, Blocks.RED_FLOWER).req(Skills.DOCTOR).recipe());
+        register(new RecipeBuilder().out(GRPGItems.ANALGETICS, 2).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(3, Blocks.YELLOW_FLOWER).add(4, Items.DYE, 2).add(5, Blocks.RED_FLOWER).add(new int[]{6, 7, 8}, Items.DYE, 4).req(Skills.PHARMACIST_I).recipe());
+        register(new RecipeBuilder().out(GRPGItems.STEREOIDS).add(0, Items.IRON_INGOT).add(new int[]{1, 3, 5, 7}, Blocks.GLASS_PANE).add(new int[]{2, 6}, Items.GOLDEN_CARROT).add(4, Blocks.REDSTONE_BLOCK).add(8, Items.SUGAR).req(Skills.PHARMACIST_II).recipe());
+        register(new RecipeBuilder().out(GRPGItems.ADRENALINE).add(0, Items.IRON_INGOT).add(new int[]{1, 3, 5, 7}, Blocks.GLASS_PANE).add(new int[]{2, 6}, Items.SPECKLED_MELON).add(4, Items.FERMENTED_SPIDER_EYE).add(8, Blocks.RED_FLOWER, 1).req(Skills.PHARMACIST_III).recipe());
+        register(new RecipeBuilder().out(GRPGItems.PAINKILLERS, 2).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(new int[]{3, 4, 5}, Items.FERMENTED_SPIDER_EYE).add(new int[]{6, 8}, Items.NETHER_WART).add(7, Blocks.REDSTONE_BLOCK).req(Skills.PHARMACIST_IV).recipe());
+        register(new RecipeBuilder().out(GRPGItems.MORPHINE).add(0, Items.IRON_INGOT).add(new int[]{1, 3, 5, 7}, Blocks.GLASS_PANE).add(2, GRPGItems.STEREOIDS).add(4, GRPGItems.PAINKILLERS).add(6, GRPGItems.ADRENALINE).add(8, Items.ENDER_EYE).req(Skills.PHARMACIST_V).recipe());
+        register(new RecipeBuilder().out(GRPGItems.BARREL).add(new int[]{0, 1, 2, 6, 7, 8}, Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE).req(Skills.GUN_PARTS_SMITH).recipe());
+        register(new RecipeBuilder().out(GRPGItems.GUN_PARTS).add(new int[]{0, 2, 6, 8}, Blocks.IRON_BARS).add(new int[]{1, 7}, Blocks.IRON_TRAPDOOR).add(new int[]{3, 5}, Items.IRON_INGOT).add(4, Items.IRON_PICKAXE).req(Skills.GUN_PARTS_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.IRON_STOCK).add(new int[]{0, 1}, Blocks.IRON_BLOCK).add(new int[]{2, 4}, Items.IRON_INGOT).add(5, Items.FLINT_AND_STEEL).req(Skills.GUN_PARTS_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.LONG_BARREL).add(new int[]{1, 2}, GRPGItems.BARREL).req(Skills.GUN_PARTS_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.MAGAZINE).add(new int[]{1, 2, 4, 5, 6, 7}, Items.IRON_INGOT).req(Skills.GUN_PARTS_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.SMALL_IRON_STOCK).add(0, Blocks.IRON_BLOCK).add(new int[]{1, 3}, Items.IRON_INGOT).add(4, Items.FLINT_AND_STEEL).req(Skills.GUN_PARTS_SMITH).recipe());
-        register(new RecipeBuilder().out(GRPGItems.WOODEN_STOCK).add(new int[]{0, 1}, Blocks.LOG, Blocks.LOG2).add(2, Items.IRON_INGOT).add(4, Blocks.WOODEN_SLAB).add(5, Items.FLINT_AND_STEEL).req(Skills.GUN_PARTS_SMITH).recipe());
+        register(new RecipeBuilder().out(GRPGItems.WOODEN_STOCK).add(new int[]{0, 1}, Blocks.LOG).add(2, Items.IRON_INGOT).add(4, Blocks.WOODEN_SLAB).add(5, Items.FLINT_AND_STEEL).req(Skills.GUN_PARTS_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.PISTOL).add(0, GRPGItems.BARREL).add(1, GRPGItems.GUN_PARTS).add(2, GRPGItems.SMALL_IRON_STOCK).req(Skills.PISTOL_ASSEMBLY).recipe());
         register(new RecipeBuilder().out(GRPGItems.SMG).add(0, GRPGItems.BARREL).add(1, GRPGItems.GUN_PARTS).add(2, GRPGItems.IRON_STOCK).add(4, GRPGItems.MAGAZINE).req(Skills.SMG_ASSEMBLY).recipe());
         register(new RecipeBuilder().out(GRPGItems.CROSSBOW).add(3, Blocks.TRIPWIRE_HOOK).add(4, GRPGItems.GUN_PARTS).add(5, GRPGItems.WOODEN_STOCK).add(new int[]{1, 7}, Items.BOW).req(Skills.CROSSBOW_ASSEMBLY).recipe());
@@ -128,7 +128,7 @@ public class SmithingTableRecipes {
             boolean valid = true;
             for (SmithingIngredient ingredient : recipe.getIngredients()) {
                 ItemStack stack = table.getStackInSlot(ingredient.getIndex());
-                if (!ModUtils.contains(stack, ingredient.items, ItemStack::isItemEqual)) {
+                if(!ingredient.test(stack)) {
                     valid = false;
                     break;
                 }
@@ -142,7 +142,7 @@ public class SmithingTableRecipes {
             boolean valid = true;
             for (SmithingIngredient ingredient : recipe.ingredients) {
                 ItemStack item = table.getStackInSlot(ingredient.id);
-                if (!ModUtils.contains(item, ingredient.items, ItemStack::isItemEqual)) {
+                if (!ingredient.test(item)) {
                     valid = false;
                     break;
                 }
@@ -151,8 +151,8 @@ public class SmithingTableRecipes {
                 validRecipes.add(recipe);
             }
         }
-        if(!validRecipes.isEmpty()) {
-            if(validRecipes.size() == 1) {
+        if (!validRecipes.isEmpty()) {
+            if (validRecipes.size() == 1) {
                 return validRecipes.get(0);
             } else {
                 SmithingRecipe matched = null;
@@ -168,8 +168,8 @@ public class SmithingTableRecipes {
     }
 
     public static SmithingRecipe getRecipeByOutput(Item output) {
-        for(SmithingRecipe recipe : RECIPES) {
-            if(recipe.output.item.getItem() == output) {
+        for (SmithingRecipe recipe : RECIPES) {
+            if (recipe.output.item.getItem() == output) {
                 return recipe;
             }
         }
@@ -225,7 +225,7 @@ public class SmithingTableRecipes {
         }
 
         public ItemStack getOutput(EntityPlayer player) {
-            if(!player.world.isRemote && returnsBucket) {
+            if (!player.world.isRemote && returnsBucket) {
                 player.addItemStackToInventory(new ItemStack(Items.BUCKET));
             }
             return output.getResult(player);
@@ -246,72 +246,48 @@ public class SmithingTableRecipes {
         private SkillType<?>[] requiredTypes;
         private boolean returnsBucket;
 
-        public RecipeBuilder add(int id, ItemStack stack) {
-            if (ingredientList.size() > 8) throw new IllegalArgumentException("Added way too many ingredients!");
-            ingredientList.add(new SmithingIngredient(id, stack));
-            return this;
+        private RecipeBuilder add(int integer, Function<Integer, SmithingIngredient> ingredientFunction) {
+            return add(new int[] {integer}, ingredientFunction);
         }
 
-        public RecipeBuilder add(int id, Block... blocks) {
-            if (ingredientList.size() > 8) throw new IllegalArgumentException("Added way too many ingredients!");
-            ingredientList.add(new SmithingIngredient(id, Arrays.stream(blocks).map(ItemStack::new).toArray(ItemStack[]::new)));
-            return this;
-        }
-
-        public RecipeBuilder add(int id, Block block) {
-            if (ingredientList.size() > 8) throw new IllegalArgumentException("Added way too many ingredients!");
-            ingredientList.add(new SmithingIngredient(id, Item.getItemFromBlock(block)));
-            return this;
-        }
-
-        public RecipeBuilder add(int id, Item item) {
-            if (ingredientList.size() > 8) throw new IllegalArgumentException("Added way too many ingredients!");
-            ingredientList.add(new SmithingIngredient(id, item));
-            return this;
-        }
-
-        public RecipeBuilder add(int id, Item item, int meta) {
-            if (ingredientList.size() > 8) throw new IllegalArgumentException("Added way too many ingredients!");
-            ingredientList.add(new SmithingIngredient(id, item, meta));
-            return this;
-        }
-
-        public RecipeBuilder add(int id, Item... items) {
-            if (ingredientList.size() > 8) throw new IllegalArgumentException("Added way too many ingredients!");
-            ingredientList.add(new SmithingIngredient(id, 0, items));
-            return this;
-        }
-
-        public RecipeBuilder add(int[] ints, Item item, int meta) {
-            for (int id : ints) {
-                if (ingredientList.size() > 8) throw new IllegalArgumentException("Added way too many ingredients!");
-                ingredientList.add(new SmithingIngredient(id, item, meta));
+        private RecipeBuilder add(int[] ints, Function<Integer, SmithingIngredient> ingredientFunction) {
+            for (int i : ints) {
+                if(ingredientList.size() > 8) throw new IllegalArgumentException("Added way too many ingredients!");
+                ingredientList.add(ingredientFunction.apply(i));
             }
             return this;
         }
 
-        public RecipeBuilder add(int[] ints, Item... items) {
-            for (int id : ints) {
-                if (ingredientList.size() > 8) throw new IllegalArgumentException("Added way too many ingredients!");
-                ingredientList.add(new SmithingIngredient(id, 0, items));
-            }
-            return this;
+        public RecipeBuilder add(int[] ints, Item item, int... subtypes) {
+            return add(ints, id -> new SmithingIngredient(id, item, subtypes));
         }
 
-        public RecipeBuilder add(int[] ints, int meta, Item... items) {
-            for (int id : ints) {
-                if (ingredientList.size() > 8) throw new IllegalArgumentException("Added way too many ingredients!");
-                ingredientList.add(new SmithingIngredient(id, meta, items));
-            }
-            return this;
+        public RecipeBuilder add(int integer, Item item, int... subtypes) {
+            return add(integer, id -> new SmithingIngredient(id, item, subtypes));
+        }
+
+        public RecipeBuilder add(int[] ints, Block block, int subtypes) {
+            return add(ints, id -> new SmithingIngredient(id, Item.getItemFromBlock(block), subtypes));
+        }
+
+        public RecipeBuilder add(int integer, Block block, int subtypes) {
+            return add(integer, Item.getItemFromBlock(block), subtypes);
+        }
+
+        public RecipeBuilder add(int[] ints, Item item) {
+            return add(ints, id -> new SmithingIngredient(id, item));
+        }
+
+        public RecipeBuilder add(int integer, Item item) {
+            return add(new int[] {integer}, item);
         }
 
         public RecipeBuilder add(int[] ints, Block block) {
-            return this.add(ints, Item.getItemFromBlock(block));
+            return add(ints, id -> new SmithingIngredient(id, Item.getItemFromBlock(block)));
         }
 
-        public RecipeBuilder add(int[] ints, Block... blocks) {
-            return this.add(ints, Arrays.stream(blocks).map(Item::getItemFromBlock).toArray(Item[]::new));
+        public RecipeBuilder add(int integer, Block block) {
+            return add(new int[] {integer}, block);
         }
 
         public RecipeBuilder out(Item item) {
@@ -349,42 +325,55 @@ public class SmithingTableRecipes {
         }
     }
 
-    public static class SmithingIngredient {
+    public static class SmithingIngredient implements Predicate<ItemStack> {
 
         private final int id;
-        private final ItemStack[] items;
+        private final Item item;
+        private final int[] subtypes;
 
-        private SmithingIngredient(int id, Item item, int meta) {
-            this(id, new ItemStack(item, 1, meta));
+        public SmithingIngredient(int index, Item item) {
+            this(index, item, OreDictionary.WILDCARD_VALUE);
         }
 
-        private SmithingIngredient(int id, Item item) {
-            this(id, new ItemStack(item));
+        public SmithingIngredient(int index, Item item, int subtypeID) {
+            this(index, item, new int[]{subtypeID});
         }
 
-        private SmithingIngredient(int id, int meta, Item... items) {
-            this(id, Arrays.stream(items).map(item -> new ItemStack(item, 1, meta)).toArray(ItemStack[]::new));
+        public SmithingIngredient(int index, Item item, int... subtypeIDs) {
+            this.id = index;
+            this.item = item;
+            this.subtypes = subtypeIDs;
         }
 
-        private SmithingIngredient(int id, ItemStack item) {
-            this(id, new ItemStack[]{item});
-        }
-
-        private SmithingIngredient(int id, ItemStack[] item) {
-            this.id = id;
-            this.items = item;
+        @Override
+        public boolean test(ItemStack stack) {
+            Item testItem = stack.getItem();
+            if (stack.isEmpty()) {
+                return false;
+            }
+            if (testItem == item) {
+                if (subtypes.length == 0) {
+                    return false;
+                }
+                for (int subtypeID : subtypes) {
+                    if(stack.getItemDamage() == subtypeID || subtypeID == OreDictionary.WILDCARD_VALUE) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         public int getIndex() {
             return id;
         }
 
-        public ItemStack getFirstItem() {
-            return items[0].copy();
+        public int[] getSubtypes() {
+            return subtypes;
         }
 
-        public ItemStack[] getItems() {
-            return items;
+        public Item getItem() {
+            return item;
         }
     }
 

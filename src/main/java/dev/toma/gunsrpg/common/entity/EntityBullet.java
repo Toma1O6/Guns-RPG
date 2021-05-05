@@ -190,7 +190,7 @@ public class EntityBullet extends Entity {
             this.motionY -= 0.05;
         }
 
-        if (ticksExisted > 1) {
+        if (ticksExisted > 2) {
             world.playSound(null, posX, posY, posZ, GRPGSounds.BULLET_WHIZZ, SoundCategory.MASTER, 0.6F, 1.0F);
         }
 

@@ -3,14 +3,10 @@ package dev.toma.gunsrpg.common.capability;
 import dev.toma.gunsrpg.common.capability.object.*;
 import dev.toma.gunsrpg.common.init.GRPGItems;
 import dev.toma.gunsrpg.common.init.Skills;
-import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketUpdateCap;
-import dev.toma.gunsrpg.network.packet.SPacketSetShooting;
-import dev.toma.gunsrpg.util.object.ShootingManager;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -30,7 +26,6 @@ public class PlayerDataFactory implements PlayerData {
     private final PlayerSkills playerSkills;
     private int reducedHealthTimer;
 
-    private boolean shooting;
     private boolean logged = false;
 
     public PlayerDataFactory() {
@@ -84,32 +79,6 @@ public class PlayerDataFactory implements PlayerData {
                 player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(d);
             }
         }
-        if(shooting) {
-            ItemStack stack = player.getHeldItemMainhand();
-            boolean gun = stack.getItem() instanceof GunItem;
-            if(gun && ShootingManager.canShoot(player, stack)) {
-                GunItem gunItem = (GunItem) stack.getItem();
-                if(world.isRemote) {
-                    ShootingManager.shootSingle(player, stack);
-                }
-            }
-            if(!world.isRemote && gun && ((GunItem) stack.getItem()).getAmmo(stack) <= 0) {
-                setShooting(false);
-                sync();
-            }
-        }
-        if(world.isRemote) {
-            this.clientTick();
-        }
-    }
-
-    protected void clientTick() {
-        if(shooting) {
-            if(!Minecraft.getMinecraft().gameSettings.keyBindAttack.isKeyDown()) {
-                setShooting(false);
-                NetworkManager.toServer(new SPacketSetShooting(false));
-            }
-        }
     }
 
     @Override
@@ -135,16 +104,6 @@ public class PlayerDataFactory implements PlayerData {
     @Override
     public PlayerSkills getSkills() {
         return playerSkills;
-    }
-
-    @Override
-    public void setShooting(boolean shooting) {
-        this.shooting = shooting;
-    }
-
-    @Override
-    public boolean isShooting() {
-        return shooting;
     }
 
     @Override

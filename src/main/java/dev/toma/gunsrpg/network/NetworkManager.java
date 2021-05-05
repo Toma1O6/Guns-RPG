@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.network;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.network.packet.*;
-import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -34,17 +33,14 @@ public class NetworkManager {
         c_register(CPacketNewSkills.Handler.class, CPacketNewSkills.class);
         s_register(SPacketShoot.Handler.class, SPacketShoot.class);
         s_register(SPacketRequestDataUpdate.Handler.class, SPacketRequestDataUpdate.class);
-        s_register(ShootingManager.Update.Handler.class, ShootingManager.Update.class);
         s_register(SPacketSelectAmmo.Handler.class, SPacketSelectAmmo.class);
         s_register(SPacketSetAiming.Handler.class, SPacketSetAiming.class);
         s_register(SPacketSetReloading.Handler.class, SPacketSetReloading.class);
-        s_register(SPacketSetShooting.Handler.class, SPacketSetShooting.class);
         s_register(SPacketUpdateSightData.Handler.class, SPacketUpdateSightData.class);
         s_register(SPacketChangeFiremode.Handler.class, SPacketChangeFiremode.class);
         s_register(SPacketUnlockSkill.Handler.class, SPacketUnlockSkill.class);
         s_register(SPacketCheckSmithingRecipe.Handler.class, SPacketCheckSmithingRecipe.class);
         s_register(SPacketSkillClicked.Handler.class, SPacketSkillClicked.class);
-        s_register(SPacketQuickInsertRecipe.Handler.class, SPacketQuickInsertRecipe.class);
     }
 
     private static <A extends IMessage, B extends IMessage> void c_register(Class<? extends IMessageHandler<A, B>> hClass, Class<A> pClass) {

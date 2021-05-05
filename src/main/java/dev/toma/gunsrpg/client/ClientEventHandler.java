@@ -24,7 +24,7 @@ import dev.toma.gunsrpg.common.skills.interfaces.OverlayRenderer;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
-import dev.toma.gunsrpg.network.packet.SPacketSetShooting;
+import dev.toma.gunsrpg.network.packet.SPacketShoot;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.OptionalObject;
@@ -41,7 +41,6 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -70,9 +69,9 @@ public class ClientEventHandler {
     }, EntityPlayer::isSprinting);
     public static OptionalObject<Float> preAimFov = OptionalObject.empty();
     public static OptionalObject<Float> preAimSens = OptionalObject.empty();
-    static float prevAimingProgress;
     static boolean burst;
     static int shotsLeft = 2;
+    public static int shootDelay;
 
     @SubscribeEvent
     public static void cancelOverlays(RenderGameOverlayEvent.Pre event) {
@@ -129,11 +128,13 @@ public class ClientEventHandler {
             FontRenderer renderer = mc.fontRenderer;
             long day = player.world.getWorldTime() / 24000L;
             int cycle = GRPGConfig.worldConfig.bloodmoonCycle;
-            boolean b = day % cycle == 0 && day > 0;
-            long l = b ? 0 : cycle - day % cycle;
-            String remainingDays = l + "";
             ScaledResolution resolution = event.getResolution();
-            mc.fontRenderer.drawStringWithShadow(remainingDays, resolution.getScaledWidth() - 10 - mc.fontRenderer.getStringWidth(remainingDays) / 2f, 6, b ? 0xff0000 : l > 0 && l < 3 ? 0xffff00 : 0xffffff);
+            if (cycle >= 0) {
+                boolean b = day % cycle == 0 && day > 0;
+                long l = b ? 0 : cycle - day % cycle;
+                String remainingDays = l + "";
+                mc.fontRenderer.drawStringWithShadow(remainingDays, resolution.getScaledWidth() - 10 - mc.fontRenderer.getStringWidth(remainingDays) / 2f, 6, b ? 0xff0000 : l > 0 && l < 3 ? 0xffff00 : 0xffffff);
+            }
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             ItemStack stack = player.getHeldItemMainhand();
             int width = 26;
@@ -213,15 +214,13 @@ public class ClientEventHandler {
         GameSettings settings = mc.gameSettings;
         if (player != null) {
             GunItem item = ShootingManager.getGunFrom(player);
+            ItemStack stack = player.getHeldItemMainhand();
             if (item != null) {
                 if (settings.keyBindAttack.isPressed()) {
-                    Firemode firemode = item.getFiremode(player.getHeldItemMainhand());
-                    if (firemode == Firemode.FULL_AUTO) {
-                        PlayerDataFactory.get(player).setShooting(true);
-                        NetworkManager.toServer(new SPacketSetShooting(true));
-                    } else if (firemode == Firemode.SINGLE) {
-                        ShootingManager.shootSingle(player, player.getHeldItemMainhand());
-                    } else {
+                    Firemode firemode = item.getFiremode(stack);
+                    if (firemode == Firemode.SINGLE && ShootingManager.canShoot(player, stack)) {
+                        shoot(player, stack);
+                    } else if (firemode == Firemode.BURST) {
                         if (!burst) {
                             burst = true;
                             shotsLeft = 2;
@@ -297,24 +296,35 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
-        EntityPlayer player = Minecraft.getMinecraft().player;
+        Minecraft mc = Minecraft.getMinecraft();
+        EntityPlayer player = mc.player;
         if (event.phase == TickEvent.Phase.END && player != null) {
+            if(shootDelay > 0)
+                --shootDelay;
             AnimationManager.tick();
             startSprintListener.update(player);
+            GameSettings settings = mc.gameSettings;
             if (burst) {
                 if (shotsLeft > 0) {
                     ItemStack stack = player.getHeldItemMainhand();
                     if (stack.getItem() instanceof GunItem) {
                         GunItem gun = (GunItem) stack.getItem();
-                        CooldownTracker tracker = player.getCooldownTracker();
-                        if (!tracker.hasCooldown(gun)) {
+                        if (shootDelay == 0) {
                             if (ShootingManager.canShoot(player, stack)) {
-                                ShootingManager.shootSingle(player, stack);
+                                shoot(player, stack);
                                 shotsLeft--;
                             } else burst = false;
                         }
                     }
                 } else burst = false;
+            } else if(settings.keyBindAttack.isKeyDown()) {
+                ItemStack stack = player.getHeldItemMainhand();
+                if(stack.getItem() instanceof GunItem) {
+                    GunItem gun = (GunItem) stack.getItem();
+                    if(gun.getFiremode(stack) == Firemode.FULL_AUTO && shootDelay == 0 && ShootingManager.canShoot(player, stack)) {
+                        shoot(player, stack);
+                    }
+                }
             }
         }
     }
@@ -345,6 +355,15 @@ public class ClientEventHandler {
         }
         GlStateManager.popMatrix();
         GlStateManager.enableCull();
+    }
+
+    private static void shoot(EntityPlayer player, ItemStack stack) {
+        GunItem gun = (GunItem) stack.getItem();
+        player.rotationPitch -= gun.getVerticalRecoil(player);
+        player.rotationYaw += gun.getHorizontalRecoil(player);
+        NetworkManager.toServer(new SPacketShoot(gun));
+        gun.onShoot(player, stack);
+        shootDelay = gun.getFirerate(player);
     }
 
     private static class RisingEdgeChecker {
