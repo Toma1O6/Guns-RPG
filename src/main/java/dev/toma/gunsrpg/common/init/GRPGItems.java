@@ -87,12 +87,16 @@ public class GRPGItems {
     public static final ItemHammer STONE_HAMMER = null;
     public static final ItemHammer IRON_HAMMER = null;
     public static final GRPGItem GOLD_EGG_SHARD = null;
+    public static final GRPGItem BLAZE_LUMP = null;
     public static final ItemModdedFood BACON_BURGER = null;
     public static final ItemModdedFood FISH_AND_CHIPS = null;
     public static final ItemModdedFood GARDEN_SOUP = null;
-    public static final ItemModdedFood CHICKEN_DINNER = null; // winner winner chicken dinner!!
+    public static final ItemModdedFood CHICKEN_DINNER = null;
     public static final ItemModdedFood DELUXE_MEAL = null;
     public static final ItemModdedFood MEATY_STEW_XXL = null;
     public static final ItemModdedFood RABBIT_CREAMY_SOUP = null;
     public static final ItemModdedFood SHEPHERDS_PIE = null;
+    public static final ItemModdedFood FRUIT_SALAD = null;
+    public static final ItemModdedFood EGG_SALAD = null;
+    public static final ItemModdedFood CHOCOLATE_GLAZED_APPLE_PIE = null;
 }

@@ -3,16 +3,15 @@ package dev.toma.gunsrpg.client.gui;
 import dev.toma.gunsrpg.client.gui.skills.GuiPlayerSkills;
 import dev.toma.gunsrpg.client.gui.skills.PlacementContext;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketUnlockSkill;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 
 import javax.annotation.Nullable;
-import java.io.IOException;
 
 public class GuiConfirmSkillUnlock extends GuiScreen {
 
@@ -20,15 +19,15 @@ public class GuiConfirmSkillUnlock extends GuiScreen {
     private final int ySize = 60;
     private int left;
     private int top;
-    private SkillType<?> type;
+    private final GuiPlayerSkills parent;
+    private final SkillType<?> type;
     @Nullable
-    private PlacementContext ctx;
-    private final SkillCategory selectedCategory;
+    private final PlacementContext ctx;
 
-    public GuiConfirmSkillUnlock(SkillType<?> type, @Nullable PlacementContext ctx, SkillCategory category) {
+    public GuiConfirmSkillUnlock(GuiPlayerSkills parent, SkillType<?> type, @Nullable PlacementContext ctx) {
+        this.parent = parent;
         this.type = type;
         this.ctx = ctx;
-        this.selectedCategory = category;
     }
 
     @Override
@@ -40,29 +39,33 @@ public class GuiConfirmSkillUnlock extends GuiScreen {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) throws IOException {
+    protected void actionPerformed(GuiButton button) {
         switch (button.id) {
             case 0:
                 if(ctx != null) {
                     if(ctx.parent != null) {
                         if(PlayerDataFactory.hasActiveSkill(mc.player, ctx.parent) && type.getCriteria().isUnlockAvailable(PlayerDataFactory.get(mc.player), type)) {
                             NetworkManager.toServer(new SPacketUnlockSkill(type, ctx.parent));
-                            mc.displayGuiScreen(new GuiPlayerSkills(selectedCategory));
+                            mc.displayGuiScreen(parent);
                         }
                     }
                 } else if(type.getCriteria().isUnlockAvailable(PlayerDataFactory.get(mc.player), type)) {
                     NetworkManager.toServer(new SPacketUnlockSkill(type));
-                    mc.displayGuiScreen(new GuiPlayerSkills(selectedCategory));
+                    mc.displayGuiScreen(parent);
                 }
                 break;
             case 1:
-                mc.displayGuiScreen(new GuiPlayerSkills(selectedCategory));
+                mc.displayGuiScreen(parent);
                 break;
         }
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0, 0, -200);
+        parent.drawScreen(mouseX, mouseY, partialTicks);
+        GlStateManager.popMatrix();
         ModUtils.renderColor(left, top, left + xSize, top + ySize, 0, 0, 0, 1.0F);
         ModUtils.renderColor(left + 1, top + 1, left + xSize - 1, top + ySize - 1, 0.25F, 0.25F, 0.25F, 1.0F);
         String question = "Are you sure you want to buy this skill?";

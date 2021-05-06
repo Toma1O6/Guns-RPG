@@ -39,6 +39,10 @@ public class SkillUtil {
         return getCraftingAmount(PlayerDataFactory.get(player).getSkills(), Skills.BONE_GRINDER_III, Skills.BONE_GRINDER_II, Skills.BONE_GRINDER_I);
     }
 
+    public static int getBlazepowderCraftAmount(EntityPlayer player) {
+        return getCraftingAmount(PlayerDataFactory.get(player).getSkills(), Skills.BLAZE_POWDER_III, Skills.BLAZE_POWDER_II, Skills.BLAZE_POWDER_I);
+    }
+
     public static int getAmmoAmount(EntityPlayer player) {
         return PlayerDataFactory.hasActiveSkill(player, Skills.AMMO_SMITHING_MASTERY) ? 2 : 1;
     }

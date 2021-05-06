@@ -35,12 +35,16 @@ public class SmithingTableRecipes {
         register(new RecipeBuilder().out(GRPGItems.FISH_AND_CHIPS).add(new int[]{3, 5}, Items.BAKED_POTATO).add(4, Items.COOKED_FISH).add(7, Items.CARROT).req(Skills.LOCAL_CHEF).recipe());
         register(new RecipeBuilder().out(GRPGItems.GARDEN_SOUP).add(1, Blocks.BROWN_MUSHROOM).add(new int[]{3, 5}, Items.CARROT).add(4, Items.BEETROOT).add(7, Items.WATER_BUCKET).add(new int[]{6, 8}, Items.POTATO).req(Skills.LOCAL_CHEF).bucket().recipe());
         register(new RecipeBuilder().out(GRPGItems.CHICKEN_DINNER).add(new int[]{3, 5}, Items.COOKED_CHICKEN).add(new int[]{4, 7}, Items.BAKED_POTATO).add(new int[]{6, 8}, Items.CARROT).req(Skills.LOCAL_CHEF).recipe());
+        register(new RecipeBuilder().out(GRPGItems.FRUIT_SALAD).add(new int[]{0, 2}, Items.APPLE).add(1, Items.SUGAR).add(new int[]{3, 5}, Items.MELON).add(4, Blocks.PUMPKIN).req(Skills.LOCAL_CHEF).recipe());
+        register(new RecipeBuilder().out(GRPGItems.EGG_SALAD).add(new int[]{1, 7}, Items.EGG).add(new int[]{3, 5}, Items.BAKED_POTATO).add(4, Items.WHEAT_SEEDS).req(Skills.LOCAL_CHEF).recipe());
         register(new RecipeBuilder().out(GRPGItems.DELUXE_MEAL).add(new int[]{0, 2}, Items.BAKED_POTATO).add(1, Items.CARROT).add(3, Items.COOKED_PORKCHOP).add(4, Items.COOKED_BEEF).add(5, Items.COOKED_CHICKEN).add(new int[]{6, 7, 8}, Items.BREAD).req(Skills.MASTER_CHEF).recipe());
         register(new RecipeBuilder().out(GRPGItems.MEATY_STEW_XXL).add(new int[]{0, 3}, Items.COOKED_MUTTON).add(new int[]{1, 4}, Items.COOKED_PORKCHOP).add(new int[]{2, 5}, Items.COOKED_BEEF).add(new int[]{6, 8}, Items.POTATO).add(7, Items.WATER_BUCKET).req(Skills.MASTER_CHEF).bucket().recipe());
         register(new RecipeBuilder().out(GRPGItems.RABBIT_CREAMY_SOUP).add(new int[]{0, 2}, Items.POTATO).add(1, Items.MILK_BUCKET).add(new int[]{3, 5}, Items.CARROT).add(4, Blocks.BROWN_MUSHROOM).add(new int[]{6, 8}, Items.BREAD).add(7, Items.COOKED_RABBIT).req(Skills.MASTER_CHEF).bucket().recipe());
         register(new RecipeBuilder().out(GRPGItems.SHEPHERDS_PIE).add(new int[]{0, 1, 2}, Blocks.BROWN_MUSHROOM).add(new int[]{3, 5}, Items.COOKED_MUTTON).add(4, Items.BAKED_POTATO).add(new int[]{6, 7, 8}, Items.BREAD).req(Skills.MASTER_CHEF).recipe());
+        register(new RecipeBuilder().out(GRPGItems.CHOCOLATE_GLAZED_APPLE_PIE).add(new int[]{0, 1, 2}, Items.APPLE).add(new int[]{3, 5}, Items.COOKIE).add(4, Items.SUGAR).add(new int[]{6,8}, Items.EGG).add(7, Items.WHEAT).req(Skills.MASTER_CHEF).recipe());
         register(new RecipeBuilder().out(Items.GUNPOWDER, SkillUtil::getGunpowderCraftAmount).add(new int[]{0, 4}, Items.COAL, 1).add(1, Items.DYE, 15).add(3, Items.SUGAR).req(Skills.GUNPOWDER_NOVICE).recipe());
         register(new RecipeBuilder().out(new ItemStack(Items.DYE, 1, 15), SkillUtil::getBonemealCraftAmount).add(0, Items.BONE).req(Skills.BONE_GRINDER_I).recipe());
+        register(new RecipeBuilder().out(GRPGItems.BLAZE_LUMP, SkillUtil::getBlazepowderCraftAmount).add(new int[]{0,2}, Items.COAL).add(new int[]{1,6,7,8}, Items.REDSTONE).add(new int[]{3,5}, Items.GUNPOWDER).add(4, Items.SUGAR).req(Skills.BLACKSMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.LARGE_BULLET_CASING).add(new int[]{0, 1}, GRPGItems.SMALL_BULLET_CASING).req(Skills.WOODEN_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.SHOTGUN_SHELL).add(0, Items.DYE, 1).add(1, GRPGItems.LARGE_BULLET_CASING).add(2, Items.PAPER).req(Skills.WOODEN_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.BOLT_FLETCHING).add(0, Items.IRON_NUGGET).add(3, Items.FEATHER).add(6, Items.GOLD_NUGGET).req(Skills.WOODEN_AMMO_SMITH).recipe());
@@ -95,10 +99,10 @@ public class SmithingTableRecipes {
         register(new RecipeBuilder().out(GRPGItems.IRON_HAMMER).add(new int[]{3, 0, 1, 2, 5}, Items.IRON_INGOT).add(new int[]{4, 7}, Items.STICK).req(Skills.HAMMER_III, Skills.HEAVY_PICKAXE_IV, Skills.MOTHER_LODE_IV).recipe());
         register(new RecipeBuilder().out(GRPGItems.AMETHYST).add(1, Items.DIAMOND).add(new int[]{3, 5}, Items.QUARTZ).add(4, Items.BLAZE_POWDER).add(7, Items.EMERALD).req(Skills.MINERALOGIST).recipe());
         register(new RecipeBuilder().out(GRPGItems.PLASTER_CAST).add(new int[]{0, 2, 6, 8}, Items.DYE, 15).add(new int[]{1, 3, 5, 7}, Blocks.CARPET).add(4, Items.DIAMOND).req(Skills.MEDIC).recipe());
-        register(new RecipeBuilder().out(GRPGItems.BANDAGE, 2).add(new int[]{0, 8}, Items.DYE, 4).add(new int[]{1, 3, 5, 7}, Items.PAPER).add(new int[]{2, 6}, Items.SLIME_BALL).add(4, Blocks.WOOL, 0).req(Skills.MEDIC).recipe());
-        register(new RecipeBuilder().out(GRPGItems.VACCINE).add(8, Items.GOLDEN_APPLE).add(6, Items.SPECKLED_MELON).add(4, GRPGItems.AMETHYST).add(2, Items.GOLDEN_CARROT).add(0, Items.IRON_INGOT).add(new int[]{1, 3, 5, 7}, Blocks.GLASS_PANE).req(Skills.DOCTOR).recipe());
-        register(new RecipeBuilder().out(GRPGItems.ANTIDOTUM_PILLS, 2).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(3, Blocks.RED_FLOWER, 2).add(4, Items.EMERALD).add(5, Items.DYE, 2).add(6, Blocks.YELLOW_FLOWER).add(7, Blocks.RED_FLOWER, 1).add(8, Blocks.RED_FLOWER).req(Skills.DOCTOR).recipe());
-        register(new RecipeBuilder().out(GRPGItems.ANALGETICS, 2).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(3, Blocks.YELLOW_FLOWER).add(4, Items.DYE, 2).add(5, Blocks.RED_FLOWER).add(new int[]{6, 7, 8}, Items.DYE, 4).req(Skills.PHARMACIST_I).recipe());
+        register(new RecipeBuilder().out(GRPGItems.BANDAGE, 2).add(new int[]{0, 8}, Items.DYE, 4).add(new int[]{1, 3, 5, 7}, Items.PAPER).add(new int[]{2, 6}, Items.SLIME_BALL).add(4, Blocks.WOOL).req(Skills.MEDIC).recipe());
+        register(new RecipeBuilder().out(GRPGItems.VACCINE).add(8, Items.GOLDEN_APPLE, 0).add(6, Items.SPECKLED_MELON).add(4, GRPGItems.AMETHYST).add(2, Items.GOLDEN_CARROT).add(0, Items.IRON_INGOT).add(new int[]{1, 3, 5, 7}, Blocks.GLASS_PANE).req(Skills.DOCTOR).recipe());
+        register(new RecipeBuilder().out(GRPGItems.ANTIDOTUM_PILLS, 2).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(3, Blocks.RED_FLOWER, 2).add(4, Items.EMERALD).add(5, Items.DYE, 2).add(6, Blocks.YELLOW_FLOWER).add(7, Blocks.RED_FLOWER, 1).add(8, Blocks.RED_FLOWER, 0).req(Skills.DOCTOR).recipe());
+        register(new RecipeBuilder().out(GRPGItems.ANALGETICS, 2).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(3, Blocks.YELLOW_FLOWER, 0).add(4, Items.DYE, 2).add(5, Blocks.RED_FLOWER, 0).add(new int[]{6, 7, 8}, Items.DYE, 4).req(Skills.PHARMACIST_I).recipe());
         register(new RecipeBuilder().out(GRPGItems.STEREOIDS).add(0, Items.IRON_INGOT).add(new int[]{1, 3, 5, 7}, Blocks.GLASS_PANE).add(new int[]{2, 6}, Items.GOLDEN_CARROT).add(4, Blocks.REDSTONE_BLOCK).add(8, Items.SUGAR).req(Skills.PHARMACIST_II).recipe());
         register(new RecipeBuilder().out(GRPGItems.ADRENALINE).add(0, Items.IRON_INGOT).add(new int[]{1, 3, 5, 7}, Blocks.GLASS_PANE).add(new int[]{2, 6}, Items.SPECKLED_MELON).add(4, Items.FERMENTED_SPIDER_EYE).add(8, Blocks.RED_FLOWER, 1).req(Skills.PHARMACIST_III).recipe());
         register(new RecipeBuilder().out(GRPGItems.PAINKILLERS, 2).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(new int[]{3, 4, 5}, Items.FERMENTED_SPIDER_EYE).add(new int[]{6, 8}, Items.NETHER_WART).add(7, Blocks.REDSTONE_BLOCK).req(Skills.PHARMACIST_IV).recipe());
@@ -128,7 +132,7 @@ public class SmithingTableRecipes {
             boolean valid = true;
             for (SmithingIngredient ingredient : recipe.getIngredients()) {
                 ItemStack stack = table.getStackInSlot(ingredient.getIndex());
-                if(!ingredient.test(stack)) {
+                if (!ingredient.test(stack)) {
                     valid = false;
                     break;
                 }
@@ -247,12 +251,12 @@ public class SmithingTableRecipes {
         private boolean returnsBucket;
 
         private RecipeBuilder add(int integer, Function<Integer, SmithingIngredient> ingredientFunction) {
-            return add(new int[] {integer}, ingredientFunction);
+            return add(new int[]{integer}, ingredientFunction);
         }
 
         private RecipeBuilder add(int[] ints, Function<Integer, SmithingIngredient> ingredientFunction) {
             for (int i : ints) {
-                if(ingredientList.size() > 8) throw new IllegalArgumentException("Added way too many ingredients!");
+                if (ingredientList.size() > 8) throw new IllegalArgumentException("Added way too many ingredients!");
                 ingredientList.add(ingredientFunction.apply(i));
             }
             return this;
@@ -279,7 +283,7 @@ public class SmithingTableRecipes {
         }
 
         public RecipeBuilder add(int integer, Item item) {
-            return add(new int[] {integer}, item);
+            return add(new int[]{integer}, item);
         }
 
         public RecipeBuilder add(int[] ints, Block block) {
@@ -287,7 +291,7 @@ public class SmithingTableRecipes {
         }
 
         public RecipeBuilder add(int integer, Block block) {
-            return add(new int[] {integer}, block);
+            return add(new int[]{integer}, block);
         }
 
         public RecipeBuilder out(Item item) {
@@ -356,7 +360,7 @@ public class SmithingTableRecipes {
                     return false;
                 }
                 for (int subtypeID : subtypes) {
-                    if(stack.getItemDamage() == subtypeID || subtypeID == OreDictionary.WILDCARD_VALUE) {
+                    if (stack.getItemDamage() == subtypeID || subtypeID == OreDictionary.WILDCARD_VALUE) {
                         return true;
                     }
                 }

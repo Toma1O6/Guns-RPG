@@ -98,6 +98,9 @@ public class CommonRegistry {
                 SkillType.Builder.create(type -> new CraftingSkill(type, 4, CraftingSkill::getBonemealYield)).setGunCategory().setRegistryName("bone_grinder_i").requiredLevel(0).price(1).childs(() -> Collections.singletonList(Skills.BONE_GRINDER_II)).build(),
                 SkillType.Builder.create(type -> new CraftingSkill(type, 5, CraftingSkill::getBonemealYield)).setGunCategory().setRegistryName("bone_grinder_ii").requiredLevel(15).price(2).childs(() -> Collections.singletonList(Skills.BONE_GRINDER_III)).build(),
                 SkillType.Builder.create(type -> new CraftingSkill(type, 6, CraftingSkill::getBonemealYield)).setGunCategory().setRegistryName("bone_grinder_iii").requiredLevel(30).price(3).build(),
+                SkillType.Builder.<CraftingSkill>create(type -> new CraftingSkill(type, 2, CraftingSkill::getBlazepowderYield)).setMiningCategory().setRegistryName("blaze_powder_i").icon("textures/items/blaze_powder.png").requiredLevel(45).price(3).childs(() -> Collections.singletonList(Skills.BLAZE_POWDER_II)).build(),
+                SkillType.Builder.<CraftingSkill>create(type -> new CraftingSkill(type, 3, CraftingSkill::getBlazepowderYield)).setMiningCategory().setRegistryName("blaze_powder_ii").icon("textures/items/blaze_powder.png").requiredLevel(55).price(4).childs(() -> Collections.singletonList(Skills.BLAZE_POWDER_III)).build(),
+                SkillType.Builder.<CraftingSkill>create(type -> new CraftingSkill(type, 4, CraftingSkill::getBlazepowderYield)).setMiningCategory().setRegistryName("blaze_powder_iii").icon("textures/items/blaze_powder.png").requiredLevel(65).price(5).build(),
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("wooden_ammo_smith").requiredLevel(0).price(1).childs(() -> ModUtils.newList(Skills.STONE_AMMO_SMITH)).build(),
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("stone_ammo_smith").requiredLevel(5).price(1).childs(() -> ModUtils.newList(Skills.IRON_AMMO_SMITH)).build(),
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("iron_ammo_smith").requiredLevel(10).price(2).childs(() -> ModUtils.newList(Skills.GOLD_AMMO_SMITH)).build(),
@@ -212,7 +215,7 @@ public class CommonRegistry {
                 SkillType.Builder.create(BasicSkill::new).setMiningCategory().setRegistryName("hammer_i").descriptionLength(4).requiredLevel(15).price(2).childs(() -> Collections.singletonList(Skills.HAMMER_II)).build(),
                 SkillType.Builder.create(BasicSkill::new).setMiningCategory().setRegistryName("hammer_ii").descriptionLength(4).requiredLevel(30).price(3).childs(() -> Collections.singletonList(Skills.HAMMER_III)).build(),
                 SkillType.Builder.create(BasicSkill::new).setMiningCategory().setRegistryName("hammer_iii").descriptionLength(4).requiredLevel(45).price(4).build(),
-                SkillType.Builder.create(BasicSkill::new).setMiningCategory().setRegistryName("blacksmith").requiredLevel(40).price(5).build(),
+                SkillType.Builder.create(BasicSkill::new).setMiningCategory().setRegistryName("blacksmith").requiredLevel(40).price(5).childs(() -> Collections.singletonList(Skills.BLAZE_POWDER_I)).build(),
                 SkillType.Builder.create(BasicSkill::new).setMiningCategory().setRegistryName("mineralogist").requiredLevel(50).price(6).build(),
                 SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setExtraDamage(1))).setSurvivalCategory().setRegistryName("strong_muscles_i").requiredLevel(10).price(2).childAndOverride(() -> Skills.STRONG_MUSCLES_II).build(),
                 SkillType.Builder.<DataChangeSkill>create(type -> new DataChangeSkill(type, skills -> skills.setExtraDamage(2))).setSurvivalCategory().setRegistryName("strong_muscles_ii").requiredLevel(25).price(3).childAndOverride(() -> Skills.STRONG_MUSCLES_III).build(),
@@ -223,9 +226,9 @@ public class CommonRegistry {
                 SkillType.Builder.<AdrenalineRushSkill>create(type -> new AdrenalineRushSkill(type, 0, 0.05f)).setSurvivalCategory().setRegistryName("adrenaline_rush_i").descriptionLength(3).requiredLevel(15).price(2).childAndOverride(() -> Skills.ADRENALINE_RUSH_II).build(),
                 SkillType.Builder.<AdrenalineRushSkill>create(type -> new AdrenalineRushSkill(type, 1, 0.1f)).setSurvivalCategory().setRegistryName("adrenaline_rush_ii").descriptionLength(3).requiredLevel(25).price(3).childAndOverride(() -> Skills.ADRENALINE_RUSH_III).build(),
                 SkillType.Builder.<AdrenalineRushSkill>create(type -> new AdrenalineRushSkill(type, 2, 0.2f)).setSurvivalCategory().setRegistryName("adrenaline_rush_iii").descriptionLength(3).requiredLevel(40).price(5).build(),
-                SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 1, 0.3F)).setSurvivalCategory().setRegistryName("well_fed_i").descriptionLength(2).requiredLevel(20).price(2).childAndOverride(() -> Skills.WELL_FED_II).build(),
-                SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 2, 0.4F)).setSurvivalCategory().setRegistryName("well_fed_ii").descriptionLength(2).requiredLevel(35).price(3).childAndOverride(() -> Skills.WELL_FED_III).build(),
-                SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 3, 0.55F)).setSurvivalCategory().setRegistryName("well_fed_iii").descriptionLength(2).requiredLevel(55).price(5).build(),
+                SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 1, 0.40F)).setSurvivalCategory().setRegistryName("well_fed_i").descriptionLength(2).requiredLevel(20).price(2).childAndOverride(() -> Skills.WELL_FED_II).build(),
+                SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 2, 0.55F)).setSurvivalCategory().setRegistryName("well_fed_ii").descriptionLength(2).requiredLevel(35).price(3).childAndOverride(() -> Skills.WELL_FED_III).build(),
+                SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 3, 0.70F)).setSurvivalCategory().setRegistryName("well_fed_iii").descriptionLength(2).requiredLevel(55).price(5).build(),
                 SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("local_chef").requiredLevel(20).price(2).childAndOverride(() -> Skills.MASTER_CHEF).build(),
                 SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("master_chef").requiredLevel(50).price(5).build(),
                 SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, 18000, 10, () -> new PotionEffect(MobEffects.REGENERATION, 200, 0))).setSurvivalCategory().setRegistryName("second_chance_i").descriptionLength(3).requiredLevel(50).price(7).childAndOverride(() -> Skills.SECOND_CHANCE_II).build(),
@@ -384,8 +387,9 @@ public class CommonRegistry {
         IForgeRegistry<Item> registry = event.getRegistry();
         Item ironChunk;
         Item goldChunk;
+        Item amethyst;
         registry.registerAll(
-                new GRPGItem("amethyst"),
+                amethyst = new GRPGItem("amethyst"),
                 new DebuffHeal("antidotum_pills", 32, () -> GRPGSounds.USE_ANTIDOTUM_PILLS, "These pills heal 40% of poison", data -> data.hasDebuff(Debuffs.POISON), data -> data.heal(Debuffs.POISON, 40)),
                 new DebuffHeal("vaccine", 32, () -> GRPGSounds.USE_VACCINE, "This vaccine heals 50% of infection", data -> data.hasDebuff(Debuffs.INFECTION), data -> data.heal(Debuffs.INFECTION, 50)) {
                     @SideOnly(Side.CLIENT)
@@ -530,28 +534,36 @@ public class CommonRegistry {
                 new ItemHammer("stone_hammer", ItemHammer.STONE_HAMMER_MATERIAL),
                 new ItemHammer("iron_hammer", ItemHammer.IRON_HAMMER_MATERIAL),
                 new GRPGItem("gold_egg_shard"),
-                new ItemModdedFood("bacon_burger", 14, 0.64285713F, false),
-                new ItemModdedFood("fish_and_chips", 12, 0.6666667F, false),
-                new ItemModdedFood("garden_soup", 11, 0.6363636F, false),
-                new ItemModdedFood("chicken_dinner", 14, 0.5714286F, false),
-                new ItemModdedFood("deluxe_meal", 18, 0.5555556F, false).buff(player -> {
+                new GRPGItem("blaze_lump"),
+                new ItemModdedFood("bacon_burger", 14, 18, false),
+                new ItemModdedFood("fish_and_chips", 12, 16, false),
+                new ItemModdedFood("garden_soup", 11, 14, false),
+                new ItemModdedFood("chicken_dinner", 14, 16, false),
+                new ItemModdedFood("deluxe_meal", 18, 20, false).buff(player -> {
                     player.heal(3);
                     player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 400));
                 }),
-                new ItemModdedFood("meaty_stew_xxl", 20, 0.5F, false).buff(player -> {
+                new ItemModdedFood("meaty_stew_xxl", 20, 20, false).buff(player -> {
                     player.heal(5);
                     player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 300));
                 }),
-                new ItemModdedFood("rabbit_creamy_soup", 16, 0.59375F, false).buff(player -> {
+                new ItemModdedFood("rabbit_creamy_soup", 16, 19, false).buff(player -> {
                     player.heal(3);
                     player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 500, 1));
                 }),
-                new ItemModdedFood("shepherds_pie", 17, 0.5882353F, false)
+                new ItemModdedFood("shepherds_pie", 17, 20, false),
+                new ItemModdedFood("fruit_salad", 10, 11, false).buff(player -> player.heal(2.0F)),
+                new ItemModdedFood("egg_salad", 11, 16, false),
+                new ItemModdedFood("chocolate_glazed_apple_pie", 16, 17, false).buff(player -> {
+                    player.heal(3.0F);
+                    player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 400, 0));
+                })
         );
         queue.forEach(registry::register);
         queue = null;
         OreDictionary.registerOre("oreIron", ironChunk);
         OreDictionary.registerOre("oreGold", goldChunk);
+        OreDictionary.registerOre("gemAmethyst", amethyst);
     }
 
     @SubscribeEvent

@@ -13,8 +13,8 @@ public class ItemModdedFood extends ItemFood {
 
     private Consumer<EntityPlayer> onEaten;
 
-    public ItemModdedFood(String name, int foodLevel, float saturationLevel, boolean wolfFood) {
-        super(foodLevel, saturationLevel, wolfFood);
+    public ItemModdedFood(String name, int foodLevel, int saturationLevel, boolean wolfFood) {
+        super(foodLevel, saturationLevel / (foodLevel * 2.0F), wolfFood);
         setRegistryName(GunsRPG.makeResource(name));
         setUnlocalizedName(name);
         setCreativeTab(ModTabs.ITEM_TAB);

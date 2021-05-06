@@ -280,11 +280,11 @@ public class GuiPlayerSkills extends GuiScreen {
                 } else {
                     if(ctx.parent != null) {
                         if(PlayerDataFactory.hasActiveSkill(player, ctx.parent) && type.getCriteria().isUnlockAvailable(PlayerDataFactory.get(player), type)) {
-                            mc.displayGuiScreen(new GuiConfirmSkillUnlock(type, ctx, GuiPlayerSkills.this.displayedCategory));
+                            mc.displayGuiScreen(new GuiConfirmSkillUnlock(GuiPlayerSkills.this, type, ctx));
                             return true;
                         }
                     } else if(type.getCriteria().isUnlockAvailable(PlayerDataFactory.get(player), type)) {
-                        mc.displayGuiScreen(new GuiConfirmSkillUnlock(type, null, GuiPlayerSkills.this.displayedCategory));
+                        mc.displayGuiScreen(new GuiConfirmSkillUnlock(GuiPlayerSkills.this, type, null));
                         return true;
                     }
                 }

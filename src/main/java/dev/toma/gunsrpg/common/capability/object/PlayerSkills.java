@@ -50,6 +50,7 @@ public class PlayerSkills {
     private int skillPoints;
     private int gunpowderCraftYield;
     private int bonemealCraftYield;
+    private int blazePowderCraftYield;
     public int poisonResistance;
     public int infectionResistance;
     public int brokenBoneResistance;
@@ -180,6 +181,7 @@ public class PlayerSkills {
         requiredKills = 10;
         gunpowderCraftYield = SkillUtil.getGunpowderCraftAmount(data.getPlayer());
         bonemealCraftYield = 0;
+        blazePowderCraftYield = 0;
         poisonResistance = 0;
         infectionResistance = 0;
         brokenBoneResistance = 0;
@@ -304,6 +306,14 @@ public class PlayerSkills {
         return bonemealCraftYield;
     }
 
+    public void setBlazePowderCraftYield(int blazePowderCraftYield) {
+        this.blazePowderCraftYield = blazePowderCraftYield;
+    }
+
+    public int getBlazePowderCraftYield() {
+        return blazePowderCraftYield;
+    }
+
     public void setPoisonResistance(int poisonResistance) {
         this.poisonResistance = Math.max(poisonResistance, this.poisonResistance);
     }
@@ -397,6 +407,7 @@ public class PlayerSkills {
         nbt.setTag("skills", skills);
         nbt.setInteger("gunpowderYield", gunpowderCraftYield);
         nbt.setInteger("bonemealYield", bonemealCraftYield);
+        nbt.setInteger("blazepowderYield", blazePowderCraftYield);
         nbt.setInteger("poisonResistance", poisonResistance);
         nbt.setInteger("infectionResistance", infectionResistance);
         nbt.setInteger("brokenBoneResistance", brokenBoneResistance);
@@ -452,6 +463,7 @@ public class PlayerSkills {
         }
         gunpowderCraftYield = nbt.getInteger("gunpowderYield");
         bonemealCraftYield = nbt.getInteger("bonemealYield");
+        blazePowderCraftYield = nbt.getInteger("blazepowderYield");
         poisonResistance = nbt.getInteger("poisonResistance");
         infectionResistance = nbt.getInteger("infectionResistance");
         brokenBoneResistance = nbt.getInteger("brokenBoneResistance");

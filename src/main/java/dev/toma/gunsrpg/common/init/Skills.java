@@ -13,6 +13,9 @@ public class Skills {
     public static final SkillType<CraftingSkill> BONE_GRINDER_I = null;
     public static final SkillType<CraftingSkill> BONE_GRINDER_II = null;
     public static final SkillType<CraftingSkill> BONE_GRINDER_III = null;
+    public static final SkillType<CraftingSkill> BLAZE_POWDER_I = null;
+    public static final SkillType<CraftingSkill> BLAZE_POWDER_II = null;
+    public static final SkillType<CraftingSkill> BLAZE_POWDER_III = null;
     public static final SkillType<BasicSkill> GUN_PARTS_SMITH = null;
     public static final SkillType<BasicSkill> PISTOL_ASSEMBLY = null;
     public static final SkillType<BasicSkill> SMG_ASSEMBLY = null;

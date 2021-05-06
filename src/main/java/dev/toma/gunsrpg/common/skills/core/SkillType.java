@@ -198,6 +198,10 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
             return this;
         }
 
+        public Builder<S> icon(String resource) {
+            return icon(new ResourceLocation(resource));
+        }
+
         public Builder<S> displayName(ITextComponent component) {
             this.textComponent = component;
             return this;
