@@ -1,31 +1,7 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/guns-rpg",
     "promos": {
-        "1.12.2-latest": "1.0.3",
-        "1.12.2-recommended": "1.0.3"
-    },
-    "1.12.2": {
-        "0.0.1d": "Initial alpha update",
-        "0.0.2d": "Hammers",
-        "0.0.3d": "Rocket Angel entity",
-        "0.0.4d": "Gold dragon entity",
-        "0.0.5d": "Gold dragon damage rebalance, config rewrite",
-        "0.0.6d": "Gold dragon gains passive regeneration effect",
-        "0.0.7d": "Gold dragon spawns only 2 zombie gunners as help",
-        "0.0.8d": "Release for streaming",
-        "0.0.9d": "Balancing",
-        "0.0.10d": "Balancing",
-        "0.0.11d": "More config options",
-        "0.0.12d": "Buff explosive skeletons",
-        "0.0.13d": "Some bug fixes",
-        "0.0.14d": "Crafting issues, improved airdrops",
-        "0.0.15d": "Smithing table quick insert fix, quick scroll edit, resistance skill balancing",
-        "0.0.16d": "Pharmacist skill",
-        "0.0.17d": "Some minor details",
-        "0.0.18d": "Added extra effect to morphine",
-        "0.0.19d": "Minor fix",
-        "1.0.0": "Edited default configs, proper update URL, final version",
-        "1.0.1": "Fixed debuffs",
-        "1.0.2": "Added ore chunks to oredictionary"
+        "1.12.2-latest": "1.0.4",
+        "1.12.2-recommended": "1.0.4"
     }
 }
