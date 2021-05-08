@@ -65,7 +65,10 @@ public class DebuffData implements INBTSerializable<NBTTagList> {
 
     public void onPlayerAttackedFrom(DamageContext ctx, EntityPlayer player) {
         Random random = player.world.rand;
-        types: for(DebuffType type : GunsRPGRegistries.DEBUFFS) {
+        types:
+        for(DebuffType type : GunsRPGRegistries.DEBUFFS) {
+            if(type.isBlacklisted())
+                continue;
             int i = getDebuffID(type);
             Debuff v = debuffs[i];
             if(v == null) {

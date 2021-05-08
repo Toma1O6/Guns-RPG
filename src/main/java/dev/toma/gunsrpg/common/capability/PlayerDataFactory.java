@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.common.init.GRPGItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketUpdateCap;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -55,7 +56,13 @@ public class PlayerDataFactory implements PlayerData {
 
     @Override
     public void setOnCooldown() {
-        reducedHealthTimer = 3600;
+        if(!GRPGConfig.debuffConfig.disableRespawnDebuff) {
+            reducedHealthTimer = 3600;
+        } else {
+            double d = getSkills().hasSkill(Skills.WAR_MACHINE) ? 40 : 20;
+            player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(d);
+            player.setHealth(player.getMaxHealth());
+        }
     }
 
     @Override

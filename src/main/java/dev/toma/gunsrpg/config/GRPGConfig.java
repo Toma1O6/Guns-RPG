@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.config;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.config.client.ClientConfiguration;
+import dev.toma.gunsrpg.config.debuff.DebuffConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfig;
 import dev.toma.gunsrpg.config.world.WorldConfiguration;
 import net.minecraftforge.common.config.Config;
@@ -20,4 +21,8 @@ public class GRPGConfig {
     @Config.Name("Weapon")
     @Config.Comment("Contains all weapon related stuff - damage, velocity...")
     public static WeaponConfig weaponConfig = new WeaponConfig();
+
+    @Config.Name("Debuffs")
+    @Config.Comment("Allows you to blacklist specific debuffs")
+    public static DebuffConfig debuffConfig = new DebuffConfig();
 }

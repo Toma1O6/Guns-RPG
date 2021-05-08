@@ -293,6 +293,7 @@ public class CommonRegistry {
         event.getRegistry().registerAll(
                 DebuffType.Builder.create()
                         .factory(Debuff.Poison::new)
+                        .blacklistOn(() -> GRPGConfig.debuffConfig.disablePoison)
                         .progress(DebuffHelper::p_progress)
                         .resist(DebuffHelper::p_resist)
                         .addStage(40, DebuffHelper::none)
@@ -311,6 +312,7 @@ public class CommonRegistry {
                         .build().setRegistryName("poison"),
                 DebuffType.Builder.create()
                         .factory(Debuff.Infection::new)
+                        .blacklistOn(() -> GRPGConfig.debuffConfig.disableInfection)
                         .progress(DebuffHelper::i_progress)
                         .resist(DebuffHelper::i_resist)
                         .addStage(35, DebuffHelper::none)
@@ -328,6 +330,7 @@ public class CommonRegistry {
                         .build().setRegistryName("infection"),
                 DebuffType.Builder.create()
                         .factory(Debuff.Fracture::new)
+                        .blacklistOn(() -> GRPGConfig.debuffConfig.disableFractures)
                         .progress(DebuffHelper::f_progress)
                         .resist(DebuffHelper::f_resist)
                         .addStage(30, DebuffHelper::f0_30eff)
@@ -341,6 +344,7 @@ public class CommonRegistry {
                         .build().setRegistryName("fracture"),
                 DebuffType.Builder.create()
                         .factory(Debuff.Bleeding::new)
+                        .blacklistOn(() -> GRPGConfig.debuffConfig.disableBleeding)
                         .progress(DebuffHelper::b_progress)
                         .resist(DebuffHelper::b_resist)
                         .addStage(25, DebuffHelper::b0_25eff)

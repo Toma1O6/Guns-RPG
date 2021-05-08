@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
@@ -22,6 +23,7 @@ public final class DebuffType extends IForgeRegistryEntry.Impl<DebuffType> {
     private final List<ToFloatBiFunction<PlayerSkills, DamageContext>> conditions;
     private final Stage[] debuffStages;
     private final Supplier<Debuff> factory;
+    private final BooleanSupplier isBlacklisted;
 
     public DebuffType(Builder builder) {
         this.debuffProgressTime = builder.debuffProgressTime;
@@ -31,6 +33,11 @@ public final class DebuffType extends IForgeRegistryEntry.Impl<DebuffType> {
         stages.sort(Comparator.comparingInt(s -> s.lastVal));
         this.debuffStages = stages.toArray(new Stage[0]);
         this.factory = builder.factory;
+        this.isBlacklisted = builder.isBlacklisted;
+    }
+
+    public boolean isBlacklisted() {
+        return isBlacklisted.getAsBoolean();
     }
 
     public void tickStage(int idx, EntityPlayer player) {
@@ -79,6 +86,7 @@ public final class DebuffType extends IForgeRegistryEntry.Impl<DebuffType> {
         private final List<ToFloatBiFunction<PlayerSkills, DamageContext>> conditions;
         private final List<Stage> stages = new ArrayList<>();
         private Supplier<Debuff> factory;
+        private BooleanSupplier isBlacklisted = () -> false;
 
         private Builder() {
             conditions = new ArrayList<>();
@@ -113,7 +121,13 @@ public final class DebuffType extends IForgeRegistryEntry.Impl<DebuffType> {
             return this;
         }
 
+        public Builder blacklistOn(BooleanSupplier supplier) {
+            this.isBlacklisted = supplier;
+            return this;
+        }
+
         public DebuffType build() {
+            Preconditions.checkNotNull(isBlacklisted, "Undefined blacklist supplier");
             Preconditions.checkNotNull(debuffProgressTime, "Undefined progress timer");
             Preconditions.checkNotNull(resistChance, "Undefined resist chance");
             Preconditions.checkState(!conditions.isEmpty(), "Condition list is empty");
