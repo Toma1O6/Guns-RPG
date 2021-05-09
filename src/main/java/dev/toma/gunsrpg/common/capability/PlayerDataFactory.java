@@ -59,6 +59,7 @@ public class PlayerDataFactory implements PlayerData {
         if(!GRPGConfig.debuffConfig.disableRespawnDebuff) {
             reducedHealthTimer = 3600;
         } else {
+            reducedHealthTimer = 0;
             double d = getSkills().hasSkill(Skills.WAR_MACHINE) ? 40 : 20;
             player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(d);
             player.setHealth(player.getMaxHealth());
