@@ -154,7 +154,7 @@ public class PlayerSkills {
         } else if(level % 10 == 0) {
             addSkillPoints(5);
         } else if(level % 5 == 0) {
-            addSkillPoints(3);
+            addSkillPoints(4);
         } else addSkillPoints(1);
     }
 
