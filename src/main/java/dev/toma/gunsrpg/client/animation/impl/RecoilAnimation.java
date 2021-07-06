@@ -1,7 +1,8 @@
 package dev.toma.gunsrpg.client.animation.impl;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.TickableAnimation;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class RecoilAnimation extends TickableAnimation {
 
@@ -14,8 +15,8 @@ public class RecoilAnimation extends TickableAnimation {
     }
 
     @Override
-    public void animateItemHands(float partialTicks) {
-        GlStateManager.rotate(3.0F * smooth, 1.0F, 0.0F, 0.0F);
-        GlStateManager.translate(0.0F, 0.0F, 0.1F * smooth);
+    public void animateItemHands(MatrixStack matrix, float partialTicks) {
+        matrix.mulPose(Vector3f.XP.rotationDegrees(3.0F * smooth));
+        matrix.translate(0.0F, 0.0F, 0.1F * smooth);
     }
 }

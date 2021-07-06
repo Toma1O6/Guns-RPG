@@ -1,55 +1,81 @@
 package dev.toma.gunsrpg.config.gun;
 
-import net.minecraftforge.common.config.Config;
+import dev.toma.configuration.api.IConfigWriter;
+import dev.toma.configuration.api.IObjectSpec;
+import dev.toma.configuration.api.type.DoubleType;
+import dev.toma.configuration.api.type.IntType;
+import dev.toma.configuration.api.type.ObjectType;
 
-public class WeaponConfiguration {
+public class WeaponConfiguration extends ObjectType {
 
-    @Config.Name("Damage")
-    @Config.Comment("Defines weapon damage")
-    @Config.RangeDouble(min = 1.0)
-    public float damage;
+    private final IntType gravityDelay;
+    private final IntType firerate;
+    private final IntType velocity;
+    private final DoubleType damage;
+    private final DoubleType horizontalRecoil;
+    private final DoubleType verticalRecoil;
 
-    @Config.Name("Velocity")
-    @Config.Comment("Defines weapon velocity")
-    @Config.RangeDouble(min = 0.1, max = 100.0)
-    public float velocity;
-
-    @Config.Name("Gravity resistant time")
-    @Config.Comment("Defines how many ticks before gravity effect is applied")
-    @Config.RangeInt(min = 0)
-    public int effect;
-
-    @Config.Name("Horizonal recoil")
-    @Config.Comment("Defines weapon horizontal recoil")
-    @Config.RangeDouble(min = 0)
-    public float recoilHorizontal;
-
-    @Config.Name("Vertical recoil")
-    @Config.Comment("Defines weapon vertical recoil")
-    @Config.RangeDouble(min = 0)
-    public float recoilVertical;
-
-    @Config.Name("Normal firerate")
-    @Config.Comment("Defines delay after each shot with no firerate skill applied")
-    @Config.RangeInt(min = 1, max = 1000)
-    public int normal;
-
-    @Config.Name("Upgraded firerate")
-    @Config.Comment("Defines delay after each shot with firerate skill applied")
-    @Config.RangeInt(min = 1, max = 1000)
-    public int upgraded;
-
-    public WeaponConfiguration(float damage, float velocity, int effect, float recoilHorizontal, float recoilVertical, int rof, int urof) {
-        this.damage = damage;
-        this.velocity = velocity;
-        this.effect = effect;
-        this.recoilHorizontal = recoilHorizontal;
-        this.recoilVertical = recoilVertical;
-        this.normal = rof;
-        this.upgraded = urof;
+    public static WeaponConfiguration basic(IObjectSpec spec, float damage, int velocity, int gravityDelay, float vertical, float horizontal, int rate) {
+        return new WeaponConfiguration(spec, damage, velocity, vertical, horizontal, gravityDelay, rate);
     }
 
-    public WeaponConfiguration(float damage, float velocity, int effect, float recoilHorizontal, float recoilVertical, int rof) {
-        this(damage, velocity, effect, recoilHorizontal, recoilVertical, rof, rof);
+    public static WeaponConfiguration withUpgrade(IObjectSpec spec, float damage, int velocity, int gravityDelay, float vertical, float horizontal, int rate, int upgradedRate) {
+        return new WeaponConfiguration.WeaponConfigurationUpgraded(spec, damage, velocity, vertical, horizontal, gravityDelay, rate, upgradedRate);
+    }
+
+    protected WeaponConfiguration(IObjectSpec spec, float damage, int velocity, float verticalRecoil, float horizontalRecoil, int delay, int firerate) {
+        super(spec);
+        IConfigWriter writer = spec.getWriter();
+        this.gravityDelay = writer.writeBoundedInt("Gravity effect delay", delay, 0, Short.MAX_VALUE, "Defines how many ticks it takes before gravity", "starts taking effect on projectiles");
+        this.firerate = writer.writeBoundedInt("Shoot delay", firerate, 1, 1000, "Delay in ticks");
+        this.damage = writer.writeBoundedDouble("Base projectile damage", damage, 1.0, Double.MAX_VALUE);
+        this.velocity = writer.writeBoundedInt("Projectile velocity", velocity, 1, 10000, "Projectile velocity in m/s");
+        this.horizontalRecoil = writer.writeBoundedDouble("Horizontal recoil", horizontalRecoil, 0.0, 15.0, "Yaw offset in degrees");
+        this.verticalRecoil = writer.writeBoundedDouble("Vertical recoil", verticalRecoil, 0.0, 15.0, "Pitch offset in degrees");
+    }
+
+    public float getDamage() {
+        return (float) ((double) damage.get());
+    }
+
+    public float getVerticalRecoil() {
+        return verticalRecoil.floatValue();
+    }
+
+    public float getHorizontalRecoil() {
+        return horizontalRecoil.floatValue();
+    }
+
+    public float getVelocity() {
+        int ms = velocity.get();
+        return ms / 20.0F;
+    }
+
+    public int getGravityDelay() {
+        return gravityDelay.get();
+    }
+
+    public int getFirerate() {
+        return firerate.get();
+    }
+
+    public int getUpgradedFirerate() {
+        return getFirerate();
+    }
+
+    private static class WeaponConfigurationUpgraded extends WeaponConfiguration {
+
+        private final IntType upgradedFirerate;
+
+        private WeaponConfigurationUpgraded(IObjectSpec spec, float damage, int velocity, float verticalRecoil, float horizontalRecoil, int delay, int firerate, int upgradedFirerate) {
+            super(spec, damage, velocity, verticalRecoil, horizontalRecoil, delay, firerate);
+            IConfigWriter writer = spec.getWriter();
+            this.upgradedFirerate = writer.writeBoundedInt("Shoot delay with upgrade", upgradedFirerate, 1, 1000, "Delay in ticks", "Applied only on weapons with skill which affects firerate");
+        }
+
+        @Override
+        public int getUpgradedFirerate() {
+            return upgradedFirerate.get();
+        }
     }
 }

@@ -1,12 +1,11 @@
 package dev.toma.gunsrpg.common;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
 
@@ -27,13 +26,13 @@ public class GunDamageSource extends DamageSource {
 
     @Nullable
     @Override
-    public Entity getTrueSource() {
+    public Entity getDirectEntity() {
         return src;
     }
 
     @Nullable
     @Override
-    public Entity getImmediateSource() {
+    public Entity getEntity() {
         return indirect;
     }
 
@@ -45,10 +44,11 @@ public class GunDamageSource extends DamageSource {
         return stacc;
     }
 
-    public ITextComponent getDeathMessage(EntityLivingBase entityLivingBaseIn) {
-        ItemStack itemstack = this.src instanceof EntityLivingBase ? ((EntityLivingBase) this.src).getHeldItemMainhand() : ItemStack.EMPTY;
-        String s = "death.attack." + this.damageType;
+    @Override
+    public ITextComponent getLocalizedDeathMessage(LivingEntity entityLivingBaseIn) {
+        ItemStack itemstack = this.src instanceof LivingEntity ? ((LivingEntity) this.src).getMainHandItem() : ItemStack.EMPTY;
+        String s = "death.attack." + this.msgId;
         String s1 = s + ".item";
-        return !itemstack.isEmpty() && itemstack.hasDisplayName() && I18n.canTranslate(s1) ? new TextComponentTranslation(s1, entityLivingBaseIn.getDisplayName(), this.src.getDisplayName(), itemstack.getTextComponent()) : new TextComponentTranslation(s, entityLivingBaseIn.getDisplayName(), this.src.getDisplayName());
+        return !itemstack.isEmpty() ? new TranslationTextComponent(s1, entityLivingBaseIn.getDisplayName(), this.src.getDisplayName(), itemstack.getDisplayName()) : new TranslationTextComponent(s, entityLivingBaseIn.getDisplayName(), this.src.getDisplayName());
     }
 }

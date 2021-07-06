@@ -1,29 +1,39 @@
 package dev.toma.gunsrpg.config.world;
 
-import net.minecraftforge.common.config.Config;
+import dev.toma.configuration.api.IConfigWriter;
+import dev.toma.configuration.api.IObjectSpec;
+import dev.toma.configuration.api.type.IntType;
+import dev.toma.configuration.api.type.ObjectType;
 
-public class SimpleOreGenConfig {
+public class SimpleOreGenConfig extends ObjectType {
 
-    @Config.Name("Spawns")
-    @Config.Comment("Amount of spawn attempts per chunk")
-    @Config.RequiresMcRestart
-    public int spawns;
+    private final IntType spawns;
+    private final IntType veinSize;
+    private final IntType minHeight;
+    private final IntType maxHeight;
 
-    @Config.Name("Min height")
-    @Config.Comment("Defines minimal height where ore can spawn")
-    @Config.RequiresMcRestart
-    @Config.RangeInt(min = 1, max = 255)
-    public int minHeight;
+    public SimpleOreGenConfig(IObjectSpec spec, int spawnAttempts, int size, int minGenHeight, int maxGenHeight) {
+        super(spec);
+        IConfigWriter writer = spec.getWriter();
+        spawns = writer.writeBoundedInt("Spawns", spawnAttempts, 0, 128, "Amount of spawn attempts per chunk");
+        veinSize = writer.writeBoundedInt("Vein size", size, 1, 32, "Max amount of ores in one vein");
+        minHeight = writer.writeBoundedInt("Min height", minGenHeight, 1, 255, "Defines lowest height at which ore can spawn");
+        maxHeight = writer.writeBoundedInt("Max height", maxGenHeight, 1, 255, "Defines highest height at which ore can spawn");
+    }
 
-    @Config.Name("Max height")
-    @Config.Comment("Defines maximum height where ore can spawn")
-    @Config.RequiresMcRestart
-    @Config.RangeInt(min = 1, max = 255)
-    public int maxHeight;
+    public int getSpawns() {
+        return spawns.get();
+    }
 
-    public SimpleOreGenConfig(int spawns, int minHeight, int maxHeight) {
-        this.spawns = spawns;
-        this.minHeight = minHeight;
-        this.maxHeight = maxHeight;
+    public int getVeinSize() {
+        return veinSize.get();
+    }
+
+    public int getMinHeight() {
+        return minHeight.get();
+    }
+
+    public int getMaxHeight() {
+        return maxHeight.get();
     }
 }

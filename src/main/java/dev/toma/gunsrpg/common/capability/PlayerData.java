@@ -1,14 +1,14 @@
 package dev.toma.gunsrpg.common.capability;
 
 import dev.toma.gunsrpg.common.capability.object.*;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public interface PlayerData extends INBTSerializable<NBTTagCompound> {
+public interface PlayerData extends INBTSerializable<CompoundNBT> {
 
     DebuffData getDebuffData();
 
-    NBTTagCompound writePermanentData();
+    CompoundNBT writePermanentData();
 
     AimInfo getAimInfo();
 
@@ -20,7 +20,7 @@ public interface PlayerData extends INBTSerializable<NBTTagCompound> {
 
     void setOnCooldown();
 
-    void readPermanentData(NBTTagCompound nbt);
+    void readPermanentData(CompoundNBT nbt);
 
     void tick();
 

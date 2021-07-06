@@ -7,5 +7,5 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class GunsRPGRegistries {
 
     public static IForgeRegistry<SkillType<?>> SKILLS;
-    public static IForgeRegistry<DebuffType> DEBUFFS;
+    public static IForgeRegistry<DebuffType<?>> DEBUFFS;
 }

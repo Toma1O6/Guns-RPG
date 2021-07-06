@@ -3,9 +3,9 @@ package dev.toma.gunsrpg.common.skills;
 import dev.toma.gunsrpg.common.init.GRPGSounds;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.interfaces.Cooldown;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.SoundCategory;
 
 import java.util.function.Supplier;
@@ -14,10 +14,10 @@ public class SecondChanceSkill extends BasicSkill implements Cooldown {
 
     private final int maxCooldown;
     private final int healAmount;
-    private final Supplier<PotionEffect> effectSupplier;
+    private final Supplier<EffectInstance> effectSupplier;
     private int cooldown;
 
-    public SecondChanceSkill(SkillType<?> type, int maxCooldown, int healAmount, Supplier<PotionEffect> effectSupplier) {
+    public SecondChanceSkill(SkillType<?> type, int maxCooldown, int healAmount, Supplier<EffectInstance> effectSupplier) {
         super(type);
         this.maxCooldown = maxCooldown;
         this.healAmount = healAmount;
@@ -25,12 +25,12 @@ public class SecondChanceSkill extends BasicSkill implements Cooldown {
     }
 
     @Override
-    public void onUpdate(EntityPlayer player) {
+    public void onUpdate(PlayerEntity player) {
         if(cooldown > 0) --cooldown;
     }
 
     @Override
-    public boolean apply(EntityPlayer user) {
+    public boolean apply(PlayerEntity user) {
         return getCooldown() == 0;
     }
 
@@ -50,19 +50,19 @@ public class SecondChanceSkill extends BasicSkill implements Cooldown {
     }
 
     @Override
-    public void onUse(EntityPlayer player) {
+    public void onUse(PlayerEntity player) {
         player.setHealth(this.healAmount);
-        player.world.playSound(null, player.posX, player.posY, player.posZ, GRPGSounds.SECOND_CHANCE_USE, SoundCategory.MASTER, 1.0F, 1.0F);
-        player.addPotionEffect(effectSupplier.get());
+        player.level.playSound(null, player.getX(), player.getY(), player.getZ(), GRPGSounds.SECOND_CHANCE_USE, SoundCategory.MASTER, 1.0F, 1.0F);
+        player.addEffect(effectSupplier.get());
     }
 
     @Override
-    public void writeExtra(NBTTagCompound nbt) {
-        nbt.setInteger("cooldown", cooldown);
+    public void writeExtra(CompoundNBT nbt) {
+        nbt.putInt("cooldown", cooldown);
     }
 
     @Override
-    public void readExtra(NBTTagCompound nbt) {
-        cooldown = nbt.getInteger("cooldown");
+    public void readExtra(CompoundNBT nbt) {
+        cooldown = nbt.getInt("cooldown");
     }
 }

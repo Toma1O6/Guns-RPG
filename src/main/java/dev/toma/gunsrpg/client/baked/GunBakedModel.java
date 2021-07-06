@@ -1,36 +1,35 @@
 package dev.toma.gunsrpg.client.baked;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.model.BakedQuad;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class GunBakedModel implements IBakedModel {
 
     @Override
-    public TextureAtlasSprite getParticleTexture() {
-        return Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
-    }
-
-    @Override
-    public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+    public List<BakedQuad> getQuads(BlockState state, Direction direction, Random random) {
         return Collections.emptyList();
     }
 
     @Override
-    public ItemOverrideList getOverrides() {
-        return ItemOverrideList.NONE;
+    public boolean useAmbientOcclusion() {
+        return false;
     }
 
     @Override
-    public boolean isBuiltInRenderer() {
+    public boolean usesBlockLight() {
+        return false;
+    }
+
+    @Override
+    public boolean isCustomRenderer() {
         return true;
     }
 
@@ -40,7 +39,12 @@ public class GunBakedModel implements IBakedModel {
     }
 
     @Override
-    public boolean isAmbientOcclusion() {
-        return false;
+    public TextureAtlasSprite getParticleIcon() {
+        return null;
+    }
+
+    @Override
+    public ItemOverrideList getOverrides() {
+        return ItemOverrideList.EMPTY;
     }
 }

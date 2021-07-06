@@ -1,13 +1,13 @@
 package dev.toma.gunsrpg.client.render;
 
 import dev.toma.gunsrpg.client.model.ModelBloodmoonGolem;
-import dev.toma.gunsrpg.common.entity.EntityBloodmoonGolem;
+import dev.toma.gunsrpg.common.entity.BloodmoonGolemEntity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderBloodmoonGolem extends RenderLiving<EntityBloodmoonGolem> {
+public class RenderBloodmoonGolem extends RenderLiving<BloodmoonGolemEntity> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/iron_golem.png");
 
@@ -15,11 +15,11 @@ public class RenderBloodmoonGolem extends RenderLiving<EntityBloodmoonGolem> {
         super(manager, new ModelBloodmoonGolem(), 0.5F);
     }
 
-    protected ResourceLocation getEntityTexture(EntityBloodmoonGolem entity) {
+    protected ResourceLocation getEntityTexture(BloodmoonGolemEntity entity) {
         return TEXTURE;
     }
 
-    protected void applyRotations(EntityBloodmoonGolem entityLiving, float p_77043_2_, float rotationYaw, float partialTicks) {
+    protected void applyRotations(BloodmoonGolemEntity entityLiving, float p_77043_2_, float rotationYaw, float partialTicks) {
         super.applyRotations(entityLiving, p_77043_2_, rotationYaw, partialTicks);
         if ((double) entityLiving.limbSwingAmount >= 0.01D) {
             float f = 13.0F;

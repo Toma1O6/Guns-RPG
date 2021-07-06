@@ -2,13 +2,13 @@ package dev.toma.gunsrpg.client.render;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.ModelAirdrop;
-import dev.toma.gunsrpg.common.entity.EntityAirdrop;
+import dev.toma.gunsrpg.common.entity.AirdropEntity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderAirdrop extends Render<EntityAirdrop> {
+public class RenderAirdrop extends Render<AirdropEntity> {
 
     private static final ResourceLocation TEXTURES = GunsRPG.makeResource("textures/entity/airdrop.png");
     private final ModelAirdrop model = new ModelAirdrop();
@@ -18,12 +18,12 @@ public class RenderAirdrop extends Render<EntityAirdrop> {
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntityAirdrop entity) {
+    protected ResourceLocation getEntityTexture(AirdropEntity entity) {
         return TEXTURES;
     }
 
     @Override
-    public void doRender(EntityAirdrop entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    public void doRender(AirdropEntity entity, double x, double y, double z, float entityYaw, float partialTicks) {
         this.bindTexture(this.getEntityTexture(entity));
         GlStateManager.pushMatrix();
         {

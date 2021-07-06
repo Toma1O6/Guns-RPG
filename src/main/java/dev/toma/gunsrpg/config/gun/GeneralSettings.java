@@ -1,18 +1,33 @@
 package dev.toma.gunsrpg.config.gun;
 
-import net.minecraftforge.common.config.Config;
+import dev.toma.configuration.api.IConfigWriter;
+import dev.toma.configuration.api.IObjectSpec;
+import dev.toma.configuration.api.NumberDisplayType;
+import dev.toma.configuration.api.type.DoubleType;
+import dev.toma.configuration.api.type.ObjectType;
 
-public class GeneralSettings {
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
-    @Config.Name("Carbon barrel recoil multipler")
-    @Config.RangeDouble(min = 0.0, max = 1.0)
-    public float carbonBarrel = 0.65F;
+public class GeneralSettings extends ObjectType {
 
-    @Config.Name("Vertical grip recoil multipler")
-    @Config.RangeDouble(min = 0.0, max = 1.0)
-    public float verticalGrip = 0.7F;
+    public final DoubleType carbonBarrel;
+    public final DoubleType verticalGrip;
+    public final DoubleType cheekpad;
 
-    @Config.Name("Cheekpad recoil multipler")
-    @Config.RangeDouble(min = 0.0, max = 1.0)
-    public float cheekpad = 0.75F;
+    public GeneralSettings(IObjectSpec spec) {
+        super(spec);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator('.');
+        DecimalFormat format = new DecimalFormat("#.###", symbols);
+        IConfigWriter writer = spec.getWriter();
+        carbonBarrel = writer.writeBoundedDouble("Carbon barrel recoil", 0.65, 0.0, 1.0).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER).setFormatting(format);
+        verticalGrip = writer.writeBoundedDouble("Verical grip recoil", 0.7, 0.0, 1.0).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER).setFormatting(format);
+        cheekpad = writer.writeBoundedDouble("Cheekpad recoil", 0.75, 0.0, 1.0).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER).setFormatting(format);
+    }
+
+    @Override
+    public int getSortIndex() {
+        return -1;
+    }
 }

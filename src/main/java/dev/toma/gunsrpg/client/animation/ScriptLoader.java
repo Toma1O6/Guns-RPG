@@ -4,13 +4,14 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.Pair;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.resources.IResource;
+import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.resource.IResourceType;
-import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
+import net.minecraftforge.resource.IResourceType;
+import net.minecraftforge.resource.ISelectiveResourceReloadListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,11 +26,11 @@ import java.util.function.Supplier;
 public class ScriptLoader implements ISelectiveResourceReloadListener {
 
     private static final Gson GSON_INSTANCE = new GsonBuilder()
-            .registerTypeAdapter(new TypeToken<List<Pair<MultiStepAnimation.Range, Supplier<SimpleAnimation>>>>() {}.getType(), new ListDeserializer())
-            .registerTypeAdapter(new TypeToken<Pair<MultiStepAnimation.Range, Supplier<SimpleAnimation>>>() {}.getType(), new PairDeserializer())
-            .registerTypeAdapter(new TypeToken<Supplier<SimpleAnimation>>() {}.getType(), new SupplierDeserializer())
-            .registerTypeAdapter(MultiStepAnimation.Range.class, new MultiStepAnimation.Range.Deserializer())
-            .registerTypeAdapter(SimpleAnimation.class, new SimpleAnimation.Deserializer())
+            //.registerTypeAdapter(new TypeToken<List<Pair<MultiStepAnimation.Range, Supplier<SimpleAnimation>>>>() {}.getType(), new ListDeserializer())
+            //.registerTypeAdapter(new TypeToken<Pair<MultiStepAnimation.Range, Supplier<SimpleAnimation>>>() {}.getType(), new PairDeserializer())
+            //.registerTypeAdapter(new TypeToken<Supplier<SimpleAnimation>>() {}.getType(), new SupplierDeserializer())
+            //.registerTypeAdapter(MultiStepAnimation.Range.class, new MultiStepAnimation.Range.Deserializer())
+            //.registerTypeAdapter(SimpleAnimation.class, new SimpleAnimation.Deserializer())
             .create();
     private static final List<ResourceLocation> PATH = ModUtils.newList(
             resource("pistol_reload"),
@@ -52,10 +53,10 @@ public class ScriptLoader implements ISelectiveResourceReloadListener {
                 } catch (Exception e) {
                     GunsRPG.log.fatal("Exception while loading resource {}: {}", location, e.getMessage());
                 }
-                String path = location.getResourcePath();
+                String path = location.getPath();
                 int start = path.lastIndexOf("/") + 1;
                 int end = path.lastIndexOf(".");
-                AnimationManager.SCRIPT_ANIMATIONS.put(path.substring(start, end), list);
+                ClientSideManager.processor().registerScriptAnimation(path.substring(start, end), list);
             }
         } catch (IOException e) {
             GunsRPG.log.fatal(e.getMessage());

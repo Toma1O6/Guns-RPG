@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.capability.object;
 
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 
 public class AimInfo {
 
@@ -16,9 +16,9 @@ public class AimInfo {
     }
 
     public void update() {
-        EntityPlayer player = parent.getPlayer();
-        boolean server = !player.world.isRemote;
-        int slotIn = player.inventory.currentItem;
+        PlayerEntity player = parent.getPlayer();
+        boolean server = !player.level.isClientSide;
+        int slotIn = player.inventory.selected;
         if(server && aiming && (slotIn != slot || player.isSprinting() || parent.getReloadInfo().isReloading())) {
             setAiming(false);
             parent.sync();
@@ -33,7 +33,7 @@ public class AimInfo {
 
     public void setAiming(boolean aiming) {
         if(aiming) {
-            slot = parent.getPlayer().inventory.currentItem;
+            slot = parent.getPlayer().inventory.selected;
         }
         this.aiming = aiming;
     }
@@ -46,16 +46,16 @@ public class AimInfo {
         return progress;
     }
 
-    public NBTTagCompound write() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("slot", slot);
-        nbt.setBoolean("aim", aiming);
-        nbt.setFloat("progress", progress);
+    public CompoundNBT write() {
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.putInt("slot", slot);
+        nbt.putBoolean("aim", aiming);
+        nbt.putFloat("progress", progress);
         return nbt;
     }
 
-    public void read(NBTTagCompound nbt) {
-        slot = nbt.getInteger("slot");
+    public void read(CompoundNBT nbt) {
+        slot = nbt.getInt("slot");
         aiming = nbt.getBoolean("aim");
         progress = nbt.getFloat("progress");
     }

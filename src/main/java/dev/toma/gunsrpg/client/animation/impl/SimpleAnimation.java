@@ -1,26 +1,20 @@
 package dev.toma.gunsrpg.client.animation.impl;
 
-import com.google.gson.*;
-import dev.toma.gunsrpg.client.animation.Animation;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.util.object.OptionalObject;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.lang.reflect.Type;
-import java.util.Map;
 import java.util.Objects;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
-public class SimpleAnimation implements Animation {
+public class SimpleAnimation implements IAnimation {
 
     private float current, prev, smooth;
-    private final OptionalObject<Consumer<Float>> itemHandAnimation = OptionalObject.empty();
-    private final OptionalObject<Consumer<Float>> handAnimation = OptionalObject.empty();
-    private final OptionalObject<Consumer<Float>> rightHandAnimation = OptionalObject.empty();
-    private final OptionalObject<Consumer<Float>> leftHandAnimation = OptionalObject.empty();
-    private final OptionalObject<Consumer<Float>> itemAnimation = OptionalObject.empty();
+    private final OptionalObject<IAnimator> itemHandAnimation = OptionalObject.empty();
+    private final OptionalObject<IAnimator> handAnimation = OptionalObject.empty();
+    private final OptionalObject<IAnimator> rightHandAnimation = OptionalObject.empty();
+    private final OptionalObject<IAnimator> leftHandAnimation = OptionalObject.empty();
+    private final OptionalObject<IAnimator> itemAnimation = OptionalObject.empty();
 
     private SimpleAnimation() {}
 
@@ -29,28 +23,28 @@ public class SimpleAnimation implements Animation {
     }
 
     @Override
-    public void animateItemHands(float partialTicks) {
-        itemHandAnimation.ifPresent(f -> f.accept(smooth));
+    public void animateItemHands(MatrixStack matrix, float partialTicks) {
+        itemHandAnimation.ifPresent(animator -> animator.animate(matrix, smooth));
     }
 
     @Override
-    public void animateHands(float partialTicks) {
-        handAnimation.ifPresent(f -> f.accept(smooth));
+    public void animateHands(MatrixStack matrix, float partialTicks) {
+        handAnimation.ifPresent(animator -> animator.animate(matrix, smooth));
     }
 
     @Override
-    public void animateRightArm(float partialTicks) {
-        rightHandAnimation.ifPresent(f -> f.accept(smooth));
+    public void animateRightArm(MatrixStack matrix, float partialTicks) {
+        rightHandAnimation.ifPresent(animator -> animator.animate(matrix, smooth));
     }
 
     @Override
-    public void animateLeftArm(float partialTicks) {
-        leftHandAnimation.ifPresent(f -> f.accept(smooth));
+    public void animateLeftArm(MatrixStack matrix, float partialTicks) {
+        leftHandAnimation.ifPresent(animator -> animator.animate(matrix, smooth));
     }
 
     @Override
-    public void animateItem(float partialTicks) {
-        itemAnimation.ifPresent(f -> f.accept(smooth));
+    public void animateItem(MatrixStack matrix, float partialTicks) {
+        itemAnimation.ifPresent(animator -> animator.animate(matrix, smooth));
     }
 
     @Override
@@ -59,10 +53,8 @@ public class SimpleAnimation implements Animation {
     }
 
     @Override
-    public void renderTick(float partialTicks, TickEvent.Phase phase) {
-        if(phase == TickEvent.Phase.START) {
-            this.calculateSmoothValue(partialTicks);
-        }
+    public void frameTick(float partialTicks) {
+        this.calculateSmoothValue(partialTicks);
     }
 
     // Doesn't do anything anyway
@@ -89,52 +81,58 @@ public class SimpleAnimation implements Animation {
         return false;
     }
 
+    @FunctionalInterface
+    public interface IAnimator {
+        void animate(MatrixStack stack, float interpolatedValue);
+    }
+
     public static class Builder {
 
-        private Consumer<Float> iha;
-        private Consumer<Float> ha;
-        private Consumer<Float> rha;
-        private Consumer<Float> lha;
-        private Consumer<Float> ia;
+        private IAnimator itemAndHandsAnimator;
+        private IAnimator handsAnimator;
+        private IAnimator rightHandAnimator;
+        private IAnimator leftHandAnimator;
+        private IAnimator itemAnimator;
 
         private Builder() {}
 
         public SimpleAnimation create() {
             SimpleAnimation simpleImpl = new SimpleAnimation();
-            simpleImpl.itemHandAnimation.map(iha);
-            simpleImpl.handAnimation.map(ha);
-            simpleImpl.rightHandAnimation.map(rha);
-            simpleImpl.leftHandAnimation.map(lha);
-            simpleImpl.itemAnimation.map(ia);
+            simpleImpl.itemHandAnimation.map(itemAndHandsAnimator);
+            simpleImpl.handAnimation.map(handsAnimator);
+            simpleImpl.rightHandAnimation.map(rightHandAnimator);
+            simpleImpl.leftHandAnimation.map(leftHandAnimator);
+            simpleImpl.itemAnimation.map(itemAnimator);
             return simpleImpl;
         }
 
-        public Builder itemHand(Consumer<Float> properties) {
-            iha = Objects.requireNonNull(properties, "Animation cannot be null!");
+        public Builder itemHand(IAnimator animator) {
+            itemAndHandsAnimator = Objects.requireNonNull(animator, "Animation cannot be null!");
             return this;
         }
 
-        public Builder hand(Consumer<Float> properties) {
-            ha = Objects.requireNonNull(properties, "Animation cannot be null!");
+        public Builder hand(IAnimator animator) {
+            handsAnimator = Objects.requireNonNull(animator, "Animation cannot be null!");
             return this;
         }
 
-        public Builder rightHand(Consumer<Float> properties) {
-            rha = Objects.requireNonNull(properties, "Animation cannot be null!");
+        public Builder rightHand(IAnimator animator) {
+            rightHandAnimator = Objects.requireNonNull(animator, "Animation cannot be null!");
             return this;
         }
 
-        public Builder leftHand(Consumer<Float> properties) {
-            lha = Objects.requireNonNull(properties, "Animation cannot be null!");
+        public Builder leftHand(IAnimator animator) {
+            leftHandAnimator = Objects.requireNonNull(animator, "Animation cannot be null!");
             return this;
         }
 
-        public Builder item(Consumer<Float> properties) {
-            ia = Objects.requireNonNull(properties, "Animation cannot be null!");
+        public Builder item(IAnimator animator) {
+            itemAnimator = Objects.requireNonNull(animator, "Animation cannot be null!");
             return this;
         }
     }
 
+    /*
     public static class Deserializer implements JsonDeserializer<SimpleAnimation> {
 
         @Override
@@ -206,4 +204,5 @@ public class SimpleAnimation implements Animation {
             }
         }
     }
+    */
 }

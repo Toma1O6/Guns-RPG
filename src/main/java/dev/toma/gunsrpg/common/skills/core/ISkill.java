@@ -1,23 +1,21 @@
 package dev.toma.gunsrpg.common.skills.core;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 
 public interface ISkill {
 
     SkillType<?> getType();
 
-    boolean apply(EntityPlayer user);
+    boolean apply(PlayerEntity user);
 
-    default void onPurchase(EntityPlayer player) {
-
+    default void onPurchase(PlayerEntity player) {
     }
 
-    default void onDeactivate(EntityPlayer player) {
-
+    default void onDeactivate(PlayerEntity player) {
     }
 
-    NBTTagCompound saveData();
+    CompoundNBT saveData();
 
-    void readData(NBTTagCompound nbt);
+    void readData(CompoundNBT nbt);
 }

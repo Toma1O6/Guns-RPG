@@ -1,20 +1,17 @@
 package dev.toma.gunsrpg.client.animation;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.entity.player.PlayerEntity;
 
-@SideOnly(Side.CLIENT)
-public abstract class AnimationFactory implements Animation {
+public abstract class AnimationFactory implements IAnimation {
 
-    protected final EntityPlayer player;
+    protected final PlayerEntity player;
     protected float current, prev;
     public float smooth;
 
     public AnimationFactory() {
-        player = Minecraft.getMinecraft().player;
+        player = Minecraft.getInstance().player;
     }
 
     public abstract float getCurrentProgress();
@@ -33,37 +30,36 @@ public abstract class AnimationFactory implements Animation {
     }
 
     @Override
-    public void animateRightArm(float partialTicks) {
+    public void animateRightArm(MatrixStack matrix, float partialTicks) {
 
     }
 
     @Override
-    public void animateLeftArm(float partialTicks) {
+    public void animateLeftArm(MatrixStack matrix, float partialTicks) {
 
     }
 
     @Override
-    public void animateItem(float partialTicks) {
+    public void animateItem(MatrixStack matrix, float partialTicks) {
 
     }
 
     @Override
-    public void animateHands(float partialTicks) {
+    public void animateHands(MatrixStack matrix, float partialTicks) {
 
     }
 
     @Override
-    public void animateItemHands(float partialTicks) {
+    public void animateItemHands(MatrixStack matrix, float partialTicks) {
 
     }
 
     @Override
-    public void renderTick(float partialTicks, TickEvent.Phase phase) {
-        if(phase == TickEvent.Phase.END) return;
+    public void frameTick(float partialTicks) {
         this.calculateSmoothValue(partialTicks);
     }
 
-    public EntityPlayer getPlayer() {
+    public PlayerEntity getPlayer() {
         return player;
     }
 

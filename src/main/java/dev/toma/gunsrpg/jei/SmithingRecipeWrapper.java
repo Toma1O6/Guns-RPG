@@ -35,7 +35,7 @@ public class SmithingRecipeWrapper implements IRecipeWrapper {
         List<List<ItemStack>> ingredientLists = new ArrayList<>();
         ingredients.setOutput(VanillaTypes.ITEM, recipe.getOutputForDisplay());
         for (SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
-            Item item = ingredient.getItem();
+            Item item = ingredient.getItems();
             List<ItemStack> stacks = new ArrayList<>();
             for (int i : ingredient.getSubtypes()) {
                 stacks.add(new ItemStack(item, 1, i));

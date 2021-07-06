@@ -8,18 +8,19 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketUpdateCap;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.LazyOptional;
 
 public class PlayerDataFactory implements PlayerData {
 
-    private final EntityPlayer player;
+    private final PlayerEntity player;
     private final DebuffData debuffData;
     private final AimInfo aimInfo;
     private final ReloadInfo reloadInfo;
@@ -33,7 +34,7 @@ public class PlayerDataFactory implements PlayerData {
         this(null);
     }
 
-    public PlayerDataFactory(EntityPlayer player) {
+    public PlayerDataFactory(PlayerEntity player) {
         this.player = player;
         this.debuffData = new DebuffData(this);
         this.aimInfo = new AimInfo(this);
@@ -42,49 +43,57 @@ public class PlayerDataFactory implements PlayerData {
         this.playerSkills = new PlayerSkills(this);
     }
 
-    public static boolean hasActiveSkill(EntityPlayer player, SkillType<?> type) {
-        return get(player).getSkills().hasSkill(type);
+    public static boolean hasActiveSkill(PlayerEntity player, SkillType<?> type) {
+        LazyOptional<PlayerData> optional = get(player);
+        if (optional.isPresent()) {
+            return optional.orElse(null).getSkills().hasSkill(type);
+        }
+        return false;
     }
 
-    public static <S extends ISkill> S getSkill(EntityPlayer player, SkillType<S> type) {
-        return get(player).getSkills().getSkill(type);
+    public static <S extends ISkill> S getSkill(PlayerEntity player, SkillType<S> type) {
+        LazyOptional<PlayerData> optional = get(player);
+        if (optional.isPresent()) {
+            return optional.orElse(null).getSkills().getSkill(type);
+        }
+        return null;
     }
 
-    public static PlayerData get(EntityPlayer player) {
+    public static LazyOptional<PlayerData> get(PlayerEntity player) {
         return player.getCapability(PlayerDataManager.CAPABILITY, null);
     }
 
     @Override
     public void setOnCooldown() {
-        if(!GRPGConfig.debuffConfig.disableRespawnDebuff) {
+        if(!GRPGConfig.debuffConfig.disableRespawnDebuff()) {
             reducedHealthTimer = 3600;
         } else {
             reducedHealthTimer = 0;
             double d = getSkills().hasSkill(Skills.WAR_MACHINE) ? 40 : 20;
-            player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(d);
+            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(d);
             player.setHealth(player.getMaxHealth());
         }
     }
 
     @Override
     public void tick() {
-        World world = player.world;
-        this.debuffData.onTick(player, this);
+        World world = player.level;
+        this.debuffData.tick(player, this);
         this.aimInfo.update();
         this.reloadInfo.update();
         this.playerSkills.update();
-        if(!world.isRemote && reducedHealthTimer > 0) {
+        if(!world.isClientSide && reducedHealthTimer > 0) {
             --reducedHealthTimer;
-            double value = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
+            double value = player.getAttributeBaseValue(Attributes.MAX_HEALTH);
             if(value != 6) {
-                player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0);
+                player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(6.0);
                 if(player.getHealth() > player.getMaxHealth()) {
                     player.setHealth(player.getMaxHealth());
                 }
             }
             if(reducedHealthTimer == 0) {
                 double d = getSkills().hasSkill(Skills.WAR_MACHINE) ? 40 : 20;
-                player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(d);
+                player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(d);
             }
         }
     }
@@ -116,15 +125,15 @@ public class PlayerDataFactory implements PlayerData {
 
     @Override
     public void sync() {
-        if(player instanceof EntityPlayerMP) {
-            NetworkManager.toClient((EntityPlayerMP) player, new CPacketUpdateCap(player.getUniqueID(), this.serializeNBT(), 0));
+        if(player instanceof ServerPlayerEntity) {
+            NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketUpdateCap(player.getUUID(), this.serializeNBT(), 0));
         }
     }
 
     @Override
     public void syncCloneData() {
-        if(player instanceof EntityPlayerMP) {
-            NetworkManager.toClient((EntityPlayerMP) player, new CPacketUpdateCap(player.getUniqueID(), this.writePermanentData(), 1));
+        if(player instanceof ServerPlayerEntity) {
+            NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketUpdateCap(player.getUUID(), this.writePermanentData(), 1));
         }
     }
 
@@ -132,53 +141,53 @@ public class PlayerDataFactory implements PlayerData {
     public void handleLogin() {
         if(!logged) {
             logged = true;
-            player.addItemStackToInventory(new ItemStack(GRPGItems.ANTIDOTUM_PILLS, 2));
-            player.addItemStackToInventory(new ItemStack(GRPGItems.BANDAGE, 2));
-            player.addItemStackToInventory(new ItemStack(GRPGItems.VACCINE));
-            player.addItemStackToInventory(new ItemStack(GRPGItems.PLASTER_CAST));
+            player.addItem(new ItemStack(GRPGItems.ANTIDOTUM_PILLS, 2));
+            player.addItem(new ItemStack(GRPGItems.BANDAGE, 2));
+            player.addItem(new ItemStack(GRPGItems.VACCINE));
+            player.addItem(new ItemStack(GRPGItems.PLASTER_CAST));
             sync();
         }
     }
 
-    public NBTTagCompound writePermanentData() {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        nbtTagCompound.setBoolean("logged", logged);
+    public CompoundNBT writePermanentData() {
+        CompoundNBT nbtTagCompound = new CompoundNBT();
+        nbtTagCompound.putBoolean("logged", logged);
         return nbtTagCompound;
     }
 
-    public void readPermanentData(NBTTagCompound nbt) {
+    public void readPermanentData(CompoundNBT nbt) {
         logged = nbt.getBoolean("logged");
     }
 
     @Override
-    public NBTTagCompound serializeNBT() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setTag("permanent", writePermanentData());
-        nbt.setTag("debuffs", debuffData.serializeNBT());
-        nbt.setTag("aimData", aimInfo.write());
-        nbt.setTag("reloadData", reloadInfo.write());
-        nbt.setTag("scopeData", scopeData.write());
-        nbt.setTag("playerSkills", playerSkills.writeData());
-        nbt.setInteger("healthCooldown", reducedHealthTimer);
+    public CompoundNBT serializeNBT() {
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.put("permanent", writePermanentData());
+        nbt.put("debuffs", debuffData.serializeNBT());
+        nbt.put("aimData", aimInfo.write());
+        nbt.put("reloadData", reloadInfo.write());
+        nbt.put("scopeData", scopeData.write());
+        nbt.put("playerSkills", playerSkills.writeData());
+        nbt.putInt("healthCooldown", reducedHealthTimer);
         return nbt;
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
-        if(nbt.hasKey("permanent")) readPermanentData(nbt.getCompoundTag("permanent"));
-        debuffData.deserializeNBT(nbt.hasKey("debuffs", Constants.NBT.TAG_LIST) ? nbt.getTagList("debuffs", Constants.NBT.TAG_COMPOUND) : new NBTTagList());
+    public void deserializeNBT(CompoundNBT nbt) {
+        if(nbt.contains("permanent")) readPermanentData(nbt.getCompound("permanent"));
+        debuffData.deserializeNBT(nbt.contains("debuffs", Constants.NBT.TAG_LIST) ? nbt.getList("debuffs", Constants.NBT.TAG_COMPOUND) : new ListNBT());
         aimInfo.read(this.findNBTTag("aimData", nbt));
         reloadInfo.read(this.findNBTTag("reloadData", nbt));
         scopeData.read(this.findNBTTag("scopeData", nbt));
         playerSkills.readData(this.findNBTTag("playerSkills", nbt));
-        reducedHealthTimer = nbt.getInteger("healthCooldown");
+        reducedHealthTimer = nbt.getInt("healthCooldown");
     }
 
-    private NBTTagCompound findNBTTag(String key, NBTTagCompound nbt) {
-        return nbt.hasKey(key) ? nbt.getCompoundTag(key) : new NBTTagCompound();
+    private CompoundNBT findNBTTag(String key, CompoundNBT nbt) {
+        return nbt.contains(key) ? nbt.getCompound(key) : new CompoundNBT();
     }
 
-    public EntityPlayer getPlayer() {
+    public PlayerEntity getPlayer() {
         return player;
     }
 }

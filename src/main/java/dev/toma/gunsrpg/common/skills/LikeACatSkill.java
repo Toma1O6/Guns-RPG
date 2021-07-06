@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.skills;
 
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.interfaces.Clickable;
@@ -10,10 +11,10 @@ import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 
 public class LikeACatSkill extends BasicSkill implements Cooldown, Clickable {
 
@@ -29,12 +30,12 @@ public class LikeACatSkill extends BasicSkill implements Cooldown, Clickable {
     }
 
     @Override
-    public boolean apply(EntityPlayer user) {
+    public boolean apply(PlayerEntity user) {
         return effectLeft == 0 && cooldown == 0;
     }
 
     @Override
-    public void onUpdate(EntityPlayer player) {
+    public void onUpdate(PlayerEntity player) {
         if(effectLeft > 0) {
             --effectLeft;
             if(effectLeft == 0) {
@@ -61,20 +62,20 @@ public class LikeACatSkill extends BasicSkill implements Cooldown, Clickable {
     }
 
     @Override
-    public void onUse(EntityPlayer player) {
+    public void onUse(PlayerEntity player) {
 
     }
 
     @Override
     public void clientHandleClicked() {
-        NetworkManager.toServer(new SPacketSkillClicked(this.getType()));
+        NetworkManager.sendServerPacket(new SPacketSkillClicked(this.getType()));
     }
 
     @Override
-    public void clicked(EntityPlayer player) {
+    public void clicked(PlayerEntity player) {
         effectLeft = effectLength;
-        player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, effectLength, 0, false, false));
-        PlayerDataFactory.get(player).sync();
+        player.addEffect(new EffectInstance(Effects.NIGHT_VISION, effectLength, 0, false, false));
+        PlayerDataFactory.get(player).ifPresent(PlayerData::sync);
     }
 
     @Override
@@ -104,20 +105,20 @@ public class LikeACatSkill extends BasicSkill implements Cooldown, Clickable {
         ModUtils.renderColor(x, y + heigth, x + width, y + heigth + 3, 0.0F, 0.0F, 0.0F, 1.0F);
         ModUtils.renderColor(x + 1, y + heigth + 1, x + 1 + (int)((width - 1) * f), y + heigth + 2, r, g, b, 1.0F);
         String cooldown = ModUtils.formatTicksToTime(time);
-        FontRenderer renderer = Minecraft.getMinecraft().fontRenderer;
-        renderer.drawString(cooldown, x + (width - renderer.getStringWidth(cooldown)) / 2, y + heigth + 4, 0xffffff);
+        FontRenderer renderer = Minecraft.getInstance().font;
+        renderer.draw(cooldown, x + (width - renderer.width(cooldown)) / 2, y + heigth + 4, 0xffffff);
         GlStateManager.popMatrix();
     }
 
     @Override
-    public void writeExtra(NBTTagCompound nbt) {
-        nbt.setInteger("effect", effectLeft);
-        nbt.setInteger("cooldown", cooldown);
+    public void writeExtra(CompoundNBT nbt) {
+        nbt.putInt("effect", effectLeft);
+        nbt.putInt("cooldown", cooldown);
     }
 
     @Override
-    public void readExtra(NBTTagCompound nbt) {
-        effectLeft = nbt.getInteger("effect");
-        cooldown = nbt.getInteger("cooldown");
+    public void readExtra(CompoundNBT nbt) {
+        effectLeft = nbt.getInt("effect");
+        cooldown = nbt.getInt("cooldown");
     }
 }

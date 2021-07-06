@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.client.model;
 
-import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
+import dev.toma.gunsrpg.common.entity.ExplosiveSkeletonEntity;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -43,7 +43,7 @@ public class ModelExplosiveSkeleton extends ModelBiped {
         this.leftArmPose = ModelBiped.ArmPose.EMPTY;
         ItemStack itemstack = entitylivingbaseIn.getHeldItem(EnumHand.MAIN_HAND);
 
-        if (itemstack.getItem() == Items.BOW && ((EntityExplosiveSkeleton) entitylivingbaseIn).isSwingingArms()) {
+        if (itemstack.getItem() == Items.BOW && ((ExplosiveSkeletonEntity) entitylivingbaseIn).isSwingingArms()) {
             if (entitylivingbaseIn.getPrimaryHand() == EnumHandSide.RIGHT) {
                 this.rightArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
             } else {
@@ -58,7 +58,7 @@ public class ModelExplosiveSkeleton extends ModelBiped {
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
         super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
         ItemStack itemstack = ((EntityLivingBase) entityIn).getHeldItemMainhand();
-        EntityExplosiveSkeleton abstractskeleton = (EntityExplosiveSkeleton) entityIn;
+        ExplosiveSkeletonEntity abstractskeleton = (ExplosiveSkeletonEntity) entityIn;
         if (abstractskeleton.isSwingingArms() && (itemstack.isEmpty() || itemstack.getItem() != Items.BOW)) {
             float f = MathHelper.sin(this.swingProgress * (float) Math.PI);
             float f1 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float) Math.PI);

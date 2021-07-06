@@ -7,13 +7,13 @@ import net.minecraft.client.Minecraft;
 public class ClientFallbacks {
 
     public static void onCapDataUpdate() {
-        Minecraft mc = Minecraft.getMinecraft();
-        if(mc.currentScreen instanceof GuiPlayerSkills) {
-            mc.currentScreen.initGui();
+        Minecraft mc = Minecraft.getInstance();
+        if(mc.screen instanceof GuiPlayerSkills) {
+            mc.screen.init(mc, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight());
         }
         if(!PlayerDataFactory.get(mc.player).getAimInfo().aiming) {
-            ClientEventHandler.preAimFov.ifPresent(value -> mc.gameSettings.fovSetting = value);
-            ClientEventHandler.preAimSens.ifPresent(value -> mc.gameSettings.mouseSensitivity = value);
+            ClientEventHandler.preAimFov.ifPresent(value -> mc.options.fov = value);
+            ClientEventHandler.preAimSens.ifPresent(value -> mc.options.sensitivity = value);
         }
     }
 }

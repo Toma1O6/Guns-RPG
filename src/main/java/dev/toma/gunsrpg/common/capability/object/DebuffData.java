@@ -7,30 +7,30 @@ import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.debuffs.DebuffType;
 import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
 import dev.toma.gunsrpg.util.function.ToFloatBiFunction;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.registries.ForgeRegistry;
 
 import java.util.Random;
 
-public class DebuffData implements INBTSerializable<NBTTagList> {
+public class DebuffData implements INBTSerializable<ListNBT> {
 
     private final PlayerData data;
     private Debuff[] debuffs;
 
     public DebuffData(PlayerData data) {
         this.data = data;
-        this.debuffs = new Debuff[GunsRPGRegistries.DEBUFFS != null ? GunsRPGRegistries.DEBUFFS.getValuesCollection().size() : 0];
+        this.debuffs = new Debuff[GunsRPGRegistries.DEBUFFS != null ? GunsRPGRegistries.DEBUFFS.getValues().size() : 0];
     }
 
     public Debuff[] getDebuffs() {
         return debuffs;
     }
 
-    public void toggle(DebuffType type) {
+    public void toggle(DebuffType<?> type) {
         int i = getDebuffID(type);
         Debuff v = debuffs[i];
         if(v != null) {
@@ -40,22 +40,22 @@ public class DebuffData implements INBTSerializable<NBTTagList> {
         }
     }
 
-    public static int getDebuffID(DebuffType type) {
-        return ((ForgeRegistry<DebuffType>) GunsRPGRegistries.DEBUFFS).getID(type);
+    public static int getDebuffID(DebuffType<?> type) {
+        return ((ForgeRegistry<DebuffType<?>>) GunsRPGRegistries.DEBUFFS).getID(type);
     }
 
-    public Debuff createInstance(DebuffType type) {
+    public Debuff createInstance(DebuffType<?> type) {
         Debuff debuff = type.create();
         debuff.onDebuffObtained();
         return debuff;
     }
 
-    public boolean hasDebuff(DebuffType debuffType) {
+    public boolean hasDebuff(DebuffType<?> debuffType) {
         int i = getDebuffID(debuffType);
         return debuffs[i] != null;
     }
 
-    public void heal(DebuffType type, int amount) {
+    public void heal(DebuffType<?> type, int amount) {
         int k = getDebuffID(type);
         Debuff debuff = debuffs[k];
         if(debuff != null) {
@@ -63,10 +63,10 @@ public class DebuffData implements INBTSerializable<NBTTagList> {
         }
     }
 
-    public void onPlayerAttackedFrom(DamageContext ctx, EntityPlayer player) {
-        Random random = player.world.rand;
+    public void onPlayerAttackedFrom(DamageContext ctx, PlayerEntity player) {
+        Random random = player.level.getRandom();
         types:
-        for(DebuffType type : GunsRPGRegistries.DEBUFFS) {
+        for(DebuffType<?> type : GunsRPGRegistries.DEBUFFS) {
             if(type.isBlacklisted())
                 continue;
             int i = getDebuffID(type);
@@ -88,7 +88,7 @@ public class DebuffData implements INBTSerializable<NBTTagList> {
         }
     }
 
-    public void onTick(EntityPlayer player, PlayerData data) {
+    public void tick(PlayerEntity player, PlayerData data) {
         for (int i = 0; i < debuffs.length; i++) {
             Debuff debuff = debuffs[i];
             if(debuff == null) continue;
@@ -97,31 +97,31 @@ public class DebuffData implements INBTSerializable<NBTTagList> {
                 data.sync();
                 continue;
             }
-            debuff.onTick(player, data);
+            debuff.tick(player, data);
         }
     }
 
     @Override
-    public NBTTagList serializeNBT() {
-        NBTTagList list = new NBTTagList();
+    public ListNBT serializeNBT() {
+        ListNBT list = new ListNBT();
         for (Debuff debuff : debuffs) {
             if (debuff == null) continue;
-            NBTTagCompound data = new NBTTagCompound();
-            data.setString("key", debuff.getType().getRegistryName().toString());
-            data.setTag("data", debuff.serializeNBT());
-            list.appendTag(data);
+            CompoundNBT data = new CompoundNBT();
+            data.putString("key", debuff.getType().getRegistryName().toString());
+            data.put("data", debuff.serializeNBT());
+            list.add(data);
         }
         return list;
     }
 
     @Override
-    public void deserializeNBT(NBTTagList list) {
-        debuffs = new Debuff[GunsRPGRegistries.DEBUFFS.getValuesCollection().size()];
-        for (int i = 0; i < list.tagCount(); i++) {
-            NBTTagCompound nbt = list.getCompoundTagAt(i);
+    public void deserializeNBT(ListNBT list) {
+        debuffs = new Debuff[GunsRPGRegistries.DEBUFFS.getValues().size()];
+        for (int i = 0; i < list.size(); i++) {
+            CompoundNBT nbt = list.getCompound(i);
             ResourceLocation key = new ResourceLocation(nbt.getString("key"));
-            NBTTagCompound data = nbt.getCompoundTag("data");
-            DebuffType type = GunsRPGRegistries.DEBUFFS.getValue(key);
+            CompoundNBT data = nbt.getCompound("data");
+            DebuffType<?> type = GunsRPGRegistries.DEBUFFS.getValue(key);
             if(type == null) {
                 GunsRPG.log.error("Error loading debuff data for key {}", key.toString());
                 continue;

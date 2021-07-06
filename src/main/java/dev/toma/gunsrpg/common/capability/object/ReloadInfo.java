@@ -5,10 +5,10 @@ import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketSendAnimation;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
 
 public class ReloadInfo {
@@ -24,8 +24,8 @@ public class ReloadInfo {
 
     public void update() {
         if(reloading) {
-            int slot = factory.getPlayer().inventory.currentItem;
-            boolean serverSide = !factory.getPlayer().world.isRemote;
+            int slot = factory.getPlayer().inventory.selected;
+            boolean serverSide = !factory.getPlayer().level.isClientSide;
             if(serverSide && this.slot != slot) {
                 cancelReload();
                 factory.sync();
@@ -34,8 +34,8 @@ public class ReloadInfo {
             if(--left <= 0 && serverSide) {
                 cancelReload();
                 factory.sync();
-                EntityPlayer player = factory.getPlayer();
-                ItemStack stack = player.getHeldItemMainhand();
+                PlayerEntity player = factory.getPlayer();
+                ItemStack stack = player.getMainHandItem();
                 if(stack.getItem() instanceof GunItem) {
                     GunItem gunItem = (GunItem) stack.getItem();
                     gunItem.getReloadManager().finishReload(factory.getPlayer(), gunItem, stack);
@@ -46,11 +46,11 @@ public class ReloadInfo {
 
     public void startReloading(int slot, int time) {
         if(!reloading) {
-            EntityPlayer player = factory.getPlayer();
-            ItemStack stack = player.getHeldItemMainhand();
+            PlayerEntity player = factory.getPlayer();
+            ItemStack stack = player.getMainHandItem();
             if(stack.getItem() instanceof GunItem) {
-                player.world.playSound(null, player.posX, player.posY, player.posZ, ((GunItem) stack.getItem()).getReloadSound(player), SoundCategory.MASTER, 1.0F, 1.0F);
-                NetworkManager.toClient((EntityPlayerMP) player, new CPacketSendAnimation(Animations.RELOAD));
+                player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ((GunItem) stack.getItem()).getReloadSound(player), SoundCategory.MASTER, 1.0F, 1.0F);
+                NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketSendAnimation(Animations.RELOAD));
             }
         }
         this.reloading = true;
@@ -82,19 +82,19 @@ public class ReloadInfo {
         return left / (float) total;
     }
 
-    public NBTTagCompound write() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setBoolean("reloading", reloading);
-        nbt.setInteger("slot", slot);
-        nbt.setInteger("total", total);
-        nbt.setInteger("left", left);
+    public CompoundNBT write() {
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.putBoolean("reloading", reloading);
+        nbt.putInt("slot", slot);
+        nbt.putInt("total", total);
+        nbt.putInt("left", left);
         return nbt;
     }
 
-    public void read(NBTTagCompound nbt) {
+    public void read(CompoundNBT nbt) {
         reloading = nbt.getBoolean("reloading");
-        slot = nbt.getInteger("slot");
-        total = nbt.getInteger("total");
-        left = nbt.getInteger("left");
+        slot = nbt.getInt("slot");
+        total = nbt.getInt("total");
+        left = nbt.getInt("left");
     }
 }

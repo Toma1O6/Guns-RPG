@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.block;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.tileentity.TileEntityAirdrop;
+import dev.toma.gunsrpg.common.tileentity.AirdropTileEntity;
 import dev.toma.gunsrpg.util.GuiHandler;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -52,7 +52,7 @@ public class BlockAirdrop extends GRPGBlock {
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityAirdrop();
+        return new AirdropTileEntity();
     }
 
     @Override

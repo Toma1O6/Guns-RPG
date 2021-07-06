@@ -4,7 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.init.GRPGBlocks;
 import dev.toma.gunsrpg.common.init.Skills;
-import dev.toma.gunsrpg.common.tileentity.TileEntityBlastFurnace;
+import dev.toma.gunsrpg.common.tileentity.BlastFurnaceTileEntity;
 import dev.toma.gunsrpg.util.GuiHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -87,7 +87,7 @@ public class BlockBlastFurnace extends GRPGBlock {
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityBlastFurnace) worldIn.getTileEntity(pos));
+        InventoryHelper.dropInventoryItems(worldIn, pos, (BlastFurnaceTileEntity) worldIn.getTileEntity(pos));
         super.breakBlock(worldIn, pos, state);
     }
 
@@ -104,7 +104,7 @@ public class BlockBlastFurnace extends GRPGBlock {
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityBlastFurnace();
+        return new BlastFurnaceTileEntity();
     }
 
     @Override

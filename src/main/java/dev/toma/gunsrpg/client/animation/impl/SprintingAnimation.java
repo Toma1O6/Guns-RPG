@@ -1,8 +1,10 @@
 package dev.toma.gunsrpg.client.animation.impl;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.AnimationFactory;
-import dev.toma.gunsrpg.client.animation.AnimationManager;
-import net.minecraft.client.renderer.GlStateManager;
+import dev.toma.gunsrpg.client.animation.AnimationProcessor;
+import dev.toma.gunsrpg.sided.ClientSideManager;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class SprintingAnimation extends AnimationFactory {
 
@@ -22,15 +24,16 @@ public class SprintingAnimation extends AnimationFactory {
     }
 
     @Override
-    public void animateItemHands(float partialTicks) {
-        GlStateManager.rotate(-20.0F * smooth, 1.0F, 0.0F, 0.0F);
+    public void animateItemHands(MatrixStack matrix, float partialTicks) {
+        matrix.mulPose(Vector3f.XP.rotationDegrees(-20.0F * smooth));
     }
 
     @Override
-    public void animateLeftArm(float partialTicks) {
-        if(!AnimationManager.renderingDualWield) {
-            GlStateManager.translate(0.0F, -0.5F * smooth, 0.8F * smooth);
-            GlStateManager.rotate(40.0F * smooth, 0.0F, 1.0F, 0.0F);
+    public void animateLeftArm(MatrixStack matrix, float partialTicks) {
+        AnimationProcessor processor = ClientSideManager.processor();
+        if(!processor.isRenderingDualWield()) {
+            matrix.translate(0.0, -0.5 * smooth, 0.8 * smooth);
+            matrix.mulPose(Vector3f.YP.rotationDegrees(40.0F * smooth));
         }
     }
 

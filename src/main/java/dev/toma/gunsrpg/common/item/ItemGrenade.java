@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.item;
 
-import dev.toma.gunsrpg.common.entity.EntityGrenade;
+import dev.toma.gunsrpg.common.entity.GrenadeEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -28,7 +28,7 @@ public class ItemGrenade extends GRPGItem {
         if(!worldIn.isRemote) {
             CooldownTracker tracker = playerIn.getCooldownTracker();
             if(!tracker.hasCooldown(stack.getItem())) {
-                worldIn.spawnEntity(new EntityGrenade(worldIn, playerIn, 80, blastSize, explodeOnImpact, stack));
+                worldIn.spawnEntity(new GrenadeEntity(worldIn, playerIn, 80, blastSize, explodeOnImpact, stack));
                 playerIn.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1.0F, 1.0F);
                 if(!playerIn.isCreative()) {
                     stack.shrink(1);

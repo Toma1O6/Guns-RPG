@@ -1,18 +1,16 @@
 package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import dev.toma.gunsrpg.network.NetworkManager;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.UUID;
 
-public class SPacketRequestDataUpdate implements IMessage {
+public class SPacketRequestDataUpdate extends AbstractNetworkPacket<SPacketRequestDataUpdate> {
 
     private UUID uuid;
 
@@ -24,25 +22,21 @@ public class SPacketRequestDataUpdate implements IMessage {
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf, uuid.toString());
+    public void encode(PacketBuffer buffer) {
+        buffer.writeUUID(uuid);
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-        uuid = UUID.fromString(ByteBufUtils.readUTF8String(buf));
+    public SPacketRequestDataUpdate decode(PacketBuffer buffer) {
+        return new SPacketRequestDataUpdate(buffer.readUUID());
     }
 
-    public static class Handler implements IMessageHandler<SPacketRequestDataUpdate, IMessage> {
-
-        @Override
-        public IMessage onMessage(SPacketRequestDataUpdate message, MessageContext ctx) {
-            EntityPlayerMP playerMP = ctx.getServerHandler().player;
-            playerMP.getServer().addScheduledTask(() -> {
-                NBTTagCompound nbt = PlayerDataFactory.get(playerMP).serializeNBT();
-                NetworkManager.toClient(playerMP, new CPacketUpdateCap(message.uuid, nbt, 0));
-            });
-            return null;
-        }
+    @Override
+    protected void handlePacket(NetworkEvent.Context context) {
+        ServerPlayerEntity player = context.getSender();
+        PlayerDataFactory.get(player).ifPresent(playerData -> {
+            CompoundNBT nbt = player.serializeNBT();
+            NetworkManager.sendClientPacket(player, new CPacketUpdateCap(uuid, nbt, 0));
+        });
     }
 }

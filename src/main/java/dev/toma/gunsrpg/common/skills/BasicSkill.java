@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.skills;
 
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class BasicSkill extends AbstractSkill {
 
@@ -10,7 +10,7 @@ public class BasicSkill extends AbstractSkill {
     }
 
     @Override
-    public boolean apply(EntityPlayer user) {
+    public boolean apply(PlayerEntity user) {
         return true;
     }
 }

@@ -2,18 +2,18 @@ package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
+import dev.toma.gunsrpg.network.AbstractNetworkPacket;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SPacketSelectAmmo implements IMessage {
+public class SPacketSelectAmmo extends AbstractNetworkPacket<SPacketSelectAmmo> {
 
     private AmmoMaterial material;
 
@@ -24,49 +24,45 @@ public class SPacketSelectAmmo implements IMessage {
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(material.ordinal());
+    public void encode(PacketBuffer buffer) {
+        buffer.writeVarInt(material.ordinal());
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-        material = AmmoMaterial.values()[buf.readInt()];
+    public SPacketSelectAmmo decode(PacketBuffer buffer) {
+        AmmoMaterial[] materials = AmmoMaterial.values();
+        int index = MathHelper.clamp(buffer.readVarInt(), 0, materials.length - 1);
+        return new SPacketSelectAmmo(materials[index]);
     }
 
-    public static class Handler implements IMessageHandler<SPacketSelectAmmo, IMessage> {
+    @Override
+    protected void handlePacket(NetworkEvent.Context context) {
+        ServerPlayerEntity player = context.getSender();
+        ItemStack stack = player.getMainHandItem();
+        if (stack.getItem() instanceof GunItem) {
+            GunItem gun = (GunItem) stack.getItem();
+            int ammo = gun.getAmmo(stack);
+            AmmoMaterial oldMaterial = gun.getMaterialFromNBT(stack);
+            if (oldMaterial != null && ammo > 0) {
+                clearWeapon(player, gun, stack, ammo);
+            }
+            CompoundNBT data = stack.getTag();
+            data.putInt("material", material.ordinal());
+        }
+    }
 
-        @Override
-        public IMessage onMessage(SPacketSelectAmmo message, MessageContext ctx) {
-            EntityPlayerMP player = ctx.getServerHandler().player;
-            player.getServer().addScheduledTask(() -> {
-                ItemStack stack = player.getHeldItemMainhand();
-                if(stack.getItem() instanceof GunItem) {
-                    if(!stack.hasTagCompound()) {
-                        stack.setTagCompound(new NBTTagCompound());
-                    }
-                    GunItem item = (GunItem) stack.getItem();
-                    int ammo = item.getAmmo(stack);
-                    AmmoType type = item.getAmmoType();
-                    AmmoMaterial oldMat = item.getMaterialFromNBT(stack);
-                    if(oldMat != null && ammo > 0) {
-                        Item it = null;
-                        for(ItemAmmo itAmm : ItemAmmo.GUN_TO_ITEM_MAP.get(item)) {
-                            if(itAmm.getAmmoType() == type && itAmm.getMaterial() == oldMat) {
-                                it = itAmm;
-                                break;
-                            }
-                        }
-                        if(it != null) {
-                            ItemStack oldStack = new ItemStack(it, ammo);
-                            player.addItemStackToInventory(oldStack);
-                            item.setAmmoCount(stack, 0);
-                        }
-                    }
-                    NBTTagCompound nbt = stack.getTagCompound();
-                    nbt.setInteger("material", message.material.ordinal());
-                }
-            });
-            return null;
+    private void clearWeapon(PlayerEntity player, GunItem gun, ItemStack stack, int ammoAmount) {
+        Item item = null;
+        for (ItemAmmo ammo : ItemAmmo.GUN_TO_ITEM_MAP.get(gun)) {
+            if (ammo.getAmmoType() == gun.getAmmoType() && ammo.getMaterial() == gun.getMaterialFromNBT(stack)) {
+                item = ammo;
+                break;
+            }
+        }
+        if (item != null) {
+            ItemStack returnAmmo = new ItemStack(item, ammoAmount);
+            player.addItem(returnAmmo);
+            gun.setAmmoCount(stack, 0);
         }
     }
 }

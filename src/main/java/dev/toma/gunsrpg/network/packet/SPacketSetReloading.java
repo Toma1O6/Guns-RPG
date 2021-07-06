@@ -1,21 +1,18 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import dev.toma.gunsrpg.network.AbstractNetworkPacket;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SPacketSetReloading implements IMessage {
+public class SPacketSetReloading extends AbstractNetworkPacket<SPacketSetReloading> {
 
     boolean reloading;
     int time;
 
     public SPacketSetReloading() {
-
     }
 
     public SPacketSetReloading(boolean reload, int time) {
@@ -24,31 +21,26 @@ public class SPacketSetReloading implements IMessage {
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeBoolean(reloading);
-        buf.writeInt(time);
+    public void encode(PacketBuffer buffer) {
+        buffer.writeBoolean(reloading);
+        buffer.writeInt(time);
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-        reloading = buf.readBoolean();
-        time = buf.readInt();
+    public SPacketSetReloading decode(PacketBuffer buffer) {
+        return new SPacketSetReloading(buffer.readBoolean(), buffer.readInt());
     }
 
-    public static class Handler implements IMessageHandler<SPacketSetReloading, IMessage> {
-
-        @Override
-        public IMessage onMessage(SPacketSetReloading message, MessageContext ctx) {
-            EntityPlayerMP player = ctx.getServerHandler().player;
-            player.getServer().addScheduledTask(() -> {
-                PlayerData data = PlayerDataFactory.get(player);
-                ReloadInfo reloadInfo = data.getReloadInfo();
-                if(message.reloading) {
-                    reloadInfo.startReloading(player.inventory.currentItem, message.time);
-                } else reloadInfo.cancelReload();
-                data.sync();
-            });
-            return null;
-        }
+    @Override
+    protected void handlePacket(NetworkEvent.Context context) {
+        ServerPlayerEntity player = context.getSender();
+        PlayerDataFactory.get(player).ifPresent(data -> {
+            ReloadInfo info = data.getReloadInfo();
+            if (reloading)
+                info.startReloading(player.inventory.selected, time);
+            else
+                info.cancelReload();
+            data.sync();
+        });
     }
 }

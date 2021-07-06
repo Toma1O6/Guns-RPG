@@ -1,31 +1,31 @@
 package dev.toma.gunsrpg.event;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 public class EntityEquippedItemEvent extends Event {
 
-    private final EntityLivingBase entityLivingBase;
+    private final LivingEntity livingEntity;
     private final ItemStack stack;
-    private final EntityEquipmentSlot slot;
+    private final EquipmentSlotType slot;
 
-    public EntityEquippedItemEvent(EntityLivingBase entityLivingBase, ItemStack stack, EntityEquipmentSlot slot) {
-        this.entityLivingBase = entityLivingBase;
+    public EntityEquippedItemEvent(LivingEntity livingEntity, ItemStack stack, EquipmentSlotType slot) {
+        this.livingEntity = livingEntity;
         this.stack = stack;
         this.slot = slot;
     }
 
-    public EntityLivingBase getEntity() {
-        return entityLivingBase;
+    public LivingEntity getEntity() {
+        return livingEntity;
     }
 
     public ItemStack getStack() {
         return stack;
     }
 
-    public EntityEquipmentSlot getSlot() {
+    public EquipmentSlotType getSlot() {
         return slot;
     }
 }

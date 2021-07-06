@@ -17,21 +17,22 @@ import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.play.server.SPacketSoundEffect;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.network.play.server.SPlaySoundEffectPacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -126,9 +127,9 @@ public class PlayerSkills {
         updateRequiredKills();
         kills = 0;
         if(notify) {
-            EntityPlayer player = data.getPlayer();
-            player.sendMessage(new TextComponentString(TextFormatting.YELLOW + "=====[ LEVEL UP ]====="));
-            player.sendMessage(new TextComponentString(TextFormatting.YELLOW + "Current level: " + level));
+            PlayerEntity player = data.getPlayer();
+            player.sendMessage(new StringTextComponent(TextFormatting.YELLOW + "=====[ LEVEL UP ]====="), Util.NIL_UUID);
+            player.sendMessage(new StringTextComponent(TextFormatting.YELLOW + "Current level: " + level), Util.NIL_UUID);
             int count = 0;
             List<SkillType<?>> unlockedSkills = new ArrayList<>();
             for(SkillType<?> type : GunsRPGRegistries.SKILLS) {
@@ -138,17 +139,17 @@ public class PlayerSkills {
                 }
             }
             if(count > 0) {
-                player.sendMessage(new TextComponentString(String.format(TextFormatting.YELLOW + "New skills available: %d", count)));
-                NetworkManager.toClient((EntityPlayerMP) player, new CPacketNewSkills(unlockedSkills));
+                player.sendMessage(new StringTextComponent(String.format(TextFormatting.YELLOW + "New skills available: %d", count)), Util.NIL_UUID);
+                NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketNewSkills(unlockedSkills));
             }
-            ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, player.posX, player.posY, player.posZ, 0.75F, 1.0F));
+            ((ServerPlayerEntity) player).connection.send(new SPlaySoundEffectPacket(SoundEvents.PLAYER_LEVELUP, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 0.75F, 1.0F));
         }
     }
 
     public void awardPoints() {
         if(level == 100) {
             addSkillPoints(25);
-            data.getPlayer().addItemStackToInventory(new ItemStack(GRPGItems.GOLD_EGG_SHARD, 2));
+            data.getPlayer().addItem(new ItemStack(GRPGItems.GOLD_EGG_SHARD, 2));
         } else if(level == 50) {
             addSkillPoints(20);
         } else if(level % 10 == 0) {
@@ -224,10 +225,10 @@ public class PlayerSkills {
         skillPoints = 0;
         kills = 0;
         gunKills.clear();
-        for (SkillType<?> skillType : GunsRPGRegistries.SKILLS.getValuesCollection()) {
+        for (SkillType<?> skillType : GunsRPGRegistries.SKILLS.getValues()) {
             unlockSkill(skillType, false);
         }
-        for(GunItem item : ForgeRegistries.ITEMS.getValuesCollection().stream().filter(item -> item instanceof GunItem).map(item -> (GunItem) item).collect(Collectors.toList())) {
+        for(GunItem item : ForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof GunItem).map(item -> (GunItem) item).collect(Collectors.toList())) {
             getGunData(item).unlockAll();
         }
         clearCache();
@@ -382,76 +383,77 @@ public class PlayerSkills {
         this.brokenBoneChance = Math.max(this.brokenBoneChance, brokenBoneChance);
     }
 
-    public NBTTagCompound writeData() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("level", level);
-        nbt.setInteger("requiredKills", requiredKills);
-        nbt.setInteger("kills", kills);
-        nbt.setInteger("skillpoints", skillPoints);
-        NBTTagCompound gunData = new NBTTagCompound();
+    public CompoundNBT writeData() {
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.putInt("level", level);
+        nbt.putInt("requiredKills", requiredKills);
+        nbt.putInt("kills", kills);
+        nbt.putInt("skillpoints", skillPoints);
+        CompoundNBT gunData = new CompoundNBT();
         for (Map.Entry<GunItem, GunData> entry : gunKills.entrySet()) {
             String k = entry.getKey().getRegistryName().toString();
             GunData v = entry.getValue();
-            gunData.setTag(k, v.saveData());
+            gunData.put(k, v.saveData());
         }
-        nbt.setTag("gunData", gunData);
-        NBTTagCompound skills = new NBTTagCompound();
+        nbt.put("gunData", gunData);
+        CompoundNBT skills = new CompoundNBT();
         for (Map.Entry<SkillCategory, List<ISkill>> entry : unlockedSkills.entrySet()) {
-            NBTTagList v = new NBTTagList();
+            ListNBT v = new ListNBT();
             String k = entry.getKey().ordinal() + "";
             for (ISkill skill : entry.getValue()) {
-                v.appendTag(skill.saveData());
+                v.add(skill.saveData());
             }
-            skills.setTag(k, v);
+            skills.put(k, v);
         }
-        nbt.setTag("skills", skills);
-        nbt.setInteger("gunpowderYield", gunpowderCraftYield);
-        nbt.setInteger("bonemealYield", bonemealCraftYield);
-        nbt.setInteger("blazepowderYield", blazePowderCraftYield);
-        nbt.setInteger("poisonResistance", poisonResistance);
-        nbt.setInteger("infectionResistance", infectionResistance);
-        nbt.setInteger("brokenBoneResistance", brokenBoneResistance);
-        nbt.setInteger("bleedingResistance", bleedResistance);
-        nbt.setInteger("extraDamage", extraDamage);
-        nbt.setFloat("instantKill", instantKillChance);
-        nbt.setFloat("axeSpeed", axeMiningSpeed);
-        nbt.setFloat("shovelSpeed", shovelMiningSpeed);
-        nbt.setFloat("pickaxeSpeed", pickaxeMiningSpeed);
-        nbt.setFloat("acrobaticsFallResistance", acrobaticsFallResistance);
-        nbt.setFloat("acrobaticsExplosionResistance", acrobaticsExplosionResistance);
-        nbt.setFloat("lightMovementSpeed", lightHunterMovementSpeed);
-        nbt.setFloat("agilitySpeed", agilitySpeed);
-        nbt.setFloat("poisonChance", poisonChance);
-        nbt.setFloat("bleedChance", bleedChance);
-        nbt.setFloat("infectionChance", infectionChance);
-        nbt.setFloat("brokenBoneChance", brokenBoneChance);
+        // TODO handle directly in skill instances
+        nbt.put("skills", skills);
+        nbt.putInt("gunpowderYield", gunpowderCraftYield);
+        nbt.putInt("bonemealYield", bonemealCraftYield);
+        nbt.putInt("blazepowderYield", blazePowderCraftYield);
+        nbt.putInt("poisonResistance", poisonResistance);
+        nbt.putInt("infectionResistance", infectionResistance);
+        nbt.putInt("brokenBoneResistance", brokenBoneResistance);
+        nbt.putInt("bleedingResistance", bleedResistance);
+        nbt.putInt("extraDamage", extraDamage);
+        nbt.putFloat("instantKill", instantKillChance);
+        nbt.putFloat("axeSpeed", axeMiningSpeed);
+        nbt.putFloat("shovelSpeed", shovelMiningSpeed);
+        nbt.putFloat("pickaxeSpeed", pickaxeMiningSpeed);
+        nbt.putFloat("acrobaticsFallResistance", acrobaticsFallResistance);
+        nbt.putFloat("acrobaticsExplosionResistance", acrobaticsExplosionResistance);
+        nbt.putFloat("lightMovementSpeed", lightHunterMovementSpeed);
+        nbt.putFloat("agilitySpeed", agilitySpeed);
+        nbt.putFloat("poisonChance", poisonChance);
+        nbt.putFloat("bleedChance", bleedChance);
+        nbt.putFloat("infectionChance", infectionChance);
+        nbt.putFloat("brokenBoneChance", brokenBoneChance);
         return nbt;
     }
 
-    public void readData(NBTTagCompound nbt) {
+    public void readData(CompoundNBT nbt) {
         clearCache();
         unlockedSkills.clear();
         gunKills.clear();
-        level = nbt.getInteger("level");
-        requiredKills = Math.max(10, nbt.getInteger("requiredKills"));
-        kills = nbt.getInteger("kills");
-        skillPoints = nbt.getInteger("skillpoints");
-        NBTTagCompound gunData = nbt.hasKey("gunData") ? nbt.getCompoundTag("gunData") : new NBTTagCompound();
-        for (String key : gunData.getKeySet()) {
+        level = nbt.getInt("level");
+        requiredKills = Math.max(10, nbt.getInt("requiredKills"));
+        kills = nbt.getInt("kills");
+        skillPoints = nbt.getInt("skillpoints");
+        CompoundNBT gunData = nbt.contains("gunData") ? nbt.getCompound("gunData") : new CompoundNBT();
+        for (String key : gunData.getAllKeys()) {
             Item it = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
             if (it instanceof GunItem) {
-                NBTTagCompound v = gunData.getCompoundTag(key);
+                CompoundNBT v = gunData.getCompound(key);
                 GunData data = new GunData();
                 data.readData(v);
                 gunKills.put((GunItem) it, data);
             }
         }
-        NBTTagCompound skills = nbt.hasKey("skills") ? nbt.getCompoundTag("skills") : new NBTTagCompound();
-        for (String id : skills.getKeySet()) {
-            NBTTagList list = skills.getTagList(id, Constants.NBT.TAG_COMPOUND);
+        CompoundNBT skills = nbt.contains("skills") ? nbt.getCompound("skills") : new CompoundNBT();
+        for (String id : skills.getAllKeys()) {
+            ListNBT list = skills.getList(id, Constants.NBT.TAG_COMPOUND);
             SkillCategory category = SkillCategory.values()[Integer.parseInt(id)];
-            for (NBTBase nbtBase : list) {
-                NBTTagCompound tagCompound = (NBTTagCompound) nbtBase;
+            for (INBT inbt : list) {
+                CompoundNBT tagCompound = (CompoundNBT) inbt;
                 ResourceLocation key = new ResourceLocation(tagCompound.getString("type"));
                 SkillType<?> skillType = GunsRPGRegistries.SKILLS.getValue(key);
                 if (skillType != null) {
@@ -461,14 +463,14 @@ public class PlayerSkills {
                 }
             }
         }
-        gunpowderCraftYield = nbt.getInteger("gunpowderYield");
-        bonemealCraftYield = nbt.getInteger("bonemealYield");
-        blazePowderCraftYield = nbt.getInteger("blazepowderYield");
-        poisonResistance = nbt.getInteger("poisonResistance");
-        infectionResistance = nbt.getInteger("infectionResistance");
-        brokenBoneResistance = nbt.getInteger("brokenBoneResistance");
-        bleedResistance = nbt.getInteger("bleedingResistance");
-        extraDamage = nbt.getInteger("extraDamage");
+        gunpowderCraftYield = nbt.getInt("gunpowderYield");
+        bonemealCraftYield = nbt.getInt("bonemealYield");
+        blazePowderCraftYield = nbt.getInt("blazepowderYield");
+        poisonResistance = nbt.getInt("poisonResistance");
+        infectionResistance = nbt.getInt("infectionResistance");
+        brokenBoneResistance = nbt.getInt("brokenBoneResistance");
+        bleedResistance = nbt.getInt("bleedingResistance");
+        extraDamage = nbt.getInt("extraDamage");
         instantKillChance = nbt.getFloat("instantKill");
         axeMiningSpeed = nbt.getFloat("axeSpeed");
         shovelMiningSpeed = nbt.getFloat("shovelSpeed");
@@ -484,7 +486,7 @@ public class PlayerSkills {
     }
 
     public float getTotalFallResistance() {
-        EntityPlayer player = data.getPlayer();
+        PlayerEntity player = data.getPlayer();
         float f = hasSkill(Skills.LIGHT_HUNTER) && getSkill(Skills.LIGHT_HUNTER).apply(player) ? 0.1F : 0.0F;
         return f + acrobaticsFallResistance;
     }

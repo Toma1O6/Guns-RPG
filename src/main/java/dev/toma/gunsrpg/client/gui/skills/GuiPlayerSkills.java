@@ -19,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -34,7 +35,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiPlayerSkills extends GuiScreen {
+public class GuiPlayerSkills extends Screen {
 
     private static final ResourceLocation SKILL_TREE_TEXTURES = GunsRPG.makeResource("textures/icons/skill_tree_bg.png");
     private final List<Component> uiComponents = new ArrayList<>();
@@ -112,8 +113,8 @@ public class GuiPlayerSkills extends GuiScreen {
                 x *= 2;
                 y *= 2;
             }
-            posX = ModUtils.wrap(posX + x, 0, 350);
-            posY = ModUtils.wrap(posY + y, 0, 400);
+            posX = ModUtils.clamp(posX + x, 0, 350);
+            posY = ModUtils.clamp(posY + y, 0, 400);
             setClickPos(mouseX, mouseY);
             display.clear();
         }

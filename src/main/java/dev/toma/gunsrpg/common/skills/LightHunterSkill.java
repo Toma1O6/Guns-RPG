@@ -4,9 +4,9 @@ import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.interfaces.TickableSkill;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Items;
 
 public class LightHunterSkill extends BasicSkill implements TickableSkill {
 
@@ -15,21 +15,23 @@ public class LightHunterSkill extends BasicSkill implements TickableSkill {
     }
 
     @Override
-    public boolean apply(EntityPlayer user) {
+    public boolean apply(PlayerEntity user) {
         return true;
     }
 
     @Override
-    public void onUpdate(EntityPlayer player) {
-        PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
-        if(hasArmor(player)) {
-            skills.lightHunterMovementSpeed = 0.015F;
-        } else {
-            skills.lightHunterMovementSpeed = 0.0F;
-        }
+    public void onUpdate(PlayerEntity player) {
+        PlayerDataFactory.get(player).ifPresent(data -> {
+            PlayerSkills skills = data.getSkills();
+            if(hasArmor(player)) {
+                skills.lightHunterMovementSpeed = 0.015F;
+            } else {
+                skills.lightHunterMovementSpeed = 0.0F;
+            }
+        });
     }
 
-    public boolean hasArmor(EntityPlayer player) {
-        return player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.LEATHER_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.LEATHER_CHESTPLATE && player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == Items.LEATHER_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == Items.LEATHER_BOOTS;
+    public boolean hasArmor(PlayerEntity player) {
+        return player.getItemBySlot(EquipmentSlotType.HEAD).getItem() == Items.LEATHER_HELMET && player.getItemBySlot(EquipmentSlotType.CHEST).getItem() == Items.LEATHER_CHESTPLATE && player.getItemBySlot(EquipmentSlotType.LEGS).getItem() == Items.LEATHER_LEGGINGS && player.getItemBySlot(EquipmentSlotType.FEET).getItem() == Items.LEATHER_BOOTS;
     }
 }

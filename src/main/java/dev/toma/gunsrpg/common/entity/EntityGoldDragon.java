@@ -2,28 +2,28 @@ package dev.toma.gunsrpg.common.entity;
 
 import dev.toma.gunsrpg.GunsRPG;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.MultiPartEntityPart;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonPartEntity;
 import net.minecraft.entity.boss.dragon.phase.PhaseList;
 import net.minecraft.entity.boss.dragon.phase.PhaseManager;
+import net.minecraft.entity.boss.dragon.phase.PhaseType;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.BossInfo;
-import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerBossInfo;
 
 import java.util.List;
 import java.util.Random;
 
-public class EntityGoldDragon extends EntityDragon {
+public class EntityGoldDragon extends EnderDragonEntity {
 
-    private final BossInfoServer bossInfoServer = (BossInfoServer) (new BossInfoServer(getDisplayName(), BossInfo.Color.YELLOW, BossInfo.Overlay.PROGRESS).setCreateFog(true).setDarkenSky(true));
+    private final ServerBossInfo bossInfoServer = (ServerBossInfo) (new ServerBossInfo(getDisplayName(), BossInfo.Color.YELLOW, BossInfo.Overlay.PROGRESS).setCreateWorldFog(true).setDarkenScreen(true));
     private int cooldown;
 
     public EntityGoldDragon(World world) {
@@ -32,7 +32,7 @@ public class EntityGoldDragon extends EntityDragon {
     }
 
     @Override
-    public boolean attackEntityFromPart(MultiPartEntityPart dragonPart, DamageSource source, float damage) {
+    public boolean hurt(EnderDragonPartEntity dragonPart, DamageSource source, float damage) {
         damage = this.phaseManager.getCurrentPhase().getAdjustedDamage(dragonPart, source, damage);
         if (damage < 0.01F) {
             return false;
@@ -58,10 +58,10 @@ public class EntityGoldDragon extends EntityDragon {
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
-        if (!world.isRemote) {
-            if (this.getHealth() < this.getMaxHealth() && ticksExisted % 12 == 0) {
+    public void aiStep() {
+        super.aiStep();
+        if (!level.isClientSide) {
+            if (this.getHealth() < this.getMaxHealth() && tickCount % 12 == 0) {
                 heal(1);
             }
             bossInfoServer.setPercent(this.getHealth() / this.getMaxHealth());
@@ -87,9 +87,9 @@ public class EntityGoldDragon extends EntityDragon {
         return result;
     }
 
-    @Override
+    /*@Override
     public int initPathPoints() {
-        if (this.pathPoints[0] == null) {
+        if (this.nodes[0] == null) {
             for (int i = 0; i < 24; ++i) {
                 int j = 5;
                 int l;
@@ -108,7 +108,7 @@ public class EntityGoldDragon extends EntityDragon {
                     i1 = (int) (20.0F * MathHelper.sin(2.0F * (-(float) Math.PI + ((float) Math.PI / 4F) * (float) k1)));
                 }
                 int j1 = Math.max(this.world.getSeaLevel() + 30, this.world.getTopSolidOrLiquidBlock(new BlockPos(l, 0, i1)).getY() + j);
-                this.pathPoints[i] = new PathPoint((int) posX + l, j1, (int) posZ + i1);
+                this.nodes[i] = new PathPoint((int) posX + l, j1, (int) posZ + i1);
             }
             this.neighbors[0] = 6146;
             this.neighbors[1] = 8197;
@@ -137,7 +137,7 @@ public class EntityGoldDragon extends EntityDragon {
         }
 
         return this.getNearestPpIdx(this.posX, this.posY, this.posZ);
-    }
+    }*/
 
     static class MyPhaseManager extends PhaseManager {
 
@@ -149,14 +149,14 @@ public class EntityGoldDragon extends EntityDragon {
         }
 
         @Override
-        public void setPhase(PhaseList<?> phaseIn) {
+        public void setPhase(PhaseType<?> phaseIn) {
             boolean strafe = false;
             boolean charge = false;
             if (goldDragon == null) {
                 super.setPhase(phaseIn);
                 return;
             }
-            EntityLivingBase entitylivingbase = goldDragon.world.getNearestAttackablePlayer(this.goldDragon, 150.0D, 60.0D);
+            LivingEntity entitylivingbase = goldDragon.level.getNearestPlayer(this.goldDragon, 150.0D, 60.0D);
             if (phaseIn == PhaseList.LANDING_APPROACH) {
                 if (entitylivingbase == null) {
                     phaseIn = PhaseList.HOLDING_PATTERN;
@@ -198,9 +198,9 @@ public class EntityGoldDragon extends EntityDragon {
                         GunsRPG.log.debug("Aborting summoning dragon help at {}, there are too many mobs! ({})", player.getName(), entitiesAround);
                         continue;
                     }
-                    spawnMob(pos, player, new EntityZombieGunner(world));
-                    spawnMob(pos, player, new EntityZombieGunner(world));
-                    spawnMob(pos, player, new EntityRocketAngel(world));
+                    spawnMob(pos, player, new ZombieGunnerEntity(world));
+                    spawnMob(pos, player, new ZombieGunnerEntity(world));
+                    spawnMob(pos, player, new RocketAngelEntity(world));
                 }
             }
         }

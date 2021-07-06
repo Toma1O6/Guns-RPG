@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.client.animation.*;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.client.animation.impl.RecoilAnimation;
@@ -15,18 +16,18 @@ import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -41,43 +42,53 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
     protected final Map<AmmoMaterial, Integer> materialDamageBonusMap;
 
     public GunItem(String name, GunType type) {
-        super(name);
+        super(name, new Properties().tab(ModTabs.ITEM_TAB).stacksTo(1));
         this.gunType = type;
-        this.setMaxStackSize(1);
         this.fillAmmoMaterialData(materialDamageBonusMap = new HashMap<>());
     }
 
-    public SoundEvent getShootSound(EntityLivingBase entity) {
-        return SoundEvents.BLOCK_LEVER_CLICK;
+    public final SoundEvent getWeaponShootSound(LivingEntity entity) {
+        if (entity instanceof PlayerEntity) {
+            return getShootSound((PlayerEntity) entity);
+        }
+        return getEntityShootSound(entity);
     }
 
-    public SoundEvent getReloadSound(EntityPlayer player) {
-        return SoundEvents.BLOCK_LEVER_CLICK;
+    protected SoundEvent getShootSound(PlayerEntity entity) {
+        return SoundEvents.LEVER_CLICK;
+    }
+
+    public SoundEvent getEntityShootSound(LivingEntity entity) {
+        return SoundEvents.LEVER_CLICK;
+    }
+
+    public SoundEvent getReloadSound(PlayerEntity player) {
+        return SoundEvents.LEVER_CLICK;
     }
 
     public final Firemode getFiremode(ItemStack stack) {
         createNBT(stack);
-        return Firemode.get(stack.getTagCompound().getInteger("firemode"));
+        return Firemode.get(stack.getTag().getInt("firemode"));
     }
 
-    public boolean switchFiremode(ItemStack stack, EntityPlayer player) {
+    public boolean switchFiremode(ItemStack stack, PlayerEntity player) {
         return false;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AimingAnimation createAimAnimation() {
         return new AimingAnimation(-0.54F, 0.06F, 0.0F);
     }
 
-    @SideOnly(Side.CLIENT)
-    public Animation createReloadAnimation(EntityPlayer player) {
+    @OnlyIn(Dist.CLIENT)
+    public IAnimation createReloadAnimation(PlayerEntity player) {
         return new MultiStepAnimation.Configurable(this.getReloadTime(player), "pistol_reload");
     }
 
-    @SideOnly(Side.CLIENT)
-    public void onShoot(EntityPlayer player, ItemStack stack) {
-        AnimationManager.cancelAnimation(Animations.RELOAD);
-        AnimationManager.sendNewAnimation(Animations.RECOIL, RecoilAnimation.newInstance(5));
+    @OnlyIn(Dist.CLIENT)
+    public void onShoot(PlayerEntity player, ItemStack stack) {
+        AnimationProcessor.stop(Animations.RELOAD);
+        AnimationProcessor.play(Animations.RECOIL, RecoilAnimation.newInstance(5));
     }
 
     public abstract SkillType<?> getRequiredSkill();
@@ -90,67 +101,67 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
         return ReloadManagerMagazine.MANAGER;
     }
 
-    public boolean isSilenced(EntityPlayer player) {
+    public boolean isSilenced(PlayerEntity player) {
         return false;
     }
 
-    public int getFirerate(EntityPlayer player) {
+    public int getFirerate(PlayerEntity player) {
         return 0;
     }
 
-    public int getMaxAmmo(EntityPlayer player) {
+    public int getMaxAmmo(PlayerEntity player) {
         return 0;
     }
 
-    public int getReloadTime(EntityPlayer player) {
+    public int getReloadTime(PlayerEntity player) {
         return 50;
     }
 
-    public float getVerticalRecoil(EntityPlayer player) {
+    public float getVerticalRecoil(PlayerEntity player) {
         return this.getWeaponConfig().recoilVertical;
     }
 
-    public float getHorizontalRecoil(EntityPlayer player) {
+    public float getHorizontalRecoil(PlayerEntity player) {
         boolean f = random.nextBoolean();
         float v = this.getWeaponConfig().recoilHorizontal;
         return f ? v : -v;
     }
 
-    public void onHitEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
+    public void onHitEntity(EntityBullet bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
 
     }
 
-    public void onKillEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
+    public void onKillEntity(EntityBullet bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
 
     }
 
-    public void shootBullet(World world, EntityLivingBase entity, ItemStack stack) {
+    public void shootBullet(World world, LivingEntity entity, ItemStack stack) {
         EntityBullet bullet = new EntityBullet(world, entity, this, stack);
-        boolean aim = entity instanceof EntityPlayer && PlayerDataFactory.get((EntityPlayer) entity).getAimInfo().isAiming();
-        float pitch = entity.rotationPitch + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 2);
-        float yaw = entity.rotationYaw + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 2);
+        boolean aim = entity instanceof PlayerEntity && PlayerDataFactory.get((PlayerEntity) entity).getAimInfo().isAiming();
+        float pitch = entity.xRot + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 2);
+        float yaw = entity.yRot + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 2);
         bullet.fire(pitch, yaw, getWeaponConfig().velocity);
-        world.spawnEntity(bullet);
+        world.addFreshEntity(bullet);
     }
 
-    public final void shoot(World world, EntityLivingBase entity, ItemStack stack) {
+    public final void shoot(World world, LivingEntity entity, ItemStack stack) {
         shoot(world, entity, stack, getShootSound(entity));
     }
 
-    public final void shoot(World world, EntityLivingBase entity, ItemStack stack, SoundEvent event) {
+    public final void shoot(World world, LivingEntity entity, ItemStack stack, SoundEvent event) {
         Item item = stack.getItem();
         CooldownTracker tracker = null;
-        if (entity instanceof EntityPlayer) {
-            tracker = ((EntityPlayer) entity).getCooldownTracker();
-            if (tracker.hasCooldown(item)) {
+        if (entity instanceof PlayerEntity) {
+            tracker = ((PlayerEntity) entity).getCooldowns();
+            if (tracker.isOnCooldown(item)) {
                 return;
             }
         }
         this.shootBullet(world, entity, stack);
         this.setAmmoCount(stack, this.getAmmo(stack) - 1);
-        world.playSound(null, entity.posX, entity.posY, entity.posZ, event, SoundCategory.MASTER, 15.0F, 1.0F);
+        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);
         if (tracker != null) {
-            tracker.setCooldown(item, this.getFirerate((EntityPlayer) entity));
+            tracker.addCooldown(item, this.getFirerate((PlayerEntity) entity));
         }
     }
 
@@ -169,31 +180,31 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
     }
 
     public void createNBT(ItemStack stack) {
-        if (stack.hasTagCompound()) {
+        if (stack.hasTag()) {
             return;
         }
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("ammo", 0);
-        nbt.setInteger("firemode", 0);
-        stack.setTagCompound(nbt);
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.putInt("ammo", 0);
+        nbt.putInt("firemode", 0);
+        stack.setTag(nbt);
     }
 
     public AmmoMaterial getMaterialFromNBT(ItemStack stack) {
         this.createNBT(stack);
-        NBTTagCompound nbt = stack.getTagCompound();
-        int id = Math.max(0, Math.min(AmmoMaterial.values().length, nbt.getInteger("material")));
-        return nbt.hasKey("material") ? AmmoMaterial.values()[id] : null;
+        CompoundNBT nbt = stack.getTag();
+        int id = Math.max(0, Math.min(AmmoMaterial.values().length, nbt.getInt("material")));
+        return nbt.contains("material") ? AmmoMaterial.values()[id] : null;
     }
 
     public int getAmmo(ItemStack stack) {
         this.createNBT(stack);
-        return stack.getTagCompound().getInteger("ammo");
+        return stack.getTag().getInt("ammo");
     }
 
     public void setAmmoCount(ItemStack stack, int count) {
         this.createNBT(stack);
-        NBTTagCompound nbt = stack.getTagCompound();
-        nbt.setInteger("ammo", Math.max(0, count));
+        CompoundNBT nbt = stack.getTag();
+        nbt.putInt("ammo", Math.max(0, count));
     }
 
     public boolean hasAmmo(ItemStack stack) {
@@ -212,7 +223,7 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
     }
 
     @Override
-    public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
+    public boolean onEntitySwing(LivingEntity entityLiving, ItemStack stack) {
         return false;
     }
 }

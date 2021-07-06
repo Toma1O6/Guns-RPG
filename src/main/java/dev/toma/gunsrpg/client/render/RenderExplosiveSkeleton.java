@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.client.render;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.ModelExplosiveSkeleton;
-import dev.toma.gunsrpg.common.entity.EntityExplosiveSkeleton;
+import dev.toma.gunsrpg.common.entity.ExplosiveSkeletonEntity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderExplosiveSkeleton extends RenderBiped<EntityExplosiveSkeleton> {
+public class RenderExplosiveSkeleton extends RenderBiped<ExplosiveSkeletonEntity> {
 
     private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/entity/explosive_skeleton.png");
 
@@ -33,7 +33,7 @@ public class RenderExplosiveSkeleton extends RenderBiped<EntityExplosiveSkeleton
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntityExplosiveSkeleton entity) {
+    protected ResourceLocation getEntityTexture(ExplosiveSkeletonEntity entity) {
         return TEXTURE;
     }
 }

@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.client;
 
-import dev.toma.gunsrpg.client.animation.AnimationManager;
+import dev.toma.gunsrpg.client.animation.AnimationProcessor;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.gui.GuiChooseAmmo;
 import dev.toma.gunsrpg.client.gui.skills.GuiPlayerSkills;
@@ -16,12 +16,12 @@ import dev.toma.gunsrpg.network.packet.SPacketRequestDataUpdate;
 import dev.toma.gunsrpg.network.packet.SPacketSetReloading;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,35 +31,35 @@ public class ModKeybinds {
     private static final List<ModKeyBind> keyBinds = new ArrayList<>(2);
 
     public static void registerKeybinds() {
-        register("reload", Keyboard.KEY_R, ModKeybinds::reloadPressed);
-        register("class_list", Keyboard.KEY_O, ModKeybinds::showClassesPressed);
-        register("firemode", Keyboard.KEY_B, () -> {
-            EntityPlayer player = Minecraft.getMinecraft().player;
-            if(player.getHeldItemMainhand().getItem() instanceof GunItem) {
-                NetworkManager.toServer(new SPacketChangeFiremode());
+        register("reload", GLFW.GLFW_KEY_R, ModKeybinds::reloadPressed);
+        register("class_list", GLFW.GLFW_KEY_O, ModKeybinds::showClassesPressed);
+        register("firemode", GLFW.GLFW_KEY_B, () -> {
+            PlayerEntity player = Minecraft.getInstance().player;
+            if(player.getMainHandItem().getItem() instanceof GunItem) {
+                NetworkManager.sendServerPacket(new SPacketChangeFiremode());
             }
         });
-        register("sight_type", Keyboard.KEY_PRIOR, () -> PlayerDataFactory.get(Minecraft.getMinecraft().player).getScopeData().updateType());
-        register("sight_color", Keyboard.KEY_NEXT, () -> PlayerDataFactory.get(Minecraft.getMinecraft().player).getScopeData().updateColor());
+        register("sight_type", GLFW.GLFW_KEY_PAGE_UP, () -> PlayerDataFactory.get(Minecraft.getInstance().player).getScopeData().updateType());
+        register("sight_color", GLFW.GLFW_KEY_PAGE_DOWN, () -> PlayerDataFactory.get(Minecraft.getInstance().player).getScopeData().updateColor());
     }
 
     private static void reloadPressed() {
-        Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayer player = mc.player;
+        Minecraft mc = Minecraft.getInstance();
+        PlayerEntity player = mc.player;
         ReloadInfo info = PlayerDataFactory.get(player).getReloadInfo();
-        if(player.isSneaking()) {
-            if(player.getHeldItemMainhand().getItem() instanceof GunItem) {
-                mc.displayGuiScreen(new GuiChooseAmmo((GunItem) player.getHeldItemMainhand().getItem()));
+        ItemStack stack = player.getMainHandItem();
+        if(player.isCrouching()) {
+            if(stack.getItem() instanceof GunItem) {
+                mc.setScreen(new GuiChooseAmmo((GunItem) stack.getItem()));
             }
         } else {
-            if(player.getHeldItemMainhand().getItem() instanceof GunItem && !player.isSprinting() && AnimationManager.getAnimationByID(Animations.REBOLT) == null) {
-                ItemStack stack = player.getHeldItemMainhand();
+            if(stack.getItem() instanceof GunItem && !player.isSprinting() && AnimationProcessor.getByID(Animations.REBOLT) == null) {
                 GunItem gun = (GunItem) stack.getItem();
                 if(info.isReloading()) {
                     if(gun.getReloadManager().canBeInterrupted(gun, stack)) {
                         info.cancelReload();
-                        AnimationManager.cancelAnimation(Animations.RELOAD);
-                        NetworkManager.toServer(new SPacketSetReloading(false, 0));
+                        AnimationProcessor.stop(Animations.RELOAD);
+                        NetworkManager.sendServerPacket(new SPacketSetReloading(false, 0));
                         return;
                     }
                 }
@@ -75,30 +75,30 @@ public class ModKeybinds {
                             gun.getReloadManager().startReloading(player, gun.getReloadTime(player), stack);
                             return;
                         }
-                        for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                            ItemStack itemStack = player.inventory.getStackInSlot(i);
+                        for(int i = 0; i < player.inventory.getContainerSize(); i++) {
+                            ItemStack itemStack = player.inventory.getItem(i);
                             if(itemStack.getItem() instanceof IAmmoProvider) {
                                 IAmmoProvider itemAmmo = (IAmmoProvider) itemStack.getItem();
                                 if(itemAmmo.getAmmoType() == ammoType && itemAmmo.getMaterial() == material) {
                                     int time = gun.getReloadTime(player);
                                     gun.getReloadManager().startReloading(player, time, stack);
-                                    NetworkManager.toServer(new SPacketSetReloading(true, time));
+                                    NetworkManager.sendServerPacket(new SPacketSetReloading(true, time));
                                     break;
                                 }
                             }
                         }
                     }
                 } else {
-                    mc.displayGuiScreen(new GuiChooseAmmo(gun));
+                    mc.setScreen(new GuiChooseAmmo(gun));
                 }
             }
         }
     }
 
     private static void showClassesPressed() {
-        Minecraft mc = Minecraft.getMinecraft();
-        NetworkManager.toServer(new SPacketRequestDataUpdate(mc.player.getUniqueID()));
-        mc.displayGuiScreen(new GuiPlayerSkills());
+        Minecraft mc = Minecraft.getInstance();
+        NetworkManager.sendServerPacket(new SPacketRequestDataUpdate(mc.player.getUUID()));
+        mc.setScreen(new GuiPlayerSkills());
     }
 
     private static void register(String name, int key, Runnable onPress) {
@@ -110,7 +110,7 @@ public class ModKeybinds {
     @SubscribeEvent
     public void onInput(InputEvent.KeyInputEvent event) {
         for(ModKeyBind bind : keyBinds) {
-            if(bind.isPressed()) {
+            if(bind.isDown()) {
                 bind.onPress.run();
                 break;
             }

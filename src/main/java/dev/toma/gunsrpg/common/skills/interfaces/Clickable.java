@@ -1,10 +1,10 @@
 package dev.toma.gunsrpg.common.skills.interfaces;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 public interface Clickable {
 
     void clientHandleClicked();
 
-    void clicked(EntityPlayer player);
+    void clicked(PlayerEntity player);
 }

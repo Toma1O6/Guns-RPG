@@ -1,12 +1,14 @@
 package dev.toma.gunsrpg.common.entity;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
-public class EntityExplosiveArrow extends EntityArrow {
+public class EntityExplosiveArrow extends AbstractArrowEntity {
 
     public int blastSize;
 
@@ -14,8 +16,8 @@ public class EntityExplosiveArrow extends EntityArrow {
         super(world);
     }
 
-    public EntityExplosiveArrow(World world, EntityLivingBase entityLivingBase, int blastSize) {
-        super(world, entityLivingBase);
+    public EntityExplosiveArrow(World world, LivingEntity entity, int blastSize) {
+        super(world, entity);
         this.pickupStatus = PickupStatus.DISALLOWED;
         this.blastSize = blastSize;
     }
@@ -28,7 +30,7 @@ public class EntityExplosiveArrow extends EntityArrow {
     @Override
     protected void arrowHit(EntityLivingBase living) {
         if(!world.isRemote) {
-            world.createExplosion(this, living.posX, living.posY, living.posZ, shootingEntity instanceof EntityExplosiveSkeleton ? 2 : 1, false);
+            world.createExplosion(this, living.posX, living.posY, living.posZ, shootingEntity instanceof ExplosiveSkeletonEntity ? 2 : 1, false);
             setDead();
         }
     }

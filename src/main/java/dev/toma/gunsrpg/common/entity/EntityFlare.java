@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -24,10 +25,10 @@ public class EntityFlare extends Entity implements IEntityAdditionalSpawnData {
         setInvisible(true);
     }
 
-    public EntityFlare(World world, EntityPlayer owner) {
+    public EntityFlare(World world, PlayerEntity owner) {
         this(world);
-        setPosition(owner.posX, owner.posY, owner.posZ);
-        startHeight = (int) posY;
+        setPos(owner.getX(), owner.getY(), owner.getZ());
+        startHeight = (int) getY();
     }
 
     @Override
@@ -81,7 +82,7 @@ public class EntityFlare extends Entity implements IEntityAdditionalSpawnData {
             if(++timeWaiting >= 100) {
                 if(!world.isRemote) {
                     setDead();
-                    EntityAirdrop airdrop = new EntityAirdrop(world);
+                    AirdropEntity airdrop = new AirdropEntity(world);
                     airdrop.setPosition(posX, posY - 10, posZ);
                     world.spawnEntity(airdrop);
                     world.playSound(null, posX, posY - 130, posZ, GRPGSounds.PLANE_FLY_BY, SoundCategory.MASTER, 7.0F, 1.0F);

@@ -3,9 +3,13 @@ package dev.toma.gunsrpg.common.capability.object;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketUpdateSightData;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 
+/**
+ * @deprecated Move to config
+ */
+@Deprecated
 public class ScopeData {
 
     public static final ResourceLocation TEXTURES = GunsRPG.makeResource("textures/icons/sight.png");
@@ -19,12 +23,12 @@ public class ScopeData {
 
     public void updateType() {
         type = type + 1 > 2 ? 0 : type + 1;
-        NetworkManager.toServer(new SPacketUpdateSightData(type, color));
+        NetworkManager.sendServerPacket(new SPacketUpdateSightData(type, color));
     }
 
     public void updateColor() {
         color = color + 1 > 4 ? 0 : color + 1;
-        NetworkManager.toServer(new SPacketUpdateSightData(type, color));
+        NetworkManager.sendServerPacket(new SPacketUpdateSightData(type, color));
     }
 
     public int getType() {
@@ -51,15 +55,15 @@ public class ScopeData {
         return ((color + 1) * 16.0D) / 80.0D;
     }
 
-    public NBTTagCompound write() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("type", type);
-        nbt.setInteger("color", color);
+    public CompoundNBT write() {
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.putInt("type", type);
+        nbt.putInt("color", color);
         return nbt;
     }
 
-    public void read(NBTTagCompound nbt) {
-        type = nbt.getInteger("type");
-        color = nbt.getInteger("color");
+    public void read(CompoundNBT nbt) {
+        type = nbt.getInt("type");
+        color = nbt.getInt("color");
     }
 }

@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.block;
 import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.common.init.CommonRegistry;
 import net.minecraft.block.BlockOre;
+import net.minecraft.block.OreBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -10,7 +11,7 @@ import net.minecraft.item.Item;
 import java.util.Random;
 import java.util.function.Supplier;
 
-public class GRPGOre extends BlockOre {
+public class GRPGOre extends OreBlock {
 
     private final Supplier<Item> supplier;
     private final int min, max;

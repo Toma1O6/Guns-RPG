@@ -1,22 +1,20 @@
 package dev.toma.gunsrpg.client.animation;
 
 import com.google.gson.*;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
-import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.Pair;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
 public abstract class MultiStepAnimation extends TickableAnimation {
 
-    protected final List<Pair<Range, Animation>> steps = new ArrayList<>();
+    protected final List<Pair<Range, IAnimation>> steps = new ArrayList<>();
     protected int index;
-    private Pair<Range, Animation> current;
+    private Pair<Range, IAnimation> current;
 
     public MultiStepAnimation(int length) {
         super(length);
@@ -29,7 +27,7 @@ public abstract class MultiStepAnimation extends TickableAnimation {
 
     public abstract void createAnimationSteps();
 
-    public final void addStep(float from, float to, Animation animation) {
+    public final void addStep(float from, float to, IAnimation animation) {
         this.steps.add(Pair.of(new Range(from, to), animation));
     }
 
@@ -38,33 +36,33 @@ public abstract class MultiStepAnimation extends TickableAnimation {
     }
 
     @Override
-    public void animateItemHands(float partialTicks) {
-        current.getRight().animateItemHands(partialTicks);
+    public void animateItemHands(MatrixStack matrix, float partialTicks) {
+        current.getRight().animateItemHands(matrix, partialTicks);
     }
 
     @Override
-    public void animateHands(float partialTicks) {
-        current.getRight().animateHands(partialTicks);
+    public void animateHands(MatrixStack matrix, float partialTicks) {
+        current.getRight().animateHands(matrix, partialTicks);
     }
 
     @Override
-    public void animateRightArm(float partialTicks) {
-        current.getRight().animateRightArm(partialTicks);
+    public void animateRightArm(MatrixStack matrix, float partialTicks) {
+        current.getRight().animateRightArm(matrix, partialTicks);
     }
 
     @Override
-    public void animateLeftArm(float partialTicks) {
-        current.getRight().animateLeftArm(partialTicks);
+    public void animateLeftArm(MatrixStack matrix, float partialTicks) {
+        current.getRight().animateLeftArm(matrix, partialTicks);
     }
 
     @Override
-    public void animateItem(float partialTicks) {
-        current.getRight().animateItem(partialTicks);
+    public void animateItem(MatrixStack matrix, float partialTicks) {
+        current.getRight().animateItem(matrix, partialTicks);
     }
 
     @Override
-    public void renderTick(float partialTicks, TickEvent.Phase phase) {
-        current.getRight().renderTick(partialTicks, phase);
+    public void frameTick(float partialTicks) {
+        current.getRight().frameTick(partialTicks);
     }
 
     @Override
@@ -72,7 +70,7 @@ public abstract class MultiStepAnimation extends TickableAnimation {
         super.update();
         float f = 1.0F - this.getCurrentProgress();
         Range range = current.getLeft();
-        Animation animation = current.getRight();
+        IAnimation animation = current.getRight();
         if(range.isIn(f)) {
             animation.clientTick();
             float f1 = range.getProgress(f);
@@ -94,25 +92,8 @@ public abstract class MultiStepAnimation extends TickableAnimation {
         return index == steps.size() - 1;
     }
 
-    public List<Pair<Range, Animation>> getSteps() {
+    public List<Pair<Range, IAnimation>> getSteps() {
         return steps;
-    }
-
-    public static class Configurable extends MultiStepAnimation {
-        private final String fileName;
-
-        public Configurable(int time, String fileName) {
-            super(time);
-            this.fileName = fileName;
-            this.init();
-        }
-
-        @Override
-        public void createAnimationSteps() {
-            for(Pair<Range, Supplier<SimpleAnimation>> pair : ModUtils.getNonnullFromMap(AnimationManager.SCRIPT_ANIMATIONS, this.fileName, Collections.emptyList())) {
-                this.addStep(pair.getLeft(), pair.getRight());
-            }
-        }
     }
 
     public static class Range {

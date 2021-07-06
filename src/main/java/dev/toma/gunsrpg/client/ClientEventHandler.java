@@ -1,16 +1,15 @@
 package dev.toma.gunsrpg.client;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.animation.AnimationManager;
+import dev.toma.gunsrpg.client.animation.AnimationProcessor;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IHandRenderer;
 import dev.toma.gunsrpg.client.animation.impl.SprintingAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import dev.toma.gunsrpg.common.capability.object.DebuffData;
-import dev.toma.gunsrpg.common.capability.object.GunData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
-import dev.toma.gunsrpg.common.capability.object.ScopeData;
+import dev.toma.gunsrpg.common.capability.object.*;
 import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.init.GRPGItems;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -22,53 +21,62 @@ import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.interfaces.OverlayRenderer;
 import dev.toma.gunsrpg.config.GRPGConfig;
+import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
 import dev.toma.gunsrpg.network.packet.SPacketShoot;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.object.ShootingManager;
+import net.minecraft.client.GameSettings;
+import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.item.Items;
+import net.minecraft.util.Hand;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderSpecificHandEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = GunsRPG.MODID)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = GunsRPG.MODID)
 public class ClientEventHandler {
 
     public static final ResourceLocation SCOPE = GunsRPG.makeResource("textures/icons/scope_overlay.png");
     public static final ResourceLocation SCOPE_OVERLAY = GunsRPG.makeResource("textures/icons/scope_full.png");
-    private static final RisingEdgeChecker startSprintListener = new RisingEdgeChecker(() -> {
-        EntityPlayer player = Minecraft.getMinecraft().player;
-        ItemStack stack = player.getHeldItemMainhand();
-        if (stack.getItem() instanceof GunItem && !PlayerDataFactory.get(player).getReloadInfo().isReloading()) {
-            AnimationManager.sendNewAnimation(Animations.SPRINT, new SprintingAnimation());
-        }
-    }, EntityPlayer::isSprinting);
-    public static OptionalObject<Float> preAimFov = OptionalObject.empty();
-    public static OptionalObject<Float> preAimSens = OptionalObject.empty();
+    private static final ChangeDetector startSprintListener = new ChangeDetector(() -> {
+        PlayerEntity player = Minecraft.getInstance().player;
+        ItemStack stack = player.getMainHandItem();
+        LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+        optional.ifPresent(data -> {
+            if (stack.getItem() instanceof GunItem && !data.getReloadInfo().isReloading())
+                ClientSideManager.processor().play(Animations.SPRINT, new SprintingAnimation());
+        });
+    }, PlayerEntity::isSprinting);
+    public static OptionalObject<Double> preAimFov = OptionalObject.empty();
+    public static OptionalObject<Double> preAimSens = OptionalObject.empty();
     static boolean burst;
     static int shotsLeft = 2;
     public static int shootDelay;
@@ -76,25 +84,28 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void cancelOverlays(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
-            EntityPlayer player = Minecraft.getMinecraft().player;
-            ScaledResolution resolution = event.getResolution();
-            ItemStack stack = player.getHeldItemMainhand();
+            Minecraft mc = Minecraft.getInstance();
+            PlayerEntity player = mc.player;
+            MainWindow window = event.getWindow();
+            ItemStack stack = player.getMainHandItem();
             if (stack.getItem() instanceof GunItem) {
                 event.setCanceled(true);
                 PlayerData data = PlayerDataFactory.get(player);
+                int windowWidth = window.getGuiScaledWidth();
+                int windowHeight = window.getGuiScaledHeight();
                 if (data.getAimInfo().progress >= 0.9F) {
                     if (stack.getItem() == GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE) || stack.getItem() == GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
-                        if (GRPGConfig.clientConfig.scopeRenderer.isTextureOverlay()) {
-                            ModUtils.renderTexture(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(), SCOPE_OVERLAY);
+                        if (GRPGConfig.clientConfig.scopeRenderer.get() == ScopeRenderer.TEXTURE) {
+                            ModUtils.renderTexture(0, 0, windowWidth, windowHeight, SCOPE_OVERLAY);
                         } else {
-                            int left = resolution.getScaledWidth() / 2 - 16;
-                            int top = resolution.getScaledHeight() / 2 - 16;
+                            int left = window.getGuiScaledWidth() / 2 - 16;
+                            int top = window.getGuiScaledHeight() / 2 - 16;
                             ModUtils.renderTexture(left, top, left + 32, top + 32, SCOPE);
                         }
                     } else if ((PlayerDataFactory.hasActiveSkill(player, Skills.SMG_RED_DOT) && stack.getItem() == GRPGItems.SMG) || (PlayerDataFactory.hasActiveSkill(player, Skills.AR_RED_DOT) && stack.getItem() == GRPGItems.ASSAULT_RIFLE)) {
                         ScopeData scopeData = data.getScopeData();
-                        float left = resolution.getScaledWidth() / 2f - 8f;
-                        float top = resolution.getScaledHeight() / 2f - 8f;
+                        float left = windowWidth / 2f - 8f;
+                        float top = windowHeight / 2f - 8f;
                         float x2 = left + 16;
                         float y2 = top + 16;
                         double us = scopeData.getTexStartX();
@@ -102,7 +113,7 @@ public class ClientEventHandler {
                         double ue = scopeData.getTexEndX();
                         double ve = scopeData.getTexEndY();
                         //draw red dot
-                        Minecraft.getMinecraft().getTextureManager().bindTexture(ScopeData.TEXTURES);
+                        mc.getTextureManager().bind(ScopeData.TEXTURES);
                         GlStateManager.enableBlend();
                         Tessellator tessellator = Tessellator.getInstance();
                         BufferBuilder builder = tessellator.getBuffer();
@@ -122,101 +133,103 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void renderOverlay(RenderGameOverlayEvent.Post event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-            Minecraft mc = Minecraft.getMinecraft();
-            EntityPlayer player = mc.player;
-            PlayerData data = PlayerDataFactory.get(player);
-            FontRenderer renderer = mc.fontRenderer;
-            long day = player.world.getWorldTime() / 24000L;
-            int cycle = GRPGConfig.worldConfig.bloodmoonCycle;
-            ScaledResolution resolution = event.getResolution();
-            if (cycle >= 0) {
-                boolean b = day % cycle == 0 && day > 0;
-                long l = b ? 0 : cycle - day % cycle;
-                String remainingDays = l + "";
-                mc.fontRenderer.drawStringWithShadow(remainingDays, resolution.getScaledWidth() - 10 - mc.fontRenderer.getStringWidth(remainingDays) / 2f, 6, b ? 0xff0000 : l > 0 && l < 3 ? 0xffff00 : 0xffffff);
-            }
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            ItemStack stack = player.getHeldItemMainhand();
-            int width = 26;
-            int x = resolution.getScaledWidth() - width - 34;
-            int y = resolution.getScaledHeight() - 22;
-            PlayerSkills skills = data.getSkills();
-            if (stack.getItem() instanceof GunItem) {
-                GunItem gun = (GunItem) stack.getItem();
-                GunData gunData = skills.getGunData((GunItem) stack.getItem());
-                int gunKills = gunData.getKills();
-                int gunRequiredKills = gunData.getRequiredKills();
-                int ammo = gun.getAmmo(stack);
-                int max = gun.getMaxAmmo(player);
-                float f = gunData.isAtMaxLevel() ? 1.0F : gunKills / (float) gunRequiredKills;
-                ItemAmmo itemAmmo = ItemAmmo.getAmmoFor(gun, stack);
-                if (itemAmmo != null) {
-                    int c = 0;
-                    for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                        ItemStack itemStack = player.inventory.getStackInSlot(i);
-                        if (itemStack.getItem() instanceof IAmmoProvider) {
-                            IAmmoProvider ammoProvider = (IAmmoProvider) itemStack.getItem();
-                            if (ammoProvider.getMaterial() == itemAmmo.getMaterial() && ammoProvider.getAmmoType() == itemAmmo.getAmmoType()) {
-                                c += itemStack.getCount();
+            Minecraft mc = Minecraft.getInstance();
+            PlayerEntity player = mc.player;
+            LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+            optional.ifPresent(data -> {
+                FontRenderer renderer = mc.font;
+                long day = player.level.getGameTime() / 24000L;
+                int cycle = GRPGConfig.worldConfig.bloodmoonCycle.get();
+                MainWindow window = event.getWindow();
+                if (cycle >= 0) {
+                    boolean b = day % cycle == 0 && day > 0;
+                    long l = b ? 0 : cycle - day % cycle;
+                    String remainingDays = l + "";
+                    mc.font.draw(remainingDays, window.getGuiScaledWidth() - 10 - mc.font.width(remainingDays) / 2f, 6, b ? 0xff0000 : l > 0 && l < 3 ? 0xffff00 : 0xffffff);
+                }
+                RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+                ItemStack stack = player.getMainHandItem();
+                int width = 26;
+                int x = window.getGuiScaledWidth() - width - 34;
+                int y = window.getGuiScaledHeight() - 22;
+                PlayerSkills skills = data.getSkills();
+                if (stack.getItem() instanceof GunItem) {
+                    GunItem gun = (GunItem) stack.getItem();
+                    GunData gunData = skills.getGunData((GunItem) stack.getItem());
+                    int gunKills = gunData.getKills();
+                    int gunRequiredKills = gunData.getRequiredKills();
+                    int ammo = gun.getAmmo(stack);
+                    int max = gun.getMaxAmmo(player);
+                    float f = gunData.isAtMaxLevel() ? 1.0F : gunKills / (float) gunRequiredKills;
+                    ItemAmmo itemAmmo = ItemAmmo.getAmmoFor(gun, stack);
+                    if (itemAmmo != null) {
+                        int c = 0;
+                        for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+                            ItemStack itemStack = player.inventory.getItem(i);
+                            if (itemStack.getItem() instanceof IAmmoProvider) {
+                                IAmmoProvider ammoProvider = (IAmmoProvider) itemStack.getItem();
+                                if (ammoProvider.getMaterial() == itemAmmo.getMaterial() && ammoProvider.getAmmoType() == itemAmmo.getAmmoType()) {
+                                    c += itemStack.getCount();
+                                }
                             }
                         }
+                        String text = ammo + " / " + c;
+                        width = renderer.width(text);
+                        x = window.getGuiScaledWidth() - width - 34;
+                        ModUtils.renderColor(x, y, x + width + 22, y + 7, 0.0F, 0.0F, 0.0F, 1.0F);
+                        ModUtils.renderColor(x + 2, y + 2, x + (int) (f * (width + 20)), y + 5, 1.0F, 1.0F, 0.0F, 1.0F);
+                        mc.getItemRenderer().renderGuiItem(new ItemStack(itemAmmo), x, y - 18);
+                        mc.font.draw(text, x + 19, y - 14, 0xffffff);
                     }
-                    String text = ammo + " / " + c;
-                    width = renderer.getStringWidth(text);
-                    x = resolution.getScaledWidth() - width - 34;
-                    ModUtils.renderColor(x, y, x + width + 22, y + 7, 0.0F, 0.0F, 0.0F, 1.0F);
-                    ModUtils.renderColor(x + 2, y + 2, x + (int) (f * (width + 20)), y + 5, 1.0F, 1.0F, 0.0F, 1.0F);
-                    mc.getRenderItem().renderItemIntoGUI(new ItemStack(itemAmmo), x, y - 18);
-                    mc.fontRenderer.drawStringWithShadow(text, x + 19, y - 14, 0xffffff);
                 }
-            }
-            int kills = skills.getKills();
-            int required = skills.getRequiredKills();
-            float levelProgress = skills.isMaxLevel() ? 1.0F : kills / (float) required;
-            ModUtils.renderColor(x, y + 10, x + width + 22, y + 17, 0.0F, 0.0F, 0.0F, 1.0F);
-            ModUtils.renderColor(x + 2, y + 12, x + (int) (levelProgress * (width + 20)), y + 15, 0.0F, 1.0F, 1.0F, 1.0F);
-            if (data != null) {
-                DebuffData debuffData = data.getDebuffData();
-                int offset = 0;
-                for (Debuff debuff : debuffData.getDebuffs()) {
-                    if (debuff == null) continue;
-                    int yStart = event.getResolution().getScaledHeight() + GRPGConfig.clientConfig.debuffOverlay.y - 50;
-                    debuff.draw(GRPGConfig.clientConfig.debuffOverlay.x, yStart + offset * 18, 50, 18, event.getPartialTicks(), renderer);
-                    ++offset;
+                int kills = skills.getKills();
+                int required = skills.getRequiredKills();
+                float levelProgress = skills.isMaxLevel() ? 1.0F : kills / (float) required;
+                ModUtils.renderColor(x, y + 10, x + width + 22, y + 17, 0.0F, 0.0F, 0.0F, 1.0F);
+                ModUtils.renderColor(x + 2, y + 12, x + (int) (levelProgress * (width + 20)), y + 15, 0.0F, 1.0F, 1.0F, 1.0F);
+                if (data != null) {
+                    DebuffData debuffData = data.getDebuffData();
+                    int offset = 0;
+                    for (Debuff debuff : debuffData.getDebuffs()) {
+                        if (debuff == null) continue;
+                        int yStart = window.getGuiScaledHeight() + GRPGConfig.clientConfig.debuffOverlay.getY() - 50;
+                        debuff.draw(GRPGConfig.clientConfig.debuffOverlay.getX(), yStart + offset * 18, 50, 18, event.getPartialTicks(), renderer);
+                        ++offset;
+                    }
                 }
-            }
-            int renderIndex = 0;
-            List<ISkill> list = skills.getUnlockedSkills().get(SkillCategory.SURVIVAL);
-            if (list == null) return;
-            int left = 5;
-            int top = resolution.getScaledHeight() - 25;
-            List<ISkill> renderSkills = new ArrayList<>();
-            for (ISkill skill : list) {
-                if (skill instanceof OverlayRenderer) {
-                    skill = SkillUtil.getBestSkillFromOverrides(skill, player);
-                    if(!renderSkills.contains(skill)) renderSkills.add(skill);
+                int renderIndex = 0;
+                List<ISkill> list = skills.getUnlockedSkills().get(SkillCategory.SURVIVAL);
+                if (list == null) return;
+                int left = 5;
+                int top = window.getGuiScaledHeight() - 25;
+                List<ISkill> renderSkills = new ArrayList<>();
+                for (ISkill skill : list) {
+                    if (skill instanceof OverlayRenderer) {
+                        skill = SkillUtil.getBestSkillFromOverrides(skill, player);
+                        if (!renderSkills.contains(skill)) renderSkills.add(skill);
+                    }
                 }
-            }
-            for(ISkill skill : renderSkills) {
-                OverlayRenderer overlayRenderer = (OverlayRenderer) skill;
-                if(skill.apply(player) && overlayRenderer.shouldRenderOnHUD()) {
-                    overlayRenderer.renderInHUD(skill, renderIndex, left, top);
-                    ++renderIndex;
+                for (ISkill skill : renderSkills) {
+                    OverlayRenderer overlayRenderer = (OverlayRenderer) skill;
+                    if (skill.apply(player) && overlayRenderer.shouldRenderOnHUD()) {
+                        overlayRenderer.renderInHUD(skill, renderIndex, left, top);
+                        ++renderIndex;
+                    }
                 }
-            }
+            });
         }
     }
 
     @SubscribeEvent
     public static void mouseInputEvent(InputEvent.MouseInputEvent event) {
-        Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayer player = mc.player;
-        GameSettings settings = mc.gameSettings;
+        Minecraft mc = Minecraft.getInstance();
+        PlayerEntity player = mc.player;
+        GameSettings settings = mc.options;
         if (player != null) {
             GunItem item = ShootingManager.getGunFrom(player);
-            ItemStack stack = player.getHeldItemMainhand();
+            ItemStack stack = player.getMainHandItem();
             if (item != null) {
-                if (settings.keyBindAttack.isPressed()) {
+                if (settings.keyAttack.isDown()) {
                     Firemode firemode = item.getFiremode(stack);
                     if (firemode == Firemode.SINGLE && ShootingManager.canShoot(player, stack)) {
                         shoot(player, stack);
@@ -226,89 +239,116 @@ public class ClientEventHandler {
                             shotsLeft = 2;
                         }
                     }
-                } else if (settings.keyBindUseItem.isPressed() && AnimationManager.getAnimationByID(Animations.REBOLT) == null && !player.isSprinting()) {
-                    boolean aim = !PlayerDataFactory.get(player).getAimInfo().aiming;
+                } else if (settings.keyUse.isDown() && ClientSideManager.processor().getByID(Animations.REBOLT) == null && !player.isSprinting()) {
+                    LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+                    boolean aim = optional.isPresent() && optional.orElse(null).getAimInfo().aiming;
                     if (aim) {
-                        preAimFov.map(settings.fovSetting);
-                        preAimSens.map(settings.mouseSensitivity);
+                        preAimFov.map(settings.fov);
+                        preAimSens.map(settings.sensitivity);
                         if (item == GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE)) {
-                            settings.mouseSensitivity = preAimSens.get() * 0.3F;
-                            settings.fovSetting = 15.0F;
+                            settings.sensitivity = preAimSens.get() * 0.3F;
+                            settings.fov = 15.0F;
                         } else if (item == GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
-                            settings.mouseSensitivity = preAimSens.get() * 0.4F;
-                            settings.fovSetting = 25.0F;
+                            settings.sensitivity = preAimSens.get() * 0.4F;
+                            settings.fov = 25.0F;
                         }
-                        AnimationManager.sendNewAnimation(Animations.AIMING, item.createAimAnimation());
+                        ClientSideManager.processor().play(Animations.AIMING, item.createAimAnimation());
                     } else {
-                        preAimFov.ifPresent(value -> settings.fovSetting = value);
-                        preAimSens.ifPresent(value -> settings.mouseSensitivity = value);
+                        preAimFov.ifPresent(value -> settings.fov = value);
+                        preAimSens.ifPresent(value -> settings.sensitivity = value);
                     }
-                    NetworkManager.toServer(new SPacketSetAiming(aim));
+                    NetworkManager.sendServerPacket(new SPacketSetAiming(aim));
                 }
             }
         }
     }
 
     @SubscribeEvent
-    public static void renderHandEvent(RenderSpecificHandEvent event) {
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
+    public static void renderHandEvent(RenderHandEvent event) {
+        ClientPlayerEntity player = Minecraft.getInstance().player;
         ItemStack stack = event.getItemStack();
-        if(event.getHand() == EnumHand.OFF_HAND) {
-            if(event.getItemStack().getItem() == Items.SHIELD && player.getHeldItemMainhand().getItem() instanceof GunItem) {
+        if (event.getHand() == Hand.OFF_HAND) {
+            if (event.getItemStack().getItem() == Items.SHIELD && player.getMainHandItem().getItem() instanceof GunItem) {
                 event.setCanceled(true);
             }
         }
-        if (PlayerDataFactory.get(player).getAimInfo().isAiming() && GRPGConfig.clientConfig.scopeRenderer.isTextureOverlay() && (PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE) && stack.getItem() == GRPGItems.SNIPER_RIFLE || PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) && stack.getItem() == GRPGItems.CROSSBOW)) {
+        LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+        if (!optional.isPresent()) {
             event.setCanceled(true);
             return;
+        } else {
+            PlayerData data = optional.orElse(null);
+            AimInfo info = data.getAimInfo();
+            ScopeRenderer renderer = GRPGConfig.clientConfig.scopeRenderer.get();
+            Item item = stack.getItem();
+            if (info.isAiming() && renderer == ScopeRenderer.TEXTURE && (PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE) && item == GRPGItems.SNIPER_RIFLE || PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) && item == GRPGItems.CROSSBOW)) {
+                event.setCanceled(true);
+                return;
+            }
         }
         float partial = event.getPartialTicks();
         if (stack.getItem() instanceof IHandRenderer) {
+            IHandRenderer iHandRenderer = (IHandRenderer) stack.getItem();
             event.setCanceled(true);
-            float pitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * event.getPartialTicks();
-            float swing = event.getSwingProgress();
+            Minecraft mc = Minecraft.getInstance();
+            FirstPersonRenderer fpRenderer = mc.getItemInHandRenderer();
+            boolean mainHand = event.getHand() == Hand.MAIN_HAND;
+            ItemCameraTransforms.TransformType transformType = mainHand ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
             float equip = event.getEquipProgress();
-            GlStateManager.pushMatrix();
-            AnimationManager.renderingDualWield = false;
-            AnimationManager.animateItemHands(partial);
-            GlStateManager.pushMatrix();
-            AnimationManager.animateHands(partial);
-            renderGunFirstPerson(event.getEquipProgress(), (IHandRenderer) event.getItemStack().getItem(), partial);
-            GlStateManager.popMatrix();
-            AnimationManager.animateItem(partial);
-            if (!AnimationManager.shouldCancelItemRender())
-                Minecraft.getMinecraft().getItemRenderer().renderItemInFirstPerson(player, partial, pitch, EnumHand.MAIN_HAND, swing, stack, equip);
-            GlStateManager.popMatrix();
+            MatrixStack matrix = event.getMatrixStack();
+            IRenderTypeBuffer buffer = event.getBuffers();
+            int packedLight = event.getLight();
+            AnimationProcessor processor = ClientSideManager.processor();
+
+            matrix.pushPose();
+            {
+                processor.setDualWieldRender(false);
+                processor.processItemAndHands(partial);
+                matrix.pushPose();
+                {
+                    processor.processHands(partial);
+                    renderAnimatedItemFP(matrix, buffer, packedLight, equip, iHandRenderer, partial, processor);
+                }
+                matrix.popPose();
+                processor.processItem(partial);
+                if (!processor.blocksItemRender())
+                    fpRenderer.renderItem(player, stack, transformType, !mainHand, matrix, buffer, packedLight);
+            }
+            matrix.popPose();
+
             if (stack.getItem() == GRPGItems.PISTOL && PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD)) {
-                GlStateManager.pushMatrix();
-                AnimationManager.renderingDualWield = true;
-                AnimationManager.animateItemHands(partial);
-                GlStateManager.pushMatrix();
-                AnimationManager.animateHands(partial);
-                renderGunFirstPerson(event.getEquipProgress(), (IHandRenderer) event.getItemStack().getItem(), partial);
-                GlStateManager.popMatrix();
-                AnimationManager.animateItem(partial);
-                Minecraft.getMinecraft().getItemRenderer().renderItemInFirstPerson(player, partial, pitch, EnumHand.OFF_HAND, swing, stack, equip);
-                GlStateManager.popMatrix();
+                matrix.pushPose();
+                {
+                    processor.setDualWieldRender(true);
+                    processor.processItemAndHands(partial);
+                    matrix.pushPose();
+                    {
+                        processor.processHands(partial);
+                        renderAnimatedItemFP(matrix, buffer, packedLight, equip, iHandRenderer, partial, processor);
+                    }
+                    matrix.popPose();
+                    processor.processItem(partial);
+                    fpRenderer.renderItem(player, stack, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, true, matrix, buffer, packedLight);
+                }
+                matrix.popPose();
             }
         }
     }
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
-        Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayer player = mc.player;
+        Minecraft mc = Minecraft.getInstance();
+        PlayerEntity player = mc.player;
         if (event.phase == TickEvent.Phase.END && player != null) {
-            if(shootDelay > 0)
+            if (shootDelay > 0)
                 --shootDelay;
-            AnimationManager.tick();
+            ClientSideManager.processor().tick();
             startSprintListener.update(player);
-            GameSettings settings = mc.gameSettings;
+            GameSettings settings = mc.options;
             if (burst) {
                 if (shotsLeft > 0) {
-                    ItemStack stack = player.getHeldItemMainhand();
+                    ItemStack stack = player.getMainHandItem();
                     if (stack.getItem() instanceof GunItem) {
-                        GunItem gun = (GunItem) stack.getItem();
                         if (shootDelay == 0) {
                             if (ShootingManager.canShoot(player, stack)) {
                                 shoot(player, stack);
@@ -317,11 +357,11 @@ public class ClientEventHandler {
                         }
                     }
                 } else burst = false;
-            } else if(settings.keyBindAttack.isKeyDown()) {
-                ItemStack stack = player.getHeldItemMainhand();
-                if(stack.getItem() instanceof GunItem) {
+            } else if (settings.keyAttack.isDown()) {
+                ItemStack stack = player.getMainHandItem();
+                if (stack.getItem() instanceof GunItem) {
                     GunItem gun = (GunItem) stack.getItem();
-                    if(gun.getFiremode(stack) == Firemode.FULL_AUTO && shootDelay == 0 && ShootingManager.canShoot(player, stack)) {
+                    if (gun.getFiremode(stack) == Firemode.FULL_AUTO && shootDelay == 0 && ShootingManager.canShoot(player, stack)) {
                         shoot(player, stack);
                     }
                 }
@@ -331,53 +371,85 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void onRenderTick(TickEvent.RenderTickEvent event) {
-        AnimationManager.renderTick(event.renderTickTime, event.phase);
+        if (event.phase == TickEvent.Phase.START)
+            ClientSideManager.processor().processFrame(event.renderTickTime);
     }
 
-    private static void renderGunFirstPerson(float equipProgress, IHandRenderer handRenderer, float partial) {
-        float yOff = 0.5F * equipProgress;
-        GlStateManager.pushMatrix();
-        GlStateManager.disableCull();
+    private static void renderAnimatedItemFP(MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, float equipProgress, IHandRenderer handRenderer, float partial, AnimationProcessor processor) {
+        float yOff = -0.5F * equipProgress;
+        RenderSystem.disableCull();
+        stack.pushPose();
         {
-            GlStateManager.translate(0, -yOff, 0);
-            GlStateManager.pushMatrix();
+            stack.translate(0, yOff, 0);
+            stack.pushPose();
             {
-                AnimationManager.animateRightArm(partial);
-                handRenderer.renderRightArm();
+                processor.processRightHand(partial);
+                renderHand(stack, HandSide.RIGHT, handRenderer, buffer, packedLight);
             }
-            GlStateManager.popMatrix();
-            GlStateManager.pushMatrix();
+            stack.popPose();
+            stack.pushPose();
             {
-                AnimationManager.animateLeftArm(partial);
-                handRenderer.renderLeftArm();
+                processor.processLeftHand(partial);
+                renderHand(stack, HandSide.LEFT, handRenderer, buffer, packedLight);
             }
-            GlStateManager.popMatrix();
+            stack.popPose();
         }
-        GlStateManager.popMatrix();
-        GlStateManager.enableCull();
+        stack.popPose();
+        RenderSystem.enableCull();
     }
 
-    private static void shoot(EntityPlayer player, ItemStack stack) {
+    private static void shoot(PlayerEntity player, ItemStack stack) {
         GunItem gun = (GunItem) stack.getItem();
-        player.rotationPitch -= gun.getVerticalRecoil(player);
-        player.rotationYaw += gun.getHorizontalRecoil(player);
-        NetworkManager.toServer(new SPacketShoot(gun));
+        player.xRot -= gun.getVerticalRecoil(player);
+        player.yRot += gun.getHorizontalRecoil(player);
+        NetworkManager.sendServerPacket(new SPacketShoot(gun));
         gun.onShoot(player, stack);
         shootDelay = gun.getFirerate(player);
     }
 
-    private static class RisingEdgeChecker {
+    private static void renderHand(MatrixStack stack, HandSide side, IHandRenderer renderer, IRenderTypeBuffer buffer, int packedLight) {
+        if (!renderer.shouldRenderForSide(side))
+            return;
+        boolean rightArm = side == HandSide.RIGHT;
 
-        private final Function<EntityPlayer, Boolean> stateGetter;
+        if (rightArm)
+            renderer.transformRightArm(stack);
+        else
+            renderer.transformLeftArm(stack);
+
+        Minecraft mc = Minecraft.getInstance();
+        mc.getTextureManager().bind(mc.player.getSkinTextureLocation());
+        EntityRenderer<? super ClientPlayerEntity> entityRenderer = mc.getEntityRenderDispatcher().getRenderer(mc.player);
+        PlayerRenderer playerRenderer = (PlayerRenderer) entityRenderer;
+
+        stack.pushPose();
+        {
+            stack.mulPose(Vector3f.YP.rotationDegrees(40.0F));
+            stack.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
+            if (rightArm) {
+                stack.translate(0.8F, -0.3F, -0.4F);
+                playerRenderer.renderRightHand(stack, buffer, packedLight, mc.player);
+            } else {
+                stack.translate(-0.5F, 0.6F, -0.36F);
+                playerRenderer.renderLeftHand(stack, buffer, packedLight, mc.player);
+            }
+            stack.mulPose(Vector3f.ZP.rotationDegrees(-41.0F));
+        }
+        stack.popPose();
+    }
+
+    private static class ChangeDetector {
+
+        private final Function<PlayerEntity, Boolean> stateGetter;
         private final Runnable onChange;
         private boolean lastState;
 
-        public RisingEdgeChecker(Runnable onChange, Function<EntityPlayer, Boolean> stateGetter) {
+        public ChangeDetector(Runnable onChange, Function<PlayerEntity, Boolean> stateGetter) {
             this.onChange = onChange;
             this.stateGetter = stateGetter;
         }
 
-        public void update(EntityPlayer player) {
+        public void update(PlayerEntity player) {
             boolean current = stateGetter.apply(player);
             if (!lastState && current) {
                 onChange.run();

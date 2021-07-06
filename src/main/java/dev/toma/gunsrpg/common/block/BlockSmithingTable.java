@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.block;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.tileentity.TileEntitySmithingTable;
+import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
 import dev.toma.gunsrpg.util.GuiHandler;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -29,8 +29,8 @@ public class BlockSmithingTable extends GRPGBlock {
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if(tileEntity instanceof TileEntitySmithingTable) {
-            InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntitySmithingTable) tileEntity);
+        if(tileEntity instanceof SmithingTableTileEntity) {
+            InventoryHelper.dropInventoryItems(worldIn, pos, (SmithingTableTileEntity) tileEntity);
         }
         super.breakBlock(worldIn, pos, state);
     }
@@ -51,6 +51,6 @@ public class BlockSmithingTable extends GRPGBlock {
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntitySmithingTable();
+        return new SmithingTableTileEntity();
     }
 }

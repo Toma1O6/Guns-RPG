@@ -1,10 +1,11 @@
 package dev.toma.gunsrpg.client.model;
 
-import dev.toma.gunsrpg.common.entity.EntityBloodmoonGolem;
+import dev.toma.gunsrpg.common.entity.BloodmoonGolemEntity;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 
 public class ModelBloodmoonGolem extends ModelBase {
 
@@ -68,8 +69,8 @@ public class ModelBloodmoonGolem extends ModelBase {
         this.ironGolemRightLeg.rotateAngleY = 0.0F;
     }
 
-    public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
-        EntityBloodmoonGolem entityirongolem = (EntityBloodmoonGolem) entitylivingbaseIn;
+    public void setLivingAnimations(LivingEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
+        BloodmoonGolemEntity entityirongolem = (BloodmoonGolemEntity) entitylivingbaseIn;
         int i = entityirongolem.getAttackTimer();
         if (i > 0) {
             this.ironGolemRightArm.rotateAngleX = -2.0F + 1.5F * this.triangleWave((float) i - partialTickTime, 10.0F);

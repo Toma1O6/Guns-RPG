@@ -1,43 +1,34 @@
 package dev.toma.gunsrpg.config;
 
+import dev.toma.configuration.api.Config;
+import dev.toma.configuration.api.IConfigPlugin;
+import dev.toma.configuration.api.IConfigWriter;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.config.client.ClientConfiguration;
 import dev.toma.gunsrpg.config.debuff.DebuffConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfig;
 import dev.toma.gunsrpg.config.world.WorldConfiguration;
-import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Config(modid = GunsRPG.MODID, name = "GunsRPG Config")
-public class GRPGConfig {
+@Config
+public class GRPGConfig implements IConfigPlugin {
 
-    @Config.Name("Client")
-    @Config.Comment({"Contains all client related stuff", "For example overlay settings"})
-    public static ClientConfiguration clientConfig = new ClientConfiguration();
+    public static ClientConfiguration clientConfig;
+    public static WorldConfiguration worldConfig;
+    public static WeaponConfig weaponConfig;
+    public static DebuffConfig debuffConfig;
+    public static SkillsConfig skillConfig;
 
-    @Config.Name("World")
-    @Config.Comment("Contains world related stuff like ore gen")
-    public static WorldConfiguration worldConfig = new WorldConfiguration();
+    @Override
+    public void buildConfig(IConfigWriter writer) {
+        clientConfig = writer.writeObject(ClientConfiguration::new, "Client", "Contains all client related stuff", "Example: Overlay settings");
+        worldConfig = writer.writeObject(WorldConfiguration::new, "World", "Contains world related stuff like ore gen");
+        weaponConfig = writer.writeObject(WeaponConfig::new, "Weapons", "Contains all gun related stuff");
+        debuffConfig = writer.writeObject(DebuffConfig::new, "Debuffs", "Allows you to blacklist specific debuffs");
+        skillConfig = writer.writeObject(SkillsConfig::new, "Skills", "Allows you to modify some skills");
+    }
 
-    @Config.Name("Weapon")
-    @Config.Comment("Contains all weapon related stuff - damage, velocity...")
-    public static WeaponConfig weaponConfig = new WeaponConfig();
-
-    @Config.Name("Debuffs")
-    @Config.Comment("Allows you to blacklist specific debuffs")
-    public static DebuffConfig debuffConfig = new DebuffConfig();
-
-    @Mod.EventBusSubscriber
-    public static class EventHandler {
-
-        @SubscribeEvent
-        public static void onConfigUpdate(ConfigChangedEvent event) {
-            if (event.getModID().equals(GunsRPG.MODID)) {
-                ConfigManager.sync(GunsRPG.MODID, Config.Type.INSTANCE);
-            }
-        }
+    @Override
+    public String getModID() {
+        return GunsRPG.MODID;
     }
 }

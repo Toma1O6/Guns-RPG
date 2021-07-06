@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.skills;
 
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityFlare;
 import dev.toma.gunsrpg.common.init.GRPGSounds;
@@ -8,8 +9,8 @@ import dev.toma.gunsrpg.common.skills.interfaces.Clickable;
 import dev.toma.gunsrpg.common.skills.interfaces.Cooldown;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSkillClicked;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
 
 public class GodHelpUsSkill extends BasicSkill implements Cooldown, Clickable {
@@ -23,25 +24,25 @@ public class GodHelpUsSkill extends BasicSkill implements Cooldown, Clickable {
     }
 
     @Override
-    public boolean apply(EntityPlayer user) {
+    public boolean apply(PlayerEntity user) {
         return currentCooldown == 0;
     }
 
     @Override
-    public void onUse(EntityPlayer player) {
+    public void onUse(PlayerEntity player) {
     }
 
     @Override
     public void clientHandleClicked() {
-        NetworkManager.toServer(new SPacketSkillClicked(this.getType()));
+        NetworkManager.sendServerPacket(new SPacketSkillClicked(this.getType()));
     }
 
     @Override
-    public void clicked(EntityPlayer player) {
+    public void clicked(PlayerEntity player) {
         currentCooldown = maxCooldown;
-        player.world.playSound(null, player.posX, player.posY, player.posZ, GRPGSounds.FLARE_SHOOT, SoundCategory.MASTER, 10.0F, 1.0F);
-        player.world.spawnEntity(new EntityFlare(player.world, player));
-        PlayerDataFactory.get(player).sync();
+        player.level.playSound(null, player.getX(), player.getY(), player.getZ(), GRPGSounds.FLARE_SHOOT, SoundCategory.MASTER, 10.0F, 1.0F);
+        player.level.addFreshEntity(new EntityFlare(player.level, player));
+        PlayerDataFactory.get(player).ifPresent(PlayerData::sync);
     }
 
     @Override
@@ -60,17 +61,17 @@ public class GodHelpUsSkill extends BasicSkill implements Cooldown, Clickable {
     }
 
     @Override
-    public void onUpdate(EntityPlayer player) {
+    public void onUpdate(PlayerEntity player) {
         if(currentCooldown > 0) --currentCooldown;
     }
 
     @Override
-    public void writeExtra(NBTTagCompound nbt) {
-        nbt.setInteger("cooldown", currentCooldown);
+    public void writeExtra(CompoundNBT nbt) {
+        nbt.putInt("cooldown", currentCooldown);
     }
 
     @Override
-    public void readExtra(NBTTagCompound nbt) {
-        currentCooldown = nbt.getInteger("cooldown");
+    public void readExtra(CompoundNBT nbt) {
+        currentCooldown = nbt.getInt("cooldown");
     }
 }

@@ -1,44 +1,40 @@
 package dev.toma.gunsrpg.client.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.container.ContainerAirdrop;
-import dev.toma.gunsrpg.common.tileentity.TileEntityAirdrop;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
+import dev.toma.gunsrpg.common.container.AirdropContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
-public class GuiAirdrop extends GuiContainer {
+public class GuiAirdrop extends ContainerScreen<AirdropContainer> {
 
     private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/gui/airdrop.png");
-    private final InventoryPlayer playerInv;
-    private final TileEntityAirdrop tileEntityAirdrop;
+    private final ITextComponent tileName;
 
-    public GuiAirdrop(InventoryPlayer player, TileEntityAirdrop tileEntityAirdrop) {
-        super(new ContainerAirdrop(player, tileEntityAirdrop));
-        this.playerInv = player;
-        this.tileEntityAirdrop = tileEntityAirdrop;
+    public GuiAirdrop(AirdropContainer container, PlayerInventory inventory, ITextComponent title) {
+        super(container, inventory, title);
+        tileName = new TranslationTextComponent("container.airdrop");
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-        this.mc.getTextureManager().bindTexture(TEXTURE);
-        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
+    protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
+        font.draw(matrix, tileName, (getXSize() / 2f - font.width(tileName) / 2f) + 3, 8, 0x404040);
+        font.draw(matrix, inventory.getName(), 115, getYSize() - 127, 0x404040);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String tileName = new TextComponentTranslation(tileEntityAirdrop.getName()).getFormattedText();
-        this.fontRenderer.drawString(tileName, (this.xSize / 2 - this.fontRenderer.getStringWidth(tileName) / 2) + 3, 8, 4210752);
-        this.fontRenderer.drawString(this.playerInv.getDisplayName().getUnformattedText(), 115, this.ySize - 127, 4210752);
+    protected void renderBg(MatrixStack matrix, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
+        minecraft.getTextureManager().bind(TEXTURE);
+        blit(matrix, getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float deltaRenderTime) {
+        renderBackground(matrixStack);
+        super.render(matrixStack, mouseX, mouseY, deltaRenderTime);
+        renderTooltip(matrixStack, mouseX, mouseY);
     }
 }

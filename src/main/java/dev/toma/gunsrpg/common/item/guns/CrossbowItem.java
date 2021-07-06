@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
-import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
@@ -150,7 +150,7 @@ public class CrossbowItem extends GunItem {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public Animation createReloadAnimation(EntityPlayer player) {
+    public IAnimation createReloadAnimation(EntityPlayer player) {
         return new Animations.ReloadCrossbow(this.getReloadTime(player));
     }
 }

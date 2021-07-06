@@ -1,6 +1,13 @@
 package dev.toma.gunsrpg.common.command;
 
-import dev.toma.gunsrpg.GunsRPG;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.LiteralMessage;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
@@ -8,136 +15,147 @@ import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.debuffs.DebuffType;
 import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
 import dev.toma.gunsrpg.config.GRPGConfig;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.command.ISuggestionProvider;
+import net.minecraft.command.arguments.ResourceLocationArgument;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.storage.IServerWorldInfo;
+import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
+import java.util.function.Consumer;
 
-public class CommandGRPG extends CommandBase {
+public class CommandGRPG {
 
-    @Override
-    public String getName() {
-        return "grpg";
+    private static final SuggestionProvider<CommandSource> DEBUFF_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(GunsRPGRegistries.DEBUFFS.getKeys(), builder);
+    private static final SimpleCommandExceptionType MISSING_KEY_EXCEPTION = new SimpleCommandExceptionType(new LiteralMessage("Undefined key!"));
+    private static final SimpleCommandExceptionType NO_ARGUMENTS_EXCEPTION = new SimpleCommandExceptionType(new LiteralMessage("Not enough arguments!"));
+    private static final DynamicCommandExceptionType UNKNOWN_KEY_EXCEPTION = new DynamicCommandExceptionType(o -> new LiteralMessage("Unknown key " + o.toString() + "!"));
+
+    public static void register(CommandDispatcher<CommandSource> dispatcher) {
+        dispatcher.register(
+                Commands.literal("gunsrpg")
+                .requires(src -> src.hasPermission(2) && src.getEntity() instanceof PlayerEntity)
+                .then(
+                        Commands.literal("debuff")
+                        .then(
+                                Commands.argument("registryKey", ResourceLocationArgument.id())
+                                        .suggests(DEBUFF_SUGGESTION)
+                                        .executes(context -> toggleDebuff(context, ResourceLocationArgument.getId(context, "registryKey")))
+                        )
+                )
+                .then(
+                        Commands.literal("bloodmoon")
+                                .executes(CommandGRPG::forceBloodmoon)
+                )
+                .then(
+                        Commands.literal("skilltree")
+                                .then(
+                                        Commands.literal("lock")
+                                                .executes(ctx -> modifySkillTree(ctx, ModifyAction.LOCK))
+                                )
+                                .then(
+                                        Commands.literal("unlock")
+                                                .executes(ctx -> modifySkillTree(ctx, ModifyAction.UNLOCK))
+                                )
+                                .executes(ctx -> modifySkillTree(ctx, null))
+                )
+                .then(
+                        Commands.literal("levelup")
+                                .then(
+                                        Commands.argument("amount", IntegerArgumentType.integer(1, 100))
+                                                .executes(ctx -> addLevels(ctx, IntegerArgumentType.getInteger(ctx, "amount")))
+                                )
+                                .executes(ctx -> addLevels(ctx, 1))
+                )
+                .executes(CommandGRPG::noArgsProvided)
+        );
     }
 
-    @Override
-    public String getUsage(ICommandSender sender) {
-        return "";
+    private static int toggleDebuff(CommandContext<CommandSource> ctx, ResourceLocation registryKey) throws CommandSyntaxException {
+        if (registryKey == null) {
+            throw MISSING_KEY_EXCEPTION.create();
+        }
+        DebuffType<?> type = GunsRPGRegistries.DEBUFFS.getValue(registryKey);
+        if (type == null) throw UNKNOWN_KEY_EXCEPTION.create(registryKey);
+        PlayerEntity player = getPlayer(ctx);
+        LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+        optional.ifPresent(data -> {
+            DebuffData debuffs = data.getDebuffData();
+            debuffs.toggle(type);
+            ctx.getSource().sendSuccess(new TranslationTextComponent("gunsrpg.command.toggledebuff", type.getRegistryName().toString()), false);
+        });
+        return 0;
+    }
+    
+    private static int forceBloodmoon(CommandContext<CommandSource> ctx) {
+        CommandSource src = ctx.getSource();
+        MinecraftServer server = src.getServer();
+        IServerWorldInfo worldInfo = server.getWorldData().overworldData();
+        worldInfo.setGameTime(GRPGConfig.worldConfig.bloodmoonCycle.get() * 24000L + 13000L);
+        src.sendSuccess(new TranslationTextComponent("gunsrpg.command.setbloodmoon"), false);
+        return 0;
     }
 
-    @Override
-    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-        if(args.length == 2) {
-            switch (args[0]) {
-                case "debuff": return getListOfStringsMatchingLastWord(args, GunsRPGRegistries.DEBUFFS.getKeys());
-                case "skillTree": return getListOfStringsMatchingLastWord(args, "lockAll", "unlockAll");
-                default: return Collections.emptyList();
+    private static int modifySkillTree(CommandContext<CommandSource> ctx, @Nullable ModifyAction action) {
+        CommandSource src = ctx.getSource();
+        if (action == null) {
+            src.sendFailure(new TranslationTextComponent("gunsrpg.command.editskills.fail"));
+            return -1;
+        }
+        PlayerEntity player = getPlayer(ctx);
+        LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+        optional.ifPresent(data -> {
+            PlayerSkills skills = data.getSkills();
+            action.apply(skills);
+            String translationKey = "gunsrpg.command.editskills." + (skills.getUnlockedSkills().isEmpty() ? "lock" : "unlock");
+            src.sendSuccess(new TranslationTextComponent(translationKey), false);
+        });
+        return 0;
+    }
+
+    private static int addLevels(CommandContext<CommandSource> ctx, int levelCount) {
+        PlayerEntity player = getPlayer(ctx);
+        LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+        optional.ifPresent(data -> {
+            PlayerSkills skills = data.getSkills();
+            int currentLevel = skills.getLevel();
+            int delta = 100 - currentLevel;
+            int obtainTarget = Math.max(100, delta);
+            for (int i = 0; i < obtainTarget; i++) {
+                skills.nextLevel(false);
             }
+            int updatedLevel = skills.getLevel();
+            int obtained = updatedLevel - currentLevel;
+            ctx.getSource().sendSuccess(new TranslationTextComponent("gunsrpg.command." + (obtained == 1 ? "addlevel" : "addlevels"), obtained), false);
+        });
+        return 0;
+    }
+
+    private static int noArgsProvided(CommandContext<CommandSource> ctx) throws CommandSyntaxException {
+        throw NO_ARGUMENTS_EXCEPTION.create();
+    }
+
+    private static PlayerEntity getPlayer(CommandContext<CommandSource> ctx) {
+        return (PlayerEntity) ctx.getSource().getEntity();
+    }
+
+    private enum ModifyAction {
+        LOCK(PlayerSkills::revertToDefault),
+        UNLOCK(PlayerSkills::unlockAll);
+
+        final Consumer<PlayerSkills> action;
+
+        ModifyAction(Consumer<PlayerSkills> action) {
+            this.action = action;
         }
-        return getListOfStringsMatchingLastWord(args, "debuff", "bloodmoon", "skillTree", "levelup");
-    }
 
-    @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-        if(args.length == 0) {
-            this.sendMessage(sender, TextFormatting.GREEN + "Subcommands:");
-            this.sendMessage(sender, TextFormatting.GREEN + "debuff - manage your debuffs");
-            this.sendMessage(sender, TextFormatting.GREEN + "bloodmoon - starts bloodmoon");
-            this.sendMessage(sender, TextFormatting.GREEN + "skillTree - manage your skills");
-            this.sendMessage(sender, TextFormatting.GREEN + "levelup [n] - level up n times");
-        } else {
-            World world = sender.getEntityWorld();
-            if(!(sender instanceof EntityPlayerMP)) return;
-            EntityPlayerMP player = (EntityPlayerMP) sender;
-            PlayerData data = PlayerDataFactory.get(player);
-            switch (args[0]) {
-                case "debuff": {
-                    DebuffData debuffData = data.getDebuffData();
-                    if(args.length < 2) {
-                        this.sendMessage(sender, TextFormatting.RED + "Write the name of debuff you want to toggle, e.g. /grpg debuff gunsrpg:poison");
-                        return;
-                    }
-                    boolean flag = args[1].contains(":");
-                    ResourceLocation location = flag ? new ResourceLocation(args[1]) : GunsRPG.makeResource(args[1]);
-                    DebuffType type = GunsRPGRegistries.DEBUFFS.getValue(location);
-                    if(type == null) {
-                        sendMessage(sender, TextFormatting.RED + "No debuff exists with id " + location.toString());
-                        return;
-                    }
-                    toggleDebuff(data, debuffData, type);
-                    sendMessage(sender, TextFormatting.GREEN + "Debuff " + location.toString() + " has been toggled");
-                    break;
-                }
-                case "bloodmoon": {
-                    world.setWorldTime(GRPGConfig.worldConfig.bloodmoonCycle * 24000L + 13000L);
-                    sendMessage(sender, TextFormatting.GREEN + "Enjoy the bloodmoon...");
-                    break;
-                }
-                case "skillTree": {
-                    if(args.length < 2) {
-                        this.sendMessage(sender, TextFormatting.RED + "Unknown argument! Valid arguments: [lockAll, unlockAll]");
-                        return;
-                    }
-                    boolean reset = args[1].equals("lockAll");
-                    PlayerSkills skills = data.getSkills();
-                    if(args[1].equals("lockAll")) {
-                        skills.revertToDefault();
-                        sendMessage(sender, TextFormatting.GREEN + "All your progress has been deleted");
-                    } else if("unlockAll".equals(args[1])) {
-                        skills.unlockAll();
-                        sendMessage(sender, TextFormatting.GREEN + "You have unlocked all skills!");
-                    } else {
-                        this.sendMessage(sender, TextFormatting.RED + "Unknown argument! Valid arguments: [lockAll, unlockAll]");
-                    }
-                    break;
-                }
-                case "levelup": {
-                    if(args.length < 2) {
-                        levelUp(data, sender, 1);
-                    } else {
-                        int n = 1;
-                        try {
-                            n = Integer.parseInt(args[1]);
-                        } catch (NumberFormatException ex) {
-                            // don't care, use 1 instead of n
-                        }
-                        levelUp(data, sender, Math.abs(n));
-                    }
-                    break;
-                }
-                default: {
-                    sendMessage(sender, TextFormatting.RED + "Unknown argument");
-                    break;
-                }
-            }
-            data.sync();
+        void apply(PlayerSkills skills) {
+            action.accept(skills);
         }
-    }
-
-    private void levelUp(PlayerData data, ICommandSender sender, int n) {
-        PlayerSkills skills = data.getSkills();
-        for(int i = 0; i < n; i++) {
-            if(skills.isMaxLevel()) break;
-            skills.nextLevel(false);
-        }
-        sendMessage(sender, "Obtained " + n + " levels");
-    }
-
-    private void sendMessage(ICommandSender sender, String message) {
-        sender.sendMessage(new TextComponentString(message));
-    }
-
-    private void toggleDebuff(PlayerData cap, DebuffData data, DebuffType type) {
-        data.toggle(type);
-        cap.sync();
     }
 }

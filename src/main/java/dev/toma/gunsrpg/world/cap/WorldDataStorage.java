@@ -1,19 +1,19 @@
 package dev.toma.gunsrpg.world.cap;
 
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 
 public class WorldDataStorage implements Capability.IStorage<WorldDataCap> {
 
     @Override
-    public NBTBase writeNBT(Capability<WorldDataCap> capability, WorldDataCap instance, EnumFacing side) {
+    public INBT writeNBT(Capability<WorldDataCap> capability, WorldDataCap instance, Direction side) {
         return instance.serializeNBT();
     }
 
     @Override
-    public void readNBT(Capability<WorldDataCap> capability, WorldDataCap instance, EnumFacing side, NBTBase nbt) {
-        instance.deserializeNBT(nbt instanceof NBTTagCompound ? (NBTTagCompound) nbt : new NBTTagCompound());
+    public void readNBT(Capability<WorldDataCap> capability, WorldDataCap instance, Direction side, INBT nbt) {
+        instance.deserializeNBT(nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT());
     }
 }

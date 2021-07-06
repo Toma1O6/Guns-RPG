@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.animation.Animation;
-import dev.toma.gunsrpg.client.animation.AnimationManager;
+import dev.toma.gunsrpg.client.animation.IAnimation;
+import dev.toma.gunsrpg.client.animation.AnimationProcessor;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
@@ -150,7 +150,7 @@ public class SRItem extends GunItem {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public Animation createReloadAnimation(EntityPlayer player) {
+    public IAnimation createReloadAnimation(EntityPlayer player) {
         return new MultiStepAnimation.Configurable(this.getReloadTime(player), "sr_reload");
     }
 
@@ -158,8 +158,8 @@ public class SRItem extends GunItem {
     @Override
     public void onShoot(EntityPlayer player, ItemStack stack) {
         super.onShoot(player, stack);
-        AnimationManager.sendNewAnimation(Animations.REBOLT, new Animations.ReboltSR(this.getFirerate(player)));
-        NetworkManager.toServer(new SPacketSetAiming(false));
+        AnimationProcessor.play(Animations.REBOLT, new Animations.ReboltSR(this.getFirerate(player)));
+        NetworkManager.sendServerPacket(new SPacketSetAiming(false));
         GunsRPG.sideManager.playDelayedSound((float) player.posX, (float) player.posY, (float) player.posZ, 1.0F, 1.0F, GRPGSounds.SR_BOLT, SoundCategory.MASTER, 15);
     }
 }

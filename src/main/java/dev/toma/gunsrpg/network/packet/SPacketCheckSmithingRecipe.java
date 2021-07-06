@@ -2,86 +2,84 @@ package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
-import dev.toma.gunsrpg.common.tileentity.TileEntitySmithingTable;
+import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
+import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.recipes.SmithingTableRecipes;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.items.IItemHandler;
 
-public class SPacketCheckSmithingRecipe implements IMessage {
+public class SPacketCheckSmithingRecipe extends AbstractNetworkPacket<SPacketCheckSmithingRecipe> {
 
-    private BlockPos pos;
-    private boolean shiftKey;
-    private int clicked;
+    private final BlockPos pos;
+    private final boolean shiftKey;
+    private final int selectedID;
 
     public SPacketCheckSmithingRecipe() {
-
+        this(null, false, -1);
     }
 
     public SPacketCheckSmithingRecipe(BlockPos pos, boolean shiftkey, OptionalObject<SmithingTableRecipes.SmithingRecipe> selected) {
+        this(pos, shiftkey, selected.isPresent() ? SmithingTableRecipes.getRecipeId(selected.get()) : -1);
+    }
+
+    private SPacketCheckSmithingRecipe(BlockPos pos, boolean shiftKey, int selectedID) {
         this.pos = pos;
-        this.shiftKey = shiftkey;
-        this.clicked = selected.isPresent() ? SmithingTableRecipes.getRecipeId(selected.get()) : -1;
+        this.shiftKey = shiftKey;
+        this.selectedID = selectedID;
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(pos.getX());
-        buf.writeInt(pos.getY());
-        buf.writeInt(pos.getZ());
-        buf.writeBoolean(shiftKey);
-        buf.writeInt(clicked);
+    public void encode(PacketBuffer buffer) {
+        buffer.writeBlockPos(pos);
+        buffer.writeBoolean(shiftKey);
+        buffer.writeInt(selectedID);
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-        pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
-        shiftKey = buf.readBoolean();
-        clicked = buf.readInt();
+    public SPacketCheckSmithingRecipe decode(PacketBuffer buffer) {
+        return new SPacketCheckSmithingRecipe(buffer.readBlockPos(), buffer.readBoolean(), buffer.readInt());
     }
 
-    public static class Handler implements IMessageHandler<SPacketCheckSmithingRecipe, IMessage> {
-
-        @Override
-        public IMessage onMessage(SPacketCheckSmithingRecipe message, MessageContext ctx) {
-            EntityPlayerMP player = ctx.getServerHandler().player;
-            player.getServer().addScheduledTask(() -> {
-                World world = player.world;
-                BlockPos pos = message.pos;
-                if(pos != null && world.isBlockLoaded(pos)) {
-                    TileEntity tileEntity = world.getTileEntity(pos);
-                    if(tileEntity instanceof TileEntitySmithingTable) {
-                        TileEntitySmithingTable smithingTable = (TileEntitySmithingTable) tileEntity;
-                        SmithingTableRecipes.SmithingRecipe recipe = SmithingTableRecipes.findRecipe(smithingTable, message.clicked);
-                        PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
-                        if(recipe != null && SmithingTableRecipes.canCraftRecipe(recipe, skills)) {
-                            if(message.shiftKey) {
-                                while (recipe == SmithingTableRecipes.findRecipe(smithingTable, message.clicked) && SmithingTableRecipes.canCraftRecipe(recipe, skills)) {
-                                    ItemStack out = recipe.getOutput(player);
-                                    player.addItemStackToInventory(out);
-                                    for(SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
-                                        smithingTable.getStackInSlot(ingredient.getIndex()).shrink(1);
-                                    }
+    @Override
+    protected void handlePacket(NetworkEvent.Context context) {
+        ServerPlayerEntity player = context.getSender();
+        World world = player.level;
+        if (pos != null && world.isLoaded(pos)) {
+            TileEntity tileEntity = world.getBlockEntity(pos);
+            if (tileEntity instanceof SmithingTableTileEntity) {
+                SmithingTableTileEntity smithingTable = (SmithingTableTileEntity) tileEntity;
+                SmithingTableRecipes.SmithingRecipe recipe = SmithingTableRecipes.findRecipe(smithingTable, selectedID);
+                PlayerDataFactory.get(player).ifPresent(data -> {
+                    PlayerSkills skills = data.getSkills();
+                    smithingTable.getInventory().ifPresent(handler -> {
+                        if (recipe != null && SmithingTableRecipes.hasRequiredSkills(recipe, skills)) {
+                            if (shiftKey) {
+                                while (recipe == SmithingTableRecipes.findRecipe(smithingTable, selectedID) && SmithingTableRecipes.hasRequiredSkills(recipe, skills)) {
+                                    craftFromRecipe(recipe, player, handler);
                                 }
                             } else {
-                                ItemStack out = recipe.getOutput(player);
-                                player.addItemStackToInventory(out);
-                                for(SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
-                                    smithingTable.getStackInSlot(ingredient.getIndex()).shrink(1);
-                                }
+                                craftFromRecipe(recipe, player, handler);
                             }
                         }
-                    }
-                }
-            });
-            return null;
+                    });
+                });
+            }
+        }
+    }
+
+    private void craftFromRecipe(SmithingTableRecipes.SmithingRecipe recipe, PlayerEntity player, IItemHandler handler) {
+        ItemStack out = recipe.getOutput(player);
+        player.addItem(out);
+        for (SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
+            handler.getStackInSlot(ingredient.getIndex()).shrink(1);
         }
     }
 }

@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.skills.interfaces;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 public interface TickableSkill {
 
-    void onUpdate(EntityPlayer player);
+    void onUpdate(PlayerEntity player);
 }

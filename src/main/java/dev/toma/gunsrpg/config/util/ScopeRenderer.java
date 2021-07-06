@@ -1,11 +1,19 @@
 package dev.toma.gunsrpg.config.util;
 
-public enum ScopeRenderer {
+import dev.toma.configuration.api.INameable;
+
+public enum ScopeRenderer implements INameable {
 
     TEXTURE,
     IN_MODEL;
 
-    public boolean isTextureOverlay() {
-        return this == TEXTURE;
+    @Override
+    public String getUnformattedName() {
+        return name();
+    }
+
+    @Override
+    public String getFormattedName() {
+        return name().toLowerCase().replaceAll("_", "");
     }
 }

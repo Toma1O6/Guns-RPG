@@ -1,10 +1,11 @@
 package dev.toma.gunsrpg.common.capability.object;
 
 import dev.toma.gunsrpg.common.init.GRPGItems;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 public class GunData {
@@ -21,24 +22,24 @@ public class GunData {
         this.gunPoints = 0;
     }
 
-    public void awardKill(EntityPlayer player) {
+    public void awardKill(PlayerEntity player) {
         ++kills;
         if (!isAtMaxLevel()) {
             if (kills >= requiredKills) {
                 kills = 0;
                 ++level;
                 onLevelUp(player);
-                player.sendMessage(new TextComponentString(TextFormatting.GREEN + "Reached next weapon level!"));
+                player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Reached next weapon level!"), Util.NIL_UUID);
             }
         }
     }
 
-    public void onLevelUp(EntityPlayer player) {
+    public void onLevelUp(PlayerEntity player) {
         requiredKills = getRequiredKills(level);
         switch (level) {
             case 8:
                 awardPoints(2);
-                player.addItemStackToInventory(new ItemStack(GRPGItems.GOLD_EGG_SHARD));
+                player.addItem(new ItemStack(GRPGItems.GOLD_EGG_SHARD));
                 break;
             case 3:
             case 5:
@@ -80,18 +81,18 @@ public class GunData {
         return level;
     }
 
-    public NBTTagCompound saveData() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("level", level);
-        nbt.setInteger("kills", kills);
-        nbt.setInteger("points", gunPoints);
+    public CompoundNBT saveData() {
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.putInt("level", level);
+        nbt.putInt("kills", kills);
+        nbt.putInt("points", gunPoints);
         return nbt;
     }
 
-    public void readData(NBTTagCompound nbt) {
-        level = nbt.getInteger("level");
-        kills = nbt.getInteger("kills");
-        gunPoints = nbt.getInteger("points");
+    public void readData(CompoundNBT nbt) {
+        level = nbt.getInt("level");
+        kills = nbt.getInt("kills");
+        gunPoints = nbt.getInt("points");
         requiredKills = getRequiredKills(level);
     }
 

@@ -1,23 +1,28 @@
 package dev.toma.gunsrpg.common.item;
 
-import dev.toma.gunsrpg.client.animation.Animation;
-import dev.toma.gunsrpg.client.animation.AnimationManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.client.animation.Animations;
+import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.IHandRenderer;
-import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.init.Skills;
-import net.minecraft.client.renderer.GlStateManager;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.item.UseAction;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -30,86 +35,84 @@ public class DebuffHeal extends GRPGItem implements IHandRenderer {
     private final int useTime;
     private final Predicate<DebuffData> predicate;
     private final Consumer<DebuffData> debuffDataConsumer;
-    private final String desc;
+    private final ITextComponent desc;
     private final Supplier<SoundEvent> useSound;
 
     public DebuffHeal(String name, int useTime, Supplier<SoundEvent> supplier, String desc, Predicate<DebuffData> predicate, Consumer<DebuffData> debuffDataConsumer) {
-        super(name);
+        super(name, new Properties().tab(ModTabs.ITEM_TAB));
         this.useTime = useTime;
         this.useSound = supplier;
         this.predicate = predicate;
         this.debuffDataConsumer = debuffDataConsumer;
-        this.desc = desc;
+        this.desc = new StringTextComponent(desc);
     }
 
-    @SideOnly(Side.CLIENT)
-    public Animation getUseAnimation(ItemStack stack) {
-        return new Animations.Antidotum(this.getMaxItemUseDuration(stack));
+    @OnlyIn(Dist.CLIENT)
+    public IAnimation getAnimation(ItemStack stack) {
+        return new Animations.Antidotum(this.getUseDuration(stack));
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void renderRightArm() {
-        GlStateManager.rotate(-80.0F, 1.0F, 0.0F, 0.0F);
-        renderArm(EnumHandSide.RIGHT);
+    public void transformRightArm(MatrixStack matrix) {
+        matrix.mulPose(Vector3f.XP.rotationDegrees(-80.0F));
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void renderLeftArm() {
-        GlStateManager.rotate(-80.0F, 1.0F, 0.0F, 0.0F);
-        renderArm(EnumHandSide.LEFT);
+    public void transformLeftArm(MatrixStack matrix) {
+        matrix.mulPose(Vector3f.XP.rotationDegrees(-80.0F));
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         tooltip.add(desc);
     }
 
     @Override
-    public int getMaxItemUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack p_77626_1_) {
         return useTime;
     }
 
     @Override
-    public EnumAction getItemUseAction(ItemStack stack) {
-        return EnumAction.NONE;
+    public UseAction getUseAnimation(ItemStack p_77661_1_) {
+        return UseAction.NONE;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-        ItemStack stack = playerIn.getHeldItem(handIn);
-        if(predicate.test(PlayerDataFactory.get(playerIn).getDebuffData())) {
-            if(playerIn.world.isRemote) {
-                playerIn.playSound(this.useSound.get(), 1.0F, 1.0F);
-                AnimationManager.sendNewAnimation(Animations.HEAL, this.getUseAnimation(stack));
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        PlayerDataFactory.get(player).ifPresent(data -> {
+            if (predicate.test(data.getDebuffData())) {
+                if (world.isClientSide) {
+                    player.playSound(useSound.get(), 1.0F, 1.0F);
+                    ClientSideManager.processor().play(Animations.HEAL, getAnimation(stack));
+                }
+                player.startUsingItem(hand);
             }
-            playerIn.setActiveHand(handIn);
-            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-        }
-        return new ActionResult<>(EnumActionResult.FAIL, stack);
+        });
+        return ActionResult.pass(stack);
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-        if(worldIn.isRemote) {
-            AnimationManager.cancelAnimation(Animations.HEAL);
-        }
+    public void releaseUsing(ItemStack p_77615_1_, World world, LivingEntity p_77615_3_, int p_77615_4_) {
+        if (world.isClientSide)
+            ClientSideManager.processor().stop(Animations.HEAL);
     }
 
     @Override
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
-        if(!worldIn.isRemote) {
-            if(entityLiving instanceof EntityPlayer) {
-                PlayerData data = PlayerDataFactory.get((EntityPlayer) entityLiving);
-                debuffDataConsumer.accept(data.getDebuffData());
-                if(data.getSkills().hasSkill(Skills.EFFICIENT_MEDS)) {
-                    entityLiving.heal(4.0F);
-                }
-                data.sync();
-                if(!((EntityPlayer) entityLiving).isCreative()) {
-                    stack.shrink(1);
-                }
+    public ItemStack finishUsingItem(ItemStack stack, World world, LivingEntity entity) {
+        if (!world.isClientSide) {
+            if (entity instanceof PlayerEntity) {
+                PlayerEntity player = (PlayerEntity) entity;
+                PlayerDataFactory.get(player).ifPresent(data -> {
+                    debuffDataConsumer.accept(data.getDebuffData());
+                    if (data.getSkills().hasSkill(Skills.EFFICIENT_MEDS))
+                        entity.heal(4.0F);
+                    data.sync();
+                    if (!player.isCreative())
+                        stack.shrink(1);
+                });
             }
         }
         return stack;

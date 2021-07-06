@@ -1,75 +1,78 @@
 package dev.toma.gunsrpg.ai;
 
-import dev.toma.gunsrpg.common.entity.EntityZombieGunner;
+import dev.toma.gunsrpg.common.entity.ZombieGunnerEntity;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.util.ModUtils;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
-public class EntityAIGunAttack extends EntityAIBase {
+import java.util.EnumSet;
+
+public class EntityAIGunAttack extends Goal {
 
     protected static final int[] ATTACK_RANGE_TABLE = {10, 15, 20, 25, 10};
-    protected final EntityZombieGunner entity;
+    protected final ZombieGunnerEntity entity;
     protected int timeRemaining = 10;
 
-    public EntityAIGunAttack(EntityZombieGunner gunner) {
+    public EntityAIGunAttack(ZombieGunnerEntity gunner) {
         this.entity = gunner;
-        setMutexBits(3);
+        setFlags(EnumSet.of(Flag.TARGET));
     }
 
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
         if(!this.hasGun()) {
             return false;
         }
-        return entity.getAttackTarget() != null;
+        return entity.getTarget() != null;
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
-        return this.shouldExecute() || !this.entity.getNavigator().noPath() || !this.hasGun();
+    public boolean canContinueToUse() {
+        return this.canUse() || !this.entity.getNavigation().isDone() || !this.hasGun();
     }
 
     @Override
-    public void resetTask() {
+    public void stop() {
         timeRemaining = 10;
     }
 
     @Override
-    public void updateTask() {
-        EntityLivingBase target = entity.getAttackTarget();
+    public void tick() {
+        LivingEntity target = entity.getTarget();
         if(target == null || !hasGun()) return;
-        double dist = Math.sqrt(entity.getDistanceSq(target));
-        GunItem gun = (GunItem) entity.getHeldItemMainhand().getItem();
+        double dist = Math.sqrt(entity.distanceToSqr(target));
+        GunItem gun = (GunItem) entity.getMainHandItem().getItem();
         double attackRange = ATTACK_RANGE_TABLE[gun.getGunType().ordinal()];
         boolean canSee = canSeeEntity(target);
         if(dist <= attackRange && canSee) {
-            entity.getNavigator().clearPath();
-        } else entity.getNavigator().tryMoveToEntityLiving(target, 1.0D);
-        this.entity.faceEntity(target, 30, 30);
-        this.entity.getLookHelper().setLookPositionWithEntity(target, 30, 30);
-        if(canSee && dist < attackRange * 3 && --timeRemaining <= 0 && !entity.world.isRemote) {
-            ItemStack stack = entity.getHeldItemMainhand();
-            EntityZombieGunner.GunData data = EntityZombieGunner.GUN_EQUIPMENT.orMap(EntityZombieGunner.populateAndGet()).get(stack.getItem());
-            SoundEvent event = data.event;
-            gun.shoot(entity.world, entity, stack, event);
-            timeRemaining = entity.rateOfFire;
+            entity.getNavigation().stop();
+        } else entity.getNavigation().moveTo(target, 1.0D);
+        this.entity.lookAt(target, 30, 30);
+        this.entity.getLookControl().setLookAt(target, 30, 30);
+        if(canSee && dist < attackRange * 3 && --timeRemaining <= 0 && !entity.level.isClientSide) {
+            ItemStack stack = entity.getMainHandItem();
+            ZombieGunnerEntity.GunData data = entity.getWeaponData();
+            if (stack.getItem() instanceof GunItem) {
+                SoundEvent event = data.event.apply((GunItem) stack.getItem(), entity);
+                gun.shoot(entity.level, entity, stack, event);
+                timeRemaining = data.rof;
+            }
         }
     }
 
     private boolean hasGun() {
-        return entity.getHeldItemMainhand().getItem() instanceof GunItem;
+        return entity.getMainHandItem().getItem() instanceof GunItem;
     }
 
-    private boolean canSeeEntity(EntityLivingBase target) {
+    private boolean canSeeEntity(LivingEntity target) {
         return ModUtils.raytraceBlocksIgnoreGlass(
-                entity.world,
-                new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ),
-                new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ),
-                state -> state.getBlock().isOpaqueCube(state)
+                new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()),
+                new Vector3d(target.getX(), target.getY() + target.getEyeHeight(), target.getZ()),
+                entity.level
         ) == null;
     }
 }

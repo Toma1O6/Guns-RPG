@@ -1,33 +1,34 @@
 package dev.toma.gunsrpg.common.debuffs;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.Debuffs;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
+public abstract class Debuff implements INBTSerializable<CompoundNBT> {
 
-    public static final DamageSource POISON_DAMAGE = new DamageSource("poison").setDamageBypassesArmor().setDamageIsAbsolute();
-    public static final DamageSource INFECTION_DAMAGE = new DamageSource("infection").setDamageBypassesArmor().setDamageIsAbsolute();
-    public static final DamageSource BLEED_DAMAGE = new DamageSource("bleeding").setDamageBypassesArmor().setDamageIsAbsolute();
+    public static final DamageSource POISON_DAMAGE = new DamageSource("poison").bypassArmor();
+    public static final DamageSource INFECTION_DAMAGE = new DamageSource("infection").bypassArmor();
+    public static final DamageSource BLEED_DAMAGE = new DamageSource("bleeding").bypassArmor();
 
-    private final DebuffType type;
+    private final DebuffType<?> type;
     private int debuffLevel = 0;
     private int levelTimer = 0;
     private int currentStage;
     private boolean invalid = false;
     private RenderStat renderStat;
 
-    public Debuff(DebuffType type) {
+    public Debuff(DebuffType<?> type) {
         this.type = type;
     }
 
@@ -39,7 +40,7 @@ public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
         levelTimer = 0;
     }
 
-    public final void onTick(EntityPlayer player, PlayerData data) {
+    public final void tick(PlayerEntity player, PlayerData data) {
         if(renderStat != null) {
             if(renderStat.tick()) {
                 renderStat = null;
@@ -52,7 +53,7 @@ public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
             levelTimer = 0;
             this.dispatchRenderAction(25, 0xbb0000);
             this.updateStageIndex();
-            if(!player.world.isRemote) data.sync();
+            if(!player.level.isClientSide) data.sync();
         }
         this.getType().tickStage(currentStage, player);
     }
@@ -68,35 +69,35 @@ public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
         invalid = true;
     }
 
-    @SideOnly(Side.CLIENT)
-    public void draw(int x, int y, int w, int h, float pt, FontRenderer renderer) {
+    @OnlyIn(Dist.CLIENT)
+    public void draw(MatrixStack stack, int x, int y, int w, int h, float pt, FontRenderer renderer) {
         ModUtils.renderColor(x, y, x + w, y + h, 0.0F, 0.0F, 0.0F, 0.6F);
         ModUtils.renderTexture(x + 2, y + 1, x + 18, y + 17, this.getIconTexture());
-        renderer.drawStringWithShadow(debuffLevel + "%", x + 20, y + 5, 0xffffff);
+        renderer.drawShadow(stack, debuffLevel + "%", x + 20, y + 5, 0xffffff);
         if(renderStat != null) {
             renderStat.draw(x, y, w, h, pt);
         }
     }
 
     @Override
-    public NBTTagCompound serializeNBT() {
-        NBTTagCompound compound = new NBTTagCompound();
-        compound.setInteger("level", debuffLevel);
-        compound.setInteger("timer", levelTimer);
-        compound.setInteger("stage", currentStage);
-        compound.setBoolean("invalid", invalid);
-        if(renderStat != null) compound.setTag("stat", renderStat.serializeNBT());
+    public CompoundNBT serializeNBT() {
+        CompoundNBT compound = new CompoundNBT();
+        compound.putInt("level", debuffLevel);
+        compound.putInt("timer", levelTimer);
+        compound.putInt("stage", currentStage);
+        compound.putBoolean("invalid", invalid);
+        if(renderStat != null) compound.put("stat", renderStat.serializeNBT());
         return compound;
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
-        debuffLevel = nbt.getInteger("level");
-        levelTimer = nbt.getInteger("timer");
-        currentStage = nbt.getInteger("stage");
+    public void deserializeNBT(CompoundNBT nbt) {
+        debuffLevel = nbt.getInt("level");
+        levelTimer = nbt.getInt("timer");
+        currentStage = nbt.getInt("stage");
         invalid = nbt.getBoolean("invalid");
-        if(nbt.hasKey("stat", Constants.NBT.TAG_COMPOUND)) {
-            renderStat = new RenderStat(nbt.getCompoundTag("stat"));
+        if(nbt.contains("stat", Constants.NBT.TAG_COMPOUND)) {
+            renderStat = new RenderStat(nbt.getCompound("stat"));
         }
     }
 
@@ -176,13 +177,13 @@ public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
         }
     }
 
-    static class RenderStat implements INBTSerializable<NBTTagCompound> {
+    static class RenderStat implements INBTSerializable<CompoundNBT> {
 
         float r, g, b;
         short startTimer;
         short timer;
 
-        RenderStat(NBTTagCompound nbt) {
+        RenderStat(CompoundNBT nbt) {
             deserializeNBT(nbt);
         }
 
@@ -212,18 +213,18 @@ public abstract class Debuff implements INBTSerializable<NBTTagCompound> {
         }
 
         @Override
-        public NBTTagCompound serializeNBT() {
-            NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setFloat("r", r);
-            nbt.setFloat("g", g);
-            nbt.setFloat("b", b);
-            nbt.setShort("initial", startTimer);
-            nbt.setShort("current", timer);
+        public CompoundNBT serializeNBT() {
+            CompoundNBT nbt = new CompoundNBT();
+            nbt.putFloat("r", r);
+            nbt.putFloat("g", g);
+            nbt.putFloat("b", b);
+            nbt.putShort("initial", startTimer);
+            nbt.putShort("current", timer);
             return nbt;
         }
 
         @Override
-        public void deserializeNBT(NBTTagCompound nbt) {
+        public void deserializeNBT(CompoundNBT nbt) {
             r = nbt.getFloat("r");
             g = nbt.getFloat("g");
             b = nbt.getFloat("b");

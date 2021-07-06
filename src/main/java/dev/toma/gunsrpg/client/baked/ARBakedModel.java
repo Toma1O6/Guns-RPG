@@ -1,41 +1,31 @@
 package dev.toma.gunsrpg.client.baked;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraftforge.common.model.TRSRTransformation;
-import org.apache.commons.lang3.tuple.Pair;
-
-import javax.vecmath.Matrix4f;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class ARBakedModel extends GunBakedModel {
 
     @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-        Matrix4f matrix4f = new Matrix4f();
-        matrix4f.setIdentity();
-        TRSRTransformation trsrTransformation = new TRSRTransformation(matrix4f);
-        GlStateManager.translate(0, 0.35, 0.2);
-        GlStateManager.scale(0.01, 0.01, 0.01);
-        GlStateManager.rotate(180, 1, 0, 0);
-        GlStateManager.rotate(180, 0, 1, 0);
+    public IBakedModel handlePerspective(ItemCameraTransforms.TransformType cameraTransformType, MatrixStack mat) {
+        mat.translate(0, 0.35, 0.2);
+        mat.scale(0.01f, 0.01f, 0.01f);
+        mat.mulPose(Vector3f.XP.rotationDegrees(180));
+        mat.mulPose(Vector3f.YP.rotationDegrees(180));
         switch (cameraTransformType) {
-            case FIRST_PERSON_RIGHT_HAND: {
-                GlStateManager.translate(30F, -5F, 20F);
+            case FIRST_PERSON_RIGHT_HAND:
+                mat.translate(30.0, -5.0, 20.0);
                 break;
-            }
-            case THIRD_PERSON_RIGHT_HAND: {
-                GlStateManager.translate(0.0F, 25F, -5f);
+            case THIRD_PERSON_RIGHT_HAND:
+                mat.translate(0.0, 25.0, -5.0);
                 break;
-            }
-            case GUI: {
-                GlStateManager.translate(-25, 35, 0);
-                GlStateManager.rotate(90, 0, -1, 0);
-                GlStateManager.rotate(30, -1, 0, 0);
+            case GUI:
+                mat.translate(-25.0, 35.0, 0);
+                mat.mulPose(Vector3f.YN.rotationDegrees(90.0F));
+                mat.mulPose(Vector3f.XN.rotationDegrees(30.0F));
                 break;
-            }
-            default: break;
         }
-        return Pair.of(this, trsrTransformation.getMatrix());
+        return super.handlePerspective(cameraTransformType, mat);
     }
 }

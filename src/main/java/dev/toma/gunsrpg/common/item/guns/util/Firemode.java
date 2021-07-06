@@ -19,7 +19,7 @@ public enum Firemode {
     }
 
     public static Firemode get(int id) {
-        int i = ModUtils.wrap(id, 0, 2);
+        int i = ModUtils.clamp(id, 0, 2);
         return values()[i];
     }
 }

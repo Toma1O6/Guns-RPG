@@ -1,15 +1,13 @@
 package dev.toma.gunsrpg.common.init;
 
-import com.google.common.collect.ImmutableList;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.animation.Animation;
+import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.client.animation.Animations;
-import dev.toma.gunsrpg.common.GRPGPotion;
+import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.common.block.*;
 import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.debuffs.DebuffHelper;
 import dev.toma.gunsrpg.common.debuffs.DebuffType;
-import dev.toma.gunsrpg.common.entity.*;
 import dev.toma.gunsrpg.common.item.*;
 import dev.toma.gunsrpg.common.item.guns.*;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
@@ -22,28 +20,19 @@ import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.init.MobEffects;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
-import net.minecraftforge.registries.RegistryBuilder;
-import net.minecraftforge.registries.RegistryManager;
+import net.minecraftforge.registries.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,39 +41,19 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
 public class CommonRegistry {
 
-    private static List<ItemBlock> queue = new ArrayList<>();
+    private static List<BlockItem> queue = new ArrayList<>();
     private static int id = -1;
 
     public static void registerItemBlock(Block block) {
-        ItemBlock itemBlock = new ItemBlock(block);
+        BlockItem itemBlock = new BlockItem(block, new Item.Properties().tab(ModTabs.BLOCK_TAB));
         itemBlock.setRegistryName(block.getRegistryName());
         queue.add(itemBlock);
     }
 
-    @SuppressWarnings("unchecked")
     @SubscribeEvent
     public static void createRegistries(RegistryEvent.NewRegistry event) {
-        ResourceLocation location = GunsRPG.makeResource("skill");
-        createRegistry(location, SkillType.class).create();
-        GunsRPGRegistries.SKILLS = RegistryManager.ACTIVE.getRegistry(location);
-        location = GunsRPG.makeResource("debuff");
-        GunsRPGRegistries.DEBUFFS = createRegistry(location, DebuffType.class).create();
-    }
-
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    @SubscribeEvent
-    public static void remap(RegistryEvent.MissingMappings event) {
-        if(!event.getRegistry().getRegistrySuperType().equals(SkillType.class)) return;
-        ImmutableList<RegistryEvent.MissingMappings.Mapping<SkillType<?>>> mappings = event.getMappings();
-        for(RegistryEvent.MissingMappings.Mapping<SkillType<?>> mapping : mappings) {
-            if(mapping.key.toString().equals("gunsrpg:broken_bone_resistance_i")) {
-                mapping.remap(Skills.FRACTURE_RESISTANCE_I);
-            } else if(mapping.key.toString().equals("gunsrpg:broken_bone_resistance_ii")) {
-                mapping.remap(Skills.FRACTURE_RESISTANCE_II);
-            } else if(mapping.key.toString().equals("gunsrpg:broken_bone_resistance_iii")) {
-                mapping.remap(Skills.FRACTURE_RESISTANCE_III);
-            }
-        }
+        GunsRPGRegistries.SKILLS = createGenericRegistry("skill", SkillType.class);
+        GunsRPGRegistries.DEBUFFS = createGenericRegistry("debuff", DebuffType.class);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -231,9 +200,9 @@ public class CommonRegistry {
                 SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 3, 0.70F)).setSurvivalCategory().setRegistryName("well_fed_iii").descriptionLength(2).requiredLevel(55).price(5).build(),
                 SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("local_chef").requiredLevel(20).price(2).childAndOverride(() -> Skills.MASTER_CHEF).build(),
                 SkillType.Builder.create(BasicSkill::new).setSurvivalCategory().setRegistryName("master_chef").requiredLevel(50).price(5).build(),
-                SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, 18000, 10, () -> new PotionEffect(MobEffects.REGENERATION, 200, 0))).setSurvivalCategory().setRegistryName("second_chance_i").descriptionLength(3).requiredLevel(50).price(7).childAndOverride(() -> Skills.SECOND_CHANCE_II).build(),
-                SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, 14400, 15, () -> new PotionEffect(MobEffects.REGENERATION, 200, 1))).setSurvivalCategory().setRegistryName("second_chance_ii").descriptionLength(3).requiredLevel(75).price(9).childAndOverride(() -> Skills.SECOND_CHANCE_III).build(),
-                SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, 10800, 20, () -> new PotionEffect(MobEffects.REGENERATION, 200, 2))).setSurvivalCategory().setRegistryName("second_chance_iii").descriptionLength(3).requiredLevel(90).price(10).build(),
+                SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, 18000, 10, () -> new EffectInstance(Effects.REGENERATION, 200, 0))).setSurvivalCategory().setRegistryName("second_chance_i").descriptionLength(3).requiredLevel(50).price(7).childAndOverride(() -> Skills.SECOND_CHANCE_II).build(),
+                SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, 14400, 15, () -> new EffectInstance(Effects.REGENERATION, 200, 1))).setSurvivalCategory().setRegistryName("second_chance_ii").descriptionLength(3).requiredLevel(75).price(9).childAndOverride(() -> Skills.SECOND_CHANCE_III).build(),
+                SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, 10800, 20, () -> new EffectInstance(Effects.REGENERATION, 200, 2))).setSurvivalCategory().setRegistryName("second_chance_iii").descriptionLength(3).requiredLevel(90).price(10).build(),
                 SkillType.Builder.create(GodHelpUsSkill::new).setSurvivalCategory().setRegistryName("god_help_us").descriptionLength(2).requiredLevel(60).price(8).build(),
                 SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setInstantKillChance(0.01F))).setSurvivalCategory().setRegistryName("skull_crusher_i").requiredLevel(20).price(2).childs(() -> Collections.singletonList(Skills.SKULL_CRUSHER_II)).build(),
                 SkillType.Builder.create(type -> new DataChangeSkill(type, skills -> skills.setInstantKillChance(0.03F))).setSurvivalCategory().setRegistryName("skull_crusher_ii").requiredLevel(35).price(4).childs(() -> Collections.singletonList(Skills.SKULL_CRUSHER_III)).build(),
@@ -289,11 +258,11 @@ public class CommonRegistry {
     }
 
     @SubscribeEvent
-    public static void onDebuffRegister(RegistryEvent.Register<DebuffType> event) {
+    public static void onDebuffRegister(RegistryEvent.Register<DebuffType<?>> event) {
         event.getRegistry().registerAll(
                 DebuffType.Builder.create()
                         .factory(Debuff.Poison::new)
-                        .blacklistOn(() -> GRPGConfig.debuffConfig.disablePoison)
+                        .blacklistOn(() -> GRPGConfig.debuffConfig.disablePoison())
                         .progress(DebuffHelper::p_progress)
                         .resist(DebuffHelper::p_resist)
                         .addStage(40, DebuffHelper::none)
@@ -312,7 +281,7 @@ public class CommonRegistry {
                         .build().setRegistryName("poison"),
                 DebuffType.Builder.create()
                         .factory(Debuff.Infection::new)
-                        .blacklistOn(() -> GRPGConfig.debuffConfig.disableInfection)
+                        .blacklistOn(() -> GRPGConfig.debuffConfig.disableInfection())
                         .progress(DebuffHelper::i_progress)
                         .resist(DebuffHelper::i_resist)
                         .addStage(35, DebuffHelper::none)
@@ -330,7 +299,7 @@ public class CommonRegistry {
                         .build().setRegistryName("infection"),
                 DebuffType.Builder.create()
                         .factory(Debuff.Fracture::new)
-                        .blacklistOn(() -> GRPGConfig.debuffConfig.disableFractures)
+                        .blacklistOn(() -> GRPGConfig.debuffConfig.disableFractures())
                         .progress(DebuffHelper::f_progress)
                         .resist(DebuffHelper::f_resist)
                         .addStage(30, DebuffHelper::f0_30eff)
@@ -344,7 +313,7 @@ public class CommonRegistry {
                         .build().setRegistryName("fracture"),
                 DebuffType.Builder.create()
                         .factory(Debuff.Bleeding::new)
-                        .blacklistOn(() -> GRPGConfig.debuffConfig.disableBleeding)
+                        .blacklistOn(() -> GRPGConfig.debuffConfig.disableBleeding())
                         .progress(DebuffHelper::b_progress)
                         .resist(DebuffHelper::b_resist)
                         .addStage(25, DebuffHelper::b0_25eff)
@@ -368,13 +337,6 @@ public class CommonRegistry {
     }
 
     @SubscribeEvent
-    public static void onPotionRegister(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().registerAll(
-                new GRPGPotion("gun_damage_buff", false, 0xff1111)
-        );
-    }
-
-    @SubscribeEvent
     public static void onBlockRegister(RegistryEvent.Register<Block> event) {
         event.getRegistry().registerAll(
                 new GRPGOre("amethyst_ore", () -> GRPGItems.AMETHYST),
@@ -389,83 +351,80 @@ public class CommonRegistry {
     @SubscribeEvent
     public static void onItemRegister(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
-        Item ironChunk;
-        Item goldChunk;
-        Item amethyst;
         registry.registerAll(
-                amethyst = new GRPGItem("amethyst"),
+                GRPGItem.basic("amethyst"),
                 new DebuffHeal("antidotum_pills", 32, () -> GRPGSounds.USE_ANTIDOTUM_PILLS, "These pills heal 40% of poison", data -> data.hasDebuff(Debuffs.POISON), data -> data.heal(Debuffs.POISON, 40)),
                 new DebuffHeal("vaccine", 32, () -> GRPGSounds.USE_VACCINE, "This vaccine heals 50% of infection", data -> data.hasDebuff(Debuffs.INFECTION), data -> data.heal(Debuffs.INFECTION, 50)) {
-                    @SideOnly(Side.CLIENT)
+                    @OnlyIn(Dist.CLIENT)
                     @Override
-                    public Animation getUseAnimation(ItemStack stack) {
+                    public IAnimation getAnimation(ItemStack stack) {
                         return new Animations.Vaccine(this.getMaxItemUseDuration(stack));
                     }
                 },
                 new DebuffHeal("plaster_cast", 32, () -> GRPGSounds.USE_PLASTER_CAST, "Plaster cast heals 35% of fractures", data -> data.hasDebuff(Debuffs.FRACTURE), data -> data.heal(Debuffs.FRACTURE, 35)) {
-                    @SideOnly(Side.CLIENT)
+                    @OnlyIn(Dist.CLIENT)
                     @Override
-                    public Animation getUseAnimation(ItemStack stack) {
+                    public IAnimation getAnimation(ItemStack stack) {
                         return new Animations.Splint(this.getMaxItemUseDuration(stack));
                     }
                 },
                 new DebuffHeal("bandage", 50, () -> GRPGSounds.USE_BANDAGE, "Bandages can stop 25% of bleeding", data -> data.hasDebuff(Debuffs.BLEEDING), data -> data.heal(Debuffs.BLEEDING, 25)) {
-                    @SideOnly(Side.CLIENT)
+                    @OnlyIn(Dist.CLIENT)
                     @Override
-                    public Animation getUseAnimation(ItemStack stack) {
+                    public IAnimation getAnimation(ItemStack stack) {
                         return new Animations.Bandage(this.getMaxItemUseDuration(stack));
                     }
                 },
                 new ItemHeal("analgetics", 32, () -> GRPGSounds.USE_ANTIDOTUM_PILLS, player -> player.heal(5), player -> player.getHealth() < player.getMaxHealth(), "+5HP on use") {
-                    @SideOnly(Side.CLIENT)
+                    @OnlyIn(Dist.CLIENT)
                     @Override
-                    public Animation getUseAnimation(int ticks) {
+                    public IAnimation getUseAnimation(int ticks) {
                         return new Animations.Antidotum(ticks);
                     }
                 },
                 new ItemHeal("stereoids", 32, () -> GRPGSounds.USE_VACCINE, player -> {
-                    if (!player.world.isRemote) {
-                        player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 0, false, false));
-                        player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 1200, 1, false, false));
+                    if (!player.level.isClientSide) {
+                        player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 1200, 0, false, false));
+                        player.addEffect(new EffectInstance(Effects.JUMP, 1200, 1, false, false));
                     }
                 }, "60s of Strength I", "60s of Jump Boost II") {
-                    @SideOnly(Side.CLIENT)
+                    @OnlyIn(Dist.CLIENT)
                     @Override
-                    public Animation getUseAnimation(int ticks) {
+                    public IAnimation getUseAnimation(int ticks) {
                         return new Animations.Vaccine(ticks);
                     }
                 },
                 new ItemHeal("adrenaline", 32, () -> GRPGSounds.USE_VACCINE, player -> {
-                    if (!player.world.isRemote) {
-                        player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 700, 0, false, false));
-                        player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 1200, 0, false, false));
+                    if (!player.level.isClientSide) {
+                        player.addEffect(new EffectInstance(Effects.REGENERATION, 700, 0, false, false));
+                        player.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 1200, 0, false, false));
                     }
                 }, "35s of Regeneration I", "60s of Speed I") {
-                    @SideOnly(Side.CLIENT)
+                    @OnlyIn(Dist.CLIENT)
                     @Override
-                    public Animation getUseAnimation(int ticks) {
+                    public IAnimation getUseAnimation(int ticks) {
                         return new Animations.Vaccine(ticks);
                     }
                 },
                 new ItemHeal("painkillers", 32, () -> GRPGSounds.USE_ANTIDOTUM_PILLS, player -> player.heal(12), player -> player.getHealth() < player.getMaxHealth(), "+12 HP on use") {
-                    @SideOnly(Side.CLIENT)
+                    @OnlyIn(Dist.CLIENT)
                     @Override
-                    public Animation getUseAnimation(int ticks) {
+                    public IAnimation getUseAnimation(int ticks) {
                         return new Animations.Antidotum(ticks);
                     }
                 },
                 new ItemHeal("morphine", 32, () -> GRPGSounds.USE_VACCINE, player -> {
-                    if(!player.world.isRemote) {
+                    if(!player.level.isClientSide) {
                         player.heal(14);
-                        player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 300, 1, false, false));
-                        player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 600, 1, false, false));
-                        player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 900, 0, false, false));
-                        player.addPotionEffect(new PotionEffect(GRPGPotions.GUN_DAMAGE_BUFF, 600, 0, false, false));
+                        player.addEffect(new EffectInstance(Effects.REGENERATION, 300, 1, false, false));
+                        player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 1, false, false));
+                        player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 900, 0, false, false));
+                        player.addEffect(new EffectInstance(GRPGEffects.GUN_DAMAGE_BUFF.get(), 600, 0, false, false));
                     }
                 }, "+14HP on use", "15s of Regeneration II", "30s of Strength II", "45s of Resistance I", "30s of +20% gun damage") {
-                    @SideOnly(Side.CLIENT)
+                    @OnlyIn(Dist.CLIENT)
                     @Override
-                    public Animation getUseAnimation(int ticks) {
+                    public IAnimation getUseAnimation(int ticks) {
                         return new Animations.Vaccine(ticks);
                     }
                 },
@@ -517,57 +476,42 @@ public class CommonRegistry {
                 new SRItem("sniper_rifle"),
                 new SGItem("shotgun"),
                 new CrossbowItem("crossbow"),
-                new GRPGItem("small_bullet_casing"),
-                new GRPGItem("large_bullet_casing"),
-                new GRPGItem("shotgun_shell"),
-                new GRPGItem("barrel"),
-                new GRPGItem("long_barrel"),
-                new GRPGItem("iron_stock"),
-                new GRPGItem("small_iron_stock"),
-                new GRPGItem("wooden_stock"),
-                new GRPGItem("magazine"),
-                new GRPGItem("gun_parts"),
-                new GRPGItem("bolt_fletching"),
+                GRPGItem.basic("small_bullet_casing"),
+                GRPGItem.basic("large_bullet_casing"),
+                GRPGItem.basic("shotgun_shell"),
+                GRPGItem.basic("barrel"),
+                GRPGItem.basic("long_barrel"),
+                GRPGItem.basic("iron_stock"),
+                GRPGItem.basic("small_iron_stock"),
+                GRPGItem.basic("wooden_stock"),
+                GRPGItem.basic("magazine"),
+                GRPGItem.basic("gun_parts"),
+                GRPGItem.basic("bolt_fletching"),
                 new ItemGrenade("grenade", 4, false),
                 new ItemGrenade("massive_grenade", 6, false),
                 new ItemGrenade("impact_grenade", 4, true),
-                ironChunk = new GRPGItem("iron_ore_chunk"),
-                goldChunk = new GRPGItem("gold_ore_chunk"),
+                GRPGItem.basic("iron_ore_chunk"),
+                GRPGItem.basic("gold_ore_chunk"),
                 new ItemSkillBook("skillpoint_book"),
                 new ItemHammer("wooden_hammer", ItemHammer.WOOD_HAMMER_MATERIAL),
                 new ItemHammer("stone_hammer", ItemHammer.STONE_HAMMER_MATERIAL),
                 new ItemHammer("iron_hammer", ItemHammer.IRON_HAMMER_MATERIAL),
-                new GRPGItem("gold_egg_shard"),
-                new GRPGItem("blaze_lump"),
-                new ItemModdedFood("bacon_burger", 14, 18, false),
-                new ItemModdedFood("fish_and_chips", 12, 16, false),
-                new ItemModdedFood("garden_soup", 11, 14, false),
-                new ItemModdedFood("chicken_dinner", 14, 16, false),
-                new ItemModdedFood("deluxe_meal", 18, 20, false).buff(player -> {
-                    player.heal(3);
-                    player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 400));
-                }),
-                new ItemModdedFood("meaty_stew_xxl", 20, 20, false).buff(player -> {
-                    player.heal(5);
-                    player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 300));
-                }),
-                new ItemModdedFood("rabbit_creamy_soup", 16, 19, false).buff(player -> {
-                    player.heal(3);
-                    player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 500, 1));
-                }),
-                new ItemModdedFood("shepherds_pie", 17, 20, false),
-                new ItemModdedFood("fruit_salad", 10, 11, false).buff(player -> player.heal(2.0F)),
-                new ItemModdedFood("egg_salad", 11, 16, false),
-                new ItemModdedFood("chocolate_glazed_apple_pie", 16, 17, false).buff(player -> {
-                    player.heal(3.0F);
-                    player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 400, 0));
-                })
+                GRPGItem.basic("gold_egg_shard"),
+                GRPGItem.basic("blaze_lump"),
+                new ItemModdedFood("bacon_burger", GRPGFoods.BACON_BURGER),
+                new ItemModdedFood("fish_and_chips", GRPGFoods.FISH_AND_CHIPS),
+                new ItemModdedFood("garden_soup", GRPGFoods.GARDEN_SOUP),
+                new ItemModdedFood("chicken_dinner", GRPGFoods.CHICKED_DINNER),
+                new ItemModdedFood("deluxe_meal", GRPGFoods.DELUXE_MEAL).buff(player -> player.heal(3)),
+                new ItemModdedFood("meaty_stew_xxl", GRPGFoods.MEATY_STEW_XXL).buff(player -> player.heal(5)),
+                new ItemModdedFood("rabbit_creamy_soup", GRPGFoods.RABBIT_CREAMY_SOUP).buff(player -> player.heal(3)),
+                new ItemModdedFood("shepherds_pie", GRPGFoods.SHEPHERDS_PIE),
+                new ItemModdedFood("fruit_salad", GRPGFoods.FRUIT_SALAD).buff(player -> player.heal(2.0F)),
+                new ItemModdedFood("egg_salad", GRPGFoods.EGG_SALAD),
+                new ItemModdedFood("chocolate_glazed_apple_pie", GRPGFoods.CHOCOLATE_GLAZED_APPLE_PIE).buff(player -> player.heal(3.0F))
         );
         queue.forEach(registry::register);
         queue = null;
-        OreDictionary.registerOre("oreIron", ironChunk);
-        OreDictionary.registerOre("oreGold", goldChunk);
-        OreDictionary.registerOre("gemAmethyst", amethyst);
     }
 
     @SubscribeEvent
@@ -579,7 +523,7 @@ public class CommonRegistry {
                 makeBuilder("airdrop", EntityAirdrop.class).tracker(256, 1, true).build(),
                 makeBuilder("explosive_skeleton", EntityExplosiveSkeleton.class).tracker(80, 3, true).egg(0xB46F67, 0x494949).spawn(EnumCreatureType.MONSTER, GRPGConfig.worldConfig.explosiveSkeletonSpawn, 1, 3, ForgeRegistries.BIOMES).build(),
                 makeBuilder("explosive_arrow", EntityExplosiveArrow.class).tracker(64, 20, true).build(),
-                makeBuilder("zombie_gunner", EntityZombieGunner.class).tracker(80, 3, true).egg(0x00aa00, 0xdbdb00).spawn(EnumCreatureType.MONSTER, GRPGConfig.worldConfig.zombieGunnerSpawn, 2, 5, ForgeRegistries.BIOMES).build(),
+                makeBuilder("zombie_gunner", ZombieGunnerEntity.class).tracker(80, 3, true).egg(0x00aa00, 0xdbdb00).spawn(EnumCreatureType.MONSTER, GRPGConfig.worldConfig.zombieGunnerSpawn, 2, 5, ForgeRegistries.BIOMES).build(),
                 makeBuilder("bloodmoon_golem", EntityBloodmoonGolem.class).tracker(80, 3, true).egg(0x444444, 0x990000).build(),
                 makeBuilder("grenade", EntityGrenade.class).tracker(64, 1, true).build(),
                 makeBuilder("flare", EntityFlare.class).tracker(256, 1, true).build(),
@@ -647,5 +591,12 @@ public class CommonRegistry {
 
     protected static <V extends IForgeRegistryEntry<V>> RegistryBuilder<V> createRegistry(ResourceLocation location, Class<V> type) {
         return new RegistryBuilder<V>().setName(location).setType(type).setMaxID(Integer.MAX_VALUE - 1);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <V extends ForgeRegistryEntry<V>> IForgeRegistry<V> createGenericRegistry(String name, Class<?> vClass) {
+        ResourceLocation location = GunsRPG.makeResource(name);
+        createRegistry(location, (Class<V>) vClass).create();
+        return RegistryManager.ACTIVE.getRegistry(location);
     }
 }

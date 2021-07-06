@@ -1,15 +1,15 @@
 package dev.toma.gunsrpg.common.skills.interfaces;
 
 import dev.toma.gunsrpg.common.skills.core.ISkill;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public interface OverlayRenderer {
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     void drawOnTop(int x, int y, int width, int heigth);
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     void renderInHUD(ISkill skill, int renderIndex, int left, int top);
 
     default boolean shouldRenderOnHUD() {

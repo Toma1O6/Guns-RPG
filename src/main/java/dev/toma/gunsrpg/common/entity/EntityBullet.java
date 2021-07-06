@@ -4,13 +4,12 @@ import com.google.common.base.Predicate;
 import dev.toma.gunsrpg.common.GunDamageSourceHack;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.init.GRPGItems;
-import dev.toma.gunsrpg.common.init.GRPGPotions;
+import dev.toma.gunsrpg.common.init.GRPGEffects;
 import dev.toma.gunsrpg.common.init.GRPGSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.CPacketParticle;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -63,7 +62,7 @@ public class EntityBullet extends Entity {
         this.effect = config.effect;
         this.ogDamage = config.damage + gun.getDamageBonus(stack);
         this.damage = ogDamage;
-        PotionEffect effect = shooter.getActivePotionEffect(GRPGPotions.GUN_DAMAGE_BUFF);
+        PotionEffect effect = shooter.getActivePotionEffect(GRPGEffects.GUN_DAMAGE_BUFF);
         if(effect != null) {
             damage *= 1.0F + (0.2F * (effect.getAmplifier() + 1));
         }

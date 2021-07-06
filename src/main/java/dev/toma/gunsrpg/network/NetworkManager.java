@@ -2,58 +2,75 @@ package dev.toma.gunsrpg.network;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.network.packet.*;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.ReportedException;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
+
+import java.util.function.Predicate;
 
 public class NetworkManager {
 
-    private static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(GunsRPG.MODID);
+    private static final String VERSION = "gunsrpg1";
+    private static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder
+            .named(GunsRPG.makeResource("network"))
+            .networkProtocolVersion(() -> VERSION)
+            .clientAcceptedVersions(VERSION::equals)
+            .serverAcceptedVersions(VERSION::equals)
+            .simpleChannel();
+    private static byte ID;
 
-    public static void toDimension(IMessage packet, int dimension) {
-        INSTANCE.sendToDimension(packet, dimension);
+    public static void sendServerPacket(INetworkPacket<?> packet) {
+        CHANNEL.sendToServer(packet);
     }
 
-    public static void toClient(EntityPlayerMP user, IMessage packet) {
-        INSTANCE.sendTo(packet, user);
+    public static void sendWorldPacket(World world, INetworkPacket<?> packet) {
+        sendWorldPacket(world, packet, player -> true);
     }
 
-    public static void toServer(IMessage packet) {
-        INSTANCE.sendToServer(packet);
+    public static void sendWorldPacket(World world, INetworkPacket<?> packet, Predicate<ServerPlayerEntity> condition) {
+        if (!(world instanceof ServerWorld)) {
+            throw new UnsupportedOperationException("Cannot send world packet from client!");
+        }
+        world.players().stream()
+                .map(pl -> (ServerPlayerEntity) pl)
+                .filter(condition)
+                .forEach(serverPlayerEntity -> sendClientPacket(serverPlayerEntity, packet));
+    }
+
+    public static void sendClientPacket(ServerPlayerEntity user, INetworkPacket<?> packet) {
+        CHANNEL.sendTo(packet, user.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
     }
 
     public static void init() {
-        c_register(CPacketUpdateCap.Handler.class, CPacketUpdateCap.class);
-        c_register(CPacketParticle.Handler.class, CPacketParticle.class);
-        c_register(CPacketSendAnimation.Handler.class, CPacketSendAnimation.class);
-        c_register(CPacketSyncTileEntity.Handler.class, CPacketSyncTileEntity.class);
-        c_register(CPacketNewSkills.Handler.class, CPacketNewSkills.class);
-        s_register(SPacketShoot.Handler.class, SPacketShoot.class);
-        s_register(SPacketRequestDataUpdate.Handler.class, SPacketRequestDataUpdate.class);
-        s_register(SPacketSelectAmmo.Handler.class, SPacketSelectAmmo.class);
-        s_register(SPacketSetAiming.Handler.class, SPacketSetAiming.class);
-        s_register(SPacketSetReloading.Handler.class, SPacketSetReloading.class);
-        s_register(SPacketUpdateSightData.Handler.class, SPacketUpdateSightData.class);
-        s_register(SPacketChangeFiremode.Handler.class, SPacketChangeFiremode.class);
-        s_register(SPacketUnlockSkill.Handler.class, SPacketUnlockSkill.class);
-        s_register(SPacketCheckSmithingRecipe.Handler.class, SPacketCheckSmithingRecipe.class);
-        s_register(SPacketSkillClicked.Handler.class, SPacketSkillClicked.class);
+        // client packets
+        registerNetworkPacket(CPacketUpdateCap.class);
+        registerNetworkPacket(CPacketSendAnimation.class);
+        registerNetworkPacket(CPacketNewSkills.class);
+        // server packets
+        registerNetworkPacket(SPacketShoot.class);
+        registerNetworkPacket(SPacketRequestDataUpdate.class);
+        registerNetworkPacket(SPacketSelectAmmo.class);
+        registerNetworkPacket(SPacketSetAiming.class);
+        registerNetworkPacket(SPacketSetReloading.class);
+        registerNetworkPacket(SPacketUpdateSightData.class);
+        registerNetworkPacket(SPacketChangeFiremode.class);
+        registerNetworkPacket(SPacketUnlockSkill.class);
+        registerNetworkPacket(SPacketCheckSmithingRecipe.class);
+        registerNetworkPacket(SPacketSkillClicked.class);
     }
 
-    private static <A extends IMessage, B extends IMessage> void c_register(Class<? extends IMessageHandler<A, B>> hClass, Class<A> pClass) {
-        register(hClass, pClass, Side.CLIENT);
-    }
-
-    private static <A extends IMessage, B extends IMessage> void s_register(Class<? extends IMessageHandler<A, B>> hClass, Class<A> pClass) {
-        register(hClass, pClass, Side.SERVER);
-    }
-
-    private static byte id = -1;
-
-    private static <A extends IMessage, B extends IMessage> void register(Class<? extends IMessageHandler<A, B>> hClass, Class<A> pClass, Side side) {
-        INSTANCE.registerMessage(hClass, pClass, ++id, side);
+    private static <P extends INetworkPacket<P>> void registerNetworkPacket(Class<P> packetType) {
+        P packet;
+        try {
+            packet = packetType.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new ReportedException(CrashReport.forThrowable(e, "Couldn't instantiate packet for registration. Make sure you have provided constructor with no parameters."));
+        }
+        CHANNEL.registerMessage(ID++, packetType, INetworkPacket::encode, packet::decode, INetworkPacket::handle);
     }
 }

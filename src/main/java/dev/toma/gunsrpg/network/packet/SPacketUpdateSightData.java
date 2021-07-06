@@ -2,13 +2,16 @@ package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.ScopeData;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import dev.toma.gunsrpg.network.AbstractNetworkPacket;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SPacketUpdateSightData implements IMessage {
+/**
+ * @deprecated Replace with config entry, packet won't be needed anymore
+ */
+@Deprecated
+public class SPacketUpdateSightData extends AbstractNetworkPacket<SPacketUpdateSightData> {
 
     public SPacketUpdateSightData() {}
 
@@ -20,27 +23,22 @@ public class SPacketUpdateSightData implements IMessage {
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(type);
-        buf.writeInt(color);
+    public void encode(PacketBuffer buffer) {
+        buffer.writeVarInt(type);
+        buffer.writeVarInt(color);
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-        type = buf.readInt();
-        color = buf.readInt();
+    public SPacketUpdateSightData decode(PacketBuffer buffer) {
+        return new SPacketUpdateSightData(buffer.readVarInt(), buffer.readVarInt());
     }
 
-    public static class Handler implements IMessageHandler<SPacketUpdateSightData, IMessage> {
-
-        @Override
-        public IMessage onMessage(SPacketUpdateSightData message, MessageContext ctx) {
-            EntityPlayerMP player = ctx.getServerHandler().player;
-            player.getServer().addScheduledTask(() -> {
-                ScopeData scopeData = PlayerDataFactory.get(player).getScopeData();
-                scopeData.setNew(message.type, message.color);
-            });
-            return null;
-        }
+    @Override
+    protected void handlePacket(NetworkEvent.Context context) {
+        ServerPlayerEntity player = context.getSender();
+        PlayerDataFactory.get(player).ifPresent(data -> {
+            ScopeData scopes = data.getScopeData();
+            scopes.setNew(type, color);
+        });
     }
 }

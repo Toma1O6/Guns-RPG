@@ -1,38 +1,39 @@
 package dev.toma.gunsrpg.world.cap;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.LazyOptional;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-public class WorldCapProvider implements ICapabilitySerializable<NBTTagCompound> {
+public class WorldCapProvider implements ICapabilitySerializable<CompoundNBT> {
 
     @CapabilityInject(WorldDataCap.class)
     public static Capability<WorldDataCap> CAP = null;
-    private WorldDataCap instance = CAP.getDefaultInstance();
+    private final LazyOptional<WorldDataCap> instance;
 
-    @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == CAP;
+    public WorldCapProvider(World world) {
+        instance = LazyOptional.of(() -> new WorldDataFactory(world));
     }
 
-    @Nullable
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-        return capability == CAP ? CAP.cast(instance) : null;
+    public WorldCapProvider() {
+        this(null);
     }
 
     @Override
-    public NBTTagCompound serializeNBT() {
-        return (NBTTagCompound) CAP.getStorage().writeNBT(CAP, instance, null);
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+        return cap == CAP ? instance.cast() : LazyOptional.empty();
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
-        CAP.getStorage().readNBT(CAP, instance, null, nbt);
+    public CompoundNBT serializeNBT() {
+        return (CompoundNBT) CAP.getStorage().writeNBT(CAP, instance.orElse(null), null);
+    }
+
+    @Override
+    public void deserializeNBT(CompoundNBT nbt) {
+        CAP.getStorage().readNBT(CAP, instance.orElse(null), null, nbt);
     }
 }

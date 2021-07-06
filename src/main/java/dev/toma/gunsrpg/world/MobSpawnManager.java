@@ -1,17 +1,17 @@
 package dev.toma.gunsrpg.world;
 
-import dev.toma.gunsrpg.ai.EntityAIFindClosestPlayer;
 import dev.toma.gunsrpg.ai.EntityAIGhastFireballAttack;
 import dev.toma.gunsrpg.common.CommonEventHandler;
-import dev.toma.gunsrpg.common.entity.EntityBloodmoonGolem;
+import dev.toma.gunsrpg.common.entity.BloodmoonGolemEntity;
 import dev.toma.gunsrpg.common.entity.EntityGoldDragon;
-import dev.toma.gunsrpg.common.entity.EntityRocketAngel;
+import dev.toma.gunsrpg.common.entity.RocketAngelEntity;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.Pair;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -20,7 +20,6 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
@@ -47,8 +46,8 @@ public class MobSpawnManager {
     }
 
     public void initialize() {
-        healthExlusions.add(EntityRocketAngel.class);
-        healthExlusions.add(EntityBloodmoonGolem.class);
+        healthExlusions.add(RocketAngelEntity.class);
+        healthExlusions.add(BloodmoonGolemEntity.class);
         healthExlusions.add(EntityDragon.class);
         healthExlusions.add(EntityGoldDragon.class);
         healthExlusions.add(EntityWither.class);
@@ -58,7 +57,7 @@ public class MobSpawnManager {
             return spider;
         });
         registerBloodmoonEntry(EntitySpider.class, GRPGConfig.worldConfig.rocketAngelSpawnChance, (world, vec3d) -> {
-            EntityRocketAngel rocketAngel = new EntityRocketAngel(world);
+            RocketAngelEntity rocketAngel = new RocketAngelEntity(world);
             rocketAngel.setPosition(vec3d.x, vec3d.y, vec3d.z);
             return rocketAngel;
         });
@@ -68,7 +67,7 @@ public class MobSpawnManager {
             return blaze;
         });
         registerBloodmoonEntry(EntityZombie.class, 4, (world, vec3d) -> {
-            EntityBloodmoonGolem golem = new EntityBloodmoonGolem(world);
+            BloodmoonGolemEntity golem = new BloodmoonGolemEntity(world);
             golem.setPosition(vec3d.x, vec3d.y, vec3d.z);
             return golem;
         });
@@ -104,13 +103,11 @@ public class MobSpawnManager {
             if(ghast.world.isRemote) return;
             ghast.tasks.taskEntries.removeIf(entry -> entry.priority == 7 && entry.action instanceof EntityGhast.AIFireballAttack);
             ghast.tasks.addTask(7, new EntityAIGhastFireballAttack(ghast));
-            ghast.targetTasks.taskEntries.removeIf(entry -> entry.priority == 1 && entry.action instanceof EntityAIFindEntityNearestPlayer);
-            ghast.targetTasks.addTask(1, new EntityAIFindClosestPlayer(ghast));
         });
     }
 
     @SuppressWarnings("unchecked")
-    public void processSpawn(EntityLivingBase entity, World world, boolean isBloodmoon, EntityJoinWorldEvent event) {
+    public void processSpawn(LivingEntity entity, World world, boolean isBloodmoon, EntityJoinWorldEvent event) {
         AbstractAttributeMap map = entity.getAttributeMap();
         if(isBloodmoon) {
             IAttributeInstance instance = map.getAttributeInstance(SharedMonsterAttributes.FOLLOW_RANGE);

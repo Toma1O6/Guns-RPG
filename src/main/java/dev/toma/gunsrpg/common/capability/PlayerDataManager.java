@@ -1,43 +1,39 @@
 package dev.toma.gunsrpg.common.capability;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.LazyOptional;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-public class PlayerDataManager implements ICapabilitySerializable<NBTTagCompound> {
+public class PlayerDataManager implements ICapabilitySerializable<CompoundNBT> {
 
     @CapabilityInject(PlayerData.class)
     public static final Capability<PlayerData> CAPABILITY = null;
-    private PlayerData instance;
+    private final LazyOptional<PlayerData> instance;
 
-    public PlayerDataManager(EntityPlayer player) {
-        instance = new PlayerDataFactory(player);
+    public PlayerDataManager(PlayerEntity player) {
+        instance = LazyOptional.of(() -> new PlayerDataFactory(player));
+    }
+
+    public PlayerDataManager() {
+        this(null);
     }
 
     @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == CAPABILITY;
-    }
-
-    @Nullable
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-        return capability == CAPABILITY ? CAPABILITY.cast(instance) : null;
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+        return cap == CAPABILITY ? instance.cast() : LazyOptional.empty();
     }
 
     @Override
-    public NBTTagCompound serializeNBT() {
-        return (NBTTagCompound) CAPABILITY.getStorage().writeNBT(CAPABILITY, instance, null);
+    public CompoundNBT serializeNBT() {
+        return (CompoundNBT) CAPABILITY.getStorage().writeNBT(CAPABILITY, instance.orElse(null), null);
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
-        CAPABILITY.getStorage().readNBT(CAPABILITY, instance, null, nbt);
+    public void deserializeNBT(CompoundNBT nbt) {
+        CAPABILITY.getStorage().readNBT(CAPABILITY, instance.orElse(null), null, nbt);
     }
 }

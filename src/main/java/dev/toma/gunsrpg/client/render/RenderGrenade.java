@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.client.render;
 
-import dev.toma.gunsrpg.common.entity.EntityGrenade;
+import dev.toma.gunsrpg.common.entity.GrenadeEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -19,14 +19,14 @@ import org.lwjgl.opengl.GL11;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class RenderGrenade extends Render<EntityGrenade> {
+public class RenderGrenade extends Render<GrenadeEntity> {
 
     public RenderGrenade(RenderManager manager) {
         super(manager);
     }
 
     @Override
-    public void doRender(EntityGrenade entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    public void doRender(GrenadeEntity entity, double x, double y, double z, float entityYaw, float partialTicks) {
         if(entity.isInvisible()) {
             return;
         }
@@ -54,7 +54,7 @@ public class RenderGrenade extends Render<EntityGrenade> {
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(EntityGrenade entity) {
+    protected ResourceLocation getEntityTexture(GrenadeEntity entity) {
         return null;
     }
 

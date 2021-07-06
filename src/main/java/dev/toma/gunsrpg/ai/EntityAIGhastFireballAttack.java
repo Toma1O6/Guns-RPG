@@ -1,66 +1,66 @@
 package dev.toma.gunsrpg.ai;
 
 import dev.toma.gunsrpg.world.cap.WorldDataFactory;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.projectile.EntityLargeFireball;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.monster.GhastEntity;
+import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
-public class EntityAIGhastFireballAttack extends EntityAIBase {
+public class EntityAIGhastFireballAttack extends Goal {
 
-    private final EntityGhast ghast;
+    private final GhastEntity ghast;
     public int attackTimer;
 
-    public EntityAIGhastFireballAttack(EntityGhast ghast) {
+    public EntityAIGhastFireballAttack(GhastEntity ghast) {
         this.ghast = ghast;
     }
 
     @Override
-    public boolean shouldExecute() {
-        return ghast.getAttackTarget() != null;
+    public boolean canUse() {
+        return ghast.getTarget() != null;
     }
 
     @Override
-    public void startExecuting() {
+    public void start() {
         this.attackTimer = 0;
     }
 
     @Override
-    public void resetTask() {
-        this.ghast.setAttacking(false);
+    public void stop() {
+        this.ghast.setCharging(false);
     }
 
     @Override
-    public void updateTask() {
-        EntityLivingBase target = ghast.getAttackTarget();
+    public void tick() {
+        LivingEntity target = ghast.getTarget();
         double maxRange = 4096.0D;
-        if(target.getDistanceSq(ghast) < maxRange && (ghast.canEntityBeSeen(target) || WorldDataFactory.isBloodMoon(ghast.world))) {
-            World world = ghast.getEntityWorld();
+        if(target.distanceToSqr(ghast) < maxRange && (ghast.canSee(target) || WorldDataFactory.isBloodMoon(ghast.level))) {
+            World world = ghast.level;
             ++attackTimer;
             if(attackTimer == 10) {
-                world.playEvent(null, 1015, new BlockPos(ghast), 0);
+                world.levelEvent(null, 1015, ghast.blockPosition(), 0);
             }
             if(attackTimer == 20) {
                 double d = 4.0D;
-                Vec3d look = ghast.getLook(1.0F);
-                double x = target.posX - (ghast.posX + look.x * d);
-                double y = target.getEntityBoundingBox().minY + (target.height / 2.0) - (0.5 + ghast.posY + (ghast.height / 2.0));
-                double z = target.posZ - (ghast.posZ + look.z * d);
-                world.playEvent(null, 1016, new BlockPos(ghast), 0);
-                EntityLargeFireball fireball = new EntityLargeFireball(world, ghast, x, y, z);
-                fireball.explosionPower = ghast.getFireballStrength();
-                fireball.posX = ghast.posX + look.x * d;
-                fireball.posY = ghast.posY + (ghast.height / 2.0) + 0.5;
-                fireball.posZ = ghast.posZ + look.z * d;
-                world.spawnEntity(fireball);
+                Vector3d look = ghast.getViewVector(1.0F);
+                double x = target.getX() - (ghast.getX() + look.x * d);
+                double y = target.getY(0.5D) - (0.5 + ghast.getY(0.5D));
+                double z = target.getZ() - (ghast.getZ() + look.z * d);
+                if (!ghast.isSilent()) {
+                    world.levelEvent(null, 1016, ghast.blockPosition(), 0);
+                }
+
+                FireballEntity fireball = new FireballEntity(world, ghast, x, y, z);
+                fireball.explosionPower = ghast.getExplosionPower();
+                fireball.setPos(this.ghast.getX() + look.x * 4.0D, this.ghast.getY(0.5D) + 0.5D, fireball.getZ() + look.z * 4.0D);
+                world.addFreshEntity(fireball);
                 attackTimer = -40;
             }
         } else if(attackTimer > 0) {
             attackTimer--;
         }
-        ghast.setAttacking(attackTimer > 10);
+        ghast.setCharging(attackTimer > 10);
     }
 }

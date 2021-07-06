@@ -1,21 +1,23 @@
 package dev.toma.gunsrpg.world.cap;
 
-import dev.toma.gunsrpg.common.entity.EntityAirdrop;
+import dev.toma.gunsrpg.common.entity.AirdropEntity;
 import dev.toma.gunsrpg.common.init.GRPGSounds;
 import dev.toma.gunsrpg.config.GRPGConfig;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.SPacketSoundEffect;
+import net.minecraft.entity.IAngerable;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.play.server.SPlaySoundEffectPacket;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.Util;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -26,40 +28,46 @@ import java.util.function.BiPredicate;
 
 public class WorldDataFactory implements WorldDataCap {
 
+    private final World world;
     private final WorldEvent bloodmoonEvent;
     private final WorldEvent airdropEvent;
 
     public WorldDataFactory() {
-        bloodmoonEvent = new WorldEvent("bloodmoon", GRPGConfig.worldConfig.bloodmoonCycle).changeDetected((world, event) -> {
-            sendUpdate(world);
+        this(null);
+    }
+
+    public WorldDataFactory(World world) {
+        this.world = world;
+        bloodmoonEvent = new WorldEvent("bloodmoon", GRPGConfig.worldConfig.bloodmoonCycle.get()).changeDetected((w, event) -> {
+            sendUpdate(w);
             if(event.isActive()) {
-                this.aggroAllEntities(world);
+                this.aggroAllEntities(w);
             }
-        }).post((world, event) -> {
-            if(event.isActive() && world.getWorldTime() % 200 == 0) {
-                this.aggroAllEntities(world);
+        }).post((w, event) -> {
+            if(event.isActive() && w.getDayTime() % 200 == 0) {
+                this.aggroAllEntities(w);
             }
-        }).condition((world, event) -> world.getWorldTime() % 24000 >= 12500);
-        airdropEvent = new WorldEvent("airdrop", GRPGConfig.worldConfig.airdropFrequency).changeDetected((world, event) -> {
-            if(!event.isActive() || world.provider.getDimension() != 0) return;
+        }).condition((w, event) -> w.getDayTime() >= 12500);
+        airdropEvent = new WorldEvent("airdrop", GRPGConfig.worldConfig.airdropFrequency.get()).changeDetected((w, event) -> {
+            if(!event.isActive() || w.dimensionType().effectsLocation().equals(DimensionType.OVERWORLD_EFFECTS)) return; // quite ugly workaround, didn't figure out anything better
             Random random = new Random();
-            if(world.playerEntities.isEmpty()) return;
-            EntityPlayer player = world.playerEntities.get(random.nextInt(world.playerEntities.size()));
-            EntityAirdrop airdrop = new EntityAirdrop(world);
+            if(w.players().isEmpty()) return;
+            PlayerEntity player = w.players().get(random.nextInt(w.players().size()));
+            AirdropEntity airdrop = new AirdropEntity(w);
             int x = random.nextInt(20) - random.nextInt(20);
             int z = random.nextInt(20) - random.nextInt(20);
-            BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos((int) player.posX + x, 255, (int) player.posZ + z);
-            while (world.isAirBlock(pos.down()) && pos.getY() > 1) {
+            BlockPos.Mutable pos = new BlockPos.Mutable((int) player.getX(x), 255, (int) player.getZ(z));
+            while (w.isEmptyBlock(pos.below()) && pos.getY() > 1) {
                 pos.setY(pos.getY() - 1);
             }
-            airdrop.setPosition(pos.getX() + 0.5, pos.getY() + 75, pos.getZ() + 0.5);
-            world.playSound(null, player.posX, player.posY, player.posZ, GRPGSounds.PLANE_FLY_BY, SoundCategory.MASTER, 10.0F, 1.0F);
-            world.spawnEntity(airdrop);
+            airdrop.setPos(pos.getX() + 0.5, pos.getY() + 75, pos.getZ() + 0.5);
+            w.playSound(null, player.getX(), player.getY(), player.getZ(), GRPGSounds.PLANE_FLY_BY, SoundCategory.MASTER, 10.0F, 1.0F);
+            w.addFreshEntity(airdrop);
         });
     }
 
     public static WorldDataCap get(World world) {
-        return world.getCapability(WorldCapProvider.CAP, null);
+        return world.getCapability(WorldCapProvider.CAP, null).orElse(null);
     }
 
     public static boolean isBloodMoon(World world) {
@@ -79,57 +87,51 @@ public class WorldDataFactory implements WorldDataCap {
 
     @Override
     public void tick(World world) {
-        long day = world.getWorldTime() / 24000L;
+        long day = world.getGameTime() / 24000L;
         WorldEvent.EVENT_LIST.forEach(worldEvent -> worldEvent.update(world, day));
     }
 
     private void sendUpdate(World world) {
-        for(EntityPlayer player : world.playerEntities) {
+        for(PlayerEntity player : world.players()) {
             if(!bloodmoonEvent.isActive()) {
-                player.sendMessage(new TextComponentString(TextFormatting.GREEN + "Bloodmoon falls"));
-                ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(GRPGSounds.RELAXED_2, SoundCategory.NEUTRAL, player.posX, player.posY, player.posZ, 1.0F, 1.0F));
-            } else if(bloodmoonEvent.isActive() && player instanceof EntityPlayerMP) {
-                ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.NEUTRAL, player.posX, player.posY, player.posZ, 1.0F, 1.0F));
+                player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Bloodmoon falls"), Util.NIL_UUID);
+                ((ServerPlayerEntity) player).connection.send(new SPlaySoundEffectPacket(GRPGSounds.RELAXED_2, SoundCategory.NEUTRAL, player.getX(), player.getY(), player.getZ(), 1.0F, 1.0F));
+            } else if(bloodmoonEvent.isActive()) {
+                ((ServerPlayerEntity) player).connection.send(new SPlaySoundEffectPacket(SoundEvents.END_PORTAL_SPAWN, SoundCategory.NEUTRAL, player.getX(), player.getY(), player.getZ(), 1.0F, 1.0F));
             }
         }
-    }
-
-    private static EntityPlayer findNearestPlayer(Entity entity, World world) {
-        double lastDist = Double.MAX_VALUE;
-        EntityPlayer p = null;
-        for(int i = 0; i < world.playerEntities.size(); i++) {
-            EntityPlayer player = world.playerEntities.get(i);
-            double d = entity.getDistanceSq(player);
-            if(d < lastDist) {
-                lastDist = d;
-                p = player;
-            }
-        }
-        return p;
     }
 
     private void aggroAllEntities(World world) {
-        for(Entity entity : world.loadedEntityList) {
-            if(entity instanceof IMob || entity instanceof EntityWolf) {
-                EntityPlayer player = findNearestPlayer(entity, world);
-                if(player == null) continue;
-                ((EntityLivingBase) entity).setRevengeTarget(player);
+        double range = GRPGConfig.worldConfig.bloodMoonMobAgroRange.get();
+        for (PlayerEntity player : world.players()) {
+            List<LivingEntity> entities = world.getLoadedEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(-range, -range, -range, range, range, range));
+            for (LivingEntity living : entities) {
+                if (living instanceof MonsterEntity) {
+                    MonsterEntity monster = (MonsterEntity) living;
+                    if (monster.getTarget() == null)
+                        monster.setTarget(player);
+                } else if (living instanceof IAngerable) {
+                    IAngerable angerable = (IAngerable) living;
+                    if (angerable.getTarget() == null)
+                        angerable.setTarget(player);
+                }
             }
         }
     }
 
     @Override
-    public NBTTagCompound serializeNBT() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setTag("bloodmoonEvent", bloodmoonEvent.write());
-        nbt.setTag("airdropEvent", airdropEvent.write());
+    public CompoundNBT serializeNBT() {
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.put("bloodmoonEvent", bloodmoonEvent.write());
+        nbt.put("airdropEvent", airdropEvent.write());
         return nbt;
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
-        bloodmoonEvent.read(nbt.hasKey("bloodmoonEvent") ? nbt.getCompoundTag("bloodmoonEvent") : new NBTTagCompound());
-        airdropEvent.read(nbt.hasKey("airdropEvent") ? nbt.getCompoundTag("airdropEvent") : new NBTTagCompound());
+    public void deserializeNBT(CompoundNBT nbt) {
+        bloodmoonEvent.read(nbt.contains("bloodmoonEvent") ? nbt.getCompound("bloodmoonEvent") : new CompoundNBT());
+        airdropEvent.read(nbt.contains("airdropEvent") ? nbt.getCompound("airdropEvent") : new CompoundNBT());
     }
 
     public static class WorldEvent {
@@ -184,14 +186,14 @@ public class WorldDataFactory implements WorldDataCap {
             return isActive;
         }
 
-        public NBTTagCompound write() {
-            NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setBoolean("active", isActive);
-            nbt.setBoolean("prev", prevTickState);
+        public CompoundNBT write() {
+            CompoundNBT nbt = new CompoundNBT();
+            nbt.putBoolean("active", isActive);
+            nbt.putBoolean("prev", prevTickState);
             return nbt;
         }
 
-        public void read(NBTTagCompound nbt) {
+        public void read(CompoundNBT nbt) {
             isActive = nbt.getBoolean("active");
             prevTickState = nbt.getBoolean("prev");
         }

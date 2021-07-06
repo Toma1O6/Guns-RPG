@@ -1,16 +1,15 @@
 package dev.toma.gunsrpg.client.animation.impl;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.AnimationFactory;
-import dev.toma.gunsrpg.client.animation.AnimationManager;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import dev.toma.gunsrpg.sided.ClientSideManager;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraftforge.common.util.LazyOptional;
 
-import javax.vecmath.Vector3f;
 import java.util.function.Consumer;
 
-@SideOnly(Side.CLIENT)
 public class AimingAnimation extends AnimationFactory {
 
     private final Vector3f animation;
@@ -37,30 +36,33 @@ public class AimingAnimation extends AnimationFactory {
 
     @Override
     public float getCurrentProgress() {
-        return PlayerDataFactory.get(player).getAimInfo().getProgress();
+        LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+        if (!optional.isPresent())
+            return 0.0F;
+        return optional.orElse(null).getAimInfo().getProgress();
     }
 
     @Override
-    public void animateItemHands(float partialTicks) {
+    public void animateItemHands(MatrixStack stack, float partialTicks) {
 
     }
 
     @Override
-    public void animateItem(float partialTicks) {
-        GlStateManager.translate(AnimationManager.renderingDualWield ? -animation.x * smooth : animation.x * smooth, animation.y * smooth, animation.z * smooth);
+    public void animateItem(MatrixStack stack, float partialTicks) {
+        stack.translate(ClientSideManager.processor().isRenderingDualWield() ? -animation.x() * smooth : animation.x() * smooth, animation.y() * smooth, animation.z() * smooth);
     }
 
     @Override
-    public void animateHands(float partialTicks) {
+    public void animateHands(MatrixStack stack, float partialTicks) {
     }
 
     @Override
-    public void animateLeftArm(float partialTicks) {
+    public void animateLeftArm(MatrixStack stack, float partialTicks) {
         leftArm.accept(this);
     }
 
     @Override
-    public void animateRightArm(float partialTicks) {
+    public void animateRightArm(MatrixStack stack, float partialTicks) {
         rightArm.accept(this);
     }
 

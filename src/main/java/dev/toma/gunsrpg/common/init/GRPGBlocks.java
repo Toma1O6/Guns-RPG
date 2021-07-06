@@ -3,8 +3,9 @@ package dev.toma.gunsrpg.common.init;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.block.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.ObjectHolder;
 
-@GameRegistry.ObjectHolder(GunsRPG.MODID)
+@ObjectHolder(GunsRPG.MODID)
 public class GRPGBlocks {
     public static final GRPGOre AMETHYST_ORE = null;
     public static final BlockBlastFurnace BLAST_FURNACE = null;

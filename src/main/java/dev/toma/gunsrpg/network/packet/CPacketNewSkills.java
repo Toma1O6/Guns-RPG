@@ -2,61 +2,54 @@ package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
+import dev.toma.gunsrpg.network.AbstractNetworkPacket;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CPacketNewSkills implements IMessage {
+public class CPacketNewSkills extends AbstractNetworkPacket<CPacketNewSkills> {
 
-    private List<SkillType<?>> unlocked = new ArrayList<>();
+    private final List<SkillType<?>> unlocked;
 
-    public CPacketNewSkills() {}
+    public CPacketNewSkills() {
+        this(null);
+    }
 
     public CPacketNewSkills(List<SkillType<?>> list) {
         unlocked = list;
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(unlocked.size());
-        for(SkillType<?> type : unlocked) {
-            ByteBufUtils.writeUTF8String(buf, type.getRegistryName().toString());
+    public void encode(PacketBuffer buffer) {
+        buffer.writeVarInt(unlocked.size());
+        for (SkillType<?> type : unlocked) {
+            buffer.writeResourceLocation(type.getRegistryName());
         }
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-        int i = buf.readInt();
-        for(int n = 0; n < i; n++) {
-            ResourceLocation location = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
+    public CPacketNewSkills decode(PacketBuffer buffer) {
+        List<SkillType<?>> unlocked = new ArrayList<>();
+        int n = buffer.readVarInt();
+        for (int i = 0; i < n; i++) {
+            ResourceLocation location = buffer.readResourceLocation();
             SkillType<?> type = GunsRPGRegistries.SKILLS.getValue(location);
-            unlocked.add(type);
+            if (type != null)
+                unlocked.add(type);
         }
+        return new CPacketNewSkills(unlocked);
     }
 
-    public static class Handler implements IMessageHandler<CPacketNewSkills, IMessage> {
-
-        @SideOnly(Side.CLIENT)
-        @Override
-        public IMessage onMessage(CPacketNewSkills message, MessageContext ctx) {
-            Minecraft.getMinecraft().addScheduledTask(() -> {
-                List<SkillType<?>> list = message.unlocked;
-                for(SkillType<?> type : list) {
-                    if(type != null) {
-                        type.isNew = true;
-                    }
-                }
-            });
-            return null;
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    protected void handlePacket(NetworkEvent.Context context) {
+        for (SkillType<?> type : unlocked) {
+            type.setFresh(true);
         }
     }
 }

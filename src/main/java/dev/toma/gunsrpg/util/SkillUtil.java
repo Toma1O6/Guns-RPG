@@ -7,14 +7,14 @@ import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
 import dev.toma.gunsrpg.common.skills.CraftingSkill;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemPickaxe;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AxeItem;
+import net.minecraft.item.PickaxeItem;
 
 @SuppressWarnings("unchecked")
 public class SkillUtil {
 
-    public static <S extends ISkill> S getBestSkillFromOverrides(S skill, EntityPlayer player) {
+    public static <S extends ISkill> S getBestSkillFromOverrides(S skill, PlayerEntity player) {
         PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
         while (skill.getType().isOverriden() && skills.hasSkill(skill.getType().getOverride())) {
             skill = (S) skills.getSkill(skill.getType().getOverride());
@@ -22,7 +22,7 @@ public class SkillUtil {
         return skill;
     }
 
-    public static float getReloadTimeMultiplier(EntityPlayer player) {
+    public static float getReloadTimeMultiplier(PlayerEntity player) {
         PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
         if(skills.hasSkill(Skills.ADRENALINE_RUSH_I)) {
             AdrenalineRushSkill ars = getBestSkillFromOverrides(skills.getSkill(Skills.ADRENALINE_RUSH_I), player);
@@ -31,31 +31,31 @@ public class SkillUtil {
         return 1.0F;
     }
 
-    public static int getGunpowderCraftAmount(EntityPlayer player) {
+    public static int getGunpowderCraftAmount(PlayerEntity player) {
         return getCraftingAmount(PlayerDataFactory.get(player).getSkills(), Skills.GUNPOWDER_MASTER, Skills.GUNPOWDER_EXPERT, Skills.GUNPOWDER_NOVICE);
     }
 
-    public static int getBonemealCraftAmount(EntityPlayer player) {
+    public static int getBonemealCraftAmount(PlayerEntity player) {
         return getCraftingAmount(PlayerDataFactory.get(player).getSkills(), Skills.BONE_GRINDER_III, Skills.BONE_GRINDER_II, Skills.BONE_GRINDER_I);
     }
 
-    public static int getBlazepowderCraftAmount(EntityPlayer player) {
+    public static int getBlazepowderCraftAmount(PlayerEntity player) {
         return getCraftingAmount(PlayerDataFactory.get(player).getSkills(), Skills.BLAZE_POWDER_III, Skills.BLAZE_POWDER_II, Skills.BLAZE_POWDER_I);
     }
 
-    public static int getAmmoAmount(EntityPlayer player) {
+    public static int getAmmoAmount(PlayerEntity player) {
         return PlayerDataFactory.hasActiveSkill(player, Skills.AMMO_SMITHING_MASTERY) ? 2 : 1;
     }
 
-    public static int getCrossbowBoltAmount(EntityPlayer player) {
+    public static int getCrossbowBoltAmount(PlayerEntity player) {
         return PlayerDataFactory.hasActiveSkill(player, Skills.AMMO_SMITHING_MASTERY) ? 3 : 2;
     }
 
-    public static float getAxeSpeedModifier(float input, ItemAxe axe, EntityPlayer player) {
+    public static float getAxeSpeedModifier(float input, AxeItem axe, PlayerEntity player) {
         return input;
     }
 
-    public static float getPickaxeSpeedModifier(float input, ItemPickaxe pickaxe, EntityPlayer player) {
+    public static float getPickaxeSpeedModifier(float input, PickaxeItem pickaxe, PlayerEntity player) {
         return input;
     }
 

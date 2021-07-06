@@ -3,7 +3,7 @@ package dev.toma.gunsrpg.common.skills;
 import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 
 public abstract class AbstractSkill implements ISkill {
@@ -20,15 +20,15 @@ public abstract class AbstractSkill implements ISkill {
     }
 
     @Override
-    public final NBTTagCompound saveData() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setString("type", type.getRegistryName().toString());
+    public final CompoundNBT saveData() {
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.putString("type", type.getRegistryName().toString());
         writeExtra(nbt);
         return nbt;
     }
 
     @Override
-    public final void readData(NBTTagCompound nbt) {
+    public final void readData(CompoundNBT nbt) {
         SkillType<?> type = GunsRPGRegistries.SKILLS.getValue(new ResourceLocation(nbt.getString("type")));
         if(type != this.type) {
             throw new IllegalStateException("Loaded wrong SkillType");
@@ -36,11 +36,11 @@ public abstract class AbstractSkill implements ISkill {
         readExtra(nbt);
     }
 
-    public void writeExtra(NBTTagCompound nbt) {
+    public void writeExtra(CompoundNBT nbt) {
 
     }
 
-    public void readExtra(NBTTagCompound nbt) {
+    public void readExtra(CompoundNBT nbt) {
 
     }
 }

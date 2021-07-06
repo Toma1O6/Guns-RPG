@@ -13,7 +13,7 @@ public class GunDamageSourceHack extends GunDamageSource {
 
     @Nullable
     @Override
-    public Entity getTrueSource() {
+    public Entity getEntity() {
         return null;
     }
 }

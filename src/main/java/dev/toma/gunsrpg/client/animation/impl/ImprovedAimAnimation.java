@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.client.animation.impl;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import java.util.function.Consumer;
 
 public class ImprovedAimAnimation extends AimingAnimation {
@@ -16,8 +18,8 @@ public class ImprovedAimAnimation extends AimingAnimation {
     }
 
     @Override
-    public void animateItem(float partialTicks) {
-        super.animateItem(partialTicks);
+    public void animateItem(MatrixStack matrix, float partialTicks) {
+        super.animateItem(matrix, partialTicks);
         item.accept(this);
     }
 }

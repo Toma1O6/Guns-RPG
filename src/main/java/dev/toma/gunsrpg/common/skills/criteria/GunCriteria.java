@@ -27,7 +27,6 @@ public class GunCriteria extends DefaultUnlockCriteria {
     @Override
     public void onActivated(PlayerData data, SkillType<?> skillType) {
         PlayerSkills skills = data.getSkills();
-        GunItem key = gunItemSupplier.get();
         skills.getGunData(gunItemSupplier.get()).consumePoint();
         skills.unlockSkill(skillType);
     }

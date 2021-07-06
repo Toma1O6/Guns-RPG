@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.client.animation;
 
 import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
 import dev.toma.gunsrpg.common.init.GRPGItems;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import net.minecraft.client.renderer.GlStateManager;
 
 public class Animations {
@@ -15,12 +16,10 @@ public class Animations {
     public static final int FIREMODE = 0x6;
 
     public static class SwitchFiremode extends MultiStepAnimation {
-
         public SwitchFiremode(int length) {
             super(length);
             this.init();
         }
-
         @Override
         public void createAnimationSteps() {
             addStep(0.0F, 0.5F, SimpleAnimation.newSimpleAnimation().itemHand(f -> GlStateManager.translate(0.05F * f, -0.05F * f, 0.0F)).create());
@@ -29,12 +28,10 @@ public class Animations {
     }
 
     public static class ReboltSR extends MultiStepAnimation {
-
         public ReboltSR(int time) {
             super(time);
             this.init();
         }
-
         @Override
         public void createAnimationSteps() {
             addStep(0.0F, 0.2F, SimpleAnimation.newSimpleAnimation().create());
@@ -49,12 +46,10 @@ public class Animations {
     }
 
     public static class ReboltSG extends MultiStepAnimation {
-
         public ReboltSG(int time) {
             super(time);
             init();
         }
-
         @Override
         public void createAnimationSteps() {
             addStep(0.0F, 0.2F, SimpleAnimation.newSimpleAnimation().create());
@@ -66,21 +61,20 @@ public class Animations {
     }
 
     public static class ReloadDual extends MultiStepAnimation {
-
         public ReloadDual(int time) {
             super(time);
             init();
         }
-
         @Override
         public void createAnimationSteps() {
+            AnimationProcessor processor = ClientSideManager.processor();
             addStep(0.0F, 0.05F, SimpleAnimation.newSimpleAnimation().item(f -> {
-                if (AnimationManager.renderingDualWield) {
+                if (processor.isRenderingDualWield()) {
                     GlStateManager.rotate(-90.0F * f, 1.0F, 0.0F, 0.0F);
                 }
             }).leftHand(f -> GlStateManager.rotate(-90.0F * f, 1.0F, 0.0F, 0.0F)).create());
             addStep(0.05F, 0.1F, SimpleAnimation.newSimpleAnimation().item(f -> {
-                if (AnimationManager.renderingDualWield) {
+                if (processor.isRenderingDualWield()) {
                     GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
             }).leftHand(f -> {
@@ -89,7 +83,7 @@ public class Animations {
                 GlStateManager.rotate(-45.0F * f, 0.0F, 1.0F, 0.0F);
             }).create());
             addStep(0.1F, 0.2F, SimpleAnimation.newSimpleAnimation().item(f -> {
-                if (AnimationManager.renderingDualWield) {
+                if (processor.isRenderingDualWield()) {
                     GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
             }).leftHand(f -> {
@@ -100,7 +94,7 @@ public class Animations {
                 GlStateManager.rotate(10.0F * f, 1.0F, 0.0F, 0.0F);
             }).create());
             addStep(0.2F, 0.35F, SimpleAnimation.newSimpleAnimation().item(f -> {
-                if (AnimationManager.renderingDualWield) {
+                if (processor.isRenderingDualWield()) {
                     GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
             }).itemHand(f -> {
@@ -112,7 +106,7 @@ public class Animations {
                 GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
             }).create());
             addStep(0.45F, 0.55F, SimpleAnimation.newSimpleAnimation().item(f -> {
-                if (AnimationManager.renderingDualWield) {
+                if (processor.isRenderingDualWield()) {
                     GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
             }).itemHand(f -> {
@@ -124,7 +118,7 @@ public class Animations {
                 GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
             }).create());
             addStep(0.55F, 0.6F, SimpleAnimation.newSimpleAnimation().item(f -> {
-                if (AnimationManager.renderingDualWield) {
+                if (processor.isRenderingDualWield()) {
                     GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
             }).itemHand(f -> {
@@ -135,7 +129,7 @@ public class Animations {
                 GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
             }).create());
             addStep(0.6F, 0.7F, SimpleAnimation.newSimpleAnimation().item(f -> {
-                if (AnimationManager.renderingDualWield) {
+                if (processor.isRenderingDualWield()) {
                     GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
             }).itemHand(f -> {
@@ -147,7 +141,7 @@ public class Animations {
                 GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
             }).create());
             addStep(0.7F, 0.8F, SimpleAnimation.newSimpleAnimation().item(f -> {
-                if (AnimationManager.renderingDualWield) {
+                if (processor.isRenderingDualWield()) {
                     GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
             }).itemHand(f -> {
@@ -159,7 +153,7 @@ public class Animations {
                 GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
             }).create());
             addStep(0.8F, 0.9F, SimpleAnimation.newSimpleAnimation().item(f -> {
-                if (AnimationManager.renderingDualWield) {
+                if (processor.isRenderingDualWield()) {
                     GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
             }).itemHand(f -> {
@@ -171,7 +165,7 @@ public class Animations {
                 GlStateManager.rotate(-45.0F + 45.0F * f, 0.0F, 1.0F, 0.0F);
             }).create());
             addStep(0.9F, 1.0F, SimpleAnimation.newSimpleAnimation().item(f -> {
-                if (AnimationManager.renderingDualWield) {
+                if (processor.isRenderingDualWield()) {
                     GlStateManager.rotate(-90.0F + 90.0F * f, 1.0F, 0.0F, 0.0F);
                 }
             }).leftHand(f -> GlStateManager.rotate(-90.0F + 90.0F * f, 1.0F, 0.0F, 0.0F)).create());

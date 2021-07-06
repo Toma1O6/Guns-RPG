@@ -2,45 +2,34 @@ package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.util.Firemode;
+import dev.toma.gunsrpg.network.AbstractHandlePacket;
 import dev.toma.gunsrpg.network.NetworkManager;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.ChatType;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SPacketChangeFiremode implements IMessage {
-
-    public SPacketChangeFiremode() {}
+public class SPacketChangeFiremode extends AbstractHandlePacket<SPacketChangeFiremode> {
 
     @Override
-    public void toBytes(ByteBuf buf) {
-
+    public SPacketChangeFiremode thisPacket() {
+        return new SPacketChangeFiremode();
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-
-    }
-
-    public static class Handler implements IMessageHandler<SPacketChangeFiremode, IMessage> {
-
-        @Override
-        public IMessage onMessage(SPacketChangeFiremode message, MessageContext ctx) {
-            EntityPlayerMP player = ctx.getServerHandler().player;
-            player.getServer().addScheduledTask(() -> {
-                ItemStack stack = player.getHeldItemMainhand();
-                if(stack.getItem() instanceof GunItem) {
-                    GunItem item = (GunItem) stack.getItem();
-                    if(item.switchFiremode(stack, player)) {
-                        player.sendStatusMessage(new TextComponentString("Firemode updated to: " + item.getFiremode(stack).getName()), true);
-                        NetworkManager.toClient(player, new CPacketSendAnimation(Animations.FIREMODE));
-                    }
-                }
-            });
-            return null;
+    protected void handlePacket(NetworkEvent.Context context) {
+        ServerPlayerEntity player = context.getSender();
+        ItemStack stack = player.getMainHandItem();
+        if (stack.getItem() instanceof GunItem) {
+            GunItem gun = (GunItem) stack.getItem();
+            if (gun.switchFiremode(stack, player)) {
+                Firemode currentMode = gun.getFiremode(stack);
+                player.sendMessage(new StringTextComponent("Firemode: " + currentMode.getName()), ChatType.GAME_INFO, Util.NIL_UUID);
+                NetworkManager.sendClientPacket(player, new CPacketSendAnimation(Animations.FIREMODE));
+            }
         }
     }
 }

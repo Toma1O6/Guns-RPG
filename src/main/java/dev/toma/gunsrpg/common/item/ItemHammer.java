@@ -2,34 +2,30 @@ package dev.toma.gunsrpg.common.item;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
-import dev.toma.gunsrpg.common.init.GRPGBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.item.Items;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.util.EnumHelper;
 
-public class ItemHammer extends ItemPickaxe {
+public class ItemHammer extends PickaxeItem {
 
-    public static final ToolMaterial WOOD_HAMMER_MATERIAL = EnumHelper.addToolMaterial("wood_hammer_material", 0, 200, 1.2F, 0.0F, 0);
-    public static final ToolMaterial STONE_HAMMER_MATERIAL = EnumHelper.addToolMaterial("stone_hammer_material", 1, 450, 1.8F, 1.0F, 0);
-    public static final ToolMaterial IRON_HAMMER_MATERIAL = EnumHelper.addToolMaterial("iron_hammer_material", 2, 700, 2.4F, 2.0F, 0);
+    public static final IItemTier WOOD_HAMMER_MATERIAL = new ItemTier(200, 1.2F, 0.0F, 0, 0, () -> Ingredient.of(ItemTags.PLANKS));
+    public static final IItemTier STONE_HAMMER_MATERIAL = new ItemTier(450, 1.8F, 1.0F, 1, 0, () -> Ingredient.of(ItemTags.STONE_TOOL_MATERIALS));
+    public static final IItemTier IRON_HAMMER_MATERIAL = new ItemTier(700, 2.4F, 2.0F, 2, 0, () -> Ingredient.of(Items.IRON_INGOT));
 
-    public ItemHammer(String name, ToolMaterial material) {
-        super(material);
-        setUnlocalizedName(name);
+    public ItemHammer(String name, IItemTier material) {
+        super(material, 1, -2.8F, new Properties().tab(ModTabs.ITEM_TAB).stacksTo(1));
         setRegistryName(GunsRPG.makeResource(name));
-        setCreativeTab(ModTabs.ITEM_TAB);
     }
 
-    public BlockPos[] gatherBlocks(BlockPos pos, EnumFacing facing) {
+    public BlockPos[] gatherBlocks(BlockPos pos, Direction direction) {
         BlockPos[] array = new BlockPos[8];
-        if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) {
+        if (direction == Direction.NORTH || direction == Direction.SOUTH) {
             int ox = pos.getX() - 1;
             int oy = pos.getY() - 1;
             int i = 0;
@@ -40,7 +36,7 @@ public class ItemHammer extends ItemPickaxe {
                     i++;
                 }
             }
-        } else if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) {
+        } else if (direction == Direction.EAST || direction == Direction.WEST) {
             int oz = pos.getZ() - 1;
             int oy = pos.getY() - 1;
             int i = 0;
@@ -69,48 +65,5 @@ public class ItemHammer extends ItemPickaxe {
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return false;
-    }
-
-    @Override
-    public boolean canHarvestBlock(IBlockState blockIn) {
-        Block block = blockIn.getBlock();
-        float f = block.getBlockHardness(blockIn, null, null);
-        if(f < 0) {
-            return false;
-        }
-        if (block == Blocks.OBSIDIAN) {
-            return this.toolMaterial.getHarvestLevel() == 3;
-        } else if (block != Blocks.DIAMOND_BLOCK && block != Blocks.DIAMOND_ORE) {
-            if (block != Blocks.EMERALD_ORE && block != Blocks.EMERALD_BLOCK && block != GRPGBlocks.AMETHYST_ORE) {
-                if (block != Blocks.GOLD_BLOCK && block != Blocks.GOLD_ORE) {
-                    if (block != Blocks.IRON_BLOCK && block != Blocks.IRON_ORE) {
-                        if (block != Blocks.LAPIS_BLOCK && block != Blocks.LAPIS_ORE) {
-                            if (block != Blocks.REDSTONE_ORE && block != Blocks.LIT_REDSTONE_ORE) {
-                                Material material = blockIn.getMaterial();
-                                if (material == Material.ROCK) {
-                                    return true;
-                                } else if (material == Material.IRON) {
-                                    return true;
-                                } else {
-                                    return material == Material.ANVIL;
-                                }
-                            } else {
-                                return this.toolMaterial.getHarvestLevel() >= 2;
-                            }
-                        } else {
-                            return this.toolMaterial.getHarvestLevel() >= 1;
-                        }
-                    } else {
-                        return this.toolMaterial.getHarvestLevel() >= 1;
-                    }
-                } else {
-                    return this.toolMaterial.getHarvestLevel() >= 2;
-                }
-            } else {
-                return this.toolMaterial.getHarvestLevel() >= 2;
-            }
-        } else {
-            return this.toolMaterial.getHarvestLevel() >= 2;
-        }
     }
 }

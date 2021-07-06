@@ -1,15 +1,13 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.AimInfo;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import dev.toma.gunsrpg.network.AbstractNetworkPacket;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SPacketSetAiming implements IMessage {
+public class SPacketSetAiming extends AbstractNetworkPacket<SPacketSetAiming> {
 
     public SPacketSetAiming() {}
 
@@ -20,27 +18,22 @@ public class SPacketSetAiming implements IMessage {
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
+    public void encode(PacketBuffer buf) {
         buf.writeBoolean(aim);
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-        aim = buf.readBoolean();
+    public SPacketSetAiming decode(PacketBuffer buf) {
+        return new SPacketSetAiming(buf.readBoolean());
     }
 
-    public static class Handler implements IMessageHandler<SPacketSetAiming, IMessage> {
-
-        @Override
-        public IMessage onMessage(SPacketSetAiming message, MessageContext ctx) {
-            EntityPlayerMP player = ctx.getServerHandler().player;
-            player.getServer().addScheduledTask(() -> {
-                PlayerData data = PlayerDataFactory.get(player);
-                AimInfo aimInfo = data.getAimInfo();
-                aimInfo.setAiming(message.aim);
-                data.sync();
-            });
-            return null;
-        }
+    @Override
+    protected void handlePacket(NetworkEvent.Context context) {
+        ServerPlayerEntity player = context.getSender();
+        PlayerDataFactory.get(player).ifPresent(data -> {
+            AimInfo info = data.getAimInfo();
+            info.setAiming(aim);
+            data.sync();
+        });
     }
 }

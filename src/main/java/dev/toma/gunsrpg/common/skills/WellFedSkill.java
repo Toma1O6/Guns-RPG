@@ -2,11 +2,11 @@ package dev.toma.gunsrpg.common.skills;
 
 import dev.toma.gunsrpg.common.init.GRPGSounds;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.MobEffects;
-import net.minecraft.network.play.server.SPacketSoundEffect;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.play.server.SPlaySoundEffectPacket;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 
 import java.util.Random;
@@ -22,12 +22,12 @@ public class WellFedSkill extends BasicSkill {
         this.chance = chance;
     }
 
-    public void applyEffects(EntityPlayer player) {
+    public void applyEffects(PlayerEntity player) {
         Random random = new Random();
-        if(player.world.isRemote || random.nextFloat() >= chance) return;
+        if(player.level.isClientSide || random.nextFloat() >= chance) return;
         int amplifier = level - 1;
         int duration = 1200 + amplifier * 600;
-        player.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, duration, amplifier));
-        ((EntityPlayerMP) player).connection.sendPacket(new SPacketSoundEffect(GRPGSounds.USE_WELL_FED, SoundCategory.MASTER, player.posX, player.posY, player.posZ, 1.0F, 1.0F));
+        player.addEffect(new EffectInstance(Effects.ABSORPTION, duration, amplifier));
+        ((ServerPlayerEntity) player).connection.send(new SPlaySoundEffectPacket(GRPGSounds.USE_WELL_FED, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 1.0F, 1.0F));
     }
 }

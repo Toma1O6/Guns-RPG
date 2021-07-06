@@ -1,27 +1,25 @@
 package dev.toma.gunsrpg.config.client;
 
+import dev.toma.configuration.api.IConfigWriter;
+import dev.toma.configuration.api.IObjectSpec;
+import dev.toma.configuration.api.type.BooleanType;
+import dev.toma.configuration.api.type.EnumType;
+import dev.toma.configuration.api.type.ObjectType;
 import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.util.math.Vec2Di;
-import net.minecraftforge.common.config.Config;
 
-public class ClientConfiguration {
+public class ClientConfiguration extends ObjectType {
 
-    @Config.Name("Debuff overlay")
-    @Config.Comment("Manage position of debuff overlay in HUD")
-    public Vec2Di debuffOverlay = new Vec2Di(0, -60);
+    public BooleanType loadAnimationTool;
+    public EnumType<ScopeRenderer> scopeRenderer;
+    public Vec2Di debuffOverlay;
 
-    @Config.Name("Animation tool")
-    @Config.Comment("Developer tool for animations")
-    @Config.RequiresMcRestart
-    public boolean loadAnimationTool = false;
+    public ClientConfiguration(IObjectSpec spec) {
+        super(spec);
 
-    @Config.Name("Scope render type")
-    @Config.Comment("Manage scope overlay render")
-    public ScopeRenderer scopeRenderer = ScopeRenderer.IN_MODEL;
-
-    @Config.Name("Skill tree spacing")
-    @Config.Comment("Manage gap size between skills in skill tree display")
-    @Config.RequiresMcRestart
-    public Vec2Di skillTreeSpacing = new Vec2Di(45, 45);
-
+        IConfigWriter writer = spec.getWriter();
+        loadAnimationTool = writer.writeBoolean("Animation tool", false, "Developer tool for animations");
+        scopeRenderer = writer.writeEnum("Scope render type", ScopeRenderer.IN_MODEL);
+        debuffOverlay = writer.writeObject(sp -> new Vec2Di(sp, 0, -60), "Debuff overlay", "Manage position of debuff overlay in HUD");
+    }
 }

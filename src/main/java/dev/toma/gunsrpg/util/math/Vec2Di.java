@@ -1,19 +1,27 @@
 package dev.toma.gunsrpg.util.math;
 
-import net.minecraftforge.common.config.Config;
+import dev.toma.configuration.api.IConfigWriter;
+import dev.toma.configuration.api.IObjectSpec;
+import dev.toma.configuration.api.type.IntType;
+import dev.toma.configuration.api.type.ObjectType;
 
-public class Vec2Di {
+public class Vec2Di extends ObjectType {
 
-    @Config.Name("X")
-    @Config.Comment("X coordinate of 2D vector")
-    public int x;
+    private final IntType x;
+    private final IntType y;
 
-    @Config.Name("Y")
-    @Config.Comment("Y coordinate of 2D vector")
-    public int y;
+    public Vec2Di(IObjectSpec spec, int _x, int _y) {
+        super(spec);
+        IConfigWriter writer = spec.getWriter();
+        x = writer.writeInt("x", _x, "X coordinate of two dimensional vector");
+        y = writer.writeInt("y", _y, "Y coordinate of two dimensional vector");
+    }
 
-    public Vec2Di(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public int getX() {
+        return x.get();
+    }
+
+    public int getY() {
+        return y.get();
     }
 }

@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.item.guns;
 
-import dev.toma.gunsrpg.client.animation.Animation;
-import dev.toma.gunsrpg.client.animation.AnimationManager;
+import dev.toma.gunsrpg.client.animation.AnimationProcessor;
 import dev.toma.gunsrpg.client.animation.Animations;
+import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.client.animation.impl.ImprovedAimAnimation;
@@ -125,7 +125,7 @@ public class PistolItem extends GunItem {
     public AimingAnimation createAimAnimation() {
         return this.isDualWieldActive() ? new ImprovedAimAnimation(-0.4F, 0.06F, 0.0F).animateItem(animation -> {
             float f = animation.smooth;
-            if(AnimationManager.renderingDualWield) {
+            if(AnimationProcessor.renderingDualWield) {
                 GlStateManager.translate(0.0F, -0.33F * f, 0.0F);
                 GlStateManager.rotate(-30.0F * f, 0.0F, 0.0F, 1.0F);
             } else {
@@ -157,7 +157,7 @@ public class PistolItem extends GunItem {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public Animation createReloadAnimation(EntityPlayer player) {
+    public IAnimation createReloadAnimation(EntityPlayer player) {
         return this.isDualWieldActive() ? new Animations.ReloadDual(this.getReloadTime(player)) : new MultiStepAnimation.Configurable(this.getReloadTime(player), "pistol_reload");
     }
 

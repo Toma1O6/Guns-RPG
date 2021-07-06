@@ -1,21 +1,45 @@
 package dev.toma.gunsrpg.config.debuff;
 
-import net.minecraftforge.common.config.Config;
+import dev.toma.configuration.api.IConfigWriter;
+import dev.toma.configuration.api.IObjectSpec;
+import dev.toma.configuration.api.type.BooleanType;
+import dev.toma.configuration.api.type.ObjectType;
 
-public class DebuffConfig {
+public class DebuffConfig extends ObjectType {
 
-    @Config.Name("Disable poison")
-    public boolean disablePoison = false;
+    private final BooleanType disablePoison;
+    private final BooleanType disableInfection;
+    private final BooleanType disableFractures;
+    private final BooleanType disableBleeding;
+    private final BooleanType disableRespawnDebuff;
 
-    @Config.Name("Disable infections")
-    public boolean disableInfection = false;
+    public DebuffConfig(IObjectSpec spec) {
+        super(spec);
+        IConfigWriter writer = spec.getWriter();
+        disablePoison = writer.writeBoolean("Disable poisoning", false);
+        disableInfection = writer.writeBoolean("Disable infections", false);
+        disableFractures = writer.writeBoolean("Disable fractures", false);
+        disableBleeding = writer.writeBoolean("Disable bleeds", false);
+        disableRespawnDebuff = writer.writeBoolean("Disable respawn health debuff", false);
+    }
 
-    @Config.Name("Disable fractures")
-    public boolean disableFractures = false;
+    public boolean disablePoison() {
+        return disablePoison.get();
+    }
 
-    @Config.Name("Disable bleeds")
-    public boolean disableBleeding = false;
+    public boolean disableInfection() {
+        return disableInfection.get();
+    }
 
-    @Config.Name("Disable respawn health debuff")
-    public boolean disableRespawnDebuff = false;
+    public boolean disableFractures() {
+        return disableFractures.get();
+    }
+
+    public boolean disableBleeding() {
+        return disableBleeding.get();
+    }
+
+    public boolean disableRespawnDebuff() {
+        return disableRespawnDebuff.get();
+    }
 }

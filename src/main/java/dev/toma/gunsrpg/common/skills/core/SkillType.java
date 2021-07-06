@@ -9,13 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillType<?>> {
+public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>> {
 
     public final int levelRequirement;
     public final int price;
@@ -31,7 +31,7 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
     private List<SkillType<?>> childList;
     private final Supplier<Item> customRenderFactory;
     public ItemStack cachedRenderStack;
-    public boolean isNew;
+    private boolean isNew;
 
     private SkillType(Builder<S> builder) {
         this.instanceFactory = builder.factory;
@@ -102,6 +102,14 @@ public class SkillType<S extends ISkill> extends IForgeRegistryEntry.Impl<SkillT
             cachedRenderStack = new ItemStack(customRenderFactory.get());
         }
         return cachedRenderStack;
+    }
+
+    public void setFresh(boolean isNew) {
+        this.isNew = isNew;
+    }
+
+    public boolean isFreshUnlock() {
+        return isNew;
     }
 
     public interface IFactory<S extends ISkill> {

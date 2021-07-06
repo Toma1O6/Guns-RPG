@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.block;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.tileentity.IInventoryFactory;
-import dev.toma.gunsrpg.common.tileentity.TileEntityDeathCrate;
+import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
+import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
 import dev.toma.gunsrpg.util.GuiHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -34,8 +34,8 @@ public class BlockDeathCrate extends GRPGBlock {
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
         TileEntity te = worldIn.getTileEntity(pos);
-        if(te instanceof TileEntityDeathCrate) {
-            TileEntityDeathCrate deathCrate = (TileEntityDeathCrate) te;
+        if(te instanceof DeathCrateTileEntity) {
+            DeathCrateTileEntity deathCrate = (DeathCrateTileEntity) te;
             if(deathCrate.isEmpty()) {
                 worldIn.destroyBlock(pos, false);
             }
@@ -79,14 +79,14 @@ public class BlockDeathCrate extends GRPGBlock {
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityDeathCrate();
+        return new DeathCrateTileEntity();
     }
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if(tileEntity instanceof IInventoryFactory) {
-            InventoryHelper.dropInventoryItems(worldIn, pos, (IInventoryFactory) tileEntity);
+        if(tileEntity instanceof InventoryTileEntity) {
+            InventoryHelper.dropInventoryItems(worldIn, pos, (InventoryTileEntity) tileEntity);
         }
         super.breakBlock(worldIn, pos, state);
     }
