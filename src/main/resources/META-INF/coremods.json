@@ -1,3 +1,3 @@
 {
-  "coremod": "transformer.js"
+  "coremod": "patches.js"
 }

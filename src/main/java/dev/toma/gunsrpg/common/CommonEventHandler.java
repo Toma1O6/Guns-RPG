@@ -117,11 +117,6 @@ public class CommonEventHandler {
                     AttributeModifier attributeModifier = adrenalineRushSkill.getAttackSpeedBoost();
                     attributeInstance.addTransientModifier(attributeModifier);
                 }
-            } else if (event.getSlot() == EquipmentSlotType.CHEST) { // TODO add skill 'Flying' which would allow this?
-                ItemStack stack = event.getStack();
-                if (stack.getItem() == Items.ELYTRA) {
-                    stack.setCount(0);
-                }
             }
         }
     }

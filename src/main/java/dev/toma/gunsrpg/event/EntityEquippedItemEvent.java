@@ -5,6 +5,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.eventbus.api.Event;
 
+@Deprecated
 public class EntityEquippedItemEvent extends Event {
 
     private final LivingEntity livingEntity;
