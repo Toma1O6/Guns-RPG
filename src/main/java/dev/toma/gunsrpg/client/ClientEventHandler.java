@@ -9,7 +9,10 @@ import dev.toma.gunsrpg.client.animation.IHandRenderer;
 import dev.toma.gunsrpg.client.animation.impl.SprintingAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import dev.toma.gunsrpg.common.capability.object.*;
+import dev.toma.gunsrpg.common.capability.object.AimInfo;
+import dev.toma.gunsrpg.common.capability.object.DebuffData;
+import dev.toma.gunsrpg.common.capability.object.GunData;
+import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.init.GRPGItems;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -90,42 +93,44 @@ public class ClientEventHandler {
             ItemStack stack = player.getMainHandItem();
             if (stack.getItem() instanceof GunItem) {
                 event.setCanceled(true);
-                PlayerData data = PlayerDataFactory.get(player);
-                int windowWidth = window.getGuiScaledWidth();
-                int windowHeight = window.getGuiScaledHeight();
-                if (data.getAimInfo().progress >= 0.9F) {
-                    if (stack.getItem() == GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE) || stack.getItem() == GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
-                        if (GRPGConfig.clientConfig.scopeRenderer.get() == ScopeRenderer.TEXTURE) {
-                            ModUtils.renderTexture(0, 0, windowWidth, windowHeight, SCOPE_OVERLAY);
-                        } else {
-                            int left = window.getGuiScaledWidth() / 2 - 16;
-                            int top = window.getGuiScaledHeight() / 2 - 16;
-                            ModUtils.renderTexture(left, top, left + 32, top + 32, SCOPE);
+                PlayerDataFactory.get(player).ifPresent(data -> {
+                    int windowWidth = window.getGuiScaledWidth();
+                    int windowHeight = window.getGuiScaledHeight();
+                    if (data.getAimInfo().progress >= 0.9F) {
+                        if (stack.getItem() == GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE) || stack.getItem() == GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
+                            if (GRPGConfig.clientConfig.scopeRenderer.get() == ScopeRenderer.TEXTURE) {
+                                ModUtils.renderTexture(0, 0, windowWidth, windowHeight, SCOPE_OVERLAY);
+                            } else {
+                                int left = window.getGuiScaledWidth() / 2 - 16;
+                                int top = window.getGuiScaledHeight() / 2 - 16;
+                                ModUtils.renderTexture(left, top, left + 32, top + 32, SCOPE);
+                            }
+                        } else if ((PlayerDataFactory.hasActiveSkill(player, Skills.SMG_RED_DOT) && stack.getItem() == GRPGItems.SMG) || (PlayerDataFactory.hasActiveSkill(player, Skills.AR_RED_DOT) && stack.getItem() == GRPGItems.ASSAULT_RIFLE)) {
+                            float left = windowWidth / 2f - 8f;
+                            float top = windowHeight / 2f - 8f;
+                            float x2 = left + 16;
+                            float y2 = top + 16;
+                            //draw red dot
+                            int color = GRPGConfig.clientConfig.reticleColor.getColor();
+                            float alpha = ModUtils.alpha(color);
+                            float red = ModUtils.red(color);
+                            float green = ModUtils.green(color);
+                            float blue = ModUtils.blue(color);
+                            mc.getTextureManager().bind(GRPGConfig.clientConfig.reticleVariants.getAsResource());
+                            RenderSystem.enableBlend();
+                            Tessellator tessellator = Tessellator.getInstance();
+                            BufferBuilder builder = tessellator.getBuilder();
+                            builder.begin(7, DefaultVertexFormats.POSITION_COLOR_TEX);
+                            builder.vertex(left, y2, 0).color(red, green, blue, alpha).uv(0.0F, 1.0F).endVertex();
+                            builder.vertex(x2, y2, 0).color(red, green, blue, alpha).uv(1.0F, 1.0F).endVertex();
+                            builder.vertex(x2, top, 0).color(red, green, blue, alpha).uv(1.0F, 0.0F).endVertex();
+                            builder.vertex(left, top, 0).color(red, green, blue, alpha).uv(0.0F, 0.0F).endVertex();
+                            builder.end();
+                            WorldVertexBufferUploader.end(builder);
+                            RenderSystem.disableBlend();
                         }
-                    } else if ((PlayerDataFactory.hasActiveSkill(player, Skills.SMG_RED_DOT) && stack.getItem() == GRPGItems.SMG) || (PlayerDataFactory.hasActiveSkill(player, Skills.AR_RED_DOT) && stack.getItem() == GRPGItems.ASSAULT_RIFLE)) {
-                        ScopeData scopeData = data.getScopeData();
-                        float left = windowWidth / 2f - 8f;
-                        float top = windowHeight / 2f - 8f;
-                        float x2 = left + 16;
-                        float y2 = top + 16;
-                        double us = scopeData.getTexStartX();
-                        double vs = scopeData.getTexStartY();
-                        double ue = scopeData.getTexEndX();
-                        double ve = scopeData.getTexEndY();
-                        //draw red dot
-                        mc.getTextureManager().bind(ScopeData.TEXTURES);
-                        GlStateManager.enableBlend();
-                        Tessellator tessellator = Tessellator.getInstance();
-                        BufferBuilder builder = tessellator.getBuffer();
-                        builder.begin(7, DefaultVertexFormats.POSITION_TEX);
-                        builder.pos(left, y2, 0).tex(us, ve).endVertex();
-                        builder.pos(x2, y2, 0).tex(ue, ve).endVertex();
-                        builder.pos(x2, top, 0).tex(ue, vs).endVertex();
-                        builder.pos(left, top, 0).tex(us, vs).endVertex();
-                        tessellator.draw();
-                        GlStateManager.disableBlend();
                     }
-                }
+                });
             }
         }
     }
@@ -303,14 +308,14 @@ public class ClientEventHandler {
             matrix.pushPose();
             {
                 processor.setDualWieldRender(false);
-                processor.processItemAndHands(partial);
+                processor.processItemAndHands(matrix, partial);
                 matrix.pushPose();
                 {
-                    processor.processHands(partial);
+                    processor.processHands(matrix, partial);
                     renderAnimatedItemFP(matrix, buffer, packedLight, equip, iHandRenderer, partial, processor);
                 }
                 matrix.popPose();
-                processor.processItem(partial);
+                processor.processItem(matrix, partial);
                 if (!processor.blocksItemRender())
                     fpRenderer.renderItem(player, stack, transformType, !mainHand, matrix, buffer, packedLight);
             }
@@ -320,14 +325,14 @@ public class ClientEventHandler {
                 matrix.pushPose();
                 {
                     processor.setDualWieldRender(true);
-                    processor.processItemAndHands(partial);
+                    processor.processItemAndHands(matrix, partial);
                     matrix.pushPose();
                     {
-                        processor.processHands(partial);
+                        processor.processHands(matrix, partial);
                         renderAnimatedItemFP(matrix, buffer, packedLight, equip, iHandRenderer, partial, processor);
                     }
                     matrix.popPose();
-                    processor.processItem(partial);
+                    processor.processItem(matrix, partial);
                     fpRenderer.renderItem(player, stack, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, true, matrix, buffer, packedLight);
                 }
                 matrix.popPose();
@@ -383,13 +388,13 @@ public class ClientEventHandler {
             stack.translate(0, yOff, 0);
             stack.pushPose();
             {
-                processor.processRightHand(partial);
+                processor.processRightHand(stack, partial);
                 renderHand(stack, HandSide.RIGHT, handRenderer, buffer, packedLight);
             }
             stack.popPose();
             stack.pushPose();
             {
-                processor.processLeftHand(partial);
+                processor.processLeftHand(stack, partial);
                 renderHand(stack, HandSide.LEFT, handRenderer, buffer, packedLight);
             }
             stack.popPose();
@@ -402,7 +407,7 @@ public class ClientEventHandler {
         GunItem gun = (GunItem) stack.getItem();
         player.xRot -= gun.getVerticalRecoil(player);
         player.yRot += gun.getHorizontalRecoil(player);
-        NetworkManager.sendServerPacket(new SPacketShoot(gun));
+        NetworkManager.sendServerPacket(new SPacketShoot());
         gun.onShoot(player, stack);
         shootDelay = gun.getFirerate(player);
     }

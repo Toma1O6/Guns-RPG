@@ -9,6 +9,4 @@ public interface WorldDataCap extends INBTSerializable<CompoundNBT> {
     boolean isBloodmoon();
 
     void tick(World world);
-
-    WorldDataFactory.WorldEvent getBloodmoonEvent();
 }

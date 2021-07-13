@@ -175,7 +175,7 @@ public class ModelCrossbow extends ModelWeapon {
     }
 
     @Override
-    public void doRender(ItemStack stack) {
+    public void render(ItemStack stack) {
         crossbow.render(1f);
         if(stack.hasTagCompound() && stack.getTagCompound().getInteger("ammo") > 0) arrow.render(1f);
         if(PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Skills.CROSSBOW_SCOPE)) scope.render(1f);

@@ -1,10 +1,8 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.client.ClientFallbacks;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -46,7 +44,6 @@ public class CPacketUpdateCap extends AbstractNetworkPacket<CPacketUpdateCap> {
     @Override
     protected void handlePacket(NetworkEvent.Context context) {
         Minecraft mc = Minecraft.getInstance();
-        ClientWorld world = mc.level;
         PlayerEntity player = mc.player;
         if (player == null)
             return;
@@ -59,7 +56,7 @@ public class CPacketUpdateCap extends AbstractNetworkPacket<CPacketUpdateCap> {
                     data.readPermanentData(nbt);
                     break;
             }
-            ClientFallbacks.onCapDataUpdate();
+            data.onSync();
         });
     }
 }

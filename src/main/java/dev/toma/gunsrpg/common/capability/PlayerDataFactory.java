@@ -1,6 +1,9 @@
 package dev.toma.gunsrpg.common.capability;
 
-import dev.toma.gunsrpg.common.capability.object.*;
+import dev.toma.gunsrpg.common.capability.object.AimInfo;
+import dev.toma.gunsrpg.common.capability.object.DebuffData;
+import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
+import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.init.GRPGItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
@@ -8,6 +11,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketUpdateCap;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -24,9 +28,9 @@ public class PlayerDataFactory implements PlayerData {
     private final DebuffData debuffData;
     private final AimInfo aimInfo;
     private final ReloadInfo reloadInfo;
-    private final ScopeData scopeData;
     private final PlayerSkills playerSkills;
     private int reducedHealthTimer;
+    private ISynchCallback callback;
 
     private boolean logged = false;
 
@@ -39,8 +43,8 @@ public class PlayerDataFactory implements PlayerData {
         this.debuffData = new DebuffData(this);
         this.aimInfo = new AimInfo(this);
         this.reloadInfo = new ReloadInfo(this);
-        this.scopeData = new ScopeData();
         this.playerSkills = new PlayerSkills(this);
+        ClientSideManager.runOnClient(() -> () -> setSyncCallback(ClientSideManager::onDataSync));
     }
 
     public static boolean hasActiveSkill(PlayerEntity player, SkillType<?> type) {
@@ -61,6 +65,10 @@ public class PlayerDataFactory implements PlayerData {
 
     public static LazyOptional<PlayerData> get(PlayerEntity player) {
         return player.getCapability(PlayerDataManager.CAPABILITY, null);
+    }
+
+    public static PlayerData getUnsafe(PlayerEntity player) {
+        return get(player).orElseThrow(NullPointerException::new);
     }
 
     @Override
@@ -114,11 +122,6 @@ public class PlayerDataFactory implements PlayerData {
     }
 
     @Override
-    public ScopeData getScopeData() {
-        return scopeData;
-    }
-
-    @Override
     public PlayerSkills getSkills() {
         return playerSkills;
     }
@@ -127,13 +130,6 @@ public class PlayerDataFactory implements PlayerData {
     public void sync() {
         if(player instanceof ServerPlayerEntity) {
             NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketUpdateCap(player.getUUID(), this.serializeNBT(), 0));
-        }
-    }
-
-    @Override
-    public void syncCloneData() {
-        if(player instanceof ServerPlayerEntity) {
-            NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketUpdateCap(player.getUUID(), this.writePermanentData(), 1));
         }
     }
 
@@ -147,6 +143,16 @@ public class PlayerDataFactory implements PlayerData {
             player.addItem(new ItemStack(GRPGItems.PLASTER_CAST));
             sync();
         }
+    }
+
+    @Override
+    public void setSyncCallback(ISynchCallback callback) {
+        this.callback = callback;
+    }
+
+    @Override
+    public void onSync() {
+        if (callback != null) callback.onSynch();
     }
 
     public CompoundNBT writePermanentData() {
@@ -166,7 +172,6 @@ public class PlayerDataFactory implements PlayerData {
         nbt.put("debuffs", debuffData.serializeNBT());
         nbt.put("aimData", aimInfo.write());
         nbt.put("reloadData", reloadInfo.write());
-        nbt.put("scopeData", scopeData.write());
         nbt.put("playerSkills", playerSkills.writeData());
         nbt.putInt("healthCooldown", reducedHealthTimer);
         return nbt;
@@ -178,7 +183,6 @@ public class PlayerDataFactory implements PlayerData {
         debuffData.deserializeNBT(nbt.contains("debuffs", Constants.NBT.TAG_LIST) ? nbt.getList("debuffs", Constants.NBT.TAG_COMPOUND) : new ListNBT());
         aimInfo.read(this.findNBTTag("aimData", nbt));
         reloadInfo.read(this.findNBTTag("reloadData", nbt));
-        scopeData.read(this.findNBTTag("scopeData", nbt));
         playerSkills.readData(this.findNBTTag("playerSkills", nbt));
         reducedHealthTimer = nbt.getInt("healthCooldown");
     }

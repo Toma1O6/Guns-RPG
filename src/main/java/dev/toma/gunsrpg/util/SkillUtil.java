@@ -15,7 +15,9 @@ import net.minecraft.item.PickaxeItem;
 public class SkillUtil {
 
     public static <S extends ISkill> S getBestSkillFromOverrides(S skill, PlayerEntity player) {
-        PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
+        PlayerSkills skills = PlayerDataFactory.get(player).orElseThrow(NullPointerException::new).getSkills();
+        if (skill == null)
+            return null;
         while (skill.getType().isOverriden() && skills.hasSkill(skill.getType().getOverride())) {
             skill = (S) skills.getSkill(skill.getType().getOverride());
         }
@@ -23,7 +25,7 @@ public class SkillUtil {
     }
 
     public static float getReloadTimeMultiplier(PlayerEntity player) {
-        PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
+        PlayerSkills skills = PlayerDataFactory.getUnsafe(player).getSkills();
         if(skills.hasSkill(Skills.ADRENALINE_RUSH_I)) {
             AdrenalineRushSkill ars = getBestSkillFromOverrides(skills.getSkill(Skills.ADRENALINE_RUSH_I), player);
             return ars.apply(player) ? 1.0F - ars.getReloadMultiplier() : 1.0F;
@@ -32,15 +34,15 @@ public class SkillUtil {
     }
 
     public static int getGunpowderCraftAmount(PlayerEntity player) {
-        return getCraftingAmount(PlayerDataFactory.get(player).getSkills(), Skills.GUNPOWDER_MASTER, Skills.GUNPOWDER_EXPERT, Skills.GUNPOWDER_NOVICE);
+        return getCraftingAmount(PlayerDataFactory.getUnsafe(player).getSkills(), Skills.GUNPOWDER_MASTER, Skills.GUNPOWDER_EXPERT, Skills.GUNPOWDER_NOVICE);
     }
 
     public static int getBonemealCraftAmount(PlayerEntity player) {
-        return getCraftingAmount(PlayerDataFactory.get(player).getSkills(), Skills.BONE_GRINDER_III, Skills.BONE_GRINDER_II, Skills.BONE_GRINDER_I);
+        return getCraftingAmount(PlayerDataFactory.getUnsafe(player).getSkills(), Skills.BONE_GRINDER_III, Skills.BONE_GRINDER_II, Skills.BONE_GRINDER_I);
     }
 
     public static int getBlazepowderCraftAmount(PlayerEntity player) {
-        return getCraftingAmount(PlayerDataFactory.get(player).getSkills(), Skills.BLAZE_POWDER_III, Skills.BLAZE_POWDER_II, Skills.BLAZE_POWDER_I);
+        return getCraftingAmount(PlayerDataFactory.getUnsafe(player).getSkills(), Skills.BLAZE_POWDER_III, Skills.BLAZE_POWDER_II, Skills.BLAZE_POWDER_I);
     }
 
     public static int getAmmoAmount(PlayerEntity player) {

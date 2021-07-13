@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.common.block;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
-import dev.toma.gunsrpg.util.GuiHandler;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

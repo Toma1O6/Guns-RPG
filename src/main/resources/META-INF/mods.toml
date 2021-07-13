@@ -1,0 +1,34 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="All rights reserved"
+
+[[mods]]
+modId="gunsrpg"
+version="${file.jarVersion}"
+displayName="Guns RPG"
+updateJSONURL="https://raw.githubusercontent.com/Toma1O6/Guns-RPG/master/update.json"
+authors="Toma,Tomano123"
+description='''
+Hardcore Minecraft mod with RPG elements.
+'''
+
+[[dependencies.gunsrpg]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.gunsrpg]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,1.17)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.gunsrpg]]
+    modId="configuration"
+    mandatory=true
+    versionRange="[1.2,1.3)"
+    ordering="BEFORE"
+    side="BOTH"

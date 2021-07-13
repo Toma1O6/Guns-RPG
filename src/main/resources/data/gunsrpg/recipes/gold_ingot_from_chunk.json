@@ -1,0 +1,9 @@
+{
+    "type": "minecraft:smelting",
+    "ingredient": {
+        "item": "gunsrpg:gold_ore_chunk"
+    },
+    "result": "minecraft:gold_ingot",
+    "experience": 1.0,
+    "cookingtime": 200
+}

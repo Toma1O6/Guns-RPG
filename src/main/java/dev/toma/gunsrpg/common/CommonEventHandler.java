@@ -15,13 +15,11 @@ import dev.toma.gunsrpg.common.init.GRPGSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.ItemHammer;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
 import dev.toma.gunsrpg.common.skills.LightHunterSkill;
 import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
 import dev.toma.gunsrpg.common.skills.WellFedSkill;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
 import dev.toma.gunsrpg.config.GRPGConfig;
-import dev.toma.gunsrpg.event.EntityEquippedItemEvent;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.Pair;
@@ -36,16 +34,12 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IAngerable;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
@@ -101,23 +95,6 @@ public class CommonEventHandler {
             // overworld biomes
             BiomeGenerationSettingsBuilder builder = event.getGeneration();
             builder.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, GRPGOres.ORE_AMETHYST);
-        }
-    }
-
-    @SubscribeEvent
-    public static void entityEquipItem(EntityEquippedItemEvent event) {
-        if (event.getEntity() instanceof PlayerEntity) {
-            if (event.getSlot() == EquipmentSlotType.MAINHAND) {
-                PlayerEntity player = (PlayerEntity) event.getEntity();
-                ModifiableAttributeInstance attributeInstance = player.getAttribute(Attributes.ATTACK_SPEED);
-                attributeInstance.removeModifier(AdrenalineRushSkill.SKILL_MODIFIER);
-                AdrenalineRushSkill adrenalineRushSkill = PlayerDataFactory.getSkill(player, Skills.ADRENALINE_RUSH_I);
-                if (adrenalineRushSkill != null && adrenalineRushSkill.apply(player)) {
-                    adrenalineRushSkill = SkillUtil.getBestSkillFromOverrides(adrenalineRushSkill, player);
-                    AttributeModifier attributeModifier = adrenalineRushSkill.getAttackSpeedBoost();
-                    attributeInstance.addTransientModifier(attributeModifier);
-                }
-            }
         }
     }
 

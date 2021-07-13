@@ -33,7 +33,7 @@ public class ModelShotgun extends ModelWeapon {
     private final ModelRenderer bone3;
 
     @Override
-    public void doRender(ItemStack stack) {
+    public void render(ItemStack stack) {
         bone.render(1f);
     }
 

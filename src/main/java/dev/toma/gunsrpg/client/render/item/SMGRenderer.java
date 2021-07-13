@@ -17,7 +17,7 @@ public class SMGRenderer extends TileEntityItemStackRenderer {
     public void renderByItem(ItemStack p_192838_1_) {
         if(p_192838_1_.getItem() == GRPGItems.SMG) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-            modelSMG.doRender(p_192838_1_);
+            modelSMG.render(p_192838_1_);
         }
     }
 }

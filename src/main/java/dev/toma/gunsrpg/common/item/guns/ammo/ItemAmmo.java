@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns.ammo;
 
+import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.common.item.GRPGItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -8,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import static dev.toma.gunsrpg.common.init.GRPGItems.*;
 
@@ -17,13 +17,11 @@ public class ItemAmmo extends GRPGItem implements IAmmoProvider {
     public static Map<GunItem, ItemAmmo[]> GUN_TO_ITEM_MAP = new HashMap<>();
     private final AmmoType ammoType;
     private final AmmoMaterial material;
-    private final Supplier<GunItem> item;
 
-    public ItemAmmo(String name, AmmoType ammoType, AmmoMaterial material, Supplier<GunItem> item) {
-        super(name);
+    public ItemAmmo(String name, AmmoType ammoType, AmmoMaterial material) {
+        super(name, new Properties().tab(ModTabs.ITEM_TAB));
         this.material = material;
         this.ammoType = ammoType;
-        this.item = item;
     }
 
     @Override

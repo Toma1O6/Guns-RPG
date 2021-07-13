@@ -17,7 +17,7 @@ public class SGRenderer extends TileEntityItemStackRenderer {
     public void renderByItem(ItemStack itemStackIn) {
         if(itemStackIn.getItem() == GRPGItems.SHOTGUN) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-            model.doRender(itemStackIn);
+            model.render(itemStackIn);
         }
     }
 }

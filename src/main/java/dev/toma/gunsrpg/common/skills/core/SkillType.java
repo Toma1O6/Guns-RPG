@@ -8,7 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import java.util.Collections;
@@ -41,12 +41,12 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
         this.skillOverride = builder.skillOverride;
         this.category = builder.category;
         this.criteria = builder.criteria;
-        this.icon = builder.icon != null ? builder.icon : GunsRPG.makeResource("textures/icons/" + builder.registryName.getResourcePath() + ".png");
-        this.textComponent = builder.textComponent != null ? builder.textComponent : new TextComponentTranslation("skill." + builder.registryName.getResourcePath());
+        this.icon = builder.icon != null ? builder.icon : GunsRPG.makeResource("textures/icons/" + builder.registryName.getPath() + ".png");
+        this.textComponent = builder.textComponent != null ? builder.textComponent : new TranslationTextComponent("skill." + builder.registryName.getPath());
         if (builder.descriptionLines > 0) {
             description = new ITextComponent[builder.descriptionLines];
             for (int i = 0; i < builder.descriptionLines; i++) {
-                description[i] = new TextComponentTranslation(builder.registryName.getResourcePath() + ".description.line_" + (i + 1));
+                description[i] = new TranslationTextComponent(builder.registryName.getPath() + ".description.line_" + (i + 1));
             }
         } else description = new ITextComponent[0];
         this.enableCustomChildDisplay = builder.enableCustomChildDisplay;
@@ -70,7 +70,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
     }
 
     public String getDisplayName() {
-        return textComponent.getFormattedText();
+        return textComponent.getString();
     }
 
     public ITextComponent[] getDescription() {

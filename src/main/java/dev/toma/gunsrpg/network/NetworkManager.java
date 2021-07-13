@@ -57,7 +57,6 @@ public class NetworkManager {
         registerNetworkPacket(SPacketSelectAmmo.class);
         registerNetworkPacket(SPacketSetAiming.class);
         registerNetworkPacket(SPacketSetReloading.class);
-        registerNetworkPacket(SPacketUpdateSightData.class);
         registerNetworkPacket(SPacketChangeFiremode.class);
         registerNetworkPacket(SPacketUnlockSkill.class);
         registerNetworkPacket(SPacketCheckSmithingRecipe.class);

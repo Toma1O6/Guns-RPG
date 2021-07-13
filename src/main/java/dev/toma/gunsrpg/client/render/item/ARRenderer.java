@@ -17,7 +17,7 @@ public class ARRenderer extends TileEntityItemStackRenderer {
     public void renderByItem(ItemStack stack, float partialTicks) {
         if(stack.getItem() == GRPGItems.ASSAULT_RIFLE) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-            model.doRender(stack);
+            model.render(stack);
         }
     }
 }

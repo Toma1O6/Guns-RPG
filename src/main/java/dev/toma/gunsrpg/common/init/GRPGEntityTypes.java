@@ -34,6 +34,9 @@ public class GRPGEntityTypes {
     public static final RegistryObject<EntityType<GrenadeEntity>> GRENADE = register("grenade", GrenadeEntity::new, EntityClassification.MISC,
             builder -> builder.setTrackingRange(64).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).sized(0.2F, 0.2F)
     );
+    public static final RegistryObject<EntityType<EntityFlare>> FLARE = register("flare", EntityFlare::new, EntityClassification.MISC,
+            builder -> builder.setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).sized(0.2F, 0.2F)
+    );
 
     private static <E extends Entity> RegistryObject<EntityType<E>> register(
             String name,

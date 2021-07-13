@@ -1,13 +1,13 @@
 package dev.toma.gunsrpg.config;
 
-import dev.toma.configuration.api.Config;
-import dev.toma.configuration.api.IConfigPlugin;
-import dev.toma.configuration.api.IConfigWriter;
+import dev.toma.configuration.api.*;
+import dev.toma.configuration.api.client.IClientSettings;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.config.client.ClientConfiguration;
 import dev.toma.gunsrpg.config.debuff.DebuffConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfig;
 import dev.toma.gunsrpg.config.world.WorldConfiguration;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 
 @Config
 public class GRPGConfig implements IConfigPlugin {

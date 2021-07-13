@@ -10,8 +10,7 @@
             "item": "minecraft:furnace"
         },
         "B": {
-            "item": "minecraft:stonebrick",
-            "data": 0
+            "item": "minecraft:stone_bricks"
         },
         "I": {
             "item": "minecraft:iron_block"

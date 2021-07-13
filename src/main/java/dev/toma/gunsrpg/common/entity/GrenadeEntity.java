@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.entity;
 
+import dev.toma.gunsrpg.common.init.GRPGEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -41,12 +42,16 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
     public Item item;
     public LazyOptional<ItemStack> renderStack = LazyOptional.of(() -> new ItemStack(item));
 
-    public GrenadeEntity(EntityType<?> type, World world) {
-        this(type, world, null);
+    public GrenadeEntity(EntityType<? extends GrenadeEntity> type, World world) {
+        this(type, world, null, 100, 3, false, Items.AIR);
     }
 
-    public GrenadeEntity(EntityType<?> type, World world, LivingEntity thrower) {
-        this(type, world, thrower, 100, 3, false, Items.AIR);
+    public GrenadeEntity(World world) {
+        this(world, null);
+    }
+
+    public GrenadeEntity(World world, LivingEntity thrower) {
+        this(GRPGEntityTypes.GRENADE.get(), world, thrower, 100, 3, false, Items.AIR);
     }
 
     public GrenadeEntity(EntityType<?> type, World world, LivingEntity thrower, int time, int blastRadius, boolean explodesOnImpact, Item item) {

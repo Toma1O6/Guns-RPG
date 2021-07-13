@@ -17,7 +17,7 @@ public class PistolRenderer extends TileEntityItemStackRenderer {
     public void renderByItem(ItemStack stack) {
         if(stack.getItem() == GRPGItems.PISTOL) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-            p1911.doRender(stack);
+            p1911.render(stack);
         }
     }
 }

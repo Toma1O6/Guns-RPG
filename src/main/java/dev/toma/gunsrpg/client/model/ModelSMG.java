@@ -243,7 +243,7 @@ public class ModelSMG extends ModelWeapon {
     }
 
     @Override
-    public void doRender(ItemStack stack) {
+    public void render(ItemStack stack) {
         EntityPlayer player = Minecraft.getMinecraft().player;
         receiver.render(1f);
         grip.render(1f);

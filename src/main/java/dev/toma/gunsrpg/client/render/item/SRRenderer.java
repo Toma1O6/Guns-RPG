@@ -17,7 +17,7 @@ public class SRRenderer extends TileEntityItemStackRenderer {
     public void renderByItem(ItemStack p_192838_1_) {
         if(p_192838_1_.getItem() == GRPGItems.SNIPER_RIFLE) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-            model.doRender(p_192838_1_);
+            model.render(p_192838_1_);
         }
     }
 }

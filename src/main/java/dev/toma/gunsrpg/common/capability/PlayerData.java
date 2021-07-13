@@ -1,6 +1,9 @@
 package dev.toma.gunsrpg.common.capability;
 
-import dev.toma.gunsrpg.common.capability.object.*;
+import dev.toma.gunsrpg.common.capability.object.AimInfo;
+import dev.toma.gunsrpg.common.capability.object.DebuffData;
+import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
+import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -14,8 +17,6 @@ public interface PlayerData extends INBTSerializable<CompoundNBT> {
 
     ReloadInfo getReloadInfo();
 
-    ScopeData getScopeData();
-
     PlayerSkills getSkills();
 
     void setOnCooldown();
@@ -26,7 +27,13 @@ public interface PlayerData extends INBTSerializable<CompoundNBT> {
 
     void sync();
 
-    void syncCloneData();
-
     void handleLogin();
+
+    void setSyncCallback(ISynchCallback callback);
+
+    void onSync();
+
+    interface ISynchCallback {
+        void onSynch();
+    }
 }

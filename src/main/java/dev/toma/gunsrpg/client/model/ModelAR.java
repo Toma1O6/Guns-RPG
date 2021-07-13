@@ -956,7 +956,7 @@ public class ModelAR extends ModelWeapon {
     }
 
     @Override
-    public void doRender(ItemStack stack) {
+    public void render(ItemStack stack) {
         EntityPlayerSP player = Minecraft.getMinecraft().player;
         sks.render(1f);
         magazine.render(1f);

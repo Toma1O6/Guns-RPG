@@ -1,8 +1,7 @@
 package dev.toma.gunsrpg.client.gui.skills;
 
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.GRPGConfig;
-import dev.toma.gunsrpg.util.math.Vec2Di;
+import dev.toma.gunsrpg.util.math.Vec2i;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,10 +12,10 @@ public class Node {
     protected final SkillType<?>[] types;
     protected final SkillType<?> parent;
     public static int currentX, currentY;
-    protected static final Vec2Di startingPoint = new Vec2Di(40, 60);
-    public static int furthestPoint = startingPoint.x;
-    protected static final int spacingHorizontal = GRPGConfig.clientConfig.skillTreeSpacing.x;
-    protected static final int spacingVerical = GRPGConfig.clientConfig.skillTreeSpacing.y;
+    protected static final Vec2i startingPoint = new Vec2i(40, 60);
+    public static int furthestPoint = startingPoint.x();
+    protected static final int spacingHorizontal = 30;
+    protected static final int spacingVerical = 30;
 
     public Node(SkillType<?> parent, SkillType<?> type) {
         this(parent, new SkillType[] {type});
@@ -28,13 +27,13 @@ public class Node {
     }
 
     public Node resetY() {
-        currentY = startingPoint.y;
+        currentY = startingPoint.y();
         return this;
     }
 
     public static void prepareNewCategory() {
-        currentX = startingPoint.x;
-        currentY = startingPoint.y;
+        currentX = startingPoint.x();
+        currentY = startingPoint.y();
         furthestPoint = currentX;
     }
 
@@ -53,7 +52,7 @@ public class Node {
             int backup = currentX;
             for(int i = 0; i < types.length; i++) {
                 SkillType<?> type = types[i];
-                ctxs.add(new PlacementContext(parent, type, new Vec2Di(currentX, currentY)));
+                ctxs.add(new PlacementContext(parent, type, new Vec2i(currentX, currentY)));
                 if(i < types.length - 1) currentX += spacingHorizontal;
                 if(currentX > furthestPoint) furthestPoint = currentX;
             }
@@ -61,7 +60,7 @@ public class Node {
             currentX = backup;
             return ctxs;
         } else {
-            Vec2Di pos = new Vec2Di(currentX, currentY);
+            Vec2i pos = new Vec2i(currentX, currentY);
             currentY += spacingVerical;
             return Collections.singletonList(new PlacementContext(parent, types[0], pos));
         }

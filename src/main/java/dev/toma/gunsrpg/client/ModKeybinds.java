@@ -14,6 +14,7 @@ import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketChangeFiremode;
 import dev.toma.gunsrpg.network.packet.SPacketRequestDataUpdate;
 import dev.toma.gunsrpg.network.packet.SPacketSetReloading;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,26 +40,25 @@ public class ModKeybinds {
                 NetworkManager.sendServerPacket(new SPacketChangeFiremode());
             }
         });
-        register("sight_type", GLFW.GLFW_KEY_PAGE_UP, () -> PlayerDataFactory.get(Minecraft.getInstance().player).getScopeData().updateType());
-        register("sight_color", GLFW.GLFW_KEY_PAGE_DOWN, () -> PlayerDataFactory.get(Minecraft.getInstance().player).getScopeData().updateColor());
     }
 
     private static void reloadPressed() {
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
-        ReloadInfo info = PlayerDataFactory.get(player).getReloadInfo();
+        ReloadInfo info = PlayerDataFactory.getUnsafe(player).getReloadInfo();
         ItemStack stack = player.getMainHandItem();
         if(player.isCrouching()) {
             if(stack.getItem() instanceof GunItem) {
                 mc.setScreen(new GuiChooseAmmo((GunItem) stack.getItem()));
             }
         } else {
-            if(stack.getItem() instanceof GunItem && !player.isSprinting() && AnimationProcessor.getByID(Animations.REBOLT) == null) {
+            AnimationProcessor processor = ClientSideManager.processor();
+            if(stack.getItem() instanceof GunItem && !player.isSprinting() && processor.getByID(Animations.REBOLT) == null) {
                 GunItem gun = (GunItem) stack.getItem();
                 if(info.isReloading()) {
                     if(gun.getReloadManager().canBeInterrupted(gun, stack)) {
                         info.cancelReload();
-                        AnimationProcessor.stop(Animations.RELOAD);
+                        processor.stop(Animations.RELOAD);
                         NetworkManager.sendServerPacket(new SPacketSetReloading(false, 0));
                         return;
                     }
@@ -69,7 +69,7 @@ public class ModKeybinds {
                     int ammo = gun.getAmmo(stack);
                     int max = gun.getMaxAmmo(player);
                     boolean skip = player.isCreative();
-                    boolean reloading = PlayerDataFactory.get(player).getReloadInfo().isReloading();
+                    boolean reloading = info.isReloading();
                     if(!reloading && ammo < max) {
                         if(skip) {
                             gun.getReloadManager().startReloading(player, gun.getReloadTime(player), stack);

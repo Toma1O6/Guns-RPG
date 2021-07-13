@@ -436,7 +436,7 @@ public class ModelSR extends ModelWeapon {
     }
 
     @Override
-    public void doRender(ItemStack stack) {
+    public void render(ItemStack stack) {
         EntityPlayer player = Minecraft.getMinecraft().player;
         kar98k.render(1f);
         if(PlayerDataFactory.hasActiveSkill(player, Skills.SR_SUPPRESSOR)) suppressor.render(1f);

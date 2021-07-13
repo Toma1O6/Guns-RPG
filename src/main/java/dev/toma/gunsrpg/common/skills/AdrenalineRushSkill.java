@@ -3,20 +3,12 @@ package dev.toma.gunsrpg.common.skills;
 import dev.toma.gunsrpg.asm.Hooks;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.interfaces.TickableSkill;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 
-import java.util.UUID;
-
 public class AdrenalineRushSkill extends BasicSkill implements TickableSkill {
 
-    public static final UUID SKILL_MODIFIER = UUID.fromString("A6FD91CA-A18E-401A-B362-D908BC717C13");
-    private static final AttributeModifier[] modifiers = {
-            new AttributeModifier(SKILL_MODIFIER, "Skill modifier", 0.15, AttributeModifier.Operation.MULTIPLY_TOTAL),
-            new AttributeModifier(SKILL_MODIFIER, "Skill modifier", 0.30, AttributeModifier.Operation.MULTIPLY_TOTAL),
-            new AttributeModifier(SKILL_MODIFIER, "Skill modifier", 0.50, AttributeModifier.Operation.MULTIPLY_TOTAL)
-    };
+    private static final float[] MODIFIERS = new float[] {0.85F, 0.70F, 0.50F};
     private final int level;
     private final float reloadMultiplier;
 
@@ -37,8 +29,8 @@ public class AdrenalineRushSkill extends BasicSkill implements TickableSkill {
         this.prevTrigger = currentlyTriggered;
     }
 
-    public AttributeModifier getAttackSpeedBoost() {
-        return modifiers[level];
+    public float getAttackSpeedBoost() {
+        return MODIFIERS[level];
     }
 
     public float getReloadMultiplier() {

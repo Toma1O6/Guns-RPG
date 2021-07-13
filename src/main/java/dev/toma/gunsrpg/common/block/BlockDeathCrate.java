@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.common.block;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
-import dev.toma.gunsrpg.util.GuiHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,21 +1,19 @@
 package dev.toma.gunsrpg;
 
 import com.mojang.brigadier.CommandDispatcher;
-import dev.toma.gunsrpg.client.ModKeybinds;
 import dev.toma.gunsrpg.client.gui.GuiAirdrop;
 import dev.toma.gunsrpg.client.gui.GuiBlastFurnace;
 import dev.toma.gunsrpg.client.gui.GuiDeathCrate;
 import dev.toma.gunsrpg.client.gui.GuiSmithingTable;
 import dev.toma.gunsrpg.client.gui.skills.SkillTreePlacement;
-import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
 import dev.toma.gunsrpg.common.command.CommandGRPG;
-import dev.toma.gunsrpg.common.entity.*;
 import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
 import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.recipes.BlastFurnaceRecipe;
 import dev.toma.gunsrpg.util.recipes.SmithingTableRecipes;
 import dev.toma.gunsrpg.world.MobSpawnManager;
@@ -34,16 +32,12 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DeferredWorkQueue;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.ParallelDispatchEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -65,26 +59,11 @@ public class GunsRPG {
         GRPGTileEntities.subscribe(eventBus);
         GRPGContainers.subscribe(eventBus);
         // lifecycle events
-        eventBus.addListener(this::clientSetup);
+        eventBus.addListener(ClientSideManager::clientSetup);
         eventBus.addListener(this::commonSetup);
         eventBus.addListener(this::parallelEvent);
         // other events
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
-    }
-
-    private void clientSetup(FMLClientSetupEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(AirdropEntity.class, RenderAirdrop::new);
-        RenderingRegistry.registerEntityRenderingHandler(ExplosiveSkeletonEntity.class, RenderExplosiveSkeleton::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityExplosiveArrow.class, RenderExplosiveArrow::new);
-        RenderingRegistry.registerEntityRenderingHandler(ZombieGunnerEntity.class, RenderZombieGunner::new);
-        RenderingRegistry.registerEntityRenderingHandler(BloodmoonGolemEntity.class, RenderBloodmoonGolem::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityCrossbowBolt.class, CrossbowBoltRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(GrenadeEntity.class, RenderGrenade::new);
-        RenderingRegistry.registerEntityRenderingHandler(RocketAngelEntity.class, RenderRocketAngel::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityGoldDragon.class, RenderGoldenDragon::new);
-        ModKeybinds.registerKeybinds();
-        MinecraftForge.EVENT_BUS.register(new ModKeybinds());
-        //((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(ClientSideManager.SCRIPT_LOADER);
     }
 
     private void parallelEvent(ParallelDispatchEvent event) {
@@ -108,8 +87,6 @@ public class GunsRPG {
         SmithingTableRecipes.register();
         ItemAmmo.init();
         initOresToChunks();
-        GameRegistry.addSmelting(GRPGItems.IRON_ORE_CHUNK, new ItemStack(Items.IRON_INGOT), 0.7F);
-        GameRegistry.addSmelting(GRPGItems.GOLD_ORE_CHUNK, new ItemStack(Items.GOLD_INGOT), 1.0F);
         LootTableList.register(makeResource("inject/dungeon_inject"));
         MobSpawnManager.instance().initialize();
         BlastFurnaceRecipe.init();

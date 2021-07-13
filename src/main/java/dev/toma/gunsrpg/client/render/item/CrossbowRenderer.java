@@ -15,6 +15,6 @@ public class CrossbowRenderer extends TileEntityItemStackRenderer {
     @Override
     public void renderByItem(ItemStack stack) {
         Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-        crossbow.doRender(stack);
+        crossbow.render(stack);
     }
 }

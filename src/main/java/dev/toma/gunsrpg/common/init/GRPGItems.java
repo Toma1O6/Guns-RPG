@@ -4,9 +4,9 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.item.*;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.ObjectHolder;
 
-@GameRegistry.ObjectHolder(GunsRPG.MODID)
+@ObjectHolder(GunsRPG.MODID)
 public class GRPGItems {
     public static final GunItem PISTOL = null;
     public static final GunItem SMG = null;

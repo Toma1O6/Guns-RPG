@@ -37,7 +37,7 @@ public class SkillTreePlacement {
 
     private static Tree getTree(SkillCategory category) {
         Predicate<SkillType<?>> filter = type -> category.hasChild() && type.category == category.getChild() || type.category == category;
-        List<SkillType<?>> list = GunsRPGRegistries.SKILLS.getValuesCollection().stream().filter(filter).collect(Collectors.toList());
+        List<SkillType<?>> list = GunsRPGRegistries.SKILLS.getValues().stream().filter(filter).collect(Collectors.toList());
         return new Tree(list);
     }
 }

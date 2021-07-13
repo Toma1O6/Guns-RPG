@@ -47,48 +47,7 @@ function initializeCoremod() {
                 'methodDesc': '()F'
             },
             'transformer': function (methodNode) {
-                /*
-                public getCurrentItemAttackStrengthDelay()F
-                   L0
-                    LINENUMBER 1907 L0
-                    DCONST_1
-                    ALOAD 0
-                    GETSTATIC net/minecraft/entity/ai/attributes/Attributes.ATTACK_SPEED : Lnet/minecraft/entity/ai/attributes/Attribute;        // remove
-                    INVOKEVIRTUAL net/minecraft/entity/player/PlayerEntity.getAttributeValue (Lnet/minecraft/entity/ai/attributes/Attribute;)D   // remove
-
-                    ====== PATCH START ======
-                    INVOKESTATIC dev/toma/gunsrpg/asm/Hooks.modifyAttackDelay (Lnet/minecraft/entity/player/PlayerEntity;)D
-                    ====== PATCH END   ======
-
-                    DDIV
-                    LDC 20.0
-                    DMUL
-                    D2F
-                    FRETURN
-                   L1
-                    LOCALVARIABLE this Lnet/minecraft/entity/player/PlayerEntity; L0 L1 0
-                    MAXSTACK = 4
-                    MAXLOCALS = 1
-                */
-                let instructions = methodNode.instructions;
-                for (let i = 0; i < instructions.size(); i++) {
-                    let instruction = instructions.get(i);
-                    if (instruction.getOpcode() === GETSTATIC) {
-                        let virtualInvoke = instructions.get(i + 1);
-                        let list = new InsnList();
-                        list.add(new MethodInsnNode(
-                            INVOKESTATIC,
-                            'dev/toma/gunsrpg/asm/Hooks',
-                            'modifyAttackDelay',
-                            '(Lnet/minecraft/entity/player/PlayerEntity;)D',
-                            false
-                        ));
-                        instructions.insertBefore(instruction, list);
-                        instructions.remove(instruction);
-                        instructions.remove(virtualInvoke);
-                        break;
-                    }
-                }
+                patchAttackDelay(methodNode.instructions);
                 return methodNode;
             }
         },
@@ -101,55 +60,103 @@ function initializeCoremod() {
                 'methodDesc': '()D'
             },
             'transformer': function (methodNode) {
-                /*
-                protected getFollowDistance()D
-                   L0
-                    LINENUMBER 74 L0
-                    ALOAD 0
-
-                    ===== PATCH START =====
-                    INVOKESTATIC dev/toma/gunsrpg/asm/Hooks.modifyFollowDistance (Lnet/minecraft/entity/MobEntity;)D
-                    ===== PATCH END   =====
-
-                    GETFIELD net/minecraft/entity/ai/goal/TargetGoal.mob : Lnet/minecraft/entity/MobEntity;                                 // remove
-                    GETSTATIC net/minecraft/entity/ai/attributes/Attributes.FOLLOW_RANGE : Lnet/minecraft/entity/ai/attributes/Attribute;   // remove
-                    INVOKEVIRTUAL net/minecraft/entity/MobEntity.getAttributeValue (Lnet/minecraft/entity/ai/attributes/Attribute;)D        // remove
-                    DRETURN
-                   L1
-                    LOCALVARIABLE this Lnet/minecraft/entity/ai/goal/TargetGoal; L0 L1 0
-                    MAXSTACK = 2
-                    MAXLOCALS = 1
-                */
-                let instructions = methodNode.instructions;
-                for (let i = 0; i < instructions.size(); i++) {
-                    let instruction = instructions.get(i);
-                    if (instruction.getOpcode() === ALOAD) {
-                        let list = new InsnList();
-                        list.add(new FieldInsnNode(
-                                GETFIELD,
-                                'net/minecraft/entity/ai/goal/TargetGoal',
-                                ASMAPI.mapField('field_75299_d'),
-                                'net/minecraft/entity/MobEntity'
-                        ));
-                        list.add(new MethodInsnNode(
-                                INVOKESTATIC,
-                                'dev/toma/gunsrpg/asm/Hooks',
-                                'modifyFollowDistance',
-                                '(Lnet/minecraft/entity/MobEntity;)D',
-                                false
-                        ));
-                        let getFieldInsn = instructions.get(i + 1);
-                        let getStaticInsn = instructions.get(i + 2);
-                        let invokeVirtualInsn = instructions.get(i + 3);
-                        instructions.insert(instruction, list);
-                        instructions.remove(getFieldInsn);
-                        instructions.remove(getStaticInsn);
-                        instructions.remove(invokeVirtualInsn);
-                        break;
-                    }
-                }
+                patchFollowDistance(methodNode.instructions)
                 return methodNode;
             }
+        }
+    }
+}
+
+/*
+public getCurrentItemAttackStrengthDelay()F
+ L0
+  LINENUMBER 1907 L0
+  DCONST_1
+  ALOAD 0
+  GETSTATIC net/minecraft/entity/ai/attributes/Attributes.ATTACK_SPEED : Lnet/minecraft/entity/ai/attributes/Attribute;        // remove
+  INVOKEVIRTUAL net/minecraft/entity/player/PlayerEntity.getAttributeValue (Lnet/minecraft/entity/ai/attributes/Attribute;)D   // remove
+
+  ====== PATCH START ======
+  INVOKESTATIC dev/toma/gunsrpg/asm/Hooks.modifyAttackDelay (Lnet/minecraft/entity/player/PlayerEntity;)D
+  ====== PATCH END   ======
+
+  DDIV
+  LDC 20.0
+  DMUL
+  D2F
+  FRETURN
+ L1
+  LOCALVARIABLE this Lnet/minecraft/entity/player/PlayerEntity; L0 L1 0
+  MAXSTACK = 4
+  MAXLOCALS = 1
+*/
+/**
+ * Simple hook call which allows me to directly change attack speed values any time I need to rather
+ * than waiting for equip event which is not fired in some occassions like equipping empty item or item of same type.
+ * @param instructions List of instructions
+ */
+function patchAttackDelay(instructions) {
+    for (let i = 0; i < instructions.size(); i++) {
+        let instruction = instructions.get(i);
+        if (instruction.getOpcode() === GETSTATIC) {
+            let virtualInvoke = instructions.get(i + 1);
+            let list = new InsnList();
+            list.add(new MethodInsnNode(
+                INVOKESTATIC,
+                'dev/toma/gunsrpg/asm/Hooks',
+                'modifyAttackDelay',
+                '(Lnet/minecraft/entity/player/PlayerEntity;)D',
+                false
+            ));
+            instructions.insertBefore(instruction, list);
+            instructions.remove(instruction);
+            instructions.remove(virtualInvoke);
+            break;
+        }
+    }
+}
+
+/*
+protected getFollowDistance()D
+ L0
+  LINENUMBER 74 L0
+  ALOAD 0
+  GETFIELD net/minecraft/entity/ai/goal/TargetGoal.mob : Lnet/minecraft/entity/MobEntity;
+
+  ===== PATCH START =====
+  INVOKESTATIC dev/toma/gunsrpg/asm/Hooks.modifyFollowDistance (Lnet/minecraft/entity/MobEntity;)D
+  ===== PATCH END   =====
+
+  GETSTATIC net/minecraft/entity/ai/attributes/Attributes.FOLLOW_RANGE : Lnet/minecraft/entity/ai/attributes/Attribute;   // remove
+  INVOKEVIRTUAL net/minecraft/entity/MobEntity.getAttributeValue (Lnet/minecraft/entity/ai/attributes/Attribute;)D        // remove
+  DRETURN
+ L1
+  LOCALVARIABLE this Lnet/minecraft/entity/ai/goal/TargetGoal; L0 L1 0
+  MAXSTACK = 2
+  MAXLOCALS = 1
+*/
+/**
+ * Used to dynamically change follow distance of all mobs during bloodmoon.
+ * This way is much faster rather than iterating over all mobs around players and updating their attributes
+ * @param instructions Instruction list
+ */
+function patchFollowDistance(instructions) {
+    for (let i = 0; i < instructions.size(); i++) {
+        let instruction = instructions.get(i);
+        if (instruction.getOpcode() === GETFIELD) {
+            let methodInsert = new MethodInsnNode(
+                INVOKESTATIC,
+                'dev/toma/gunsrpg/asm/Hooks',
+                'modifyFollowDistance',
+                '(Lnet/minecraft/entity/MobEntity;)D',
+                false
+            );
+            let getStaticInsn = instructions.get(i + 1);
+            let invokeVirtualInsn = instructions.get(i + 2);
+            instructions.insert(instruction, methodInsert);
+            instructions.remove(getStaticInsn);
+            instructions.remove(invokeVirtualInsn);
+            break;
         }
     }
 }

@@ -3,10 +3,10 @@ package dev.toma.gunsrpg.util.recipes;
 import dev.toma.gunsrpg.common.init.GRPGBlocks;
 import dev.toma.gunsrpg.common.init.GRPGItems;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class BlastFurnaceRecipe {
     }
 
     public static boolean hasRecipeFor(Block block) {
-        return RECIPES.containsKey(Item.getItemFromBlock(block));
+        return RECIPES.containsKey(block.asItem());
     }
 
     public static boolean hasRecipeFor(ItemStack stack) {
@@ -36,7 +36,7 @@ public class BlastFurnaceRecipe {
 
     @Nullable
     public static ItemStack getResult(Block block) {
-        return RECIPES.get(Item.getItemFromBlock(block)).get();
+        return RECIPES.get(block.asItem()).get();
     }
 
     @Nullable
@@ -60,6 +60,6 @@ public class BlastFurnaceRecipe {
     }
 
     private static void register(Block in, Supplier<ItemStack> out) {
-        RECIPES.put(Item.getItemFromBlock(in), out);
+        RECIPES.put(in.asItem(), out);
     }
 }

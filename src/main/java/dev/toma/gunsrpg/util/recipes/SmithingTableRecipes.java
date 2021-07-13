@@ -21,6 +21,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * @deprecated Use {@link net.minecraft.item.crafting.IRecipe} API
+ */
+@Deprecated
 public class SmithingTableRecipes {
 
     private static final List<SmithingRecipe> RECIPES = new ArrayList<>();
@@ -49,42 +53,42 @@ public class SmithingTableRecipes {
         register(new RecipeBuilder().out(GRPGItems.SHOTGUN_SHELL).add(0, Items.RED_DYE).add(1, GRPGItems.LARGE_BULLET_CASING).add(2, Items.PAPER).req(Skills.WOODEN_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.BOLT_FLETCHING).add(0, Items.IRON_NUGGET).add(3, Items.FEATHER).add(6, Items.GOLD_NUGGET).req(Skills.WOODEN_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.SMALL_BULLET_CASING, 16).add(0, Items.COAL).add(1, Items.IRON_INGOT).add(2, Items.GOLD_INGOT).req(Skills.WOODEN_AMMO_SMITH).recipe());
-        register(new RecipeBuilder().out(GRPGItems.WOODEN_AMMO_9MM, SkillUtil::getAmmoAmount).add(0, Blocks.PLANKS).add(3, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.WOODEN_AMMO_SMITH).recipe());
+        register(new RecipeBuilder().out(GRPGItems.WOODEN_AMMO_9MM, SkillUtil::getAmmoAmount).add(0, Blocks.OAK_PLANKS).add(3, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.WOODEN_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.STONE_AMMO_9MM, SkillUtil::getAmmoAmount).add(0, Blocks.STONE).add(3, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.STONE_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.IRON_AMMO_9MM, SkillUtil::getAmmoAmount).add(0, Items.IRON_INGOT).add(3, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.IRON_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.GOLD_AMMO_9MM, SkillUtil::getAmmoAmount).add(0, Items.GOLD_INGOT).add(3, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.GOLD_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.DIAMOND_AMMO_9MM, SkillUtil::getAmmoAmount).add(0, Items.DIAMOND).add(3, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.DIAMOND_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.EMERALD_AMMO_9MM, SkillUtil::getAmmoAmount).add(0, Items.EMERALD).add(3, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.EMERALD_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.AMETHYST_AMMO_9MM, SkillUtil::getAmmoAmount).add(0, GRPGItems.AMETHYST).add(3, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.AMETHYST_AMMO_SMITH).recipe());
-        register(new RecipeBuilder().out(GRPGItems.WOODEN_AMMO_45ACP, SkillUtil::getAmmoAmount).add(0, Blocks.PLANKS).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.WOODEN_AMMO_SMITH).recipe());
+        register(new RecipeBuilder().out(GRPGItems.WOODEN_AMMO_45ACP, SkillUtil::getAmmoAmount).add(0, Blocks.OAK_PLANKS).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.WOODEN_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.STONE_AMMO_45ACP, SkillUtil::getAmmoAmount).add(0, Blocks.STONE).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.STONE_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.IRON_AMMO_45ACP, SkillUtil::getAmmoAmount).add(0, Items.IRON_INGOT).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.IRON_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.GOLD_AMMO_45ACP, SkillUtil::getAmmoAmount).add(0, Items.GOLD_INGOT).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.GOLD_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.DIAMOND_AMMO_45ACP, SkillUtil::getAmmoAmount).add(0, Items.DIAMOND).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.DIAMOND_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.EMERALD_AMMO_45ACP, SkillUtil::getAmmoAmount).add(0, Items.EMERALD).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.EMERALD_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.AMETHYST_AMMO_45ACP, SkillUtil::getAmmoAmount).add(0, GRPGItems.AMETHYST).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.SMALL_BULLET_CASING).req(Skills.AMETHYST_AMMO_SMITH).recipe());
-        register(new RecipeBuilder().out(GRPGItems.WOODEN_AMMO_CROSSBOW_BOLT, SkillUtil::getCrossbowBoltAmount).add(0, Blocks.PLANKS).add(3, Items.STICK).add(6, GRPGItems.BOLT_FLETCHING).req(Skills.WOODEN_AMMO_SMITH).recipe());
+        register(new RecipeBuilder().out(GRPGItems.WOODEN_AMMO_CROSSBOW_BOLT, SkillUtil::getCrossbowBoltAmount).add(0, Blocks.OAK_PLANKS).add(3, Items.STICK).add(6, GRPGItems.BOLT_FLETCHING).req(Skills.WOODEN_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.STONE_AMMO_CROSSBOW_BOLT, SkillUtil::getCrossbowBoltAmount).add(0, Blocks.STONE).add(3, Items.STICK).add(6, GRPGItems.BOLT_FLETCHING).req(Skills.STONE_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.IRON_AMMO_CROSSBOW_BOLT, SkillUtil::getCrossbowBoltAmount).add(0, Items.IRON_INGOT).add(3, Items.STICK).add(6, GRPGItems.BOLT_FLETCHING).req(Skills.IRON_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.GOLD_AMMO_CROSSBOW_BOLT, SkillUtil::getCrossbowBoltAmount).add(0, Items.GOLD_INGOT).add(3, Items.STICK).add(6, GRPGItems.BOLT_FLETCHING).req(Skills.GOLD_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.DIAMOND_AMMO_CROSSBOW_BOLT, SkillUtil::getCrossbowBoltAmount).add(0, Items.DIAMOND).add(3, Items.STICK).add(6, GRPGItems.BOLT_FLETCHING).req(Skills.DIAMOND_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.EMERALD_AMMO_CROSSBOW_BOLT, SkillUtil::getCrossbowBoltAmount).add(0, Items.EMERALD).add(3, Items.STICK).add(6, GRPGItems.BOLT_FLETCHING).req(Skills.EMERALD_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.AMETHYST_AMMO_CROSSBOW_BOLT, SkillUtil::getCrossbowBoltAmount).add(0, GRPGItems.AMETHYST).add(3, Items.STICK).add(6, GRPGItems.BOLT_FLETCHING).req(Skills.AMETHYST_AMMO_SMITH).recipe());
-        register(new RecipeBuilder().out(GRPGItems.WOODEN_AMMO_12G, SkillUtil::getAmmoAmount).add(0, Blocks.PLANKS).add(new int[]{3, 4, 5}, Items.GUNPOWDER).add(6, GRPGItems.SHOTGUN_SHELL).req(Skills.WOODEN_AMMO_SMITH).recipe());
+        register(new RecipeBuilder().out(GRPGItems.WOODEN_AMMO_12G, SkillUtil::getAmmoAmount).add(0, Blocks.OAK_PLANKS).add(new int[]{3, 4, 5}, Items.GUNPOWDER).add(6, GRPGItems.SHOTGUN_SHELL).req(Skills.WOODEN_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.STONE_AMMO_12G, SkillUtil::getAmmoAmount).add(0, Blocks.STONE).add(new int[]{3, 4, 5}, Items.GUNPOWDER).add(6, GRPGItems.SHOTGUN_SHELL).req(Skills.STONE_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.IRON_AMMO_12G, SkillUtil::getAmmoAmount).add(0, Items.IRON_INGOT).add(new int[]{3, 4, 5}, Items.GUNPOWDER).add(6, GRPGItems.SHOTGUN_SHELL).req(Skills.IRON_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.GOLD_AMMO_12G, SkillUtil::getAmmoAmount).add(0, Items.GOLD_INGOT).add(new int[]{3, 4, 5}, Items.GUNPOWDER).add(6, GRPGItems.SHOTGUN_SHELL).req(Skills.GOLD_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.DIAMOND_AMMO_12G, SkillUtil::getAmmoAmount).add(0, Items.DIAMOND).add(new int[]{3, 4, 5}, Items.GUNPOWDER).add(6, GRPGItems.SHOTGUN_SHELL).req(Skills.DIAMOND_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.EMERALD_AMMO_12G, SkillUtil::getAmmoAmount).add(0, Items.EMERALD).add(new int[]{3, 4, 5}, Items.GUNPOWDER).add(6, GRPGItems.SHOTGUN_SHELL).req(Skills.EMERALD_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.AMETHYST_AMMO_12G, SkillUtil::getAmmoAmount).add(0, GRPGItems.AMETHYST).add(new int[]{3, 4, 5}, Items.GUNPOWDER).add(6, GRPGItems.SHOTGUN_SHELL).req(Skills.AMETHYST_AMMO_SMITH).recipe());
-        register(new RecipeBuilder().out(GRPGItems.WOODEN_AMMO_556MM, SkillUtil::getAmmoAmount).add(0, Blocks.PLANKS).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.LARGE_BULLET_CASING).req(Skills.WOODEN_AMMO_SMITH).recipe());
+        register(new RecipeBuilder().out(GRPGItems.WOODEN_AMMO_556MM, SkillUtil::getAmmoAmount).add(0, Blocks.OAK_PLANKS).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.LARGE_BULLET_CASING).req(Skills.WOODEN_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.STONE_AMMO_556MM, SkillUtil::getAmmoAmount).add(0, Blocks.STONE).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.LARGE_BULLET_CASING).req(Skills.STONE_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.IRON_AMMO_556MM, SkillUtil::getAmmoAmount).add(0, Items.IRON_INGOT).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.LARGE_BULLET_CASING).req(Skills.IRON_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.GOLD_AMMO_556MM, SkillUtil::getAmmoAmount).add(0, Items.GOLD_INGOT).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.LARGE_BULLET_CASING).req(Skills.GOLD_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.DIAMOND_AMMO_556MM, SkillUtil::getAmmoAmount).add(0, Items.DIAMOND).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.LARGE_BULLET_CASING).req(Skills.DIAMOND_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.EMERALD_AMMO_556MM, SkillUtil::getAmmoAmount).add(0, Items.EMERALD).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.LARGE_BULLET_CASING).req(Skills.EMERALD_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.AMETHYST_AMMO_556MM, SkillUtil::getAmmoAmount).add(0, GRPGItems.AMETHYST).add(new int[]{3, 4}, Items.GUNPOWDER).add(6, GRPGItems.LARGE_BULLET_CASING).req(Skills.AMETHYST_AMMO_SMITH).recipe());
-        register(new RecipeBuilder().out(GRPGItems.WOODEN_AMMO_762MM, SkillUtil::getAmmoAmount).add(0, Blocks.PLANKS).add(new int[]{3, 4, 5}, Items.GUNPOWDER).add(6, GRPGItems.LARGE_BULLET_CASING).req(Skills.WOODEN_AMMO_SMITH).recipe());
+        register(new RecipeBuilder().out(GRPGItems.WOODEN_AMMO_762MM, SkillUtil::getAmmoAmount).add(0, Blocks.OAK_PLANKS).add(new int[]{3, 4, 5}, Items.GUNPOWDER).add(6, GRPGItems.LARGE_BULLET_CASING).req(Skills.WOODEN_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.STONE_AMMO_762MM, SkillUtil::getAmmoAmount).add(0, Blocks.STONE).add(new int[]{3, 4, 5}, Items.GUNPOWDER).add(6, GRPGItems.LARGE_BULLET_CASING).req(Skills.STONE_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.IRON_AMMO_762MM, SkillUtil::getAmmoAmount).add(0, Items.IRON_INGOT).add(new int[]{3, 4, 5}, Items.GUNPOWDER).add(6, GRPGItems.LARGE_BULLET_CASING).req(Skills.IRON_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.GOLD_AMMO_762MM, SkillUtil::getAmmoAmount).add(0, Items.GOLD_INGOT).add(new int[]{3, 4, 5}, Items.GUNPOWDER).add(6, GRPGItems.LARGE_BULLET_CASING).req(Skills.GOLD_AMMO_SMITH).recipe());
@@ -94,15 +98,15 @@ public class SmithingTableRecipes {
         register(new RecipeBuilder().out(GRPGItems.GRENADE).add(new int[]{1, 3, 5, 7}, Items.IRON_INGOT).add(4, Blocks.TNT).add(2, Items.FLINT_AND_STEEL).req(Skills.GRENADES).recipe());
         register(new RecipeBuilder().out(GRPGItems.MASSIVE_GRENADE).add(new int[]{0, 2, 3, 5, 6, 7, 8}, Items.GOLD_NUGGET).add(1, Blocks.TNT).add(4, GRPGItems.GRENADE).req(Skills.MASSIVE_GRENADES).recipe());
         register(new RecipeBuilder().out(GRPGItems.IMPACT_GRENADE).add(new int[]{0, 2, 6, 8}, Items.REDSTONE).add(new int[]{3, 7, 5}, Items.GLOWSTONE_DUST).add(1, Items.BLAZE_POWDER).add(4, GRPGItems.GRENADE).req(Skills.IMPACT_GRENADES).recipe());
-        register(new RecipeBuilder().out(GRPGItems.WOODEN_HAMMER).add(new int[]{3, 0, 1, 2, 5}, Blocks.LOG).add(new int[]{4, 7}, Items.STICK).req(Skills.HAMMER_I, Skills.HEAVY_PICKAXE_II, Skills.MOTHER_LODE_II).recipe());
+        register(new RecipeBuilder().out(GRPGItems.WOODEN_HAMMER).add(new int[]{3, 0, 1, 2, 5}, Blocks.OAK_LOG).add(new int[]{4, 7}, Items.STICK).req(Skills.HAMMER_I, Skills.HEAVY_PICKAXE_II, Skills.MOTHER_LODE_II).recipe());
         register(new RecipeBuilder().out(GRPGItems.STONE_HAMMER).add(new int[]{3, 0, 1, 2, 5}, Blocks.STONE).add(new int[]{4, 7}, Items.STICK).req(Skills.HAMMER_II, Skills.HEAVY_PICKAXE_III, Skills.MOTHER_LODE_III).recipe());
         register(new RecipeBuilder().out(GRPGItems.IRON_HAMMER).add(new int[]{3, 0, 1, 2, 5}, Items.IRON_INGOT).add(new int[]{4, 7}, Items.STICK).req(Skills.HAMMER_III, Skills.HEAVY_PICKAXE_IV, Skills.MOTHER_LODE_IV).recipe());
         register(new RecipeBuilder().out(GRPGItems.AMETHYST).add(1, Items.DIAMOND).add(new int[]{3, 5}, Items.QUARTZ).add(4, Items.BLAZE_POWDER).add(7, Items.EMERALD).req(Skills.MINERALOGIST).recipe());
-        register(new RecipeBuilder().out(GRPGItems.PLASTER_CAST).add(new int[]{0, 2, 6, 8}, Items.DYE, 15).add(new int[]{1, 3, 5, 7}, Blocks.CARPET).add(4, Items.DIAMOND).req(Skills.MEDIC).recipe());
-        register(new RecipeBuilder().out(GRPGItems.BANDAGE, 2).add(new int[]{0, 8}, Items.DYE, 4).add(new int[]{1, 3, 5, 7}, Items.PAPER).add(new int[]{2, 6}, Items.SLIME_BALL).add(4, Blocks.WOOL).req(Skills.MEDIC).recipe());
+        register(new RecipeBuilder().out(GRPGItems.PLASTER_CAST).add(new int[]{0, 2, 6, 8}, Items.BONE_MEAL).add(new int[]{1, 3, 5, 7}, Blocks.WHITE_CARPET).add(4, Items.DIAMOND).req(Skills.MEDIC).recipe());
+        register(new RecipeBuilder().out(GRPGItems.BANDAGE, 2).add(new int[]{0, 8}, Items.YELLOW_DYE).add(new int[]{1, 3, 5, 7}, Items.PAPER).add(new int[]{2, 6}, Items.SLIME_BALL).add(4, Blocks.WHITE_WOOL).req(Skills.MEDIC).recipe());
         register(new RecipeBuilder().out(GRPGItems.VACCINE).add(8, Items.GOLDEN_APPLE).add(6, Items.GLISTERING_MELON_SLICE).add(4, GRPGItems.AMETHYST).add(2, Items.GOLDEN_CARROT).add(0, Items.IRON_INGOT).add(new int[]{1, 3, 5, 7}, Blocks.GLASS_PANE).req(Skills.DOCTOR).recipe());
-        register(new RecipeBuilder().out(GRPGItems.ANTIDOTUM_PILLS, 2).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(3, Blocks.POPPY).add(4, Items.EMERALD).add(5, Items.DYE, 2).add(6, Blocks.DANDELION).add(7, Blocks.POPPY).add(8, Blocks.POPPY).req(Skills.DOCTOR).recipe());
-        register(new RecipeBuilder().out(GRPGItems.ANALGETICS, 2).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(3, Blocks.DANDELION).add(4, Items.GREEN_DYE).add(5, Blocks.POPPY).add(new int[]{6, 7, 8}, Items.DYE, 4).req(Skills.PHARMACIST_I).recipe());
+        register(new RecipeBuilder().out(GRPGItems.ANTIDOTUM_PILLS, 2).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(3, Blocks.POPPY).add(4, Items.EMERALD).add(5, Items.GREEN_DYE).add(6, Blocks.DANDELION).add(7, Blocks.POPPY).add(8, Blocks.POPPY).req(Skills.DOCTOR).recipe());
+        register(new RecipeBuilder().out(GRPGItems.ANALGETICS, 2).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(3, Blocks.DANDELION).add(4, Items.GREEN_DYE).add(5, Blocks.POPPY).add(new int[]{6, 7, 8}, Items.YELLOW_DYE).req(Skills.PHARMACIST_I).recipe());
         register(new RecipeBuilder().out(GRPGItems.STEREOIDS).add(0, Items.IRON_INGOT).add(new int[]{1, 3, 5, 7}, Blocks.GLASS_PANE).add(new int[]{2, 6}, Items.GOLDEN_CARROT).add(4, Blocks.REDSTONE_BLOCK).add(8, Items.SUGAR).req(Skills.PHARMACIST_II).recipe());
         register(new RecipeBuilder().out(GRPGItems.ADRENALINE).add(0, Items.IRON_INGOT).add(new int[]{1, 3, 5, 7}, Blocks.GLASS_PANE).add(new int[]{2, 6}, Items.GLISTERING_MELON_SLICE).add(4, Items.FERMENTED_SPIDER_EYE).add(8, Blocks.POPPY).req(Skills.PHARMACIST_III).recipe());
         register(new RecipeBuilder().out(GRPGItems.PAINKILLERS, 2).add(new int[]{0, 2}, Items.PAPER).add(1, Items.SUGAR).add(new int[]{3, 4, 5}, Items.FERMENTED_SPIDER_EYE).add(new int[]{6, 8}, Items.NETHER_WART).add(7, Blocks.REDSTONE_BLOCK).req(Skills.PHARMACIST_IV).recipe());
@@ -113,7 +117,7 @@ public class SmithingTableRecipes {
         register(new RecipeBuilder().out(GRPGItems.LONG_BARREL).add(new int[]{1, 2}, GRPGItems.BARREL).req(Skills.GUN_PARTS_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.MAGAZINE).add(new int[]{1, 2, 4, 5, 6, 7}, Items.IRON_INGOT).req(Skills.GUN_PARTS_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.SMALL_IRON_STOCK).add(0, Blocks.IRON_BLOCK).add(new int[]{1, 3}, Items.IRON_INGOT).add(4, Items.FLINT_AND_STEEL).req(Skills.GUN_PARTS_SMITH).recipe());
-        register(new RecipeBuilder().out(GRPGItems.WOODEN_STOCK).add(new int[]{0, 1}, Blocks.LOG).add(2, Items.IRON_INGOT).add(4, Blocks.WOODEN_SLAB).add(5, Items.FLINT_AND_STEEL).req(Skills.GUN_PARTS_SMITH).recipe());
+        register(new RecipeBuilder().out(GRPGItems.WOODEN_STOCK).add(new int[]{0, 1}, Blocks.OAK_LOG).add(2, Items.IRON_INGOT).add(4, Blocks.OAK_SLAB).add(5, Items.FLINT_AND_STEEL).req(Skills.GUN_PARTS_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.PISTOL).add(0, GRPGItems.BARREL).add(1, GRPGItems.GUN_PARTS).add(2, GRPGItems.SMALL_IRON_STOCK).req(Skills.PISTOL_ASSEMBLY).recipe());
         register(new RecipeBuilder().out(GRPGItems.SMG).add(0, GRPGItems.BARREL).add(1, GRPGItems.GUN_PARTS).add(2, GRPGItems.IRON_STOCK).add(4, GRPGItems.MAGAZINE).req(Skills.SMG_ASSEMBLY).recipe());
         register(new RecipeBuilder().out(GRPGItems.CROSSBOW).add(3, Blocks.TRIPWIRE_HOOK).add(4, GRPGItems.GUN_PARTS).add(5, GRPGItems.WOODEN_STOCK).add(new int[]{1, 7}, Items.BOW).req(Skills.CROSSBOW_ASSEMBLY).recipe());

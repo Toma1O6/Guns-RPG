@@ -12,6 +12,8 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -21,6 +23,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import org.lwjgl.opengl.GL11;
 
@@ -28,6 +31,7 @@ import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class ModUtils {
 
@@ -35,6 +39,41 @@ public class ModUtils {
         if (!optional.isPresent())
             return fallback;
         return extractor.apply(optional.orElse(null));
+    }
+
+    public static <NBT extends INBT> void saveSerializable(String name, INBTSerializable<NBT> serializable, CompoundNBT nbt) {
+        nbt.put(name, serializable.serializeNBT());
+    }
+
+    public static <NBT extends INBT> void loadDeserializable(String name, INBTSerializable<NBT> serializable, INBTDeserializer<NBT> deserializer, Supplier<NBT> fallback, CompoundNBT nbt) {
+        NBT inbt = deserializer.deserialize(nbt, name);
+        serializable.deserializeNBT(inbt != null ? inbt : fallback.get());
+    }
+
+    public static void loadNBT(String name, INBTSerializable<CompoundNBT> serializable, CompoundNBT source) {
+        loadDeserializable(name, serializable, CompoundNBT::getCompound, CompoundNBT::new, source);
+    }
+
+    public static <T> T getRandomListElement(List<T> list, Random random) {
+        if (list.isEmpty())
+            return null;
+        return list.get(random.nextInt(list.size()));
+    }
+
+    public static float alpha(int color) {
+        return ((color >> 24) & 255) / 255.0F;
+    }
+
+    public static float red(int color) {
+        return ((color >> 16) & 255) / 255.0F;
+    }
+
+    public static float green(int color) {
+        return ((color >> 8) & 255) / 255.0F;
+    }
+
+    public static float blue(int color) {
+        return (color & 255) / 255.0F;
     }
 
     public static void renderTexture(int x, int y, int x2, int y2, ResourceLocation location) {
@@ -254,5 +293,9 @@ public class ModUtils {
     public static float getReachDistance(PlayerEntity player) {
         float attrib = (float) player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
         return player.isCreative() ? attrib : attrib - 0.5F;
+    }
+
+    public interface INBTDeserializer<NBT extends INBT> {
+        NBT deserialize(CompoundNBT nbt, String key);
     }
 }
