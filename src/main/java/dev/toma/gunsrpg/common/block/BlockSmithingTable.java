@@ -12,17 +12,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nullable;
 
 public class BlockSmithingTable extends GRPGBlock {
 
     public BlockSmithingTable(String name) {
-        super(name, Material.IRON);
-        setSoundType(SoundType.METAL);
-        setHardness(2.2F);
-        setResistance(18.0F);
-        setHarvestLevel("pickaxe", 1);
+        super(name, Properties.of(Material.METAL).strength(2.2F, 18.0F).harvestTool(ToolType.PICKAXE).harvestLevel(1).requiresCorrectToolForDrops());
     }
 
     @Override

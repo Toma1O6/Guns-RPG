@@ -1,23 +1,22 @@
 package dev.toma.gunsrpg.client.render;
 
 import dev.toma.gunsrpg.common.entity.EntityExplosiveArrow;
-import net.minecraft.client.renderer.entity.RenderArrow;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.ArrowRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.TippedArrowRenderer;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 
-public class RenderExplosiveArrow extends RenderArrow<EntityExplosiveArrow> {
+public class RenderExplosiveArrow extends ArrowRenderer<EntityExplosiveArrow> {
 
-    public static final ResourceLocation RES_ARROW = new ResourceLocation("textures/entity/projectiles/arrow.png");
-
-    public RenderExplosiveArrow(RenderManager manager) {
+    public RenderExplosiveArrow(EntityRendererManager manager) {
         super(manager);
     }
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(EntityExplosiveArrow entity) {
-        return RES_ARROW;
+    public ResourceLocation getTextureLocation(EntityExplosiveArrow entity) {
+        return TippedArrowRenderer.NORMAL_ARROW_LOCATION;
     }
 }

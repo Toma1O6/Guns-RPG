@@ -5,7 +5,9 @@ import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.IHandRenderer;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import net.minecraft.client.util.ITooltipFlag;
@@ -23,46 +25,51 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.*;
 
-public abstract class ItemHeal extends GRPGItem implements IHandRenderer {
+public abstract class AbstractHealItem<T> extends GRPGItem implements IHandRenderer {
 
+    private final int useTime;
     private final ITextComponent[] description;
     private final Supplier<SoundEvent> useSound;
-    private final Predicate<PlayerEntity> useCondition;
-    private final Consumer<PlayerEntity> useAction;
+    private final Predicate<T> useCondition;
+    private final Consumer<T> useAction;
     private final Supplier<IAnimation> useAnimation;
-    private final int useTime;
 
-    private ItemHeal(Builder builder) {
+    protected AbstractHealItem(HealBuilder<T, ?> builder) {
         super(builder.name, new Properties().tab(ModTabs.ITEM_TAB));
+        useTime = builder.useTime;
         description = builder.description;
         useSound = builder.useSound;
         useCondition = builder.useCondition;
         useAction = builder.useAction;
         Object temp = DistExecutor.callWhenOn(Dist.CLIENT, builder.useAnimation);
         useAnimation = () -> (IAnimation) temp;
-        useTime = builder.useTime;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public IAnimation getUseAnimation(int ticks) {
-        return useAnimation.get();
+    public static HealBuilder<PlayerEntity, PlayerHealItem> definePlayerHeal(String name) {
+        return PlayerHealItem.define(name);
+    }
+
+    public static HealBuilder<DebuffData, DebuffHealItem> defineDebuffHeal(String name) {
+        return DebuffHealItem.define(name);
+    }
+
+    public abstract T getTargetObject(World world, PlayerEntity user, PlayerData data);
+
+    @Override
+    public void appendHoverText(ItemStack stack, World level, List<ITextComponent> list, ITooltipFlag flag) {
+        list.addAll(Arrays.asList(description));
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.addAll(Arrays.asList(description));
-    }
-
-    @Override
-    public int getUseDuration(ItemStack p_77626_1_) {
+    public int getUseDuration(ItemStack stack) {
         return useTime;
     }
 
@@ -72,25 +79,29 @@ public abstract class ItemHeal extends GRPGItem implements IHandRenderer {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+    public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (useCondition.test(player)) {
-            if (world.isClientSide) {
-                player.playSound(useSound.get(), 1.0F, 1.0F);
-                ClientSideManager.instance().processor().play(Animations.HEAL, getUseAnimation(stack.getUseDuration()));
+        LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+        if (optional.isPresent()) {
+            PlayerData data = optional.orElse(null);
+            T target = getTargetObject(level, player, data);
+            if (useCondition.test(target)) {
+                if (level.isClientSide) {
+                    player.playSound(useSound.get(), 1.0F, 1.0F);
+                    ClientSideManager.runOnClient(() -> () -> ClientSideManager.instance().processor().play(Animations.HEAL, useAnimation.get()));
+                }
+                player.startUsingItem(hand);
+                return ActionResult.pass(stack);
             }
-            player.startUsingItem(hand);
-            return ActionResult.success(stack);
         }
-        return ActionResult.pass(stack);
+        return ActionResult.fail(stack);
     }
 
-
-
     @Override
-    public void releaseUsing(ItemStack stack, World world, LivingEntity entity, int timeLeft) {
-        if (world.isClientSide)
-            ClientSideManager.instance().processor().stop(Animations.HEAL);
+    public void releaseUsing(ItemStack p_77615_1_, World p_77615_2_, LivingEntity p_77615_3_, int p_77615_4_) {
+        if (p_77615_2_.isClientSide) {
+            ClientSideManager.runOnClient(() -> () -> ClientSideManager.instance().processor().stop(Animations.HEAL));
+        }
     }
 
     @Override
@@ -99,14 +110,14 @@ public abstract class ItemHeal extends GRPGItem implements IHandRenderer {
             if (entity instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) entity;
                 PlayerDataFactory.get(player).ifPresent(data -> {
-                    useAction.accept(player);
-                    if (data.getSkills().hasSkill(Skills.EFFICIENT_MEDS)) {
-                        entity.heal(4.0F);
-                    }
-                    if (!player.isCreative()) {
+                    T target = getTargetObject(world, player, data);
+                    useAction.accept(target);
+                    if (data.getSkills().hasSkill(Skills.EFFICIENT_MEDS))
+                        player.heal(4.0F);
+                    if (!player.isCreative())
                         stack.shrink(1);
-                    }
                 });
+
             }
         }
         return stack;
@@ -124,54 +135,57 @@ public abstract class ItemHeal extends GRPGItem implements IHandRenderer {
         stack.mulPose(Vector3f.XP.rotationDegrees(-80.0F));
     }
 
-    public static class Builder {
-        private final String name;
+    public static abstract class HealBuilder<T, H extends AbstractHealItem<T>> {
+
+        protected final String name;
         private int useTime;
+        private ITextComponent[] description = new ITextComponent[0];
         private Supplier<SoundEvent> useSound;
-        private Predicate<PlayerEntity> useCondition = playerEntity -> true;
-        private Consumer<PlayerEntity> useAction = playerEntity -> {};
-        private ITextComponent[] description;
+        private Predicate<T> useCondition = t -> true;
+        private Consumer<T> useAction;
         private Supplier<Callable<IAnimation>> useAnimation;
 
-        private Builder(String name) {
+        protected HealBuilder(String name) {
             this.name = name;
         }
 
-        public Builder defineSound(Supplier<SoundEvent> useSound) {
+        public abstract H build();
+
+        public HealBuilder<T, H> defineSound(Supplier<SoundEvent> useSound) {
             this.useSound = useSound;
             return this;
         }
 
-        public Builder canUse(Predicate<PlayerEntity> useCondition) {
+        public HealBuilder<T, H> canUse(Predicate<T> useCondition) {
             this.useCondition = useCondition;
             return this;
         }
 
-        public Builder onUsed(Consumer<PlayerEntity> useAction) {
+        public HealBuilder<T, H> onUse(Consumer<T> useAction) {
             this.useAction = useAction;
             return this;
         }
 
-        public Builder animate(int useTime, Function<Integer, Supplier<Callable<IAnimation>>> animation) {
+        public HealBuilder<T, H> animate(int useTime, Function<Integer, Supplier<Callable<IAnimation>>> useAnimationFactory) {
             this.useTime = useTime;
-            this.useAnimation = animation.apply(useTime);
+            this.useAnimation = useAnimationFactory.apply(useTime);
             return this;
         }
 
-        public Builder describe(ITextComponent... lines) {
+        public HealBuilder<T, H> describe(ITextComponent... lines) {
             this.description = lines;
             return this;
         }
 
-        public Builder describe(String... lines) {
+        public HealBuilder<T, H> describe(String... lines) {
             return describe(convert(lines, StringTextComponent::new, StringTextComponent[]::new));
         }
 
-        public Builder translate(String... keys) {
+        public HealBuilder<T, H> translate(String... keys) {
             return describe(convert(keys, TranslationTextComponent::new, TranslationTextComponent[]::new));
         }
 
-        private <T extends ITextComponent> T[] convert(String[] array, Function<String, T> mapper, IntFunction<T[]> arrayFactory) {
+        private static <T extends ITextComponent> T[] convert(String[] array, Function<String, T> mapper, IntFunction<T[]> arrayFactory) {
             return Arrays.stream(array).map(mapper).toArray(arrayFactory);
         }
     }

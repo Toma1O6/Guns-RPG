@@ -137,7 +137,7 @@ public class Animations {
 
         @Override
         public void createAnimationSteps() {
-            AnimationProcessor processor = ClientSideManager.processor();
+            AnimationProcessor processor = ClientSideManager.instance().processor();
             addStep(0.0F, 0.05F, SimpleAnimation.newSimpleAnimation().item((stack, f) -> {
                 if (processor.isRenderingDualWield()) {
                     stack.mulPose(XP.rotationDegrees(-90.0F * f));
@@ -280,9 +280,9 @@ public class Animations {
         }
     }
 
-    public static class Antidotum extends MultiStepAnimation {
+    public static class Pills extends MultiStepAnimation {
 
-        public Antidotum(int time) {
+        public Pills(int time) {
             super(time);
             init();
         }
@@ -331,9 +331,9 @@ public class Animations {
         }
     }
 
-    public static class Vaccine extends MultiStepAnimation {
+    public static class Injection extends MultiStepAnimation {
 
-        public Vaccine(int time) {
+        public Injection(int time) {
             super(time);
             init();
         }

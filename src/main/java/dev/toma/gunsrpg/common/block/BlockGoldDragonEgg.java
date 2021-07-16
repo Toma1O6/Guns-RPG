@@ -1,89 +1,73 @@
 package dev.toma.gunsrpg.common.block;
 
 import dev.toma.gunsrpg.common.entity.EntityGoldDragon;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.boss.dragon.phase.PhaseList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.entity.boss.dragon.phase.PhaseType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
 public class BlockGoldDragonEgg extends GRPGBlock {
 
-    private static final PropertyBool IGNITED = PropertyBool.create("ignited");
-
     public BlockGoldDragonEgg(String name) {
-        super(name, Material.DRAGON_EGG);
-        setDefaultState(blockState.getBaseState().withProperty(IGNITED, false));
-        setTickRandomly(true);
+        super(name, Properties.of(Material.EGG));
+        registerDefaultState(getStateDefinition().any().setValue(BlockStateProperties.LIT, false));
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(playerIn.getHeldItem(hand).getItem() == Items.FLINT_AND_STEEL) {
-            if(!state.getValue(IGNITED)) {
-                worldIn.setBlockState(pos, state.withProperty(IGNITED, true), 3);
-                playerIn.getHeldItem(hand).damageItem(1, playerIn);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-        if(stateIn.getValue(IGNITED)) {
-            worldIn.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + rand.nextDouble(), pos.getY() + 0.5, pos.getZ() + rand.nextDouble(), 0.0, 0.05, 0.0);
-        }
-    }
-
-    @Override
-    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
-        if (state.getValue(IGNITED)) {
-            if(!worldIn.isRemote) {
-                boolean canSpawn = false;
-                if(worldIn.canSeeSky(pos)) {
-                    EntityGoldDragon goldDragon = new EntityGoldDragon(worldIn);
-                    goldDragon.setPosition(pos.getX(), pos.getY() + 30, pos.getZ());
-                    goldDragon.phaseManager.setPhase(PhaseList.HOLDING_PATTERN);
-                    worldIn.spawnEntity(goldDragon);
-                    canSpawn = true;
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+        if (world.isClientSide)
+            return ActionResultType.SUCCESS;
+        else {
+            ItemStack stack = player.getItemInHand(hand);
+            if (stack.getItem() == Items.FLINT_AND_STEEL) {
+                if (!state.getValue(BlockStateProperties.LIT)) {
+                    world.setBlock(pos, state.setValue(BlockStateProperties.LIT, true), 3);
+                    stack.hurt(1, player.getRandom(), (ServerPlayerEntity) player);
                 }
-                worldIn.destroyBlock(pos, !canSpawn);
             }
+            return ActionResultType.CONSUME;
         }
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(IGNITED) ? 1 : 0;
+    public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
+        if (state.getValue(BlockStateProperties.LIT)) {
+            world.addParticle(ParticleTypes.FLAME, pos.getX() + random.nextDouble(), pos.getY(), pos.getZ() + random.nextDouble(), 0.0, 0.05, 0.0);
+        }
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(IGNITED, meta > 0);
+    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        if (!world.isClientSide && state.getValue(BlockStateProperties.LIT)) {
+            boolean spawned = false;
+            if (world.canSeeSky(pos)) {
+                EntityGoldDragon dragon = new EntityGoldDragon(world);
+                dragon.setPos(pos.getX(), pos.getY() + 30, pos.getZ());
+                dragon.getPhaseManager().setPhase(PhaseType.HOLDING_PATTERN);
+                world.addFreshEntity(dragon);
+                spawned = true;
+            }
+            world.destroyBlock(pos, !spawned);
+        }
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, IGNITED);
-    }
-
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(BlockStateProperties.LIT);
     }
 }

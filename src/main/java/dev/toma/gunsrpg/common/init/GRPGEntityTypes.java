@@ -28,6 +28,9 @@ public class GRPGEntityTypes {
     public static final RegistryObject<EntityType<RocketAngelEntity>> ROCKET_ANGEL = register("rocket_angel", RocketAngelEntity::new, EntityClassification.MONSTER,
             builder -> builder.setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).sized(0.8F, 1.6F)
     );
+    public static final RegistryObject<EntityType<EntityGoldDragon>> GOLD_DRAGON = register("gold_dragon", EntityGoldDragon::new, EntityClassification.MONSTER,
+            builder -> builder.setTrackingRange(160).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).fireImmune().sized(16.0F, 8.0F).clientTrackingRange(10)
+    );
     public static final RegistryObject<EntityType<AirdropEntity>> AIRDROP = register("airdrop", AirdropEntity::new, EntityClassification.MISC,
             builder -> builder.setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).sized(1.0F, 1.0F)
     );
@@ -36,6 +39,18 @@ public class GRPGEntityTypes {
     );
     public static final RegistryObject<EntityType<EntityFlare>> FLARE = register("flare", EntityFlare::new, EntityClassification.MISC,
             builder -> builder.setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).sized(0.2F, 0.2F)
+    );
+    public static final RegistryObject<EntityType<EntityExplosiveArrow>> EXPLOSIVE_ARROW = register("explosive_arrow", EntityExplosiveArrow::new, EntityClassification.MISC,
+            builder -> builder.setTrackingRange(64).setUpdateInterval(20).setShouldReceiveVelocityUpdates(true).sized(0.5F, 0.5F).noSave()
+    );
+    public static final RegistryObject<EntityType<EntityBullet>> BULLET = register("bullet", EntityBullet::new, EntityClassification.MISC,
+            builder -> builder.setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).sized(0.05F, 0.05F).noSummon().noSave()
+    );
+    public static final RegistryObject<EntityType<EntityShotgunPellet>> SHOTGUN_PELLET = register("shotgun_pellet", EntityShotgunPellet::new, EntityClassification.MISC,
+            builder -> builder.setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).sized(0.05F, 0.05F).noSummon().noSave()
+    );
+    public static final RegistryObject<EntityType<EntityCrossbowBolt>> CROSSBOW_BOLT = register("crossbow_bolt", EntityCrossbowBolt::new, EntityClassification.MISC,
+            builder -> builder.setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).sized(0.5F, 0.5F).noSummon().noSave()
     );
 
     private static <E extends Entity> RegistryObject<EntityType<E>> register(

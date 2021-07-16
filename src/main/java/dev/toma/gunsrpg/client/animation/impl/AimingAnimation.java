@@ -49,7 +49,7 @@ public class AimingAnimation extends AnimationFactory {
 
     @Override
     public void animateItem(MatrixStack stack, float partialTicks) {
-        stack.translate(ClientSideManager.processor().isRenderingDualWield() ? -animation.x() * smooth : animation.x() * smooth, animation.y() * smooth, animation.z() * smooth);
+        stack.translate(ClientSideManager.instance().processor().isRenderingDualWield() ? -animation.x() * smooth : animation.x() * smooth, animation.y() * smooth, animation.z() * smooth);
     }
 
     @Override

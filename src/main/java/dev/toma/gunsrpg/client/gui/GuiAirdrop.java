@@ -12,16 +12,14 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class GuiAirdrop extends ContainerScreen<AirdropContainer> {
 
     private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/gui/airdrop.png");
-    private final ITextComponent tileName;
 
     public GuiAirdrop(AirdropContainer container, PlayerInventory inventory, ITextComponent title) {
         super(container, inventory, title);
-        tileName = new TranslationTextComponent("container.airdrop");
     }
 
     @Override
     protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-        font.draw(matrix, tileName, (getXSize() / 2f - font.width(tileName) / 2f) + 3, 8, 0x404040);
+        font.draw(matrix, title, (getXSize() / 2f - font.width(title) / 2f) + 3, 8, 0x404040);
         font.draw(matrix, inventory.getName(), 115, getYSize() - 127, 0x404040);
     }
 

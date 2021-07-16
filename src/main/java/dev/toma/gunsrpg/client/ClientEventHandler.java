@@ -75,7 +75,7 @@ public class ClientEventHandler {
         LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
         optional.ifPresent(data -> {
             if (stack.getItem() instanceof GunItem && !data.getReloadInfo().isReloading())
-                ClientSideManager.processor().play(Animations.SPRINT, new SprintingAnimation());
+                ClientSideManager.instance().processor().play(Animations.SPRINT, new SprintingAnimation());
         });
     }, PlayerEntity::isSprinting);
     public static OptionalObject<Double> preAimFov = OptionalObject.empty();
@@ -244,7 +244,7 @@ public class ClientEventHandler {
                             shotsLeft = 2;
                         }
                     }
-                } else if (settings.keyUse.isDown() && ClientSideManager.processor().getByID(Animations.REBOLT) == null && !player.isSprinting()) {
+                } else if (settings.keyUse.isDown() && ClientSideManager.instance().processor().getByID(Animations.REBOLT) == null && !player.isSprinting()) {
                     LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
                     boolean aim = optional.isPresent() && optional.orElse(null).getAimInfo().aiming;
                     if (aim) {
@@ -257,7 +257,7 @@ public class ClientEventHandler {
                             settings.sensitivity = preAimSens.get() * 0.4F;
                             settings.fov = 25.0F;
                         }
-                        ClientSideManager.processor().play(Animations.AIMING, item.createAimAnimation());
+                        ClientSideManager.instance().processor().play(Animations.AIMING, item.createAimAnimation());
                     } else {
                         preAimFov.ifPresent(value -> settings.fov = value);
                         preAimSens.ifPresent(value -> settings.sensitivity = value);
@@ -303,7 +303,7 @@ public class ClientEventHandler {
             MatrixStack matrix = event.getMatrixStack();
             IRenderTypeBuffer buffer = event.getBuffers();
             int packedLight = event.getLight();
-            AnimationProcessor processor = ClientSideManager.processor();
+            AnimationProcessor processor = ClientSideManager.instance().processor();
 
             matrix.pushPose();
             {
@@ -347,7 +347,7 @@ public class ClientEventHandler {
         if (event.phase == TickEvent.Phase.END && player != null) {
             if (shootDelay > 0)
                 --shootDelay;
-            ClientSideManager.processor().tick();
+            ClientSideManager.instance().processor().tick();
             startSprintListener.update(player);
             GameSettings settings = mc.options;
             if (burst) {
@@ -377,7 +377,7 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onRenderTick(TickEvent.RenderTickEvent event) {
         if (event.phase == TickEvent.Phase.START)
-            ClientSideManager.processor().processFrame(event.renderTickTime);
+            ClientSideManager.instance().processor().processFrame(event.renderTickTime);
     }
 
     private static void renderAnimatedItemFP(MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, float equipProgress, IHandRenderer handRenderer, float partial, AnimationProcessor processor) {

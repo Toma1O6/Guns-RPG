@@ -30,7 +30,7 @@ public class SprintingAnimation extends AnimationFactory {
 
     @Override
     public void animateLeftArm(MatrixStack matrix, float partialTicks) {
-        AnimationProcessor processor = ClientSideManager.processor();
+        AnimationProcessor processor = ClientSideManager.instance().processor();
         if(!processor.isRenderingDualWield()) {
             matrix.translate(0.0, -0.5 * smooth, 0.8 * smooth);
             matrix.mulPose(Vector3f.YP.rotationDegrees(40.0F * smooth));

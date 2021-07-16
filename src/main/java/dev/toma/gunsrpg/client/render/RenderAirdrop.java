@@ -1,39 +1,42 @@
 package dev.toma.gunsrpg.client.render;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.ModelAirdrop;
 import dev.toma.gunsrpg.common.entity.AirdropEntity;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 
-public class RenderAirdrop extends Render<AirdropEntity> {
+public class RenderAirdrop extends EntityRenderer<AirdropEntity> {
 
     private static final ResourceLocation TEXTURES = GunsRPG.makeResource("textures/entity/airdrop.png");
     private final ModelAirdrop model = new ModelAirdrop();
 
-    public RenderAirdrop(RenderManager manager) {
+    public RenderAirdrop(EntityRendererManager manager) {
         super(manager);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(AirdropEntity entity) {
+    public ResourceLocation getTextureLocation(AirdropEntity entity) {
         return TEXTURES;
     }
 
     @Override
-    public void doRender(AirdropEntity entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        this.bindTexture(this.getEntityTexture(entity));
-        GlStateManager.pushMatrix();
+    public void render(AirdropEntity airdrop, float rotation, float partialTicks, MatrixStack matrix, IRenderTypeBuffer renderBuffer, int light) {
+        matrix.pushPose();
         {
-            GlStateManager.translate(x, y, z);
-            GlStateManager.translate(0f, 1.8f, 0f);
-            GlStateManager.scale(0.08f, 0.08f, 0.08f);
-            GlStateManager.rotate(180f, 1f, 0f, 0f);
-            model.render();
+            matrix.translate(0.0F, 1.8F, 0.0F);
+            matrix.scale(0.08F, 0.08F, 0.08F);
+            matrix.mulPose(Vector3f.XP.rotationDegrees(180F));
+            IVertexBuilder builder = renderBuffer.getBuffer(model.renderType(getTextureLocation(airdrop)));
+            model.renderToBuffer(matrix, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
-        GlStateManager.popMatrix();
-        super.doRender(entity, x, y, z, entityYaw, partialTicks);
+        matrix.popPose();
+        super.render(airdrop, rotation, partialTicks, matrix, renderBuffer, light);
     }
 }

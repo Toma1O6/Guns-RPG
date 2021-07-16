@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.common.init;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.client.animation.Animations;
-import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.common.block.*;
 import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.debuffs.DebuffHelper;
@@ -18,17 +17,16 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.util.ModUtils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -339,7 +337,7 @@ public class CommonRegistry {
     @SubscribeEvent
     public static void onBlockRegister(RegistryEvent.Register<Block> event) {
         event.getRegistry().registerAll(
-                new GRPGOre("amethyst_ore", () -> GRPGItems.AMETHYST),
+                new GRPGOre("amethyst_ore", AbstractBlock.Properties.of(Material.STONE).strength(2.5F, 10.0F).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops()),
                 new BlockBlastFurnace("blast_furnace"),
                 new BlockAirdrop("airdrop"),
                 new BlockSmithingTable("smithing_table"),
@@ -353,81 +351,67 @@ public class CommonRegistry {
         IForgeRegistry<Item> registry = event.getRegistry();
         registry.registerAll(
                 GRPGItem.basic("amethyst"),
-                new DebuffHeal("antidotum_pills", 32, () -> GRPGSounds.USE_ANTIDOTUM_PILLS, "These pills heal 40% of poison", data -> data.hasDebuff(Debuffs.POISON), data -> data.heal(Debuffs.POISON, 40)),
-                new DebuffHeal("vaccine", 32, () -> GRPGSounds.USE_VACCINE, "This vaccine heals 50% of infection", data -> data.hasDebuff(Debuffs.INFECTION), data -> data.heal(Debuffs.INFECTION, 50)) {
-                    @OnlyIn(Dist.CLIENT)
-                    @Override
-                    public IAnimation getAnimation(ItemStack stack) {
-                        return new Animations.Vaccine(this.getUseDuration(stack));
-                    }
-                },
-                new DebuffHeal("plaster_cast", 32, () -> GRPGSounds.USE_PLASTER_CAST, "Plaster cast heals 35% of fractures", data -> data.hasDebuff(Debuffs.FRACTURE), data -> data.heal(Debuffs.FRACTURE, 35)) {
-                    @OnlyIn(Dist.CLIENT)
-                    @Override
-                    public IAnimation getAnimation(ItemStack stack) {
-                        return new Animations.Splint(this.getUseDuration(stack));
-                    }
-                },
-                new DebuffHeal("bandage", 50, () -> GRPGSounds.USE_BANDAGE, "Bandages can stop 25% of bleeding", data -> data.hasDebuff(Debuffs.BLEEDING), data -> data.heal(Debuffs.BLEEDING, 25)) {
-                    @OnlyIn(Dist.CLIENT)
-                    @Override
-                    public IAnimation getAnimation(ItemStack stack) {
-                        return new Animations.Bandage(this.getUseDuration(stack));
-                    }
-                },
-                new ItemHeal("analgetics", 32, () -> GRPGSounds.USE_ANTIDOTUM_PILLS, player -> player.heal(5), player -> player.getHealth() < player.getMaxHealth(), "+5HP on use") {
-                    @OnlyIn(Dist.CLIENT)
-                    @Override
-                    public IAnimation getUseAnimation(int ticks) {
-                        return new Animations.Antidotum(ticks);
-                    }
-                },
-                new ItemHeal("stereoids", 32, () -> GRPGSounds.USE_VACCINE, player -> {
-                    if (!player.level.isClientSide) {
-                        player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 1200, 0, false, false));
-                        player.addEffect(new EffectInstance(Effects.JUMP, 1200, 1, false, false));
-                    }
-                }, "60s of Strength I", "60s of Jump Boost II") {
-                    @OnlyIn(Dist.CLIENT)
-                    @Override
-                    public IAnimation getUseAnimation(int ticks) {
-                        return new Animations.Vaccine(ticks);
-                    }
-                },
-                new ItemHeal("adrenaline", 32, () -> GRPGSounds.USE_VACCINE, player -> {
-                    if (!player.level.isClientSide) {
-                        player.addEffect(new EffectInstance(Effects.REGENERATION, 700, 0, false, false));
-                        player.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 1200, 0, false, false));
-                    }
-                }, "35s of Regeneration I", "60s of Speed I") {
-                    @OnlyIn(Dist.CLIENT)
-                    @Override
-                    public IAnimation getUseAnimation(int ticks) {
-                        return new Animations.Vaccine(ticks);
-                    }
-                },
-                new ItemHeal("painkillers", 32, () -> GRPGSounds.USE_ANTIDOTUM_PILLS, player -> player.heal(12), player -> player.getHealth() < player.getMaxHealth(), "+12 HP on use") {
-                    @OnlyIn(Dist.CLIENT)
-                    @Override
-                    public IAnimation getUseAnimation(int ticks) {
-                        return new Animations.Antidotum(ticks);
-                    }
-                },
-                new ItemHeal("morphine", 32, () -> GRPGSounds.USE_VACCINE, player -> {
-                    if(!player.level.isClientSide) {
-                        player.heal(14);
-                        player.addEffect(new EffectInstance(Effects.REGENERATION, 300, 1, false, false));
-                        player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 1, false, false));
-                        player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 900, 0, false, false));
-                        player.addEffect(new EffectInstance(GRPGEffects.GUN_DAMAGE_BUFF.get(), 600, 0, false, false));
-                    }
-                }, "+14HP on use", "15s of Regeneration II", "30s of Strength II", "45s of Resistance I", "30s of +20% gun damage") {
-                    @OnlyIn(Dist.CLIENT)
-                    @Override
-                    public IAnimation getUseAnimation(int ticks) {
-                        return new Animations.Vaccine(ticks);
-                    }
-                },
+                AbstractHealItem.defineDebuffHeal("antidotum_pills")
+                        .defineSound(() -> GRPGSounds.USE_ANTIDOTUM_PILLS)
+                        .canUse(data -> data.hasDebuff(Debuffs.POISON))
+                        .onUse(data -> data.heal(Debuffs.POISON, 40))
+                        .describe("Heals 40% of poison progress")
+                        .animate(32, ticks -> () -> () -> new Animations.Pills(ticks))
+                        .build(),
+                AbstractHealItem.defineDebuffHeal("vaccine")
+                        .defineSound(() -> GRPGSounds.USE_VACCINE)
+                        .canUse(data -> data.hasDebuff(Debuffs.INFECTION))
+                        .onUse(data -> data.heal(Debuffs.INFECTION, 50))
+                        .describe("Heals 50% of infection progress")
+                        .animate(32, ticks -> () -> () -> new Animations.Injection(ticks))
+                        .build(),
+                AbstractHealItem.defineDebuffHeal("plaster_cast")
+                        .defineSound(() -> GRPGSounds.USE_PLASTER_CAST)
+                        .canUse(data -> data.hasDebuff(Debuffs.FRACTURE))
+                        .onUse(data -> data.heal(Debuffs.FRACTURE, 35))
+                        .describe("Heals 35% of fracture progress")
+                        .animate(32, ticks -> () -> () -> new Animations.Splint(ticks))
+                        .build(),
+                AbstractHealItem.defineDebuffHeal("bandage")
+                        .defineSound(() -> GRPGSounds.USE_BANDAGE)
+                        .canUse(data -> data.hasDebuff(Debuffs.BLEEDING))
+                        .onUse(data -> data.heal(Debuffs.BLEEDING, 25))
+                        .describe("Heals 25% of bleeding progress")
+                        .animate(50, ticks -> () -> () -> new Animations.Bandage(ticks))
+                        .build(),
+                AbstractHealItem.definePlayerHeal("analgetics")
+                        .defineSound(() -> GRPGSounds.USE_ANTIDOTUM_PILLS)
+                        .canUse(player -> player.getHealth() < player.getMaxHealth())
+                        .onUse(player -> player.heal(5))
+                        .describe("Recovers 2.5 hearts")
+                        .animate(32, ticks -> () -> () -> new Animations.Pills(ticks))
+                        .build(),
+                AbstractHealItem.definePlayerHeal("stereoids")
+                        .defineSound(() -> GRPGSounds.USE_VACCINE)
+                        .onUse(PlayerHealItem::onStereoidsUsed)
+                        .describe("Effects:", "Strength I for 60 seconds", "Jump Boost II for 60 seconds")
+                        .animate(32, ticks -> () -> () -> new Animations.Injection(ticks))
+                        .build(),
+                AbstractHealItem.definePlayerHeal("adrenaline")
+                        .defineSound(() -> GRPGSounds.USE_VACCINE)
+                        .onUse(PlayerHealItem::onAdrenalineUsed)
+                        .describe("Effects:", "Regeneration I for 35 seconds", "Speed I for 60 seconds")
+                        .animate(32, ticks -> () -> () -> new Animations.Injection(ticks))
+                        .build(),
+                AbstractHealItem.definePlayerHeal("painkillers")
+                        .defineSound(() -> GRPGSounds.USE_ANTIDOTUM_PILLS)
+                        .canUse(player -> player.getHealth() < player.getMaxHealth())
+                        .onUse(player -> player.heal(12.0F))
+                        .describe("Recovers 6 hearts")
+                        .animate(32, ticks -> () -> () -> new Animations.Pills(ticks))
+                        .build(),
+                AbstractHealItem.definePlayerHeal("morphine")
+                        .defineSound(() -> GRPGSounds.USE_VACCINE)
+                        .onUse(PlayerHealItem::onMorphineUsed)
+                        .describe("Recovers 7 hearts", "Effects:", "Regeneration II for 15 seconds", "Strength II for 30 seconds",
+                                "Resistance I for 45 seconds", "Additional 20% to projectile damage")
+                        .animate(32, ticks -> () -> () -> new Animations.Injection(ticks))
+                        .build(),
                 new ItemAmmo("wooden_ammo_9mm", AmmoType._9MM, AmmoMaterial.WOOD),
                 new ItemAmmo("wooden_ammo_45acp", AmmoType._45ACP, AmmoMaterial.WOOD),
                 new ItemAmmo("wooden_ammo_556mm", AmmoType._556MM, AmmoMaterial.WOOD),
@@ -512,24 +496,6 @@ public class CommonRegistry {
         );
         queue.forEach(registry::register);
         queue = null;
-    }
-
-    @SubscribeEvent
-    public static void onEntityRegister(RegistryEvent.Register<EntityEntry> event) {
-        event.getRegistry().registerAll(
-                makeBuilder("bullet", EntityBullet.class).tracker(256, 1, true).build(),
-                makeBuilder("sg_pellet", EntityShotgunPellet.class).tracker(128, 1, true).build(),
-                makeBuilder("crossbow_bolt", EntityCrossbowBolt.class).tracker(256, 1, true).build(),
-                makeBuilder("airdrop", EntityAirdrop.class).tracker(256, 1, true).build(),
-                makeBuilder("explosive_skeleton", EntityExplosiveSkeleton.class).tracker(80, 3, true).egg(0xB46F67, 0x494949).spawn(EnumCreatureType.MONSTER, GRPGConfig.worldConfig.explosiveSkeletonSpawn, 1, 3, ForgeRegistries.BIOMES).build(),
-                makeBuilder("explosive_arrow", EntityExplosiveArrow.class).tracker(64, 20, true).build(),
-                makeBuilder("zombie_gunner", ZombieGunnerEntity.class).tracker(80, 3, true).egg(0x00aa00, 0xdbdb00).spawn(EnumCreatureType.MONSTER, GRPGConfig.worldConfig.zombieGunnerSpawn, 2, 5, ForgeRegistries.BIOMES).build(),
-                makeBuilder("bloodmoon_golem", EntityBloodmoonGolem.class).tracker(80, 3, true).egg(0x444444, 0x990000).build(),
-                makeBuilder("grenade", EntityGrenade.class).tracker(64, 1, true).build(),
-                makeBuilder("flare", EntityFlare.class).tracker(256, 1, true).build(),
-                makeBuilder("rocket_angel", EntityRocketAngel.class).tracker(80, 3, true).egg(0xbbddff, 0xffffff).build(),
-                makeBuilder("golden_dragon", EntityGoldDragon.class).tracker(160, 3, true).build()
-        );
     }
 
     @SubscribeEvent

@@ -1,78 +1,76 @@
 package dev.toma.gunsrpg.common.block;
 
-import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.container.BlastFurnaceContainer;
 import dev.toma.gunsrpg.common.init.GRPGBlocks;
-import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.tileentity.BlastFurnaceTileEntity;
+import dev.toma.gunsrpg.util.ModUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ToolType;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockBlastFurnace extends GRPGBlock {
 
-    private static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-    private static final PropertyBool BURN = PropertyBool.create("burning");
+    private static final ITextComponent TITLE = new TranslationTextComponent("container.blast_furnace");
 
     public BlockBlastFurnace(String name) {
-        super(name, Material.ROCK);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURN, false));
-        this.setHarvestLevel("pickaxe", 1);
-        this.setHardness(2.2F);
-        this.setResistance(16.0F);
+        super(name, Properties.of(Material.STONE).strength(2.2F, 16.0F).harvestTool(ToolType.PICKAXE).harvestLevel(1));
+        registerDefaultState(stateDefinition.any().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH).setValue(BlockStateProperties.LIT, false));
     }
 
     public static void updateBurnState(BlockPos pos, World world, boolean lit) {
-        IBlockState currentState = world.getBlockState(pos);
+        BlockState currentState = world.getBlockState(pos);
         if(currentState.getBlock() != GRPGBlocks.BLAST_FURNACE) return;
-        world.setBlockState(pos, currentState.withProperty(BURN, lit));
+        world.setBlock(pos, currentState.setValue(BlockStateProperties.LIT, lit), 3);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-        if(stateIn.getValue(BURN)) {
-            EnumFacing facing = stateIn.getValue(FACING);
-            worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 0.0, 0.0, 0.0);
+    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+        if(stateIn.getValue(BlockStateProperties.LIT)) {
+            Direction direction = stateIn.getValue(BlockStateProperties.HORIZONTAL_FACING);
+            worldIn.addParticle(ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 0.0, 0.0, 0.0);
             double rng = (rand.nextDouble() - rand.nextDouble()) / 3;
             if(rand.nextDouble() <= 0.2) {
-                worldIn.playSound((double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+                worldIn.playSound(null, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }
-            switch (facing) {
+            switch (direction) {
                 case NORTH: {
-                    worldIn.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5 + rng, pos.getY() + 0.25, pos.getZ() - 0.05, 0, 0, 0);
+                    worldIn.addParticle(ParticleTypes.FLAME, pos.getX() + 0.5 + rng, pos.getY() + 0.25, pos.getZ() - 0.05, 0, 0, 0);
                     break;
                 }
                 case EAST: {
-                    worldIn.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 1.05, pos.getY() + 0.25, pos.getZ() + 0.5 + rng, 0, 0, 0);
+                    worldIn.addParticle(ParticleTypes.FLAME, pos.getX() + 1.05, pos.getY() + 0.25, pos.getZ() + 0.5 + rng, 0, 0, 0);
                     break;
                 }
                 case SOUTH: {
-                    worldIn.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5 + rng, pos.getY() + 0.25, pos.getZ() + 1.05, 0, 0, 0);
+                    worldIn.addParticle(ParticleTypes.FLAME, pos.getX() + 0.5 + rng, pos.getY() + 0.25, pos.getZ() + 1.05, 0, 0, 0);
                     break;
                 }
                 case WEST: {
-                    worldIn.spawnParticle(EnumParticleTypes.FLAME, pos.getX() - 0.05, pos.getY() + 0.25, pos.getZ() + 0.5 + rng, 0, 0, 0);
+                    worldIn.addParticle(ParticleTypes.FLAME, pos.getX() - 0.05, pos.getY() + 0.25, pos.getZ() + 0.5 + rng, 0, 0, 0);
                     break;
                 }
             }
@@ -80,59 +78,51 @@ public class BlockBlastFurnace extends GRPGBlock {
     }
 
     @Override
-    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return state.getValue(BURN) ? 12 : 0;
+    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+        return state.getValue(BlockStateProperties.LIT) ? 12 : 0;
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        InventoryHelper.dropInventoryItems(worldIn, pos, (BlastFurnaceTileEntity) worldIn.getTileEntity(pos));
-        super.breakBlock(worldIn, pos, state);
+    public void onRemove(BlockState state, World world, BlockPos pos, BlockState oldState, boolean p_196243_5_) {
+        if (!state.is(oldState.getBlock())) {
+            ModUtils.dropInventoryItems(world, pos);
+        }
+        super.onRemove(state, world, pos, state, p_196243_5_);
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand).withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state) {
+    public boolean hasTileEntity(BlockState state) {
         return true;
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
+    public TileEntity createTileEntity(BlockState state, IBlockReader reader) {
         return new BlastFurnaceTileEntity();
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(!worldIn.isRemote) {
-            if(PlayerDataFactory.hasActiveSkill(playerIn, Skills.BLACKSMITH)) {
-                playerIn.openGui(GunsRPG.modInstance, GuiHandler.BLAST_FURNACE, worldIn, pos.getX(), pos.getY(), pos.getZ());
-            } else {
-                playerIn.sendStatusMessage(new TextComponentString("§cYou must have Blacksmith skill in order to use this!"), true);
-            }
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+        if (world.isClientSide)
+            return ActionResultType.SUCCESS;
+        else {
+            NetworkHooks.openGui((ServerPlayerEntity) player, getMenuProvider(state, world, pos), pos);
+            return ActionResultType.CONSUME;
         }
-        return true;
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
-        int meta = 0;
-        meta |= state.getValue(FACING).getHorizontalIndex();
-        meta |= state.getValue(BURN) ? 4 : 0;
-        return meta;
+    public INamedContainerProvider getMenuProvider(BlockState state, World world, BlockPos pos) {
+        return new SimpleNamedContainerProvider((id, inventory, entity) -> new BlastFurnaceContainer(id, inventory, (BlastFurnaceTileEntity) world.getBlockEntity(pos)), TITLE);
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta)).withProperty(BURN, (meta & 4) > 0);
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, BURN);
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(BlockStateProperties.HORIZONTAL_FACING).add(BlockStateProperties.LIT);
     }
 }

@@ -6,26 +6,21 @@ import dev.toma.gunsrpg.common.init.GRPGItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.CrossbowItem;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class EntityCrossbowBolt extends EntityBullet {
 
-    public final List<Vec3d> previousPositions = new ArrayList<>();
-
-    public EntityCrossbowBolt(World world) {
-        super(world);
+    public EntityCrossbowBolt(EntityType<? extends EntityCrossbowBolt> type, World world) {
+        super(type, world);
     }
 
-    public EntityCrossbowBolt(World worldIn, EntityLivingBase shooter, CrossbowItem gun, ItemStack stack) {
-        super(worldIn, shooter, gun, stack);
-        canPenetrateEntity = gun == GRPGItems.CROSSBOW && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Skills.CROSSBOW_PENETRATOR);
+    public EntityCrossbowBolt(EntityType<? extends EntityCrossbowBolt> type, World worldIn, LivingEntity shooter, CrossbowItem gun, ItemStack stack) {
+        super(type, worldIn, shooter, gun, stack);
+        canPenetrateEntity = gun == GRPGItems.CROSSBOW && shooter instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_PENETRATOR);
     }
 
     @Override
@@ -35,7 +30,7 @@ public class EntityCrossbowBolt extends EntityBullet {
 
     @Override
     protected void damageTargetEntity(Entity target, boolean isHeadshot) {
-        target.attackEntityFrom(new GunDamageSource(shooter, this, stack), damage);
+        target.hurt(new GunDamageSource(shooter, this, stack), damage);
     }
 
     @Override
@@ -46,11 +41,5 @@ public class EntityCrossbowBolt extends EntityBullet {
     @Override
     public boolean isInRangeToRenderDist(double distance) {
         return true;
-    }
-
-    @Override
-    public void onUpdate() {
-        if(ticksExisted > 1 && world.isRemote && !collided) previousPositions.add(getPositionVector());
-        super.onUpdate();
     }
 }

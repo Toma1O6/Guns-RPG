@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.util;
 
+import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -10,10 +11,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraft.network.IPacket;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -23,8 +27,13 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import org.lwjgl.opengl.GL11;
 
 import java.util.*;
@@ -58,6 +67,38 @@ public class ModUtils {
         if (list.isEmpty())
             return null;
         return list.get(random.nextInt(list.size()));
+    }
+
+    public static void sendWorldPacketVanilla(World world, IPacket<?> packet) {
+        if (!world.isClientSide)
+            ((ServerWorld) world).players().forEach(player -> player.connection.send(packet));
+    }
+
+    public static double randomValue(Random random, double multiplier) {
+        return randomValue(random, Random::nextDouble, d -> d * multiplier);
+    }
+
+    public static float randomValue(Random random, float multiplier) {
+        return randomValue(random, Random::nextFloat, f -> f * multiplier);
+    }
+
+    public static <T extends Number> T randomValue(Random random, Function<Random, T> function, Function<T, T> multiplier) {
+        return multiplier.apply(function.apply(random));
+    }
+
+    public static void dropInventoryItems(World world, BlockPos pos) {
+        TileEntity entity = world.getBlockEntity(pos);
+        if (entity instanceof InventoryTileEntity) {
+            dropInventoryItems(((InventoryTileEntity) entity).getInventory(), world, pos);
+        }
+    }
+
+    public static void dropInventoryItems(LazyOptional<? extends IItemHandler> optional, World world, BlockPos pos) {
+        optional.ifPresent(handler -> {
+            for (int i = 0; i < handler.getSlots(); i++) {
+                InventoryHelper.dropItemStack(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, handler.getStackInSlot(i));
+            }
+        });
     }
 
     public static float alpha(int color) {

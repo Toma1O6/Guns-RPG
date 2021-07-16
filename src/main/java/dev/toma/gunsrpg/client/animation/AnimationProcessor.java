@@ -1,8 +1,6 @@
 package dev.toma.gunsrpg.client.animation;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.client.animation.impl.ConfigurableAnimation;
-import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
 import dev.toma.gunsrpg.util.object.Pair;
 import net.minecraft.client.Minecraft;
 
@@ -10,11 +8,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class AnimationProcessor {
 
-    private final Map<String, List<Pair<MultiStepAnimation.Range, Supplier<SimpleAnimation>>>> scriptAnimations = new HashMap<>();
     private final Map<Integer, IAnimation> animations = new HashMap<>();
     private boolean renderingDualWield = false;
 
@@ -24,15 +20,6 @@ public class AnimationProcessor {
 
     public void setDualWieldRender(boolean render) {
         this.renderingDualWield = render;
-    }
-
-    public void registerScriptAnimation(String key, List<Pair<MultiStepAnimation.Range, Supplier<SimpleAnimation>>> animation) {
-        scriptAnimations.put(key, animation);
-    }
-
-    public ConfigurableAnimation configurableFromFile(int time, String file) {
-        ConfigurableAnimation.ILoader loader = animationSteps -> loadAnimationFromFile(file, animationSteps);
-        return new ConfigurableAnimation(time, loader);
     }
 
     public void play(int ID, IAnimation animation) {

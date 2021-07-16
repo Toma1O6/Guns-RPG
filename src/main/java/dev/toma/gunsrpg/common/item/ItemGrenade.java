@@ -1,13 +1,15 @@
 package dev.toma.gunsrpg.common.item;
 
+import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.common.entity.GrenadeEntity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import dev.toma.gunsrpg.common.init.GRPGEntityTypes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.CooldownTracker;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
 public class ItemGrenade extends GRPGItem {
@@ -16,26 +18,26 @@ public class ItemGrenade extends GRPGItem {
     private final boolean explodeOnImpact;
 
     public ItemGrenade(String name, int blastRadius, boolean explodeOnImpact) {
-        super(name);
+        super(name, new Properties().tab(ModTabs.ITEM_TAB).stacksTo(10));
         this.blastSize = blastRadius;
         this.explodeOnImpact = explodeOnImpact;
-        setMaxStackSize(10);
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-        ItemStack stack = playerIn.getHeldItem(handIn);
-        if(!worldIn.isRemote) {
-            CooldownTracker tracker = playerIn.getCooldownTracker();
-            if(!tracker.hasCooldown(stack.getItem())) {
-                worldIn.spawnEntity(new GrenadeEntity(worldIn, playerIn, 80, blastSize, explodeOnImpact, stack));
-                playerIn.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1.0F, 1.0F);
-                if(!playerIn.isCreative()) {
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (!world.isClientSide) {
+            CooldownTracker tracker = player.getCooldowns();
+            Item item = stack.getItem();
+            if (!tracker.isOnCooldown(item)) {
+                world.addFreshEntity(new GrenadeEntity(GRPGEntityTypes.GRENADE.get(), world, player, 80, blastSize, explodeOnImpact, item));
+                player.playSound(SoundEvents.SNOWBALL_THROW, 1.0F, 1.0F);
+                if (!player.isCreative()) {
                     stack.shrink(1);
                 }
-                tracker.setCooldown(stack.getItem(), 60);
+                tracker.addCooldown(item, 60);
             }
         }
-        return ActionResult.newResult(EnumActionResult.PASS, stack);
+        return ActionResult.pass(stack);
     }
 }

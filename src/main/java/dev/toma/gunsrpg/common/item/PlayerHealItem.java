@@ -1,0 +1,54 @@
+package dev.toma.gunsrpg.common.item;
+
+import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.GRPGEffects;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.world.World;
+
+public class PlayerHealItem extends AbstractHealItem<PlayerEntity> {
+
+    protected PlayerHealItem(Builder builder) {
+        super(builder);
+    }
+
+    public static HealBuilder<PlayerEntity, PlayerHealItem> define(String name) {
+        return new Builder(name);
+    }
+
+    @Override
+    public PlayerEntity getTargetObject(World world, PlayerEntity user, PlayerData data) {
+        return user;
+    }
+
+    public static void onStereoidsUsed(PlayerEntity player) {
+        player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 1200, 0, false, false));
+        player.addEffect(new EffectInstance(Effects.JUMP, 1200, 1, false, false));
+    }
+
+    public static void onAdrenalineUsed(PlayerEntity player) {
+        player.addEffect(new EffectInstance(Effects.REGENERATION, 700, 0, false, false));
+        player.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 1200, 0, false, false));
+    }
+
+    public static void onMorphineUsed(PlayerEntity player) {
+        player.heal(14);
+        player.addEffect(new EffectInstance(Effects.REGENERATION, 300, 1, false, false));
+        player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 1, false, false));
+        player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 900, 0, false, false));
+        player.addEffect(new EffectInstance(GRPGEffects.GUN_DAMAGE_BUFF.get(), 600, 0, false, false));
+    }
+
+    protected static class Builder extends HealBuilder<PlayerEntity, PlayerHealItem> {
+
+        protected Builder(String name) {
+            super(name);
+        }
+
+        @Override
+        public PlayerHealItem build() {
+            return new PlayerHealItem(this);
+        }
+    }
+}

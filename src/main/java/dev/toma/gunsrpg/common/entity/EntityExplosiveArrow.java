@@ -1,52 +1,54 @@
 package dev.toma.gunsrpg.common.entity;
 
-import net.minecraft.entity.EntityLivingBase;
+import dev.toma.gunsrpg.common.init.GRPGEntityTypes;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 public class EntityExplosiveArrow extends AbstractArrowEntity {
 
     public int blastSize;
 
-    public EntityExplosiveArrow(World world) {
-        super(world);
+    public EntityExplosiveArrow(EntityType<? extends EntityExplosiveArrow> type, World world) {
+        super(type, world);
     }
 
     public EntityExplosiveArrow(World world, LivingEntity entity, int blastSize) {
-        super(world, entity);
-        this.pickupStatus = PickupStatus.DISALLOWED;
+        super(GRPGEntityTypes.EXPLOSIVE_ARROW.get(), entity, world);
+        this.pickup = PickupStatus.DISALLOWED;
         this.blastSize = blastSize;
     }
 
     @Override
-    protected ItemStack getArrowStack() {
+    protected ItemStack getPickupItem() {
         return ItemStack.EMPTY;
     }
 
     @Override
-    protected void arrowHit(EntityLivingBase living) {
-        if(!world.isRemote) {
-            world.createExplosion(this, living.posX, living.posY, living.posZ, shootingEntity instanceof ExplosiveSkeletonEntity ? 2 : 1, false);
-            setDead();
+    protected void onHitEntity(EntityRayTraceResult result) {
+        if (!level.isClientSide) {
+            level.explode(this, getX(), getY(), getZ(), getOwner() instanceof ExplosiveSkeletonEntity ? 2 : 1, Explosion.Mode.DESTROY);
+            remove();
         }
     }
 
     @Override
-    public void onUpdate() {
-        super.onUpdate();
-        if(world.isRemote) {
+    public void tick() {
+        super.tick();
+        if(level.isClientSide) {
             for(int i = 0; i < 4; i++) {
-                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX, posY, posZ, r(5), r(5), r(5));
-                world.spawnParticle(EnumParticleTypes.FLAME, posX, posY, posZ, r(3), r(3), r(3));
+                level.addParticle(ParticleTypes.LARGE_SMOKE, getX(), getY(), getZ(), r(5), r(5), r(5));
+                level.addParticle(ParticleTypes.FLAME, getX(), getY(), getZ(), r(3), r(3), r(3));
             }
         }
     }
 
     private double r(int mod) {
-        return rand.nextDouble() / mod - rand.nextDouble() / mod;
+        return random.nextDouble() / mod - random.nextDouble() / mod;
     }
 }

@@ -2,22 +2,18 @@ package dev.toma.gunsrpg.client.render.item;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.ModelSR;
-import dev.toma.gunsrpg.common.init.GRPGItems;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
-import net.minecraft.item.ItemStack;
+import dev.toma.gunsrpg.client.model.ModelWeapon;
 import net.minecraft.util.ResourceLocation;
 
-public class SRRenderer extends TileEntityItemStackRenderer {
-
-    private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/items/kar98k.png");
-    private final ModelSR model = new ModelSR();
+public class SRRenderer extends AbstractWeaponRenderer {
 
     @Override
-    public void renderByItem(ItemStack p_192838_1_) {
-        if(p_192838_1_.getItem() == GRPGItems.SNIPER_RIFLE) {
-            Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
-            model.render(p_192838_1_);
-        }
+    public ModelWeapon createModelInstance() {
+        return new ModelSR();
+    }
+
+    @Override
+    public ResourceLocation createGunTextureInstance() {
+        return GunsRPG.makeResource("textures/item/kar98k.png");
     }
 }

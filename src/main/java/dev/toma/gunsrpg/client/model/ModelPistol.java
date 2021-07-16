@@ -274,10 +274,4 @@ public class ModelPistol extends ModelWeapon {
         if (data.getSkills().hasSkill(Skills.PISTOL_SUPPRESSOR))
             suppressor.render(matrix, builder, light, overlay);
     }
-
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
-    }
 }

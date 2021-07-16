@@ -7,16 +7,13 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class GuiBlastFurnace extends ContainerScreen<BlastFurnaceContainer> {
 
     private static final ResourceLocation ICON = new ResourceLocation("textures/gui/container/furnace.png");
-    private final ITextComponent tileName;
 
     public GuiBlastFurnace(BlastFurnaceContainer container, PlayerInventory inventory, ITextComponent component) {
         super(container, inventory, component);
-        tileName = new TranslationTextComponent("container.blast_furnace");
     }
 
     @Override
@@ -37,7 +34,7 @@ public class GuiBlastFurnace extends ContainerScreen<BlastFurnaceContainer> {
 
     @Override
     protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-        font.draw(matrix, tileName, getXSize() / 2f - font.width(tileName) / 2f, 6, 0x404040);
+        font.draw(matrix, title, getXSize() / 2f - font.width(title) / 2f, 6, 0x404040);
         font.draw(matrix, inventory.getName(), 8, getYSize() - 94, 0x404040);
     }
 

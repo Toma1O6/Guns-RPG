@@ -49,7 +49,7 @@ public class DebuffHeal extends GRPGItem implements IHandRenderer {
 
     @OnlyIn(Dist.CLIENT)
     public IAnimation getAnimation(ItemStack stack) {
-        return new Animations.Antidotum(this.getUseDuration(stack));
+        return new Animations.Pills(this.getUseDuration(stack));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -86,7 +86,7 @@ public class DebuffHeal extends GRPGItem implements IHandRenderer {
             if (predicate.test(data.getDebuffData())) {
                 if (world.isClientSide) {
                     player.playSound(useSound.get(), 1.0F, 1.0F);
-                    ClientSideManager.processor().play(Animations.HEAL, getAnimation(stack));
+                    ClientSideManager.runOnClient(() -> () -> ClientSideManager.instance().processor().play(Animations.HEAL, getAnimation(stack)));
                 }
                 player.startUsingItem(hand);
             }
@@ -97,7 +97,7 @@ public class DebuffHeal extends GRPGItem implements IHandRenderer {
     @Override
     public void releaseUsing(ItemStack p_77615_1_, World world, LivingEntity p_77615_3_, int p_77615_4_) {
         if (world.isClientSide)
-            ClientSideManager.processor().stop(Animations.HEAL);
+            ClientSideManager.runOnClient(() -> () -> ClientSideManager.instance().processor().stop(Animations.HEAL));
     }
 
     @Override

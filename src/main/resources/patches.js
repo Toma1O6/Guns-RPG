@@ -60,7 +60,20 @@ function initializeCoremod() {
                 'methodDesc': '()D'
             },
             'transformer': function (methodNode) {
-                patchFollowDistance(methodNode.instructions)
+                patchFollowDistance(methodNode.instructions);
+                return methodNode;
+            }
+        },
+
+        'blockDropsPatch': {
+            'target': {
+                'type': 'METHOD',
+                'class': 'net.minecraft.block.AbstractBlock',
+                'methodName': 'func_220076_a',
+                'methodDesc': '(Lnet/minecraft/block/BlockState;Lnet/minecraft/loot/LootContext$Builder;)Ljava/util/List;'
+            },
+            'transformer': function (methodNode) {
+                patchBlockDrops(methodNode.instructions);
                 return methodNode;
             }
         }
@@ -157,6 +170,31 @@ function patchFollowDistance(instructions) {
             instructions.remove(getStaticInsn);
             instructions.remove(invokeVirtualInsn);
             break;
+        }
+    }
+}
+
+function patchBlockDrops(instructions) {
+    let foundReturnStatement = false;
+    for (let i = instructions.size() - 1; i >= 0; i--) {
+        let instruction = instructions.get(i);
+        if (!foundReturnStatement) {
+            if (instruction.getOpcode() === ARETURN) {
+                foundReturnStatement = true;
+            }
+        } else {
+            if (instruction.getOpcode() === INVOKEVIRTUAL && instruction instanceof MethodInsnNode) {
+                if (instruction.desc === '(Lnet/minecraft/loot/LootContext;)Ljava/util/List;') {
+                    instructions.set(instruction, new MethodInsnNode(
+                        INVOKESTATIC,
+                        'dev/toma/pubgmc/asm/Hooks',
+                        'modifyBlockDrops',
+                        '(Lnet/minecraft/loot/LootTable;Lnet/minecraft/loot/LootContext;)Ljava/util/List;',
+                        false
+                    ));
+                    break;
+                }
+            }
         }
     }
 }

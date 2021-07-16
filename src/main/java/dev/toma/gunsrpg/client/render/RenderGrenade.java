@@ -1,68 +1,51 @@
 package dev.toma.gunsrpg.client.render;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.common.entity.GrenadeEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.pipeline.LightUtil;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
-public class RenderGrenade extends Render<GrenadeEntity> {
+public class RenderGrenade extends EntityRenderer<GrenadeEntity> {
 
-    public RenderGrenade(RenderManager manager) {
+    private static final Vector3f ROTATION = new Vector3f(1.0F, 0.5F, 1.0F);
+    private final ItemRenderer renderer;
+
+    public RenderGrenade(EntityRendererManager manager) {
         super(manager);
+        this.renderer = Minecraft.getInstance().getItemRenderer();
     }
 
     @Override
-    public void doRender(GrenadeEntity entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        if(entity.isInvisible()) {
-            return;
-        }
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(x, y, z);
-        GlStateManager.scale(0.6f, 0.6f, 0.6f);
-        GlStateManager.translate(-0.5f, 0, -0.5f);
-        float rotationProgress = entity.lastRotation + (entity.rotation - entity.lastRotation) * partialTicks;
-        GlStateManager.rotate(rotationProgress, 1.0F, 0.5F, 1.0F);
-        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-        GlStateManager.disableLighting();
-        IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(entity.stack);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferBuilder = tessellator.getBuffer();
-        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-        for(EnumFacing facing : EnumFacing.values()) {
-            renderQuads(bufferBuilder, model.getQuads(null, facing, 0L));
-        }
-        renderQuads(bufferBuilder, model.getQuads(null, null, 0L));
-        tessellator.draw();
-        GlStateManager.enableLighting();
-        GlStateManager.popMatrix();
-        super.doRender(entity, x, y, z, entityYaw, partialTicks);
+    public void render(GrenadeEntity grenade, float yaw, float renderTickTime, MatrixStack matrix, IRenderTypeBuffer buffer, int light) {
+        matrix.pushPose();
+        matrix.scale(0.6F, 0.6F, 0.6F);
+        matrix.translate(-0.5F, 0.0F, -0.5F);
+        float rotation = MathHelper.lerp(renderTickTime, grenade.lastRotation, grenade.rotation);
+        matrix.mulPose(new Quaternion(ROTATION, rotation, true));
+        ItemStack stack = grenade.renderStack.orElse(ItemStack.EMPTY);
+        IBakedModel model = renderer.getModel(stack, grenade.level, null);
+        renderer.render(stack, ItemCameraTransforms.TransformType.GROUND, false, matrix, buffer, light, OverlayTexture.NO_OVERLAY, model);
+        matrix.popPose();
+        super.render(grenade, yaw, renderTickTime, matrix, buffer, light);
     }
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(GrenadeEntity entity) {
-        return null;
-    }
-
-    protected static void renderQuads(BufferBuilder buffer, List<BakedQuad> quads) {
-        int i = 0;
-        for (int j = quads.size(); i < j; ++i) {
-            BakedQuad quad = quads.get(i);
-            LightUtil.renderQuadColor(buffer, quad, -1);
-        }
+    public ResourceLocation getTextureLocation(GrenadeEntity entity) {
+        return AtlasTexture.LOCATION_BLOCKS;
     }
 }

@@ -52,7 +52,7 @@ public class ModKeybinds {
                 mc.setScreen(new GuiChooseAmmo((GunItem) stack.getItem()));
             }
         } else {
-            AnimationProcessor processor = ClientSideManager.processor();
+            AnimationProcessor processor = ClientSideManager.instance().processor();
             if(stack.getItem() instanceof GunItem && !player.isSprinting() && processor.getByID(Animations.REBOLT) == null) {
                 GunItem gun = (GunItem) stack.getItem();
                 if(info.isReloading()) {

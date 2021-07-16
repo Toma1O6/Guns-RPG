@@ -44,7 +44,7 @@ public class PlayerDataFactory implements PlayerData {
         this.aimInfo = new AimInfo(this);
         this.reloadInfo = new ReloadInfo(this);
         this.playerSkills = new PlayerSkills(this);
-        ClientSideManager.runOnClient(() -> () -> setSyncCallback(ClientSideManager::onDataSync));
+        ClientSideManager.runOnClient(() -> () -> setSyncCallback(ClientSideManager.instance()::onDataSync));
     }
 
     public static boolean hasActiveSkill(PlayerEntity player, SkillType<?> type) {

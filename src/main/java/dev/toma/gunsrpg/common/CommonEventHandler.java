@@ -22,13 +22,11 @@ import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
 import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
-import dev.toma.gunsrpg.util.object.Pair;
 import dev.toma.gunsrpg.world.GRPGOres;
 import dev.toma.gunsrpg.world.MobSpawnManager;
 import dev.toma.gunsrpg.world.cap.WorldCapProvider;
 import dev.toma.gunsrpg.world.cap.WorldDataCap;
 import dev.toma.gunsrpg.world.cap.WorldDataFactory;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -41,8 +39,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.loot.ConstantRange;
+import net.minecraft.loot.ItemLootEntry;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.RandomValueRange;
+import net.minecraft.loot.functions.SetCount;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
@@ -50,6 +51,8 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
@@ -79,9 +82,10 @@ import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
 public class CommonEventHandler {
@@ -230,63 +234,6 @@ public class CommonEventHandler {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void harvestBlock(BlockEvent.HarvestDropsEvent event) {
-        EntityPlayer player = event.getHarvester();
-        if (player == null) return;
-        PlayerSkills skills = PlayerDataFactory.get(player).getSkills();
-        if (event.getState().getBlock() instanceof BlockLog && skills.hasSkill(Skills.LUMBERJACK_I)) {
-            Block block = event.getState().getBlock();
-            for (IRecipe<?> recipe : ForgeRegistries.RECIPES) {
-                List<Ingredient> ingredients = recipe.getIngredients();
-                if (ingredients.size() == 1) {
-                    Ingredient ingredient = ingredients.get(0);
-                    if (ingredient.apply(new ItemStack(block, 1, block.damageDropped(event.getState())))) {
-                        ItemStack result = recipe.getRecipeOutput().copy();
-                        result.setCount(1);
-                        Pair<Float, Float> chances = SkillUtil.getBestSkillFromOverrides(skills.getSkill(Skills.LUMBERJACK_I), player).getDropChances();
-                        if (random.nextFloat() < chances.getLeft()) {
-                            event.getDrops().add(result);
-                        }
-                        if (random.nextFloat() < chances.getRight()) {
-                            event.getDrops().add(new ItemStack(Items.STICK, 2));
-                        }
-                        break;
-                    }
-                }
-            }
-        } else if (event.getState().getBlock() instanceof BlockOre) {
-            Block block = event.getState().getBlock();
-            if (skills.hasSkill(Skills.MOTHER_LODE_I)) {
-                Pair<Float, Float> chances = SkillUtil.getBestSkillFromOverrides(skills.getSkill(Skills.MOTHER_LODE_I), player).getDropChances();
-                float x3 = chances.getRight();
-                float x2 = chances.getLeft();
-                if (random.nextFloat() < x3) {
-                    replaceOres(event.getDrops(), 3);
-                } else if (random.nextFloat() < x2) {
-                    replaceOres(event.getDrops(), 2);
-                } else replaceOres(event.getDrops(), 1);
-            } else replaceOres(event.getDrops(), 1);
-        }
-    }
-
-    private static void replaceOres(List<ItemStack> drops, int multiplier) {
-        Iterator<ItemStack> iterator = drops.iterator();
-        List<ItemStack> pending = new ArrayList<>();
-        while (iterator.hasNext()) {
-            ItemStack stack = iterator.next();
-            Item replacement = GunsRPG.oreToChunkMap.get(stack.getItem());
-            if (replacement != null) {
-                ItemStack replaceStack = new ItemStack(replacement, Math.min(64, stack.getCount() * multiplier));
-                pending.add(replaceStack);
-                iterator.remove();
-            } else {
-                stack.setCount(Math.min(64, stack.getCount() * multiplier));
-            }
-        }
-        drops.addAll(pending);
-    }
-
     @SubscribeEvent
     public static void damageEntity(LivingDamageEvent event) {
         DamageSource source = event.getSource();
@@ -433,7 +380,7 @@ public class CommonEventHandler {
                     if (GRPGConfig.worldConfig.createCrateOnPlayerDeath.get() && !player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
                         BlockPos pos = player.blockPosition();
                         World world = player.level;
-                        while (!world.getBlockState(pos).getBlock().isReplaceable(world, pos) && pos.getY() < 255) {
+                        while (!world.getBlockState(pos).getBlock().getCollisionShape(world.getBlockState(pos), world, pos, ISelectionContext.empty()).isEmpty() && pos.getY() < 255) {
                             pos = pos.above();
                         }
                         world.setBlock(pos, GRPGBlocks.DEATH_CRATE.defaultBlockState(), 3);
@@ -443,7 +390,7 @@ public class CommonEventHandler {
                         }
                     }
                     if (skills.hasSkill(Skills.AVENGE_ME_FRIENDS) && !player.level.isClientSide) {
-                        List<PlayerEntity> players = player.level.getEntities(PlayerEntity.class, Block.FULL_BLOCK_AABB.offset(player.blockPosition()).grow(30));
+                        List<PlayerEntity> players = player.level.getEntitiesOfClass(PlayerEntity.class, VoxelShapes.block().bounds().move(player.blockPosition()).inflate(30));
                         players.forEach(p -> {
                             p.addEffect(new EffectInstance(Effects.ABSORPTION, 400, 2));
                             p.addEffect(new EffectInstance(Effects.REGENERATION, 500, 1));
@@ -544,35 +491,13 @@ public class CommonEventHandler {
     public static void loadLootTables(LootTableLoadEvent event) {
         String loottable = event.getName().toString();
         if (loottable.equals("minecraft:chests/abandoned_mineshaft") || loottable.equals("minecraft:chests/desert_pyramid") || loottable.equals("minecraft:chests/simple_dungeon") || loottable.equals("minecraft:chests/village_blacksmith")) {
-            LootEntryItem entryItem = new LootEntryItem(
-                    GRPGItems.SKILLPOINT_BOOK,
-                    3,
-                    0,
-                    new LootFunction[]{new SetCount(new LootCondition[0], new RandomValueRange(1, 3))},
-                    new LootCondition[0],
-                    "skill_book"
+            event.getTable().addPool(LootPool.lootPool().add(ItemLootEntry
+                    .lootTableItem(GRPGItems.SKILLPOINT_BOOK)
+                    .apply(SetCount.setCount(new RandomValueRange(1, 3))))
+                    .setRolls(new ConstantRange(1))
+                    .bonusRolls(0.0F, 0.0F)
+                    .build()
             );
-            LootPool pool = new LootPool(new LootEntry[]{entryItem}, new LootCondition[0], new RandomValueRange(1), new RandomValueRange(0), "dungeon_inject_pool");
-            event.getTable().addPool(pool);
         }
-    }
-
-    private static PlayerEntity findNearestPlayer(Entity entity, World world) {
-        double lastDist = Double.MAX_VALUE;
-        PlayerEntity p = null;
-        for (int i = 0; i < world.players().size(); i++) {
-            PlayerEntity player = world.players().get(i);
-            double d = entity.distanceTo(player);
-            if (d < lastDist) {
-                lastDist = d;
-                p = player;
-            }
-        }
-        return p;
-    }
-
-    private static <K, V> V getMapNonnull(Map<K, V> map, K key, V defValue) {
-        V v = map.get(key);
-        return v != null ? v : defValue;
     }
 }

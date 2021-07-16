@@ -1,97 +1,101 @@
 package dev.toma.gunsrpg.common.block;
 
-import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
+import dev.toma.gunsrpg.common.container.AirdropContainer;
+import dev.toma.gunsrpg.common.tileentity.AirdropTileEntity;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
+import dev.toma.gunsrpg.util.ModUtils;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.Item;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class BlockDeathCrate extends GRPGBlock {
 
-    private static final AxisAlignedBB BB = new AxisAlignedBB(0, 0, 0, 1, 0.4, 1);
+    private static final ITextComponent TITLE = new TranslationTextComponent("container.death_crate");
+    private static final VoxelShape SHAPE = VoxelShapes.box(0.0, 0.0, 0.0, 1.0, 0.4, 1.0);
 
     public BlockDeathCrate(String name) {
-        super(name, Material.WOOD);
-        setHardness(1.2F);
-        setTickRandomly(true);
+        super(name, Properties.of(Material.WOOD).strength(1.2F).randomTicks());
     }
 
     @Override
-    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
-        TileEntity te = worldIn.getTileEntity(pos);
+    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        TileEntity te = world.getBlockEntity(pos);
         if(te instanceof DeathCrateTileEntity) {
             DeathCrateTileEntity deathCrate = (DeathCrateTileEntity) te;
             if(deathCrate.isEmpty()) {
-                worldIn.destroyBlock(pos, false);
+                world.destroyBlock(pos, false);
             }
         }
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return BB;
-    }
-
-    @Nullable
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-        return BB;
+    public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_, ISelectionContext p_220053_4_) {
+        return SHAPE;
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(!worldIn.isRemote) {
-            playerIn.openGui(GunsRPG.modInstance, GuiHandler.DEATH_CRATE, worldIn, pos.getX(), pos.getY(), pos.getZ());
+    public INamedContainerProvider getMenuProvider(BlockState state, World world, BlockPos pos) {
+        return new SimpleNamedContainerProvider(
+                (windowID, playerInventory, player) -> new AirdropContainer(windowID, playerInventory, (AirdropTileEntity) world.getBlockEntity(pos)),
+                TITLE
+        );
+    }
+
+    @Override
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+        if (world.isClientSide)
+            return ActionResultType.SUCCESS;
+        else {
+            NetworkHooks.openGui((ServerPlayerEntity) player, getMenuProvider(state, world, pos), pos);
+            return ActionResultType.CONSUME;
         }
-        return true;
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
+    public boolean hasTileEntity(BlockState state) {
         return true;
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
+    public TileEntity createTileEntity(BlockState state, IBlockReader reader) {
         return new DeathCrateTileEntity();
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if(tileEntity instanceof InventoryTileEntity) {
-            InventoryHelper.dropInventoryItems(worldIn, pos, (InventoryTileEntity) tileEntity);
+    public void onRemove(BlockState state, World world, BlockPos pos, BlockState oldState, boolean p_196243_5_) {
+        if (!state.is(oldState.getBlock())) {
+            ModUtils.dropInventoryItems(world, pos);
         }
-        super.breakBlock(worldIn, pos, state);
+        super.onRemove(state, world, pos, oldState, p_196243_5_);
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Items.AIR;
+    public List<ItemStack> getDrops(BlockState p_220076_1_, LootContext.Builder p_220076_2_) {
+        return Collections.emptyList();
     }
 }

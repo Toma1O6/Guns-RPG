@@ -81,6 +81,19 @@ public abstract class InventoryTileEntity extends TileEntity {
         fill(() -> ItemStack.EMPTY);
     }
 
+    public boolean isEmpty() {
+        LazyOptional<IItemHandlerModifiable> inv = getInventory();
+        if (inv.isPresent()) {
+            IItemHandlerModifiable handler = inv.orElse(null);
+            for (int i = 0; i < handler.getSlots(); i++) {
+                ItemStack stack = handler.getStackInSlot(i);
+                if (!stack.isEmpty())
+                    return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
