@@ -35,7 +35,7 @@ public class SPacketRequestDataUpdate extends AbstractNetworkPacket<SPacketReque
     protected void handlePacket(NetworkEvent.Context context) {
         ServerPlayerEntity player = context.getSender();
         PlayerDataFactory.get(player).ifPresent(playerData -> {
-            CompoundNBT nbt = player.serializeNBT();
+            CompoundNBT nbt = playerData.serializeNBT();
             NetworkManager.sendClientPacket(player, new CPacketUpdateCap(uuid, nbt, 0));
         });
     }

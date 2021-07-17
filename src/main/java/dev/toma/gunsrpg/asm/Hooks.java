@@ -7,7 +7,6 @@ import dev.toma.gunsrpg.common.init.GRPGItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
 import dev.toma.gunsrpg.common.skills.MotherlodeSkill;
-import dev.toma.gunsrpg.config.GRPGConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.Pair;
 import dev.toma.gunsrpg.world.cap.WorldDataFactory;
@@ -33,6 +32,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.*;
 
@@ -42,11 +42,14 @@ public class Hooks {
 
     public static double modifyAttackDelay(PlayerEntity player) {
         double value = player.getAttributeValue(Attributes.ATTACK_SPEED);
-        PlayerData data = PlayerDataFactory.get(player).orElseThrow(NullPointerException::new);
-        PlayerSkills skills = data.getSkills();
-        AdrenalineRushSkill adrenaline = SkillUtil.getBestSkillFromOverrides(skills.getSkill(Skills.ADRENALINE_RUSH_I), player);
-        if (adrenaline != null && adrenaline.apply(player)) {
-            value *= adrenaline.getAttackSpeedBoost();
+        LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+        if (optional.isPresent()) {
+            PlayerData data = optional.orElse(null);
+            PlayerSkills skills = data.getSkills();
+            AdrenalineRushSkill adrenaline = SkillUtil.getBestSkillFromOverrides(skills.getSkill(Skills.ADRENALINE_RUSH_I), player);
+            if (adrenaline != null && adrenaline.apply(player)) {
+                value *= adrenaline.getAttackSpeedBoost();
+            }
         }
         return value;
     }
@@ -55,7 +58,7 @@ public class Hooks {
         double attributeValue = mob.getAttributeValue(Attributes.FOLLOW_RANGE);
         World world = mob.level;
         if (WorldDataFactory.isBloodMoon(world)) {
-            return Math.max(attributeValue, GRPGConfig.worldConfig.bloodMoonMobAgroRange.get());
+            return Math.max(attributeValue, 90/*GRPGConfig.worldConfig.bloodMoonMobAgroRange.get()*/);
         }
         return attributeValue;
     }

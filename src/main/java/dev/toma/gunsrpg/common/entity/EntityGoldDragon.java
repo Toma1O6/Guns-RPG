@@ -34,7 +34,7 @@ public class EntityGoldDragon extends EnderDragonEntity {
     public EntityGoldDragon(EntityType<? extends EntityGoldDragon> type, World world) {
         super(type, world);
         phaseManager = new ExtendedPhaseManager(this);
-        if (dragonFight.dragonEvent != null)
+        if (dragonFight != null)
             dragonFight.dragonEvent = (ServerBossInfo) (new ServerBossInfo(new TranslationTextComponent("entity.gunsrpg.gold_dragon"), BossInfo.Color.YELLOW, BossInfo.Overlay.PROGRESS)).setPlayBossMusic(true).setCreateWorldFog(true).setDarkenScreen(true);
     }
 
@@ -101,8 +101,10 @@ public class EntityGoldDragon extends EnderDragonEntity {
                     l = (int) (20.0F * MathHelper.cos(2.0F * (-(float) Math.PI + ((float) Math.PI / 4F) * (float) k1)));
                     i1 = (int) (20.0F * MathHelper.sin(2.0F * (-(float) Math.PI + ((float) Math.PI / 4F) * (float) k1)));
                 }
-                int j1 = Math.max(this.level.getSeaLevel() + 30, this.level.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(l, 0, i1)).getY() + j);
-                this.nodes[i] = new PathPoint((int) getX() + l, j1, (int) getZ() + i1);
+                double x = getX();
+                double z = getZ();
+                int j1 = Math.max(this.level.getSeaLevel() + 30, this.level.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(x + l, 0, z + i1)).getY() + j);
+                this.nodes[i] = new PathPoint((int) x + l, j1, (int) z + i1);
             }
             this.nodeAdjacency[0] = 6146;
             this.nodeAdjacency[1] = 8197;

@@ -87,6 +87,7 @@ public class CommandGRPG {
         optional.ifPresent(data -> {
             DebuffData debuffs = data.getDebuffData();
             debuffs.toggle(type);
+            data.sync();
             ctx.getSource().sendSuccess(new TranslationTextComponent("gunsrpg.command.toggledebuff", type.getRegistryName().toString()), false);
         });
         return 0;
@@ -96,7 +97,9 @@ public class CommandGRPG {
         CommandSource src = ctx.getSource();
         MinecraftServer server = src.getServer();
         IServerWorldInfo worldInfo = server.getWorldData().overworldData();
-        worldInfo.setGameTime(GRPGConfig.worldConfig.bloodmoonCycle.get() * 24000L + 13000L);
+        long newGameTime = GRPGConfig.worldConfig.bloodmoonCycle.get() * 24000L + 13000L;
+        worldInfo.setGameTime(newGameTime);
+        src.getLevel().setDayTime(newGameTime);
         src.sendSuccess(new TranslationTextComponent("gunsrpg.command.setbloodmoon"), false);
         return 0;
     }
@@ -125,16 +128,12 @@ public class CommandGRPG {
             PlayerSkills skills = data.getSkills();
             int currentLevel = skills.getLevel();
             int delta = 100 - currentLevel;
-            int obtainTarget = Math.max(100, delta);
-            for (int i = 0; i < obtainTarget; i++) {
+            int target = Math.min(levelCount, delta);
+            for (int i = 0; i < target; i++) {
                 skills.nextLevel(false);
             }
-            int updatedLevel = skills.getLevel();
-            int obtained = updatedLevel - currentLevel;
-            for (int i = 0; i < obtained; i++) {
-                skills.nextLevel(false);
-            }
-            ctx.getSource().sendSuccess(new TranslationTextComponent("gunsrpg.command." + (obtained == 1 ? "addlevel" : "addlevels"), obtained), false);
+            data.sync();
+            ctx.getSource().sendSuccess(new TranslationTextComponent("gunsrpg.command." + (target == 1 ? "addlevel" : "addlevels"), target), false);
         });
         return 0;
     }

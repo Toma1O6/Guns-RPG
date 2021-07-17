@@ -64,7 +64,7 @@ public class GuiPlayerSkills extends Screen {
     @Override
     public void init() {
         uiComponents.clear();
-        headerText = String.format("%s's skill tree", minecraft.player.getName());
+        headerText = String.format("%s's skill tree", minecraft.player.getName().getString());
         headerWidth = minecraft.font.width(headerText);
         Tree tree = SkillTreePlacement.treeMap.get(displayedCategory);
         PlayerEntity player = minecraft.player;

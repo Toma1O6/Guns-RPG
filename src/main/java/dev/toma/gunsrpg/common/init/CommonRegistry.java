@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.common.block.*;
 import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.debuffs.DebuffHelper;
 import dev.toma.gunsrpg.common.debuffs.DebuffType;
+import dev.toma.gunsrpg.common.entity.*;
 import dev.toma.gunsrpg.common.item.*;
 import dev.toma.gunsrpg.common.item.guns.*;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
@@ -28,6 +29,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.*;
@@ -540,6 +542,15 @@ public class CommonRegistry {
                 sound("use_well_fed"),
                 sound("bullet_whizz")
         );
+    }
+
+    @SubscribeEvent
+    public static void registerEntityAttributes(EntityAttributeCreationEvent event) {
+        event.put(GRPGEntityTypes.ZOMBIE_GUNNER.get(), ZombieGunnerEntity.createAttributes().build());
+        event.put(GRPGEntityTypes.EXPLOSIVE_SKELETON.get(), ExplosiveSkeletonEntity.createAttributes().build());
+        event.put(GRPGEntityTypes.ROCKET_ANGEL.get(), RocketAngelEntity.createAttributes().build());
+        event.put(GRPGEntityTypes.BLOODMOON_GOLEM.get(), BloodmoonGolemEntity.createAttributes().build());
+        event.put(GRPGEntityTypes.GOLD_DRAGON.get(), EntityGoldDragon.createAttributes().build());
     }
 
     protected static SoundEvent sound(String key) {

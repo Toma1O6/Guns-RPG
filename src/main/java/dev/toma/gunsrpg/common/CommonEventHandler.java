@@ -276,8 +276,9 @@ public class CommonEventHandler {
         AbstractArrowEntity arrow = event.getArrow();
         World world = arrow.level;
         if (!world.isClientSide) {
-            BlockRayTraceResult result = (BlockRayTraceResult) event.getRayTraceResult();
-            if (result != null && result.getType() == RayTraceResult.Type.BLOCK && arrow instanceof EntityExplosiveArrow) {
+            RayTraceResult rayTraceResult = event.getRayTraceResult();
+            if (rayTraceResult != null && rayTraceResult.getType() == RayTraceResult.Type.BLOCK && arrow instanceof EntityExplosiveArrow) {
+                BlockRayTraceResult result = (BlockRayTraceResult) event.getRayTraceResult();
                 arrow.remove();
                 Direction facing = result.getDirection();
                 BlockPos pos = result.getBlockPos().relative(facing);

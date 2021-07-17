@@ -88,7 +88,7 @@ public abstract class AbstractHealItem<T> extends GRPGItem implements IHandRende
             if (useCondition.test(target)) {
                 if (level.isClientSide) {
                     player.playSound(useSound.get(), 1.0F, 1.0F);
-                    DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> ClientSideManager.instance().processor().play(Animations.HEAL, useAnimation.get()));
+                    ClientSideManager.instance().processor().play(Animations.HEAL, useAnimation.get());
                 }
                 player.startUsingItem(hand);
                 return ActionResult.pass(stack);
@@ -100,7 +100,7 @@ public abstract class AbstractHealItem<T> extends GRPGItem implements IHandRende
     @Override
     public void releaseUsing(ItemStack p_77615_1_, World p_77615_2_, LivingEntity p_77615_3_, int p_77615_4_) {
         if (p_77615_2_.isClientSide) {
-            DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> ClientSideManager.instance().processor().stop(Animations.HEAL));
+            ClientSideManager.instance().processor().stop(Animations.HEAL);
         }
     }
 

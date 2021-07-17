@@ -40,7 +40,7 @@ public class ClientSideManager {
     }
 
     public void clientSetup(FMLClientSetupEvent event) {
-        /*RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.AIRDROP.get(), RenderAirdrop::new);
+        RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.AIRDROP.get(), RenderAirdrop::new);
         RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.EXPLOSIVE_SKELETON.get(), RenderExplosiveSkeleton::new);
         RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.EXPLOSIVE_ARROW.get(), RenderExplosiveArrow::new);
         RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.ZOMBIE_GUNNER.get(), RenderZombieGunner::new);
@@ -51,7 +51,7 @@ public class ClientSideManager {
         RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.GOLD_DRAGON.get(), RenderGoldenDragon::new);
         ModKeybinds.registerKeybinds();
         MinecraftForge.EVENT_BUS.register(new ModKeybinds());
-        event.enqueueWork(this::screenSetup);*/
+        event.enqueueWork(this::screenSetup);
     }
 
     public void playDelayedSound(BlockPos pos, float volume, float pitch, SoundEvent event, SoundCategory category, int tickDelay) {

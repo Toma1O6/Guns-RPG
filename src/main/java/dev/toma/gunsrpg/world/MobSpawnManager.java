@@ -14,6 +14,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifierManager;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
+import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.monster.BlazeEntity;
 import net.minecraft.entity.monster.CaveSpiderEntity;
 import net.minecraft.entity.monster.WitherSkeletonEntity;
@@ -74,7 +75,9 @@ public class MobSpawnManager {
         registerPostSpawnAction(EntityType.CREEPER, (bloodmoon, creeper) -> {
             if (creeper.level.isClientSide || !bloodmoon) return;
             if (creeper.getRandom().nextFloat() <= 0.2F) {
-                creeper.thunderHit((ServerWorld) creeper.level, null);
+                LightningBoltEntity lightningBolt = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, creeper.level);
+                lightningBolt.setDamage(0);
+                creeper.thunderHit((ServerWorld) creeper.level, lightningBolt);
                 creeper.clearFire();
                 creeper.setHealth(creeper.getMaxHealth());
             }

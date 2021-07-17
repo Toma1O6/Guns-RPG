@@ -47,7 +47,7 @@ public class GunsRPG {
         GRPGTileEntities.subscribe(eventBus);
         GRPGContainers.subscribe(eventBus);
         // lifecycle events
-        //eventBus.addListener(this::clientSetup);
+        eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::commonSetup);
         eventBus.addListener(this::gatherData);
         // other events
