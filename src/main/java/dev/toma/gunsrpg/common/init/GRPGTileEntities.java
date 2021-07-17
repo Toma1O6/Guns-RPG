@@ -18,13 +18,13 @@ import java.util.function.Supplier;
 public class GRPGTileEntities {
     private static final DeferredRegister<TileEntityType<?>> TYPES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, GunsRPG.MODID);
 
-    public static final RegistryObject<TileEntityType<AirdropTileEntity>> AIRDROP = register("airdrop", AirdropTileEntity::new, GRPGBlocks.AIRDROP);
-    public static final RegistryObject<TileEntityType<BlastFurnaceTileEntity>> BLAST_FURNACE = register("blast_furnace", BlastFurnaceTileEntity::new, GRPGBlocks.BLAST_FURNACE);
-    public static final RegistryObject<TileEntityType<DeathCrateTileEntity>> DEATH_CRATE = register("death_crate", DeathCrateTileEntity::new, GRPGBlocks.DEATH_CRATE);
-    public static final RegistryObject<TileEntityType<SmithingTableTileEntity>> SMITHING_TABLE = register("smithing_table", SmithingTableTileEntity::new, GRPGBlocks.SMITHING_TABLE);
+    public static final RegistryObject<TileEntityType<AirdropTileEntity>> AIRDROP = register("airdrop", AirdropTileEntity::new, () -> new Block[] {GRPGBlocks.AIRDROP});
+    public static final RegistryObject<TileEntityType<BlastFurnaceTileEntity>> BLAST_FURNACE = register("blast_furnace", BlastFurnaceTileEntity::new, () -> new Block[] {GRPGBlocks.BLAST_FURNACE});
+    public static final RegistryObject<TileEntityType<DeathCrateTileEntity>> DEATH_CRATE = register("death_crate", DeathCrateTileEntity::new, () -> new Block[] {GRPGBlocks.DEATH_CRATE});
+    public static final RegistryObject<TileEntityType<SmithingTableTileEntity>> SMITHING_TABLE = register("smithing_table", SmithingTableTileEntity::new, () -> new Block[] {GRPGBlocks.SMITHING_TABLE});
 
-    private static <T extends TileEntity> RegistryObject<TileEntityType<T>> register(String name, Supplier<T> supplier, Block... blocks) {
-        return TYPES.register(name, () -> TileEntityType.Builder.of(supplier, blocks).build(null));
+    private static <T extends TileEntity> RegistryObject<TileEntityType<T>> register(String name, Supplier<T> supplier, Supplier<Block[]> blockSupplier) {
+        return TYPES.register(name, () -> TileEntityType.Builder.of(supplier, blockSupplier.get()).build(null));
     }
 
     public static void subscribe(IEventBus bus) {

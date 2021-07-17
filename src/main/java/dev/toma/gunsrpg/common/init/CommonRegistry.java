@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = GunsRPG.MODID)
+@Mod.EventBusSubscriber(modid = GunsRPG.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonRegistry {
 
     private static List<BlockItem> queue = new ArrayList<>();
@@ -54,10 +54,8 @@ public class CommonRegistry {
         GunsRPGRegistries.DEBUFFS = createGenericRegistry("debuff", DebuffType.class);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @SubscribeEvent
-    public static void onSkillRegister(RegistryEvent.Register event) {
-        if (!event.getRegistry().getRegistrySuperType().equals(SkillType.class)) return;
+    public static void onSkillRegister(RegistryEvent.Register<SkillType<?>> event) {
         event.getRegistry().registerAll(
                 SkillType.Builder.create(type -> new CraftingSkill(type, 2, CraftingSkill::getGunpowderYield)).setGunCategory().setRegistryName("gunpowder_novice").requiredLevel(0).price(1).childs(() -> ModUtils.newList(Skills.GUNPOWDER_EXPERT)).build(),
                 SkillType.Builder.create(type -> new CraftingSkill(type, 4, CraftingSkill::getGunpowderYield)).setGunCategory().setRegistryName("gunpowder_expert").requiredLevel(15).price(2).childs(() -> ModUtils.newList(Skills.GUNPOWDER_MASTER)).build(),

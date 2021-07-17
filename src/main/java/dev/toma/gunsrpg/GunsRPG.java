@@ -26,6 +26,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -46,7 +47,7 @@ public class GunsRPG {
         GRPGTileEntities.subscribe(eventBus);
         GRPGContainers.subscribe(eventBus);
         // lifecycle events
-        eventBus.addListener(ClientSideManager.instance()::clientSetup);
+        //eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::commonSetup);
         eventBus.addListener(this::gatherData);
         // other events
@@ -67,6 +68,10 @@ public class GunsRPG {
             generator.addProvider(blockTagsProvider);
             generator.addProvider(new ModItemTagsProvider(generator, blockTagsProvider, fileHelper));
         }
+    }
+
+    private void clientSetup(FMLClientSetupEvent event) {
+        ClientSideManager.instance().clientSetup(event);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

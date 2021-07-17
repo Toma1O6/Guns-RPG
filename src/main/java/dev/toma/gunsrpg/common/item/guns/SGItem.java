@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.common.item.guns;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
-import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
@@ -145,7 +144,7 @@ public class SGItem extends GunItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public IAnimation createReloadAnimation(PlayerEntity player) {
-        return new MultiStepAnimation.Configurable(this.getReloadTime(player), "sg_reload");
+        return new Animations.ShotgunReload(this.getReloadTime(player));
     }
 
     @OnlyIn(Dist.CLIENT)

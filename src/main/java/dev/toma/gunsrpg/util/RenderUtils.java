@@ -80,6 +80,7 @@ public class RenderUtils {
             greenComponents[i] = green_i(color);
             blueComponents[i] = blue_i(color);
         }
+        return 0; // TODO
     }
 
     public static void fillGradientColor(IVertexBuilder builder, Matrix4f matrix, int x1, int y1, int x2, int y2, int depth, int color1, int color2) {

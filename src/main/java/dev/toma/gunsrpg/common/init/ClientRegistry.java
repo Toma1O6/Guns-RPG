@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Map;
 
-@Mod.EventBusSubscriber(modid = GunsRPG.MODID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = GunsRPG.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientRegistry {
 
     @SubscribeEvent

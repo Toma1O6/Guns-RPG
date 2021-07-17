@@ -19,8 +19,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.DistExecutor;
 
 public class PlayerDataFactory implements PlayerData {
 
@@ -44,7 +46,7 @@ public class PlayerDataFactory implements PlayerData {
         this.aimInfo = new AimInfo(this);
         this.reloadInfo = new ReloadInfo(this);
         this.playerSkills = new PlayerSkills(this);
-        ClientSideManager.runOnClient(() -> () -> setSyncCallback(ClientSideManager.instance()::onDataSync));
+        setSyncCallback(DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> ClientSideManager.instance()::onDataSync));
     }
 
     public static boolean hasActiveSkill(PlayerEntity player, SkillType<?> type) {

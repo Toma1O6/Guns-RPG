@@ -4,7 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.AnimationProcessor;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
-import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.client.animation.impl.ImprovedAimAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
@@ -161,7 +160,7 @@ public class PistolItem extends GunItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public IAnimation createReloadAnimation(PlayerEntity player) {
-        return this.isDualWieldActive() ? new Animations.ReloadDual(this.getReloadTime(player)) : new MultiStepAnimation.Configurable(this.getReloadTime(player), "pistol_reload");
+        return this.isDualWieldActive() ? new Animations.ReloadDual(this.getReloadTime(player)) : new Animations.PistolReload(this.getReloadTime(player));
     }
 
     @OnlyIn(Dist.CLIENT)

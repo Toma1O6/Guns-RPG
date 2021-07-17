@@ -131,6 +131,9 @@ public class CommandGRPG {
             }
             int updatedLevel = skills.getLevel();
             int obtained = updatedLevel - currentLevel;
+            for (int i = 0; i < obtained; i++) {
+                skills.nextLevel(false);
+            }
             ctx.getSource().sendSuccess(new TranslationTextComponent("gunsrpg.command." + (obtained == 1 ? "addlevel" : "addlevels"), obtained), false);
         });
         return 0;

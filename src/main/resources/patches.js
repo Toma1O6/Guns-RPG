@@ -1,5 +1,5 @@
 // Initializes coremod
-function initializeCoremod() {
+function initializeCoreMod() {
     Opcodes = Java.type('org.objectweb.asm.Opcodes');
     ASMAPI = Java.type('net.minecraftforge.coremod.api.ASMAPI');
     InsnList = Java.type('org.objectweb.asm.tree.InsnList');
@@ -109,11 +109,11 @@ public getCurrentItemAttackStrengthDelay()F
  * @param instructions List of instructions
  */
 function patchAttackDelay(instructions) {
-    for (let i = 0; i < instructions.size(); i++) {
-        let instruction = instructions.get(i);
+    for (var i = 0; i < instructions.size(); i++) {
+        var instruction = instructions.get(i);
         if (instruction.getOpcode() === GETSTATIC) {
-            let virtualInvoke = instructions.get(i + 1);
-            let list = new InsnList();
+            var virtualInvoke = instructions.get(i + 1);
+            var list = new InsnList();
             list.add(new MethodInsnNode(
                 INVOKESTATIC,
                 'dev/toma/gunsrpg/asm/Hooks',
@@ -154,18 +154,18 @@ protected getFollowDistance()D
  * @param instructions Instruction list
  */
 function patchFollowDistance(instructions) {
-    for (let i = 0; i < instructions.size(); i++) {
-        let instruction = instructions.get(i);
+    for (var i = 0; i < instructions.size(); i++) {
+        var instruction = instructions.get(i);
         if (instruction.getOpcode() === GETFIELD) {
-            let methodInsert = new MethodInsnNode(
+            var methodInsert = new MethodInsnNode(
                 INVOKESTATIC,
                 'dev/toma/gunsrpg/asm/Hooks',
                 'modifyFollowDistance',
                 '(Lnet/minecraft/entity/MobEntity;)D',
                 false
             );
-            let getStaticInsn = instructions.get(i + 1);
-            let invokeVirtualInsn = instructions.get(i + 2);
+            var getStaticInsn = instructions.get(i + 1);
+            var invokeVirtualInsn = instructions.get(i + 2);
             instructions.insert(instruction, methodInsert);
             instructions.remove(getStaticInsn);
             instructions.remove(invokeVirtualInsn);
@@ -175,9 +175,9 @@ function patchFollowDistance(instructions) {
 }
 
 function patchBlockDrops(instructions) {
-    let foundReturnStatement = false;
-    for (let i = instructions.size() - 1; i >= 0; i--) {
-        let instruction = instructions.get(i);
+    var foundReturnStatement = false;
+    for (var i = instructions.size() - 1; i >= 0; i--) {
+        var instruction = instructions.get(i);
         if (!foundReturnStatement) {
             if (instruction.getOpcode() === ARETURN) {
                 foundReturnStatement = true;
@@ -187,7 +187,7 @@ function patchBlockDrops(instructions) {
                 if (instruction.desc === '(Lnet/minecraft/loot/LootContext;)Ljava/util/List;') {
                     instructions.set(instruction, new MethodInsnNode(
                         INVOKESTATIC,
-                        'dev/toma/pubgmc/asm/Hooks',
+                        'dev/toma/gunsrpg/asm/Hooks',
                         'modifyBlockDrops',
                         '(Lnet/minecraft/loot/LootTable;Lnet/minecraft/loot/LootContext;)Ljava/util/List;',
                         false
