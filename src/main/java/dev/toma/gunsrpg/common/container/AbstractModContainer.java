@@ -29,6 +29,11 @@ public abstract class AbstractModContainer<T extends InventoryTileEntity> extend
         this(type, windowID, playerInventory, readTileEntity(buffer, playerInventory));
     }
 
+    @SuppressWarnings("unchecked")
+    protected static <T extends TileEntity> T readTileEntity(PacketBuffer buffer, PlayerInventory inventory) {
+        return (T) inventory.player.level.getBlockEntity(buffer.readBlockPos());
+    }
+
     @Override
     public boolean stillValid(PlayerEntity player) {
         return stillValid(access, player, player.level.getBlockState(tileEntity.getBlockPos()).getBlock());
@@ -47,20 +52,20 @@ public abstract class AbstractModContainer<T extends InventoryTileEntity> extend
     }
 
     public void addSlots(IInventory inventory, int rows, int cols, int posX, int posY, int idAdd, SlotFactory factory) {
-        for(int y = 0; y < rows; y++) {
-            for(int x = 0; x < cols; x++) {
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++) {
                 this.addSlot(factory.createSlot(inventory, y * cols + x + idAdd, posX + x * 18, posY + y * 18));
             }
         }
     }
 
     public void addPlayerInventory(PlayerInventory inv, int yOffset) {
-        for(int y = 0; y < 3; y++) {
-            for(int x = 0; x < 9; x++) {
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 9; x++) {
                 addSlot(new Slot(inv, 9 + y * 9 + x, 8 + x * 18, yOffset + y * 18));
             }
         }
-        for(int x = 0; x < 9; x++) {
+        for (int x = 0; x < 9; x++) {
             addSlot(new Slot(inv, x, 8 + x * 18, yOffset + 58));
         }
     }
@@ -87,11 +92,6 @@ public abstract class AbstractModContainer<T extends InventoryTileEntity> extend
 
     public T getTileEntity() {
         return tileEntity;
-    }
-
-    @SuppressWarnings("unchecked")
-    protected static <T extends TileEntity> T readTileEntity(PacketBuffer buffer, PlayerInventory inventory) {
-        return (T) inventory.player.level.getBlockEntity(buffer.readBlockPos());
     }
 
     private Slot makeDefaultSlot(IInventory inventory, int id, int posX, int posY) {

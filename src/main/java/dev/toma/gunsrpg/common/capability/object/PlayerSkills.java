@@ -45,13 +45,6 @@ public class PlayerSkills {
     private final PlayerDataFactory data;
     private final Map<GunItem, GunData> gunKills = new HashMap<>();
     private final Map<SkillCategory, List<ISkill>> unlockedSkills = new HashMap<>();
-    private int level;
-    private int requiredKills = 10;
-    private int kills;
-    private int skillPoints;
-    private int gunpowderCraftYield;
-    private int bonemealCraftYield;
-    private int blazePowderCraftYield;
     public int poisonResistance;
     public int infectionResistance;
     public int brokenBoneResistance;
@@ -69,7 +62,13 @@ public class PlayerSkills {
     public float bleedChance;
     public float infectionChance;
     public float brokenBoneChance;
-
+    private int level;
+    private int requiredKills = 10;
+    private int kills;
+    private int skillPoints;
+    private int gunpowderCraftYield;
+    private int bonemealCraftYield;
+    private int blazePowderCraftYield;
     private Map<SkillCategory, List<TickableSkill>> tickCache;
 
     public PlayerSkills(PlayerDataFactory data) {
@@ -88,7 +87,7 @@ public class PlayerSkills {
 
     public boolean hasSkill(SkillType<?> type) {
         List<ISkill> list = unlockedSkills.get(type.category);
-        if(list == null) return false;
+        if (list == null) return false;
         return ModUtils.contains(type, list, SkillType::areTypesEqual);
     }
 
@@ -96,9 +95,9 @@ public class PlayerSkills {
     public <S extends ISkill> S getSkill(SkillType<S> type) {
         SkillCategory category = type.category;
         List<ISkill> list = unlockedSkills.get(category);
-        if(list == null) return null;
-        for(ISkill skill : list) {
-            if(type.areTypesEqual(skill)) {
+        if (list == null) return null;
+        for (ISkill skill : list) {
+            if (type.areTypesEqual(skill)) {
                 return (S) skill;
             }
         }
@@ -110,12 +109,12 @@ public class PlayerSkills {
     }
 
     public void onKillEntity(Entity entity, ItemStack stack) {
-        if(!(entity instanceof IMob)) return;
+        if (!(entity instanceof IMob)) return;
         ++kills;
-        if(!isMaxLevel() && kills >= requiredKills) {
+        if (!isMaxLevel() && kills >= requiredKills) {
             nextLevel(true);
         }
-        if(stack.getItem() instanceof GunItem) {
+        if (stack.getItem() instanceof GunItem) {
             this.killMob((GunItem) stack.getItem());
         }
         data.sync();
@@ -126,19 +125,19 @@ public class PlayerSkills {
         awardPoints();
         updateRequiredKills();
         kills = 0;
-        if(notify) {
+        if (notify) {
             PlayerEntity player = data.getPlayer();
             player.sendMessage(new StringTextComponent(TextFormatting.YELLOW + "=====[ LEVEL UP ]====="), Util.NIL_UUID);
             player.sendMessage(new StringTextComponent(TextFormatting.YELLOW + "Current level: " + level), Util.NIL_UUID);
             int count = 0;
             List<SkillType<?>> unlockedSkills = new ArrayList<>();
-            for(SkillType<?> type : GunsRPGRegistries.SKILLS) {
-                if(!(type.getCriteria() instanceof GunCriteria) && type.levelRequirement == level) {
+            for (SkillType<?> type : GunsRPGRegistries.SKILLS) {
+                if (!(type.getCriteria() instanceof GunCriteria) && type.levelRequirement == level) {
                     count++;
                     unlockedSkills.add(type);
                 }
             }
-            if(count > 0) {
+            if (count > 0) {
                 player.sendMessage(new StringTextComponent(String.format(TextFormatting.YELLOW + "New skills available: %d", count)), Util.NIL_UUID);
                 NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketNewSkills(unlockedSkills));
             }
@@ -147,14 +146,14 @@ public class PlayerSkills {
     }
 
     public void awardPoints() {
-        if(level == 100) {
+        if (level == 100) {
             addSkillPoints(25);
             data.getPlayer().addItem(new ItemStack(GRPGItems.GOLD_EGG_SHARD, 2));
-        } else if(level == 50) {
+        } else if (level == 50) {
             addSkillPoints(20);
-        } else if(level % 10 == 0) {
+        } else if (level % 10 == 0) {
             addSkillPoints(5);
-        } else if(level % 5 == 0) {
+        } else if (level % 5 == 0) {
             addSkillPoints(4);
         } else addSkillPoints(1);
     }
@@ -170,8 +169,8 @@ public class PlayerSkills {
 
     public void revertToDefault() {
         gunKills.clear();
-        for(Map.Entry<SkillCategory, List<ISkill>> entry : unlockedSkills.entrySet()) {
-            for(ISkill skill : entry.getValue()) {
+        for (Map.Entry<SkillCategory, List<ISkill>> entry : unlockedSkills.entrySet()) {
+            for (ISkill skill : entry.getValue()) {
                 skill.onDeactivate(data.getPlayer());
             }
         }
@@ -228,7 +227,7 @@ public class PlayerSkills {
         for (SkillType<?> skillType : GunsRPGRegistries.SKILLS.getValues()) {
             unlockSkill(skillType, false);
         }
-        for(GunItem item : ForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof GunItem).map(item -> (GunItem) item).collect(Collectors.toList())) {
+        for (GunItem item : ForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof GunItem).map(item -> (GunItem) item).collect(Collectors.toList())) {
             getGunData(item).unlockAll();
         }
         clearCache();
@@ -236,25 +235,25 @@ public class PlayerSkills {
     }
 
     private void updateRequiredKills() {
-        if(level >= 95) {
+        if (level >= 95) {
             requiredKills = 100;
-        } else if(level >= 90) {
+        } else if (level >= 90) {
             requiredKills = 85;
-        } else if(level >= 80) {
+        } else if (level >= 80) {
             requiredKills = 70;
-        } else if(level >= 70) {
+        } else if (level >= 70) {
             requiredKills = 60;
-        } else if(level >= 60) {
+        } else if (level >= 60) {
             requiredKills = 50;
-        } else if(level >= 50) {
+        } else if (level >= 50) {
             requiredKills = 45;
-        } else if(level >= 40) {
+        } else if (level >= 40) {
             requiredKills = 35;
-        } else if(level >= 30) {
+        } else if (level >= 30) {
             requiredKills = 30;
-        } else if(level >= 20) {
+        } else if (level >= 20) {
             requiredKills = 25;
-        } else if(level >= 10) {
+        } else if (level >= 10) {
             requiredKills = 15;
         } else requiredKills = 10;
     }
@@ -291,28 +290,28 @@ public class PlayerSkills {
         this.skillPoints = Math.max(0, skillPoints + amount);
     }
 
-    public void setGunpowderCraftYield(int gunpowderCraftYield) {
-        this.gunpowderCraftYield = gunpowderCraftYield;
-    }
-
     public int getGunpowderCraftYield() {
         return gunpowderCraftYield;
     }
 
-    public void setBonemealCraftYield(int bonemealCraftYield) {
-        this.bonemealCraftYield = bonemealCraftYield;
+    public void setGunpowderCraftYield(int gunpowderCraftYield) {
+        this.gunpowderCraftYield = gunpowderCraftYield;
     }
 
     public int getBonemealCraftYield() {
         return bonemealCraftYield;
     }
 
-    public void setBlazePowderCraftYield(int blazePowderCraftYield) {
-        this.blazePowderCraftYield = blazePowderCraftYield;
+    public void setBonemealCraftYield(int bonemealCraftYield) {
+        this.bonemealCraftYield = bonemealCraftYield;
     }
 
     public int getBlazePowderCraftYield() {
         return blazePowderCraftYield;
+    }
+
+    public void setBlazePowderCraftYield(int blazePowderCraftYield) {
+        this.blazePowderCraftYield = blazePowderCraftYield;
     }
 
     public void setPoisonResistance(int poisonResistance) {

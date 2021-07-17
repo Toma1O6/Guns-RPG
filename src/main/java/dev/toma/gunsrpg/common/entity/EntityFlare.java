@@ -52,7 +52,8 @@ public class EntityFlare extends Entity implements IEntityAdditionalSpawnData {
     }
 
     @Override
-    protected void defineSynchedData() {}
+    protected void defineSynchedData() {
+    }
 
     @Override
     protected void addAdditionalSaveData(CompoundNBT nbt) {
@@ -72,22 +73,22 @@ public class EntityFlare extends Entity implements IEntityAdditionalSpawnData {
         Vector3d start = position();
         Vector3d end = start.add(getDeltaMovement());
         BlockRayTraceResult traceResult = level.clip(new RayTraceContext(start, end, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, null));
-        if(traceResult != null) {
+        if (traceResult != null) {
             remove();
         }
-        if(level.isClientSide) {
+        if (level.isClientSide) {
             level.addParticle(ParticleTypes.CLOUD, true, getX(), getY(), getZ(), 0, -0.25, 0);
             level.addParticle(ParticleTypes.CLOUD, true, getX(), getY(), getZ(), 0, -0.15, 0);
             level.addParticle(ParticleTypes.CLOUD, true, getX(), getY(), getZ(), 0, -0.05, 0);
         }
         Vector3d motion = getDeltaMovement();
         boolean reachedHeight = getY() >= startHeight + 125;
-        if(motion.y > 0) setDeltaMovement(motion.x, motion.y - 0.025, motion.z);
-        if(!reachedHeight) {
+        if (motion.y > 0) setDeltaMovement(motion.x, motion.y - 0.025, motion.z);
+        if (!reachedHeight) {
             setDeltaMovement(motion.x, 0.55, motion.z);
         } else {
-            if(++timeWaiting >= 100) {
-                if(!level.isClientSide) {
+            if (++timeWaiting >= 100) {
+                if (!level.isClientSide) {
                     remove();
                     AirdropEntity airdrop = new AirdropEntity(level);
                     airdrop.setPos(getX(), getY() - 10, getZ());

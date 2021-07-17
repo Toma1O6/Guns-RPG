@@ -32,25 +32,25 @@ public class OptionalObject<T> {
     }
 
     public T orMap(T value) {
-        if(t == null) {
+        if (t == null) {
             map(value);
         }
         return t;
     }
 
     public T or(T value) {
-        if(t == null) return value;
+        if (t == null) return value;
         else return t;
     }
 
     public <EX extends Exception> T orThrow(Supplier<EX> exceptionSupplier) throws EX {
-        if(t != null) {
+        if (t != null) {
             return t;
         } else throw exceptionSupplier.get();
     }
 
     public void ifPresent(Consumer<T> action) {
-        if(t != null) {
+        if (t != null) {
             action.accept(t);
         }
     }

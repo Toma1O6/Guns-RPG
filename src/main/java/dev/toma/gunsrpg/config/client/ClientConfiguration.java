@@ -14,17 +14,16 @@ import net.minecraft.util.ResourceLocation;
 
 public class ClientConfiguration extends ObjectType {
 
-    public final BooleanType loadAnimationTool;
-    public final EnumType<ScopeRenderer> scopeRenderer;
-    public final ConfigurableVec2i debuffOverlay;
-    public final ColorType reticleColor;
-    public final IconsType reticleVariants;
-
     private static final ResourceLocation[] VARIANTS = {
             GunsRPG.makeResource("textures/icons/reticle_dot.png"),
             GunsRPG.makeResource("textures/icons/reticle_chevron.png"),
             GunsRPG.makeResource("textures/icons/reticle_cross.png")
     };
+    public final BooleanType loadAnimationTool;
+    public final EnumType<ScopeRenderer> scopeRenderer;
+    public final ConfigurableVec2i debuffOverlay;
+    public final ColorType reticleColor;
+    public final IconsType reticleVariants;
 
     public ClientConfiguration(IObjectSpec spec) {
         super(spec);

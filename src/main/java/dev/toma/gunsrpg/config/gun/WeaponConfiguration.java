@@ -15,14 +15,6 @@ public class WeaponConfiguration extends ObjectType implements IWeaponConfigurat
     private final DoubleType horizontalRecoil;
     private final DoubleType verticalRecoil;
 
-    public static WeaponConfiguration basic(IObjectSpec spec, float damage, int velocity, int gravityDelay, float vertical, float horizontal, int rate) {
-        return new WeaponConfiguration(spec, damage, velocity, vertical, horizontal, gravityDelay, rate);
-    }
-
-    public static WeaponConfiguration withUpgrade(IObjectSpec spec, float damage, int velocity, int gravityDelay, float vertical, float horizontal, int rate, int upgradedRate) {
-        return new WeaponConfiguration.WeaponConfigurationUpgraded(spec, damage, velocity, vertical, horizontal, gravityDelay, rate, upgradedRate);
-    }
-
     protected WeaponConfiguration(IObjectSpec spec, float damage, int velocity, float verticalRecoil, float horizontalRecoil, int delay, int firerate) {
         super(spec);
         IConfigWriter writer = spec.getWriter();
@@ -32,6 +24,14 @@ public class WeaponConfiguration extends ObjectType implements IWeaponConfigurat
         this.velocity = writer.writeBoundedInt("Projectile velocity", velocity, 1, 10000, "Projectile velocity in m/s");
         this.horizontalRecoil = writer.writeBoundedDouble("Horizontal recoil", horizontalRecoil, 0.0, 15.0, "Yaw offset in degrees");
         this.verticalRecoil = writer.writeBoundedDouble("Vertical recoil", verticalRecoil, 0.0, 15.0, "Pitch offset in degrees");
+    }
+
+    public static WeaponConfiguration basic(IObjectSpec spec, float damage, int velocity, int gravityDelay, float vertical, float horizontal, int rate) {
+        return new WeaponConfiguration(spec, damage, velocity, vertical, horizontal, gravityDelay, rate);
+    }
+
+    public static WeaponConfiguration withUpgrade(IObjectSpec spec, float damage, int velocity, int gravityDelay, float vertical, float horizontal, int rate, int upgradedRate) {
+        return new WeaponConfiguration.WeaponConfigurationUpgraded(spec, damage, velocity, vertical, horizontal, gravityDelay, rate, upgradedRate);
     }
 
     @Override

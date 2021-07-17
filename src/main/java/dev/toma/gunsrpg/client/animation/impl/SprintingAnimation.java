@@ -16,9 +16,9 @@ public class SprintingAnimation extends AnimationFactory {
     @Override
     public void update() {
         float speed = 0.15F;
-        if(player.isSprinting() && current < 1.0F) {
+        if (player.isSprinting() && current < 1.0F) {
             current = Math.min(1.0F, current + speed);
-        } else if(!player.isSprinting() && current > 0.0F) {
+        } else if (!player.isSprinting() && current > 0.0F) {
             current = Math.max(0.0F, current - speed);
         }
     }
@@ -31,7 +31,7 @@ public class SprintingAnimation extends AnimationFactory {
     @Override
     public void animateLeftArm(MatrixStack matrix, float partialTicks) {
         AnimationProcessor processor = ClientSideManager.instance().processor();
-        if(!processor.isRenderingDualWield()) {
+        if (!processor.isRenderingDualWield()) {
             matrix.translate(0.0, -0.5 * smooth, 0.8 * smooth);
             matrix.mulPose(Vector3f.YP.rotationDegrees(40.0F * smooth));
         }

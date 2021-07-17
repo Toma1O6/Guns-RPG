@@ -86,7 +86,6 @@ public abstract class ItemHeal extends GRPGItem implements IHandRenderer {
     }
 
 
-
     @Override
     public void releaseUsing(ItemStack stack, World world, LivingEntity entity, int timeLeft) {
         if (world.isClientSide)
@@ -129,7 +128,8 @@ public abstract class ItemHeal extends GRPGItem implements IHandRenderer {
         private int useTime;
         private Supplier<SoundEvent> useSound;
         private Predicate<PlayerEntity> useCondition = playerEntity -> true;
-        private Consumer<PlayerEntity> useAction = playerEntity -> {};
+        private Consumer<PlayerEntity> useAction = playerEntity -> {
+        };
         private ITextComponent[] description;
         private Supplier<Callable<IAnimation>> useAnimation;
 

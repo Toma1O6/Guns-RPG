@@ -27,10 +27,10 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
     private final ITextComponent textComponent;
     private final ITextComponent[] description;
     private final Supplier<SkillType<S>> skillOverride;
-    private Supplier<List<SkillType<?>>> uninitializedChildList;
-    private List<SkillType<?>> childList;
     private final Supplier<Item> customRenderFactory;
     public ItemStack cachedRenderStack;
+    private Supplier<List<SkillType<?>>> uninitializedChildList;
+    private List<SkillType<?>> childList;
     private boolean isNew;
 
     private SkillType(Builder<S> builder) {
@@ -98,7 +98,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
     }
 
     public ItemStack getRenderItem() {
-        if(cachedRenderStack == null) {
+        if (cachedRenderStack == null) {
             cachedRenderStack = new ItemStack(customRenderFactory.get());
         }
         return cachedRenderStack;

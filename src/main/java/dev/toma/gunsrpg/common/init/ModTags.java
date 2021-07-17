@@ -16,9 +16,10 @@ public class ModTags {
 
     public static class Blocks {
 
-        private static void init() {}
-
         public static final Tags.IOptionalNamedTag<Block> ORES_AMETHYST = forge("ores/amethyst");
+
+        private static void init() {
+        }
 
         private static Tags.IOptionalNamedTag<Block> forge(String path) {
             return tag("forge", path);
@@ -30,9 +31,10 @@ public class ModTags {
     }
 
     public static class Items {
-        private static void init() {}
-
         public static final Tags.IOptionalNamedTag<Item> ORES_AMETHYST = forge("ores/amethyst");
+
+        private static void init() {
+        }
 
         private static Tags.IOptionalNamedTag<Item> forge(String path) {
             return tag("forge", path);

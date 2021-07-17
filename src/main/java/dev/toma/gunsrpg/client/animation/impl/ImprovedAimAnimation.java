@@ -4,7 +4,8 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 public class ImprovedAimAnimation extends AimingAnimation {
 
-    private IAnimator item = (stack, f) -> {};
+    private IAnimator item = (stack, f) -> {
+    };
 
     public ImprovedAimAnimation(float x, float y, float z) {
         super(x, y, z);

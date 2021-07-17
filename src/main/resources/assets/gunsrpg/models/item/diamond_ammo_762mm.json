@@ -1,6 +1,6 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "gunsrpg:items/diamond_ammo_762mm"
-  }
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "gunsrpg:items/diamond_ammo_762mm"
+    }
 }

@@ -207,10 +207,10 @@ public class ModUtils {
         toParse = toParse % 3600;
         int minutes = toParse / 60;
         toParse = toParse % 60;
-        if(hours > 0) {
+        if (hours > 0) {
             builder.append(hours).append("h:");
         }
-        if(hours > 0 || minutes > 0) {
+        if (hours > 0 || minutes > 0) {
             builder.append(minutes < 10 ? "0" : "").append(minutes).append("m:");
         }
         builder.append(toParse < 10 ? "0" : "").append(toParse).append("s");
@@ -234,8 +234,8 @@ public class ModUtils {
     }
 
     public static <A> boolean contains(A lookingFor, Collection<A> collection) {
-        for(A a : collection) {
-            if(a == lookingFor) {
+        for (A a : collection) {
+            if (a == lookingFor) {
                 return true;
             }
         }
@@ -252,8 +252,8 @@ public class ModUtils {
     }
 
     public static <A> boolean contains(A obj, A[] array) {
-        for(A a : array) {
-            if(a == obj) {
+        for (A a : array) {
+            if (a == obj) {
                 return true;
             }
         }
@@ -261,8 +261,8 @@ public class ModUtils {
     }
 
     public static <A, B> boolean contains(A obj, B[] array, BiPredicate<A, B> comparator) {
-        for(B b : array) {
-            if(comparator.test(obj, b)) {
+        for (B b : array) {
+            if (comparator.test(obj, b)) {
                 return true;
             }
         }
@@ -283,9 +283,9 @@ public class ModUtils {
 
     public static int getItemCountInInventory(Item item, IInventory inventory) {
         int count = 0;
-        for(int i = 0; i < inventory.getContainerSize(); i++) {
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
             ItemStack stack = inventory.getItem(i);
-            if(stack.getItem() == item) {
+            if (stack.getItem() == item) {
                 count += stack.getCount();
             }
         }

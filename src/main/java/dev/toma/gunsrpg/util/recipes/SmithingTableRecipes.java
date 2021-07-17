@@ -45,10 +45,10 @@ public class SmithingTableRecipes {
         register(new RecipeBuilder().out(GRPGItems.MEATY_STEW_XXL).add(new int[]{0, 3}, Items.COOKED_MUTTON).add(new int[]{1, 4}, Items.COOKED_PORKCHOP).add(new int[]{2, 5}, Items.COOKED_BEEF).add(new int[]{6, 8}, Items.POTATO).add(7, Items.WATER_BUCKET).req(Skills.MASTER_CHEF).bucket().recipe());
         register(new RecipeBuilder().out(GRPGItems.RABBIT_CREAMY_SOUP).add(new int[]{0, 2}, Items.POTATO).add(1, Items.MILK_BUCKET).add(new int[]{3, 5}, Items.CARROT).add(4, Blocks.BROWN_MUSHROOM).add(new int[]{6, 8}, Items.BREAD).add(7, Items.COOKED_RABBIT).req(Skills.MASTER_CHEF).bucket().recipe());
         register(new RecipeBuilder().out(GRPGItems.SHEPHERDS_PIE).add(new int[]{0, 1, 2}, Blocks.BROWN_MUSHROOM).add(new int[]{3, 5}, Items.COOKED_MUTTON).add(4, Items.BAKED_POTATO).add(new int[]{6, 7, 8}, Items.BREAD).req(Skills.MASTER_CHEF).recipe());
-        register(new RecipeBuilder().out(GRPGItems.CHOCOLATE_GLAZED_APPLE_PIE).add(new int[]{0, 1, 2}, Items.APPLE).add(new int[]{3, 5}, Items.COOKIE).add(4, Items.SUGAR).add(new int[]{6,8}, Items.EGG).add(7, Items.WHEAT).req(Skills.MASTER_CHEF).recipe());
+        register(new RecipeBuilder().out(GRPGItems.CHOCOLATE_GLAZED_APPLE_PIE).add(new int[]{0, 1, 2}, Items.APPLE).add(new int[]{3, 5}, Items.COOKIE).add(4, Items.SUGAR).add(new int[]{6, 8}, Items.EGG).add(7, Items.WHEAT).req(Skills.MASTER_CHEF).recipe());
         register(new RecipeBuilder().out(Items.GUNPOWDER, SkillUtil::getGunpowderCraftAmount).add(new int[]{0, 4}, Items.CHARCOAL).add(1, Items.INK_SAC).add(3, Items.SUGAR).req(Skills.GUNPOWDER_NOVICE).recipe());
         register(new RecipeBuilder().out(new ItemStack(Items.BONE_MEAL), SkillUtil::getBonemealCraftAmount).add(0, Items.BONE).req(Skills.BONE_GRINDER_I).recipe());
-        register(new RecipeBuilder().out(GRPGItems.BLAZE_LUMP, SkillUtil::getBlazepowderCraftAmount).add(new int[]{0,2}, Items.COAL).add(new int[]{1,6,7,8}, Items.REDSTONE).add(new int[]{3,5}, Items.GUNPOWDER).add(4, Items.SUGAR).req(Skills.BLACKSMITH).recipe());
+        register(new RecipeBuilder().out(GRPGItems.BLAZE_LUMP, SkillUtil::getBlazepowderCraftAmount).add(new int[]{0, 2}, Items.COAL).add(new int[]{1, 6, 7, 8}, Items.REDSTONE).add(new int[]{3, 5}, Items.GUNPOWDER).add(4, Items.SUGAR).req(Skills.BLACKSMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.LARGE_BULLET_CASING).add(new int[]{0, 1}, GRPGItems.SMALL_BULLET_CASING).req(Skills.WOODEN_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.SHOTGUN_SHELL).add(0, Items.RED_DYE).add(1, GRPGItems.LARGE_BULLET_CASING).add(2, Items.PAPER).req(Skills.WOODEN_AMMO_SMITH).recipe());
         register(new RecipeBuilder().out(GRPGItems.BOLT_FLETCHING).add(0, Items.IRON_NUGGET).add(3, Items.FEATHER).add(6, Items.GOLD_NUGGET).req(Skills.WOODEN_AMMO_SMITH).recipe());
@@ -348,7 +348,7 @@ public class SmithingTableRecipes {
         private final Item[] item;
 
         public SmithingIngredient(int index, Item item) {
-            this(index, new Item[] {item});
+            this(index, new Item[]{item});
         }
 
         public SmithingIngredient(int index, Item[] item) {

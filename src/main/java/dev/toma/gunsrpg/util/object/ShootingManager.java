@@ -23,13 +23,13 @@ public class ShootingManager {
         PlayerSkills skills = data.getSkills();
         GunItem item = (GunItem) stack.getItem();
         IReloadManager reloadManager = item.getReloadManager();
-        if(!player.isSprinting() && ClientEventHandler.shootDelay == 0) {
+        if (!player.isSprinting() && ClientEventHandler.shootDelay == 0) {
             AmmoMaterial material = item.getMaterialFromNBT(stack);
-            if(material == null) return false;
-            if(reloadInfo.isReloading()) {
-                if(reloadManager.canBeInterrupted(item, stack)) {
+            if (material == null) return false;
+            if (reloadInfo.isReloading()) {
+                if (reloadManager.canBeInterrupted(item, stack)) {
                     reloadInfo.cancelReload();
-                    if(!player.level.isClientSide) {
+                    if (!player.level.isClientSide) {
                         data.sync();
                     } else {
                         NetworkManager.sendServerPacket(new SPacketSetReloading(false, 0));

@@ -31,16 +31,16 @@ public class SmithingTableContainer extends AbstractModContainer<SmithingTableTi
     public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = getSlot(index);
-        if(slot != null && slot.hasItem()) {
+        if (slot != null && slot.hasItem()) {
             ItemStack stack = slot.getItem();
             itemStack = stack.copy();
-            if(index >= 0 && index <= 8) {
-                if(!moveItemStackTo(stack, 9, 45, false)) {
+            if (index >= 0 && index <= 8) {
+                if (!moveItemStackTo(stack, 9, 45, false)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(stack, itemStack);
-            } else if(index >= 9 && index <= 44) {
-                if(!moveItemStackTo(stack, 0, 9, false)) {
+            } else if (index >= 9 && index <= 44) {
+                if (!moveItemStackTo(stack, 0, 9, false)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(stack, itemStack);

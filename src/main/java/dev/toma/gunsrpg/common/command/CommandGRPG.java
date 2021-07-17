@@ -39,40 +39,40 @@ public class CommandGRPG {
     public static void register(CommandDispatcher<CommandSource> dispatcher) {
         dispatcher.register(
                 Commands.literal("gunsrpg")
-                .requires(src -> src.hasPermission(2) && src.getEntity() instanceof PlayerEntity)
-                .then(
-                        Commands.literal("debuff")
+                        .requires(src -> src.hasPermission(2) && src.getEntity() instanceof PlayerEntity)
                         .then(
-                                Commands.argument("registryKey", ResourceLocationArgument.id())
-                                        .suggests(DEBUFF_SUGGESTION)
-                                        .executes(context -> toggleDebuff(context, ResourceLocationArgument.getId(context, "registryKey")))
+                                Commands.literal("debuff")
+                                        .then(
+                                                Commands.argument("registryKey", ResourceLocationArgument.id())
+                                                        .suggests(DEBUFF_SUGGESTION)
+                                                        .executes(context -> toggleDebuff(context, ResourceLocationArgument.getId(context, "registryKey")))
+                                        )
                         )
-                )
-                .then(
-                        Commands.literal("bloodmoon")
-                                .executes(CommandGRPG::forceBloodmoon)
-                )
-                .then(
-                        Commands.literal("skilltree")
-                                .then(
-                                        Commands.literal("lock")
-                                                .executes(ctx -> modifySkillTree(ctx, ModifyAction.LOCK))
-                                )
-                                .then(
-                                        Commands.literal("unlock")
-                                                .executes(ctx -> modifySkillTree(ctx, ModifyAction.UNLOCK))
-                                )
-                                .executes(ctx -> modifySkillTree(ctx, null))
-                )
-                .then(
-                        Commands.literal("levelup")
-                                .then(
-                                        Commands.argument("amount", IntegerArgumentType.integer(1, 100))
-                                                .executes(ctx -> addLevels(ctx, IntegerArgumentType.getInteger(ctx, "amount")))
-                                )
-                                .executes(ctx -> addLevels(ctx, 1))
-                )
-                .executes(CommandGRPG::noArgsProvided)
+                        .then(
+                                Commands.literal("bloodmoon")
+                                        .executes(CommandGRPG::forceBloodmoon)
+                        )
+                        .then(
+                                Commands.literal("skilltree")
+                                        .then(
+                                                Commands.literal("lock")
+                                                        .executes(ctx -> modifySkillTree(ctx, ModifyAction.LOCK))
+                                        )
+                                        .then(
+                                                Commands.literal("unlock")
+                                                        .executes(ctx -> modifySkillTree(ctx, ModifyAction.UNLOCK))
+                                        )
+                                        .executes(ctx -> modifySkillTree(ctx, null))
+                        )
+                        .then(
+                                Commands.literal("levelup")
+                                        .then(
+                                                Commands.argument("amount", IntegerArgumentType.integer(1, 100))
+                                                        .executes(ctx -> addLevels(ctx, IntegerArgumentType.getInteger(ctx, "amount")))
+                                        )
+                                        .executes(ctx -> addLevels(ctx, 1))
+                        )
+                        .executes(CommandGRPG::noArgsProvided)
         );
     }
 
@@ -91,7 +91,7 @@ public class CommandGRPG {
         });
         return 0;
     }
-    
+
     private static int forceBloodmoon(CommandContext<CommandSource> ctx) {
         CommandSource src = ctx.getSource();
         MinecraftServer server = src.getServer();

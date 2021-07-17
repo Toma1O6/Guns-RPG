@@ -24,22 +24,12 @@ public class ItemAmmo extends GRPGItem implements IAmmoProvider {
         this.ammoType = ammoType;
     }
 
-    @Override
-    public AmmoType getAmmoType() {
-        return ammoType;
-    }
-
-    @Override
-    public AmmoMaterial getMaterial() {
-        return material;
-    }
-
     public static ItemAmmo getAmmoFor(GunItem item, ItemStack stack) {
         AmmoMaterial material = item.getMaterialFromNBT(stack);
-        if(material == null) return null;
+        if (material == null) return null;
         AmmoType type = item.getAmmoType();
-        for(ItemAmmo ia : GUN_TO_ITEM_MAP.get(item)) {
-            if(ia.getAmmoType() == type && ia.getMaterial() == material) {
+        for (ItemAmmo ia : GUN_TO_ITEM_MAP.get(item)) {
+            if (ia.getAmmoType() == type && ia.getMaterial() == material) {
                 return ia;
             }
         }
@@ -59,5 +49,15 @@ public class ItemAmmo extends GRPGItem implements IAmmoProvider {
         GUN_TO_ITEM_MAP.put(SNIPER_RIFLE, sr.toArray(new ItemAmmo[0]));
         GUN_TO_ITEM_MAP.put(SHOTGUN, sg.toArray(new ItemAmmo[0]));
         GUN_TO_ITEM_MAP.put(CROSSBOW, cb.toArray(new ItemAmmo[0]));
+    }
+
+    @Override
+    public AmmoType getAmmoType() {
+        return ammoType;
+    }
+
+    @Override
+    public AmmoMaterial getMaterial() {
+        return material;
     }
 }

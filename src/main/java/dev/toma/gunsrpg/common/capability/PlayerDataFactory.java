@@ -73,7 +73,7 @@ public class PlayerDataFactory implements PlayerData {
 
     @Override
     public void setOnCooldown() {
-        if(!GRPGConfig.debuffConfig.disableRespawnDebuff()) {
+        if (!GRPGConfig.debuffConfig.disableRespawnDebuff()) {
             reducedHealthTimer = 3600;
         } else {
             reducedHealthTimer = 0;
@@ -90,16 +90,16 @@ public class PlayerDataFactory implements PlayerData {
         this.aimInfo.update();
         this.reloadInfo.update();
         this.playerSkills.update();
-        if(!world.isClientSide && reducedHealthTimer > 0) {
+        if (!world.isClientSide && reducedHealthTimer > 0) {
             --reducedHealthTimer;
             double value = player.getAttributeBaseValue(Attributes.MAX_HEALTH);
-            if(value != 6) {
+            if (value != 6) {
                 player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(6.0);
-                if(player.getHealth() > player.getMaxHealth()) {
+                if (player.getHealth() > player.getMaxHealth()) {
                     player.setHealth(player.getMaxHealth());
                 }
             }
-            if(reducedHealthTimer == 0) {
+            if (reducedHealthTimer == 0) {
                 double d = getSkills().hasSkill(Skills.WAR_MACHINE) ? 40 : 20;
                 player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(d);
             }
@@ -128,14 +128,14 @@ public class PlayerDataFactory implements PlayerData {
 
     @Override
     public void sync() {
-        if(player instanceof ServerPlayerEntity) {
+        if (player instanceof ServerPlayerEntity) {
             NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketUpdateCap(player.getUUID(), this.serializeNBT(), 0));
         }
     }
 
     @Override
     public void handleLogin() {
-        if(!logged) {
+        if (!logged) {
             logged = true;
             player.addItem(new ItemStack(GRPGItems.ANTIDOTUM_PILLS, 2));
             player.addItem(new ItemStack(GRPGItems.BANDAGE, 2));
@@ -179,7 +179,7 @@ public class PlayerDataFactory implements PlayerData {
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-        if(nbt.contains("permanent")) readPermanentData(nbt.getCompound("permanent"));
+        if (nbt.contains("permanent")) readPermanentData(nbt.getCompound("permanent"));
         debuffData.deserializeNBT(nbt.contains("debuffs", Constants.NBT.TAG_LIST) ? nbt.getList("debuffs", Constants.NBT.TAG_COMPOUND) : new ListNBT());
         aimInfo.read(this.findNBTTag("aimData", nbt));
         reloadInfo.read(this.findNBTTag("reloadData", nbt));

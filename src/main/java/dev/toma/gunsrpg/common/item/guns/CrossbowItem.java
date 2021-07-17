@@ -54,10 +54,10 @@ public class CrossbowItem extends GunItem {
     @Override
     public int getReloadTime(PlayerEntity player) {
         int base = 60;
-        if(PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_QUIVER)) {
+        if (PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_QUIVER)) {
             base = (int) (base * 0.65);
         }
-        if(PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_REPEATER)) {
+        if (PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_REPEATER)) {
             base = (int) (base * 1.25);
         }
         return (int) (base * SkillUtil.getReloadTimeMultiplier(player));
@@ -78,14 +78,14 @@ public class CrossbowItem extends GunItem {
 
     @Override
     public void onHitEntity(EntityBullet bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if(!bullet.level.isClientSide && shooter instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_POISONED_BOLTS)) {
+        if (!bullet.level.isClientSide && shooter instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_POISONED_BOLTS)) {
             victim.addEffect(new EffectInstance(Effects.WITHER, 140, 1, false, false));
         }
     }
 
     @Override
     public void onKillEntity(EntityBullet bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if(!bullet.level.isClientSide && shooter instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_HUNTER)) {
+        if (!bullet.level.isClientSide && shooter instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_HUNTER)) {
             shooter.heal(4.0F);
         }
     }

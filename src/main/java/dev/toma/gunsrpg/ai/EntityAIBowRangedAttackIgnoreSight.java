@@ -14,8 +14,8 @@ public class EntityAIBowRangedAttackIgnoreSight<T extends MobEntity & IRangedAtt
 
     protected final T entity;
     protected final double moveSpeedAmp;
-    protected int attackCooldown;
     protected final float maxAttackDistance;
+    protected int attackCooldown;
     private int attackTime = -1;
     private int seeTime;
     private boolean strafingClockwise;
@@ -79,7 +79,7 @@ public class EntityAIBowRangedAttackIgnoreSight<T extends MobEntity & IRangedAtt
                 --this.seeTime;
             }
 
-            if (distanceToTarget <= (double)this.maxAttackDistance && this.seeTime >= 20) {
+            if (distanceToTarget <= (double) this.maxAttackDistance && this.seeTime >= 20) {
                 this.entity.getNavigation().stop();
                 ++this.strafingTime;
             } else {
@@ -88,19 +88,19 @@ public class EntityAIBowRangedAttackIgnoreSight<T extends MobEntity & IRangedAtt
             }
 
             if (this.strafingTime >= 20) {
-                if ((double)this.entity.getRandom().nextFloat() < 0.3D) {
+                if ((double) this.entity.getRandom().nextFloat() < 0.3D) {
                     this.strafingClockwise = !this.strafingClockwise;
                 }
-                if ((double)this.entity.getRandom().nextFloat() < 0.3D) {
+                if ((double) this.entity.getRandom().nextFloat() < 0.3D) {
                     this.strafingBackwards = !this.strafingBackwards;
                 }
                 this.strafingTime = 0;
             }
 
             if (this.strafingTime > -1) {
-                if (distanceToTarget > (double)(this.maxAttackDistance * 0.75F)) {
+                if (distanceToTarget > (double) (this.maxAttackDistance * 0.75F)) {
                     this.strafingBackwards = false;
-                } else if (distanceToTarget < (double)(this.maxAttackDistance * 0.25F)) {
+                } else if (distanceToTarget < (double) (this.maxAttackDistance * 0.25F)) {
                     this.strafingBackwards = true;
                 }
 

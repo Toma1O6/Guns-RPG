@@ -24,9 +24,9 @@ public class DeathCrateTileEntity extends InventoryTileEntity {
 
     public void fillInventory(PlayerEntity player) {
         int s = 0;
-        for(int i = 0; i < player.inventory.getContainerSize(); i++) {
+        for (int i = 0; i < player.inventory.getContainerSize(); i++) {
             ItemStack stack = player.inventory.getItem(i);
-            if(!stack.isEmpty()) {
+            if (!stack.isEmpty()) {
                 setItem(s++, stack.copy());
             }
         }

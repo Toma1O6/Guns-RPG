@@ -5,7 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class AdrenalineRushSkill extends BasicSkill {
 
-    private static final float[] MODIFIERS = new float[] {0.85F, 0.70F, 0.50F};
+    private static final float[] MODIFIERS = new float[]{0.85F, 0.70F, 0.50F};
     private final int level;
     private final float reloadMultiplier;
 

@@ -36,7 +36,7 @@ public class ModKeybinds {
         register("class_list", GLFW.GLFW_KEY_O, ModKeybinds::showClassesPressed);
         register("firemode", GLFW.GLFW_KEY_B, () -> {
             PlayerEntity player = Minecraft.getInstance().player;
-            if(player.getMainHandItem().getItem() instanceof GunItem) {
+            if (player.getMainHandItem().getItem() instanceof GunItem) {
                 NetworkManager.sendServerPacket(new SPacketChangeFiremode());
             }
         });
@@ -47,16 +47,16 @@ public class ModKeybinds {
         PlayerEntity player = mc.player;
         ReloadInfo info = PlayerDataFactory.getUnsafe(player).getReloadInfo();
         ItemStack stack = player.getMainHandItem();
-        if(player.isCrouching()) {
-            if(stack.getItem() instanceof GunItem) {
+        if (player.isCrouching()) {
+            if (stack.getItem() instanceof GunItem) {
                 mc.setScreen(new GuiChooseAmmo((GunItem) stack.getItem()));
             }
         } else {
             AnimationProcessor processor = ClientSideManager.instance().processor();
-            if(stack.getItem() instanceof GunItem && !player.isSprinting() && processor.getByID(Animations.REBOLT) == null) {
+            if (stack.getItem() instanceof GunItem && !player.isSprinting() && processor.getByID(Animations.REBOLT) == null) {
                 GunItem gun = (GunItem) stack.getItem();
-                if(info.isReloading()) {
-                    if(gun.getReloadManager().canBeInterrupted(gun, stack)) {
+                if (info.isReloading()) {
+                    if (gun.getReloadManager().canBeInterrupted(gun, stack)) {
                         info.cancelReload();
                         processor.stop(Animations.RELOAD);
                         NetworkManager.sendServerPacket(new SPacketSetReloading(false, 0));
@@ -65,21 +65,21 @@ public class ModKeybinds {
                 }
                 AmmoType ammoType = gun.getAmmoType();
                 AmmoMaterial material = gun.getMaterialFromNBT(stack);
-                if(material != null) {
+                if (material != null) {
                     int ammo = gun.getAmmo(stack);
                     int max = gun.getMaxAmmo(player);
                     boolean skip = player.isCreative();
                     boolean reloading = info.isReloading();
-                    if(!reloading && ammo < max) {
-                        if(skip) {
+                    if (!reloading && ammo < max) {
+                        if (skip) {
                             gun.getReloadManager().startReloading(player, gun.getReloadTime(player), stack);
                             return;
                         }
-                        for(int i = 0; i < player.inventory.getContainerSize(); i++) {
+                        for (int i = 0; i < player.inventory.getContainerSize(); i++) {
                             ItemStack itemStack = player.inventory.getItem(i);
-                            if(itemStack.getItem() instanceof IAmmoProvider) {
+                            if (itemStack.getItem() instanceof IAmmoProvider) {
                                 IAmmoProvider itemAmmo = (IAmmoProvider) itemStack.getItem();
-                                if(itemAmmo.getAmmoType() == ammoType && itemAmmo.getMaterial() == material) {
+                                if (itemAmmo.getAmmoType() == ammoType && itemAmmo.getMaterial() == material) {
                                     int time = gun.getReloadTime(player);
                                     gun.getReloadManager().startReloading(player, time, stack);
                                     NetworkManager.sendServerPacket(new SPacketSetReloading(true, time));
@@ -109,8 +109,8 @@ public class ModKeybinds {
 
     @SubscribeEvent
     public void onInput(InputEvent.KeyInputEvent event) {
-        for(ModKeyBind bind : keyBinds) {
-            if(bind.isDown()) {
+        for (ModKeyBind bind : keyBinds) {
+            if (bind.isDown()) {
                 bind.onPress.run();
                 break;
             }

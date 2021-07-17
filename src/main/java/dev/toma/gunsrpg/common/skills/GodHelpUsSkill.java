@@ -62,7 +62,7 @@ public class GodHelpUsSkill extends BasicSkill implements Cooldown, Clickable {
 
     @Override
     public void onUpdate(PlayerEntity player) {
-        if(currentCooldown > 0) --currentCooldown;
+        if (currentCooldown > 0) --currentCooldown;
     }
 
     @Override

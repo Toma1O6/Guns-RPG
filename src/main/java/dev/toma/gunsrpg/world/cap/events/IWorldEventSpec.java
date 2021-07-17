@@ -8,13 +8,13 @@ import java.util.function.Supplier;
 
 public interface IWorldEventSpec extends INBTSerializable<CompoundNBT> {
 
+    static IWorldEventSpec of(String name, Supplier<Integer> cycle, IWorldEventHandler handler) {
+        return new WorldEventSpec(name, cycle, handler);
+    }
+
     String getEventName();
 
     boolean isEventActive();
 
     void tick(World world, long currentDay);
-
-    static IWorldEventSpec of(String name, Supplier<Integer> cycle, IWorldEventHandler handler) {
-        return new WorldEventSpec(name, cycle, handler);
-    }
 }

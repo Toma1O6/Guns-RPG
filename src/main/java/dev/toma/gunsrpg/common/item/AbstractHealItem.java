@@ -149,6 +149,10 @@ public abstract class AbstractHealItem<T> extends GRPGItem implements IHandRende
             this.name = name;
         }
 
+        private static <T extends ITextComponent> T[] convert(String[] array, Function<String, T> mapper, IntFunction<T[]> arrayFactory) {
+            return Arrays.stream(array).map(mapper).toArray(arrayFactory);
+        }
+
         public abstract H build();
 
         public HealBuilder<T, H> defineSound(Supplier<SoundEvent> useSound) {
@@ -183,10 +187,6 @@ public abstract class AbstractHealItem<T> extends GRPGItem implements IHandRende
 
         public HealBuilder<T, H> translate(String... keys) {
             return describe(convert(keys, TranslationTextComponent::new, TranslationTextComponent[]::new));
-        }
-
-        private static <T extends ITextComponent> T[] convert(String[] array, Function<String, T> mapper, IntFunction<T[]> arrayFactory) {
-            return Arrays.stream(array).map(mapper).toArray(arrayFactory);
         }
     }
 }

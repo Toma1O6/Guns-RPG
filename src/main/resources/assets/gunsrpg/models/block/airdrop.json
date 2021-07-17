@@ -8,6 +8,5 @@
         "west": "gunsrpg:blocks/airdrop_side",
         "north": "gunsrpg:blocks/airdrop_side",
         "south": "gunsrpg:blocks/airdrop_side"
-
     }
 }

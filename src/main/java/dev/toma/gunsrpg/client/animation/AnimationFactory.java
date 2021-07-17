@@ -7,8 +7,8 @@ import net.minecraft.entity.player.PlayerEntity;
 public abstract class AnimationFactory implements IAnimation {
 
     protected final PlayerEntity player;
-    protected float current, prev;
     public float smooth;
+    protected float current, prev;
 
     public AnimationFactory() {
         player = Minecraft.getInstance().player;

@@ -9,26 +9,21 @@ import java.util.List;
 
 public class Node {
 
-    protected final SkillType<?>[] types;
-    protected final SkillType<?> parent;
-    public static int currentX, currentY;
     protected static final Vec2i startingPoint = new Vec2i(40, 60);
-    public static int furthestPoint = startingPoint.x();
     protected static final int spacingHorizontal = 30;
     protected static final int spacingVerical = 30;
+    public static int currentX, currentY;
+    public static int furthestPoint = startingPoint.x();
+    protected final SkillType<?>[] types;
+    protected final SkillType<?> parent;
 
     public Node(SkillType<?> parent, SkillType<?> type) {
-        this(parent, new SkillType[] {type});
+        this(parent, new SkillType[]{type});
     }
 
     public Node(SkillType<?> parent, SkillType<?>[] types) {
         this.parent = parent;
         this.types = types;
-    }
-
-    public Node resetY() {
-        currentY = startingPoint.y();
-        return this;
     }
 
     public static void prepareNewCategory() {
@@ -45,16 +40,21 @@ public class Node {
         return new Node(parent, skillTypes);
     }
 
+    public Node resetY() {
+        currentY = startingPoint.y();
+        return this;
+    }
+
     public List<PlacementContext> create() {
         boolean flag = types.length > 1;
-        if(flag) {
+        if (flag) {
             List<PlacementContext> ctxs = new ArrayList<>();
             int backup = currentX;
-            for(int i = 0; i < types.length; i++) {
+            for (int i = 0; i < types.length; i++) {
                 SkillType<?> type = types[i];
                 ctxs.add(new PlacementContext(parent, type, new Vec2i(currentX, currentY)));
-                if(i < types.length - 1) currentX += spacingHorizontal;
-                if(currentX > furthestPoint) furthestPoint = currentX;
+                if (i < types.length - 1) currentX += spacingHorizontal;
+                if (currentX > furthestPoint) furthestPoint = currentX;
             }
             currentY += spacingVerical;
             currentX = backup;

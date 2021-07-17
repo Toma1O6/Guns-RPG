@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 public interface IReloadManager {
 
     default void startReloading(PlayerEntity player, int time, ItemStack stack) {
-        if(player.level.isClientSide) {
+        if (player.level.isClientSide) {
             NetworkManager.sendServerPacket(new SPacketSetReloading(true, time));
         } else {
             PlayerData data = PlayerDataFactory.getUnsafe(player);

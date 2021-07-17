@@ -40,5 +40,6 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
 
     public abstract ResourceLocation createGunTextureInstance();
 
-    public void prepareRender(MatrixStack stack, ItemCameraTransforms.TransformType transform) {}
+    public void prepareRender(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
+    }
 }

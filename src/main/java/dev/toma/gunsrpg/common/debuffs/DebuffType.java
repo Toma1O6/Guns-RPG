@@ -61,8 +61,8 @@ public final class DebuffType<D extends Debuff> extends ForgeRegistryEntry<Debuf
     }
 
     protected int getAppropriateStage(int debuffProgressPct) {
-        for(int i = 0; i < debuffStages.length; i++) {
-            if(debuffProgressPct <= debuffStages[i].lastVal) {
+        for (int i = 0; i < debuffStages.length; i++) {
+            if (debuffProgressPct <= debuffStages[i].lastVal) {
                 return i;
             }
         }
@@ -81,10 +81,10 @@ public final class DebuffType<D extends Debuff> extends ForgeRegistryEntry<Debuf
 
     public static class Builder<D extends Debuff> {
 
-        private ToIntFunction<PlayerSkills> debuffProgressTime;
-        private ToFloatBiFunction<PlayerSkills, DamageSource> resistChance;
         private final List<ToFloatBiFunction<PlayerSkills, DamageContext>> conditions;
         private final List<Stage> stages = new ArrayList<>();
+        private ToIntFunction<PlayerSkills> debuffProgressTime;
+        private ToFloatBiFunction<PlayerSkills, DamageSource> resistChance;
         private Supplier<D> factory;
         private BooleanSupplier isBlacklisted = () -> false;
 

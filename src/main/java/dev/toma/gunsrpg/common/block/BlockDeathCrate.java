@@ -44,9 +44,9 @@ public class BlockDeathCrate extends GRPGBlock {
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         TileEntity te = world.getBlockEntity(pos);
-        if(te instanceof DeathCrateTileEntity) {
+        if (te instanceof DeathCrateTileEntity) {
             DeathCrateTileEntity deathCrate = (DeathCrateTileEntity) te;
-            if(deathCrate.isEmpty()) {
+            if (deathCrate.isEmpty()) {
                 world.destroyBlock(pos, false);
             }
         }

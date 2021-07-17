@@ -76,14 +76,14 @@ public class BloodmoonGolemEntity extends CreatureEntity implements IMob {
             --this.attackTimer;
         }
 
-        if (getHorizontalDistanceSqr(this.getDeltaMovement()) > (double)2.5000003E-7F && this.random.nextInt(5) == 0) {
+        if (getHorizontalDistanceSqr(this.getDeltaMovement()) > (double) 2.5000003E-7F && this.random.nextInt(5) == 0) {
             int i = MathHelper.floor(this.getX());
-            int j = MathHelper.floor(this.getY() - (double)0.2F);
+            int j = MathHelper.floor(this.getY() - (double) 0.2F);
             int k = MathHelper.floor(this.getZ());
             BlockPos pos = new BlockPos(i, j, k);
             BlockState blockstate = this.level.getBlockState(pos);
             if (!level.isEmptyBlock(pos)) {
-                this.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate).setPos(pos), this.getX() + ((double)this.random.nextFloat() - 0.5D) * (double)this.getBbWidth(), this.getY() + 0.1D, this.getZ() + ((double)this.random.nextFloat() - 0.5D) * (double)this.getBbWidth(), 4.0D * ((double)this.random.nextFloat() - 0.5D), 0.5D, ((double)this.random.nextFloat() - 0.5D) * 4.0D);
+                this.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate).setPos(pos), this.getX() + ((double) this.random.nextFloat() - 0.5D) * (double) this.getBbWidth(), this.getY() + 0.1D, this.getZ() + ((double) this.random.nextFloat() - 0.5D) * (double) this.getBbWidth(), 4.0D * ((double) this.random.nextFloat() - 0.5D), 0.5D, ((double) this.random.nextFloat() - 0.5D) * 4.0D);
             }
         }
     }
@@ -105,7 +105,7 @@ public class BloodmoonGolemEntity extends CreatureEntity implements IMob {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void handleEntityEvent(byte id) {
-        if(id == 4) {
+        if (id == 4) {
             this.attackTimer = 10;
             this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
         } else super.handleEntityEvent(id);

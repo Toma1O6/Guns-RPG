@@ -20,12 +20,12 @@ public class GuiConfirmSkillUnlock extends Screen {
 
     private final int xSize = 215;
     private final int ySize = 60;
-    private int left;
-    private int top;
     private final GuiPlayerSkills parent;
     private final SkillType<?> type;
     @Nullable
     private final PlacementContext ctx;
+    private int left;
+    private int top;
 
     public GuiConfirmSkillUnlock(GuiPlayerSkills parent, SkillType<?> type, @Nullable PlacementContext ctx) {
         super(new TranslationTextComponent("screen.confirm_skillUnlock"));

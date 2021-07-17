@@ -50,7 +50,7 @@ public class CrossbowBoltRenderer extends EntityRenderer<EntityCrossbowBolt> {
         this.vertex(matrix4f, matrix3f, ivertexbuilder, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, light);
         this.vertex(matrix4f, matrix3f, ivertexbuilder, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, light);
 
-        for(int j = 0; j < 4; ++j) {
+        for (int j = 0; j < 4; ++j) {
             stack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
             this.vertex(matrix4f, matrix3f, ivertexbuilder, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, light);
             this.vertex(matrix4f, matrix3f, ivertexbuilder, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, light);
@@ -63,6 +63,6 @@ public class CrossbowBoltRenderer extends EntityRenderer<EntityCrossbowBolt> {
     }
 
     public void vertex(Matrix4f pose, Matrix3f normal, IVertexBuilder builder, int x, int y, int z, float u, float v, int normalX, int normalY, int normalZ, int light) {
-        builder.vertex(pose, (float)x, (float)y, (float)z).color(255, 255, 255, 255).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, (float)normalX, (float)normalZ, (float)normalY).endVertex();
+        builder.vertex(pose, (float) x, (float) y, (float) z).color(255, 255, 255, 255).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(normal, (float) normalX, (float) normalZ, (float) normalY).endVertex();
     }
 }

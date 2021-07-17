@@ -10,7 +10,12 @@
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
-                    { "item": "gunsrpg:gold_egg_shard", "count": { "min": 4 }}
+                    {
+                        "item": "gunsrpg:gold_egg_shard",
+                        "count": {
+                            "min": 4
+                        }
+                    }
                 ]
             }
         }

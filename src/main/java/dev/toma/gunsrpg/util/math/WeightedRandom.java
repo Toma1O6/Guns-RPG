@@ -21,10 +21,10 @@ public class WeightedRandom<T> {
     public T getRandom() {
         int total = totalValue.get();
         int weight = random.nextInt(total);
-        for(int idx = values.length - 1; idx >= 0; idx--) {
+        for (int idx = values.length - 1; idx >= 0; idx--) {
             T t = values[idx];
             weight -= toIntFunction.applyAsInt(t);
-            if(weight < 0) {
+            if (weight < 0) {
                 return t;
             }
         }
@@ -33,7 +33,7 @@ public class WeightedRandom<T> {
 
     private int gatherAll() {
         int i = 0;
-        for(T t : values)
+        for (T t : values)
             i += toIntFunction.applyAsInt(t);
         return i;
     }

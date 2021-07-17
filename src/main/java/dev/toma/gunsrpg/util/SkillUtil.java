@@ -26,7 +26,7 @@ public class SkillUtil {
 
     public static float getReloadTimeMultiplier(PlayerEntity player) {
         PlayerSkills skills = PlayerDataFactory.getUnsafe(player).getSkills();
-        if(skills.hasSkill(Skills.ADRENALINE_RUSH_I)) {
+        if (skills.hasSkill(Skills.ADRENALINE_RUSH_I)) {
             AdrenalineRushSkill ars = getBestSkillFromOverrides(skills.getSkill(Skills.ADRENALINE_RUSH_I), player);
             return ars.apply(player) ? 1.0F - ars.getReloadMultiplier() : 1.0F;
         }
@@ -72,7 +72,7 @@ public class SkillUtil {
     }
 
     private static int getOutputAmount(PlayerSkills skills, SkillType<? extends CraftingSkill> type) {
-        if(skills.hasSkill(type)) {
+        if (skills.hasSkill(type)) {
             return skills.getSkill(type).getOutputAmount();
         }
         return -1;

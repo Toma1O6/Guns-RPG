@@ -81,9 +81,9 @@ public class ClientEventHandler {
     }, PlayerEntity::isSprinting);
     public static OptionalObject<Double> preAimFov = OptionalObject.empty();
     public static OptionalObject<Double> preAimSens = OptionalObject.empty();
+    public static int shootDelay;
     static boolean burst;
     static int shotsLeft = 2;
-    public static int shootDelay;
 
     @SubscribeEvent
     public static void cancelOverlays(RenderGameOverlayEvent.Pre event) {

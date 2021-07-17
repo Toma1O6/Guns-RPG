@@ -9,9 +9,10 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SPacketSetAiming extends AbstractNetworkPacket<SPacketSetAiming> {
 
-    public SPacketSetAiming() {}
-
     private boolean aim;
+
+    public SPacketSetAiming() {
+    }
 
     public SPacketSetAiming(boolean aim) {
         this.aim = aim;

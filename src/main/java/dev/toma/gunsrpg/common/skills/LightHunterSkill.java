@@ -23,7 +23,7 @@ public class LightHunterSkill extends BasicSkill implements TickableSkill {
     public void onUpdate(PlayerEntity player) {
         PlayerDataFactory.get(player).ifPresent(data -> {
             PlayerSkills skills = data.getSkills();
-            if(hasArmor(player)) {
+            if (hasArmor(player)) {
                 skills.lightHunterMovementSpeed = 0.015F;
             } else {
                 skills.lightHunterMovementSpeed = 0.0F;

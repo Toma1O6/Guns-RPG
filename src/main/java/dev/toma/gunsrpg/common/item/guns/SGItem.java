@@ -94,7 +94,7 @@ public class SGItem extends GunItem {
 
     @Override
     public void onKillEntity(EntityBullet bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if(!shooter.level.isClientSide && shooter instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) shooter, Skills.SHOTGUN_NEVER_GIVE_UP)) {
+        if (!shooter.level.isClientSide && shooter instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) shooter, Skills.SHOTGUN_NEVER_GIVE_UP)) {
             shooter.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 100, 0, false, false));
         }
     }
@@ -104,7 +104,7 @@ public class SGItem extends GunItem {
         boolean choke = entity instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) entity, Skills.SHOTGUN_CHOKE);
         float modifier = 3.0F;
         float velocity = this.getWeaponConfig().getVelocity();
-        for(int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
             EntityShotgunPellet bullet = new EntityShotgunPellet(GRPGEntityTypes.SHOTGUN_PELLET.get(), world, entity, this, stack);
             float pitch = choke ? entity.xRot + (random.nextFloat() * modifier - random.nextFloat() * modifier) : entity.xRot + (random.nextFloat() * modifier * 2 - random.nextFloat() * modifier * 2);
             float yaw = choke ? entity.yRot + (random.nextFloat() * modifier - random.nextFloat() * modifier) : entity.yRot + (random.nextFloat() * modifier * 2 - random.nextFloat() * modifier * 2);

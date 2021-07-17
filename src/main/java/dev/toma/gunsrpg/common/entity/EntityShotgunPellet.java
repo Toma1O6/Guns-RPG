@@ -30,10 +30,10 @@ public class EntityShotgunPellet extends EntityBullet {
     @Override
     protected void damageTargetEntity(Entity target, boolean isHeadshot) {
         double distance = shooter == null ? 15.0D : this.getDistanceTo(shooter.position());
-        if(distance > maxRange) {
+        if (distance > maxRange) {
             remove();
             return;
-        } else if(distance > effectiveRange && distance <= maxRange) {
+        } else if (distance > effectiveRange && distance <= maxRange) {
             damage /= 2;
         }
         super.damageTargetEntity(target, isHeadshot);

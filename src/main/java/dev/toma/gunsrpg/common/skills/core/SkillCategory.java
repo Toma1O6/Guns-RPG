@@ -30,25 +30,13 @@ public enum SkillCategory {
         this.isChild = isChild;
     }
 
-    public boolean isChild() {
-        return isChild;
-    }
-
-    public boolean hasChild() {
-        return childCategory != null;
-    }
-
-    public SkillCategory getChild() {
-        return childCategory.get();
-    }
-
     public static SkillCategory[] mainCategories() {
-        if(mainCategories == null) {
+        if (mainCategories == null) {
             SkillCategory[] temp = new SkillCategory[values().length];
             int c = 0;
-            for(int i = values().length - 1; i >= 0; i--) {
+            for (int i = values().length - 1; i >= 0; i--) {
                 SkillCategory category = values()[i];
-                if(!category.isChild()) {
+                if (!category.isChild()) {
                     temp[c] = category;
                     ++c;
                 }
@@ -60,11 +48,11 @@ public enum SkillCategory {
     }
 
     public static SkillCategory[] tickables() {
-        if(tickableTypes == null) {
+        if (tickableTypes == null) {
             SkillCategory[] temp = new SkillCategory[values().length];
             int c = 0;
-            for(SkillCategory category : values()) {
-                if(category.containsTickableTypes) {
+            for (SkillCategory category : values()) {
+                if (category.containsTickableTypes) {
                     temp[c] = category;
                     ++c;
                 }
@@ -73,5 +61,17 @@ public enum SkillCategory {
             System.arraycopy(temp, 0, tickableTypes, 0, c);
         }
         return tickableTypes;
+    }
+
+    public boolean isChild() {
+        return isChild;
+    }
+
+    public boolean hasChild() {
+        return childCategory != null;
+    }
+
+    public SkillCategory getChild() {
+        return childCategory.get();
     }
 }

@@ -22,7 +22,7 @@ public class PlacementContext {
     }
 
     public void getParentPos(SkillType<?> parent) {
-        if(parent == null) return;
+        if (parent == null) return;
         parentPos = new LazyLoader<>(() -> {
             SkillCategory category = null;
             for (SkillCategory temp : SkillCategory.mainCategories()) {

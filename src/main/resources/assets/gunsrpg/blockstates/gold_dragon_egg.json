@@ -1,6 +1,10 @@
 {
     "variants": {
-        "ignited=false": { "model": "gunsrpg:gold_dragon_egg" },
-        "ignited=true": { "model": "gunsrpg:gold_dragon_egg" }
+        "ignited=false": {
+            "model": "gunsrpg:gold_dragon_egg"
+        },
+        "ignited=true": {
+            "model": "gunsrpg:gold_dragon_egg"
+        }
     }
 }

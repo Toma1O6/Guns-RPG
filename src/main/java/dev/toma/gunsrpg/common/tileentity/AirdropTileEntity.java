@@ -38,7 +38,7 @@ public class AirdropTileEntity extends InventoryTileEntity {
         getInventory().ifPresent(handler -> {
             int slots = SLOT_COUNT_PICKER.getRandom().getSlots();
             LootStorage storage = LootStorage.instance();
-            for(int i = 0; i < slots; i++) {
+            for (int i = 0; i < slots; i++) {
                 LootCategory category = CATEGORIES.getRandom();
                 LootRarity rarity = getRarityPicker(category).getRandom();
                 handler.setStackInSlot(i, storage.getRandomItem(category, rarity, random));
@@ -101,8 +101,8 @@ public class AirdropTileEntity extends InventoryTileEntity {
 
     public static final class LootStorage {
 
-        private final Map<LootCategory, Map<LootRarity, List<Supplier<ItemStack>>>> completeLootPool = new HashMap<>();
         private static final LootStorage INSTANCE = new LootStorage();
+        private final Map<LootCategory, Map<LootRarity, List<Supplier<ItemStack>>>> completeLootPool = new HashMap<>();
 
         private LootStorage() {
             Map<LootRarity, List<Supplier<ItemStack>>> meds = new HashMap<>();
@@ -133,6 +133,13 @@ public class AirdropTileEntity extends InventoryTileEntity {
 
         public static LootStorage instance() {
             return INSTANCE;
+        }
+
+        @SafeVarargs
+        private static <V> List<V> listOf(V... values) {
+            List<V> list = new ArrayList<>();
+            Collections.addAll(list, values);
+            return list;
         }
 
         public ItemStack getRandomItem(LootCategory category, LootRarity rarity, Random rand) {
@@ -338,13 +345,6 @@ public class AirdropTileEntity extends InventoryTileEntity {
                     () -> new ItemStack(GRPGItems.PAINKILLERS, 3),
                     () -> new ItemStack(GRPGItems.MORPHINE)
             );
-        }
-
-        @SafeVarargs
-        private static <V> List<V> listOf(V... values) {
-            List<V> list = new ArrayList<>();
-            Collections.addAll(list, values);
-            return list;
         }
     }
 

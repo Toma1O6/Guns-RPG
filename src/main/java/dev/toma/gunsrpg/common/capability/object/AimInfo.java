@@ -19,27 +19,27 @@ public class AimInfo {
         PlayerEntity player = parent.getPlayer();
         boolean server = !player.level.isClientSide;
         int slotIn = player.inventory.selected;
-        if(server && aiming && (slotIn != slot || player.isSprinting() || parent.getReloadInfo().isReloading())) {
+        if (server && aiming && (slotIn != slot || player.isSprinting() || parent.getReloadInfo().isReloading())) {
             setAiming(false);
             parent.sync();
         }
         float aimingSpeed = 0.25F;
-        if(aiming && progress < 1.0F) {
+        if (aiming && progress < 1.0F) {
             progress = Math.min(1.0F, progress + aimingSpeed);
-        } else if(!aiming && progress > 0.0F) {
+        } else if (!aiming && progress > 0.0F) {
             progress = Math.max(0.0F, progress - aimingSpeed);
         }
     }
 
+    public boolean isAiming() {
+        return progress == 1.0F;
+    }
+
     public void setAiming(boolean aiming) {
-        if(aiming) {
+        if (aiming) {
             slot = parent.getPlayer().inventory.selected;
         }
         this.aiming = aiming;
-    }
-
-    public boolean isAiming() {
-        return progress == 1.0F;
     }
 
     public float getProgress() {

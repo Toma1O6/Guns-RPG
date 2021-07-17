@@ -16,7 +16,9 @@
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
-                    {"item": "gunsrpg:blast_furnace"}
+                    {
+                        "item": "gunsrpg:blast_furnace"
+                    }
                 ]
             }
         }

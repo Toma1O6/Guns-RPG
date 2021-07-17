@@ -75,7 +75,7 @@ public class ARItem extends GunItem {
     public int getFirerate(PlayerEntity player) {
         IWeaponConfiguration cfg = getWeaponConfig();
         int firerate = PlayerDataFactory.hasActiveSkill(player, Skills.AR_TOUGH_SPRING) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
-        if(PlayerDataFactory.hasActiveSkill(player, Skills.AR_ADAPTIVE_CHAMBERING)) {
+        if (PlayerDataFactory.hasActiveSkill(player, Skills.AR_ADAPTIVE_CHAMBERING)) {
             firerate -= 2;
         }
         return Math.max(firerate, 1);
@@ -83,7 +83,7 @@ public class ARItem extends GunItem {
 
     @Override
     public int getReloadTime(PlayerEntity player) {
-        return (int)(32 * SkillUtil.getReloadTimeMultiplier(player));
+        return (int) (32 * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override
@@ -105,7 +105,7 @@ public class ARItem extends GunItem {
     public boolean switchFiremode(ItemStack stack, PlayerEntity player) {
         Firemode firemode = this.getFiremode(stack);
         int newMode = 0;
-        if(firemode == Firemode.SINGLE && PlayerDataFactory.hasActiveSkill(player, Skills.AR_ADAPTIVE_CHAMBERING)) {
+        if (firemode == Firemode.SINGLE && PlayerDataFactory.hasActiveSkill(player, Skills.AR_ADAPTIVE_CHAMBERING)) {
             newMode = 2;
         }
         stack.getTag().putInt("firemode", newMode);

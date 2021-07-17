@@ -55,6 +55,10 @@ public class GunsRPG {
         ModTags.init();
     }
 
+    public static ResourceLocation makeResource(String path) {
+        return new ResourceLocation(MODID, path);
+    }
+
     private void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
         if (event.includeServer()) {
@@ -80,9 +84,5 @@ public class GunsRPG {
     private void registerCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSource> dispatcher = event.getDispatcher();
         CommandGRPG.register(dispatcher);
-    }
-
-    public static ResourceLocation makeResource(String path) {
-        return new ResourceLocation(MODID, path);
     }
 }

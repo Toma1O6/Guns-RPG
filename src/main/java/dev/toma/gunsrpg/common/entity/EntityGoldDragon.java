@@ -35,7 +35,11 @@ public class EntityGoldDragon extends EnderDragonEntity {
         super(type, world);
         phaseManager = new ExtendedPhaseManager(this);
         if (dragonFight.dragonEvent != null)
-            dragonFight.dragonEvent = (ServerBossInfo)(new ServerBossInfo(new TranslationTextComponent("entity.gunsrpg.gold_dragon"), BossInfo.Color.YELLOW, BossInfo.Overlay.PROGRESS)).setPlayBossMusic(true).setCreateWorldFog(true).setDarkenScreen(true);
+            dragonFight.dragonEvent = (ServerBossInfo) (new ServerBossInfo(new TranslationTextComponent("entity.gunsrpg.gold_dragon"), BossInfo.Color.YELLOW, BossInfo.Overlay.PROGRESS)).setPlayBossMusic(true).setCreateWorldFog(true).setDarkenScreen(true);
+    }
+
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 1000);
     }
 
     @Override
@@ -67,10 +71,6 @@ public class EntityGoldDragon extends EnderDragonEntity {
 
     public void resetCooldown() {
         cooldown = 800;
-    }
-
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 1000);
     }
 
     @Override

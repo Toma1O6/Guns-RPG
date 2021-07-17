@@ -15,26 +15,26 @@ public class ReloadManagerSingle implements IReloadManager {
     public void finishReload(PlayerEntity player, GunItem item, ItemStack stack) {
         AmmoType ammoType = item.getAmmoType();
         AmmoMaterial material = item.getMaterialFromNBT(stack);
-        if(material == null) return;
+        if (material == null) return;
         int ammo = item.getAmmo(stack);
         int max = item.getMaxAmmo(player);
         boolean continueReload = max - ammo > 1;
-        if(ammo < max) {
-            if(player.isCreative()) {
+        if (ammo < max) {
+            if (player.isCreative()) {
                 item.setAmmoCount(stack, ammo + 1);
-                if(continueReload) {
+                if (continueReload) {
                     this.startReloading(player, item.getReloadTime(player), stack);
                 }
                 return;
             }
-            for(int i = 0; i < player.inventory.getContainerSize(); i++) {
+            for (int i = 0; i < player.inventory.getContainerSize(); i++) {
                 ItemStack itemStack = player.inventory.getItem(i);
-                if(itemStack.getItem() instanceof IAmmoProvider) {
+                if (itemStack.getItem() instanceof IAmmoProvider) {
                     IAmmoProvider provider = (IAmmoProvider) itemStack.getItem();
-                    if(itemStack.getCount() > 0 && provider.getAmmoType() == ammoType && provider.getMaterial() == material) {
+                    if (itemStack.getCount() > 0 && provider.getAmmoType() == ammoType && provider.getMaterial() == material) {
                         itemStack.shrink(1);
                         item.setAmmoCount(stack, ammo + 1);
-                        if(continueReload) {
+                        if (continueReload) {
                             this.startReloading(player, item.getReloadTime(player), stack);
                         }
                         break;

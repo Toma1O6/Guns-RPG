@@ -43,13 +43,13 @@ public class GuiPlayerSkills extends Screen {
 
     private static final ResourceLocation SKILL_TREE_TEXTURES = GunsRPG.makeResource("textures/icons/skill_tree_bg.png");
     private final List<Component> uiComponents = new ArrayList<>();
+    private final OptionalObject<GunDisplay> display = OptionalObject.empty();
     private SkillCategory displayedCategory;
     private String headerText;
     private int headerWidth;
     private Tree displayTree;
     private int posX, posY;
     private int clickedX, clickedY;
-    private final OptionalObject<GunDisplay> display = OptionalObject.empty();
     private PlayerSkills skills;
 
     public GuiPlayerSkills() {
@@ -70,9 +70,9 @@ public class GuiPlayerSkills extends Screen {
         PlayerEntity player = minecraft.player;
         skills = PlayerDataFactory.getUnsafe(player).getSkills();
         int level = skills.getLevel();
-        for(Branch branch : tree.branches) {
-            for(PlacementContext ctx : branch.getPlacements()) {
-                if(ctx.type.levelRequirement <= level) {
+        for (Branch branch : tree.branches) {
+            for (PlacementContext ctx : branch.getPlacements()) {
+                if (ctx.type.levelRequirement <= level) {
                     addComponent(new SkillComponent(ctx));
                 }
             }
@@ -84,7 +84,7 @@ public class GuiPlayerSkills extends Screen {
     public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         renderBackground(stack);
 
-        for(Component component : uiComponents) {
+        for (Component component : uiComponents) {
             component.draw(stack, minecraft, mouseX, mouseY, partialTicks, posX, posY);
         }
         display.ifPresent(dsp -> dsp.draw(stack, minecraft, mouseX, mouseY, partialTicks, posX, posY));
@@ -97,11 +97,11 @@ public class GuiPlayerSkills extends Screen {
         int killed = skills.getKills();
         int required = skills.getRequiredKills();
         float decimal = skills.isMaxLevel() ? 1.0F : killed / (float) required;
-        String foot = skills.isMaxLevel() ? String.format("Level: %d - %d kills", level, killed) : String.format("Level: %d (%d%%) - %d / %d kills", level, (int)(decimal * 100), killed, required);
+        String foot = skills.isMaxLevel() ? String.format("Level: %d - %d kills", level, killed) : String.format("Level: %d (%d%%) - %d / %d kills", level, (int) (decimal * 100), killed, required);
         // level progress
         int length = width / 2;
         ModUtils.renderColor(stack.last().pose(), 15, height - 15, length, height - 5, 0.0F, 0.0F, 0.0F, 1.0F);
-        ModUtils.renderColor(stack.last().pose(), 17, height - 13, (int)(decimal * (length - 2)), height - 7, 0.0F, 1.0F, 1.0F, 1.0F);
+        ModUtils.renderColor(stack.last().pose(), 17, height - 13, (int) (decimal * (length - 2)), height - 7, 0.0F, 1.0F, 1.0F, 1.0F);
         font.drawShadow(stack, foot, 4 + length, height - 14, 0xffffff);
         String text2 = skills.getSkillPoints() + " pts";
         font.drawShadow(stack, text2, width - font.width(text2) - 5, height - 14, 0xffff00);
@@ -109,10 +109,10 @@ public class GuiPlayerSkills extends Screen {
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        if(button == 0) {
+        if (button == 0) {
             int x = (int) (clickedX - mouseX);
             int y = (int) (clickedY - mouseY);
-            if(hasShiftDown()) {
+            if (hasShiftDown()) {
                 x *= 2;
                 y *= 2;
             }
@@ -127,16 +127,16 @@ public class GuiPlayerSkills extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if(button == 0) setClickPos((int) mouseX, (int) mouseY);
-        if(display.isPresent()) {
-            if(display.get().isMouseOver(mouseX + posX, mouseY + posY)) {
+        if (button == 0) setClickPos((int) mouseX, (int) mouseY);
+        if (display.isPresent()) {
+            if (display.get().isMouseOver(mouseX + posX, mouseY + posY)) {
                 display.get().mouseClicked(mouseX, mouseY, posX, posY, button);
                 return true;
             }
         }
         boolean clicked = false;
-        for(Component component : uiComponents) {
-            if(component.isMouseOver(mouseX, mouseY, posX, posY) && component.onClick(button)) {
+        for (Component component : uiComponents) {
+            if (component.isMouseOver(mouseX, mouseY, posX, posY) && component.onClick(button)) {
                 minecraft.getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 init(minecraft, width, height);
                 clicked = true;
@@ -216,9 +216,9 @@ public class GuiPlayerSkills extends Screen {
         private final SkillType<?> type;
         private final List<Pair<Vec2i, Vec2i>> lines = new ArrayList<>();
         private final boolean obtained;
+        private final ITextComponent[] comments;
         private long hoverStartTime;
         private boolean hasStartedCounting;
-        private final ITextComponent[] comments;
         private int infoWidth;
         private OverlayRenderer renderer;
 
@@ -228,9 +228,9 @@ public class GuiPlayerSkills extends Screen {
             this.ctx = context;
             this.type = context.type;
             Vec2i parentPos = context.parentPos != null ? context.parentPos.get() : null;
-            if(parentPos != null) {
+            if (parentPos != null) {
                 Vec2i p1 = context.pos;
-                if(parentPos.x() == context.pos.x()) {
+                if (parentPos.x() == context.pos.x()) {
                     lines.add(Pair.of(new Vec2i(p1.x() + w / 2, p1.y()), new Vec2i(parentPos.x() + w / 2, parentPos.y() + h)));
                 } else {
                     int heightDiffDivided = Math.abs((parentPos.y() + 20) - p1.y()) / 2;
@@ -241,27 +241,27 @@ public class GuiPlayerSkills extends Screen {
             }
             this.obtained = PlayerDataFactory.hasActiveSkill(Minecraft.getInstance().player, type);
             List<ITextComponent> components = new ArrayList<>();
-            for(ITextComponent itc : type.getDescription()) {
+            for (ITextComponent itc : type.getDescription()) {
                 components.add(itc);
             }
             components.add(new StringTextComponent(TextFormatting.AQUA + "Unlocks at level " + type.levelRequirement));
             components.add(new StringTextComponent(TextFormatting.RED + "Costs " + type.price + " points"));
-            if(obtained && PlayerDataFactory.getSkill(Minecraft.getInstance().player, type) instanceof Clickable) {
+            if (obtained && PlayerDataFactory.getSkill(Minecraft.getInstance().player, type) instanceof Clickable) {
                 components.add(new StringTextComponent(TextFormatting.YELLOW + "Left-click to use this skill"));
             }
-            if(type.hasCustomRenderFactory()) {
+            if (type.hasCustomRenderFactory()) {
                 components.add(new StringTextComponent(TextFormatting.YELLOW + "Right-click to view unlockable skills"));
             }
             this.comments = components.toArray(new ITextComponent[0]);
-            for(ITextComponent component : comments) {
+            for (ITextComponent component : comments) {
                 int cw = Minecraft.getInstance().font.width(component);
-                if(cw > infoWidth) {
+                if (cw > infoWidth) {
                     infoWidth = cw;
                 }
             }
-            if(obtained) {
+            if (obtained) {
                 ISkill skill = PlayerDataFactory.getSkill(Minecraft.getInstance().player, type);
-                if(skill instanceof OverlayRenderer) {
+                if (skill instanceof OverlayRenderer) {
                     renderer = (OverlayRenderer) skill;
                 }
             }
@@ -274,24 +274,24 @@ public class GuiPlayerSkills extends Screen {
 
         @Override
         public boolean onClick(int mouseButton) {
-            if(mouseButton == 1 && type.hasCustomRenderFactory()) {
+            if (mouseButton == 1 && type.hasCustomRenderFactory()) {
                 GuiPlayerSkills.this.display.map(new GunDisplay(ctx));
                 return true;
-            } else if(mouseButton == 0) {
+            } else if (mouseButton == 0) {
                 PlayerEntity player = Minecraft.getInstance().player;
-                if(obtained) {
+                if (obtained) {
                     ISkill skill = PlayerDataFactory.getSkill(player, type);
-                    if(skill instanceof Clickable) {
+                    if (skill instanceof Clickable) {
                         ((Clickable) skill).clientHandleClicked();
                         return true;
                     }
                 } else {
-                    if(ctx.parent != null) {
-                        if(PlayerDataFactory.hasActiveSkill(player, ctx.parent) && type.getCriteria().isUnlockAvailable(PlayerDataFactory.getUnsafe(player), type)) {
+                    if (ctx.parent != null) {
+                        if (PlayerDataFactory.hasActiveSkill(player, ctx.parent) && type.getCriteria().isUnlockAvailable(PlayerDataFactory.getUnsafe(player), type)) {
                             minecraft.setScreen(new GuiConfirmSkillUnlock(GuiPlayerSkills.this, type, ctx));
                             return true;
                         }
-                    } else if(type.getCriteria().isUnlockAvailable(PlayerDataFactory.getUnsafe(player), type)) {
+                    } else if (type.getCriteria().isUnlockAvailable(PlayerDataFactory.getUnsafe(player), type)) {
                         minecraft.setScreen(new GuiConfirmSkillUnlock(GuiPlayerSkills.this, type, null));
                         return true;
                     }
@@ -315,27 +315,27 @@ public class GuiPlayerSkills extends Screen {
             }
             hovered = isMouseOver(offsetX + mouseX, offsetY + mouseY, 0, 0);
             ModUtils.renderColor(pose, px, py, px + w, py + h, 0.0F, 0.0F, 0.0F, 1.0F);
-            if(obtained) {
+            if (obtained) {
                 ModUtils.renderColor(pose, px + 1, py + 1, px + w - 1, py + h - 1, 0.25F, 0.75F, 0.1F, 1.0F);
             } else {
                 ModUtils.renderColor(pose, px + 1, py + 1, px + w - 1, py + h - 1, 0.25F, 0.25F, 0.25F, 1.0F);
             }
-            if(type.hasCustomRenderFactory()) {
+            if (type.hasCustomRenderFactory()) {
                 mc.getItemRenderer().renderGuiItem(type.getRenderItem(), px + 2, py + 2);
             } else {
                 ModUtils.renderTexture(pose, px + 2, py + 2, px + w - 2, py + h - 2, type.icon);
             }
-            if(renderer != null) {
+            if (renderer != null) {
                 renderer.drawOnTop(stack, px, py, w, h);
             }
-            if(type.isFreshUnlock()) {
+            if (type.isFreshUnlock()) {
                 ModUtils.renderColor(pose, px + 17, py, px + 20, py + 3, 1.0F, 1.0F, 0.0F, 1.0F);
             }
-            if(hovered) {
-                if(type.isFreshUnlock()) {
+            if (hovered) {
+                if (type.isFreshUnlock()) {
                     type.setFresh(false);
                 }
-                if(!hasStartedCounting || System.currentTimeMillis() - hoverStartTime <= 1000L) {
+                if (!hasStartedCounting || System.currentTimeMillis() - hoverStartTime <= 1000L) {
                     stack.pushPose();
                     stack.translate(0, 0, 1);
                     String displayName = type.getDisplayName();
@@ -345,17 +345,17 @@ public class GuiPlayerSkills extends Screen {
                     stack.popPose();
                 }
 
-                if(!hasStartedCounting) {
+                if (!hasStartedCounting) {
                     hoverStartTime = System.currentTimeMillis();
                     hasStartedCounting = true;
-                } else if(System.currentTimeMillis() - hoverStartTime > 1000L) {
+                } else if (System.currentTimeMillis() - hoverStartTime > 1000L) {
                     stack.pushPose();
                     stack.translate(0, 0, 150);
                     int left = mouseX + infoWidth > GuiPlayerSkills.this.width ? mouseX - infoWidth - 10 : mouseX;
                     int top = mouseY + 5 + comments.length * 12 > GuiPlayerSkills.this.height ? mouseY - comments.length * 12 : mouseY + 5;
                     int panelHeight = comments.length * 12 + 5;
                     ModUtils.renderTextureWithColor(stack.last().pose(), left, top, left + infoWidth + 10, top + panelHeight, SKILL_TREE_TEXTURES, 0.25F, obtained ? 0.75F : 0.25F, obtained ? 0.1F : 0.25F, 1.0F);
-                    for(int i = 0; i < comments.length; i++) {
+                    for (int i = 0; i < comments.length; i++) {
                         mc.font.drawShadow(stack, comments[i], left + 5, top + 5 + 12 * i, 0xffffff);
                     }
                     stack.popPose();
@@ -383,16 +383,16 @@ public class GuiPlayerSkills extends Screen {
             boolean flag = false;
             for (Branch branch : tree.branches) {
                 for (PlacementContext ctx : branch.getPlacements()) {
-                    if(ctx.type.isFreshUnlock()) {
+                    if (ctx.type.isFreshUnlock()) {
                         flag = true;
                         break;
                     }
                 }
             }
-            if(flag) {
+            if (flag) {
                 ModUtils.renderColor(stack.last().pose(), this.x + this.w - 3, this.y, this.x + this.w, this.y + 3, 1.0F, 1.0F, 0.0F, 1.0F);
             }
-            if(selected) {
+            if (selected) {
                 fadeAway(x, y, x + 2, y + h);
                 ModUtils.renderColor(stack.last().pose(), x, y + h - 2, x + w, y + h, 1.0F, 1.0F, 1.0F, 1.0F);
                 fadeAway(x + w - 2, y, x + w, y + h);
@@ -402,8 +402,8 @@ public class GuiPlayerSkills extends Screen {
 
         @Override
         public boolean onClick(int mouseButton) {
-            if(mouseButton != 0) return false;
-            if(GuiPlayerSkills.this.displayedCategory != this.category) {
+            if (mouseButton != 0) return false;
+            if (GuiPlayerSkills.this.displayedCategory != this.category) {
                 GuiPlayerSkills.this.switchCategory(category);
                 return true;
             }
@@ -434,8 +434,8 @@ public class GuiPlayerSkills extends Screen {
     private class GunDisplay {
         private final PlacementContext ctx;
         private final GunItem gun;
-        private int x, y, w, h;
         private final List<Component> list = new ArrayList<>();
+        private int x, y, w, h;
         private GunData gunData;
 
         public GunDisplay(PlacementContext ctx) {
@@ -449,8 +449,8 @@ public class GuiPlayerSkills extends Screen {
         }
 
         public void mouseClicked(double mouseX, double mouseY, int xOff, int yOff, int mouseButton) {
-            for(Component component : list) {
-                if(component.isMouseOver(mouseX, mouseY, xOff, yOff) && component.onClick(mouseButton)) {
+            for (Component component : list) {
+                if (component.isMouseOver(mouseX, mouseY, xOff, yOff) && component.onClick(mouseButton)) {
                     Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                     MainWindow window = Minecraft.getInstance().getWindow();
                     GuiPlayerSkills.this.init(Minecraft.getInstance(), window.getGuiScaledWidth(), window.getGuiScaledHeight());
@@ -469,7 +469,7 @@ public class GuiPlayerSkills extends Screen {
             this.h = 60;
             int px = x - GuiPlayerSkills.this.posX;
             int py = y - GuiPlayerSkills.this.posY;
-            for(int i = 0; i < ctx.type.getChilds().size(); i++) {
+            for (int i = 0; i < ctx.type.getChilds().size(); i++) {
                 SkillType<?> child = ctx.type.getChilds().get(i);
                 list.add(new SkillComponent(new PlacementContext(null, child, new Vec2i(x + 10 + 25 * i, y + 10))));
             }
@@ -483,7 +483,7 @@ public class GuiPlayerSkills extends Screen {
             ModUtils.renderColor(pose, px, py, px + w, py + h, 0.0F, 0.0F, 0.0F, 1.0F);
             ModUtils.renderColor(pose, px + 1, py + 1, px + w - 1, py + h - 1, 0.5F, 0.5F, 0.5F, 1.0F);
             String txt;
-            if(gunData.isAtMaxLevel()) {
+            if (gunData.isAtMaxLevel()) {
                 txt = String.format("Level %d, kills %d", gunData.getLevel(), gunData.getKills());
             } else {
                 txt = String.format("Level %d, kills %d/%d", gunData.getLevel(), gunData.getKills(), gunData.getRequiredKills());
@@ -493,7 +493,7 @@ public class GuiPlayerSkills extends Screen {
             mc.font.drawShadow(stack, txt2, px + w - 10 - mc.font.width(txt2), py + h - 24, 0xffff00);
             ModUtils.renderColor(pose, px + 10, py + h - 15, px + w - 10, py + h - 5, 0.0F, 0.0F, 0.0F, 1.0F);
             float levelPrg = gunData.isAtMaxLevel() ? 1.0F : ((float) gunData.getKills() / gunData.getRequiredKills());
-            ModUtils.renderColor(pose, px + 12, py + h - 13, (int)(px + (w - 12) * levelPrg), py + h - 7, 1.0F, 1.0F, 0.0F, 1.0F);
+            ModUtils.renderColor(pose, px + 12, py + h - 13, (int) (px + (w - 12) * levelPrg), py + h - 7, 1.0F, 1.0F, 0.0F, 1.0F);
             list.forEach(component -> component.draw(stack, mc, mouseX, mouseY, partialTicks, xOffset, yOffset));
         }
     }

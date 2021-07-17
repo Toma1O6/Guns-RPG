@@ -15,22 +15,22 @@ public class ReloadManagerMagazine implements IReloadManager {
     public void finishReload(PlayerEntity player, GunItem item, ItemStack stack) {
         AmmoType type = item.getAmmoType();
         AmmoMaterial material = item.getMaterialFromNBT(stack);
-        if(material == null) return;
+        if (material == null) return;
         int max = item.getMaxAmmo(player);
         int left = max - item.getAmmo(stack);
-        for(int i = 0; i < player.inventory.getContainerSize(); i++) {
-            if(player.isCreative()) {
+        for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+            if (player.isCreative()) {
                 left = 0;
                 break;
             }
             ItemStack ammoStack = player.inventory.getItem(i);
-            if(ammoStack.getItem() instanceof IAmmoProvider) {
+            if (ammoStack.getItem() instanceof IAmmoProvider) {
                 IAmmoProvider ammoProvider = (IAmmoProvider) ammoStack.getItem();
-                if(ammoProvider.getAmmoType() == type && ammoProvider.getMaterial() == material) {
+                if (ammoProvider.getAmmoType() == type && ammoProvider.getMaterial() == material) {
                     int count = Math.min(left, ammoStack.getCount());
                     left -= count;
                     ammoStack.shrink(count);
-                    if(left <= 0) break;
+                    if (left <= 0) break;
                 }
             }
         }

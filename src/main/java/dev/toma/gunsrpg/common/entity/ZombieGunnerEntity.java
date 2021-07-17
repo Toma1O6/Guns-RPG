@@ -53,6 +53,14 @@ public class ZombieGunnerEntity extends MonsterEntity {
         super(type, world);
     }
 
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return MonsterEntity.createMonsterAttributes()
+                .add(Attributes.FOLLOW_RANGE, 35.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.23)
+                .add(Attributes.ATTACK_DAMAGE, 3.0)
+                .add(Attributes.ARMOR, 2.0);
+    }
+
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
@@ -65,14 +73,6 @@ public class ZombieGunnerEntity extends MonsterEntity {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, VillagerEntity.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolemEntity.class, true));
-    }
-
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MonsterEntity.createMonsterAttributes()
-                .add(Attributes.FOLLOW_RANGE, 35.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.23)
-                .add(Attributes.ATTACK_DAMAGE, 3.0)
-                .add(Attributes.ARMOR, 2.0);
     }
 
     @Override
@@ -110,20 +110,17 @@ public class ZombieGunnerEntity extends MonsterEntity {
     }
 
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return SoundEvents.ZOMBIE_AMBIENT;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundEvents.ZOMBIE_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return SoundEvents.ZOMBIE_DEATH;
     }
 

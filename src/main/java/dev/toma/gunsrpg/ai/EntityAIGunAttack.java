@@ -24,7 +24,7 @@ public class EntityAIGunAttack extends Goal {
 
     @Override
     public boolean canUse() {
-        if(!this.hasGun()) {
+        if (!this.hasGun()) {
             return false;
         }
         return entity.getTarget() != null;
@@ -43,17 +43,17 @@ public class EntityAIGunAttack extends Goal {
     @Override
     public void tick() {
         LivingEntity target = entity.getTarget();
-        if(target == null || !hasGun()) return;
+        if (target == null || !hasGun()) return;
         double dist = Math.sqrt(entity.distanceToSqr(target));
         GunItem gun = (GunItem) entity.getMainHandItem().getItem();
         double attackRange = ATTACK_RANGE_TABLE[gun.getGunType().ordinal()];
         boolean canSee = canSeeEntity(target);
-        if(dist <= attackRange && canSee) {
+        if (dist <= attackRange && canSee) {
             entity.getNavigation().stop();
         } else entity.getNavigation().moveTo(target, 1.0D);
         this.entity.lookAt(target, 30, 30);
         this.entity.getLookControl().setLookAt(target, 30, 30);
-        if(canSee && dist < attackRange * 3 && --timeRemaining <= 0 && !entity.level.isClientSide) {
+        if (canSee && dist < attackRange * 3 && --timeRemaining <= 0 && !entity.level.isClientSide) {
             ItemStack stack = entity.getMainHandItem();
             ZombieGunnerEntity.GunData data = entity.getWeaponData();
             if (stack.getItem() instanceof GunItem) {

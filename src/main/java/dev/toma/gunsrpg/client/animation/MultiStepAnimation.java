@@ -71,12 +71,12 @@ public abstract class MultiStepAnimation extends TickableAnimation {
         float f = 1.0F - this.getCurrentProgress();
         Range range = current.getLeft();
         IAnimation animation = current.getRight();
-        if(range.isIn(f)) {
+        if (range.isIn(f)) {
             animation.clientTick();
             float f1 = range.getProgress(f);
             animation.setProgress(f1);
-        } else if(range.isOver(f)) {
-            if(!this.isAtLastStep()) {
+        } else if (range.isOver(f)) {
+            if (!this.isAtLastStep()) {
                 ++index;
                 current = steps.get(index);
                 onStepChanged();

@@ -57,14 +57,14 @@ public class ModelExplosiveSkeleton extends BipedModel<ExplosiveSkeletonEntity> 
         super.setupAnim(p_225597_1_, p_225597_2_, p_225597_3_, p_225597_4_, p_225597_5_, p_225597_6_);
         ItemStack itemstack = p_225597_1_.getMainHandItem();
         if (p_225597_1_.isAggressive() && (itemstack.isEmpty() || itemstack.getItem() != Items.BOW)) {
-            float f = MathHelper.sin(this.attackTime * (float)Math.PI);
-            float f1 = MathHelper.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * (float)Math.PI);
+            float f = MathHelper.sin(this.attackTime * (float) Math.PI);
+            float f1 = MathHelper.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * (float) Math.PI);
             this.rightArm.zRot = 0.0F;
             this.leftArm.zRot = 0.0F;
             this.rightArm.yRot = -(0.1F - f * 0.6F);
             this.leftArm.yRot = 0.1F - f * 0.6F;
-            this.rightArm.xRot = (-(float)Math.PI / 2F);
-            this.leftArm.xRot = (-(float)Math.PI / 2F);
+            this.rightArm.xRot = (-(float) Math.PI / 2F);
+            this.leftArm.xRot = (-(float) Math.PI / 2F);
             this.rightArm.xRot -= f * 1.2F - f1 * 0.4F;
             this.leftArm.xRot -= f * 1.2F - f1 * 0.4F;
             ModelHelper.bobArms(this.rightArm, this.leftArm, p_225597_4_);

@@ -14,12 +14,12 @@ public enum Firemode {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public static Firemode get(int id) {
         int i = ModUtils.clamp(id, 0, 2);
         return values()[i];
+    }
+
+    public String getName() {
+        return name;
     }
 }

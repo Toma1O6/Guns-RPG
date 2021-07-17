@@ -17,11 +17,6 @@ public class PlayerHealItem extends AbstractHealItem<PlayerEntity> {
         return new Builder(name);
     }
 
-    @Override
-    public PlayerEntity getTargetObject(World world, PlayerEntity user, PlayerData data) {
-        return user;
-    }
-
     public static void onStereoidsUsed(PlayerEntity player) {
         player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 1200, 0, false, false));
         player.addEffect(new EffectInstance(Effects.JUMP, 1200, 1, false, false));
@@ -38,6 +33,11 @@ public class PlayerHealItem extends AbstractHealItem<PlayerEntity> {
         player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 1, false, false));
         player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 900, 0, false, false));
         player.addEffect(new EffectInstance(GRPGEffects.GUN_DAMAGE_BUFF.get(), 600, 0, false, false));
+    }
+
+    @Override
+    public PlayerEntity getTargetObject(World world, PlayerEntity user, PlayerData data) {
+        return user;
     }
 
     protected static class Builder extends HealBuilder<PlayerEntity, PlayerHealItem> {

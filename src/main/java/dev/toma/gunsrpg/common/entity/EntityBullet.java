@@ -167,7 +167,7 @@ public class EntityBullet extends Entity {
             remove();
         }
 
-        if(canPen && damage > 0) {
+        if (canPen && damage > 0) {
             doCollisionCheck(position(), position().add(getDeltaMovement()));
         }
     }

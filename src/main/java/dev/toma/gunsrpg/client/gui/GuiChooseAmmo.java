@@ -92,7 +92,7 @@ public class GuiChooseAmmo extends Screen {
             this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             Matrix4f pose = matrix.last().pose();
             ModUtils.renderColor(pose, x, y, x + width, y + height, 0.0F, 0.0F, 0.0F, 1.0F);
-            if(active) {
+            if (active) {
                 ModUtils.renderColor(pose, x + 1, y + 1, x + width - 1, y + height - 1, 0.2F, 0.7F, 0.2F, 1.0F);
             } else {
                 ModUtils.renderColor(pose, x + 1, y + 1, x + width - 1, y + height - 1, 0.3F, 0.3F, 0.3F, 1.0F);
@@ -103,7 +103,7 @@ public class GuiChooseAmmo extends Screen {
             int nameWidth = font.width(name) / 2;
             font.drawShadow(matrix, ammo.getMaterial().getColor() + name, x + 16 - nameWidth, y + height + 1, 0xffffff);
             font.drawShadow(matrix, count + "", x + 24 - countWidth, y + height - 8, 0xffffff);
-            if(isHovered && !active) {
+            if (isHovered && !active) {
                 String text = String.format("Requires your weapon on level %d", requiredLevel);
                 font.drawShadow(matrix, text, x + (width - font.width(text)) / 2.0F, y + height + 10, 0xdd0000);
             }

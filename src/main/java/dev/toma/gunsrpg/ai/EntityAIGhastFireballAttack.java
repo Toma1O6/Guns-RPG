@@ -36,13 +36,13 @@ public class EntityAIGhastFireballAttack extends Goal {
     public void tick() {
         LivingEntity target = ghast.getTarget();
         double maxRange = 4096.0D;
-        if(target.distanceToSqr(ghast) < maxRange && (ghast.canSee(target) || WorldDataFactory.isBloodMoon(ghast.level))) {
+        if (target.distanceToSqr(ghast) < maxRange && (ghast.canSee(target) || WorldDataFactory.isBloodMoon(ghast.level))) {
             World world = ghast.level;
             ++attackTimer;
-            if(attackTimer == 10) {
+            if (attackTimer == 10) {
                 world.levelEvent(null, 1015, ghast.blockPosition(), 0);
             }
-            if(attackTimer == 20) {
+            if (attackTimer == 20) {
                 double d = 4.0D;
                 Vector3d look = ghast.getViewVector(1.0F);
                 double x = target.getX() - (ghast.getX() + look.x * d);
@@ -58,7 +58,7 @@ public class EntityAIGhastFireballAttack extends Goal {
                 world.addFreshEntity(fireball);
                 attackTimer = -40;
             }
-        } else if(attackTimer > 0) {
+        } else if (attackTimer > 0) {
             attackTimer--;
         }
         ghast.setCharging(attackTimer > 10);

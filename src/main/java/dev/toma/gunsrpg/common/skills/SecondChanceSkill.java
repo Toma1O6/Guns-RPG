@@ -26,7 +26,7 @@ public class SecondChanceSkill extends BasicSkill implements Cooldown {
 
     @Override
     public void onUpdate(PlayerEntity player) {
-        if(cooldown > 0) --cooldown;
+        if (cooldown > 0) --cooldown;
     }
 
     @Override

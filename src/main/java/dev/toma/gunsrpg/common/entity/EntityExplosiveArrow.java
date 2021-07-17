@@ -40,8 +40,8 @@ public class EntityExplosiveArrow extends AbstractArrowEntity {
     @Override
     public void tick() {
         super.tick();
-        if(level.isClientSide) {
-            for(int i = 0; i < 4; i++) {
+        if (level.isClientSide) {
+            for (int i = 0; i < 4; i++) {
                 level.addParticle(ParticleTypes.LARGE_SMOKE, getX(), getY(), getZ(), r(5), r(5), r(5));
                 level.addParticle(ParticleTypes.FLAME, getX(), getY(), getZ(), r(3), r(3), r(3));
             }

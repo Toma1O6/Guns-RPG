@@ -32,7 +32,7 @@ public class CraftingSkill extends BasicSkill {
 
     @Override
     public void onPurchase(PlayerEntity player) {
-        if(consumer != null) {
+        if (consumer != null) {
             PlayerDataFactory.get(player).ifPresent(data -> {
                 PlayerSkills skills = data.getSkills();
                 this.consumer.accept(this, skills);

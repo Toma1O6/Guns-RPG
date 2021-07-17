@@ -24,7 +24,7 @@ public class WellFedSkill extends BasicSkill {
 
     public void applyEffects(PlayerEntity player) {
         Random random = new Random();
-        if(player.level.isClientSide || random.nextFloat() >= chance) return;
+        if (player.level.isClientSide || random.nextFloat() >= chance) return;
         int amplifier = level - 1;
         int duration = 1200 + amplifier * 600;
         player.addEffect(new EffectInstance(Effects.ABSORPTION, duration, amplifier));

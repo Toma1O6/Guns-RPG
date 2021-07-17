@@ -22,14 +22,14 @@ public class GuiBlastFurnace extends ContainerScreen<BlastFurnaceContainer> {
         blit(matrix, getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
         BlastFurnaceTileEntity tile = menu.getTileEntity();
         if (tile.timeCooking > 0) {
-            int pixels = (int)(13 * (tile.fuelValue / (float) BlastFurnaceTileEntity.FUEL_VALUE_LIMIT));
+            int pixels = (int) (13 * (tile.fuelValue / (float) BlastFurnaceTileEntity.FUEL_VALUE_LIMIT));
             float modifier = pixels / 13.0F;
             int i = (int) (13 * modifier);
             blit(matrix, getGuiLeft() + 56, getGuiTop() + 48 - i, 176, 12 - i, 14, i + 1);
         }
         int pixels = (int) (24 * (tile.timeCooking / (float) BlastFurnaceTileEntity.SMELT_TIME));
         float modifier = pixels / 24.0F;
-        blit(matrix, getGuiLeft() + 79, getGuiTop() + 34, 176, 14, (int)(24 * modifier), 16);
+        blit(matrix, getGuiLeft() + 79, getGuiTop() + 34, 176, 14, (int) (24 * modifier), 16);
     }
 
     @Override

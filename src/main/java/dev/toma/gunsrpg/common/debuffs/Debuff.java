@@ -42,19 +42,19 @@ public abstract class Debuff implements INBTSerializable<CompoundNBT> {
     }
 
     public final void tick(PlayerEntity player, PlayerData data) {
-        if(renderStat != null) {
-            if(renderStat.tick()) {
+        if (renderStat != null) {
+            if (renderStat.tick()) {
                 renderStat = null;
             }
         }
         ++levelTimer;
         int target = this.getType().getProgressDelay(data.getSkills());
-        if(this.canContinueSpreading() && levelTimer >= target) {
+        if (this.canContinueSpreading() && levelTimer >= target) {
             ++debuffLevel;
             levelTimer = 0;
             this.dispatchRenderAction(25, 0xbb0000);
             this.updateStageIndex();
-            if(!player.level.isClientSide) data.sync();
+            if (!player.level.isClientSide) data.sync();
         }
         this.getType().tickStage(currentStage, player);
     }
@@ -62,7 +62,7 @@ public abstract class Debuff implements INBTSerializable<CompoundNBT> {
     public final void heal(int amount) {
         debuffLevel -= amount;
         dispatchRenderAction(20, 0x009944);
-        if(debuffLevel <= 0)
+        if (debuffLevel <= 0)
             invalidate();
     }
 
@@ -76,7 +76,7 @@ public abstract class Debuff implements INBTSerializable<CompoundNBT> {
         ModUtils.renderColor(pose, x, y, x + w, y + h, 0.0F, 0.0F, 0.0F, 0.6F);
         ModUtils.renderTexture(pose, x + 2, y + 1, x + 18, y + 17, this.getIconTexture());
         renderer.drawShadow(stack, debuffLevel + "%", x + 20, y + 5, 0xffffff);
-        if(renderStat != null) {
+        if (renderStat != null) {
             renderStat.draw(stack, x, y, w, h, pt);
         }
     }
@@ -88,7 +88,7 @@ public abstract class Debuff implements INBTSerializable<CompoundNBT> {
         compound.putInt("timer", levelTimer);
         compound.putInt("stage", currentStage);
         compound.putBoolean("invalid", invalid);
-        if(renderStat != null) compound.put("stat", renderStat.serializeNBT());
+        if (renderStat != null) compound.put("stat", renderStat.serializeNBT());
         return compound;
     }
 
@@ -98,7 +98,7 @@ public abstract class Debuff implements INBTSerializable<CompoundNBT> {
         levelTimer = nbt.getInt("timer");
         currentStage = nbt.getInt("stage");
         invalid = nbt.getBoolean("invalid");
-        if(nbt.contains("stat", Constants.NBT.TAG_COMPOUND)) {
+        if (nbt.contains("stat", Constants.NBT.TAG_COMPOUND)) {
             renderStat = new RenderStat(nbt.getCompound("stat"));
         }
     }
@@ -193,8 +193,8 @@ public abstract class Debuff implements INBTSerializable<CompoundNBT> {
             this.startTimer = timer;
             this.timer = timer;
             this.r = ((color >> 16) & 0xff) / 255.0F;
-            this.g = ((color >>  8) & 0xff) / 255.0F;
-            this.b = ( color        & 0xff) / 255.0F;
+            this.g = ((color >> 8) & 0xff) / 255.0F;
+            this.b = (color & 0xff) / 255.0F;
         }
 
         void draw(MatrixStack stack, int x, int y, int w, int h, float pt) {

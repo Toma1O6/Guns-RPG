@@ -14,15 +14,15 @@ public class Tree {
     public Tree(List<SkillType<?>> types) {
         Node.prepareNewCategory();
         types.sort(Comparator.comparingInt(type -> type.levelRequirement));
-        for(SkillType<?> head : types) {
+        for (SkillType<?> head : types) {
             boolean isChild = false;
-            for(SkillType<?> type : types) {
-                if(ModUtils.contains(head, type.getChilds())) {
+            for (SkillType<?> type : types) {
+                if (ModUtils.contains(head, type.getChilds())) {
                     isChild = true;
                     break;
                 }
             }
-            if(!isChild) {
+            if (!isChild) {
                 branches.add(new Branch(head));
                 Node.furthestPoint += Node.spacingHorizontal;
             }

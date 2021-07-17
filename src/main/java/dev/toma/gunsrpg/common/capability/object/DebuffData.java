@@ -26,6 +26,10 @@ public class DebuffData implements INBTSerializable<ListNBT> {
         this.debuffs = new Debuff[GunsRPGRegistries.DEBUFFS != null ? GunsRPGRegistries.DEBUFFS.getValues().size() : 0];
     }
 
+    public static int getDebuffID(DebuffType<?> type) {
+        return ((ForgeRegistry<DebuffType<?>>) GunsRPGRegistries.DEBUFFS).getID(type);
+    }
+
     public Debuff[] getDebuffs() {
         return debuffs;
     }
@@ -33,15 +37,11 @@ public class DebuffData implements INBTSerializable<ListNBT> {
     public void toggle(DebuffType<?> type) {
         int i = getDebuffID(type);
         Debuff v = debuffs[i];
-        if(v != null) {
+        if (v != null) {
             debuffs[i] = null;
         } else {
             debuffs[i] = createInstance(type);
         }
-    }
-
-    public static int getDebuffID(DebuffType<?> type) {
-        return ((ForgeRegistry<DebuffType<?>>) GunsRPGRegistries.DEBUFFS).getID(type);
     }
 
     public Debuff createInstance(DebuffType<?> type) {
@@ -58,7 +58,7 @@ public class DebuffData implements INBTSerializable<ListNBT> {
     public void heal(DebuffType<?> type, int amount) {
         int k = getDebuffID(type);
         Debuff debuff = debuffs[k];
-        if(debuff != null) {
+        if (debuff != null) {
             debuff.heal(amount);
         }
     }
@@ -66,18 +66,18 @@ public class DebuffData implements INBTSerializable<ListNBT> {
     public void onPlayerAttackedFrom(DamageContext ctx, PlayerEntity player) {
         Random random = player.level.getRandom();
         types:
-        for(DebuffType<?> type : GunsRPGRegistries.DEBUFFS) {
-            if(type.isBlacklisted())
+        for (DebuffType<?> type : GunsRPGRegistries.DEBUFFS) {
+            if (type.isBlacklisted())
                 continue;
             int i = getDebuffID(type);
             Debuff v = debuffs[i];
-            if(v == null) {
+            if (v == null) {
                 float resist = type.getResistChance(data.getSkills(), ctx.getSource());
-                if(resist > 0 && random.nextFloat() <= resist) continue;
-                for(ToFloatBiFunction<PlayerSkills, DamageContext> function : type.getConditions()) {
+                if (resist > 0 && random.nextFloat() <= resist) continue;
+                for (ToFloatBiFunction<PlayerSkills, DamageContext> function : type.getConditions()) {
                     float chance = function.applyAsFloat(data.getSkills(), ctx);
-                    if(chance <= 0) continue;
-                    if(random.nextFloat() <= chance) {
+                    if (chance <= 0) continue;
+                    if (random.nextFloat() <= chance) {
                         Debuff newInst = createInstance(type);
                         debuffs[i] = newInst;
                         data.sync();
@@ -91,8 +91,8 @@ public class DebuffData implements INBTSerializable<ListNBT> {
     public void tick(PlayerEntity player, PlayerData data) {
         for (int i = 0; i < debuffs.length; i++) {
             Debuff debuff = debuffs[i];
-            if(debuff == null) continue;
-            if(debuff.isInvalid()) {
+            if (debuff == null) continue;
+            if (debuff.isInvalid()) {
                 debuffs[i] = null;
                 data.sync();
                 continue;
@@ -122,7 +122,7 @@ public class DebuffData implements INBTSerializable<ListNBT> {
             ResourceLocation key = new ResourceLocation(nbt.getString("key"));
             CompoundNBT data = nbt.getCompound("data");
             DebuffType<?> type = GunsRPGRegistries.DEBUFFS.getValue(key);
-            if(type == null) {
+            if (type == null) {
                 GunsRPG.log.error("Error loading debuff data for key {}", key.toString());
                 continue;
             }

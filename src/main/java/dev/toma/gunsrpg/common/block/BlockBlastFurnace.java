@@ -42,19 +42,19 @@ public class BlockBlastFurnace extends GRPGBlock {
 
     public static void updateBurnState(BlockPos pos, World world, boolean lit) {
         BlockState currentState = world.getBlockState(pos);
-        if(currentState.getBlock() != GRPGBlocks.BLAST_FURNACE) return;
+        if (currentState.getBlock() != GRPGBlocks.BLAST_FURNACE) return;
         world.setBlock(pos, currentState.setValue(BlockStateProperties.LIT, lit), 3);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-        if(stateIn.getValue(BlockStateProperties.LIT)) {
+        if (stateIn.getValue(BlockStateProperties.LIT)) {
             Direction direction = stateIn.getValue(BlockStateProperties.HORIZONTAL_FACING);
             worldIn.addParticle(ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 0.0, 0.0, 0.0);
             double rng = (rand.nextDouble() - rand.nextDouble()) / 3;
-            if(rand.nextDouble() <= 0.2) {
-                worldIn.playSound(null, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            if (rand.nextDouble() <= 0.2) {
+                worldIn.playSound(null, (double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }
             switch (direction) {
                 case NORTH: {

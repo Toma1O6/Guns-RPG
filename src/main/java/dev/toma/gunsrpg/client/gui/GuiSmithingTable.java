@@ -59,21 +59,21 @@ public class GuiSmithingTable extends ContainerScreen<SmithingTableContainer> {
         int scrollbarWidth = 8;
         int scrollbarY = topPos + 5;
         int scroolbarHeight = 160;
-        if(mouseX >= scrollbarX && mouseX <= scrollbarX + scrollbarWidth && mouseY >= scrollbarY && mouseY <= scrollbarY + scroolbarHeight) {
+        if (mouseX >= scrollbarX && mouseX <= scrollbarX + scrollbarWidth && mouseY >= scrollbarY && mouseY <= scrollbarY + scroolbarHeight) {
             float step = scroolbarHeight / (float) recipeList.size();
-            int barPos = (int)(scrollIndex * step);
-            int barHeight = (int)((scrollIndex + 8) * step - barPos);
+            int barPos = (int) (scrollIndex * step);
+            int barHeight = (int) ((scrollIndex + 8) * step - barPos);
             int halfHeight = barHeight / 2;
             int delta = (int) (mouseY - scrollbarY - barPos - halfHeight);
             if (delta > halfHeight) {
                 int next = scrollIndex + 1;
-                if(next < recipeList.size() - 7) {
+                if (next < recipeList.size() - 7) {
                     scrollIndex = next;
                     init(minecraft, width, height);
                 }
-            } else if(delta < -halfHeight) {
+            } else if (delta < -halfHeight) {
                 int next = scrollIndex - 1;
-                if(next >= 0) {
+                if (next >= 0) {
                     scrollIndex = next;
                     init(minecraft, width, height);
                 }

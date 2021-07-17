@@ -37,12 +37,12 @@ public class LikeACatSkill extends BasicSkill implements Cooldown, Clickable {
 
     @Override
     public void onUpdate(PlayerEntity player) {
-        if(effectLeft > 0) {
+        if (effectLeft > 0) {
             --effectLeft;
-            if(effectLeft == 0) {
+            if (effectLeft == 0) {
                 setOnCooldown();
             }
-        } else if(cooldown > 0) {
+        } else if (cooldown > 0) {
             --cooldown;
         }
     }
@@ -86,16 +86,16 @@ public class LikeACatSkill extends BasicSkill implements Cooldown, Clickable {
         float g;
         float b;
         int time;
-        if(effectLeft > 0) {
+        if (effectLeft > 0) {
             f = 1.0F - effectLeft / (float) effectLength;
-            if(f == 0) return;
+            if (f == 0) return;
             r = 0.0F;
             g = 1.0F;
             b = 0.2F;
             time = effectLeft;
         } else {
             f = getCooldown() / (float) getMaxCooldown();
-            if(f == 0) return;
+            if (f == 0) return;
             r = 1.0F;
             g = 0.2F;
             b = 0.0F;
@@ -105,7 +105,7 @@ public class LikeACatSkill extends BasicSkill implements Cooldown, Clickable {
         stack.translate(0, 0, 1);
         Matrix4f pose = stack.last().pose();
         ModUtils.renderColor(pose, x, y + heigth, x + width, y + heigth + 3, 0.0F, 0.0F, 0.0F, 1.0F);
-        ModUtils.renderColor(pose, x + 1, y + heigth + 1, x + 1 + (int)((width - 1) * f), y + heigth + 2, r, g, b, 1.0F);
+        ModUtils.renderColor(pose, x + 1, y + heigth + 1, x + 1 + (int) ((width - 1) * f), y + heigth + 2, r, g, b, 1.0F);
         String cooldown = ModUtils.formatTicksToTime(time);
         FontRenderer renderer = Minecraft.getInstance().font;
         renderer.draw(stack, cooldown, x + (width - renderer.width(cooldown)) / 2f, y + heigth + 4, 0xffffff);

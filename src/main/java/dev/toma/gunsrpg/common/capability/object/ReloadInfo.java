@@ -23,20 +23,20 @@ public class ReloadInfo {
     }
 
     public void update() {
-        if(reloading) {
+        if (reloading) {
             int slot = factory.getPlayer().inventory.selected;
             boolean serverSide = !factory.getPlayer().level.isClientSide;
-            if(serverSide && this.slot != slot) {
+            if (serverSide && this.slot != slot) {
                 cancelReload();
                 factory.sync();
                 return;
             }
-            if(--left <= 0 && serverSide) {
+            if (--left <= 0 && serverSide) {
                 cancelReload();
                 factory.sync();
                 PlayerEntity player = factory.getPlayer();
                 ItemStack stack = player.getMainHandItem();
-                if(stack.getItem() instanceof GunItem) {
+                if (stack.getItem() instanceof GunItem) {
                     GunItem gunItem = (GunItem) stack.getItem();
                     gunItem.getReloadManager().finishReload(factory.getPlayer(), gunItem, stack);
                 }
@@ -45,10 +45,10 @@ public class ReloadInfo {
     }
 
     public void startReloading(int slot, int time) {
-        if(!reloading) {
+        if (!reloading) {
             PlayerEntity player = factory.getPlayer();
             ItemStack stack = player.getMainHandItem();
-            if(stack.getItem() instanceof GunItem) {
+            if (stack.getItem() instanceof GunItem) {
                 player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ((GunItem) stack.getItem()).getReloadSound(player), SoundCategory.MASTER, 1.0F, 1.0F);
                 NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketSendAnimation(Animations.RELOAD));
             }

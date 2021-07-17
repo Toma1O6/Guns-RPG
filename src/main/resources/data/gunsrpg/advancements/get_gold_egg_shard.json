@@ -16,7 +16,9 @@
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
-                    {"item": "gunsrpg:gold_egg_shard"}
+                    {
+                        "item": "gunsrpg:gold_egg_shard"
+                    }
                 ]
             }
         }

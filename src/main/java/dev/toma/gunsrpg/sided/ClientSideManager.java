@@ -37,6 +37,10 @@ public class ClientSideManager {
         return INSTANCE;
     }
 
+    public static void runOnClient(Supplier<DistExecutor.SafeRunnable> runnableSupplier) {
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, runnableSupplier);
+    }
+
     public AnimationProcessor processor() {
         return animations;
     }
@@ -56,10 +60,6 @@ public class ClientSideManager {
         event.enqueueWork(this::screenSetup);
     }
 
-    public static void runOnClient(Supplier<DistExecutor.SafeRunnable> runnableSupplier) {
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, runnableSupplier);
-    }
-
     public void playDelayedSound(BlockPos pos, float volume, float pitch, SoundEvent event, SoundCategory category, int tickDelay) {
         Minecraft mc = Minecraft.getInstance();
         SoundHandler handler = mc.getSoundManager();
@@ -68,10 +68,10 @@ public class ClientSideManager {
 
     public void onDataSync() {
         Minecraft mc = Minecraft.getInstance();
-        if(mc.screen instanceof GuiPlayerSkills) {
+        if (mc.screen instanceof GuiPlayerSkills) {
             mc.screen.init(mc, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight());
         }
-        if(!PlayerDataFactory.getUnsafe(mc.player).getAimInfo().aiming) {
+        if (!PlayerDataFactory.getUnsafe(mc.player).getAimInfo().aiming) {
             ClientEventHandler.preAimFov.ifPresent(value -> mc.options.fov = value);
             ClientEventHandler.preAimSens.ifPresent(value -> mc.options.sensitivity = value);
         }

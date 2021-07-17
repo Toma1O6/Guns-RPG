@@ -16,10 +16,6 @@ public class IconsType extends ArrayType<NameableWrapper<ResourceLocation>> {
         return writer.write(new IconsType(name, wrappers[entry], wrappers, desc));
     }
 
-    public ResourceLocation getAsResource() {
-        return get().getElement();
-    }
-
     private static String formatLocation(String asString) {
         int lastIndex = asString.lastIndexOf('/');
         if (lastIndex > 0) {
@@ -27,5 +23,9 @@ public class IconsType extends ArrayType<NameableWrapper<ResourceLocation>> {
         }
         asString = asString.replaceAll("\\..+", "");
         return asString.substring(0, 1).toUpperCase() + asString.substring(1);
+    }
+
+    public ResourceLocation getAsResource() {
+        return get().getElement();
     }
 }

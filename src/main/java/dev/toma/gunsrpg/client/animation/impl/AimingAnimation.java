@@ -11,8 +11,10 @@ import net.minecraftforge.common.util.LazyOptional;
 public class AimingAnimation extends AnimationFactory {
 
     private final Vector3f animation;
-    private IAnimator leftArm = (stack, f) -> {};
-    private IAnimator rightArm = (stack, f) -> {};
+    private IAnimator leftArm = (stack, f) -> {
+    };
+    private IAnimator rightArm = (stack, f) -> {
+    };
 
     public AimingAnimation(float x, float y, float z) {
         this(new Vector3f(x, y, z));

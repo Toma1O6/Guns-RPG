@@ -41,22 +41,22 @@ public class BlastFurnaceContainer extends AbstractModContainer<BlastFurnaceTile
     public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.getSlot(index);
-        if(slot.hasItem()) {
+        if (slot.hasItem()) {
             ItemStack stack = slot.getItem();
             itemStack = stack.copy();
-            if(index >= 0 && index <= 2) {
-                if(!this.moveItemStackTo(stack, 3, 39, true)) {
+            if (index >= 0 && index <= 2) {
+                if (!this.moveItemStackTo(stack, 3, 39, true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(stack, itemStack);
-            } else if(index >= 3 && index <= 38) {
-                if(stack.getItem() == Items.COAL) {
-                    if(!moveItemStackTo(stack, 1, 2, false)) {
+            } else if (index >= 3 && index <= 38) {
+                if (stack.getItem() == Items.COAL) {
+                    if (!moveItemStackTo(stack, 1, 2, false)) {
                         return ItemStack.EMPTY;
                     }
                     slot.onQuickCraft(stack, itemStack);
-                } else if(BlastFurnaceRecipe.hasRecipeFor(stack)) {
-                    if(!moveItemStackTo(stack, 0, 1, false)) {
+                } else if (BlastFurnaceRecipe.hasRecipeFor(stack)) {
+                    if (!moveItemStackTo(stack, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
                     slot.onQuickCraft(stack, itemStack);

@@ -37,10 +37,10 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
     public float rotation;
     public float lastRotation;
     public int timesBounced = 0;
-    private int blastRadius;
-    private boolean explodesOnImpact;
     public Item item;
     public LazyOptional<ItemStack> renderStack = LazyOptional.of(() -> new ItemStack(item));
+    private int blastRadius;
+    private boolean explodesOnImpact;
 
     public GrenadeEntity(EntityType<? extends GrenadeEntity> type, World world) {
         this(type, world, null, 100, 3, false, Items.AIR);
@@ -56,12 +56,16 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
 
     public GrenadeEntity(EntityType<?> type, World world, LivingEntity thrower, int time, int blastRadius, boolean explodesOnImpact, Item item) {
         super(type, world);
-        if(thrower != null) this.setPos(thrower.getX(), thrower.getY() + thrower.getEyeHeight(), thrower.getZ());
+        if (thrower != null) this.setPos(thrower.getX(), thrower.getY() + thrower.getEyeHeight(), thrower.getZ());
         this.fuse = time;
         this.blastRadius = blastRadius;
         this.explodesOnImpact = explodesOnImpact;
         this.setInitialMotion(thrower);
         this.item = item;
+    }
+
+    private static double sqr(double n) {
+        return n * n;
     }
 
     @Override
@@ -70,7 +74,7 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
     }
 
     public void doExplosion() {
-        if(!level.isClientSide) {
+        if (!level.isClientSide) {
             level.explode(null, getX(), getY() + 0.5, getZ(), blastRadius, Explosion.Mode.NONE);
             remove();
         }
@@ -79,7 +83,7 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
     @Override
     public void tick() {
         --this.fuse;
-        if(fuse < 0) {
+        if (fuse < 0) {
             doExplosion();
         }
         this.xo = this.getX();
@@ -89,12 +93,12 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
         double prevMotionX = deltaMovement.x;
         double prevMotionY = deltaMovement.y;
         double prevMotionZ = deltaMovement.z;
-        if(!level.isClientSide) {
+        if (!level.isClientSide) {
             Vector3d from = this.position();
             Vector3d to = from.add(deltaMovement.x, deltaMovement.y, deltaMovement.z);
             RayTraceContext context = new RayTraceContext(from, to, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this);
             BlockRayTraceResult rayTraceResult = level.clip(context);
-            if(rayTraceResult != null && rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
+            if (rayTraceResult != null && rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
                 this.onCollide(from, to, rayTraceResult, context);
             }
         }
@@ -104,31 +108,31 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
         double bounceX = deltaMovement.x;
         double bounceY = deltaMovement.y;
         double bounceZ = deltaMovement.z;
-        if(deltaMovement.x != prevMotionX) {
+        if (deltaMovement.x != prevMotionX) {
             bounceX = -BOUNCE_MODIFIER * prevMotionX;
             bouncedThisTick = true;
         }
-        if(deltaMovement.y != prevMotionY) {
+        if (deltaMovement.y != prevMotionY) {
             bounceY = -BOUNCE_MODIFIER * prevMotionY;
             bouncedThisTick = true;
         }
-        if(deltaMovement.z != prevMotionZ) {
+        if (deltaMovement.z != prevMotionZ) {
             bounceZ = -BOUNCE_MODIFIER * prevMotionZ;
             bouncedThisTick = true;
         }
         if (bouncedThisTick)
             onGrenadeBounce(getDeltaMovement());
         setDeltaMovement(bounceX, bounceY, bounceZ);
-        if(!this.isNoGravity()) {
+        if (!this.isNoGravity()) {
             setDeltaMovement(getDeltaMovement().add(0, -0.039, 0));
         }
         setDeltaMovement(getDeltaMovement().multiply(AIR_DRAG_MULTIPLIER));
-        if(this.onGround) {
+        if (this.onGround) {
             setDeltaMovement(getDeltaMovement().multiply(GROUND_DRAG_MULTIPLIER));
         }
         this.lastRotation = this.rotation;
-        if(level.isClientSide && !this.onGround) {
-            if(!getDeltaMovement().equals(Vector3d.ZERO)) {
+        if (level.isClientSide && !this.onGround) {
+            if (!getDeltaMovement().equals(Vector3d.ZERO)) {
                 this.rotation += 45F;
             }
         }
@@ -140,13 +144,13 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
         BlockPos pos = result.getBlockPos();
         BlockState state = this.level.getBlockState(pos);
         boolean hasBrokenGlass = false;
-        if(state.getMaterial() == Material.GLASS) {
+        if (state.getMaterial() == Material.GLASS) {
             level.destroyBlock(pos, false);
             hasBrokenGlass = true;
         }
-        if(hasBrokenGlass) {
+        if (hasBrokenGlass) {
             BlockRayTraceResult rayTraceResult = level.clip(traceContext);
-            if(rayTraceResult != null && rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
+            if (rayTraceResult != null && rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
                 this.onCollide(from, to, rayTraceResult, traceContext);
             }
         }
@@ -162,7 +166,7 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
     }
 
     public void bounce() {
-        if(explodesOnImpact) {
+        if (explodesOnImpact) {
             doExplosion();
         }
     }
@@ -212,7 +216,7 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
         }
         float sprintModifier = 1.25F;
         float modifier = 1.4F;
-        if(thrower.isSprinting()) modifier *= sprintModifier;
+        if (thrower.isSprinting()) modifier *= sprintModifier;
         Vector3d viewVec = thrower.getLookAngle();
         setDeltaMovement(viewVec.x * modifier, viewVec.y * modifier / sprintModifier, viewVec.z * modifier);
     }
@@ -221,14 +225,10 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
         double x = sqr(movement.x);
         double y = sqr(movement.y);
         double z = sqr(movement.z);
-        if(Math.sqrt(x*x+y*y+z*z) >= 0.2) {
+        if (Math.sqrt(x * x + y * y + z * z) >= 0.2) {
             this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ANVIL_BREAK, SoundCategory.MASTER, 1.0F, 1.8F);
         }
         this.timesBounced++;
         this.bounce();
-    }
-
-    private static double sqr(double n) {
-        return n*n;
     }
 }

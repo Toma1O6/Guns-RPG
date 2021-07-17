@@ -89,7 +89,7 @@ public class SMGItem extends GunItem {
 
     @Override
     public void onKillEntity(EntityBullet bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if(!shooter.level.isClientSide && shooter instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) shooter, Skills.SMG_COMMANDO)) {
+        if (!shooter.level.isClientSide && shooter instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) shooter, Skills.SMG_COMMANDO)) {
             shooter.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 100, 1, false, false));
             shooter.addEffect(new EffectInstance(Effects.REGENERATION, 60, 2, false, false));
         }

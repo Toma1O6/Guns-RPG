@@ -22,11 +22,11 @@ public class SkillTreePlacement {
                 long startTime = System.currentTimeMillis();
                 GunsRPG.log.info("Creating skill placement map");
                 Map<SkillCategory, Tree> temp = new HashMap<>();
-                for(SkillCategory category : SkillCategory.mainCategories()) {
+                for (SkillCategory category : SkillCategory.mainCategories()) {
                     temp.put(category, getTree(category));
                 }
                 synchronized (treeMap) {
-                    for(Map.Entry<SkillCategory, Tree> entry : temp.entrySet()) {
+                    for (Map.Entry<SkillCategory, Tree> entry : temp.entrySet()) {
                         treeMap.put(entry.getKey(), entry.getValue());
                     }
                 }

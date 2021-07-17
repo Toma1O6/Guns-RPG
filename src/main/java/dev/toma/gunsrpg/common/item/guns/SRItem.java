@@ -72,9 +72,9 @@ public class SRItem extends GunItem {
     @Override
     public SoundEvent getReloadSound(PlayerEntity player) {
         ItemStack stack = player.getMainHandItem();
-        if(stack.getItem() == this) {
+        if (stack.getItem() == this) {
             int ammo = getAmmo(stack);
-            if(ammo == 0) {
+            if (ammo == 0) {
                 return PlayerDataFactory.hasActiveSkill(player, Skills.SR_FAST_HANDS) ? GRPGSounds.KAR98K_RELOAD_CLIP_FAST : GRPGSounds.KAR98K_RELOAD_CLIP;
             }
         }

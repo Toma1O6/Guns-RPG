@@ -23,7 +23,7 @@ public class AnimationProcessor {
     }
 
     public void play(int ID, IAnimation animation) {
-        if(animation == null) return;
+        if (animation == null) return;
         animations.put(ID, animation);
     }
 
@@ -36,8 +36,8 @@ public class AnimationProcessor {
     }
 
     public boolean blocksItemRender() {
-        for(IAnimation animation : animations.values()) {
-            if(animation.cancelsItemRender()) {
+        for (IAnimation animation : animations.values()) {
+            if (animation.cancelsItemRender()) {
                 return true;
             }
         }
@@ -69,12 +69,12 @@ public class AnimationProcessor {
     }
 
     public void tick() {
-        if(Minecraft.getInstance().isPaused()) return;
+        if (Minecraft.getInstance().isPaused()) return;
         Iterator<Map.Entry<Integer, IAnimation>> iterator = animations.entrySet().iterator();
         while (iterator.hasNext()) {
             IAnimation animation = iterator.next().getValue();
             animation.clientTick();
-            if(animation.isFinished()) {
+            if (animation.isFinished()) {
                 iterator.remove();
             }
         }

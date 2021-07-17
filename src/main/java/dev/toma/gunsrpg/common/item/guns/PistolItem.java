@@ -61,7 +61,7 @@ public class PistolItem extends GunItem {
 
     @Override
     public void onHitEntity(EntityBullet bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if(shooter instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) shooter, Skills.PISTOL_HEAVY_BULLETS) && random.nextDouble() <= 0.35) {
+        if (shooter instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) shooter, Skills.PISTOL_HEAVY_BULLETS) && random.nextDouble() <= 0.35) {
             victim.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 100, 1, false, false));
             victim.addEffect(new EffectInstance(Effects.WEAKNESS, 100, 0, false, false));
         }
@@ -98,7 +98,7 @@ public class PistolItem extends GunItem {
     public int getReloadTime(PlayerEntity player) {
         boolean quickdraw = PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_QUICKDRAW);
         int time = PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD) ? quickdraw ? 50 : 70 : quickdraw ? 25 : 35;
-        return (int)(time * SkillUtil.getReloadTimeMultiplier(player));
+        return (int) (time * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override
@@ -132,7 +132,7 @@ public class PistolItem extends GunItem {
     public AimingAnimation createAimAnimation() {
         AnimationProcessor processor = ClientSideManager.instance().processor();
         return this.isDualWieldActive() ? new ImprovedAimAnimation(-0.4F, 0.06F, 0.0F).animateItem((stack, f) -> {
-            if(processor.isRenderingDualWield()) {
+            if (processor.isRenderingDualWield()) {
                 stack.translate(0.0F, -0.33F * f, 0.0F);
                 stack.mulPose(Vector3f.ZP.rotationDegrees(-30f * f));
             } else {
@@ -175,7 +175,7 @@ public class PistolItem extends GunItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void transformLeftArm(MatrixStack matrix) {
-        if(this.isDualWieldActive()) {
+        if (this.isDualWieldActive()) {
             matrix.translate(-0.05F, -0.05F, -0.15F);
             matrix.mulPose(Vector3f.XP.rotationDegrees(5.0f));
             matrix.mulPose(Vector3f.YP.rotationDegrees(10));

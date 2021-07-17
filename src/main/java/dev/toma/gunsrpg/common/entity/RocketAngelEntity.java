@@ -126,12 +126,12 @@ public class RocketAngelEntity extends MonsterEntity {
                 }
             } else if (distance < (getFollowDistance() * getFollowDistance()) / 1.5F) {
                 this.entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
-                int heightDiff = (int)(entity.getY() - target.getY());
-                if(heightDiff < 10) {
+                int heightDiff = (int) (entity.getY() - target.getY());
+                if (heightDiff < 10) {
                     Vector3d currentMovement = entity.getDeltaMovement();
                     entity.setDeltaMovement(currentMovement.x, 0.2, currentMovement.z);
                 }
-                if(cooldown <= 0) {
+                if (cooldown <= 0) {
                     cooldown = 6;
                     EntityExplosiveArrow arrow = new EntityExplosiveArrow(entity.level, entity, 1);
                     double x = target.getX() - entity.getX();
@@ -141,7 +141,7 @@ public class RocketAngelEntity extends MonsterEntity {
                     arrow.shoot(x, y + dist * 0.2D, z, 1.6F, (float) (23 - entity.level.getDifficulty().getId() * 4));
                     entity.level.addFreshEntity(arrow);
                     --toFire;
-                    if(toFire < 0) {
+                    if (toFire < 0) {
                         toFire = 4;
                         cooldown = 100;
                     }
@@ -213,11 +213,11 @@ public class RocketAngelEntity extends MonsterEntity {
 
                     if (RocketAngelEntity.this.getTarget() == null) {
                         Vector3d vector3d1 = RocketAngelEntity.this.getDeltaMovement();
-                        RocketAngelEntity.this.yRot = -((float)MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float)Math.PI);
+                        RocketAngelEntity.this.yRot = -((float) MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
                     } else {
                         double px = RocketAngelEntity.this.getTarget().getX() - RocketAngelEntity.this.getX();
                         double pz = RocketAngelEntity.this.getTarget().getZ() - RocketAngelEntity.this.getZ();
-                        RocketAngelEntity.this.yRot = -((float)MathHelper.atan2(px, pz)) * (180F / (float)Math.PI);
+                        RocketAngelEntity.this.yRot = -((float) MathHelper.atan2(px, pz)) * (180F / (float) Math.PI);
                     }
                     RocketAngelEntity.this.yBodyRot = RocketAngelEntity.this.yRot;
                 }

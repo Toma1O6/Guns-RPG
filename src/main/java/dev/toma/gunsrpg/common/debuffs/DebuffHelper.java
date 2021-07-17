@@ -30,7 +30,7 @@ public class DebuffHelper {
     }
 
     public static void p86_99eff(PlayerEntity player) {
-        eff_m(player, () -> new EffectInstance[] {
+        eff_m(player, () -> new EffectInstance[]{
                 new EffectInstance(Effects.POISON, 60, 1, false, false),
                 new EffectInstance(Effects.CONFUSION, 260, 0, false, false),
                 new EffectInstance(Effects.BLINDNESS, 260, 0, false, false)
@@ -38,7 +38,7 @@ public class DebuffHelper {
     }
 
     public static void p100eff(PlayerEntity player) {
-        if(!player.level.isClientSide && player.level.getGameTime() % 50L == 0) {
+        if (!player.level.isClientSide && player.level.getGameTime() % 50L == 0) {
             player.hurt(Debuff.POISON_DAMAGE, 15.0F);
         }
     }
@@ -73,7 +73,7 @@ public class DebuffHelper {
 
     public static float pSlimeCondition(PlayerSkills skills, DamageContext ctx) {
         DamageSource source = ctx.getSource();
-        if(source instanceof EntityDamageSource && source.getDirectEntity() instanceof SlimeEntity) {
+        if (source instanceof EntityDamageSource && source.getDirectEntity() instanceof SlimeEntity) {
             return 0.03F * ((SlimeEntity) source.getDirectEntity()).getSize();
         }
         return 0.0F;
@@ -96,28 +96,28 @@ public class DebuffHelper {
     }
 
     public static void i36_60eff(PlayerEntity player) {
-        eff_m(player, () -> new EffectInstance[] {
+        eff_m(player, () -> new EffectInstance[]{
                 new EffectInstance(Effects.WITHER, 60, 0, false, false),
                 new EffectInstance(Effects.HUNGER, 60, 4, false, false)
         });
     }
 
     public static void i61_85eff(PlayerEntity player) {
-        eff_m(player, () -> new EffectInstance[] {
+        eff_m(player, () -> new EffectInstance[]{
                 new EffectInstance(Effects.WITHER, 60, 1, false, false),
                 new EffectInstance(Effects.HUNGER, 60, 10, false, false)
         });
     }
 
     public static void i86_99eff(PlayerEntity player) {
-        eff_m(player, () -> new EffectInstance[] {
+        eff_m(player, () -> new EffectInstance[]{
                 new EffectInstance(Effects.WITHER, 60, 2, false, false),
                 new EffectInstance(Effects.HUNGER, 60, 15, false, false)
         });
     }
 
     public static void i100eff(PlayerEntity player) {
-        if(!player.level.isClientSide && player.level.getGameTime() % 50L == 0) {
+        if (!player.level.isClientSide && player.level.getGameTime() % 50L == 0) {
             player.hurt(Debuff.INFECTION_DAMAGE, 15.0F);
         }
     }
@@ -163,14 +163,14 @@ public class DebuffHelper {
     }
 
     public static void f31_55eff(PlayerEntity player) {
-        eff_m(player, () -> new EffectInstance[] {
+        eff_m(player, () -> new EffectInstance[]{
                 new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 60, 1, false, false),
                 new EffectInstance(Effects.DIG_SLOWDOWN, 60, 0, false, false)
         });
     }
 
     public static void f56_75eff(PlayerEntity player) {
-        eff_m(player, () -> new EffectInstance[] {
+        eff_m(player, () -> new EffectInstance[]{
                 new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 60, 2, false, false),
                 new EffectInstance(Effects.WEAKNESS, 60, 0, false, false),
                 new EffectInstance(Effects.DIG_SLOWDOWN, 60, 0, false, false)
@@ -178,7 +178,7 @@ public class DebuffHelper {
     }
 
     public static void f76_99eff(PlayerEntity player) {
-        eff_m(player, () -> new EffectInstance[] {
+        eff_m(player, () -> new EffectInstance[]{
                 new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 60, 3, false, false),
                 new EffectInstance(Effects.WEAKNESS, 60, 0, false, false),
                 new EffectInstance(Effects.DIG_SLOWDOWN, 60, 1, false, false)
@@ -186,7 +186,7 @@ public class DebuffHelper {
     }
 
     public static void f100eff(PlayerEntity player) {
-        eff_m(player, () -> new EffectInstance[] {
+        eff_m(player, () -> new EffectInstance[]{
                 new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 60, 3, false, false),
                 new EffectInstance(Effects.WEAKNESS, 60, 1, false, false),
                 new EffectInstance(Effects.WITHER, 60, 0, false, false),
@@ -201,7 +201,7 @@ public class DebuffHelper {
 
     public static float fFallCondition(PlayerSkills skills, DamageContext ctx) {
         DamageSource source = ctx.getSource();
-        if(source == DamageSource.FALL) {
+        if (source == DamageSource.FALL) {
             float base = 6.0F;
             float actual = ctx.getAmount();
             float computed = 1.0F + ((actual - base) / base);
@@ -223,31 +223,31 @@ public class DebuffHelper {
     }
 
     public static void b0_25eff(PlayerEntity player) {
-        if(!player.level.isClientSide && player.level.getGameTime() % 80 == 0) {
+        if (!player.level.isClientSide && player.level.getGameTime() % 80 == 0) {
             player.hurt(Debuff.BLEED_DAMAGE, 1.0F);
         }
     }
 
     public static void b26_50eff(PlayerEntity player) {
-        if(!player.level.isClientSide && player.level.getGameTime() % 60 == 0) {
+        if (!player.level.isClientSide && player.level.getGameTime() % 60 == 0) {
             player.hurt(Debuff.BLEED_DAMAGE, 1.0F);
         }
     }
 
     public static void b51_75eff(PlayerEntity player) {
-        if(!player.level.isClientSide && player.level.getGameTime() % 40 == 0) {
+        if (!player.level.isClientSide && player.level.getGameTime() % 40 == 0) {
             player.hurt(Debuff.BLEED_DAMAGE, 1.0F);
         }
     }
 
     public static void b76_99eff(PlayerEntity player) {
-        if(!player.level.isClientSide && player.level.getGameTime() % 20 == 0) {
+        if (!player.level.isClientSide && player.level.getGameTime() % 20 == 0) {
             player.hurt(Debuff.BLEED_DAMAGE, 1.0F);
         }
     }
 
     public static void b100eff(PlayerEntity player) {
-        if(!player.level.isClientSide && player.level.getGameTime() % 10 == 0) {
+        if (!player.level.isClientSide && player.level.getGameTime() % 10 == 0) {
             player.hurt(Debuff.BLEED_DAMAGE, 1.0F);
             player.hurtTime = 9;
         }
@@ -303,12 +303,12 @@ public class DebuffHelper {
     }
 
     protected static void eff_s(PlayerEntity player, Supplier<EffectInstance> eff) {
-        eff_m(player, () -> new EffectInstance[] {eff.get()});
+        eff_m(player, () -> new EffectInstance[]{eff.get()});
     }
 
     protected static void eff_m(PlayerEntity player, Supplier<EffectInstance[]> eff) {
-        if(!player.level.isClientSide && player.level.getGameTime() % 50L == 0) {
-            for(EffectInstance effect : eff.get()) {
+        if (!player.level.isClientSide && player.level.getGameTime() % 50L == 0) {
+            for (EffectInstance effect : eff.get()) {
                 player.addEffect(effect);
             }
         }

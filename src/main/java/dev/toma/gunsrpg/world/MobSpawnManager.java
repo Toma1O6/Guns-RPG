@@ -72,8 +72,8 @@ public class MobSpawnManager {
             return witherSkeleton;
         });
         registerPostSpawnAction(EntityType.CREEPER, (bloodmoon, creeper) -> {
-            if(creeper.level.isClientSide || !bloodmoon) return;
-            if(creeper.getRandom().nextFloat() <= 0.2F) {
+            if (creeper.level.isClientSide || !bloodmoon) return;
+            if (creeper.getRandom().nextFloat() <= 0.2F) {
                 creeper.thunderHit((ServerWorld) creeper.level, null);
                 creeper.clearFire();
                 creeper.setHealth(creeper.getMaxHealth());
@@ -85,12 +85,12 @@ public class MobSpawnManager {
     @SuppressWarnings("unchecked")
     public void processSpawn(LivingEntity entity, World world, boolean isBloodmoon, EntityJoinWorldEvent event) {
         AttributeModifierManager manager = entity.getAttributes();
-        if(isBloodmoon && !world.isClientSide) {
+        if (isBloodmoon && !world.isClientSide) {
             List<Pair<Integer, BiFunction<ServerWorld, Vector3d, LivingEntity>>> list = ModUtils.getNonnullFromMap(bloodmoonEntries, entity.getType(), Collections.emptyList());
             Random random = world.getRandom();
             Vector3d vec3d = entity.position();
-            for(Pair<Integer, BiFunction<ServerWorld, Vector3d, LivingEntity>> pair : list) {
-                if(random.nextInt(20) < pair.getLeft()) {
+            for (Pair<Integer, BiFunction<ServerWorld, Vector3d, LivingEntity>> pair : list) {
+                if (random.nextInt(20) < pair.getLeft()) {
                     event.setCanceled(true);
                     entity = pair.getRight().apply((ServerWorld) world, vec3d);
                     world.addFreshEntity(entity);
@@ -98,19 +98,19 @@ public class MobSpawnManager {
                 }
             }
         }
-        if(isExluded(entity)) {
+        if (isExluded(entity)) {
             return;
         }
         ModifiableAttributeInstance instance = manager.getInstance(Attributes.MAX_HEALTH);
         instance.removeModifier(health2x);
         instance.removeModifier(health3x);
         AttributeModifier modifier = getRandomModifier(world.getRandom());
-        if(modifier != null) {
+        if (modifier != null) {
             instance.addTransientModifier(modifier);
             entity.setHealth(entity.getMaxHealth());
         }
         BooleanConsumer<Entity> consumer = (BooleanConsumer<Entity>) postSpawn.get(entity.getType());
-        if(consumer != null) {
+        if (consumer != null) {
             consumer.acceptBoolean(isBloodmoon, entity);
         }
     }

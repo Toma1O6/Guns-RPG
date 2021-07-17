@@ -17,7 +17,8 @@ public class SPacketSelectAmmo extends AbstractNetworkPacket<SPacketSelectAmmo> 
 
     private AmmoMaterial material;
 
-    public SPacketSelectAmmo() {}
+    public SPacketSelectAmmo() {
+    }
 
     public SPacketSelectAmmo(AmmoMaterial material) {
         this.material = material;

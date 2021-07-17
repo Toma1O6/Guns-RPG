@@ -30,7 +30,7 @@ public abstract class AbstractSkill implements ISkill {
     @Override
     public final void readData(CompoundNBT nbt) {
         SkillType<?> type = GunsRPGRegistries.SKILLS.getValue(new ResourceLocation(nbt.getString("type")));
-        if(type != this.type) {
+        if (type != this.type) {
             throw new IllegalStateException("Loaded wrong SkillType");
         }
         readExtra(nbt);

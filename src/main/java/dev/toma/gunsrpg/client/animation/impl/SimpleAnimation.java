@@ -9,14 +9,15 @@ import java.util.Objects;
 
 public class SimpleAnimation implements IAnimation {
 
-    private float current, prev, smooth;
     private final OptionalObject<IAnimator> itemHandAnimation = OptionalObject.empty();
     private final OptionalObject<IAnimator> handAnimation = OptionalObject.empty();
     private final OptionalObject<IAnimator> rightHandAnimation = OptionalObject.empty();
     private final OptionalObject<IAnimator> leftHandAnimation = OptionalObject.empty();
     private final OptionalObject<IAnimator> itemAnimation = OptionalObject.empty();
+    private float current, prev, smooth;
 
-    private SimpleAnimation() {}
+    private SimpleAnimation() {
+    }
 
     public static Builder newSimpleAnimation() {
         return new Builder();
@@ -74,6 +75,7 @@ public class SimpleAnimation implements IAnimation {
 
     /**
      * Not called, override {@link MultiStepAnimation#cancelsItemRender()}
+     *
      * @return whether item should be rendered
      */
     @Override
@@ -89,7 +91,8 @@ public class SimpleAnimation implements IAnimation {
         private IAnimator leftHandAnimator;
         private IAnimator itemAnimator;
 
-        private Builder() {}
+        private Builder() {
+        }
 
         public SimpleAnimation create() {
             SimpleAnimation simpleImpl = new SimpleAnimation();

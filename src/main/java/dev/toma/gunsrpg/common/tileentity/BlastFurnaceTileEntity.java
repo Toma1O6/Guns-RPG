@@ -49,15 +49,15 @@ public class BlastFurnaceTileEntity extends InventoryTileEntity implements ITick
 
     @Override
     public void tick() {
-        if(BlastFurnaceRecipe.hasRecipeFor(getInput()) && canSmelt()) {
-            if(fuelValue > 0) {
+        if (BlastFurnaceRecipe.hasRecipeFor(getInput()) && canSmelt()) {
+            if (fuelValue > 0) {
                 setBurningState(true);
-            } else if(hasFuelInSlot()) {
+            } else if (hasFuelInSlot()) {
                 this.fuelValue = FUEL_VALUE_LIMIT;
                 consumeItem(2);
                 setBurningState(true);
             } else setBurningState(false);
-            if(isBurning && ++timeCooking >= SMELT_TIME) {
+            if (isBurning && ++timeCooking >= SMELT_TIME) {
                 timeCooking = 0;
                 ItemStack res = BlastFurnaceRecipe.getResult(getInput());
                 ItemStack out = getOutput();
@@ -65,9 +65,9 @@ public class BlastFurnaceTileEntity extends InventoryTileEntity implements ITick
                 consumeItem(0);
             }
         } else timeCooking = 0;
-        if(fuelValue > 0) {
+        if (fuelValue > 0) {
             --fuelValue;
-            if(fuelValue == 0) setBurningState(false);
+            if (fuelValue == 0) setBurningState(false);
         }
     }
 
@@ -77,7 +77,7 @@ public class BlastFurnaceTileEntity extends InventoryTileEntity implements ITick
     }
 
     private void setBurningState(boolean state) {
-        if(state != isBurning) {
+        if (state != isBurning) {
             BlockBlastFurnace.updateBurnState(worldPosition, level, state);
             this.timeCooking = 0;
         }
