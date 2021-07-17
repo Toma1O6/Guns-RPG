@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.baked.*;
+import dev.toma.gunsrpg.client.baked.GunBakedModel;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
@@ -19,12 +19,13 @@ public class ClientRegistry {
     @SubscribeEvent
     public static void onModelBake(ModelBakeEvent event) {
         Map<ResourceLocation, IBakedModel> registry = event.getModelRegistry();
-        registry.put(getGunModelResourceLocation(GRPGItems.PISTOL), new PistolBakedModel());
-        registry.put(getGunModelResourceLocation(GRPGItems.SMG), new SMGBakedModel());
-        registry.put(getGunModelResourceLocation(GRPGItems.ASSAULT_RIFLE), new ARBakedModel());
-        registry.put(getGunModelResourceLocation(GRPGItems.SNIPER_RIFLE), new SRBakedModel());
-        registry.put(getGunModelResourceLocation(GRPGItems.SHOTGUN), new SGBakedModel());
-        registry.put(getGunModelResourceLocation(GRPGItems.CROSSBOW), new CrossbowBakedModel());
+        IBakedModel model = new GunBakedModel();
+        registry.put(getGunModelResourceLocation(GRPGItems.PISTOL), model);
+        registry.put(getGunModelResourceLocation(GRPGItems.SMG), model);
+        registry.put(getGunModelResourceLocation(GRPGItems.ASSAULT_RIFLE), model);
+        registry.put(getGunModelResourceLocation(GRPGItems.SNIPER_RIFLE), model);
+        registry.put(getGunModelResourceLocation(GRPGItems.SHOTGUN), model);
+        registry.put(getGunModelResourceLocation(GRPGItems.CROSSBOW), model);
     }
 
     protected static ModelResourceLocation getGunModelResourceLocation(GunItem gunItem) {

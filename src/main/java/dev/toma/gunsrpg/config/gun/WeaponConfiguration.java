@@ -6,7 +6,7 @@ import dev.toma.configuration.api.type.DoubleType;
 import dev.toma.configuration.api.type.IntType;
 import dev.toma.configuration.api.type.ObjectType;
 
-public class WeaponConfiguration extends ObjectType {
+public class WeaponConfiguration extends ObjectType implements IWeaponConfiguration {
 
     private final IntType gravityDelay;
     private final IntType firerate;
@@ -34,31 +34,38 @@ public class WeaponConfiguration extends ObjectType {
         this.verticalRecoil = writer.writeBoundedDouble("Vertical recoil", verticalRecoil, 0.0, 15.0, "Pitch offset in degrees");
     }
 
+    @Override
     public float getDamage() {
         return (float) ((double) damage.get());
     }
 
+    @Override
     public float getVerticalRecoil() {
         return verticalRecoil.floatValue();
     }
 
+    @Override
     public float getHorizontalRecoil() {
         return horizontalRecoil.floatValue();
     }
 
+    @Override
     public float getVelocity() {
         int ms = velocity.get();
         return ms / 20.0F;
     }
 
+    @Override
     public int getGravityDelay() {
         return gravityDelay.get();
     }
 
+    @Override
     public int getFirerate() {
         return firerate.get();
     }
 
+    @Override
     public int getUpgradedFirerate() {
         return getFirerate();
     }

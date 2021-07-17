@@ -14,6 +14,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -44,7 +45,7 @@ public class GuiChooseAmmo extends Screen {
 
     @Override
     public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-        ModUtils.renderColor(0, 0, width, height, 0.0F, 0.0F, 0.0F, 0.4F);
+        ModUtils.renderColor(matrix.last().pose(), 0, 0, width, height, 0.0F, 0.0F, 0.0F, 0.4F);
         super.render(matrix, mouseX, mouseY, partialTicks);
     }
 
@@ -57,11 +58,6 @@ public class GuiChooseAmmo extends Screen {
     public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_) {
         minecraft.setScreen(null);
         return true;
-    }
-
-    private static void renderRedCross(int x, int y, int x2, int y2, int width) {
-        ModUtils.renderLine(x, y, x2, y2, 1.0F, 0.0F, 0.0F, 1.0F, width);
-        ModUtils.renderLine(x, y2, x2, y, 1.0F, 0.0F, 0.0F, 1.0F, width);
     }
 
     private static class AmmoButton extends Widget {
@@ -94,11 +90,12 @@ public class GuiChooseAmmo extends Screen {
             Minecraft mc = Minecraft.getInstance();
             FontRenderer font = mc.font;
             this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-            ModUtils.renderColor(x, y, x + width, y + height, 0.0F, 0.0F, 0.0F, 1.0F);
+            Matrix4f pose = matrix.last().pose();
+            ModUtils.renderColor(pose, x, y, x + width, y + height, 0.0F, 0.0F, 0.0F, 1.0F);
             if(active) {
-                ModUtils.renderColor(x + 1, y + 1, x + width - 1, y + height - 1, 0.2F, 0.7F, 0.2F, 1.0F);
+                ModUtils.renderColor(pose, x + 1, y + 1, x + width - 1, y + height - 1, 0.2F, 0.7F, 0.2F, 1.0F);
             } else {
-                ModUtils.renderColor(x + 1, y + 1, x + width - 1, y + height - 1, 0.3F, 0.3F, 0.3F, 1.0F);
+                ModUtils.renderColor(pose, x + 1, y + 1, x + width - 1, y + height - 1, 0.3F, 0.3F, 0.3F, 1.0F);
             }
             mc.getItemRenderer().renderGuiItem(stack, x + 8, y + 8);
             int countWidth = font.width(String.valueOf(count)) / 2;

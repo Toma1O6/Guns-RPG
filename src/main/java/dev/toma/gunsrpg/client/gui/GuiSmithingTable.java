@@ -14,6 +14,7 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
@@ -97,11 +98,12 @@ public class GuiSmithingTable extends ContainerScreen<SmithingTableContainer> {
 
     public void renderScrollbar(MatrixStack matrix, int x, int width) {
         int barHeight = 160;
-        ModUtils.renderColor(x, topPos + 5, x + width, topPos + 5 + barHeight, 0.2F, 0.2F, 0.2F, 1.0F);
+        Matrix4f pose = matrix.last().pose();
+        ModUtils.renderColor(pose, x, topPos + 5, x + width, topPos + 5 + barHeight, 0.2F, 0.2F, 0.2F, 1.0F);
         double step = recipeList.size() == 0 ? 1.0 : barHeight / (double) recipeList.size();
         double start = scrollIndex * step;
         double end = recipeList.size() == 0 ? barHeight - 1 : Math.min(barHeight, (scrollIndex + 8) * step) - 1;
-        ModUtils.renderColor(x + 1, (int) (topPos + 6 + start), x + width - 1, (int) (topPos + 5 + end), 0.75F, 0.75F, 0.75F, 1.0F);
+        ModUtils.renderColor(pose, x + 1, (int) (topPos + 6 + start), x + width - 1, (int) (topPos + 5 + end), 0.75F, 0.75F, 0.75F, 1.0F);
     }
 
     @Override

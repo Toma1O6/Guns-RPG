@@ -7,12 +7,12 @@ import dev.toma.configuration.api.type.ObjectType;
 public class WeaponConfig extends ObjectType {
 
     public final GeneralSettings general;
-    public final WeaponConfiguration m1911;
-    public final WeaponConfiguration ump;
-    public final WeaponConfiguration sks;
-    public final WeaponConfiguration kar98k;
-    public final WeaponConfiguration s1897;
-    public final WeaponConfiguration crossbow;
+    public final IWeaponConfiguration m1911;
+    public final IWeaponConfiguration ump;
+    public final IWeaponConfiguration sks;
+    public final IWeaponConfiguration kar98k;
+    public final IWeaponConfiguration s1897;
+    public final IWeaponConfiguration crossbow;
 
     public WeaponConfig(IObjectSpec objectSpec) {
         super(objectSpec);

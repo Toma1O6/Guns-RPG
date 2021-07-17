@@ -204,7 +204,7 @@ public class ZombieGunnerEntity extends MonsterEntity {
         }
 
         public static GunData from(GunItem item, int firerate) {
-            return new GunData(item, firerate, GunItem::getEntityShootSound);
+            return new GunData(item, firerate, GunItem::getWeaponShootSound);
         }
     }
 }

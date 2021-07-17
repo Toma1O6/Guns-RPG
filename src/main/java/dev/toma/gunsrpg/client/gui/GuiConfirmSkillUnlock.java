@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.network.packet.SPacketUnlockSkill;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -69,10 +70,11 @@ public class GuiConfirmSkillUnlock extends Screen {
     public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         matrix.pushPose();
         matrix.translate(0, 0, -200);
-        parent.drawScreen(mouseX, mouseY, partialTicks);
+        parent.render(matrix, mouseX, mouseY, partialTicks);
         matrix.popPose();
-        ModUtils.renderColor(left, top, left + xSize, top + ySize, 0, 0, 0, 1.0F);
-        ModUtils.renderColor(left + 1, top + 1, left + xSize - 1, top + ySize - 1, 0.25F, 0.25F, 0.25F, 1.0F);
+        Matrix4f pose = matrix.last().pose();
+        ModUtils.renderColor(pose, left, top, left + xSize, top + ySize, 0, 0, 0, 1.0F);
+        ModUtils.renderColor(pose, left + 1, top + 1, left + xSize - 1, top + ySize - 1, 0.25F, 0.25F, 0.25F, 1.0F);
         String question = "Are you sure you want to buy this skill?";
         int qw = font.width(question);
         font.drawShadow(matrix, question, left + (xSize - qw) / 2.0F, top + 5, 0xffffff);

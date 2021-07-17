@@ -1,9 +1,8 @@
 package dev.toma.gunsrpg.common.item.guns;
 
-import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.animation.IAnimation;
-import dev.toma.gunsrpg.client.animation.AnimationProcessor;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.Animations;
+import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
@@ -15,20 +14,21 @@ import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerClipOrSingle;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.GRPGConfig;
-import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import dev.toma.gunsrpg.config.gun.IWeaponConfiguration;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
 
 import java.util.Map;
 
@@ -39,8 +39,8 @@ public class SRItem extends GunItem {
     }
 
     @Override
-    public WeaponConfiguration getWeaponConfig() {
-        return GRPGConfig.weaponConfig.sr;
+    public IWeaponConfiguration getWeaponConfig() {
+        return GRPGConfig.weaponConfig.kar98k;
     }
 
     @Override
@@ -60,13 +60,18 @@ public class SRItem extends GunItem {
     }
 
     @Override
-    public SoundEvent getShootSound(EntityLivingBase entity) {
-        return entity instanceof EntityPlayer && this.isSilenced((EntityPlayer) entity) ? GRPGSounds.KAR98K_SILENT : GRPGSounds.KAR98K;
+    public SoundEvent getShootSound(PlayerEntity entity) {
+        return this.isSilenced(entity) ? GRPGSounds.KAR98K_SILENT : GRPGSounds.KAR98K;
     }
 
     @Override
-    public SoundEvent getReloadSound(EntityPlayer player) {
-        ItemStack stack = player.getHeldItemMainhand();
+    protected SoundEvent getEntityShootSound(LivingEntity entity) {
+        return GRPGSounds.M24;
+    }
+
+    @Override
+    public SoundEvent getReloadSound(PlayerEntity player) {
+        ItemStack stack = player.getMainHandItem();
         if(stack.getItem() == this) {
             int ammo = getAmmo(stack);
             if(ammo == 0) {
@@ -77,40 +82,40 @@ public class SRItem extends GunItem {
     }
 
     @Override
-    public int getMaxAmmo(EntityPlayer player) {
+    public int getMaxAmmo(PlayerEntity player) {
         return PlayerDataFactory.hasActiveSkill(player, Skills.SR_EXTENDED) ? 10 : 5;
     }
 
     @Override
-    public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Skills.SR_FAST_HANDS) ? GRPGConfig.weaponConfig.sr.upgraded : GRPGConfig.weaponConfig.sr.normal;
+    public int getFirerate(PlayerEntity player) {
+        IWeaponConfiguration cfg = getWeaponConfig();
+        return PlayerDataFactory.hasActiveSkill(player, Skills.SR_FAST_HANDS) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
     }
 
     @Override
-    public int getReloadTime(EntityPlayer player) {
-        // it's safe to assume player is holding the weaponConfig when this is called. Maybe
-        boolean empty = this.getAmmo(player.getHeldItemMainhand()) == 0;
+    public int getReloadTime(PlayerEntity player) {
+        boolean empty = this.getAmmo(player.getMainHandItem()) == 0;
         boolean magSkill = PlayerDataFactory.hasActiveSkill(player, Skills.SR_FAST_HANDS);
         int time = magSkill ? empty ? 40 : 20 : empty ? 66 : 33;
         return (int) (time * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override
-    public boolean isSilenced(EntityPlayer player) {
+    public boolean isSilenced(PlayerEntity player) {
         return PlayerDataFactory.hasActiveSkill(player, Skills.SR_SUPPRESSOR);
     }
 
     @Override
-    public float getVerticalRecoil(EntityPlayer player) {
+    public float getVerticalRecoil(PlayerEntity player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, Skills.SR_CHEEKPAD) ? GRPGConfig.weaponConfig.general.cheekpad : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, Skills.SR_CHEEKPAD) ? GRPGConfig.weaponConfig.general.cheekpad.floatValue() : 1.0F;
         return mod * f;
     }
 
     @Override
-    public float getHorizontalRecoil(EntityPlayer player) {
+    public float getHorizontalRecoil(PlayerEntity player) {
         float f = super.getHorizontalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, Skills.SR_CHEEKPAD) ? GRPGConfig.weaponConfig.general.cheekpad : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, Skills.SR_CHEEKPAD) ? GRPGConfig.weaponConfig.general.cheekpad.floatValue() : 1.0F;
         return mod * f;
     }
 
@@ -119,47 +124,43 @@ public class SRItem extends GunItem {
         return Skills.SNIPER_RIFLE_ASSEMBLY;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void renderRightArm() {
-        GlStateManager.translate(0.25F, -0.02F, 0.45F);
-        GlStateManager.rotate(20.0F, 0.0F, 1.0F, 0.0F);
-        renderArm(EnumHandSide.RIGHT);
+    public void transformRightArm(MatrixStack matrix) {
+        matrix.translate(0.25F, -0.02F, 0.45F);
+        matrix.mulPose(Vector3f.YP.rotationDegrees(20));
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void renderLeftArm() {
-        GlStateManager.translate(0.3F, -0.05F, -0.1F);
-        GlStateManager.rotate(-20.0F, 0.0F, 1.0F, 0.0F);
-        renderArm(EnumHandSide.LEFT);
+    public void transformLeftArm(MatrixStack matrix) {
+        matrix.translate(0.3F, -0.05F, -0.1F);
+        matrix.mulPose(Vector3f.YP.rotationDegrees(-20));
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
-        boolean scope = PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Skills.SR_SCOPE);
-        return new AimingAnimation(-0.265F, scope ? 0.14F : 0.175F, 0.3F).animateRight(animation -> {
-            float f = animation.smooth;
-            GlStateManager.translate(-0.265F * f, 0.175F * f, 0.3F * f);
-        }).animateLeft(animation -> {
-            float f = animation.smooth;
-            GlStateManager.translate(-0.265F * f, 0.175F * f, 0.3F * f);
+        boolean scope = PlayerDataFactory.hasActiveSkill(Minecraft.getInstance().player, Skills.SR_SCOPE);
+        return new AimingAnimation(-0.265F, scope ? 0.14F : 0.175F, 0.3F).animateRight((stack, f) -> {
+            stack.translate(-0.265F * f, 0.175F * f, 0.3F * f);
+        }).animateLeft((stack, f) -> {
+            stack.translate(-0.265F * f, 0.175F * f, 0.3F * f);
         });
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public IAnimation createReloadAnimation(EntityPlayer player) {
+    public IAnimation createReloadAnimation(PlayerEntity player) {
         return new MultiStepAnimation.Configurable(this.getReloadTime(player), "sr_reload");
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void onShoot(EntityPlayer player, ItemStack stack) {
+    public void onShoot(PlayerEntity player, ItemStack stack) {
         super.onShoot(player, stack);
-        AnimationProcessor.play(Animations.REBOLT, new Animations.ReboltSR(this.getFirerate(player)));
+        ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltSR(this.getFirerate(player)));
         NetworkManager.sendServerPacket(new SPacketSetAiming(false));
-        GunsRPG.sideManager.playDelayedSound((float) player.posX, (float) player.posY, (float) player.posZ, 1.0F, 1.0F, GRPGSounds.SR_BOLT, SoundCategory.MASTER, 15);
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> ClientSideManager.instance().playDelayedSound(player.blockPosition(), 1.0F, 1.0F, GRPGSounds.SR_BOLT, SoundCategory.MASTER, 15));
     }
 }

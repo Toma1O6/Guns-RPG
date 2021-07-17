@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.client.gui.skills;
 
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.util.math.ConfigurableVec2i;
 import dev.toma.gunsrpg.util.math.Vec2i;
 import dev.toma.gunsrpg.util.object.LazyLoader;
 

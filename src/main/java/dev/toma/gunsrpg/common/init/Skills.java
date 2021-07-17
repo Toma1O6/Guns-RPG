@@ -3,9 +3,9 @@ package dev.toma.gunsrpg.common.init;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.skills.*;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.ObjectHolder;
 
-@GameRegistry.ObjectHolder(GunsRPG.MODID)
+@ObjectHolder(GunsRPG.MODID)
 public class Skills {
     public static final SkillType<CraftingSkill> GUNPOWDER_NOVICE = null;
     public static final SkillType<CraftingSkill> GUNPOWDER_EXPERT = null;

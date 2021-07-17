@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.block;
 
 import dev.toma.gunsrpg.common.entity.EntityGoldDragon;
+import dev.toma.gunsrpg.common.init.GRPGEntityTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -56,7 +57,7 @@ public class BlockGoldDragonEgg extends GRPGBlock {
         if (!world.isClientSide && state.getValue(BlockStateProperties.LIT)) {
             boolean spawned = false;
             if (world.canSeeSky(pos)) {
-                EntityGoldDragon dragon = new EntityGoldDragon(world);
+                EntityGoldDragon dragon = new EntityGoldDragon(GRPGEntityTypes.GOLD_DRAGON.get(), world);
                 dragon.setPos(pos.getX(), pos.getY() + 30, pos.getZ());
                 dragon.getPhaseManager().setPhase(PhaseType.HOLDING_PATTERN);
                 world.addFreshEntity(dragon);

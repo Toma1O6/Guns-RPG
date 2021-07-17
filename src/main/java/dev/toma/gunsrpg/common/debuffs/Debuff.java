@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
@@ -71,11 +72,12 @@ public abstract class Debuff implements INBTSerializable<CompoundNBT> {
 
     @OnlyIn(Dist.CLIENT)
     public void draw(MatrixStack stack, int x, int y, int w, int h, float pt, FontRenderer renderer) {
-        ModUtils.renderColor(x, y, x + w, y + h, 0.0F, 0.0F, 0.0F, 0.6F);
-        ModUtils.renderTexture(x + 2, y + 1, x + 18, y + 17, this.getIconTexture());
+        Matrix4f pose = stack.last().pose();
+        ModUtils.renderColor(pose, x, y, x + w, y + h, 0.0F, 0.0F, 0.0F, 0.6F);
+        ModUtils.renderTexture(pose, x + 2, y + 1, x + 18, y + 17, this.getIconTexture());
         renderer.drawShadow(stack, debuffLevel + "%", x + 20, y + 5, 0xffffff);
         if(renderStat != null) {
-            renderStat.draw(x, y, w, h, pt);
+            renderStat.draw(stack, x, y, w, h, pt);
         }
     }
 
@@ -195,11 +197,11 @@ public abstract class Debuff implements INBTSerializable<CompoundNBT> {
             this.b = ( color        & 0xff) / 255.0F;
         }
 
-        void draw(int x, int y, int w, int h, float pt) {
+        void draw(MatrixStack stack, int x, int y, int w, int h, float pt) {
             float f0 = timer / (float) startTimer;
             float f1 = 1.0F / startTimer;
             float f2 = intN(f0, f1, pt);
-            ModUtils.renderColor(x, y, x + w, y + h, r, g, b, f2);
+            ModUtils.renderColor(stack.last().pose(), x, y, x + w, y + h, r, g, b, f2);
         }
 
         float intN(float in, float add, float pt) {

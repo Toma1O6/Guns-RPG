@@ -45,7 +45,7 @@ public class Hooks {
         PlayerData data = PlayerDataFactory.get(player).orElseThrow(NullPointerException::new);
         PlayerSkills skills = data.getSkills();
         AdrenalineRushSkill adrenaline = SkillUtil.getBestSkillFromOverrides(skills.getSkill(Skills.ADRENALINE_RUSH_I), player);
-        if (adrenaline != null) {
+        if (adrenaline != null && adrenaline.apply(player)) {
             value *= adrenaline.getAttackSpeedBoost();
         }
         return value;

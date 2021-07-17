@@ -4,7 +4,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 public class ReloadManagerClipOrSingle implements IReloadManager {
@@ -12,7 +12,7 @@ public class ReloadManagerClipOrSingle implements IReloadManager {
     public static final ReloadManagerClipOrSingle CLIP_OR_SINGLE = new ReloadManagerClipOrSingle();
 
     @Override
-    public void finishReload(EntityPlayer player, GunItem item, ItemStack stack) {
+    public void finishReload(PlayerEntity player, GunItem item, ItemStack stack) {
         AmmoType ammoType = item.getAmmoType();
         AmmoMaterial material = item.getMaterialFromNBT(stack);
         if(material == null) return;
@@ -27,14 +27,14 @@ public class ReloadManagerClipOrSingle implements IReloadManager {
         }
     }
 
-    private void handleClipReload(EntityPlayer player, GunItem item, ItemStack stack, int ammo, int maxAmmo, AmmoMaterial material, AmmoType ammoType) {
+    private void handleClipReload(PlayerEntity player, GunItem item, ItemStack stack, int ammo, int maxAmmo, AmmoMaterial material, AmmoType ammoType) {
         if(player.isCreative()) {
             item.setAmmoCount(stack, maxAmmo);
             return;
         }
         int left = maxAmmo;
-        for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
-            ItemStack itemStack = player.inventory.getStackInSlot(i);
+        for(int i = 0; i < player.inventory.getContainerSize(); i++) {
+            ItemStack itemStack = player.inventory.getItem(i);
             if(itemStack.getItem() instanceof IAmmoProvider) {
                 IAmmoProvider provider = (IAmmoProvider) itemStack.getItem();
                 if(provider.getAmmoType() == ammoType && provider.getMaterial() == material) {
@@ -48,7 +48,7 @@ public class ReloadManagerClipOrSingle implements IReloadManager {
         item.setAmmoCount(stack, maxAmmo - left);
     }
 
-    private void handleSingleBulletReload(EntityPlayer player, GunItem item, ItemStack stack, int ammo, int maxAmmo, AmmoMaterial material, AmmoType ammoType) {
+    private void handleSingleBulletReload(PlayerEntity player, GunItem item, ItemStack stack, int ammo, int maxAmmo, AmmoMaterial material, AmmoType ammoType) {
         boolean continueReload = maxAmmo - ammo > 1;
         if(player.isCreative()) {
             item.setAmmoCount(stack, ammo + 1);
@@ -57,8 +57,8 @@ public class ReloadManagerClipOrSingle implements IReloadManager {
             }
             return;
         }
-        for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
-            ItemStack itemStack = player.inventory.getStackInSlot(i);
+        for(int i = 0; i < player.inventory.getContainerSize(); i++) {
+            ItemStack itemStack = player.inventory.getItem(i);
             if(itemStack.getItem() instanceof IAmmoProvider) {
                 IAmmoProvider provider = (IAmmoProvider) itemStack.getItem();
                 if(provider.getAmmoType() == ammoType && provider.getMaterial() == material) {

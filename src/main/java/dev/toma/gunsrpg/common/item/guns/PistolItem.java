@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.AnimationProcessor;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
@@ -15,19 +16,19 @@ import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.GRPGConfig;
-import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import dev.toma.gunsrpg.config.gun.IWeaponConfiguration;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumHandSide;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Map;
 
@@ -38,8 +39,8 @@ public class PistolItem extends GunItem {
     }
 
     @Override
-    public WeaponConfiguration getWeaponConfig() {
-        return GRPGConfig.weaponConfig.pistol;
+    public IWeaponConfiguration getWeaponConfig() {
+        return GRPGConfig.weaponConfig.m1911;
     }
 
     @Override
@@ -54,64 +55,70 @@ public class PistolItem extends GunItem {
     }
 
     @Override
-    public boolean isSilenced(EntityPlayer player) {
+    public boolean isSilenced(PlayerEntity player) {
         return PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_SUPPRESSOR);
     }
 
     @Override
-    public void onHitEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
-        if(shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Skills.PISTOL_HEAVY_BULLETS) && random.nextDouble() <= 0.35) {
-            victim.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1, false, false));
-            victim.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 100, 0, false, false));
+    public void onHitEntity(EntityBullet bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+        if(shooter instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) shooter, Skills.PISTOL_HEAVY_BULLETS) && random.nextDouble() <= 0.35) {
+            victim.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 100, 1, false, false));
+            victim.addEffect(new EffectInstance(Effects.WEAKNESS, 100, 0, false, false));
         }
     }
 
     @Override
-    public SoundEvent getShootSound(EntityLivingBase entity) {
-        return entity instanceof EntityPlayer && this.isSilenced((EntityPlayer) entity) ? GRPGSounds.P1911_SILENT : GRPGSounds.P1911;
+    protected SoundEvent getShootSound(PlayerEntity entity) {
+        return this.isSilenced(entity) ? GRPGSounds.P1911_SILENT : GRPGSounds.P1911;
     }
 
     @Override
-    public SoundEvent getReloadSound(EntityPlayer player) {
+    protected SoundEvent getEntityShootSound(LivingEntity entity) {
+        return GRPGSounds.P92;
+    }
+
+    @Override
+    public SoundEvent getReloadSound(PlayerEntity player) {
         return PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_QUICKDRAW) ? GRPGSounds.P1911_RELOAD_SHORT : GRPGSounds.P1911_RELOAD;
     }
 
     @Override
-    public int getMaxAmmo(EntityPlayer player) {
+    public int getMaxAmmo(PlayerEntity player) {
         boolean extended = PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_EXTENDED);
         return PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD) ? extended ? 26 : 14 : extended ? 13 : 7;
     }
 
     @Override
-    public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_TOUGH_SPRING) ? GRPGConfig.weaponConfig.pistol.upgraded : GRPGConfig.weaponConfig.pistol.normal;
+    public int getFirerate(PlayerEntity player) {
+        IWeaponConfiguration config = getWeaponConfig();
+        return PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_TOUGH_SPRING) ? config.getUpgradedFirerate() : config.getFirerate();
     }
 
     @Override
-    public int getReloadTime(EntityPlayer player) {
+    public int getReloadTime(PlayerEntity player) {
         boolean quickdraw = PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_QUICKDRAW);
         int time = PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD) ? quickdraw ? 50 : 70 : quickdraw ? 25 : 35;
         return (int)(time * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override
-    public float getVerticalRecoil(EntityPlayer player) {
+    public float getVerticalRecoil(PlayerEntity player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_CARBON_BARREL) ? GRPGConfig.weaponConfig.general.carbonBarrel : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_CARBON_BARREL) ? GRPGConfig.weaponConfig.general.carbonBarrel.floatValue() : 1.0F;
         return mod * f;
     }
 
     @Override
-    public float getHorizontalRecoil(EntityPlayer player) {
+    public float getHorizontalRecoil(PlayerEntity player) {
         float f = super.getHorizontalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_CARBON_BARREL) ? GRPGConfig.weaponConfig.general.carbonBarrel : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_CARBON_BARREL) ? GRPGConfig.weaponConfig.general.carbonBarrel.floatValue() : 1.0F;
         return mod * f;
     }
 
     @Override
-    public boolean switchFiremode(ItemStack stack, EntityPlayer player) {
+    public boolean switchFiremode(ItemStack stack, PlayerEntity player) {
         Firemode firemode = this.getFiremode(stack);
-        stack.getTagCompound().setInteger("firemode", firemode == Firemode.SINGLE ? 1 : 0);
+        stack.getTag().putInt("firemode", firemode == Firemode.SINGLE ? 1 : 0);
         return true;
     }
 
@@ -120,74 +127,67 @@ public class PistolItem extends GunItem {
         return Skills.PISTOL_ASSEMBLY;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
-        return this.isDualWieldActive() ? new ImprovedAimAnimation(-0.4F, 0.06F, 0.0F).animateItem(animation -> {
-            float f = animation.smooth;
-            if(AnimationProcessor.renderingDualWield) {
-                GlStateManager.translate(0.0F, -0.33F * f, 0.0F);
-                GlStateManager.rotate(-30.0F * f, 0.0F, 0.0F, 1.0F);
+        AnimationProcessor processor = ClientSideManager.instance().processor();
+        return this.isDualWieldActive() ? new ImprovedAimAnimation(-0.4F, 0.06F, 0.0F).animateItem((stack, f) -> {
+            if(processor.isRenderingDualWield()) {
+                stack.translate(0.0F, -0.33F * f, 0.0F);
+                stack.mulPose(Vector3f.ZP.rotationDegrees(-30f * f));
             } else {
-                GlStateManager.translate(0.0F, -0.33F * f, 0.0F);
-                GlStateManager.rotate(30.0F * f, 0.0F, 0.0F, 1.0F);
+                stack.translate(0.0F, -0.33F * f, 0.0F);
+                stack.mulPose(Vector3f.ZP.rotationDegrees(30 * f));
             }
-        }).animateRight(animation -> {
-            float f = animation.smooth;
-            GlStateManager.translate(-0.13F * f, -0.12F * f, 0.1F * f);
-            GlStateManager.rotate(30.0F * f, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotate(16.0F * f, 0.0F, 1.0F, 0.0F);
-        }).animateLeft(animation -> {
-            float f = animation.smooth;
-            GlStateManager.translate(0.13F * f, -0.12F * f, 0.1F * f);
-            GlStateManager.rotate(-30.0F * f, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotate(-16.0F * f, 0.0F, 1.0F, 0.0F);
-        }) : new AimingAnimation(-0.54F, 0.06F, 0.0F).animateRight(animation -> {
-            float f = animation.smooth;
-            GlStateManager.translate(-0.18F * f, 0.0F, 0.1F * f);
-            GlStateManager.rotate(3.0F * f, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(20.0F * f, 0.0F, 1.0F, 0.0F);
-        }).animateLeft(animation -> {
-            float f = animation.smooth;
-            GlStateManager.translate(-0.2F * f, 0.0F, 0.0F);
-            GlStateManager.rotate(3.0F * f, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(15.0F * f, 0.0F, 1.0F, 0.0F);
+        }).animateRight((stack, f) -> {
+            stack.translate(-0.13F * f, -0.12F * f, 0.1F * f);
+            stack.mulPose(Vector3f.ZP.rotationDegrees(30 * f));
+            stack.mulPose(Vector3f.YP.rotationDegrees(16 * f));
+        }).animateLeft((stack, f) -> {
+            stack.translate(0.13F * f, -0.12F * f, 0.1F * f);
+            stack.mulPose(Vector3f.ZP.rotationDegrees(-30 * f));
+            stack.mulPose(Vector3f.YP.rotationDegrees(-16 * f));
+        }) : new AimingAnimation(-0.54F, 0.06F, 0.0F).animateRight((stack, f) -> {
+            stack.translate(-0.18F * f, 0.0F, 0.1F * f);
+            stack.mulPose(Vector3f.XP.rotationDegrees(3 * f));
+            stack.mulPose(Vector3f.YP.rotationDegrees(20 * f));
+        }).animateLeft((stack, f) -> {
+            stack.translate(-0.2F * f, 0.0F, 0.0F);
+            stack.mulPose(Vector3f.XP.rotationDegrees(3 * f));
+            stack.mulPose(Vector3f.YP.rotationDegrees(15 * f));
         });
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public IAnimation createReloadAnimation(EntityPlayer player) {
+    public IAnimation createReloadAnimation(PlayerEntity player) {
         return this.isDualWieldActive() ? new Animations.ReloadDual(this.getReloadTime(player)) : new MultiStepAnimation.Configurable(this.getReloadTime(player), "pistol_reload");
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void renderRightArm() {
-        GlStateManager.translate(-0.05F, -0.02F, 0.0F);
-        GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(-10F, 0F, 1.0F, 0.0F);
-        renderArm(EnumHandSide.RIGHT);
+    public void transformRightArm(MatrixStack matrix) {
+        matrix.translate(-0.05F, -0.02F, 0.0F);
+        matrix.mulPose(Vector3f.XP.rotationDegrees(5));
+        matrix.mulPose(Vector3f.YP.rotationDegrees(-10));
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void renderLeftArm() {
+    public void transformLeftArm(MatrixStack matrix) {
         if(this.isDualWieldActive()) {
-            GlStateManager.translate(-0.05F, -0.05F, -0.15F);
-            GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(10F, 0F, 1.0F, 0.0F);
-            renderArm(EnumHandSide.LEFT);
-            return;
+            matrix.translate(-0.05F, -0.05F, -0.15F);
+            matrix.mulPose(Vector3f.XP.rotationDegrees(5.0f));
+            matrix.mulPose(Vector3f.YP.rotationDegrees(10));
+        } else {
+            matrix.translate(0.35F, -0.08F, 0.05F);
+            matrix.mulPose(Vector3f.XP.rotationDegrees(5));
+            matrix.mulPose(Vector3f.YP.rotationDegrees(-30));
         }
-        GlStateManager.translate(0.35F, -0.08F, 0.05F);
-        GlStateManager.rotate(5.0F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(-30.0F, 0.0F, 1.0F, 0.0F);
-        renderArm(EnumHandSide.LEFT);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private boolean isDualWieldActive() {
-        return PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Skills.PISTOL_DUAL_WIELD);
+        return PlayerDataFactory.hasActiveSkill(Minecraft.getInstance().player, Skills.PISTOL_DUAL_WIELD);
     }
 }

@@ -73,7 +73,6 @@ public class GunsRPG {
         SmithingTableRecipes.register();
         ItemAmmo.init();
         Hooks.initOre2ChunkMap();
-        LootTableList.register(makeResource("inject/dungeon_inject"));
         MobSpawnManager.instance().initialize();
         BlastFurnaceRecipe.init();
     }

@@ -14,7 +14,7 @@ public interface IReloadManager {
         if(player.level.isClientSide) {
             NetworkManager.sendServerPacket(new SPacketSetReloading(true, time));
         } else {
-            PlayerData data = PlayerDataFactory.get(player);
+            PlayerData data = PlayerDataFactory.getUnsafe(player);
             data.getReloadInfo().startReloading(player.inventory.selected, time);
         }
     }

@@ -50,6 +50,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -93,17 +94,19 @@ public class ClientEventHandler {
             ItemStack stack = player.getMainHandItem();
             if (stack.getItem() instanceof GunItem) {
                 event.setCanceled(true);
+                MatrixStack matrixStack = event.getMatrixStack();
                 PlayerDataFactory.get(player).ifPresent(data -> {
                     int windowWidth = window.getGuiScaledWidth();
                     int windowHeight = window.getGuiScaledHeight();
                     if (data.getAimInfo().progress >= 0.9F) {
                         if (stack.getItem() == GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE) || stack.getItem() == GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
+                            Matrix4f pose = matrixStack.last().pose();
                             if (GRPGConfig.clientConfig.scopeRenderer.get() == ScopeRenderer.TEXTURE) {
-                                ModUtils.renderTexture(0, 0, windowWidth, windowHeight, SCOPE_OVERLAY);
+                                ModUtils.renderTexture(pose, 0, 0, windowWidth, windowHeight, SCOPE_OVERLAY);
                             } else {
                                 int left = window.getGuiScaledWidth() / 2 - 16;
                                 int top = window.getGuiScaledHeight() / 2 - 16;
-                                ModUtils.renderTexture(left, top, left + 32, top + 32, SCOPE);
+                                ModUtils.renderTexture(pose, left, top, left + 32, top + 32, SCOPE);
                             }
                         } else if ((PlayerDataFactory.hasActiveSkill(player, Skills.SMG_RED_DOT) && stack.getItem() == GRPGItems.SMG) || (PlayerDataFactory.hasActiveSkill(player, Skills.AR_RED_DOT) && stack.getItem() == GRPGItems.ASSAULT_RIFLE)) {
                             float left = windowWidth / 2f - 8f;
@@ -140,6 +143,7 @@ public class ClientEventHandler {
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
             Minecraft mc = Minecraft.getInstance();
             PlayerEntity player = mc.player;
+            MatrixStack matrixStack = event.getMatrixStack();
             LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
             optional.ifPresent(data -> {
                 FontRenderer renderer = mc.font;
@@ -150,7 +154,7 @@ public class ClientEventHandler {
                     boolean b = day % cycle == 0 && day > 0;
                     long l = b ? 0 : cycle - day % cycle;
                     String remainingDays = l + "";
-                    mc.font.draw(remainingDays, window.getGuiScaledWidth() - 10 - mc.font.width(remainingDays) / 2f, 6, b ? 0xff0000 : l > 0 && l < 3 ? 0xffff00 : 0xffffff);
+                    mc.font.draw(matrixStack, remainingDays, window.getGuiScaledWidth() - 10 - mc.font.width(remainingDays) / 2f, 6, b ? 0xff0000 : l > 0 && l < 3 ? 0xffff00 : 0xffffff);
                 }
                 RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
                 ItemStack stack = player.getMainHandItem();
@@ -181,24 +185,26 @@ public class ClientEventHandler {
                         String text = ammo + " / " + c;
                         width = renderer.width(text);
                         x = window.getGuiScaledWidth() - width - 34;
-                        ModUtils.renderColor(x, y, x + width + 22, y + 7, 0.0F, 0.0F, 0.0F, 1.0F);
-                        ModUtils.renderColor(x + 2, y + 2, x + (int) (f * (width + 20)), y + 5, 1.0F, 1.0F, 0.0F, 1.0F);
+                        Matrix4f pose = matrixStack.last().pose();
+                        ModUtils.renderColor(pose, x, y, x + width + 22, y + 7, 0.0F, 0.0F, 0.0F, 1.0F);
+                        ModUtils.renderColor(pose, x + 2, y + 2, x + (int) (f * (width + 20)), y + 5, 1.0F, 1.0F, 0.0F, 1.0F);
                         mc.getItemRenderer().renderGuiItem(new ItemStack(itemAmmo), x, y - 18);
-                        mc.font.draw(text, x + 19, y - 14, 0xffffff);
+                        mc.font.draw(matrixStack, text, x + 19, y - 14, 0xffffff);
                     }
                 }
                 int kills = skills.getKills();
                 int required = skills.getRequiredKills();
                 float levelProgress = skills.isMaxLevel() ? 1.0F : kills / (float) required;
-                ModUtils.renderColor(x, y + 10, x + width + 22, y + 17, 0.0F, 0.0F, 0.0F, 1.0F);
-                ModUtils.renderColor(x + 2, y + 12, x + (int) (levelProgress * (width + 20)), y + 15, 0.0F, 1.0F, 1.0F, 1.0F);
+                Matrix4f pose = matrixStack.last().pose();
+                ModUtils.renderColor(pose, x, y + 10, x + width + 22, y + 17, 0.0F, 0.0F, 0.0F, 1.0F);
+                ModUtils.renderColor(pose, x + 2, y + 12, x + (int) (levelProgress * (width + 20)), y + 15, 0.0F, 1.0F, 1.0F, 1.0F);
                 if (data != null) {
                     DebuffData debuffData = data.getDebuffData();
                     int offset = 0;
                     for (Debuff debuff : debuffData.getDebuffs()) {
                         if (debuff == null) continue;
                         int yStart = window.getGuiScaledHeight() + GRPGConfig.clientConfig.debuffOverlay.getY() - 50;
-                        debuff.draw(GRPGConfig.clientConfig.debuffOverlay.getX(), yStart + offset * 18, 50, 18, event.getPartialTicks(), renderer);
+                        debuff.draw(matrixStack, GRPGConfig.clientConfig.debuffOverlay.getX(), yStart + offset * 18, 50, 18, event.getPartialTicks(), renderer);
                         ++offset;
                     }
                 }
@@ -217,7 +223,7 @@ public class ClientEventHandler {
                 for (ISkill skill : renderSkills) {
                     OverlayRenderer overlayRenderer = (OverlayRenderer) skill;
                     if (skill.apply(player) && overlayRenderer.shouldRenderOnHUD()) {
-                        overlayRenderer.renderInHUD(skill, renderIndex, left, top);
+                        overlayRenderer.renderInHUD(matrixStack, skill, renderIndex, left, top);
                         ++renderIndex;
                     }
                 }

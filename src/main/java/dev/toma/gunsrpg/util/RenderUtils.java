@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.util;
 
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 

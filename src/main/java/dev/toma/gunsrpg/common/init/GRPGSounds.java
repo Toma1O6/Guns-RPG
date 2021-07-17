@@ -2,9 +2,9 @@ package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.ObjectHolder;
 
-@GameRegistry.ObjectHolder(GunsRPG.MODID)
+@ObjectHolder(GunsRPG.MODID)
 public class GRPGSounds {
     public static final SoundEvent USE_ANTIDOTUM_PILLS = null;
     public static final SoundEvent USE_VACCINE = null;

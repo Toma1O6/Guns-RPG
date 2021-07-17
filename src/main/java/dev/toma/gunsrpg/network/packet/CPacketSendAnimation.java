@@ -49,7 +49,7 @@ public class CPacketSendAnimation extends AbstractNetworkPacket<CPacketSendAnima
             GunsRPG.log.error("Couldn't recreate animation for {} with {} for ID {}", player.getName(), stack.getItem(), event);
             return;
         }
-        ClientSideManager.processor().play(event, animation);
+        ClientSideManager.instance().processor().play(event, animation);
     }
 
     @OnlyIn(Dist.CLIENT)

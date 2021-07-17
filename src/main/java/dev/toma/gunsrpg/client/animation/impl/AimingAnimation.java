@@ -8,13 +8,11 @@ import dev.toma.gunsrpg.sided.ClientSideManager;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.common.util.LazyOptional;
 
-import java.util.function.Consumer;
-
 public class AimingAnimation extends AnimationFactory {
 
     private final Vector3f animation;
-    private Consumer<AimingAnimation> leftArm = animation -> {};
-    private Consumer<AimingAnimation> rightArm = animation -> {};
+    private IAnimator leftArm = (stack, f) -> {};
+    private IAnimator rightArm = (stack, f) -> {};
 
     public AimingAnimation(float x, float y, float z) {
         this(new Vector3f(x, y, z));
@@ -24,13 +22,13 @@ public class AimingAnimation extends AnimationFactory {
         this.animation = animation;
     }
 
-    public AimingAnimation animateRight(Consumer<AimingAnimation> consumer) {
-        this.rightArm = consumer;
+    public AimingAnimation animateRight(IAnimator animator) {
+        this.rightArm = animator;
         return this;
     }
 
-    public AimingAnimation animateLeft(Consumer<AimingAnimation> consumer) {
-        this.leftArm = consumer;
+    public AimingAnimation animateLeft(IAnimator animator) {
+        this.leftArm = animator;
         return this;
     }
 
@@ -58,12 +56,12 @@ public class AimingAnimation extends AnimationFactory {
 
     @Override
     public void animateLeftArm(MatrixStack stack, float partialTicks) {
-        leftArm.accept(this);
+        leftArm.animate(stack, smooth);
     }
 
     @Override
     public void animateRightArm(MatrixStack stack, float partialTicks) {
-        rightArm.accept(this);
+        rightArm.animate(stack, smooth);
     }
 
     @Override

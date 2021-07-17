@@ -1,13 +1,14 @@
 package dev.toma.gunsrpg.util;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.IInventory;
@@ -25,15 +26,15 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import org.lwjgl.opengl.GL11;
 
 import java.util.*;
@@ -117,81 +118,86 @@ public class ModUtils {
         return (color & 255) / 255.0F;
     }
 
-    public static void renderTexture(int x, int y, int x2, int y2, ResourceLocation location) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(location);
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+    public static void renderTexture(Matrix4f pose, int x, int y, int x2, int y2, ResourceLocation location) {
+        Minecraft.getInstance().getTextureManager().bind(location);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder builder = tessellator.getBuffer();
+        BufferBuilder builder = tessellator.getBuilder();
         builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        builder.pos(x, y2, 0).tex(0, 1).endVertex();
-        builder.pos(x2, y2, 0).tex(1, 1).endVertex();
-        builder.pos(x2, y, 0).tex(1, 0).endVertex();
-        builder.pos(x, y, 0).tex(0, 0).endVertex();
-        tessellator.draw();
-        GlStateManager.disableBlend();
+        builder.vertex(pose, x, y2, 0).uv(0, 1).endVertex();
+        builder.vertex(pose, x2, y2, 0).uv(1, 1).endVertex();
+        builder.vertex(pose, x2, y, 0).uv(1, 0).endVertex();
+        builder.vertex(pose, x, y, 0).uv(0, 0).endVertex();
+        builder.end();
+        WorldVertexBufferUploader.end(builder);
+        RenderSystem.disableBlend();
     }
 
-    public static void renderTexture(int x, int y, int x2, int y2, double uMin, double vMin, double uMax, double vMax, ResourceLocation location) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(location);
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+    public static void renderTexture(Matrix4f pose, int x, int y, int x2, int y2, float uMin, float vMin, float uMax, float vMax, ResourceLocation location) {
+        Minecraft.getInstance().getTextureManager().bind(location);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder builder = tessellator.getBuffer();
+        BufferBuilder builder = tessellator.getBuilder();
         builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        builder.pos(x, y2, 0).tex(uMin, vMax).endVertex();
-        builder.pos(x2, y2, 0).tex(uMax, vMax).endVertex();
-        builder.pos(x2, y, 0).tex(uMax, vMin).endVertex();
-        builder.pos(x, y, 0).tex(uMin, vMin).endVertex();
-        tessellator.draw();
-        GlStateManager.disableBlend();
+        builder.vertex(pose, x, y2, 0).uv(uMin, vMax).endVertex();
+        builder.vertex(pose, x2, y2, 0).uv(uMax, vMax).endVertex();
+        builder.vertex(pose, x2, y, 0).uv(uMax, vMin).endVertex();
+        builder.vertex(pose, x, y, 0).uv(uMin, vMin).endVertex();
+        builder.end();
+        WorldVertexBufferUploader.end(builder);
+        RenderSystem.disableBlend();
     }
 
-    public static void renderTextureWithColor(int x, int y, int x2, int y2, ResourceLocation location, float r, float g, float b, float a) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(location);
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+    public static void renderTextureWithColor(Matrix4f pose, int x, int y, int x2, int y2, ResourceLocation location, float r, float g, float b, float a) {
+        Minecraft.getInstance().getTextureManager().bind(location);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder builder = tessellator.getBuffer();
+        BufferBuilder builder = tessellator.getBuilder();
         builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-        builder.pos(x, y2, 0).tex(0, 1).color(r, g, b, a).endVertex();
-        builder.pos(x2, y2, 0).tex(1, 1).color(r, g, b, a).endVertex();
-        builder.pos(x2, y, 0).tex(1, 0).color(r, g, b, a).endVertex();
-        builder.pos(x, y, 0).tex(0, 0).color(r, g, b, a).endVertex();
-        tessellator.draw();
-        GlStateManager.disableBlend();
+        builder.vertex(pose, x, y2, 0).uv(0, 1).color(r, g, b, a).endVertex();
+        builder.vertex(pose, x2, y2, 0).uv(1, 1).color(r, g, b, a).endVertex();
+        builder.vertex(pose, x2, y, 0).uv(1, 0).color(r, g, b, a).endVertex();
+        builder.vertex(pose, x, y, 0).uv(0, 0).color(r, g, b, a).endVertex();
+        builder.end();
+        WorldVertexBufferUploader.end(builder);
+        RenderSystem.disableBlend();
     }
 
-    public static void renderColor(int x, int y, int x2, int y2, float r, float g, float b, float a) {
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+    public static void renderColor(Matrix4f pose, int x, int y, int x2, int y2, float r, float g, float b, float a) {
+        RenderSystem.disableTexture();
+        RenderSystem.enableBlend();
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder builder = tessellator.getBuffer();
+        BufferBuilder builder = tessellator.getBuilder();
         builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        builder.pos(x, y2, 0).color(r, g, b, a).endVertex();
-        builder.pos(x2, y2, 0).color(r, g, b, a).endVertex();
-        builder.pos(x2, y, 0).color(r, g, b, a).endVertex();
-        builder.pos(x, y, 0).color(r, g, b, a).endVertex();
-        tessellator.draw();
-        GlStateManager.disableBlend();
-        GlStateManager.enableTexture2D();
+        builder.vertex(pose, x, y2, 0).color(r, g, b, a).endVertex();
+        builder.vertex(pose, x2, y2, 0).color(r, g, b, a).endVertex();
+        builder.vertex(pose, x2, y, 0).color(r, g, b, a).endVertex();
+        builder.vertex(pose, x, y, 0).color(r, g, b, a).endVertex();
+        builder.end();
+        WorldVertexBufferUploader.end(builder);
+        RenderSystem.disableBlend();
+        RenderSystem.enableTexture();
     }
 
-    public static void renderLine(int x, int y, int x2, int y2, float r, float g, float b, float a, int width) {
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+    public static void renderLine(Matrix4f pose, int x, int y, int x2, int y2, float r, float g, float b, float a, int width) {
+        RenderSystem.disableTexture();
+        RenderSystem.enableBlend();
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder builder = tessellator.getBuffer();
-        GlStateManager.glLineWidth(width);
+        BufferBuilder builder = tessellator.getBuilder();
+        RenderSystem.lineWidth(width);
         builder.begin(3, DefaultVertexFormats.POSITION_COLOR);
-        builder.pos(x, y, 0).color(r, g, b, a).endVertex();
-        builder.pos(x2, y2, 0).color(r, g, b, a).endVertex();
-        tessellator.draw();
-        GlStateManager.glLineWidth(1);
-        GlStateManager.disableBlend();
-        GlStateManager.enableTexture2D();
+        builder.vertex(pose, x, y, 0).color(r, g, b, a).endVertex();
+        builder.vertex(pose, x2, y2, 0).color(r, g, b, a).endVertex();
+        builder.end();
+        WorldVertexBufferUploader.end(builder);
+        RenderSystem.lineWidth(1);
+        RenderSystem.disableBlend();
+        RenderSystem.enableTexture();
     }
 
     public static String formatTicksToTime(int ticks) {
@@ -332,7 +338,7 @@ public class ModUtils {
     }
 
     public static float getReachDistance(PlayerEntity player) {
-        float attrib = (float) player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
+        float attrib = (float) player.getAttributeValue(ForgeMod.REACH_DISTANCE.get());
         return player.isCreative() ? attrib : attrib - 0.5F;
     }
 

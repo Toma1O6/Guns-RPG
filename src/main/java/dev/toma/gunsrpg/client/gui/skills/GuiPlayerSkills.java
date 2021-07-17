@@ -30,6 +30,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -88,10 +89,10 @@ public class GuiPlayerSkills extends Screen {
         }
         display.ifPresent(dsp -> dsp.draw(stack, minecraft, mouseX, mouseY, partialTicks, posX, posY));
         // HEADER
-        ModUtils.renderColor(0, 0, width, 25, 0, 0, 0, 0.4f);
+        ModUtils.renderColor(stack.last().pose(), 0, 0, width, 25, 0, 0, 0, 0.4f);
         font.drawShadow(stack, TextFormatting.UNDERLINE + headerText, (width - headerWidth) / 2f, 8, 0xFFFFFFFF);
         // FOOTER
-        ModUtils.renderColor(0, height - 20, width, height, 0, 0, 0, 0.4F);
+        ModUtils.renderColor(stack.last().pose(), 0, height - 20, width, height, 0, 0, 0, 0.4F);
         int level = skills.getLevel();
         int killed = skills.getKills();
         int required = skills.getRequiredKills();
@@ -99,8 +100,8 @@ public class GuiPlayerSkills extends Screen {
         String foot = skills.isMaxLevel() ? String.format("Level: %d - %d kills", level, killed) : String.format("Level: %d (%d%%) - %d / %d kills", level, (int)(decimal * 100), killed, required);
         // level progress
         int length = width / 2;
-        ModUtils.renderColor(15, height - 15, length, height - 5, 0.0F, 0.0F, 0.0F, 1.0F);
-        ModUtils.renderColor(17, height - 13, (int)(decimal * (length - 2)), height - 7, 0.0F, 1.0F, 1.0F, 1.0F);
+        ModUtils.renderColor(stack.last().pose(), 15, height - 15, length, height - 5, 0.0F, 0.0F, 0.0F, 1.0F);
+        ModUtils.renderColor(stack.last().pose(), 17, height - 13, (int)(decimal * (length - 2)), height - 7, 0.0F, 1.0F, 1.0F, 1.0F);
         font.drawShadow(stack, foot, 4 + length, height - 14, 0xffffff);
         String text2 = skills.getSkillPoints() + " pts";
         font.drawShadow(stack, text2, width - font.width(text2) - 5, height - 14, 0xffff00);
@@ -192,8 +193,8 @@ public class GuiPlayerSkills extends Screen {
 
         public void draw(MatrixStack stack, Minecraft mc, int mouseX, int mouseY, float partialTicks, int offsetX, int offsetY) {
             hovered = isMouseOver(mouseX, mouseY, offsetX, offsetY);
-            ModUtils.renderColor(x, y, x + w, y + h, 0.0F, 0.0F, 0.0F, 0.4F);
-            if (hovered) ModUtils.renderColor(x, y, x + w, y + h, 1.0F, 1.0F, 1.0F, 0.4F);
+            ModUtils.renderColor(stack.last().pose(), x, y, x + w, y + h, 0.0F, 0.0F, 0.0F, 0.4F);
+            if (hovered) ModUtils.renderColor(stack.last().pose(), x, y, x + w, y + h, 1.0F, 1.0F, 1.0F, 0.4F);
         }
 
         public boolean isMouseOver(double mouseX, double mouseY, int px, int py) {
@@ -303,31 +304,32 @@ public class GuiPlayerSkills extends Screen {
         public void draw(MatrixStack stack, Minecraft mc, int mouseX, int mouseY, float partialTicks, int offsetX, int offsetY) {
             int px = x - offsetX;
             int py = y - offsetY;
+            Matrix4f pose = stack.last().pose();
             for (Pair<Vec2i, Vec2i> line : lines) {
                 int x1 = line.getLeft().x() - offsetX;
                 int y1 = line.getLeft().y() - offsetY;
                 int x2 = line.getRight().x() - offsetX;
                 int y2 = line.getRight().y() - offsetY;
-                ModUtils.renderLine(x1, y1, x2, y2, 0.0F, 0.0F, 0.0F, 1.0F, 8);
-                ModUtils.renderLine(x1, y1, x2, y2, 1.0F, 1.0F, 1.0F, 1.0F, 2);
+                ModUtils.renderLine(pose, x1, y1, x2, y2, 0.0F, 0.0F, 0.0F, 1.0F, 8);
+                ModUtils.renderLine(pose, x1, y1, x2, y2, 1.0F, 1.0F, 1.0F, 1.0F, 2);
             }
             hovered = isMouseOver(offsetX + mouseX, offsetY + mouseY, 0, 0);
-            ModUtils.renderColor(px, py, px + w, py + h, 0.0F, 0.0F, 0.0F, 1.0F);
+            ModUtils.renderColor(pose, px, py, px + w, py + h, 0.0F, 0.0F, 0.0F, 1.0F);
             if(obtained) {
-                ModUtils.renderColor(px + 1, py + 1, px + w - 1, py + h - 1, 0.25F, 0.75F, 0.1F, 1.0F);
+                ModUtils.renderColor(pose, px + 1, py + 1, px + w - 1, py + h - 1, 0.25F, 0.75F, 0.1F, 1.0F);
             } else {
-                ModUtils.renderColor(px + 1, py + 1, px + w - 1, py + h - 1, 0.25F, 0.25F, 0.25F, 1.0F);
+                ModUtils.renderColor(pose, px + 1, py + 1, px + w - 1, py + h - 1, 0.25F, 0.25F, 0.25F, 1.0F);
             }
             if(type.hasCustomRenderFactory()) {
                 mc.getItemRenderer().renderGuiItem(type.getRenderItem(), px + 2, py + 2);
             } else {
-                ModUtils.renderTexture(px + 2, py + 2, px + w - 2, py + h - 2, type.icon);
+                ModUtils.renderTexture(pose, px + 2, py + 2, px + w - 2, py + h - 2, type.icon);
             }
             if(renderer != null) {
-                renderer.drawOnTop(px, py, w, h);
+                renderer.drawOnTop(stack, px, py, w, h);
             }
             if(type.isFreshUnlock()) {
-                ModUtils.renderColor(px + 17, py, px + 20, py + 3, 1.0F, 1.0F, 0.0F, 1.0F);
+                ModUtils.renderColor(pose, px + 17, py, px + 20, py + 3, 1.0F, 1.0F, 0.0F, 1.0F);
             }
             if(hovered) {
                 if(type.isFreshUnlock()) {
@@ -338,7 +340,7 @@ public class GuiPlayerSkills extends Screen {
                     stack.translate(0, 0, 1);
                     String displayName = type.getDisplayName();
                     int width = mc.font.width(displayName);
-                    ModUtils.renderColor(5 + px - width / 2, py + h + 2, 15 + px + width / 2, py + h + 16, 0.0F, 0.0F, 0.0F, 1.0F);
+                    ModUtils.renderColor(stack.last().pose(), 5 + px - width / 2, py + h + 2, 15 + px + width / 2, py + h + 16, 0.0F, 0.0F, 0.0F, 1.0F);
                     mc.font.drawShadow(stack, displayName, px + (20 - width) / 2.0F, py + h + 5, 0xffffff);
                     stack.popPose();
                 }
@@ -352,7 +354,7 @@ public class GuiPlayerSkills extends Screen {
                     int left = mouseX + infoWidth > GuiPlayerSkills.this.width ? mouseX - infoWidth - 10 : mouseX;
                     int top = mouseY + 5 + comments.length * 12 > GuiPlayerSkills.this.height ? mouseY - comments.length * 12 : mouseY + 5;
                     int panelHeight = comments.length * 12 + 5;
-                    ModUtils.renderTextureWithColor(left, top, left + infoWidth + 10, top + panelHeight, SKILL_TREE_TEXTURES, 0.25F, obtained ? 0.75F : 0.25F, obtained ? 0.1F : 0.25F, 1.0F);
+                    ModUtils.renderTextureWithColor(stack.last().pose(), left, top, left + infoWidth + 10, top + panelHeight, SKILL_TREE_TEXTURES, 0.25F, obtained ? 0.75F : 0.25F, obtained ? 0.1F : 0.25F, 1.0F);
                     for(int i = 0; i < comments.length; i++) {
                         mc.font.drawShadow(stack, comments[i], left + 5, top + 5 + 12 * i, 0xffffff);
                     }
@@ -388,11 +390,11 @@ public class GuiPlayerSkills extends Screen {
                 }
             }
             if(flag) {
-                ModUtils.renderColor(this.x + this.w - 3, this.y, this.x + this.w, this.y + 3, 1.0F, 1.0F, 0.0F, 1.0F);
+                ModUtils.renderColor(stack.last().pose(), this.x + this.w - 3, this.y, this.x + this.w, this.y + 3, 1.0F, 1.0F, 0.0F, 1.0F);
             }
             if(selected) {
                 fadeAway(x, y, x + 2, y + h);
-                ModUtils.renderColor(x, y + h - 2, x + w, y + h, 1.0F, 1.0F, 1.0F, 1.0F);
+                ModUtils.renderColor(stack.last().pose(), x, y + h - 2, x + w, y + h, 1.0F, 1.0F, 1.0F, 1.0F);
                 fadeAway(x + w - 2, y, x + w, y + h);
             }
             this.drawCenteredString(mc.font, stack, this.category.name(), this.x + this.w / 2, this.y + (this.h - 8) / 2, hovered ? 0xffff88 : 0xffffff);
@@ -477,8 +479,9 @@ public class GuiPlayerSkills extends Screen {
         public void draw(MatrixStack stack, Minecraft mc, int mouseX, int mouseY, float partialTicks, int xOffset, int yOffset) {
             int px = x - xOffset;
             int py = y - yOffset;
-            ModUtils.renderColor(px, py, px + w, py + h, 0.0F, 0.0F, 0.0F, 1.0F);
-            ModUtils.renderColor(px + 1, py + 1, px + w - 1, py + h - 1, 0.5F, 0.5F, 0.5F, 1.0F);
+            Matrix4f pose = stack.last().pose();
+            ModUtils.renderColor(pose, px, py, px + w, py + h, 0.0F, 0.0F, 0.0F, 1.0F);
+            ModUtils.renderColor(pose, px + 1, py + 1, px + w - 1, py + h - 1, 0.5F, 0.5F, 0.5F, 1.0F);
             String txt;
             if(gunData.isAtMaxLevel()) {
                 txt = String.format("Level %d, kills %d", gunData.getLevel(), gunData.getKills());
@@ -488,9 +491,9 @@ public class GuiPlayerSkills extends Screen {
             mc.font.drawShadow(stack, txt, px + 10, py + h - 24, 0xffffff);
             String txt2 = gunData.getGunPoints() + " pts";
             mc.font.drawShadow(stack, txt2, px + w - 10 - mc.font.width(txt2), py + h - 24, 0xffff00);
-            ModUtils.renderColor(px + 10, py + h - 15, px + w - 10, py + h - 5, 0.0F, 0.0F, 0.0F, 1.0F);
+            ModUtils.renderColor(pose, px + 10, py + h - 15, px + w - 10, py + h - 5, 0.0F, 0.0F, 0.0F, 1.0F);
             float levelPrg = gunData.isAtMaxLevel() ? 1.0F : ((float) gunData.getKills() / gunData.getRequiredKills());
-            ModUtils.renderColor(px + 12, py + h - 13, (int)(px + (w - 12) * levelPrg), py + h - 7, 1.0F, 1.0F, 0.0F, 1.0F);
+            ModUtils.renderColor(pose, px + 12, py + h - 13, (int)(px + (w - 12) * levelPrg), py + h - 7, 1.0F, 1.0F, 0.0F, 1.0F);
             list.forEach(component -> component.draw(stack, mc, mouseX, mouseY, partialTicks, xOffset, yOffset));
         }
     }

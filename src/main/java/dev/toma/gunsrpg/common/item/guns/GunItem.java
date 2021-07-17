@@ -1,11 +1,15 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.ModTabs;
-import dev.toma.gunsrpg.client.animation.*;
+import dev.toma.gunsrpg.client.animation.AnimationProcessor;
+import dev.toma.gunsrpg.client.animation.Animations;
+import dev.toma.gunsrpg.client.animation.IAnimation;
+import dev.toma.gunsrpg.client.animation.IHandRenderer;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.client.animation.impl.RecoilAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.entity.EntityBullet;
+import dev.toma.gunsrpg.common.init.GRPGEntityTypes;
 import dev.toma.gunsrpg.common.item.GRPGItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
@@ -14,7 +18,8 @@ import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerMagazine;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import dev.toma.gunsrpg.config.gun.IWeaponConfiguration;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,11 +30,12 @@ import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,11 +60,20 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
         return getEntityShootSound(entity);
     }
 
+    public abstract SkillType<?> getRequiredSkill();
+
+    public abstract IWeaponConfiguration getWeaponConfig();
+
+    public abstract void fillAmmoMaterialData(Map<AmmoMaterial, Integer> data);
+
+    @OnlyIn(Dist.CLIENT)
+    public abstract IAnimation createReloadAnimation(PlayerEntity player);
+
     protected SoundEvent getShootSound(PlayerEntity entity) {
         return SoundEvents.LEVER_CLICK;
     }
 
-    public SoundEvent getEntityShootSound(LivingEntity entity) {
+    protected SoundEvent getEntityShootSound(LivingEntity entity) {
         return SoundEvents.LEVER_CLICK;
     }
 
@@ -81,21 +96,11 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public IAnimation createReloadAnimation(PlayerEntity player) {
-        return new MultiStepAnimation.Configurable(this.getReloadTime(player), "pistol_reload");
-    }
-
-    @OnlyIn(Dist.CLIENT)
     public void onShoot(PlayerEntity player, ItemStack stack) {
-        AnimationProcessor.stop(Animations.RELOAD);
-        AnimationProcessor.play(Animations.RECOIL, RecoilAnimation.newInstance(5));
+        AnimationProcessor processor = ClientSideManager.instance().processor();
+        processor.stop(Animations.RELOAD);
+        processor.play(Animations.RECOIL, RecoilAnimation.newInstance(5));
     }
-
-    public abstract SkillType<?> getRequiredSkill();
-
-    public abstract WeaponConfiguration getWeaponConfig();
-
-    public abstract void fillAmmoMaterialData(Map<AmmoMaterial, Integer> data);
 
     public IReloadManager getReloadManager() {
         return ReloadManagerMagazine.MANAGER;
@@ -118,12 +123,12 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
     }
 
     public float getVerticalRecoil(PlayerEntity player) {
-        return this.getWeaponConfig().recoilVertical;
+        return this.getWeaponConfig().getVerticalRecoil();
     }
 
     public float getHorizontalRecoil(PlayerEntity player) {
         boolean f = random.nextBoolean();
-        float v = this.getWeaponConfig().recoilHorizontal;
+        float v = this.getWeaponConfig().getHorizontalRecoil();
         return f ? v : -v;
     }
 
@@ -136,16 +141,16 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
     }
 
     public void shootBullet(World world, LivingEntity entity, ItemStack stack) {
-        EntityBullet bullet = new EntityBullet(world, entity, this, stack);
-        boolean aim = entity instanceof PlayerEntity && PlayerDataFactory.get((PlayerEntity) entity).getAimInfo().isAiming();
+        EntityBullet bullet = new EntityBullet(GRPGEntityTypes.BULLET.get(), world, entity, this, stack);
+        boolean aim = entity instanceof PlayerEntity && PlayerDataFactory.getUnsafe((PlayerEntity) entity).getAimInfo().isAiming();
         float pitch = entity.xRot + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 2);
         float yaw = entity.yRot + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 2);
-        bullet.fire(pitch, yaw, getWeaponConfig().velocity);
+        bullet.fire(pitch, yaw, getWeaponConfig().getVelocity());
         world.addFreshEntity(bullet);
     }
 
     public final void shoot(World world, LivingEntity entity, ItemStack stack) {
-        shoot(world, entity, stack, getShootSound(entity));
+        shoot(world, entity, stack, getWeaponShootSound(entity));
     }
 
     public final void shoot(World world, LivingEntity entity, ItemStack stack, SoundEvent event) {
@@ -212,9 +217,9 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flags) {
         AmmoMaterial material = getMaterialFromNBT(stack);
-        tooltip.add("Ammo type: " + (material != null ? material.getColor() + material.name().toUpperCase() : "???"));
+        list.add(new StringTextComponent("Ammo type: " + (material != null ? material.getColor() + material.name().toUpperCase() : "???")));
     }
 
     @Override
@@ -223,7 +228,7 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
     }
 
     @Override
-    public boolean onEntitySwing(LivingEntity entityLiving, ItemStack stack) {
+    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
         return false;
     }
 }

@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.block;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.common.init.CommonRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

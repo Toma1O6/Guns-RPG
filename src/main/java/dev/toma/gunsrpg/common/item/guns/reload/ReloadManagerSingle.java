@@ -4,7 +4,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 public class ReloadManagerSingle implements IReloadManager {
@@ -12,7 +12,7 @@ public class ReloadManagerSingle implements IReloadManager {
     public static final ReloadManagerSingle SINGLE = new ReloadManagerSingle();
 
     @Override
-    public void finishReload(EntityPlayer player, GunItem item, ItemStack stack) {
+    public void finishReload(PlayerEntity player, GunItem item, ItemStack stack) {
         AmmoType ammoType = item.getAmmoType();
         AmmoMaterial material = item.getMaterialFromNBT(stack);
         if(material == null) return;
@@ -27,8 +27,8 @@ public class ReloadManagerSingle implements IReloadManager {
                 }
                 return;
             }
-            for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                ItemStack itemStack = player.inventory.getStackInSlot(i);
+            for(int i = 0; i < player.inventory.getContainerSize(); i++) {
+                ItemStack itemStack = player.inventory.getItem(i);
                 if(itemStack.getItem() instanceof IAmmoProvider) {
                     IAmmoProvider provider = (IAmmoProvider) itemStack.getItem();
                     if(itemStack.getCount() > 0 && provider.getAmmoType() == ammoType && provider.getMaterial() == material) {

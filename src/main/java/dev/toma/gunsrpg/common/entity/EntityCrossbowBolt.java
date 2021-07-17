@@ -39,7 +39,7 @@ public class EntityCrossbowBolt extends EntityBullet {
     }
 
     @Override
-    public boolean isInRangeToRenderDist(double distance) {
+    public boolean shouldRenderAtSqrDistance(double sqrDist) {
         return true;
     }
 }

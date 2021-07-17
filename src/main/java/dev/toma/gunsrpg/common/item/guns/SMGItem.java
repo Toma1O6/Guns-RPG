@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.MultiStepAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
@@ -12,19 +13,18 @@ import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.GRPGConfig;
-import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
+import dev.toma.gunsrpg.config.gun.IWeaponConfiguration;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumHandSide;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Map;
 
@@ -35,8 +35,8 @@ public class SMGItem extends GunItem {
     }
 
     @Override
-    public WeaponConfiguration getWeaponConfig() {
-        return GRPGConfig.weaponConfig.smg;
+    public IWeaponConfiguration getWeaponConfig() {
+        return GRPGConfig.weaponConfig.ump;
     }
 
     @Override
@@ -51,55 +51,61 @@ public class SMGItem extends GunItem {
     }
 
     @Override
-    public SoundEvent getShootSound(EntityLivingBase entity) {
-        return entity instanceof EntityPlayer && this.isSilenced((EntityPlayer) entity) ? GRPGSounds.UMP45_SILENT : GRPGSounds.UMP45;
+    public SoundEvent getShootSound(PlayerEntity entity) {
+        return this.isSilenced(entity) ? GRPGSounds.UMP45_SILENT : GRPGSounds.UMP45;
     }
 
     @Override
-    public SoundEvent getReloadSound(EntityPlayer player) {
+    protected SoundEvent getEntityShootSound(LivingEntity entity) {
+        return GRPGSounds.MP5;
+    }
+
+    @Override
+    public SoundEvent getReloadSound(PlayerEntity player) {
         return PlayerDataFactory.hasActiveSkill(player, Skills.SMG_QUICKDRAW) ? GRPGSounds.SMG_RELOAD_SHORT : GRPGSounds.SMG_RELOAD;
     }
 
     @Override
-    public int getMaxAmmo(EntityPlayer player) {
+    public int getMaxAmmo(PlayerEntity player) {
         return PlayerDataFactory.hasActiveSkill(player, Skills.SMG_EXTENDED) ? 40 : 25;
     }
 
     @Override
-    public int getFirerate(EntityPlayer player) {
-        return PlayerDataFactory.hasActiveSkill(player, Skills.SMG_TOUGH_SPRING) ? GRPGConfig.weaponConfig.smg.upgraded : GRPGConfig.weaponConfig.smg.normal;
+    public int getFirerate(PlayerEntity player) {
+        IWeaponConfiguration cfg = getWeaponConfig();
+        return PlayerDataFactory.hasActiveSkill(player, Skills.SMG_TOUGH_SPRING) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
     }
 
     @Override
-    public boolean isSilenced(EntityPlayer player) {
+    public boolean isSilenced(PlayerEntity player) {
         return PlayerDataFactory.hasActiveSkill(player, Skills.SMG_SUPPRESSOR);
     }
 
     @Override
-    public int getReloadTime(EntityPlayer player) {
+    public int getReloadTime(PlayerEntity player) {
         int time = PlayerDataFactory.hasActiveSkill(player, Skills.SMG_QUICKDRAW) ? 40 : 52;
         return (int) (time * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override
-    public void onKillEntity(EntityBullet bullet, EntityLivingBase victim, ItemStack stack, EntityLivingBase shooter) {
-        if(!shooter.world.isRemote && shooter instanceof EntityPlayer && PlayerDataFactory.hasActiveSkill((EntityPlayer) shooter, Skills.SMG_COMMANDO)) {
-            shooter.addPotionEffect(new PotionEffect(MobEffects.SPEED, 100, 1, false, false));
-            shooter.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 60, 2, false, false));
+    public void onKillEntity(EntityBullet bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+        if(!shooter.level.isClientSide && shooter instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) shooter, Skills.SMG_COMMANDO)) {
+            shooter.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 100, 1, false, false));
+            shooter.addEffect(new EffectInstance(Effects.REGENERATION, 60, 2, false, false));
         }
     }
 
     @Override
-    public float getVerticalRecoil(EntityPlayer player) {
+    public float getVerticalRecoil(PlayerEntity player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerDataFactory.hasActiveSkill(player, Skills.SMG_VERTICAL_GRIP) ? GRPGConfig.weaponConfig.general.verticalGrip : 1.0F;
+        float mod = PlayerDataFactory.hasActiveSkill(player, Skills.SMG_VERTICAL_GRIP) ? GRPGConfig.weaponConfig.general.verticalGrip.floatValue() : 1.0F;
         return mod * f;
     }
 
     @Override
-    public boolean switchFiremode(ItemStack stack, EntityPlayer player) {
+    public boolean switchFiremode(ItemStack stack, PlayerEntity player) {
         Firemode mode = this.getFiremode(stack);
-        stack.getTagCompound().setInteger("firemode", mode == Firemode.SINGLE ? 2 : 0);
+        stack.getTag().putInt("firemode", mode == Firemode.SINGLE ? 2 : 0);
         return true;
     }
 
@@ -108,41 +114,37 @@ public class SMGItem extends GunItem {
         return Skills.SMG_ASSEMBLY;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
-        boolean rds = PlayerDataFactory.hasActiveSkill(Minecraft.getMinecraft().player, Skills.SMG_RED_DOT);
-        return new AimingAnimation(-0.57F, rds ? 0.144F : 0.2F, 0.2F).animateRight(animation -> {
-            float f = animation.smooth;
-            GlStateManager.translate(-0.25F * f, 0.2F * f, 0.2F * f);
-            GlStateManager.rotate(20.0F * f, 0.0F, 1.0F, 0.0F);
-        }).animateLeft(animation -> {
-            float f = animation.smooth;
-            GlStateManager.translate(-0.32F * f, 0.2F * f, 0.35F * f);
-            GlStateManager.rotate(10.0F * f, 0.0F, 1.0F, 0.0F);
+        boolean rds = PlayerDataFactory.hasActiveSkill(Minecraft.getInstance().player, Skills.SMG_RED_DOT);
+        return new AimingAnimation(-0.57F, rds ? 0.144F : 0.2F, 0.2F).animateRight((stack, f) -> {
+            stack.translate(-0.25F * f, 0.2F * f, 0.2F * f);
+            stack.mulPose(Vector3f.YP.rotationDegrees(20 * f));
+        }).animateLeft((stack, f) -> {
+            stack.translate(-0.32F * f, 0.2F * f, 0.35F * f);
+            stack.mulPose(Vector3f.YP.rotationDegrees(10 * f));
         });
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public IAnimation createReloadAnimation(EntityPlayer player) {
+    public IAnimation createReloadAnimation(PlayerEntity player) {
         return new MultiStepAnimation.Configurable(this.getReloadTime(player), "smg_reload");
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void renderRightArm() {
-        GlStateManager.translate(0.15F, -0.3F, 0.25F);
-        GlStateManager.rotate(10.0F, 1.0F, 0.0F, 0.0F);
-        renderArm(EnumHandSide.RIGHT);
+    public void transformRightArm(MatrixStack matrix) {
+        matrix.translate(0.15F, -0.3F, 0.25F);
+        matrix.mulPose(Vector3f.XP.rotationDegrees(10));
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void renderLeftArm() {
-        GlStateManager.translate(0.4F, -0.25F, -0.2F);
-        GlStateManager.rotate(10.0F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(-30.0F, 0.0F, 1.0F, 0.0F);
-        renderArm(EnumHandSide.LEFT);
+    public void transformLeftArm(MatrixStack matrix) {
+        matrix.translate(0.4F, -0.25F, -0.2F);
+        matrix.mulPose(Vector3f.XP.rotationDegrees(10));
+        matrix.mulPose(Vector3f.YP.rotationDegrees(-30));
     }
 }

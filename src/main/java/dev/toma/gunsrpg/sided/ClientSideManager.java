@@ -10,11 +10,15 @@ import dev.toma.gunsrpg.client.gui.GuiSmithingTable;
 import dev.toma.gunsrpg.client.gui.skills.GuiPlayerSkills;
 import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import dev.toma.gunsrpg.common.entity.EntityGoldDragon;
 import dev.toma.gunsrpg.common.init.GRPGContainers;
 import dev.toma.gunsrpg.common.init.GRPGEntityTypes;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
@@ -46,7 +50,7 @@ public class ClientSideManager {
         RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.CROSSBOW_BOLT.get(), CrossbowBoltRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.GRENADE.get(), RenderGrenade::new);
         RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.ROCKET_ANGEL.get(), RenderRocketAngel::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityGoldDragon.class, RenderGoldenDragon::new);
+        RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.GOLD_DRAGON.get(), RenderGoldenDragon::new);
         ModKeybinds.registerKeybinds();
         MinecraftForge.EVENT_BUS.register(new ModKeybinds());
         event.enqueueWork(this::screenSetup);
@@ -54,6 +58,12 @@ public class ClientSideManager {
 
     public static void runOnClient(Supplier<DistExecutor.SafeRunnable> runnableSupplier) {
         DistExecutor.safeRunWhenOn(Dist.CLIENT, runnableSupplier);
+    }
+
+    public void playDelayedSound(BlockPos pos, float volume, float pitch, SoundEvent event, SoundCategory category, int tickDelay) {
+        Minecraft mc = Minecraft.getInstance();
+        SoundHandler handler = mc.getSoundManager();
+        handler.playDelayed(new SimpleSound(event, category, volume, pitch, pos), tickDelay);
     }
 
     public void onDataSync() {

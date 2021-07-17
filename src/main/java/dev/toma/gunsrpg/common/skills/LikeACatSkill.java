@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.skills;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -10,11 +11,11 @@ import dev.toma.gunsrpg.network.packet.SPacketSkillClicked;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.math.vector.Matrix4f;
 
 public class LikeACatSkill extends BasicSkill implements Cooldown, Clickable {
 
@@ -79,7 +80,7 @@ public class LikeACatSkill extends BasicSkill implements Cooldown, Clickable {
     }
 
     @Override
-    public void drawOnTop(int x, int y, int width, int heigth) {
+    public void drawOnTop(MatrixStack stack, int x, int y, int width, int heigth) {
         float f;
         float r;
         float g;
@@ -100,14 +101,15 @@ public class LikeACatSkill extends BasicSkill implements Cooldown, Clickable {
             b = 0.0F;
             time = getCooldown();
         }
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(0, 0, 1);
-        ModUtils.renderColor(x, y + heigth, x + width, y + heigth + 3, 0.0F, 0.0F, 0.0F, 1.0F);
-        ModUtils.renderColor(x + 1, y + heigth + 1, x + 1 + (int)((width - 1) * f), y + heigth + 2, r, g, b, 1.0F);
+        stack.pushPose();
+        stack.translate(0, 0, 1);
+        Matrix4f pose = stack.last().pose();
+        ModUtils.renderColor(pose, x, y + heigth, x + width, y + heigth + 3, 0.0F, 0.0F, 0.0F, 1.0F);
+        ModUtils.renderColor(pose, x + 1, y + heigth + 1, x + 1 + (int)((width - 1) * f), y + heigth + 2, r, g, b, 1.0F);
         String cooldown = ModUtils.formatTicksToTime(time);
         FontRenderer renderer = Minecraft.getInstance().font;
-        renderer.draw(cooldown, x + (width - renderer.width(cooldown)) / 2, y + heigth + 4, 0xffffff);
-        GlStateManager.popMatrix();
+        renderer.draw(stack, cooldown, x + (width - renderer.width(cooldown)) / 2f, y + heigth + 4, 0xffffff);
+        stack.popPose();
     }
 
     @Override
