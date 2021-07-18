@@ -16,7 +16,7 @@
             "trigger": "minecraft:player_killed_entity",
             "conditions": {
                 "entity": {
-                    "type": "gunsrpg:golden_dragon"
+                    "type": "gunsrpg:gold_dragon"
                 }
             }
         }

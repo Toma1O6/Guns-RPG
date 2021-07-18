@@ -49,6 +49,9 @@ public class ClientSideManager {
         RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.GRENADE.get(), RenderGrenade::new);
         RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.ROCKET_ANGEL.get(), RenderRocketAngel::new);
         RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.GOLD_DRAGON.get(), RenderGoldenDragon::new);
+        RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.SHOTGUN_PELLET.get(), EmptyEntityRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.BULLET.get(), EmptyEntityRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(GRPGEntityTypes.FLARE.get(), EmptyEntityRenderer::new);
         ModKeybinds.registerKeybinds();
         MinecraftForge.EVENT_BUS.register(new ModKeybinds());
         event.enqueueWork(this::screenSetup);

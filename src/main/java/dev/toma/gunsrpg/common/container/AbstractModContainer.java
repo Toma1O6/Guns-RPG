@@ -25,10 +25,6 @@ public abstract class AbstractModContainer<T extends InventoryTileEntity> extend
         tileEntity.getInventory().ifPresent(handler -> size = handler.getSlots());
     }
 
-    public AbstractModContainer(ContainerType<? extends AbstractModContainer<?>> type, int windowID, PlayerInventory playerInventory, PacketBuffer buffer) {
-        this(type, windowID, playerInventory, readTileEntity(buffer, playerInventory));
-    }
-
     @SuppressWarnings("unchecked")
     protected static <T extends TileEntity> T readTileEntity(PacketBuffer buffer, PlayerInventory inventory) {
         return (T) inventory.player.level.getBlockEntity(buffer.readBlockPos());

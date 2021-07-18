@@ -32,12 +32,12 @@ public class AirdropEntity extends Entity {
 
     @Override
     public void tick() {
-        BlockPos pos = getOnPos();
+        BlockPos pos = blockPosition();
         if (!onGround) {
             if (level.getBlockState(pos).getMaterial().isLiquid()) {
                 onLanding(pos);
             }
-            this.setDeltaMovement(getDeltaMovement().add(0, -0.075, 0));
+            this.setDeltaMovement(0, -0.075, 0);
         } else {
             if (!level.isClientSide) {
                 onLanding(pos);

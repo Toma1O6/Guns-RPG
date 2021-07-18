@@ -56,6 +56,11 @@ public class BlockAirdrop extends GRPGBlock {
     }
 
     @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
+
+    @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new AirdropTileEntity();
     }

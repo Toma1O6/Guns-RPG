@@ -31,7 +31,7 @@ public class RenderAirdrop extends EntityRenderer<AirdropEntity> {
         matrix.pushPose();
         {
             matrix.translate(0.0F, 1.8F, 0.0F);
-            matrix.scale(0.08F, 0.08F, 0.08F);
+            //matrix.scale(0.08F, 0.08F, 0.08F);
             matrix.mulPose(Vector3f.XP.rotationDegrees(180F));
             IVertexBuilder builder = renderBuffer.getBuffer(model.renderType(getTextureLocation(airdrop)));
             model.renderToBuffer(matrix, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);

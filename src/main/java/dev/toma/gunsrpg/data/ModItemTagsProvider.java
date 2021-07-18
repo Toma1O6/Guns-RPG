@@ -1,6 +1,7 @@
-package dev.toma.gunsrpg.common.init;
+package dev.toma.gunsrpg.data;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.common.init.ModTags;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;

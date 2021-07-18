@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.block;
 
 import dev.toma.gunsrpg.common.container.AirdropContainer;
+import dev.toma.gunsrpg.common.container.DeathCrateContainer;
 import dev.toma.gunsrpg.common.tileentity.AirdropTileEntity;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -60,7 +61,7 @@ public class BlockDeathCrate extends GRPGBlock {
     @Override
     public INamedContainerProvider getMenuProvider(BlockState state, World world, BlockPos pos) {
         return new SimpleNamedContainerProvider(
-                (windowID, playerInventory, player) -> new AirdropContainer(windowID, playerInventory, (AirdropTileEntity) world.getBlockEntity(pos)),
+                (windowID, playerInventory, player) -> new DeathCrateContainer(windowID, playerInventory, (DeathCrateTileEntity) world.getBlockEntity(pos)),
                 TITLE
         );
     }

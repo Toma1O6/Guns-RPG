@@ -49,7 +49,6 @@ public class GunsRPG {
         // lifecycle events
         eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::commonSetup);
-        eventBus.addListener(this::gatherData);
         // other events
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 
@@ -58,16 +57,6 @@ public class GunsRPG {
 
     public static ResourceLocation makeResource(String path) {
         return new ResourceLocation(MODID, path);
-    }
-
-    private void gatherData(GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        if (event.includeServer()) {
-            ExistingFileHelper fileHelper = event.getExistingFileHelper();
-            ModBlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(generator, fileHelper);
-            generator.addProvider(blockTagsProvider);
-            generator.addProvider(new ModItemTagsProvider(generator, blockTagsProvider, fileHelper));
-        }
     }
 
     private void clientSetup(FMLClientSetupEvent event) {
