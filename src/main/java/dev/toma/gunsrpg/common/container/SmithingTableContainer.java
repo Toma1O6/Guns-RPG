@@ -16,7 +16,7 @@ public class SmithingTableContainer extends AbstractModContainer<SmithingTableTi
         tileEntity.getInventory().ifPresent(handler -> {
             for (int y = 0; y < 3; y++) {
                 for (int x = 0; x < 3; x++) {
-                    addSlot(new SlotItemHandler(handler, x + y * 9, 26 + x * 18, 8 + y * 18));
+                    addSlot(new SlotItemHandler(handler, x + y * 3, 26 + x * 18, 8 + y * 18));
                 }
             }
         });

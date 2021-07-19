@@ -1,12 +1,12 @@
 {
     "parent": "block/orientable",
     "textures": {
-        "particle": "gunsrpg:blocks/blast_furnace_side",
-        "north": "gunsrpg:blocks/blast_furnace_front_lit",
-        "south": "gunsrpg:blocks/blast_furnace_side",
-        "west": "gunsrpg:blocks/blast_furnace_side",
-        "east": "gunsrpg:blocks/blast_furnace_side",
-        "up": "gunsrpg:blocks/blast_furnace_top_lit",
-        "down": "gunsrpg:blocks/blast_furnace_bottom"
+        "particle": "gunsrpg:block/blast_furnace_side",
+        "north": "gunsrpg:block/blast_furnace_front_lit",
+        "south": "gunsrpg:block/blast_furnace_side",
+        "west": "gunsrpg:block/blast_furnace_side",
+        "east": "gunsrpg:block/blast_furnace_side",
+        "up": "gunsrpg:block/blast_furnace_top_lit",
+        "down": "gunsrpg:block/blast_furnace_bottom"
     }
 }

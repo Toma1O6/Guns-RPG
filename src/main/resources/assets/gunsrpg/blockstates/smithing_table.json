@@ -1,7 +1,7 @@
 {
     "variants": {
-        "normal": {
-            "model": "gunsrpg:smithing_table"
+        "": {
+            "model": "gunsrpg:block/smithing_table"
         }
     }
 }

@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.common.entity;
 
 import dev.toma.gunsrpg.GunsRPG;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
@@ -23,12 +22,14 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class GoldDragonEntity extends EnderDragonEntity {
 
-    private static final AttributeModifier MAX_HEALTH_MODIFIER = new AttributeModifier(UUID.fromString("9651DBF8-5926-45FC-9608-9EBED5F2A0D0"), "maxHealthModifier", 800.0D, AttributeModifier.Operation.ADDITION);
     private DragonStatsManager manager;
     private int cooldown;
 
@@ -38,9 +39,6 @@ public class GoldDragonEntity extends EnderDragonEntity {
         if (!world.isClientSide) {
             manager = new DragonStatsManager((ServerWorld) world, getDisplayName());
         }
-        // workaround for max health attribute, as all children of ender dragon entity are forced to use vanilla's dragon attribute values
-        //getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(MAX_HEALTH_MODIFIER);
-        //setHealth(getMaxHealth());
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {

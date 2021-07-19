@@ -19,7 +19,7 @@ import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
-import dev.toma.gunsrpg.world.ModConfiguredFeatures;
+import dev.toma.gunsrpg.world.feature.ModConfiguredFeatures;
 import dev.toma.gunsrpg.world.MobSpawnManager;
 import dev.toma.gunsrpg.world.cap.WorldDataProvider;
 import dev.toma.gunsrpg.world.cap.IWorldData;

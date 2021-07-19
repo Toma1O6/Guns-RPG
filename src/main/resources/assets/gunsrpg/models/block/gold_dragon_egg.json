@@ -2,8 +2,8 @@
     "parent": "block/block",
     "ambientocclusion": false,
     "textures": {
-        "particle": "gunsrpg:blocks/gold_dragon_egg",
-        "all": "gunsrpg:blocks/gold_dragon_egg"
+        "particle": "gunsrpg:block/gold_dragon_egg",
+        "all": "gunsrpg:block/gold_dragon_egg"
     },
     "elements": [
         {

@@ -1,7 +1,7 @@
 {
     "variants": {
-        "normal": {
-            "model": "gunsrpg:amethyst_ore"
+        "": {
+            "model": "gunsrpg:block/amethyst_ore"
         }
     }
 }

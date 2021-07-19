@@ -1,9 +1,9 @@
 {
     "parent": "block/orientable",
     "textures": {
-        "0": "blocks/planks_oak",
-        "1": "blocks/planks_spruce",
-        "particle": "blocks/planks_oak"
+        "0": "block/oak_planks",
+        "1": "block/spruce_planks",
+        "particle": "block/oak_planks"
     },
     "elements": [
         {

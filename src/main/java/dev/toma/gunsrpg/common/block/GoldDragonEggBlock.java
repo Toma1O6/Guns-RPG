@@ -25,7 +25,7 @@ import java.util.Random;
 public class GoldDragonEggBlock extends BaseBlock {
 
     public GoldDragonEggBlock(String name) {
-        super(name, Properties.of(Material.EGG).randomTicks());
+        super(name, Properties.of(Material.EGG).randomTicks().noOcclusion());
         registerDefaultState(getStateDefinition().any().setValue(BlockStateProperties.LIT, false));
     }
 

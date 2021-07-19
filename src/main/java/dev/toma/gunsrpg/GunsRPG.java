@@ -37,13 +37,14 @@ public class GunsRPG {
     public static Logger log = LogManager.getLogger();
 
     public GunsRPG() {
-        System.out.println();
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         // deferred registries
         ModEntities.subscribe(eventBus);
         ModEffects.subscribe(eventBus);
         ModBlockEntities.subscribe(eventBus);
         ModContainers.subscribe(eventBus);
+        ModFeatures.subscribe(eventBus);
+        ModFeaturePlacements.subscribe(eventBus);
         // lifecycle events
         eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::commonSetup);

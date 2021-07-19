@@ -37,7 +37,7 @@ public class DeathCrateBlock extends BaseBlock {
     private static final VoxelShape SHAPE = VoxelShapes.box(0.0, 0.0, 0.0, 1.0, 0.4, 1.0);
 
     public DeathCrateBlock(String name) {
-        super(name, Properties.of(Material.WOOD).strength(1.2F).randomTicks());
+        super(name, Properties.of(Material.WOOD).strength(1.2F).randomTicks().noOcclusion());
     }
 
     @Override
