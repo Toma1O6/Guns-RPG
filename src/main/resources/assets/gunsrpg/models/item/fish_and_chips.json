@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:items/fish_and_chips"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/fish_and_chips"
+  }
 }

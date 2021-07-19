@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:items/shepherds_pie"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/shepherds_pie"
+  }
 }

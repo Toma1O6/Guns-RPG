@@ -1,8 +1,8 @@
 {
     "credit": "Made by OfficialMajonaise using Blockbench. For more models see sketchfab.com/officialmajonaise",
     "textures": {
-        "0": "gunsrpg:items/impact_grenade",
-        "particle": "gunsrpg:items/impact_grenade"
+        "0": "gunsrpg:item/impact_grenade",
+        "particle": "gunsrpg:item/impact_grenade"
     },
     "elements": [
         {

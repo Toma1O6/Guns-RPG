@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:items/small_bullet_casing"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/small_bullet_casing"
+  }
 }

@@ -1,6 +1,6 @@
 {
-    "parent": "item/handheld",
-    "textures": {
-        "layer0": "gunsrpg:items/iron_hammer"
-    }
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "gunsrpg:item/iron_hammer"
+  }
 }

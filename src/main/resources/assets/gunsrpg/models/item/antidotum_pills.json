@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:items/antidotum_pills"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/antidotum_pills"
+  }
 }

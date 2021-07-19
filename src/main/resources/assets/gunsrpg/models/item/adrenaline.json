@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:items/adrenaline"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/adrenaline"
+  }
 }

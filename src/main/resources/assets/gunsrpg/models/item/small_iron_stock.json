@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:items/small_iron_stock"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/small_iron_stock"
+  }
 }

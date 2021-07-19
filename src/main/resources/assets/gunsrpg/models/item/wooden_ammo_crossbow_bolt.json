@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:items/wooden_ammo_crossbow_bolt"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/wooden_ammo_crossbow_bolt"
+  }
 }

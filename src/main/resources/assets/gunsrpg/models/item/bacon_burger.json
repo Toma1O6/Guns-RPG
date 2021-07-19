@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:items/bacon_burger"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/bacon_burger"
+  }
 }

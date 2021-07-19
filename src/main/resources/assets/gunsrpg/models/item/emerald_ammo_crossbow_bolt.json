@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:items/emerald_ammo_crossbow_bolt"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/emerald_ammo_crossbow_bolt"
+  }
 }

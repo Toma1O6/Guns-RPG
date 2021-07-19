@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:items/shotgun_shell"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/shotgun_shell"
+  }
 }

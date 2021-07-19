@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:items/skillpoint_book"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/skillpoint_book"
+  }
 }

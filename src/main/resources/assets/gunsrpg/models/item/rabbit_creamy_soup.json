@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:items/rabbit_creamy_soup"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/rabbit_creamy_soup"
+  }
 }
