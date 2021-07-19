@@ -9,10 +9,7 @@ import dev.toma.gunsrpg.common.debuffs.DamageContext;
 import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.entity.EntityCrossbowBolt;
 import dev.toma.gunsrpg.common.entity.EntityExplosiveArrow;
-import dev.toma.gunsrpg.common.init.GRPGBlocks;
-import dev.toma.gunsrpg.common.init.GRPGItems;
-import dev.toma.gunsrpg.common.init.GRPGSounds;
-import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.common.item.ItemHammer;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.LightHunterSkill;
@@ -30,6 +27,7 @@ import dev.toma.gunsrpg.world.cap.WorldDataFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.IAngerable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -60,9 +58,11 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
+import net.minecraftforge.common.world.MobSpawnInfoBuilder;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
@@ -95,9 +95,12 @@ public class CommonEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void loadBiomes(BiomeLoadingEvent event) {
         Biome.Category category = event.getCategory();
+        BiomeGenerationSettingsBuilder builder = event.getGeneration();
+        MobSpawnInfoBuilder mobSpawnBuilder = event.getSpawns();
+        mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(GRPGEntityTypes.ZOMBIE_GUNNER.get(), GRPGConfig.worldConfig.zombieGunnerSpawn.get(), 1, 3));
+        mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(GRPGEntityTypes.EXPLOSIVE_SKELETON.get(), GRPGConfig.worldConfig.explosiveSkeletonSpawn.get(), 1, 3));
         if (category != Biome.Category.NETHER && category != Biome.Category.THEEND) {
             // overworld biomes
-            BiomeGenerationSettingsBuilder builder = event.getGeneration();
             builder.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, GRPGOres.ORE_AMETHYST);
         }
     }
