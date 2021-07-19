@@ -14,7 +14,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.config.gun.IWeaponConfiguration;
+import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
@@ -101,7 +101,7 @@ public class WoodenCrossbowItem extends GunItem {
     }
 
     @Override
-    public IWeaponConfiguration getWeaponConfig() {
+    public IWeaponConfig getWeaponConfig() {
         return ModConfig.weaponConfig.crossbow;
     }
 

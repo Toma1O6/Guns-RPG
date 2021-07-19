@@ -12,7 +12,7 @@ import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.config.gun.IWeaponConfiguration;
+import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,7 +31,7 @@ public class SksItem extends GunItem {
     }
 
     @Override
-    public IWeaponConfiguration getWeaponConfig() {
+    public IWeaponConfig getWeaponConfig() {
         return ModConfig.weaponConfig.sks;
     }
 
@@ -73,7 +73,7 @@ public class SksItem extends GunItem {
 
     @Override
     public int getFirerate(PlayerEntity player) {
-        IWeaponConfiguration cfg = getWeaponConfig();
+        IWeaponConfig cfg = getWeaponConfig();
         int firerate = PlayerData.hasActiveSkill(player, Skills.AR_TOUGH_SPRING) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
         if (PlayerData.hasActiveSkill(player, Skills.AR_ADAPTIVE_CHAMBERING)) {
             firerate -= 2;

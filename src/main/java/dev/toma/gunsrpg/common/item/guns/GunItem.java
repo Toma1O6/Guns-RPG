@@ -18,7 +18,7 @@ import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerMagazine;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.gun.IWeaponConfiguration;
+import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
@@ -62,7 +62,7 @@ public abstract class GunItem extends BaseItem implements IHandRenderer {
 
     public abstract SkillType<?> getRequiredSkill();
 
-    public abstract IWeaponConfiguration getWeaponConfig();
+    public abstract IWeaponConfig getWeaponConfig();
 
     public abstract void fillAmmoMaterialData(Map<AmmoMaterial, Integer> data);
 

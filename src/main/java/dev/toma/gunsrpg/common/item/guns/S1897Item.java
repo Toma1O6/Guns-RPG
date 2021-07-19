@@ -16,7 +16,7 @@ import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerSingle;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.config.gun.IWeaponConfiguration;
+import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.entity.LivingEntity;
@@ -39,7 +39,7 @@ public class S1897Item extends GunItem {
     }
 
     @Override
-    public IWeaponConfiguration getWeaponConfig() {
+    public IWeaponConfig getWeaponConfig() {
         return ModConfig.weaponConfig.s1897;
     }
 
@@ -87,7 +87,7 @@ public class S1897Item extends GunItem {
 
     @Override
     public int getFirerate(PlayerEntity player) {
-        IWeaponConfiguration cfg = getWeaponConfig();
+        IWeaponConfig cfg = getWeaponConfig();
         return PlayerData.hasActiveSkill(player, Skills.SHOTGUN_PUMP_IN_ACTION) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
     }
 

@@ -6,7 +6,7 @@ import dev.toma.configuration.api.type.DoubleType;
 import dev.toma.configuration.api.type.IntType;
 import dev.toma.configuration.api.type.ObjectType;
 
-public class WeaponConfiguration extends ObjectType implements IWeaponConfiguration {
+public class WeaponConfiguration extends ObjectType implements IWeaponConfig {
 
     private final IntType gravityDelay;
     private final IntType firerate;
@@ -26,11 +26,11 @@ public class WeaponConfiguration extends ObjectType implements IWeaponConfigurat
         this.verticalRecoil = writer.writeBoundedDouble("Vertical recoil", verticalRecoil, 0.0, 15.0, "Pitch offset in degrees");
     }
 
-    public static WeaponConfiguration basic(IObjectSpec spec, float damage, int velocity, int gravityDelay, float vertical, float horizontal, int rate) {
+    protected static WeaponConfiguration basic(IObjectSpec spec, float damage, int velocity, int gravityDelay, float vertical, float horizontal, int rate) {
         return new WeaponConfiguration(spec, damage, velocity, vertical, horizontal, gravityDelay, rate);
     }
 
-    public static WeaponConfiguration withUpgrade(IObjectSpec spec, float damage, int velocity, int gravityDelay, float vertical, float horizontal, int rate, int upgradedRate) {
+    protected static WeaponConfiguration withUpgrade(IObjectSpec spec, float damage, int velocity, int gravityDelay, float vertical, float horizontal, int rate, int upgradedRate) {
         return new WeaponConfiguration.WeaponConfigurationUpgraded(spec, damage, velocity, vertical, horizontal, gravityDelay, rate, upgradedRate);
     }
 

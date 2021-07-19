@@ -13,7 +13,7 @@ import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.config.gun.IWeaponConfiguration;
+import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
@@ -35,7 +35,7 @@ public class Ump45Item extends GunItem {
     }
 
     @Override
-    public IWeaponConfiguration getWeaponConfig() {
+    public IWeaponConfig getWeaponConfig() {
         return ModConfig.weaponConfig.ump;
     }
 
@@ -72,7 +72,7 @@ public class Ump45Item extends GunItem {
 
     @Override
     public int getFirerate(PlayerEntity player) {
-        IWeaponConfiguration cfg = getWeaponConfig();
+        IWeaponConfig cfg = getWeaponConfig();
         return PlayerData.hasActiveSkill(player, Skills.SMG_TOUGH_SPRING) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
     }
 

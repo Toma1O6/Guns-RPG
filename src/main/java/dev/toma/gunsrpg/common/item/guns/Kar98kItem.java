@@ -13,7 +13,7 @@ import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerClipOrSingle;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.config.gun.IWeaponConfiguration;
+import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
 import dev.toma.gunsrpg.sided.ClientSideManager;
@@ -38,7 +38,7 @@ public class Kar98kItem extends GunItem {
     }
 
     @Override
-    public IWeaponConfiguration getWeaponConfig() {
+    public IWeaponConfig getWeaponConfig() {
         return ModConfig.weaponConfig.kar98k;
     }
 
@@ -87,7 +87,7 @@ public class Kar98kItem extends GunItem {
 
     @Override
     public int getFirerate(PlayerEntity player) {
-        IWeaponConfiguration cfg = getWeaponConfig();
+        IWeaponConfig cfg = getWeaponConfig();
         return PlayerData.hasActiveSkill(player, Skills.SR_FAST_HANDS) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
     }
 

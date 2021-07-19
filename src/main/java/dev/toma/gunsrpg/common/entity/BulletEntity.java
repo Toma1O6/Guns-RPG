@@ -7,7 +7,7 @@ import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.config.gun.IWeaponConfiguration;
+import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -55,7 +55,7 @@ public class BulletEntity extends Entity {
         this.noPhysics = true;
         this.shooter = shooter;
         this.stack = stack;
-        IWeaponConfiguration config = gun.getWeaponConfig();
+        IWeaponConfig config = gun.getWeaponConfig();
         this.effect = config.getGravityDelay();
         this.ogDamage = config.getDamage() + gun.getDamageBonus(stack);
         this.damage = ogDamage;
