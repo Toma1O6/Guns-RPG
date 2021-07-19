@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.world.cap.events;
 
 import dev.toma.gunsrpg.common.entity.AirdropEntity;
-import dev.toma.gunsrpg.common.init.GRPGSounds;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
@@ -51,7 +51,7 @@ public class AirdropEventHandler implements IWorldEventHandler {
         if (world.isEmptyBlock(dynamicPos)) {
             AirdropEntity entity = new AirdropEntity(world);
             entity.setPos(dynamicPos.getX(), dynamicPos.getY(), dynamicPos.getZ());
-            world.playSound(null, dynamicPos.getX(), dynamicPos.getY(), dynamicPos.getZ(), GRPGSounds.PLANE_FLY_BY, SoundCategory.MASTER, 15.0F, 1.0F);
+            world.playSound(null, dynamicPos.getX(), dynamicPos.getY(), dynamicPos.getZ(), ModSounds.PLANE_FLY_BY, SoundCategory.MASTER, 15.0F, 1.0F);
             world.addFreshEntity(entity);
         }
         float anotherAirdropChance = 0.005F;

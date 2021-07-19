@@ -1,11 +1,11 @@
 package dev.toma.gunsrpg.common.skills;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.common.skills.interfaces.Clickable;
-import dev.toma.gunsrpg.common.skills.interfaces.Cooldown;
+import dev.toma.gunsrpg.common.skills.interfaces.IClickableSkill;
+import dev.toma.gunsrpg.common.skills.interfaces.ICooldown;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSkillClicked;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -17,7 +17,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.vector.Matrix4f;
 
-public class LikeACatSkill extends BasicSkill implements Cooldown, Clickable {
+public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSkill {
 
     private final int effectLength;
     private final int totalCooldown;
@@ -76,7 +76,7 @@ public class LikeACatSkill extends BasicSkill implements Cooldown, Clickable {
     public void clicked(PlayerEntity player) {
         effectLeft = effectLength;
         player.addEffect(new EffectInstance(Effects.NIGHT_VISION, effectLength, 0, false, false));
-        PlayerDataFactory.get(player).ifPresent(PlayerData::sync);
+        PlayerData.get(player).ifPresent(IPlayerData::sync);
     }
 
     @Override

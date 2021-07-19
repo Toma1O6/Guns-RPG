@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.capability.object;
 
 import dev.toma.gunsrpg.client.animation.Animations;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketSendAnimation;
@@ -13,12 +13,12 @@ import net.minecraft.util.SoundCategory;
 
 public class ReloadInfo {
 
-    private final PlayerDataFactory factory;
+    private final PlayerData factory;
     private int slot;
     private boolean reloading;
     private int total, left;
 
-    public ReloadInfo(PlayerDataFactory factory) {
+    public ReloadInfo(PlayerData factory) {
         this.factory = factory;
     }
 

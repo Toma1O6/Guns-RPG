@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.client.animation;
 
 import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
-import dev.toma.gunsrpg.common.init.GRPGItems;
+import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 
 import static net.minecraft.util.math.vector.Vector3f.*;
@@ -244,7 +244,7 @@ public class Animations {
         @Override
         public void onStepChanged() {
             if (index == 4) {
-                this.getPlayer().playSound(GRPGItems.PISTOL.getReloadSound(this.getPlayer()), 1.0F, 1.0F);
+                this.getPlayer().playSound(ModItems.PISTOL.getReloadSound(this.getPlayer()), 1.0F, 1.0F);
             }
         }
     }

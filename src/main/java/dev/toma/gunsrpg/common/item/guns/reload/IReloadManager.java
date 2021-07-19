@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns.reload;
 
+import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetReloading;
@@ -14,7 +14,7 @@ public interface IReloadManager {
         if (player.level.isClientSide) {
             NetworkManager.sendServerPacket(new SPacketSetReloading(true, time));
         } else {
-            PlayerData data = PlayerDataFactory.getUnsafe(player);
+            IPlayerData data = PlayerData.getUnsafe(player);
             data.getReloadInfo().startReloading(player.inventory.selected, time);
         }
     }

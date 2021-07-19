@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
-import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -54,7 +54,7 @@ public class SPacketSelectAmmo extends AbstractNetworkPacket<SPacketSelectAmmo> 
 
     private void clearWeapon(PlayerEntity player, GunItem gun, ItemStack stack, int ammoAmount) {
         Item item = null;
-        for (ItemAmmo ammo : ItemAmmo.GUN_TO_ITEM_MAP.get(gun)) {
+        for (AmmoItem ammo : AmmoItem.GUN_TO_ITEM_MAP.get(gun)) {
             if (ammo.getAmmoType() == gun.getAmmoType() && ammo.getMaterial() == gun.getMaterialFromNBT(stack)) {
                 item = ammo;
                 break;

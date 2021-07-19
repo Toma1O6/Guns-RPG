@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.entity;
 
-import dev.toma.gunsrpg.ai.EntityAIGunAttack;
-import dev.toma.gunsrpg.common.init.GRPGEntityTypes;
-import dev.toma.gunsrpg.common.init.GRPGItems;
+import dev.toma.gunsrpg.ai.GunAttackGoal;
+import dev.toma.gunsrpg.common.init.ModEntities;
+import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
@@ -36,17 +36,17 @@ public class ZombieGunnerEntity extends MonsterEntity {
     // loaded lazily to prevent getting null items
     public static final LazyOptional<List<GunData>> DATA = LazyOptional.of(() -> {
         List<GunData> list = new ArrayList<>();
-        list.add(GunData.from(GRPGItems.PISTOL, 30));
-        list.add(GunData.from(GRPGItems.SMG, 15));
-        list.add(GunData.from(GRPGItems.ASSAULT_RIFLE, 30));
-        list.add(GunData.from(GRPGItems.SNIPER_RIFLE, 80));
-        list.add(GunData.from(GRPGItems.SHOTGUN, 50));
+        list.add(GunData.from(ModItems.PISTOL, 30));
+        list.add(GunData.from(ModItems.SMG, 15));
+        list.add(GunData.from(ModItems.ASSAULT_RIFLE, 30));
+        list.add(GunData.from(ModItems.SNIPER_RIFLE, 80));
+        list.add(GunData.from(ModItems.SHOTGUN, 50));
         return list;
     });
     private int weaponDataIndex;
 
     public ZombieGunnerEntity(World world) {
-        this(GRPGEntityTypes.ZOMBIE_GUNNER.get(), world);
+        this(ModEntities.ZOMBIE_GUNNER.get(), world);
     }
 
     public ZombieGunnerEntity(EntityType<? extends MonsterEntity> type, World world) {
@@ -64,7 +64,7 @@ public class ZombieGunnerEntity extends MonsterEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(2, new EntityAIGunAttack(this));
+        this.goalSelector.addGoal(2, new GunAttackGoal(this));
         this.goalSelector.addGoal(5, new MoveTowardsRestrictionGoal(this, 1.0D));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));

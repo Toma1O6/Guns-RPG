@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.skills.criteria;
 
-import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.object.GunData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
@@ -18,14 +18,14 @@ public class GunCriteria extends DefaultUnlockCriteria {
     }
 
     @Override
-    public boolean isUnlockAvailable(PlayerData data, SkillType<?> skillType) {
+    public boolean isUnlockAvailable(IPlayerData data, SkillType<?> skillType) {
         Map<GunItem, GunData> stats = data.getSkills().getGunStats();
         GunData v = stats.get(gunItemSupplier.get());
         return v != null && v.getGunPoints() >= skillType.price && v.getLevel() >= skillType.levelRequirement;
     }
 
     @Override
-    public void onActivated(PlayerData data, SkillType<?> skillType) {
+    public void onActivated(IPlayerData data, SkillType<?> skillType) {
         PlayerSkills skills = data.getSkills();
         skills.getGunData(gunItemSupplier.get()).consumePoint();
         skills.unlockSkill(skillType);

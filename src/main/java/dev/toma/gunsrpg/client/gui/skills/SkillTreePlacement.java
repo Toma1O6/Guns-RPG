@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.client.gui.skills;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
+import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 
@@ -37,7 +37,7 @@ public class SkillTreePlacement {
 
     private static Tree getTree(SkillCategory category) {
         Predicate<SkillType<?>> filter = type -> category.hasChild() && type.category == category.getChild() || type.category == category;
-        List<SkillType<?>> list = GunsRPGRegistries.SKILLS.getValues().stream().filter(filter).collect(Collectors.toList());
+        List<SkillType<?>> list = ModRegistries.SKILLS.getValues().stream().filter(filter).collect(Collectors.toList());
         return new Tree(list);
     }
 }

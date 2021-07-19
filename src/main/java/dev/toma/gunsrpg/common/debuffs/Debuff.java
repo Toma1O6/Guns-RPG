@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.common.debuffs;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.init.Debuffs;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.gui.FontRenderer;
@@ -41,7 +41,7 @@ public abstract class Debuff implements INBTSerializable<CompoundNBT> {
         levelTimer = 0;
     }
 
-    public final void tick(PlayerEntity player, PlayerData data) {
+    public final void tick(PlayerEntity player, IPlayerData data) {
         if (renderStat != null) {
             if (renderStat.tick()) {
                 renderStat = null;
@@ -107,7 +107,7 @@ public abstract class Debuff implements INBTSerializable<CompoundNBT> {
         this.renderStat = new RenderStat(color, (short) actionLength);
     }
 
-    public DebuffType getType() {
+    public DebuffType<?> getType() {
         return type;
     }
 
@@ -123,63 +123,7 @@ public abstract class Debuff implements INBTSerializable<CompoundNBT> {
         return invalid;
     }
 
-    public static class Poison extends Debuff {
-
-        private static final ResourceLocation ICON = GunsRPG.makeResource("textures/icons/poison.png");
-
-        public Poison() {
-            super(Debuffs.POISON);
-        }
-
-        @Override
-        protected ResourceLocation getIconTexture() {
-            return ICON;
-        }
-    }
-
-    public static class Infection extends Debuff {
-
-        private static final ResourceLocation ICON = GunsRPG.makeResource("textures/icons/infection.png");
-
-        public Infection() {
-            super(Debuffs.INFECTION);
-        }
-
-        @Override
-        protected ResourceLocation getIconTexture() {
-            return ICON;
-        }
-    }
-
-    public static class Fracture extends Debuff {
-
-        private static final ResourceLocation ICON = GunsRPG.makeResource("textures/icons/fracture.png");
-
-        public Fracture() {
-            super(Debuffs.FRACTURE);
-        }
-
-        @Override
-        protected ResourceLocation getIconTexture() {
-            return ICON;
-        }
-    }
-
-    public static class Bleeding extends Debuff {
-
-        private static final ResourceLocation ICON = GunsRPG.makeResource("textures/icons/bleed.png");
-
-        public Bleeding() {
-            super(Debuffs.BLEEDING);
-        }
-
-        @Override
-        protected ResourceLocation getIconTexture() {
-            return ICON;
-        }
-    }
-
-    static class RenderStat implements INBTSerializable<CompoundNBT> {
+    public static class RenderStat implements INBTSerializable<CompoundNBT> {
 
         float r, g, b;
         short startTimer;

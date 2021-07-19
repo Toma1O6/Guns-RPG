@@ -1,17 +1,17 @@
 package dev.toma.gunsrpg.common.capability.object;
 
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
 public class AimInfo {
 
-    private final PlayerDataFactory parent;
+    private final PlayerData parent;
     public int slot;
     public boolean aiming;
     public float progress;
 
-    public AimInfo(PlayerDataFactory parent) {
+    public AimInfo(PlayerData parent) {
         this.parent = parent;
     }
 

@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.client.render.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.client.model.ModelWeapon;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.client.model.AbstractWeaponModel;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 
 public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer {
 
-    private final ModelWeapon weaponModel;
+    private final AbstractWeaponModel weaponModel;
     private final ResourceLocation gunTexture;
 
     public AbstractWeaponRenderer() {
@@ -26,7 +26,7 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
         Minecraft mc = Minecraft.getInstance();
         TextureManager manager = mc.getTextureManager();
         manager.bind(gunTexture);
-        PlayerDataFactory.get(mc.player).ifPresent(data -> {
+        PlayerData.get(mc.player).ifPresent(data -> {
             matrix.pushPose();
             {
                 prepareRender(matrix, transformType);
@@ -36,7 +36,7 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
         });
     }
 
-    public abstract ModelWeapon createModelInstance();
+    public abstract AbstractWeaponModel createModelInstance();
 
     public abstract ResourceLocation createGunTextureInstance();
 

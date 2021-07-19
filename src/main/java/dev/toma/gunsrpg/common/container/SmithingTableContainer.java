@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.container;
 
-import dev.toma.gunsrpg.common.init.GRPGContainers;
+import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -12,7 +12,7 @@ import net.minecraftforge.items.SlotItemHandler;
 public class SmithingTableContainer extends AbstractModContainer<SmithingTableTileEntity> {
 
     public SmithingTableContainer(int windowID, PlayerInventory inventory, SmithingTableTileEntity tileEntity) {
-        super(GRPGContainers.SMITHING_TABLE.get(), windowID, inventory, tileEntity);
+        super(ModContainers.SMITHING_TABLE.get(), windowID, inventory, tileEntity);
         tileEntity.getInventory().ifPresent(handler -> {
             for (int y = 0; y < 3; y++) {
                 for (int x = 0; x < 3; x++) {

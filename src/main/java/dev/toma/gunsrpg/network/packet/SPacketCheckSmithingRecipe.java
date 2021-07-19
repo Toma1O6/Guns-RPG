@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
@@ -57,7 +57,7 @@ public class SPacketCheckSmithingRecipe extends AbstractNetworkPacket<SPacketChe
             if (tileEntity instanceof SmithingTableTileEntity) {
                 SmithingTableTileEntity smithingTable = (SmithingTableTileEntity) tileEntity;
                 SmithingTableRecipes.SmithingRecipe recipe = SmithingTableRecipes.findRecipe(smithingTable, selectedID);
-                PlayerDataFactory.get(player).ifPresent(data -> {
+                PlayerData.get(player).ifPresent(data -> {
                     PlayerSkills skills = data.getSkills();
                     smithingTable.getInventory().ifPresent(handler -> {
                         if (recipe != null && SmithingTableRecipes.hasRequiredSkills(recipe, skills)) {

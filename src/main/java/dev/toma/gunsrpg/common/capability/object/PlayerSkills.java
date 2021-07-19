@@ -1,15 +1,15 @@
 package dev.toma.gunsrpg.common.capability.object;
 
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import dev.toma.gunsrpg.common.init.GRPGItems;
-import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
+import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.ModItems;
+import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.criteria.GunCriteria;
-import dev.toma.gunsrpg.common.skills.interfaces.TickableSkill;
+import dev.toma.gunsrpg.common.skills.interfaces.ITickableSkill;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketNewSkills;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 
 public class PlayerSkills {
 
-    private final PlayerDataFactory data;
+    private final PlayerData data;
     private final Map<GunItem, GunData> gunKills = new HashMap<>();
     private final Map<SkillCategory, List<ISkill>> unlockedSkills = new HashMap<>();
     public int poisonResistance;
@@ -69,16 +69,16 @@ public class PlayerSkills {
     private int gunpowderCraftYield;
     private int bonemealCraftYield;
     private int blazePowderCraftYield;
-    private Map<SkillCategory, List<TickableSkill>> tickCache;
+    private Map<SkillCategory, List<ITickableSkill>> tickCache;
 
-    public PlayerSkills(PlayerDataFactory data) {
+    public PlayerSkills(PlayerData data) {
         this.data = data;
     }
 
     public void update() {
         if (tickCache != null) {
-            for (List<TickableSkill> skillList : tickCache.values()) {
-                for (TickableSkill skill : skillList) {
+            for (List<ITickableSkill> skillList : tickCache.values()) {
+                for (ITickableSkill skill : skillList) {
                     skill.onUpdate(data.getPlayer());
                 }
             }
@@ -131,7 +131,7 @@ public class PlayerSkills {
             player.sendMessage(new StringTextComponent(TextFormatting.YELLOW + "Current level: " + level), Util.NIL_UUID);
             int count = 0;
             List<SkillType<?>> unlockedSkills = new ArrayList<>();
-            for (SkillType<?> type : GunsRPGRegistries.SKILLS) {
+            for (SkillType<?> type : ModRegistries.SKILLS) {
                 if (!(type.getCriteria() instanceof GunCriteria) && type.levelRequirement == level) {
                     count++;
                     unlockedSkills.add(type);
@@ -148,7 +148,7 @@ public class PlayerSkills {
     public void awardPoints() {
         if (level == 100) {
             addSkillPoints(25);
-            data.getPlayer().addItem(new ItemStack(GRPGItems.GOLD_EGG_SHARD, 2));
+            data.getPlayer().addItem(new ItemStack(ModItems.GOLD_EGG_SHARD, 2));
         } else if (level == 50) {
             addSkillPoints(20);
         } else if (level % 10 == 0) {
@@ -224,7 +224,7 @@ public class PlayerSkills {
         skillPoints = 0;
         kills = 0;
         gunKills.clear();
-        for (SkillType<?> skillType : GunsRPGRegistries.SKILLS.getValues()) {
+        for (SkillType<?> skillType : ModRegistries.SKILLS.getValues()) {
             unlockSkill(skillType, false);
         }
         for (GunItem item : ForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof GunItem).map(item -> (GunItem) item).collect(Collectors.toList())) {
@@ -454,7 +454,7 @@ public class PlayerSkills {
             for (INBT inbt : list) {
                 CompoundNBT tagCompound = (CompoundNBT) inbt;
                 ResourceLocation key = new ResourceLocation(tagCompound.getString("type"));
-                SkillType<?> skillType = GunsRPGRegistries.SKILLS.getValue(key);
+                SkillType<?> skillType = ModRegistries.SKILLS.getValue(key);
                 if (skillType != null) {
                     ISkill instance = skillType.instantiate();
                     instance.readData(tagCompound);
@@ -499,7 +499,7 @@ public class PlayerSkills {
         for (SkillCategory category : SkillCategory.tickables()) {
             OptionalObject<List<ISkill>> obj = OptionalObject.of(unlockedSkills.get(category));
             if (!obj.isPresent()) continue;
-            tickCache.put(category, obj.get().stream().filter(s -> s instanceof TickableSkill).map(s -> (TickableSkill) s).collect(Collectors.toList()));
+            tickCache.put(category, obj.get().stream().filter(s -> s instanceof ITickableSkill).map(s -> (ITickableSkill) s).collect(Collectors.toList()));
         }
     }
 }

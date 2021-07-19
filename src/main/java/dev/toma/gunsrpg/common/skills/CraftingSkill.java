@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.skills;
 
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,7 +33,7 @@ public class CraftingSkill extends BasicSkill {
     @Override
     public void onPurchase(PlayerEntity player) {
         if (consumer != null) {
-            PlayerDataFactory.get(player).ifPresent(data -> {
+            PlayerData.get(player).ifPresent(data -> {
                 PlayerSkills skills = data.getSkills();
                 this.consumer.accept(this, skills);
                 data.sync();

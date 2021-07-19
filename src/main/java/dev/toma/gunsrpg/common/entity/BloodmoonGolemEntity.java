@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.entity;
 
-import dev.toma.gunsrpg.common.init.GRPGEntityTypes;
+import dev.toma.gunsrpg.common.init.ModEntities;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
@@ -28,7 +28,7 @@ public class BloodmoonGolemEntity extends CreatureEntity implements IMob {
     private int attackTimer;
 
     public BloodmoonGolemEntity(World world) {
-        this(GRPGEntityTypes.BLOODMOON_GOLEM.get(), world);
+        this(ModEntities.BLOODMOON_GOLEM.get(), world);
     }
 
     public BloodmoonGolemEntity(EntityType<? extends CreatureEntity> type, World worldIn) {

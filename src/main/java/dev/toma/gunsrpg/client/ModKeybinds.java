@@ -2,9 +2,9 @@ package dev.toma.gunsrpg.client;
 
 import dev.toma.gunsrpg.client.animation.AnimationProcessor;
 import dev.toma.gunsrpg.client.animation.Animations;
-import dev.toma.gunsrpg.client.gui.GuiChooseAmmo;
+import dev.toma.gunsrpg.client.gui.ChooseAmmoScreen;
 import dev.toma.gunsrpg.client.gui.skills.GuiPlayerSkills;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
@@ -45,11 +45,11 @@ public class ModKeybinds {
     private static void reloadPressed() {
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
-        ReloadInfo info = PlayerDataFactory.getUnsafe(player).getReloadInfo();
+        ReloadInfo info = PlayerData.getUnsafe(player).getReloadInfo();
         ItemStack stack = player.getMainHandItem();
         if (player.isCrouching()) {
             if (stack.getItem() instanceof GunItem) {
-                mc.setScreen(new GuiChooseAmmo((GunItem) stack.getItem()));
+                mc.setScreen(new ChooseAmmoScreen((GunItem) stack.getItem()));
             }
         } else {
             AnimationProcessor processor = ClientSideManager.instance().processor();
@@ -89,7 +89,7 @@ public class ModKeybinds {
                         }
                     }
                 } else {
-                    mc.setScreen(new GuiChooseAmmo(gun));
+                    mc.setScreen(new ChooseAmmoScreen(gun));
                 }
             }
         }

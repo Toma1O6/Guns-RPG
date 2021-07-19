@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.util.object;
 
 import dev.toma.gunsrpg.client.ClientEventHandler;
+import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 public class ShootingManager {
 
     public static boolean canShoot(PlayerEntity player, ItemStack stack) {
-        PlayerData data = PlayerDataFactory.get(player).orElseThrow(NullPointerException::new);
+        IPlayerData data = PlayerData.get(player).orElseThrow(NullPointerException::new);
         ReloadInfo reloadInfo = data.getReloadInfo();
         PlayerSkills skills = data.getSkills();
         GunItem item = (GunItem) stack.getItem();

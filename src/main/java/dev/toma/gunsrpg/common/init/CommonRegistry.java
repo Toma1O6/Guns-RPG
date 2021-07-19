@@ -4,19 +4,17 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.common.block.*;
-import dev.toma.gunsrpg.common.debuffs.Debuff;
-import dev.toma.gunsrpg.common.debuffs.DebuffHelper;
-import dev.toma.gunsrpg.common.debuffs.DebuffType;
+import dev.toma.gunsrpg.common.debuffs.*;
 import dev.toma.gunsrpg.common.entity.*;
 import dev.toma.gunsrpg.common.item.*;
 import dev.toma.gunsrpg.common.item.guns.*;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
 import dev.toma.gunsrpg.common.skills.*;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
-import dev.toma.gunsrpg.config.GRPGConfig;
+import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -52,8 +50,8 @@ public class CommonRegistry {
 
     @SubscribeEvent
     public static void createRegistries(RegistryEvent.NewRegistry event) {
-        GunsRPGRegistries.SKILLS = createGenericRegistry("skill", SkillType.class);
-        GunsRPGRegistries.DEBUFFS = createGenericRegistry("debuff", DebuffType.class);
+        ModRegistries.SKILLS = createGenericRegistry("skill", SkillType.class);
+        ModRegistries.DEBUFFS = createGenericRegistry("debuff", DebuffType.class);
     }
 
     @SubscribeEvent
@@ -77,12 +75,12 @@ public class CommonRegistry {
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("amethyst_ammo_smith").requiredLevel(45).price(6).build(),
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("ammo_smithing_mastery").requiredLevel(60).price(10).build(),
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("gun_parts_smith").requiredLevel(5).price(1).childs(() -> ModUtils.newList(Skills.PISTOL_ASSEMBLY, Skills.SMG_ASSEMBLY, Skills.CROSSBOW_ASSEMBLY, Skills.SHOTGUN_ASSEMBLY, Skills.ASSAULT_RIFLE_ASSEMBLY, Skills.SNIPER_RIFLE_ASSEMBLY)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("pistol_assembly").requiredLevel(5).price(2).setCustomDisplay().renderFactory(() -> GRPGItems.PISTOL).childs(() -> ModUtils.newList(Skills.PISTOL_QUICKDRAW, Skills.PISTOL_EXTENDED, Skills.PISTOL_TOUGH_SPRING, Skills.PISTOL_CARBON_BARREL, Skills.PISTOL_SUPPRESSOR, Skills.PISTOL_HEAVY_BULLETS, Skills.PISTOL_DUAL_WIELD)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("smg_assembly").requiredLevel(10).price(3).setCustomDisplay().renderFactory(() -> GRPGItems.SMG).childs(() -> ModUtils.newList(Skills.SMG_QUICKDRAW, Skills.SMG_EXTENDED, Skills.SMG_VERTICAL_GRIP, Skills.SMG_TOUGH_SPRING, Skills.SMG_RED_DOT, Skills.SMG_SUPPRESSOR, Skills.SMG_COMMANDO)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("crossbow_assembly").requiredLevel(15).price(3).setCustomDisplay().renderFactory(() -> GRPGItems.CROSSBOW).childs(() -> ModUtils.newList(Skills.CROSSBOW_QUIVER, Skills.CROSSBOW_POISONED_BOLTS, Skills.CROSSBOW_HUNTER, Skills.CROSSBOW_TOUGH_BOWSTRING, Skills.CROSSBOW_PENETRATOR, Skills.CROSSBOW_SCOPE, Skills.CROSSBOW_REPEATER)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("shotgun_assembly").requiredLevel(20).price(4).setCustomDisplay().renderFactory(() -> GRPGItems.SHOTGUN).childs(() -> ModUtils.newList(Skills.SHOTGUN_BULLET_LOOPS, Skills.SHOTGUN_EXTENDED, Skills.SHOTGUN_PUMP_IN_ACTION, Skills.SHOTGUN_CHOKE, Skills.SHOTGUN_NEVER_GIVE_UP, Skills.SHOTGUN_EXTENDED_BARREL)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("assault_rifle_assembly").requiredLevel(25).price(4).setCustomDisplay().renderFactory(() -> GRPGItems.ASSAULT_RIFLE).childs(() -> ModUtils.newList(Skills.AR_TOUGH_SPRING, Skills.AR_VERTICAL_GRIP, Skills.AR_EXTENDED, Skills.AR_RED_DOT, Skills.AR_SUPPRESSOR, Skills.AR_CHEEKPAD, Skills.AR_ADAPTIVE_CHAMBERING)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("sniper_rifle_assembly").requiredLevel(35).price(5).setCustomDisplay().renderFactory(() -> GRPGItems.SNIPER_RIFLE).childs(() -> ModUtils.newList(Skills.SR_SCOPE, Skills.SR_CHEEKPAD, Skills.SR_EXTENDED, Skills.SR_SUPPRESSOR, Skills.SR_FAST_HANDS, Skills.SR_PENETRATOR, Skills.SR_DEAD_EYE)).build(),
+                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("pistol_assembly").requiredLevel(5).price(2).setCustomDisplay().renderFactory(() -> ModItems.PISTOL).childs(() -> ModUtils.newList(Skills.PISTOL_QUICKDRAW, Skills.PISTOL_EXTENDED, Skills.PISTOL_TOUGH_SPRING, Skills.PISTOL_CARBON_BARREL, Skills.PISTOL_SUPPRESSOR, Skills.PISTOL_HEAVY_BULLETS, Skills.PISTOL_DUAL_WIELD)).build(),
+                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("smg_assembly").requiredLevel(10).price(3).setCustomDisplay().renderFactory(() -> ModItems.SMG).childs(() -> ModUtils.newList(Skills.SMG_QUICKDRAW, Skills.SMG_EXTENDED, Skills.SMG_VERTICAL_GRIP, Skills.SMG_TOUGH_SPRING, Skills.SMG_RED_DOT, Skills.SMG_SUPPRESSOR, Skills.SMG_COMMANDO)).build(),
+                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("crossbow_assembly").requiredLevel(15).price(3).setCustomDisplay().renderFactory(() -> ModItems.CROSSBOW).childs(() -> ModUtils.newList(Skills.CROSSBOW_QUIVER, Skills.CROSSBOW_POISONED_BOLTS, Skills.CROSSBOW_HUNTER, Skills.CROSSBOW_TOUGH_BOWSTRING, Skills.CROSSBOW_PENETRATOR, Skills.CROSSBOW_SCOPE, Skills.CROSSBOW_REPEATER)).build(),
+                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("shotgun_assembly").requiredLevel(20).price(4).setCustomDisplay().renderFactory(() -> ModItems.SHOTGUN).childs(() -> ModUtils.newList(Skills.SHOTGUN_BULLET_LOOPS, Skills.SHOTGUN_EXTENDED, Skills.SHOTGUN_PUMP_IN_ACTION, Skills.SHOTGUN_CHOKE, Skills.SHOTGUN_NEVER_GIVE_UP, Skills.SHOTGUN_EXTENDED_BARREL)).build(),
+                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("assault_rifle_assembly").requiredLevel(25).price(4).setCustomDisplay().renderFactory(() -> ModItems.ASSAULT_RIFLE).childs(() -> ModUtils.newList(Skills.AR_TOUGH_SPRING, Skills.AR_VERTICAL_GRIP, Skills.AR_EXTENDED, Skills.AR_RED_DOT, Skills.AR_SUPPRESSOR, Skills.AR_CHEEKPAD, Skills.AR_ADAPTIVE_CHAMBERING)).build(),
+                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("sniper_rifle_assembly").requiredLevel(35).price(5).setCustomDisplay().renderFactory(() -> ModItems.SNIPER_RIFLE).childs(() -> ModUtils.newList(Skills.SR_SCOPE, Skills.SR_CHEEKPAD, Skills.SR_EXTENDED, Skills.SR_SUPPRESSOR, Skills.SR_FAST_HANDS, Skills.SR_PENETRATOR, Skills.SR_DEAD_EYE)).build(),
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("grenades").requiredLevel(15).price(3).childs(() -> ModUtils.newList(Skills.MASSIVE_GRENADES, Skills.IMPACT_GRENADES)).build(),
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("massive_grenades").requiredLevel(30).price(5).build(),
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("impact_grenades").requiredLevel(40).price(5).build(),
@@ -259,8 +257,8 @@ public class CommonRegistry {
     public static void onDebuffRegister(RegistryEvent.Register<DebuffType<?>> event) {
         event.getRegistry().registerAll(
                 DebuffType.Builder.create()
-                        .factory(Debuff.Poison::new)
-                        .blacklistOn(() -> GRPGConfig.debuffConfig.disablePoison())
+                        .factory(PoisonDebuff::new)
+                        .blacklistOn(() -> ModConfig.debuffConfig.disablePoison())
                         .progress(DebuffHelper::p_progress)
                         .resist(DebuffHelper::p_resist)
                         .addStage(40, DebuffHelper::none)
@@ -278,8 +276,8 @@ public class CommonRegistry {
                         .condition(DebuffHelper::pSilverfishCondition)
                         .build().setRegistryName("poison"),
                 DebuffType.Builder.create()
-                        .factory(Debuff.Infection::new)
-                        .blacklistOn(() -> GRPGConfig.debuffConfig.disableInfection())
+                        .factory(InfectionDebuff::new)
+                        .blacklistOn(() -> ModConfig.debuffConfig.disableInfection())
                         .progress(DebuffHelper::i_progress)
                         .resist(DebuffHelper::i_resist)
                         .addStage(35, DebuffHelper::none)
@@ -296,8 +294,8 @@ public class CommonRegistry {
                         .condition(DebuffHelper::iPigZombieCondition)
                         .build().setRegistryName("infection"),
                 DebuffType.Builder.create()
-                        .factory(Debuff.Fracture::new)
-                        .blacklistOn(() -> GRPGConfig.debuffConfig.disableFractures())
+                        .factory(FractureDebuff::new)
+                        .blacklistOn(() -> ModConfig.debuffConfig.disableFractures())
                         .progress(DebuffHelper::f_progress)
                         .resist(DebuffHelper::f_resist)
                         .addStage(30, DebuffHelper::f0_30eff)
@@ -310,8 +308,8 @@ public class CommonRegistry {
                         .condition(DebuffHelper::fFallCondition)
                         .build().setRegistryName("fracture"),
                 DebuffType.Builder.create()
-                        .factory(Debuff.Bleeding::new)
-                        .blacklistOn(() -> GRPGConfig.debuffConfig.disableBleeding())
+                        .factory(BleedDebuff::new)
+                        .blacklistOn(() -> ModConfig.debuffConfig.disableBleeding())
                         .progress(DebuffHelper::b_progress)
                         .resist(DebuffHelper::b_resist)
                         .addStage(25, DebuffHelper::b0_25eff)
@@ -337,12 +335,12 @@ public class CommonRegistry {
     @SubscribeEvent
     public static void onBlockRegister(RegistryEvent.Register<Block> event) {
         event.getRegistry().registerAll(
-                new GRPGOre("amethyst_ore", AbstractBlock.Properties.of(Material.STONE).strength(2.5F, 10.0F).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops()),
-                new BlockBlastFurnace("blast_furnace"),
-                new BlockAirdrop("airdrop"),
-                new BlockSmithingTable("smithing_table"),
-                new BlockGoldDragonEgg("gold_dragon_egg"),
-                new BlockDeathCrate("death_crate")
+                new BaseOreBlock("amethyst_ore", AbstractBlock.Properties.of(Material.STONE).strength(2.5F, 10.0F).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops()),
+                new BlastFurnaceBlock("blast_furnace"),
+                new AirdropBlock("airdrop"),
+                new SmithingTableBlock("smithing_table"),
+                new GoldDragonEggBlock("gold_dragon_egg"),
+                new DeathCrateBlock("death_crate")
         );
     }
 
@@ -350,149 +348,149 @@ public class CommonRegistry {
     public static void onItemRegister(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
         registry.registerAll(
-                GRPGItem.basic("amethyst"),
+                BaseItem.basic("amethyst"),
                 AbstractHealItem.defineDebuffHeal("antidotum_pills")
-                        .defineSound(() -> GRPGSounds.USE_ANTIDOTUM_PILLS)
+                        .defineSound(() -> ModSounds.USE_ANTIDOTUM_PILLS)
                         .canUse(data -> data.hasDebuff(Debuffs.POISON))
                         .onUse(data -> data.heal(Debuffs.POISON, 40))
                         .describe("Heals 40% of poison progress")
                         .animate(32, ticks -> () -> () -> new Animations.Pills(ticks))
                         .build(),
                 AbstractHealItem.defineDebuffHeal("vaccine")
-                        .defineSound(() -> GRPGSounds.USE_VACCINE)
+                        .defineSound(() -> ModSounds.USE_VACCINE)
                         .canUse(data -> data.hasDebuff(Debuffs.INFECTION))
                         .onUse(data -> data.heal(Debuffs.INFECTION, 50))
                         .describe("Heals 50% of infection progress")
                         .animate(32, ticks -> () -> () -> new Animations.Injection(ticks))
                         .build(),
                 AbstractHealItem.defineDebuffHeal("plaster_cast")
-                        .defineSound(() -> GRPGSounds.USE_PLASTER_CAST)
+                        .defineSound(() -> ModSounds.USE_PLASTER_CAST)
                         .canUse(data -> data.hasDebuff(Debuffs.FRACTURE))
                         .onUse(data -> data.heal(Debuffs.FRACTURE, 35))
                         .describe("Heals 35% of fracture progress")
                         .animate(32, ticks -> () -> () -> new Animations.Splint(ticks))
                         .build(),
                 AbstractHealItem.defineDebuffHeal("bandage")
-                        .defineSound(() -> GRPGSounds.USE_BANDAGE)
+                        .defineSound(() -> ModSounds.USE_BANDAGE)
                         .canUse(data -> data.hasDebuff(Debuffs.BLEEDING))
                         .onUse(data -> data.heal(Debuffs.BLEEDING, 25))
                         .describe("Heals 25% of bleeding progress")
                         .animate(50, ticks -> () -> () -> new Animations.Bandage(ticks))
                         .build(),
                 AbstractHealItem.definePlayerHeal("analgetics")
-                        .defineSound(() -> GRPGSounds.USE_ANTIDOTUM_PILLS)
+                        .defineSound(() -> ModSounds.USE_ANTIDOTUM_PILLS)
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> player.heal(5))
                         .describe("Recovers 2.5 hearts")
                         .animate(32, ticks -> () -> () -> new Animations.Pills(ticks))
                         .build(),
                 AbstractHealItem.definePlayerHeal("stereoids")
-                        .defineSound(() -> GRPGSounds.USE_VACCINE)
+                        .defineSound(() -> ModSounds.USE_VACCINE)
                         .onUse(PlayerHealItem::onStereoidsUsed)
                         .describe("Effects:", "Strength I for 60 seconds", "Jump Boost II for 60 seconds")
                         .animate(32, ticks -> () -> () -> new Animations.Injection(ticks))
                         .build(),
                 AbstractHealItem.definePlayerHeal("adrenaline")
-                        .defineSound(() -> GRPGSounds.USE_VACCINE)
+                        .defineSound(() -> ModSounds.USE_VACCINE)
                         .onUse(PlayerHealItem::onAdrenalineUsed)
                         .describe("Effects:", "Regeneration I for 35 seconds", "Speed I for 60 seconds")
                         .animate(32, ticks -> () -> () -> new Animations.Injection(ticks))
                         .build(),
                 AbstractHealItem.definePlayerHeal("painkillers")
-                        .defineSound(() -> GRPGSounds.USE_ANTIDOTUM_PILLS)
+                        .defineSound(() -> ModSounds.USE_ANTIDOTUM_PILLS)
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> player.heal(12.0F))
                         .describe("Recovers 6 hearts")
                         .animate(32, ticks -> () -> () -> new Animations.Pills(ticks))
                         .build(),
                 AbstractHealItem.definePlayerHeal("morphine")
-                        .defineSound(() -> GRPGSounds.USE_VACCINE)
+                        .defineSound(() -> ModSounds.USE_VACCINE)
                         .onUse(PlayerHealItem::onMorphineUsed)
                         .describe("Recovers 7 hearts", "Effects:", "Regeneration II for 15 seconds", "Strength II for 30 seconds",
                                 "Resistance I for 45 seconds", "Additional 20% to projectile damage")
                         .animate(32, ticks -> () -> () -> new Animations.Injection(ticks))
                         .build(),
-                new ItemAmmo("wooden_ammo_9mm", AmmoType._9MM, AmmoMaterial.WOOD),
-                new ItemAmmo("wooden_ammo_45acp", AmmoType._45ACP, AmmoMaterial.WOOD),
-                new ItemAmmo("wooden_ammo_556mm", AmmoType._556MM, AmmoMaterial.WOOD),
-                new ItemAmmo("wooden_ammo_762mm", AmmoType._762MM, AmmoMaterial.WOOD),
-                new ItemAmmo("wooden_ammo_12g", AmmoType._12G, AmmoMaterial.WOOD),
-                new ItemAmmo("wooden_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.WOOD),
-                new ItemAmmo("stone_ammo_9mm", AmmoType._9MM, AmmoMaterial.STONE),
-                new ItemAmmo("stone_ammo_45acp", AmmoType._45ACP, AmmoMaterial.STONE),
-                new ItemAmmo("stone_ammo_556mm", AmmoType._556MM, AmmoMaterial.STONE),
-                new ItemAmmo("stone_ammo_762mm", AmmoType._762MM, AmmoMaterial.STONE),
-                new ItemAmmo("stone_ammo_12g", AmmoType._12G, AmmoMaterial.STONE),
-                new ItemAmmo("stone_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.STONE),
-                new ItemAmmo("iron_ammo_9mm", AmmoType._9MM, AmmoMaterial.IRON),
-                new ItemAmmo("iron_ammo_45acp", AmmoType._45ACP, AmmoMaterial.IRON),
-                new ItemAmmo("iron_ammo_556mm", AmmoType._556MM, AmmoMaterial.IRON),
-                new ItemAmmo("iron_ammo_762mm", AmmoType._762MM, AmmoMaterial.IRON),
-                new ItemAmmo("iron_ammo_12g", AmmoType._12G, AmmoMaterial.IRON),
-                new ItemAmmo("iron_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.IRON),
-                new ItemAmmo("gold_ammo_9mm", AmmoType._9MM, AmmoMaterial.GOLD),
-                new ItemAmmo("gold_ammo_45acp", AmmoType._45ACP, AmmoMaterial.GOLD),
-                new ItemAmmo("gold_ammo_556mm", AmmoType._556MM, AmmoMaterial.GOLD),
-                new ItemAmmo("gold_ammo_762mm", AmmoType._762MM, AmmoMaterial.GOLD),
-                new ItemAmmo("gold_ammo_12g", AmmoType._12G, AmmoMaterial.GOLD),
-                new ItemAmmo("gold_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.GOLD),
-                new ItemAmmo("diamond_ammo_9mm", AmmoType._9MM, AmmoMaterial.DIAMOND),
-                new ItemAmmo("diamond_ammo_45acp", AmmoType._45ACP, AmmoMaterial.DIAMOND),
-                new ItemAmmo("diamond_ammo_556mm", AmmoType._556MM, AmmoMaterial.DIAMOND),
-                new ItemAmmo("diamond_ammo_762mm", AmmoType._762MM, AmmoMaterial.DIAMOND),
-                new ItemAmmo("diamond_ammo_12g", AmmoType._12G, AmmoMaterial.DIAMOND),
-                new ItemAmmo("diamond_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.DIAMOND),
-                new ItemAmmo("emerald_ammo_9mm", AmmoType._9MM, AmmoMaterial.EMERALD),
-                new ItemAmmo("emerald_ammo_45acp", AmmoType._45ACP, AmmoMaterial.EMERALD),
-                new ItemAmmo("emerald_ammo_556mm", AmmoType._556MM, AmmoMaterial.EMERALD),
-                new ItemAmmo("emerald_ammo_762mm", AmmoType._762MM, AmmoMaterial.EMERALD),
-                new ItemAmmo("emerald_ammo_12g", AmmoType._12G, AmmoMaterial.EMERALD),
-                new ItemAmmo("emerald_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.EMERALD),
-                new ItemAmmo("amethyst_ammo_9mm", AmmoType._9MM, AmmoMaterial.AMETHYST),
-                new ItemAmmo("amethyst_ammo_45acp", AmmoType._45ACP, AmmoMaterial.AMETHYST),
-                new ItemAmmo("amethyst_ammo_556mm", AmmoType._556MM, AmmoMaterial.AMETHYST),
-                new ItemAmmo("amethyst_ammo_762mm", AmmoType._762MM, AmmoMaterial.AMETHYST),
-                new ItemAmmo("amethyst_ammo_12g", AmmoType._12G, AmmoMaterial.AMETHYST),
-                new ItemAmmo("amethyst_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.AMETHYST),
-                new PistolItem("pistol"),
-                new SMGItem("smg"),
-                new ARItem("assault_rifle"),
-                new SRItem("sniper_rifle"),
-                new SGItem("shotgun"),
-                new CrossbowItem("crossbow"),
-                GRPGItem.basic("small_bullet_casing"),
-                GRPGItem.basic("large_bullet_casing"),
-                GRPGItem.basic("shotgun_shell"),
-                GRPGItem.basic("barrel"),
-                GRPGItem.basic("long_barrel"),
-                GRPGItem.basic("iron_stock"),
-                GRPGItem.basic("small_iron_stock"),
-                GRPGItem.basic("wooden_stock"),
-                GRPGItem.basic("magazine"),
-                GRPGItem.basic("gun_parts"),
-                GRPGItem.basic("bolt_fletching"),
-                new ItemGrenade("grenade", 4, false),
-                new ItemGrenade("massive_grenade", 6, false),
-                new ItemGrenade("impact_grenade", 4, true),
-                GRPGItem.basic("iron_ore_chunk"),
-                GRPGItem.basic("gold_ore_chunk"),
-                new ItemSkillBook("skillpoint_book"),
-                new ItemHammer("wooden_hammer", ItemHammer.WOOD_HAMMER_MATERIAL),
-                new ItemHammer("stone_hammer", ItemHammer.STONE_HAMMER_MATERIAL),
-                new ItemHammer("iron_hammer", ItemHammer.IRON_HAMMER_MATERIAL),
-                GRPGItem.basic("gold_egg_shard"),
-                GRPGItem.basic("blaze_lump"),
-                new ItemModdedFood("bacon_burger", GRPGFoods.BACON_BURGER),
-                new ItemModdedFood("fish_and_chips", GRPGFoods.FISH_AND_CHIPS),
-                new ItemModdedFood("garden_soup", GRPGFoods.GARDEN_SOUP),
-                new ItemModdedFood("chicken_dinner", GRPGFoods.CHICKED_DINNER),
-                new ItemModdedFood("deluxe_meal", GRPGFoods.DELUXE_MEAL).buff(player -> player.heal(3)),
-                new ItemModdedFood("meaty_stew_xxl", GRPGFoods.MEATY_STEW_XXL).buff(player -> player.heal(5)),
-                new ItemModdedFood("rabbit_creamy_soup", GRPGFoods.RABBIT_CREAMY_SOUP).buff(player -> player.heal(3)),
-                new ItemModdedFood("shepherds_pie", GRPGFoods.SHEPHERDS_PIE),
-                new ItemModdedFood("fruit_salad", GRPGFoods.FRUIT_SALAD).buff(player -> player.heal(2.0F)),
-                new ItemModdedFood("egg_salad", GRPGFoods.EGG_SALAD),
-                new ItemModdedFood("chocolate_glazed_apple_pie", GRPGFoods.CHOCOLATE_GLAZED_APPLE_PIE).buff(player -> player.heal(3.0F))
+                new AmmoItem("wooden_ammo_9mm", AmmoType._9MM, AmmoMaterial.WOOD),
+                new AmmoItem("wooden_ammo_45acp", AmmoType._45ACP, AmmoMaterial.WOOD),
+                new AmmoItem("wooden_ammo_556mm", AmmoType._556MM, AmmoMaterial.WOOD),
+                new AmmoItem("wooden_ammo_762mm", AmmoType._762MM, AmmoMaterial.WOOD),
+                new AmmoItem("wooden_ammo_12g", AmmoType._12G, AmmoMaterial.WOOD),
+                new AmmoItem("wooden_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.WOOD),
+                new AmmoItem("stone_ammo_9mm", AmmoType._9MM, AmmoMaterial.STONE),
+                new AmmoItem("stone_ammo_45acp", AmmoType._45ACP, AmmoMaterial.STONE),
+                new AmmoItem("stone_ammo_556mm", AmmoType._556MM, AmmoMaterial.STONE),
+                new AmmoItem("stone_ammo_762mm", AmmoType._762MM, AmmoMaterial.STONE),
+                new AmmoItem("stone_ammo_12g", AmmoType._12G, AmmoMaterial.STONE),
+                new AmmoItem("stone_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.STONE),
+                new AmmoItem("iron_ammo_9mm", AmmoType._9MM, AmmoMaterial.IRON),
+                new AmmoItem("iron_ammo_45acp", AmmoType._45ACP, AmmoMaterial.IRON),
+                new AmmoItem("iron_ammo_556mm", AmmoType._556MM, AmmoMaterial.IRON),
+                new AmmoItem("iron_ammo_762mm", AmmoType._762MM, AmmoMaterial.IRON),
+                new AmmoItem("iron_ammo_12g", AmmoType._12G, AmmoMaterial.IRON),
+                new AmmoItem("iron_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.IRON),
+                new AmmoItem("gold_ammo_9mm", AmmoType._9MM, AmmoMaterial.GOLD),
+                new AmmoItem("gold_ammo_45acp", AmmoType._45ACP, AmmoMaterial.GOLD),
+                new AmmoItem("gold_ammo_556mm", AmmoType._556MM, AmmoMaterial.GOLD),
+                new AmmoItem("gold_ammo_762mm", AmmoType._762MM, AmmoMaterial.GOLD),
+                new AmmoItem("gold_ammo_12g", AmmoType._12G, AmmoMaterial.GOLD),
+                new AmmoItem("gold_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.GOLD),
+                new AmmoItem("diamond_ammo_9mm", AmmoType._9MM, AmmoMaterial.DIAMOND),
+                new AmmoItem("diamond_ammo_45acp", AmmoType._45ACP, AmmoMaterial.DIAMOND),
+                new AmmoItem("diamond_ammo_556mm", AmmoType._556MM, AmmoMaterial.DIAMOND),
+                new AmmoItem("diamond_ammo_762mm", AmmoType._762MM, AmmoMaterial.DIAMOND),
+                new AmmoItem("diamond_ammo_12g", AmmoType._12G, AmmoMaterial.DIAMOND),
+                new AmmoItem("diamond_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.DIAMOND),
+                new AmmoItem("emerald_ammo_9mm", AmmoType._9MM, AmmoMaterial.EMERALD),
+                new AmmoItem("emerald_ammo_45acp", AmmoType._45ACP, AmmoMaterial.EMERALD),
+                new AmmoItem("emerald_ammo_556mm", AmmoType._556MM, AmmoMaterial.EMERALD),
+                new AmmoItem("emerald_ammo_762mm", AmmoType._762MM, AmmoMaterial.EMERALD),
+                new AmmoItem("emerald_ammo_12g", AmmoType._12G, AmmoMaterial.EMERALD),
+                new AmmoItem("emerald_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.EMERALD),
+                new AmmoItem("amethyst_ammo_9mm", AmmoType._9MM, AmmoMaterial.AMETHYST),
+                new AmmoItem("amethyst_ammo_45acp", AmmoType._45ACP, AmmoMaterial.AMETHYST),
+                new AmmoItem("amethyst_ammo_556mm", AmmoType._556MM, AmmoMaterial.AMETHYST),
+                new AmmoItem("amethyst_ammo_762mm", AmmoType._762MM, AmmoMaterial.AMETHYST),
+                new AmmoItem("amethyst_ammo_12g", AmmoType._12G, AmmoMaterial.AMETHYST),
+                new AmmoItem("amethyst_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.AMETHYST),
+                new M1911Item("pistol"),
+                new Ump45Item("smg"),
+                new SksItem("assault_rifle"),
+                new Kar98kItem("sniper_rifle"),
+                new S1897Item("shotgun"),
+                new WoodenCrossbowItem("crossbow"),
+                BaseItem.basic("small_bullet_casing"),
+                BaseItem.basic("large_bullet_casing"),
+                BaseItem.basic("shotgun_shell"),
+                BaseItem.basic("barrel"),
+                BaseItem.basic("long_barrel"),
+                BaseItem.basic("iron_stock"),
+                BaseItem.basic("small_iron_stock"),
+                BaseItem.basic("wooden_stock"),
+                BaseItem.basic("magazine"),
+                BaseItem.basic("gun_parts"),
+                BaseItem.basic("bolt_fletching"),
+                new GrenadeItem("grenade", 4, false),
+                new GrenadeItem("massive_grenade", 6, false),
+                new GrenadeItem("impact_grenade", 4, true),
+                BaseItem.basic("iron_ore_chunk"),
+                BaseItem.basic("gold_ore_chunk"),
+                new SkillBookItem("skillpoint_book"),
+                new HammerItem("wooden_hammer", HammerItem.WOOD_HAMMER_MATERIAL),
+                new HammerItem("stone_hammer", HammerItem.STONE_HAMMER_MATERIAL),
+                new HammerItem("iron_hammer", HammerItem.IRON_HAMMER_MATERIAL),
+                BaseItem.basic("gold_egg_shard"),
+                BaseItem.basic("blaze_lump"),
+                new ModFoodItem("bacon_burger", ModFoods.BACON_BURGER),
+                new ModFoodItem("fish_and_chips", ModFoods.FISH_AND_CHIPS),
+                new ModFoodItem("garden_soup", ModFoods.GARDEN_SOUP),
+                new ModFoodItem("chicken_dinner", ModFoods.CHICKED_DINNER),
+                new ModFoodItem("deluxe_meal", ModFoods.DELUXE_MEAL).buff(player -> player.heal(3)),
+                new ModFoodItem("meaty_stew_xxl", ModFoods.MEATY_STEW_XXL).buff(player -> player.heal(5)),
+                new ModFoodItem("rabbit_creamy_soup", ModFoods.RABBIT_CREAMY_SOUP).buff(player -> player.heal(3)),
+                new ModFoodItem("shepherds_pie", ModFoods.SHEPHERDS_PIE),
+                new ModFoodItem("fruit_salad", ModFoods.FRUIT_SALAD).buff(player -> player.heal(2.0F)),
+                new ModFoodItem("egg_salad", ModFoods.EGG_SALAD),
+                new ModFoodItem("chocolate_glazed_apple_pie", ModFoods.CHOCOLATE_GLAZED_APPLE_PIE).buff(player -> player.heal(3.0F))
         );
         queue.forEach(registry::register);
         queue = null;
@@ -546,11 +544,11 @@ public class CommonRegistry {
 
     @SubscribeEvent
     public static void registerEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(GRPGEntityTypes.ZOMBIE_GUNNER.get(), ZombieGunnerEntity.createAttributes().build());
-        event.put(GRPGEntityTypes.EXPLOSIVE_SKELETON.get(), ExplosiveSkeletonEntity.createAttributes().build());
-        event.put(GRPGEntityTypes.ROCKET_ANGEL.get(), RocketAngelEntity.createAttributes().build());
-        event.put(GRPGEntityTypes.BLOODMOON_GOLEM.get(), BloodmoonGolemEntity.createAttributes().build());
-        event.put(GRPGEntityTypes.GOLD_DRAGON.get(), EntityGoldDragon.createAttributes().build());
+        event.put(ModEntities.ZOMBIE_GUNNER.get(), ZombieGunnerEntity.createAttributes().build());
+        event.put(ModEntities.EXPLOSIVE_SKELETON.get(), ExplosiveSkeletonEntity.createAttributes().build());
+        event.put(ModEntities.ROCKET_ANGEL.get(), RocketAngelEntity.createAttributes().build());
+        event.put(ModEntities.BLOODMOON_GOLEM.get(), BloodmoonGolemEntity.createAttributes().build());
+        event.put(ModEntities.GOLD_DRAGON.get(), GoldDragonEntity.createAttributes().build());
     }
 
     protected static SoundEvent sound(String key) {

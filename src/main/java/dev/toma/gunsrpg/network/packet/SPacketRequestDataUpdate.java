@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import dev.toma.gunsrpg.network.NetworkManager;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -34,7 +34,7 @@ public class SPacketRequestDataUpdate extends AbstractNetworkPacket<SPacketReque
     @Override
     protected void handlePacket(NetworkEvent.Context context) {
         ServerPlayerEntity player = context.getSender();
-        PlayerDataFactory.get(player).ifPresent(playerData -> {
+        PlayerData.get(player).ifPresent(playerData -> {
             CompoundNBT nbt = playerData.serializeNBT();
             NetworkManager.sendClientPacket(player, new CPacketUpdateCap(uuid, nbt, 0));
         });

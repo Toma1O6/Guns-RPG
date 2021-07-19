@@ -20,12 +20,12 @@ public class ClientRegistry {
     public static void onModelBake(ModelBakeEvent event) {
         Map<ResourceLocation, IBakedModel> registry = event.getModelRegistry();
         IBakedModel model = new GunBakedModel();
-        registry.put(getGunModelResourceLocation(GRPGItems.PISTOL), model);
-        registry.put(getGunModelResourceLocation(GRPGItems.SMG), model);
-        registry.put(getGunModelResourceLocation(GRPGItems.ASSAULT_RIFLE), model);
-        registry.put(getGunModelResourceLocation(GRPGItems.SNIPER_RIFLE), model);
-        registry.put(getGunModelResourceLocation(GRPGItems.SHOTGUN), model);
-        registry.put(getGunModelResourceLocation(GRPGItems.CROSSBOW), model);
+        registry.put(getGunModelResourceLocation(ModItems.PISTOL), model);
+        registry.put(getGunModelResourceLocation(ModItems.SMG), model);
+        registry.put(getGunModelResourceLocation(ModItems.ASSAULT_RIFLE), model);
+        registry.put(getGunModelResourceLocation(ModItems.SNIPER_RIFLE), model);
+        registry.put(getGunModelResourceLocation(ModItems.SHOTGUN), model);
+        registry.put(getGunModelResourceLocation(ModItems.CROSSBOW), model);
     }
 
     protected static ModelResourceLocation getGunModelResourceLocation(GunItem gunItem) {

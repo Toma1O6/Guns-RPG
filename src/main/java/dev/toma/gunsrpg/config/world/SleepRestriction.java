@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.config.world;
 
 import dev.toma.configuration.api.INameable;
-import dev.toma.gunsrpg.world.cap.WorldDataFactory;
+import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
@@ -11,7 +11,7 @@ import java.util.function.Function;
 public enum SleepRestriction implements INameable {
 
     ALWAYS("Always", world -> PlayerEntity.SleepResult.NOT_SAFE),
-    BLOODMOON("Only in bloodmoon", world -> WorldDataFactory.isBloodMoon(world) ? PlayerEntity.SleepResult.NOT_SAFE : null),
+    BLOODMOON("Only in bloodmoon", world -> WorldData.isBloodMoon(world) ? PlayerEntity.SleepResult.NOT_SAFE : null),
     NEVER("Never", world -> null);
 
     final String displayName;

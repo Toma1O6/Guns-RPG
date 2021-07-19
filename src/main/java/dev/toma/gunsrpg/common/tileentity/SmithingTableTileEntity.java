@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.tileentity;
 
-import dev.toma.gunsrpg.common.init.GRPGTileEntities;
+import dev.toma.gunsrpg.common.init.ModBlockEntities;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
@@ -8,7 +8,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class SmithingTableTileEntity extends InventoryTileEntity {
 
     public SmithingTableTileEntity() {
-        this(GRPGTileEntities.SMITHING_TABLE.get());
+        this(ModBlockEntities.SMITHING_TABLE.get());
     }
 
     protected SmithingTableTileEntity(TileEntityType<? extends SmithingTableTileEntity> type) {

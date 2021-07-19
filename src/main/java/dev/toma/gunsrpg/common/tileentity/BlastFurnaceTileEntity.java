@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.tileentity;
 
-import dev.toma.gunsrpg.common.block.BlockBlastFurnace;
-import dev.toma.gunsrpg.common.init.GRPGTileEntities;
+import dev.toma.gunsrpg.common.block.BlastFurnaceBlock;
+import dev.toma.gunsrpg.common.init.ModBlockEntities;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.recipes.BlastFurnaceRecipe;
 import net.minecraft.item.ItemStack;
@@ -21,7 +21,7 @@ public class BlastFurnaceTileEntity extends InventoryTileEntity implements ITick
     private boolean isBurning;
 
     public BlastFurnaceTileEntity() {
-        this(GRPGTileEntities.BLAST_FURNACE.get());
+        this(ModBlockEntities.BLAST_FURNACE.get());
     }
 
     protected BlastFurnaceTileEntity(TileEntityType<? extends BlastFurnaceTileEntity> type) {
@@ -78,7 +78,7 @@ public class BlastFurnaceTileEntity extends InventoryTileEntity implements ITick
 
     private void setBurningState(boolean state) {
         if (state != isBurning) {
-            BlockBlastFurnace.updateBurnState(worldPosition, level, state);
+            BlastFurnaceBlock.updateBurnState(worldPosition, level, state);
             this.timeCooking = 0;
         }
         this.isBurning = state;

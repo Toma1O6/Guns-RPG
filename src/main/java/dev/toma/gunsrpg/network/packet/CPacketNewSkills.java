@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
+import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import net.minecraft.network.PacketBuffer;
@@ -38,7 +38,7 @@ public class CPacketNewSkills extends AbstractNetworkPacket<CPacketNewSkills> {
         int n = buffer.readVarInt();
         for (int i = 0; i < n; i++) {
             ResourceLocation location = buffer.readResourceLocation();
-            SkillType<?> type = GunsRPGRegistries.SKILLS.getValue(location);
+            SkillType<?> type = ModRegistries.SKILLS.getValue(location);
             if (type != null)
                 unlocked.add(type);
         }

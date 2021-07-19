@@ -1,11 +1,11 @@
 package dev.toma.gunsrpg.common.capability.object;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.debuffs.DamageContext;
 import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.debuffs.DebuffType;
-import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
+import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.util.function.ToFloatBiFunction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -18,16 +18,16 @@ import java.util.Random;
 
 public class DebuffData implements INBTSerializable<ListNBT> {
 
-    private final PlayerData data;
+    private final IPlayerData data;
     private Debuff[] debuffs;
 
-    public DebuffData(PlayerData data) {
+    public DebuffData(IPlayerData data) {
         this.data = data;
-        this.debuffs = new Debuff[GunsRPGRegistries.DEBUFFS != null ? GunsRPGRegistries.DEBUFFS.getValues().size() : 0];
+        this.debuffs = new Debuff[ModRegistries.DEBUFFS != null ? ModRegistries.DEBUFFS.getValues().size() : 0];
     }
 
     public static int getDebuffID(DebuffType<?> type) {
-        return ((ForgeRegistry<DebuffType<?>>) GunsRPGRegistries.DEBUFFS).getID(type);
+        return ((ForgeRegistry<DebuffType<?>>) ModRegistries.DEBUFFS).getID(type);
     }
 
     public Debuff[] getDebuffs() {
@@ -66,7 +66,7 @@ public class DebuffData implements INBTSerializable<ListNBT> {
     public void onPlayerAttackedFrom(DamageContext ctx, PlayerEntity player) {
         Random random = player.level.getRandom();
         types:
-        for (DebuffType<?> type : GunsRPGRegistries.DEBUFFS) {
+        for (DebuffType<?> type : ModRegistries.DEBUFFS) {
             if (type.isBlacklisted())
                 continue;
             int i = getDebuffID(type);
@@ -88,7 +88,7 @@ public class DebuffData implements INBTSerializable<ListNBT> {
         }
     }
 
-    public void tick(PlayerEntity player, PlayerData data) {
+    public void tick(PlayerEntity player, IPlayerData data) {
         for (int i = 0; i < debuffs.length; i++) {
             Debuff debuff = debuffs[i];
             if (debuff == null) continue;
@@ -116,12 +116,12 @@ public class DebuffData implements INBTSerializable<ListNBT> {
 
     @Override
     public void deserializeNBT(ListNBT list) {
-        debuffs = new Debuff[GunsRPGRegistries.DEBUFFS.getValues().size()];
+        debuffs = new Debuff[ModRegistries.DEBUFFS.getValues().size()];
         for (int i = 0; i < list.size(); i++) {
             CompoundNBT nbt = list.getCompound(i);
             ResourceLocation key = new ResourceLocation(nbt.getString("key"));
             CompoundNBT data = nbt.getCompound("data");
-            DebuffType<?> type = GunsRPGRegistries.DEBUFFS.getValue(key);
+            DebuffType<?> type = ModRegistries.DEBUFFS.getValue(key);
             if (type == null) {
                 GunsRPG.log.error("Error loading debuff data for key {}", key.toString());
                 continue;

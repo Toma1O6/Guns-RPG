@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.entity;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.init.GRPGBlocks;
-import dev.toma.gunsrpg.common.init.GRPGEntityTypes;
+import dev.toma.gunsrpg.common.init.ModBlocks;
+import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.tileentity.AirdropTileEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -17,7 +17,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class AirdropEntity extends Entity {
 
     public AirdropEntity(World world) {
-        this(GRPGEntityTypes.AIRDROP.get(), world);
+        this(ModEntities.AIRDROP.get(), world);
     }
 
     public AirdropEntity(EntityType<?> type, World world) {
@@ -47,7 +47,7 @@ public class AirdropEntity extends Entity {
     }
 
     private void onLanding(BlockPos landingPos) {
-        level.setBlock(landingPos, GRPGBlocks.AIRDROP.defaultBlockState(), 3);
+        level.setBlock(landingPos, ModBlocks.AIRDROP.defaultBlockState(), 3);
         TileEntity entity = level.getBlockEntity(landingPos);
         remove();
         if (!(entity instanceof AirdropTileEntity)) {

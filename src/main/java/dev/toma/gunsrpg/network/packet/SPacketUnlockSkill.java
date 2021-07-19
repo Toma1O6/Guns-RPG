@@ -1,9 +1,9 @@
 package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
-import dev.toma.gunsrpg.common.init.GunsRPGRegistries;
+import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -41,15 +41,15 @@ public class SPacketUnlockSkill extends AbstractNetworkPacket<SPacketUnlockSkill
     @Override
     public SPacketUnlockSkill decode(PacketBuffer buffer) {
         boolean hasParent = buffer.readBoolean();
-        SkillType<?> clicked = GunsRPGRegistries.SKILLS.getValue(buffer.readResourceLocation());
-        SkillType<?> parent = hasParent ? GunsRPGRegistries.SKILLS.getValue(buffer.readResourceLocation()) : null;
+        SkillType<?> clicked = ModRegistries.SKILLS.getValue(buffer.readResourceLocation());
+        SkillType<?> parent = hasParent ? ModRegistries.SKILLS.getValue(buffer.readResourceLocation()) : null;
         return new SPacketUnlockSkill(clicked, parent);
     }
 
     @Override
     protected void handlePacket(NetworkEvent.Context context) {
         ServerPlayerEntity player = context.getSender();
-        PlayerDataFactory.get(player).ifPresent(data -> {
+        PlayerData.get(player).ifPresent(data -> {
             PlayerSkills skills = data.getSkills();
             if (clicked == null) {
                 logInvalidPacket("Clicked skill is null");
@@ -66,7 +66,7 @@ public class SPacketUnlockSkill extends AbstractNetworkPacket<SPacketUnlockSkill
                 }
             } else {
                 // validates that parent skill is unlocked
-                for (SkillType<?> type : GunsRPGRegistries.SKILLS) {
+                for (SkillType<?> type : ModRegistries.SKILLS) {
                     if (ModUtils.contains(clicked, type.getChilds())) {
                         if (!skills.hasSkill(type)) {
                             logInvalidPacket("Parent skill is not unlocked!");

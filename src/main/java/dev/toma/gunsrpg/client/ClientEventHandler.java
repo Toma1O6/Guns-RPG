@@ -7,23 +7,23 @@ import dev.toma.gunsrpg.client.animation.AnimationProcessor;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IHandRenderer;
 import dev.toma.gunsrpg.client.animation.impl.SprintingAnimation;
+import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.AimInfo;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.GunData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.debuffs.Debuff;
-import dev.toma.gunsrpg.common.init.GRPGItems;
+import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
-import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
-import dev.toma.gunsrpg.common.skills.interfaces.OverlayRenderer;
-import dev.toma.gunsrpg.config.GRPGConfig;
+import dev.toma.gunsrpg.common.skills.interfaces.IOverlayRender;
+import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
@@ -73,7 +73,7 @@ public class ClientEventHandler {
     private static final ChangeDetector startSprintListener = new ChangeDetector(() -> {
         PlayerEntity player = Minecraft.getInstance().player;
         ItemStack stack = player.getMainHandItem();
-        LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+        LazyOptional<IPlayerData> optional = PlayerData.get(player);
         optional.ifPresent(data -> {
             if (stack.getItem() instanceof GunItem && !data.getReloadInfo().isReloading())
                 ClientSideManager.instance().processor().play(Animations.SPRINT, new SprintingAnimation());
@@ -95,31 +95,31 @@ public class ClientEventHandler {
             if (stack.getItem() instanceof GunItem) {
                 event.setCanceled(true);
                 MatrixStack matrixStack = event.getMatrixStack();
-                PlayerDataFactory.get(player).ifPresent(data -> {
+                PlayerData.get(player).ifPresent(data -> {
                     int windowWidth = window.getGuiScaledWidth();
                     int windowHeight = window.getGuiScaledHeight();
                     if (data.getAimInfo().progress >= 0.9F) {
-                        if (stack.getItem() == GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE) || stack.getItem() == GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
+                        if (stack.getItem() == ModItems.SNIPER_RIFLE && PlayerData.hasActiveSkill(player, Skills.SR_SCOPE) || stack.getItem() == ModItems.CROSSBOW && PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
                             Matrix4f pose = matrixStack.last().pose();
-                            if (GRPGConfig.clientConfig.scopeRenderer.get() == ScopeRenderer.TEXTURE) {
+                            if (ModConfig.clientConfig.scopeRenderer.get() == ScopeRenderer.TEXTURE) {
                                 ModUtils.renderTexture(pose, 0, 0, windowWidth, windowHeight, SCOPE_OVERLAY);
                             } else {
                                 int left = window.getGuiScaledWidth() / 2 - 16;
                                 int top = window.getGuiScaledHeight() / 2 - 16;
                                 ModUtils.renderTexture(pose, left, top, left + 32, top + 32, SCOPE);
                             }
-                        } else if ((PlayerDataFactory.hasActiveSkill(player, Skills.SMG_RED_DOT) && stack.getItem() == GRPGItems.SMG) || (PlayerDataFactory.hasActiveSkill(player, Skills.AR_RED_DOT) && stack.getItem() == GRPGItems.ASSAULT_RIFLE)) {
+                        } else if ((PlayerData.hasActiveSkill(player, Skills.SMG_RED_DOT) && stack.getItem() == ModItems.SMG) || (PlayerData.hasActiveSkill(player, Skills.AR_RED_DOT) && stack.getItem() == ModItems.ASSAULT_RIFLE)) {
                             float left = windowWidth / 2f - 8f;
                             float top = windowHeight / 2f - 8f;
                             float x2 = left + 16;
                             float y2 = top + 16;
                             //draw red dot
-                            int color = GRPGConfig.clientConfig.reticleColor.getColor();
+                            int color = ModConfig.clientConfig.reticleColor.getColor();
                             float alpha = ModUtils.alpha(color);
                             float red = ModUtils.red(color);
                             float green = ModUtils.green(color);
                             float blue = ModUtils.blue(color);
-                            mc.getTextureManager().bind(GRPGConfig.clientConfig.reticleVariants.getAsResource());
+                            mc.getTextureManager().bind(ModConfig.clientConfig.reticleVariants.getAsResource());
                             RenderSystem.enableBlend();
                             Tessellator tessellator = Tessellator.getInstance();
                             BufferBuilder builder = tessellator.getBuilder();
@@ -144,11 +144,11 @@ public class ClientEventHandler {
             Minecraft mc = Minecraft.getInstance();
             PlayerEntity player = mc.player;
             MatrixStack matrixStack = event.getMatrixStack();
-            LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+            LazyOptional<IPlayerData> optional = PlayerData.get(player);
             optional.ifPresent(data -> {
                 FontRenderer renderer = mc.font;
                 long day = player.level.getGameTime() / 24000L;
-                int cycle = GRPGConfig.worldConfig.bloodmoonCycle.get();
+                int cycle = ModConfig.worldConfig.bloodmoonCycle.get();
                 MainWindow window = event.getWindow();
                 if (cycle >= 0) {
                     boolean b = day % cycle == 0 && day > 0;
@@ -170,7 +170,7 @@ public class ClientEventHandler {
                     int ammo = gun.getAmmo(stack);
                     int max = gun.getMaxAmmo(player);
                     float f = gunData.isAtMaxLevel() ? 1.0F : gunKills / (float) gunRequiredKills;
-                    ItemAmmo itemAmmo = ItemAmmo.getAmmoFor(gun, stack);
+                    AmmoItem itemAmmo = AmmoItem.getAmmoFor(gun, stack);
                     if (itemAmmo != null) {
                         int c = 0;
                         for (int i = 0; i < player.inventory.getContainerSize(); i++) {
@@ -203,8 +203,8 @@ public class ClientEventHandler {
                     int offset = 0;
                     for (Debuff debuff : debuffData.getDebuffs()) {
                         if (debuff == null) continue;
-                        int yStart = window.getGuiScaledHeight() + GRPGConfig.clientConfig.debuffOverlay.getY() - 50;
-                        debuff.draw(matrixStack, GRPGConfig.clientConfig.debuffOverlay.getX(), yStart + offset * 18, 50, 18, event.getPartialTicks(), renderer);
+                        int yStart = window.getGuiScaledHeight() + ModConfig.clientConfig.debuffOverlay.getY() - 50;
+                        debuff.draw(matrixStack, ModConfig.clientConfig.debuffOverlay.getX(), yStart + offset * 18, 50, 18, event.getPartialTicks(), renderer);
                         ++offset;
                     }
                 }
@@ -215,13 +215,13 @@ public class ClientEventHandler {
                 int top = window.getGuiScaledHeight() - 25;
                 List<ISkill> renderSkills = new ArrayList<>();
                 for (ISkill skill : list) {
-                    if (skill instanceof OverlayRenderer) {
+                    if (skill instanceof IOverlayRender) {
                         skill = SkillUtil.getBestSkillFromOverrides(skill, player);
                         if (!renderSkills.contains(skill)) renderSkills.add(skill);
                     }
                 }
                 for (ISkill skill : renderSkills) {
-                    OverlayRenderer overlayRenderer = (OverlayRenderer) skill;
+                    IOverlayRender overlayRenderer = (IOverlayRender) skill;
                     if (skill.apply(player) && overlayRenderer.shouldRenderOnHUD()) {
                         overlayRenderer.renderInHUD(matrixStack, skill, renderIndex, left, top);
                         ++renderIndex;
@@ -251,15 +251,15 @@ public class ClientEventHandler {
                         }
                     }
                 } else if (settings.keyUse.isDown() && ClientSideManager.instance().processor().getByID(Animations.REBOLT) == null && !player.isSprinting()) {
-                    LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+                    LazyOptional<IPlayerData> optional = PlayerData.get(player);
                     boolean aim = optional.isPresent() && optional.orElse(null).getAimInfo().aiming;
                     if (aim) {
                         preAimFov.map(settings.fov);
                         preAimSens.map(settings.sensitivity);
-                        if (item == GRPGItems.SNIPER_RIFLE && PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE)) {
+                        if (item == ModItems.SNIPER_RIFLE && PlayerData.hasActiveSkill(player, Skills.SR_SCOPE)) {
                             settings.sensitivity = preAimSens.get() * 0.3F;
                             settings.fov = 15.0F;
-                        } else if (item == GRPGItems.CROSSBOW && PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
+                        } else if (item == ModItems.CROSSBOW && PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
                             settings.sensitivity = preAimSens.get() * 0.4F;
                             settings.fov = 25.0F;
                         }
@@ -283,16 +283,16 @@ public class ClientEventHandler {
                 event.setCanceled(true);
             }
         }
-        LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+        LazyOptional<IPlayerData> optional = PlayerData.get(player);
         if (!optional.isPresent()) {
             event.setCanceled(true);
             return;
         } else {
-            PlayerData data = optional.orElse(null);
+            IPlayerData data = optional.orElse(null);
             AimInfo info = data.getAimInfo();
-            ScopeRenderer renderer = GRPGConfig.clientConfig.scopeRenderer.get();
+            ScopeRenderer renderer = ModConfig.clientConfig.scopeRenderer.get();
             Item item = stack.getItem();
-            if (info.isAiming() && renderer == ScopeRenderer.TEXTURE && (PlayerDataFactory.hasActiveSkill(player, Skills.SR_SCOPE) && item == GRPGItems.SNIPER_RIFLE || PlayerDataFactory.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) && item == GRPGItems.CROSSBOW)) {
+            if (info.isAiming() && renderer == ScopeRenderer.TEXTURE && (PlayerData.hasActiveSkill(player, Skills.SR_SCOPE) && item == ModItems.SNIPER_RIFLE || PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) && item == ModItems.CROSSBOW)) {
                 event.setCanceled(true);
                 return;
             }
@@ -327,7 +327,7 @@ public class ClientEventHandler {
             }
             matrix.popPose();
 
-            if (stack.getItem() == GRPGItems.PISTOL && PlayerDataFactory.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD)) {
+            if (stack.getItem() == ModItems.PISTOL && PlayerData.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD)) {
                 matrix.pushPose();
                 {
                     processor.setDualWieldRender(true);

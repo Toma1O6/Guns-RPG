@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.util.recipes;
 
-import dev.toma.gunsrpg.common.init.GRPGBlocks;
-import dev.toma.gunsrpg.common.init.GRPGItems;
+import dev.toma.gunsrpg.common.init.ModBlocks;
+import dev.toma.gunsrpg.common.init.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
@@ -49,10 +49,10 @@ public class BlastFurnaceRecipe {
         register(Blocks.IRON_ORE, () -> new ItemStack(Items.IRON_INGOT, 2));
         register(Blocks.GOLD_ORE, () -> new ItemStack(Items.GOLD_INGOT, 2));
         register(Blocks.DIAMOND_ORE, () -> new ItemStack(Items.DIAMOND, 2));
-        register(GRPGBlocks.AMETHYST_ORE, () -> new ItemStack(GRPGItems.AMETHYST, 2));
-        register(GRPGItems.IRON_ORE_CHUNK, () -> new ItemStack(Items.IRON_INGOT, 2));
-        register(GRPGItems.GOLD_ORE_CHUNK, () -> new ItemStack(Items.GOLD_INGOT, 2));
-        register(GRPGItems.BLAZE_LUMP, () -> new ItemStack(Items.BLAZE_POWDER));
+        register(ModBlocks.AMETHYST_ORE, () -> new ItemStack(ModItems.AMETHYST, 2));
+        register(ModItems.IRON_ORE_CHUNK, () -> new ItemStack(Items.IRON_INGOT, 2));
+        register(ModItems.GOLD_ORE_CHUNK, () -> new ItemStack(Items.GOLD_INGOT, 2));
+        register(ModItems.BLAZE_LUMP, () -> new ItemStack(Items.BLAZE_POWDER));
     }
 
     private static void register(Item in, Supplier<ItemStack> out) {

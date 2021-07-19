@@ -1,29 +1,29 @@
 package dev.toma.gunsrpg.common;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import dev.toma.gunsrpg.common.capability.PlayerDataManager;
+import dev.toma.gunsrpg.common.capability.PlayerDataProvider;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.debuffs.DamageContext;
 import dev.toma.gunsrpg.common.debuffs.Debuff;
-import dev.toma.gunsrpg.common.entity.EntityCrossbowBolt;
-import dev.toma.gunsrpg.common.entity.EntityExplosiveArrow;
+import dev.toma.gunsrpg.common.entity.CrossbowBoltEntity;
+import dev.toma.gunsrpg.common.entity.ExplosiveArrowEntity;
 import dev.toma.gunsrpg.common.init.*;
-import dev.toma.gunsrpg.common.item.ItemHammer;
+import dev.toma.gunsrpg.common.item.HammerItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.LightHunterSkill;
 import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
 import dev.toma.gunsrpg.common.skills.WellFedSkill;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
-import dev.toma.gunsrpg.config.GRPGConfig;
+import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
-import dev.toma.gunsrpg.world.GRPGOres;
+import dev.toma.gunsrpg.world.ModConfiguredFeatures;
 import dev.toma.gunsrpg.world.MobSpawnManager;
-import dev.toma.gunsrpg.world.cap.WorldCapProvider;
-import dev.toma.gunsrpg.world.cap.WorldDataCap;
-import dev.toma.gunsrpg.world.cap.WorldDataFactory;
+import dev.toma.gunsrpg.world.cap.WorldDataProvider;
+import dev.toma.gunsrpg.world.cap.IWorldData;
+import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -97,11 +97,11 @@ public class CommonEventHandler {
         Biome.Category category = event.getCategory();
         BiomeGenerationSettingsBuilder builder = event.getGeneration();
         MobSpawnInfoBuilder mobSpawnBuilder = event.getSpawns();
-        mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(GRPGEntityTypes.ZOMBIE_GUNNER.get(), GRPGConfig.worldConfig.zombieGunnerSpawn.get(), 1, 3));
-        mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(GRPGEntityTypes.EXPLOSIVE_SKELETON.get(), GRPGConfig.worldConfig.explosiveSkeletonSpawn.get(), 1, 3));
+        mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_GUNNER.get(), ModConfig.worldConfig.zombieGunnerSpawn.get(), 1, 3));
+        mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.EXPLOSIVE_SKELETON.get(), ModConfig.worldConfig.explosiveSkeletonSpawn.get(), 1, 3));
         if (category != Biome.Category.NETHER && category != Biome.Category.THEEND) {
             // overworld biomes
-            builder.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, GRPGOres.ORE_AMETHYST);
+            builder.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ModConfiguredFeatures.ORE_AMETHYST);
         }
     }
 
@@ -116,19 +116,19 @@ public class CommonEventHandler {
     public static void onCapAttachP(AttachCapabilitiesEvent<Entity> event) {
         Entity entity = event.getObject();
         if (entity instanceof PlayerEntity) {
-            event.addCapability(GunsRPG.makeResource("playerdata"), new PlayerDataManager((PlayerEntity) entity));
+            event.addCapability(GunsRPG.makeResource("playerdata"), new PlayerDataProvider((PlayerEntity) entity));
         }
     }
 
     @SubscribeEvent
     public static void onCapAttachW(AttachCapabilitiesEvent<World> event) {
-        event.addCapability(GunsRPG.makeResource("worldcap"), new WorldCapProvider());
+        event.addCapability(GunsRPG.makeResource("worldcap"), new WorldDataProvider());
     }
 
     @SubscribeEvent
     public static void onLogIn(PlayerEvent.PlayerLoggedInEvent event) {
         PlayerEntity player = event.getPlayer();
-        PlayerDataFactory.get(player).ifPresent(data -> {
+        PlayerData.get(player).ifPresent(data -> {
             data.sync();
             data.handleLogin();
             ModList list = ModList.get();
@@ -159,7 +159,7 @@ public class CommonEventHandler {
     public static void getDestructionSpeed(net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed event) {
         PlayerEntity player = event.getPlayer();
         ItemStack stack = player.getMainHandItem();
-        PlayerDataFactory.get(player).ifPresent(data -> {
+        PlayerData.get(player).ifPresent(data -> {
             PlayerSkills skills = data.getSkills();
             if (stack.getItem() instanceof AxeItem && skills.hasSkill(Skills.SHARP_AXE_I)) {
                 float f = event.getOriginalSpeed();
@@ -207,10 +207,10 @@ public class CommonEventHandler {
             Food food = item.getFoodProperties();
             if (food != null) {
                 int nutrition = food.getNutrition();
-                PlayerDataFactory.get(player).ifPresent(data -> {
+                PlayerData.get(player).ifPresent(data -> {
                     PlayerSkills skills = data.getSkills();
                     WellFedSkill skill = skills.getSkill(Skills.WELL_FED_I);
-                    if (nutrition >= GRPGConfig.skillConfig.getWellFedMinNutrition() && skill != null) {
+                    if (nutrition >= ModConfig.skillConfig.getWellFedMinNutrition() && skill != null) {
                         SkillUtil.getBestSkillFromOverrides(skill, player).applyEffects(player);
                     }
                 });
@@ -223,8 +223,8 @@ public class CommonEventHandler {
         PlayerEntity player = event.getPlayer();
         ItemStack stack = player.getMainHandItem();
         World world = (World) event.getWorld();
-        if (stack.getItem() instanceof ItemHammer) {
-            ItemHammer hammer = (ItemHammer) stack.getItem();
+        if (stack.getItem() instanceof HammerItem) {
+            HammerItem hammer = (HammerItem) stack.getItem();
             Direction facing = ModUtils.getFacing(player);
             for (BlockPos pos : hammer.gatherBlocks(event.getPos(), facing)) {
                 BlockState state = world.getBlockState(pos);
@@ -242,7 +242,7 @@ public class CommonEventHandler {
         DamageSource source = event.getSource();
         if (source.getDirectEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) source.getDirectEntity();
-            PlayerDataFactory.get(player).ifPresent(data -> {
+            PlayerData.get(player).ifPresent(data -> {
                 PlayerSkills skills = data.getSkills();
                 float health = event.getEntityLiving().getMaxHealth();
                 boolean instantKill = false;
@@ -258,9 +258,9 @@ public class CommonEventHandler {
                     event.setAmount(event.getAmount() + skills.extraDamage);
                 }
             });
-        } else if ((source.getDirectEntity() instanceof AbstractArrowEntity || source.getDirectEntity() instanceof EntityCrossbowBolt) && source.getEntity() instanceof PlayerEntity) {
+        } else if ((source.getDirectEntity() instanceof AbstractArrowEntity || source.getDirectEntity() instanceof CrossbowBoltEntity) && source.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) source.getEntity();
-            LightHunterSkill skill = PlayerDataFactory.getSkill(player, Skills.LIGHT_HUNTER);
+            LightHunterSkill skill = PlayerData.getSkill(player, Skills.LIGHT_HUNTER);
             if (skill != null && skill.apply(player)) {
                 event.setAmount(event.getAmount() * 1.2F);
             }
@@ -269,8 +269,8 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void clonePlayer(net.minecraftforge.event.entity.player.PlayerEvent.Clone event) {
-        LazyOptional<PlayerData> oldDataOptional = PlayerDataFactory.get(event.getOriginal());
-        LazyOptional<PlayerData> freshDataOptional = PlayerDataFactory.get(event.getPlayer());
+        LazyOptional<IPlayerData> oldDataOptional = PlayerData.get(event.getOriginal());
+        LazyOptional<IPlayerData> freshDataOptional = PlayerData.get(event.getPlayer());
         oldDataOptional.ifPresent(oldData -> freshDataOptional.ifPresent(freshData -> freshData.deserializeNBT(oldData.serializeNBT())));
     }
 
@@ -280,12 +280,12 @@ public class CommonEventHandler {
         World world = arrow.level;
         if (!world.isClientSide) {
             RayTraceResult rayTraceResult = event.getRayTraceResult();
-            if (rayTraceResult != null && rayTraceResult.getType() == RayTraceResult.Type.BLOCK && arrow instanceof EntityExplosiveArrow) {
+            if (rayTraceResult != null && rayTraceResult.getType() == RayTraceResult.Type.BLOCK && arrow instanceof ExplosiveArrowEntity) {
                 BlockRayTraceResult result = (BlockRayTraceResult) event.getRayTraceResult();
                 arrow.remove();
                 Direction facing = result.getDirection();
                 BlockPos pos = result.getBlockPos().relative(facing);
-                int pw = ((EntityExplosiveArrow) arrow).blastSize;
+                int pw = ((ExplosiveArrowEntity) arrow).blastSize;
                 switch (facing) {
                     case NORTH:
                     case SOUTH: {
@@ -338,7 +338,7 @@ public class CommonEventHandler {
     public static void onEntityDamaged(LivingHurtEvent event) {
         if (event.getAmount() >= 0.2F && event.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntity();
-            PlayerDataFactory.get(player).ifPresent(data -> data.getDebuffData().onPlayerAttackedFrom(DamageContext.getContext(event.getSource(), event.getAmount()), player));
+            PlayerData.get(player).ifPresent(data -> data.getDebuffData().onPlayerAttackedFrom(DamageContext.getContext(event.getSource(), event.getAmount()), player));
         }
     }
 
@@ -348,23 +348,23 @@ public class CommonEventHandler {
         if (flag) {
             Entity source = ((GunDamageSource) event.getSource()).getSrc();
             if (source instanceof PlayerEntity) {
-                PlayerDataFactory.get((PlayerEntity) source).ifPresent(data -> data.getSkills().onKillEntity(event.getEntity(), ((GunDamageSource) event.getSource()).getStacc()));
+                PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getSkills().onKillEntity(event.getEntity(), ((GunDamageSource) event.getSource()).getStacc()));
             }
         } else {
             Entity source = event.getSource().getDirectEntity();
             if (source instanceof PlayerEntity) {
-                PlayerDataFactory.get((PlayerEntity) source).ifPresent(data -> data.getSkills().onKillEntity(event.getEntity(), ItemStack.EMPTY));
+                PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getSkills().onKillEntity(event.getEntity(), ItemStack.EMPTY));
             }
         }
         if (event.getEntity() instanceof IMob) {
             if (!event.getEntity().level.isClientSide && random.nextFloat() <= 0.016) {
                 Entity entity = event.getEntity();
-                entity.level.addFreshEntity(new ItemEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(GRPGItems.SKILLPOINT_BOOK)));
+                entity.level.addFreshEntity(new ItemEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(ModItems.SKILLPOINT_BOOK)));
             }
         }
         if (event.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntity();
-            PlayerDataFactory.get(player).ifPresent(data -> {
+            PlayerData.get(player).ifPresent(data -> {
                 PlayerSkills skills = data.getSkills();
                 SecondChanceSkill secondChanceSkill = skills.getSkill(Skills.SECOND_CHANCE_I);
                 if (secondChanceSkill != null) {
@@ -381,13 +381,13 @@ public class CommonEventHandler {
                         if (debuff != null && !debuff.isInvalid())
                             debuff.invalidate();
                     }
-                    if (GRPGConfig.worldConfig.createCrateOnPlayerDeath.get() && !player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
+                    if (ModConfig.worldConfig.createCrateOnPlayerDeath.get() && !player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
                         BlockPos pos = player.blockPosition();
                         World world = player.level;
                         while (!world.getBlockState(pos).getBlock().getCollisionShape(world.getBlockState(pos), world, pos, ISelectionContext.empty()).isEmpty() && pos.getY() < 255) {
                             pos = pos.above();
                         }
-                        world.setBlock(pos, GRPGBlocks.DEATH_CRATE.defaultBlockState(), 3);
+                        world.setBlock(pos, ModBlocks.DEATH_CRATE.defaultBlockState(), 3);
                         TileEntity tileEntity = world.getBlockEntity(pos);
                         if (tileEntity instanceof DeathCrateTileEntity) {
                             ((DeathCrateTileEntity) tileEntity).fillInventory(player);
@@ -398,7 +398,7 @@ public class CommonEventHandler {
                         players.forEach(p -> {
                             p.addEffect(new EffectInstance(Effects.ABSORPTION, 400, 2));
                             p.addEffect(new EffectInstance(Effects.REGENERATION, 500, 1));
-                            p.level.playSound(p, p.getX(), p.getY(), p.getZ(), GRPGSounds.USE_AVENGE_ME_FRIENDS, SoundCategory.MASTER, 1.0F, 1.0F);
+                            p.level.playSound(p, p.getX(), p.getY(), p.getZ(), ModSounds.USE_AVENGE_ME_FRIENDS, SoundCategory.MASTER, 1.0F, 1.0F);
                         });
                     }
                 }
@@ -409,7 +409,7 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void respawnPlayer(PlayerEvent.PlayerRespawnEvent event) {
         PlayerEntity player = event.getPlayer();
-        PlayerDataFactory.get(player).ifPresent(data -> {
+        PlayerData.get(player).ifPresent(data -> {
             PlayerSkills skills = data.getSkills();
             if (skills.hasSkill(Skills.WAR_MACHINE)) {
                 skills.getSkill(Skills.WAR_MACHINE).onPurchase(player);
@@ -427,7 +427,7 @@ public class CommonEventHandler {
             GunDamageSource src = (GunDamageSource) event.getDamageSource();
             ItemStack stack = src.getStacc();
             Entity shooter = src.getSrc();
-            if (stack.getItem() == GRPGItems.CROSSBOW && shooter instanceof PlayerEntity && PlayerDataFactory.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_HUNTER)) {
+            if (stack.getItem() == ModItems.CROSSBOW && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_HUNTER)) {
                 event.setLootingLevel(3);
             }
         }
@@ -436,7 +436,7 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void checkEntitySpawn(LivingSpawnEvent.CheckSpawn event) {
         if (event.isSpawner()) {
-            if (GRPGConfig.worldConfig.disableMobSpawners.get())
+            if (ModConfig.worldConfig.disableMobSpawners.get())
                 event.setResult(Event.Result.DENY);
         }
     }
@@ -445,7 +445,7 @@ public class CommonEventHandler {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             PlayerEntity player = event.player;
-            PlayerDataFactory.get(player).ifPresent(data -> {
+            PlayerData.get(player).ifPresent(data -> {
                 data.tick();
                 player.abilities.setWalkingSpeed(data.getSkills().getMovementSpeed());
             });
@@ -457,14 +457,14 @@ public class CommonEventHandler {
         if (event.getEntity() instanceof MonsterEntity || event.getEntity() instanceof IAngerable) {
             LivingEntity entity = (LivingEntity) event.getEntity();
             World world = event.getWorld();
-            boolean bloodmoon = WorldDataFactory.isBloodMoon(world);
+            boolean bloodmoon = WorldData.isBloodMoon(world);
             MobSpawnManager.instance().processSpawn(entity, world, bloodmoon, event);
         }
     }
 
     @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
-        WorldDataCap cap = WorldDataFactory.get(event.world);
+        IWorldData cap = WorldData.get(event.world);
         if (cap == null) return;
         cap.tick(event.world);
     }
@@ -478,7 +478,7 @@ public class CommonEventHandler {
                 ServerPlayerEntity serverplayer = (ServerPlayerEntity) player;
                 serverplayer.setRespawnPosition(serverplayer.level.dimension(), pos.above(), serverplayer.yRot, true, false);
             }
-            PlayerEntity.SleepResult result = GRPGConfig.worldConfig.sleepRestriction.get().getResult(player.level);
+            PlayerEntity.SleepResult result = ModConfig.worldConfig.sleepRestriction.get().getResult(player.level);
             if (result != null)
                 event.setResult(result);
         }
@@ -496,7 +496,7 @@ public class CommonEventHandler {
         String loottable = event.getName().toString();
         if (loottable.equals("minecraft:chests/abandoned_mineshaft") || loottable.equals("minecraft:chests/desert_pyramid") || loottable.equals("minecraft:chests/simple_dungeon") || loottable.equals("minecraft:chests/village_blacksmith")) {
             event.getTable().addPool(LootPool.lootPool().add(ItemLootEntry
-                    .lootTableItem(GRPGItems.SKILLPOINT_BOOK)
+                    .lootTableItem(ModItems.SKILLPOINT_BOOK)
                     .apply(SetCount.setCount(new RandomValueRange(1, 3))))
                     .setRolls(new ConstantRange(1))
                     .bonusRolls(0.0F, 0.0F)

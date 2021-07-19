@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.skills;
 
-import dev.toma.gunsrpg.common.init.GRPGSounds;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.common.skills.interfaces.Cooldown;
+import dev.toma.gunsrpg.common.skills.interfaces.ICooldown;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
@@ -10,7 +10,7 @@ import net.minecraft.util.SoundCategory;
 
 import java.util.function.Supplier;
 
-public class SecondChanceSkill extends BasicSkill implements Cooldown {
+public class SecondChanceSkill extends BasicSkill implements ICooldown {
 
     private final int maxCooldown;
     private final int healAmount;
@@ -52,7 +52,7 @@ public class SecondChanceSkill extends BasicSkill implements Cooldown {
     @Override
     public void onUse(PlayerEntity player) {
         player.setHealth(this.healAmount);
-        player.level.playSound(null, player.getX(), player.getY(), player.getZ(), GRPGSounds.SECOND_CHANCE_USE, SoundCategory.MASTER, 1.0F, 1.0F);
+        player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.SECOND_CHANCE_USE, SoundCategory.MASTER, 1.0F, 1.0F);
         player.addEffect(effectSupplier.get());
     }
 

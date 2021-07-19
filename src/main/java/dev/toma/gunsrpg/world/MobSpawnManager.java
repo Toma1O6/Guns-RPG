@@ -2,8 +2,8 @@ package dev.toma.gunsrpg.world;
 
 import dev.toma.gunsrpg.common.entity.BloodmoonGolemEntity;
 import dev.toma.gunsrpg.common.entity.RocketAngelEntity;
-import dev.toma.gunsrpg.common.init.GRPGEntityTypes;
-import dev.toma.gunsrpg.config.GRPGConfig;
+import dev.toma.gunsrpg.common.init.ModEntities;
+import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.Pair;
 import net.minecraft.entity.Entity;
@@ -41,17 +41,17 @@ public class MobSpawnManager {
     }
 
     public void initialize() {
-        healthExlusions.add(GRPGEntityTypes.ROCKET_ANGEL.get());
-        healthExlusions.add(GRPGEntityTypes.BLOODMOON_GOLEM.get());
+        healthExlusions.add(ModEntities.ROCKET_ANGEL.get());
+        healthExlusions.add(ModEntities.BLOODMOON_GOLEM.get());
         healthExlusions.add(EntityType.ENDER_DRAGON);
-        healthExlusions.add(GRPGEntityTypes.GOLD_DRAGON.get());
+        healthExlusions.add(ModEntities.GOLD_DRAGON.get());
         healthExlusions.add(EntityType.WITHER);
         registerBloodmoonEntry(EntityType.SPIDER, 7, (world, vec3d) -> {
             CaveSpiderEntity spider = new CaveSpiderEntity(EntityType.CAVE_SPIDER, world);
             spider.setPos(vec3d.x, vec3d.y, vec3d.z);
             return spider;
         });
-        registerBloodmoonEntry(EntityType.SPIDER, GRPGConfig.worldConfig.rocketAngelSpawnChance.get(), (world, vec3d) -> {
+        registerBloodmoonEntry(EntityType.SPIDER, ModConfig.worldConfig.rocketAngelSpawnChance.get(), (world, vec3d) -> {
             RocketAngelEntity rocketAngel = new RocketAngelEntity(world);
             rocketAngel.setPos(vec3d.x, vec3d.y, vec3d.z);
             return rocketAngel;

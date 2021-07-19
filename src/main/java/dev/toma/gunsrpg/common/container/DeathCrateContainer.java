@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.container;
 
-import dev.toma.gunsrpg.common.init.GRPGContainers;
+import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketBuffer;
@@ -9,7 +9,7 @@ import net.minecraftforge.items.SlotItemHandler;
 public class DeathCrateContainer extends AbstractModContainer<DeathCrateTileEntity> {
 
     public DeathCrateContainer(int windowID, PlayerInventory inventory, DeathCrateTileEntity tileEntity) {
-        super(GRPGContainers.DEATH_CRATE.get(), windowID, inventory, tileEntity);
+        super(ModContainers.DEATH_CRATE.get(), windowID, inventory, tileEntity);
         tileEntity.getInventory().ifPresent(handler -> {
             for (int y = 0; y < 5; y++) {
                 for (int x = 0; x < 9; x++) {

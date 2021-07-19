@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.util;
 
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
@@ -15,7 +15,7 @@ import net.minecraft.item.PickaxeItem;
 public class SkillUtil {
 
     public static <S extends ISkill> S getBestSkillFromOverrides(S skill, PlayerEntity player) {
-        PlayerSkills skills = PlayerDataFactory.get(player).orElseThrow(NullPointerException::new).getSkills();
+        PlayerSkills skills = PlayerData.get(player).orElseThrow(NullPointerException::new).getSkills();
         if (skill == null)
             return null;
         while (skill.getType().isOverriden() && skills.hasSkill(skill.getType().getOverride())) {
@@ -25,7 +25,7 @@ public class SkillUtil {
     }
 
     public static float getReloadTimeMultiplier(PlayerEntity player) {
-        PlayerSkills skills = PlayerDataFactory.getUnsafe(player).getSkills();
+        PlayerSkills skills = PlayerData.getUnsafe(player).getSkills();
         if (skills.hasSkill(Skills.ADRENALINE_RUSH_I)) {
             AdrenalineRushSkill ars = getBestSkillFromOverrides(skills.getSkill(Skills.ADRENALINE_RUSH_I), player);
             return ars.apply(player) ? 1.0F - ars.getReloadMultiplier() : 1.0F;
@@ -34,23 +34,23 @@ public class SkillUtil {
     }
 
     public static int getGunpowderCraftAmount(PlayerEntity player) {
-        return getCraftingAmount(PlayerDataFactory.getUnsafe(player).getSkills(), Skills.GUNPOWDER_MASTER, Skills.GUNPOWDER_EXPERT, Skills.GUNPOWDER_NOVICE);
+        return getCraftingAmount(PlayerData.getUnsafe(player).getSkills(), Skills.GUNPOWDER_MASTER, Skills.GUNPOWDER_EXPERT, Skills.GUNPOWDER_NOVICE);
     }
 
     public static int getBonemealCraftAmount(PlayerEntity player) {
-        return getCraftingAmount(PlayerDataFactory.getUnsafe(player).getSkills(), Skills.BONE_GRINDER_III, Skills.BONE_GRINDER_II, Skills.BONE_GRINDER_I);
+        return getCraftingAmount(PlayerData.getUnsafe(player).getSkills(), Skills.BONE_GRINDER_III, Skills.BONE_GRINDER_II, Skills.BONE_GRINDER_I);
     }
 
     public static int getBlazepowderCraftAmount(PlayerEntity player) {
-        return getCraftingAmount(PlayerDataFactory.getUnsafe(player).getSkills(), Skills.BLAZE_POWDER_III, Skills.BLAZE_POWDER_II, Skills.BLAZE_POWDER_I);
+        return getCraftingAmount(PlayerData.getUnsafe(player).getSkills(), Skills.BLAZE_POWDER_III, Skills.BLAZE_POWDER_II, Skills.BLAZE_POWDER_I);
     }
 
     public static int getAmmoAmount(PlayerEntity player) {
-        return PlayerDataFactory.hasActiveSkill(player, Skills.AMMO_SMITHING_MASTERY) ? 2 : 1;
+        return PlayerData.hasActiveSkill(player, Skills.AMMO_SMITHING_MASTERY) ? 2 : 1;
     }
 
     public static int getCrossbowBoltAmount(PlayerEntity player) {
-        return PlayerDataFactory.hasActiveSkill(player, Skills.AMMO_SMITHING_MASTERY) ? 3 : 2;
+        return PlayerData.hasActiveSkill(player, Skills.AMMO_SMITHING_MASTERY) ? 3 : 2;
     }
 
     public static float getAxeSpeedModifier(float input, AxeItem axe, PlayerEntity player) {

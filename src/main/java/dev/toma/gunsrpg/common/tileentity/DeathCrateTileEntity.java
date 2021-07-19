@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.tileentity;
 
-import dev.toma.gunsrpg.common.init.GRPGTileEntities;
+import dev.toma.gunsrpg.common.init.ModBlockEntities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
@@ -10,7 +10,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class DeathCrateTileEntity extends InventoryTileEntity {
 
     public DeathCrateTileEntity() {
-        this(GRPGTileEntities.DEATH_CRATE.get());
+        this(ModBlockEntities.DEATH_CRATE.get());
     }
 
     protected DeathCrateTileEntity(TileEntityType<? extends DeathCrateTileEntity> type) {

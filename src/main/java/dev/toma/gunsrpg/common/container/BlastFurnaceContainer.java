@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.container;
 
-import dev.toma.gunsrpg.common.init.GRPGContainers;
+import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.tileentity.BlastFurnaceTileEntity;
 import dev.toma.gunsrpg.util.recipes.BlastFurnaceRecipe;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,7 +14,7 @@ import net.minecraftforge.items.SlotItemHandler;
 public class BlastFurnaceContainer extends AbstractModContainer<BlastFurnaceTileEntity> {
 
     public BlastFurnaceContainer(int windowID, PlayerInventory inventory, BlastFurnaceTileEntity tileEntity) {
-        super(GRPGContainers.BLAST_FURNACE.get(), windowID, inventory, tileEntity);
+        super(ModContainers.BLAST_FURNACE.get(), windowID, inventory, tileEntity);
         tileEntity.getInventory().ifPresent(handler -> {
             addSlot(new SlotItemHandler(handler, 0, 56, 17));
             addSlot(new SlotItemHandler(handler, 1, 116, 35) {

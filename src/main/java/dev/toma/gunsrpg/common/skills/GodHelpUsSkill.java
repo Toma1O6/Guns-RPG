@@ -1,19 +1,19 @@
 package dev.toma.gunsrpg.common.skills;
 
+import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import dev.toma.gunsrpg.common.entity.EntityFlare;
-import dev.toma.gunsrpg.common.init.GRPGSounds;
+import dev.toma.gunsrpg.common.entity.FlareEntity;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.common.skills.interfaces.Clickable;
-import dev.toma.gunsrpg.common.skills.interfaces.Cooldown;
+import dev.toma.gunsrpg.common.skills.interfaces.IClickableSkill;
+import dev.toma.gunsrpg.common.skills.interfaces.ICooldown;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSkillClicked;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
 
-public class GodHelpUsSkill extends BasicSkill implements Cooldown, Clickable {
+public class GodHelpUsSkill extends BasicSkill implements ICooldown, IClickableSkill {
 
     private final int maxCooldown;
     private int currentCooldown;
@@ -40,9 +40,9 @@ public class GodHelpUsSkill extends BasicSkill implements Cooldown, Clickable {
     @Override
     public void clicked(PlayerEntity player) {
         currentCooldown = maxCooldown;
-        player.level.playSound(null, player.getX(), player.getY(), player.getZ(), GRPGSounds.FLARE_SHOOT, SoundCategory.MASTER, 10.0F, 1.0F);
-        player.level.addFreshEntity(new EntityFlare(player.level, player));
-        PlayerDataFactory.get(player).ifPresent(PlayerData::sync);
+        player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.FLARE_SHOOT, SoundCategory.MASTER, 10.0F, 1.0F);
+        player.level.addFreshEntity(new FlareEntity(player.level, player));
+        PlayerData.get(player).ifPresent(IPlayerData::sync);
     }
 
     @Override

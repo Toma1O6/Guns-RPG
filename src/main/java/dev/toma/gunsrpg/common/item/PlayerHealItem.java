@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.item;
 
-import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.init.GRPGEffects;
+import dev.toma.gunsrpg.common.capability.IPlayerData;
+import dev.toma.gunsrpg.common.init.ModEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -32,11 +32,11 @@ public class PlayerHealItem extends AbstractHealItem<PlayerEntity> {
         player.addEffect(new EffectInstance(Effects.REGENERATION, 300, 1, false, false));
         player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 1, false, false));
         player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 900, 0, false, false));
-        player.addEffect(new EffectInstance(GRPGEffects.GUN_DAMAGE_BUFF.get(), 600, 0, false, false));
+        player.addEffect(new EffectInstance(ModEffects.GUN_DAMAGE_BUFF.get(), 600, 0, false, false));
     }
 
     @Override
-    public PlayerEntity getTargetObject(World world, PlayerEntity user, PlayerData data) {
+    public PlayerEntity getTargetObject(World world, PlayerEntity user, IPlayerData data) {
         return user;
     }
 

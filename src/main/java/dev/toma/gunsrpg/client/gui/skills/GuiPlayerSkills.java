@@ -4,16 +4,16 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.gui.GuiConfirmSkillUnlock;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.client.gui.ConfirmSkillUnlockScreen;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.GunData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.common.skills.interfaces.Clickable;
-import dev.toma.gunsrpg.common.skills.interfaces.OverlayRenderer;
+import dev.toma.gunsrpg.common.skills.interfaces.IClickableSkill;
+import dev.toma.gunsrpg.common.skills.interfaces.IOverlayRender;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.math.Vec2i;
 import dev.toma.gunsrpg.util.object.OptionalObject;
@@ -68,7 +68,7 @@ public class GuiPlayerSkills extends Screen {
         headerWidth = minecraft.font.width(headerText);
         Tree tree = SkillTreePlacement.treeMap.get(displayedCategory);
         PlayerEntity player = minecraft.player;
-        skills = PlayerDataFactory.getUnsafe(player).getSkills();
+        skills = PlayerData.getUnsafe(player).getSkills();
         int level = skills.getLevel();
         for (Branch branch : tree.branches) {
             for (PlacementContext ctx : branch.getPlacements()) {
@@ -220,7 +220,7 @@ public class GuiPlayerSkills extends Screen {
         private long hoverStartTime;
         private boolean hasStartedCounting;
         private int infoWidth;
-        private OverlayRenderer renderer;
+        private IOverlayRender renderer;
 
         @SuppressWarnings({"UseBulkOperation", "ManualArrayToCollectionCopy"})
         public SkillComponent(PlacementContext context) {
@@ -239,14 +239,14 @@ public class GuiPlayerSkills extends Screen {
                     lines.add(Pair.of(new Vec2i(p1.x() + w / 2, p1.y() - heightDiffDivided), new Vec2i(parentPos.x() + w / 2, p1.y() - heightDiffDivided)));
                 }
             }
-            this.obtained = PlayerDataFactory.hasActiveSkill(Minecraft.getInstance().player, type);
+            this.obtained = PlayerData.hasActiveSkill(Minecraft.getInstance().player, type);
             List<ITextComponent> components = new ArrayList<>();
             for (ITextComponent itc : type.getDescription()) {
                 components.add(itc);
             }
             components.add(new StringTextComponent(TextFormatting.AQUA + "Unlocks at level " + type.levelRequirement));
             components.add(new StringTextComponent(TextFormatting.RED + "Costs " + type.price + " points"));
-            if (obtained && PlayerDataFactory.getSkill(Minecraft.getInstance().player, type) instanceof Clickable) {
+            if (obtained && PlayerData.getSkill(Minecraft.getInstance().player, type) instanceof IClickableSkill) {
                 components.add(new StringTextComponent(TextFormatting.YELLOW + "Left-click to use this skill"));
             }
             if (type.hasCustomRenderFactory()) {
@@ -260,9 +260,9 @@ public class GuiPlayerSkills extends Screen {
                 }
             }
             if (obtained) {
-                ISkill skill = PlayerDataFactory.getSkill(Minecraft.getInstance().player, type);
-                if (skill instanceof OverlayRenderer) {
-                    renderer = (OverlayRenderer) skill;
+                ISkill skill = PlayerData.getSkill(Minecraft.getInstance().player, type);
+                if (skill instanceof IOverlayRender) {
+                    renderer = (IOverlayRender) skill;
                 }
             }
         }
@@ -280,19 +280,19 @@ public class GuiPlayerSkills extends Screen {
             } else if (mouseButton == 0) {
                 PlayerEntity player = Minecraft.getInstance().player;
                 if (obtained) {
-                    ISkill skill = PlayerDataFactory.getSkill(player, type);
-                    if (skill instanceof Clickable) {
-                        ((Clickable) skill).clientHandleClicked();
+                    ISkill skill = PlayerData.getSkill(player, type);
+                    if (skill instanceof IClickableSkill) {
+                        ((IClickableSkill) skill).clientHandleClicked();
                         return true;
                     }
                 } else {
                     if (ctx.parent != null) {
-                        if (PlayerDataFactory.hasActiveSkill(player, ctx.parent) && type.getCriteria().isUnlockAvailable(PlayerDataFactory.getUnsafe(player), type)) {
-                            minecraft.setScreen(new GuiConfirmSkillUnlock(GuiPlayerSkills.this, type, ctx));
+                        if (PlayerData.hasActiveSkill(player, ctx.parent) && type.getCriteria().isUnlockAvailable(PlayerData.getUnsafe(player), type)) {
+                            minecraft.setScreen(new ConfirmSkillUnlockScreen(GuiPlayerSkills.this, type, ctx));
                             return true;
                         }
-                    } else if (type.getCriteria().isUnlockAvailable(PlayerDataFactory.getUnsafe(player), type)) {
-                        minecraft.setScreen(new GuiConfirmSkillUnlock(GuiPlayerSkills.this, type, null));
+                    } else if (type.getCriteria().isUnlockAvailable(PlayerData.getUnsafe(player), type)) {
+                        minecraft.setScreen(new ConfirmSkillUnlockScreen(GuiPlayerSkills.this, type, null));
                         return true;
                     }
                 }
@@ -473,7 +473,7 @@ public class GuiPlayerSkills extends Screen {
                 SkillType<?> child = ctx.type.getChilds().get(i);
                 list.add(new SkillComponent(new PlacementContext(null, child, new Vec2i(x + 10 + 25 * i, y + 10))));
             }
-            this.gunData = PlayerDataFactory.getUnsafe(Minecraft.getInstance().player).getSkills().getGunData(gun);
+            this.gunData = PlayerData.getUnsafe(Minecraft.getInstance().player).getSkills().getGunData(gun);
         }
 
         public void draw(MatrixStack stack, Minecraft mc, int mouseX, int mouseY, float partialTicks, int xOffset, int yOffset) {

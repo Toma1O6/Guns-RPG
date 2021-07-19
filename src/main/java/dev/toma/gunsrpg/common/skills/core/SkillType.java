@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.common.skills.core;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
-import dev.toma.gunsrpg.common.skills.criteria.UnlockCriteria;
+import dev.toma.gunsrpg.common.skills.criteria.IUnlockCriteria;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,7 +22,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
     public final ResourceLocation icon;
     public final SkillCategory category;
     private final boolean enableCustomChildDisplay;
-    private final UnlockCriteria criteria;
+    private final IUnlockCriteria criteria;
     private final IFactory<S> instanceFactory;
     private final ITextComponent textComponent;
     private final ITextComponent[] description;
@@ -77,7 +77,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
         return description;
     }
 
-    public UnlockCriteria getCriteria() {
+    public IUnlockCriteria getCriteria() {
         return criteria;
     }
 
@@ -128,7 +128,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
         private ResourceLocation registryName;
         private ResourceLocation icon;
         private ITextComponent textComponent;
-        private UnlockCriteria criteria = CriteriaTypes.getDefaultCriteria();
+        private IUnlockCriteria criteria = CriteriaTypes.getDefaultCriteria();
         private int descriptionLines = 1;
         private boolean enableCustomChildDisplay;
         private Supplier<Item> customRenderFactory;
@@ -171,7 +171,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
             return this;
         }
 
-        public Builder<S> criteria(UnlockCriteria criteria) {
+        public Builder<S> criteria(IUnlockCriteria criteria) {
             this.criteria = criteria;
             return this;
         }

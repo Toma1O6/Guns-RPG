@@ -4,36 +4,196 @@ import dev.toma.gunsrpg.common.capability.object.AimInfo;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
+import dev.toma.gunsrpg.common.init.ModItems;
+import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.skills.core.ISkill;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.CPacketUpdateCap;
+import dev.toma.gunsrpg.sided.ClientSideManager;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.DistExecutor;
 
-public interface PlayerData extends INBTSerializable<CompoundNBT> {
+public class PlayerData implements IPlayerData {
 
-    DebuffData getDebuffData();
+    private final PlayerEntity player;
+    private final DebuffData debuffData;
+    private final AimInfo aimInfo;
+    private final ReloadInfo reloadInfo;
+    private final PlayerSkills playerSkills;
+    private int reducedHealthTimer;
+    private ISynchCallback callback;
 
-    CompoundNBT writePermanentData();
+    private boolean logged = false;
 
-    AimInfo getAimInfo();
+    public PlayerData() {
+        this(null);
+    }
 
-    ReloadInfo getReloadInfo();
+    public PlayerData(PlayerEntity player) {
+        this.player = player;
+        this.debuffData = new DebuffData(this);
+        this.aimInfo = new AimInfo(this);
+        this.reloadInfo = new ReloadInfo(this);
+        this.playerSkills = new PlayerSkills(this);
+        setSyncCallback(DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> ClientSideManager.instance()::onDataSync));
+    }
 
-    PlayerSkills getSkills();
+    public static boolean hasActiveSkill(PlayerEntity player, SkillType<?> type) {
+        LazyOptional<IPlayerData> optional = get(player);
+        if (optional.isPresent()) {
+            return optional.orElse(null).getSkills().hasSkill(type);
+        }
+        return false;
+    }
 
-    void setOnCooldown();
+    public static <S extends ISkill> S getSkill(PlayerEntity player, SkillType<S> type) {
+        LazyOptional<IPlayerData> optional = get(player);
+        if (optional.isPresent()) {
+            return optional.orElse(null).getSkills().getSkill(type);
+        }
+        return null;
+    }
 
-    void readPermanentData(CompoundNBT nbt);
+    public static LazyOptional<IPlayerData> get(PlayerEntity player) {
+        return player.getCapability(PlayerDataProvider.CAPABILITY, null);
+    }
 
-    void tick();
+    public static IPlayerData getUnsafe(PlayerEntity player) {
+        return get(player).orElseThrow(NullPointerException::new);
+    }
 
-    void sync();
+    @Override
+    public void setOnCooldown() {
+        if (!ModConfig.debuffConfig.disableRespawnDebuff()) {
+            reducedHealthTimer = 3600;
+        } else {
+            reducedHealthTimer = 0;
+            double d = getSkills().hasSkill(Skills.WAR_MACHINE) ? 40 : 20;
+            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(d);
+            player.setHealth(player.getMaxHealth());
+        }
+    }
 
-    void handleLogin();
+    @Override
+    public void tick() {
+        World world = player.level;
+        this.debuffData.tick(player, this);
+        this.aimInfo.update();
+        this.reloadInfo.update();
+        this.playerSkills.update();
+        if (!world.isClientSide && reducedHealthTimer > 0) {
+            --reducedHealthTimer;
+            double value = player.getAttributeBaseValue(Attributes.MAX_HEALTH);
+            if (value != 6) {
+                player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(6.0);
+                if (player.getHealth() > player.getMaxHealth()) {
+                    player.setHealth(player.getMaxHealth());
+                }
+            }
+            if (reducedHealthTimer == 0) {
+                double d = getSkills().hasSkill(Skills.WAR_MACHINE) ? 40 : 20;
+                player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(d);
+            }
+        }
+    }
 
-    void setSyncCallback(ISynchCallback callback);
+    @Override
+    public DebuffData getDebuffData() {
+        return debuffData;
+    }
 
-    void onSync();
+    @Override
+    public AimInfo getAimInfo() {
+        return aimInfo;
+    }
 
-    interface ISynchCallback {
-        void onSynch();
+    @Override
+    public ReloadInfo getReloadInfo() {
+        return reloadInfo;
+    }
+
+    @Override
+    public PlayerSkills getSkills() {
+        return playerSkills;
+    }
+
+    @Override
+    public void sync() {
+        if (player instanceof ServerPlayerEntity) {
+            NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketUpdateCap(player.getUUID(), this.serializeNBT(), 0));
+        }
+    }
+
+    @Override
+    public void handleLogin() {
+        if (!logged) {
+            logged = true;
+            player.addItem(new ItemStack(ModItems.ANTIDOTUM_PILLS, 2));
+            player.addItem(new ItemStack(ModItems.BANDAGE, 2));
+            player.addItem(new ItemStack(ModItems.VACCINE));
+            player.addItem(new ItemStack(ModItems.PLASTER_CAST));
+            sync();
+        }
+    }
+
+    @Override
+    public void setSyncCallback(ISynchCallback callback) {
+        this.callback = callback;
+    }
+
+    @Override
+    public void onSync() {
+        if (callback != null) callback.onSynch();
+    }
+
+    public CompoundNBT writePermanentData() {
+        CompoundNBT nbtTagCompound = new CompoundNBT();
+        nbtTagCompound.putBoolean("logged", logged);
+        return nbtTagCompound;
+    }
+
+    public void readPermanentData(CompoundNBT nbt) {
+        logged = nbt.getBoolean("logged");
+    }
+
+    @Override
+    public CompoundNBT serializeNBT() {
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.put("permanent", writePermanentData());
+        nbt.put("debuffs", debuffData.serializeNBT());
+        nbt.put("aimData", aimInfo.write());
+        nbt.put("reloadData", reloadInfo.write());
+        nbt.put("playerSkills", playerSkills.writeData());
+        nbt.putInt("healthCooldown", reducedHealthTimer);
+        return nbt;
+    }
+
+    @Override
+    public void deserializeNBT(CompoundNBT nbt) {
+        if (nbt.contains("permanent")) readPermanentData(nbt.getCompound("permanent"));
+        debuffData.deserializeNBT(nbt.contains("debuffs", Constants.NBT.TAG_LIST) ? nbt.getList("debuffs", Constants.NBT.TAG_COMPOUND) : new ListNBT());
+        aimInfo.read(this.findNBTTag("aimData", nbt));
+        reloadInfo.read(this.findNBTTag("reloadData", nbt));
+        playerSkills.readData(this.findNBTTag("playerSkills", nbt));
+        reducedHealthTimer = nbt.getInt("healthCooldown");
+    }
+
+    private CompoundNBT findNBTTag(String key, CompoundNBT nbt) {
+        return nbt.contains(key) ? nbt.getCompound(key) : new CompoundNBT();
+    }
+
+    public PlayerEntity getPlayer() {
+        return player;
     }
 }

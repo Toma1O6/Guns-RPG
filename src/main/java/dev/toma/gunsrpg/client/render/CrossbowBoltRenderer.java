@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import dev.toma.gunsrpg.common.entity.EntityCrossbowBolt;
+import dev.toma.gunsrpg.common.entity.CrossbowBoltEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -17,7 +17,7 @@ import net.minecraft.util.math.vector.Vector3f;
 
 import javax.annotation.Nullable;
 
-public class CrossbowBoltRenderer extends EntityRenderer<EntityCrossbowBolt> {
+public class CrossbowBoltRenderer extends EntityRenderer<CrossbowBoltEntity> {
 
     public CrossbowBoltRenderer(EntityRendererManager manager) {
         super(manager);
@@ -25,12 +25,12 @@ public class CrossbowBoltRenderer extends EntityRenderer<EntityCrossbowBolt> {
 
     @Nullable
     @Override
-    public ResourceLocation getTextureLocation(EntityCrossbowBolt entity) {
+    public ResourceLocation getTextureLocation(CrossbowBoltEntity entity) {
         return TippedArrowRenderer.NORMAL_ARROW_LOCATION;
     }
 
     @Override
-    public void render(EntityCrossbowBolt bolt, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+    public void render(CrossbowBoltEntity bolt, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
         stack.pushPose();
         stack.mulPose(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, bolt.yRotO, bolt.yRot) - 90.0F));
         stack.mulPose(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, bolt.xRotO, bolt.xRot)));

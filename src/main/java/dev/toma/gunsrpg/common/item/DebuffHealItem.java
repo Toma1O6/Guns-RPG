@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.item;
 
-import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
@@ -16,7 +16,7 @@ public class DebuffHealItem extends AbstractHealItem<DebuffData> {
     }
 
     @Override
-    public DebuffData getTargetObject(World world, PlayerEntity user, PlayerData data) {
+    public DebuffData getTargetObject(World world, PlayerEntity user, IPlayerData data) {
         return data.getDebuffData();
     }
 

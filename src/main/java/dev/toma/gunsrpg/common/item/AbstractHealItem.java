@@ -5,8 +5,8 @@ import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.IHandRenderer;
+import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.sided.ClientSideManager;
@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.*;
 
-public abstract class AbstractHealItem<T> extends GRPGItem implements IHandRenderer {
+public abstract class AbstractHealItem<T> extends BaseItem implements IHandRenderer {
 
     private final int useTime;
     private final ITextComponent[] description;
@@ -61,7 +61,7 @@ public abstract class AbstractHealItem<T> extends GRPGItem implements IHandRende
         return DebuffHealItem.define(name);
     }
 
-    public abstract T getTargetObject(World world, PlayerEntity user, PlayerData data);
+    public abstract T getTargetObject(World world, PlayerEntity user, IPlayerData data);
 
     @Override
     public void appendHoverText(ItemStack stack, World level, List<ITextComponent> list, ITooltipFlag flag) {
@@ -81,9 +81,9 @@ public abstract class AbstractHealItem<T> extends GRPGItem implements IHandRende
     @Override
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+        LazyOptional<IPlayerData> optional = PlayerData.get(player);
         if (optional.isPresent()) {
-            PlayerData data = optional.orElse(null);
+            IPlayerData data = optional.orElse(null);
             T target = getTargetObject(level, player, data);
             if (useCondition.test(target)) {
                 if (level.isClientSide) {
@@ -109,7 +109,7 @@ public abstract class AbstractHealItem<T> extends GRPGItem implements IHandRende
         if (!world.isClientSide) {
             if (entity instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) entity;
-                PlayerDataFactory.get(player).ifPresent(data -> {
+                PlayerData.get(player).ifPresent(data -> {
                     T target = getTargetObject(world, player, data);
                     useAction.accept(target);
                     if (data.getSkills().hasSkill(Skills.EFFICIENT_MEDS))

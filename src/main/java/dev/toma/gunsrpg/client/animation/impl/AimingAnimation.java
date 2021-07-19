@@ -2,8 +2,8 @@ package dev.toma.gunsrpg.client.animation.impl;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.AnimationFactory;
+import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.common.util.LazyOptional;
@@ -36,7 +36,7 @@ public class AimingAnimation extends AnimationFactory {
 
     @Override
     public float getCurrentProgress() {
-        LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+        LazyOptional<IPlayerData> optional = PlayerData.get(player);
         if (!optional.isPresent())
             return 0.0F;
         return optional.orElse(null).getAimInfo().getProgress();

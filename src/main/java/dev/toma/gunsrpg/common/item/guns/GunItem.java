@@ -7,10 +7,10 @@ import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.IHandRenderer;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.client.animation.impl.RecoilAnimation;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
-import dev.toma.gunsrpg.common.entity.EntityBullet;
-import dev.toma.gunsrpg.common.init.GRPGEntityTypes;
-import dev.toma.gunsrpg.common.item.GRPGItem;
+import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.entity.BulletEntity;
+import dev.toma.gunsrpg.common.init.ModEntities;
+import dev.toma.gunsrpg.common.item.BaseItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public abstract class GunItem extends GRPGItem implements IHandRenderer {
+public abstract class GunItem extends BaseItem implements IHandRenderer {
 
     protected static Random random = new Random();
     protected final GunType gunType;
@@ -132,17 +132,17 @@ public abstract class GunItem extends GRPGItem implements IHandRenderer {
         return f ? v : -v;
     }
 
-    public void onHitEntity(EntityBullet bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+    public void onHitEntity(BulletEntity bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
 
     }
 
-    public void onKillEntity(EntityBullet bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+    public void onKillEntity(BulletEntity bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
 
     }
 
     public void shootBullet(World world, LivingEntity entity, ItemStack stack) {
-        EntityBullet bullet = new EntityBullet(GRPGEntityTypes.BULLET.get(), world, entity, this, stack);
-        boolean aim = entity instanceof PlayerEntity && PlayerDataFactory.getUnsafe((PlayerEntity) entity).getAimInfo().isAiming();
+        BulletEntity bullet = new BulletEntity(ModEntities.BULLET.get(), world, entity, this, stack);
+        boolean aim = entity instanceof PlayerEntity && PlayerData.getUnsafe((PlayerEntity) entity).getAimInfo().isAiming();
         float pitch = entity.xRot + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 2);
         float yaw = entity.yRot + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 2);
         bullet.fire(pitch, yaw, getWeaponConfig().getVelocity());

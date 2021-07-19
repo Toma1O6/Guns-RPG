@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.entity;
 
-import dev.toma.gunsrpg.ai.EntityAIBowRangedAttackIgnoreSight;
-import dev.toma.gunsrpg.common.init.GRPGEntityTypes;
+import dev.toma.gunsrpg.ai.BowAttackWithoutSightGoal;
+import dev.toma.gunsrpg.common.init.ModEntities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -30,7 +30,7 @@ import java.time.temporal.ChronoField;
 
 public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAttackMob {
 
-    private final EntityAIBowRangedAttackIgnoreSight<ExplosiveSkeletonEntity> aiArrowAttack = new EntityAIBowRangedAttackIgnoreSight<>(this, 1.0D, 25, 18.0F);
+    private final BowAttackWithoutSightGoal<ExplosiveSkeletonEntity> aiArrowAttack = new BowAttackWithoutSightGoal<>(this, 1.0D, 25, 18.0F);
     private final MeleeAttackGoal aiAttackOnCollide = new MeleeAttackGoal(this, 1.2D, false) {
         @Override
         public void stop() {
@@ -46,7 +46,7 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
     };
 
     public ExplosiveSkeletonEntity(World world) {
-        this(GRPGEntityTypes.EXPLOSIVE_SKELETON.get(), world);
+        this(ModEntities.EXPLOSIVE_SKELETON.get(), world);
     }
 
     public ExplosiveSkeletonEntity(EntityType<? extends MonsterEntity> type, World world) {
@@ -185,7 +185,7 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
 
     @Override
     public void performRangedAttack(LivingEntity target, float distanceFactor) {
-        AbstractArrowEntity entityarrow = new EntityExplosiveArrow(level, this, 3);
+        AbstractArrowEntity entityarrow = new ExplosiveArrowEntity(level, this, 3);
         double x = target.getX() - this.getX();
         double y = target.getY(0.3333) - entityarrow.getY();
         double z = target.getZ() - this.getZ();

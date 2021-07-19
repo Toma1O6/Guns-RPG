@@ -1,14 +1,14 @@
 package dev.toma.gunsrpg.common.skills;
 
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.common.skills.interfaces.TickableSkill;
+import dev.toma.gunsrpg.common.skills.interfaces.ITickableSkill;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Items;
 
-public class LightHunterSkill extends BasicSkill implements TickableSkill {
+public class LightHunterSkill extends BasicSkill implements ITickableSkill {
 
     public LightHunterSkill(SkillType<?> type) {
         super(type);
@@ -21,7 +21,7 @@ public class LightHunterSkill extends BasicSkill implements TickableSkill {
 
     @Override
     public void onUpdate(PlayerEntity player) {
-        PlayerDataFactory.get(player).ifPresent(data -> {
+        PlayerData.get(player).ifPresent(data -> {
             PlayerSkills skills = data.getSkills();
             if (hasArmor(player)) {
                 skills.lightHunterMovementSpeed = 0.015F;

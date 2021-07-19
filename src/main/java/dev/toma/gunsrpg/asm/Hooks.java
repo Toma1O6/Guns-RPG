@@ -1,15 +1,15 @@
 package dev.toma.gunsrpg.asm;
 
+import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
-import dev.toma.gunsrpg.common.init.GRPGItems;
+import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
 import dev.toma.gunsrpg.common.skills.MotherlodeSkill;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.Pair;
-import dev.toma.gunsrpg.world.cap.WorldDataFactory;
+import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -42,9 +42,9 @@ public class Hooks {
 
     public static double modifyAttackDelay(PlayerEntity player) {
         double value = player.getAttributeValue(Attributes.ATTACK_SPEED);
-        LazyOptional<PlayerData> optional = PlayerDataFactory.get(player);
+        LazyOptional<IPlayerData> optional = PlayerData.get(player);
         if (optional.isPresent()) {
-            PlayerData data = optional.orElse(null);
+            IPlayerData data = optional.orElse(null);
             PlayerSkills skills = data.getSkills();
             AdrenalineRushSkill adrenaline = SkillUtil.getBestSkillFromOverrides(skills.getSkill(Skills.ADRENALINE_RUSH_I), player);
             if (adrenaline != null && adrenaline.apply(player)) {
@@ -57,7 +57,7 @@ public class Hooks {
     public static double modifyFollowDistance(MobEntity mob) {
         double attributeValue = mob.getAttributeValue(Attributes.FOLLOW_RANGE);
         World world = mob.level;
-        if (WorldDataFactory.isBloodMoon(world)) {
+        if (WorldData.isBloodMoon(world)) {
             return Math.max(attributeValue, 90/*GRPGConfig.worldConfig.bloodMoonMobAgroRange.get()*/);
         }
         return attributeValue;
@@ -72,7 +72,7 @@ public class Hooks {
         }
         Block block = state.getBlock();
         PlayerEntity player = (PlayerEntity) entity;
-        PlayerData data = PlayerDataFactory.get(player).orElse(null);
+        IPlayerData data = PlayerData.get(player).orElse(null);
         if (data == null)
             return drops;
         PlayerSkills skills = data.getSkills();
@@ -125,7 +125,7 @@ public class Hooks {
     }
 
     public static void initOre2ChunkMap() {
-        ORE2CHUNK_MAP.put(Blocks.IRON_ORE.asItem(), GRPGItems.IRON_ORE_CHUNK);
-        ORE2CHUNK_MAP.put(Blocks.GOLD_ORE.asItem(), GRPGItems.GOLD_ORE_CHUNK);
+        ORE2CHUNK_MAP.put(Blocks.IRON_ORE.asItem(), ModItems.IRON_ORE_CHUNK);
+        ORE2CHUNK_MAP.put(Blocks.GOLD_ORE.asItem(), ModItems.GOLD_ORE_CHUNK);
     }
 }

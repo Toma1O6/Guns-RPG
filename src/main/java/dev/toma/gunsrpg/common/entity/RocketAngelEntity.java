@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.entity;
 
-import dev.toma.gunsrpg.common.init.GRPGEntityTypes;
+import dev.toma.gunsrpg.common.init.ModEntities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -23,7 +23,7 @@ import java.util.EnumSet;
 public class RocketAngelEntity extends MonsterEntity {
 
     public RocketAngelEntity(World world) {
-        this(GRPGEntityTypes.ROCKET_ANGEL.get(), world);
+        this(ModEntities.ROCKET_ANGEL.get(), world);
     }
 
     public RocketAngelEntity(EntityType<? extends MonsterEntity> type, World world) {
@@ -133,7 +133,7 @@ public class RocketAngelEntity extends MonsterEntity {
                 }
                 if (cooldown <= 0) {
                     cooldown = 6;
-                    EntityExplosiveArrow arrow = new EntityExplosiveArrow(entity.level, entity, 1);
+                    ExplosiveArrowEntity arrow = new ExplosiveArrowEntity(entity.level, entity, 1);
                     double x = target.getX() - entity.getX();
                     double y = target.getY() - arrow.getY();
                     double z = target.getZ() - entity.getZ();

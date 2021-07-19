@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.world.cap.events;
 
-import dev.toma.gunsrpg.common.init.GRPGSounds;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
 import net.minecraft.util.SoundCategory;
@@ -33,6 +33,6 @@ public class BloodmoonEventHandler implements IWorldEventHandler {
 
     private void notifyBloodmoonEnd(ServerPlayerEntity player) {
         player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Bloodmoon falls"), Util.NIL_UUID);
-        player.connection.send(new SPlaySoundEffectPacket(GRPGSounds.RELAXED_2, SoundCategory.NEUTRAL, player.getX(), player.getY(), player.getZ(), 1.0F, 1.0F));
+        player.connection.send(new SPlaySoundEffectPacket(ModSounds.RELAXED_2, SoundCategory.NEUTRAL, player.getX(), player.getY(), player.getZ(), 1.0F, 1.0F));
     }
 }

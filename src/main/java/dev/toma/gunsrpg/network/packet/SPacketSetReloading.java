@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -34,7 +34,7 @@ public class SPacketSetReloading extends AbstractNetworkPacket<SPacketSetReloadi
     @Override
     protected void handlePacket(NetworkEvent.Context context) {
         ServerPlayerEntity player = context.getSender();
-        PlayerDataFactory.get(player).ifPresent(data -> {
+        PlayerData.get(player).ifPresent(data -> {
             ReloadInfo info = data.getReloadInfo();
             if (reloading)
                 info.startReloading(player.inventory.selected, time);

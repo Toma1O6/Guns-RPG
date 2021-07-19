@@ -3,32 +3,29 @@ package dev.toma.gunsrpg;
 import com.mojang.brigadier.CommandDispatcher;
 import dev.toma.gunsrpg.asm.Hooks;
 import dev.toma.gunsrpg.client.gui.skills.SkillTreePlacement;
+import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.PlayerDataFactory;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
-import dev.toma.gunsrpg.common.command.CommandGRPG;
+import dev.toma.gunsrpg.common.command.GunsrpgCommand;
 import dev.toma.gunsrpg.common.init.*;
-import dev.toma.gunsrpg.common.item.guns.ammo.ItemAmmo;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.recipes.BlastFurnaceRecipe;
 import dev.toma.gunsrpg.util.recipes.SmithingTableRecipes;
 import dev.toma.gunsrpg.world.MobSpawnManager;
-import dev.toma.gunsrpg.world.cap.WorldDataCap;
-import dev.toma.gunsrpg.world.cap.WorldDataFactory;
+import dev.toma.gunsrpg.world.cap.IWorldData;
+import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataStorage;
 import net.minecraft.command.CommandSource;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,10 +40,10 @@ public class GunsRPG {
         System.out.println();
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         // deferred registries
-        GRPGEntityTypes.subscribe(eventBus);
-        GRPGEffects.subscribe(eventBus);
-        GRPGTileEntities.subscribe(eventBus);
-        GRPGContainers.subscribe(eventBus);
+        ModEntities.subscribe(eventBus);
+        ModEffects.subscribe(eventBus);
+        ModBlockEntities.subscribe(eventBus);
+        ModContainers.subscribe(eventBus);
         // lifecycle events
         eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::commonSetup);
@@ -66,11 +63,11 @@ public class GunsRPG {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         NetworkManager.init();
-        CapabilityManager.INSTANCE.register(PlayerData.class, new PlayerDataStorage(), PlayerDataFactory::new);
-        CapabilityManager.INSTANCE.register(WorldDataCap.class, new WorldDataStorage(), WorldDataFactory::new);
+        CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData::new);
+        CapabilityManager.INSTANCE.register(IWorldData.class, new WorldDataStorage(), WorldData::new);
         SkillTreePlacement.generatePlacement();
         SmithingTableRecipes.register();
-        ItemAmmo.init();
+        AmmoItem.init();
         Hooks.initOre2ChunkMap();
         MobSpawnManager.instance().initialize();
         BlastFurnaceRecipe.init();
@@ -78,6 +75,6 @@ public class GunsRPG {
 
     private void registerCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSource> dispatcher = event.getDispatcher();
-        CommandGRPG.register(dispatcher);
+        GunsrpgCommand.register(dispatcher);
     }
 }
