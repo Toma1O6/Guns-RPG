@@ -231,7 +231,7 @@ public class EntityBullet extends Entity {
     }
 
     protected boolean canHitEntity(Entity entity) {
-        return entity.canBeCollidedWith() && !entity.isSpectator() && entity.isAlive() && entity != lastHitEntity && entity != shooter;
+        return !entity.isSpectator() && entity.isAlive() && entity != lastHitEntity && entity != shooter;
     }
 
     protected void damageTargetEntity(Entity target, boolean isHeadshot) {

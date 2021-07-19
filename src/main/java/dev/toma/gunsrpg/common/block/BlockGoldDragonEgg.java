@@ -25,7 +25,7 @@ import java.util.Random;
 public class BlockGoldDragonEgg extends GRPGBlock {
 
     public BlockGoldDragonEgg(String name) {
-        super(name, Properties.of(Material.EGG));
+        super(name, Properties.of(Material.EGG).randomTicks());
         registerDefaultState(getStateDefinition().any().setValue(BlockStateProperties.LIT, false));
     }
 
@@ -55,15 +55,22 @@ public class BlockGoldDragonEgg extends GRPGBlock {
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (!world.isClientSide && state.getValue(BlockStateProperties.LIT)) {
-            boolean spawned = false;
-            if (world.canSeeSky(pos)) {
+            boolean blocked = false;
+            BlockPos.Mutable mutable = pos.above().mutable();
+            while (mutable.getY() < 255) {
+                if (!world.isEmptyBlock(mutable)) {
+                    blocked = true;
+                    break;
+                }
+                mutable.setY(mutable.getY() + 1);
+            }
+            if (!blocked) {
                 EntityGoldDragon dragon = new EntityGoldDragon(GRPGEntityTypes.GOLD_DRAGON.get(), world);
                 dragon.setPos(pos.getX(), pos.getY() + 30, pos.getZ());
                 dragon.getPhaseManager().setPhase(PhaseType.HOLDING_PATTERN);
                 world.addFreshEntity(dragon);
-                spawned = true;
             }
-            world.destroyBlock(pos, !spawned);
+            world.destroyBlock(pos, blocked);
         }
     }
 

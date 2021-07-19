@@ -4,12 +4,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
 
-public class GunDamageSource extends DamageSource {
+public class GunDamageSource extends EntityDamageSource {
 
     @Nullable
     private final Entity src;
@@ -18,10 +19,12 @@ public class GunDamageSource extends DamageSource {
     private final ItemStack stacc;
 
     public GunDamageSource(Entity src, Entity indirect, ItemStack stacc) {
-        super("mob");
+        super("mob", src);
+        setThorns();
         this.src = src;
         this.indirect = indirect;
         this.stacc = stacc;
+
     }
 
     @Nullable

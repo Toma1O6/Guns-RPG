@@ -13,6 +13,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -73,7 +74,7 @@ public class EntityFlare extends Entity implements IEntityAdditionalSpawnData {
         Vector3d start = position();
         Vector3d end = start.add(getDeltaMovement());
         BlockRayTraceResult traceResult = level.clip(new RayTraceContext(start, end, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, null));
-        if (traceResult != null) {
+        if (traceResult != null && traceResult.getType() != RayTraceResult.Type.MISS) {
             remove();
         }
         if (level.isClientSide) {
@@ -83,10 +84,11 @@ public class EntityFlare extends Entity implements IEntityAdditionalSpawnData {
         }
         Vector3d motion = getDeltaMovement();
         boolean reachedHeight = getY() >= startHeight + 125;
-        if (motion.y > 0) setDeltaMovement(motion.x, motion.y - 0.025, motion.z);
+        //if (motion.y > 0) setDeltaMovement(motion.x, motion.y + 0.025, motion.z);
         if (!reachedHeight) {
             setDeltaMovement(motion.x, 0.55, motion.z);
         } else {
+            setDeltaMovement(0, 0, 0);
             if (++timeWaiting >= 100) {
                 if (!level.isClientSide) {
                     remove();

@@ -97,7 +97,7 @@ public class ModUtils {
     public static void dropInventoryItems(LazyOptional<? extends IItemHandler> optional, World world, BlockPos pos) {
         optional.ifPresent(handler -> {
             for (int i = 0; i < handler.getSlots(); i++) {
-                InventoryHelper.dropItemStack(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, handler.getStackInSlot(i));
+                InventoryHelper.dropItemStack(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, handler.getStackInSlot(i));
             }
         });
     }

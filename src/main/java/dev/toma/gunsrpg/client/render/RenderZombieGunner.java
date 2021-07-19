@@ -10,14 +10,15 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderZombieGunner extends BipedRenderer<ZombieGunnerEntity, ModelZombieGunner> {
 
-    private static final ResourceLocation TEXTURES = GunsRPG.makeResource("textures/entity/zombie_gunner.png");
+    private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/entity/zombie_gunner.png");
 
     public RenderZombieGunner(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new ModelZombieGunner(), 0.5F);
         addLayer(new BipedArmorLayer<>(this, new ModelZombieGunner(0.5F, true), new ModelZombieGunner(1.0F, true)));
     }
 
-    protected ResourceLocation getEntityTexture(ZombieGunnerEntity entity) {
-        return TEXTURES;
+    @Override
+    public ResourceLocation getTextureLocation(ZombieGunnerEntity entity) {
+        return TEXTURE;
     }
 }

@@ -1,10 +1,8 @@
 package dev.toma.gunsrpg.common.entity;
 
 import dev.toma.gunsrpg.GunsRPG;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
@@ -12,34 +10,46 @@ import net.minecraft.entity.boss.dragon.EnderDragonPartEntity;
 import net.minecraft.entity.boss.dragon.phase.PhaseManager;
 import net.minecraft.entity.boss.dragon.phase.PhaseType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.function.Predicate;
 
 public class EntityGoldDragon extends EnderDragonEntity {
 
-    private final ServerBossInfo bossInfoServer = (ServerBossInfo) (new ServerBossInfo(getDisplayName(), BossInfo.Color.YELLOW, BossInfo.Overlay.PROGRESS).setCreateWorldFog(true).setDarkenScreen(true));
+    private static final AttributeModifier MAX_HEALTH_MODIFIER = new AttributeModifier(UUID.fromString("9651DBF8-5926-45FC-9608-9EBED5F2A0D0"), "maxHealthModifier", 800.0D, AttributeModifier.Operation.ADDITION);
+    private DragonStatsManager manager;
     private int cooldown;
 
     public EntityGoldDragon(EntityType<? extends EntityGoldDragon> type, World world) {
         super(type, world);
         phaseManager = new ExtendedPhaseManager(this);
-        if (dragonFight != null)
-            dragonFight.dragonEvent = (ServerBossInfo) (new ServerBossInfo(new TranslationTextComponent("entity.gunsrpg.gold_dragon"), BossInfo.Color.YELLOW, BossInfo.Overlay.PROGRESS)).setPlayBossMusic(true).setCreateWorldFog(true).setDarkenScreen(true);
+        if (!world.isClientSide) {
+            manager = new DragonStatsManager((ServerWorld) world, getDisplayName());
+        }
+        // workaround for max health attribute, as all children of ender dragon entity are forced to use vanilla's dragon attribute values
+        //getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(MAX_HEALTH_MODIFIER);
+        //setHealth(getMaxHealth());
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 1000);
+    }
+
+    @Override
+    public boolean hurt(DamageSource p_70097_1_, float p_70097_2_) {
+        return reallyHurt(p_70097_1_, p_70097_2_);
     }
 
     @Override
@@ -48,7 +58,7 @@ public class EntityGoldDragon extends EnderDragonEntity {
         if (damage < 0.01F) {
             return false;
         } else {
-            this.hurt(source, damage);
+            super.hurt(dragonPart, source, damage);
             if (this.getHealth() <= 0.0F && !this.getPhaseManager().getCurrentPhase().isSitting()) {
                 this.setHealth(1.0F);
                 this.getPhaseManager().setPhase(PhaseType.DYING);
@@ -64,13 +74,29 @@ public class EntityGoldDragon extends EnderDragonEntity {
             if (this.getHealth() < this.getMaxHealth() && tickCount % 12 == 0) {
                 heal(1);
             }
-            bossInfoServer.setPercent(this.getHealth() / this.getMaxHealth());
             if (cooldown > 0) cooldown--;
         }
     }
 
     public void resetCooldown() {
         cooldown = 800;
+    }
+
+    @Override
+    public void tick() {
+        if (getPhaseManager().getCurrentPhase().getPhase() == PhaseType.DYING) {
+            setDeltaMovement(0, 0, 0);
+        }
+        super.tick();
+        if (!level.isClientSide)
+            manager.tick(this);
+    }
+
+    @Override
+    public void onRemovedFromWorld() {
+        if (!level.isClientSide)
+            manager.end();
+        super.onRemovedFromWorld();
     }
 
     @Override
@@ -183,7 +209,7 @@ public class EntityGoldDragon extends EnderDragonEntity {
                 goldDragon.resetCooldown();
                 List<? extends PlayerEntity> players = world.players();
                 for (PlayerEntity player : players) {
-                    if (player.isCreative() || player.isSpectator() || !player.isAlive()) {
+                    if (player.isSpectator() || !player.isAlive()) {
                         continue;
                     }
                     double distance = Math.sqrt(goldDragon.distanceToSqr(player));
@@ -219,6 +245,45 @@ public class EntityGoldDragon extends EnderDragonEntity {
                 mutableBlockPos.setY(mutableBlockPos.getY() - 1);
             }
             return mutableBlockPos.immutable();
+        }
+    }
+
+    public static class DragonStatsManager {
+        private static final Predicate<Entity> VALID_PLAYERS = EntityPredicates.ENTITY_STILL_ALIVE.and(EntityPredicates.withinDistance(0, 128, 0, 192));
+        private final ServerWorld level;
+        private final ServerBossInfo bossInfoServer;
+        private int ticksSinceLastCheck;
+
+        protected DragonStatsManager(ServerWorld _level, ITextComponent displayName) {
+            level = _level;
+            bossInfoServer = (ServerBossInfo) (new ServerBossInfo(displayName, BossInfo.Color.YELLOW, BossInfo.Overlay.PROGRESS).setCreateWorldFog(true).setDarkenScreen(true));
+            bossInfoServer.setVisible(true);
+        }
+
+        public void tick(EntityGoldDragon dragon) {
+            bossInfoServer.setPercent(dragon.getHealth() / dragon.getMaxHealth());
+            if (++ticksSinceLastCheck >= 20) {
+                sendStatusUpdateToPlayers();
+                ticksSinceLastCheck = 0;
+            }
+        }
+
+        public void end() {
+            bossInfoServer.removeAllPlayers();
+            bossInfoServer.setVisible(false);
+        }
+
+        private void sendStatusUpdateToPlayers() {
+            Set<ServerPlayerEntity> set = new HashSet<>();
+            for (ServerPlayerEntity player : level.getPlayers(VALID_PLAYERS)) {
+                bossInfoServer.addPlayer(player);
+                set.add(player);
+            }
+            Set<ServerPlayerEntity> set1 = new HashSet<>(bossInfoServer.getPlayers());
+            set1.removeAll(set);
+            for (ServerPlayerEntity player : set1) {
+                bossInfoServer.removePlayer(player);
+            }
         }
     }
 }

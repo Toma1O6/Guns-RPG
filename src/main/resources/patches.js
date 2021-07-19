@@ -17,6 +17,7 @@ function initializeCoreMod() {
     ACC_PUBLIC = Opcodes.ACC_PUBLIC;
     INVOKESTATIC = Opcodes.INVOKESTATIC;
     INVOKEVIRTUAL = Opcodes.INVOKEVIRTUAL;
+    INVOKESPECIAL = Opcodes.INVOKESPECIAL;
     ALOAD = Opcodes.ALOAD;
     ILOAD = Opcodes.ILOAD;
     FLOAD = Opcodes.FLOAD;
@@ -74,6 +75,19 @@ function initializeCoreMod() {
             },
             'transformer': function (methodNode) {
                 patchBlockDrops(methodNode.instructions);
+                return methodNode;
+            }
+        },
+
+        'enderDragonConstructorPatch': {
+            'target': {
+                'type': 'METHOD',
+                'class': 'net.minecraft.entity.boss.dragon.EnderDragonEntity',
+                'methodName': '<init>',
+                'methodDesc': '(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V'
+            },
+            'transformer': function (methodNode) {
+                patchEnderDragonConstructor(methodNode.instructions);
                 return methodNode;
             }
         }
@@ -194,6 +208,35 @@ function patchBlockDrops(instructions) {
                     ));
                     break;
                 }
+            }
+        }
+    }
+}
+
+/*
+public <init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V
+   L0
+    LINENUMBER 87 L0
+    ALOAD 0
+    GETSTATIC net/minecraft/entity/EntityType.ENDER_DRAGON : Lnet/minecraft/entity/EntityType;
+    ALOAD 2
+    INVOKESPECIAL net/minecraft/entity/MobEntity.<init> (Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V
+ */
+function patchEnderDragonConstructor(instructions) {
+    var superCall = -1;
+    for (var i = 0; i < instructions.size(); i++) {
+        var ins = instructions.get(i);
+        if (ins.getOpcode() === INVOKESPECIAL) {
+            superCall = i;
+            break;
+        }
+    }
+    if (superCall !== -1) {
+        for (var j = superCall; j >= 0; j--) {
+            var instruction = instructions.get(j);
+            if (instruction.getOpcode() === GETSTATIC) {
+                instructions.set(instruction, new VarInsnNode(ALOAD, 1));
+                break;
             }
         }
     }

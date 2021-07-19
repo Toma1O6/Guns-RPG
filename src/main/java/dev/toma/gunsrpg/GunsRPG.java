@@ -40,6 +40,7 @@ public class GunsRPG {
     public static Logger log = LogManager.getLogger();
 
     public GunsRPG() {
+        System.out.println();
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         // deferred registries
         GRPGEntityTypes.subscribe(eventBus);

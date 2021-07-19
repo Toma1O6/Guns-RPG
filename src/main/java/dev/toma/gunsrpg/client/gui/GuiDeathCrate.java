@@ -15,6 +15,8 @@ public class GuiDeathCrate extends ContainerScreen<DeathCrateContainer> {
     public GuiDeathCrate(DeathCrateContainer container, PlayerInventory inventory, ITextComponent component) {
         super(container, inventory, component);
         imageHeight = 208;
+        titleLabelY = 9;
+        inventoryLabelY = 115;
     }
 
     @Override
