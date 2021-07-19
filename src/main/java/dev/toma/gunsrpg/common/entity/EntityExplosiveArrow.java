@@ -5,10 +5,12 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.IPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityExplosiveArrow extends AbstractArrowEntity {
 
@@ -22,6 +24,11 @@ public class EntityExplosiveArrow extends AbstractArrowEntity {
         super(GRPGEntityTypes.EXPLOSIVE_ARROW.get(), entity, world);
         this.pickup = PickupStatus.DISALLOWED;
         this.blastSize = blastSize;
+    }
+
+    @Override
+    public IPacket<?> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override

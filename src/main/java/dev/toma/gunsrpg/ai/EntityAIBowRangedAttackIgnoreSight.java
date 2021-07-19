@@ -1,11 +1,13 @@
 package dev.toma.gunsrpg.ai;
 
 import dev.toma.gunsrpg.world.cap.WorldDataFactory;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.BowItem;
+import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 
 import java.util.EnumSet;
@@ -58,7 +60,7 @@ public class EntityAIBowRangedAttackIgnoreSight<T extends MobEntity & IRangedAtt
     }
 
     protected boolean isBowMainHand() {
-        return !this.entity.isHolding(item -> item instanceof BowItem);
+        return this.entity.isHolding(item -> item instanceof BowItem);
     }
 
     @Override

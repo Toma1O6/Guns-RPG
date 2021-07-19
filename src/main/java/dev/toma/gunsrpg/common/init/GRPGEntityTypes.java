@@ -41,7 +41,7 @@ public class GRPGEntityTypes {
             builder -> builder.setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).sized(0.2F, 0.2F)
     );
     public static final RegistryObject<EntityType<EntityExplosiveArrow>> EXPLOSIVE_ARROW = register("explosive_arrow", EntityExplosiveArrow::new, EntityClassification.MISC,
-            builder -> builder.setTrackingRange(64).setUpdateInterval(20).setShouldReceiveVelocityUpdates(true).sized(0.5F, 0.5F).noSave()
+            builder -> builder.setTrackingRange(64).setUpdateInterval(20).setShouldReceiveVelocityUpdates(true).sized(0.5F, 0.5F).clientTrackingRange(4)
     );
     public static final RegistryObject<EntityType<EntityBullet>> BULLET = register("bullet", EntityBullet::new, EntityClassification.MISC,
             builder -> builder.setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).sized(0.05F, 0.05F).noSummon().noSave()

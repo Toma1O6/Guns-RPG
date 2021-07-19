@@ -32,7 +32,7 @@ public class EntityAIGunAttack extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return this.canUse() || !this.entity.getNavigation().isDone() || !this.hasGun();
+        return this.canUse() || !this.entity.getNavigation().isDone() || this.hasGun();
     }
 
     @Override
@@ -73,6 +73,6 @@ public class EntityAIGunAttack extends Goal {
                 new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()),
                 new Vector3d(target.getX(), target.getY() + target.getEyeHeight(), target.getZ()),
                 entity.level
-        ) == null;
+        ) != null;
     }
 }
