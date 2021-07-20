@@ -19,7 +19,7 @@ public class SimpleAnimation implements IAnimation {
     private SimpleAnimation() {
     }
 
-    public static Builder newSimpleAnimation() {
+    public static Builder define() {
         return new Builder();
     }
 

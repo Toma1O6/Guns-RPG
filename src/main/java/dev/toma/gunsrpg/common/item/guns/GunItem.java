@@ -47,8 +47,8 @@ public abstract class GunItem extends BaseItem implements IHandRenderer {
     protected final GunType gunType;
     protected final Map<AmmoMaterial, Integer> materialDamageBonusMap;
 
-    public GunItem(String name, GunType type) {
-        super(name, new Properties().tab(ModTabs.ITEM_TAB).stacksTo(1));
+    public GunItem(String name, GunType type, Properties properties) {
+        super(name, properties.tab(ModTabs.ITEM_TAB).stacksTo(1));
         this.gunType = type;
         this.fillAmmoMaterialData(materialDamageBonusMap = new HashMap<>());
     }

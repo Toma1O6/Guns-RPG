@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
+import dev.toma.gunsrpg.client.render.item.Ump45Renderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
 import dev.toma.gunsrpg.common.init.ModSounds;
@@ -31,7 +32,7 @@ import java.util.Map;
 public class Ump45Item extends GunItem {
 
     public Ump45Item(String name) {
-        super(name, GunType.SMG);
+        super(name, GunType.SMG, new Properties().setISTER(() -> Ump45Renderer::new));
     }
 
     @Override
@@ -130,7 +131,7 @@ public class Ump45Item extends GunItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public IAnimation createReloadAnimation(PlayerEntity player) {
-        return new Animations.SmgReload(this.getReloadTime(player));
+        return new Animations.Ump45Reload(this.getReloadTime(player));
     }
 
     @OnlyIn(Dist.CLIENT)

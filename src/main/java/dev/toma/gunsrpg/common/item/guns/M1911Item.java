@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.client.animation.impl.ImprovedAimAnimation;
+import dev.toma.gunsrpg.client.render.item.M1911Renderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
 import dev.toma.gunsrpg.common.init.ModSounds;
@@ -34,7 +35,7 @@ import java.util.Map;
 public class M1911Item extends GunItem {
 
     public M1911Item(String name) {
-        super(name, GunType.PISTOL);
+        super(name, GunType.PISTOL, new Properties().setISTER(() -> M1911Renderer::new));
     }
 
     @Override
@@ -160,7 +161,7 @@ public class M1911Item extends GunItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public IAnimation createReloadAnimation(PlayerEntity player) {
-        return this.isDualWieldActive() ? new Animations.ReloadDual(this.getReloadTime(player)) : new Animations.PistolReload(this.getReloadTime(player));
+        return this.isDualWieldActive() ? new Animations.M1911ReloadDual(this.getReloadTime(player)) : new Animations.M1911Reload(this.getReloadTime(player));
     }
 
     @OnlyIn(Dist.CLIENT)

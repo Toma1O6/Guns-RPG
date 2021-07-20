@@ -14,9 +14,9 @@ public class WeaponConfig extends ObjectType {
     public final IWeaponConfig s1897;
     public final IWeaponConfig crossbow;
 
-    public WeaponConfig(IObjectSpec objectSpec) {
-        super(objectSpec);
-        IConfigWriter writer = objectSpec.getWriter();
+    public WeaponConfig(IObjectSpec objectSpecification) {
+        super(objectSpecification);
+        IConfigWriter writer = objectSpecification.getWriter();
         general = writer.writeObject(GeneralSettings::new, "Attachment settings");
         m1911 = writer.writeObject(specification -> IWeaponConfig.configured(specification, 4.0F, 280, 3, 3.1F, 1.4F, 4, 3), "M1911");
         ump = writer.writeObject(specification -> IWeaponConfig.configured(specification, 3.0F, 320, 5, 1.8F, 0.7F, 3, 2), "UMP-45");

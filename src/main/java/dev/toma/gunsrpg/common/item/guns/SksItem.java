@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
+import dev.toma.gunsrpg.client.render.item.SksRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -27,7 +28,7 @@ import java.util.Map;
 public class SksItem extends GunItem {
 
     public SksItem(String name) {
-        super(name, GunType.AR);
+        super(name, GunType.AR, new Properties().setISTER(() -> SksRenderer::new));
     }
 
     @Override
@@ -146,6 +147,6 @@ public class SksItem extends GunItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public IAnimation createReloadAnimation(PlayerEntity player) {
-        return new Animations.ArReload(this.getReloadTime(player));
+        return new Animations.SksReload(this.getReloadTime(player));
     }
 }

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
+import dev.toma.gunsrpg.client.render.item.Kar98kRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -34,7 +35,7 @@ import java.util.Map;
 public class Kar98kItem extends GunItem {
 
     public Kar98kItem(String name) {
-        super(name, GunType.SR);
+        super(name, GunType.SR, new Properties().setISTER(() -> Kar98kRenderer::new));
     }
 
     @Override
@@ -151,14 +152,14 @@ public class Kar98kItem extends GunItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public IAnimation createReloadAnimation(PlayerEntity player) {
-        return new Animations.SniperReload(this.getReloadTime(player));
+        return new Animations.Kar98kReload(this.getReloadTime(player));
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void onShoot(PlayerEntity player, ItemStack stack) {
         super.onShoot(player, stack);
-        ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltSR(this.getFirerate(player)));
+        ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltKar98k(this.getFirerate(player)));
         NetworkManager.sendServerPacket(new SPacketSetAiming(false));
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> ClientSideManager.instance().playDelayedSound(player.blockPosition(), 1.0F, 1.0F, ModSounds.SR_BOLT, SoundCategory.MASTER, 15));
     }

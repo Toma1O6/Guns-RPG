@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
+import dev.toma.gunsrpg.client.render.item.WoodenCrossbowRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
 import dev.toma.gunsrpg.common.entity.CrossbowBoltEntity;
@@ -33,7 +34,7 @@ import java.util.Map;
 public class WoodenCrossbowItem extends GunItem {
 
     public WoodenCrossbowItem(String name) {
-        super(name, GunType.CROSSBOW);
+        super(name, GunType.CROSSBOW, new Properties().setISTER(() -> WoodenCrossbowRenderer::new));
     }
 
     @Override

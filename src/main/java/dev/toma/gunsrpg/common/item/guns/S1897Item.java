@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
+import dev.toma.gunsrpg.client.render.item.S1897Renderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
 import dev.toma.gunsrpg.common.entity.ShotgunPelletEntity;
@@ -35,7 +36,7 @@ import java.util.Map;
 public class S1897Item extends GunItem {
 
     public S1897Item(String name) {
-        super(name, GunType.SG);
+        super(name, GunType.SG, new Properties().setISTER(() -> S1897Renderer::new));
     }
 
     @Override
@@ -144,13 +145,13 @@ public class S1897Item extends GunItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public IAnimation createReloadAnimation(PlayerEntity player) {
-        return new Animations.ShotgunReload(this.getReloadTime(player));
+        return new Animations.S1897Reload(this.getReloadTime(player));
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void onShoot(PlayerEntity player, ItemStack stack) {
         super.onShoot(player, stack);
-        ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltSG(this.getFirerate(player)));
+        ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltS1897(this.getFirerate(player)));
     }
 }

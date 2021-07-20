@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 
 public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer {
 
@@ -29,7 +30,12 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
         PlayerData.get(mc.player).ifPresent(data -> {
             matrix.pushPose();
             {
-                prepareRender(matrix, transformType);
+                matrix.translate(0.7, 0.5, 0.05);
+                positionModel(matrix, transformType);
+                matrix.mulPose(Vector3f.XP.rotationDegrees(180));
+                matrix.mulPose(Vector3f.YP.rotationDegrees(180));
+                float scaleFactor = scaleForTransform(transformType);
+                matrix.scale(scaleFactor, scaleFactor, scaleFactor);
                 weaponModel.renderWeapon(stack, data, matrix, renderBuffer.getBuffer(weaponModel.renderType(gunTexture)), light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
             }
             matrix.popPose();
@@ -40,6 +46,10 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
 
     public abstract ResourceLocation createGunTextureInstance();
 
-    public void prepareRender(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
+    protected void positionModel(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
+    }
+
+    protected float scaleForTransform(ItemCameraTransforms.TransformType transform) {
+        return 0.3F;
     }
 }
