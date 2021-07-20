@@ -1,15 +1,13 @@
 package dev.toma.gunsrpg.world;
 
+import dev.toma.gunsrpg.ai.BeAngryDuringBloodmoonGoal;
 import dev.toma.gunsrpg.common.entity.BloodmoonGolemEntity;
 import dev.toma.gunsrpg.common.entity.RocketAngelEntity;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.Pair;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifierManager;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -116,6 +114,9 @@ public class MobSpawnManager {
         if (consumer != null) {
             consumer.acceptBoolean(isBloodmoon, entity);
         }
+        if (entity instanceof MobEntity && entity instanceof IAngerable) {
+            addBloodmoonAggroGoal((MobEntity & IAngerable) entity);
+        }
     }
 
     private boolean isExluded(Entity entity) {
@@ -134,6 +135,10 @@ public class MobSpawnManager {
     private AttributeModifier getRandomModifier(Random random) {
         float f = random.nextFloat();
         return f <= 0.2F ? health3x : f <= 0.5F ? health2x : null;
+    }
+
+    private <E extends MobEntity & IAngerable> void addBloodmoonAggroGoal(E entity) {
+        entity.targetSelector.addGoal(1, new BeAngryDuringBloodmoonGoal(entity));
     }
 
     @FunctionalInterface
