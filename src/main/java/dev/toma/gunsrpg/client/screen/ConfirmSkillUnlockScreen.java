@@ -1,8 +1,8 @@
-package dev.toma.gunsrpg.client.gui;
+package dev.toma.gunsrpg.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.client.gui.skills.GuiPlayerSkills;
-import dev.toma.gunsrpg.client.gui.skills.PlacementContext;
+import dev.toma.gunsrpg.client.screen.skills.PlayerSkillsScreen;
+import dev.toma.gunsrpg.client.screen.skills.PlacementContext;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -20,14 +20,14 @@ public class ConfirmSkillUnlockScreen extends Screen {
 
     private final int xSize = 215;
     private final int ySize = 60;
-    private final GuiPlayerSkills parent;
+    private final PlayerSkillsScreen parent;
     private final SkillType<?> type;
     @Nullable
     private final PlacementContext ctx;
     private int left;
     private int top;
 
-    public ConfirmSkillUnlockScreen(GuiPlayerSkills parent, SkillType<?> type, @Nullable PlacementContext ctx) {
+    public ConfirmSkillUnlockScreen(PlayerSkillsScreen parent, SkillType<?> type, @Nullable PlacementContext ctx) {
         super(new TranslationTextComponent("screen.confirm_skillUnlock"));
         this.parent = parent;
         this.type = type;

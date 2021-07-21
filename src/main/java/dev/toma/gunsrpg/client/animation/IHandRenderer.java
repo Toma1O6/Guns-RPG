@@ -13,6 +13,8 @@ public interface IHandRenderer {
     @OnlyIn(Dist.CLIENT)
     void transformLeftArm(MatrixStack stack);
 
+    boolean disableVanillaAnimations();
+
     default boolean shouldRenderForSide(HandSide side) {
         return true;
     }

@@ -3,23 +3,20 @@ package dev.toma.gunsrpg.sided;
 import dev.toma.gunsrpg.client.ClientEventHandler;
 import dev.toma.gunsrpg.client.ModKeybinds;
 import dev.toma.gunsrpg.client.animation.AnimationProcessor;
-import dev.toma.gunsrpg.client.gui.AirdropScreen;
-import dev.toma.gunsrpg.client.gui.BlastFurnaceScreen;
-import dev.toma.gunsrpg.client.gui.DeathCrateScreen;
-import dev.toma.gunsrpg.client.gui.SmithingTableScreen;
-import dev.toma.gunsrpg.client.gui.skills.GuiPlayerSkills;
+import dev.toma.gunsrpg.client.screen.AirdropScreen;
+import dev.toma.gunsrpg.client.screen.BlastFurnaceScreen;
+import dev.toma.gunsrpg.client.screen.DeathCrateScreen;
+import dev.toma.gunsrpg.client.screen.SmithingTableScreen;
+import dev.toma.gunsrpg.client.screen.skills.PlayerSkillsScreen;
 import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.init.ModBlocks;
 import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -68,7 +65,7 @@ public class ClientSideManager {
     public IPlayerData.ISynchCallback onDataSync() {
         return () -> {
             Minecraft mc = Minecraft.getInstance();
-            if (mc.screen instanceof GuiPlayerSkills) {
+            if (mc.screen instanceof PlayerSkillsScreen) {
                 mc.screen.init(mc, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight());
             }
             if (!PlayerData.getUnsafe(mc.player).getAimInfo().aiming) {

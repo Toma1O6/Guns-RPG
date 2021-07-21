@@ -119,7 +119,7 @@ public class Ump45Item extends GunItem {
     @Override
     public AimingAnimation createAimAnimation() {
         boolean rds = PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.SMG_RED_DOT);
-        return new AimingAnimation(-0.57F, rds ? 0.144F : 0.2F, 0.2F).animateRight((stack, f) -> {
+        return new AimingAnimation(-0.57F, rds ? 0.08F : 0.2F, 0.2F).animateRight((stack, f) -> {
             stack.translate(-0.25F * f, 0.2F * f, 0.2F * f);
             stack.mulPose(Vector3f.YP.rotationDegrees(20 * f));
         }).animateLeft((stack, f) -> {
@@ -144,8 +144,8 @@ public class Ump45Item extends GunItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void transformLeftArm(MatrixStack matrix) {
-        matrix.translate(0.4F, -0.25F, -0.2F);
-        matrix.mulPose(Vector3f.XP.rotationDegrees(10));
-        matrix.mulPose(Vector3f.YP.rotationDegrees(-30));
+        matrix.translate(-0.1F, -0.85F, -0.3F);
+        matrix.mulPose(Vector3f.XP.rotationDegrees(35));
+        matrix.mulPose(Vector3f.YN.rotationDegrees(70));
     }
 }

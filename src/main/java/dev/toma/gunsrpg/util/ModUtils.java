@@ -38,12 +38,16 @@ import net.minecraftforge.items.IItemHandler;
 import org.lwjgl.opengl.GL11;
 
 import java.util.*;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 public class ModUtils {
+
+    public static int sum(int[] array) {
+        int total = 0;
+        for (int i : array)
+            total += i;
+        return total;
+    }
 
     public static <T, U> U extractOptionalOrElse(LazyOptional<T> optional, Function<T, U> extractor, U fallback) {
         if (!optional.isPresent())
@@ -118,6 +122,7 @@ public class ModUtils {
         return (color & 255) / 255.0F;
     }
 
+    @Deprecated
     public static void renderTexture(Matrix4f pose, int x, int y, int x2, int y2, ResourceLocation location) {
         Minecraft.getInstance().getTextureManager().bind(location);
         RenderSystem.enableBlend();
@@ -134,6 +139,7 @@ public class ModUtils {
         RenderSystem.disableBlend();
     }
 
+    @Deprecated
     public static void renderTexture(Matrix4f pose, int x, int y, int x2, int y2, float uMin, float vMin, float uMax, float vMax, ResourceLocation location) {
         Minecraft.getInstance().getTextureManager().bind(location);
         RenderSystem.enableBlend();
@@ -150,6 +156,7 @@ public class ModUtils {
         RenderSystem.disableBlend();
     }
 
+    @Deprecated
     public static void renderTextureWithColor(Matrix4f pose, int x, int y, int x2, int y2, ResourceLocation location, float r, float g, float b, float a) {
         Minecraft.getInstance().getTextureManager().bind(location);
         RenderSystem.enableBlend();
@@ -166,6 +173,7 @@ public class ModUtils {
         RenderSystem.disableBlend();
     }
 
+    @Deprecated
     public static void renderColor(Matrix4f pose, int x, int y, int x2, int y2, float r, float g, float b, float a) {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
@@ -183,6 +191,7 @@ public class ModUtils {
         RenderSystem.enableTexture();
     }
 
+    @Deprecated
     public static void renderLine(Matrix4f pose, int x, int y, int x2, int y2, float r, float g, float b, float a, int width) {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();

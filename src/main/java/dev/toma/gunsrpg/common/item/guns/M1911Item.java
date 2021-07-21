@@ -142,19 +142,19 @@ public class M1911Item extends GunItem {
         }).animateRight((stack, f) -> {
             stack.translate(-0.13F * f, -0.12F * f, 0.1F * f);
             stack.mulPose(Vector3f.ZP.rotationDegrees(30 * f));
-            stack.mulPose(Vector3f.YP.rotationDegrees(16 * f));
+            stack.mulPose(Vector3f.YP.rotationDegrees(20 * f));
         }).animateLeft((stack, f) -> {
-            stack.translate(0.13F * f, -0.12F * f, 0.1F * f);
-            stack.mulPose(Vector3f.ZP.rotationDegrees(-30 * f));
-            stack.mulPose(Vector3f.YP.rotationDegrees(-16 * f));
+            stack.translate(0.1F * f, -0.05F * f, 0.15F * f);
+            stack.mulPose(Vector3f.ZN.rotationDegrees(30 * f));
+            stack.mulPose(Vector3f.YN.rotationDegrees(30 * f));
         }) : new AimingAnimation(-0.54F, 0.06F, 0.0F).animateRight((stack, f) -> {
             stack.translate(-0.18F * f, 0.0F, 0.1F * f);
             stack.mulPose(Vector3f.XP.rotationDegrees(3 * f));
-            stack.mulPose(Vector3f.YP.rotationDegrees(20 * f));
+            stack.mulPose(Vector3f.YP.rotationDegrees(30 * f));
         }).animateLeft((stack, f) -> {
-            stack.translate(-0.2F * f, 0.0F, 0.0F);
+            stack.translate(-0.2F * f, 0.0F, 0.1F * f);
             stack.mulPose(Vector3f.XP.rotationDegrees(3 * f));
-            stack.mulPose(Vector3f.YP.rotationDegrees(15 * f));
+            stack.mulPose(Vector3f.YP.rotationDegrees(25 * f));
         });
     }
 
@@ -167,22 +167,22 @@ public class M1911Item extends GunItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void transformRightArm(MatrixStack matrix) {
-        matrix.translate(-0.05F, -0.02F, 0.0F);
+        matrix.translate(0.24F, 0.0F, -0.1F);
         matrix.mulPose(Vector3f.XP.rotationDegrees(5));
-        matrix.mulPose(Vector3f.YP.rotationDegrees(-10));
+        matrix.mulPose(Vector3f.YN.rotationDegrees(25));
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void transformLeftArm(MatrixStack matrix) {
         if (this.isDualWieldActive()) {
-            matrix.translate(-0.05F, -0.05F, -0.15F);
+            matrix.translate(-0.15F, -0.09F, 0.7F);
             matrix.mulPose(Vector3f.XP.rotationDegrees(5.0f));
-            matrix.mulPose(Vector3f.YP.rotationDegrees(10));
+            matrix.mulPose(Vector3f.YN.rotationDegrees(25));
         } else {
-            matrix.translate(0.35F, -0.08F, 0.05F);
+            matrix.translate(0.13F, -0.08F, 0.6F);
             matrix.mulPose(Vector3f.XP.rotationDegrees(5));
-            matrix.mulPose(Vector3f.YP.rotationDegrees(-30));
+            matrix.mulPose(Vector3f.YN.rotationDegrees(60));
         }
     }
 

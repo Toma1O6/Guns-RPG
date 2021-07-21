@@ -1,10 +1,10 @@
-package dev.toma.gunsrpg.client.gui.skills;
+package dev.toma.gunsrpg.client.screen.skills;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.gui.ConfirmSkillUnlockScreen;
+import dev.toma.gunsrpg.client.screen.ConfirmSkillUnlockScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.GunData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
@@ -15,6 +15,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.interfaces.IClickableSkill;
 import dev.toma.gunsrpg.common.skills.interfaces.IOverlayRender;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.math.Vec2i;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.object.Pair;
@@ -39,10 +40,12 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiPlayerSkills extends Screen {
+public class PlayerSkillsScreen extends Screen {
 
     private static final ResourceLocation SKILL_TREE_TEXTURES = GunsRPG.makeResource("textures/icons/skill_tree_bg.png");
     private final List<Component> uiComponents = new ArrayList<>();
+    private final List<CategoryComponent> categories = new ArrayList<>();
+    private final List<SkillComponent> skillElements = new ArrayList<>();
     private final OptionalObject<GunDisplay> display = OptionalObject.empty();
     private SkillCategory displayedCategory;
     private String headerText;
@@ -51,12 +54,15 @@ public class GuiPlayerSkills extends Screen {
     private int posX, posY;
     private int clickedX, clickedY;
     private PlayerSkills skills;
+    private SkillComponent hoveredSkill;
+    private long hoverStartTime;
+    private boolean wasHovered;
 
-    public GuiPlayerSkills() {
+    public PlayerSkillsScreen() {
         this(SkillCategory.GUN);
     }
 
-    public GuiPlayerSkills(SkillCategory category) {
+    public PlayerSkillsScreen(SkillCategory category) {
         super(new StringTextComponent("screen.playerSkills"));
         this.displayedCategory = category;
     }
@@ -64,6 +70,8 @@ public class GuiPlayerSkills extends Screen {
     @Override
     public void init() {
         uiComponents.clear();
+        categories.clear();
+        skillElements.clear();
         headerText = String.format("%s's skill tree", minecraft.player.getName().getString());
         headerWidth = minecraft.font.width(headerText);
         Tree tree = SkillTreePlacement.treeMap.get(displayedCategory);
@@ -83,25 +91,25 @@ public class GuiPlayerSkills extends Screen {
     @Override
     public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         renderBackground(stack);
-
-        for (Component component : uiComponents) {
-            component.draw(stack, minecraft, mouseX, mouseY, partialTicks, posX, posY);
-        }
-        display.ifPresent(dsp -> dsp.draw(stack, minecraft, mouseX, mouseY, partialTicks, posX, posY));
-        // HEADER
-        ModUtils.renderColor(stack.last().pose(), 0, 0, width, 25, 0, 0, 0, 0.4f);
-        font.drawShadow(stack, TextFormatting.UNDERLINE + headerText, (width - headerWidth) / 2f, 8, 0xFFFFFFFF);
-        // FOOTER
-        ModUtils.renderColor(stack.last().pose(), 0, height - 20, width, height, 0, 0, 0, 0.4F);
-        int level = skills.getLevel();
+        hoveredSkill = null;
+        int gradientMin = 0x66 << 24;
+        int gradientMax = 0xDD << 24;
         int killed = skills.getKills();
         int required = skills.getRequiredKills();
         float decimal = skills.isMaxLevel() ? 1.0F : killed / (float) required;
-        String foot = skills.isMaxLevel() ? String.format("Level: %d - %d kills", level, killed) : String.format("Level: %d (%d%%) - %d / %d kills", level, (int) (decimal * 100), killed, required);
-        // level progress
         int length = width / 2;
-        ModUtils.renderColor(stack.last().pose(), 15, height - 15, length, height - 5, 0.0F, 0.0F, 0.0F, 1.0F);
-        ModUtils.renderColor(stack.last().pose(), 17, height - 13, (int) (decimal * (length - 2)), height - 7, 0.0F, 1.0F, 1.0F, 1.0F);
+        Matrix4f pose = stack.last().pose();
+        renderSkills(stack, mouseX, mouseY, partialTicks);
+        RenderUtils.drawGradient(pose, 0, 0, width, 45, 0, gradientMax, gradientMin); // header
+        renderCategories(stack, mouseX, mouseY, partialTicks); // categories
+        display.ifPresent(dsp -> dsp.draw(stack, minecraft, mouseX, mouseY, partialTicks, posX, posY)); // weapon skills
+        renderHoverInfo(stack, mouseX, mouseY, partialTicks); // hovered data
+        RenderUtils.drawGradient(pose, 0, height - 20, width, height, 0, gradientMin, gradientMax); // footer background
+        RenderUtils.drawGradient(pose, 15, height - 15, length, height - 5, 0, 0xFF << 24, 0xFF << 24); // level progress background
+        RenderUtils.drawGradient(pose, 17, height - 13, (int) (decimal * (length - 2)), height - 7, 0, 0xFF00FFFF, 0xFF006565); // level progress
+        font.drawShadow(stack, TextFormatting.UNDERLINE + headerText, (width - headerWidth) / 2f, 8, 0xFFFFFFFF);
+        int level = skills.getLevel();
+        String foot = skills.isMaxLevel() ? String.format("Level: %d - %d kills", level, killed) : String.format("Level: %d (%d%%) - %d / %d kills", level, (int) (decimal * 100), killed, required);
         font.drawShadow(stack, foot, 4 + length, height - 14, 0xffffff);
         String text2 = skills.getSkillPoints() + " pts";
         font.drawShadow(stack, text2, width - font.width(text2) - 5, height - 14, 0xffff00);
@@ -151,6 +159,67 @@ public class GuiPlayerSkills extends Screen {
         return false;
     }
 
+    private void renderHoverInfo(MatrixStack stack, int mouseX, int mouseY, float deltaRenderTime) {
+        if (hoveredSkill == null) {
+            wasHovered = false;
+            return;
+        }
+        SkillType<?> type = hoveredSkill.type;
+        if (type.isFreshUnlock()) {
+            type.setFresh(false);
+        }
+        long msDescDisplayDelay = 1000L;
+        Matrix4f pose = stack.last().pose();
+        if (!wasHovered || System.currentTimeMillis() - hoverStartTime <= msDescDisplayDelay) {
+            String title = type.getDisplayName();
+            int width = font.width(title);
+            int px = hoveredSkill.x - posX;
+            int py = hoveredSkill.y - posY;
+            RenderUtils.drawSolid(pose, 5 + px - width / 2, py + hoveredSkill.h + 2, 15 + px + width / 2, py + hoveredSkill.h + 16, 0xFF << 24);
+            font.drawShadow(stack, title, px + (20 - width) / 2.0F, py + hoveredSkill.h + 5, 0xFFFFFF);
+        }
+        if (!wasHovered) {
+            hoverStartTime = System.currentTimeMillis();
+            wasHovered = true;
+        } else if (System.currentTimeMillis() - hoverStartTime > msDescDisplayDelay) {
+            ITextComponent[] comments = hoveredSkill.comments;
+            int left = mouseX + hoveredSkill.infoWidth > width ? mouseX - hoveredSkill.infoWidth - 10 : mouseX;
+            int top = mouseY + 5 + comments.length * 12 > height ? mouseY - comments.length * 12 : mouseY + 5;
+            int panelWidth = left + hoveredSkill.infoWidth + 10;
+            int panelHeight = top + comments.length * 12 + 5;
+            drawDescriptionBg(left, top, panelWidth, panelHeight, comments, stack, hoveredSkill.obtained);
+        }
+    }
+
+    private void drawDescriptionBg(int x1, int y1, int x2, int y2, ITextComponent[] comments, MatrixStack stack, boolean unlocked) {
+        stack.pushPose();
+        stack.translate(0, 0, 400);
+        RenderUtils.setupColorRenderState();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder builder = tessellator.getBuilder();
+        builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        Matrix4f pose = stack.last().pose();
+        RenderUtils.fillSolid(builder, pose, x1, y1, x2, y2, 0, 0xFF << 24);
+        int light = unlocked ? 0xFF00DD44 : 0xFF767676;
+        int dark = RenderUtils.multiplyRGB(light, 0.55);
+        RenderUtils.fillGradient(builder, pose, x1 + 1, y1 + 1, x2 - 1, y2 - 1, 0, light, dark);
+        tessellator.end();
+        RenderUtils.resetColorRenderState();
+        for (int i = 0; i < comments.length; i++) {
+            font.drawShadow(stack, comments[i], x1 + 5, y1 + 5 + 12 * i, 0xFFFFFF);
+        }
+        stack.popPose();
+    }
+
+    private void renderCategories(MatrixStack stack, int mouseX, int mouseY, float deltaRenderTime) {
+        categories.forEach(cat -> cat.draw(stack, minecraft, mouseX, mouseY, deltaRenderTime, posX, posY));
+    }
+
+    private void renderSkills(MatrixStack stack, int mouseX, int mouseY, float deltaRenderTime) {
+        skillElements.forEach(el -> el.draw(stack, minecraft, mouseX, mouseY, deltaRenderTime, posX, posY));
+        if (hoveredSkill == null) hoverStartTime = 0L;
+    }
+
     private void setClickPos(int mouseX, int mouseY) {
         this.clickedX = mouseX;
         this.clickedY = mouseY;
@@ -178,6 +247,11 @@ public class GuiPlayerSkills extends Screen {
 
     private void addComponent(Component component) {
         this.uiComponents.add(component);
+        if (component instanceof CategoryComponent) {
+            categories.add((CategoryComponent) component);
+        } else if (component instanceof SkillComponent) {
+            skillElements.add((SkillComponent) component);
+        }
     }
 
     private static class Component {
@@ -193,7 +267,7 @@ public class GuiPlayerSkills extends Screen {
 
         public void draw(MatrixStack stack, Minecraft mc, int mouseX, int mouseY, float partialTicks, int offsetX, int offsetY) {
             hovered = isMouseOver(mouseX, mouseY, offsetX, offsetY);
-            ModUtils.renderColor(stack.last().pose(), x, y, x + w, y + h, 0.0F, 0.0F, 0.0F, 0.4F);
+            //ModUtils.renderColor(stack.last().pose(), x, y, x + w, y + h, 0.0F, 0.0F, 0.0F, 0.4F);
             if (hovered) ModUtils.renderColor(stack.last().pose(), x, y, x + w, y + h, 1.0F, 1.0F, 1.0F, 0.4F);
         }
 
@@ -275,7 +349,7 @@ public class GuiPlayerSkills extends Screen {
         @Override
         public boolean onClick(int mouseButton) {
             if (mouseButton == 1 && type.hasCustomRenderFactory()) {
-                GuiPlayerSkills.this.display.map(new GunDisplay(ctx));
+                PlayerSkillsScreen.this.display.map(new GunDisplay(ctx));
                 return true;
             } else if (mouseButton == 0) {
                 PlayerEntity player = Minecraft.getInstance().player;
@@ -288,11 +362,11 @@ public class GuiPlayerSkills extends Screen {
                 } else {
                     if (ctx.parent != null) {
                         if (PlayerData.hasActiveSkill(player, ctx.parent) && type.getCriteria().isUnlockAvailable(PlayerData.getUnsafe(player), type)) {
-                            minecraft.setScreen(new ConfirmSkillUnlockScreen(GuiPlayerSkills.this, type, ctx));
+                            minecraft.setScreen(new ConfirmSkillUnlockScreen(PlayerSkillsScreen.this, type, ctx));
                             return true;
                         }
                     } else if (type.getCriteria().isUnlockAvailable(PlayerData.getUnsafe(player), type)) {
-                        minecraft.setScreen(new ConfirmSkillUnlockScreen(GuiPlayerSkills.this, type, null));
+                        minecraft.setScreen(new ConfirmSkillUnlockScreen(PlayerSkillsScreen.this, type, null));
                         return true;
                     }
                 }
@@ -314,6 +388,9 @@ public class GuiPlayerSkills extends Screen {
                 ModUtils.renderLine(pose, x1, y1, x2, y2, 1.0F, 1.0F, 1.0F, 1.0F, 2);
             }
             hovered = isMouseOver(offsetX + mouseX, offsetY + mouseY, 0, 0);
+            if (hovered) {
+                PlayerSkillsScreen.this.hoveredSkill = this;
+            }
             ModUtils.renderColor(pose, px, py, px + w, py + h, 0.0F, 0.0F, 0.0F, 1.0F);
             if (obtained) {
                 ModUtils.renderColor(pose, px + 1, py + 1, px + w - 1, py + h - 1, 0.25F, 0.75F, 0.1F, 1.0F);
@@ -331,38 +408,6 @@ public class GuiPlayerSkills extends Screen {
             if (type.isFreshUnlock()) {
                 ModUtils.renderColor(pose, px + 17, py, px + 20, py + 3, 1.0F, 1.0F, 0.0F, 1.0F);
             }
-            if (hovered) {
-                if (type.isFreshUnlock()) {
-                    type.setFresh(false);
-                }
-                if (!hasStartedCounting || System.currentTimeMillis() - hoverStartTime <= 1000L) {
-                    stack.pushPose();
-                    stack.translate(0, 0, 1);
-                    String displayName = type.getDisplayName();
-                    int width = mc.font.width(displayName);
-                    ModUtils.renderColor(stack.last().pose(), 5 + px - width / 2, py + h + 2, 15 + px + width / 2, py + h + 16, 0.0F, 0.0F, 0.0F, 1.0F);
-                    mc.font.drawShadow(stack, displayName, px + (20 - width) / 2.0F, py + h + 5, 0xffffff);
-                    stack.popPose();
-                }
-
-                if (!hasStartedCounting) {
-                    hoverStartTime = System.currentTimeMillis();
-                    hasStartedCounting = true;
-                } else if (System.currentTimeMillis() - hoverStartTime > 1000L) {
-                    stack.pushPose();
-                    stack.translate(0, 0, 150);
-                    int left = mouseX + infoWidth > GuiPlayerSkills.this.width ? mouseX - infoWidth - 10 : mouseX;
-                    int top = mouseY + 5 + comments.length * 12 > GuiPlayerSkills.this.height ? mouseY - comments.length * 12 : mouseY + 5;
-                    int panelHeight = comments.length * 12 + 5;
-                    ModUtils.renderTextureWithColor(stack.last().pose(), left, top, left + infoWidth + 10, top + panelHeight, SKILL_TREE_TEXTURES, 0.25F, obtained ? 0.75F : 0.25F, obtained ? 0.1F : 0.25F, 1.0F);
-                    for (int i = 0; i < comments.length; i++) {
-                        mc.font.drawShadow(stack, comments[i], left + 5, top + 5 + 12 * i, 0xffffff);
-                    }
-                    stack.popPose();
-                }
-            } else {
-                hasStartedCounting = false;
-            }
         }
     }
 
@@ -373,7 +418,7 @@ public class GuiPlayerSkills extends Screen {
         public CategoryComponent(int x, int y, int w, int h, SkillCategory category) {
             super(x, y, w, h);
             this.category = category;
-            this.selected = GuiPlayerSkills.this.displayedCategory == category;
+            this.selected = PlayerSkillsScreen.this.displayedCategory == category;
         }
 
         @Override
@@ -403,8 +448,8 @@ public class GuiPlayerSkills extends Screen {
         @Override
         public boolean onClick(int mouseButton) {
             if (mouseButton != 0) return false;
-            if (GuiPlayerSkills.this.displayedCategory != this.category) {
-                GuiPlayerSkills.this.switchCategory(category);
+            if (PlayerSkillsScreen.this.displayedCategory != this.category) {
+                PlayerSkillsScreen.this.switchCategory(category);
                 return true;
             }
             return false;
@@ -453,7 +498,7 @@ public class GuiPlayerSkills extends Screen {
                 if (component.isMouseOver(mouseX, mouseY, xOff, yOff) && component.onClick(mouseButton)) {
                     Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                     MainWindow window = Minecraft.getInstance().getWindow();
-                    GuiPlayerSkills.this.init(Minecraft.getInstance(), window.getGuiScaledWidth(), window.getGuiScaledHeight());
+                    PlayerSkillsScreen.this.init(Minecraft.getInstance(), window.getGuiScaledWidth(), window.getGuiScaledHeight());
                     break;
                 }
             }
@@ -467,8 +512,8 @@ public class GuiPlayerSkills extends Screen {
             this.y = pos.y() + 25;
             this.w = width;
             this.h = 60;
-            int px = x - GuiPlayerSkills.this.posX;
-            int py = y - GuiPlayerSkills.this.posY;
+            int px = x - PlayerSkillsScreen.this.posX;
+            int py = y - PlayerSkillsScreen.this.posY;
             for (int i = 0; i < ctx.type.getChilds().size(); i++) {
                 SkillType<?> child = ctx.type.getChilds().get(i);
                 list.add(new SkillComponent(new PlacementContext(null, child, new Vec2i(x + 10 + 25 * i, y + 10))));

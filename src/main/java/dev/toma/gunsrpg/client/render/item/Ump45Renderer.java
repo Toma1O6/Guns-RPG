@@ -21,8 +21,21 @@ public class Ump45Renderer extends AbstractWeaponRenderer {
 
     @Override
     public void positionModel(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
-        if (transform == ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND) {
-            stack.translate(-0.2, 0.4, 0.4);
+        switch (transform) {
+            case THIRD_PERSON_RIGHT_HAND:
+                stack.translate(-0.2, 0.5, 0.4);
+                break;
+            case FIRST_PERSON_RIGHT_HAND:
+                stack.translate(-0.19, 0.7, 0.2);
+                break;
         }
+    }
+
+    @Override
+    protected float scaleForTransform(ItemCameraTransforms.TransformType transform) {
+        if (transform == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
+            return 0.65F;
+        }
+        return super.scaleForTransform(transform);
     }
 }

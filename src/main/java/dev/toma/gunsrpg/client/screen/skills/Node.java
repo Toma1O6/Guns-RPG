@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.client.gui.skills;
+package dev.toma.gunsrpg.client.screen.skills;
 
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.math.Vec2i;

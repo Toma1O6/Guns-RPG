@@ -6,13 +6,13 @@ import net.minecraft.potion.Effects;
 
 public class ModFoods {
 
-    public static final Food BACON_BURGER = nutritionAndSaturation(14, 18).build();
-    public static final Food FISH_AND_CHIPS = nutritionAndSaturation(12, 16).build();
+    public static final Food BACON_BURGER = nutritionAndSaturation(14, 18).meat().build();
+    public static final Food FISH_AND_CHIPS = nutritionAndSaturation(12, 16).meat().build();
     public static final Food GARDEN_SOUP = nutritionAndSaturation(11, 14).build();
-    public static final Food CHICKED_DINNER = nutritionAndSaturation(14, 16).build();
-    public static final Food DELUXE_MEAL = nutritionAndSaturation(18, 20).effect(() -> new EffectInstance(Effects.DAMAGE_BOOST, 400), 1.0F).build();
-    public static final Food MEATY_STEW_XXL = nutritionAndSaturation(20, 20).effect(() -> new EffectInstance(Effects.REGENERATION, 300), 1.0F).build();
-    public static final Food RABBIT_CREAMY_SOUP = nutritionAndSaturation(16, 19).effect(() -> new EffectInstance(Effects.JUMP, 500, 1), 1.0F).build();
+    public static final Food CHICKED_DINNER = nutritionAndSaturation(14, 16).meat().build();
+    public static final Food DELUXE_MEAL = nutritionAndSaturation(18, 20).meat().effect(() -> new EffectInstance(Effects.DAMAGE_BOOST, 400), 1.0F).build();
+    public static final Food MEATY_STEW_XXL = nutritionAndSaturation(20, 20).meat().effect(() -> new EffectInstance(Effects.REGENERATION, 300), 1.0F).build();
+    public static final Food RABBIT_CREAMY_SOUP = nutritionAndSaturation(16, 19).meat().effect(() -> new EffectInstance(Effects.JUMP, 500, 1), 1.0F).build();
     public static final Food SHEPHERDS_PIE = nutritionAndSaturation(17, 20).build();
     public static final Food FRUIT_SALAD = nutritionAndSaturation(10, 11).build();
     public static final Food EGG_SALAD = nutritionAndSaturation(11, 16).build();

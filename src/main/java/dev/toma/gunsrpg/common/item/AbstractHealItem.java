@@ -135,6 +135,11 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IHandRende
         stack.mulPose(Vector3f.XP.rotationDegrees(-80.0F));
     }
 
+    @Override
+    public boolean disableVanillaAnimations() {
+        return false;
+    }
+
     public static abstract class HealBuilder<T, H extends AbstractHealItem<T>> {
 
         protected final String name;

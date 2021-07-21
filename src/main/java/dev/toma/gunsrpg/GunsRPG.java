@@ -2,7 +2,7 @@ package dev.toma.gunsrpg;
 
 import com.mojang.brigadier.CommandDispatcher;
 import dev.toma.gunsrpg.asm.Hooks;
-import dev.toma.gunsrpg.client.gui.skills.SkillTreePlacement;
+import dev.toma.gunsrpg.client.screen.skills.SkillTreePlacement;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;

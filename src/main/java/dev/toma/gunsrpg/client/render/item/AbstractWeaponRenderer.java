@@ -36,6 +36,9 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
                 matrix.mulPose(Vector3f.YP.rotationDegrees(180));
                 float scaleFactor = scaleForTransform(transformType);
                 matrix.scale(scaleFactor, scaleFactor, scaleFactor);
+                if (transformType == ItemCameraTransforms.TransformType.GUI) {
+                    defaultUITransform(matrix);
+                }
                 weaponModel.renderWeapon(stack, data, matrix, renderBuffer.getBuffer(weaponModel.renderType(gunTexture)), light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
             }
             matrix.popPose();
@@ -46,10 +49,22 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
 
     public abstract ResourceLocation createGunTextureInstance();
 
+    protected void transformUI(MatrixStack matrix) {
+
+    }
+
     protected void positionModel(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
     }
 
     protected float scaleForTransform(ItemCameraTransforms.TransformType transform) {
-        return 0.3F;
+        return 0.4F;
+    }
+
+    private void defaultUITransform(MatrixStack matrix) {
+        transformUI(matrix);
+        matrix.translate(-0.25, -0.3, 0.0);
+        matrix.scale(0.7F, 0.7F, 0.7F);
+        matrix.mulPose(Vector3f.ZN.rotationDegrees(45));
+        matrix.mulPose(Vector3f.YN.rotationDegrees(90));
     }
 }

@@ -17,8 +17,8 @@ import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
+import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
@@ -38,7 +38,10 @@ import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.FirstPersonRenderer;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -50,6 +53,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
@@ -93,7 +97,7 @@ public class ClientEventHandler {
             MainWindow window = event.getWindow();
             ItemStack stack = player.getMainHandItem();
             if (stack.getItem() instanceof GunItem) {
-                event.setCanceled(true);
+                //event.setCanceled(true);
                 MatrixStack matrixStack = event.getMatrixStack();
                 PlayerData.get(player).ifPresent(data -> {
                     int windowWidth = window.getGuiScaledWidth();
@@ -128,8 +132,7 @@ public class ClientEventHandler {
                             builder.vertex(x2, y2, 0).color(red, green, blue, alpha).uv(1.0F, 1.0F).endVertex();
                             builder.vertex(x2, top, 0).color(red, green, blue, alpha).uv(1.0F, 0.0F).endVertex();
                             builder.vertex(left, top, 0).color(red, green, blue, alpha).uv(0.0F, 0.0F).endVertex();
-                            builder.end();
-                            WorldVertexBufferUploader.end(builder);
+                            tessellator.end();
                             RenderSystem.disableBlend();
                         }
                     }
@@ -253,7 +256,7 @@ public class ClientEventHandler {
                 } else if (settings.keyUse.isDown() && ClientSideManager.instance().processor().getByID(Animations.REBOLT) == null && !player.isSprinting()) {
                     LazyOptional<IPlayerData> optional = PlayerData.get(player);
                     boolean aim = optional.isPresent() && optional.orElse(null).getAimInfo().aiming;
-                    if (aim) {
+                    if (!aim) {
                         preAimFov.map(settings.fov);
                         preAimSens.map(settings.sensitivity);
                         if (item == ModItems.SNIPER_RIFLE && PlayerData.hasActiveSkill(player, Skills.SR_SCOPE)) {
@@ -268,7 +271,7 @@ public class ClientEventHandler {
                         preAimFov.ifPresent(value -> settings.fov = value);
                         preAimSens.ifPresent(value -> settings.sensitivity = value);
                     }
-                    NetworkManager.sendServerPacket(new SPacketSetAiming(aim));
+                    NetworkManager.sendServerPacket(new SPacketSetAiming(!aim));
                 }
             }
         }
@@ -305,7 +308,9 @@ public class ClientEventHandler {
             FirstPersonRenderer fpRenderer = mc.getItemInHandRenderer();
             boolean mainHand = event.getHand() == Hand.MAIN_HAND;
             ItemCameraTransforms.TransformType transformType = mainHand ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
-            float equip = event.getEquipProgress();
+            boolean disableVanillaAnimations = iHandRenderer.disableVanillaAnimations();
+            float equip = disableVanillaAnimations ? 0.0F : event.getEquipProgress();
+            float swing = disableVanillaAnimations ? 0.0F : event.getSwingProgress();
             MatrixStack matrix = event.getMatrixStack();
             IRenderTypeBuffer buffer = event.getBuffers();
             int packedLight = event.getLight();
@@ -323,7 +328,7 @@ public class ClientEventHandler {
                 matrix.popPose();
                 processor.processItem(matrix, partial);
                 if (!processor.blocksItemRender())
-                    fpRenderer.renderItem(player, stack, transformType, !mainHand, matrix, buffer, packedLight);
+                    renderItem(fpRenderer, player, stack, transformType, !mainHand, matrix, buffer, packedLight, swing, equip);
             }
             matrix.popPose();
 
@@ -339,7 +344,7 @@ public class ClientEventHandler {
                     }
                     matrix.popPose();
                     processor.processItem(matrix, partial);
-                    fpRenderer.renderItem(player, stack, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, true, matrix, buffer, packedLight);
+                    renderItem(fpRenderer, player, stack, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, true, matrix, buffer, packedLight, swing, equip);
                 }
                 matrix.popPose();
             }
@@ -384,6 +389,33 @@ public class ClientEventHandler {
     public static void onRenderTick(TickEvent.RenderTickEvent event) {
         if (event.phase == TickEvent.Phase.START)
             ClientSideManager.instance().processor().processFrame(event.renderTickTime);
+    }
+
+    private static void renderItem(FirstPersonRenderer renderer, PlayerEntity player, ItemStack stack, ItemCameraTransforms.TransformType transform, boolean offHand, MatrixStack matrix, IRenderTypeBuffer buffer, int light, float swingProgress, float equipProgress) {
+        HandSide handside = offHand ? HandSide.LEFT : HandSide.RIGHT;
+        float f5 = -0.4F * MathHelper.sin(MathHelper.sqrt(swingProgress) * (float)Math.PI);
+        float f6 = 0.2F * MathHelper.sin(MathHelper.sqrt(swingProgress) * ((float)Math.PI * 2F));
+        float f10 = -0.2F * MathHelper.sin(swingProgress * (float)Math.PI);
+        int l = !offHand ? 1 : -1;
+        matrix.translate(l * f5, f6, f10);
+        applyItemArmTransform(matrix, handside, equipProgress);
+        applyItemArmAttackTransform(matrix, handside, swingProgress);
+        renderer.renderItem(player, stack, transform, offHand, matrix, buffer, light);
+    }
+
+    private static void applyItemArmTransform(MatrixStack matrix, HandSide side, float equipProgress) {
+        int offset = side == HandSide.RIGHT ? 1 : -1;
+        matrix.translate(offset * 0.56F, -0.52F + equipProgress * -0.6F, -0.72F);
+    }
+
+    private static void applyItemArmAttackTransform(MatrixStack matrix, HandSide side, float swingProgress) {
+        int i = side == HandSide.RIGHT ? 1 : -1;
+        float f = MathHelper.sin(swingProgress * swingProgress * (float) Math.PI);
+        matrix.mulPose(Vector3f.YP.rotationDegrees(i * (45.0F + f * -20.0F)));
+        float f1 = MathHelper.sin(MathHelper.sqrt(swingProgress) * (float) Math.PI);
+        matrix.mulPose(Vector3f.ZP.rotationDegrees(i * f1 * -20.0F));
+        matrix.mulPose(Vector3f.XP.rotationDegrees(f1 * -80.0F));
+        matrix.mulPose(Vector3f.YP.rotationDegrees(i * -45.0F));
     }
 
     private static void renderAnimatedItemFP(MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, float equipProgress, IHandRenderer handRenderer, float partial, AnimationProcessor processor) {

@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.client.gui;
+package dev.toma.gunsrpg.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.common.container.BlastFurnaceContainer;

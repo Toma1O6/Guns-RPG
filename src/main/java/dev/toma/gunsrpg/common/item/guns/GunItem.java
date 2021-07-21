@@ -102,6 +102,11 @@ public abstract class GunItem extends BaseItem implements IHandRenderer {
         processor.play(Animations.RECOIL, RecoilAnimation.newInstance(5));
     }
 
+    @Override
+    public boolean disableVanillaAnimations() {
+        return true;
+    }
+
     public IReloadManager getReloadManager() {
         return ReloadManagerMagazine.MANAGER;
     }
