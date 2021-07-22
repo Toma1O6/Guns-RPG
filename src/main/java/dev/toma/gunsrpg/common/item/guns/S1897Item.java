@@ -128,8 +128,9 @@ public class S1897Item extends GunItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void transformLeftArm(MatrixStack matrix) {
-        matrix.translate(0.3F, -0.1F, -0.15F);
-        matrix.mulPose(Vector3f.YP.rotationDegrees(-20));
+        matrix.translate(0.3F, -1.4F, -0.6F);
+        matrix.mulPose(Vector3f.XP.rotationDegrees(60));
+        matrix.mulPose(Vector3f.YN.rotationDegrees(40));
     }
 
     @OnlyIn(Dist.CLIENT)

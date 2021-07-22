@@ -21,6 +21,28 @@ public class S1897Renderer extends AbstractWeaponRenderer {
 
     @Override
     public void positionModel(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
+        switch (transform) {
+            case THIRD_PERSON_RIGHT_HAND:
+                stack.translate(-0.2, 0.25, 0.35);
+                break;
+            case FIRST_PERSON_RIGHT_HAND:
+                stack.translate(-0.495, 0.6, 0.3);
+                break;
+        }
+    }
+
+    @Override
+    protected float scaleForTransform(ItemCameraTransforms.TransformType transform) {
+        if (transform == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
+            return 0.4F;
+        } else if (transform == ItemCameraTransforms.TransformType.GUI) {
+            return 0.28F;
+        }
+        return 0.2F;
+    }
+
+    @Override
+    protected void transformUI(MatrixStack matrix) {
 
     }
 }
