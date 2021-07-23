@@ -34,6 +34,7 @@ public class ClientSideManager {
         return INSTANCE;
     }
 
+    @Deprecated
     public AnimationProcessor processor() {
         return animations;
     }

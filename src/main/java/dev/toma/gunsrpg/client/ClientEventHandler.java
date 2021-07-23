@@ -301,7 +301,6 @@ public class ClientEventHandler {
                 return;
             }
         }
-        float partial = event.getPartialTicks();
         if (stack.getItem() instanceof IAnimationEntry) {
             AnimationCompatLayer animLib = AnimationCompatLayer.instance();
             ClientSideManager client = ClientSideManager.instance();
@@ -365,7 +364,7 @@ public class ClientEventHandler {
         if (event.phase == TickEvent.Phase.END && player != null) {
             if (shootDelay > 0)
                 --shootDelay;
-            ClientSideManager.instance().processor().tick();
+            AnimationCompatLayer.instance().pipeline().handleGameTick();
             startSprintListener.update(player);
             GameSettings settings = mc.options;
             if (burst) {
@@ -395,7 +394,7 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onRenderTick(TickEvent.RenderTickEvent event) {
         if (event.phase == TickEvent.Phase.START)
-            ClientSideManager.instance().processor().processFrame(event.renderTickTime);
+            AnimationCompatLayer.instance().pipeline().processFrame(event.renderTickTime);
     }
 
     private static void renderItem(FirstPersonRenderer renderer, PlayerEntity player, ItemStack stack, ItemCameraTransforms.TransformType transform, boolean offHand, MatrixStack matrix, IRenderTypeBuffer buffer, int light, float swingProgress, float equipProgress) {
