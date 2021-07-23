@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
 import dev.toma.gunsrpg.common.command.GunsrpgCommand;
 import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
+import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.recipes.BlastFurnaceRecipe;
@@ -17,6 +18,7 @@ import dev.toma.gunsrpg.world.MobSpawnManager;
 import dev.toma.gunsrpg.world.cap.IWorldData;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataStorage;
+import lib.toma.animations.AnimationCompatLayer;
 import net.minecraft.command.CommandSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -60,6 +62,10 @@ public class GunsRPG {
 
     private void clientSetup(FMLClientSetupEvent event) {
         ClientSideManager.instance().clientSetup(event);
+        if (ModConfig.clientConfig.developerMode.get()) {
+            AnimationCompatLayer compatLayer = AnimationCompatLayer.instance();
+            compatLayer.setup();
+        }
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

@@ -4,7 +4,6 @@ import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.client.animation.AnimationProcessor;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
-import dev.toma.gunsrpg.client.animation.IHandRenderer;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.client.animation.impl.RecoilAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -20,6 +19,8 @@ import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.sided.ClientSideManager;
+import lib.toma.animations.IAnimationEntry;
+import lib.toma.animations.IRenderConfig;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public abstract class GunItem extends BaseItem implements IHandRenderer {
+public abstract class GunItem extends BaseItem implements IAnimationEntry {
 
     protected static Random random = new Random();
     protected final GunType gunType;
@@ -100,6 +101,16 @@ public abstract class GunItem extends BaseItem implements IHandRenderer {
         AnimationProcessor processor = ClientSideManager.instance().processor();
         processor.stop(Animations.RELOAD);
         processor.play(Animations.RECOIL, RecoilAnimation.newInstance(5));
+    }
+
+    @Override
+    public IRenderConfig right() {
+        return IRenderConfig.empty();
+    }
+
+    @Override
+    public IRenderConfig left() {
+        return IRenderConfig.empty();
     }
 
     @Override

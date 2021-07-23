@@ -1,6 +1,5 @@
 package dev.toma.gunsrpg.common.item.guns;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
@@ -132,20 +131,5 @@ public class Ump45Item extends GunItem {
     @Override
     public IAnimation createReloadAnimation(PlayerEntity player) {
         return new Animations.Ump45Reload(this.getReloadTime(player));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void transformRightArm(MatrixStack matrix) {
-        matrix.translate(0.15F, -0.3F, 0.25F);
-        matrix.mulPose(Vector3f.XP.rotationDegrees(10));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void transformLeftArm(MatrixStack matrix) {
-        matrix.translate(-0.1F, -0.85F, -0.3F);
-        matrix.mulPose(Vector3f.XP.rotationDegrees(35));
-        matrix.mulPose(Vector3f.YN.rotationDegrees(70));
     }
 }

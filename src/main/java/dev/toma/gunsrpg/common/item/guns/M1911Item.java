@@ -1,6 +1,5 @@
 package dev.toma.gunsrpg.common.item.guns;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.AnimationProcessor;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
@@ -162,28 +161,6 @@ public class M1911Item extends GunItem {
     @Override
     public IAnimation createReloadAnimation(PlayerEntity player) {
         return this.isDualWieldActive() ? new Animations.M1911ReloadDual(this.getReloadTime(player)) : new Animations.M1911Reload(this.getReloadTime(player));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void transformRightArm(MatrixStack matrix) {
-        matrix.translate(0.24F, 0.0F, -0.1F);
-        matrix.mulPose(Vector3f.XP.rotationDegrees(5));
-        matrix.mulPose(Vector3f.YN.rotationDegrees(25));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void transformLeftArm(MatrixStack matrix) {
-        if (this.isDualWieldActive()) {
-            matrix.translate(-0.15F, -0.09F, 0.7F);
-            matrix.mulPose(Vector3f.XP.rotationDegrees(5.0f));
-            matrix.mulPose(Vector3f.YN.rotationDegrees(25));
-        } else {
-            matrix.translate(0.13F, -0.08F, 0.6F);
-            matrix.mulPose(Vector3f.XP.rotationDegrees(5));
-            matrix.mulPose(Vector3f.YN.rotationDegrees(60));
-        }
     }
 
     @OnlyIn(Dist.CLIENT)

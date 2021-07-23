@@ -17,6 +17,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
+import lib.toma.animations.IRenderConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -128,27 +129,19 @@ public class WoodenCrossbowItem extends GunItem {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void transformRightArm(MatrixStack matrix) {
-        matrix.translate(0.05F, -0.1F, 0.7F);
-        matrix.mulPose(Vector3f.YP.rotationDegrees(10));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void transformLeftArm(MatrixStack matrix) {
-        matrix.translate(0.3F, -0.1F, 0.0F);
-        matrix.mulPose(Vector3f.YP.rotationDegrees(-30));
+    public IRenderConfig right() {
+        return IRenderConfig.empty();
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public AimingAnimation createAimAnimation() {
         boolean scoped = PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.CROSSBOW_SCOPE);
-        return new AimingAnimation(-0.265F, scoped ? 0.14F : 0.18F, -0.1F).animateRight((stack, f) -> {
+        return new AimingAnimation(-0.96F, scoped ? 0.58F : 0.68F, 0.6F).animateRight((stack, f) -> {
             stack.translate(-0.265F * f, 0.16F * f, -0.1F * f);
         }).animateLeft((stack, f) -> {
-            stack.translate(-0.1F * f, 0.15F * f, 0.15F * f);
-            stack.mulPose(Vector3f.XP.rotationDegrees(20 * f));
+            stack.translate(-0.15F * f, 0.64F * f, 0.6F * f);
+            stack.mulPose(Vector3f.YP.rotationDegrees(25 * f));
         });
     }
 

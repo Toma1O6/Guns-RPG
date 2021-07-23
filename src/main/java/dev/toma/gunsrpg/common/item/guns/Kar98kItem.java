@@ -126,26 +126,12 @@ public class Kar98kItem extends GunItem {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void transformRightArm(MatrixStack matrix) {
-        matrix.translate(0.25F, -0.02F, 0.45F);
-        matrix.mulPose(Vector3f.YP.rotationDegrees(20));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void transformLeftArm(MatrixStack matrix) {
-        matrix.translate(0.3F, -0.05F, -0.1F);
-        matrix.mulPose(Vector3f.YP.rotationDegrees(-20));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
     public AimingAnimation createAimAnimation() {
         boolean scope = PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.SR_SCOPE);
-        return new AimingAnimation(-0.265F, scope ? 0.14F : 0.175F, 0.3F).animateRight((stack, f) -> {
+        return new AimingAnimation(-0.662F, scope ? 0.44F : 0.49F, 0.7F).animateRight((stack, f) -> {
             stack.translate(-0.265F * f, 0.175F * f, 0.3F * f);
         }).animateLeft((stack, f) -> {
-            stack.translate(-0.265F * f, 0.175F * f, 0.3F * f);
+            stack.translate(-0.7F * f, 0.175F * f, 0.3F * f);
         });
     }
 
@@ -161,6 +147,6 @@ public class Kar98kItem extends GunItem {
         super.onShoot(player, stack);
         ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltKar98k(this.getFirerate(player)));
         NetworkManager.sendServerPacket(new SPacketSetAiming(false));
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> ClientSideManager.instance().playDelayedSound(player.blockPosition(), 1.0F, 1.0F, ModSounds.SR_BOLT, SoundCategory.MASTER, 15));
+        ClientSideManager.instance().playDelayedSound(player.blockPosition(), 1.0F, 1.0F, ModSounds.SR_BOLT, SoundCategory.MASTER, 15);
     }
 }

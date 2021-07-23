@@ -19,7 +19,7 @@ public class ClientConfiguration extends ObjectType {
             GunsRPG.makeResource("textures/icons/reticle_chevron.png"),
             GunsRPG.makeResource("textures/icons/reticle_cross.png")
     };
-    public final BooleanType loadAnimationTool;
+    public final BooleanType developerMode;
     public final EnumType<ScopeRenderer> scopeRenderer;
     public final ConfigurableVec2i debuffOverlay;
     public final ColorType reticleColor;
@@ -29,7 +29,7 @@ public class ClientConfiguration extends ObjectType {
         super(spec);
 
         IConfigWriter writer = spec.getWriter();
-        loadAnimationTool = writer.writeBoolean("Animation tool", false, "Developer tool for animations");
+        developerMode = writer.writeBoolean("Developer mode", false, "Enables some special developer tools");
         scopeRenderer = writer.writeEnum("Scope render type", ScopeRenderer.IN_MODEL);
         debuffOverlay = writer.writeObject(sp -> new ConfigurableVec2i(sp, 0, -60), "Debuff overlay", "Manage position of debuff overlay in HUD");
         reticleColor = writer.writeColorARGB("Reticle color", "#FFFF0000", "Configure color reticle color");

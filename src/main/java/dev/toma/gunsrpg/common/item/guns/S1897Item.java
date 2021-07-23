@@ -1,6 +1,5 @@
 package dev.toma.gunsrpg.common.item.guns;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
@@ -26,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -116,21 +114,6 @@ public class S1897Item extends GunItem {
     @Override
     public SkillType<?> getRequiredSkill() {
         return Skills.SHOTGUN_ASSEMBLY;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void transformRightArm(MatrixStack matrix) {
-        matrix.translate(0.16F, -0.1F, 0.35F);
-        matrix.mulPose(Vector3f.YP.rotationDegrees(15));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void transformLeftArm(MatrixStack matrix) {
-        matrix.translate(0.3F, -1.4F, -0.6F);
-        matrix.mulPose(Vector3f.XP.rotationDegrees(60));
-        matrix.mulPose(Vector3f.YN.rotationDegrees(40));
     }
 
     @OnlyIn(Dist.CLIENT)

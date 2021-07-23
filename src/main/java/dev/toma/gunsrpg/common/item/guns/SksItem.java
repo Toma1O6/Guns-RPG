@@ -1,6 +1,5 @@
 package dev.toma.gunsrpg.common.item.guns;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
@@ -116,21 +115,6 @@ public class SksItem extends GunItem {
     @Override
     public SkillType<?> getRequiredSkill() {
         return Skills.ASSAULT_RIFLE_ASSEMBLY;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void transformRightArm(MatrixStack matrix) {
-        matrix.translate(-0.1F, -0.05F, 0.6F);
-        matrix.mulPose(Vector3f.XP.rotationDegrees(5));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void transformLeftArm(MatrixStack matrix) {
-        matrix.translate(0.32F, -0.1F, -0.1F);
-        matrix.mulPose(Vector3f.XP.rotationDegrees(5.0F));
-        matrix.mulPose(Vector3f.YP.rotationDegrees(-20.0F));
     }
 
     @OnlyIn(Dist.CLIENT)

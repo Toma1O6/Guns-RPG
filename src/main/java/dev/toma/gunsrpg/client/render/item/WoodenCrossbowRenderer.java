@@ -21,6 +21,23 @@ public class WoodenCrossbowRenderer extends AbstractWeaponRenderer {
 
     @Override
     public void positionModel(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
+        if (transform == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
+            stack.translate(0.2, 0.0, -0.2);
+        } else if (transform == ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND) {
+            stack.translate(-0.2, 0.2, 0.3);
+        }
+    }
+
+    @Override
+    protected float scaleForTransform(ItemCameraTransforms.TransformType transform) {
+        if (transform != ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
+            return 0.2F;
+        }
+        return super.scaleForTransform(transform);
+    }
+
+    @Override
+    protected void transformUI(MatrixStack matrix) {
 
     }
 }

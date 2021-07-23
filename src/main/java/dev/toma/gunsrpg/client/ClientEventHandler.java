@@ -5,7 +5,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.animation.AnimationProcessor;
 import dev.toma.gunsrpg.client.animation.Animations;
-import dev.toma.gunsrpg.client.animation.IHandRenderer;
+import lib.toma.animations.AnimationCompatLayer;
+import lib.toma.animations.IHandRenderAPI;
+import lib.toma.animations.IHandTransformer;
+import lib.toma.animations.IAnimationEntry;
 import dev.toma.gunsrpg.client.animation.impl.SprintingAnimation;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -33,6 +36,7 @@ import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.object.ShootingManager;
+import lib.toma.animations.IRenderConfig;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
@@ -97,7 +101,7 @@ public class ClientEventHandler {
             MainWindow window = event.getWindow();
             ItemStack stack = player.getMainHandItem();
             if (stack.getItem() instanceof GunItem) {
-                //event.setCanceled(true);
+                event.setCanceled(true);
                 MatrixStack matrixStack = event.getMatrixStack();
                 PlayerData.get(player).ifPresent(data -> {
                     int windowWidth = window.getGuiScaledWidth();
@@ -301,14 +305,18 @@ public class ClientEventHandler {
             }
         }
         float partial = event.getPartialTicks();
-        if (stack.getItem() instanceof IHandRenderer) {
-            IHandRenderer iHandRenderer = (IHandRenderer) stack.getItem();
+        if (stack.getItem() instanceof IAnimationEntry) {
+            IHandRenderAPI handAPI = AnimationCompatLayer.instance().getHandRenderAPI();
+            IAnimationEntry iAnimationEntry = (IAnimationEntry) stack.getItem();
+            boolean devMode = handAPI.isDevMode();
+            IHandTransformer transformer = devMode ? handAPI : iAnimationEntry;
+            Function<HandSide, IRenderConfig> configSelector = side -> side == HandSide.RIGHT ? transformer.right() : transformer.left();
             event.setCanceled(true);
             Minecraft mc = Minecraft.getInstance();
             FirstPersonRenderer fpRenderer = mc.getItemInHandRenderer();
             boolean mainHand = event.getHand() == Hand.MAIN_HAND;
             ItemCameraTransforms.TransformType transformType = mainHand ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
-            boolean disableVanillaAnimations = iHandRenderer.disableVanillaAnimations();
+            boolean disableVanillaAnimations = iAnimationEntry.disableVanillaAnimations();
             float equip = disableVanillaAnimations ? 0.0F : event.getEquipProgress();
             float swing = disableVanillaAnimations ? 0.0F : event.getSwingProgress();
             MatrixStack matrix = event.getMatrixStack();
@@ -323,7 +331,7 @@ public class ClientEventHandler {
                 matrix.pushPose();
                 {
                     processor.processHands(matrix, partial);
-                    renderAnimatedItemFP(matrix, buffer, packedLight, equip, iHandRenderer, partial, processor);
+                    renderAnimatedItemFP(matrix, buffer, packedLight, equip, configSelector, partial, processor);
                 }
                 matrix.popPose();
                 processor.processItem(matrix, partial);
@@ -340,7 +348,7 @@ public class ClientEventHandler {
                     matrix.pushPose();
                     {
                         processor.processHands(matrix, partial);
-                        renderAnimatedItemFP(matrix, buffer, packedLight, equip, iHandRenderer, partial, processor);
+                        renderAnimatedItemFP(matrix, buffer, packedLight, equip, configSelector, partial, processor);
                     }
                     matrix.popPose();
                     processor.processItem(matrix, partial);
@@ -418,7 +426,7 @@ public class ClientEventHandler {
         matrix.mulPose(Vector3f.YP.rotationDegrees(i * -45.0F));
     }
 
-    private static void renderAnimatedItemFP(MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, float equipProgress, IHandRenderer handRenderer, float partial, AnimationProcessor processor) {
+    private static void renderAnimatedItemFP(MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, float equipProgress, Function<HandSide, IRenderConfig> function, float partial, AnimationProcessor processor) {
         float yOff = -0.5F * equipProgress;
         RenderSystem.disableCull();
         stack.pushPose();
@@ -427,13 +435,13 @@ public class ClientEventHandler {
             stack.pushPose();
             {
                 processor.processRightHand(stack, partial);
-                renderHand(stack, HandSide.RIGHT, handRenderer, buffer, packedLight);
+                renderHand(stack, HandSide.RIGHT, function, buffer, packedLight);
             }
             stack.popPose();
             stack.pushPose();
             {
                 processor.processLeftHand(stack, partial);
-                renderHand(stack, HandSide.LEFT, handRenderer, buffer, packedLight);
+                renderHand(stack, HandSide.LEFT, function, buffer, packedLight);
             }
             stack.popPose();
         }
@@ -450,16 +458,10 @@ public class ClientEventHandler {
         shootDelay = gun.getFirerate(player);
     }
 
-    private static void renderHand(MatrixStack stack, HandSide side, IHandRenderer renderer, IRenderTypeBuffer buffer, int packedLight) {
-        if (!renderer.shouldRenderForSide(side))
-            return;
+    private static void renderHand(MatrixStack stack, HandSide side, Function<HandSide, IRenderConfig> configFunction, IRenderTypeBuffer buffer, int packedLight) {
         boolean rightArm = side == HandSide.RIGHT;
-
-        if (rightArm)
-            renderer.transformRightArm(stack);
-        else
-            renderer.transformLeftArm(stack);
-
+        IRenderConfig config = configFunction.apply(side);
+        config.applyTo(stack);
         Minecraft mc = Minecraft.getInstance();
         mc.getTextureManager().bind(mc.player.getSkinTextureLocation());
         EntityRenderer<? super ClientPlayerEntity> entityRenderer = mc.getEntityRenderDispatcher().getRenderer(mc.player);

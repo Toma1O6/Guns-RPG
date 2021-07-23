@@ -1,15 +1,16 @@
 package dev.toma.gunsrpg.common.item;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
-import dev.toma.gunsrpg.client.animation.IHandRenderer;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.sided.ClientSideManager;
+import lib.toma.animations.IAnimationEntry;
+import lib.toma.animations.IRenderConfig;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,13 +19,11 @@ import net.minecraft.item.UseAction;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
 
@@ -33,7 +32,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.*;
 
-public abstract class AbstractHealItem<T> extends BaseItem implements IHandRenderer {
+public abstract class AbstractHealItem<T> extends BaseItem implements IAnimationEntry {
 
     private final int useTime;
     private final ITextComponent[] description;
@@ -123,16 +122,14 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IHandRende
         return stack;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public void transformRightArm(MatrixStack stack) {
-        stack.mulPose(Vector3f.XP.rotationDegrees(-80.0F));
+    public IRenderConfig left() {
+        return RenderConfigs.HEAL_CONFIG;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public void transformLeftArm(MatrixStack stack) {
-        stack.mulPose(Vector3f.XP.rotationDegrees(-80.0F));
+    public IRenderConfig right() {
+        return RenderConfigs.HEAL_CONFIG;
     }
 
     @Override
