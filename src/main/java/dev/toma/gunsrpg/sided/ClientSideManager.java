@@ -27,8 +27,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientSideManager {
 
     private static final ClientSideManager INSTANCE = new ClientSideManager();
-
     private final AnimationProcessor animations = new AnimationProcessor();
+    private boolean dualWieldRender;
 
     public static ClientSideManager instance() {
         return INSTANCE;
@@ -36,6 +36,14 @@ public class ClientSideManager {
 
     public AnimationProcessor processor() {
         return animations;
+    }
+
+    public boolean isRenderingDualWield() {
+        return dualWieldRender;
+    }
+
+    public void setDualWieldRender(boolean render) {
+        this.dualWieldRender = render;
     }
 
     public void clientSetup(FMLClientSetupEvent event) {

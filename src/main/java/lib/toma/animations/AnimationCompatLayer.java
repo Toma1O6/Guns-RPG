@@ -1,5 +1,6 @@
 package lib.toma.animations;
 
+import lib.toma.animations.pipeline.IAnimationPipeline;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.event.InputEvent;
@@ -14,13 +15,15 @@ public final class AnimationCompatLayer {
     public int handConfigKey = GLFW.GLFW_KEY_KP_9;
     final HandRenderAPI handRenderAPI;
     final UtilScreenFactory screenFactory;
-    final Logger logger = LogManager.getLogger("AnimationLib");
+    final AnimationPipeline pipeline;
+    public static final Logger logger = LogManager.getLogger("AnimationLib");
 
     private KeyBinding handConfigs;
 
     private AnimationCompatLayer() {
         handRenderAPI = new HandRenderAPI();
         screenFactory = new UtilScreenFactory();
+        pipeline = new AnimationPipeline();
     }
 
     public void setup() {
@@ -38,6 +41,10 @@ public final class AnimationCompatLayer {
 
     public IUtilScreenFactory getScreenFactory() {
         return screenFactory;
+    }
+
+    public IAnimationPipeline pipeline() {
+        return pipeline;
     }
 
     private KeyBinding registerKey(String name, int keycode) {

@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public class AnimationProcessor {
 
     private final Map<Integer, IAnimation> animations = new HashMap<>();

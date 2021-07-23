@@ -17,6 +17,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Locale;
 import java.util.function.BiConsumer;
@@ -28,7 +29,6 @@ public class HandRenderScreen extends Screen {
     private boolean enabled;
     private final RenderConfig.Mutable leftHand;
     private final RenderConfig.Mutable rightHand;
-
     private SelectorWidget<HandSide> handSelector;
     private TextFieldWidget posX;
     private TextFieldWidget posY;
@@ -240,23 +240,13 @@ public class HandRenderScreen extends Screen {
         scaleY.setValue(String.valueOf(config.scale.y()));
         scaleZ.setValue(String.valueOf(config.scale.z()));
         Quaternion rotation = config.rotation;
-        asVector(rotation, (vec, f) -> {
-            degrees.setValue(String.format(Locale.ROOT, "%.2f", f));
-            rotationX.setValue(String.format(Locale.ROOT, "%.2f", vec.x()));
-            rotationY.setValue(String.format(Locale.ROOT, "%.2f", vec.y()));
-            rotationZ.setValue(String.format(Locale.ROOT, "%.2f", vec.z()));
-        });
-    }
-
-    public void asVector(Quaternion quaternion, BiConsumer<Vector3f, Float> action) {
-        double value = Math.acos(quaternion.r());
-        double deg = Math.toDegrees(value * 2f);
-        double rad = deg * ((float) Math.PI / 180.0F);
-        float f = (float) Math.sin((rad / 2.0F));
-        float x = f == 0 ? 0.0F : quaternion.i() / f;
-        float y = f == 0 ? 0.0F : quaternion.j() / f;
-        float z = f == 0 ? 0.0F : quaternion.k() / f;
-        action.accept(new Vector3f(x, y, z), (float) deg);
+        Pair<Float, Vector3f> transformed = AnimationUtils.getVectorWithRotation(rotation);
+        float f = transformed.getLeft();
+        Vector3f vec = transformed.getRight();
+        degrees.setValue(String.format(Locale.ROOT, "%.2f", f));
+        rotationX.setValue(String.format(Locale.ROOT, "%.2f", vec.x()));
+        rotationY.setValue(String.format(Locale.ROOT, "%.2f", vec.y()));
+        rotationZ.setValue(String.format(Locale.ROOT, "%.2f", vec.z()));
     }
 
     private RenderConfig.Mutable getActiveConfig() {

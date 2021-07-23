@@ -3,12 +3,7 @@ package dev.toma.gunsrpg.client;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.animation.AnimationProcessor;
 import dev.toma.gunsrpg.client.animation.Animations;
-import lib.toma.animations.AnimationCompatLayer;
-import lib.toma.animations.IHandRenderAPI;
-import lib.toma.animations.IHandTransformer;
-import lib.toma.animations.IAnimationEntry;
 import dev.toma.gunsrpg.client.animation.impl.SprintingAnimation;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -36,7 +31,9 @@ import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.object.ShootingManager;
-import lib.toma.animations.IRenderConfig;
+import lib.toma.animations.*;
+import lib.toma.animations.pipeline.AnimationStage;
+import lib.toma.animations.pipeline.IAnimationPipeline;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
@@ -306,36 +303,38 @@ public class ClientEventHandler {
         }
         float partial = event.getPartialTicks();
         if (stack.getItem() instanceof IAnimationEntry) {
-            IHandRenderAPI handAPI = AnimationCompatLayer.instance().getHandRenderAPI();
-            IAnimationEntry iAnimationEntry = (IAnimationEntry) stack.getItem();
+            AnimationCompatLayer animLib = AnimationCompatLayer.instance();
+            ClientSideManager client = ClientSideManager.instance();
+            IHandRenderAPI handAPI = animLib.getHandRenderAPI();
+            IAnimationEntry animationEntry = (IAnimationEntry) stack.getItem();
+            IAnimationPipeline pipeline = animLib.pipeline();
             boolean devMode = handAPI.isDevMode();
-            IHandTransformer transformer = devMode ? handAPI : iAnimationEntry;
+            IHandTransformer transformer = devMode ? handAPI : animationEntry;
             Function<HandSide, IRenderConfig> configSelector = side -> side == HandSide.RIGHT ? transformer.right() : transformer.left();
             event.setCanceled(true);
             Minecraft mc = Minecraft.getInstance();
             FirstPersonRenderer fpRenderer = mc.getItemInHandRenderer();
             boolean mainHand = event.getHand() == Hand.MAIN_HAND;
             ItemCameraTransforms.TransformType transformType = mainHand ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
-            boolean disableVanillaAnimations = iAnimationEntry.disableVanillaAnimations();
+            boolean disableVanillaAnimations = animationEntry.disableVanillaAnimations();
             float equip = disableVanillaAnimations ? 0.0F : event.getEquipProgress();
             float swing = disableVanillaAnimations ? 0.0F : event.getSwingProgress();
             MatrixStack matrix = event.getMatrixStack();
             IRenderTypeBuffer buffer = event.getBuffers();
             int packedLight = event.getLight();
-            AnimationProcessor processor = ClientSideManager.instance().processor();
 
             matrix.pushPose();
             {
-                processor.setDualWieldRender(false);
-                processor.processItemAndHands(matrix, partial);
+                client.setDualWieldRender(false);
+                pipeline.animateStage(AnimationStage.ITEM_AND_HANDS);
                 matrix.pushPose();
                 {
-                    processor.processHands(matrix, partial);
-                    renderAnimatedItemFP(matrix, buffer, packedLight, equip, configSelector, partial, processor);
+                    pipeline.animateStage(AnimationStage.HANDS);
+                    renderAnimatedItemFP(matrix, buffer, packedLight, equip, configSelector, pipeline);
                 }
                 matrix.popPose();
-                processor.processItem(matrix, partial);
-                if (!processor.blocksItemRender())
+                pipeline.animateStage(AnimationStage.HELD_ITEM);
+                if (!pipeline.isItemRenderBlocked())
                     renderItem(fpRenderer, player, stack, transformType, !mainHand, matrix, buffer, packedLight, swing, equip);
             }
             matrix.popPose();
@@ -343,15 +342,15 @@ public class ClientEventHandler {
             if (stack.getItem() == ModItems.PISTOL && PlayerData.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD)) {
                 matrix.pushPose();
                 {
-                    processor.setDualWieldRender(true);
-                    processor.processItemAndHands(matrix, partial);
+                    client.setDualWieldRender(true);
+                    pipeline.animateStage(AnimationStage.ITEM_AND_HANDS);
                     matrix.pushPose();
                     {
-                        processor.processHands(matrix, partial);
-                        renderAnimatedItemFP(matrix, buffer, packedLight, equip, configSelector, partial, processor);
+                        pipeline.animateStage(AnimationStage.HANDS);
+                        renderAnimatedItemFP(matrix, buffer, packedLight, equip, configSelector, pipeline);
                     }
                     matrix.popPose();
-                    processor.processItem(matrix, partial);
+                    pipeline.animateStage(AnimationStage.HELD_ITEM);
                     renderItem(fpRenderer, player, stack, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, true, matrix, buffer, packedLight, swing, equip);
                 }
                 matrix.popPose();
@@ -426,7 +425,7 @@ public class ClientEventHandler {
         matrix.mulPose(Vector3f.YP.rotationDegrees(i * -45.0F));
     }
 
-    private static void renderAnimatedItemFP(MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, float equipProgress, Function<HandSide, IRenderConfig> function, float partial, AnimationProcessor processor) {
+    private static void renderAnimatedItemFP(MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, float equipProgress, Function<HandSide, IRenderConfig> function, IAnimationPipeline pipeline) {
         float yOff = -0.5F * equipProgress;
         RenderSystem.disableCull();
         stack.pushPose();
@@ -434,13 +433,13 @@ public class ClientEventHandler {
             stack.translate(0, yOff, 0);
             stack.pushPose();
             {
-                processor.processRightHand(stack, partial);
+                pipeline.animateStage(AnimationStage.RIGHT_HAND);
                 renderHand(stack, HandSide.RIGHT, function, buffer, packedLight);
             }
             stack.popPose();
             stack.pushPose();
             {
-                processor.processLeftHand(stack, partial);
+                pipeline.animateStage(AnimationStage.LEFT_HAND);
                 renderHand(stack, HandSide.LEFT, function, buffer, packedLight);
             }
             stack.popPose();

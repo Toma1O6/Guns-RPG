@@ -1,0 +1,74 @@
+package lib.toma.animations.pipeline;
+
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.util.ResourceLocation;
+
+import java.util.IdentityHashMap;
+import java.util.Map;
+
+public final class AnimationType<A extends IAnimation> {
+
+    private static final Map<Integer, AnimationType<?>> TYPE_MAP = new IdentityHashMap<>();
+    private static int indexOffset;
+    private final ResourceLocation name;
+    private final int index;
+    private IAnimationCreator<A> creator;
+
+    public AnimationType(ResourceLocation name, IAnimationCreator<A> creator) {
+        this.name = name;
+        this.index = indexOffset++;
+        this.creator = creator;
+
+        TYPE_MAP.put(index, this);
+    }
+
+    public AnimationType(ResourceLocation name) {
+        this(name, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <A extends IAnimation> AnimationType<A> getTypeFromID(int ID) {
+        return (AnimationType<A>) TYPE_MAP.get(ID);
+    }
+
+    public void setCreator(IAnimationCreator<A> creator) {
+        this.creator = creator;
+    }
+
+    public boolean hasCreator() {
+        return creator != null;
+    }
+
+    public A create(ClientPlayerEntity client) {
+        return creator.create(client);
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public ResourceLocation getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "AnimationType{" +
+                "name=" + name +
+                ", index=" + index +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AnimationType<?> that = (AnimationType<?>) o;
+        return index == that.index;
+    }
+
+    @Override
+    public int hashCode() {
+        return index;
+    }
+}
