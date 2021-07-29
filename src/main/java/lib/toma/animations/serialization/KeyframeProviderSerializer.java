@@ -36,7 +36,7 @@ public class KeyframeProviderSerializer implements JsonSerializer<IKeyframeProvi
         if (!object.has("frames"))
             throw new JsonSyntaxException("Missing keyframe definition");
         Map<AnimationStage, IKeyframe[]> frames = deserializeFrames(object.getAsJsonObject("frames"), context);
-        IAnimationEvent[] events = object.has("events") ? deserializeEvents(object.getAsJsonArray("events"), context) : new IAnimationEvent[0];
+        IAnimationEvent[] events = object.has("events") ? deserializeEvents(object.getAsJsonArray("events"), context) : IAnimationEvent.NO_EVENTS;
         return new KeyframeProvider(frames, events);
     }
 

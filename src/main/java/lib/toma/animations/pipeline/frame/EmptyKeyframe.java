@@ -28,7 +28,7 @@ public class EmptyKeyframe implements IKeyframe {
 
     @Override
     public Vector3f scaleTarget() {
-        return AnimationUtils.DEFAULT_SCALE_VECTOR;
+        return AnimationUtils.EMPTY_SCALE_VECTOR;
     }
 
     @Override

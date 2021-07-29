@@ -69,7 +69,6 @@ public class KeyframeProvider implements IKeyframeProvider {
     private static class NoFrames implements IKeyframeProvider {
 
         private static final Map<AnimationStage, IKeyframe[]> MAP = new HashMap<>(0);
-        private static final IAnimationEvent[] EVENTS = new IAnimationEvent[0];
 
         @Override
         public Map<AnimationStage, IKeyframe[]> getFrames() {
@@ -78,7 +77,7 @@ public class KeyframeProvider implements IKeyframeProvider {
 
         @Override
         public IAnimationEvent[] animationEventsSorted() {
-            return EVENTS;
+            return IAnimationEvent.NO_EVENTS;
         }
 
         @Override

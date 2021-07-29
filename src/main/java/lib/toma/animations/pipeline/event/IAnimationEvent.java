@@ -6,6 +6,8 @@ import net.minecraft.util.ResourceLocation;
 
 public interface IAnimationEvent {
 
+    public IAnimationEvent[] NO_EVENTS = new IAnimationEvent[0];
+
     AnimationEventType<?> getType();
 
     float invokeAt();
