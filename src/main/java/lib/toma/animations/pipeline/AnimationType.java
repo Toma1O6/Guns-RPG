@@ -3,12 +3,13 @@ package lib.toma.animations.pipeline;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
 public final class AnimationType<A extends IAnimation> {
 
-    private static final Map<Integer, AnimationType<?>> TYPE_MAP = new IdentityHashMap<>();
+    private static final Map<ResourceLocation, AnimationType<?>> TYPE_MAP = new HashMap<>();
     private static int indexOffset;
     private final ResourceLocation name;
     private final int index;
@@ -19,7 +20,7 @@ public final class AnimationType<A extends IAnimation> {
         this.index = indexOffset++;
         this.creator = creator;
 
-        TYPE_MAP.put(index, this);
+        TYPE_MAP.put(name, this);
     }
 
     public AnimationType(ResourceLocation name) {
@@ -27,8 +28,8 @@ public final class AnimationType<A extends IAnimation> {
     }
 
     @SuppressWarnings("unchecked")
-    public static <A extends IAnimation> AnimationType<A> getTypeFromID(int ID) {
-        return (AnimationType<A>) TYPE_MAP.get(ID);
+    public static <A extends IAnimation> AnimationType<A> getTypeFromID(ResourceLocation key) {
+        return (AnimationType<A>) TYPE_MAP.get(key);
     }
 
     public void setCreator(IAnimationCreator<A> creator) {

@@ -1,17 +1,9 @@
 package lib.toma.animations.pipeline.frame;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
 import lib.toma.animations.AnimationUtils;
-import lib.toma.animations.serialization.IKeyframeSerializer;
-import lib.toma.animations.serialization.KeyframeSerializers;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
-
-import java.lang.reflect.Type;
 
 public class EmptyKeyframe implements IKeyframe {
 
@@ -64,23 +56,5 @@ public class EmptyKeyframe implements IKeyframe {
         pos = Keyframes.getEntryPosition(parent);
         scale = Keyframes.getEntryScale(parent);
         rot = Keyframes.getEntryRotation(parent);
-    }
-
-    @Override
-    public IKeyframeSerializer serializers() {
-        return KeyframeSerializers.EMPTY_FRAME_SERIALIZER;
-    }
-
-    public static final class EmptyKeyframeSerializer implements IKeyframeSerializer {
-
-        @Override
-        public JsonElement serialize(IKeyframe src, Type typeOfSrc, JsonSerializationContext context) {
-            return null;
-        }
-
-        @Override
-        public IKeyframe deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return null;
-        }
     }
 }

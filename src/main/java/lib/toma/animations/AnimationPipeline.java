@@ -1,5 +1,6 @@
 package lib.toma.animations;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import lib.toma.animations.pipeline.AnimationStage;
 import lib.toma.animations.pipeline.AnimationType;
 import lib.toma.animations.pipeline.IAnimation;
@@ -35,6 +36,13 @@ public final class AnimationPipeline implements IAnimationPipeline {
             return;
         }
         playingAnimations.put(Objects.requireNonNull(type), animation);
+    }
+
+    @Override
+    public <A extends IAnimation> void scheduleInsert(AnimationType<A> type, int gameTickDelay) {
+        if (!type.hasCreator())
+            AnimationCompatLayer.logger.fatal(MARKER, "Cannot create default animation from animation type ({}) with undefined AnimationCreator", type);
+        scheduleInsert(type, () -> type.create(Minecraft.getInstance().player), gameTickDelay);
     }
 
     @Override
@@ -105,8 +113,8 @@ public final class AnimationPipeline implements IAnimationPipeline {
     }
 
     @Override
-    public void animateStage(AnimationStage stage) {
-        playingAnimations.values().forEach(anim -> anim.animate(stage));
+    public void animateStage(AnimationStage stage, MatrixStack matrix) {
+        playingAnimations.values().forEach(anim -> anim.animate(stage, matrix));
     }
 
     @Override

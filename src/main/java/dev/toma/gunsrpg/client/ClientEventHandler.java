@@ -325,14 +325,14 @@ public class ClientEventHandler {
             matrix.pushPose();
             {
                 client.setDualWieldRender(false);
-                pipeline.animateStage(AnimationStage.ITEM_AND_HANDS);
+                pipeline.animateStage(AnimationStage.ITEM_AND_HANDS, matrix);
                 matrix.pushPose();
                 {
-                    pipeline.animateStage(AnimationStage.HANDS);
+                    pipeline.animateStage(AnimationStage.HANDS, matrix);
                     renderAnimatedItemFP(matrix, buffer, packedLight, equip, configSelector, pipeline);
                 }
                 matrix.popPose();
-                pipeline.animateStage(AnimationStage.HELD_ITEM);
+                pipeline.animateStage(AnimationStage.HELD_ITEM, matrix);
                 if (!pipeline.isItemRenderBlocked())
                     renderItem(fpRenderer, player, stack, transformType, !mainHand, matrix, buffer, packedLight, swing, equip);
             }
@@ -342,14 +342,14 @@ public class ClientEventHandler {
                 matrix.pushPose();
                 {
                     client.setDualWieldRender(true);
-                    pipeline.animateStage(AnimationStage.ITEM_AND_HANDS);
+                    pipeline.animateStage(AnimationStage.ITEM_AND_HANDS, matrix);
                     matrix.pushPose();
                     {
-                        pipeline.animateStage(AnimationStage.HANDS);
+                        pipeline.animateStage(AnimationStage.HANDS, matrix);
                         renderAnimatedItemFP(matrix, buffer, packedLight, equip, configSelector, pipeline);
                     }
                     matrix.popPose();
-                    pipeline.animateStage(AnimationStage.HELD_ITEM);
+                    pipeline.animateStage(AnimationStage.HELD_ITEM, matrix);
                     renderItem(fpRenderer, player, stack, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, true, matrix, buffer, packedLight, swing, equip);
                 }
                 matrix.popPose();
@@ -432,13 +432,13 @@ public class ClientEventHandler {
             stack.translate(0, yOff, 0);
             stack.pushPose();
             {
-                pipeline.animateStage(AnimationStage.RIGHT_HAND);
+                pipeline.animateStage(AnimationStage.RIGHT_HAND, stack);
                 renderHand(stack, HandSide.RIGHT, function, buffer, packedLight);
             }
             stack.popPose();
             stack.pushPose();
             {
-                pipeline.animateStage(AnimationStage.LEFT_HAND);
+                pipeline.animateStage(AnimationStage.LEFT_HAND, stack);
                 renderHand(stack, HandSide.LEFT, function, buffer, packedLight);
             }
             stack.popPose();

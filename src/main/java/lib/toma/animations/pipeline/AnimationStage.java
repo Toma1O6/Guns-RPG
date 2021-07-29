@@ -1,5 +1,9 @@
 package lib.toma.animations.pipeline;
 
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -13,23 +17,30 @@ public final class AnimationStage {
     public static final AnimationStage HANDS = vanilla("hands");
     public static final AnimationStage HELD_ITEM = vanilla("item.heldfp");
 
-    private static final Map<Integer, AnimationStage> ID_STAGE_MAP = new IdentityHashMap<>();
+    private static final Map<ResourceLocation, AnimationStage> ID_STAGE_MAP = new IdentityHashMap<>();
     private static final Set<AnimationStage> VANILLA_TYPES = new HashSet<>();
     private static int indexOffset;
 
     private final int index;
-    private final String name;
+    private final ResourceLocation key;
+    private final ITextComponent name;
 
-    public AnimationStage(String name) {
+    public AnimationStage(ResourceLocation key) {
         this.index = indexOffset++;
-        this.name = name;
+        this.key = key;
+        this.name = new TranslationTextComponent("animation.stage." + key.toString());
+        ID_STAGE_MAP.put(key, this);
     }
 
     public int getIndex() {
         return index;
     }
 
-    public String getName() {
+    public ResourceLocation getKey() {
+        return key;
+    }
+
+    public ITextComponent getName() {
         return name;
     }
 
@@ -58,8 +69,12 @@ public final class AnimationStage {
                 '}';
     }
 
+    public static AnimationStage byKey(ResourceLocation key) {
+        return ID_STAGE_MAP.get(key);
+    }
+
     private static AnimationStage vanilla(String name) {
-        AnimationStage stage = new AnimationStage(name);
+        AnimationStage stage = new AnimationStage(new ResourceLocation(name));
         VANILLA_TYPES.add(stage);
         return stage;
     }

@@ -1,6 +1,5 @@
 package lib.toma.animations.pipeline.frame;
 
-import lib.toma.animations.serialization.IKeyframeSerializer;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
@@ -22,6 +21,4 @@ public interface IKeyframe {
     Quaternion initialRotation();
 
     void baseOn(IKeyframe parent);
-
-    IKeyframeSerializer serializers();
 }

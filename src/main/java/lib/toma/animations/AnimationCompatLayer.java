@@ -1,6 +1,7 @@
 package lib.toma.animations;
 
 import lib.toma.animations.pipeline.IAnimationPipeline;
+import lib.toma.animations.serialization.AnimationLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.event.InputEvent;
@@ -16,6 +17,7 @@ public final class AnimationCompatLayer {
     final HandRenderAPI handRenderAPI;
     final UtilScreenFactory screenFactory;
     final AnimationPipeline pipeline;
+    final AnimationLoader loader;
     public static final Logger logger = LogManager.getLogger("AnimationLib");
 
     private KeyBinding handConfigs;
@@ -24,6 +26,7 @@ public final class AnimationCompatLayer {
         handRenderAPI = new HandRenderAPI();
         screenFactory = new UtilScreenFactory();
         pipeline = new AnimationPipeline();
+        loader = new AnimationLoader();
     }
 
     public void setup() {
@@ -33,6 +36,10 @@ public final class AnimationCompatLayer {
         MinecraftForge.EVENT_BUS.addListener(this::handleKeys);
         logger.info("Key listener registered");
         logger.info("Animation lib - READY");
+    }
+
+    public AnimationLoader loader() {
+        return loader;
     }
 
     public IHandRenderAPI getHandRenderAPI() {

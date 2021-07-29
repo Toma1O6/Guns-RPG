@@ -1,5 +1,6 @@
 package lib.toma.animations.pipeline.frame;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import lib.toma.animations.AnimationUtils;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
@@ -29,12 +30,30 @@ public class Keyframes {
         return new Quaternion(total, newRot, true);
     }
 
-    public static Quaternion mul(Quaternion target, float value) {
-        float i = target.i();
-        float j = target.j();
-        float k = target.k();
-        float r = target.r();
-        return new Quaternion(i * value, j * value, k * value, r * value);
+    public static void processFrame(IKeyframe keyframe, float percent, MatrixStack matrixStack) {
+        Vector3d move1 = keyframe.initialPosition();
+        Vector3d move2 = keyframe.positionTarget();
+        Vector3f scale1 = keyframe.initialScale();
+        Vector3f scale2 = keyframe.scaleTarget();
+        Quaternion rot1 = keyframe.initialRotation();
+        Quaternion rot2 = keyframe.rotationTarget();
+        matrixStack.translate(move1.x + move2.x * percent, move1.y + move2.y * percent, move1.z + move2.z * percent);
+        matrixStack.scale(scale1.x() + scale2.x() * percent, scale1.y() + scale2.y() * percent, scale1.z() + scale2.z() * percent);
+        matrixStack.mulPose(mul(rot1, rot2, percent));
+    }
+
+    protected static Quaternion mul(Quaternion q1, Quaternion q2, float f) {
+        Pair<Float, Vector3f> p1 = AnimationUtils.getVectorWithRotation(q1);
+        Pair<Float, Vector3f> p2 = AnimationUtils.getVectorWithRotation(q2);
+        float d1 = p1.getLeft();
+        float d2 = p2.getLeft();
+        Vector3f v1 = p1.getRight();
+        Vector3f v2 = p2.getRight();
+        float x = v2.x() * f;
+        float y = v2.y() * f;
+        float z = v2.z() * f;
+        Vector3f v3 = new Vector3f(v1.x() + x, v1.y() + y, v1.z() + z);
+        return new Quaternion(v3, d1 + d2 * f, true);
     }
 
     public static IKeyframe none() {

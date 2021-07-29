@@ -1,8 +1,10 @@
 package lib.toma.animations.pipeline;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 public interface IAnimation {
 
-    void animate(AnimationStage stage);
+    void animate(AnimationStage stage, MatrixStack matrixStack);
 
     void gameTick();
 

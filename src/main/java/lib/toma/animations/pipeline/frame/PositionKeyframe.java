@@ -1,7 +1,6 @@
 package lib.toma.animations.pipeline.frame;
 
 import lib.toma.animations.AnimationUtils;
-import lib.toma.animations.serialization.IKeyframeSerializer;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
@@ -61,10 +60,5 @@ public class PositionKeyframe implements IKeyframe {
         this.staticPos = Keyframes.getEntryPosition(parent);
         this.staticScale = Keyframes.getEntryScale(parent);
         this.staticRotation = Keyframes.getEntryRotation(parent);
-    }
-
-    @Override
-    public IKeyframeSerializer serializers() {
-        return null;
     }
 }

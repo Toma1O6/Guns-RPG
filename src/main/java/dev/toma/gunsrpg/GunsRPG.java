@@ -62,10 +62,7 @@ public class GunsRPG {
 
     private void clientSetup(FMLClientSetupEvent event) {
         ClientSideManager.instance().clientSetup(event);
-        if (ModConfig.clientConfig.developerMode.get()) {
-            AnimationCompatLayer compatLayer = AnimationCompatLayer.instance();
-            compatLayer.setup();
-        }
+        AnimationCompatLayer.instance().loader().init(ModConfig.clientConfig.developerMode.get());
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
