@@ -1,59 +1,66 @@
 package lib.toma.animations.pipeline.frame;
 
+import com.google.gson.*;
 import lib.toma.animations.AnimationCompatLayer;
+import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.pipeline.AnimationStage;
-import lib.toma.animations.pipeline.IKeyframeProvider;
 import lib.toma.animations.pipeline.event.IAnimationEvent;
 import lib.toma.animations.serialization.AnimationLoader;
+import lib.toma.animations.serialization.IKeyframeTypeSerializer;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class KeyframeProvider implements IKeyframeProvider {
 
-    public static final IKeyframeProvider NO_FRAMES = new NoFrames();
     private final Map<AnimationStage, IKeyframe[]> frames;
     private final IAnimationEvent[] events;
-    private final Supplier<byte[]> cacheCreator;
+    private final int maxStageIndex;
 
     public KeyframeProvider(Map<AnimationStage, IKeyframe[]> frames, IAnimationEvent[] events) {
         this.frames = frames;
         this.events = events;
-        this.cacheCreator = this::createCache;
+        this.maxStageIndex = AnimationUtils.getBiggestFromMap(frames, Map::keySet, AnimationStage::getIndex);
         compileFrames();
     }
 
     public static IKeyframeProvider noFrames(ResourceLocation location) {
         AnimationCompatLayer.logger.error(AnimationLoader.MARKER, "Missing animation definition for {} key, falling back to default implementation", location);
-        return NO_FRAMES;
+        return NoFramesProvider.empty();
     }
 
     @Override
-    public Map<AnimationStage, IKeyframe[]> getFrames() {
-        return frames;
+    public boolean shouldAdvance(AnimationStage stage, float progress, byte frameIndex) {
+        IKeyframe[] keyframes = frames.get(stage);
+        if (keyframes == null || frameIndex >= keyframes.length - 1) return false;
+        IKeyframe frame = keyframes[frameIndex];
+        return frame.endpoint() <= progress;
     }
 
     @Override
-    public IAnimationEvent[] animationEventsSorted() {
+    public IKeyframe getCurrentFrame(AnimationStage stage, float progress, byte frameIndex) {
+        return frames.get(stage)[frameIndex];
+    }
+
+    @Override
+    public IKeyframe getOldFrame(AnimationStage stage, byte frameIndex) {
+        return frameIndex == 0 ? Keyframes.none() : frames.get(stage)[frameIndex - 1];
+    }
+
+    @Override
+    public IAnimationEvent[] getEvents() {
         return events;
     }
 
     @Override
-    public byte[] getCacheStorage() {
-        return cacheCreator.get();
+    public int getCacheSize() {
+        return maxStageIndex;
     }
 
-    private byte[] createCache() {
-        int maxindex = 0;
-        for (AnimationStage stage : frames.keySet()) {
-            int index = stage.getIndex();
-            if (index > maxindex) {
-                maxindex = index;
-            }
-        }
-        return new byte[maxindex];
+    @Override
+    public FrameProviderType<?> getType() {
+        return FrameProviderType.KEYFRAME_PROVIDER_TYPE;
     }
 
     private void compileFrames() {
@@ -66,23 +73,41 @@ public class KeyframeProvider implements IKeyframeProvider {
         }
     }
 
-    private static class NoFrames implements IKeyframeProvider {
-
-        private static final Map<AnimationStage, IKeyframe[]> MAP = new HashMap<>(0);
+    public static class Serializer implements IKeyframeTypeSerializer<KeyframeProvider> {
 
         @Override
-        public Map<AnimationStage, IKeyframe[]> getFrames() {
-            return MAP;
+        public void serialize(JsonObject data, KeyframeProvider provider, JsonSerializationContext context) {
+            Map<AnimationStage, IKeyframe[]> frames = provider.frames;
+            for (Map.Entry<AnimationStage, IKeyframe[]> entry : frames.entrySet()) {
+                String key = entry.getKey().toString();
+                JsonArray array = new JsonArray();
+                for (IKeyframe frame : entry.getValue()) {
+                    array.add(context.serialize(frame, IKeyframe.class));
+                }
+                data.add(key, array);
+            }
         }
 
         @Override
-        public IAnimationEvent[] animationEventsSorted() {
-            return IAnimationEvent.NO_EVENTS;
-        }
-
-        @Override
-        public byte[] getCacheStorage() {
-            return new byte[0];
+        public KeyframeProvider deserialize(JsonObject source, JsonDeserializationContext context, IAnimationEvent[] events) throws JsonParseException {
+            Map<AnimationStage, IKeyframe[]> map = new HashMap<>();
+            for (Map.Entry<String, JsonElement> entry : source.entrySet()) {
+                ResourceLocation key = new ResourceLocation(entry.getKey());
+                AnimationStage stage = AnimationStage.byKey(key);
+                if (stage == null)
+                    throw new JsonSyntaxException("Unknown animation stage: " + key);
+                JsonElement element = entry.getValue();
+                if (!element.isJsonArray())
+                    throw new JsonSyntaxException("Not a Json array!");
+                JsonArray array = element.getAsJsonArray();
+                IKeyframe[] keyframes = new IKeyframe[array.size()];
+                for (int i = 0; i < array.size(); i++) {
+                    IKeyframe iKeyframe = context.deserialize(array.get(i), IKeyframe.class);
+                    keyframes[i] = iKeyframe;
+                }
+                map.put(stage, keyframes);
+            }
+            return new KeyframeProvider(map, events);
         }
     }
 }

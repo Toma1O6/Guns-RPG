@@ -4,6 +4,12 @@ import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.ToIntFunction;
+
 public class AnimationUtils {
 
     public static final Vector3f EMPTY_SCALE_VECTOR = new Vector3f();
@@ -34,5 +40,21 @@ public class AnimationUtils {
         double value = Math.acos(quaternion.r());
         double deg = Math.toDegrees(value * 2f);
         return (float) deg;
+    }
+
+    public static <K, V> V safeRet(Map<K, V> map, K key, V fallback) {
+        V v = map.get(key);
+        return v != null ? v : Objects.requireNonNull(fallback, "Fallback value cannot be null");
+    }
+
+    public static <K, V, E> int getBiggestFromMap(Map<K, V> map, Function<Map<K, V>, Collection<E>> collectionExtractor, ToIntFunction<E> function) {
+        int max = 0;
+        Collection<E> collection = collectionExtractor.apply(map);
+        for (E element : collection) {
+            int value = function.applyAsInt(element);
+            if (value > max)
+                max = value;
+        }
+        return max;
     }
 }

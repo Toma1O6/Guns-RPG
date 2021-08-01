@@ -61,12 +61,12 @@ public final class AnimationStage {
         return index;
     }
 
+    /**
+     * @return String version of {@link ResourceLocation} which is used for map lookups
+     */
     @Override
     public String toString() {
-        return "AnimationStage{" +
-                "index=" + index +
-                ", name='" + name + '\'' +
-                '}';
+        return key.toString();
     }
 
     public static AnimationStage byKey(ResourceLocation key) {
