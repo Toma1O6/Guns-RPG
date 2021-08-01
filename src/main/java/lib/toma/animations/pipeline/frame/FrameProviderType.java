@@ -2,7 +2,6 @@ package lib.toma.animations.pipeline.frame;
 
 import lib.toma.animations.serialization.IKeyframeTypeSerializer;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 

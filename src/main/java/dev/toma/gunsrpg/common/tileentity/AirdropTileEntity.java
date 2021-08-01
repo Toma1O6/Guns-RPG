@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.tileentity;
 
-import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.ModBlockEntities;
+import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.util.math.WeightedRandom;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;

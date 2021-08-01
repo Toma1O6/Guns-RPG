@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.ai;
 
 import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.TargetGoal;

@@ -1,9 +1,7 @@
 package dev.toma.gunsrpg.common.debuffs;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
-import dev.toma.gunsrpg.common.init.Debuffs;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.PlayerEntity;

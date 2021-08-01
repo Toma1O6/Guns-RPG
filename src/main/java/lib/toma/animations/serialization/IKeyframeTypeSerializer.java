@@ -1,6 +1,9 @@
 package lib.toma.animations.serialization;
 
-import com.google.gson.*;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
 import lib.toma.animations.pipeline.event.IAnimationEvent;
 import lib.toma.animations.pipeline.frame.IKeyframeProvider;
 

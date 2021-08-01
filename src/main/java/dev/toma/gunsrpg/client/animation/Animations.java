@@ -3,8 +3,6 @@ package dev.toma.gunsrpg.client.animation;
 import dev.toma.gunsrpg.client.animation.impl.SimpleAnimation;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.sided.ClientSideManager;
-import net.minecraft.util.ScreenShotHelper;
-import net.minecraft.util.math.vector.Vector3f;
 
 import static net.minecraft.util.math.vector.Vector3f.*;
 

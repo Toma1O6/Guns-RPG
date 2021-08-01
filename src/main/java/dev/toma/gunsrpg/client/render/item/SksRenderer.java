@@ -2,11 +2,10 @@ package dev.toma.gunsrpg.client.render.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.model.SksModel;
 import dev.toma.gunsrpg.client.model.AbstractWeaponModel;
+import dev.toma.gunsrpg.client.model.SksModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
 
 public class SksRenderer extends AbstractWeaponRenderer {
 

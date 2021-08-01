@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.client.render;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.entity.GoldDragonEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EnderCrystalRenderer;
