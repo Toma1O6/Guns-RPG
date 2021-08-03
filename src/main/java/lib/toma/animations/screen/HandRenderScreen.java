@@ -1,8 +1,10 @@
-package lib.toma.animations;
+package lib.toma.animations.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import lib.toma.animations.AnimationUtils;
+import lib.toma.animations.RenderConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
@@ -17,6 +19,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Locale;
@@ -42,7 +45,7 @@ public class HandRenderScreen extends Screen {
     private TextFieldWidget rotationZ;
 
     public HandRenderScreen(RenderConfig.Mutable left, RenderConfig.Mutable right, IChangeCallback callback, boolean isEnabled) {
-        super(new StringTextComponent("screen.dev_tool.hand_config"));
+        super(new TranslationTextComponent("screen.dev_tool.hand_config"));
         this.leftHand = left;
         this.rightHand = right;
         this.callback = callback;
@@ -155,8 +158,8 @@ public class HandRenderScreen extends Screen {
         try {
             val = Double.parseDouble(value);
             widget.setTextColor(0xE0E0E0);
-            Vector3d old = cfg.pos;
-            cfg.pos = function.getPos(val, old);
+            Vector3d old = cfg.getPosition();
+            cfg.setPosition(function.getPos(val, old));
         } catch (NumberFormatException nfe) {
             widget.setTextColor(0xE0 << 16);
         }
@@ -168,7 +171,7 @@ public class HandRenderScreen extends Screen {
         try {
             f = Float.parseFloat(value);
             widget.setTextColor(0xE0E0E0);
-            setter.accept(cfg.scale, f);
+            setter.accept(cfg.getScale(), f);
         } catch (NumberFormatException nfe) {
             widget.setTextColor(0xE0 << 16);
         }
@@ -213,9 +216,9 @@ public class HandRenderScreen extends Screen {
     }
 
     private String getConfigDef(RenderConfig.Mutable cfg) {
-        Vector3d position = cfg.pos;
-        Vector3f scale = cfg.scale;
-        Quaternion rotation = cfg.rotation;
+        Vector3d position = cfg.getPosition();
+        Vector3f scale = cfg.getScale();
+        Quaternion rotation = cfg.getRotation();
         if (scale.equals(new Vector3f(1.0F, 1.0F, 1.0F)) && rotation.equals(Quaternion.ONE)) {
             // only position
             return String.format(Locale.ROOT, "new PositionConfig(new Vector3d(%.3f, %.3f, %.3f));", position.x, position.y, position.z);
@@ -233,13 +236,15 @@ public class HandRenderScreen extends Screen {
 
     private void selector_OnChange(HandSide current, HandSide old) {
         RenderConfig.Mutable config = current == HandSide.RIGHT ? rightHand : leftHand;
-        posX.setValue(String.valueOf(config.pos.x));
-        posY.setValue(String.valueOf(config.pos.y));
-        posZ.setValue(String.valueOf(config.pos.z));
-        scaleX.setValue(String.valueOf(config.scale.x()));
-        scaleY.setValue(String.valueOf(config.scale.y()));
-        scaleZ.setValue(String.valueOf(config.scale.z()));
-        Quaternion rotation = config.rotation;
+        Vector3d pos = config.getPosition();
+        Vector3f scale = config.getScale();
+        posX.setValue(String.valueOf(pos.x));
+        posY.setValue(String.valueOf(pos.y));
+        posZ.setValue(String.valueOf(pos.z));
+        scaleX.setValue(String.valueOf(scale.x()));
+        scaleY.setValue(String.valueOf(scale.y()));
+        scaleZ.setValue(String.valueOf(scale.z()));
+        Quaternion rotation = config.getRotation();
         Pair<Float, Vector3f> transformed = AnimationUtils.getVectorWithRotation(rotation);
         float f = transformed.getLeft();
         Vector3f vec = transformed.getRight();

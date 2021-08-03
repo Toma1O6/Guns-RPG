@@ -489,5 +489,15 @@
     "skill.pharmacist_iv": "Pharmacist IV",
     "pharmacist_iv.description.line_1": "Unlocks crafting of Painkillers",
     "skill.pharmacist_v": "Pharmacist V",
-    "pharmacist_v.description.line_1": "Unlocks crafting of Morphine"
+    "pharmacist_v.description.line_1": "Unlocks crafting of Morphine",
+
+    "screen.animator.new_project": "New Project",
+    "screen.animator.open": "Open Project",
+    "screen.animator.save": "Save",
+    "screen.animator.save_as": "Save As",
+    "screen.animator.settings": "Settings",
+    "screen.animator.paused": "Pause",
+
+    "screen.animator.dialog.new_project": "Create new project",
+    "screen.animator.dialog.settings": "Project settings"
 }

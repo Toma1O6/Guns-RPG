@@ -1,9 +1,11 @@
 package lib.toma.animations.serialization;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.stream.JsonReader;
 import lib.toma.animations.AnimationCompatLayer;
 import lib.toma.animations.pipeline.frame.IKeyframe;
 import lib.toma.animations.pipeline.frame.IKeyframeProvider;
@@ -21,7 +23,9 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -30,6 +34,8 @@ public final class AnimationLoader extends JsonReloadListener {
     public static final Marker MARKER = MarkerManager.getMarker("Loader");
     private Gson gson;
     private final Map<ResourceLocation, IKeyframeProvider> animationDefinitions = new HashMap<>();
+    private final List<ILoadingFinished> loadListeners = new ArrayList<>();
+    private ILoader loader;
 
     public AnimationLoader() {
         super(new GsonBuilder().disableHtmlEscaping().create(), "animations");
@@ -50,6 +56,7 @@ public final class AnimationLoader extends JsonReloadListener {
                 .registerTypeAdapter(Quaternion.class, new QuaternionSerializer());
         callback.accept(builder);
         gson = builder.create();
+        loader = reader -> gson.fromJson(reader, IKeyframeProvider.class);
         if (devMode) {
             AnimationCompatLayer.instance().setup();
         }
@@ -58,6 +65,14 @@ public final class AnimationLoader extends JsonReloadListener {
 
     public IKeyframeProvider getProvider(ResourceLocation key) {
         return animationDefinitions.computeIfAbsent(key, KeyframeProvider::noFrames);
+    }
+
+    public void addListener(ILoadingFinished loadingFinishedListener) {
+        this.loadListeners.add(loadingFinishedListener);
+    }
+
+    public String serializeToString(IKeyframeProvider provider) {
+        return gson.toJson(provider, IKeyframeProvider.class).replaceAll("\\s+", "");
     }
 
     @Override
@@ -78,7 +93,26 @@ public final class AnimationLoader extends JsonReloadListener {
                 log.fatal(MARKER, "Exception ocurred while parsing animation file {}: {}", key, e.toString());
             }
         }
+        notifyListeners(log);
         log.info(MARKER, "Animations loaded");
         profiler.pop();
+    }
+
+    private void notifyListeners(Logger log) {
+        int len = loadListeners.size();
+        if (len == 0) return;
+        log.debug(MARKER, "Sending load notification to {} listeners", loadListeners.size());
+        ImmutableMap<ResourceLocation, IKeyframeProvider> map = ImmutableMap.copyOf(animationDefinitions);
+        loadListeners.forEach(listener -> listener.onLoaded(map, loader));
+        log.debug(MARKER, "All listeners have been notified");
+    }
+
+    @FunctionalInterface
+    public interface ILoadingFinished {
+        void onLoaded(Map<ResourceLocation, IKeyframeProvider> providerMap, ILoader loader);
+    }
+
+    public interface ILoader {
+        IKeyframeProvider load(JsonReader reader);
     }
 }

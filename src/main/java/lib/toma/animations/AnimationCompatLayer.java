@@ -1,6 +1,9 @@
 package lib.toma.animations;
 
 import lib.toma.animations.pipeline.IAnimationPipeline;
+import lib.toma.animations.screen.HandRenderScreen;
+import lib.toma.animations.screen.animator.Animator;
+import lib.toma.animations.screen.animator.AnimatorScreen;
 import lib.toma.animations.serialization.AnimationLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -14,6 +17,7 @@ import org.lwjgl.glfw.GLFW;
 public final class AnimationCompatLayer {
 
     public int handConfigKey = GLFW.GLFW_KEY_KP_9;
+    public int animatorKey = GLFW.GLFW_KEY_KP_8;
     final HandRenderAPI handRenderAPI;
     final UtilScreenFactory screenFactory;
     final AnimationPipeline pipeline;
@@ -21,6 +25,7 @@ public final class AnimationCompatLayer {
     public static final Logger logger = LogManager.getLogger("AnimationLib");
 
     private KeyBinding handConfigs;
+    private KeyBinding animator;
 
     private AnimationCompatLayer() {
         handRenderAPI = new HandRenderAPI();
@@ -32,9 +37,12 @@ public final class AnimationCompatLayer {
     public void setup() {
         logger.info("Setting up animation lib [developer mode]");
         handConfigs = registerKey("tools.animation.handConfig", handConfigKey);
-        logger.info("Key binds registered: {} - handConfigs", handConfigs.getKey().getName());
+        animator = registerKey("tools.animation.animator", animatorKey);
+        logger.info("Key binds registered: {} - handConfigs, {} - animator", handConfigs.getKey().getName(), animator.getKey().getName());
         MinecraftForge.EVENT_BUS.addListener(this::handleKeys);
         logger.info("Key listener registered");
+        Animator animator = Animator.get();
+        loader().addListener(animator::onAnimationsLoaded);
         logger.info("Animation lib - READY");
     }
 
@@ -61,8 +69,12 @@ public final class AnimationCompatLayer {
     }
 
     private void handleKeys(InputEvent.KeyInputEvent event) {
+        IUtilScreenFactory factory = getScreenFactory();
+        Minecraft mc = Minecraft.getInstance();
         if (handConfigs.isDown()) {
-            Minecraft.getInstance().setScreen(screenFactory.getHandConfigScreen());
+            mc.setScreen(factory.getHandConfigScreen());
+        } else if (animator.isDown()) {
+            mc.setScreen(factory.getAnimatorScreen());
         }
     }
 
@@ -100,6 +112,11 @@ public final class AnimationCompatLayer {
         public HandRenderScreen getHandConfigScreen() {
             HandRenderAPI api = AnimationCompatLayer.this.handRenderAPI;
             return new HandRenderScreen(api.left, api.right, active -> api.dev = active, api.isDevMode());
+        }
+
+        @Override
+        public AnimatorScreen getAnimatorScreen() {
+            return new AnimatorScreen();
         }
     }
 }

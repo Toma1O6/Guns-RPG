@@ -47,6 +47,18 @@ public class RenderConfig extends PositionConfig {
             super(position, scale, rotation);
         }
 
+        public Vector3d getPosition() {
+            return pos;
+        }
+
+        public Vector3f getScale() {
+            return scale;
+        }
+
+        public Quaternion getRotation() {
+            return rotation;
+        }
+
         public void setPosition(Vector3d position) {
             this.pos = position;
         }
