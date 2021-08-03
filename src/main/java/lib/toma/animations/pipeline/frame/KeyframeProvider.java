@@ -1,5 +1,6 @@
 package lib.toma.animations.pipeline.frame;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.*;
 import lib.toma.animations.AnimationCompatLayer;
 import lib.toma.animations.AnimationUtils;
@@ -12,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KeyframeProvider implements IKeyframeProvider {
+public class KeyframeProvider implements IKeyframeProvider, ILoadableProvider {
 
     private final Map<AnimationStage, IKeyframe[]> frames;
     private final IAnimationEvent[] events;
@@ -61,6 +62,11 @@ public class KeyframeProvider implements IKeyframeProvider {
     @Override
     public FrameProviderType<?> getType() {
         return FrameProviderType.KEYFRAME_PROVIDER_TYPE;
+    }
+
+    @Override
+    public Map<AnimationStage, IKeyframe[]> getFramesForAnimator() {
+        return new HashMap<>(frames);
     }
 
     private void compileFrames() {
