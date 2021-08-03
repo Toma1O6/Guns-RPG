@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class SingleFrameProvider implements IKeyframeProvider, ILoadableProvider {
+public class SingleFrameProvider implements IKeyframeProvider, ICustomizableProvider {
 
     private final Map<AnimationStage, IKeyframe> frames;
     private final int cacheSize;
@@ -74,6 +74,16 @@ public class SingleFrameProvider implements IKeyframeProvider, ILoadableProvider
         Map<AnimationStage, IKeyframe[]> map = new HashMap<>();
         frames.forEach((stage, frame) -> map.put(stage, new IKeyframe[]{frame}));
         return map;
+    }
+
+    @Override
+    public void insertKeyframe(AnimationStage stage, IKeyframe iKeyframe) {
+        frames.put(stage, iKeyframe);
+    }
+
+    @Override
+    public void deleteKeyframe(AnimationStage stage, IKeyframe iKeyframe) {
+        frames.remove(stage);
     }
 
     @FunctionalInterface

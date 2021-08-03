@@ -2,14 +2,21 @@ package lib.toma.animations.pipeline.frame;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lib.toma.animations.AnimationUtils;
+import lib.toma.animations.QuickSort;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.Comparator;
+
 public class Keyframes {
 
     private static final IKeyframe NULL_FRAME = new EmptyKeyframe(0.0F);
+
+    public static void sortFrames(IKeyframe[] array) {
+        QuickSort.sort(array, Comparator.comparingDouble(IKeyframe::endpoint));
+    }
 
     public static Vector3d getEntryPosition(IKeyframe parent) {
         return parent.initialPosition().add(parent.positionTarget());
