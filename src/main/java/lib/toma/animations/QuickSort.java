@@ -21,7 +21,7 @@ public class QuickSort {
         int i = (min - 1);
         for (int j = min; j < max; j++) {
             T t = array[j];
-            if (comparator.compare(p, t) < 0) {
+            if (comparator.compare(t, p) < 0) {
                 ++i;
                 T temp = array[i];
                 array[i] = array[j];
