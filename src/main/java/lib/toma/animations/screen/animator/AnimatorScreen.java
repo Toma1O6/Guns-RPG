@@ -42,9 +42,8 @@ public class AnimatorScreen extends Screen {
     private static final ITextComponent SET2BEGINNING = new TranslationTextComponent("screen.animator.timeline.to_beginning");
     private static final ITextComponent SET2END = new TranslationTextComponent("screen.animator.timeline.to_end");
     private static final ITextComponent NEXT_FRAME = new TranslationTextComponent("screen.animator.timeline.next_frame");
-    // TODO remove non-api references
-    private static final ResourceLocation ANIMATOR_ICONS = GunsRPG.makeResource("textures/icons/animator/animator_icons.png");
-    private static final ResourceLocation TIMELINE_ICONS = GunsRPG.makeResource("textures/icons/animator/timeline_icons.png");
+    private static final ResourceLocation ANIMATOR_ICONS = new ResourceLocation("textures/icons/animator/animator_icons.png");
+    private static final ResourceLocation TIMELINE_ICONS = new ResourceLocation("textures/icons/animator/timeline_icons.png");
 
     private final Pattern posScaleDeg = Pattern.compile("-?[0-9]+(\\.[0-9]*)?");
     private final Pattern rotVec = Pattern.compile("-?(1(\\.0)?)|(0(\\.[0-9]+)?)");
