@@ -8,12 +8,12 @@ public final class FrameProviderWrapper {
 
     private final String name;
     private final File directory;
-    private final IKeyframeProvider provider;
+    private final AnimatorFrameProvider provider;
 
     private FrameProviderWrapper(String name, File directory, IKeyframeProvider provider) {
         this.name = name;
         this.directory = directory;
-        this.provider = provider;
+        this.provider = new AnimatorFrameProvider(provider);
     }
 
     public static FrameProviderWrapper modded(String name, IKeyframeProvider provider) {
@@ -32,7 +32,11 @@ public final class FrameProviderWrapper {
         return directory;
     }
 
-    public IKeyframeProvider getProvider() {
+    public AnimatorFrameProvider getProvider() {
         return provider;
+    }
+
+    public boolean hasEventSupport() {
+        return provider.canAddEvents();
     }
 }

@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class SingleFrameProvider implements IKeyframeProvider, ICustomizableProvider {
+public class SingleFrameProvider implements IKeyframeProvider {
 
     private final Map<AnimationStage, IKeyframe> frames;
     private final int cacheSize;
@@ -31,12 +31,19 @@ public class SingleFrameProvider implements IKeyframeProvider, ICustomizableProv
      * @param frames Loaded frames
      * @throws JsonParseException Thrown when frame map is empty
      */
-    SingleFrameProvider(Map<AnimationStage, IKeyframe> frames) throws JsonParseException {
-        if (frames.isEmpty()) {
-            throw new JsonSyntaxException("Single frame provider must contain atleast one keyframe");
-        }
+    private SingleFrameProvider(Map<AnimationStage, IKeyframe> frames) {
         this.frames = frames;
         this.cacheSize = AnimationUtils.getBiggestFromMap(frames, Map::keySet, AnimationStage::getIndex);
+    }
+
+    public static SingleFrameProvider fromExistingMap(Map<AnimationStage, IKeyframe> frames) {
+        return new SingleFrameProvider(frames);
+    }
+
+    static SingleFrameProvider jsonLoaded(Map<AnimationStage, IKeyframe> frames) throws JsonParseException {
+        if (frames.isEmpty())
+            throw new JsonSyntaxException("Single frame provider must contain atleast one keyframe");
+        return new SingleFrameProvider(frames);
     }
 
     @Override
@@ -70,20 +77,10 @@ public class SingleFrameProvider implements IKeyframeProvider, ICustomizableProv
     }
 
     @Override
-    public Map<AnimationStage, IKeyframe[]> getFramesForAnimator() {
-        Map<AnimationStage, IKeyframe[]> map = new HashMap<>();
-        frames.forEach((stage, frame) -> map.put(stage, new IKeyframe[]{frame}));
+    public Map<AnimationStage, IKeyframe[]> getFrameMap() {
+        Map<AnimationStage, IKeyframe[]> map = AnimationUtils.createSortedMap();
+        frames.forEach((k, v) -> map.put(k, new IKeyframe[] {v}));
         return map;
-    }
-
-    @Override
-    public void insertKeyframe(AnimationStage stage, IKeyframe iKeyframe) {
-        frames.put(stage, iKeyframe);
-    }
-
-    @Override
-    public void deleteKeyframe(AnimationStage stage, IKeyframe iKeyframe) {
-        frames.remove(stage);
     }
 
     @FunctionalInterface
@@ -130,7 +127,7 @@ public class SingleFrameProvider implements IKeyframeProvider, ICustomizableProv
                 IKeyframe frame = context.deserialize(element, IKeyframe.class);
                 map.put(stage, Objects.requireNonNull(frame));
             }
-            return new SingleFrameProvider(map);
+            return SingleFrameProvider.jsonLoaded(map);
         }
     }
 }

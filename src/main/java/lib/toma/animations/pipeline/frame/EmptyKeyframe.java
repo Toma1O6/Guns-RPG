@@ -53,8 +53,8 @@ public class EmptyKeyframe implements IKeyframe {
 
     @Override
     public void baseOn(IKeyframe parent) {
-        pos = Keyframes.getEntryPosition(parent);
-        scale = Keyframes.getEntryScale(parent);
-        rot = Keyframes.getEntryRotation(parent);
+        pos = Keyframes.getInitialPosition(parent);
+        scale = Keyframes.getInitialScale(parent);
+        rot = Keyframes.getInitialRotation(parent);
     }
 }

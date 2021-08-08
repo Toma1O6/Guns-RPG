@@ -1,29 +1,33 @@
 package lib.toma.animations.screen.animator;
 
-import lib.toma.animations.AnimationCompatLayer;
+import lib.toma.animations.AnimationEngine;
+import lib.toma.animations.pipeline.event.IAnimationEvent;
 import lib.toma.animations.pipeline.frame.IKeyframeProvider;
-import lib.toma.animations.pipeline.frame.NoFramesProvider;
+import lib.toma.animations.pipeline.frame.KeyframeProvider;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class AnimationProject {
 
     private final AnimationController controller = new AnimationController();
     private final String name;
-    private IKeyframeProvider provider = NoFramesProvider.empty();
+    private FrameProviderWrapper wrapper;
     private File projectDirectory;
     private boolean isSaved = true;
 
     public AnimationProject(FrameProviderWrapper wrapper) {
         this.name = wrapper.getName();
         this.projectDirectory = wrapper.getWorkingDirectory();
+        this.wrapper = wrapper;
     }
 
     public AnimationProject(String projectName, int animationLength) {
         this.name = projectName;
         this.controller.setAnimationTime(animationLength);
+        this.wrapper = FrameProviderWrapper.userCreated(projectName, new File("./export/providers"), new KeyframeProvider(new HashMap<>(), IAnimationEvent.NO_EVENTS));
     }
 
     public static AnimationProject createEmpty() {
@@ -34,12 +38,20 @@ public class AnimationProject {
         return controller;
     }
 
+    public FrameProviderWrapper getFrameControl() {
+        return wrapper;
+    }
+
     public boolean isNamed() {
         return name != null && !name.isEmpty();
     }
 
     public boolean isSaved() {
         return isSaved;
+    }
+
+    public boolean hasEvents() {
+        return wrapper.hasEventSupport();
     }
 
     public void saveProject() {
@@ -71,7 +83,8 @@ public class AnimationProject {
     }
 
     private void saveToDisk(File file) throws IOException {
-        String out = AnimationCompatLayer.instance().loader().serializeToString(provider);
+        IKeyframeProvider serializable = wrapper.getProvider().toSerializable();
+        String out = AnimationEngine.get().loader().serializeToString(serializable);
         try (FileWriter fw = new FileWriter(file)) {
             fw.write(out);
         }

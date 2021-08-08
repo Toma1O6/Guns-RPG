@@ -1,6 +1,8 @@
 package lib.toma.animations.screen.animator;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import lib.toma.animations.screen.animator.dialog.DialogScreen;
+import lib.toma.animations.screen.animator.dialog.SuggestionResponder;
 import lib.toma.animations.screen.animator.widget.ListView;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -27,7 +29,7 @@ public class ImportProjectScreen extends Screen {
     protected void init() {
         TextFieldWidget fileFilter = addButton(new TextFieldWidget(font, 5, 5, width - 10, 20, StringTextComponent.EMPTY));
         fileFilter.setSuggestion("Find project");
-        fileFilter.setResponder(new DialogScreen.SuggestionResponder("Find project", fileFilter, this::fileFilter_Change));
+        fileFilter.setResponder(new SuggestionResponder("Find project", fileFilter, this::fileFilter_Change));
         Animator animator = Animator.get();
         files = addButton(new ListView<>(5, 30, width - 10, height - 60, animator.getPaths()));
         files.setFormatter(Function.identity());
@@ -72,6 +74,11 @@ public class ImportProjectScreen extends Screen {
     }
 
     private void confirm_clicked(Button button) {
+        Animator animator = Animator.get();
+        FrameProviderWrapper wrapper = animator.getWrapper(filePath);
+        if (wrapper != null) {
+            animator.setUsingProject(new AnimationProject(wrapper));
+        }
         minecraft.setScreen(screen);
     }
 

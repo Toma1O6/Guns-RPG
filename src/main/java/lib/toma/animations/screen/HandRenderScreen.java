@@ -58,7 +58,7 @@ public class HandRenderScreen extends Screen {
         Button toClipboard = new Button(5, 40, 50, 20, new StringTextComponent("Copy"), this::copy_Clicked);
         Button reset = new Button(5, 65, 50, 20, new StringTextComponent("Clear"), this::reset_Clicked);
         // on/off
-        CheckboxWidget active = new CheckboxWidget(10, height - 30, 60, 20, new StringTextComponent("Active"), enabled).onClicked(this::checkbox_Change);
+        CheckboxWidget active = new CheckboxWidget(5, 90, 60, 20, new StringTextComponent("Active"), enabled).onClicked(this::checkbox_Change);
         // add hand selector
         handSelector = new SelectorWidget<>(5, 15, 50, 20, HandSide.values(), side -> new StringTextComponent(side.name())).onValueChanged(this::selector_OnChange);
         // position

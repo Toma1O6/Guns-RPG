@@ -302,7 +302,7 @@ public class ClientEventHandler {
             }
         }
         if (stack.getItem() instanceof IAnimationEntry) {
-            AnimationCompatLayer animLib = AnimationCompatLayer.instance();
+            AnimationEngine animLib = AnimationEngine.get();
             ClientSideManager client = ClientSideManager.instance();
             IHandRenderAPI handAPI = animLib.getHandRenderAPI();
             IAnimationEntry animationEntry = (IAnimationEntry) stack.getItem();
@@ -364,7 +364,7 @@ public class ClientEventHandler {
         if (event.phase == TickEvent.Phase.END && player != null) {
             if (shootDelay > 0)
                 --shootDelay;
-            AnimationCompatLayer.instance().pipeline().handleGameTick();
+            AnimationEngine.get().pipeline().handleGameTick();
             startSprintListener.update(player);
             GameSettings settings = mc.options;
             if (burst) {
@@ -394,7 +394,7 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onRenderTick(TickEvent.RenderTickEvent event) {
         if (event.phase == TickEvent.Phase.START)
-            AnimationCompatLayer.instance().pipeline().processFrame(event.renderTickTime);
+            AnimationEngine.get().pipeline().processFrame(event.renderTickTime);
     }
 
     private static void renderItem(FirstPersonRenderer renderer, PlayerEntity player, ItemStack stack, ItemCameraTransforms.TransformType transform, boolean offHand, MatrixStack matrix, IRenderTypeBuffer buffer, int light, float swingProgress, float equipProgress) {

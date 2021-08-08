@@ -1,5 +1,9 @@
-package lib.toma.animations.screen.animator;
+package lib.toma.animations.screen.animator.dialog;
 
+import lib.toma.animations.ByteFlags;
+import lib.toma.animations.screen.animator.AnimationProject;
+import lib.toma.animations.screen.animator.Animator;
+import lib.toma.animations.screen.animator.AnimatorScreen;
 import lib.toma.animations.screen.animator.widget.LabelWidget;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -20,7 +24,7 @@ public class NewProjectDialog extends DialogScreen {
     private TextFieldWidget nameField;
     private TextFieldWidget cycleField;
     private CheckboxButton onRepeat;
-    private byte errorFlags = 0;
+    private ByteFlags errorFlags = new ByteFlags();
 
     public NewProjectDialog(AnimatorScreen animator) {
         super(new TranslationTextComponent("screen.animator.dialog.new_project"), animator);
@@ -69,16 +73,16 @@ public class NewProjectDialog extends DialogScreen {
 
     private void setErrorFlags(int offset, boolean value) {
         if (value) {
-            errorFlags |= 1 << offset;
+            errorFlags.set(offset);
         } else {
-            errorFlags &= ~(1 << offset);
+            errorFlags.clear(offset);
         }
         updateConfirmButtonState();
     }
 
     private void confirm_clicked(Button button) {
         Animator animator = Animator.get();
-        AnimationProject lastProject = animator.getLatestProject();
+        AnimationProject lastProject = animator.getProject();
         if (!lastProject.isSaved()) {
             ConfirmScreen warning = new ConfirmScreen(proceed -> handleUnsavedProject(proceed, this::createNewProject), new StringTextComponent("Warning"), new StringTextComponent("Your project is not saved. Do you wish to proceed anyway?"));
             warning.setDelay(25);
@@ -112,6 +116,6 @@ public class NewProjectDialog extends DialogScreen {
 
     private void updateConfirmButtonState() {
         if (confirm != null)
-            confirm.active = errorFlags == 0;
+            confirm.active = errorFlags.isEmpty();
     }
 }

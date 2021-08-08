@@ -14,7 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
-public final class AnimationCompatLayer {
+public final class AnimationEngine {
 
     public int handConfigKey = GLFW.GLFW_KEY_KP_9;
     public int animatorKey = GLFW.GLFW_KEY_KP_8;
@@ -27,7 +27,7 @@ public final class AnimationCompatLayer {
     private KeyBinding handConfigs;
     private KeyBinding animator;
 
-    private AnimationCompatLayer() {
+    private AnimationEngine() {
         handRenderAPI = new HandRenderAPI();
         screenFactory = new UtilScreenFactory();
         pipeline = new AnimationPipeline();
@@ -78,9 +78,9 @@ public final class AnimationCompatLayer {
         }
     }
 
-    private static final AnimationCompatLayer INSTANCE = new AnimationCompatLayer();
+    private static final AnimationEngine INSTANCE = new AnimationEngine();
 
-    public static AnimationCompatLayer instance() {
+    public static AnimationEngine get() {
         return INSTANCE;
     }
 
@@ -110,7 +110,7 @@ public final class AnimationCompatLayer {
 
         @Override
         public HandRenderScreen getHandConfigScreen() {
-            HandRenderAPI api = AnimationCompatLayer.this.handRenderAPI;
+            HandRenderAPI api = AnimationEngine.this.handRenderAPI;
             return new HandRenderScreen(api.left, api.right, active -> api.dev = active, api.isDevMode());
         }
 

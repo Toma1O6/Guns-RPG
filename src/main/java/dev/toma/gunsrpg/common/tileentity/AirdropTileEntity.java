@@ -151,8 +151,7 @@ public class AirdropTileEntity extends InventoryTileEntity {
         private List<Supplier<ItemStack>> getCommonMeds() {
             return listOf(
                     () -> new ItemStack(ModItems.BANDAGE),
-                    () -> new ItemStack(ModItems.ANTIDOTUM_PILLS),
-                    () -> new ItemStack(ModItems.BANDAGE, 2)
+                    () -> new ItemStack(ModItems.ANTIDOTUM_PILLS)
             );
         }
 
@@ -166,7 +165,7 @@ public class AirdropTileEntity extends InventoryTileEntity {
         private List<Supplier<ItemStack>> getRareMeds() {
             return listOf(
                     () -> new ItemStack(ModItems.ANTIDOTUM_PILLS, 2),
-                    () -> new ItemStack(ModItems.BANDAGE, 3)
+                    () -> new ItemStack(ModItems.BANDAGE, 2)
             );
         }
 
@@ -180,13 +179,13 @@ public class AirdropTileEntity extends InventoryTileEntity {
         private List<Supplier<ItemStack>> getEpicMeds() {
             return listOf(
                     () -> new ItemStack(ModItems.BANDAGE, 4),
-                    () -> new ItemStack(ModItems.ANTIDOTUM_PILLS, 3)
+                    () -> new ItemStack(ModItems.ANTIDOTUM_PILLS, 2)
             );
         }
 
         private List<Supplier<ItemStack>> getLegendaryMeds() {
             return listOf(
-                    () -> new ItemStack(ModItems.BANDAGE, 5),
+                    () -> new ItemStack(ModItems.BANDAGE, 4),
                     () -> new ItemStack(ModItems.PLASTER_CAST, 3)
             );
         }

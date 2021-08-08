@@ -18,17 +18,17 @@ public class Keyframes {
         QuickSort.sort(array, Comparator.comparingDouble(IKeyframe::endpoint));
     }
 
-    public static Vector3d getEntryPosition(IKeyframe parent) {
+    public static Vector3d getInitialPosition(IKeyframe parent) {
         return parent.initialPosition().add(parent.positionTarget());
     }
 
-    public static Vector3f getEntryScale(IKeyframe parent) {
+    public static Vector3f getInitialScale(IKeyframe parent) {
         Vector3f vec3f = parent.initialScale().copy();
         vec3f.add(parent.scaleTarget());
         return vec3f;
     }
 
-    public static Quaternion getEntryRotation(IKeyframe parent) {
+    public static Quaternion getInitialRotation(IKeyframe parent) {
         Pair<Float, Vector3f> initialRot = AnimationUtils.getVectorWithRotation(parent.initialRotation());
         Pair<Float, Vector3f> targetRot = AnimationUtils.getVectorWithRotation(parent.rotationTarget());
         float newRot = initialRot.getLeft() + targetRot.getLeft();

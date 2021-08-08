@@ -1,6 +1,7 @@
 package lib.toma.animations.serialization;
 
 import com.google.gson.*;
+import lib.toma.animations.QuickSort;
 import lib.toma.animations.pipeline.event.AnimationEventType;
 import lib.toma.animations.pipeline.event.IAnimationEvent;
 import lib.toma.animations.pipeline.frame.FrameProviderType;
@@ -9,6 +10,7 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 
 import java.lang.reflect.Type;
+import java.util.Comparator;
 
 public class KeyframeProviderSerializer implements JsonSerializer<IKeyframeProvider>, JsonDeserializer<IKeyframeProvider> {
 
@@ -67,6 +69,7 @@ public class KeyframeProviderSerializer implements JsonSerializer<IKeyframeProvi
             E event = serializer.deserialize(target, JSONUtils.getAsJsonObject(object, "data"), context);
             events[i] = event;
         }
+        QuickSort.sort(events, Comparator.comparingDouble(IAnimationEvent::invokeAt));
         return events;
     }
 

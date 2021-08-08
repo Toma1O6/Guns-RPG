@@ -18,7 +18,7 @@ import dev.toma.gunsrpg.world.MobSpawnManager;
 import dev.toma.gunsrpg.world.cap.IWorldData;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataStorage;
-import lib.toma.animations.AnimationCompatLayer;
+import lib.toma.animations.AnimationEngine;
 import net.minecraft.command.CommandSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -54,6 +54,9 @@ public class GunsRPG {
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 
         ModTags.init();
+
+        // TODO
+        // GameRules.GAME_RULE_TYPES.put(GameRules.RULE_NATURAL_REGENERATION, GameRules.BooleanValue.create(false));
     }
 
     public static ResourceLocation makeResource(String path) {
@@ -62,7 +65,7 @@ public class GunsRPG {
 
     private void clientSetup(FMLClientSetupEvent event) {
         ClientSideManager.instance().clientSetup(event);
-        AnimationCompatLayer.instance().loader().init(ModConfig.clientConfig.developerMode.get());
+        AnimationEngine.get().loader().init(ModConfig.clientConfig.developerMode.get());
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

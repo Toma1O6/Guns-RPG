@@ -18,7 +18,7 @@ public class Animation extends TickableAnimation {
 
     @Override
     public void animate(AnimationStage stage, MatrixStack matrix) {
-        if (!provider.canAnimate(stage)) return;
+        if (provider.blocksStageAnimation(stage)) return;
         float progressInterpolated = getIntepolatedProgress();
         IKeyframe currentFrame = provider.getCurrentFrame(stage, progressInterpolated);
         IKeyframe lastFrame = provider.getPreviousFrame(stage);

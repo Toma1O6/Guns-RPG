@@ -69,33 +69,6 @@ public class RenderUtils {
         return combine4f(red, green, blue, 1.0F);
     }
 
-    public static int mix(int... colors) {
-        int len = colors.length;
-        if (len == 1)
-            return colors[0];
-
-        int[] alphaComponents = new int[len];
-        int[] redComponents = new int[len];
-        int[] greenComponents = new int[len];
-        int[] blueComponents = new int[len];
-        int i = 0;
-        for (int color : colors) {
-            alphaComponents[i] = alpha_i(color);
-            redComponents[i] = red_i(color);
-            greenComponents[i] = green_i(color);
-            blueComponents[i] = blue_i(color);
-        }
-        int a_sum = ModUtils.sum(alphaComponents);
-        int r_sum = ModUtils.sum(redComponents);
-        int g_sum = ModUtils.sum(greenComponents);
-        int b_sum = ModUtils.sum(blueComponents);
-        int a = a_sum / len;
-        int r = r_sum / len;
-        int g = g_sum / len;
-        int b = b_sum / len;
-        return combine4i(r, g, b, a);
-    }
-
     public static int multiplyRGB(int color, double multiplier) {
         int red = (int) (red_i(color) * multiplier);
         int green = (int) (green_i(color) * multiplier);

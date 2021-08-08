@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.stream.JsonReader;
-import lib.toma.animations.AnimationCompatLayer;
+import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.pipeline.frame.IKeyframe;
 import lib.toma.animations.pipeline.frame.IKeyframeProvider;
 import lib.toma.animations.pipeline.frame.KeyframeProvider;
@@ -58,7 +58,7 @@ public final class AnimationLoader extends JsonReloadListener {
         gson = builder.create();
         loader = reader -> gson.fromJson(reader, IKeyframeProvider.class);
         if (devMode) {
-            AnimationCompatLayer.instance().setup();
+            AnimationEngine.get().setup();
         }
         ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(this);
     }
@@ -78,7 +78,7 @@ public final class AnimationLoader extends JsonReloadListener {
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> resources, IResourceManager manager, IProfiler profiler) {
         profiler.push("Animation loading");
-        Logger log = AnimationCompatLayer.logger;
+        Logger log = AnimationEngine.logger;
         log.info(MARKER, "Loading animations");
         animationDefinitions.clear();
         for (Map.Entry<ResourceLocation, JsonElement> entry : resources.entrySet()) {

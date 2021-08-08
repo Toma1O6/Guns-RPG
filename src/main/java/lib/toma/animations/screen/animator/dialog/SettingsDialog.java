@@ -1,5 +1,8 @@
-package lib.toma.animations.screen.animator;
+package lib.toma.animations.screen.animator.dialog;
 
+import lib.toma.animations.screen.animator.AnimationProject;
+import lib.toma.animations.screen.animator.Animator;
+import lib.toma.animations.screen.animator.AnimatorScreen;
 import lib.toma.animations.screen.animator.widget.LabelWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
@@ -7,7 +10,6 @@ import net.minecraft.client.gui.widget.button.CheckboxButton;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 public class SettingsDialog extends DialogScreen {
@@ -26,7 +28,7 @@ public class SettingsDialog extends DialogScreen {
     @Override
     protected void init() {
         super.init();
-        AnimationProject project = Animator.get().getLatestProject();
+        AnimationProject project = Animator.get().getProject();
         AnimationProject.AnimationController controller = project.getAnimationControl();
         addButton(new LabelWidget(left() + 5, top() + 15, dWidth() - 10, 15, new StringTextComponent("Animation cycle [ticks]"), font));
         cycleField = addButton(new TextFieldWidget(font, left() + 5, top() + 30, dWidth() - 10, 20, StringTextComponent.EMPTY));
@@ -42,7 +44,7 @@ public class SettingsDialog extends DialogScreen {
     }
 
     private void save_clicked(Button button) {
-        AnimationProject.AnimationController controller = Animator.get().getLatestProject().getAnimationControl();
+        AnimationProject.AnimationController controller = Animator.get().getProject().getAnimationControl();
         int len = parse(cycleField.getValue(), controller.getAnimationTime());
         boolean repeat = onRepeat.selected();
         controller.setAnimationTime(len);

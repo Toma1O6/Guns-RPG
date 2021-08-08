@@ -3,6 +3,8 @@ package lib.toma.animations.pipeline.frame;
 import lib.toma.animations.pipeline.AnimationStage;
 import lib.toma.animations.pipeline.event.IAnimationEvent;
 
+import java.util.Map;
+
 public interface IKeyframeProvider {
 
     FrameProviderType<?> getType();
@@ -16,4 +18,6 @@ public interface IKeyframeProvider {
     IAnimationEvent[] getEvents();
 
     int getCacheSize();
+
+    Map<AnimationStage, IKeyframe[]> getFrameMap();
 }

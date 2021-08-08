@@ -499,5 +499,12 @@
     "screen.animator.paused": "Pause",
 
     "screen.animator.dialog.new_project": "Create new project",
-    "screen.animator.dialog.settings": "Project settings"
+    "screen.animator.dialog.settings": "Project settings",
+    "screen.animator.dialog.add_frame": "Add frame",
+
+    "animation.stage.minecraft:item.heldfp": "Mainhand item",
+    "animation.stage.minecraft:hands.left": "Left hand",
+    "animation.stage.minecraft:hands.right": "Right hand",
+    "animation.stage.minecraft:hands.item": "Mainhand item, both hands",
+    "animation.stage.minecraft:hands": "Both hands"
 }

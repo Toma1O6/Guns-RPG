@@ -24,7 +24,7 @@ public final class AnimationPipeline implements IAnimationPipeline {
     @Override
     public <A extends IAnimation> void insert(AnimationType<A> type) {
         if (!type.hasCreator())
-            AnimationCompatLayer.logger.fatal(MARKER, "Cannot create default animation from animation type ({}) with undefined AnimationCreator", type);
+            AnimationEngine.logger.fatal(MARKER, "Cannot create default animation from animation type ({}) with undefined AnimationCreator", type);
         A animation = type.create(Minecraft.getInstance().player);
         insert(type, animation);
     }
@@ -32,7 +32,7 @@ public final class AnimationPipeline implements IAnimationPipeline {
     @Override
     public <A extends IAnimation> void insert(AnimationType<A> type, A animation) {
         if (animation == null) {
-            AnimationCompatLayer.logger.fatal(MARKER, "Attempted to play null animation for {} type, aborting!", type);
+            AnimationEngine.logger.fatal(MARKER, "Attempted to play null animation for {} type, aborting!", type);
             return;
         }
         playingAnimations.put(Objects.requireNonNull(type), animation);
@@ -41,7 +41,7 @@ public final class AnimationPipeline implements IAnimationPipeline {
     @Override
     public <A extends IAnimation> void scheduleInsert(AnimationType<A> type, int gameTickDelay) {
         if (!type.hasCreator())
-            AnimationCompatLayer.logger.fatal(MARKER, "Cannot create default animation from animation type ({}) with undefined AnimationCreator", type);
+            AnimationEngine.logger.fatal(MARKER, "Cannot create default animation from animation type ({}) with undefined AnimationCreator", type);
         scheduleInsert(type, () -> type.create(Minecraft.getInstance().player), gameTickDelay);
     }
 
@@ -50,7 +50,7 @@ public final class AnimationPipeline implements IAnimationPipeline {
         if (gameTickDelay < 0)
             throw new IllegalArgumentException("Delay must be bigger than 0!");
         if (supplier == null) {
-            AnimationCompatLayer.logger.fatal(MARKER, "Attempted to schedule null animation for {} type", type);
+            AnimationEngine.logger.fatal(MARKER, "Attempted to schedule null animation for {} type", type);
             return;
         }
         if (gameTickDelay == 0) {

@@ -1,17 +1,18 @@
-package lib.toma.animations.screen.animator;
+package lib.toma.animations.screen.animator.dialog;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import lib.toma.animations.screen.animator.AnimatorScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.glfw.GLFW;
-
-import java.util.function.Consumer;
 
 public abstract class DialogScreen extends Screen {
 
+    public static final ITextComponent CANCEL = new StringTextComponent("Cancel");
+    public static final ITextComponent CONFIRM = new StringTextComponent("Confirm");
     private int left;
     private int top;
     private int xSize;
@@ -103,27 +104,5 @@ public abstract class DialogScreen extends Screen {
 
     public int dHeight() {
         return ySize;
-    }
-
-    protected static class SuggestionResponder implements Consumer<String> {
-
-        private final String suggestion;
-        private final TextFieldWidget widget;
-        private final Consumer<String> responder;
-
-        protected SuggestionResponder(String suggestion, TextFieldWidget widget, Consumer<String> responder) {
-            this.suggestion = suggestion;
-            this.widget = widget;
-            this.responder = responder;
-        }
-
-        @Override
-        public void accept(String s) {
-            if (s.isEmpty())
-                widget.setSuggestion(suggestion);
-            else
-                widget.setSuggestion(null);
-            responder.accept(s);
-        }
     }
 }

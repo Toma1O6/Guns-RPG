@@ -1,5 +1,7 @@
-package lib.toma.animations.screen.animator;
+package lib.toma.animations.screen.animator.dialog;
 
+import lib.toma.animations.screen.animator.Animator;
+import lib.toma.animations.screen.animator.AnimatorScreen;
 import lib.toma.animations.screen.animator.widget.LabelWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
@@ -36,7 +38,7 @@ public class SaveAsDialog extends DialogScreen {
     }
 
     private void save_clicked(Button button) {
-        Animator.get().getLatestProject().saveProjectAs(filename.getValue());
+        Animator.get().getProject().saveProjectAs(filename.getValue());
         showParent();
     }
 

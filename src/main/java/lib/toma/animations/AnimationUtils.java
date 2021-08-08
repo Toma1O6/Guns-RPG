@@ -1,5 +1,7 @@
 package lib.toma.animations;
 
+import lib.toma.animations.pipeline.AnimationStage;
+import lib.toma.animations.pipeline.frame.IKeyframe;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import org.apache.commons.lang3.tuple.Pair;
@@ -7,6 +9,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
 
@@ -56,5 +59,9 @@ public class AnimationUtils {
                 max = value;
         }
         return max;
+    }
+
+    public static TreeMap<AnimationStage, IKeyframe[]> createSortedMap() {
+        return new TreeMap<>(AnimationStage::compareTo);
     }
 }

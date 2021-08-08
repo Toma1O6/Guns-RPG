@@ -2,7 +2,7 @@ package lib.toma.animations.pipeline.event;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.*;
-import lib.toma.animations.AnimationCompatLayer;
+import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.pipeline.AnimationType;
 import lib.toma.animations.pipeline.IAnimation;
 import lib.toma.animations.pipeline.IAnimationPipeline;
@@ -32,8 +32,8 @@ public class PlayAnimationEvent extends AbstractAnimationEvent {
     }
 
     @Override
-    public void dispatchEvent(Minecraft client, IAnimation fromAnimation) {
-        IAnimationPipeline pipeline = AnimationCompatLayer.instance().pipeline();
+    public void dispatch(Minecraft client, IAnimation fromAnimation) {
+        IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
         if (playDelay == 0)
             pipeline.insert(type);
         else

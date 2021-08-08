@@ -57,8 +57,8 @@ public class PositionKeyframe implements IKeyframe {
 
     @Override
     public void baseOn(IKeyframe parent) {
-        this.staticPos = Keyframes.getEntryPosition(parent);
-        this.staticScale = Keyframes.getEntryScale(parent);
-        this.staticRotation = Keyframes.getEntryRotation(parent);
+        this.staticPos = Keyframes.getInitialPosition(parent);
+        this.staticScale = Keyframes.getInitialScale(parent);
+        this.staticRotation = Keyframes.getInitialRotation(parent);
     }
 }

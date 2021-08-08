@@ -1,7 +1,7 @@
 package lib.toma.animations.pipeline.frame;
 
 import com.google.gson.*;
-import lib.toma.animations.AnimationCompatLayer;
+import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.pipeline.AnimationStage;
 import lib.toma.animations.pipeline.event.IAnimationEvent;
@@ -11,8 +11,9 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
-public class KeyframeProvider implements IKeyframeProvider, ICustomizableProvider {
+public class KeyframeProvider implements IKeyframeProvider {
 
     private final Map<AnimationStage, IKeyframe[]> frames;
     private final IAnimationEvent[] events;
@@ -26,7 +27,7 @@ public class KeyframeProvider implements IKeyframeProvider, ICustomizableProvide
     }
 
     public static IKeyframeProvider noFrames(ResourceLocation location) {
-        AnimationCompatLayer.logger.error(AnimationLoader.MARKER, "Missing animation definition for {} key, falling back to default implementation", location);
+        AnimationEngine.logger.error(AnimationLoader.MARKER, "Missing animation definition for {} key, falling back to default implementation", location);
         return NoFramesProvider.empty();
     }
 
@@ -64,43 +65,8 @@ public class KeyframeProvider implements IKeyframeProvider, ICustomizableProvide
     }
 
     @Override
-    public Map<AnimationStage, IKeyframe[]> getFramesForAnimator() {
-        return new HashMap<>(frames);
-    }
-
-    @Override
-    public void insertKeyframe(AnimationStage stage, IKeyframe iKeyframe) {
-        IKeyframe[] array = frames.computeIfAbsent(stage, k -> new IKeyframe[0]);
-        IKeyframe[] array1 = new IKeyframe[array.length + 1];
-        System.arraycopy(array, 0, array1, 0, array.length);
-        array1[array1.length - 1] = iKeyframe;
-        Keyframes.sortFrames(array1);
-        frames.put(stage, array1);
-    }
-
-    @Override
-    public void deleteKeyframe(AnimationStage stage, IKeyframe iKeyframe) {
-        IKeyframe[] array = frames.get(stage);
-        if (array == null || array.length == 0) {
-            return;
-        }
-        int index = -1;
-        int j = 0;
-        for (IKeyframe iKeyframe1 : array) {
-            if (iKeyframe1 == iKeyframe) {
-                index = j;
-                break;
-            }
-            ++j;
-        }
-        if (index != -1) {
-            IKeyframe[] shrinked = new IKeyframe[array.length - 1];
-            if (shrinked.length != 0) {
-                System.arraycopy(array, 0, shrinked, 0, index);
-                System.arraycopy(array, index + 1, shrinked, index, array.length - index - 1);
-            }
-            frames.put(stage, shrinked);
-        }
+    public Map<AnimationStage, IKeyframe[]> getFrameMap() {
+        return frames;
     }
 
     private void compileFrames() {

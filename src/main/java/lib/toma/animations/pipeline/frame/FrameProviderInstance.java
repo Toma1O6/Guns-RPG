@@ -16,8 +16,12 @@ public final class FrameProviderInstance implements IFrameProviderInstance {
         this.frameIndexCache = new byte[frameProvider.getCacheSize()];
     }
 
-    public boolean canAnimate(AnimationStage stage) {
-        return stage.getIndex() < frameIndexCache.length;
+    public static FrameProviderInstance instance(IKeyframeProvider provider) {
+        return new FrameProviderInstance(provider);
+    }
+
+    public boolean blocksStageAnimation(AnimationStage stage) {
+        return stage.getIndex() >= frameIndexCache.length;
     }
 
     public IKeyframe getCurrentFrame(AnimationStage stage, float animationProgress) {
@@ -43,7 +47,7 @@ public final class FrameProviderInstance implements IFrameProviderInstance {
         float eventDispatchTarget = event.invokeAt();
         if (progress >= eventDispatchTarget && progressOld < eventDispatchTarget) {
             ++eventIndex;
-            event.dispatchEvent(Minecraft.getInstance(), source);
+            event.dispatch(Minecraft.getInstance(), source);
             invokeEventsRecursive(events, source, progress, progressOld); // makes sure all events are called in case there are multiple events 'close' to each other
         }
     }

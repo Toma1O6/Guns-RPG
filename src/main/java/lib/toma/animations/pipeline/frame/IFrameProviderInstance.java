@@ -5,7 +5,7 @@ import lib.toma.animations.pipeline.IAnimation;
 
 public interface IFrameProviderInstance {
 
-    boolean canAnimate(AnimationStage stage);
+    boolean blocksStageAnimation(AnimationStage stage);
 
     IKeyframe getCurrentFrame(AnimationStage stage, float progress);
 

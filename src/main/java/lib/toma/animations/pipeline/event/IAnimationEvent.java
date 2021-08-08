@@ -5,11 +5,11 @@ import net.minecraft.client.Minecraft;
 
 public interface IAnimationEvent {
 
-    public IAnimationEvent[] NO_EVENTS = new IAnimationEvent[0];
+    IAnimationEvent[] NO_EVENTS = new IAnimationEvent[0];
 
     AnimationEventType<?> getType();
 
     float invokeAt();
 
-    void dispatchEvent(Minecraft client, IAnimation fromAnimation);
+    void dispatch(Minecraft client, IAnimation fromAnimation);
 }

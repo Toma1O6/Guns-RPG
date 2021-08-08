@@ -7,12 +7,11 @@ import java.util.Map;
 
 public final class FrameProviderType<FP extends IKeyframeProvider> {
 
+    private static final Map<String, FrameProviderType<?>> TYPE_REGISTRY = new HashMap<>();
     public static final FrameProviderType<NoFramesProvider> EMPTY = new FrameProviderType<>("empty", new NoFramesProvider.Serializer());
     public static final FrameProviderType<SingleFrameProvider> SINGLE = new FrameProviderType<>("single_frame", new SingleFrameProvider.Serializer());
     public static final FrameProviderType<TargetAndBackFrameProvider> TARGET_AND_BACK = new FrameProviderType<>("target_back", new TargetAndBackFrameProvider.Serializer());
     public static final FrameProviderType<KeyframeProvider> KEYFRAME_PROVIDER_TYPE = new FrameProviderType<>("default", new KeyframeProvider.Serializer()).allowEvents();
-
-    private static final Map<String, FrameProviderType<?>> TYPE_REGISTRY = new HashMap<>();
 
     private final String typeKey;
     private final IKeyframeTypeSerializer<FP> serializer;

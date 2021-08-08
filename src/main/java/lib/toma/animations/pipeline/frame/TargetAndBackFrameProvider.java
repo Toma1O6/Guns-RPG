@@ -1,6 +1,7 @@
 package lib.toma.animations.pipeline.frame;
 
 import com.google.gson.*;
+import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.pipeline.AnimationStage;
 import lib.toma.animations.pipeline.event.IAnimationEvent;
 import lib.toma.animations.serialization.IKeyframeTypeSerializer;
@@ -9,6 +10,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
+
+import java.util.Map;
 
 public class TargetAndBackFrameProvider implements IKeyframeProvider {
 
@@ -20,7 +23,7 @@ public class TargetAndBackFrameProvider implements IKeyframeProvider {
         this.frames = new FramePair(position, rotation, rotationDegrees);
     }
 
-    TargetAndBackFrameProvider(AnimationStage stage, IKeyframe mov, IKeyframe ret) throws JsonParseException {
+    public TargetAndBackFrameProvider(AnimationStage stage, IKeyframe mov, IKeyframe ret) {
         this.targetStage = stage;
         this.frames = new FramePair(mov, ret);
     }
@@ -53,6 +56,16 @@ public class TargetAndBackFrameProvider implements IKeyframeProvider {
     @Override
     public FrameProviderType<?> getType() {
         return FrameProviderType.TARGET_AND_BACK;
+    }
+
+    @Override
+    public Map<AnimationStage, IKeyframe[]> getFrameMap() {
+        Map<AnimationStage, IKeyframe[]> map = AnimationUtils.createSortedMap();
+        IKeyframe[] array = new IKeyframe[2];
+        array[0] = frames.toTarget();
+        array[1] = frames.returning();
+        map.put(targetStage, array);
+        return map;
     }
 
     private static class FramePair {

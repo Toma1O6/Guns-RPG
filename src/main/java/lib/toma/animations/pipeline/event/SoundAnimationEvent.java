@@ -27,7 +27,7 @@ public class SoundAnimationEvent extends AbstractAnimationEvent {
     }
 
     @Override
-    public void dispatchEvent(Minecraft client, IAnimation fromAnimation) {
+    public void dispatch(Minecraft client, IAnimation fromAnimation) {
         client.player.playSound(sound, volume, pitch);
     }
 

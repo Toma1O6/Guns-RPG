@@ -4,22 +4,19 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public final class AnimationStage {
+public final class AnimationStage implements Comparable<AnimationStage> {
+
+    private static final Map<ResourceLocation, AnimationStage> ID_STAGE_MAP = new HashMap<>();
+    private static final Set<AnimationStage> VANILLA_TYPES = new HashSet<>();
+    private static int indexOffset;
 
     public static final AnimationStage ITEM_AND_HANDS = vanilla("hands.item");
     public static final AnimationStage RIGHT_HAND = vanilla("hands.right");
     public static final AnimationStage LEFT_HAND = vanilla("hands.left");
     public static final AnimationStage HANDS = vanilla("hands");
     public static final AnimationStage HELD_ITEM = vanilla("item.heldfp");
-
-    private static final Map<ResourceLocation, AnimationStage> ID_STAGE_MAP = new IdentityHashMap<>();
-    private static final Set<AnimationStage> VANILLA_TYPES = new HashSet<>();
-    private static int indexOffset;
 
     private final int index;
     private final ResourceLocation key;
@@ -44,8 +41,9 @@ public final class AnimationStage {
         return name;
     }
 
-    public Set<AnimationStage> vanillaTypes() {
-        return VANILLA_TYPES;
+    @Override
+    public int compareTo(AnimationStage o) {
+        return this.getIndex() - o.getIndex();
     }
 
     @Override
@@ -71,6 +69,14 @@ public final class AnimationStage {
 
     public static AnimationStage byKey(ResourceLocation key) {
         return ID_STAGE_MAP.get(key);
+    }
+
+    public static Set<AnimationStage> vanillaTypes() {
+        return VANILLA_TYPES;
+    }
+
+    public static Collection<AnimationStage> values() {
+        return ID_STAGE_MAP.values();
     }
 
     private static AnimationStage vanilla(String name) {
