@@ -5,15 +5,19 @@ import lib.toma.animations.pipeline.IAnimation;
 import lib.toma.animations.pipeline.event.IAnimationEvent;
 import net.minecraft.client.Minecraft;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public final class FrameProviderInstance implements IFrameProviderInstance {
 
     private final IKeyframeProvider frameProvider;
-    private final byte[] frameIndexCache;
+    private final Map<AnimationStage, Integer> frameCache;
     private byte eventIndex;
 
     FrameProviderInstance(IKeyframeProvider frameProvider) {
         this.frameProvider = frameProvider;
-        this.frameIndexCache = new byte[frameProvider.getCacheSize()];
+        this.frameCache = new HashMap<>();
+        this.frameProvider.initCache(frameCache);
     }
 
     public static FrameProviderInstance instance(IKeyframeProvider provider) {
@@ -21,19 +25,19 @@ public final class FrameProviderInstance implements IFrameProviderInstance {
     }
 
     public boolean blocksStageAnimation(AnimationStage stage) {
-        return stage.getIndex() >= frameIndexCache.length;
+        return !frameCache.containsKey(stage);
     }
 
     public IKeyframe getCurrentFrame(AnimationStage stage, float animationProgress) {
-        byte index = frameIndexCache[stage.getIndex()];
+        int index = frameCache.get(stage);
         if (frameProvider.shouldAdvance(stage, animationProgress, index)) {
-            index = ++frameIndexCache[stage.getIndex()];
+            frameCache.put(stage, ++index);
         }
         return frameProvider.getCurrentFrame(stage, animationProgress, index);
     }
 
     public IKeyframe getPreviousFrame(AnimationStage stage) {
-        return frameProvider.getOldFrame(stage, frameIndexCache[stage.getIndex()]);
+        return frameProvider.getOldFrame(stage, frameCache.get(stage));
     }
 
     public void onAnimationProgressed(float progress, float progressOld, IAnimation source) {

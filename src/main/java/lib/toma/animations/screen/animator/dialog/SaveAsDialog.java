@@ -18,6 +18,7 @@ public class SaveAsDialog extends DialogScreen {
 
     public SaveAsDialog(AnimatorScreen screen) {
         super(new TranslationTextComponent("screen.animator.dialog.save_as"), screen);
+        setDimensions(140, 80);
     }
 
     @Override

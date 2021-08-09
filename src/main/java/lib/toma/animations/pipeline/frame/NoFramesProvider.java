@@ -8,6 +8,9 @@ import lib.toma.animations.pipeline.AnimationStage;
 import lib.toma.animations.pipeline.event.IAnimationEvent;
 import lib.toma.animations.serialization.IKeyframeTypeSerializer;
 
+import java.util.Collections;
+import java.util.Map;
+
 public final class NoFramesProvider implements IKeyframeProvider {
 
     private static final NoFramesProvider NO_FRAMES = new NoFramesProvider();
@@ -19,22 +22,27 @@ public final class NoFramesProvider implements IKeyframeProvider {
     }
 
     @Override
+    public Map<AnimationStage, IKeyframe[]> getFrameMap() {
+        return Collections.emptyMap();
+    }
+
+    @Override
     public FrameProviderType<?> getType() {
         return FrameProviderType.EMPTY;
     }
 
     @Override
-    public boolean shouldAdvance(AnimationStage stage, float progress, byte frameIndex) {
+    public boolean shouldAdvance(AnimationStage stage, float progress, int frameIndex) {
         return false;
     }
 
     @Override
-    public IKeyframe getCurrentFrame(AnimationStage stage, float progress, byte frameIndex) {
+    public IKeyframe getCurrentFrame(AnimationStage stage, float progress, int frameIndex) {
         return Keyframes.none();
     }
 
     @Override
-    public IKeyframe getOldFrame(AnimationStage stage, byte frameIndex) {
+    public IKeyframe getOldFrame(AnimationStage stage, int frameIndex) {
         return Keyframes.none();
     }
 
@@ -44,8 +52,8 @@ public final class NoFramesProvider implements IKeyframeProvider {
     }
 
     @Override
-    public int getCacheSize() {
-        return 0;
+    public void initCache(Map<AnimationStage, Integer> cache) {
+
     }
 
     public static class Serializer implements IKeyframeTypeSerializer<NoFramesProvider> {

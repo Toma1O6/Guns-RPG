@@ -9,15 +9,15 @@ public interface IKeyframeProvider {
 
     FrameProviderType<?> getType();
 
-    boolean shouldAdvance(AnimationStage stage, float progress, byte frameIndex);
+    boolean shouldAdvance(AnimationStage stage, float progress, int frameIndex);
 
-    IKeyframe getCurrentFrame(AnimationStage stage, float progress, byte frameIndex);
+    IKeyframe getCurrentFrame(AnimationStage stage, float progress, int frameIndex);
 
-    IKeyframe getOldFrame(AnimationStage stage, byte frameIndex);
+    IKeyframe getOldFrame(AnimationStage stage, int frameIndex);
 
     IAnimationEvent[] getEvents();
 
-    int getCacheSize();
+    void initCache(Map<AnimationStage, Integer> cache);
 
     Map<AnimationStage, IKeyframe[]> getFrameMap();
 }

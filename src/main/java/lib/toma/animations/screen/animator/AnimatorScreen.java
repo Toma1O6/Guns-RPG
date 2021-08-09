@@ -1,7 +1,7 @@
 package lib.toma.animations.screen.animator;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.GunsRPG;
+import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.pipeline.AnimationStage;
 import lib.toma.animations.pipeline.event.IAnimationEvent;
 import lib.toma.animations.pipeline.frame.IKeyframe;
@@ -12,18 +12,26 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AnimatorScreen extends Screen {
 
@@ -46,7 +54,7 @@ public class AnimatorScreen extends Screen {
     private static final ResourceLocation TIMELINE_ICONS = new ResourceLocation("textures/icons/animator/timeline_icons.png");
 
     private final Pattern posScaleDeg = Pattern.compile("-?[0-9]+(\\.[0-9]*)?");
-    private final Pattern rotVec = Pattern.compile("-?(1(\\.0)?)|(0(\\.[0-9]+)?)");
+    private final Pattern rotVec = Pattern.compile("-?(1(\\.0)?)|-?(0(\\.[0-9]+)?)");
     private final Pattern endpoint = Pattern.compile("(1(\\.0)?)|(0(\\.[0-9]+)?)");
 
     @Nullable
@@ -126,7 +134,7 @@ public class AnimatorScreen extends Screen {
         deg = keyframeEditor.addWidget(new TextFieldWidget(font, 95, 95, 40, 20, StringTextComponent.EMPTY));
         deg.setResponder(new SuggestionResponder("Deg", deg, this::degrees_change));
         deg.setSuggestion("Deg");
-        end = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 95, 40, 20, StringTextComponent.EMPTY));
+        end = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 95, 85, 20, StringTextComponent.EMPTY));
         end.setResponder(new SuggestionResponder("Pos", end, this::endpoint_change));
         end.setSuggestion("Pos");
         // ---- TIMELINE
@@ -149,6 +157,8 @@ public class AnimatorScreen extends Screen {
         }
         timeline.playAnimation();
 
+        addEvent.active = false; // TODO implement
+
         updateSelectionDependents(selectionContext != null);
     }
 
@@ -165,70 +175,106 @@ public class AnimatorScreen extends Screen {
 
     private void posX_change(String value) {
         if (tryValidate(value, posScaleDeg, posX)) {
-            double x = Double.parseDouble(value);
-            MutableKeyframe selectedFrame = selectionContext.frame();
-            Vector3d oldpos = selectedFrame.position;
-            selectedFrame.setPosition(new Vector3d(x, oldpos.y, oldpos.z));
+            setPos(value, (old, x) -> new Vector3d(x, old.y, old.z));
         }
     }
 
     private void posY_change(String value) {
         if (tryValidate(value, posScaleDeg, posY)) {
-
+            setPos(value, (old, y) -> new Vector3d(old.x, y, old.z));
         }
     }
 
     private void posZ_change(String value) {
         if (tryValidate(value, posScaleDeg, posZ)) {
-
+            setPos(value, (old, z) -> new Vector3d(old.x, old.y, z));
         }
+    }
+
+    private void setPos(String value, BiFunction<Vector3d, Double, Vector3d> setter) {
+        double x = Double.parseDouble(value);
+        MutableKeyframe keyframe = selectionContext.frame();
+        Vector3d old = keyframe.position;
+        keyframe.setPosition(setter.apply(old, x));
+        timeline.recompile(selectionContext.owner());
     }
 
     private void scaleX_change(String value) {
         if (tryValidate(value, posScaleDeg, scaleX)) {
-
+            setScale(value, Vector3f::setX);
         }
     }
 
     private void scaleY_change(String value) {
         if (tryValidate(value, posScaleDeg, scaleY)) {
-
+            setScale(value, Vector3f::setY);
         }
     }
 
     private void scaleZ_change(String value) {
         if (tryValidate(value, posScaleDeg, scaleZ)) {
-
+            setScale(value, Vector3f::setZ);
         }
+    }
+
+    private void setScale(String value, BiConsumer<Vector3f, Float> setter) {
+        float x = Float.parseFloat(value);
+        MutableKeyframe keyframe = selectionContext.frame();
+        Vector3f old = keyframe.scale;
+        setter.accept(old, x);
+        timeline.recompile(selectionContext.owner());
     }
 
     private void rotX_change(String value) {
         if (tryValidate(value, rotVec, rotX)) {
-
+            setRotation(value, (pair, x) -> {
+                Vector3f vec3f = pair.getRight();
+                vec3f.setX(x);
+                return new Quaternion(vec3f, pair.getLeft(), true);
+            });
         }
     }
 
     private void rotY_change(String value) {
         if (tryValidate(value, rotVec, rotY)) {
-
+            setRotation(value, (pair, y) -> {
+                Vector3f vec3f = pair.getRight();
+                vec3f.setY(y);
+                return new Quaternion(vec3f, pair.getLeft(), true);
+            });
         }
     }
 
     private void rotZ_change(String value) {
         if (tryValidate(value, rotVec, rotZ)) {
-
+            setRotation(value, (pair, z) -> {
+                Vector3f vec3f = pair.getRight();
+                vec3f.setZ(z);
+                return new Quaternion(vec3f, pair.getLeft(), true);
+            });
         }
     }
 
     private void degrees_change(String value) {
         if (tryValidate(value, posScaleDeg, deg)) {
-
+            setRotation(value, (pair, d) -> new Quaternion(pair.getRight(), d, true));
         }
+    }
+
+    private void setRotation(String value, BiFunction<Pair<Float, Vector3f>, Float, Quaternion> setter) {
+        float f = Float.parseFloat(value);
+        MutableKeyframe keyframe = selectionContext.frame();
+        Pair<Float, Vector3f> rotationPair = AnimationUtils.getVectorWithRotation(keyframe.rotation);
+        keyframe.setRotation(setter.apply(rotationPair, f));
+        timeline.recompile(selectionContext.owner());
     }
 
     private void endpoint_change(String value) {
         if (tryValidate(value, endpoint, end)) {
-
+            float val = Float.parseFloat(value);
+            selectionContext.frame().setEndpoint(val);
+            timeline.getProject().getFrameControl().getProvider().sort(selectionContext.owner());
+            timeline.init();
         }
     }
 
@@ -256,8 +302,8 @@ public class AnimatorScreen extends Screen {
             mutable = new MutableKeyframe();
             mutable.setEndpoint(progress);
             timeline.add(stage, mutable);
-            timeline.init();
         }
+        timeline.init();
         if (lastStage != null && mutable != null) {
             keyframe_select(Timeline.IKeyframeSelectContext.of(mutable, lastStage));
         }
@@ -265,18 +311,32 @@ public class AnimatorScreen extends Screen {
 
     private void buttonRemoveFrame_clicked(Button button) {
         // remove selected frame
+        timeline.remove(selectionContext.owner(), selectionContext.frame());
+        timeline.init();
     }
 
     private void buttonAddEvent_clicked(Button button) {
         // add event dialog
+        // TODO implement
     }
 
     private void buttonCopyFrame_clicked(Button button) {
         // copy frame dialog
+        DialogScreen dialog = new CopyFrameDialog(this, this::copyFrames, selectionContext.owner());
+        minecraft.setScreen(dialog);
+    }
+
+    private void copyFrames(List<AnimationStage> targets) {
+        for (AnimationStage stage : targets) {
+            MutableKeyframe kf = MutableKeyframe.copyOf(selectionContext.frame());
+            timeline.add(stage, kf);
+        }
+        timeline.init();
     }
 
     private void buttonEndFrames_clicked(Button button) {
         // fill end frames
+        timeline.finishFrames();
     }
 
     private void buttonSetProgressToFrame_clicked(Button button) {
@@ -298,20 +358,24 @@ public class AnimatorScreen extends Screen {
         // find next frame (or animation end)
         AnimationProject project = timeline.getProject();
         AnimatorFrameProvider provider = project.getFrameControl().getProvider();
-        Map<AnimationStage, IKeyframe[]> frames = provider.getFrameMap();
-        List<IKeyframe> list = frames.values().stream().flatMap(Arrays::stream).sorted(Comparator.comparingDouble(IKeyframe::endpoint)).collect(Collectors.toList());
-        int selIndex = selectionContext != null ? list.indexOf(selectionContext.frame()) : -1;
-        float value;
-        if (selIndex == -1) {
-            value = list.isEmpty() ? 0.0F : list.get(0).endpoint();
-        } else {
-            if (++selIndex >= list.size()) {
-                value = 1.0F;
-            } else {
-                value = list.get(selIndex).endpoint();
+        Map<AnimationStage, List<MutableKeyframe>> frames = provider.getFrames();
+        float currentProgress = timeline.getAnimationProgress();
+        if (currentProgress == 1.0F) {
+            currentProgress = 0.0F;
+        }
+        List<Timeline.IKeyframeSelectContext> list = frames.entrySet().stream().flatMap(this::doMapping).sorted(Timeline.IKeyframeSelectContext::compareTo).collect(Collectors.toList());
+        Timeline.IKeyframeSelectContext next = null;
+        for (Timeline.IKeyframeSelectContext context : list) {
+            if (context.frame().endpoint() > currentProgress) {
+                next = context;
+                break;
             }
         }
+        float value = next != null ? next.frame().endpoint() : 1.0F;
         timeline.getAnimation().setProgress(value);
+        if (next != null) {
+            keyframe_select(next);
+        }
     }
 
     private void animationProgressBar_clicked(float value) {
@@ -325,7 +389,8 @@ public class AnimatorScreen extends Screen {
     }
 
     private void event_clicked(IAnimationEvent event) {
-
+        // event editor
+        // TODO implement
     }
 
     private void updateSelectionDependents(boolean hasFrame) {
@@ -333,6 +398,26 @@ public class AnimatorScreen extends Screen {
         removeFrame.active = hasFrame;
         copyFrame.active = hasFrame;
         progress2Frame.active = hasFrame;
+        if (hasFrame) {
+            IKeyframe frame = selectionContext.frame();
+            Vector3d position = frame.positionTarget();
+            Vector3f scale = frame.scaleTarget();
+            Pair<Float, Vector3f> rotation = AnimationUtils.getVectorWithRotation(frame.rotationTarget());
+            Vector3f rotV = rotation.getRight();
+            posX.setValue(String.valueOf(position.x));
+            posY.setValue(String.valueOf(position.y));
+            posZ.setValue(String.valueOf(position.z));
+            scaleX.setValue(String.valueOf(scale.x()));
+            scaleY.setValue(String.valueOf(scale.y()));
+            scaleZ.setValue(String.valueOf(scale.z()));
+            DecimalFormat formatter = new DecimalFormat("0.0##");
+            formatter.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.ROOT));
+            deg.setValue(formatter.format(rotation.getLeft()));
+            rotX.setValue(formatter.format(rotV.x()));
+            rotY.setValue(formatter.format(rotV.y()));
+            rotZ.setValue(formatter.format(rotV.z()));
+            end.setValue(String.valueOf(frame.endpoint()));
+        }
     }
 
     private void drawToolbarBackground(MatrixStack stack) {
@@ -375,5 +460,13 @@ public class AnimatorScreen extends Screen {
 
     private void setPaused(boolean paused) {
         Animator.get().getProject().getAnimationControl().setPaused(paused);
+    }
+
+    private Stream<Timeline.IKeyframeSelectContext> doMapping(Map.Entry<AnimationStage, List<MutableKeyframe>> entry) {
+        List<Timeline.IKeyframeSelectContext> list = new ArrayList<>();
+        for (MutableKeyframe frame : entry.getValue()) {
+            list.add(Timeline.IKeyframeSelectContext.of(frame, entry.getKey()));
+        }
+        return list.stream();
     }
 }

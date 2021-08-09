@@ -15,15 +15,20 @@ public class MutableKeyframe implements IKeyframe {
     private Vector3f scale0 = AnimationUtils.DEFAULT_SCALE_VECTOR;
     private Quaternion quat0 = Quaternion.ONE;
 
-    public static MutableKeyframe mutable(IKeyframe frame) {
-        MutableKeyframe mkf = new MutableKeyframe();
-        mkf.setEndpoint(frame.endpoint());
-        mkf.setPosition(frame.positionTarget());
+    public static MutableKeyframe fullCopyOf(IKeyframe frame) {
+        MutableKeyframe mkf = copyOf(frame);
         mkf.setPos0(frame.initialPosition());
-        mkf.setScale(frame.scaleTarget());
         mkf.setScale0(frame.initialScale());
-        mkf.setRotation(frame.rotationTarget());
         mkf.setQuat0(frame.initialRotation());
+        return mkf;
+    }
+
+    public static MutableKeyframe copyOf(IKeyframe keyframe) {
+        MutableKeyframe mkf = new MutableKeyframe();
+        mkf.setEndpoint(keyframe.endpoint());
+        mkf.setPosition(keyframe.positionTarget());
+        mkf.setScale(keyframe.scaleTarget());
+        mkf.setRotation(keyframe.rotationTarget());
         return mkf;
     }
 

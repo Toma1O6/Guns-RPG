@@ -10,6 +10,7 @@ import lib.toma.animations.pipeline.frame.IKeyframe;
 import lib.toma.animations.pipeline.frame.MutableKeyframe;
 import lib.toma.animations.screen.animator.AnimationProject;
 import lib.toma.animations.screen.animator.Animator;
+import lib.toma.animations.screen.animator.AnimatorFrameProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.text.ITextComponent;
@@ -28,8 +29,6 @@ public class Timeline extends WidgetContainer {
     private final int toolbarHeight = 20;
     private final int progressBarHeight = 10;
     private final int scrollbarWidth = 4;
-    private final Map<AnimationStage, IKeyframe[]> frameMap;
-    private final List<AnimationStage> stages;
     private final List<Display> displayList = new ArrayList<>();
     private int scrollIndex;
     private final int displaySize;
@@ -42,8 +41,6 @@ public class Timeline extends WidgetContainer {
         super(x, y, width, height);
         this.project = Animator.get().getProject();
         this.displaySize = (height - toolbarHeight - progressBarHeight) / 10;
-        this.frameMap = project.getFrameControl().getProvider().getFramesForAnimator();
-        this.stages = new ArrayList<>(frameMap.keySet());
         this.contextSupplier = contextSupplier;
         init();
     }
@@ -64,18 +61,20 @@ public class Timeline extends WidgetContainer {
             }
             displayList.add(addWidget(display));
         }
+        AnimatorFrameProvider provider = project.getFrameControl().getProvider();
+        Map<AnimationStage, List<MutableKeyframe>> map = provider.getFrames();
+        List<AnimationStage> stages = new ArrayList<>(map.keySet());
         for (int i = scrollIndex; i < limit; i++) {
             if (i >= stages.size()) break;
             AnimationStage stage = stages.get(i);
-            IKeyframe[] array = frameMap.get(stage);
-            if (array == null || array.length == 0) {
-                stages.remove(stage);
-                frameMap.remove(stage);
+            List<MutableKeyframe> list = map.get(stage);
+            if (list == null || list.isEmpty()) {
+                provider.deleteStage(stage);
                 continue;
             }
             int j = addEventDisplay ? i - scrollIndex + 1 : i - scrollIndex;
-            Display display = new Display(x, y + vertOffset + j * 10, width - scrollbarWidth, 10, stage.getName(), this, contextSupplier);
-            for (IKeyframe frame : array) {
+            Display display = new Display(0, vertOffset + j * 10, width - scrollbarWidth, 10, stage.getName(), this, stage, contextSupplier);
+            for (MutableKeyframe frame : list) {
                 display.addWidget(new Element<>(frame, IKeyframe::endpoint, display, ClickActionType.FRAME));
             }
             displayList.add(addWidget(display));
@@ -103,6 +102,8 @@ public class Timeline extends WidgetContainer {
         fill(stack, x, y, x + width, y + height, 0x67 << 24);
         fill(stack, x, y, x + width, y + toolbarHeight, 0x44 << 24);
         renderChildren(stack, mouseX, mouseY, partialTicks);
+        renderProgressBar(stack);
+        renderScrollbar(stack);
     }
 
     @Override
@@ -125,8 +126,50 @@ public class Timeline extends WidgetContainer {
         }
     }
 
-    public void add(AnimationStage stage, MutableKeyframe frame) {
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+        if (!super.mouseScrolled(mouseX, mouseY, amount)) {
+            if (amount != 0) {
+                if (isMouseOver(mouseX, mouseY)) {
+                    onScrolled((int) amount);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
+    public void onScrolled(int amount) {
+        int i = -amount;
+        int j = scrollIndex + i;
+        AnimatorFrameProvider provider = project.getFrameControl().getProvider();
+        int elements = provider.getFrames().keySet().size();
+        if (project.hasEvents()) {
+            ++elements;
+        }
+        if (j >= 0 && j <= elements - displaySize + 1) {
+            scrollIndex = j;
+            init();
+        }
+    }
+
+    public void recompile(AnimationStage stage) {
+        project.getFrameControl().getProvider().recompile(stage);
+        init();
+    }
+
+    public void finishFrames() {
+        project.getFrameControl().getProvider().finish();
+        init();
+    }
+
+    public void add(AnimationStage stage, MutableKeyframe frame) {
+        project.getFrameControl().getProvider().addFrame(stage, frame);
+    }
+
+    public void remove(AnimationStage stage, MutableKeyframe frame) {
+        project.getFrameControl().getProvider().removeFrame(stage, frame);
+        clearSelection();
     }
 
     public Animator.CustomizableAnimation getAnimation() {
@@ -159,7 +202,27 @@ public class Timeline extends WidgetContainer {
 
     private void renderProgressBar(MatrixStack stack) {
         float progress = this.getAnimationProgress();
+        int pos = x + (int) (progress * (width - scrollbarWidth - 5)) + 5;
+        vLine(stack, pos, y + toolbarHeight, y + height, 0xFFFFFFFF);
+        fill(stack, pos - 2, y + toolbarHeight, pos + 3, y + toolbarHeight + progressBarHeight, 0xFFFFFFFF);
+    }
 
+    private void renderScrollbar(MatrixStack stack) {
+        int left = x + width - 2;
+        int right = left + 2;
+        int top = y + toolbarHeight + progressBarHeight;
+        int bottom = y + height;
+        fill(stack, left, top, right, bottom, 0xFF << 24);
+        AnimatorFrameProvider provider = project.getFrameControl().getProvider();
+        int total = provider.getFrames().keySet().size();
+        if (project.hasEvents()) {
+            ++total;
+        }
+        double size = 1.0 / total * (height - toolbarHeight - progressBarHeight);
+        int minY = (int) (scrollIndex * size);
+        int bottomIndex = Math.min(displayList.size(), total);
+        int maxY = minY + (int) size * bottomIndex;
+        fill(stack, left, top + minY, right, top + maxY, 0xFFFFFFFF);
     }
 
     private void rightClickEvent(IAnimationEvent event) {
@@ -167,9 +230,14 @@ public class Timeline extends WidgetContainer {
             eventClicked.clicked(event);
     }
 
+    private void clearSelection() {
+        if (keyframeSelected != null)
+            keyframeSelected.onSelect(null);
+    }
+
     private void rightClickFrame(AnimationStage stage, MutableKeyframe iKeyframe) {
         if (keyframeSelected != null) {
-            keyframeSelected.onSelect(IKeyframeSelectContext.of(iKeyframe, stage));
+            keyframeSelected.onSelect(iKeyframe != null ? IKeyframeSelectContext.of(iKeyframe, stage) : null);
         }
     }
 
@@ -187,7 +255,7 @@ public class Timeline extends WidgetContainer {
         void clicked(IAnimationEvent event);
     }
 
-    public interface IKeyframeSelectContext {
+    public interface IKeyframeSelectContext extends Comparable<IKeyframeSelectContext> {
 
         MutableKeyframe frame();
         AnimationStage owner();
@@ -204,6 +272,11 @@ public class Timeline extends WidgetContainer {
                     return owner;
                 }
             };
+        }
+
+        @Override
+        default int compareTo(IKeyframeSelectContext o) {
+            return Float.compare(frame().endpoint(), o.frame().endpoint());
         }
     }
 
@@ -228,9 +301,13 @@ public class Timeline extends WidgetContainer {
         @Override
         public void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
             ITextComponent title = getMessage();
-            hLine(stack, x, x + width, y + 4, 0xFFFF << 16);
-            Minecraft.getInstance().font.drawShadow(stack, title, x + 2, y, 0xFFFFFF);
+            hLine(stack, x, x + width, y + 5, 0xFFFF << 16);
+            Minecraft.getInstance().font.drawShadow(stack, title, x + 2, y + 1, 0xFFFFFF);
             renderChildren(stack, mouseX, mouseY, partialTicks);
+        }
+
+        public Timeline getTimeline() {
+            return owner;
         }
 
         private void selected(ClickActionType type, Object value) {
@@ -260,8 +337,8 @@ public class Timeline extends WidgetContainer {
             this.contextSupplier = owner.contextSupplier;
 
             int dx = owner.x;
-            int dy = owner.y;
-            int dw = owner.getWidth();
+            int dy = owner.getTimeline().y;
+            int dw = owner.getWidth() - 5;
             float posPct = progress.apply(t);
             this.x = dx + (int) (dw * posPct);
             this.y = dy;
@@ -269,9 +346,9 @@ public class Timeline extends WidgetContainer {
 
         @Override
         public void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
-            int color = isSelected() ? 0xAA00 : 0xAAAA;
+            int color = isSelected() ? 0xCC00 : 0xCCCC;
             fill(stack, x, y, x + width, y + height, color | (0x89 << 24));
-            fill(stack, x + 2, y + 2, x + width - 2, y + height - 2, color | (0x44 << 24));
+            fill(stack, x + 2, y + 2, x + width - 2, y + height - 2, color | (0xFF << 24));
         }
 
         @Override
@@ -289,7 +366,8 @@ public class Timeline extends WidgetContainer {
         }
 
         private boolean isSelected() {
-            return clickActionType == ClickActionType.FRAME && t == contextSupplier.get().frame();
+            IKeyframeSelectContext context = contextSupplier.get();
+            return context != null && clickActionType == ClickActionType.FRAME && t == context.frame();
         }
     }
 

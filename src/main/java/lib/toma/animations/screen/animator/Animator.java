@@ -127,7 +127,6 @@ public final class Animator {
         private int totalTicks;
         private int remainingTicks;
         private float progress, progressO, progressI;
-        private float pausePartialTicks;
         private boolean removalMarker;
 
         public CustomizableAnimation() {
@@ -144,23 +143,18 @@ public final class Animator {
             IKeyframe kfO = provider.getLastFrame(stage);
             float ep = kf.endpoint();
             float epO = kfO.endpoint();
-            float sProgress = (progressI - epO) / (ep - epO);
+            float min = ep - epO;
+            float sProgress = min == 0.0F ? 1.0F : (progressI - epO) / (ep - epO);
             Keyframes.processFrame(kf, sProgress, matrixStack);
         }
 
         @Override
         public void renderTick(float deltaRenderTime) {
             float prev = progressI;
-            boolean paused = isPausedSupp.getAsBoolean();
-            float renderTime;
-            if (!paused) {
-                pausePartialTicks = deltaRenderTime;
-                renderTime = deltaRenderTime;
-            } else {
-                renderTime = pausePartialTicks;
+            if (!isPausedSupp.getAsBoolean()) {
+                progressI = progressO + (progress - progressO) * deltaRenderTime;
+                advance(progressI, prev);
             }
-            progressI = progressO + (progress - progressO) * renderTime;
-            advance(progressI, prev);
         }
 
         @Override
@@ -189,7 +183,7 @@ public final class Animator {
             this.progress = value;
             this.progressO = value;
             this.progressI = value;
-            this.remainingTicks = (int) (totalTicks * value);
+            this.remainingTicks = totalTicks - (int) (totalTicks * value);
             this.provider.forceProgress(value);
         }
 
@@ -211,7 +205,7 @@ public final class Animator {
         }
 
         private float getRawProgress() {
-            return 1.0F - ((float) remainingTicks / totalTicks);
+            return isPausedSupp.getAsBoolean() ? progress : 1.0F - ((float) remainingTicks / totalTicks);
         }
 
         private void resetState() {
@@ -219,7 +213,7 @@ public final class Animator {
             progress = 0.0F;
             progressO = 0.0F;
             progressI = 0.0F;
-            pausePartialTicks = 0.0F;
+            provider.forceProgress(0.0F);
         }
     }
 }

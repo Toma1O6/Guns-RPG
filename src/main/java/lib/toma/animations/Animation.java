@@ -24,7 +24,8 @@ public class Animation extends TickableAnimation {
         IKeyframe lastFrame = provider.getPreviousFrame(stage);
         float activeEndpoint = currentFrame.endpoint();
         float prevEndpoint = lastFrame.endpoint();
-        float stageProgress = (progressInterpolated - prevEndpoint) / (activeEndpoint - prevEndpoint);
+        float min = activeEndpoint - prevEndpoint;
+        float stageProgress = min == 0.0F ? 1.0F : (progressInterpolated - prevEndpoint) / (activeEndpoint - prevEndpoint);
         Keyframes.processFrame(currentFrame, stageProgress, matrix);
     }
 

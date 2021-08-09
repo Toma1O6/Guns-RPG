@@ -29,23 +29,18 @@ public class TargetAndBackFrameProvider implements IKeyframeProvider {
     }
 
     @Override
-    public boolean shouldAdvance(AnimationStage stage, float progress, byte frameIndex) {
+    public boolean shouldAdvance(AnimationStage stage, float progress, int frameIndex) {
         return frameIndex == 0 && progress >= 0.5F;
     }
 
     @Override
-    public IKeyframe getCurrentFrame(AnimationStage stage, float progress, byte frameIndex) {
+    public IKeyframe getCurrentFrame(AnimationStage stage, float progress, int frameIndex) {
         return frameIndex != 0 ? frames.returning() : frames.toTarget();
     }
 
     @Override
-    public IKeyframe getOldFrame(AnimationStage stage, byte frameIndex) {
+    public IKeyframe getOldFrame(AnimationStage stage, int frameIndex) {
         return frameIndex != 0 ? frames.toTarget() : Keyframes.none();
-    }
-
-    @Override
-    public int getCacheSize() {
-        return targetStage.getIndex();
     }
 
     @Override
@@ -66,6 +61,11 @@ public class TargetAndBackFrameProvider implements IKeyframeProvider {
         array[1] = frames.returning();
         map.put(targetStage, array);
         return map;
+    }
+
+    @Override
+    public void initCache(Map<AnimationStage, Integer> cache) {
+        cache.put(targetStage, 0);
     }
 
     private static class FramePair {

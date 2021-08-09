@@ -11,7 +11,8 @@ public final class FrameProviderType<FP extends IKeyframeProvider> {
     public static final FrameProviderType<NoFramesProvider> EMPTY = new FrameProviderType<>("empty", new NoFramesProvider.Serializer());
     public static final FrameProviderType<SingleFrameProvider> SINGLE = new FrameProviderType<>("single_frame", new SingleFrameProvider.Serializer());
     public static final FrameProviderType<TargetAndBackFrameProvider> TARGET_AND_BACK = new FrameProviderType<>("target_back", new TargetAndBackFrameProvider.Serializer());
-    public static final FrameProviderType<KeyframeProvider> KEYFRAME_PROVIDER_TYPE = new FrameProviderType<>("default", new KeyframeProvider.Serializer()).allowEvents();
+    // TODO allow events on this provider type
+    public static final FrameProviderType<KeyframeProvider> KEYFRAME_PROVIDER_TYPE = new FrameProviderType<>("default", new KeyframeProvider.Serializer());
 
     private final String typeKey;
     private final IKeyframeTypeSerializer<FP> serializer;

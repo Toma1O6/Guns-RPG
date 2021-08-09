@@ -7,19 +7,22 @@ import lib.toma.animations.pipeline.IAnimation;
 import lib.toma.animations.pipeline.event.IAnimationEvent;
 import lib.toma.animations.pipeline.frame.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 import java.util.function.Predicate;
 
 public class AnimatorFrameProvider implements IKeyframeProvider {
 
-    private final Map<AnimationStage, LinkedList<MutableKeyframe>> frameMap = new TreeMap<>(AnimationStage::compareTo);
+    private final Map<AnimationStage, List<MutableKeyframe>> frameMap = new TreeMap<>(AnimationStage::compareTo);
     private final List<IAnimationEvent> eventList = new ArrayList<>();
     private final boolean events;
-    private int maxStageIndex;
 
     // stuff which is normally handled in FrameProviderInstances
-    private byte[] cache;
+    private final Map<AnimationStage, Integer> frameCache = new HashMap<>();
     private byte eventIndex;
 
     public AnimatorFrameProvider(IKeyframeProvider provider) {
@@ -33,15 +36,15 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
             AnimationStage stage = entry.getKey();
             IKeyframe[] array = entry.getValue();
             if(array.length == 0) continue;
-            LinkedList<MutableKeyframe> linkedList = new LinkedList<>();
-            Arrays.stream(array).map(MutableKeyframe::mutable).forEach(linkedList::add);
-            frameMap.put(stage, linkedList);
+            List<MutableKeyframe> list = new ArrayList<>();
+            Arrays.stream(array).map(MutableKeyframe::fullCopyOf).forEach(list::add);
+            frameMap.put(stage, list);
         }
-        computeMaxStageIndex();
+        provider.initCache(frameCache);
     }
 
     @Override
-    public boolean shouldAdvance(AnimationStage stage, float progress, byte frameIndex) {
+    public boolean shouldAdvance(AnimationStage stage, float progress, int frameIndex) {
         List<MutableKeyframe> list = frameMap.get(stage);
         if (list == null || frameIndex >= list.size() - 1) return false;
         MutableKeyframe frame = list.get(frameIndex);
@@ -49,23 +52,18 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
     }
 
     @Override
-    public IKeyframe getCurrentFrame(AnimationStage stage, float progress, byte frameIndex) {
+    public IKeyframe getCurrentFrame(AnimationStage stage, float progress, int frameIndex) {
         return frameMap.get(stage).get(frameIndex);
     }
 
     @Override
-    public IKeyframe getOldFrame(AnimationStage stage, byte frameIndex) {
+    public IKeyframe getOldFrame(AnimationStage stage, int frameIndex) {
         return frameIndex == 0 ? Keyframes.none() : frameMap.get(stage).get(frameIndex - 1);
     }
 
     @Override
     public IAnimationEvent[] getEvents() {
         return eventList.toArray(IAnimationEvent.NO_EVENTS);
-    }
-
-    @Override
-    public int getCacheSize() {
-        return maxStageIndex;
     }
 
     @Override
@@ -78,6 +76,54 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public void initCache(Map<AnimationStage, Integer> cache) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void recompile(AnimationStage stage) {
+        List<MutableKeyframe> list = frameMap.get(stage);
+        if (list != null && list.size() > 1) {
+            for (int i = 1; i < list.size(); i++) {
+                IKeyframe parent = list.get(i - 1);
+                IKeyframe child = list.get(i);
+                child.baseOn(parent);
+            }
+        }
+    }
+
+    public void finish() {
+        for (List<MutableKeyframe> list : frameMap.values()) {
+            if (list.isEmpty()) continue;
+            MutableKeyframe last = list.get(list.size() - 1);
+            if (last.endpoint() == 1.0F) continue;
+            MutableKeyframe ending = new MutableKeyframe();
+            ending.baseOn(last);
+
+            Vector3d position = ending.initialPosition();
+            ending.setPosition(position.multiply(-1, -1, -1));
+            Vector3f scale = ending.initialScale();
+            if (!scale.equals(AnimationUtils.DEFAULT_SCALE_VECTOR)) {
+                ending.setScale(new Vector3f(1.0F - scale.x(), 1.0F - scale.y(), 1.0F - scale.z()));
+            }
+            Pair<Float, Vector3f> rotation = AnimationUtils.getVectorWithRotation(ending.initialRotation());
+            float degrees = rotation.getKey();
+            ending.setRotation(new Quaternion(rotation.getValue().copy(), -degrees, true));
+            ending.setEndpoint(1.0F);
+
+            list.add(ending);
+        }
+    }
+
+    public void deleteStage(AnimationStage stage) {
+        frameMap.remove(stage);
+        frameCache.remove(stage);
+    }
+
+    public Map<AnimationStage, List<MutableKeyframe>> getFrames() {
+        return frameMap;
+    }
+
     public void onProgressed(float progress, float progressOld, IAnimation source) {
         invokeEventsRecursive(source, progress, progressOld);
     }
@@ -88,19 +134,19 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
     }
 
     public boolean blocksStageAnimation(AnimationStage stage) {
-        return stage.getIndex() >= maxStageIndex;
+        return !frameCache.containsKey(stage);
     }
 
     public IKeyframe getActualFrame(AnimationStage stage, float progress) {
-        byte index = cache[stage.getIndex()];
+        int index = frameCache.get(stage);
         if (shouldAdvance(stage, progress, index)) {
-            index = ++cache[stage.getIndex()];
+            frameCache.put(stage, ++index);
         }
         return getCurrentFrame(stage, progress, index);
     }
 
     public IKeyframe getLastFrame(AnimationStage stage) {
-        return getOldFrame(stage, cache[stage.getIndex()]);
+        return getOldFrame(stage, frameCache.get(stage));
     }
 
     public IKeyframeProvider toSerializable() {
@@ -122,6 +168,35 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
         return events;
     }
 
+    public void addFrame(AnimationStage stage, MutableKeyframe frame) {
+        List<MutableKeyframe> list = frameMap.computeIfAbsent(stage, key -> new ArrayList<>());
+        list.add(frame);
+        sortAndCompile(list);
+        onStageAdded(stage);
+    }
+
+    public void removeFrame(AnimationStage stage, MutableKeyframe frame) {
+        List<MutableKeyframe> list = frameMap.get(stage);
+        if (list != null) {
+            if (list.remove(frame)) {
+                sortAndCompile(list);
+                int index = frameCache.get(stage);
+                if (index >= list.size()) {
+                    frameCache.put(stage, list.size() - 1);
+                }
+            }
+            if (list.isEmpty()) {
+                deleteStage(stage);
+            }
+        }
+    }
+
+    public void sort(AnimationStage stage) {
+        List<? extends IKeyframe> list = frameMap.get(stage);
+        if (list == null) return;
+        sortAndCompile(list);
+    }
+
     private boolean checkSingleFrame() {
         return isWithinFrameCount(size -> size <= 1);
     }
@@ -132,20 +207,20 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
 
     private IKeyframeProvider constructSingleFrameProvider() {
         Map<AnimationStage, IKeyframe> map = new HashMap<>();
-        for (Map.Entry<AnimationStage, LinkedList<MutableKeyframe>> entry : frameMap.entrySet()) {
-            LinkedList<MutableKeyframe> list = entry.getValue();
+        for (Map.Entry<AnimationStage, List<MutableKeyframe>> entry : frameMap.entrySet()) {
+            List<MutableKeyframe> list = entry.getValue();
             if (!list.isEmpty()) {
-                map.put(entry.getKey(), list.getFirst());
+                map.put(entry.getKey(), list.get(0));
             }
         }
         return SingleFrameProvider.fromExistingMap(map);
     }
 
     private IKeyframeProvider constructTargetAndBackProvider() {
-        for (Map.Entry<AnimationStage, LinkedList<MutableKeyframe>> entry : frameMap.entrySet()) {
+        for (Map.Entry<AnimationStage, List<MutableKeyframe>> entry : frameMap.entrySet()) {
             AnimationStage target = entry.getKey();
-            LinkedList<MutableKeyframe> list = entry.getValue();
-            MutableKeyframe toTarget = list.getFirst();
+            List<MutableKeyframe> list = entry.getValue();
+            MutableKeyframe toTarget = list.get(0);
             MutableKeyframe fromTarget = list.get(1);
             return new TargetAndBackFrameProvider(target, toTarget, fromTarget);
         }
@@ -154,9 +229,9 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
 
     private IKeyframeProvider constructFullProvider() {
         Map<AnimationStage, IKeyframe[]> map = new HashMap<>();
-        for (Map.Entry<AnimationStage, LinkedList<MutableKeyframe>> entry : frameMap.entrySet()) {
+        for (Map.Entry<AnimationStage, List<MutableKeyframe>> entry : frameMap.entrySet()) {
             AnimationStage stage = entry.getKey();
-            LinkedList<MutableKeyframe> frames = entry.getValue();
+            List<MutableKeyframe> frames = entry.getValue();
             IKeyframe[] array = frames.toArray(new IKeyframe[0]);
             QuickSort.sort(array, Comparator.comparingDouble(IKeyframe::endpoint));
             map.put(stage, array);
@@ -165,7 +240,7 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
     }
 
     private boolean isWithinFrameCount(Predicate<Integer> sizePredicate) {
-        for (Map.Entry<AnimationStage, LinkedList<MutableKeyframe>> entry : frameMap.entrySet()) {
+        for (Map.Entry<AnimationStage, List<MutableKeyframe>> entry : frameMap.entrySet()) {
             int size = entry.getValue().size();
             if (!sizePredicate.test(size)) {
                 return false;
@@ -175,30 +250,11 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
     }
 
     private void onStageAdded(AnimationStage stage) {
-        int index = stage.getIndex();
-        if (index > maxStageIndex) {
-            maxStageIndex = index;
-            modifyCacheSize();
-        }
-    }
-
-    private void computeMaxStageIndex() {
-        int oldIndex = maxStageIndex;
-        int biggest = AnimationUtils.getBiggestFromMap(frameMap, Map::keySet, AnimationStage::getIndex);
-        if (oldIndex != biggest) {
-            maxStageIndex = biggest;
-            modifyCacheSize();
-        }
-    }
-
-    private void modifyCacheSize() {
-        byte[] newCache = new byte[maxStageIndex];
-        System.arraycopy(cache, 0, newCache, 0, maxStageIndex);
-        cache = newCache;
+        frameCache.put(stage, 0);
     }
 
     private void clrAndAdjustCache(float progress, Set<AnimationStage> set) {
-        Arrays.fill(cache, (byte) 0);
+        set.forEach(stage -> frameCache.put(stage, 0));
         while (true) {
             if (!hasFrameAdvanced(progress, set)) {
                 break;
@@ -209,9 +265,9 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
     private boolean hasFrameAdvanced(float progress, Set<AnimationStage> set) {
         boolean changed = false;
         for (AnimationStage stage : set) {
-            byte index = cache[stage.getIndex()];
+            int index = frameCache.get(stage);
             if (shouldAdvance(stage, progress, index)) {
-                cache[stage.getIndex()]++;
+                frameCache.put(stage, index + 1);
                 changed = true;
             }
         }
@@ -226,6 +282,15 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
             ++eventIndex;
             event.dispatch(Minecraft.getInstance(), source);
             invokeEventsRecursive(source, progress, progressOld);
+        }
+    }
+
+    private void sortAndCompile(List<? extends IKeyframe> list) {
+        list.sort(Comparator.comparingDouble(IKeyframe::endpoint));
+        for (int i = 1; i < list.size(); i++) {
+            IKeyframe parent = list.get(i - 1);
+            IKeyframe child = list.get(i);
+            child.baseOn(parent);
         }
     }
 }

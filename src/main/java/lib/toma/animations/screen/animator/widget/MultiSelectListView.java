@@ -122,7 +122,7 @@ public class MultiSelectListView<T> extends Widget {
 
         double size = 1.0 / entries.size() * height;
         int scrollbarY = (int) (scroll * size);
-        int scrollbarHeight = (int) (Math.ceil(displayLimit * size));
+        int scrollbarHeight = (int) (Math.ceil((scroll + Math.min(displayLimit, entries.size())) * size));
         fill(stack, left, top + scrollbarY, right, top + scrollbarY + scrollbarHeight, 0xFFFFFFFF);
     }
 

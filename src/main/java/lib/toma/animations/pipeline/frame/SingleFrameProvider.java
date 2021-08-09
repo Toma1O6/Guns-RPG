@@ -14,7 +14,6 @@ import java.util.Objects;
 public class SingleFrameProvider implements IKeyframeProvider {
 
     private final Map<AnimationStage, IKeyframe> frames;
-    private final int cacheSize;
 
     public SingleFrameProvider(IFrameConstructor frameConstructor) {
         FrameBuilder builder = new FrameBuilder();
@@ -23,17 +22,16 @@ public class SingleFrameProvider implements IKeyframeProvider {
             throw new IllegalArgumentException("Cannot construct empty keyframe provider!");
         }
         frames = builder.frames;
-        cacheSize = AnimationUtils.getBiggestFromMap(frames, Map::keySet, AnimationStage::getIndex);
     }
 
     /**
      * Constructor for JSON deserializer
+     *
      * @param frames Loaded frames
      * @throws JsonParseException Thrown when frame map is empty
      */
     private SingleFrameProvider(Map<AnimationStage, IKeyframe> frames) {
         this.frames = frames;
-        this.cacheSize = AnimationUtils.getBiggestFromMap(frames, Map::keySet, AnimationStage::getIndex);
     }
 
     public static SingleFrameProvider fromExistingMap(Map<AnimationStage, IKeyframe> frames) {
@@ -47,28 +45,23 @@ public class SingleFrameProvider implements IKeyframeProvider {
     }
 
     @Override
-    public IKeyframe getCurrentFrame(AnimationStage stage, float progress, byte frameIndex) {
+    public IKeyframe getCurrentFrame(AnimationStage stage, float progress, int frameIndex) {
         return AnimationUtils.safeRet(frames, stage, Keyframes.none());
     }
 
     @Override
-    public IKeyframe getOldFrame(AnimationStage stage, byte frameIndex) {
+    public IKeyframe getOldFrame(AnimationStage stage, int frameIndex) {
         return getCurrentFrame(stage, 0, frameIndex);
     }
 
     @Override
-    public boolean shouldAdvance(AnimationStage stage, float progress, byte frameIndex) {
+    public boolean shouldAdvance(AnimationStage stage, float progress, int frameIndex) {
         return false;
     }
 
     @Override
     public IAnimationEvent[] getEvents() {
         return IAnimationEvent.NO_EVENTS;
-    }
-
-    @Override
-    public int getCacheSize() {
-        return cacheSize;
     }
 
     @Override
@@ -79,8 +72,15 @@ public class SingleFrameProvider implements IKeyframeProvider {
     @Override
     public Map<AnimationStage, IKeyframe[]> getFrameMap() {
         Map<AnimationStage, IKeyframe[]> map = AnimationUtils.createSortedMap();
-        frames.forEach((k, v) -> map.put(k, new IKeyframe[] {v}));
+        frames.forEach((k, v) -> map.put(k, new IKeyframe[]{v}));
         return map;
+    }
+
+    @Override
+    public void initCache(Map<AnimationStage, Integer> cache) {
+        for (AnimationStage stage : frames.keySet()) {
+            cache.put(stage, 0);
+        }
     }
 
     @FunctionalInterface

@@ -1,6 +1,8 @@
 package lib.toma.animations.screen.animator;
 
 import lib.toma.animations.AnimationEngine;
+import lib.toma.animations.pipeline.AnimationType;
+import lib.toma.animations.pipeline.IAnimationPipeline;
 import lib.toma.animations.pipeline.event.IAnimationEvent;
 import lib.toma.animations.pipeline.frame.IKeyframeProvider;
 import lib.toma.animations.pipeline.frame.KeyframeProvider;
@@ -98,6 +100,12 @@ public class AnimationProject {
 
         public void setAnimationTime(int animationTime) {
             this.animationTime = animationTime;
+            IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
+            AnimationType<Animator.CustomizableAnimation> type = Animator.ANIMATOR_TYPE;
+            Animator.CustomizableAnimation animation = pipeline.get(type);
+            if (animation != null) {
+                animation.setTickLength(animationTime);
+            }
         }
 
         public int getAnimationTime() {

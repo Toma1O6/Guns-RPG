@@ -2,7 +2,6 @@ package lib.toma.animations.pipeline.frame;
 
 import com.google.gson.*;
 import lib.toma.animations.AnimationEngine;
-import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.pipeline.AnimationStage;
 import lib.toma.animations.pipeline.event.IAnimationEvent;
 import lib.toma.animations.serialization.AnimationLoader;
@@ -11,18 +10,15 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class KeyframeProvider implements IKeyframeProvider {
 
     private final Map<AnimationStage, IKeyframe[]> frames;
     private final IAnimationEvent[] events;
-    private final int maxStageIndex;
 
     public KeyframeProvider(Map<AnimationStage, IKeyframe[]> frames, IAnimationEvent[] events) {
         this.frames = frames;
         this.events = events;
-        this.maxStageIndex = AnimationUtils.getBiggestFromMap(frames, Map::keySet, AnimationStage::getIndex);
         compileFrames();
     }
 
@@ -32,7 +28,7 @@ public class KeyframeProvider implements IKeyframeProvider {
     }
 
     @Override
-    public boolean shouldAdvance(AnimationStage stage, float progress, byte frameIndex) {
+    public boolean shouldAdvance(AnimationStage stage, float progress, int frameIndex) {
         IKeyframe[] keyframes = frames.get(stage);
         if (keyframes == null || frameIndex >= keyframes.length - 1) return false;
         IKeyframe frame = keyframes[frameIndex];
@@ -40,23 +36,18 @@ public class KeyframeProvider implements IKeyframeProvider {
     }
 
     @Override
-    public IKeyframe getCurrentFrame(AnimationStage stage, float progress, byte frameIndex) {
+    public IKeyframe getCurrentFrame(AnimationStage stage, float progress, int frameIndex) {
         return frames.get(stage)[frameIndex];
     }
 
     @Override
-    public IKeyframe getOldFrame(AnimationStage stage, byte frameIndex) {
+    public IKeyframe getOldFrame(AnimationStage stage, int frameIndex) {
         return frameIndex == 0 ? Keyframes.none() : frames.get(stage)[frameIndex - 1];
     }
 
     @Override
     public IAnimationEvent[] getEvents() {
         return events;
-    }
-
-    @Override
-    public int getCacheSize() {
-        return maxStageIndex;
     }
 
     @Override
@@ -67,6 +58,13 @@ public class KeyframeProvider implements IKeyframeProvider {
     @Override
     public Map<AnimationStage, IKeyframe[]> getFrameMap() {
         return frames;
+    }
+
+    @Override
+    public void initCache(Map<AnimationStage, Integer> cache) {
+        for (AnimationStage stage : frames.keySet()) {
+            cache.put(stage, 0);
+        }
     }
 
     private void compileFrames() {
