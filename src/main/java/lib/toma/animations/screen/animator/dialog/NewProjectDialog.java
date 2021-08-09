@@ -1,6 +1,8 @@
 package lib.toma.animations.screen.animator.dialog;
 
+import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.ByteFlags;
+import lib.toma.animations.pipeline.IAnimationPipeline;
 import lib.toma.animations.screen.animator.AnimationProject;
 import lib.toma.animations.screen.animator.Animator;
 import lib.toma.animations.screen.animator.AnimatorScreen;
@@ -107,6 +109,8 @@ public class NewProjectDialog extends DialogScreen {
         AnimationProject project = new AnimationProject(name, value);
         project.getAnimationControl().setOnRepeat(repeat);
         Animator.get().setUsingProject(project);
+        IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
+        pipeline.insert(Animator.ANIMATOR_TYPE);
         showParent();
     }
 

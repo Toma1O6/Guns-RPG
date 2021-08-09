@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -37,6 +36,7 @@ public class AnimatorScreen extends Screen {
 
     private static final ITextComponent NEW_PROJECT = new TranslationTextComponent("screen.animator.new_project");
     private static final ITextComponent OPEN = new TranslationTextComponent("screen.animator.open");
+    private static final ITextComponent OPEN_FROM = new TranslationTextComponent("screen.animator.open_from");
     private static final ITextComponent SAVE = new TranslationTextComponent("screen.animator.save");
     private static final ITextComponent SAVE_AS = new TranslationTextComponent("screen.animator.save_as");
     private static final ITextComponent SETTINGS = new TranslationTextComponent("screen.animator.settings");
@@ -64,9 +64,6 @@ public class AnimatorScreen extends Screen {
     private TextFieldWidget posX;
     private TextFieldWidget posY;
     private TextFieldWidget posZ;
-    private TextFieldWidget scaleX;
-    private TextFieldWidget scaleY;
-    private TextFieldWidget scaleZ;
     private TextFieldWidget rotX;
     private TextFieldWidget rotY;
     private TextFieldWidget rotZ;
@@ -74,15 +71,9 @@ public class AnimatorScreen extends Screen {
     private TextFieldWidget end;
 
     private Timeline timeline;
-    private IconButton addFrame;
     private IconButton removeFrame;
-    private IconButton addEvent;
     private IconButton copyFrame;
-    private IconButton endFrames;
     private IconButton progress2Frame;
-    private IconButton toBeginning;
-    private IconButton toEnd;
-    private IconButton nextFrame;
 
     public AnimatorScreen() {
         super(new TranslationTextComponent("screen.dev_tool.animator"));
@@ -91,15 +82,16 @@ public class AnimatorScreen extends Screen {
     @Override
     protected void init() {
         // ---- TOOLBAR (top)
-        IconButton.SETTINGS.set(ANIMATOR_ICONS, 2, 16);
+        IconButton.SETTINGS.set(ANIMATOR_ICONS, 3, 16);
         addButton(new IconButton(5, 5, 20, 20, 0, this::buttonNewProject_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, NEW_PROJECT, mx, my)));
         addButton(new IconButton(30, 5, 20, 20, 1, this::buttonOpen_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, OPEN, mx, my)));
-        addButton(new IconButton(55, 5, 20, 20, 2, this::buttonSave_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SAVE, mx, my)));
-        addButton(new IconButton(80, 5, 20, 20, 2, this::buttonSaveAs_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SAVE_AS, mx, my)));
-        addButton(new IconButton(105, 5, 20, 20, 3, this::buttonSettings_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SETTINGS, mx, my)));
+        addButton(new IconButton(55, 5, 20, 20, 4, this::buttonOpenFrom_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, OPEN_FROM, mx, my)));
+        addButton(new IconButton(80, 5, 20, 20, 2, this::buttonSave_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SAVE, mx, my)));
+        addButton(new IconButton(105, 5, 20, 20, 2, this::buttonSaveAs_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SAVE_AS, mx, my)));
+        addButton(new IconButton(130, 5, 20, 20, 3, this::buttonSettings_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SETTINGS, mx, my)));
         addButton(new ControlButton(width - 70, 5, 65, 20, PAUSED, this::isPaused, this::setPaused));
         // ---- KEYFRAME INSPECTOR
-        keyframeEditor = addButton(new WidgetContainer(0, height - 200, 140, 120));
+        keyframeEditor = addButton(new WidgetContainer(0, height - 175, 140, 95));
         keyframeEditor.backgroundColor = 0x40 << 24;
         keyframeEditor.frameSize = 1;
         keyframeEditor.frameColor = 0x67 << 24;
@@ -113,28 +105,19 @@ public class AnimatorScreen extends Screen {
         posZ = keyframeEditor.addWidget(new TextFieldWidget(font, 95, 20, 40, 20, StringTextComponent.EMPTY));
         posZ.setResponder(new SuggestionResponder("Z pos", posZ, this::posZ_change));
         posZ.setSuggestion("Z pos");
-        scaleX = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 45, 40, 20, StringTextComponent.EMPTY));
-        scaleX.setResponder(new SuggestionResponder("X scl", scaleX, this::scaleX_change));
-        scaleX.setSuggestion("X scl");
-        scaleY = keyframeEditor.addWidget(new TextFieldWidget(font, 50, 45, 40, 20, StringTextComponent.EMPTY));
-        scaleY.setResponder(new SuggestionResponder("Y scl", scaleY, this::scaleY_change));
-        scaleY.setSuggestion("Y scl");
-        scaleZ = keyframeEditor.addWidget(new TextFieldWidget(font, 95, 45, 40, 20, StringTextComponent.EMPTY));
-        scaleZ.setResponder(new SuggestionResponder("Z scl", scaleZ, this::scaleZ_change));
-        scaleZ.setSuggestion("Z scl");
-        rotX = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 70, 40, 20, StringTextComponent.EMPTY));
+        rotX = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 45, 40, 20, StringTextComponent.EMPTY));
         rotX.setResponder(new SuggestionResponder("X rot", rotX, this::rotX_change));
         rotX.setSuggestion("X rot");
-        rotY = keyframeEditor.addWidget(new TextFieldWidget(font, 50, 70, 40, 20, StringTextComponent.EMPTY));
+        rotY = keyframeEditor.addWidget(new TextFieldWidget(font, 50, 45, 40, 20, StringTextComponent.EMPTY));
         rotY.setResponder(new SuggestionResponder("Y rot", rotY, this::rotY_change));
         rotY.setSuggestion("Y rot");
-        rotZ = keyframeEditor.addWidget(new TextFieldWidget(font, 95, 70, 40, 20, StringTextComponent.EMPTY));
+        rotZ = keyframeEditor.addWidget(new TextFieldWidget(font, 95, 45, 40, 20, StringTextComponent.EMPTY));
         rotZ.setResponder(new SuggestionResponder("Z rot", rotZ, this::rotZ_change));
         rotZ.setSuggestion("Z rot");
-        deg = keyframeEditor.addWidget(new TextFieldWidget(font, 95, 95, 40, 20, StringTextComponent.EMPTY));
+        deg = keyframeEditor.addWidget(new TextFieldWidget(font, 95, 70, 40, 20, StringTextComponent.EMPTY));
         deg.setResponder(new SuggestionResponder("Deg", deg, this::degrees_change));
         deg.setSuggestion("Deg");
-        end = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 95, 85, 20, StringTextComponent.EMPTY));
+        end = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 70, 85, 20, StringTextComponent.EMPTY));
         end.setResponder(new SuggestionResponder("Pos", end, this::endpoint_change));
         end.setSuggestion("Pos");
         // ---- TIMELINE
@@ -143,15 +126,15 @@ public class AnimatorScreen extends Screen {
         timeline.setKeyframeSelectHandler(this::keyframe_select);
         timeline.setEventClickHandler(this::event_clicked);
         IconButton.SETTINGS.set(TIMELINE_ICONS, 3, 16);
-        addFrame = timeline.addWidget(new IconButton(5, 2, 16, 16, 0, this::buttonAddFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, ADD_FRAME, mx, my)));
+        timeline.addWidget(new IconButton(5, 2, 16, 16, 0, this::buttonAddFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, ADD_FRAME, mx, my)));
         removeFrame = timeline.addWidget(new IconButton(30, 2, 16, 16, 1, this::buttonRemoveFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, REMOVE_FRAME, mx, my)));
-        addEvent = timeline.addWidget(new IconButton(55, 2, 16, 16, 2, this::buttonAddEvent_clicked, (btn, poses, mx, my) -> renderTooltip(poses, ADD_EVENT, mx, my)));
+        IconButton addEvent = timeline.addWidget(new IconButton(55, 2, 16, 16, 2, this::buttonAddEvent_clicked, (btn, poses, mx, my) -> renderTooltip(poses, ADD_EVENT, mx, my)));
         copyFrame = timeline.addWidget(new IconButton(80, 2, 16, 16, 3, this::buttonCopyFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, COPY_FRAME, mx, my)));
-        endFrames = timeline.addWidget(new IconButton(105, 2, 16, 16, 4, this::buttonEndFrames_clicked, (btn, poses, mx, my) -> renderTooltip(poses, END_FRAMES, mx, my)));
+        timeline.addWidget(new IconButton(105, 2, 16, 16, 4, this::buttonEndFrames_clicked, (btn, poses, mx, my) -> renderTooltip(poses, END_FRAMES, mx, my)));
         progress2Frame = timeline.addWidget(new IconButton(130, 2, 16, 16, 5, this::buttonSetProgressToFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, PROGRESS2FRAME, mx, my)));
-        toBeginning = timeline.addWidget(new IconButton(155, 2, 16, 16, 6, this::resetToBeginning_clicked, (btn, poses, mx, my) -> renderTooltip(poses, SET2BEGINNING, mx, my)));
-        toEnd = timeline.addWidget(new IconButton(180, 2, 16, 16, 7, this::setToEnd_clicked, (btn, poses, mx, my) -> renderTooltip(poses, SET2END, mx, my)));
-        nextFrame = timeline.addWidget(new IconButton(205, 2, 16, 16, 8, this::setToNextFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, NEXT_FRAME, mx, my)));
+        timeline.addWidget(new IconButton(155, 2, 16, 16, 6, this::resetToBeginning_clicked, (btn, poses, mx, my) -> renderTooltip(poses, SET2BEGINNING, mx, my)));
+        timeline.addWidget(new IconButton(180, 2, 16, 16, 7, this::setToEnd_clicked, (btn, poses, mx, my) -> renderTooltip(poses, SET2END, mx, my)));
+        timeline.addWidget(new IconButton(205, 2, 16, 16, 8, this::setToNextFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, NEXT_FRAME, mx, my)));
         if (!timeline.getProject().hasEvents()) {
             addEvent.active = false;
         }
@@ -196,32 +179,6 @@ public class AnimatorScreen extends Screen {
         MutableKeyframe keyframe = selectionContext.frame();
         Vector3d old = keyframe.position;
         keyframe.setPosition(setter.apply(old, x));
-        timeline.recompile(selectionContext.owner());
-    }
-
-    private void scaleX_change(String value) {
-        if (tryValidate(value, posScaleDeg, scaleX)) {
-            setScale(value, Vector3f::setX);
-        }
-    }
-
-    private void scaleY_change(String value) {
-        if (tryValidate(value, posScaleDeg, scaleY)) {
-            setScale(value, Vector3f::setY);
-        }
-    }
-
-    private void scaleZ_change(String value) {
-        if (tryValidate(value, posScaleDeg, scaleZ)) {
-            setScale(value, Vector3f::setZ);
-        }
-    }
-
-    private void setScale(String value, BiConsumer<Vector3f, Float> setter) {
-        float x = Float.parseFloat(value);
-        MutableKeyframe keyframe = selectionContext.frame();
-        Vector3f old = keyframe.scale;
-        setter.accept(old, x);
         timeline.recompile(selectionContext.owner());
     }
 
@@ -401,15 +358,11 @@ public class AnimatorScreen extends Screen {
         if (hasFrame) {
             IKeyframe frame = selectionContext.frame();
             Vector3d position = frame.positionTarget();
-            Vector3f scale = frame.scaleTarget();
             Pair<Float, Vector3f> rotation = AnimationUtils.getVectorWithRotation(frame.rotationTarget());
             Vector3f rotV = rotation.getRight();
             posX.setValue(String.valueOf(position.x));
             posY.setValue(String.valueOf(position.y));
             posZ.setValue(String.valueOf(position.z));
-            scaleX.setValue(String.valueOf(scale.x()));
-            scaleY.setValue(String.valueOf(scale.y()));
-            scaleZ.setValue(String.valueOf(scale.z()));
             DecimalFormat formatter = new DecimalFormat("0.0##");
             formatter.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.ROOT));
             deg.setValue(formatter.format(rotation.getLeft()));
@@ -432,6 +385,10 @@ public class AnimatorScreen extends Screen {
 
     private void buttonOpen_Clicked(Button button) {
         minecraft.setScreen(new ImportProjectScreen(this));
+    }
+
+    private void buttonOpenFrom_Clicked(Button button) {
+        minecraft.setScreen(new ImportFromAnimationScreen(this));
     }
 
     private void buttonSave_Clicked(Button button) {

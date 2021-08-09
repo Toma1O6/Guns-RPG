@@ -18,15 +18,11 @@ public class KeyframeSerializer implements JsonSerializer<IKeyframe>, JsonDeseri
         JsonObject object = new JsonObject();
         float endpoint = src.endpoint();
         Vector3d pos = src.positionTarget();
-        Vector3f scale = src.scaleTarget();
         Quaternion rotation = src.rotationTarget();
         object.addProperty("e", endpoint);
         if (!pos.equals(Vector3d.ZERO)) {
             object.add("pos", context.serialize(pos, Vector3d.class));
-            boolean scaled = !scale.equals(AnimationUtils.DEFAULT_SCALE_VECTOR);
             boolean rotated = !rotation.equals(Quaternion.ONE);
-            if (scaled)
-                object.add("scl", context.serialize(scale, Vector3f.class));
             if (rotated)
                 object.add("rot", context.serialize(rotation, Quaternion.class));
         }
@@ -43,14 +39,9 @@ public class KeyframeSerializer implements JsonSerializer<IKeyframe>, JsonDeseri
             return endpoint == 0 ? Keyframes.none() : Keyframes.await(endpoint);
         } else {
             Vector3d pos = context.deserialize(object.get("pos"), Vector3d.class);
-            Vector3f scale = object.has("scl") ? context.deserialize(object.get("scl"), Vector3f.class) : null;
             Quaternion rot = object.has("rot") ? context.deserialize(object.get("rot"), Quaternion.class) : null;
-            if (scale != null && rot != null) {
-                return Keyframes.keyframe(pos, scale, rot, endpoint);
-            } else if (rot != null) {
-                return Keyframes.positionRotate(pos, rot, endpoint);
-            } else if (scale != null) {
-                return Keyframes.positionScale(pos, scale, endpoint);
+            if (rot != null) {
+                return Keyframes.keyframe(pos, rot, endpoint);
             } else {
                 return Keyframes.position(pos, endpoint);
             }

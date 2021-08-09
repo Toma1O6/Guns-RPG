@@ -19,6 +19,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.util.function.BooleanSupplier;
+import java.util.stream.Collectors;
 
 public final class Animator {
 
@@ -34,6 +35,12 @@ public final class Animator {
 
     public static Animator get() {
         return INSTANCE;
+    }
+
+    public void refreshUserAnimations() {
+        List<String> collect = configurables.keySet().stream().filter(s -> !s.contains(":")).collect(Collectors.toList());
+        collect.forEach(configurables::remove);
+        loadUserDefinedProviders(exportDir(), AnimationEngine.get().loader().reader());
     }
 
     public void onAnimationsLoaded(Map<ResourceLocation, IKeyframeProvider> providerMap, AnimationLoader.ILoader loader) {
@@ -85,9 +92,9 @@ public final class Animator {
             String name = file.getName().replaceFirst("[.][^.]+$", "");
             configurables.put(name, FrameProviderWrapper.userCreated(name, file.getParentFile(), provider));
         } catch (JsonParseException ex) {
-            log.error("Exception parsing {} file: {}", file.getPath(), ex.getMessage());
+            log.error(AnimationLoader.MARKER, "Exception parsing {} file: {}", file.getPath(), ex.getMessage());
         } catch (IOException ex) {
-            log.fatal("Fatal exception ocurred while parsing {} file: {}", file.getPath(), ex.getMessage());
+            log.fatal(AnimationLoader.MARKER, "Fatal exception ocurred while parsing {} file: {}", file.getPath(), ex.getMessage());
         }
     }
 

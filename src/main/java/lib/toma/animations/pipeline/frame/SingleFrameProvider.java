@@ -51,7 +51,7 @@ public class SingleFrameProvider implements IKeyframeProvider {
 
     @Override
     public IKeyframe getOldFrame(AnimationStage stage, int frameIndex) {
-        return getCurrentFrame(stage, 0, frameIndex);
+        return Keyframes.none();
     }
 
     @Override

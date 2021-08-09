@@ -1,6 +1,5 @@
 package lib.toma.animations.pipeline.frame;
 
-import lib.toma.animations.AnimationUtils;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
@@ -9,16 +8,13 @@ public class MutableKeyframe implements IKeyframe {
 
     public float endpoint;
     public Vector3d position = Vector3d.ZERO;
-    public Vector3f scale = new Vector3f();
     public Quaternion rotation = Quaternion.ONE.copy();
     private Vector3d pos0 = Vector3d.ZERO;
-    private Vector3f scale0 = AnimationUtils.DEFAULT_SCALE_VECTOR;
     private Quaternion quat0 = Quaternion.ONE;
 
     public static MutableKeyframe fullCopyOf(IKeyframe frame) {
         MutableKeyframe mkf = copyOf(frame);
         mkf.setPos0(frame.initialPosition());
-        mkf.setScale0(frame.initialScale());
         mkf.setQuat0(frame.initialRotation());
         return mkf;
     }
@@ -27,7 +23,6 @@ public class MutableKeyframe implements IKeyframe {
         MutableKeyframe mkf = new MutableKeyframe();
         mkf.setEndpoint(keyframe.endpoint());
         mkf.setPosition(keyframe.positionTarget());
-        mkf.setScale(keyframe.scaleTarget());
         mkf.setRotation(keyframe.rotationTarget());
         return mkf;
     }
@@ -48,15 +43,6 @@ public class MutableKeyframe implements IKeyframe {
 
     public void setPosition(Vector3d position) {
         this.position = position;
-    }
-
-    @Override
-    public Vector3f scaleTarget() {
-        return scale;
-    }
-
-    public void setScale(Vector3f scale) {
-        this.scale = scale;
     }
 
     @Override
@@ -82,15 +68,6 @@ public class MutableKeyframe implements IKeyframe {
     }
 
     @Override
-    public Vector3f initialScale() {
-        return scale0;
-    }
-
-    public void setScale0(Vector3f scale0) {
-        this.scale0 = scale0;
-    }
-
-    @Override
     public Quaternion initialRotation() {
         return quat0;
     }
@@ -102,7 +79,6 @@ public class MutableKeyframe implements IKeyframe {
     @Override
     public void baseOn(IKeyframe parent) {
         pos0 = Keyframes.getInitialPosition(parent);
-        scale0 = Keyframes.getInitialScale(parent);
         quat0 = Keyframes.getInitialRotation(parent);
     }
 }

@@ -75,6 +75,10 @@ public final class AnimationLoader extends JsonReloadListener {
         return gson.toJson(provider, IKeyframeProvider.class).replaceAll("\\s+", "");
     }
 
+    public ILoader reader() {
+        return loader;
+    }
+
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> resources, IResourceManager manager, IProfiler profiler) {
         profiler.push("Animation loading");

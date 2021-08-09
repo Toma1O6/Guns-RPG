@@ -16,8 +16,8 @@ public class AnimationProject {
 
     private final AnimationController controller = new AnimationController();
     private final String name;
-    private FrameProviderWrapper wrapper;
-    private File projectDirectory;
+    private final FrameProviderWrapper wrapper;
+    private final File projectDirectory;
     private boolean isSaved = true;
 
     public AnimationProject(FrameProviderWrapper wrapper) {
@@ -30,6 +30,7 @@ public class AnimationProject {
         this.name = projectName;
         this.controller.setAnimationTime(animationLength);
         this.wrapper = FrameProviderWrapper.userCreated(projectName, new File("./export/providers"), new KeyframeProvider(new HashMap<>(), IAnimationEvent.NO_EVENTS));
+        this.projectDirectory = wrapper.getWorkingDirectory();
     }
 
     public static AnimationProject createEmpty() {

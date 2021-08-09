@@ -1,6 +1,7 @@
 package lib.toma.animations.screen.animator;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.screen.animator.dialog.DialogScreen;
 import lib.toma.animations.screen.animator.dialog.SuggestionResponder;
 import lib.toma.animations.screen.animator.widget.ListView;
@@ -23,6 +24,7 @@ public class ImportProjectScreen extends Screen {
     public ImportProjectScreen(AnimatorScreen screen) {
         super(new TranslationTextComponent("screen.animator.import"));
         this.screen = screen;
+        Animator.get().refreshUserAnimations();
     }
 
     @Override
@@ -64,6 +66,10 @@ public class ImportProjectScreen extends Screen {
         return false;
     }
 
+    protected FrameProviderWrapper obtainWrapper(Animator animator, String path) {
+        return animator.getWrapper(path);
+    }
+
     private void fileFilter_Change(String value) {
         files.setFilter(s -> accept(s, value));
     }
@@ -75,9 +81,10 @@ public class ImportProjectScreen extends Screen {
 
     private void confirm_clicked(Button button) {
         Animator animator = Animator.get();
-        FrameProviderWrapper wrapper = animator.getWrapper(filePath);
+        FrameProviderWrapper wrapper = obtainWrapper(animator, filePath);
         if (wrapper != null) {
             animator.setUsingProject(new AnimationProject(wrapper));
+            AnimationEngine.get().pipeline().insert(Animator.ANIMATOR_TYPE);
         }
         minecraft.setScreen(screen);
     }

@@ -1,15 +1,12 @@
 package lib.toma.animations.pipeline.frame;
 
-import lib.toma.animations.AnimationUtils;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
 
 public class EmptyKeyframe implements IKeyframe {
 
     private final float endpoint;
     private Vector3d pos = Vector3d.ZERO;
-    private Vector3f scale = AnimationUtils.DEFAULT_SCALE_VECTOR;
     private Quaternion rot = Quaternion.ONE;
 
     protected EmptyKeyframe(float endpoint) {
@@ -27,11 +24,6 @@ public class EmptyKeyframe implements IKeyframe {
     }
 
     @Override
-    public Vector3f scaleTarget() {
-        return AnimationUtils.EMPTY_SCALE_VECTOR;
-    }
-
-    @Override
     public Quaternion rotationTarget() {
         return Quaternion.ONE;
     }
@@ -42,11 +34,6 @@ public class EmptyKeyframe implements IKeyframe {
     }
 
     @Override
-    public Vector3f initialScale() {
-        return scale;
-    }
-
-    @Override
     public Quaternion initialRotation() {
         return rot;
     }
@@ -54,7 +41,6 @@ public class EmptyKeyframe implements IKeyframe {
     @Override
     public void baseOn(IKeyframe parent) {
         pos = Keyframes.getInitialPosition(parent);
-        scale = Keyframes.getInitialScale(parent);
         rot = Keyframes.getInitialRotation(parent);
     }
 }

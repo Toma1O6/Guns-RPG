@@ -12,9 +12,6 @@ import java.util.TreeMap;
 
 public class AnimationUtils {
 
-    public static final Vector3f EMPTY_SCALE_VECTOR = new Vector3f();
-    public static final Vector3f DEFAULT_SCALE_VECTOR = new Vector3f(1.0F, 1.0F, 1.0F);
-
     /**
      * Returns rotation-vector pair from supplied quaternion.
      * Rotation is in degrees

@@ -10,13 +10,9 @@ public interface IKeyframe {
 
     Vector3d positionTarget();
 
-    Vector3f scaleTarget();
-
     Quaternion rotationTarget();
 
     Vector3d initialPosition();
-
-    Vector3f initialScale();
 
     Quaternion initialRotation();
 

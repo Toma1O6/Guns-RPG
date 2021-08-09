@@ -32,8 +32,6 @@ public class KeyframeProviderSerializer implements JsonSerializer<IKeyframeProvi
         if (!json.isJsonObject())
             throw new JsonSyntaxException("Not a Json object!");
         JsonObject object = json.getAsJsonObject();
-        if (!object.has("frames"))
-            throw new JsonSyntaxException("Missing keyframe definition");
         String typeKey = JSONUtils.getAsString(object, "type");
         FrameProviderType<?> type = FrameProviderType.getType(typeKey);
         if (type == null) throw new JsonSyntaxException("Unknown frame provider type: " + typeKey);

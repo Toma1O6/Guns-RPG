@@ -22,12 +22,6 @@ public class Keyframes {
         return parent.initialPosition().add(parent.positionTarget());
     }
 
-    public static Vector3f getInitialScale(IKeyframe parent) {
-        Vector3f vec3f = parent.initialScale().copy();
-        vec3f.add(parent.scaleTarget());
-        return vec3f;
-    }
-
     public static Quaternion getInitialRotation(IKeyframe parent) {
         Pair<Float, Vector3f> initialRot = AnimationUtils.getVectorWithRotation(parent.initialRotation());
         Pair<Float, Vector3f> targetRot = AnimationUtils.getVectorWithRotation(parent.rotationTarget());
@@ -40,12 +34,9 @@ public class Keyframes {
     public static void processFrame(IKeyframe keyframe, float percent, MatrixStack matrixStack) {
         Vector3d move1 = keyframe.initialPosition();
         Vector3d move2 = keyframe.positionTarget();
-        Vector3f scale1 = keyframe.initialScale();
-        Vector3f scale2 = keyframe.scaleTarget();
         Quaternion rot1 = keyframe.initialRotation();
         Quaternion rot2 = keyframe.rotationTarget();
         matrixStack.translate(move1.x + move2.x * percent, move1.y + move2.y * percent, move1.z + move2.z * percent);
-        matrixStack.scale(scale1.x() + scale2.x() * percent, scale1.y() + scale2.y() * percent, scale1.z() + scale2.z() * percent);
         matrixStack.mulPose(mul(rot1, rot2, percent));
     }
 
@@ -75,15 +66,7 @@ public class Keyframes {
         return new PositionKeyframe(position, endpoint);
     }
 
-    public static IKeyframe positionScale(Vector3d position, Vector3f scale, float endpoint) {
-        return new PositionScaleKeyframe(position, scale, endpoint);
-    }
-
-    public static IKeyframe positionRotate(Vector3d position, Quaternion rotation, float endpoint) {
-        return new PositionRotateKeyframe(position, rotation, endpoint);
-    }
-
-    public static IKeyframe keyframe(Vector3d position, Vector3f scale, Quaternion rotation, float endpoint) {
-        return new Keyframe(position, scale, rotation, endpoint);
+    public static IKeyframe keyframe(Vector3d position, Quaternion rotation, float endpoint) {
+        return new Keyframe(position, rotation, endpoint);
     }
 }

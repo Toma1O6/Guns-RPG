@@ -43,6 +43,12 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
         provider.initCache(frameCache);
     }
 
+    public AnimatorFrameProvider(Map<AnimationStage, List<MutableKeyframe>> frameMap) {
+        this.events = true;
+        this.frameMap.putAll(frameMap);
+        this.frameMap.keySet().forEach(stage -> frameCache.put(stage, 0));
+    }
+
     @Override
     public boolean shouldAdvance(AnimationStage stage, float progress, int frameIndex) {
         List<MutableKeyframe> list = frameMap.get(stage);
@@ -102,10 +108,6 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
 
             Vector3d position = ending.initialPosition();
             ending.setPosition(position.multiply(-1, -1, -1));
-            Vector3f scale = ending.initialScale();
-            if (!scale.equals(AnimationUtils.DEFAULT_SCALE_VECTOR)) {
-                ending.setScale(new Vector3f(1.0F - scale.x(), 1.0F - scale.y(), 1.0F - scale.z()));
-            }
             Pair<Float, Vector3f> rotation = AnimationUtils.getVectorWithRotation(ending.initialRotation());
             float degrees = rotation.getKey();
             ending.setRotation(new Quaternion(rotation.getValue().copy(), -degrees, true));

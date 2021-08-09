@@ -75,8 +75,8 @@ public class TargetAndBackFrameProvider implements IKeyframeProvider {
 
         public FramePair(Vector3d position, Vector3f rotation, float rotationScale) {
             this(
-                    new PositionRotateKeyframe(position, new Quaternion(rotation, rotationScale, true), 0.0F),
-                    new PositionRotateKeyframe(new Vector3d(-position.x, -position.y, -position.z), new Quaternion(rotation, -rotationScale, true), 0.0F)
+                    new Keyframe(position, new Quaternion(rotation, rotationScale, true), 0.5F),
+                    new Keyframe(new Vector3d(-position.x, -position.y, -position.z), new Quaternion(rotation, -rotationScale, true), 1.0F)
             );
         }
 
