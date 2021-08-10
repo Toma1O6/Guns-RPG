@@ -89,10 +89,6 @@ public class AddFrameDialog extends DialogScreen {
         showParent();
     }
 
-    private void cancel_clicked(Button button) {
-        showParent();
-    }
-
     public interface IInsertion {
         void doInsertion(float progress, List<AnimationStage> stages);
     }

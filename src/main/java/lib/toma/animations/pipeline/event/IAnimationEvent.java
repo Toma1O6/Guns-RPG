@@ -12,4 +12,6 @@ public interface IAnimationEvent {
     float invokeAt();
 
     void dispatch(Minecraft client, IAnimation fromAnimation);
+
+    IAnimationEvent copyAt(float target);
 }

@@ -20,7 +20,7 @@ public final class FrameProviderInstance implements IFrameProviderInstance {
         this.frameProvider.initCache(frameCache);
     }
 
-    public static FrameProviderInstance instance(IKeyframeProvider provider) {
+    public static IFrameProviderInstance instance(IKeyframeProvider provider) {
         return new FrameProviderInstance(provider);
     }
 

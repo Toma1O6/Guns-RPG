@@ -140,8 +140,6 @@ public class AnimatorScreen extends Screen {
         }
         timeline.playAnimation();
 
-        addEvent.active = false; // TODO implement
-
         updateSelectionDependents(selectionContext != null);
     }
 
@@ -274,7 +272,8 @@ public class AnimatorScreen extends Screen {
 
     private void buttonAddEvent_clicked(Button button) {
         // add event dialog
-        // TODO implement
+        DialogScreen dialog = new AddEventDialog(this, timeline.getAnimationProgress(), timeline::add);
+        minecraft.setScreen(dialog);
     }
 
     private void buttonCopyFrame_clicked(Button button) {
@@ -347,7 +346,8 @@ public class AnimatorScreen extends Screen {
 
     private void event_clicked(IAnimationEvent event) {
         // event editor
-        // TODO implement
+        DialogScreen screen = new EditEventDialog(this, event, timeline::replace);
+        minecraft.setScreen(screen);
     }
 
     private void updateSelectionDependents(boolean hasFrame) {

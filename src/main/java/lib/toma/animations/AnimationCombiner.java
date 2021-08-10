@@ -33,14 +33,15 @@ public final class AnimationCombiner {
         }
 
         public IKeyframeProvider combine() {
-            // TODO modify for events
             float min = 0.0F;
             entries.sort(Entry::compareTo);
             List<Entry> fullEntryList = splitRepeated(); // splits all entries which are repeated n times to n new entries
             Map<AnimationStage, List<IKeyframe>> frames = new HashMap<>();
+            List<IAnimationEvent> eventList = new ArrayList<>();
             for (Entry entry : fullEntryList) {
                 IKeyframeProvider provider = entry.insertionSource;
                 float point = entry.insertionPoint;
+                IAnimationEvent[] events = provider.getEvents();
                 Map<AnimationStage, IKeyframe[]> entryFrames = provider.getFrameMap();
                 for (Map.Entry<AnimationStage, IKeyframe[]> mapEntry : entryFrames.entrySet()) {
                     IKeyframe[] frameArray = mapEntry.getValue();
@@ -51,6 +52,11 @@ public final class AnimationCombiner {
                         float modifiedFramePoint = (point - min) * framePoint + min;
                         keyframes.add(Keyframes.keyframe(keyframe.positionTarget(), keyframe.rotationTarget(), modifiedFramePoint));
                     }
+                }
+                for (IAnimationEvent event : events) {
+                    float eventPoint = event.invokeAt();
+                    float modified = (point - min) * eventPoint + min;
+                    eventList.add(event.copyAt(modified));
                 }
                 min = point;
             }
@@ -67,7 +73,8 @@ public final class AnimationCombiner {
                 }
                 map.put(entry.getKey(), list.toArray(new IKeyframe[0]));
             }
-            return new KeyframeProvider(map, IAnimationEvent.NO_EVENTS);
+            eventList.sort(Comparator.comparingDouble(IAnimationEvent::invokeAt));
+            return new KeyframeProvider(map, eventList.isEmpty() ? IAnimationEvent.NO_EVENTS : eventList.toArray(IAnimationEvent.NO_EVENTS));
         }
 
         private List<Entry> splitRepeated() {

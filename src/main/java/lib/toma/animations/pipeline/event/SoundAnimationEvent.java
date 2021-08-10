@@ -2,6 +2,8 @@ package lib.toma.animations.pipeline.event;
 
 import com.google.gson.*;
 import lib.toma.animations.pipeline.IAnimation;
+import lib.toma.animations.screen.animator.dialog.EventCreateDialog;
+import lib.toma.animations.screen.animator.dialog.EventDialogContext;
 import lib.toma.animations.serialization.IAnimationEventSerializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.JSONUtils;
@@ -31,6 +33,11 @@ public class SoundAnimationEvent extends AbstractAnimationEvent {
         client.player.playSound(sound, volume, pitch);
     }
 
+    @Override
+    public IAnimationEvent copyAt(float target) {
+        return new SoundAnimationEvent(target, sound, volume, pitch);
+    }
+
     public static final class Serializer implements IAnimationEventSerializer<SoundAnimationEvent> {
 
         @Override
@@ -54,6 +61,23 @@ public class SoundAnimationEvent extends AbstractAnimationEvent {
             float volume = JSONUtils.getAsFloat(object, "volume", 1.0F);
             float pitch = JSONUtils.getAsFloat(object, "pitch", 1.0F);
             return new SoundAnimationEvent(target, event, volume, pitch);
+        }
+    }
+
+    public static class AddSoundEventDialog extends EventCreateDialog<SoundAnimationEvent> {
+
+        public AddSoundEventDialog(EventDialogContext<SoundAnimationEvent> context) {
+            super(context);
+        }
+
+        @Override
+        protected SoundAnimationEvent construct() {
+            return null;
+        }
+
+        @Override
+        protected void addWidgets() {
+
         }
     }
 }

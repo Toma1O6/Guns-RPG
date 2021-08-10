@@ -3,6 +3,7 @@ package lib.toma.animations.pipeline;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +30,10 @@ public final class AnimationType<A extends IAnimation> {
     @SuppressWarnings("unchecked")
     public static <A extends IAnimation> AnimationType<A> getTypeFromID(ResourceLocation key) {
         return (AnimationType<A>) TYPE_MAP.get(key);
+    }
+
+    public static Collection<AnimationType<?>> values() {
+        return TYPE_MAP.values();
     }
 
     public void setCreator(IAnimationCreator<A> creator) {

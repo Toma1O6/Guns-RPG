@@ -42,10 +42,6 @@ public class SaveAsDialog extends DialogScreen {
         confirm = addButton(new Button(left() + 10 + btnWidth, top() + 80, btnWidth, 20, new StringTextComponent("Save"), this::save_clicked));
     }
 
-    private void cancel_clicked(Button button) {
-        showParent();
-    }
-
     private void save_clicked(Button button) {
         Animator animator = Animator.get();
         AnimationProject project = animator.getProject();

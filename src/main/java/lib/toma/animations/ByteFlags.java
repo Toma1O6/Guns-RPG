@@ -6,6 +6,12 @@ public final class ByteFlags {
 
     public ByteFlags() {}
 
+    public ByteFlags(int... set) {
+        for (int i : set) {
+            set(i);
+        }
+    }
+
     public void set(int pos) {
         flags |= 1 << pos;
     }

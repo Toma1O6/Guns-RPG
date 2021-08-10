@@ -19,6 +19,7 @@ import dev.toma.gunsrpg.world.cap.IWorldData;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataStorage;
 import lib.toma.animations.AnimationEngine;
+import lib.toma.animations.pipeline.render.IRenderPipeline;
 import net.minecraft.command.CommandSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -52,6 +53,8 @@ public class GunsRPG {
         eventBus.addListener(this::commonSetup);
         // other events
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
+        IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
+        renderPipeline.register(MinecraftForge.EVENT_BUS);
 
         ModTags.init();
 

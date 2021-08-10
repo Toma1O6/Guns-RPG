@@ -170,6 +170,15 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
         return events;
     }
 
+    public void addEvent(IAnimationEvent event) {
+        eventList.add(event);
+        eventList.sort(Comparator.comparingDouble(IAnimationEvent::invokeAt));
+    }
+
+    public void removeEvent(IAnimationEvent event) {
+        eventList.remove(event);
+    }
+
     public void addFrame(AnimationStage stage, MutableKeyframe frame) {
         List<MutableKeyframe> list = frameMap.computeIfAbsent(stage, key -> new ArrayList<>());
         list.add(frame);

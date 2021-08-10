@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
-import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.client.render.item.WoodenCrossbowRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
@@ -17,14 +17,13 @@ import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.IRenderConfig;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,6 +31,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.Map;
 
 public class WoodenCrossbowItem extends GunItem {
+
+    private static final ResourceLocation AIM = GunsRPG.makeResource("wooden_crossbow/aim");
+    private static final ResourceLocation AIM_SCOPED = GunsRPG.makeResource("wooden_crossbow/aim_scoped");
 
     public WoodenCrossbowItem(String name) {
         super(name, GunType.CROSSBOW, new Properties().setISTER(() -> WoodenCrossbowRenderer::new));
@@ -132,16 +134,9 @@ public class WoodenCrossbowItem extends GunItem {
         return IRenderConfig.empty();
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public AimingAnimation createAimAnimation() {
-        boolean scoped = PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.CROSSBOW_SCOPE);
-        return new AimingAnimation(-0.96F, scoped ? 0.58F : 0.68F, 0.6F).animateRight((stack, f) -> {
-            stack.translate(-0.265F * f, 0.16F * f, -0.1F * f);
-        }).animateLeft((stack, f) -> {
-            stack.translate(-0.15F * f, 0.64F * f, 0.6F * f);
-            stack.mulPose(Vector3f.YP.rotationDegrees(25 * f));
-        });
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) ? AIM_SCOPED : AIM;
     }
 
     @OnlyIn(Dist.CLIENT)

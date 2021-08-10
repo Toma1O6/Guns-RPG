@@ -52,10 +52,6 @@ public class SettingsDialog extends DialogScreen {
         showParent();
     }
 
-    private void cancel_clicked(Button button) {
-        showParent();
-    }
-
     private void cycleField_changed(String value) {
         if (cyclePattern.matcher(value).matches()) {
             cycleField.setTextColor(0xE0E0E0);

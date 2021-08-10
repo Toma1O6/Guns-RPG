@@ -114,10 +114,6 @@ public class NewProjectDialog extends DialogScreen {
         showParent();
     }
 
-    private void cancel_clicked(Button button) {
-        showParent();
-    }
-
     private void updateConfirmButtonState() {
         if (confirm != null)
             confirm.active = errorFlags.isEmpty();

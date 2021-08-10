@@ -47,10 +47,6 @@ public class CopyFrameDialog extends DialogScreen {
         updateConfirmButton();
     }
 
-    private void cancel_clicked(Button button) {
-        showParent();
-    }
-
     private void confirm_clicked(Button button) {
         if (copyCallback != null) {
             copyCallback.onCopied(selector.getSelection());

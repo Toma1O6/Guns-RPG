@@ -90,6 +90,10 @@ public abstract class DialogScreen extends Screen {
         minecraft.setScreen(parent);
     }
 
+    public AnimatorScreen getParent() {
+        return parent;
+    }
+
     public int left() {
         return left;
     }
@@ -104,5 +108,9 @@ public abstract class DialogScreen extends Screen {
 
     public int dHeight() {
         return ySize;
+    }
+
+    protected void cancel_clicked(Button button) {
+        showParent();
     }
 }

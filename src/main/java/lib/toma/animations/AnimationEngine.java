@@ -1,6 +1,8 @@
 package lib.toma.animations;
 
 import lib.toma.animations.pipeline.IAnimationPipeline;
+import lib.toma.animations.pipeline.render.IRenderPipeline;
+import lib.toma.animations.pipeline.render.MainRenderPipeline;
 import lib.toma.animations.screen.HandRenderScreen;
 import lib.toma.animations.screen.animator.Animator;
 import lib.toma.animations.screen.animator.AnimatorScreen;
@@ -22,6 +24,7 @@ public final class AnimationEngine {
     final UtilScreenFactory screenFactory;
     final AnimationPipeline pipeline;
     final AnimationLoader loader;
+    final MainRenderPipeline renderPipeline;
     public static final Logger logger = LogManager.getLogger("AnimationLib");
 
     private KeyBinding handConfigs;
@@ -32,6 +35,7 @@ public final class AnimationEngine {
         screenFactory = new UtilScreenFactory();
         pipeline = new AnimationPipeline();
         loader = new AnimationLoader();
+        renderPipeline = new MainRenderPipeline();
     }
 
     public void setup() {
@@ -60,6 +64,10 @@ public final class AnimationEngine {
 
     public IAnimationPipeline pipeline() {
         return pipeline;
+    }
+
+    public IRenderPipeline renderPipeline() {
+        return renderPipeline;
     }
 
     private KeyBinding registerKey(String name, int keycode) {

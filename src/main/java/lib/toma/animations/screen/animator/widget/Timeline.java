@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.pipeline.AnimationStage;
 import lib.toma.animations.pipeline.AnimationType;
+import lib.toma.animations.pipeline.IAnimation;
 import lib.toma.animations.pipeline.IAnimationPipeline;
 import lib.toma.animations.pipeline.event.IAnimationEvent;
 import lib.toma.animations.pipeline.frame.IKeyframe;
@@ -160,6 +161,20 @@ public class Timeline extends WidgetContainer {
 
     public void finishFrames() {
         project.getFrameControl().getProvider().finish();
+        init();
+    }
+
+    public void add(IAnimationEvent event) {
+        project.getFrameControl().getProvider().addEvent(event);
+        init();
+    }
+
+    public void replace(IAnimationEvent oldEvent, IAnimationEvent replacement) {
+        AnimatorFrameProvider provider = project.getFrameControl().getProvider();
+        provider.removeEvent(oldEvent);
+        if (replacement != null) {
+            provider.addEvent(replacement);
+        }
         init();
     }
 

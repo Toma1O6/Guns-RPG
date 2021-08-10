@@ -4,7 +4,6 @@ import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.client.animation.AnimationProcessor;
 import dev.toma.gunsrpg.client.animation.Animations;
 import dev.toma.gunsrpg.client.animation.IAnimation;
-import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
 import dev.toma.gunsrpg.client.animation.impl.RecoilAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
@@ -27,10 +26,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.CooldownTracker;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
@@ -91,9 +87,8 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
         return false;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public AimingAnimation createAimAnimation() {
-        return new AimingAnimation(-0.54F, 0.06F, 0.0F);
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return null;
     }
 
     @OnlyIn(Dist.CLIENT)
