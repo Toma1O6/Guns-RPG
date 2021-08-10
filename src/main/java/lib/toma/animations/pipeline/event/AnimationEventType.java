@@ -17,7 +17,8 @@ public class AnimationEventType<E extends IAnimationEvent> {
     private static final Map<ResourceLocation, AnimationEventType<?>> TYPES = new HashMap<>();
 
     public static final AnimationEventType<SoundAnimationEvent> SOUND = new AnimationEventType<>(new ResourceLocation("sound"), new SoundAnimationEvent.Serializer(), SoundAnimationEvent.AddSoundEventDialog::new);
-    public static final AnimationEventType<PlayAnimationEvent> ANIMATION = new AnimationEventType<>(new ResourceLocation("animation"), new PlayAnimationEvent.Serializer(), PlayAnimationEvent.AddPlayAnimationEventDialog::new);
+    public static final AnimationEventType<PlayAnimationEvent> PLAY_ANIMATION = new AnimationEventType<>(new ResourceLocation("animation_play"), new PlayAnimationEvent.Serializer(), PlayAnimationEvent.AddPlayAnimationEventDialog::new);
+    public static final AnimationEventType<StopAnimationEvent> STOP_ANIMATION = new AnimationEventType<>(new ResourceLocation("animation_stop"), new StopAnimationEvent.Serializer(), StopAnimationEvent.AddStopAnimationEventDialog::new);
 
     private final ResourceLocation key;
     private final IAnimationEventSerializer<E> serializer;

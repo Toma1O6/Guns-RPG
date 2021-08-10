@@ -31,7 +31,7 @@ public class PlayAnimationEvent extends AbstractAnimationEvent {
     }
 
     public PlayAnimationEvent(float target, AnimationType<?> type, int playDelay) {
-        this(AnimationEventType.ANIMATION, target, type, playDelay);
+        this(AnimationEventType.PLAY_ANIMATION, target, type, playDelay);
     }
 
     protected PlayAnimationEvent(AnimationEventType<? extends PlayAnimationEvent> eventType, float target, AnimationType<?> type, int playDelay) {

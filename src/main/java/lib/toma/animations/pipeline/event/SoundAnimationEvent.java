@@ -4,12 +4,20 @@ import com.google.gson.*;
 import lib.toma.animations.pipeline.IAnimation;
 import lib.toma.animations.screen.animator.dialog.EventCreateDialog;
 import lib.toma.animations.screen.animator.dialog.EventDialogContext;
+import lib.toma.animations.screen.animator.widget.ListView;
 import lib.toma.animations.serialization.IAnimationEventSerializer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.fml.client.gui.widget.Slider;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SoundAnimationEvent extends AbstractAnimationEvent {
 
@@ -66,18 +74,47 @@ public class SoundAnimationEvent extends AbstractAnimationEvent {
 
     public static class AddSoundEventDialog extends EventCreateDialog<SoundAnimationEvent> {
 
+        private Slider volumeSlider;
+        private Slider pitchSlider;
+        private SoundEvent selectedSound;
+
         public AddSoundEventDialog(EventDialogContext<SoundAnimationEvent> context) {
             super(context);
+            setDimensions(155, 170);
         }
 
         @Override
         protected SoundAnimationEvent construct() {
-            return null;
+            EventDialogContext<SoundAnimationEvent> context = getContext();
+            float volume = (float) volumeSlider.getValue();
+            float pitch = (float) pitchSlider.getValue();
+            return new SoundAnimationEvent(context.getTarget(), selectedSound, volume, pitch);
         }
 
         @Override
         protected void addWidgets() {
+            int elWidth = dWidth() - 10;
+            int btWidth = (elWidth - 5) / 2;
+            List<SoundEvent> sortedSoundList = ForgeRegistries.SOUND_EVENTS.getValues().stream().sorted(Comparator.comparing(SoundEvent::getLocation, ResourceLocation::compareNamespaced)).collect(Collectors.toList());
+            ListView<SoundEvent> soundSelector = addButton(new ListView<>(left() + 5, top() + 15, elWidth, 75, sortedSoundList));
+            soundSelector.setResponder(this::sound_select);
+            soundSelector.setFormatter(sound -> sound.getRegistryName().toString());
+            volumeSlider = addButton(new Slider(left() + 5, top() + 95, elWidth, 20, new StringTextComponent("Volume"), StringTextComponent.EMPTY, 0.0, 1.0, 1.0, false, true, btn -> {}));
+            pitchSlider = addButton(new Slider(left() + 5, top() + 120, elWidth, 20, new StringTextComponent("Pitch"), StringTextComponent.EMPTY, 0.0, 1.0, 1.0, false, true, btn -> {}));
+            cancel = addButton(new Button(left() + 5, top() + 145, btWidth, 20, CANCEL, this::cancel_clicked));
+            confirm = addButton(new Button(left() + 10 + btWidth, top() + 145, btWidth, 20, CONFIRM, this::confirm_clicked));
 
+            updateConfirmButton();
+        }
+
+        private void sound_select(SoundEvent event) {
+            this.selectedSound = event;
+            updateConfirmButton();
+        }
+
+        private void updateConfirmButton() {
+            if (confirm != null)
+                confirm.active = selectedSound != null;
         }
     }
 }
