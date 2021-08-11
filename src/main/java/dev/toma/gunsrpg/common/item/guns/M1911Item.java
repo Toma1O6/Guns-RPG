@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.M1911Renderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
@@ -13,6 +14,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
+import lib.toma.animations.IRenderConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -144,5 +146,15 @@ public class M1911Item extends GunItem {
     @OnlyIn(Dist.CLIENT)
     private boolean isDualWieldActive() {
         return PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.PISTOL_DUAL_WIELD);
+    }
+
+    @Override
+    public IRenderConfig left() {
+        return isDualWieldActive() ? RenderConfigs.M1911_LEFT_DUAL : RenderConfigs.M1911_LEFT;
+    }
+
+    @Override
+    public IRenderConfig right() {
+        return isDualWieldActive() ? RenderConfigs.M1911_RIGHT_DUAL : RenderConfigs.M1911_RIGHT;
     }
 }

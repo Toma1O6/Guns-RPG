@@ -521,6 +521,7 @@
     "animation.stage.minecraft:hands.right": "Right hand",
     "animation.stage.minecraft:hands.item": "Mainhand item, both hands",
     "animation.stage.minecraft:hands": "Both hands",
+    "animation.stage.gunsrpg:item.heldfp.dual": "Mainhand item (Dual wield)",
 
     "event.type.minecraft:sound": "Add sound",
     "event.type.minecraft:animation_play": "Play animation",

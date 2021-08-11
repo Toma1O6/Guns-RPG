@@ -58,7 +58,7 @@ public class Keyframes {
         return NULL_FRAME;
     }
 
-    public static IKeyframe await(float endpoint) {
+    public static IKeyframe wait(float endpoint) {
         return new EmptyKeyframe(endpoint);
     }
 

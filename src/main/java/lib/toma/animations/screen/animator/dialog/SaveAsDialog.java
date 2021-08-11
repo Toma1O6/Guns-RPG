@@ -37,9 +37,12 @@ public class SaveAsDialog extends DialogScreen {
         filename = addButton(new TextFieldWidget(font, left() + 5, top() + 30, btnWidthP, 20, StringTextComponent.EMPTY));
         filename.setResponder(new SuggestionResponder("Filename", filename, this::filename_changed));
         cleanFirstFrames = addButton(new CheckboxButton(left() + 5, top() + 55, btnWidthP, 20, new StringTextComponent("Clean first frames"), false));
+        errored = true;
 
         cancel = addButton(new Button(left() + 5, top() + 80, btnWidth, 20, new StringTextComponent("Cancel"), this::cancel_clicked));
         confirm = addButton(new Button(left() + 10 + btnWidth, top() + 80, btnWidth, 20, new StringTextComponent("Save"), this::save_clicked));
+
+        updateSaveButtonState();
     }
 
     private void save_clicked(Button button) {

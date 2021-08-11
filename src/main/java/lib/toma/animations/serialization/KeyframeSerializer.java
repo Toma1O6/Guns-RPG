@@ -2,6 +2,7 @@ package lib.toma.animations.serialization;
 
 import com.google.gson.*;
 import lib.toma.animations.pipeline.frame.IKeyframe;
+import lib.toma.animations.pipeline.frame.Keyframe;
 import lib.toma.animations.pipeline.frame.Keyframes;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.math.vector.Quaternion;
@@ -20,9 +21,9 @@ public class KeyframeSerializer implements JsonSerializer<IKeyframe>, JsonDeseri
         object.addProperty("e", endpoint);
         if (!pos.equals(Vector3d.ZERO)) {
             object.add("pos", context.serialize(pos, Vector3d.class));
-            boolean rotated = !rotation.equals(Quaternion.ONE);
-            if (rotated)
-                object.add("rot", context.serialize(rotation, Quaternion.class));
+        }
+        if (!rotation.equals(Quaternion.ONE)) {
+            object.add("rot", context.serialize(rotation, Quaternion.class));
         }
         return object;
     }
@@ -30,19 +31,21 @@ public class KeyframeSerializer implements JsonSerializer<IKeyframe>, JsonDeseri
     @Override
     public IKeyframe deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         if (!json.isJsonObject())
-            throw new JsonSyntaxException("Not a json object!");
+            throw new JsonSyntaxException("Not a Json object!");
         JsonObject object = json.getAsJsonObject();
         float endpoint = JSONUtils.getAsFloat(object, "e");
-        if (!object.has("pos")) {
-            return endpoint == 0 ? Keyframes.none() : Keyframes.await(endpoint);
+        boolean positioned = object.has("pos");
+        boolean rotated = object.has("rot");
+        if (!positioned && !rotated) {
+            return endpoint == 0.0F ? Keyframes.none() : Keyframes.wait(endpoint);
+        }
+        if (rotated) {
+            Vector3d pos = positioned ? context.deserialize(object.get("pos"), Vector3d.class) : Vector3d.ZERO;
+            Quaternion rot = context.deserialize(object.get("rot"), Quaternion.class);
+            return Keyframes.keyframe(pos, rot, endpoint);
         } else {
             Vector3d pos = context.deserialize(object.get("pos"), Vector3d.class);
-            Quaternion rot = object.has("rot") ? context.deserialize(object.get("rot"), Quaternion.class) : null;
-            if (rot != null) {
-                return Keyframes.keyframe(pos, rot, endpoint);
-            } else {
-                return Keyframes.position(pos, endpoint);
-            }
+            return Keyframes.position(pos, endpoint);
         }
     }
 }

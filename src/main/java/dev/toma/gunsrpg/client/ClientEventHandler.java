@@ -268,7 +268,7 @@ public class ClientEventHandler {
                         ResourceLocation aimAnimationPath = item.getAimAnimationPath(stack, player);
                         if (aimAnimationPath != null) {
                             IKeyframeProvider keyframeProvider = loader.getProvider(aimAnimationPath);
-                            pipeline.insert(GRPGAnimations.AIM_ANIMATION, new AimAnimation((SingleFrameProvider) keyframeProvider));
+                            pipeline.insert(GRPGAnimations.AIM_ANIMATION, new AimAnimation(keyframeProvider));
                         }
                     } else {
                         preAimFov.ifPresent(value -> settings.fov = value);

@@ -9,6 +9,7 @@ import lib.toma.animations.screen.animator.AnimatorScreen;
 import lib.toma.animations.serialization.AnimationLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -39,6 +40,7 @@ public final class AnimationEngine {
         pipeline = new AnimationPipeline();
         loader = new AnimationLoader();
         renderPipeline = new MainRenderPipeline();
+        ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(loader);
     }
 
     public void setup() {

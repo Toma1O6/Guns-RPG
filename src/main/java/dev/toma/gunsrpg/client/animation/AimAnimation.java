@@ -8,8 +8,8 @@ import lib.toma.animations.Intepolation;
 import lib.toma.animations.pipeline.AnimationStage;
 import lib.toma.animations.pipeline.IAnimation;
 import lib.toma.animations.pipeline.frame.IKeyframe;
+import lib.toma.animations.pipeline.frame.IKeyframeProvider;
 import lib.toma.animations.pipeline.frame.Keyframes;
-import lib.toma.animations.pipeline.frame.SingleFrameProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.common.util.LazyOptional;
@@ -18,12 +18,12 @@ import java.util.function.Supplier;
 
 public class AimAnimation implements IAnimation {
 
-    private final SingleFrameProvider provider;
+    private final IKeyframeProvider provider;
     private final Supplier<Float> progressSupplier;
     private float progress, progressO, progressI;
     private long ticksPlaying;
 
-    public AimAnimation(SingleFrameProvider provider) {
+    public AimAnimation(IKeyframeProvider provider) {
         this.provider = provider;
         PlayerEntity player = Minecraft.getInstance().player;
         LazyOptional<IPlayerData> optional = PlayerData.get(player);

@@ -60,7 +60,6 @@ public final class AnimationLoader extends JsonReloadListener {
         if (devMode) {
             AnimationEngine.get().setup();
         }
-        ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(this);
     }
 
     public IKeyframeProvider getProvider(ResourceLocation key) {
@@ -81,6 +80,7 @@ public final class AnimationLoader extends JsonReloadListener {
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> resources, IResourceManager manager, IProfiler profiler) {
+        profiler.startTick();
         profiler.push("Animation loading");
         Logger log = AnimationEngine.logger;
         log.info(MARKER, "Loading animations");
@@ -98,8 +98,9 @@ public final class AnimationLoader extends JsonReloadListener {
             }
         }
         notifyListeners(log);
-        log.info(MARKER, "Animations loaded");
+        log.info(MARKER, "Loaded {} animations", animationDefinitions.size());
         profiler.pop();
+        profiler.endTick();
     }
 
     private void notifyListeners(Logger log) {

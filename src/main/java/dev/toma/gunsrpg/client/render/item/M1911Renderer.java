@@ -27,7 +27,7 @@ public class M1911Renderer extends AbstractWeaponRenderer {
                 break;
             case FIRST_PERSON_RIGHT_HAND:
             case FIRST_PERSON_LEFT_HAND:
-                stack.translate(-0.223, 0.84, 0.3);
+                stack.translate(-0.15, 0.7, 0.1);
                 break;
         }
     }

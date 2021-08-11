@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.sided;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.ClientEventHandler;
 import dev.toma.gunsrpg.client.ModKeybinds;
+import dev.toma.gunsrpg.client.animation.GRPGAnimations;
 import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.client.screen.AirdropScreen;
 import dev.toma.gunsrpg.client.screen.BlastFurnaceScreen;
@@ -50,12 +51,9 @@ public class ClientSideManager {
         return INSTANCE;
     }
 
+    @Deprecated
     public boolean isRenderingDualWield() {
         return dualWieldRender;
-    }
-
-    public void setDualWieldRender(boolean render) {
-        this.dualWieldRender = render;
     }
 
     public void clientSetup(FMLClientSetupEvent event) {
@@ -106,34 +104,19 @@ public class ClientSideManager {
 
     private void setupRenderPipeline() {
         IRenderPipeline pipeline = AnimationEngine.get().renderPipeline();
-        pipeline.setPreAnimateCallback(this::disableDualWield);
         pipeline.setPostAnimateCallback(this::animateDualWield);
-    }
-
-    private void disableDualWield(MatrixStack poseStack, IRenderTypeBuffer buffer, int light, float swing, float equip, Function<HandSide, IRenderConfig> selector,
-                                  IAnimationPipeline pipeline, FirstPersonRenderer fpRenderer, PlayerEntity player, ItemStack stack, ItemCameraTransforms.TransformType type,
-                                  boolean mainHand) {
-        setDualWieldRender(false);
     }
 
     private void animateDualWield(MatrixStack poseStack, IRenderTypeBuffer buffer, int light, float swing, float equip, Function<HandSide, IRenderConfig> selector,
                                   IAnimationPipeline pipeline, FirstPersonRenderer fpRenderer, PlayerEntity player, ItemStack stack, ItemCameraTransforms.TransformType type,
                                   boolean mainHand) {
+
         IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
-        IHandAnimator handAnimator = renderPipeline.getHandAnimator();
         IItemRenderer itemRenderer = renderPipeline.getItemRenderer();
         if (stack.getItem() == ModItems.M1911 && PlayerData.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD)) {
             poseStack.pushPose();
             {
-                setDualWieldRender(true);
-                pipeline.animateStage(AnimationStage.ITEM_AND_HANDS, poseStack);
-                poseStack.pushPose();
-                {
-                    pipeline.animateStage(AnimationStage.HANDS, poseStack);
-                    handAnimator.animateHands(poseStack, buffer, light, equip, selector, pipeline);
-                }
-                poseStack.popPose();
-                pipeline.animateStage(AnimationStage.HELD_ITEM, poseStack);
+                pipeline.animateStage(GRPGAnimations.DUAL_WIELD_ITEM, poseStack);
                 itemRenderer.renderItem(fpRenderer, player, stack, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, true, poseStack, buffer, light, swing, equip);
             }
             poseStack.popPose();
