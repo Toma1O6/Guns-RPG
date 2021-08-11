@@ -3,15 +3,15 @@ package dev.toma.gunsrpg.client.render.item;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.AbstractWeaponModel;
-import dev.toma.gunsrpg.client.model.Kar98kModel;
+import dev.toma.gunsrpg.client.model.WeaponModels;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.util.ResourceLocation;
 
 public class Kar98kRenderer extends AbstractWeaponRenderer {
 
     @Override
-    public AbstractWeaponModel createModelInstance() {
-        return new Kar98kModel();
+    public AbstractWeaponModel getWeaponModel() {
+        return WeaponModels.KAR98K;
     }
 
     @Override

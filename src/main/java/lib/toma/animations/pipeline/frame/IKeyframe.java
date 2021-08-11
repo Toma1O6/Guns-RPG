@@ -2,7 +2,6 @@ package lib.toma.animations.pipeline.frame;
 
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
 
 public interface IKeyframe {
 

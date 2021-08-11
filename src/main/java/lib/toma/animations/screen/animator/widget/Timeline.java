@@ -4,7 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.pipeline.AnimationStage;
 import lib.toma.animations.pipeline.AnimationType;
-import lib.toma.animations.pipeline.IAnimation;
 import lib.toma.animations.pipeline.IAnimationPipeline;
 import lib.toma.animations.pipeline.event.IAnimationEvent;
 import lib.toma.animations.pipeline.frame.IKeyframe;

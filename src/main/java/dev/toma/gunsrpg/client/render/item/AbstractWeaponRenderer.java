@@ -14,11 +14,9 @@ import net.minecraft.util.math.vector.Vector3f;
 
 public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer {
 
-    private final AbstractWeaponModel weaponModel;
     private final ResourceLocation gunTexture;
 
     public AbstractWeaponRenderer() {
-        this.weaponModel = createModelInstance();
         this.gunTexture = createGunTextureInstance();
     }
 
@@ -39,13 +37,14 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
                 if (transformType == ItemCameraTransforms.TransformType.GUI) {
                     defaultUITransform(matrix);
                 }
+                AbstractWeaponModel weaponModel = getWeaponModel();
                 weaponModel.renderWeapon(stack, data, matrix, renderBuffer.getBuffer(weaponModel.renderType(gunTexture)), light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
             }
             matrix.popPose();
         });
     }
 
-    public abstract AbstractWeaponModel createModelInstance();
+    public abstract AbstractWeaponModel getWeaponModel();
 
     public abstract ResourceLocation createGunTextureInstance();
 

@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.entity;
 
 import dev.toma.gunsrpg.common.init.ModEntities;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -39,7 +40,8 @@ public class ExplosiveArrowEntity extends AbstractArrowEntity {
     @Override
     protected void onHitEntity(EntityRayTraceResult result) {
         if (!level.isClientSide) {
-            level.explode(this, getX(), getY(), getZ(), getOwner() instanceof ExplosiveSkeletonEntity ? 2 : 1, Explosion.Mode.DESTROY);
+            Entity entity = result.getEntity();
+            level.explode(this, entity.getX(), entity.getY() + 2, entity.getZ(), getOwner() instanceof ExplosiveSkeletonEntity ? 2 : 1, Explosion.Mode.DESTROY);
             remove();
         }
     }

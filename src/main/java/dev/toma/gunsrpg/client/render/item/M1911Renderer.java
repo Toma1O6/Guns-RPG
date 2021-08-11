@@ -3,15 +3,15 @@ package dev.toma.gunsrpg.client.render.item;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.AbstractWeaponModel;
-import dev.toma.gunsrpg.client.model.M1911Model;
+import dev.toma.gunsrpg.client.model.WeaponModels;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.util.ResourceLocation;
 
 public class M1911Renderer extends AbstractWeaponRenderer {
 
     @Override
-    public AbstractWeaponModel createModelInstance() {
-        return new M1911Model();
+    public AbstractWeaponModel getWeaponModel() {
+        return WeaponModels.M1911;
     }
 
     @Override
