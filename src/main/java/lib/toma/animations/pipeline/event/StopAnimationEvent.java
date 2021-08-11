@@ -66,6 +66,7 @@ public class StopAnimationEvent extends AbstractAnimationEvent {
 
         public AddStopAnimationEventDialog(EventDialogContext<StopAnimationEvent> context) {
             super(context);
+            setDimensions(175, 120);
         }
 
         @Override

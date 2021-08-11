@@ -43,12 +43,12 @@ public class AmmoItem extends BaseItem implements IAmmoProvider {
         List<AmmoItem> sr = Arrays.asList(WOODEN_AMMO_762MM, STONE_AMMO_762MM, IRON_AMMO_762MM, GOLD_AMMO_762MM, DIAMOND_AMMO_762MM, EMERALD_AMMO_762MM, AMETHYST_AMMO_762MM);
         List<AmmoItem> sg = Arrays.asList(WOODEN_AMMO_12G, STONE_AMMO_12G, IRON_AMMO_12G, GOLD_AMMO_12G, DIAMOND_AMMO_12G, EMERALD_AMMO_12G, AMETHYST_AMMO_12G);
         List<AmmoItem> cb = Arrays.asList(WOODEN_AMMO_CROSSBOW_BOLT, STONE_AMMO_CROSSBOW_BOLT, IRON_AMMO_CROSSBOW_BOLT, GOLD_AMMO_CROSSBOW_BOLT, DIAMOND_AMMO_CROSSBOW_BOLT, EMERALD_AMMO_CROSSBOW_BOLT, AMETHYST_AMMO_CROSSBOW_BOLT);
-        GUN_TO_ITEM_MAP.put(PISTOL, pistol.toArray(new AmmoItem[0]));
-        GUN_TO_ITEM_MAP.put(SMG, smg.toArray(new AmmoItem[0]));
-        GUN_TO_ITEM_MAP.put(ASSAULT_RIFLE, ar.toArray(new AmmoItem[0]));
-        GUN_TO_ITEM_MAP.put(SNIPER_RIFLE, sr.toArray(new AmmoItem[0]));
-        GUN_TO_ITEM_MAP.put(SHOTGUN, sg.toArray(new AmmoItem[0]));
-        GUN_TO_ITEM_MAP.put(CROSSBOW, cb.toArray(new AmmoItem[0]));
+        GUN_TO_ITEM_MAP.put(M1911, pistol.toArray(new AmmoItem[0]));
+        GUN_TO_ITEM_MAP.put(UMP45, smg.toArray(new AmmoItem[0]));
+        GUN_TO_ITEM_MAP.put(SKS, ar.toArray(new AmmoItem[0]));
+        GUN_TO_ITEM_MAP.put(KAR98K, sr.toArray(new AmmoItem[0]));
+        GUN_TO_ITEM_MAP.put(S1897, sg.toArray(new AmmoItem[0]));
+        GUN_TO_ITEM_MAP.put(WOODEN_CROSSBOW, cb.toArray(new AmmoItem[0]));
     }
 
     @Override

@@ -1,10 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
-import dev.toma.gunsrpg.client.animation.AnimationProcessor;
-import dev.toma.gunsrpg.client.animation.Animations;
-import dev.toma.gunsrpg.client.animation.IAnimation;
-import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
-import dev.toma.gunsrpg.client.animation.impl.ImprovedAimAnimation;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.M1911Renderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
@@ -16,7 +12,6 @@ import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
-import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
@@ -24,14 +19,23 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Map;
 
 public class M1911Item extends GunItem {
+
+    private static final ResourceLocation[] AIM_ANIMATIONS = {
+            GunsRPG.makeResource("m1911/aim"),
+            GunsRPG.makeResource("m1911/aim_dual")
+    };
+    private static final ResourceLocation[] RELOAD_ANIMATIONS = {
+            GunsRPG.makeResource("m1911/reload"),
+            GunsRPG.makeResource("m1911/reload_dual")
+    };
 
     public M1911Item(String name) {
         super(name, GunType.PISTOL, new Properties().setISTER(() -> M1911Renderer::new));
@@ -126,41 +130,15 @@ public class M1911Item extends GunItem {
         return Skills.PISTOL_ASSEMBLY;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public AimingAnimation createAimAnimation() {
-        AnimationProcessor processor = ClientSideManager.instance().processor();
-        return this.isDualWieldActive() ? new ImprovedAimAnimation(-0.4F, 0.06F, 0.0F).animateItem((stack, f) -> {
-            if (processor.isRenderingDualWield()) {
-                stack.translate(0.0F, -0.33F * f, 0.0F);
-                stack.mulPose(Vector3f.ZP.rotationDegrees(-30f * f));
-            } else {
-                stack.translate(0.0F, -0.33F * f, 0.0F);
-                stack.mulPose(Vector3f.ZP.rotationDegrees(30 * f));
-            }
-        }).animateRight((stack, f) -> {
-            stack.translate(-0.13F * f, -0.12F * f, 0.1F * f);
-            stack.mulPose(Vector3f.ZP.rotationDegrees(30 * f));
-            stack.mulPose(Vector3f.YP.rotationDegrees(20 * f));
-        }).animateLeft((stack, f) -> {
-            stack.translate(0.1F * f, -0.05F * f, 0.15F * f);
-            stack.mulPose(Vector3f.ZN.rotationDegrees(30 * f));
-            stack.mulPose(Vector3f.YN.rotationDegrees(30 * f));
-        }) : new AimingAnimation(-0.54F, 0.06F, 0.0F).animateRight((stack, f) -> {
-            stack.translate(-0.18F * f, 0.0F, 0.1F * f);
-            stack.mulPose(Vector3f.XP.rotationDegrees(3 * f));
-            stack.mulPose(Vector3f.YP.rotationDegrees(30 * f));
-        }).animateLeft((stack, f) -> {
-            stack.translate(-0.2F * f, 0.0F, 0.1F * f);
-            stack.mulPose(Vector3f.XP.rotationDegrees(3 * f));
-            stack.mulPose(Vector3f.YP.rotationDegrees(25 * f));
-        });
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return isDualWieldActive() ? AIM_ANIMATIONS[1] : AIM_ANIMATIONS[0];
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public IAnimation createReloadAnimation(PlayerEntity player) {
-        return this.isDualWieldActive() ? new Animations.M1911ReloadDual(this.getReloadTime(player)) : new Animations.M1911Reload(this.getReloadTime(player));
+    public ResourceLocation getReloadAnimation(PlayerEntity player) {
+        return this.isDualWieldActive() ? RELOAD_ANIMATIONS[1] : RELOAD_ANIMATIONS[0];
     }
 
     @OnlyIn(Dist.CLIENT)

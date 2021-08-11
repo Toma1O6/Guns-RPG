@@ -428,7 +428,7 @@ public class CommonEventHandler {
             GunDamageSource src = (GunDamageSource) event.getDamageSource();
             ItemStack stack = src.getStacc();
             Entity shooter = src.getSrc();
-            if (stack.getItem() == ModItems.CROSSBOW && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_HUNTER)) {
+            if (stack.getItem() == ModItems.WOODEN_CROSSBOW && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_HUNTER)) {
                 event.setLootingLevel(3);
             }
         }

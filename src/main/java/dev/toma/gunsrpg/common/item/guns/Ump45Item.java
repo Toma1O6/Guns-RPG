@@ -1,8 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
-import dev.toma.gunsrpg.client.animation.Animations;
-import dev.toma.gunsrpg.client.animation.IAnimation;
-import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.Ump45Renderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
@@ -21,14 +19,20 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Map;
 
 public class Ump45Item extends GunItem {
+
+    private static final ResourceLocation[] AIM_ANIMATIONS = {
+            GunsRPG.makeResource("ump45/aim"),
+            GunsRPG.makeResource("ump45/aim_red_dot")
+    };
+    private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("ump45/reload");
 
     public Ump45Item(String name) {
         super(name, GunType.SMG, new Properties().setISTER(() -> Ump45Renderer::new));
@@ -114,22 +118,15 @@ public class Ump45Item extends GunItem {
         return Skills.SMG_ASSEMBLY;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public AimingAnimation createAimAnimation() {
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         boolean rds = PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.SMG_RED_DOT);
-        return new AimingAnimation(-0.57F, rds ? 0.08F : 0.2F, 0.2F).animateRight((stack, f) -> {
-            stack.translate(-0.25F * f, 0.2F * f, 0.2F * f);
-            stack.mulPose(Vector3f.YP.rotationDegrees(20 * f));
-        }).animateLeft((stack, f) -> {
-            stack.translate(-0.32F * f, 0.2F * f, 0.35F * f);
-            stack.mulPose(Vector3f.YP.rotationDegrees(10 * f));
-        });
+        return AIM_ANIMATIONS[rds ? 1 : 0];
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public IAnimation createReloadAnimation(PlayerEntity player) {
-        return new Animations.Ump45Reload(this.getReloadTime(player));
+    public ResourceLocation getReloadAnimation(PlayerEntity player) {
+        return RELOAD_ANIMATION;
     }
 }

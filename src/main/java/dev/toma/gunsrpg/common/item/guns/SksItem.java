@@ -1,8 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
-import dev.toma.gunsrpg.client.animation.Animations;
-import dev.toma.gunsrpg.client.animation.IAnimation;
-import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.SksRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
@@ -17,14 +15,20 @@ import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Map;
 
 public class SksItem extends GunItem {
+
+    private static final ResourceLocation[] AIM_ANIMATIONS = {
+            GunsRPG.makeResource("sks/aim"),
+            GunsRPG.makeResource("sks/aim_red_dot")
+    };
+    private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("sks/reload");
 
     public SksItem(String name) {
         super(name, GunType.AR, new Properties().setISTER(() -> SksRenderer::new));
@@ -117,20 +121,15 @@ public class SksItem extends GunItem {
         return Skills.ASSAULT_RIFLE_ASSEMBLY;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public AimingAnimation createAimAnimation() {
-        return new AimingAnimation(-0.265F, 0.07F, 0.2F).animateRight((stack, f) -> {
-            stack.translate(-0.2F * f, 0.0F, 0.0F);
-            stack.mulPose(Vector3f.YP.rotationDegrees(20 * f));
-        }).animateLeft((stack, f) -> {
-            stack.translate(-0.33F * f, 0.1F * f, 0.2F * f);
-        });
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        boolean scoped = PlayerData.hasActiveSkill(player, Skills.AR_RED_DOT);
+        return AIM_ANIMATIONS[scoped ? 1 : 0];
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public IAnimation createReloadAnimation(PlayerEntity player) {
-        return new Animations.SksReload(this.getReloadTime(player));
+    public ResourceLocation getReloadAnimation(PlayerEntity player) {
+        return RELOAD_ANIMATION;
     }
 }

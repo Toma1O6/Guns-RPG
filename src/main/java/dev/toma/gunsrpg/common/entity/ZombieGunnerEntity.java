@@ -36,11 +36,11 @@ public class ZombieGunnerEntity extends MonsterEntity {
     // loaded lazily to prevent getting null items
     public static final LazyOptional<List<GunData>> DATA = LazyOptional.of(() -> {
         List<GunData> list = new ArrayList<>();
-        list.add(GunData.from(ModItems.PISTOL, 30));
-        list.add(GunData.from(ModItems.SMG, 15));
-        list.add(GunData.from(ModItems.ASSAULT_RIFLE, 30));
-        list.add(GunData.from(ModItems.SNIPER_RIFLE, 80));
-        list.add(GunData.from(ModItems.SHOTGUN, 50));
+        list.add(GunData.from(ModItems.M1911, 30));
+        list.add(GunData.from(ModItems.UMP45, 15));
+        list.add(GunData.from(ModItems.SKS, 30));
+        list.add(GunData.from(ModItems.KAR98K, 80));
+        list.add(GunData.from(ModItems.S1897, 50));
         return list;
     });
     private int weaponDataIndex;

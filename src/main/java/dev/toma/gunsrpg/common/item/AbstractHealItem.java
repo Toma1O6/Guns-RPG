@@ -1,16 +1,18 @@
 package dev.toma.gunsrpg.common.item;
 
 import dev.toma.gunsrpg.ModTabs;
-import dev.toma.gunsrpg.client.animation.Animations;
-import dev.toma.gunsrpg.client.animation.IAnimation;
+import dev.toma.gunsrpg.client.animation.GRPGAnimations;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.init.Skills;
-import dev.toma.gunsrpg.sided.ClientSideManager;
+import lib.toma.animations.Animation;
+import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.IAnimationEntry;
 import lib.toma.animations.IRenderConfig;
+import lib.toma.animations.pipeline.IAnimationPipeline;
+import lib.toma.animations.serialization.AnimationLoader;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,18 +20,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.DistExecutor;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.function.*;
 
 public abstract class AbstractHealItem<T> extends BaseItem implements IAnimationEntry {
@@ -39,7 +39,7 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
     private final Supplier<SoundEvent> useSound;
     private final Predicate<T> useCondition;
     private final Consumer<T> useAction;
-    private final Supplier<IAnimation> useAnimation;
+    private final ResourceLocation useAnimation;
 
     protected AbstractHealItem(HealBuilder<T, ?> builder) {
         super(builder.name, new Properties().tab(ModTabs.ITEM_TAB));
@@ -48,8 +48,7 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
         useSound = builder.useSound;
         useCondition = builder.useCondition;
         useAction = builder.useAction;
-        Object temp = DistExecutor.callWhenOn(Dist.CLIENT, builder.useAnimation);
-        useAnimation = () -> (IAnimation) temp;
+        useAnimation = builder.useAnimation;
     }
 
     public static HealBuilder<PlayerEntity, PlayerHealItem> definePlayerHeal(String name) {
@@ -87,7 +86,10 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
             if (useCondition.test(target)) {
                 if (level.isClientSide) {
                     player.playSound(useSound.get(), 1.0F, 1.0F);
-                    ClientSideManager.instance().processor().play(Animations.HEAL, useAnimation.get());
+                    AnimationEngine engine = AnimationEngine.get();
+                    AnimationLoader loader = engine.loader();
+                    IAnimationPipeline pipeline = engine.pipeline();
+                    pipeline.insert(GRPGAnimations.HEAL, new Animation(loader.getProvider(useAnimation), useTime));
                 }
                 player.startUsingItem(hand);
                 return ActionResult.pass(stack);
@@ -99,7 +101,7 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
     @Override
     public void releaseUsing(ItemStack p_77615_1_, World p_77615_2_, LivingEntity p_77615_3_, int p_77615_4_) {
         if (p_77615_2_.isClientSide) {
-            ClientSideManager.instance().processor().stop(Animations.HEAL);
+            AnimationEngine.get().pipeline().remove(GRPGAnimations.HEAL);
         }
     }
 
@@ -145,7 +147,7 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
         private Supplier<SoundEvent> useSound;
         private Predicate<T> useCondition = t -> true;
         private Consumer<T> useAction;
-        private Supplier<Callable<IAnimation>> useAnimation;
+        private ResourceLocation useAnimation;
 
         protected HealBuilder(String name) {
             this.name = name;
@@ -172,9 +174,9 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
             return this;
         }
 
-        public HealBuilder<T, H> animate(int useTime, Function<Integer, Supplier<Callable<IAnimation>>> useAnimationFactory) {
+        public HealBuilder<T, H> animate(int useTime, ResourceLocation animationPath) {
             this.useTime = useTime;
-            this.useAnimation = useAnimationFactory.apply(useTime);
+            this.useAnimation = animationPath;
             return this;
         }
 

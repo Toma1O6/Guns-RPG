@@ -8,12 +8,12 @@ import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder(GunsRPG.MODID)
 public class ModItems {
-    public static final GunItem PISTOL = null;
-    public static final GunItem SMG = null;
-    public static final GunItem ASSAULT_RIFLE = null;
-    public static final GunItem SNIPER_RIFLE = null;
-    public static final GunItem SHOTGUN = null;
-    public static final GunItem CROSSBOW = null;
+    public static final GunItem M1911 = null;
+    public static final GunItem UMP45 = null;
+    public static final GunItem SKS = null;
+    public static final GunItem KAR98K = null;
+    public static final GunItem S1897 = null;
+    public static final GunItem WOODEN_CROSSBOW = null;
     public static final BaseItem AMETHYST = null;
     public static final DebuffHealItem ANTIDOTUM_PILLS = null;
     public static final DebuffHealItem VACCINE = null;

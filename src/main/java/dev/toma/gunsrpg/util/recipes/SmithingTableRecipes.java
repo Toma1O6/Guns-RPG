@@ -118,12 +118,12 @@ public class SmithingTableRecipes {
         register(new RecipeBuilder().out(ModItems.MAGAZINE).add(new int[]{1, 2, 4, 5, 6, 7}, Items.IRON_INGOT).req(Skills.GUN_PARTS_SMITH).recipe());
         register(new RecipeBuilder().out(ModItems.SMALL_IRON_STOCK).add(0, Blocks.IRON_BLOCK).add(new int[]{1, 3}, Items.IRON_INGOT).add(4, Items.FLINT_AND_STEEL).req(Skills.GUN_PARTS_SMITH).recipe());
         register(new RecipeBuilder().out(ModItems.WOODEN_STOCK).add(new int[]{0, 1}, Blocks.OAK_LOG).add(2, Items.IRON_INGOT).add(4, Blocks.OAK_SLAB).add(5, Items.FLINT_AND_STEEL).req(Skills.GUN_PARTS_SMITH).recipe());
-        register(new RecipeBuilder().out(ModItems.PISTOL).add(0, ModItems.BARREL).add(1, ModItems.GUN_PARTS).add(2, ModItems.SMALL_IRON_STOCK).req(Skills.PISTOL_ASSEMBLY).recipe());
-        register(new RecipeBuilder().out(ModItems.SMG).add(0, ModItems.BARREL).add(1, ModItems.GUN_PARTS).add(2, ModItems.IRON_STOCK).add(4, ModItems.MAGAZINE).req(Skills.SMG_ASSEMBLY).recipe());
-        register(new RecipeBuilder().out(ModItems.CROSSBOW).add(3, Blocks.TRIPWIRE_HOOK).add(4, ModItems.GUN_PARTS).add(5, ModItems.WOODEN_STOCK).add(new int[]{1, 7}, Items.BOW).req(Skills.CROSSBOW_ASSEMBLY).recipe());
-        register(new RecipeBuilder().out(ModItems.SHOTGUN).add(0, ModItems.LONG_BARREL).add(1, ModItems.GUN_PARTS).add(2, ModItems.WOODEN_STOCK).add(4, ModItems.MAGAZINE).req(Skills.SHOTGUN_ASSEMBLY).recipe());
-        register(new RecipeBuilder().out(ModItems.ASSAULT_RIFLE).add(0, ModItems.LONG_BARREL).add(1, ModItems.GUN_PARTS).add(2, ModItems.IRON_STOCK).add(4, ModItems.MAGAZINE).req(Skills.ASSAULT_RIFLE_ASSEMBLY).recipe());
-        register(new RecipeBuilder().out(ModItems.SNIPER_RIFLE).add(0, ModItems.LONG_BARREL).add(1, ModItems.GUN_PARTS).add(2, ModItems.WOODEN_STOCK).req(Skills.SNIPER_RIFLE_ASSEMBLY).recipe());
+        register(new RecipeBuilder().out(ModItems.M1911).add(0, ModItems.BARREL).add(1, ModItems.GUN_PARTS).add(2, ModItems.SMALL_IRON_STOCK).req(Skills.PISTOL_ASSEMBLY).recipe());
+        register(new RecipeBuilder().out(ModItems.UMP45).add(0, ModItems.BARREL).add(1, ModItems.GUN_PARTS).add(2, ModItems.IRON_STOCK).add(4, ModItems.MAGAZINE).req(Skills.SMG_ASSEMBLY).recipe());
+        register(new RecipeBuilder().out(ModItems.WOODEN_CROSSBOW).add(3, Blocks.TRIPWIRE_HOOK).add(4, ModItems.GUN_PARTS).add(5, ModItems.WOODEN_STOCK).add(new int[]{1, 7}, Items.BOW).req(Skills.CROSSBOW_ASSEMBLY).recipe());
+        register(new RecipeBuilder().out(ModItems.S1897).add(0, ModItems.LONG_BARREL).add(1, ModItems.GUN_PARTS).add(2, ModItems.WOODEN_STOCK).add(4, ModItems.MAGAZINE).req(Skills.SHOTGUN_ASSEMBLY).recipe());
+        register(new RecipeBuilder().out(ModItems.SKS).add(0, ModItems.LONG_BARREL).add(1, ModItems.GUN_PARTS).add(2, ModItems.IRON_STOCK).add(4, ModItems.MAGAZINE).req(Skills.ASSAULT_RIFLE_ASSEMBLY).recipe());
+        register(new RecipeBuilder().out(ModItems.KAR98K).add(0, ModItems.LONG_BARREL).add(1, ModItems.GUN_PARTS).add(2, ModItems.WOODEN_STOCK).req(Skills.SNIPER_RIFLE_ASSEMBLY).recipe());
     }
 
     public static List<SmithingRecipe> getRecipes() {

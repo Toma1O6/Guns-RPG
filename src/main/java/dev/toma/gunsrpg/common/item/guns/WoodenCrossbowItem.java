@@ -1,8 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.animation.Animations;
-import dev.toma.gunsrpg.client.animation.IAnimation;
 import dev.toma.gunsrpg.client.render.item.WoodenCrossbowRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
@@ -32,8 +30,11 @@ import java.util.Map;
 
 public class WoodenCrossbowItem extends GunItem {
 
-    private static final ResourceLocation AIM = GunsRPG.makeResource("wooden_crossbow/aim");
-    private static final ResourceLocation AIM_SCOPED = GunsRPG.makeResource("wooden_crossbow/aim_scoped");
+    private static final ResourceLocation[] AIM_ANIMATIONS = {
+            GunsRPG.makeResource("wooden_crossbow/aim"),
+            GunsRPG.makeResource("wooden_crossbow/aim_scoped")
+    };
+    private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("wooden_crossbow/reload");
 
     public WoodenCrossbowItem(String name) {
         super(name, GunType.CROSSBOW, new Properties().setISTER(() -> WoodenCrossbowRenderer::new));
@@ -136,12 +137,12 @@ public class WoodenCrossbowItem extends GunItem {
 
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) ? AIM_SCOPED : AIM;
+        return AIM_ANIMATIONS[PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) ? 1 : 0];
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public IAnimation createReloadAnimation(PlayerEntity player) {
-        return new Animations.ReloadCrossbow(this.getReloadTime(player));
+    public ResourceLocation getReloadAnimation(PlayerEntity player) {
+        return RELOAD_ANIMATION;
     }
 }

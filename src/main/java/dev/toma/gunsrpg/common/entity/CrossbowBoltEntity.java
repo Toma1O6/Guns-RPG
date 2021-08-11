@@ -20,7 +20,7 @@ public class CrossbowBoltEntity extends BulletEntity {
 
     public CrossbowBoltEntity(EntityType<? extends CrossbowBoltEntity> type, World worldIn, LivingEntity shooter, WoodenCrossbowItem gun, ItemStack stack) {
         super(type, worldIn, shooter, gun, stack);
-        canPenetrateEntity = gun == ModItems.CROSSBOW && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_PENETRATOR);
+        canPenetrateEntity = gun == ModItems.WOODEN_CROSSBOW && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_PENETRATOR);
     }
 
     @Override

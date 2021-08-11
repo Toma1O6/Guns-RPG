@@ -99,7 +99,7 @@ public class ClientEventHandler {
                     int windowWidth = window.getGuiScaledWidth();
                     int windowHeight = window.getGuiScaledHeight();
                     if (data.getAimInfo().progress >= 0.9F) {
-                        if (stack.getItem() == ModItems.SNIPER_RIFLE && PlayerData.hasActiveSkill(player, Skills.SR_SCOPE) || stack.getItem() == ModItems.CROSSBOW && PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
+                        if (stack.getItem() == ModItems.KAR98K && PlayerData.hasActiveSkill(player, Skills.SR_SCOPE) || stack.getItem() == ModItems.WOODEN_CROSSBOW && PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
                             Matrix4f pose = matrixStack.last().pose();
                             if (ModConfig.clientConfig.scopeRenderer.get() == ScopeRenderer.TEXTURE) {
                                 ModUtils.renderTexture(pose, 0, 0, windowWidth, windowHeight, SCOPE_OVERLAY);
@@ -108,7 +108,7 @@ public class ClientEventHandler {
                                 int top = window.getGuiScaledHeight() / 2 - 16;
                                 ModUtils.renderTexture(pose, left, top, left + 32, top + 32, SCOPE);
                             }
-                        } else if ((PlayerData.hasActiveSkill(player, Skills.SMG_RED_DOT) && stack.getItem() == ModItems.SMG) || (PlayerData.hasActiveSkill(player, Skills.AR_RED_DOT) && stack.getItem() == ModItems.ASSAULT_RIFLE)) {
+                        } else if ((PlayerData.hasActiveSkill(player, Skills.SMG_RED_DOT) && stack.getItem() == ModItems.UMP45) || (PlayerData.hasActiveSkill(player, Skills.AR_RED_DOT) && stack.getItem() == ModItems.SKS)) {
                             float left = windowWidth / 2f - 8f;
                             float top = windowHeight / 2f - 8f;
                             float x2 = left + 16;
@@ -257,10 +257,10 @@ public class ClientEventHandler {
                     if (!aim) {
                         preAimFov.map(settings.fov);
                         preAimSens.map(settings.sensitivity);
-                        if (item == ModItems.SNIPER_RIFLE && PlayerData.hasActiveSkill(player, Skills.SR_SCOPE)) {
+                        if (item == ModItems.KAR98K && PlayerData.hasActiveSkill(player, Skills.SR_SCOPE)) {
                             settings.sensitivity = preAimSens.get() * 0.3F;
                             settings.fov = 15.0F;
-                        } else if (item == ModItems.CROSSBOW && PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
+                        } else if (item == ModItems.WOODEN_CROSSBOW && PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
                             settings.sensitivity = preAimSens.get() * 0.4F;
                             settings.fov = 25.0F;
                         }
@@ -297,7 +297,7 @@ public class ClientEventHandler {
             AimInfo info = data.getAimInfo();
             ScopeRenderer renderer = ModConfig.clientConfig.scopeRenderer.get();
             Item item = stack.getItem();
-            if (info.isAiming() && renderer == ScopeRenderer.TEXTURE && (PlayerData.hasActiveSkill(player, Skills.SR_SCOPE) && item == ModItems.SNIPER_RIFLE || PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) && item == ModItems.CROSSBOW)) {
+            if (info.isAiming() && renderer == ScopeRenderer.TEXTURE && (PlayerData.hasActiveSkill(player, Skills.SR_SCOPE) && item == ModItems.KAR98K || PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) && item == ModItems.WOODEN_CROSSBOW)) {
                 event.setCanceled(true);
             }
         }

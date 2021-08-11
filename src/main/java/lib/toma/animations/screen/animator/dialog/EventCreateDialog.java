@@ -16,8 +16,11 @@ public abstract class EventCreateDialog<E extends IAnimationEvent> extends Dialo
 
     protected abstract void addWidgets();
 
+    protected void preInit() {}
+
     @Override
     protected final void init() {
+        preInit();
         super.init();
         addWidgets();
     }

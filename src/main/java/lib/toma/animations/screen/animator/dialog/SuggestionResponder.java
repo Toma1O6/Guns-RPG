@@ -14,6 +14,9 @@ public class SuggestionResponder implements Consumer<String> {
         this.suggestion = suggestion;
         this.widget = widget;
         this.responder = responder;
+        if (widget.getValue().isEmpty()) {
+            widget.setSuggestion(suggestion);
+        }
     }
 
     @Override

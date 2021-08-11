@@ -39,6 +39,7 @@ public class AddEventDialog extends DialogScreen {
     protected void init() {
         super.init();
 
+        errorFlags.set(0);
         int btnWidthP = dWidth() - 10;
         int btnWidth = (btnWidthP - 5) / 2;
         typeSelector = addButton(new ListView<>(left() + 5, top() + 15, btnWidthP, 75, AnimationEventType.allKeys()));

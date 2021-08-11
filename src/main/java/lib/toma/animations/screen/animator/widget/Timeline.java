@@ -64,7 +64,7 @@ public class Timeline extends WidgetContainer {
         AnimatorFrameProvider provider = project.getFrameControl().getProvider();
         Map<AnimationStage, List<MutableKeyframe>> map = provider.getFrames();
         List<AnimationStage> stages = new ArrayList<>(map.keySet());
-        for (int i = scrollIndex; i < limit; i++) {
+        for (int i = project.hasEvents() && scrollIndex == 1 ? scrollIndex - 1 : scrollIndex; i < limit; i++) {
             if (i >= stages.size()) break;
             AnimationStage stage = stages.get(i);
             List<MutableKeyframe> list = map.get(stage);
@@ -72,7 +72,7 @@ public class Timeline extends WidgetContainer {
                 provider.deleteStage(stage);
                 continue;
             }
-            int j = addEventDisplay ? i - scrollIndex + 1 : i - scrollIndex;
+            int j = i - scrollIndex + 1;
             Display display = new Display(0, vertOffset + j * 10, width - scrollbarWidth, 10, stage.getName(), this, stage, contextSupplier);
             for (MutableKeyframe frame : list) {
                 display.addWidget(new Element<>(frame, IKeyframe::endpoint, display, ClickActionType.FRAME));
@@ -147,7 +147,7 @@ public class Timeline extends WidgetContainer {
         if (project.hasEvents()) {
             ++elements;
         }
-        if (j >= 0 && j <= elements - displaySize + 1) {
+        if (j >= 0 && j <= elements - displaySize) {
             scrollIndex = j;
             init();
         }
@@ -234,8 +234,8 @@ public class Timeline extends WidgetContainer {
         }
         double size = 1.0 / total * (height - toolbarHeight - progressBarHeight);
         int minY = (int) (scrollIndex * size);
-        int bottomIndex = Math.min(displayList.size(), total);
-        int maxY = minY + (int) size * bottomIndex;
+        int bottomIndex = Math.min(displaySize, total);
+        int maxY = minY + (int) Math.ceil(size * bottomIndex);
         fill(stack, left, top + minY, right, top + maxY, 0xFFFFFFFF);
     }
 

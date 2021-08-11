@@ -1,8 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
-import dev.toma.gunsrpg.client.animation.Animations;
-import dev.toma.gunsrpg.client.animation.IAnimation;
-import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.S1897Renderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
@@ -17,13 +15,13 @@ import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
-import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,6 +30,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.Map;
 
 public class S1897Item extends GunItem {
+
+    public static final ResourceLocation AIM_ANIMATION = GunsRPG.makeResource("s1897/aim");
+    public static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("s1897/reload");
 
     public S1897Item(String name) {
         super(name, GunType.SG, new Properties().setISTER(() -> S1897Renderer::new));
@@ -116,26 +117,22 @@ public class S1897Item extends GunItem {
         return Skills.SHOTGUN_ASSEMBLY;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public AimingAnimation createAimAnimation() {
-        return new AimingAnimation(-0.267F, 0.22F, -0.1F).animateRight((stack, f) -> {
-            stack.translate(-0.267F * f, 0.22F * f, 0.1F * f);
-        }).animateLeft((stack, f) -> {
-            stack.translate(-0.267F * f, 0.22F * f, 0.2F * f);
-        });
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return AIM_ANIMATION;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public IAnimation createReloadAnimation(PlayerEntity player) {
-        return new Animations.S1897Reload(this.getReloadTime(player));
+    public ResourceLocation getReloadAnimation(PlayerEntity player) {
+        return RELOAD_ANIMATION;
     }
 
+    // TODO
     @OnlyIn(Dist.CLIENT)
     @Override
     public void onShoot(PlayerEntity player, ItemStack stack) {
         super.onShoot(player, stack);
-        ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltS1897(this.getFirerate(player)));
+        // ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltS1897(this.getFirerate(player)));
     }
 }

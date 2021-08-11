@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.capability.object;
 
-import dev.toma.gunsrpg.client.animation.Animations;
+import dev.toma.gunsrpg.client.animation.GRPGAnimations;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -50,7 +50,7 @@ public class ReloadInfo {
             ItemStack stack = player.getMainHandItem();
             if (stack.getItem() instanceof GunItem) {
                 player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ((GunItem) stack.getItem()).getReloadSound(player), SoundCategory.MASTER, 1.0F, 1.0F);
-                NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketSendAnimation(Animations.RELOAD));
+                NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketSendAnimation(GRPGAnimations.RELOAD));
             }
         }
         this.reloading = true;

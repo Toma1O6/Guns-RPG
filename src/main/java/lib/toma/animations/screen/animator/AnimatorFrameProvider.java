@@ -265,6 +265,7 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
     }
 
     private void clrAndAdjustCache(float progress, Set<AnimationStage> set) {
+        eventIndex = 0;
         set.forEach(stage -> frameCache.put(stage, 0));
         while (true) {
             if (!hasFrameAdvanced(progress, set)) {

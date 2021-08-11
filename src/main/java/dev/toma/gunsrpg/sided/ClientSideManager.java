@@ -122,7 +122,7 @@ public class ClientSideManager {
         IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
         IHandAnimator handAnimator = renderPipeline.getHandAnimator();
         IItemRenderer itemRenderer = renderPipeline.getItemRenderer();
-        if (stack.getItem() == ModItems.PISTOL && PlayerData.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD)) {
+        if (stack.getItem() == ModItems.M1911 && PlayerData.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD)) {
             poseStack.pushPose();
             {
                 setDualWieldRender(true);

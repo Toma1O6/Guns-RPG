@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.client;
 
-import dev.toma.gunsrpg.client.animation.AnimationProcessor;
-import dev.toma.gunsrpg.client.animation.Animations;
+import dev.toma.gunsrpg.client.animation.GRPGAnimations;
 import dev.toma.gunsrpg.client.screen.ChooseAmmoScreen;
 import dev.toma.gunsrpg.client.screen.skills.PlayerSkillsScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -14,7 +13,8 @@ import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketChangeFiremode;
 import dev.toma.gunsrpg.network.packet.SPacketRequestDataUpdate;
 import dev.toma.gunsrpg.network.packet.SPacketSetReloading;
-import dev.toma.gunsrpg.sided.ClientSideManager;
+import lib.toma.animations.AnimationEngine;
+import lib.toma.animations.pipeline.IAnimationPipeline;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.PlayerEntity;
@@ -52,13 +52,14 @@ public class ModKeybinds {
                 mc.setScreen(new ChooseAmmoScreen((GunItem) stack.getItem()));
             }
         } else {
-            AnimationProcessor processor = ClientSideManager.instance().processor();
-            if (stack.getItem() instanceof GunItem && !player.isSprinting() && processor.getByID(Animations.REBOLT) == null) {
+            AnimationEngine engine = AnimationEngine.get();
+            IAnimationPipeline pipeline = engine.pipeline();
+            if (stack.getItem() instanceof GunItem && !player.isSprinting() && pipeline.get(GRPGAnimations.CHAMBER) == null) {
                 GunItem gun = (GunItem) stack.getItem();
                 if (info.isReloading()) {
                     if (gun.getReloadManager().canBeInterrupted(gun, stack)) {
                         info.cancelReload();
-                        processor.stop(Animations.RELOAD);
+                        pipeline.remove(GRPGAnimations.RELOAD);
                         NetworkManager.sendServerPacket(new SPacketSetReloading(false, 0));
                         return;
                     }

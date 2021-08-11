@@ -98,28 +98,20 @@ public class AnimatorScreen extends Screen {
         keyframeEditor.addWidget(new LabelWidget(5, 2, 130, 15, new StringTextComponent("Keyframe inspector"), font));
         posX = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 20, 40, 20, StringTextComponent.EMPTY));
         posX.setResponder(new SuggestionResponder("X pos", posX, this::posX_change));
-        posX.setSuggestion("X pos");
         posY = keyframeEditor.addWidget(new TextFieldWidget(font, 50, 20, 40, 20, StringTextComponent.EMPTY));
         posY.setResponder(new SuggestionResponder("Y pos", posY, this::posY_change));
-        posY.setSuggestion("Y pos");
         posZ = keyframeEditor.addWidget(new TextFieldWidget(font, 95, 20, 40, 20, StringTextComponent.EMPTY));
         posZ.setResponder(new SuggestionResponder("Z pos", posZ, this::posZ_change));
-        posZ.setSuggestion("Z pos");
         rotX = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 45, 40, 20, StringTextComponent.EMPTY));
         rotX.setResponder(new SuggestionResponder("X rot", rotX, this::rotX_change));
-        rotX.setSuggestion("X rot");
         rotY = keyframeEditor.addWidget(new TextFieldWidget(font, 50, 45, 40, 20, StringTextComponent.EMPTY));
         rotY.setResponder(new SuggestionResponder("Y rot", rotY, this::rotY_change));
-        rotY.setSuggestion("Y rot");
         rotZ = keyframeEditor.addWidget(new TextFieldWidget(font, 95, 45, 40, 20, StringTextComponent.EMPTY));
         rotZ.setResponder(new SuggestionResponder("Z rot", rotZ, this::rotZ_change));
-        rotZ.setSuggestion("Z rot");
         deg = keyframeEditor.addWidget(new TextFieldWidget(font, 95, 70, 40, 20, StringTextComponent.EMPTY));
         deg.setResponder(new SuggestionResponder("Deg", deg, this::degrees_change));
-        deg.setSuggestion("Deg");
         end = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 70, 85, 20, StringTextComponent.EMPTY));
         end.setResponder(new SuggestionResponder("Pos", end, this::endpoint_change));
-        end.setSuggestion("Pos");
         // ---- TIMELINE
         timeline = addButton(new Timeline(0, height - 80, width, 80, () -> selectionContext));
         timeline.setProgressBarClickHandler(this::animationProgressBar_clicked);

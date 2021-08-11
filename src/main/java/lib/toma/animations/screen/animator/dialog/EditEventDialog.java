@@ -24,7 +24,7 @@ public class EditEventDialog extends DialogScreen {
         this.clickedEvent = clickedEvent;
         this.positionChanger = positionChanger;
 
-        setDimensions(180, 60);
+        setDimensions(180, 65);
     }
 
     @Override
@@ -60,10 +60,12 @@ public class EditEventDialog extends DialogScreen {
 
     private void confirm_clicked(Button button) {
         positionChanger.change(clickedEvent, clickedEvent.copyAt(Float.parseFloat(position.getValue())));
+        showParent();
     }
 
     private void delete_clicked(Button button) {
         positionChanger.change(clickedEvent, null);
+        showParent();
     }
 
     private void updateConfirmButton() {

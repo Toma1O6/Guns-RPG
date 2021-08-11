@@ -83,7 +83,7 @@ public class ListView<T> extends Widget {
     public void onScroll(int amount) {
         int i = -amount;
         int j = scrollOffset + i;
-        if (j >= 0 && j < displayList.size() - elementDisplayLimit) {
+        if (j >= 0 && j <= displayList.size() - elementDisplayLimit) {
             scrollOffset = j;
         }
     }
@@ -102,15 +102,15 @@ public class ListView<T> extends Widget {
     }
 
     private void drawScrollbar(MatrixStack stack) {
-        int left = x + width - 4;
-        int right = left + 4;
+        int left = x + width - 2;
+        int right = left + 2;
         int top = y;
         int bottom = top + height;
-        fill(stack, left, top, right, bottom, 0xFF << 24);
-
         double size = 1.0 / displayList.size() * height;
         int scrollbarY = (int) (scrollOffset * size);
-        int scrollbarHeight = (int) (Math.ceil((1 + elementDisplayLimit) * size));
+        int scrollbarHeight = (int) (Math.ceil(Math.min(elementDisplayLimit, displayList.size()) * size));
+
+        fill(stack, left, top, right, bottom, 0xFF << 24);
         fill(stack, left, top + scrollbarY, right, top + scrollbarY + scrollbarHeight, 0xFFFFFFFF);
     }
 

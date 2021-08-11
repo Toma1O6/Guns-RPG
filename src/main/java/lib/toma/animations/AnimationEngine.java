@@ -14,10 +14,13 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.lwjgl.glfw.GLFW;
 
 public final class AnimationEngine {
 
+    public static final Marker MARKER = MarkerManager.getMarker("Engine");
     public int handConfigKey = GLFW.GLFW_KEY_KP_9;
     public int animatorKey = GLFW.GLFW_KEY_KP_8;
     final HandRenderAPI handRenderAPI;
@@ -39,15 +42,15 @@ public final class AnimationEngine {
     }
 
     public void setup() {
-        logger.info("Setting up animation lib [developer mode]");
+        logger.info(MARKER, "Setting up animation lib [developer mode]");
         handConfigs = registerKey("tools.animation.handConfig", handConfigKey);
         animator = registerKey("tools.animation.animator", animatorKey);
-        logger.info("Key binds registered: {} - handConfigs, {} - animator", handConfigs.getKey().getName(), animator.getKey().getName());
+        logger.info(MARKER, "Key binds registered: {} - handConfigs, {} - animator", handConfigs.getKey().getName(), animator.getKey().getName());
         MinecraftForge.EVENT_BUS.addListener(this::handleKeys);
-        logger.info("Key listener registered");
+        logger.info(MARKER, "Key listener registered");
         Animator animator = Animator.get();
         loader().addListener(animator::onAnimationsLoaded);
-        logger.info("Animation lib - READY");
+        logger.info(MARKER, "Animation lib - READY");
     }
 
     public AnimationLoader loader() {

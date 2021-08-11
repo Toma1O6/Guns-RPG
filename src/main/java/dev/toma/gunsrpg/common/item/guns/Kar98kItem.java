@@ -1,8 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
-import dev.toma.gunsrpg.client.animation.Animations;
-import dev.toma.gunsrpg.client.animation.IAnimation;
-import dev.toma.gunsrpg.client.animation.impl.AimingAnimation;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.Kar98kRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
@@ -22,6 +20,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,6 +29,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.Map;
 
 public class Kar98kItem extends GunItem {
+
+    private static final ResourceLocation[] AIM_ANIMATIONS = {
+            GunsRPG.makeResource("kar98k/aim"),
+            GunsRPG.makeResource("kar98k/aim_scoped")
+    };
+    private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("kar98k/reload");
 
     public Kar98kItem(String name) {
         super(name, GunType.SR, new Properties().setISTER(() -> Kar98kRenderer::new));
@@ -121,28 +126,24 @@ public class Kar98kItem extends GunItem {
         return Skills.SNIPER_RIFLE_ASSEMBLY;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public AimingAnimation createAimAnimation() {
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         boolean scope = PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.SR_SCOPE);
-        return new AimingAnimation(-0.662F, scope ? 0.44F : 0.49F, 0.7F).animateRight((stack, f) -> {
-            stack.translate(-0.265F * f, 0.175F * f, 0.3F * f);
-        }).animateLeft((stack, f) -> {
-            stack.translate(-0.7F * f, 0.175F * f, 0.3F * f);
-        });
+        return scope ? AIM_ANIMATIONS[1] : AIM_ANIMATIONS[0];
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public IAnimation createReloadAnimation(PlayerEntity player) {
-        return new Animations.Kar98kReload(this.getReloadTime(player));
+    public ResourceLocation getReloadAnimation(PlayerEntity player) {
+        return RELOAD_ANIMATION;
     }
 
+    // TODO
     @OnlyIn(Dist.CLIENT)
     @Override
     public void onShoot(PlayerEntity player, ItemStack stack) {
         super.onShoot(player, stack);
-        ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltKar98k(this.getFirerate(player)));
+        //ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltKar98k(this.getFirerate(player)));
         NetworkManager.sendServerPacket(new SPacketSetAiming(false));
         ClientSideManager.instance().playDelayedSound(player.blockPosition(), 1.0F, 1.0F, ModSounds.SR_BOLT, SoundCategory.MASTER, 15);
     }

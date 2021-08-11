@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
-import dev.toma.gunsrpg.client.animation.Animations;
+import dev.toma.gunsrpg.client.animation.GRPGAnimations;
 import dev.toma.gunsrpg.common.block.*;
 import dev.toma.gunsrpg.common.debuffs.*;
 import dev.toma.gunsrpg.common.entity.*;
@@ -40,7 +40,6 @@ import java.util.List;
 public class CommonRegistry {
 
     private static List<BlockItem> queue = new ArrayList<>();
-    private static int id = -1;
 
     public static void registerItemBlock(Block block) {
         BlockItem itemBlock = new BlockItem(block, new Item.Properties().tab(ModTabs.BLOCK_TAB));
@@ -75,12 +74,12 @@ public class CommonRegistry {
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("amethyst_ammo_smith").requiredLevel(45).price(6).build(),
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("ammo_smithing_mastery").requiredLevel(60).price(10).build(),
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("gun_parts_smith").requiredLevel(5).price(1).childs(() -> ModUtils.newList(Skills.PISTOL_ASSEMBLY, Skills.SMG_ASSEMBLY, Skills.CROSSBOW_ASSEMBLY, Skills.SHOTGUN_ASSEMBLY, Skills.ASSAULT_RIFLE_ASSEMBLY, Skills.SNIPER_RIFLE_ASSEMBLY)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("pistol_assembly").requiredLevel(5).price(2).setCustomDisplay().renderFactory(() -> ModItems.PISTOL).childs(() -> ModUtils.newList(Skills.PISTOL_QUICKDRAW, Skills.PISTOL_EXTENDED, Skills.PISTOL_TOUGH_SPRING, Skills.PISTOL_CARBON_BARREL, Skills.PISTOL_SUPPRESSOR, Skills.PISTOL_HEAVY_BULLETS, Skills.PISTOL_DUAL_WIELD)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("smg_assembly").requiredLevel(10).price(3).setCustomDisplay().renderFactory(() -> ModItems.SMG).childs(() -> ModUtils.newList(Skills.SMG_QUICKDRAW, Skills.SMG_EXTENDED, Skills.SMG_VERTICAL_GRIP, Skills.SMG_TOUGH_SPRING, Skills.SMG_RED_DOT, Skills.SMG_SUPPRESSOR, Skills.SMG_COMMANDO)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("crossbow_assembly").requiredLevel(15).price(3).setCustomDisplay().renderFactory(() -> ModItems.CROSSBOW).childs(() -> ModUtils.newList(Skills.CROSSBOW_QUIVER, Skills.CROSSBOW_POISONED_BOLTS, Skills.CROSSBOW_HUNTER, Skills.CROSSBOW_TOUGH_BOWSTRING, Skills.CROSSBOW_PENETRATOR, Skills.CROSSBOW_SCOPE, Skills.CROSSBOW_REPEATER)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("shotgun_assembly").requiredLevel(20).price(4).setCustomDisplay().renderFactory(() -> ModItems.SHOTGUN).childs(() -> ModUtils.newList(Skills.SHOTGUN_BULLET_LOOPS, Skills.SHOTGUN_EXTENDED, Skills.SHOTGUN_PUMP_IN_ACTION, Skills.SHOTGUN_CHOKE, Skills.SHOTGUN_NEVER_GIVE_UP, Skills.SHOTGUN_EXTENDED_BARREL)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("assault_rifle_assembly").requiredLevel(25).price(4).setCustomDisplay().renderFactory(() -> ModItems.ASSAULT_RIFLE).childs(() -> ModUtils.newList(Skills.AR_TOUGH_SPRING, Skills.AR_VERTICAL_GRIP, Skills.AR_EXTENDED, Skills.AR_RED_DOT, Skills.AR_SUPPRESSOR, Skills.AR_CHEEKPAD, Skills.AR_ADAPTIVE_CHAMBERING)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("sniper_rifle_assembly").requiredLevel(35).price(5).setCustomDisplay().renderFactory(() -> ModItems.SNIPER_RIFLE).childs(() -> ModUtils.newList(Skills.SR_SCOPE, Skills.SR_CHEEKPAD, Skills.SR_EXTENDED, Skills.SR_SUPPRESSOR, Skills.SR_FAST_HANDS, Skills.SR_PENETRATOR, Skills.SR_DEAD_EYE)).build(),
+                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("pistol_assembly").requiredLevel(5).price(2).setCustomDisplay().renderFactory(() -> ModItems.M1911).childs(() -> ModUtils.newList(Skills.PISTOL_QUICKDRAW, Skills.PISTOL_EXTENDED, Skills.PISTOL_TOUGH_SPRING, Skills.PISTOL_CARBON_BARREL, Skills.PISTOL_SUPPRESSOR, Skills.PISTOL_HEAVY_BULLETS, Skills.PISTOL_DUAL_WIELD)).build(),
+                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("smg_assembly").requiredLevel(10).price(3).setCustomDisplay().renderFactory(() -> ModItems.UMP45).childs(() -> ModUtils.newList(Skills.SMG_QUICKDRAW, Skills.SMG_EXTENDED, Skills.SMG_VERTICAL_GRIP, Skills.SMG_TOUGH_SPRING, Skills.SMG_RED_DOT, Skills.SMG_SUPPRESSOR, Skills.SMG_COMMANDO)).build(),
+                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("crossbow_assembly").requiredLevel(15).price(3).setCustomDisplay().renderFactory(() -> ModItems.WOODEN_CROSSBOW).childs(() -> ModUtils.newList(Skills.CROSSBOW_QUIVER, Skills.CROSSBOW_POISONED_BOLTS, Skills.CROSSBOW_HUNTER, Skills.CROSSBOW_TOUGH_BOWSTRING, Skills.CROSSBOW_PENETRATOR, Skills.CROSSBOW_SCOPE, Skills.CROSSBOW_REPEATER)).build(),
+                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("shotgun_assembly").requiredLevel(20).price(4).setCustomDisplay().renderFactory(() -> ModItems.S1897).childs(() -> ModUtils.newList(Skills.SHOTGUN_BULLET_LOOPS, Skills.SHOTGUN_EXTENDED, Skills.SHOTGUN_PUMP_IN_ACTION, Skills.SHOTGUN_CHOKE, Skills.SHOTGUN_NEVER_GIVE_UP, Skills.SHOTGUN_EXTENDED_BARREL)).build(),
+                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("assault_rifle_assembly").requiredLevel(25).price(4).setCustomDisplay().renderFactory(() -> ModItems.SKS).childs(() -> ModUtils.newList(Skills.AR_TOUGH_SPRING, Skills.AR_VERTICAL_GRIP, Skills.AR_EXTENDED, Skills.AR_RED_DOT, Skills.AR_SUPPRESSOR, Skills.AR_CHEEKPAD, Skills.AR_ADAPTIVE_CHAMBERING)).build(),
+                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("sniper_rifle_assembly").requiredLevel(35).price(5).setCustomDisplay().renderFactory(() -> ModItems.KAR98K).childs(() -> ModUtils.newList(Skills.SR_SCOPE, Skills.SR_CHEEKPAD, Skills.SR_EXTENDED, Skills.SR_SUPPRESSOR, Skills.SR_FAST_HANDS, Skills.SR_PENETRATOR, Skills.SR_DEAD_EYE)).build(),
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("grenades").requiredLevel(15).price(3).childs(() -> ModUtils.newList(Skills.MASSIVE_GRENADES, Skills.IMPACT_GRENADES)).build(),
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("massive_grenades").requiredLevel(30).price(5).build(),
                 SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("impact_grenades").requiredLevel(40).price(5).build(),
@@ -355,61 +354,61 @@ public class CommonRegistry {
                         .canUse(data -> data.hasDebuff(Debuffs.POISON))
                         .onUse(data -> data.heal(Debuffs.POISON, 40))
                         .describe("Heals 40% of poison progress")
-                        .animate(32, ticks -> () -> () -> new Animations.Pills(ticks))
+                        .animate(32, GRPGAnimations.PILLS)
                         .build(),
                 AbstractHealItem.defineDebuffHeal("vaccine")
                         .defineSound(() -> ModSounds.USE_VACCINE)
                         .canUse(data -> data.hasDebuff(Debuffs.INFECTION))
                         .onUse(data -> data.heal(Debuffs.INFECTION, 50))
                         .describe("Heals 50% of infection progress")
-                        .animate(32, ticks -> () -> () -> new Animations.Injection(ticks))
+                        .animate(32, GRPGAnimations.INJECTION)
                         .build(),
                 AbstractHealItem.defineDebuffHeal("plaster_cast")
                         .defineSound(() -> ModSounds.USE_PLASTER_CAST)
                         .canUse(data -> data.hasDebuff(Debuffs.FRACTURE))
                         .onUse(data -> data.heal(Debuffs.FRACTURE, 35))
                         .describe("Heals 35% of fracture progress")
-                        .animate(32, ticks -> () -> () -> new Animations.Splint(ticks))
+                        .animate(32, GRPGAnimations.SPLINT)
                         .build(),
                 AbstractHealItem.defineDebuffHeal("bandage")
                         .defineSound(() -> ModSounds.USE_BANDAGE)
                         .canUse(data -> data.hasDebuff(Debuffs.BLEEDING))
                         .onUse(data -> data.heal(Debuffs.BLEEDING, 25))
                         .describe("Heals 25% of bleeding progress")
-                        .animate(50, ticks -> () -> () -> new Animations.Bandage(ticks))
+                        .animate(50, GRPGAnimations.BANDAGE)
                         .build(),
                 AbstractHealItem.definePlayerHeal("analgetics")
                         .defineSound(() -> ModSounds.USE_ANTIDOTUM_PILLS)
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> player.heal(5))
                         .describe("Recovers 2.5 hearts")
-                        .animate(32, ticks -> () -> () -> new Animations.Pills(ticks))
+                        .animate(32, GRPGAnimations.PILLS)
                         .build(),
                 AbstractHealItem.definePlayerHeal("stereoids")
                         .defineSound(() -> ModSounds.USE_VACCINE)
                         .onUse(PlayerHealItem::onStereoidsUsed)
                         .describe("Effects:", "Strength I for 60 seconds", "Jump Boost II for 60 seconds")
-                        .animate(32, ticks -> () -> () -> new Animations.Injection(ticks))
+                        .animate(32, GRPGAnimations.INJECTION)
                         .build(),
                 AbstractHealItem.definePlayerHeal("adrenaline")
                         .defineSound(() -> ModSounds.USE_VACCINE)
                         .onUse(PlayerHealItem::onAdrenalineUsed)
                         .describe("Effects:", "Regeneration I for 35 seconds", "Speed I for 60 seconds")
-                        .animate(32, ticks -> () -> () -> new Animations.Injection(ticks))
+                        .animate(32, GRPGAnimations.INJECTION)
                         .build(),
                 AbstractHealItem.definePlayerHeal("painkillers")
                         .defineSound(() -> ModSounds.USE_ANTIDOTUM_PILLS)
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> player.heal(12.0F))
                         .describe("Recovers 6 hearts")
-                        .animate(32, ticks -> () -> () -> new Animations.Pills(ticks))
+                        .animate(32, GRPGAnimations.PILLS)
                         .build(),
                 AbstractHealItem.definePlayerHeal("morphine")
                         .defineSound(() -> ModSounds.USE_VACCINE)
                         .onUse(PlayerHealItem::onMorphineUsed)
                         .describe("Recovers 7 hearts", "Effects:", "Regeneration II for 15 seconds", "Strength II for 30 seconds",
                                 "Resistance I for 45 seconds", "Additional 20% to projectile damage")
-                        .animate(32, ticks -> () -> () -> new Animations.Injection(ticks))
+                        .animate(32, GRPGAnimations.PILLS)
                         .build(),
                 new AmmoItem("wooden_ammo_9mm", AmmoType._9MM, AmmoMaterial.WOOD),
                 new AmmoItem("wooden_ammo_45acp", AmmoType._45ACP, AmmoMaterial.WOOD),
@@ -453,12 +452,12 @@ public class CommonRegistry {
                 new AmmoItem("amethyst_ammo_762mm", AmmoType._762MM, AmmoMaterial.AMETHYST),
                 new AmmoItem("amethyst_ammo_12g", AmmoType._12G, AmmoMaterial.AMETHYST),
                 new AmmoItem("amethyst_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterial.AMETHYST),
-                new M1911Item("pistol"),
-                new Ump45Item("smg"),
-                new SksItem("assault_rifle"),
-                new Kar98kItem("sniper_rifle"),
-                new S1897Item("shotgun"),
-                new WoodenCrossbowItem("crossbow"),
+                new M1911Item("m1911"),
+                new Ump45Item("ump45"),
+                new SksItem("sks"),
+                new Kar98kItem("kar98k"),
+                new S1897Item("s1897"),
+                new WoodenCrossbowItem("wooden_crossbow"),
                 BaseItem.basic("small_bullet_casing"),
                 BaseItem.basic("large_bullet_casing"),
                 BaseItem.basic("shotgun_shell"),
