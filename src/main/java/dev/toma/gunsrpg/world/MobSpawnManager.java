@@ -28,11 +28,13 @@ import java.util.function.BiFunction;
 public class MobSpawnManager {
 
     private static final MobSpawnManager INSTANCE = new MobSpawnManager();
+    private static final UUID HEALTH_BOOST_UUID = UUID.fromString("80096B27-0A64-47FF-A22A-06146FC42448");
     private final List<EntityType<?>> healthExlusions = new ArrayList<>();
     private final Map<EntityType<?>, BooleanConsumer<? extends Entity>> postSpawn = new HashMap<>();
     private final Map<EntityType<?>, List<Pair<Integer, BiFunction<ServerWorld, Vector3d, LivingEntity>>>> bloodmoonEntries = new HashMap<>();
-    private final AttributeModifier health2x = new AttributeModifier(UUID.fromString("80096B27-0A64-47FF-A22A-06146FC42448"), "health2x", 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
-    private final AttributeModifier health3x = new AttributeModifier(UUID.fromString("AF5943C6-D3BC-4AD9-8CBB-E16D17D0C245"), "health3x", 2.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
+    private final AttributeModifier health2x = new AttributeModifier(HEALTH_BOOST_UUID, "health2x", 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
+    private final AttributeModifier health3x = new AttributeModifier(HEALTH_BOOST_UUID, "health3x", 2.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
+    private final AttributeModifier health4x = new AttributeModifier(HEALTH_BOOST_UUID, "health4x", 3.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
 
     public static MobSpawnManager instance() {
         return INSTANCE;
@@ -103,8 +105,7 @@ public class MobSpawnManager {
             return;
         }
         ModifiableAttributeInstance instance = manager.getInstance(Attributes.MAX_HEALTH);
-        instance.removeModifier(health2x);
-        instance.removeModifier(health3x);
+        instance.removeModifier(HEALTH_BOOST_UUID);
         AttributeModifier modifier = getRandomModifier(world.getRandom());
         if (modifier != null) {
             instance.addTransientModifier(modifier);
@@ -134,7 +135,7 @@ public class MobSpawnManager {
 
     private AttributeModifier getRandomModifier(Random random) {
         float f = random.nextFloat();
-        return f <= 0.2F ? health3x : f <= 0.5F ? health2x : null;
+        return f <= 0.05F ? health4x : f <= 0.2F ? health3x : f <= 0.45F ? health2x : null;
     }
 
     private <E extends MobEntity & IAngerable> void addBloodmoonAggroGoal(E entity) {
