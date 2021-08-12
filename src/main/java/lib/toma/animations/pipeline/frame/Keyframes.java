@@ -41,17 +41,10 @@ public class Keyframes {
     }
 
     protected static Quaternion mul(Quaternion q1, Quaternion q2, float f) {
-        Pair<Float, Vector3f> p1 = AnimationUtils.getVectorWithRotation(q1);
-        Pair<Float, Vector3f> p2 = AnimationUtils.getVectorWithRotation(q2);
-        float d1 = p1.getLeft();
-        float d2 = p2.getLeft();
-        Vector3f v1 = p1.getRight();
-        Vector3f v2 = p2.getRight();
-        float x = v2.x() * f;
-        float y = v2.y() * f;
-        float z = v2.z() * f;
-        Vector3f v3 = new Vector3f(v1.x() + x, v1.y() + y, v1.z() + z);
-        return new Quaternion(v3, d1 + d2 * f, true);
+        Quaternion q3 = q2.copy();
+        q3.mul(f);
+        q3.mul(q1);
+        return q3;
     }
 
     public static IKeyframe none() {
