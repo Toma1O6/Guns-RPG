@@ -49,7 +49,7 @@ public class MultiSelectListView<T> extends Widget {
                     fill(stack, x, y1, x + width, y2, 0x67FFFFFF);
                 }
             }
-            font.drawShadow(stack, text, x + 2, y + 3 + i * 15, 0xFFFFFF);
+            font.drawShadow(stack, text, x + 2, y + 3 + j * 15, 0xFFFFFF);
         }
         drawScrollbar(stack);
     }
@@ -92,7 +92,7 @@ public class MultiSelectListView<T> extends Widget {
     public void onScroll(int amount) {
         int i = -amount;
         int j = scroll + i;
-        if (j >= 0 && j < entries.size() - displayLimit) {
+        if (j >= 0 && j <= entries.size() - displayLimit) {
             scroll = j;
         }
     }
@@ -122,7 +122,7 @@ public class MultiSelectListView<T> extends Widget {
 
         double size = 1.0 / entries.size() * height;
         int scrollbarY = (int) (scroll * size);
-        int scrollbarHeight = (int) (Math.ceil((scroll + Math.min(displayLimit, entries.size())) * size));
+        int scrollbarHeight = (int) (Math.ceil(Math.min(displayLimit, entries.size()) * size));
         fill(stack, left, top + scrollbarY, right, top + scrollbarY + scrollbarHeight, 0xFFFFFFFF);
     }
 
