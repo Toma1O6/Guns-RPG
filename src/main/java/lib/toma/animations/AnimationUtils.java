@@ -29,16 +29,6 @@ public class AnimationUtils {
         return Pair.of((float) deg, new Vector3f(x, y, z));
     }
 
-    public static Vector3f getVectorFromQuaternion(Quaternion quaternion) {
-        return getVectorWithRotation(quaternion).getRight();
-    }
-
-    public static float getRotationDegrees(Quaternion quaternion) {
-        double value = Math.acos(quaternion.r());
-        double deg = Math.toDegrees(value * 2f);
-        return (float) deg;
-    }
-
     public static <K, V> V safeRet(Map<K, V> map, K key, V fallback) {
         V v = map.get(key);
         return v != null ? v : Objects.requireNonNull(fallback, "Fallback value cannot be null");

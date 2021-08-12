@@ -23,12 +23,11 @@ public class Keyframes {
     }
 
     public static Quaternion getInitialRotation(IKeyframe parent) {
-        Pair<Float, Vector3f> initialRot = AnimationUtils.getVectorWithRotation(parent.initialRotation());
-        Pair<Float, Vector3f> targetRot = AnimationUtils.getVectorWithRotation(parent.rotationTarget());
-        float newRot = initialRot.getLeft() + targetRot.getLeft();
-        Vector3f total = initialRot.getRight();
-        total.add(targetRot.getRight());
-        return new Quaternion(total, newRot, true);
+        Quaternion q1 = parent.initialRotation();
+        Quaternion q2 = parent.rotationTarget();
+        Quaternion q3 = q1.copy();
+        q3.mul(q2);
+        return q3;
     }
 
     public static void processFrame(IKeyframe keyframe, float percent, MatrixStack matrixStack) {
