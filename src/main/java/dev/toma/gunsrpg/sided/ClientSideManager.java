@@ -105,7 +105,7 @@ public class ClientSideManager {
 
         IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
         IItemRenderer itemRenderer = renderPipeline.getItemRenderer();
-        if (stack.getItem() == ModItems.M1911 && PlayerData.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD)) {
+        if (stack.getItem() == ModItems.M1911 && PlayerData.hasActiveSkill(player, Skills.M1911_DUAL_WIELD)) {
             poseStack.pushPose();
             {
                 pipeline.animateStage(GRPGAnimations.DUAL_WIELD_ITEM, poseStack);

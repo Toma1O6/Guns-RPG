@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.S1897Renderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
@@ -16,6 +17,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
+import lib.toma.animations.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -71,36 +73,36 @@ public class S1897Item extends GunItem {
 
     @Override
     public SoundEvent getReloadSound(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.SHOTGUN_BULLET_LOOPS) ? ModSounds.SG_RELOAD_SHORT : ModSounds.SG_RELOAD;
+        return PlayerData.hasActiveSkill(player, Skills.S1897_BULLET_LOOPS) ? ModSounds.SHOTGUN_RELOAD_SHORT : ModSounds.SHOTGUN_RELOAD;
     }
 
     @Override
     public int getReloadTime(PlayerEntity player) {
-        int time = PlayerData.hasActiveSkill(player, Skills.SHOTGUN_BULLET_LOOPS) ? 12 : 17;
+        int time = PlayerData.hasActiveSkill(player, Skills.S1897_BULLET_LOOPS) ? 12 : 17;
         return (int) (time * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override
     public int getMaxAmmo(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.SHOTGUN_EXTENDED) ? 8 : 5;
+        return PlayerData.hasActiveSkill(player, Skills.S1897_EXTENDED) ? 8 : 5;
     }
 
     @Override
     public int getFirerate(PlayerEntity player) {
         IWeaponConfig cfg = getWeaponConfig();
-        return PlayerData.hasActiveSkill(player, Skills.SHOTGUN_PUMP_IN_ACTION) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
+        return PlayerData.hasActiveSkill(player, Skills.S1897_PUMP_IN_ACTION) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
     }
 
     @Override
     public void onKillEntity(BulletEntity bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if (!shooter.level.isClientSide && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.SHOTGUN_NEVER_GIVE_UP)) {
+        if (!shooter.level.isClientSide && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.S1897_NEVER_GIVE_UP)) {
             shooter.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 100, 0, false, false));
         }
     }
 
     @Override
     public void shootBullet(World world, LivingEntity entity, ItemStack stack) {
-        boolean choke = entity instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) entity, Skills.SHOTGUN_CHOKE);
+        boolean choke = entity instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) entity, Skills.S1897_CHOKE);
         float modifier = 3.0F;
         float velocity = this.getWeaponConfig().getVelocity();
         for (int i = 0; i < 6; i++) {
@@ -114,7 +116,7 @@ public class S1897Item extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.SHOTGUN_ASSEMBLY;
+        return Skills.S1897_ASSEMBLY;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -135,5 +137,15 @@ public class S1897Item extends GunItem {
     public void onShoot(PlayerEntity player, ItemStack stack) {
         super.onShoot(player, stack);
         // ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltS1897(this.getFirerate(player)));
+    }
+
+    @Override
+    public IRenderConfig left() {
+        return RenderConfigs.S1897_LEFT;
+    }
+
+    @Override
+    public IRenderConfig right() {
+        return RenderConfigs.S1897_RIGHT;
     }
 }

@@ -32,19 +32,12 @@ import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
-import lib.toma.animations.IAnimationLoader;
 import lib.toma.animations.pipeline.IAnimationPipeline;
-import lib.toma.animations.pipeline.frame.IKeyframeProvider;
-import lib.toma.animations.pipeline.frame.SingleFrameProvider;
-import lib.toma.animations.serialization.AnimationLoader;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -259,7 +252,7 @@ public class ClientEventHandler {
                     if (!aim) {
                         preAimFov.map(settings.fov);
                         preAimSens.map(settings.sensitivity);
-                        if (item == ModItems.KAR98K && PlayerData.hasActiveSkill(player, Skills.SR_SCOPE)) {
+                        if (item == ModItems.KAR98K && PlayerData.hasActiveSkill(player, Skills.KAR98K_SCOPE)) {
                             settings.sensitivity = preAimSens.get() * 0.3F;
                             settings.fov = 15.0F;
                         } else if (item == ModItems.WOODEN_CROSSBOW && PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
@@ -297,7 +290,7 @@ public class ClientEventHandler {
             AimInfo info = data.getAimInfo();
             ScopeRenderer renderer = ModConfig.clientConfig.scopeRenderer.get();
             Item item = stack.getItem();
-            if (info.isAiming() && renderer == ScopeRenderer.TEXTURE && (PlayerData.hasActiveSkill(player, Skills.SR_SCOPE) && item == ModItems.KAR98K || PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) && item == ModItems.WOODEN_CROSSBOW)) {
+            if (info.isAiming() && renderer == ScopeRenderer.TEXTURE && (PlayerData.hasActiveSkill(player, Skills.KAR98K_SCOPE) && item == ModItems.KAR98K || PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) && item == ModItems.WOODEN_CROSSBOW)) {
                 event.setCanceled(true);
             }
         }

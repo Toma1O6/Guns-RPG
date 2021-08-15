@@ -4,6 +4,8 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.model.WeaponModels;
+import dev.toma.gunsrpg.common.capability.IPlayerData;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.util.ResourceLocation;
 
@@ -41,5 +43,15 @@ public class SksRenderer extends AbstractWeaponRenderer {
     @Override
     protected void transformUI(MatrixStack matrix) {
         matrix.translate(-0.3, 0.8, 0.0);
+    }
+
+    @Override
+    protected boolean hasCustomAttachments() {
+        return true;
+    }
+
+    @Override
+    protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, ResourceLocation texture, int light, int overlay, float progress) {
+
     }
 }

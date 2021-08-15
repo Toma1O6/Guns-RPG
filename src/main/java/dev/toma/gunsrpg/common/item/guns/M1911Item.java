@@ -61,12 +61,12 @@ public class M1911Item extends GunItem {
 
     @Override
     public boolean isSilenced(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.PISTOL_SUPPRESSOR);
+        return PlayerData.hasActiveSkill(player, Skills.M1911_SUPPRESSOR);
     }
 
     @Override
     public void onHitEntity(BulletEntity bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.PISTOL_HEAVY_BULLETS) && random.nextDouble() <= 0.35) {
+        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.M1911_HEAVY_BULLETS) && random.nextDouble() <= 0.35) {
             victim.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 100, 1, false, false));
             victim.addEffect(new EffectInstance(Effects.WEAKNESS, 100, 0, false, false));
         }
@@ -74,49 +74,49 @@ public class M1911Item extends GunItem {
 
     @Override
     protected SoundEvent getShootSound(PlayerEntity entity) {
-        return this.isSilenced(entity) ? ModSounds.P1911_SILENT : ModSounds.P1911;
+        return this.isSilenced(entity) ? ModSounds.M1911_SILENT : ModSounds.M1911;
     }
 
     @Override
     protected SoundEvent getEntityShootSound(LivingEntity entity) {
-        return ModSounds.P92;
+        return ModSounds.M9;
     }
 
     @Override
     public SoundEvent getReloadSound(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.PISTOL_QUICKDRAW) ? ModSounds.P1911_RELOAD_SHORT : ModSounds.P1911_RELOAD;
+        return PlayerData.hasActiveSkill(player, Skills.M1911_QUICKDRAW) ? ModSounds.M1911_RELOAD_SHORT : ModSounds.M1911_RELOAD;
     }
 
     @Override
     public int getMaxAmmo(PlayerEntity player) {
-        boolean extended = PlayerData.hasActiveSkill(player, Skills.PISTOL_EXTENDED);
-        return PlayerData.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD) ? extended ? 26 : 14 : extended ? 13 : 7;
+        boolean extended = PlayerData.hasActiveSkill(player, Skills.M1911_EXTENDED);
+        return PlayerData.hasActiveSkill(player, Skills.M1911_DUAL_WIELD) ? extended ? 26 : 14 : extended ? 13 : 7;
     }
 
     @Override
     public int getFirerate(PlayerEntity player) {
         IWeaponConfig config = getWeaponConfig();
-        return PlayerData.hasActiveSkill(player, Skills.PISTOL_TOUGH_SPRING) ? config.getUpgradedFirerate() : config.getFirerate();
+        return PlayerData.hasActiveSkill(player, Skills.M1911_TOUGH_SPRING) ? config.getUpgradedFirerate() : config.getFirerate();
     }
 
     @Override
     public int getReloadTime(PlayerEntity player) {
-        boolean quickdraw = PlayerData.hasActiveSkill(player, Skills.PISTOL_QUICKDRAW);
-        int time = PlayerData.hasActiveSkill(player, Skills.PISTOL_DUAL_WIELD) ? quickdraw ? 50 : 70 : quickdraw ? 25 : 35;
+        boolean quickdraw = PlayerData.hasActiveSkill(player, Skills.M1911_QUICKDRAW);
+        int time = PlayerData.hasActiveSkill(player, Skills.M1911_DUAL_WIELD) ? quickdraw ? 50 : 70 : quickdraw ? 25 : 35;
         return (int) (time * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override
     public float getVerticalRecoil(PlayerEntity player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerData.hasActiveSkill(player, Skills.PISTOL_CARBON_BARREL) ? ModConfig.weaponConfig.general.carbonBarrel.floatValue() : 1.0F;
+        float mod = PlayerData.hasActiveSkill(player, Skills.M1911_CARBON_BARREL) ? ModConfig.weaponConfig.general.carbonBarrel.floatValue() : 1.0F;
         return mod * f;
     }
 
     @Override
     public float getHorizontalRecoil(PlayerEntity player) {
         float f = super.getHorizontalRecoil(player);
-        float mod = PlayerData.hasActiveSkill(player, Skills.PISTOL_CARBON_BARREL) ? ModConfig.weaponConfig.general.carbonBarrel.floatValue() : 1.0F;
+        float mod = PlayerData.hasActiveSkill(player, Skills.M1911_CARBON_BARREL) ? ModConfig.weaponConfig.general.carbonBarrel.floatValue() : 1.0F;
         return mod * f;
     }
 
@@ -129,7 +129,7 @@ public class M1911Item extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.PISTOL_ASSEMBLY;
+        return Skills.M1911_ASSEMBLY;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -146,7 +146,7 @@ public class M1911Item extends GunItem {
 
     @OnlyIn(Dist.CLIENT)
     private boolean isDualWieldActive() {
-        return PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.PISTOL_DUAL_WIELD);
+        return PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.M1911_DUAL_WIELD);
     }
 
     @Override

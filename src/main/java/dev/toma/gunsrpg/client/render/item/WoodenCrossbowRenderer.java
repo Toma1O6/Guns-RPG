@@ -51,9 +51,4 @@ public class WoodenCrossbowRenderer extends AbstractWeaponRenderer {
         }
         return super.scaleForTransform(transform);
     }
-
-    @Override
-    protected void transformUI(MatrixStack matrix) {
-
-    }
 }

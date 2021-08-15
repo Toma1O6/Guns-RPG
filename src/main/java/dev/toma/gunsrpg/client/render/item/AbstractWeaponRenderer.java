@@ -54,7 +54,6 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
     }
 
     protected void transformUI(MatrixStack matrix) {
-
     }
 
     protected void positionModel(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
@@ -65,7 +64,6 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
     }
 
     protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, ResourceLocation texture, int light, int overlay, float progress) {
-
     }
 
     protected void renderScope(IRenderConfig config, MatrixStack poseStack, IRenderTypeBuffer buffer, int light, int overlay, float progress) {

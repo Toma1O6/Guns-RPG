@@ -962,8 +962,8 @@ public class SksModel extends AbstractWeaponModel {
 
 
         PlayerSkills skills = data.getSkills();
-        boolean sight = skills.hasSkill(Skills.AR_RED_DOT);
-        if (skills.hasSkill(Skills.AR_SUPPRESSOR)) suppressor.render(matrix, builder, light, overlay);
+        boolean sight = skills.hasSkill(Skills.SKS_RED_DOT);
+        if (skills.hasSkill(Skills.SKS_SUPPRESSOR)) suppressor.render(matrix, builder, light, overlay);
         ironsights.visible = !sight;
         ironsights.render(matrix, builder, light, overlay);
         if (sight) rds.render(matrix, builder, light, overlay);

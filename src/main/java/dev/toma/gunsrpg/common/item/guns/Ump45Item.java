@@ -68,34 +68,34 @@ public class Ump45Item extends GunItem {
 
     @Override
     public SoundEvent getReloadSound(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.SMG_QUICKDRAW) ? ModSounds.SMG_RELOAD_SHORT : ModSounds.SMG_RELOAD;
+        return PlayerData.hasActiveSkill(player, Skills.UMP45_QUICKDRAW) ? ModSounds.UMP45_RELOAD_SHORT : ModSounds.UMP45_RELOAD;
     }
 
     @Override
     public int getMaxAmmo(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.SMG_EXTENDED) ? 40 : 25;
+        return PlayerData.hasActiveSkill(player, Skills.UMP45_EXTENDED) ? 40 : 25;
     }
 
     @Override
     public int getFirerate(PlayerEntity player) {
         IWeaponConfig cfg = getWeaponConfig();
-        return PlayerData.hasActiveSkill(player, Skills.SMG_TOUGH_SPRING) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
+        return PlayerData.hasActiveSkill(player, Skills.UMP45_TOUGH_SPRING) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
     }
 
     @Override
     public boolean isSilenced(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.SMG_SUPPRESSOR);
+        return PlayerData.hasActiveSkill(player, Skills.UMP45_SUPPRESSOR);
     }
 
     @Override
     public int getReloadTime(PlayerEntity player) {
-        int time = PlayerData.hasActiveSkill(player, Skills.SMG_QUICKDRAW) ? 40 : 52;
+        int time = PlayerData.hasActiveSkill(player, Skills.UMP45_QUICKDRAW) ? 40 : 52;
         return (int) (time * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override
     public void onKillEntity(BulletEntity bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if (!shooter.level.isClientSide && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.SMG_COMMANDO)) {
+        if (!shooter.level.isClientSide && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.UMP45_COMMANDO)) {
             shooter.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 100, 1, false, false));
             shooter.addEffect(new EffectInstance(Effects.REGENERATION, 60, 2, false, false));
         }
@@ -104,7 +104,7 @@ public class Ump45Item extends GunItem {
     @Override
     public float getVerticalRecoil(PlayerEntity player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerData.hasActiveSkill(player, Skills.SMG_VERTICAL_GRIP) ? ModConfig.weaponConfig.general.verticalGrip.floatValue() : 1.0F;
+        float mod = PlayerData.hasActiveSkill(player, Skills.UMP45_VERTICAL_GRIP) ? ModConfig.weaponConfig.general.verticalGrip.floatValue() : 1.0F;
         return mod * f;
     }
 
@@ -117,13 +117,13 @@ public class Ump45Item extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.SMG_ASSEMBLY;
+        return Skills.UMP45_ASSEMBLY;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
-        boolean rds = PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.SMG_RED_DOT);
+        boolean rds = PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.UMP45_RED_DOT);
         return AIM_ANIMATIONS[rds ? 1 : 0];
     }
 

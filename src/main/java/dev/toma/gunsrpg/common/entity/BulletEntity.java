@@ -66,7 +66,7 @@ public class BulletEntity extends Entity {
         this.setPos(shooter.getX(), shooter.getY() + shooter.getEyeHeight(), shooter.getZ());
         if (shooter instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) shooter;
-            canPenetrateEntity = gun == ModItems.KAR98K && PlayerData.hasActiveSkill(player, Skills.SR_PENETRATOR);
+            canPenetrateEntity = gun == ModItems.KAR98K && PlayerData.hasActiveSkill(player, Skills.KAR98K_PENETRATOR);
         }
     }
 
@@ -110,7 +110,7 @@ public class BulletEntity extends Entity {
         if (!level.isClientSide) {
             Vector3d hitLocation = result.getLocation();
             boolean validWeaponForHeadshot = stack.getItem() == ModItems.KAR98K;
-            boolean canHeadshot = validWeaponForHeadshot && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.SR_DEAD_EYE);
+            boolean canHeadshot = validWeaponForHeadshot && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.KAR98K_DEAD_EYE);
             boolean isHeadshot = canHeadshot && canEntityGetHeadshot(entity) && hitLocation.y >= entity.position().y + entity.getEyeHeight() - 0.15F;
             if (isHeadshot)
                 damage *= 1.5F;

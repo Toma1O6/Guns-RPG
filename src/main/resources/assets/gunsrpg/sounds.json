@@ -35,20 +35,20 @@
             }
         ]
     },
-    "p1911": {
+    "m1911": {
         "category": "master",
         "sounds": [
             {
-                "name": "gunsrpg:p1911",
+                "name": "gunsrpg:m1911",
                 "stream": true
             }
         ]
     },
-    "p1911_silent": {
+    "m1911_silent": {
         "category": "master",
         "sounds": [
             {
-                "name": "gunsrpg:p1911_silent",
+                "name": "gunsrpg:m1911_silent",
                 "stream": true
             }
         ]
@@ -125,61 +125,61 @@
             }
         ]
     },
-    "p1911_reload": {
+    "m1911_reload": {
         "category": "master",
         "sounds": [
             {
-                "name": "gunsrpg:p1911_reload",
+                "name": "gunsrpg:m1911_reload",
                 "stream": true
             }
         ]
     },
-    "p1911_reload_short": {
+    "m1911_reload_short": {
         "category": "master",
         "sounds": [
             {
-                "name": "gunsrpg:p1911_reload_short",
+                "name": "gunsrpg:m1911_reload_short",
                 "stream": true
             }
         ]
     },
-    "smg_reload": {
+    "ump45_reload": {
         "category": "master",
         "sounds": [
             {
-                "name": "gunsrpg:smg_reload",
+                "name": "gunsrpg:ump45_reload",
                 "stream": true
             }
         ]
     },
-    "smg_reload_short": {
+    "ump45_reload_short": {
         "category": "master",
         "sounds": [
             {
-                "name": "gunsrpg:smg_reload_short",
+                "name": "gunsrpg:ump45_reload_short",
                 "stream": true
             }
         ]
     },
-    "ar_reload": {
+    "sks_reload": {
         "category": "master",
         "sounds": [
             {
-                "name": "gunsrpg:ar_reload",
+                "name": "gunsrpg:sks_reload",
                 "stream": true
             }
         ]
     },
-    "sr_reload": {
+    "kar98k_reload": {
         "category": "master",
         "sounds": [
             {
-                "name": "gunsrpg:sr_reload",
+                "name": "gunsrpg:kar98k_reload",
                 "stream": true
             }
         ]
     },
-    "sr_bolt": {
+    "kar98k_bolt": {
         "category": "master",
         "sounds": [
             {
@@ -188,38 +188,38 @@
             }
         ]
     },
-    "sr_reload_short": {
+    "kar98k_reload_short": {
         "category": "master",
         "sounds": [
             {
-                "name": "gunsrpg:sr_reload_short",
+                "name": "gunsrpg:kar98k_reload_short",
                 "stream": true
             }
         ]
     },
-    "sg_reload": {
+    "s1897_reload": {
         "category": "master",
         "sounds": [
             {
-                "name": "gunsrpg:sg_reload",
+                "name": "gunsrpg:s1897_reload",
                 "stream": true
             }
         ]
     },
-    "sg_reload_short": {
+    "s1897_reload_short": {
         "category": "master",
         "sounds": [
             {
-                "name": "gunsrpg:sg_reload_short",
+                "name": "gunsrpg:s1897_reload_short",
                 "stream": true
             }
         ]
     },
-    "p92": {
+    "m9": {
         "category": "master",
         "sounds": [
             {
-                "name": "gunsrpg:p92",
+                "name": "gunsrpg:m9",
                 "stream": true
             }
         ]

@@ -437,7 +437,7 @@ public class Kar98kModel extends AbstractWeaponModel {
     @Override
     public void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay, float r, float g, float b, float a) {
         kar98k.render(matrix, builder, light, overlay);
-        renderWithCondition(suppressor, matrix, builder, light, overlay, data.getSkills(), skills -> skills.hasSkill(Skills.SR_SUPPRESSOR));
-        renderWithCondition(scope, matrix, builder, light, overlay, data.getSkills(), skills -> skills.hasSkill(Skills.SR_SCOPE));
+        renderWithCondition(suppressor, matrix, builder, light, overlay, data.getSkills(), skills -> skills.hasSkill(Skills.KAR98K_SUPPRESSOR));
+        renderWithCondition(scope, matrix, builder, light, overlay, data.getSkills(), skills -> skills.hasSkill(Skills.KAR98K_SCOPE));
     }
 }

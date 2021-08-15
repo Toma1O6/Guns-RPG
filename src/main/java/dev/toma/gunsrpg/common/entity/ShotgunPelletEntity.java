@@ -22,7 +22,7 @@ public class ShotgunPelletEntity extends BulletEntity {
 
     public ShotgunPelletEntity(EntityType<? extends ShotgunPelletEntity> type, World worldIn, LivingEntity shooter, S1897Item gun, ItemStack stack) {
         super(type, worldIn, shooter, gun, stack);
-        this.extendedBarrel = shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.SHOTGUN_EXTENDED_BARREL);
+        this.extendedBarrel = shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.S1897_EXTENDED_BARREL);
         this.effectiveRange = extendedBarrel ? 10 : 6;
         this.maxRange = extendedBarrel ? 20 : 13;
     }

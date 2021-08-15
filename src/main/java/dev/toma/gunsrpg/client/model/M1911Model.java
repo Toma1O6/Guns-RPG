@@ -271,7 +271,7 @@ public class M1911Model extends AbstractWeaponModel {
     public void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay, float r, float g, float b, float a) {
         gunRenderer.render(matrix, builder, light, overlay);
         magazineRenderer.render(matrix, builder, light, overlay);
-        if (data.getSkills().hasSkill(Skills.PISTOL_SUPPRESSOR))
+        if (data.getSkills().hasSkill(Skills.M1911_SUPPRESSOR))
             suppressor.render(matrix, builder, light, overlay);
     }
 }

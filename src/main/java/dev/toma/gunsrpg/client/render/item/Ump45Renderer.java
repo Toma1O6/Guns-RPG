@@ -4,6 +4,8 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.model.WeaponModels;
+import dev.toma.gunsrpg.common.capability.IPlayerData;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.util.ResourceLocation;
 
@@ -37,5 +39,15 @@ public class Ump45Renderer extends AbstractWeaponRenderer {
             return 0.65F;
         }
         return super.scaleForTransform(transform);
+    }
+
+    @Override
+    protected boolean hasCustomAttachments() {
+        return true;
+    }
+
+    @Override
+    protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, ResourceLocation texture, int light, int overlay, float progress) {
+
     }
 }

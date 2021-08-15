@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.SksRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
@@ -12,6 +13,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
+import lib.toma.animations.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -62,24 +64,24 @@ public class SksItem extends GunItem {
 
     @Override
     public SoundEvent getReloadSound(PlayerEntity player) {
-        return ModSounds.AR_RELOAD;
+        return ModSounds.SKS_RELOAD;
     }
 
     @Override
     public boolean isSilenced(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.AR_SUPPRESSOR);
+        return PlayerData.hasActiveSkill(player, Skills.SKS_SUPPRESSOR);
     }
 
     @Override
     public int getMaxAmmo(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.AR_EXTENDED) ? 20 : 10;
+        return PlayerData.hasActiveSkill(player, Skills.SKS_EXTENDED) ? 20 : 10;
     }
 
     @Override
     public int getFirerate(PlayerEntity player) {
         IWeaponConfig cfg = getWeaponConfig();
-        int firerate = PlayerData.hasActiveSkill(player, Skills.AR_TOUGH_SPRING) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
-        if (PlayerData.hasActiveSkill(player, Skills.AR_ADAPTIVE_CHAMBERING)) {
+        int firerate = PlayerData.hasActiveSkill(player, Skills.SKS_TOUGH_SPRING) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
+        if (PlayerData.hasActiveSkill(player, Skills.SKS_ADAPTIVE_CHAMBERING)) {
             firerate -= 2;
         }
         return Math.max(firerate, 1);
@@ -93,15 +95,15 @@ public class SksItem extends GunItem {
     @Override
     public float getVerticalRecoil(PlayerEntity player) {
         float f = super.getVerticalRecoil(player);
-        float mod = PlayerData.hasActiveSkill(player, Skills.AR_VERTICAL_GRIP) ? ModConfig.weaponConfig.general.verticalGrip.floatValue() : 1.0F;
-        float mod2 = PlayerData.hasActiveSkill(player, Skills.AR_CHEEKPAD) ? ModConfig.weaponConfig.general.cheekpad.floatValue() : 1.0F;
+        float mod = PlayerData.hasActiveSkill(player, Skills.SKS_VERTICAL_GRIP) ? ModConfig.weaponConfig.general.verticalGrip.floatValue() : 1.0F;
+        float mod2 = PlayerData.hasActiveSkill(player, Skills.SKS_CHEEKPAD) ? ModConfig.weaponConfig.general.cheekpad.floatValue() : 1.0F;
         return mod * mod2 * f;
     }
 
     @Override
     public float getHorizontalRecoil(PlayerEntity player) {
         float f = super.getHorizontalRecoil(player);
-        float mod = PlayerData.hasActiveSkill(player, Skills.AR_CHEEKPAD) ? ModConfig.weaponConfig.general.cheekpad.floatValue() : 1.0F;
+        float mod = PlayerData.hasActiveSkill(player, Skills.SKS_CHEEKPAD) ? ModConfig.weaponConfig.general.cheekpad.floatValue() : 1.0F;
         return mod * f;
     }
 
@@ -109,7 +111,7 @@ public class SksItem extends GunItem {
     public boolean switchFiremode(ItemStack stack, PlayerEntity player) {
         Firemode firemode = this.getFiremode(stack);
         int newMode = 0;
-        if (firemode == Firemode.SINGLE && PlayerData.hasActiveSkill(player, Skills.AR_ADAPTIVE_CHAMBERING)) {
+        if (firemode == Firemode.SINGLE && PlayerData.hasActiveSkill(player, Skills.SKS_ADAPTIVE_CHAMBERING)) {
             newMode = 2;
         }
         stack.getTag().putInt("firemode", newMode);
@@ -118,13 +120,13 @@ public class SksItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.ASSAULT_RIFLE_ASSEMBLY;
+        return Skills.SKS_ASSEMBLY;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
-        boolean scoped = PlayerData.hasActiveSkill(player, Skills.AR_RED_DOT);
+        boolean scoped = PlayerData.hasActiveSkill(player, Skills.SKS_RED_DOT);
         return AIM_ANIMATIONS[scoped ? 1 : 0];
     }
 
@@ -132,5 +134,15 @@ public class SksItem extends GunItem {
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD_ANIMATION;
+    }
+
+    @Override
+    public IRenderConfig left() {
+        return RenderConfigs.SKS_LEFT;
+    }
+
+    @Override
+    public IRenderConfig right() {
+        return RenderConfigs.SKS_RIGHT;
     }
 }

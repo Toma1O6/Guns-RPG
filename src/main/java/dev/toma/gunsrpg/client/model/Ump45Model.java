@@ -250,7 +250,7 @@ public class Ump45Model extends AbstractWeaponModel {
         sights.render(matrix, builder, light, overlay);
         barrel.render(matrix, builder, light, overlay);
         PlayerSkills skills = data.getSkills();
-        renderWithCondition(suppressor, matrix, builder, light, overlay, skills, s -> s.hasSkill(Skills.SMG_SUPPRESSOR));
-        renderWithCondition(rds, matrix, builder, light, overlay, skills, s -> s.hasSkill(Skills.SMG_RED_DOT));
+        renderWithCondition(suppressor, matrix, builder, light, overlay, skills, s -> s.hasSkill(Skills.UMP45_SUPPRESSOR));
+        renderWithCondition(rds, matrix, builder, light, overlay, skills, s -> s.hasSkill(Skills.UMP45_RED_DOT));
     }
 }

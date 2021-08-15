@@ -16,10 +16,12 @@ public interface IAnimationLoader {
 
     void addLoadingListener(ILoadingFinished listener);
 
+    @FunctionalInterface
     interface ILoadingFinished {
         void onLoaded(Map<ResourceLocation, IKeyframeProvider> providerMap, ILoader resourceLoader);
     }
 
+    @FunctionalInterface
     interface ILoader {
         IKeyframeProvider loadResource(JsonReader reader);
     }

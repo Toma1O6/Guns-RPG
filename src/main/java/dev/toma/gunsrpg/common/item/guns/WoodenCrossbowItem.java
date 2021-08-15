@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.WoodenCrossbowRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
@@ -129,10 +130,14 @@ public class WoodenCrossbowItem extends GunItem {
         return Skills.CROSSBOW_ASSEMBLY;
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Override
+    public IRenderConfig left() {
+        return RenderConfigs.CROSSBOW_LEFT;
+    }
+
     @Override
     public IRenderConfig right() {
-        return IRenderConfig.empty();
+        return RenderConfigs.CROSSBOW_RIGHT;
     }
 
     @OnlyIn(Dist.CLIENT)
