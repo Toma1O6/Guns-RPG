@@ -1,10 +1,9 @@
 package dev.toma.gunsrpg.client.animation;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.sided.ClientSideManager;
 import lib.toma.animations.Intepolation;
-import lib.toma.animations.pipeline.AnimationStage;
-import lib.toma.animations.pipeline.IAnimation;
+import lib.toma.animations.api.AnimationStage;
+import lib.toma.animations.api.IAnimation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;

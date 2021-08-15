@@ -32,7 +32,7 @@ import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
-import lib.toma.animations.pipeline.IAnimationPipeline;
+import lib.toma.animations.api.IAnimationPipeline;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;

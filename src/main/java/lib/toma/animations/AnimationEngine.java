@@ -1,12 +1,13 @@
 package lib.toma.animations;
 
-import lib.toma.animations.pipeline.IAnimationPipeline;
-import lib.toma.animations.pipeline.render.IRenderPipeline;
-import lib.toma.animations.pipeline.render.MainRenderPipeline;
-import lib.toma.animations.screen.HandRenderScreen;
-import lib.toma.animations.screen.animator.Animator;
-import lib.toma.animations.screen.animator.AnimatorScreen;
-import lib.toma.animations.serialization.AnimationLoader;
+import lib.toma.animations.api.*;
+import lib.toma.animations.engine.AnimationPipeline;
+import lib.toma.animations.engine.MainRenderPipeline;
+import lib.toma.animations.engine.RenderConfig;
+import lib.toma.animations.engine.screen.HandRenderScreen;
+import lib.toma.animations.engine.screen.animator.Animator;
+import lib.toma.animations.engine.screen.animator.AnimatorScreen;
+import lib.toma.animations.engine.serialization.AnimationLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.resources.IReloadableResourceManager;

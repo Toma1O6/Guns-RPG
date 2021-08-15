@@ -1,11 +1,10 @@
 package lib.toma.animations;
 
-import lib.toma.animations.pipeline.AnimationStage;
-import lib.toma.animations.pipeline.event.IAnimationEvent;
-import lib.toma.animations.pipeline.frame.IKeyframe;
-import lib.toma.animations.pipeline.frame.IKeyframeProvider;
-import lib.toma.animations.pipeline.frame.KeyframeProvider;
-import lib.toma.animations.pipeline.frame.Keyframes;
+import lib.toma.animations.api.AnimationStage;
+import lib.toma.animations.api.event.IAnimationEvent;
+import lib.toma.animations.api.IKeyframe;
+import lib.toma.animations.api.IKeyframeProvider;
+import lib.toma.animations.engine.frame.KeyframeProvider;
 
 import java.util.*;
 

@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.client.render;
 
-import lib.toma.animations.IRenderConfig;
-import lib.toma.animations.RenderConfig;
+import lib.toma.animations.api.IRenderConfig;
+import lib.toma.animations.engine.RenderConfig;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 

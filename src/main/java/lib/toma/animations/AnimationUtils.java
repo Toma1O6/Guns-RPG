@@ -1,11 +1,11 @@
 package lib.toma.animations;
 
-import lib.toma.animations.pipeline.AnimationStage;
-import lib.toma.animations.pipeline.AnimationType;
-import lib.toma.animations.pipeline.IAnimation;
-import lib.toma.animations.pipeline.frame.IKeyframe;
-import lib.toma.animations.pipeline.frame.IKeyframeProvider;
-import lib.toma.animations.serialization.AnimationLoader;
+import lib.toma.animations.api.IAnimationLoader;
+import lib.toma.animations.api.AnimationStage;
+import lib.toma.animations.api.AnimationType;
+import lib.toma.animations.api.IAnimation;
+import lib.toma.animations.api.IKeyframe;
+import lib.toma.animations.api.IKeyframeProvider;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;

@@ -1,0 +1,19 @@
+package lib.toma.animations.api;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import lib.toma.animations.api.IRenderConfig;
+import lib.toma.animations.api.IAnimationPipeline;
+import net.minecraft.client.renderer.FirstPersonRenderer;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.HandSide;
+
+import java.util.function.Function;
+
+public interface IAnimator {
+    void animate(MatrixStack poseStack, IRenderTypeBuffer buffer, int light, float swing, float equip, Function<HandSide, IRenderConfig> selector,
+                 IAnimationPipeline pipeline, FirstPersonRenderer fpRenderer, PlayerEntity player, ItemStack stack,
+                 ItemCameraTransforms.TransformType type, boolean mainHand);
+}

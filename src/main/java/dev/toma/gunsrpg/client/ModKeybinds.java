@@ -14,7 +14,7 @@ import dev.toma.gunsrpg.network.packet.SPacketChangeFiremode;
 import dev.toma.gunsrpg.network.packet.SPacketRequestDataUpdate;
 import dev.toma.gunsrpg.network.packet.SPacketSetReloading;
 import lib.toma.animations.AnimationEngine;
-import lib.toma.animations.pipeline.IAnimationPipeline;
+import lib.toma.animations.api.IAnimationPipeline;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.PlayerEntity;

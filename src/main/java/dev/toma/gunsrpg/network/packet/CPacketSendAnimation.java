@@ -3,7 +3,7 @@ package dev.toma.gunsrpg.network.packet;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
-import lib.toma.animations.pipeline.AnimationType;
+import lib.toma.animations.api.AnimationType;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

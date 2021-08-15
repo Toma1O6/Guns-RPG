@@ -19,7 +19,7 @@ import dev.toma.gunsrpg.world.cap.IWorldData;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataStorage;
 import lib.toma.animations.AnimationEngine;
-import lib.toma.animations.pipeline.render.IRenderPipeline;
+import lib.toma.animations.api.IRenderPipeline;
 import net.minecraft.command.CommandSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
