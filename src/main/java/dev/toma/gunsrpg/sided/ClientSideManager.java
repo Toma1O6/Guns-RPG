@@ -18,9 +18,7 @@ import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.IRenderConfig;
-import lib.toma.animations.pipeline.AnimationStage;
 import lib.toma.animations.pipeline.IAnimationPipeline;
-import lib.toma.animations.pipeline.render.IHandAnimator;
 import lib.toma.animations.pipeline.render.IItemRenderer;
 import lib.toma.animations.pipeline.render.IRenderPipeline;
 import net.minecraft.client.Minecraft;
@@ -45,15 +43,9 @@ import java.util.function.Function;
 public class ClientSideManager {
 
     private static final ClientSideManager INSTANCE = new ClientSideManager();
-    private boolean dualWieldRender;
 
     public static ClientSideManager instance() {
         return INSTANCE;
-    }
-
-    @Deprecated
-    public boolean isRenderingDualWield() {
-        return dualWieldRender;
     }
 
     public void clientSetup(FMLClientSetupEvent event) {

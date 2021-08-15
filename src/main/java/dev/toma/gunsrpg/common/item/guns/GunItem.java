@@ -82,6 +82,7 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
         return false;
     }
 
+    @OnlyIn(Dist.CLIENT)
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         return null;
     }

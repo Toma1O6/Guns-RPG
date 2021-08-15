@@ -121,6 +121,7 @@ public class SksItem extends GunItem {
         return Skills.ASSAULT_RIFLE_ASSEMBLY;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         boolean scoped = PlayerData.hasActiveSkill(player, Skills.AR_RED_DOT);

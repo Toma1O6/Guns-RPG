@@ -1,7 +1,11 @@
 package lib.toma.animations;
 
 import lib.toma.animations.pipeline.AnimationStage;
+import lib.toma.animations.pipeline.IAnimation;
 import lib.toma.animations.pipeline.frame.IKeyframe;
+import lib.toma.animations.pipeline.frame.IKeyframeProvider;
+import lib.toma.animations.serialization.AnimationLoader;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import org.apache.commons.lang3.tuple.Pair;
@@ -9,8 +13,16 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
+import java.util.function.Function;
 
 public class AnimationUtils {
+
+    public static <A extends IAnimation> A createAnimation(ResourceLocation providerPath, Function<IKeyframeProvider, A> creatorFunction) {
+        AnimationEngine engine = AnimationEngine.get();
+        IAnimationLoader loader = engine.loader();
+        IKeyframeProvider provider = loader.getProvider(providerPath);
+        return creatorFunction.apply(provider);
+    }
 
     /**
      * Returns rotation-vector pair from supplied quaternion.

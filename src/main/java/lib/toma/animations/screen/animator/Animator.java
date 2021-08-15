@@ -12,7 +12,7 @@ import lib.toma.animations.pipeline.frame.IKeyframe;
 import lib.toma.animations.pipeline.frame.IKeyframeProvider;
 import lib.toma.animations.pipeline.frame.Keyframes;
 import lib.toma.animations.serialization.AnimationLoader;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.Logger;
 
@@ -42,7 +42,7 @@ public final class Animator {
     public void refreshUserAnimations() {
         List<String> collect = configurables.keySet().stream().filter(s -> !s.contains(":")).collect(Collectors.toList());
         collect.forEach(configurables::remove);
-        loadUserDefinedProviders(exportDir(), AnimationEngine.get().loader().reader());
+        loadUserDefinedProviders(exportDir(), AnimationEngine.get().loader().getResourceReader());
     }
 
     public void onAnimationsLoaded(Map<ResourceLocation, IKeyframeProvider> providerMap, AnimationLoader.ILoader loader) {
@@ -88,7 +88,7 @@ public final class Animator {
         Logger log = AnimationEngine.logger;
         try {
             JsonReader reader = new JsonReader(new FileReader(file));
-            IKeyframeProvider provider = loader.load(reader);
+            IKeyframeProvider provider = loader.loadResource(reader);
             if (provider == null)
                 throw new JsonSyntaxException("Unable to parse");
             String name = file.getName().replaceFirst("[.][^.]+$", "");
@@ -124,7 +124,7 @@ public final class Animator {
         return s1 != null && s2 != null && b1 == b2 ? s1.compareTo(s2) : b1 && !b2 ? 1 : -1;
     }
 
-    private CustomizableAnimation getAnimation(ClientPlayerEntity client) {
+    private CustomizableAnimation getAnimation(PlayerEntity client) {
         return new CustomizableAnimation();
     }
 

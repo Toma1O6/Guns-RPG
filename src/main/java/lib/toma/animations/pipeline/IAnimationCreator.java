@@ -1,8 +1,8 @@
 package lib.toma.animations.pipeline;
 
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 
 public interface IAnimationCreator<A extends IAnimation> {
 
-    A create(ClientPlayerEntity player);
+    A create(PlayerEntity player);
 }

@@ -5,15 +5,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.google.gson.stream.JsonReader;
 import lib.toma.animations.AnimationEngine;
+import lib.toma.animations.IAnimationLoader;
 import lib.toma.animations.pipeline.frame.IKeyframe;
 import lib.toma.animations.pipeline.frame.IKeyframeProvider;
 import lib.toma.animations.pipeline.frame.KeyframeProvider;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
@@ -27,55 +25,45 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
-public final class AnimationLoader extends JsonReloadListener {
+public final class AnimationLoader extends JsonReloadListener implements IAnimationLoader {
 
     public static final Marker MARKER = MarkerManager.getMarker("Loader");
-    private Gson gson;
+    private static final Gson GSON = new GsonBuilder()
+            .disableHtmlEscaping()
+            .registerTypeHierarchyAdapter(IKeyframeProvider.class, new KeyframeProviderSerializer())
+            .registerTypeHierarchyAdapter(IKeyframe.class, new KeyframeSerializer())
+            .registerTypeAdapter(Vector3d.class, new Vector3dSerializer())
+            .registerTypeAdapter(Vector3f.class, new Vector3fSerializer())
+            .registerTypeAdapter(Quaternion.class, new QuaternionSerializer())
+            .create();
     private final Map<ResourceLocation, IKeyframeProvider> animationDefinitions = new HashMap<>();
     private final List<ILoadingFinished> loadListeners = new ArrayList<>();
-    private ILoader loader;
+    private final ILoader loader;
 
     public AnimationLoader() {
-        super(new GsonBuilder().disableHtmlEscaping().create(), "animations");
+        super(GSON, "animations");
+        this.loader = reader -> GSON.fromJson(reader, IKeyframeProvider.class);
     }
 
-    public void init(boolean devMode) {
-        init(devMode, gsonBuilder -> {});
-    }
-
-    public void init(boolean devMode, Consumer<GsonBuilder> callback) {
-        GsonBuilder builder = new GsonBuilder();
-        builder
-                .disableHtmlEscaping()
-                .registerTypeHierarchyAdapter(IKeyframeProvider.class, new KeyframeProviderSerializer())
-                .registerTypeHierarchyAdapter(IKeyframe.class, new KeyframeSerializer())
-                .registerTypeAdapter(Vector3d.class, new Vector3dSerializer())
-                .registerTypeAdapter(Vector3f.class, new Vector3fSerializer())
-                .registerTypeAdapter(Quaternion.class, new QuaternionSerializer());
-        callback.accept(builder);
-        gson = builder.create();
-        loader = reader -> gson.fromJson(reader, IKeyframeProvider.class);
-        if (devMode) {
-            AnimationEngine.get().setup();
-        }
-    }
-
+    @Override
     public IKeyframeProvider getProvider(ResourceLocation key) {
         return animationDefinitions.computeIfAbsent(key, KeyframeProvider::noFrames);
     }
 
-    public void addListener(ILoadingFinished loadingFinishedListener) {
-        this.loadListeners.add(loadingFinishedListener);
-    }
-
-    public String serializeToString(IKeyframeProvider provider) {
-        return gson.toJson(provider, IKeyframeProvider.class).replaceAll("\\s+", "");
-    }
-
-    public ILoader reader() {
+    @Override
+    public ILoader getResourceReader() {
         return loader;
+    }
+
+    @Override
+    public String serializeResource(IKeyframeProvider provider) {
+        return GSON.toJson(provider, IKeyframeProvider.class).replaceAll("\\s+", "");
+    }
+
+    @Override
+    public void addLoadingListener(ILoadingFinished listener) {
+        loadListeners.add(listener);
     }
 
     @Override
@@ -89,7 +77,7 @@ public final class AnimationLoader extends JsonReloadListener {
             ResourceLocation key = entry.getKey();
             JsonElement value = entry.getValue();
             try {
-                IKeyframeProvider provider = gson.fromJson(value, IKeyframeProvider.class);
+                IKeyframeProvider provider = GSON.fromJson(value, IKeyframeProvider.class);
                 animationDefinitions.put(key, provider);
             } catch (JsonParseException parseException) {
                 log.error(MARKER, "Couldn't parse animation file {}: {}", key, parseException.getMessage());
@@ -110,14 +98,5 @@ public final class AnimationLoader extends JsonReloadListener {
         ImmutableMap<ResourceLocation, IKeyframeProvider> map = ImmutableMap.copyOf(animationDefinitions);
         loadListeners.forEach(listener -> listener.onLoaded(map, loader));
         log.debug(MARKER, "All listeners have been notified");
-    }
-
-    @FunctionalInterface
-    public interface ILoadingFinished {
-        void onLoaded(Map<ResourceLocation, IKeyframeProvider> providerMap, ILoader loader);
-    }
-
-    public interface ILoader {
-        IKeyframeProvider load(JsonReader reader);
     }
 }

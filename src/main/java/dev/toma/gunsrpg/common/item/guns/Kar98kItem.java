@@ -126,6 +126,7 @@ public class Kar98kItem extends GunItem {
         return Skills.SNIPER_RIFLE_ASSEMBLY;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         boolean scope = PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.SR_SCOPE);

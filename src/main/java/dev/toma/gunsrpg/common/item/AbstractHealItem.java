@@ -7,10 +7,7 @@ import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.init.Skills;
-import lib.toma.animations.Animation;
-import lib.toma.animations.AnimationEngine;
-import lib.toma.animations.IAnimationEntry;
-import lib.toma.animations.IRenderConfig;
+import lib.toma.animations.*;
 import lib.toma.animations.pipeline.IAnimationPipeline;
 import lib.toma.animations.serialization.AnimationLoader;
 import net.minecraft.client.util.ITooltipFlag;
@@ -26,6 +23,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.Arrays;
@@ -49,14 +48,6 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
         useCondition = builder.useCondition;
         useAction = builder.useAction;
         useAnimation = builder.useAnimation;
-    }
-
-    public static HealBuilder<PlayerEntity, PlayerHealItem> definePlayerHeal(String name) {
-        return PlayerHealItem.define(name);
-    }
-
-    public static HealBuilder<DebuffData, DebuffHealItem> defineDebuffHeal(String name) {
-        return DebuffHealItem.define(name);
     }
 
     public abstract T getTargetObject(World world, PlayerEntity user, IPlayerData data);
@@ -87,7 +78,7 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
                 if (level.isClientSide) {
                     player.playSound(useSound.get(), 1.0F, 1.0F);
                     AnimationEngine engine = AnimationEngine.get();
-                    AnimationLoader loader = engine.loader();
+                    IAnimationLoader loader = engine.loader();
                     IAnimationPipeline pipeline = engine.pipeline();
                     pipeline.insert(GRPGAnimations.HEAL, new Animation(loader.getProvider(useAnimation), useTime));
                 }

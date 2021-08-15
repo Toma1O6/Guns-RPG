@@ -23,7 +23,7 @@ public class SksRenderer extends AbstractWeaponRenderer {
     public void positionModel(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
         switch (transform) {
             case FIRST_PERSON_RIGHT_HAND:
-                stack.translate(-0.5, 0.34, 0.7);
+                stack.translate(-0.1, 0.25, 0.7);
                 break;
             case THIRD_PERSON_RIGHT_HAND:
                 stack.translate(-0.2, 0.2, 0.5);

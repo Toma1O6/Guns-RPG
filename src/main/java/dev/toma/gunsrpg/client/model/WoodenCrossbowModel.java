@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.client.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
-import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
 
@@ -24,7 +23,6 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
     private final ModelRenderer trigger;
     private final ModelRenderer angle2;
     private final ModelRenderer arrow;
-    private final ModelRenderer scope;
 
     public WoodenCrossbowModel() {
         texWidth = 128;
@@ -163,21 +161,11 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
         arrow.texOffs(6, 69).addBox(-1.0F, -15.75F, -45.0F, 2.0F, 2.0F, 22.0F, 0.0F, false);
         arrow.texOffs(6, 69).addBox(-1.0F, -15.75F, -23.0F, 2.0F, 2.0F, 22.0F, 0.0F, false);
         arrow.texOffs(6, 69).addBox(-1.0F, -15.75F, -1.0F, 2.0F, 2.0F, 11.0F, 0.0F, false);
-
-        scope = new ModelRenderer(this);
-        scope.setPos(0.0F, 24.0F, 0.0F);
-        scope.texOffs(6, 81).addBox(-2.0F, -19.25F, 11.0F, 4.0F, 1.0F, 9.0F, 0.0F, false);
-        scope.texOffs(6, 81).addBox(-2.0F, -18.25F, 17.0F, 4.0F, 3.0F, 2.0F, 0.0F, false);
-        scope.texOffs(6, 81).addBox(-2.0F, -18.25F, 12.0F, 4.0F, 3.0F, 2.0F, 0.0F, false);
-        scope.texOffs(6, 81).addBox(-2.0F, -24.25F, 11.0F, 4.0F, 1.0F, 9.0F, 0.0F, false);
-        scope.texOffs(6, 81).addBox(-3.0F, -23.25F, 11.0F, 1.0F, 4.0F, 9.0F, 0.0F, false);
-        scope.texOffs(6, 81).addBox(2.0F, -23.25F, 11.0F, 1.0F, 4.0F, 9.0F, 0.0F, false);
     }
 
     @Override
     public void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay, float r, float g, float b, float a) {
         crossbow.render(matrix, builder, light, overlay);
         if (stack.hasTag() && stack.getTag().getInt("ammo") > 0) arrow.render(matrix, builder, light, overlay);
-        if (data.getSkills().hasSkill(Skills.CROSSBOW_SCOPE)) scope.render(matrix, builder, light, overlay);
     }
 }

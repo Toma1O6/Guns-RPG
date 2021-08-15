@@ -40,22 +40,30 @@ public final class AnimationEngine {
         pipeline = new AnimationPipeline();
         loader = new AnimationLoader();
         renderPipeline = new MainRenderPipeline();
-        ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(loader);
+
     }
 
-    public void setup() {
-        logger.info(MARKER, "Setting up animation lib [developer mode]");
+    public void startEngine(boolean enableDeveloperTools) {
+        logger.info(MARKER, "Starting animation engine [{} mode]", enableDeveloperTools ? "Developer" : "User");
+        ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(loader);
+        logger.info(MARKER, "Registered animation resource manager");
+        if (enableDeveloperTools) {
+            devSetup();
+        }
+        logger.info(MARKER, "Animation engine - READY");
+    }
+
+    private void devSetup() {
         handConfigs = registerKey("tools.animation.handConfig", handConfigKey);
         animator = registerKey("tools.animation.animator", animatorKey);
         logger.info(MARKER, "Key binds registered: {} - handConfigs, {} - animator", handConfigs.getKey().getName(), animator.getKey().getName());
         MinecraftForge.EVENT_BUS.addListener(this::handleKeys);
         logger.info(MARKER, "Key listener registered");
         Animator animator = Animator.get();
-        loader().addListener(animator::onAnimationsLoaded);
-        logger.info(MARKER, "Animation lib - READY");
+        loader().addLoadingListener(animator::onAnimationsLoaded);
     }
 
-    public AnimationLoader loader() {
+    public IAnimationLoader loader() {
         return loader;
     }
 

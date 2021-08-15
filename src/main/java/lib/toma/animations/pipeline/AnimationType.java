@@ -1,6 +1,6 @@
 package lib.toma.animations.pipeline;
 
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Collection;
@@ -44,7 +44,7 @@ public final class AnimationType<A extends IAnimation> {
         return creator != null;
     }
 
-    public A create(ClientPlayerEntity client) {
+    public A create(PlayerEntity client) {
         return creator.create(client);
     }
 

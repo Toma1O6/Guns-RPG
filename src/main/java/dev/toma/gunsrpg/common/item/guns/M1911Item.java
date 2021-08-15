@@ -132,6 +132,7 @@ public class M1911Item extends GunItem {
         return Skills.PISTOL_ASSEMBLY;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         return isDualWieldActive() ? AIM_ANIMATIONS[1] : AIM_ANIMATIONS[0];

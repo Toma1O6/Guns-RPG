@@ -117,6 +117,7 @@ public class S1897Item extends GunItem {
         return Skills.SHOTGUN_ASSEMBLY;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         return AIM_ANIMATION;

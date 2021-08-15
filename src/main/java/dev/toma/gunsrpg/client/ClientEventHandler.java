@@ -31,6 +31,8 @@ import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
+import lib.toma.animations.AnimationUtils;
+import lib.toma.animations.IAnimationLoader;
 import lib.toma.animations.pipeline.IAnimationPipeline;
 import lib.toma.animations.pipeline.frame.IKeyframeProvider;
 import lib.toma.animations.pipeline.frame.SingleFrameProvider;
@@ -94,7 +96,7 @@ public class ClientEventHandler {
                 if (!ModConfig.clientConfig.developerMode.get()) {
                     event.setCanceled(true);
                 }
-                MatrixStack matrixStack = event.getMatrixStack();
+                /*MatrixStack matrixStack = event.getMatrixStack();
                 PlayerData.get(player).ifPresent(data -> {
                     int windowWidth = window.getGuiScaledWidth();
                     int windowHeight = window.getGuiScaledHeight();
@@ -132,7 +134,7 @@ public class ClientEventHandler {
                             RenderSystem.disableBlend();
                         }
                     }
-                });
+                });*/
             }
         }
     }
@@ -264,11 +266,9 @@ public class ClientEventHandler {
                             settings.sensitivity = preAimSens.get() * 0.4F;
                             settings.fov = 25.0F;
                         }
-                        AnimationLoader loader = engine.loader();
                         ResourceLocation aimAnimationPath = item.getAimAnimationPath(stack, player);
                         if (aimAnimationPath != null) {
-                            IKeyframeProvider keyframeProvider = loader.getProvider(aimAnimationPath);
-                            pipeline.insert(GRPGAnimations.AIM_ANIMATION, new AimAnimation(keyframeProvider));
+                            pipeline.insert(GRPGAnimations.AIM_ANIMATION, AnimationUtils.createAnimation(aimAnimationPath, AimAnimation::new));
                         }
                     } else {
                         preAimFov.ifPresent(value -> settings.fov = value);

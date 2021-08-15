@@ -135,6 +135,7 @@ public class WoodenCrossbowItem extends GunItem {
         return IRenderConfig.empty();
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         return AIM_ANIMATIONS[PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) ? 1 : 0];

@@ -22,10 +22,12 @@ import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.pipeline.render.IRenderPipeline;
 import net.minecraft.command.CommandSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -53,8 +55,10 @@ public class GunsRPG {
         eventBus.addListener(this::commonSetup);
         // other events
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
-        IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
-        renderPipeline.register(MinecraftForge.EVENT_BUS);
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
+            renderPipeline.register(MinecraftForge.EVENT_BUS);
+        });
 
         ModTags.init();
 
@@ -68,7 +72,8 @@ public class GunsRPG {
 
     private void clientSetup(FMLClientSetupEvent event) {
         ClientSideManager.instance().clientSetup(event);
-        AnimationEngine.get().loader().init(ModConfig.clientConfig.developerMode.get());
+        boolean devTools = ModConfig.clientConfig.developerMode.get();
+        AnimationEngine.get().startEngine(devTools);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

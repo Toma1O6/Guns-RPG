@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
-import dev.toma.gunsrpg.client.animation.GRPGAnimations;
+import dev.toma.gunsrpg.common.AnimationPaths;
 import dev.toma.gunsrpg.common.block.*;
 import dev.toma.gunsrpg.common.debuffs.*;
 import dev.toma.gunsrpg.common.entity.*;
@@ -349,66 +349,66 @@ public class CommonRegistry {
         IForgeRegistry<Item> registry = event.getRegistry();
         registry.registerAll(
                 BaseItem.basic("amethyst"),
-                AbstractHealItem.defineDebuffHeal("antidotum_pills")
+                DebuffHealItem.define("antidotum_pills")
                         .defineSound(() -> ModSounds.USE_ANTIDOTUM_PILLS)
                         .canUse(data -> data.hasDebuff(Debuffs.POISON))
                         .onUse(data -> data.heal(Debuffs.POISON, 40))
                         .describe("Heals 40% of poison progress")
-                        .animate(32, GRPGAnimations.PILLS)
+                        .animate(32, AnimationPaths.PILLS)
                         .build(),
-                AbstractHealItem.defineDebuffHeal("vaccine")
+                DebuffHealItem.define("vaccine")
                         .defineSound(() -> ModSounds.USE_VACCINE)
                         .canUse(data -> data.hasDebuff(Debuffs.INFECTION))
                         .onUse(data -> data.heal(Debuffs.INFECTION, 50))
                         .describe("Heals 50% of infection progress")
-                        .animate(32, GRPGAnimations.INJECTION)
+                        .animate(32, AnimationPaths.INJECTION)
                         .build(),
-                AbstractHealItem.defineDebuffHeal("plaster_cast")
+                DebuffHealItem.define("plaster_cast")
                         .defineSound(() -> ModSounds.USE_PLASTER_CAST)
                         .canUse(data -> data.hasDebuff(Debuffs.FRACTURE))
                         .onUse(data -> data.heal(Debuffs.FRACTURE, 35))
                         .describe("Heals 35% of fracture progress")
-                        .animate(32, GRPGAnimations.SPLINT)
+                        .animate(32, AnimationPaths.SPLINT)
                         .build(),
-                AbstractHealItem.defineDebuffHeal("bandage")
+                DebuffHealItem.define("bandage")
                         .defineSound(() -> ModSounds.USE_BANDAGE)
                         .canUse(data -> data.hasDebuff(Debuffs.BLEEDING))
                         .onUse(data -> data.heal(Debuffs.BLEEDING, 25))
                         .describe("Heals 25% of bleeding progress")
-                        .animate(50, GRPGAnimations.BANDAGE)
+                        .animate(50, AnimationPaths.BANDAGE)
                         .build(),
-                AbstractHealItem.definePlayerHeal("analgetics")
+                PlayerHealItem.define("analgetics")
                         .defineSound(() -> ModSounds.USE_ANTIDOTUM_PILLS)
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> player.heal(5))
                         .describe("Recovers 2.5 hearts")
-                        .animate(32, GRPGAnimations.PILLS)
+                        .animate(32, AnimationPaths.PILLS)
                         .build(),
-                AbstractHealItem.definePlayerHeal("stereoids")
+                PlayerHealItem.define("stereoids")
                         .defineSound(() -> ModSounds.USE_VACCINE)
                         .onUse(PlayerHealItem::onStereoidsUsed)
                         .describe("Effects:", "Strength I for 60 seconds", "Jump Boost II for 60 seconds")
-                        .animate(32, GRPGAnimations.INJECTION)
+                        .animate(32, AnimationPaths.INJECTION)
                         .build(),
-                AbstractHealItem.definePlayerHeal("adrenaline")
+                PlayerHealItem.define("adrenaline")
                         .defineSound(() -> ModSounds.USE_VACCINE)
                         .onUse(PlayerHealItem::onAdrenalineUsed)
                         .describe("Effects:", "Regeneration I for 35 seconds", "Speed I for 60 seconds")
-                        .animate(32, GRPGAnimations.INJECTION)
+                        .animate(32, AnimationPaths.INJECTION)
                         .build(),
-                AbstractHealItem.definePlayerHeal("painkillers")
+                PlayerHealItem.define("painkillers")
                         .defineSound(() -> ModSounds.USE_ANTIDOTUM_PILLS)
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> player.heal(12.0F))
                         .describe("Recovers 6 hearts")
-                        .animate(32, GRPGAnimations.PILLS)
+                        .animate(32, AnimationPaths.PILLS)
                         .build(),
-                AbstractHealItem.definePlayerHeal("morphine")
+                PlayerHealItem.define("morphine")
                         .defineSound(() -> ModSounds.USE_VACCINE)
                         .onUse(PlayerHealItem::onMorphineUsed)
                         .describe("Recovers 7 hearts", "Effects:", "Regeneration II for 15 seconds", "Strength II for 30 seconds",
                                 "Resistance I for 45 seconds", "Additional 20% to projectile damage")
-                        .animate(32, GRPGAnimations.PILLS)
+                        .animate(32, AnimationPaths.PILLS)
                         .build(),
                 new AmmoItem("wooden_ammo_9mm", AmmoType._9MM, AmmoMaterial.WOOD),
                 new AmmoItem("wooden_ammo_45acp", AmmoType._45ACP, AmmoMaterial.WOOD),

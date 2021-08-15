@@ -87,7 +87,7 @@ public class AnimationProject {
 
     private void saveToDisk(File file) throws IOException {
         IKeyframeProvider serializable = wrapper.getProvider().toSerializable();
-        String out = AnimationEngine.get().loader().serializeToString(serializable);
+        String out = AnimationEngine.get().loader().serializeResource(serializable);
         try (FileWriter fw = new FileWriter(file)) {
             fw.write(out);
         }

@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Ump45Renderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
@@ -13,6 +14,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
+import lib.toma.animations.IRenderConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -118,6 +120,7 @@ public class Ump45Item extends GunItem {
         return Skills.SMG_ASSEMBLY;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         boolean rds = PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.SMG_RED_DOT);
@@ -128,5 +131,15 @@ public class Ump45Item extends GunItem {
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD_ANIMATION;
+    }
+
+    @Override
+    public IRenderConfig left() {
+        return RenderConfigs.UMP45_LEFT;
+    }
+
+    @Override
+    public IRenderConfig right() {
+        return RenderConfigs.UMP45_RIGHT;
     }
 }

@@ -9,4 +9,6 @@ public final class WeaponModels {
     public static final AbstractWeaponModel S1897 = new S1897Model();
     public static final AbstractWeaponModel SKS = new SksModel();
     public static final AbstractWeaponModel KAR98K = new Kar98kModel();
+
+    public static final AbstractAttachmentModel SCOPE = new ScopeModel();
 }

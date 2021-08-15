@@ -24,11 +24,9 @@ public class SprintAnimation implements IAnimation {
     public void animate(AnimationStage stage, MatrixStack matrixStack) {
         if (stage == AnimationStage.ITEM_AND_HANDS) {
             matrixStack.mulPose(Vector3f.XP.rotationDegrees(-20.0F * progressInterpolated));
-        } else if (stage == AnimationStage.LEFT_HAND) {
-            if (!ClientSideManager.instance().isRenderingDualWield()) {
-                matrixStack.translate(0.0, -0.5F * progressInterpolated, 0.8F * progressInterpolated);
-                matrixStack.mulPose(Vector3f.YP.rotationDegrees(40.0F * progressInterpolated));
-            }
+        } else if (stage == AnimationStage.LEFT_HAND || stage == GRPGAnimations.DUAL_WIELD_ITEM) {
+            matrixStack.translate(0.0, -0.5F * progressInterpolated, 0.8F * progressInterpolated);
+            matrixStack.mulPose(Vector3f.YP.rotationDegrees(40.0F * progressInterpolated));
         }
     }
 
