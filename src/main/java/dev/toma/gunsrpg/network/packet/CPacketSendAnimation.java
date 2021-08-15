@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import lib.toma.animations.AnimationEngine;
+import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.pipeline.AnimationType;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -23,12 +24,12 @@ public class CPacketSendAnimation extends AbstractNetworkPacket<CPacketSendAnima
 
     @Override
     public void encode(PacketBuffer buffer) {
-        buffer.writeResourceLocation(type.getName());
+        AnimationUtils.encodeAnimationType(type, buffer);
     }
 
     @Override
     public CPacketSendAnimation decode(PacketBuffer buffer) {
-        return new CPacketSendAnimation(AnimationType.getTypeFromID(buffer.readResourceLocation()));
+        return new CPacketSendAnimation(AnimationUtils.decodeAnimationType(buffer));
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -1,10 +1,12 @@
 package lib.toma.animations;
 
 import lib.toma.animations.pipeline.AnimationStage;
+import lib.toma.animations.pipeline.AnimationType;
 import lib.toma.animations.pipeline.IAnimation;
 import lib.toma.animations.pipeline.frame.IKeyframe;
 import lib.toma.animations.pipeline.frame.IKeyframeProvider;
 import lib.toma.animations.serialization.AnimationLoader;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
@@ -22,6 +24,16 @@ public class AnimationUtils {
         IAnimationLoader loader = engine.loader();
         IKeyframeProvider provider = loader.getProvider(providerPath);
         return creatorFunction.apply(provider);
+    }
+
+    public static void encodeAnimationType(AnimationType<?> type, PacketBuffer buffer) {
+        if (!type.hasCreator())
+            throw new IllegalArgumentException(String.format("Animation type (%s) doesn't support raw animation creation!", type.getName()));
+        buffer.writeResourceLocation(type.getName());
+    }
+
+    public static <A extends IAnimation> AnimationType<A> decodeAnimationType(PacketBuffer buffer) {
+        return AnimationType.getTypeFromID(buffer.readResourceLocation());
     }
 
     /**
