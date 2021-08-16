@@ -51,7 +51,7 @@ public class SksRenderer extends AbstractWeaponRenderer {
     }
 
     @Override
-    protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, ResourceLocation texture, int light, int overlay, float progress) {
+    protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
 
     }
 }

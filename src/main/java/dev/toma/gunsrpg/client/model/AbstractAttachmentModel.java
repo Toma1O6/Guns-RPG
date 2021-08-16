@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.AbstractWeaponRenderer;
+import dev.toma.gunsrpg.config.ModConfig;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.ModelRenderer;
@@ -15,7 +16,18 @@ public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
 
     public abstract void renderAttachment(MatrixStack stack, IRenderTypeBuffer buffer, int light, int overlay, float aimingProgress);
 
-    protected void renderScopeWithGlass(MatrixStack matrix, IRenderTypeBuffer buffer, ModelRenderer scopeModel, ModelRenderer reticleModel, ModelRenderer overlayModel, float progress, ResourceLocation reticleTexture, int light, int overlay) {
+    protected static void renderReflexSight(MatrixStack matrix, IRenderTypeBuffer buffer, ModelRenderer bone, ModelRenderer glass, float progress, ResourceLocation reticleTexture, int reticleColor, int light, int overlay) {
+        IVertexBuilder modelVertexBuilder = buffer.getBuffer(RenderType.entitySolid(AbstractWeaponRenderer.ATTACHMENTS));
+        bone.render(matrix, modelVertexBuilder, light, overlay);
+        IVertexBuilder reticleVertexBuilder = buffer.getBuffer(RenderType.entityShadow(reticleTexture));
+        float a = ModConfig.clientConfig.developerMode.get() ? 1.0F : progress;
+        float r = ((reticleColor >> 16) & 255) / 255.0F;
+        float g = ((reticleColor >>  8) & 255) / 255.0F;
+        float b = ( reticleColor        & 255) / 255.0F;
+        glass.render(matrix, reticleVertexBuilder, light, overlay, r, g, b, a);
+    }
+
+    protected static void renderScopeWithGlass(MatrixStack matrix, IRenderTypeBuffer buffer, ModelRenderer scopeModel, ModelRenderer reticleModel, ModelRenderer overlayModel, float progress, ResourceLocation reticleTexture, int light, int overlay) {
         float inv = 1.0F - progress;
         matrix.pushPose();
         matrix.translate(0.0F, 0.0F, 0.78F * progress);
@@ -42,6 +54,10 @@ public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
                 setUV(ver4, 1.0F, 0.0F);
             }
         }
+    }
+
+    @Override
+    public final void renderToBuffer(MatrixStack matrix, IVertexBuilder vertexbuilder, int light, int overlay, float red, float green, float blue, float alpha) {
     }
 
     private static void setUV(ModelRenderer.PositionTextureVertex vertex, float u, float v) {

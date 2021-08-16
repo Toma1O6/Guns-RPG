@@ -38,7 +38,7 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
                 if (hasCustomAttachments() && canRenderAttachments(transformType)) {
                     matrix.pushPose();
                     float aimProgress = data.getAimInfo().getProgress(ClientEventHandler.partialTicks);
-                    renderAttachments(data, matrix, renderBuffer, ATTACHMENTS, light, overlay, aimProgress);
+                    renderAttachments(data, matrix, renderBuffer, light, overlay, aimProgress);
                     matrix.popPose();
                 }
             }
@@ -64,19 +64,27 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
         return 0.4F;
     }
 
-    protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, ResourceLocation texture, int light, int overlay, float progress) {
+    protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
     }
 
-    protected void renderScope(IRenderConfig config, MatrixStack poseStack, IRenderTypeBuffer buffer, int light, int overlay, float progress) {
-        doConfiguredRender(WeaponModels.SCOPE, config, poseStack, buffer, light, overlay, progress);
+    protected static void renderReflex(IRenderConfig config, MatrixStack stack, IRenderTypeBuffer buffer, int light, int overlay, float progress) {
+        renderConfigured(WeaponModels.REFLEX, config, stack, buffer, light, overlay, progress);
     }
 
-    protected void renderScope(IRenderConfig config, MatrixStack poseStack, IRenderTypeBuffer buffer, int light, int overlay, float progress, ResourceLocation reticleTexture) {
+    protected static void renderSuppressor(IRenderConfig config, MatrixStack stack, IRenderTypeBuffer buffer, int light, int overlay, float progress) {
+        renderConfigured(WeaponModels.SUPPRESSOR, config, stack, buffer, light, overlay, progress);
+    }
+
+    protected static void renderScope(IRenderConfig config, MatrixStack poseStack, IRenderTypeBuffer buffer, int light, int overlay, float progress) {
+        renderConfigured(WeaponModels.SCOPE, config, poseStack, buffer, light, overlay, progress);
+    }
+
+    protected static void renderScope(IRenderConfig config, MatrixStack poseStack, IRenderTypeBuffer buffer, int light, int overlay, float progress, ResourceLocation reticleTexture) {
         ScopeModel.prepare(reticleTexture);
-        doConfiguredRender(WeaponModels.SCOPE, config, poseStack, buffer, light, overlay, progress);
+        renderConfigured(WeaponModels.SCOPE, config, poseStack, buffer, light, overlay, progress);
     }
 
-    private void doConfiguredRender(AbstractAttachmentModel model, IRenderConfig config, MatrixStack pose, IRenderTypeBuffer buffer, int light, int overlay, float aimProgress) {
+    protected static void renderConfigured(AbstractAttachmentModel model, IRenderConfig config, MatrixStack pose, IRenderTypeBuffer buffer, int light, int overlay, float aimProgress) {
         pose.pushPose();
         config.applyTo(pose);
         model.renderAttachment(pose, buffer, light, overlay, aimProgress);

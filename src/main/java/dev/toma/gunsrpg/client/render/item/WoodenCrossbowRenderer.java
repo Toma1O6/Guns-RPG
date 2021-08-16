@@ -38,7 +38,7 @@ public class WoodenCrossbowRenderer extends AbstractWeaponRenderer {
     }
 
     @Override
-    protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, ResourceLocation texture, int light, int overlay, float progress) {
+    protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
         if (data.getSkills().hasSkill(Skills.CROSSBOW_SCOPE)) {
             renderScope(RenderConfigs.WOODEN_CROSSBOW_SCOPE, matrix, typeBuffer, light, overlay, progress);
         }

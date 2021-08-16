@@ -47,7 +47,7 @@ public class Kar98kRenderer extends AbstractWeaponRenderer {
     }
 
     @Override
-    protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, ResourceLocation texture, int light, int overlay, float progress) {
+    protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
         if (data.getSkills().hasSkill(Skills.KAR98K_SCOPE)) {
             IRenderConfig config = RenderConfig.newDef().withPosition(0.0, -0.68, 0.1).finish();
             renderScope(config, matrix, typeBuffer, light, overlay, progress);

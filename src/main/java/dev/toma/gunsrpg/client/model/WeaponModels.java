@@ -11,4 +11,6 @@ public final class WeaponModels {
     public static final AbstractWeaponModel KAR98K = new Kar98kModel();
 
     public static final AbstractAttachmentModel SCOPE = new ScopeModel();
+    public static final AbstractAttachmentModel SUPPRESSOR = new SuppressorModel();
+    public static final AbstractAttachmentModel REFLEX = new ReflexSightModel();
 }

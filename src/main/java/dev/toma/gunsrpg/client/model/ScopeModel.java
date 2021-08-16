@@ -28,9 +28,6 @@ public class ScopeModel extends AbstractAttachmentModel {
         renderScopeWithGlass(stack, buffer, scope, reticle, this.overlay, progress, reticlePath, light, overlay);
     }
 
-    @Override
-    public void renderToBuffer(MatrixStack matrix, IVertexBuilder vertexbuilder, int light, int overlay, float red, float green, float blue, float alpha) {}
-
     public ScopeModel() {
         texWidth = 64;
         texHeight = 64;
