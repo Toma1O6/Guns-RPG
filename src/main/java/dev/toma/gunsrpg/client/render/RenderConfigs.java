@@ -31,4 +31,5 @@ public class RenderConfigs {
     public static final IRenderConfig WOODEN_CROSSBOW_SCOPE = IRenderConfig.pos(0.0, -1.0, 0.5);
     public static final IRenderConfig KAR98K_SCOPE = IRenderConfig.pos(0.0, -0.68, 0.1);
     public static final IRenderConfig M1911_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -0.17, 0.0).withScale(1.1F, 1.1F, 1.5F).finish();
+    public static final IRenderConfig KAR98K_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -1.05, -5.7).withScale(1.5F, 1.5F, 2.0F).finish();
 }
