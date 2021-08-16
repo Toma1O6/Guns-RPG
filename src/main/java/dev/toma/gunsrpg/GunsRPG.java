@@ -2,6 +2,7 @@ package dev.toma.gunsrpg;
 
 import com.mojang.brigadier.CommandDispatcher;
 import dev.toma.gunsrpg.asm.Hooks;
+import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.screen.skills.SkillTreePlacement;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -56,8 +57,10 @@ public class GunsRPG {
         // other events
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            ModAnimations.init();
             IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
             renderPipeline.register(MinecraftForge.EVENT_BUS);
+            AnimationEngine.get().startEngine(() -> ModConfig.clientConfig.developerMode.get());
         });
 
         ModTags.init();
@@ -72,8 +75,6 @@ public class GunsRPG {
 
     private void clientSetup(FMLClientSetupEvent event) {
         ClientSideManager.instance().clientSetup(event);
-        boolean devTools = ModConfig.clientConfig.developerMode.get();
-        AnimationEngine.get().startEngine(devTools);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

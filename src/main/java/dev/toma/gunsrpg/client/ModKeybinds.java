@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.client;
 
-import dev.toma.gunsrpg.client.animation.GRPGAnimations;
+import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.screen.ChooseAmmoScreen;
 import dev.toma.gunsrpg.client.screen.skills.PlayerSkillsScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -54,12 +54,12 @@ public class ModKeybinds {
         } else {
             AnimationEngine engine = AnimationEngine.get();
             IAnimationPipeline pipeline = engine.pipeline();
-            if (stack.getItem() instanceof GunItem && !player.isSprinting() && pipeline.get(GRPGAnimations.CHAMBER) == null) {
+            if (stack.getItem() instanceof GunItem && !player.isSprinting() && pipeline.get(ModAnimations.CHAMBER) == null) {
                 GunItem gun = (GunItem) stack.getItem();
                 if (info.isReloading()) {
                     if (gun.getReloadManager().canBeInterrupted(gun, stack)) {
                         info.cancelReload();
-                        pipeline.remove(GRPGAnimations.RELOAD);
+                        pipeline.remove(ModAnimations.RELOAD);
                         NetworkManager.sendServerPacket(new SPacketSetReloading(false, 0));
                         return;
                     }

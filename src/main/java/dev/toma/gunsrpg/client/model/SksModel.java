@@ -67,12 +67,6 @@ public class SksModel extends AbstractWeaponModel {
     private final ModelRenderer bone49;
     private final ModelRenderer bone;
     private final ModelRenderer bone47;
-    private final ModelRenderer suppressor;
-    private final ModelRenderer supp1;
-    private final ModelRenderer supp0;
-    private final ModelRenderer rds;
-    private final ModelRenderer rds1;
-    private final ModelRenderer rds2;
 
     public SksModel() {
         texWidth = 128;
@@ -893,66 +887,6 @@ public class SksModel extends AbstractWeaponModel {
         ironsights.addChild(bone47);
         setRotationAngle(bone47, 0.0F, 0.0F, -0.5236F);
         bone47.texOffs(66, 12).addBox(-2.4821F, -2.433F, -0.5F, 1.0F, 3.0F, 4.0F, 0.0F, false);
-
-        suppressor = new ModelRenderer(this);
-        suppressor.setPos(0.0F, 9.0F, -111.0F);
-        suppressor.texOffs(70, 68).addBox(-1.0F, 1.7321F, -2.1719F, 2.0F, 2.0F, 20.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(-3.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(0.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, true);
-        suppressor.texOffs(70, 68).addBox(-1.0F, -3.7321F, -2.1719F, 2.0F, 2.0F, 20.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(-1.0F, 0.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(-3.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(0.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, true);
-        suppressor.texOffs(70, 68).addBox(-1.0F, -3.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-
-        supp1 = new ModelRenderer(this);
-        supp1.setPos(0.0F, 0.0F, 0.0F);
-        suppressor.addChild(supp1);
-        setRotationAngle(supp1, 0.0F, 0.0F, -0.5236F);
-        supp1.texOffs(70, 68).addBox(-1.0F, -0.2679F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, false);
-        supp1.texOffs(70, 68).addBox(-3.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, false);
-        supp1.texOffs(70, 68).addBox(-1.0F, -3.7321F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, true);
-        supp1.texOffs(70, 68).addBox(0.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, true);
-        supp1.texOffs(70, 68).addBox(-1.0F, 0.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-        supp1.texOffs(70, 68).addBox(-3.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, false);
-        supp1.texOffs(70, 68).addBox(-1.0F, -3.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, true);
-        supp1.texOffs(70, 68).addBox(0.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, true);
-
-        supp0 = new ModelRenderer(this);
-        supp0.setPos(0.0F, 0.0F, 0.0F);
-        suppressor.addChild(supp0);
-        setRotationAngle(supp0, 0.0F, 0.0F, 0.5236F);
-        supp0.texOffs(70, 68).addBox(-1.0F, -0.2679F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, false);
-        supp0.texOffs(70, 68).addBox(0.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, false);
-        supp0.texOffs(70, 68).addBox(-3.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, true);
-        supp0.texOffs(70, 68).addBox(-1.0F, -3.7321F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, true);
-        supp0.texOffs(70, 68).addBox(-1.0F, 0.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-        supp0.texOffs(70, 68).addBox(0.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, false);
-        supp0.texOffs(70, 68).addBox(-3.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, true);
-        supp0.texOffs(70, 68).addBox(-1.0F, -3.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, true);
-
-        rds = new ModelRenderer(this);
-        rds.setPos(0.0F, 24.0F, 0.0F);
-        rds.texOffs(70, 72).addBox(-2.0F, -25.0F, -33.0F, 4.0F, 1.0F, 15.0F, 0.0F, false);
-        rds.texOffs(70, 72).addBox(-2.0F, -26.0F, -21.0F, 4.0F, 1.0F, 3.0F, 0.0F, false);
-        rds.texOffs(114, 103).addBox(-2.5F, -24.75F, -20.0F, 5.0F, 1.0F, 1.0F, 0.0F, false);
-        rds.texOffs(116, 102).addBox(-2.5F, -24.75F, -32.5F, 5.0F, 1.0F, 1.0F, 0.0F, false);
-        rds.texOffs(70, 72).addBox(-2.0F, -26.0F, -33.0F, 4.0F, 1.0F, 2.0F, 0.0F, false);
-        rds.texOffs(70, 72).addBox(-3.0F, -31.0F, -33.0F, 6.0F, 1.0F, 2.0F, 0.0F, false);
-        rds.texOffs(70, 72).addBox(-3.0F, -30.0F, -33.0F, 1.0F, 3.0F, 2.0F, 0.0F, false);
-        rds.texOffs(70, 72).addBox(2.0F, -30.0F, -33.0F, 1.0F, 3.0F, 2.0F, 0.0F, false);
-
-        rds1 = new ModelRenderer(this);
-        rds1.setPos(11.35F, -4.2F, 0.0F);
-        rds.addChild(rds1);
-        setRotationAngle(rds1, 0.0F, 0.0F, -0.5236F);
-        rds1.texOffs(70, 72).addBox(-1.0038F, -26.9128F, -33.0F, 1.0F, 2.0F, 2.0F, 0.0F, false);
-
-        rds2 = new ModelRenderer(this);
-        rds2.setPos(-10.45F, -3.7F, 0.0F);
-        rds.addChild(rds2);
-        setRotationAngle(rds2, 0.0F, 0.0F, 0.5236F);
-        rds2.texOffs(70, 72).addBox(-1.0038F, -26.9128F, -33.0F, 1.0F, 2.0F, 2.0F, 0.0F, false);
     }
 
     @Override
@@ -960,12 +894,9 @@ public class SksModel extends AbstractWeaponModel {
         sks.render(matrix, builder, light, overlay);
         magazine.render(matrix, builder, light, overlay);
 
-
         PlayerSkills skills = data.getSkills();
         boolean sight = skills.hasSkill(Skills.SKS_RED_DOT);
-        if (skills.hasSkill(Skills.SKS_SUPPRESSOR)) suppressor.render(matrix, builder, light, overlay);
         ironsights.visible = !sight;
         ironsights.render(matrix, builder, light, overlay);
-        if (sight) rds.render(matrix, builder, light, overlay);
     }
 }

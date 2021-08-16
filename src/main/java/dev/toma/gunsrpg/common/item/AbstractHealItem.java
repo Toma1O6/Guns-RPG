@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.item;
 
 import dev.toma.gunsrpg.ModTabs;
-import dev.toma.gunsrpg.client.animation.GRPGAnimations;
+import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -76,7 +76,7 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
                     AnimationEngine engine = AnimationEngine.get();
                     IAnimationLoader loader = engine.loader();
                     IAnimationPipeline pipeline = engine.pipeline();
-                    pipeline.insert(GRPGAnimations.HEAL, new Animation(loader.getProvider(useAnimation), useTime));
+                    pipeline.insert(ModAnimations.HEAL, new Animation(loader.getProvider(useAnimation), useTime));
                 }
                 player.startUsingItem(hand);
                 return ActionResult.pass(stack);
@@ -88,7 +88,7 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
     @Override
     public void releaseUsing(ItemStack p_77615_1_, World p_77615_2_, LivingEntity p_77615_3_, int p_77615_4_) {
         if (p_77615_2_.isClientSide) {
-            AnimationEngine.get().pipeline().remove(GRPGAnimations.HEAL);
+            AnimationEngine.get().pipeline().remove(ModAnimations.HEAL);
         }
     }
 

@@ -4,7 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.animation.AimAnimation;
-import dev.toma.gunsrpg.client.animation.GRPGAnimations;
+import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.AimInfo;
@@ -69,7 +69,7 @@ public class ClientEventHandler {
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         optional.ifPresent(data -> {
             if (stack.getItem() instanceof GunItem && !data.getReloadInfo().isReloading())
-                AnimationEngine.get().pipeline().insert(GRPGAnimations.SPRINT);
+                AnimationEngine.get().pipeline().insert(ModAnimations.SPRINT);
         });
     }, PlayerEntity::isSprinting);
     public static OptionalObject<Double> preAimFov = OptionalObject.empty();
@@ -247,7 +247,7 @@ public class ClientEventHandler {
                             shotsLeft = 2;
                         }
                     }
-                } else if (settings.keyUse.isDown() && pipeline.get(GRPGAnimations.CHAMBER) == null && !player.isSprinting()) {
+                } else if (settings.keyUse.isDown() && pipeline.get(ModAnimations.CHAMBER) == null && !player.isSprinting()) {
                     LazyOptional<IPlayerData> optional = PlayerData.get(player);
                     boolean aim = optional.isPresent() && optional.orElse(null).getAimInfo().aiming;
                     if (!aim) {
@@ -262,7 +262,7 @@ public class ClientEventHandler {
                         }
                         ResourceLocation aimAnimationPath = item.getAimAnimationPath(stack, player);
                         if (aimAnimationPath != null) {
-                            pipeline.insert(GRPGAnimations.AIM_ANIMATION, AnimationUtils.createAnimation(aimAnimationPath, AimAnimation::new));
+                            pipeline.insert(ModAnimations.AIM_ANIMATION, AnimationUtils.createAnimation(aimAnimationPath, AimAnimation::new));
                         }
                     } else {
                         preAimFov.ifPresent(value -> settings.fov = value);

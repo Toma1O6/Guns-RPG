@@ -20,6 +20,8 @@ import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.function.BooleanSupplier;
+
 public final class AnimationEngine {
 
     public static final Marker MARKER = MarkerManager.getMarker("Engine");
@@ -44,11 +46,12 @@ public final class AnimationEngine {
 
     }
 
-    public void startEngine(boolean enableDeveloperTools) {
-        logger.info(MARKER, "Starting animation engine [{} mode]", enableDeveloperTools ? "Developer" : "User");
+    public void startEngine(BooleanSupplier devTools) {
+        boolean inDev = devTools.getAsBoolean();
+        logger.info(MARKER, "Starting animation engine [{} mode]", inDev ? "Developer" : "User");
         ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(loader);
         logger.info(MARKER, "Registered animation resource manager");
-        if (enableDeveloperTools) {
+        if (inDev) {
             devSetup();
         }
         logger.info(MARKER, "Animation engine - READY");

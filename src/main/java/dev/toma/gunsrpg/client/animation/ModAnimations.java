@@ -14,8 +14,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public final class GRPGAnimations {
-    private GRPGAnimations() {}
+public final class ModAnimations {
+    private ModAnimations() {}
 
     public static final AnimationStage DUAL_WIELD_ITEM = new AnimationStage(GunsRPG.makeResource("item.heldfp.dual"));
 
@@ -23,8 +23,12 @@ public final class GRPGAnimations {
     public static final AnimationType<SprintAnimation> SPRINT = new AnimationType<>(GunsRPG.makeResource("sprinting"), SprintAnimation::new);
     public static final AnimationType<IAnimation> CHAMBER = new AnimationType<>(GunsRPG.makeResource("chamber"));
     public static final AnimationType<Animation> HEAL = new AnimationType<>(GunsRPG.makeResource("heal"));
-    public static final AnimationType<Animation> RELOAD = new AnimationType<>(GunsRPG.makeResource("reload"), GRPGAnimations::createReloadAnimation);
-    public static final AnimationType<Animation> FIREMODE = new AnimationType<>(GunsRPG.makeResource("firemode"), GRPGAnimations::createFiremodeAnimation);
+    public static final AnimationType<Animation> RELOAD = new AnimationType<>(GunsRPG.makeResource("reload"), ModAnimations::createReloadAnimation);
+    public static final AnimationType<Animation> FIREMODE = new AnimationType<>(GunsRPG.makeResource("firemode"), ModAnimations::createFiremodeAnimation);
+
+    public static void init() {
+        // loads class
+    }
 
     public static Animation createReloadAnimation(PlayerEntity player) {
         ItemStack stack = player.getMainHandItem();

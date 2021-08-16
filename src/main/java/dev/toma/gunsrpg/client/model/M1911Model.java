@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.client.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
-import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
 
@@ -27,9 +26,6 @@ public class M1911Model extends AbstractWeaponModel {
     private final ModelRenderer magazineRenderer;
     private final ModelRenderer bone16;
     private final ModelRenderer bone17;
-    private final ModelRenderer suppressor;
-    private final ModelRenderer supp0;
-    private final ModelRenderer supp1;
 
     public M1911Model() {
         texWidth = 128;
@@ -228,50 +224,11 @@ public class M1911Model extends AbstractWeaponModel {
         magazineRenderer.addChild(bone17);
         setRotationAngle(bone17, 0.0F, 0.0F, -0.1745F);
         bone17.texOffs(0, 69).addBox(6.1211F, -21.2302F, 12.1863F, 1.0F, 1.0F, 5.0F, 0.0F, false);
-
-        suppressor = new ModelRenderer(this);
-        suppressor.setPos(0.0F, 21.0F, -28.0F);
-        suppressor.texOffs(70, 68).addBox(-1.0F, 1.7321F, -2.1719F, 2.0F, 2.0F, 20.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(-3.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(0.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, true);
-        suppressor.texOffs(70, 68).addBox(-1.0F, -3.7321F, -2.1719F, 2.0F, 2.0F, 20.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(-1.0F, 0.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(-3.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(0.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, true);
-        suppressor.texOffs(70, 68).addBox(-1.0F, -3.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-
-        supp0 = new ModelRenderer(this);
-        supp0.setPos(0.0F, 0.0F, 0.0F);
-        suppressor.addChild(supp0);
-        setRotationAngle(supp0, 0.0F, 0.0F, 0.5236F);
-        supp0.texOffs(70, 68).addBox(-1.0F, -0.2679F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, false);
-        supp0.texOffs(70, 68).addBox(0.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, false);
-        supp0.texOffs(70, 68).addBox(-3.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, true);
-        supp0.texOffs(70, 68).addBox(-1.0F, -3.7321F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, true);
-        supp0.texOffs(70, 68).addBox(-1.0F, 0.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-        supp0.texOffs(70, 68).addBox(0.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, false);
-        supp0.texOffs(70, 68).addBox(-3.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, true);
-        supp0.texOffs(70, 68).addBox(-1.0F, -3.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, true);
-
-        supp1 = new ModelRenderer(this);
-        supp1.setPos(0.0F, 0.0F, 0.0F);
-        suppressor.addChild(supp1);
-        setRotationAngle(supp1, 0.0F, 0.0F, -0.5236F);
-        supp1.texOffs(70, 68).addBox(-1.0F, -0.2679F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, false);
-        supp1.texOffs(70, 68).addBox(-3.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, false);
-        supp1.texOffs(70, 68).addBox(-1.0F, -3.7321F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, true);
-        supp1.texOffs(70, 68).addBox(0.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, true);
-        supp1.texOffs(70, 68).addBox(-1.0F, 0.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-        supp1.texOffs(70, 68).addBox(-3.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, false);
-        supp1.texOffs(70, 68).addBox(-1.0F, -3.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, true);
-        supp1.texOffs(70, 68).addBox(0.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, true);
     }
 
     @Override
     public void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay, float r, float g, float b, float a) {
         gunRenderer.render(matrix, builder, light, overlay);
         magazineRenderer.render(matrix, builder, light, overlay);
-        if (data.getSkills().hasSkill(Skills.M1911_SUPPRESSOR))
-            suppressor.render(matrix, builder, light, overlay);
     }
 }

@@ -42,16 +42,21 @@ public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
     }
 
     public static void setBuiltInRender(ModelRenderer render) {
+        setBuiltInRender(render, 0.0F);
+    }
+
+    public static void setBuiltInRender(ModelRenderer render, float offset) {
         for (ModelRenderer.ModelBox box : render.cubes) {
             for (ModelRenderer.TexturedQuad quad : box.polygons) {
                 ModelRenderer.PositionTextureVertex ver1 = quad.vertices[0];
                 ModelRenderer.PositionTextureVertex ver2 = quad.vertices[1];
                 ModelRenderer.PositionTextureVertex ver3 = quad.vertices[2];
                 ModelRenderer.PositionTextureVertex ver4 = quad.vertices[3];
-                setUV(ver1, 0.0F, 0.0F);
-                setUV(ver2, 0.0F, 1.0F);
-                setUV(ver3, 1.0F, 1.0F);
-                setUV(ver4, 1.0F, 0.0F);
+                float max = 1.0F - offset;
+                setUV(ver1, max, offset);
+                setUV(ver2, offset, offset);
+                setUV(ver3, offset, max);
+                setUV(ver4, max, max);
             }
         }
     }

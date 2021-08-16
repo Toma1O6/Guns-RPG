@@ -3,8 +3,6 @@ package dev.toma.gunsrpg.client.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
-import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
 
@@ -30,12 +28,6 @@ public class Ump45Model extends AbstractWeaponModel {
     private final ModelRenderer bone13;
     private final ModelRenderer bone14;
     private final ModelRenderer barrel;
-    private final ModelRenderer suppressor;
-    private final ModelRenderer supp1;
-    private final ModelRenderer supp0;
-    private final ModelRenderer rds;
-    private final ModelRenderer a1;
-    private final ModelRenderer a2;
 
     public Ump45Model() {
         texWidth = 256;
@@ -181,64 +173,6 @@ public class Ump45Model extends AbstractWeaponModel {
         barrel.setPos(0.0F, 24.0F, 0.0F);
         barrel.texOffs(30, 139).addBox(-1.5F, -11.0F, -31.0F, 2.0F, 2.0F, 7.0F, 0.0F, false);
         barrel.texOffs(30, 139).addBox(-2.0F, -11.5F, -26.5F, 3.0F, 3.0F, 2.0F, 0.0F, false);
-
-        suppressor = new ModelRenderer(this);
-        suppressor.setPos(0.0F, 14.0F, -42.8F);
-        suppressor.texOffs(169, 149).addBox(-1.0F, 1.7321F, -2.1719F, 2.0F, 2.0F, 20.0F, 0.0F, false);
-        suppressor.texOffs(169, 149).addBox(-3.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, false);
-        suppressor.texOffs(169, 149).addBox(0.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, true);
-        suppressor.texOffs(169, 149).addBox(-1.0F, -3.7321F, -2.1719F, 2.0F, 2.0F, 20.0F, 0.0F, false);
-        suppressor.texOffs(169, 149).addBox(-1.0F, 0.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-        suppressor.texOffs(169, 149).addBox(-3.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, false);
-        suppressor.texOffs(169, 149).addBox(0.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, true);
-        suppressor.texOffs(169, 149).addBox(-1.0F, -3.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-
-        supp1 = new ModelRenderer(this);
-        supp1.setPos(0.0F, 0.0F, 0.0F);
-        suppressor.addChild(supp1);
-        setRotationAngle(supp1, 0.0F, 0.0F, -0.5236F);
-        supp1.texOffs(169, 149).addBox(-1.0F, -0.2679F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, false);
-        supp1.texOffs(169, 149).addBox(-3.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, false);
-        supp1.texOffs(169, 149).addBox(-1.0F, -3.7321F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, true);
-        supp1.texOffs(169, 149).addBox(0.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, true);
-        supp1.texOffs(169, 149).addBox(-1.0F, 0.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-        supp1.texOffs(169, 149).addBox(-3.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, false);
-        supp1.texOffs(169, 149).addBox(-1.0F, -3.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, true);
-        supp1.texOffs(169, 149).addBox(0.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, true);
-
-        supp0 = new ModelRenderer(this);
-        supp0.setPos(0.0F, 0.0F, 0.0F);
-        suppressor.addChild(supp0);
-        setRotationAngle(supp0, 0.0F, 0.0F, 0.5236F);
-        supp0.texOffs(169, 149).addBox(-1.0F, -0.2679F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, false);
-        supp0.texOffs(169, 149).addBox(0.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, false);
-        supp0.texOffs(169, 149).addBox(-3.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, true);
-        supp0.texOffs(169, 149).addBox(-1.0F, -3.7321F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, true);
-        supp0.texOffs(169, 149).addBox(-1.0F, 0.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-        supp0.texOffs(169, 149).addBox(0.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, false);
-        supp0.texOffs(169, 149).addBox(-3.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, true);
-        supp0.texOffs(169, 149).addBox(-1.0F, -3.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, true);
-
-        rds = new ModelRenderer(this);
-        rds.setPos(0.0F, 24.0F, 0.0F);
-        rds.texOffs(140, 140).addBox(-2.0F, -14.5F, -12.0F, 4.0F, 1.0F, 13.0F, 0.0F, false);
-        rds.texOffs(140, 140).addBox(-2.0F, -15.5F, -2.0F, 4.0F, 1.0F, 3.0F, 0.0F, false);
-        rds.texOffs(140, 140).addBox(-2.0F, -15.5F, -12.0F, 4.0F, 1.0F, 2.0F, 0.0F, false);
-        rds.texOffs(140, 140).addBox(-3.0F, -20.5F, -12.0F, 6.0F, 1.0F, 2.0F, 0.0F, false);
-        rds.texOffs(140, 140).addBox(2.0F, -19.5F, -12.0F, 1.0F, 3.0F, 2.0F, 0.0F, false);
-        rds.texOffs(140, 140).addBox(-3.0F, -19.5F, -12.0F, 1.0F, 3.0F, 2.0F, 0.0F, false);
-
-        a1 = new ModelRenderer(this);
-        a1.setPos(-2.15F, 2.4F, 0.0F);
-        rds.addChild(a1);
-        setRotationAngle(a1, 0.0F, 0.0F, 0.3491F);
-        a1.texOffs(140, 140).addBox(-2.6369F, -19.5257F, -12.0F, 1.0F, 3.0F, 2.0F, 0.0F, false);
-
-        a2 = new ModelRenderer(this);
-        a2.setPos(-2.15F, 2.4F, 0.0F);
-        rds.addChild(a2);
-        setRotationAngle(a2, 0.0F, 0.0F, -0.3491F);
-        a2.texOffs(140, 140).addBox(5.6756F, -18.0965F, -12.0F, 1.0F, 3.0F, 2.0F, 0.0F, false);
     }
 
     @Override
@@ -249,8 +183,5 @@ public class Ump45Model extends AbstractWeaponModel {
         stock.render(matrix, builder, light, overlay);
         sights.render(matrix, builder, light, overlay);
         barrel.render(matrix, builder, light, overlay);
-        PlayerSkills skills = data.getSkills();
-        renderWithCondition(suppressor, matrix, builder, light, overlay, skills, s -> s.hasSkill(Skills.UMP45_SUPPRESSOR));
-        renderWithCondition(rds, matrix, builder, light, overlay, skills, s -> s.hasSkill(Skills.UMP45_RED_DOT));
     }
 }

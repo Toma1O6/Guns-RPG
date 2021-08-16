@@ -3,7 +3,7 @@ package dev.toma.gunsrpg.sided;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.ClientEventHandler;
 import dev.toma.gunsrpg.client.ModKeybinds;
-import dev.toma.gunsrpg.client.animation.GRPGAnimations;
+import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.client.screen.AirdropScreen;
 import dev.toma.gunsrpg.client.screen.BlastFurnaceScreen;
@@ -108,7 +108,7 @@ public class ClientSideManager {
         if (stack.getItem() == ModItems.M1911 && PlayerData.hasActiveSkill(player, Skills.M1911_DUAL_WIELD)) {
             poseStack.pushPose();
             {
-                pipeline.animateStage(GRPGAnimations.DUAL_WIELD_ITEM, poseStack);
+                pipeline.animateStage(ModAnimations.DUAL_WIELD_ITEM, poseStack);
                 itemRenderer.renderItem(fpRenderer, player, stack, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, true, poseStack, buffer, light, swing, equip);
             }
             poseStack.popPose();

@@ -13,6 +13,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class WoodenCrossbowRenderer extends AbstractWeaponRenderer {
 
+    public static final ResourceLocation RETICLE = GunsRPG.makeResource("textures/scope/crossbow_reticle.png");
+
     @Override
     public AbstractWeaponModel getWeaponModel() {
         return WeaponModels.WOODEN_CROSSBOW;
@@ -40,7 +42,7 @@ public class WoodenCrossbowRenderer extends AbstractWeaponRenderer {
     @Override
     protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
         if (data.getSkills().hasSkill(Skills.CROSSBOW_SCOPE)) {
-            renderScope(RenderConfigs.WOODEN_CROSSBOW_SCOPE, matrix, typeBuffer, light, overlay, progress);
+            renderScope(RenderConfigs.WOODEN_CROSSBOW_SCOPE, matrix, typeBuffer, light, overlay, progress, RETICLE);
         }
     }
 
