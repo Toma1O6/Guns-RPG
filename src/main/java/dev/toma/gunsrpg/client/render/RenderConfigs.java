@@ -32,6 +32,8 @@ public class RenderConfigs {
     public static final IRenderConfig UMP45_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -0.5, -1.0).withScale(1.0F, 1.0F, 1.5F).finish();
     public static final IRenderConfig UMP45_REFLEX = RenderConfig.newDef().withPosition(0.0, -0.815, 0.0).finish();
     public static final IRenderConfig WOODEN_CROSSBOW_SCOPE = IRenderConfig.pos(0.0, -1.0, 0.5);
-    public static final IRenderConfig KAR98K_SCOPE = IRenderConfig.pos(0.0, -0.68, 0.1);
+    public static final IRenderConfig SKS_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -1.33, -5.0).withScale(1.4F, 1.4F, 2.0F).finish();
+    public static final IRenderConfig SKS_REFLEX = RenderConfig.newDef().withPosition(0.0, -1.9, -1.1).withScale(1.3F, 1.3F, 1.3F).finish();
     public static final IRenderConfig KAR98K_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -1.05, -5.7).withScale(1.5F, 1.5F, 2.0F).finish();
+    public static final IRenderConfig KAR98K_SCOPE = IRenderConfig.pos(0.0, -0.68, 0.1);
 }
