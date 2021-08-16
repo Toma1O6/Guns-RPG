@@ -24,7 +24,7 @@ import java.util.function.BooleanSupplier;
 
 public final class AnimationEngine {
 
-    public static final Marker MARKER = MarkerManager.getMarker("Engine");
+    public static final Marker MARKER = MarkerManager.getMarker("Core");
     public int handConfigKey = GLFW.GLFW_KEY_KP_9;
     public int animatorKey = GLFW.GLFW_KEY_KP_8;
     final HandRenderAPI handRenderAPI;
@@ -32,7 +32,7 @@ public final class AnimationEngine {
     final AnimationPipeline pipeline;
     final AnimationLoader loader;
     final MainRenderPipeline renderPipeline;
-    public static final Logger logger = LogManager.getLogger("AnimationLib");
+    public static final Logger logger = LogManager.getLogger("AnimationEngine");
 
     private KeyBinding handConfigs;
     private KeyBinding animator;
