@@ -16,6 +16,7 @@ public abstract class AbstractWeaponModel extends AbstractSolidEntityModel {
 
     public abstract void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay, float r, float g, float b, float a);
 
+    @Deprecated
     protected <T> void renderWithCondition(ModelRenderer renderer, MatrixStack stack, IVertexBuilder builder, int light, int overlay, T src, Predicate<T> condition) {
         if (condition.test(src))
             renderer.render(stack, builder, light, overlay);

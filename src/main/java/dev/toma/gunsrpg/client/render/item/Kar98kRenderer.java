@@ -5,6 +5,9 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.model.WeaponModels;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
+import dev.toma.gunsrpg.common.init.Skills;
+import lib.toma.animations.api.IRenderConfig;
+import lib.toma.animations.engine.RenderConfig;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.util.ResourceLocation;
@@ -45,6 +48,9 @@ public class Kar98kRenderer extends AbstractWeaponRenderer {
 
     @Override
     protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, ResourceLocation texture, int light, int overlay, float progress) {
-
+        if (data.getSkills().hasSkill(Skills.KAR98K_SCOPE)) {
+            IRenderConfig config = RenderConfig.newDef().withPosition(0.0, -0.68, 0.1).finish();
+            renderScope(config, matrix, typeBuffer, light, overlay, progress);
+        }
     }
 }

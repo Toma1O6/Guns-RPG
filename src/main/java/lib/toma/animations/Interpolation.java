@@ -1,7 +1,7 @@
 package lib.toma.animations;
 
-public final class Intepolation {
-    private Intepolation() {}
+public final class Interpolation {
+    private Interpolation() {}
 
     public static float linear(float delta, float current, float old) {
         return old + (current - old) * delta;

@@ -77,6 +77,7 @@ public class ClientEventHandler {
     public static int shootDelay;
     static boolean burst;
     static int shotsLeft = 2;
+    public static float partialTicks;
 
     @SubscribeEvent
     public static void cancelOverlays(RenderGameOverlayEvent.Pre event) {
@@ -332,6 +333,7 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void onRenderTick(TickEvent.RenderTickEvent event) {
+        partialTicks = event.renderTickTime;
         if (event.phase == TickEvent.Phase.START)
             AnimationEngine.get().pipeline().processFrame(event.renderTickTime);
     }

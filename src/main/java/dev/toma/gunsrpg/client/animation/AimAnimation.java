@@ -4,7 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.AimInfo;
-import lib.toma.animations.Intepolation;
+import lib.toma.animations.Interpolation;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IAnimation;
 import lib.toma.animations.api.IKeyframe;
@@ -50,7 +50,7 @@ public class AimAnimation implements IAnimation {
 
     @Override
     public void renderTick(float deltaRenderTime) {
-        progressI = Intepolation.linear(deltaRenderTime, progress, progressO);
+        progressI = Interpolation.linear(deltaRenderTime, progress, progressO);
     }
 
     @Override

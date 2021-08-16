@@ -19,7 +19,7 @@ public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
         float inv = 1.0F - progress;
         matrix.pushPose();
         matrix.translate(0.0F, 0.0F, 0.78F * progress);
-        matrix.scale(1.0F, 1.0F, 0.1F + 0.9F * inv);
+        matrix.scale(1.0F, 1.0F, 0.07F + 0.93F * inv);
         IVertexBuilder modelVertexBuilder = buffer.getBuffer(RenderType.entitySolid(AbstractWeaponRenderer.ATTACHMENTS));
         scopeModel.render(matrix, modelVertexBuilder, light, overlay);
         IVertexBuilder reticleVertexBuilder = buffer.getBuffer(RenderType.entityShadow(reticleTexture));

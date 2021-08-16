@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.client.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
-import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
 
@@ -31,12 +30,6 @@ public class Kar98kModel extends AbstractWeaponModel {
     private final ModelRenderer bone9;
     private final ModelRenderer bone7;
     private final ModelRenderer bone8;
-    private final ModelRenderer suppressor;
-    private final ModelRenderer supp0;
-    private final ModelRenderer supp1;
-    private final ModelRenderer scope;
-    private final ModelRenderer bone21;
-    private final ModelRenderer bone22;
 
     public Kar98kModel() {
         texWidth = 128;
@@ -372,72 +365,10 @@ public class Kar98kModel extends AbstractWeaponModel {
         kar98k.addChild(bone8);
         setRotationAngle(bone8, 0.0F, -0.2618F, 0.0F);
         bone8.texOffs(32, 68).addBox(12.1279F, -7.0F, 16.1526F, 1.0F, 2.0F, 4.0F, 0.0F, false);
-
-        suppressor = new ModelRenderer(this);
-        suppressor.setPos(0.0F, 15.5F, -124.75F);
-        suppressor.texOffs(70, 68).addBox(-1.0F, 1.7321F, -2.1719F, 2.0F, 2.0F, 20.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(-3.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(0.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, true);
-        suppressor.texOffs(70, 68).addBox(-1.0F, -3.7321F, -2.1719F, 2.0F, 2.0F, 20.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(-1.0F, 0.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(-3.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, false);
-        suppressor.texOffs(70, 68).addBox(0.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, true);
-        suppressor.texOffs(70, 68).addBox(-1.0F, -3.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-
-        supp0 = new ModelRenderer(this);
-        supp0.setPos(0.0F, 0.0F, 0.0F);
-        suppressor.addChild(supp0);
-        setRotationAngle(supp0, 0.0F, 0.0F, 0.5236F);
-        supp0.texOffs(70, 68).addBox(-1.0F, -0.2679F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, false);
-        supp0.texOffs(70, 68).addBox(0.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, false);
-        supp0.texOffs(70, 68).addBox(-3.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, true);
-        supp0.texOffs(70, 68).addBox(-1.0F, -3.7321F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, true);
-        supp0.texOffs(70, 68).addBox(-1.0F, 0.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-        supp0.texOffs(70, 68).addBox(0.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, false);
-        supp0.texOffs(70, 68).addBox(-3.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, true);
-        supp0.texOffs(70, 68).addBox(-1.0F, -3.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, true);
-
-        supp1 = new ModelRenderer(this);
-        supp1.setPos(0.0F, 0.0F, 0.0F);
-        suppressor.addChild(supp1);
-        setRotationAngle(supp1, 0.0F, 0.0F, -0.5236F);
-        supp1.texOffs(70, 68).addBox(-1.0F, -0.2679F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, false);
-        supp1.texOffs(70, 68).addBox(-3.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, false);
-        supp1.texOffs(70, 68).addBox(-1.0F, -3.7321F, -2.1719F, 2.0F, 4.0F, 20.0F, 0.0F, true);
-        supp1.texOffs(70, 68).addBox(0.7321F, -1.0F, -2.1719F, 3.0F, 2.0F, 20.0F, 0.0F, true);
-        supp1.texOffs(70, 68).addBox(-1.0F, 0.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, false);
-        supp1.texOffs(70, 68).addBox(-3.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, false);
-        supp1.texOffs(70, 68).addBox(-1.0F, -3.7321F, -7.1719F, 2.0F, 3.0F, 5.0F, 0.0F, true);
-        supp1.texOffs(70, 68).addBox(0.7321F, -1.0F, -7.1719F, 3.0F, 2.0F, 5.0F, 0.0F, true);
-
-        scope = new ModelRenderer(this);
-        scope.setPos(0.0F, 24.0F, 0.0F);
-        scope.texOffs(71, 70).addBox(-2.0F, -14.0F, -1.0F, 4.0F, 1.0F, 17.0F, 0.0F, false);
-        scope.texOffs(71, 70).addBox(-2.0F, -19.8F, -1.0F, 4.0F, 1.0F, 17.0F, 0.0F, false);
-        scope.texOffs(71, 70).addBox(-1.0F, -13.0F, 9.0F, 2.0F, 2.0F, 2.0F, 0.0F, false);
-        scope.texOffs(71, 70).addBox(-1.0F, -13.0F, 2.0F, 2.0F, 2.0F, 2.0F, 0.0F, false);
-        scope.texOffs(71, 67).addBox(-3.4015F, -18.4142F, -1.0F, 1.0F, 4.0F, 17.0F, 0.0F, false);
-        scope.texOffs(71, 67).addBox(2.3985F, -18.4142F, -1.0F, 1.0F, 4.0F, 17.0F, 0.0F, false);
-
-        bone21 = new ModelRenderer(this);
-        bone21.setPos(-5.0F, -14.0F, 4.0F);
-        scope.addChild(bone21);
-        setRotationAngle(bone21, 0.0F, 0.0F, 0.7854F);
-        bone21.texOffs(71, 70).addBox(0.8485F, -2.4142F, -5.0F, 2.0F, 1.0F, 17.0F, 0.0F, false);
-        bone21.texOffs(71, 70).addBox(0.8485F, -9.061F, -5.0F, 2.0F, 1.0F, 17.0F, 0.0F, false);
-
-        bone22 = new ModelRenderer(this);
-        bone22.setPos(-5.0F, -14.0F, 4.0F);
-        scope.addChild(bone22);
-        setRotationAngle(bone22, 0.0F, 0.0F, -0.7854F);
-        bone22.texOffs(71, 70).addBox(4.2426F, -1.9899F, -5.0F, 2.0F, 1.0F, 17.0F, 0.0F, false);
-        bone22.texOffs(71, 70).addBox(4.2426F, 4.6569F, -5.0F, 2.0F, 1.0F, 17.0F, 0.0F, false);
     }
 
     @Override
     public void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay, float r, float g, float b, float a) {
         kar98k.render(matrix, builder, light, overlay);
-        renderWithCondition(suppressor, matrix, builder, light, overlay, data.getSkills(), skills -> skills.hasSkill(Skills.KAR98K_SUPPRESSOR));
-        renderWithCondition(scope, matrix, builder, light, overlay, data.getSkills(), skills -> skills.hasSkill(Skills.KAR98K_SCOPE));
     }
 }

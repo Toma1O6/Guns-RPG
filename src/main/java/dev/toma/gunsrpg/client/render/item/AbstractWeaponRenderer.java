@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.client.render.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.ClientEventHandler;
 import dev.toma.gunsrpg.client.model.AbstractAttachmentModel;
 import dev.toma.gunsrpg.client.model.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.model.ScopeModel;
@@ -36,7 +37,7 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
                 setupAndRender(stack, matrix, transformType, data, renderBuffer, light, overlay);
                 if (hasCustomAttachments() && canRenderAttachments(transformType)) {
                     matrix.pushPose();
-                    float aimProgress = data.getAimInfo().getProgress();
+                    float aimProgress = data.getAimInfo().getProgress(ClientEventHandler.partialTicks);
                     renderAttachments(data, matrix, renderBuffer, ATTACHMENTS, light, overlay, aimProgress);
                     matrix.popPose();
                 }
