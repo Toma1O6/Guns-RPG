@@ -4,7 +4,10 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.model.WeaponModels;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
+import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
+import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.util.ResourceLocation;
@@ -48,6 +51,12 @@ public class Ump45Renderer extends AbstractWeaponRenderer {
 
     @Override
     protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
-
+        PlayerSkills skills = data.getSkills();
+        if (skills.hasSkill(Skills.UMP45_SUPPRESSOR)) {
+            renderSuppressor(RenderConfigs.UMP45_SUPPRESSOR, matrix, typeBuffer, light, overlay, progress);
+        }
+        if (skills.hasSkill(Skills.UMP45_RED_DOT)) {
+            renderReflex(RenderConfigs.UMP45_REFLEX, matrix, typeBuffer, light, overlay, progress);
+        }
     }
 }
