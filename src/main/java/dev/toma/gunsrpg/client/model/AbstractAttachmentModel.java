@@ -20,7 +20,8 @@ public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
         IVertexBuilder modelVertexBuilder = buffer.getBuffer(RenderType.entitySolid(AbstractWeaponRenderer.ATTACHMENTS));
         bone.render(matrix, modelVertexBuilder, light, overlay);
         IVertexBuilder reticleVertexBuilder = buffer.getBuffer(RenderType.entityShadow(reticleTexture));
-        float a = ModConfig.clientConfig.developerMode.get() ? 1.0F : progress;
+        float cfgA = ((reticleColor >> 24) & 255) / 255.0F;
+        float a = ModConfig.clientConfig.developerMode.get() ? 1.0F : Math.min(cfgA, progress);
         float r = ((reticleColor >> 16) & 255) / 255.0F;
         float g = ((reticleColor >>  8) & 255) / 255.0F;
         float b = ( reticleColor        & 255) / 255.0F;
