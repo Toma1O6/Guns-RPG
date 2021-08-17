@@ -53,11 +53,11 @@ public class Kar98kRenderer extends AbstractWeaponRenderer {
     @Override
     protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
         PlayerSkills skills = data.getSkills();
-        if (skills.hasSkill(Skills.KAR98K_SCOPE)) {
-            renderScope(RenderConfigs.KAR98K_SCOPE, matrix, typeBuffer, light, overlay, progress, KAR98K_SCOPE_RETICLE);
-        }
         if (skills.hasSkill(Skills.KAR98K_SUPPRESSOR)) {
             renderSuppressor(RenderConfigs.KAR98K_SUPPRESSOR, matrix, typeBuffer, light, overlay, progress);
+        }
+        if (skills.hasSkill(Skills.KAR98K_SCOPE)) {
+            renderScope(RenderConfigs.KAR98K_SCOPE, matrix, typeBuffer, light, overlay, progress, KAR98K_SCOPE_RETICLE);
         }
     }
 }
