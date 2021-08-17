@@ -8,6 +8,7 @@ version="${file.jarVersion}"
 displayName="Guns RPG"
 updateJSONURL="https://raw.githubusercontent.com/Toma1O6/Guns-RPG/master/update.json"
 authors="Toma,Tomano123"
+credits="Weapons models created by OfficialMajonaise"
 description='''
 Hardcore Minecraft mod with RPG elements.
 '''

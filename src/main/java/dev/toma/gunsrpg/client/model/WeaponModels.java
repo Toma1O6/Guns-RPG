@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.client.model;
 
+import dev.toma.gunsrpg.client.model.weapon.*;
+
 public final class WeaponModels {
     private WeaponModels() {}
 

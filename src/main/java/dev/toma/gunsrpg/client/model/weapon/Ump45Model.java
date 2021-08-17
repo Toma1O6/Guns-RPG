@@ -1,7 +1,8 @@
-package dev.toma.gunsrpg.client.model;
+package dev.toma.gunsrpg.client.model.weapon;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
@@ -176,7 +177,7 @@ public class Ump45Model extends AbstractWeaponModel {
     }
 
     @Override
-    public void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay, float r, float g, float b, float a) {
+    public void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay) {
         receiver.render(matrix, builder, light, overlay);
         grip.render(matrix, builder, light, overlay);
         magazine.render(matrix, builder, light, overlay);

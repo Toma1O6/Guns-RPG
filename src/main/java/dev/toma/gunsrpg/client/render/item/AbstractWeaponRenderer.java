@@ -4,7 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.ClientEventHandler;
 import dev.toma.gunsrpg.client.model.AbstractAttachmentModel;
-import dev.toma.gunsrpg.client.model.AbstractWeaponModel;
+import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.model.ScopeModel;
 import dev.toma.gunsrpg.client.model.WeaponModels;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
@@ -30,11 +30,12 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
     @Override
     public final void renderByItem(ItemStack stack, ItemCameraTransforms.TransformType transformType, MatrixStack matrix, IRenderTypeBuffer renderBuffer, int light, int overlay) {
         Minecraft mc = Minecraft.getInstance();
+        boolean held = stack == mc.player.getMainHandItem();
         PlayerData.get(mc.player).ifPresent(data -> {
             matrix.pushPose();
             {
                 positionModel(matrix, transformType);
-                setupAndRender(stack, matrix, transformType, data, renderBuffer, light, overlay);
+                setupAndRender(stack, matrix, transformType, data, renderBuffer, light, overlay, held);
                 if (hasCustomAttachments() && canRenderAttachments(transformType)) {
                     matrix.pushPose();
                     float aimProgress = data.getAimInfo().getProgress(ClientEventHandler.partialTicks);
@@ -103,7 +104,7 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
         return type != ItemCameraTransforms.TransformType.GUI;
     }
 
-    private void setupAndRender(ItemStack stack, MatrixStack matrix, ItemCameraTransforms.TransformType transformType, IPlayerData data, IRenderTypeBuffer renderBuffer, int light, int overlay) {
+    private void setupAndRender(ItemStack stack, MatrixStack matrix, ItemCameraTransforms.TransformType transformType, IPlayerData data, IRenderTypeBuffer renderBuffer, int light, int overlay, boolean animate) {
         matrix.translate(0.7, 0.5, 0.05);
         matrix.mulPose(Vector3f.XP.rotationDegrees(180));
         matrix.mulPose(Vector3f.YP.rotationDegrees(180));
@@ -113,6 +114,6 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
             defaultUITransform(matrix);
         }
         AbstractWeaponModel weaponModel = getWeaponModel();
-        weaponModel.renderWeapon(stack, data, matrix, renderBuffer.getBuffer(weaponModel.renderType(gunTexture)), light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+        weaponModel.render(stack, data, matrix, renderBuffer.getBuffer(weaponModel.renderType(gunTexture)), light, overlay, animate);
     }
 }
