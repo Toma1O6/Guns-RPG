@@ -214,11 +214,12 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
         if (thrower == null) {
             return;
         }
-        float sprintModifier = 1.25F;
-        float modifier = 1.4F;
+        float sprintModifier = 1.2F;
+        float modifier = 1.3F;
         if (thrower.isSprinting()) modifier *= sprintModifier;
         Vector3d viewVec = thrower.getLookAngle();
-        setDeltaMovement(viewVec.x * modifier, viewVec.y * modifier / sprintModifier, viewVec.z * modifier);
+        Vector3d thrVec = viewVec.multiply(0.75, 0.75, 0.75);
+        setDeltaMovement(thrVec.x * modifier, thrVec.y * modifier / sprintModifier, thrVec.z * modifier);
     }
 
     private void onGrenadeBounce(Vector3d movement) {
