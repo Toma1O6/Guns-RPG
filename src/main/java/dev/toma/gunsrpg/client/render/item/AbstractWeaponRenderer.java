@@ -21,11 +21,7 @@ import net.minecraft.util.math.vector.Vector3f;
 public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer {
 
     public static final ResourceLocation ATTACHMENTS = GunsRPG.makeResource("textures/item/attachments.png");
-    private final ResourceLocation gunTexture;
-
-    public AbstractWeaponRenderer() {
-        this.gunTexture = createGunTextureInstance();
-    }
+    public static final ResourceLocation WEAPON = GunsRPG.makeResource("textures/item/weapon_texture_map.png");
 
     @Override
     public final void renderByItem(ItemStack stack, ItemCameraTransforms.TransformType transformType, MatrixStack matrix, IRenderTypeBuffer renderBuffer, int light, int overlay) {
@@ -48,8 +44,6 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
     }
 
     public abstract AbstractWeaponModel getWeaponModel();
-
-    public abstract ResourceLocation createGunTextureInstance();
 
     protected boolean hasCustomAttachments() {
         return false;
@@ -114,6 +108,6 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
             defaultUITransform(matrix);
         }
         AbstractWeaponModel weaponModel = getWeaponModel();
-        weaponModel.render(stack, data, matrix, renderBuffer.getBuffer(weaponModel.renderType(gunTexture)), light, overlay, animate);
+        weaponModel.render(stack, data, matrix, renderBuffer.getBuffer(weaponModel.renderType(WEAPON)), light, overlay, animate && transformType.firstPerson());
     }
 }

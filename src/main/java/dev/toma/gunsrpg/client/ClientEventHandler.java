@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.animation.AimAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
@@ -27,6 +28,7 @@ import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
 import dev.toma.gunsrpg.network.packet.SPacketShoot;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.object.ShootingManager;
@@ -38,6 +40,7 @@ import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -181,8 +184,8 @@ public class ClientEventHandler {
                         width = renderer.width(text);
                         x = window.getGuiScaledWidth() - width - 34;
                         Matrix4f pose = matrixStack.last().pose();
-                        ModUtils.renderColor(pose, x, y, x + width + 22, y + 7, 0.0F, 0.0F, 0.0F, 1.0F);
-                        ModUtils.renderColor(pose, x + 2, y + 2, x + (int) (f * (width + 20)), y + 5, 1.0F, 1.0F, 0.0F, 1.0F);
+                        RenderUtils.drawGradient(pose, x, y, x + width + 22, y + 7, 0xFF << 24, 0xFF << 24);
+                        RenderUtils.drawGradient(pose, x + 2, y + 2, x + (int) (f * (width + 20)), y + 5, 0xFFFFFF << 8, 0xFF8888 << 8);
                         mc.getItemRenderer().renderGuiItem(new ItemStack(itemAmmo), x, y - 18);
                         mc.font.draw(matrixStack, text, x + 19, y - 14, 0xffffff);
                     }
@@ -191,8 +194,8 @@ public class ClientEventHandler {
                 int required = skills.getRequiredKills();
                 float levelProgress = skills.isMaxLevel() ? 1.0F : kills / (float) required;
                 Matrix4f pose = matrixStack.last().pose();
-                ModUtils.renderColor(pose, x, y + 10, x + width + 22, y + 17, 0.0F, 0.0F, 0.0F, 1.0F);
-                ModUtils.renderColor(pose, x + 2, y + 12, x + (int) (levelProgress * (width + 20)), y + 15, 0.0F, 1.0F, 1.0F, 1.0F);
+                RenderUtils.drawGradient(pose, x, y + 10, x + width + 22, y + 17, 0xFF << 24, 0xFF << 24);
+                RenderUtils.drawGradient(pose, x + 2, y + 12, x + (int) (levelProgress * (width + 20)), y + 15, 0xFF00FFFF, 0xFF008888);
                 if (data != null) {
                     DebuffData debuffData = data.getDebuffData();
                     int offset = 0;

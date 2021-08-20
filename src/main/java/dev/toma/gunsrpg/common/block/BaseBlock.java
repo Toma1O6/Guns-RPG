@@ -5,6 +5,8 @@ import dev.toma.gunsrpg.common.init.CommonRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
+import java.util.function.Consumer;
+
 public class BaseBlock extends Block {
 
     public BaseBlock(String name, Properties properties) {
@@ -15,5 +17,11 @@ public class BaseBlock extends Block {
 
     public static BaseBlock basic(String name, Material material) {
         return new BaseBlock(name, Properties.of(material));
+    }
+
+    public static BaseBlock basic(String name, Material material, Consumer<Properties> propertiesConsumer) {
+        Properties properties = Properties.of(material);
+        propertiesConsumer.accept(properties);
+        return new BaseBlock(name, properties);
     }
 }

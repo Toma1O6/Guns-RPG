@@ -20,11 +20,6 @@ public class Ump45Renderer extends AbstractWeaponRenderer {
     }
 
     @Override
-    public ResourceLocation createGunTextureInstance() {
-        return GunsRPG.makeResource("textures/item/ump45.png");
-    }
-
-    @Override
     public void positionModel(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
         switch (transform) {
             case THIRD_PERSON_RIGHT_HAND:

@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.debuffs;
 
-import dev.toma.gunsrpg.common.GunDamageSourceHack;
+import dev.toma.gunsrpg.common.init.GunDamageSourceSpecial;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.SlimeEntity;
@@ -294,7 +294,7 @@ public class DebuffHelper {
     }
 
     public static float bGunshotWoundCondition(PlayerSkills skills, DamageContext ctx) {
-        return ctx.getSource() instanceof GunDamageSourceHack ? 0.05F : 0.0F;
+        return ctx.getSource() instanceof GunDamageSourceSpecial ? 0.05F : 0.0F;
     }
 
     protected static boolean isEntity(EntityType<?> type, DamageContext ctx) {

@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.entity;
 
-import dev.toma.gunsrpg.common.GunDamageSource;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.ModDamageSources;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.WoodenCrossbowItem;
@@ -30,7 +30,7 @@ public class CrossbowBoltEntity extends BulletEntity {
 
     @Override
     protected void damageTargetEntity(Entity target, boolean isHeadshot) {
-        target.hurt(new GunDamageSource(shooter, this, stack), damage);
+        target.hurt(ModDamageSources.dealWeaponDamage(shooter, this, stack), damage);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common;
+package dev.toma.gunsrpg.common.init;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -17,7 +17,7 @@ public class GunDamageSource extends EntityDamageSource {
     private final Entity indirect;
     private final ItemStack stacc;
 
-    public GunDamageSource(Entity src, Entity indirect, ItemStack stacc) {
+    protected GunDamageSource(Entity src, Entity indirect, ItemStack stacc) {
         super("mob", src);
         setThorns();
         this.src = src;

@@ -1,11 +1,7 @@
 package dev.toma.gunsrpg.common.entity;
 
-import dev.toma.gunsrpg.common.GunDamageSourceHack;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.init.ModEffects;
-import dev.toma.gunsrpg.common.init.ModItems;
-import dev.toma.gunsrpg.common.init.ModSounds;
-import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -235,7 +231,7 @@ public class BulletEntity extends Entity {
     }
 
     protected void damageTargetEntity(Entity target, boolean isHeadshot) {
-        target.hurt(new GunDamageSourceHack(shooter, this, stack), damage);
+        target.hurt(ModDamageSources.dealSpecialWeaponDamage(shooter, this, stack), damage);
     }
 
     protected void onEntityHit(boolean isHeadshot, Entity entity) {
@@ -251,7 +247,7 @@ public class BulletEntity extends Entity {
                 }
             }
         } else if (entity instanceof PartEntity<?>) {
-            entity.hurt(new GunDamageSourceHack(shooter, this, stack), damage);
+            entity.hurt(ModDamageSources.dealSpecialWeaponDamage(shooter, this, stack), damage);
         }
     }
 

@@ -19,11 +19,6 @@ public class M1911Renderer extends AbstractWeaponRenderer {
     }
 
     @Override
-    public ResourceLocation createGunTextureInstance() {
-        return GunsRPG.makeResource("textures/item/p1911.png");
-    }
-
-    @Override
     public void positionModel(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
         switch (transform) {
             case THIRD_PERSON_RIGHT_HAND:

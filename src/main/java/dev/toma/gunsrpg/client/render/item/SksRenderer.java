@@ -20,11 +20,6 @@ public class SksRenderer extends AbstractWeaponRenderer {
     }
 
     @Override
-    public ResourceLocation createGunTextureInstance() {
-        return GunsRPG.makeResource("textures/item/sks.png");
-    }
-
-    @Override
     public void positionModel(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
         switch (transform) {
             case FIRST_PERSON_RIGHT_HAND:

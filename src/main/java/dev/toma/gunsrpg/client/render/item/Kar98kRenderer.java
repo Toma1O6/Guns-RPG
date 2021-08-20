@@ -22,11 +22,6 @@ public class Kar98kRenderer extends AbstractWeaponRenderer {
     }
 
     @Override
-    public ResourceLocation createGunTextureInstance() {
-        return GunsRPG.makeResource("textures/item/kar98k.png");
-    }
-
-    @Override
     public void positionModel(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
         if (transform == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
             stack.translate(0.2, 0.2, 0.0);

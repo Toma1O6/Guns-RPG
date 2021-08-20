@@ -1,13 +1,13 @@
-package dev.toma.gunsrpg.common;
+package dev.toma.gunsrpg.common.init;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;
 
-public class GunDamageSourceHack extends GunDamageSource {
+public class GunDamageSourceSpecial extends GunDamageSource {
 
-    public GunDamageSourceHack(Entity src, Entity indirect, ItemStack stacc) {
+    protected GunDamageSourceSpecial(Entity src, Entity indirect, ItemStack stacc) {
         super(src, indirect, stacc);
     }
 

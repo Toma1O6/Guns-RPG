@@ -18,6 +18,14 @@ public final class ModAnimations {
     private ModAnimations() {}
 
     public static final AnimationStage DUAL_WIELD_ITEM = new AnimationStage(GunsRPG.makeResource("item.heldfp.dual"));
+    public static final AnimationStage MAGAZINE = new AnimationStage(GunsRPG.makeResource("weapon.magazine"));
+    public static final AnimationStage SLIDE = new AnimationStage(GunsRPG.makeResource("weapon.slide"));
+    public static final AnimationStage CHARGING_HANDLE = new AnimationStage(GunsRPG.makeResource("weapon.charging_handle"));
+    public static final AnimationStage BULLET = new AnimationStage(GunsRPG.makeResource("weapon.bullet"));
+    public static final AnimationStage BOLT = new AnimationStage(GunsRPG.makeResource("weapon.bolt"));
+    public static final AnimationStage BOLT_CARRIER = new AnimationStage(GunsRPG.makeResource("weapon.bolt_carrier"));
+    public static final AnimationStage BARRELS = new AnimationStage(GunsRPG.makeResource("weapon.barrels"));
+    public static final AnimationStage BULLET_2 = new AnimationStage(GunsRPG.makeResource("weapon.bullet2"));
 
     public static final AnimationType<AimAnimation> AIM_ANIMATION = new AnimationType<>(GunsRPG.makeResource("aim_animation"));
     public static final AnimationType<SprintAnimation> SPRINT = new AnimationType<>(GunsRPG.makeResource("sprinting"), SprintAnimation::new);
