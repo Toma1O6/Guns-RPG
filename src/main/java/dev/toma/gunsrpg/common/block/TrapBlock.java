@@ -101,13 +101,14 @@ public class TrapBlock extends BaseBlock {
     }
 
     private void applyTrapEffects(World world, BlockPos pos, Entity victim) {
-        reaction.applyTrapEffects(world, pos, victim);
-        onEntityCaught(world, pos, victim);
+        if (reaction.applyTrapEffects(world, pos, victim)) {
+            onEntityCaught(world, pos, victim);
+        }
     }
 
     public interface ITrapReaction {
 
-        void applyTrapEffects(World level, BlockPos pos, Entity entity);
+        boolean applyTrapEffects(World level, BlockPos pos, Entity entity);
 
         boolean requiresSpecialTool();
 
@@ -137,11 +138,12 @@ public class TrapBlock extends BaseBlock {
         }
 
         @Override
-        public void applyTrapEffects(World level, BlockPos pos, Entity entity) {
+        public boolean applyTrapEffects(World level, BlockPos pos, Entity entity) {
             if (!level.isClientSide) {
                 level.destroyBlock(pos, false);
                 level.explode(entity, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, explosionPower, explosionMode);
             }
+            return true;
         }
 
         @Override

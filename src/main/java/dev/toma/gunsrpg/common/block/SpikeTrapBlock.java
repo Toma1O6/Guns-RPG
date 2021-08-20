@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.block;
 
 import dev.toma.gunsrpg.common.init.ModDamageSources;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -8,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -22,6 +24,7 @@ public class SpikeTrapBlock extends TrapBlock {
 
     public SpikeTrapBlock(String name, int durability, float damage, Properties properties) {
         this(name, durability, damage, entity -> {}, properties);
+        registerDefaultState(stateDefinition.any().setValue(DAMAGE_STATE, 0));
     }
 
     public SpikeTrapBlock(String name, int durability, float damage, Consumer<Entity> effect, Properties properties) {
@@ -41,6 +44,11 @@ public class SpikeTrapBlock extends TrapBlock {
             living.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 60, 1));
             living.addEffect(new EffectInstance(Effects.WEAKNESS, 60, 0));
         }
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(DAMAGE_STATE);
     }
 
     @Override
@@ -74,9 +82,12 @@ public class SpikeTrapBlock extends TrapBlock {
         }
 
         @Override
-        public void applyTrapEffects(World level, BlockPos pos, Entity entity) {
-            entity.hurt(ModDamageSources.SPIKE_DAMAGE, damage);
-            action.accept(entity);
+        public boolean applyTrapEffects(World level, BlockPos pos, Entity entity) {
+            boolean hurt = entity.hurt(ModDamageSources.SPIKE_DAMAGE, damage);
+            if (hurt) {
+                action.accept(entity);
+            }
+            return hurt;
         }
 
         @Override
