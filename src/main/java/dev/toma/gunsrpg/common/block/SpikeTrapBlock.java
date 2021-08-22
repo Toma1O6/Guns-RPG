@@ -63,7 +63,8 @@ public class SpikeTrapBlock extends TrapBlock {
         if (shouldBreak(state)) {
             world.destroyBlock(pos, false);
         } else if (state.is(this)) {
-            world.setBlock(pos, state.setValue(DAMAGE_STATE, state.getValue(DAMAGE_STATE) + 1), 3);
+            int damage = state.getValue(DAMAGE_STATE);
+            world.setBlock(pos, state.setValue(DAMAGE_STATE, damage + 1), 3);
         }
     }
 
