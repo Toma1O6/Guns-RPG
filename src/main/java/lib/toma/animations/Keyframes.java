@@ -36,14 +36,10 @@ public class Keyframes {
         Quaternion rot1 = keyframe.initialRotation();
         Quaternion rot2 = keyframe.rotationTarget();
         matrixStack.translate(move1.x + move2.x * percent, move1.y + move2.y * percent, move1.z + move2.z * percent);
-        matrixStack.mulPose(mul(rot1, rot2, percent));
-    }
-
-    protected static Quaternion mul(Quaternion q1, Quaternion q2, float f) {
-        Quaternion q3 = q2.copy();
-        q3.mul(f);
-        q3.mul(q1);
-        return q3;
+        Quaternion smoothRot = rot2.copy();
+        smoothRot.mul(percent);
+        matrixStack.mulPose(rot1);
+        matrixStack.mulPose(smoothRot);
     }
 
     public static IKeyframe none() {
