@@ -1205,8 +1205,8 @@ public class Mk14Model extends AbstractWeaponModel {
         setRotationAngle(bone36, 0.2967F, 0.0F, 0.0F);
         bone36.texOffs(104, 18).addBox(-2.5F, -2.0F, 0.0F, 5.0F, 2.0F, 7.0F, 0.0F, false);
 
-        addSingleAnimated(ModAnimations.MAGAZINE, magazine);
-        addSingleAnimated(ModAnimations.SLIDE, slide);
-        addSingleAnimated(ModAnimations.BULLET, bullet);
+        setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
+        setSpecialRenderer(ModAnimations.SLIDE, slide);
+        setSpecialRenderer(ModAnimations.BULLET, bullet);
     }
 }

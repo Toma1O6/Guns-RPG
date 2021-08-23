@@ -683,8 +683,8 @@ public class AKMModel extends AbstractWeaponModel {
         bullet2.texOffs(0, 491).addBox(-1.5F, -52.9758F, -4.9912F, 3.0F, 3.0F, 1.0F, 0.0F, false);
         bullet2.texOffs(0, 491).addBox(-2.0F, -53.4758F, -3.9912F, 4.0F, 4.0F, 1.0F, 0.0F, false);
 
-        addSingleAnimated(ModAnimations.MAGAZINE, magazine);
-        addSingleAnimated(ModAnimations.BOLT, bolt);
-        addSingleAnimated(ModAnimations.BULLET, bullet);
+        setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
+        setSpecialRenderer(ModAnimations.BOLT, bolt);
+        setSpecialRenderer(ModAnimations.BULLET, bullet);
     }
 }

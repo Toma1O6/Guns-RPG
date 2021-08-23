@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.client.model.weapon;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
-import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -890,9 +889,9 @@ public class SksModel extends AbstractWeaponModel {
         setRotationAngle(bone54, 0.0F, 0.1047F, 0.0F);
         bone54.texOffs(13, 497).addBox(4.3762F, -16.3943F, -32.018F, 1.0F, 2.0F, 3.0F, 0.0F, true);
 
-        addSingleAnimated(ModAnimations.MAGAZINE, magazine);
-        addSingleAnimated(ModAnimations.CHARGING_HANDLE, charging_handle);
-        addSingleAnimated(ModAnimations.BULLET, bullet);
+        setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
+        setSpecialRenderer(ModAnimations.CHARGING_HANDLE, charging_handle);
+        setSpecialRenderer(ModAnimations.BULLET, bullet);
     }
 
     @Override

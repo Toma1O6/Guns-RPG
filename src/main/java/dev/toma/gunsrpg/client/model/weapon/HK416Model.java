@@ -1008,9 +1008,9 @@ public class HK416Model extends AbstractWeaponModel {
         bullet.texOffs(0, 505).addBox(-0.7F, -6.7595F, 21.476F, 2.0F, 2.0F, 1.0F, 0.0F, false);
         bullet.texOffs(0, 505).addBox(-1.3F, -6.7595F, 21.476F, 2.0F, 2.0F, 1.0F, 0.0F, false);
 
-        addSingleAnimated(ModAnimations.MAGAZINE, magazine);
-        addSingleAnimated(ModAnimations.SLIDE, slide);
-        addSingleAnimated(ModAnimations.CHARGING_HANDLE, charging_handle);
-        addSingleAnimated(ModAnimations.BULLET, bullet);
+        setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
+        setSpecialRenderer(ModAnimations.SLIDE, slide);
+        setSpecialRenderer(ModAnimations.CHARGING_HANDLE, charging_handle);
+        setSpecialRenderer(ModAnimations.BULLET, bullet);
     }
 }

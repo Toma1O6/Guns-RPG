@@ -334,8 +334,8 @@ public class S686Model extends AbstractWeaponModel {
         bullet2.texOffs(26, 499).addBox(-0.9F, -5.9492F, 7.4041F, 1.0F, 1.0F, 1.0F, 0.0F, true);
         bullet2.texOffs(26, 499).addBox(-0.9F, -5.1492F, 7.4041F, 1.0F, 1.0F, 1.0F, 0.0F, true);
 
-        addSingleAnimated(ModAnimations.BARRELS, barrels);
-        addSingleAnimated(ModAnimations.BULLET, bullet1);
-        addSingleAnimated(ModAnimations.BULLET_2, bullet2);
+        setSpecialRenderer(ModAnimations.BARRELS, barrels);
+        setSpecialRenderer(ModAnimations.BULLET, bullet1);
+        setSpecialRenderer(ModAnimations.BULLET_2, bullet2);
     }
 }

@@ -258,6 +258,6 @@ public class R45Model extends AbstractWeaponModel {
         r45.addChild(bone3);
         setRotationAngle(bone3, 0.0F, -0.1745F, 0.0F);
 
-        addSingleAnimated(ModAnimations.MAGAZINE, drum);
+        setSpecialRenderer(ModAnimations.MAGAZINE, drum);
     }
 }

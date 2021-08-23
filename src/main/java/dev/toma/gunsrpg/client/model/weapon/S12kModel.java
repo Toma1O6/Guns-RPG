@@ -777,8 +777,8 @@ public class S12kModel extends AbstractWeaponModel {
         setRotationAngle(cube_r14, -0.3054F, 0.0F, 0.0F);
         cube_r14.texOffs(76, 24).addBox(-4.0F, -11.0F, -11.0F, 7.0F, 1.0F, 15.0F, 0.0F, false);
 
-        addSingleAnimated(ModAnimations.MAGAZINE, magazine);
-        addSingleAnimated(ModAnimations.BOLT, bolt);
-        addSingleAnimated(ModAnimations.BULLET, bullet3);
+        setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
+        setSpecialRenderer(ModAnimations.BOLT, bolt);
+        setSpecialRenderer(ModAnimations.BULLET, bullet3);
     }
 }

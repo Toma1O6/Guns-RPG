@@ -406,8 +406,8 @@ public class WinchesterModel extends AbstractWeaponModel {
         bullet.texOffs(0, 497).addBox(-6.9F, -15.9F, -4.0F, 1.0F, 1.0F, 4.0F, 0.0F, false);
         bullet.texOffs(0, 497).addBox(-6.9F, -15.1F, -4.0F, 1.0F, 1.0F, 4.0F, 0.0F, false);
 
-        addSingleAnimated(ModAnimations.CHARGING_HANDLE, lever);
-        addSingleAnimated(ModAnimations.BOLT, bolt);
-        addSingleAnimated(ModAnimations.BULLET, bullet);
+        setSpecialRenderer(ModAnimations.CHARGING_HANDLE, lever);
+        setSpecialRenderer(ModAnimations.BOLT, bolt);
+        setSpecialRenderer(ModAnimations.BULLET, bullet);
     }
 }

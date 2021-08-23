@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.client.model.weapon;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
-import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
@@ -607,9 +606,9 @@ public class Kar98kModel extends AbstractWeaponModel {
         bullet.texOffs(8, 496).addBox(-1.4188F, -2.3F, -11.0F, 2.0F, 2.0F, 7.0F, 0.0F, true);
         bullet.texOffs(8, 496).addBox(-1.4188F, -1.7F, -11.0F, 2.0F, 2.0F, 7.0F, 0.0F, true);
 
-        addSingleAnimated(ModAnimations.BOLT, bolt);
-        addSingleAnimated(ModAnimations.BOLT_CARRIER, boltcarrier);
-        addSingleAnimated(ModAnimations.BULLET, bullet);
+        setSpecialRenderer(ModAnimations.BOLT, bolt);
+        setSpecialRenderer(ModAnimations.BOLT_CARRIER, boltcarrier);
+        setSpecialRenderer(ModAnimations.BULLET, bullet);
     }
 
     @Override

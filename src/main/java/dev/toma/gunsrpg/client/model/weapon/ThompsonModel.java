@@ -428,8 +428,8 @@ public class ThompsonModel extends AbstractWeaponModel {
         bullet.texOffs(6, 505).addBox(-0.2F, -22.618F, -15.7305F, 1.0F, 1.0F, 1.0F, 0.0F, true);
 
         // TODO extended mag
-        addSingleAnimated(ModAnimations.MAGAZINE, magazine1);
-        addSingleAnimated(ModAnimations.CHARGING_HANDLE, charging_handle);
-        addSingleAnimated(ModAnimations.BULLET, bullet);
+        setSpecialRenderer(ModAnimations.MAGAZINE, magazine1);
+        setSpecialRenderer(ModAnimations.CHARGING_HANDLE, charging_handle);
+        setSpecialRenderer(ModAnimations.BULLET, bullet);
     }
 }

@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.client.model.weapon;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
-import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
@@ -696,9 +695,9 @@ public class Ump45Model extends AbstractWeaponModel {
         bullet.texOffs(0, 494).addBox(-0.8F, -10.96F, -1.116F, 1.0F, 1.0F, 5.0F, 0.0F, false);
         bullet.texOffs(0, 494).addBox(-0.8F, -10.36F, -1.116F, 1.0F, 1.0F, 5.0F, 0.0F, false);
 
-        addSingleAnimated(ModAnimations.MAGAZINE, magazine);
-        addSingleAnimated(ModAnimations.CHARGING_HANDLE, charging_handle);
-        addSingleAnimated(ModAnimations.BULLET, bullet);
+        setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
+        setSpecialRenderer(ModAnimations.CHARGING_HANDLE, charging_handle);
+        setSpecialRenderer(ModAnimations.BULLET, bullet);
     }
 
     @Override

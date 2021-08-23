@@ -526,8 +526,8 @@ public class VectorModel extends AbstractWeaponModel {
         setRotationAngle(bullet, 0.3491F, 0.0F, 0.0F);
         bullet.texOffs(0, 498).addBox(-8.0F, -3.7572F, -3.2066F, 1.0F, 1.0F, 3.0F, 0.0F, true);
 
-        addSingleAnimated(ModAnimations.MAGAZINE, magazine);
-        addSingleAnimated(ModAnimations.CHARGING_HANDLE, charging_handle);
-        addSingleAnimated(ModAnimations.BULLET, bullet);
+        setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
+        setSpecialRenderer(ModAnimations.CHARGING_HANDLE, charging_handle);
+        setSpecialRenderer(ModAnimations.BULLET, bullet);
     }
 }

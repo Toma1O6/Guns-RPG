@@ -255,9 +255,9 @@ public class M1911Model extends AbstractWeaponModel {
         setRotationAngle(bullet, 0.1047F, 0.0F, 0.0F);
         bullet.texOffs(0, 493).addBox(1.0F, -21.4594F, 13.1863F, 1.0F, 1.0F, 3.0F, 0.0F, false);
 
-        addSingleAnimated(ModAnimations.MAGAZINE, magazine);
-        addSingleAnimated(ModAnimations.SLIDE, slide);
-        addSingleAnimated(ModAnimations.BULLET, bullet);
+        setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
+        setSpecialRenderer(ModAnimations.SLIDE, slide);
+        setSpecialRenderer(ModAnimations.BULLET, bullet);
     }
 
     @Override

@@ -463,8 +463,8 @@ public class DesertEagleModel extends AbstractWeaponModel {
         bullet2.texOffs(8, 497).addBox(-1.5F, -19.0852F, -2.3024F, 3.0F, 3.0F, 4.0F, 0.0F, true);
         bullet2.texOffs(8, 497).addBox(-1.5F, -19.0852F, 2.2656F, 3.0F, 3.0F, 1.0F, 0.0F, true);
 
-        addSingleAnimated(ModAnimations.MAGAZINE, magazine);
-        addSingleAnimated(ModAnimations.SLIDE, slide);
-        addSingleAnimated(ModAnimations.BULLET, bullet);
+        setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
+        setSpecialRenderer(ModAnimations.SLIDE, slide);
+        setSpecialRenderer(ModAnimations.BULLET, bullet);
     }
 }

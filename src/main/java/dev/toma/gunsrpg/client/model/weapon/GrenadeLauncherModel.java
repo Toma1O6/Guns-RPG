@@ -1370,6 +1370,6 @@ public class GrenadeLauncherModel extends AbstractWeaponModel {
         setRotationAngle(cube_r131, 0.1745F, 0.0F, 0.0F);
         cube_r131.texOffs(48, 173).addBox(-3.0F, -0.8F, -0.5F, 4.0F, 1.0F, 1.0F, 0.0F, false);
 
-        addSingleAnimated(ModAnimations.MAGAZINE, magazine);
+        setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
     }
 }

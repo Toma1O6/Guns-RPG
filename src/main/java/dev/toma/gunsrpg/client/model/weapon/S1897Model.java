@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.client.model.weapon;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
-import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
@@ -331,8 +330,8 @@ public class S1897Model extends AbstractWeaponModel {
         bullet.texOffs(26, 499).addBox(-0.9F, 18.254F, 2.4041F, 2.0F, 2.0F, 1.0F, 0.0F, true);
         bullet.texOffs(26, 499).addBox(-0.9F, 19.054F, 2.4041F, 2.0F, 2.0F, 1.0F, 0.0F, true);
 
-        addSingleAnimated(ModAnimations.CHARGING_HANDLE, charging_handle);
-        addSingleAnimated(ModAnimations.BULLET, bullet);
+        setSpecialRenderer(ModAnimations.CHARGING_HANDLE, charging_handle);
+        setSpecialRenderer(ModAnimations.BULLET, bullet);
     }
 
     @Override
