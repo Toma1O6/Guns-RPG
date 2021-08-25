@@ -5,13 +5,10 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lib.toma.animations.AnimationEngine;
-import lib.toma.animations.api.AnimationStage;
-import lib.toma.animations.api.AnimationType;
-import lib.toma.animations.api.IAnimation;
-import lib.toma.animations.api.IKeyframe;
-import lib.toma.animations.api.IKeyframeProvider;
 import lib.toma.animations.Keyframes;
+import lib.toma.animations.api.*;
 import lib.toma.animations.engine.serialization.AnimationLoader;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +23,7 @@ import java.util.stream.Collectors;
 public final class Animator {
 
     private static final Animator INSTANCE = new Animator();
-    public static final AnimationType<CustomizableAnimation> ANIMATOR_TYPE = new AnimationType<>(new ResourceLocation("animator"), Animator.get()::getAnimation);
+    public static final AnimationType<CustomizableAnimation> ANIMATOR_TYPE = AnimationType.create(new ResourceLocation("animator"), Animator.get()::getAnimation);
     private final File exportDir = new File("./export/providers");
     private final Map<String, FrameProviderWrapper> configurables;
     private AnimationProject project = AnimationProject.createEmpty();
@@ -146,7 +143,7 @@ public final class Animator {
         }
 
         @Override
-        public void animate(AnimationStage stage, MatrixStack matrixStack) {
+        public void animate(AnimationStage stage, MatrixStack matrixStack, IRenderTypeBuffer typeBuffer, int light, int overlay) {
             if (provider.blocksStageAnimation(stage)) return;
             IKeyframe kf = provider.getActualFrame(stage, progressI);
             IKeyframe kfO = provider.getLastFrame(stage);

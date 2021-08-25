@@ -4,12 +4,12 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.AimInfo;
-import lib.toma.animations.Interpolation;
+import lib.toma.animations.Interpolate;
+import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IAnimation;
 import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.IKeyframeProvider;
-import lib.toma.animations.Keyframes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.common.util.LazyOptional;
@@ -50,7 +50,7 @@ public class AimAnimation implements IAnimation {
 
     @Override
     public void renderTick(float deltaRenderTime) {
-        progressI = Interpolation.linear(deltaRenderTime, progress, progressO);
+        progressI = Interpolate.linear(deltaRenderTime, progress, progressO);
     }
 
     @Override

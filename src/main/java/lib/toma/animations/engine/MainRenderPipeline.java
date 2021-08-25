@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -121,14 +122,14 @@ public final class MainRenderPipeline implements IRenderPipeline {
         preAnimate.call(poseStack, buffer, light, swing, equip, selector, pipeline, fpRenderer, player, stack, type, mainHand);
         poseStack.pushPose();
         {
-            pipeline.animateStage(AnimationStage.ITEM_AND_HANDS, poseStack);
+            pipeline.animateStage(AnimationStage.ITEM_AND_HANDS, poseStack, buffer, light, OverlayTexture.NO_OVERLAY);
             poseStack.pushPose();
             {
-                pipeline.animateStage(AnimationStage.HANDS, poseStack);
+                pipeline.animateStage(AnimationStage.HANDS, poseStack, buffer, light, OverlayTexture.NO_OVERLAY);
                 handAnimator.animateHands(poseStack, buffer, light, equip, selector, pipeline);
             }
             poseStack.popPose();
-            pipeline.animateStage(AnimationStage.HELD_ITEM, poseStack);
+            pipeline.animateStage(AnimationStage.HELD_ITEM, poseStack, buffer, light, OverlayTexture.NO_OVERLAY);
             itemRenderer.renderItem(fpRenderer, player, stack, type, !mainHand, poseStack, buffer, light, swing, equip);
         }
         poseStack.popPose();
@@ -143,13 +144,13 @@ public final class MainRenderPipeline implements IRenderPipeline {
             poseStack.translate(0, offsetY, 0);
             poseStack.pushPose();
             {
-                pipeline.animateStage(AnimationStage.RIGHT_HAND, poseStack);
+                pipeline.animateStage(AnimationStage.RIGHT_HAND, poseStack, buffer, light, OverlayTexture.NO_OVERLAY);
                 handRenderer.renderHand(poseStack, HandSide.RIGHT, selector, buffer, light);
             }
             poseStack.popPose();
             poseStack.pushPose();
             {
-                pipeline.animateStage(AnimationStage.LEFT_HAND, poseStack);
+                pipeline.animateStage(AnimationStage.LEFT_HAND, poseStack, buffer, light, OverlayTexture.NO_OVERLAY);
                 handRenderer.renderHand(poseStack, HandSide.LEFT, selector, buffer, light);
             }
             poseStack.popPose();

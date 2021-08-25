@@ -1,6 +1,7 @@
 package lib.toma.animations.api;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 
 import java.util.function.Supplier;
 
@@ -101,6 +102,9 @@ public interface IAnimationPipeline {
      * Processes all animations which have defined keyframes for current stage
      * @param stage Stage which is being processed
      * @param matrix Pose stack
+     * @param buffer Render type buffer
+     * @param light Light at player's location
+     * @param overlay Overlay tint
      */
-    void animateStage(AnimationStage stage, MatrixStack matrix);
+    void animateStage(AnimationStage stage, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay);
 }

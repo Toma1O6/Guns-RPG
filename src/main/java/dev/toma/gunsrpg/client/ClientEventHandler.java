@@ -307,7 +307,6 @@ public class ClientEventHandler {
         if (event.phase == TickEvent.Phase.END && player != null) {
             if (shootDelay > 0)
                 --shootDelay;
-            AnimationEngine.get().pipeline().handleGameTick();
             startSprintListener.update(player);
             GameSettings settings = mc.options;
             if (burst) {
@@ -337,8 +336,6 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onRenderTick(TickEvent.RenderTickEvent event) {
         partialTicks = event.renderTickTime;
-        if (event.phase == TickEvent.Phase.START)
-            AnimationEngine.get().pipeline().processFrame(event.renderTickTime);
     }
 
     private static void shoot(PlayerEntity player, ItemStack stack) {

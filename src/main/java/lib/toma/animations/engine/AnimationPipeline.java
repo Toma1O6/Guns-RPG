@@ -7,6 +7,7 @@ import lib.toma.animations.api.AnimationType;
 import lib.toma.animations.api.IAnimation;
 import lib.toma.animations.api.IAnimationPipeline;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.profiler.IProfiler;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
@@ -106,8 +107,8 @@ public final class AnimationPipeline implements IAnimationPipeline {
     }
 
     @Override
-    public void animateStage(AnimationStage stage, MatrixStack matrix) {
-        playingAnimations.values().forEach(anim -> anim.animate(stage, matrix));
+    public void animateStage(AnimationStage stage, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay) {
+        playingAnimations.values().forEach(anim -> anim.animate(stage, matrix, buffer, light, overlay));
     }
 
     @SuppressWarnings("unchecked")

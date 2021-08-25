@@ -19,7 +19,7 @@ public class CPacketSendAnimation extends AbstractNetworkPacket<CPacketSendAnima
     public CPacketSendAnimation(AnimationType<?> type) {
         this.type = type;
         if (!type.hasCreator())
-            throw new IllegalArgumentException(String.format("Animation type (%s) doesn't support raw animation creation!", type.getName()));
+            throw new IllegalArgumentException(String.format("Animation type (%s) doesn't support raw animation creation!", type.getKey()));
     }
 
     @Override

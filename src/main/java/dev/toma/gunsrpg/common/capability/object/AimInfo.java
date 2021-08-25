@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.capability.object;
 
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import lib.toma.animations.Interpolation;
+import lib.toma.animations.Interpolate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
@@ -50,7 +50,7 @@ public class AimInfo {
     }
 
     public float getProgress(float deltaTime) {
-        return Interpolation.linear(deltaTime, progress, progressOld);
+        return Interpolate.linear(deltaTime, progress, progressOld);
     }
 
     public CompoundNBT write() {

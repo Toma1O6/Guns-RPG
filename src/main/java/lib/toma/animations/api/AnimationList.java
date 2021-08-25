@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import lib.toma.animations.AnimationEngine;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -42,20 +43,10 @@ public abstract class AnimationList<A extends IAnimation> implements IAnimationL
     }
 
     @Override
-    public void animateSpecial(AnimationStage stage, MatrixStack poseStack, IVertexBuilder vertexBuilder, int light, int overlay) {
-        for (A anim : animations) {
-            poseStack.pushPose();
-            anim.animate(stage, poseStack);
-            renderAdditional(poseStack, vertexBuilder, light, overlay);
-            poseStack.popPose();
-        }
-    }
-
-    @Override
-    public void animate(AnimationStage stage, MatrixStack matrixStack) {
+    public void animate(AnimationStage stage, MatrixStack matrixStack, IRenderTypeBuffer typeBuffer, int light, int overlay) {
         for (A anim : animations) {
             matrixStack.pushPose();
-            anim.animate(stage, matrixStack);
+            anim.animate(stage, matrixStack, typeBuffer, light, overlay);
             matrixStack.popPose();
         }
     }

@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.sided;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.ClientEventHandler;
 import dev.toma.gunsrpg.client.ModKeybinds;
-import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.client.screen.AirdropScreen;
 import dev.toma.gunsrpg.client.screen.BlastFurnaceScreen;
@@ -17,10 +16,8 @@ import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import lib.toma.animations.AnimationEngine;
-import lib.toma.animations.api.IRenderConfig;
-import lib.toma.animations.api.IAnimationPipeline;
-import lib.toma.animations.api.IItemRenderer;
-import lib.toma.animations.api.IRenderPipeline;
+import lib.toma.animations.api.*;
+import lib.toma.animations.api.lifecycle.Registries;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.audio.SoundHandler;
@@ -40,12 +37,19 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.util.function.Function;
 
+import static dev.toma.gunsrpg.client.animation.ModAnimations.*;
+
 public class ClientSideManager {
 
     private static final ClientSideManager INSTANCE = new ClientSideManager();
 
     public static ClientSideManager instance() {
         return INSTANCE;
+    }
+
+    public void animationSetup() {
+        Registries.ANIMATION_TYPES.addCallback(this::gatherAnimationTypes);
+        Registries.ANIMATION_STAGES.addCallback(this::gatherAnimationStages);
     }
 
     public void clientSetup(FMLClientSetupEvent event) {
@@ -108,10 +112,22 @@ public class ClientSideManager {
         if (stack.getItem() == ModItems.M1911 && PlayerData.hasActiveSkill(player, Skills.M1911_DUAL_WIELD)) {
             poseStack.pushPose();
             {
-                pipeline.animateStage(ModAnimations.DUAL_WIELD_ITEM, poseStack);
+                pipeline.animateStage(DUAL_WIELD_ITEM, poseStack);
                 itemRenderer.renderItem(fpRenderer, player, stack, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, true, poseStack, buffer, light, swing, equip);
             }
             poseStack.popPose();
         }
+    }
+
+    private AnimationType<?>[] gatherAnimationTypes() {
+        return new AnimationType[] {
+                AIM_ANIMATION, SPRINT, CHAMBER, HEAL, RELOAD, FIREMODE
+        };
+    }
+
+    private AnimationStage[] gatherAnimationStages() {
+        return new AnimationStage[] {
+                DUAL_WIELD_ITEM, MAGAZINE, SLIDE, CHARGING_HANDLE, BULLET, BOLT, BOLT_CARRIER, BARRELS, BULLET_2
+        };
     }
 }
