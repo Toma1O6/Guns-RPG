@@ -1,8 +1,9 @@
 package lib.toma.animations.engine.screen.animator.dialog;
 
-import lib.toma.animations.engine.ByteFlags;
 import lib.toma.animations.api.event.AnimationEventType;
 import lib.toma.animations.api.event.IAnimationEvent;
+import lib.toma.animations.api.lifecycle.Registries;
+import lib.toma.animations.engine.ByteFlags;
 import lib.toma.animations.engine.screen.animator.AnimatorScreen;
 import lib.toma.animations.engine.screen.animator.widget.ListView;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -42,7 +43,7 @@ public class AddEventDialog extends DialogScreen {
         errorFlags.set(0);
         int btnWidthP = dWidth() - 10;
         int btnWidth = (btnWidthP - 5) / 2;
-        typeSelector = addButton(new ListView<>(left() + 5, top() + 15, btnWidthP, 75, AnimationEventType.allKeys()));
+        typeSelector = addButton(new ListView<>(left() + 5, top() + 15, btnWidthP, 75, Registries.EVENTS.keys()));
         typeSelector.setResponder(this::selection_change);
         position = addButton(new TextFieldWidget(font, left() + 5, top() + 95, btnWidthP, 20, StringTextComponent.EMPTY));
         position.setResponder(new SuggestionResponder("Target", position, this::invokeTarget_change));
@@ -60,7 +61,7 @@ public class AddEventDialog extends DialogScreen {
 
     @SuppressWarnings("unchecked")
     private <E extends IAnimationEvent> void confirm_clicked(Button button) {
-        AnimationEventType<E> eventType = AnimationEventType.getType(selectedValue);
+        AnimationEventType<E> eventType = (AnimationEventType<E>) Registries.EVENTS.getElement(selectedValue);
         if (eventType == null) showParent();
         minecraft.setScreen(eventType.createDialog(this, Float.parseFloat(position.getValue()), (EventCreateDialog.ICreator<E>) creator));
     }

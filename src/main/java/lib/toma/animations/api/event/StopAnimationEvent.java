@@ -5,6 +5,7 @@ import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.AnimationType;
 import lib.toma.animations.api.IAnimation;
 import lib.toma.animations.api.IAnimationPipeline;
+import lib.toma.animations.api.lifecycle.Registries;
 import lib.toma.animations.engine.AbstractAnimationEvent;
 import lib.toma.animations.engine.screen.animator.dialog.EventCreateDialog;
 import lib.toma.animations.engine.screen.animator.dialog.EventDialogContext;
@@ -43,7 +44,7 @@ public class StopAnimationEvent extends AbstractAnimationEvent {
         @Override
         public JsonElement serialize(StopAnimationEvent event, JsonSerializationContext context) {
             JsonObject object = new JsonObject();
-            object.addProperty("key", event.targetType.getName().toString());
+            object.addProperty("key", event.targetType.getKey().toString());
             return object;
         }
 
@@ -53,7 +54,7 @@ public class StopAnimationEvent extends AbstractAnimationEvent {
                 throw new JsonSyntaxException("Not a Json object!");
             JsonObject object = src.getAsJsonObject();
             ResourceLocation keyPath = new ResourceLocation(JSONUtils.getAsString(object, "key"));
-            AnimationType<?> type = AnimationType.getTypeFromID(keyPath);
+            AnimationType<?> type = Registries.ANIMATION_TYPES.getElement(keyPath);
             if (type == null)
                 throw new JsonSyntaxException("Unknown animation type: " + keyPath);
             return new StopAnimationEvent(target, type);
@@ -73,9 +74,9 @@ public class StopAnimationEvent extends AbstractAnimationEvent {
         protected void addWidgets() {
             int elWidth = dWidth() - 10;
             int btWidth = (elWidth - 5) / 2;
-            ListView<AnimationType<?>> view = addButton(new ListView<>(left() + 5, top() + 15, elWidth, 75, AnimationType.values()));
+            ListView<AnimationType<?>> view = addButton(new ListView<>(left() + 5, top() + 15, elWidth, 75, Registries.ANIMATION_TYPES.values()));
             view.setResponder(this::onSelect);
-            view.setFormatter(type -> type.getName().toString());
+            view.setFormatter(type -> type.getKey().toString());
 
             cancel = addButton(new Button(left() + 5, top() + 95, btWidth, 20, CANCEL, this::cancel_clicked));
             confirm = addButton(new Button(left() + 10 + btWidth, top() + 95, btWidth, 20, CONFIRM, this::confirm_clicked));

@@ -3,11 +3,12 @@ package lib.toma.animations.api.event;
 import com.google.common.base.Preconditions;
 import com.google.gson.*;
 import lib.toma.animations.AnimationEngine;
-import lib.toma.animations.engine.ByteFlags;
 import lib.toma.animations.api.AnimationType;
 import lib.toma.animations.api.IAnimation;
 import lib.toma.animations.api.IAnimationPipeline;
+import lib.toma.animations.api.lifecycle.Registries;
 import lib.toma.animations.engine.AbstractAnimationEvent;
+import lib.toma.animations.engine.ByteFlags;
 import lib.toma.animations.engine.screen.animator.dialog.EventCreateDialog;
 import lib.toma.animations.engine.screen.animator.dialog.EventDialogContext;
 import lib.toma.animations.engine.screen.animator.dialog.SuggestionResponder;
@@ -60,7 +61,7 @@ public class PlayAnimationEvent extends AbstractAnimationEvent {
         @Override
         public JsonElement serialize(PlayAnimationEvent event, JsonSerializationContext context) {
             JsonObject object = new JsonObject();
-            object.addProperty("key", event.type.getName().toString());
+            object.addProperty("key", event.type.getKey().toString());
             if (event.playDelay > 0)
                 object.addProperty("delay", event.playDelay);
             return object;
@@ -72,7 +73,7 @@ public class PlayAnimationEvent extends AbstractAnimationEvent {
                 throw new JsonSyntaxException("Not a Json object!");
             JsonObject object = src.getAsJsonObject();
             ResourceLocation location = new ResourceLocation(JSONUtils.getAsString(object, "key"));
-            AnimationType<?> type = AnimationType.getTypeFromID(location);
+            AnimationType<?> type = Registries.ANIMATION_TYPES.getElement(location);
             if (type == null)
                 throw new JsonSyntaxException("Unknown animation type: " + location);
             int delay = JSONUtils.getAsInt(object, "delay", 0);
@@ -103,9 +104,9 @@ public class PlayAnimationEvent extends AbstractAnimationEvent {
         protected void addWidgets() {
             int elementWidth = dWidth() - 10;
             int buttonWidth = (elementWidth - 5) / 2;
-            ListView<AnimationType<?>> availableTypes = addButton(new ListView<>(left() + 5, top() + 15, elementWidth, 75, AnimationType.values(), AnimationType::hasCreator));
+            ListView<AnimationType<?>> availableTypes = addButton(new ListView<>(left() + 5, top() + 15, elementWidth, 75, Registries.ANIMATION_TYPES.values(), AnimationType::hasCreator));
             availableTypes.setResponder(this::select);
-            availableTypes.setFormatter(type -> type.getName().toString());
+            availableTypes.setFormatter(type -> type.getKey().toString());
             playDelay = addButton(new TextFieldWidget(font, left() + 5, top() + 95, elementWidth, 20, StringTextComponent.EMPTY));
             playDelay.setResponder(new SuggestionResponder("Delay [ticks]", playDelay, this::playDelay_changed));
             cancel = addButton(new Button(left() + 5, top() + 120, buttonWidth, 20, CANCEL, this::cancel_clicked));

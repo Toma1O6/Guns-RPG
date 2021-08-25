@@ -1,6 +1,7 @@
 package lib.toma.animations.engine.screen.animator.dialog;
 
 import lib.toma.animations.api.AnimationStage;
+import lib.toma.animations.api.lifecycle.Registries;
 import lib.toma.animations.engine.screen.animator.AnimatorScreen;
 import lib.toma.animations.engine.screen.animator.widget.MultiSelectListView;
 import net.minecraft.client.gui.widget.button.Button;
@@ -28,7 +29,7 @@ public class CopyFrameDialog extends DialogScreen {
         super.init();
         int btnWidthP = dWidth() - 10;
         int btnWidth = (btnWidthP - 5) / 2;
-        List<AnimationStage> list = AnimationStage.values().stream().filter(stage -> !stage.equals(selectedStage)).collect(Collectors.toList());
+        List<AnimationStage> list = Registries.ANIMATION_STAGES.values().stream().filter(stage -> !stage.equals(selectedStage)).collect(Collectors.toList());
         selector = addButton(new MultiSelectListView<>(font, left() + 5, top() + 15, btnWidthP, 75, list));
         selector.setSelectionResponder(this::selection_change);
         selector.setFormatter(stage -> stage.getName().getString());

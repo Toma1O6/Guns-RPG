@@ -3,11 +3,12 @@ package lib.toma.animations.engine.frame;
 import com.google.gson.*;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.Keyframes;
+import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.IKeyframeProvider;
-import lib.toma.animations.api.AnimationStage;
-import lib.toma.animations.api.event.IAnimationEvent;
 import lib.toma.animations.api.IKeyframeTypeSerializer;
+import lib.toma.animations.api.event.IAnimationEvent;
+import lib.toma.animations.api.lifecycle.Registries;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
@@ -111,8 +112,8 @@ public class TargetAndBackFrameProvider implements IKeyframeProvider {
         @Override
         public TargetAndBackFrameProvider deserialize(JsonObject source, JsonDeserializationContext context, IAnimationEvent[] events) throws JsonParseException {
             String stageKey = JSONUtils.getAsString(source, "target");
-            AnimationStage stage = AnimationStage.byKey(new ResourceLocation(stageKey));
-            if (stage == null) throw new JsonSyntaxException("Unkown animation stage: " + stageKey);
+            AnimationStage stage = Registries.ANIMATION_STAGES.getElement(new ResourceLocation(stageKey));
+            if (stage == null) throw new JsonSyntaxException("Unknown animation stage: " + stageKey);
             IKeyframe mov = context.deserialize(JSONUtils.getAsJsonObject(source, "mov"), IKeyframe.class);
             IKeyframe ret = context.deserialize(JSONUtils.getAsJsonObject(source, "ret"), IKeyframe.class);
             return new TargetAndBackFrameProvider(stage, mov, ret);

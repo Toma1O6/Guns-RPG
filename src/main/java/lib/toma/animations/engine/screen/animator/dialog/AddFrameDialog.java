@@ -1,5 +1,6 @@
 package lib.toma.animations.engine.screen.animator.dialog;
 
+import lib.toma.animations.api.lifecycle.Registries;
 import lib.toma.animations.engine.ByteFlags;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.engine.screen.animator.AnimatorScreen;
@@ -37,7 +38,7 @@ public class AddFrameDialog extends DialogScreen {
 
         int btnWidthP = dWidth() - 10;
         int btnWidth = (btnWidthP - 5) / 2;
-        Collection<AnimationStage> stages = AnimationStage.values();
+        Collection<AnimationStage> stages = Registries.ANIMATION_STAGES.values();
         stageSelector = addButton(new MultiSelectListView<>(font, left() + 5, top() + 15, btnWidthP, 75, new ArrayList<>(stages)));
         stageSelector.setFormatter(stage -> stage.getName().getString());
         stageSelector.setSelectionResponder(this::selection_change);

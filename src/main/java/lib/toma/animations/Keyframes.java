@@ -33,13 +33,13 @@ public class Keyframes {
     public static void processFrame(IKeyframe keyframe, float percent, MatrixStack matrixStack) {
         Vector3d move1 = keyframe.initialPosition();
         Vector3d move2 = keyframe.positionTarget();
-        Quaternion rot1 = keyframe.initialRotation();
-        Quaternion rot2 = keyframe.rotationTarget();
+        Quaternion q1 = keyframe.initialRotation();
+        Quaternion q2 = keyframe.rotationTarget();
+        Quaternion q3 = q2.copy();
+        q3.mul(percent);
         matrixStack.translate(move1.x + move2.x * percent, move1.y + move2.y * percent, move1.z + move2.z * percent);
-        Quaternion smoothRot = rot2.copy();
-        smoothRot.mul(percent);
-        matrixStack.mulPose(rot1);
-        matrixStack.mulPose(smoothRot);
+        matrixStack.mulPose(q1);
+        matrixStack.mulPose(q3);
     }
 
     public static IKeyframe none() {

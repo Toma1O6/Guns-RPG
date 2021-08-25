@@ -1,58 +1,68 @@
 package lib.toma.animations.api;
 
+import lib.toma.animations.api.lifecycle.IRegistryEntry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+/**
+ * Animation type acts as common identifier for specific group of animations.
+ *
+ * @param <A> Type of animation
+ */
+public final class AnimationType<A extends IAnimation> implements IRegistryEntry {
 
-public final class AnimationType<A extends IAnimation> {
-
-    private static final Map<ResourceLocation, AnimationType<?>> TYPE_MAP = new HashMap<>();
-    private static int indexOffset;
+    // unique id
     private final ResourceLocation name;
-    private final int index;
-    private IAnimationCreator<A> creator;
+    // animation instance creator, can be null
+    private final IAnimationCreator<A> creator;
+    // whether this animation should be process via IAnimationList#animateSpecial method
+    private boolean renderSpecial;
 
-    public AnimationType(ResourceLocation name, IAnimationCreator<A> creator) {
+    private AnimationType(ResourceLocation name, IAnimationCreator<A> creator) {
         this.name = name;
-        this.index = indexOffset++;
         this.creator = creator;
-
-        TYPE_MAP.put(name, this);
     }
 
-    public AnimationType(ResourceLocation name) {
-        this(name, null);
+    /**
+     * Creates new animation type with specified ID and instance creator
+     * @param uniqueID Unique id for this type
+     * @param instanceCreator Animation instance creator
+     * @param <A> Animation type
+     * @return New animation type instance
+     */
+    public static <A extends IAnimation> AnimationType<A> create(ResourceLocation uniqueID, IAnimationCreator<A> instanceCreator) {
+        return new AnimationType<>(uniqueID, instanceCreator);
     }
 
-    @SuppressWarnings("unchecked")
-    public static <A extends IAnimation> AnimationType<A> getTypeFromID(ResourceLocation key) {
-        return (AnimationType<A>) TYPE_MAP.get(key);
+    /**
+     * Creates new animation type with specified ID but without custom instance creator
+     * @param uniqueID Unique id for this type
+     * @param <A> Animation type
+     * @return New animation type instance
+     */
+    public static <A extends IAnimation> AnimationType<A> create(ResourceLocation uniqueID) {
+        return create(uniqueID, null);
     }
 
-    public static Collection<AnimationType<?>> values() {
-        return TYPE_MAP.values();
-    }
-
-    public void setCreator(IAnimationCreator<A> creator) {
-        this.creator = creator;
+    public AnimationType<A> setSpecial() {
+        this.renderSpecial = true;
+        return this;
     }
 
     public boolean hasCreator() {
         return creator != null;
     }
 
+    public boolean isSpecial() {
+        return renderSpecial;
+    }
+
     public A create(PlayerEntity client) {
         return creator.create(client);
     }
 
-    public int getIndex() {
-        return index;
-    }
-
-    public ResourceLocation getName() {
+    @Override
+    public ResourceLocation getKey() {
         return name;
     }
 
@@ -60,7 +70,6 @@ public final class AnimationType<A extends IAnimation> {
     public String toString() {
         return "AnimationType{" +
                 "name=" + name +
-                ", index=" + index +
                 '}';
     }
 
@@ -69,11 +78,11 @@ public final class AnimationType<A extends IAnimation> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AnimationType<?> that = (AnimationType<?>) o;
-        return index == that.index;
+        return name.equals(that.name);
     }
 
     @Override
     public int hashCode() {
-        return index;
+        return name.hashCode();
     }
 }

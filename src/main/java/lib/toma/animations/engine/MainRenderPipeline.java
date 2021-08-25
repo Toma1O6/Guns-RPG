@@ -4,8 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;
-import lib.toma.animations.api.AnimationStage;
-import lib.toma.animations.api.IAnimationPipeline;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.FirstPersonRenderer;
@@ -31,8 +29,8 @@ public final class MainRenderPipeline implements IRenderPipeline {
     private IHandAnimator handAnimator = this::animateHands;
     private IHandRenderer handRenderer = this::renderHand;
     private IItemRenderer itemRenderer = this::renderItem;
-    private IAnimateCallback preAnimate = this::pre;
-    private IAnimateCallback postAnimate = this::post;
+    private IAnimateCallback preAnimate = this::empty_callback;
+    private IAnimateCallback postAnimate = this::empty_callback;
 
     @Override
     public void register(IEventBus bus) {
@@ -130,10 +128,8 @@ public final class MainRenderPipeline implements IRenderPipeline {
                 handAnimator.animateHands(poseStack, buffer, light, equip, selector, pipeline);
             }
             poseStack.popPose();
-            if (!pipeline.isItemRenderBlocked()) {
-                pipeline.animateStage(AnimationStage.HELD_ITEM, poseStack);
-                itemRenderer.renderItem(fpRenderer, player, stack, type, !mainHand, poseStack, buffer, light, swing, equip);
-            }
+            pipeline.animateStage(AnimationStage.HELD_ITEM, poseStack);
+            itemRenderer.renderItem(fpRenderer, player, stack, type, !mainHand, poseStack, buffer, light, swing, equip);
         }
         poseStack.popPose();
         postAnimate.call(poseStack, buffer, light, swing, equip, selector, pipeline, fpRenderer, player, stack, type, mainHand);
@@ -209,11 +205,7 @@ public final class MainRenderPipeline implements IRenderPipeline {
         fpRenderer.renderItem(player, stack, type, offHand, poseStack, buffer, light);
     }
 
-    private void pre(MatrixStack poseStack, IRenderTypeBuffer buffer, int light, float swing, float equip, Function<HandSide, IRenderConfig> selector,
-                           IAnimationPipeline pipeline, FirstPersonRenderer fpRenderer, PlayerEntity player, ItemStack stack, ItemCameraTransforms.TransformType type,
-                           boolean mainHand) {}
-
-    private void post(MatrixStack poseStack, IRenderTypeBuffer buffer, int light, float swing, float equip, Function<HandSide, IRenderConfig> selector,
-                      IAnimationPipeline pipeline, FirstPersonRenderer fpRenderer, PlayerEntity player, ItemStack stack, ItemCameraTransforms.TransformType type,
-                      boolean mainHand) {}
+    private void empty_callback(MatrixStack poseStack, IRenderTypeBuffer buffer, int light, float swing, float equip, Function<HandSide, IRenderConfig> selector,
+                                IAnimationPipeline pipeline, FirstPersonRenderer fpRenderer, PlayerEntity player, ItemStack stack, ItemCameraTransforms.TransformType type,
+                                boolean mainHand) {}
 }

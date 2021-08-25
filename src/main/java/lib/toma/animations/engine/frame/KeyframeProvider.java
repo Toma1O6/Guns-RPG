@@ -7,6 +7,7 @@ import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.IKeyframeProvider;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.event.IAnimationEvent;
+import lib.toma.animations.api.lifecycle.Registries;
 import lib.toma.animations.engine.serialization.AnimationLoader;
 import lib.toma.animations.api.IKeyframeTypeSerializer;
 import net.minecraft.util.ResourceLocation;
@@ -100,7 +101,7 @@ public class KeyframeProvider implements IKeyframeProvider {
             Map<AnimationStage, IKeyframe[]> map = new HashMap<>();
             for (Map.Entry<String, JsonElement> entry : source.entrySet()) {
                 ResourceLocation key = new ResourceLocation(entry.getKey());
-                AnimationStage stage = AnimationStage.byKey(key);
+                AnimationStage stage = Registries.ANIMATION_STAGES.getElement(key);
                 if (stage == null)
                     throw new JsonSyntaxException("Unknown animation stage: " + key);
                 JsonElement element = entry.getValue();

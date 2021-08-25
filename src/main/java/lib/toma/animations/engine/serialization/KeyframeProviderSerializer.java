@@ -2,12 +2,13 @@ package lib.toma.animations.engine.serialization;
 
 import com.google.gson.*;
 import lib.toma.animations.QuickSort;
+import lib.toma.animations.api.IKeyframeProvider;
 import lib.toma.animations.api.IKeyframeTypeSerializer;
 import lib.toma.animations.api.event.AnimationEventType;
 import lib.toma.animations.api.event.IAnimationEvent;
 import lib.toma.animations.api.event.IAnimationEventSerializer;
+import lib.toma.animations.api.lifecycle.Registries;
 import lib.toma.animations.engine.frame.FrameProviderType;
-import lib.toma.animations.api.IKeyframeProvider;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 
@@ -61,7 +62,7 @@ public class KeyframeProviderSerializer implements JsonSerializer<IKeyframeProvi
                 throw new JsonSyntaxException("Not a Json object!");
             JsonObject object = element.getAsJsonObject();
             ResourceLocation typeKey = new ResourceLocation(JSONUtils.getAsString(object, "type"));
-            AnimationEventType<E> type = AnimationEventType.getType(typeKey);
+            AnimationEventType<E> type = (AnimationEventType<E>) Registries.EVENTS.getElement(typeKey);
             if (type == null)
                 throw new JsonSyntaxException("Unknown event type: " + typeKey);
             IAnimationEventSerializer<E> serializer = type.serializer();

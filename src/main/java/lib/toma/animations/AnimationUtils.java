@@ -1,11 +1,7 @@
 package lib.toma.animations;
 
-import lib.toma.animations.api.IAnimationLoader;
-import lib.toma.animations.api.AnimationStage;
-import lib.toma.animations.api.AnimationType;
-import lib.toma.animations.api.IAnimation;
-import lib.toma.animations.api.IKeyframe;
-import lib.toma.animations.api.IKeyframeProvider;
+import lib.toma.animations.api.*;
+import lib.toma.animations.api.lifecycle.Registries;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
@@ -28,12 +24,12 @@ public class AnimationUtils {
 
     public static void encodeAnimationType(AnimationType<?> type, PacketBuffer buffer) {
         if (!type.hasCreator())
-            throw new IllegalArgumentException(String.format("Animation type (%s) doesn't support raw animation creation!", type.getName()));
-        buffer.writeResourceLocation(type.getName());
+            throw new IllegalArgumentException(String.format("Animation type (%s) doesn't support raw animation creation!", type.getKey()));
+        buffer.writeResourceLocation(type.getKey());
     }
 
     public static <A extends IAnimation> AnimationType<A> decodeAnimationType(PacketBuffer buffer) {
-        return AnimationType.getTypeFromID(buffer.readResourceLocation());
+        return (AnimationType<A>) Registries.ANIMATION_TYPES.getElement(buffer.readResourceLocation());
     }
 
     /**

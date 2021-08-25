@@ -68,9 +68,10 @@ public final class AnimationPipeline implements IAnimationPipeline {
 
     @Override
     public void removeScheduled(AnimationType<?> type) {
-        scheduledAnimations.removeIf(element -> element.type.getIndex() == type.getIndex());
+        scheduledAnimations.removeIf(element -> element.type.getKey().equals(type.getKey()));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <A extends IAnimation> A get(AnimationType<A> type) {
         return (A) playingAnimations.get(type);
@@ -82,20 +83,11 @@ public final class AnimationPipeline implements IAnimationPipeline {
     }
 
     @Override
-    public <A extends IAnimation> void handleGameTick() {
+    public void handleGameTick() {
         IProfiler profiler = Minecraft.getInstance().getProfiler();
         profiler.push("Animation tick");
         profiler.push("Scheduled animations");
-        Iterator<ScheduledElement<?>> it = scheduledAnimations.iterator();
-        while (it.hasNext()) {
-            ScheduledElement<A> element = (ScheduledElement<A>) it.next();
-            if (element.isDone()) {
-                it.remove();
-                insert(element.type, element.supplier.get());
-            } else {
-                element.tick();
-            }
-        }
+        tickScheduled();
         profiler.popPush("Live animations");
         Iterator<IAnimation> it1 = playingAnimations.values().iterator();
         while (it1.hasNext()) {
@@ -118,12 +110,18 @@ public final class AnimationPipeline implements IAnimationPipeline {
         playingAnimations.values().forEach(anim -> anim.animate(stage, matrix));
     }
 
-    @Override
-    public boolean isItemRenderBlocked() {
-        for (IAnimation animation : playingAnimations.values())
-            if (animation.disallowItemRendering())
-                return true;
-        return false;
+    @SuppressWarnings("unchecked")
+    private <A extends IAnimation> void tickScheduled() {
+        Iterator<ScheduledElement<?>> iterator = scheduledAnimations.iterator();
+        while (iterator.hasNext()) {
+            ScheduledElement<A> element = (ScheduledElement<A>) iterator.next();
+            if (element.isDone()) {
+                iterator.remove();
+                insert(element.type, element.supplier.get());
+            } else {
+                element.tick();
+            }
+        }
     }
 
     private static class ScheduledElement<A extends IAnimation> {

@@ -1,7 +1,11 @@
 package lib.toma.animations.api;
 
-import lib.toma.animations.api.IAnimation;
+import lib.toma.animations.Interpolate;
 
+/**
+ * Animation implementation where animation progress is based on defined time (ticks).
+ * Animation is automatically stopped after its lifetime is over.
+ */
 public abstract class TickableAnimation implements IAnimation {
 
     private final int length;
@@ -18,15 +22,24 @@ public abstract class TickableAnimation implements IAnimation {
     @Override
     public final void renderTick(float deltaRenderTime) {
         float old = progressInterpolated;
-        progressInterpolated = progressOld + (progress - progressOld) * deltaRenderTime;
+        progressInterpolated = Interpolate.linear(deltaRenderTime, progress, progressOld);
         nextFrame(progressInterpolated, old);
     }
 
+    /**
+     * Gets current animation progress from remaining ticks.
+     * Progress is calculated via following formula: </br>
+     * {@code progress = 1 - (remainingTicks / initialLength)}.
+     * @return Animation progress based on remaining ticks
+     */
     public float getProgress() {
         return 1.0F - ((float) ticksRemaining / length);
     }
 
-    public float getIntepolatedProgress() {
+    /**
+     * @return Interpolated progress value.
+     */
+    public float getInterpolatedProgress() {
         return progressInterpolated;
     }
 
