@@ -30,6 +30,7 @@ import java.util.Map;
 
 public class M1911Item extends GunItem {
 
+    private static final ResourceLocation EJECT = GunsRPG.makeResource("m1911/eject");
     private static final ResourceLocation[] AIM_ANIMATIONS = {
             GunsRPG.makeResource("m1911/aim"),
             GunsRPG.makeResource("m1911/aim_dual")
@@ -136,6 +137,12 @@ public class M1911Item extends GunItem {
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         return isDualWieldActive() ? AIM_ANIMATIONS[1] : AIM_ANIMATIONS[0];
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return EJECT;
     }
 
     @OnlyIn(Dist.CLIENT)

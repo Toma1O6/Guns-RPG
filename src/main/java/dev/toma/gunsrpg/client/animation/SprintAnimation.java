@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import lib.toma.animations.Interpolate;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IAnimation;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
@@ -20,7 +21,7 @@ public class SprintAnimation implements IAnimation {
     }
 
     @Override
-    public void animate(AnimationStage stage, MatrixStack matrixStack) {
+    public void animate(AnimationStage stage, MatrixStack matrixStack, IRenderTypeBuffer typeBuffer, int light, int overlay) {
         if (stage == AnimationStage.ITEM_AND_HANDS) {
             matrixStack.mulPose(Vector3f.XP.rotationDegrees(-20.0F * progressInterpolated));
         } else if (stage == AnimationStage.LEFT_HAND || stage == ModAnimations.DUAL_WIELD_ITEM) {

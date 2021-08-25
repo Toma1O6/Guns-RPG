@@ -528,6 +528,6 @@ public class VectorModel extends AbstractWeaponModel {
 
         setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
         setSpecialRenderer(ModAnimations.CHARGING_HANDLE, charging_handle);
-        setSpecialRenderer(ModAnimations.BULLET, bullet);
+        setBulletRenderer(setSpecialRenderer(ModAnimations.BULLET, bullet));
     }
 }

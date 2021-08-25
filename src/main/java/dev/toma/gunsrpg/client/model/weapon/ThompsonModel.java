@@ -430,6 +430,6 @@ public class ThompsonModel extends AbstractWeaponModel {
         // TODO extended mag
         setSpecialRenderer(ModAnimations.MAGAZINE, magazine1);
         setSpecialRenderer(ModAnimations.CHARGING_HANDLE, charging_handle);
-        setSpecialRenderer(ModAnimations.BULLET, bullet);
+        setBulletRenderer(setSpecialRenderer(ModAnimations.BULLET, bullet));
     }
 }

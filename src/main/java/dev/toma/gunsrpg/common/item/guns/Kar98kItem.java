@@ -32,6 +32,7 @@ import java.util.Map;
 
 public class Kar98kItem extends GunItem {
 
+    private static final ResourceLocation EJECT = GunsRPG.makeResource("kar98k/eject");
     private static final ResourceLocation[] AIM_ANIMATIONS = {
             GunsRPG.makeResource("kar98k/aim"),
             GunsRPG.makeResource("kar98k/aim_scoped")
@@ -145,7 +146,6 @@ public class Kar98kItem extends GunItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void onShoot(PlayerEntity player, ItemStack stack) {
-        super.onShoot(player, stack);
         //ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltKar98k(this.getFirerate(player)));
         NetworkManager.sendServerPacket(new SPacketSetAiming(false));
         ClientSideManager.instance().playDelayedSound(player.blockPosition(), 1.0F, 1.0F, ModSounds.KAR98K_BOLT, SoundCategory.MASTER, 15);

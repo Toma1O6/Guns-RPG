@@ -4,9 +4,9 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.ClientEventHandler;
 import dev.toma.gunsrpg.client.model.AbstractAttachmentModel;
-import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.model.ScopeModel;
 import dev.toma.gunsrpg.client.model.WeaponModels;
+import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import lib.toma.animations.api.IRenderConfig;
@@ -108,6 +108,6 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
             defaultUITransform(matrix);
         }
         AbstractWeaponModel weaponModel = getWeaponModel();
-        weaponModel.render(stack, data, matrix, renderBuffer.getBuffer(weaponModel.renderType(WEAPON)), light, overlay, animate && transformType.firstPerson());
+        weaponModel.render(stack, data, matrix, renderBuffer, renderBuffer.getBuffer(weaponModel.renderType(WEAPON)), light, overlay, animate && transformType.firstPerson());
     }
 }

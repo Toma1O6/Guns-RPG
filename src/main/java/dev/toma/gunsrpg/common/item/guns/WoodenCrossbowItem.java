@@ -151,4 +151,9 @@ public class WoodenCrossbowItem extends GunItem {
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD_ANIMATION;
     }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void onShoot(PlayerEntity player, ItemStack stack) {
+    }
 }

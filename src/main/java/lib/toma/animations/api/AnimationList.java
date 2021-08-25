@@ -1,19 +1,21 @@
 package lib.toma.animations.api;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 import lib.toma.animations.AnimationEngine;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class AnimationList<A extends IAnimation> implements IAnimationList<A> {
+public class AnimationList<A extends IAnimation> implements IAnimationList<A> {
 
     private final List<A> animations = new LinkedList<>();
     private int runningAnimations;
+
+    public AnimationList(PlayerEntity client) {}
 
     /**
      * Enqueues supplied animation for playing. Creates new animation list if no list exists.

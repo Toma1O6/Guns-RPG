@@ -465,6 +465,6 @@ public class DesertEagleModel extends AbstractWeaponModel {
 
         setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
         setSpecialRenderer(ModAnimations.SLIDE, slide);
-        setSpecialRenderer(ModAnimations.BULLET, bullet);
+        setBulletRenderer(setSpecialRenderer(ModAnimations.BULLET, bullet));
     }
 }

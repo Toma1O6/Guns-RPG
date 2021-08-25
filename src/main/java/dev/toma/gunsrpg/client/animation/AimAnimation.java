@@ -11,6 +11,7 @@ import lib.toma.animations.api.IAnimation;
 import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.IKeyframeProvider;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -36,7 +37,7 @@ public class AimAnimation implements IAnimation {
     }
 
     @Override
-    public void animate(AnimationStage stage, MatrixStack matrixStack) {
+    public void animate(AnimationStage stage, MatrixStack matrixStack, IRenderTypeBuffer typeBuffer, int light, int overlay) {
         IKeyframe frame = provider.getCurrentFrame(stage, progressI, 0);
         Keyframes.processFrame(frame, progressI, matrixStack);
     }

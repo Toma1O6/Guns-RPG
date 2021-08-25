@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.ModTabs;
+import dev.toma.gunsrpg.client.animation.BulletEjectAnimation;
+import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
 import dev.toma.gunsrpg.common.init.ModEntities;
@@ -13,6 +15,8 @@ import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
+import lib.toma.animations.AnimationUtils;
+import lib.toma.animations.api.AnimationList;
 import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.client.util.ITooltipFlag;
@@ -88,7 +92,15 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
     }
 
     @OnlyIn(Dist.CLIENT)
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return null;
+    }
+
+    @OnlyIn(Dist.CLIENT)
     public void onShoot(PlayerEntity player, ItemStack stack) {
+        ResourceLocation bulletEjectPath = getBulletEjectAnimationPath();
+        BulletEjectAnimation animation = AnimationUtils.createAnimation(bulletEjectPath, BulletEjectAnimation::new);
+        AnimationList.enqueue(ModAnimations.BULLET_EJECTION, animation);
         // TODO recoil animation
     }
 

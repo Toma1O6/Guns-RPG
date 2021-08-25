@@ -779,6 +779,6 @@ public class S12kModel extends AbstractWeaponModel {
 
         setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
         setSpecialRenderer(ModAnimations.BOLT, bolt);
-        setSpecialRenderer(ModAnimations.BULLET, bullet3);
+        setBulletRenderer(setSpecialRenderer(ModAnimations.BULLET, bullet3));
     }
 }

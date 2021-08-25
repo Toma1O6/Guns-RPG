@@ -33,8 +33,8 @@ import java.util.Map;
 
 public class S1897Item extends GunItem {
 
-    public static final ResourceLocation AIM_ANIMATION = GunsRPG.makeResource("s1897/aim");
-    public static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("s1897/reload");
+    private static final ResourceLocation AIM_ANIMATION = GunsRPG.makeResource("s1897/aim");
+    private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("s1897/reload");
 
     public S1897Item(String name) {
         super(name, GunType.SG, new Properties().setISTER(() -> S1897Renderer::new));
@@ -135,7 +135,6 @@ public class S1897Item extends GunItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void onShoot(PlayerEntity player, ItemStack stack) {
-        super.onShoot(player, stack);
         // ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltS1897(this.getFirerate(player)));
     }
 

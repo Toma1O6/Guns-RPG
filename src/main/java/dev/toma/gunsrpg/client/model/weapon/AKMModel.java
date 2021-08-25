@@ -685,6 +685,6 @@ public class AKMModel extends AbstractWeaponModel {
 
         setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
         setSpecialRenderer(ModAnimations.BOLT, bolt);
-        setSpecialRenderer(ModAnimations.BULLET, bullet);
+        setBulletRenderer(setSpecialRenderer(ModAnimations.BULLET, bullet));
     }
 }

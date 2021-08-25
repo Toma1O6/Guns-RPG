@@ -26,6 +26,7 @@ import java.util.Map;
 
 public class SksItem extends GunItem {
 
+    private static final ResourceLocation EJECT = GunsRPG.makeResource("sks/eject");
     private static final ResourceLocation[] AIM_ANIMATIONS = {
             GunsRPG.makeResource("sks/aim"),
             GunsRPG.makeResource("sks/aim_red_dot")
@@ -128,6 +129,12 @@ public class SksItem extends GunItem {
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         boolean scoped = PlayerData.hasActiveSkill(player, Skills.SKS_RED_DOT);
         return AIM_ANIMATIONS[scoped ? 1 : 0];
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return EJECT;
     }
 
     @OnlyIn(Dist.CLIENT)

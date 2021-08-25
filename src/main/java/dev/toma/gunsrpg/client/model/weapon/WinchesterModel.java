@@ -408,6 +408,6 @@ public class WinchesterModel extends AbstractWeaponModel {
 
         setSpecialRenderer(ModAnimations.CHARGING_HANDLE, lever);
         setSpecialRenderer(ModAnimations.BOLT, bolt);
-        setSpecialRenderer(ModAnimations.BULLET, bullet);
+        setBulletRenderer(setSpecialRenderer(ModAnimations.BULLET, bullet));
     }
 }

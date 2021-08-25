@@ -25,6 +25,7 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.FirstPersonRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.HandSide;
@@ -112,7 +113,7 @@ public class ClientSideManager {
         if (stack.getItem() == ModItems.M1911 && PlayerData.hasActiveSkill(player, Skills.M1911_DUAL_WIELD)) {
             poseStack.pushPose();
             {
-                pipeline.animateStage(DUAL_WIELD_ITEM, poseStack);
+                pipeline.animateStage(DUAL_WIELD_ITEM, poseStack, buffer, light, OverlayTexture.NO_OVERLAY);
                 itemRenderer.renderItem(fpRenderer, player, stack, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, true, poseStack, buffer, light, swing, equip);
             }
             poseStack.popPose();
@@ -121,7 +122,7 @@ public class ClientSideManager {
 
     private AnimationType<?>[] gatherAnimationTypes() {
         return new AnimationType[] {
-                AIM_ANIMATION, SPRINT, CHAMBER, HEAL, RELOAD, FIREMODE
+                AIM_ANIMATION, SPRINT, CHAMBER, HEAL, RELOAD, FIREMODE, BULLET_EJECTION
         };
     }
 

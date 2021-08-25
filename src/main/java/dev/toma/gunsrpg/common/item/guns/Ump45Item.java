@@ -30,6 +30,7 @@ import java.util.Map;
 
 public class Ump45Item extends GunItem {
 
+    private static final ResourceLocation EJECT = GunsRPG.makeResource("ump45/eject");
     private static final ResourceLocation[] AIM_ANIMATIONS = {
             GunsRPG.makeResource("ump45/aim"),
             GunsRPG.makeResource("ump45/aim_red_dot")
@@ -125,6 +126,12 @@ public class Ump45Item extends GunItem {
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         boolean rds = PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.UMP45_RED_DOT);
         return AIM_ANIMATIONS[rds ? 1 : 0];
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return EJECT;
     }
 
     @OnlyIn(Dist.CLIENT)
