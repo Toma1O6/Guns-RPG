@@ -122,7 +122,7 @@ public class ClientSideManager {
 
     private AnimationType<?>[] gatherAnimationTypes() {
         return new AnimationType[] {
-                AIM_ANIMATION, SPRINT, CHAMBER, HEAL, RELOAD, FIREMODE, BULLET_EJECTION
+                AIM_ANIMATION, SPRINT, CHAMBER, HEAL, RELOAD, FIREMODE, BULLET_EJECTION, RECOIL
         };
     }
 

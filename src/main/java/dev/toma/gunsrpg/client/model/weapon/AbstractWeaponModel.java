@@ -73,8 +73,7 @@ public abstract class AbstractWeaponModel extends AbstractSolidEntityModel {
             matrix.pushPose();
             {
                 pipeline.animateStage(specialRenderer.targetStage, matrix, typeBuffer, light, overlay);
-                if (!specialRenderer.builtInAnimations())
-                    specialRenderer.renderCubes(data, matrix, builder, light, overlay);
+                specialRenderer.renderCubes(data, matrix, builder, light, overlay);
             }
             matrix.popPose();
         }

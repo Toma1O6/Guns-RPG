@@ -28,7 +28,13 @@ public class AnimationList<A extends IAnimation> implements IAnimationList<A> {
     public static <A extends IAnimation, L extends AnimationList<A>> L enqueue(AnimationType<L> listAnimationType, A animation) {
         IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
         boolean exists = pipeline.has(listAnimationType);
-        L animationList = exists ? pipeline.get(listAnimationType) : listAnimationType.create(Minecraft.getInstance().player);
+        L animationList;
+        if (exists) {
+            animationList = pipeline.get(listAnimationType);
+        } else {
+            animationList = listAnimationType.create(Minecraft.getInstance().player);
+            pipeline.insert(listAnimationType, animationList);
+        }
         animationList.enqueue(animation);
         return animationList;
     }
@@ -47,9 +53,7 @@ public class AnimationList<A extends IAnimation> implements IAnimationList<A> {
     @Override
     public void animate(AnimationStage stage, MatrixStack matrixStack, IRenderTypeBuffer typeBuffer, int light, int overlay) {
         for (A anim : animations) {
-            matrixStack.pushPose();
             anim.animate(stage, matrixStack, typeBuffer, light, overlay);
-            matrixStack.popPose();
         }
     }
 

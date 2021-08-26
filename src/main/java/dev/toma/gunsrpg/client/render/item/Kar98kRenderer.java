@@ -2,8 +2,8 @@ package dev.toma.gunsrpg.client.render.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.model.WeaponModels;
+import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
@@ -24,9 +24,9 @@ public class Kar98kRenderer extends AbstractWeaponRenderer {
     @Override
     public void positionModel(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
         if (transform == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
-            stack.translate(0.2, 0.2, 0.0);
+            stack.translate(0.2, 0.392, 0.0);
         } else if(transform == ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND) {
-            stack.translate(-0.2, 0.2, 0.3);
+            stack.translate(-0.2, 0.3, 0.3);
         }
     }
 

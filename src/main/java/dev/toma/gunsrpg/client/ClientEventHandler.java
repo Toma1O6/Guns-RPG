@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.animation.AimAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
+import dev.toma.gunsrpg.client.animation.RecoilAnimation;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.AimInfo;
@@ -87,51 +88,11 @@ public class ClientEventHandler {
         if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
             Minecraft mc = Minecraft.getInstance();
             PlayerEntity player = mc.player;
-            MainWindow window = event.getWindow();
             ItemStack stack = player.getMainHandItem();
             if (stack.getItem() instanceof GunItem) {
                 if (!ModConfig.clientConfig.developerMode.get()) {
                     event.setCanceled(true);
                 }
-                /*MatrixStack matrixStack = event.getMatrixStack();
-                PlayerData.get(player).ifPresent(data -> {
-                    int windowWidth = window.getGuiScaledWidth();
-                    int windowHeight = window.getGuiScaledHeight();
-                    if (data.getAimInfo().progress >= 0.9F) {
-                        if (stack.getItem() == ModItems.KAR98K && PlayerData.hasActiveSkill(player, Skills.SR_SCOPE) || stack.getItem() == ModItems.WOODEN_CROSSBOW && PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
-                            Matrix4f pose = matrixStack.last().pose();
-                            if (ModConfig.clientConfig.scopeRenderer.get() == ScopeRenderer.TEXTURE) {
-                                ModUtils.renderTexture(pose, 0, 0, windowWidth, windowHeight, SCOPE_OVERLAY);
-                            } else {
-                                int left = window.getGuiScaledWidth() / 2 - 16;
-                                int top = window.getGuiScaledHeight() / 2 - 16;
-                                ModUtils.renderTexture(pose, left, top, left + 32, top + 32, SCOPE);
-                            }
-                        } else if ((PlayerData.hasActiveSkill(player, Skills.SMG_RED_DOT) && stack.getItem() == ModItems.UMP45) || (PlayerData.hasActiveSkill(player, Skills.AR_RED_DOT) && stack.getItem() == ModItems.SKS)) {
-                            float left = windowWidth / 2f - 8f;
-                            float top = windowHeight / 2f - 8f;
-                            float x2 = left + 16;
-                            float y2 = top + 16;
-                            //draw red dot
-                            int color = ModConfig.clientConfig.reticleColor.getColor();
-                            float alpha = ModUtils.alpha(color);
-                            float red = ModUtils.red(color);
-                            float green = ModUtils.green(color);
-                            float blue = ModUtils.blue(color);
-                            mc.getTextureManager().bind(ModConfig.clientConfig.reticleVariants.getAsResource());
-                            RenderSystem.enableBlend();
-                            Tessellator tessellator = Tessellator.getInstance();
-                            BufferBuilder builder = tessellator.getBuilder();
-                            builder.begin(7, DefaultVertexFormats.POSITION_COLOR_TEX);
-                            builder.vertex(left, y2, 0).color(red, green, blue, alpha).uv(0.0F, 1.0F).endVertex();
-                            builder.vertex(x2, y2, 0).color(red, green, blue, alpha).uv(1.0F, 1.0F).endVertex();
-                            builder.vertex(x2, top, 0).color(red, green, blue, alpha).uv(1.0F, 0.0F).endVertex();
-                            builder.vertex(left, top, 0).color(red, green, blue, alpha).uv(0.0F, 0.0F).endVertex();
-                            tessellator.end();
-                            RenderSystem.disableBlend();
-                        }
-                    }
-                });*/
             }
         }
     }
@@ -340,11 +301,16 @@ public class ClientEventHandler {
 
     private static void shoot(PlayerEntity player, ItemStack stack) {
         GunItem gun = (GunItem) stack.getItem();
-        player.xRot -= gun.getVerticalRecoil(player);
-        player.yRot += gun.getHorizontalRecoil(player);
+        float xRot = gun.getVerticalRecoil(player);
+        float yRot = gun.getHorizontalRecoil(player);
+        player.xRot -= xRot;
+        player.yRot -= yRot;
         NetworkManager.sendServerPacket(new SPacketShoot());
         gun.onShoot(player, stack);
         shootDelay = gun.getFirerate(player);
+
+        IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
+        pipeline.insert(ModAnimations.RECOIL, new RecoilAnimation(xRot, yRot));
     }
 
     private static class ChangeDetector {

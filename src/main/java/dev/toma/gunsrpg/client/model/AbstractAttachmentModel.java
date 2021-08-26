@@ -30,9 +30,11 @@ public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
 
     protected static void renderScopeWithGlass(MatrixStack matrix, IRenderTypeBuffer buffer, ModelRenderer scopeModel, ModelRenderer reticleModel, ModelRenderer overlayModel, float progress, ResourceLocation reticleTexture, int light, int overlay) {
         float inv = 1.0F - progress;
+        float sizeProgress = progress >= 0.9F ? progress : 0.0F;
+        float sizeProgressInv = 1.0F - sizeProgress;
         matrix.pushPose();
-        matrix.translate(0.0F, 0.0F, 0.78F * progress);
-        matrix.scale(1.0F, 1.0F, 0.07F + 0.93F * inv);
+        matrix.translate(0.0F, 0.0F, 0.78F * sizeProgress);
+        matrix.scale(1.0F, 1.0F, 0.07F + 0.93F * sizeProgressInv);
         IVertexBuilder modelVertexBuilder = buffer.getBuffer(RenderType.entitySolid(AbstractWeaponRenderer.ATTACHMENTS));
         scopeModel.render(matrix, modelVertexBuilder, light, overlay);
         IVertexBuilder reticleVertexBuilder = buffer.getBuffer(RenderType.entityShadow(reticleTexture));

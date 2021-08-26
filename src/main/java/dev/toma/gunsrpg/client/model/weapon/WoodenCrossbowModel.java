@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class WoodenCrossbowModel extends AbstractWeaponModel {
 
@@ -749,8 +750,11 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
 
     @Override
     public void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay) {
+        matrix.pushPose();
+        matrix.mulPose(Vector3f.YN.rotation((float) Math.PI));
         crossbow.render(matrix, builder, light, overlay);
         arms.render(matrix, builder, light, overlay);
         arms_charged.render(matrix, builder, light, overlay);
+        matrix.popPose();
     }
 }
