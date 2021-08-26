@@ -15,7 +15,12 @@ public class AnimationList<A extends IAnimation> implements IAnimationList<A> {
     private final List<A> animations = new LinkedList<>();
     private int runningAnimations;
 
-    public AnimationList(PlayerEntity client) {}
+    protected AnimationList(PlayerEntity player) {
+    }
+
+    public static <A extends IAnimation> AnimationList<A> newList(PlayerEntity player) {
+        return new AnimationList<>(player);
+    }
 
     /**
      * Enqueues supplied animation for playing. Creates new animation list if no list exists.
@@ -53,7 +58,9 @@ public class AnimationList<A extends IAnimation> implements IAnimationList<A> {
     @Override
     public void animate(AnimationStage stage, MatrixStack matrixStack, IRenderTypeBuffer typeBuffer, int light, int overlay) {
         for (A anim : animations) {
+            matrixStack.pushPose();
             anim.animate(stage, matrixStack, typeBuffer, light, overlay);
+            matrixStack.popPose();
         }
     }
 
