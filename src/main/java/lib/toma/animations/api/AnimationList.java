@@ -58,9 +58,7 @@ public class AnimationList<A extends IAnimation> implements IAnimationList<A> {
     @Override
     public void animate(AnimationStage stage, MatrixStack matrixStack, IRenderTypeBuffer typeBuffer, int light, int overlay) {
         for (A anim : animations) {
-            matrixStack.pushPose();
             anim.animate(stage, matrixStack, typeBuffer, light, overlay);
-            matrixStack.popPose();
         }
     }
 

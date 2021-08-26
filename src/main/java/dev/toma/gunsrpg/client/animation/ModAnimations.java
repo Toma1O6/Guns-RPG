@@ -28,7 +28,7 @@ public final class ModAnimations {
     public static final AnimationType<Animation> HEAL = AnimationType.create(GunsRPG.makeResource("heal"));
     public static final AnimationType<Animation> RELOAD = AnimationType.create(GunsRPG.makeResource("reload"), ModAnimations::createReloadAnimation);
     public static final AnimationType<Animation> FIREMODE = AnimationType.create(GunsRPG.makeResource("firemode"), ModAnimations::createFiremodeAnimation);
-    public static final AnimationType<AnimationList<BulletEjectAnimation>> BULLET_EJECTION = AnimationType.create(GunsRPG.makeResource("bullet_eject"), AnimationList::new);
+    public static final AnimationType<AnimationList<BulletEjectAnimation>> BULLET_EJECTION = AnimationType.create(GunsRPG.makeResource("bullet_eject"), AnimationList::newList);
     public static final AnimationType<RecoilAnimation> RECOIL = AnimationType.create(GunsRPG.makeResource("recoil"));
 
     public static Animation createReloadAnimation(PlayerEntity player) {
