@@ -32,10 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public abstract class GunItem extends BaseItem implements IAnimationEntry {
 
@@ -247,5 +244,9 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
         return false;
+    }
+
+    public final Set<AmmoMaterial> getCompatibleMaterials() {
+        return materialDamageBonusMap.keySet();
     }
 }

@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.animation.AimAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
@@ -28,7 +27,6 @@ import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
 import dev.toma.gunsrpg.network.packet.SPacketShoot;
-import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.OptionalObject;
@@ -41,7 +39,6 @@ import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -129,7 +126,7 @@ public class ClientEventHandler {
                     int ammo = gun.getAmmo(stack);
                     int max = gun.getMaxAmmo(player);
                     float f = gunData.isAtMaxLevel() ? 1.0F : gunKills / (float) gunRequiredKills;
-                    AmmoItem itemAmmo = AmmoItem.getAmmoFor(gun, stack);
+                    IAmmoProvider itemAmmo = AmmoItem.getAmmoFor(gun, stack);
                     if (itemAmmo != null) {
                         int c = 0;
                         for (int i = 0; i < player.inventory.getContainerSize(); i++) {
@@ -147,7 +144,7 @@ public class ClientEventHandler {
                         Matrix4f pose = matrixStack.last().pose();
                         RenderUtils.drawGradient(pose, x, y, x + width + 22, y + 7, 0xFF << 24, 0xFF << 24);
                         RenderUtils.drawGradient(pose, x + 2, y + 2, x + (int) (f * (width + 20)), y + 5, 0xFFFFFF << 8, 0xFF8888 << 8);
-                        mc.getItemRenderer().renderGuiItem(new ItemStack(itemAmmo), x, y - 18);
+                        mc.getItemRenderer().renderGuiItem(new ItemStack((Item) itemAmmo), x, y - 18);
                         mc.font.draw(matrixStack, text, x + 19, y - 14, 0xffffff);
                     }
                 }

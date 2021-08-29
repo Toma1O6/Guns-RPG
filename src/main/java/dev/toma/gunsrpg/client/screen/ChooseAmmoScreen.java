@@ -5,14 +5,17 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
+import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSelectAmmo;
+import dev.toma.gunsrpg.util.AmmoLocator;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.StringTextComponent;
@@ -20,7 +23,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class ChooseAmmoScreen extends Screen {
 
-    private final AmmoItem[] items;
+    private final IAmmoProvider[] items;
 
     public ChooseAmmoScreen(GunItem item) {
         super(new TranslationTextComponent("screen.ammo_select"));
@@ -62,17 +65,17 @@ public class ChooseAmmoScreen extends Screen {
 
     private static class AmmoButton extends Widget {
 
-        private final AmmoItem ammo;
+        private final IAmmoProvider ammo;
         private final int count;
         private final int requiredLevel;
         private ItemStack stack;
 
-        public AmmoButton(int x, int y, AmmoItem ammo) {
+        public AmmoButton(int x, int y, IAmmoProvider ammo) {
             super(x, y, 32, 32, StringTextComponent.EMPTY);
             this.ammo = ammo;
             PlayerEntity player = Minecraft.getInstance().player;
             ItemStack stack = player.getMainHandItem();
-            this.count = ModUtils.getItemCountInInventory(ammo, player.inventory);
+            this.count = new AmmoLocator().count(player.inventory, provider -> provider.equals(ammo));
             this.requiredLevel = ammo.getMaterial().ordinal() + 1;
             boolean isGun = stack.getItem() instanceof GunItem;
             this.active = false;
@@ -81,7 +84,7 @@ public class ChooseAmmoScreen extends Screen {
                 PlayerSkills skills = data.getSkills();
                 GunItem gun = (GunItem) stack.getItem();
                 active = isGun && skills.hasSkill(gun.getRequiredSkill()) && skills.getGunData(gun).getLevel() >= requiredLevel;
-                this.stack = new ItemStack(ammo);
+                this.stack = new ItemStack((Item) ammo);
             });
         }
 

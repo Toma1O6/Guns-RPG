@@ -1,20 +1,19 @@
 package dev.toma.gunsrpg.common.item.guns.ammo;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.common.item.BaseItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static dev.toma.gunsrpg.common.init.ModItems.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AmmoItem extends BaseItem implements IAmmoProvider {
 
-    public static Map<GunItem, AmmoItem[]> GUN_TO_ITEM_MAP = new HashMap<>();
+    public static Map<GunItem, IAmmoProvider[]> GUN_TO_ITEM_MAP = new IdentityHashMap<>();
     private final AmmoType ammoType;
     private final AmmoMaterial material;
 
@@ -24,11 +23,11 @@ public class AmmoItem extends BaseItem implements IAmmoProvider {
         this.ammoType = ammoType;
     }
 
-    public static AmmoItem getAmmoFor(GunItem item, ItemStack stack) {
+    public static IAmmoProvider getAmmoFor(GunItem item, ItemStack stack) {
         AmmoMaterial material = item.getMaterialFromNBT(stack);
         if (material == null) return null;
         AmmoType type = item.getAmmoType();
-        for (AmmoItem ia : GUN_TO_ITEM_MAP.get(item)) {
+        for (IAmmoProvider ia : GUN_TO_ITEM_MAP.get(item)) {
             if (ia.getAmmoType() == type && ia.getMaterial() == material) {
                 return ia;
             }
@@ -37,18 +36,21 @@ public class AmmoItem extends BaseItem implements IAmmoProvider {
     }
 
     public static void init() {
-        List<AmmoItem> pistol = Arrays.asList(WOODEN_AMMO_9MM, STONE_AMMO_9MM, IRON_AMMO_9MM, GOLD_AMMO_9MM, DIAMOND_AMMO_9MM, EMERALD_AMMO_9MM, AMETHYST_AMMO_9MM);
-        List<AmmoItem> smg = Arrays.asList(WOODEN_AMMO_45ACP, STONE_AMMO_45ACP, IRON_AMMO_45ACP, GOLD_AMMO_45ACP, DIAMOND_AMMO_45ACP, EMERALD_AMMO_45ACP, AMETHYST_AMMO_45ACP);
-        List<AmmoItem> ar = Arrays.asList(WOODEN_AMMO_556MM, STONE_AMMO_556MM, IRON_AMMO_556MM, GOLD_AMMO_556MM, DIAMOND_AMMO_556MM, EMERALD_AMMO_556MM, AMETHYST_AMMO_556MM);
-        List<AmmoItem> sr = Arrays.asList(WOODEN_AMMO_762MM, STONE_AMMO_762MM, IRON_AMMO_762MM, GOLD_AMMO_762MM, DIAMOND_AMMO_762MM, EMERALD_AMMO_762MM, AMETHYST_AMMO_762MM);
-        List<AmmoItem> sg = Arrays.asList(WOODEN_AMMO_12G, STONE_AMMO_12G, IRON_AMMO_12G, GOLD_AMMO_12G, DIAMOND_AMMO_12G, EMERALD_AMMO_12G, AMETHYST_AMMO_12G);
-        List<AmmoItem> cb = Arrays.asList(WOODEN_AMMO_CROSSBOW_BOLT, STONE_AMMO_CROSSBOW_BOLT, IRON_AMMO_CROSSBOW_BOLT, GOLD_AMMO_CROSSBOW_BOLT, DIAMOND_AMMO_CROSSBOW_BOLT, EMERALD_AMMO_CROSSBOW_BOLT, AMETHYST_AMMO_CROSSBOW_BOLT);
-        GUN_TO_ITEM_MAP.put(M1911, pistol.toArray(new AmmoItem[0]));
-        GUN_TO_ITEM_MAP.put(UMP45, smg.toArray(new AmmoItem[0]));
-        GUN_TO_ITEM_MAP.put(SKS, ar.toArray(new AmmoItem[0]));
-        GUN_TO_ITEM_MAP.put(KAR98K, sr.toArray(new AmmoItem[0]));
-        GUN_TO_ITEM_MAP.put(S1897, sg.toArray(new AmmoItem[0]));
-        GUN_TO_ITEM_MAP.put(WOODEN_CROSSBOW, cb.toArray(new AmmoItem[0]));
+        GunsRPG.log.debug("Making weapon -> ammo mappings");
+        long time = System.currentTimeMillis();
+        Collection<Item> items = ForgeRegistries.ITEMS.getValues();
+        List<GunItem> weapons = items.stream().filter(it -> it instanceof GunItem).map(it -> (GunItem) it).collect(Collectors.toList());
+        List<IAmmoProvider> ammoProviders = items.stream().filter(it -> it instanceof IAmmoProvider).map(it -> (IAmmoProvider) it).collect(Collectors.toList());
+        for (GunItem weapon : weapons) {
+            AmmoType type = weapon.getAmmoType();
+            Set<AmmoMaterial> materials = weapon.getCompatibleMaterials();
+            IAmmoProvider[] providers = ammoProviders.stream()
+                    .filter(provider -> provider.getAmmoType() == type && materials.contains(provider.getMaterial()))
+                    .toArray(IAmmoProvider[]::new);
+            GUN_TO_ITEM_MAP.put(weapon, providers);
+        }
+        long len = System.currentTimeMillis() - time;
+        GunsRPG.log.debug("Weapon -> ammo mappings finished, took {}ms", len);
     }
 
     @Override
