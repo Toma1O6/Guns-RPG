@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.capability.object;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.reload.IReloader;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketSendAnimation;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,10 +19,37 @@ public class ReloadInfo {
     private boolean reloading;
     private int total, left;
 
+    private IReloader activeReloadManager = IReloader.EMPTY;
+    private int reloadingSlot;
+
     public ReloadInfo(PlayerData factory) {
         this.factory = factory;
     }
 
+    public void enqueueCancel() {
+        activeReloadManager.enqueueCancel();
+    }
+
+    public IReloader getActiveReloader() {
+        return activeReloadManager;
+    }
+
+    public void tick() {
+        PlayerEntity owner = factory.getPlayer();
+        int equippedSlot = owner.inventory.selected;
+        if (equippedSlot != reloadingSlot) {
+            activeReloadManager.forceCancel();
+        }
+        activeReloadManager.tick(factory.getPlayer());
+    }
+
+    public void startReloading(PlayerEntity player, GunItem gun, ItemStack stack, int slot) {
+        activeReloadManager = gun.getReloadManager(player).createReloadHandler();
+        activeReloadManager.initiateReload(player, gun, stack);
+        reloadingSlot = slot;
+    }
+
+    // OLD METHODS
     public void update() {
         if (reloading) {
             int slot = factory.getPlayer().inventory.selected;
@@ -38,7 +66,6 @@ public class ReloadInfo {
                 ItemStack stack = player.getMainHandItem();
                 if (stack.getItem() instanceof GunItem) {
                     GunItem gunItem = (GunItem) stack.getItem();
-                    gunItem.getReloadManager().finishReload(factory.getPlayer(), gunItem, stack);
                 }
             }
         }
@@ -75,7 +102,7 @@ public class ReloadInfo {
     }
 
     public boolean isReloading() {
-        return reloading;
+        return activeReloadManager.isReloading();
     }
 
     public float getProgress() {

@@ -2,12 +2,9 @@ package dev.toma.gunsrpg.client.animation;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.AnimationPaths;
-import dev.toma.gunsrpg.common.item.guns.GunItem;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public final class ModAnimations {
     private ModAnimations() {}
@@ -26,22 +23,11 @@ public final class ModAnimations {
     public static final AnimationType<SprintAnimation> SPRINT = AnimationType.create(GunsRPG.makeResource("sprinting"), SprintAnimation::new);
     public static final AnimationType<IAnimation> CHAMBER = AnimationType.create(GunsRPG.makeResource("chamber"));
     public static final AnimationType<Animation> HEAL = AnimationType.create(GunsRPG.makeResource("heal"));
-    public static final AnimationType<Animation> RELOAD = AnimationType.create(GunsRPG.makeResource("reload"), ModAnimations::createReloadAnimation);
+    public static final AnimationType<IModifiableProgress> RELOAD = AnimationType.create(GunsRPG.makeResource("reload"));
+    public static final AnimationType<IModifiableProgress> RELOAD_BULLET = AnimationType.create(GunsRPG.makeResource("reload_bullet"));
     public static final AnimationType<Animation> FIREMODE = AnimationType.create(GunsRPG.makeResource("firemode"), ModAnimations::createFiremodeAnimation);
     public static final AnimationType<AnimationList<BulletEjectAnimation>> BULLET_EJECTION = AnimationType.create(GunsRPG.makeResource("bullet_eject"), AnimationList::newList);
     public static final AnimationType<RecoilAnimation> RECOIL = AnimationType.create(GunsRPG.makeResource("recoil"));
-
-    public static Animation createReloadAnimation(PlayerEntity player) {
-        ItemStack stack = player.getMainHandItem();
-        if (stack.getItem() instanceof GunItem) {
-            GunItem item = (GunItem) stack.getItem();
-            ResourceLocation animationPath = item.getReloadAnimation(player);
-            AnimationEngine engine = AnimationEngine.get();
-            IAnimationLoader loader = engine.loader();
-            return new Animation(loader.getProvider(animationPath), item.getReloadTime(player));
-        }
-        return null;
-    }
 
     public static Animation createFiremodeAnimation(PlayerEntity client) {
         AnimationEngine engine = AnimationEngine.get();

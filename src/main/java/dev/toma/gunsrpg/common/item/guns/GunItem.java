@@ -10,7 +10,7 @@ import dev.toma.gunsrpg.common.item.BaseItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
-import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerMagazine;
+import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -119,8 +119,8 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
         return true;
     }
 
-    public IReloadManager getReloadManager() {
-        return ReloadManagerMagazine.MANAGER;
+    public IReloadManager getReloadManager(PlayerEntity player) {
+        return ReloadManagers.fullMagLoading();
     }
 
     public boolean isSilenced(PlayerEntity player) {

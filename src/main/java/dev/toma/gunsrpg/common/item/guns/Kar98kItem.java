@@ -8,7 +8,7 @@ import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
-import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerClipOrSingle;
+import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
@@ -38,6 +38,7 @@ public class Kar98kItem extends GunItem {
             GunsRPG.makeResource("kar98k/aim_scoped")
     };
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("kar98k/reload");
+    private static final ResourceLocation LOAD_BULLET_ANIMATION = GunsRPG.makeResource("kar98k/load_bullet");
 
     public Kar98kItem(String name) {
         super(name, GunType.SR, new Properties().setISTER(() -> Kar98kRenderer::new));
@@ -60,8 +61,13 @@ public class Kar98kItem extends GunItem {
     }
 
     @Override
-    public IReloadManager getReloadManager() {
-        return ReloadManagerClipOrSingle.CLIP_OR_SINGLE;
+    public IReloadManager getReloadManager(PlayerEntity player) {
+        ItemStack stack = player.getMainHandItem();
+        return ReloadManagers.either(
+                getAmmo(stack) < getMaxAmmo(player),
+                ReloadManagers.singleBulletLoading(46, player, this, stack, LOAD_BULLET_ANIMATION),
+                ReloadManagers.fullMagLoading()
+        );
     }
 
     @Override

@@ -7,7 +7,6 @@ import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
-import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetReloading;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,19 +21,15 @@ public class ShootingManager {
         ReloadInfo reloadInfo = data.getReloadInfo();
         PlayerSkills skills = data.getSkills();
         GunItem item = (GunItem) stack.getItem();
-        IReloadManager reloadManager = item.getReloadManager();
         if (!player.isSprinting() && ClientEventHandler.shootDelay == 0) {
             AmmoMaterial material = item.getMaterialFromNBT(stack);
             if (material == null) return false;
             if (reloadInfo.isReloading()) {
-                if (reloadManager.canBeInterrupted(item, stack)) {
-                    reloadInfo.cancelReload();
-                    if (!player.level.isClientSide) {
-                        data.sync();
-                    } else {
-                        NetworkManager.sendServerPacket(new SPacketSetReloading(false, 0));
-                    }
-                    return item.hasAmmo(stack) && skills.getGunData(item).getLevel() >= material.ordinal() + 1;
+                reloadInfo.enqueueCancel();
+                if (!player.level.isClientSide) {
+                    data.sync();
+                } else {
+                    NetworkManager.sendServerPacket(new SPacketSetReloading(false, 0));
                 }
                 return false;
             }

@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
+import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketChangeFiremode;
 import dev.toma.gunsrpg.network.packet.SPacketRequestDataUpdate;
@@ -57,8 +58,9 @@ public class ModKeybinds {
             if (stack.getItem() instanceof GunItem && !player.isSprinting() && pipeline.get(ModAnimations.CHAMBER) == null) {
                 GunItem gun = (GunItem) stack.getItem();
                 if (info.isReloading()) {
-                    if (gun.getReloadManager().canBeInterrupted(gun, stack)) {
-                        info.cancelReload();
+                    IReloadManager manager = gun.getReloadManager(player);
+                    if (manager.isCancelable()) {
+                        info.enqueueCancel();
                         pipeline.remove(ModAnimations.RELOAD);
                         NetworkManager.sendServerPacket(new SPacketSetReloading(false, 0));
                         return;
@@ -73,7 +75,7 @@ public class ModKeybinds {
                     boolean reloading = info.isReloading();
                     if (!reloading && ammo < max) {
                         if (skip) {
-                            gun.getReloadManager().startReloading(player, gun.getReloadTime(player), stack);
+                            info.startReloading(player, gun, stack, player.inventory.selected);
                             return;
                         }
                         for (int i = 0; i < player.inventory.getContainerSize(); i++) {
@@ -82,7 +84,7 @@ public class ModKeybinds {
                                 IAmmoProvider itemAmmo = (IAmmoProvider) itemStack.getItem();
                                 if (itemAmmo.getAmmoType() == ammoType && itemAmmo.getMaterial() == material) {
                                     int time = gun.getReloadTime(player);
-                                    gun.getReloadManager().startReloading(player, time, stack);
+                                    info.startReloading(player, gun, stack, player.inventory.selected);
                                     NetworkManager.sendServerPacket(new SPacketSetReloading(true, time));
                                     break;
                                 }

@@ -11,7 +11,7 @@ import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
-import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagerSingle;
+import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
@@ -35,6 +35,7 @@ public class S1897Item extends GunItem {
 
     private static final ResourceLocation AIM_ANIMATION = GunsRPG.makeResource("s1897/aim");
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("s1897/reload");
+    private static final ResourceLocation LOAD_BULLET_ANIMATION = GunsRPG.makeResource("s1897/load_bullet");
 
     public S1897Item(String name) {
         super(name, GunType.SG, new Properties().setISTER(() -> S1897Renderer::new));
@@ -57,8 +58,8 @@ public class S1897Item extends GunItem {
     }
 
     @Override
-    public IReloadManager getReloadManager() {
-        return ReloadManagerSingle.SINGLE;
+    public IReloadManager getReloadManager(PlayerEntity player) {
+        return ReloadManagers.singleBulletLoading(30, player, this, player.getMainHandItem(), LOAD_BULLET_ANIMATION);
     }
 
     @Override
