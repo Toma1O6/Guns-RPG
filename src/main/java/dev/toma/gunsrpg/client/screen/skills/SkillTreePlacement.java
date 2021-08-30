@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+// TODO completely rework
 public class SkillTreePlacement {
 
     public static final Map<SkillCategory, Tree> treeMap = new HashMap<>();

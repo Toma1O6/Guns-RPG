@@ -16,7 +16,6 @@ import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.ISkill;
@@ -27,6 +26,7 @@ import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
 import dev.toma.gunsrpg.network.packet.SPacketShoot;
+import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.OptionalObject;
@@ -94,6 +94,7 @@ public class ClientEventHandler {
         }
     }
 
+    // TODO clean up
     @SubscribeEvent
     public static void renderOverlay(RenderGameOverlayEvent.Post event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
@@ -126,7 +127,8 @@ public class ClientEventHandler {
                     int ammo = gun.getAmmo(stack);
                     int max = gun.getMaxAmmo(player);
                     float f = gunData.isAtMaxLevel() ? 1.0F : gunKills / (float) gunRequiredKills;
-                    IAmmoProvider itemAmmo = AmmoItem.getAmmoFor(gun, stack);
+                    Lifecycle lifecycle = GunsRPG.getModLifecycle();
+                    IAmmoProvider itemAmmo = lifecycle.getAmmoForWeapon(gun, stack);
                     if (itemAmmo != null) {
                         int c = 0;
                         for (int i = 0; i < player.inventory.getContainerSize(); i++) {

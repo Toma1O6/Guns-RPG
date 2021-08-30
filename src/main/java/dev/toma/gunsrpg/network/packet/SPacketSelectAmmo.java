@@ -1,10 +1,12 @@
 package dev.toma.gunsrpg.network.packet;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
+import dev.toma.gunsrpg.util.AmmoLocator;
+import dev.toma.gunsrpg.util.Lifecycle;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
@@ -55,8 +57,10 @@ public class SPacketSelectAmmo extends AbstractNetworkPacket<SPacketSelectAmmo> 
 
     private void clearWeapon(PlayerEntity player, GunItem gun, ItemStack stack, int ammoAmount) {
         Item item = null;
-        for (IAmmoProvider ammo : AmmoItem.GUN_TO_ITEM_MAP.get(gun)) {
-            if (ammo.getAmmoType() == gun.getAmmoType() && ammo.getMaterial() == gun.getMaterialFromNBT(stack)) {
+        AmmoLocator.ISearchConstraint constraint = AmmoLocator.ISearchConstraint.typeAndMaterial(gun.getAmmoType(), gun.getMaterialFromNBT(stack));
+        Lifecycle lifecycle = GunsRPG.getModLifecycle();
+        for (IAmmoProvider ammo : lifecycle.getAllCompatibleAmmoProviders(gun)) {
+            if (constraint.isValidItem(ammo)) {
                 item = (Item) ammo;
                 break;
             }

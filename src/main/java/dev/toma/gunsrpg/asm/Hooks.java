@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.asm;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
@@ -7,6 +8,7 @@ import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
 import dev.toma.gunsrpg.common.skills.MotherlodeSkill;
+import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.Pair;
 import dev.toma.gunsrpg.world.cap.WorldData;
@@ -37,8 +39,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import java.util.*;
 
 public class Hooks {
-
-    private static final Map<Item, Item> ORE2CHUNK_MAP = new IdentityHashMap<>(2);
 
     public static double modifyAttackDelay(PlayerEntity player) {
         double value = player.getAttributeValue(Attributes.ATTACK_SPEED);
@@ -108,9 +108,10 @@ public class Hooks {
                 int multiplier = random.nextFloat() < multiplierChances.getRight() ? 3 : random.nextFloat() < multiplierChances.getLeft() ? 2 : 1;
                 Iterator<ItemStack> iterator = drops.iterator();
                 List<ItemStack> pending = new ArrayList<>();
+                Lifecycle modLifecycle = GunsRPG.getModLifecycle();
                 while (iterator.hasNext()) {
                     ItemStack stack = iterator.next();
-                    Item replacement = ORE2CHUNK_MAP.get(stack.getItem());
+                    Item replacement = modLifecycle.getOreDropReplacement(stack.getItem());
                     if (replacement != null) {
                         pending.add(new ItemStack(replacement, Math.min(64, stack.getCount() * multiplier)));
                         iterator.remove();
@@ -122,10 +123,5 @@ public class Hooks {
             }
         }
         return drops;
-    }
-
-    public static void initOre2ChunkMap() {
-        ORE2CHUNK_MAP.put(Blocks.IRON_ORE.asItem(), ModItems.IRON_ORE_CHUNK);
-        ORE2CHUNK_MAP.put(Blocks.GOLD_ORE.asItem(), ModItems.GOLD_ORE_CHUNK);
     }
 }

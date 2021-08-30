@@ -1,14 +1,15 @@
 package dev.toma.gunsrpg.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSelectAmmo;
 import dev.toma.gunsrpg.util.AmmoLocator;
+import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -27,7 +28,8 @@ public class ChooseAmmoScreen extends Screen {
 
     public ChooseAmmoScreen(GunItem item) {
         super(new TranslationTextComponent("screen.ammo_select"));
-        this.items = AmmoItem.GUN_TO_ITEM_MAP.get(item);
+        Lifecycle lifecycle = GunsRPG.getModLifecycle();
+        this.items = lifecycle.getAllCompatibleAmmoProviders(item);
     }
 
     @Override

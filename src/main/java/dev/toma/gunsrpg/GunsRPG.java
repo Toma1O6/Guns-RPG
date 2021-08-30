@@ -1,17 +1,16 @@
 package dev.toma.gunsrpg;
 
 import com.mojang.brigadier.CommandDispatcher;
-import dev.toma.gunsrpg.asm.Hooks;
 import dev.toma.gunsrpg.client.screen.skills.SkillTreePlacement;
 import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
 import dev.toma.gunsrpg.common.command.GunsrpgCommand;
 import dev.toma.gunsrpg.common.init.*;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.sided.ClientSideManager;
+import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.recipes.BlastFurnaceRecipe;
 import dev.toma.gunsrpg.util.recipes.SmithingTableRecipes;
 import dev.toma.gunsrpg.world.MobSpawnManager;
@@ -40,6 +39,7 @@ public class GunsRPG {
 
     public static final String MODID = "gunsrpg";
     public static Logger log = LogManager.getLogger();
+    private static final Lifecycle modLifecycle = new Lifecycle();
 
     public GunsRPG() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -68,6 +68,10 @@ public class GunsRPG {
         // GameRules.GAME_RULE_TYPES.put(GameRules.RULE_NATURAL_REGENERATION, GameRules.BooleanValue.create(false));
     }
 
+    public static Lifecycle getModLifecycle() {
+        return modLifecycle;
+    }
+
     public static ResourceLocation makeResource(String path) {
         return new ResourceLocation(MODID, path);
     }
@@ -82,8 +86,8 @@ public class GunsRPG {
         CapabilityManager.INSTANCE.register(IWorldData.class, new WorldDataStorage(), WorldData::new);
         SkillTreePlacement.generatePlacement();
         SmithingTableRecipes.register();
-        AmmoItem.init();
-        Hooks.initOre2ChunkMap();
+        modLifecycle.initWeaponProviderMap();
+        modLifecycle.initOreToChunkMap();
         MobSpawnManager.instance().initialize();
         BlastFurnaceRecipe.init();
     }
