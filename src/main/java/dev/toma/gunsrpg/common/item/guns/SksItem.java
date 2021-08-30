@@ -6,9 +6,10 @@ import dev.toma.gunsrpg.client.render.item.SksRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
+import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
@@ -21,8 +22,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.Map;
 
 public class SksItem extends GunItem {
 
@@ -43,14 +42,15 @@ public class SksItem extends GunItem {
     }
 
     @Override
-    public void fillAmmoMaterialData(Map<AmmoMaterial, Integer> data) {
-        data.put(AmmoMaterial.WOOD, 0);
-        data.put(AmmoMaterial.STONE, 2);
-        data.put(AmmoMaterial.IRON, 4);
-        data.put(AmmoMaterial.GOLD, 6);
-        data.put(AmmoMaterial.DIAMOND, 9);
-        data.put(AmmoMaterial.EMERALD, 11);
-        data.put(AmmoMaterial.AMETHYST, 14);
+    public void fillAmmoMaterialData(MaterialContainer container) {
+        container
+                .add(AmmoMaterials.WOOD, 0)
+                .add(AmmoMaterials.STONE, 2)
+                .add(AmmoMaterials.IRON, 4)
+                .add(AmmoMaterials.GOLD, 6)
+                .add(AmmoMaterials.DIAMOND, 9)
+                .add(AmmoMaterials.EMERALD, 11)
+                .add(AmmoMaterials.AMETHYST, 14);
     }
 
     @Override
@@ -61,11 +61,6 @@ public class SksItem extends GunItem {
     @Override
     protected SoundEvent getEntityShootSound(LivingEntity entity) {
         return ModSounds.SLR;
-    }
-
-    @Override
-    public SoundEvent getReloadSound(PlayerEntity player) {
-        return ModSounds.SKS_RELOAD;
     }
 
     @Override

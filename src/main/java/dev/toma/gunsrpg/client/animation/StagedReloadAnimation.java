@@ -1,15 +1,15 @@
 package dev.toma.gunsrpg.client.animation;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.GunsRPG;
 import lib.toma.animations.Interpolate;
 import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.IKeyframeProvider;
-import lib.toma.animations.engine.frame.SingleFrameProvider;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -19,16 +19,17 @@ public class StagedReloadAnimation implements IModifiableProgress {
     private final IKeyframeProvider baseProvider;
     private final BooleanSupplier finished;
     private final Supplier<Float> progressFetcher;
+    private final Map<AnimationStage, IKeyframe[]> frameCache;
+    private final Map<AnimationStage, Integer> cache = new HashMap<>();
     private final int indexShift;
     private float progress, progressOld, progressInterpolated;
     private int indexes;
 
     public StagedReloadAnimation(IKeyframeProvider provider, BooleanSupplier finished, Supplier<Float> progressFetcher) {
         this.baseProvider = provider;
+        this.frameCache = baseProvider.getFrameMap();
         this.finished = finished;
         this.progressFetcher = progressFetcher;
-        if (!(baseProvider instanceof SingleFrameProvider)) // TODO bake into single frame provider
-            GunsRPG.log.warn("Invalid keyframe provider for staged reload animation, expected single frame, got {}", provider.getClass().getSimpleName());
         Set<AnimationStage> stages = provider.getFrameMap().keySet();
         indexShift = stages.stream().mapToInt(AnimationStage::getIndex).min().orElse(0);
         for (AnimationStage stage : provider.getFrameMap().keySet()) {
@@ -44,7 +45,11 @@ public class StagedReloadAnimation implements IModifiableProgress {
 
     @Override
     public void renderTick(float deltaRenderTime) {
+        float old = progressInterpolated;
         progressInterpolated = Interpolate.linear(deltaRenderTime, progress, progressOld);
+        if (progressInterpolated != old) {
+            updateCache();
+        }
     }
 
     @Override
@@ -71,5 +76,24 @@ public class StagedReloadAnimation implements IModifiableProgress {
     private boolean containsIndex(int index) {
         int value = 1 << index;
         return (indexes & value) == value;
+    }
+
+    private void updateCache() {
+        for (Map.Entry<AnimationStage, IKeyframe[]> entry : frameCache.entrySet()) {
+            AnimationStage stage = entry.getKey();
+            IKeyframe[] frames = entry.getValue();
+            int index = cache.computeIfAbsent(stage, k -> 0);
+            IKeyframe current = frames[index];
+            float end = current.endpoint();
+            if (progressInterpolated > end) {
+                cache.put(stage, Math.min(frames.length - 1, index + 1));
+            } else if (index > 1) {
+                IKeyframe prev = frames[index - 1];
+                float endO = prev.endpoint();
+                if (progressInterpolated <= endO) {
+                    cache.put(stage, index - 1);
+                }
+            }
+        }
     }
 }

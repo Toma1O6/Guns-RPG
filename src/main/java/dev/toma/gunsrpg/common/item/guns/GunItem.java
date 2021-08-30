@@ -7,14 +7,17 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.item.BaseItem;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterialManager;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
+import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
+import dev.toma.gunsrpg.util.object.RGB2TextFormatting;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.AnimationList;
 import lib.toma.animations.api.IAnimationEntry;
@@ -28,22 +31,25 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public abstract class GunItem extends BaseItem implements IAnimationEntry {
 
     protected static Random random = new Random();
     protected final GunType gunType;
-    protected final Map<AmmoMaterial, Integer> materialDamageBonusMap;
+    private final MaterialContainer container = new MaterialContainer();
 
     public GunItem(String name, GunType type, Properties properties) {
         super(name, properties.tab(ModTabs.ITEM_TAB).stacksTo(1));
         this.gunType = type;
-        this.fillAmmoMaterialData(materialDamageBonusMap = new HashMap<>());
+        this.fillAmmoMaterialData(container);
     }
 
     public final SoundEvent getWeaponShootSound(LivingEntity entity) {
@@ -57,7 +63,7 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
 
     public abstract IWeaponConfig getWeaponConfig();
 
-    public abstract void fillAmmoMaterialData(Map<AmmoMaterial, Integer> data);
+    public abstract void fillAmmoMaterialData(MaterialContainer container);
 
     @OnlyIn(Dist.CLIENT)
     public abstract ResourceLocation getReloadAnimation(PlayerEntity player);
@@ -67,10 +73,6 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
     }
 
     protected SoundEvent getEntityShootSound(LivingEntity entity) {
-        return SoundEvents.LEVER_CLICK;
-    }
-
-    public SoundEvent getReloadSound(PlayerEntity player) {
         return SoundEvents.LEVER_CLICK;
     }
 
@@ -98,7 +100,6 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
         ResourceLocation bulletEjectPath = getBulletEjectAnimationPath();
         BulletEjectAnimation animation = AnimationUtils.createAnimation(bulletEjectPath, BulletEjectAnimation::new);
         AnimationList.enqueue(ModAnimations.BULLET_EJECTION, animation);
-        // TODO recoil animation
     }
 
     @Override
@@ -185,9 +186,8 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
     }
 
     public final int getDamageBonus(ItemStack stack) {
-        AmmoMaterial material = this.getMaterialFromNBT(stack);
-        Integer v = material != null ? materialDamageBonusMap.get(material) : 0;
-        return v == null ? 0 : v;
+        IAmmoMaterial material = this.getMaterialFromNBT(stack);
+        return material != null ? container.getAdditionalDamage(material) : 0;
     }
 
     public AmmoType getAmmoType() {
@@ -208,11 +208,11 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
         stack.setTag(nbt);
     }
 
-    public AmmoMaterial getMaterialFromNBT(ItemStack stack) {
+    public IAmmoMaterial getMaterialFromNBT(ItemStack stack) {
         this.createNBT(stack);
         CompoundNBT nbt = stack.getTag();
-        int id = Math.max(0, Math.min(AmmoMaterial.values().length, nbt.getInt("material")));
-        return nbt.contains("material") ? AmmoMaterial.values()[id] : null;
+        AmmoMaterialManager materialManager = AmmoMaterialManager.get();
+        return materialManager.parse(nbt);
     }
 
     public int getAmmo(ItemStack stack) {
@@ -232,8 +232,9 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
 
     @Override
     public void appendHoverText(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flags) {
-        AmmoMaterial material = getMaterialFromNBT(stack);
-        list.add(new StringTextComponent("Ammo type: " + (material != null ? material.getColor() + material.name().toUpperCase() : "???")));
+        IAmmoMaterial material = getMaterialFromNBT(stack);
+        TextFormatting formatting = material != null ? RGB2TextFormatting.getClosestFormat(material.getTextColor()) : TextFormatting.GRAY;
+        list.add(new StringTextComponent("Ammo material: " + formatting + (material != null ? material.getDisplayName().getString() : "???")));
     }
 
     @Override
@@ -246,7 +247,11 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
         return false;
     }
 
-    public final Set<AmmoMaterial> getCompatibleMaterials() {
-        return materialDamageBonusMap.keySet();
+    public final Set<IAmmoMaterial> getCompatibleMaterials() {
+        return container.getCompatible();
+    }
+
+    public MaterialContainer getContainer() {
+        return container;
     }
 }

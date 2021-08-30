@@ -3,8 +3,8 @@ package dev.toma.gunsrpg.common.item.guns.reload;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.animation.ReloadAnimation;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
@@ -52,7 +52,8 @@ public class FullReloader implements IReloader {
 
     @Override
     public void tick(PlayerEntity player) {
-        if (--ticksLeft <= 0) {
+        if (reloading && --ticksLeft <= 0) {
+            reloading = false;
             onReload(player);
         }
     }
@@ -63,22 +64,26 @@ public class FullReloader implements IReloader {
         int currentAmmo = gun.getAmmo(stack);
         int toLoad = weaponLimit - currentAmmo;
         AmmoType ammoType = gun.getAmmoType();
-        AmmoMaterial material = gun.getMaterialFromNBT(stack);
+        IAmmoMaterial material = gun.getMaterialFromNBT(stack);
         PlayerInventory inventory = player.inventory;
-        for (int i = 0; i < inventory.getContainerSize(); i++) {
-            ItemStack stack = inventory.getItem(i);
-            if (stack.getItem() instanceof IAmmoProvider) {
-                IAmmoProvider provider = (IAmmoProvider) stack.getItem();
-                if (provider.getAmmoType() == ammoType && provider.getMaterial() == material) {
-                    int count = stack.getCount();
-                    int load = Math.min(toLoad, count);
-                    toLoad -= load;
-                    stack.shrink(load);
-                }
-                if (toLoad <= 0) {
-                    break;
+        if (!player.isCreative()) {
+            for (int i = 0; i < inventory.getContainerSize(); i++) {
+                ItemStack stack = inventory.getItem(i);
+                if (stack.getItem() instanceof IAmmoProvider) {
+                    IAmmoProvider provider = (IAmmoProvider) stack.getItem();
+                    if (provider.getAmmoType() == ammoType && provider.getMaterial() == material) {
+                        int count = stack.getCount();
+                        int load = Math.min(toLoad, count);
+                        toLoad -= load;
+                        stack.shrink(load);
+                    }
+                    if (toLoad <= 0) {
+                        break;
+                    }
                 }
             }
+        } else {
+            toLoad = 0;
         }
         gun.setAmmoCount(stack, weaponLimit - toLoad);
     }

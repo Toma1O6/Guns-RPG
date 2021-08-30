@@ -7,9 +7,10 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.BulletEntity;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
+import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
@@ -25,8 +26,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.Map;
 
 public class M1911Item extends GunItem {
 
@@ -50,14 +49,15 @@ public class M1911Item extends GunItem {
     }
 
     @Override
-    public void fillAmmoMaterialData(Map<AmmoMaterial, Integer> data) {
-        data.put(AmmoMaterial.WOOD, 0);
-        data.put(AmmoMaterial.STONE, 1);
-        data.put(AmmoMaterial.IRON, 3);
-        data.put(AmmoMaterial.GOLD, 4);
-        data.put(AmmoMaterial.DIAMOND, 6);
-        data.put(AmmoMaterial.EMERALD, 8);
-        data.put(AmmoMaterial.AMETHYST, 11);
+    public void fillAmmoMaterialData(MaterialContainer container) {
+        container
+                .add(AmmoMaterials.WOOD, 0)
+                .add(AmmoMaterials.STONE, 1)
+                .add(AmmoMaterials.IRON, 3)
+                .add(AmmoMaterials.GOLD, 4)
+                .add(AmmoMaterials.DIAMOND, 6)
+                .add(AmmoMaterials.EMERALD, 8)
+                .add(AmmoMaterials.AMETHYST, 11);
     }
 
     @Override
@@ -81,11 +81,6 @@ public class M1911Item extends GunItem {
     @Override
     protected SoundEvent getEntityShootSound(LivingEntity entity) {
         return ModSounds.M9;
-    }
-
-    @Override
-    public SoundEvent getReloadSound(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.M1911_QUICKDRAW) ? ModSounds.M1911_RELOAD_SHORT : ModSounds.M1911_RELOAD;
     }
 
     @Override

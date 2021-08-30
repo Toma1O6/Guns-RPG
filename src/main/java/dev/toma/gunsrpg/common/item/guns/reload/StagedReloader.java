@@ -6,6 +6,9 @@ import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.animation.ReloadAnimation;
 import dev.toma.gunsrpg.client.animation.StagedReloadAnimation;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoMaterial;
+import dev.toma.gunsrpg.util.AmmoLocator;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.IAnimationLoader;
 import lib.toma.animations.api.IAnimationPipeline;
@@ -23,6 +26,7 @@ import java.util.List;
 public class StagedReloader implements IReloader {
 
     private final StageDefinitionContainer container;
+    private final AmmoLocator locator = new AmmoLocator();
 
     private GunItem reloadingGun;
     private ItemStack stack;
@@ -48,7 +52,7 @@ public class StagedReloader implements IReloader {
 
     @Override
     public boolean isReloading() {
-        return false;
+        return !container.hasFinished();
     }
 
     @Override
@@ -58,16 +62,28 @@ public class StagedReloader implements IReloader {
 
     @Override
     public void forceCancel() {
-
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> this::cancelAnimations);
     }
 
     @Override
     public void tick(PlayerEntity player) {
-
+        container.tick(player);
     }
 
     private void loadBullet(PlayerEntity player) {
-
+        if (!(stack.getItem() instanceof GunItem)) return;
+        int max = reloadingGun.getMaxAmmo(player);
+        AmmoType type = reloadingGun.getAmmoType();
+        IAmmoMaterial material = reloadingGun.getMaterialFromNBT(stack);
+        if (player.isCreative()) {
+            reloadingGun.setAmmoCount(stack, Math.min(reloadingGun.getAmmo(stack) + 1, max));
+        } else {
+            ItemStack ammo = locator.findFirst(player.inventory, AmmoLocator.ISearchConstraint.typeAndMaterial(type, material));
+            if (!ammo.isEmpty()) {
+                ammo.shrink(1);
+                reloadingGun.setAmmoCount(stack, Math.min(reloadingGun.getAmmo(stack) + 1, max));
+            }
+        }
     }
 
     private void stageFinished(PlayerEntity player, IReloadingStage stage, boolean wasLast) {
@@ -75,6 +91,13 @@ public class StagedReloader implements IReloader {
         if (type == ReloadingStageType.LOADING) {
             loadBullet(player);
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void cancelAnimations() {
+        IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
+        pipeline.remove(ModAnimations.RELOAD);
+        pipeline.remove(ModAnimations.RELOAD_BULLET);
     }
 
     public interface IReloadingStage {
@@ -207,6 +230,7 @@ public class StagedReloader implements IReloader {
 
         public void clientInit(ResourceLocation reloadAnimation) {
             definitions[0].initClient(reloadAnimation, this);
+            definitions[definitions.length - 1].initClient(reloadAnimation, this);
         }
 
         public void init(int reloadTime) {
@@ -253,13 +277,12 @@ public class StagedReloader implements IReloader {
         public float getPreparationProgress() {
             IReloadingStage stage = getCurrent();
             boolean isPrepStage = stage.stageType() == ReloadingStageType.PREPARATION;
-            float progress = 1.0F;
             if (isPrepStage) {
                 PreparationStage preparationStage = (PreparationStage) stage;
                 float stageProgress = preparationStage.remainingTicks() / (float) preparationStageLength;
-                progress = preparationStage.inverseProgress ? stageProgress : 1.0F - stageProgress;
+                return 1.0F - stageProgress;
             }
-            return progress;
+            return 1.0F;
         }
 
         private boolean canAdvance() {

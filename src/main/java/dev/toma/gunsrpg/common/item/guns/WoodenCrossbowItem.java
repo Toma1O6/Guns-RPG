@@ -9,14 +9,14 @@ import dev.toma.gunsrpg.common.entity.CrossbowBoltEntity;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
+import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
-import lib.toma.animations.engine.RenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -24,12 +24,9 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.Map;
 
 public class WoodenCrossbowItem extends GunItem {
 
@@ -98,23 +95,20 @@ public class WoodenCrossbowItem extends GunItem {
     }
 
     @Override
-    public void fillAmmoMaterialData(Map<AmmoMaterial, Integer> data) {
-        data.put(AmmoMaterial.STONE, 3);
-        data.put(AmmoMaterial.IRON, 6);
-        data.put(AmmoMaterial.GOLD, 9);
-        data.put(AmmoMaterial.DIAMOND, 14);
-        data.put(AmmoMaterial.EMERALD, 16);
-        data.put(AmmoMaterial.AMETHYST, 20);
+    public void fillAmmoMaterialData(MaterialContainer container) {
+        container
+                .add(AmmoMaterials.WOOD, 0)
+                .add(AmmoMaterials.STONE, 3)
+                .add(AmmoMaterials.IRON, 6)
+                .add(AmmoMaterials.GOLD, 9)
+                .add(AmmoMaterials.DIAMOND, 14)
+                .add(AmmoMaterials.EMERALD, 16)
+                .add(AmmoMaterials.AMETHYST, 20);
     }
 
     @Override
     public IWeaponConfig getWeaponConfig() {
         return ModConfig.weaponConfig.crossbow;
-    }
-
-    @Override
-    public SoundEvent getReloadSound(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.CROSSBOW_QUIVER) ? ModSounds.CROSSBOW_RELOAD_FAST : ModSounds.CROSSBOW_RELOAD;
     }
 
     @Override

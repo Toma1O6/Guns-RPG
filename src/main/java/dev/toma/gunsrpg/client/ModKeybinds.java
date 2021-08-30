@@ -6,8 +6,8 @@ import dev.toma.gunsrpg.client.screen.skills.PlayerSkillsScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -67,7 +67,7 @@ public class ModKeybinds {
                     }
                 }
                 AmmoType ammoType = gun.getAmmoType();
-                AmmoMaterial material = gun.getMaterialFromNBT(stack);
+                IAmmoMaterial material = gun.getMaterialFromNBT(stack);
                 if (material != null) {
                     int ammo = gun.getAmmo(stack);
                     int max = gun.getMaxAmmo(player);
@@ -76,13 +76,14 @@ public class ModKeybinds {
                     if (!reloading && ammo < max) {
                         if (skip) {
                             info.startReloading(player, gun, stack, player.inventory.selected);
+                            NetworkManager.sendServerPacket(new SPacketSetReloading(true, gun.getReloadTime(player)));
                             return;
                         }
                         for (int i = 0; i < player.inventory.getContainerSize(); i++) {
                             ItemStack itemStack = player.inventory.getItem(i);
                             if (itemStack.getItem() instanceof IAmmoProvider) {
                                 IAmmoProvider itemAmmo = (IAmmoProvider) itemStack.getItem();
-                                if (itemAmmo.getAmmoType() == ammoType && itemAmmo.getMaterial() == material) {
+                                if (itemAmmo.getAmmoType() == ammoType && itemAmmo.getMaterial().equals(material)) {
                                     int time = gun.getReloadTime(player);
                                     info.startReloading(player, gun, stack, player.inventory.selected);
                                     NetworkManager.sendServerPacket(new SPacketSetReloading(true, time));

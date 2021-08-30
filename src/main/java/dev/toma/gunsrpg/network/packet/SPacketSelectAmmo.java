@@ -2,7 +2,8 @@ package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterialManager;
+import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import dev.toma.gunsrpg.util.AmmoLocator;
@@ -13,30 +14,28 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SPacketSelectAmmo extends AbstractNetworkPacket<SPacketSelectAmmo> {
 
-    private AmmoMaterial material;
+    private IAmmoMaterial material;
 
     public SPacketSelectAmmo() {
     }
 
-    public SPacketSelectAmmo(AmmoMaterial material) {
+    public SPacketSelectAmmo(IAmmoMaterial material) {
         this.material = material;
     }
 
     @Override
     public void encode(PacketBuffer buffer) {
-        buffer.writeVarInt(material.ordinal());
+        buffer.writeResourceLocation(material.getMaterialID());
     }
 
     @Override
     public SPacketSelectAmmo decode(PacketBuffer buffer) {
-        AmmoMaterial[] materials = AmmoMaterial.values();
-        int index = MathHelper.clamp(buffer.readVarInt(), 0, materials.length - 1);
-        return new SPacketSelectAmmo(materials[index]);
+        IAmmoMaterial material = AmmoMaterialManager.get().findMaterial(buffer.readResourceLocation());
+        return new SPacketSelectAmmo(material);
     }
 
     @Override
@@ -46,12 +45,12 @@ public class SPacketSelectAmmo extends AbstractNetworkPacket<SPacketSelectAmmo> 
         if (stack.getItem() instanceof GunItem) {
             GunItem gun = (GunItem) stack.getItem();
             int ammo = gun.getAmmo(stack);
-            AmmoMaterial oldMaterial = gun.getMaterialFromNBT(stack);
+            IAmmoMaterial oldMaterial = gun.getMaterialFromNBT(stack);
             if (oldMaterial != null && ammo > 0) {
                 clearWeapon(player, gun, stack, ammo);
             }
             CompoundNBT data = stack.getTag();
-            data.putInt("material", material.ordinal());
+            data.putString("material", material.getMaterialID().toString());
         }
     }
 

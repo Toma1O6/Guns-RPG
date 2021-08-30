@@ -6,9 +6,9 @@ import dev.toma.gunsrpg.common.item.BaseItem;
 public class AmmoItem extends BaseItem implements IAmmoProvider {
 
     private final AmmoType ammoType;
-    private final AmmoMaterial material;
+    private final IAmmoMaterial material;
 
-    public AmmoItem(String name, AmmoType ammoType, AmmoMaterial material) {
+    public AmmoItem(String name, AmmoType ammoType, IAmmoMaterial material) {
         super(name, new Properties().tab(ModTabs.ITEM_TAB));
         this.material = material;
         this.ammoType = ammoType;
@@ -20,7 +20,7 @@ public class AmmoItem extends BaseItem implements IAmmoProvider {
     }
 
     @Override
-    public AmmoMaterial getMaterial() {
+    public IAmmoMaterial getMaterial() {
         return material;
     }
 }

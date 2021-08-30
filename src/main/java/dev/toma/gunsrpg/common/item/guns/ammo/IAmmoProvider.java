@@ -4,5 +4,5 @@ public interface IAmmoProvider {
 
     AmmoType getAmmoType();
 
-    AmmoMaterial getMaterial();
+    IAmmoMaterial getMaterial();
 }

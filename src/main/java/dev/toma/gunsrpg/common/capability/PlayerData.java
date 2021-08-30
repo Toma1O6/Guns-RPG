@@ -90,7 +90,7 @@ public class PlayerData implements IPlayerData {
         World world = player.level;
         this.debuffData.tick(player, this);
         this.aimInfo.update();
-        this.reloadInfo.update();
+        this.reloadInfo.tick();
         this.playerSkills.update();
         if (!world.isClientSide && reducedHealthTimer > 0) {
             --reducedHealthTimer;
@@ -173,7 +173,6 @@ public class PlayerData implements IPlayerData {
         nbt.put("permanent", writePermanentData());
         nbt.put("debuffs", debuffData.serializeNBT());
         nbt.put("aimData", aimInfo.write());
-        nbt.put("reloadData", reloadInfo.write());
         nbt.put("playerSkills", playerSkills.writeData());
         nbt.putInt("healthCooldown", reducedHealthTimer);
         return nbt;
@@ -184,7 +183,6 @@ public class PlayerData implements IPlayerData {
         if (nbt.contains("permanent")) readPermanentData(nbt.getCompound("permanent"));
         debuffData.deserializeNBT(nbt.contains("debuffs", Constants.NBT.TAG_LIST) ? nbt.getList("debuffs", Constants.NBT.TAG_COMPOUND) : new ListNBT());
         aimInfo.read(this.findNBTTag("aimData", nbt));
-        reloadInfo.read(this.findNBTTag("reloadData", nbt));
         playerSkills.readData(this.findNBTTag("playerSkills", nbt));
         reducedHealthTimer = nbt.getInt("healthCooldown");
     }

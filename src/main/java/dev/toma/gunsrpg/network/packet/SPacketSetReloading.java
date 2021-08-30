@@ -2,8 +2,10 @@ package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
+import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -36,10 +38,15 @@ public class SPacketSetReloading extends AbstractNetworkPacket<SPacketSetReloadi
         ServerPlayerEntity player = context.getSender();
         PlayerData.get(player).ifPresent(data -> {
             ReloadInfo info = data.getReloadInfo();
-            if (reloading)
-                info.startReloading(player.inventory.selected, time);
-            else
-                info.cancelReload();
+            ItemStack stack = player.getMainHandItem();
+            if (stack.getItem() instanceof GunItem) {
+                GunItem gun = (GunItem) stack.getItem();
+                if (reloading) {
+                    info.startReloading(player, gun, stack, player.inventory.selected);
+                } else {
+                    info.enqueueCancel();
+                }
+            }
             data.sync();
         });
     }

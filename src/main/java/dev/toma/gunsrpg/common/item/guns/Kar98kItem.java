@@ -6,10 +6,11 @@ import dev.toma.gunsrpg.client.render.item.Kar98kRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
+import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.gun.IWeaponConfig;
@@ -27,8 +28,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.Map;
 
 public class Kar98kItem extends GunItem {
 
@@ -50,14 +49,15 @@ public class Kar98kItem extends GunItem {
     }
 
     @Override
-    public void fillAmmoMaterialData(Map<AmmoMaterial, Integer> data) {
-        data.put(AmmoMaterial.WOOD, 0);
-        data.put(AmmoMaterial.STONE, 4);
-        data.put(AmmoMaterial.IRON, 9);
-        data.put(AmmoMaterial.GOLD, 13);
-        data.put(AmmoMaterial.DIAMOND, 17);
-        data.put(AmmoMaterial.EMERALD, 20);
-        data.put(AmmoMaterial.AMETHYST, 25);
+    public void fillAmmoMaterialData(MaterialContainer container) {
+        container
+                .add(AmmoMaterials.WOOD, 0)
+                .add(AmmoMaterials.STONE, 4)
+                .add(AmmoMaterials.IRON, 9)
+                .add(AmmoMaterials.GOLD, 13)
+                .add(AmmoMaterials.DIAMOND, 17)
+                .add(AmmoMaterials.EMERALD, 20)
+                .add(AmmoMaterials.AMETHYST, 25);
     }
 
     @Override
@@ -78,18 +78,6 @@ public class Kar98kItem extends GunItem {
     @Override
     protected SoundEvent getEntityShootSound(LivingEntity entity) {
         return ModSounds.M24;
-    }
-
-    @Override
-    public SoundEvent getReloadSound(PlayerEntity player) {
-        ItemStack stack = player.getMainHandItem();
-        if (stack.getItem() == this) {
-            int ammo = getAmmo(stack);
-            if (ammo == 0) {
-                return PlayerData.hasActiveSkill(player, Skills.KAR98K_FAST_HANDS) ? ModSounds.KAR98K_RELOAD_CLIP_FAST : ModSounds.KAR98K_RELOAD_CLIP;
-            }
-        }
-        return PlayerData.hasActiveSkill(player, Skills.KAR98K_FAST_HANDS) ? ModSounds.KAR98K_RELOAD_SHORT : ModSounds.KAR98K_RELOAD;
     }
 
     @Override

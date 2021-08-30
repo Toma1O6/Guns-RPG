@@ -3,8 +3,8 @@ package dev.toma.gunsrpg.util;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
@@ -32,7 +32,7 @@ public final class Lifecycle {
         List<IAmmoProvider> ammoProviders = items.stream().filter(it -> it instanceof IAmmoProvider).map(it -> (IAmmoProvider) it).collect(Collectors.toList());
         for (GunItem weapon : weapons) {
             AmmoType type = weapon.getAmmoType();
-            Set<AmmoMaterial> materials = weapon.getCompatibleMaterials();
+            Set<IAmmoMaterial> materials = weapon.getCompatibleMaterials();
             IAmmoProvider[] providers = ammoProviders.stream()
                     .filter(provider -> provider.getAmmoType() == type && materials.contains(provider.getMaterial()))
                     .toArray(IAmmoProvider[]::new);
@@ -54,7 +54,7 @@ public final class Lifecycle {
 
     @Nullable
     public IAmmoProvider getAmmoForWeapon(GunItem item, ItemStack stack) {
-        AmmoMaterial material = item.getMaterialFromNBT(stack);
+        IAmmoMaterial material = item.getMaterialFromNBT(stack);
         if (material == null) return null;
         AmmoType ammoType = item.getAmmoType();
         AmmoLocator.ISearchConstraint constraint = AmmoLocator.ISearchConstraint.typeAndMaterial(ammoType, material);

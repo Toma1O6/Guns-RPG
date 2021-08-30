@@ -6,5 +6,7 @@ public enum AmmoType {
     _556MM,
     _762MM,
     _12G,
-    CROSSBOW
+    CROSSBOW,
+    GRENADE,
+    ROCKET
 }

@@ -5,7 +5,9 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
+import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSelectAmmo;
 import dev.toma.gunsrpg.util.AmmoLocator;
@@ -19,6 +21,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -69,7 +72,7 @@ public class ChooseAmmoScreen extends Screen {
 
         private final IAmmoProvider ammo;
         private final int count;
-        private final int requiredLevel;
+        private int requiredLevel;
         private ItemStack stack;
 
         public AmmoButton(int x, int y, IAmmoProvider ammo) {
@@ -77,16 +80,19 @@ public class ChooseAmmoScreen extends Screen {
             this.ammo = ammo;
             PlayerEntity player = Minecraft.getInstance().player;
             ItemStack stack = player.getMainHandItem();
-            this.count = new AmmoLocator().count(player.inventory, provider -> provider.equals(ammo));
-            this.requiredLevel = ammo.getMaterial().ordinal() + 1;
             boolean isGun = stack.getItem() instanceof GunItem;
+            this.count = new AmmoLocator().count(player.inventory, provider -> provider.equals(ammo));
             this.active = false;
-            this.stack = ItemStack.EMPTY;
+            this.stack = new ItemStack((Item) ammo);
             PlayerData.get(player).ifPresent(data -> {
                 PlayerSkills skills = data.getSkills();
-                GunItem gun = (GunItem) stack.getItem();
-                active = isGun && skills.hasSkill(gun.getRequiredSkill()) && skills.getGunData(gun).getLevel() >= requiredLevel;
-                this.stack = new ItemStack((Item) ammo);
+                if (isGun) {
+                    GunItem gun = (GunItem) stack.getItem();
+                    MaterialContainer container = gun.getContainer();
+                    int weaponLevel = skills.getGunData(gun).getLevel();
+                    requiredLevel = container.getRequiredLevel(ammo.getMaterial());
+                    active = skills.hasSkill(gun.getRequiredSkill()) && weaponLevel >= requiredLevel;
+                }
             });
         }
 
@@ -104,9 +110,10 @@ public class ChooseAmmoScreen extends Screen {
             }
             mc.getItemRenderer().renderGuiItem(stack, x + 8, y + 8);
             int countWidth = font.width(String.valueOf(count)) / 2;
-            String name = ammo.getMaterial().name();
+            IAmmoMaterial material = ammo.getMaterial();
+            ITextComponent name = material.getDisplayName();
             int nameWidth = font.width(name) / 2;
-            font.drawShadow(matrix, ammo.getMaterial().getColor() + name, x + 16 - nameWidth, y + height + 1, 0xffffff);
+            font.drawShadow(matrix, name, x + 16 - nameWidth, y + height + 1, material.getTextColor());
             font.drawShadow(matrix, count + "", x + 24 - countWidth, y + height - 8, 0xffffff);
             if (isHovered && !active) {
                 String text = String.format("Requires your weapon on level %d", requiredLevel);
