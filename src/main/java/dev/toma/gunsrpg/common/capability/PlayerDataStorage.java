@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.capability;
 
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;

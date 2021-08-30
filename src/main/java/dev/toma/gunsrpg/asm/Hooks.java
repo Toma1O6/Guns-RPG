@@ -1,10 +1,9 @@
 package dev.toma.gunsrpg.asm;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.capability.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
-import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
 import dev.toma.gunsrpg.common.skills.MotherlodeSkill;
@@ -14,7 +13,6 @@ import dev.toma.gunsrpg.util.object.Pair;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.Attributes;

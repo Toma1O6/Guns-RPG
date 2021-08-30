@@ -1,5 +1,6 @@
-package dev.toma.gunsrpg.world.cap.events;
+package dev.toma.gunsrpg.api.common.data;
 
+import dev.toma.gunsrpg.world.cap.events.WorldEventSpec;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.INBTSerializable;

@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.skills.interfaces;
+package dev.toma.gunsrpg.api.common;
 
 import net.minecraft.entity.player.PlayerEntity;
 

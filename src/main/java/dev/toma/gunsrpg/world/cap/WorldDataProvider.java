@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.world.cap;
 
+import dev.toma.gunsrpg.api.common.data.IWorldData;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;

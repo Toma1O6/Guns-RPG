@@ -1,15 +1,15 @@
 package dev.toma.gunsrpg.client;
 
+import dev.toma.gunsrpg.api.common.data.IReloadInfo;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.screen.ChooseAmmoScreen;
 import dev.toma.gunsrpg.client.screen.skills.PlayerSkillsScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoMaterial;
-import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
-import dev.toma.gunsrpg.common.item.guns.reload.IReloadManager;
+import dev.toma.gunsrpg.api.common.IAmmoMaterial;
+import dev.toma.gunsrpg.api.common.IAmmoProvider;
+import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketChangeFiremode;
 import dev.toma.gunsrpg.network.packet.SPacketRequestDataUpdate;
@@ -46,7 +46,7 @@ public class ModKeybinds {
     private static void reloadPressed() {
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
-        ReloadInfo info = PlayerData.getUnsafe(player).getReloadInfo();
+        IReloadInfo info = PlayerData.getUnsafe(player).getReloadInfo();
         ItemStack stack = player.getMainHandItem();
         if (player.isCrouching()) {
             if (stack.getItem() instanceof GunItem) {

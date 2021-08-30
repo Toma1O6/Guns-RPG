@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.debuffs;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.common.capability.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,6 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
+// TODO rework
 public abstract class Debuff implements INBTSerializable<CompoundNBT> {
 
     public static final DamageSource POISON_DAMAGE = new DamageSource("poison").bypassArmor();

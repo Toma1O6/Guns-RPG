@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.network;
 
+import dev.toma.gunsrpg.api.common.INetworkPacket;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;

@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.skills.criteria;
 
-import dev.toma.gunsrpg.common.capability.IPlayerData;
+import dev.toma.gunsrpg.api.common.IUnlockCriteria;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 

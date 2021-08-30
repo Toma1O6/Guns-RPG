@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns.ammo;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 

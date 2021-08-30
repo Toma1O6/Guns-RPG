@@ -1,4 +1,6 @@
-package dev.toma.gunsrpg.common.item.guns.reload;
+package dev.toma.gunsrpg.api.common;
+
+import dev.toma.gunsrpg.api.common.IReloader;
 
 public interface IReloadManager {
 

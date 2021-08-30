@@ -2,9 +2,9 @@ package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModRegistries;
-import dev.toma.gunsrpg.common.skills.core.ISkill;
+import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.common.skills.interfaces.IClickableSkill;
+import dev.toma.gunsrpg.api.common.IClickableSkill;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.entity.player.ServerPlayerEntity;

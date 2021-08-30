@@ -4,6 +4,7 @@ import dev.toma.configuration.api.IConfigWriter;
 import dev.toma.configuration.api.IObjectSpec;
 import dev.toma.configuration.api.type.IntType;
 import dev.toma.configuration.api.type.ObjectType;
+import dev.toma.gunsrpg.api.common.IGeneratorConfig;
 
 public class SimpleOreGenConfig extends ObjectType implements IGeneratorConfig {
 

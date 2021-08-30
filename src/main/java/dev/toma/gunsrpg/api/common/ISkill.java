@@ -1,5 +1,6 @@
-package dev.toma.gunsrpg.common.skills.core;
+package dev.toma.gunsrpg.api.common;
 
+import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 

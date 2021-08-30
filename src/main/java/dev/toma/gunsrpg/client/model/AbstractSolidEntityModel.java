@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.client.model;
 
+import dev.toma.gunsrpg.api.client.IRotatableRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;

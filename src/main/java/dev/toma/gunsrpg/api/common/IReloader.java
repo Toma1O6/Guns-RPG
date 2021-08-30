@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.item.guns.reload;
+package dev.toma.gunsrpg.api.common;
 
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import net.minecraft.entity.player.PlayerEntity;

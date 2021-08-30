@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.animation;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.api.client.IModifiableProgress;
 import lib.toma.animations.Interpolate;
 import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.AnimationStage;

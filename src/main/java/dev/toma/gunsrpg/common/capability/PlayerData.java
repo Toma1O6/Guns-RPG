@@ -1,12 +1,15 @@
 package dev.toma.gunsrpg.common.capability;
 
+import dev.toma.gunsrpg.api.common.data.IAimInfo;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IReloadInfo;
 import dev.toma.gunsrpg.common.capability.object.AimInfo;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
-import dev.toma.gunsrpg.common.skills.core.ISkill;
+import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -114,12 +117,12 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public AimInfo getAimInfo() {
+    public IAimInfo getAimInfo() {
         return aimInfo;
     }
 
     @Override
-    public ReloadInfo getReloadInfo() {
+    public IReloadInfo getReloadInfo() {
         return reloadInfo;
     }
 

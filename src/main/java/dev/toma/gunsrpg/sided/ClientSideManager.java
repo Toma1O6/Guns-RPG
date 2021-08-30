@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.sided;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.ClientEventHandler;
 import dev.toma.gunsrpg.client.ModKeybinds;
 import dev.toma.gunsrpg.client.render.*;
@@ -9,7 +10,6 @@ import dev.toma.gunsrpg.client.screen.BlastFurnaceScreen;
 import dev.toma.gunsrpg.client.screen.DeathCrateScreen;
 import dev.toma.gunsrpg.client.screen.SmithingTableScreen;
 import dev.toma.gunsrpg.client.screen.skills.PlayerSkillsScreen;
-import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.init.ModEntities;
@@ -85,7 +85,7 @@ public class ClientSideManager {
             if (mc.screen instanceof PlayerSkillsScreen) {
                 mc.screen.init(mc, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight());
             }
-            if (!PlayerData.getUnsafe(mc.player).getAimInfo().aiming) {
+            if (!PlayerData.getUnsafe(mc.player).getAimInfo().startedAiming()) {
                 ClientEventHandler.preAimFov.ifPresent(value -> mc.options.fov = value);
                 ClientEventHandler.preAimSens.ifPresent(value -> mc.options.sensitivity = value);
             }

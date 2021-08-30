@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.config.world;
+package dev.toma.gunsrpg.api.common;
 
 public interface IGeneratorConfig {
 

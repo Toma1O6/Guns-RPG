@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.config.gun;
 import dev.toma.configuration.api.IConfigWriter;
 import dev.toma.configuration.api.IObjectSpec;
 import dev.toma.configuration.api.type.ObjectType;
+import dev.toma.gunsrpg.api.common.IWeaponConfig;
 
 public class WeaponConfig extends ObjectType {
 

@@ -3,12 +3,12 @@ package dev.toma.gunsrpg.client;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IAimInfo;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.AimAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.animation.RecoilAnimation;
-import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.AimInfo;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.GunData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
@@ -16,11 +16,11 @@ import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoProvider;
+import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
-import dev.toma.gunsrpg.common.skills.core.ISkill;
+import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
-import dev.toma.gunsrpg.common.skills.interfaces.IOverlayRender;
+import dev.toma.gunsrpg.api.common.IOverlayRender;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -212,7 +212,7 @@ public class ClientEventHandler {
                     }
                 } else if (settings.keyUse.isDown() && pipeline.get(ModAnimations.CHAMBER) == null && !player.isSprinting()) {
                     LazyOptional<IPlayerData> optional = PlayerData.get(player);
-                    boolean aim = optional.isPresent() && optional.orElse(null).getAimInfo().aiming;
+                    boolean aim = optional.isPresent() && optional.orElse(null).getAimInfo().startedAiming();
                     if (!aim) {
                         preAimFov.map(settings.fov);
                         preAimSens.map(settings.sensitivity);
@@ -251,7 +251,7 @@ public class ClientEventHandler {
             event.setCanceled(true);
         } else {
             IPlayerData data = optional.orElse(null);
-            AimInfo info = data.getAimInfo();
+            IAimInfo info = data.getAimInfo();
             ScopeRenderer renderer = ModConfig.clientConfig.scopeRenderer.get();
             Item item = stack.getItem();
             if (info.isAiming() && renderer == ScopeRenderer.TEXTURE && (PlayerData.hasActiveSkill(player, Skills.KAR98K_SCOPE) && item == ModItems.KAR98K || PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) && item == ModItems.WOODEN_CROSSBOW)) {

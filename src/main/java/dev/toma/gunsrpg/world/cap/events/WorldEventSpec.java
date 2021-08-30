@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.world.cap.events;
 
+import dev.toma.gunsrpg.api.common.data.IWorldEventHandler;
+import dev.toma.gunsrpg.api.common.data.IWorldEventSpec;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 

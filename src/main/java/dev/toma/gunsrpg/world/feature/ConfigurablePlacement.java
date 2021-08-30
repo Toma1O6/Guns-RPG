@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.world.feature;
 
 import com.mojang.serialization.Codec;
-import dev.toma.gunsrpg.config.world.IGeneratorConfig;
+import dev.toma.gunsrpg.api.common.IGeneratorConfig;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraft.world.gen.placement.SimplePlacement;

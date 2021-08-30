@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.world.cap.events;
 
+import dev.toma.gunsrpg.api.common.data.IWorldEventHandler;
 import dev.toma.gunsrpg.common.init.ModSounds;
-import dev.toma.gunsrpg.config.ModConfig;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
 import net.minecraft.util.SoundCategory;

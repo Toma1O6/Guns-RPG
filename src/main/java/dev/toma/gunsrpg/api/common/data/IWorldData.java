@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.world.cap;
+package dev.toma.gunsrpg.api.common.data;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;

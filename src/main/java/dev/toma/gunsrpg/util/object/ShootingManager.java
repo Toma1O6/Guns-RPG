@@ -1,12 +1,12 @@
 package dev.toma.gunsrpg.util.object;
 
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IReloadInfo;
 import dev.toma.gunsrpg.client.ClientEventHandler;
-import dev.toma.gunsrpg.common.capability.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
-import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoMaterial;
+import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetReloading;
@@ -19,7 +19,7 @@ public class ShootingManager {
 
     public static boolean canShoot(PlayerEntity player, ItemStack stack) {
         IPlayerData data = PlayerData.get(player).orElseThrow(NullPointerException::new);
-        ReloadInfo reloadInfo = data.getReloadInfo();
+        IReloadInfo reloadInfo = data.getReloadInfo();
         PlayerSkills skills = data.getSkills();
         GunItem item = (GunItem) stack.getItem();
         if (!player.isSprinting() && ClientEventHandler.shootDelay == 0) {

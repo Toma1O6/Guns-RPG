@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.world.cap.events;
 
+import dev.toma.gunsrpg.api.common.data.IWorldEventHandler;
 import dev.toma.gunsrpg.common.entity.AirdropEntity;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.util.ModUtils;

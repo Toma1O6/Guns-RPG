@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns.util;
 
-import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoMaterial;
+import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 
 import java.util.IdentityHashMap;
 import java.util.Map;

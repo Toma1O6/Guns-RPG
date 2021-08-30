@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.animation;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.client.IModifiableProgress;
 import dev.toma.gunsrpg.common.AnimationPaths;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;

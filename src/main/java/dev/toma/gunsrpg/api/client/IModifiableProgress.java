@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.client.animation;
+package dev.toma.gunsrpg.api.client;
 
 import lib.toma.animations.api.IAnimation;
 

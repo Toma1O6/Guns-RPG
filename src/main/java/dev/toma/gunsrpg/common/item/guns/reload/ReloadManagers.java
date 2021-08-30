@@ -1,8 +1,9 @@
 package dev.toma.gunsrpg.common.item.guns.reload;
 
+import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoMaterial;
+import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.util.AmmoLocator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

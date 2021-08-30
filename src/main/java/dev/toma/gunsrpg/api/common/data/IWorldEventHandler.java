@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.world.cap.events;
+package dev.toma.gunsrpg.api.common.data;
 
 import net.minecraft.world.World;
 

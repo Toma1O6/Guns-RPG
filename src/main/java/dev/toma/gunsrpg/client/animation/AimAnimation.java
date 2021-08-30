@@ -1,9 +1,9 @@
 package dev.toma.gunsrpg.client.animation;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.common.capability.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IAimInfo;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.AimInfo;
 import lib.toma.animations.Interpolate;
 import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.AnimationStage;
@@ -29,7 +29,7 @@ public class AimAnimation implements IAnimation {
         PlayerEntity player = Minecraft.getInstance().player;
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         if (optional.isPresent()) {
-            AimInfo aim = optional.orElse(null).getAimInfo();
+            IAimInfo aim = optional.orElse(null).getAimInfo();
             this.progressSupplier = aim::getProgress;
         } else {
             progressSupplier = () -> 0.0F;

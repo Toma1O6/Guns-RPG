@@ -1,15 +1,16 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.api.common.data.IReloadInfo;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoMaterial;
-import dev.toma.gunsrpg.common.item.guns.reload.IReloader;
+import dev.toma.gunsrpg.api.common.IAmmoMaterial;
+import dev.toma.gunsrpg.api.common.IReloader;
 import dev.toma.gunsrpg.util.AmmoLocator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-public class ReloadInfo {
+public class ReloadInfo implements IReloadInfo {
 
     private final PlayerData factory;
 
@@ -20,10 +21,12 @@ public class ReloadInfo {
         this.factory = factory;
     }
 
+    @Override
     public void enqueueCancel() {
         activeReloadManager.enqueueCancel();
     }
 
+    @Override
     public void tick() {
         PlayerEntity owner = factory.getPlayer();
         int equippedSlot = owner.inventory.selected;
@@ -31,9 +34,10 @@ public class ReloadInfo {
             activeReloadManager.forceCancel();
             activeReloadManager = IReloader.EMPTY;
         }
-        activeReloadManager.tick(factory.getPlayer());
+        activeReloadManager.tick(owner);
     }
 
+    @Override
     public void startReloading(PlayerEntity player, GunItem gun, ItemStack stack, int slot) {
         AmmoLocator locator = new AmmoLocator();
         AmmoType ammoType = gun.getAmmoType();
@@ -45,6 +49,7 @@ public class ReloadInfo {
         }
     }
 
+    @Override
     public boolean isReloading() {
         return activeReloadManager.isReloading();
     }

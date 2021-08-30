@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.network;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.INetworkPacket;
 import dev.toma.gunsrpg.network.packet.*;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.ReportedException;

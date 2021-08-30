@@ -1,8 +1,9 @@
 package dev.toma.gunsrpg.common.skills.core;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
-import dev.toma.gunsrpg.common.skills.criteria.IUnlockCriteria;
+import dev.toma.gunsrpg.api.common.IUnlockCriteria;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

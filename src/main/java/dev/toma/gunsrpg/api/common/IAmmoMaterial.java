@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.item.guns.ammo;
+package dev.toma.gunsrpg.api.common;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileEntity;

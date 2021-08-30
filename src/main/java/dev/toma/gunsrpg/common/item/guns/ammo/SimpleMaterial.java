@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns.ammo;
 
+import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.util.ResourceLocation;

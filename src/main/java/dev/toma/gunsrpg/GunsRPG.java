@@ -2,7 +2,7 @@ package dev.toma.gunsrpg;
 
 import com.mojang.brigadier.CommandDispatcher;
 import dev.toma.gunsrpg.client.screen.skills.SkillTreePlacement;
-import dev.toma.gunsrpg.common.capability.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
 import dev.toma.gunsrpg.common.command.GunsrpgCommand;
@@ -14,7 +14,7 @@ import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.recipes.BlastFurnaceRecipe;
 import dev.toma.gunsrpg.util.recipes.SmithingTableRecipes;
 import dev.toma.gunsrpg.world.MobSpawnManager;
-import dev.toma.gunsrpg.world.cap.IWorldData;
+import dev.toma.gunsrpg.api.common.data.IWorldData;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataStorage;
 import lib.toma.animations.AnimationEngine;

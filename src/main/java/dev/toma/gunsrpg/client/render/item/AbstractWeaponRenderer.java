@@ -7,7 +7,7 @@ import dev.toma.gunsrpg.client.model.AbstractAttachmentModel;
 import dev.toma.gunsrpg.client.model.ScopeModel;
 import dev.toma.gunsrpg.client.model.WeaponModels;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
-import dev.toma.gunsrpg.common.capability.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.client.Minecraft;

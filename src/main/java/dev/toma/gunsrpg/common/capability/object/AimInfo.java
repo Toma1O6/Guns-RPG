@@ -1,11 +1,12 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.api.common.data.IAimInfo;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import lib.toma.animations.Interpolate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
-public class AimInfo {
+public class AimInfo implements IAimInfo {
 
     private final PlayerData parent;
     public int slot;
@@ -34,10 +35,17 @@ public class AimInfo {
         }
     }
 
+    @Override
     public boolean isAiming() {
         return progress == 1.0F;
     }
 
+    @Override
+    public boolean startedAiming() {
+        return aiming;
+    }
+
+    @Override
     public void setAiming(boolean aiming) {
         if (aiming) {
             slot = parent.getPlayer().inventory.selected;
@@ -45,10 +53,12 @@ public class AimInfo {
         this.aiming = aiming;
     }
 
+    @Override
     public float getProgress() {
         return progress;
     }
 
+    @Override
     public float getProgress(float deltaTime) {
         return Interpolate.linear(deltaTime, progress, progressOld);
     }

@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.client.model;
+package dev.toma.gunsrpg.api.client;
 
 import net.minecraft.client.renderer.model.ModelRenderer;
 

@@ -1,13 +1,14 @@
 package dev.toma.gunsrpg.common.item.guns.reload;
 
 import com.google.common.base.Preconditions;
-import dev.toma.gunsrpg.client.animation.IModifiableProgress;
+import dev.toma.gunsrpg.api.client.IModifiableProgress;
+import dev.toma.gunsrpg.api.common.IReloader;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.animation.ReloadAnimation;
 import dev.toma.gunsrpg.client.animation.StagedReloadAnimation;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.common.item.guns.ammo.IAmmoMaterial;
+import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.util.AmmoLocator;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.IAnimationLoader;

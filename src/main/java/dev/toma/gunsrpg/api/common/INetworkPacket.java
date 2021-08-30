@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.network;
+package dev.toma.gunsrpg.api.common;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;

@@ -1,6 +1,7 @@
-package dev.toma.gunsrpg.config.gun;
+package dev.toma.gunsrpg.api.common;
 
 import dev.toma.configuration.api.IObjectSpec;
+import dev.toma.gunsrpg.config.gun.WeaponConfiguration;
 
 public interface IWeaponConfig {
 

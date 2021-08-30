@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.skills.criteria;
 
+import dev.toma.gunsrpg.api.common.IUnlockCriteria;
 import dev.toma.gunsrpg.common.init.ModItems;
 
 public class CriteriaTypes {

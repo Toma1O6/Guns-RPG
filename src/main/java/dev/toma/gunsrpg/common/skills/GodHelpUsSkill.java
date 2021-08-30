@@ -1,12 +1,12 @@
 package dev.toma.gunsrpg.common.skills;
 
-import dev.toma.gunsrpg.common.capability.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.FlareEntity;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.common.skills.interfaces.IClickableSkill;
-import dev.toma.gunsrpg.common.skills.interfaces.ICooldown;
+import dev.toma.gunsrpg.api.common.IClickableSkill;
+import dev.toma.gunsrpg.api.common.ICooldown;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSkillClicked;
 import net.minecraft.entity.player.PlayerEntity;

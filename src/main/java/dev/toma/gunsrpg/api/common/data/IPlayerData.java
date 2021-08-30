@@ -1,9 +1,7 @@
-package dev.toma.gunsrpg.common.capability;
+package dev.toma.gunsrpg.api.common.data;
 
-import dev.toma.gunsrpg.common.capability.object.AimInfo;
 import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
-import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -13,9 +11,9 @@ public interface IPlayerData extends INBTSerializable<CompoundNBT> {
 
     CompoundNBT writePermanentData();
 
-    AimInfo getAimInfo();
+    IAimInfo getAimInfo();
 
-    ReloadInfo getReloadInfo();
+    IReloadInfo getReloadInfo();
 
     PlayerSkills getSkills();
 

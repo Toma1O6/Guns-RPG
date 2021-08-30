@@ -1,10 +1,11 @@
 package dev.toma.gunsrpg.world.cap;
 
+import dev.toma.gunsrpg.api.common.data.IWorldData;
+import dev.toma.gunsrpg.api.common.data.IWorldEventSpec;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.world.cap.events.AirdropEventHandler;
 import dev.toma.gunsrpg.world.cap.events.BloodmoonEventHandler;
-import dev.toma.gunsrpg.world.cap.events.IWorldEventSpec;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 
