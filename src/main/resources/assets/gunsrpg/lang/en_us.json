@@ -497,6 +497,13 @@
     "pharmacist_iv.description.line_1": "Unlocks crafting of Painkillers",
     "skill.pharmacist_v": "Pharmacist V",
     "pharmacist_v.description.line_1": "Unlocks crafting of Morphine",
+    "ammo.material.gunsrpg.wood": "Wood",
+    "ammo.material.gunsrpg.stone": "Stone",
+    "ammo.material.gunsrpg.iron": "Iron",
+    "ammo.material.gunsrpg.gold": "Gold",
+    "ammo.material.gunsrpg.diamond": "Diamond",
+    "ammo.material.gunsrpg.emerald": "Emerald",
+    "ammo.material.gunsrpg.amethyst": "Amethyst",
 
     "screen.animator.new_project": "New Project",
     "screen.animator.open": "Open Project",

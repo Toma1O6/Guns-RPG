@@ -13,6 +13,7 @@ import dev.toma.gunsrpg.network.packet.SPacketSelectAmmo;
 import dev.toma.gunsrpg.util.AmmoLocator;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
@@ -103,11 +104,11 @@ public class ChooseAmmoScreen extends Screen {
             FontRenderer font = mc.font;
             this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             Matrix4f pose = matrix.last().pose();
-            ModUtils.renderColor(pose, x, y, x + width, y + height, 0.0F, 0.0F, 0.0F, 1.0F);
+            RenderUtils.drawGradient(pose, x, y, x + width, y + height, 0xFF << 24, 0xFF << 24);
             if (active) {
-                ModUtils.renderColor(pose, x + 1, y + 1, x + width - 1, y + height - 1, 0.2F, 0.7F, 0.2F, 1.0F);
+                RenderUtils.drawGradient(pose, x + 1, y + 1, x + width - 1, y + height - 1, 0xFF22AA22, 0xFF008800);
             } else {
-                ModUtils.renderColor(pose, x + 1, y + 1, x + width - 1, y + height - 1, 0.3F, 0.3F, 0.3F, 1.0F);
+                RenderUtils.drawGradient(pose, x + 1, y + 1, x + width - 1, y + height - 1, 0xFF444444, 0xFF333333);
             }
             mc.getItemRenderer().renderGuiItem(stack, x + 8, y + 8);
             int countWidth = font.width(String.valueOf(count)) / 2;
@@ -115,9 +116,9 @@ public class ChooseAmmoScreen extends Screen {
             ITextComponent name = material.getDisplayName();
             int nameWidth = font.width(name) / 2;
             font.drawShadow(matrix, name, x + 16 - nameWidth, y + height + 1, material.getTextColor());
-            font.drawShadow(matrix, count + "", x + 24 - countWidth, y + height - 8, 0xffffff);
+            font.drawShadow(matrix, count + "", x + 25 - countWidth, y + height - 11, 0xffffff);
             if (isHovered && !active) {
-                String text = String.format("Requires your weapon on level %d", requiredLevel);
+                String text = String.format("Requires weapon level %d", requiredLevel);
                 font.drawShadow(matrix, text, x + (width - font.width(text)) / 2.0F, y + height + 10, 0xdd0000);
             }
         }
