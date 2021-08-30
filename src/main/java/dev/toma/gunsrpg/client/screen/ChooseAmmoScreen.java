@@ -37,17 +37,18 @@ public class ChooseAmmoScreen extends Screen {
 
     @Override
     protected void init() {
-        int scale = width / 6;
         double diff = 1.0 / items.length;
         int x = width / 2;
         int y = height / 2;
-        int py = (int) (height / 3.5);
+        double horizontalScale = x / 2.4f;
+        double verticalScale = y / 1.5f;
         for (int i = 0; i < items.length; i++) {
             double angle = Math.toRadians(i * diff * 360.0);
             double sin = Math.sin(angle);
-            double cos = Math.abs(1.0 - Math.cos(angle));
-            addButton(new AmmoButton(x + (int) (scale * sin) - 16, y + (int) (scale * cos) - py - 16, items[i]));
-
+            double cos = Math.cos(Math.PI - angle);
+            int btnX = (int) (sin * horizontalScale) - 16;
+            int btnY = (int) (cos * verticalScale) - 16;
+            addButton(new AmmoButton(x + btnX, y + btnY, items[i]));
         }
     }
 
@@ -89,7 +90,7 @@ public class ChooseAmmoScreen extends Screen {
                 if (isGun) {
                     GunItem gun = (GunItem) stack.getItem();
                     MaterialContainer container = gun.getContainer();
-                    int weaponLevel = skills.getGunData(gun).getLevel();
+                    int weaponLevel = skills.getGunData(gun).getLevel() - 1;
                     requiredLevel = container.getRequiredLevel(ammo.getMaterial());
                     active = skills.hasSkill(gun.getRequiredSkill()) && weaponLevel >= requiredLevel;
                 }

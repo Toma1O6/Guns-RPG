@@ -35,7 +35,8 @@ public class ShootingManager {
                 return false;
             }
             MaterialContainer container = item.getContainer();
-            return item.hasAmmo(stack) && skills.getGunData(item).getLevel() >= container.getRequiredLevel(material) + 1;
+            int weaponLevel = skills.getGunData(item).getLevel();
+            return item.hasAmmo(stack) && weaponLevel >= container.getRequiredLevel(material) + 1;
         }
         return false;
     }
