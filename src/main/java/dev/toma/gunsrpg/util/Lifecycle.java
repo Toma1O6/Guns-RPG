@@ -24,27 +24,9 @@ public final class Lifecycle {
     private final Map<GunItem, IAmmoProvider[]> weaponProviderMap = new IdentityHashMap<>();
     private final Map<Item, Item> ore2ChunkMap = new IdentityHashMap<>(2);
 
-    public void initWeaponProviderMap() {
-        GunsRPG.log.debug(MARKER, "Making weapon -> ammo mappings");
-        long startTime = System.currentTimeMillis();
-        Collection<Item> items = ForgeRegistries.ITEMS.getValues();
-        List<GunItem> weapons = items.stream().filter(it -> it instanceof GunItem).map(it -> (GunItem) it).collect(Collectors.toList());
-        List<IAmmoProvider> ammoProviders = items.stream().filter(it -> it instanceof IAmmoProvider).map(it -> (IAmmoProvider) it).collect(Collectors.toList());
-        for (GunItem weapon : weapons) {
-            AmmoType type = weapon.getAmmoType();
-            Set<IAmmoMaterial> materials = weapon.getCompatibleMaterials();
-            IAmmoProvider[] providers = ammoProviders.stream()
-                    .filter(provider -> provider.getAmmoType() == type && materials.contains(provider.getMaterial()))
-                    .toArray(IAmmoProvider[]::new);
-            weaponProviderMap.put(weapon, providers);
-        }
-        long len = System.currentTimeMillis() - startTime;
-        GunsRPG.log.debug(MARKER, "Weapon -> ammo mappings finished, took {}ms", len);
-    }
-
-    public void initOreToChunkMap() {
-        ore2ChunkMap.put(Blocks.IRON_ORE.asItem(), ModItems.IRON_ORE_CHUNK);
-        ore2ChunkMap.put(Blocks.GOLD_ORE.asItem(), ModItems.GOLD_ORE_CHUNK);
+    public void commonInit() {
+        initWeaponProviderMap();
+        initOreToChunkMap();
     }
 
     @Nullable
@@ -68,5 +50,28 @@ public final class Lifecycle {
 
     public IAmmoProvider[] getAllCompatibleAmmoProviders(GunItem gunItem) {
         return weaponProviderMap.get(gunItem);
+    }
+
+    private void initWeaponProviderMap() {
+        GunsRPG.log.debug(MARKER, "Making weapon -> ammo mappings");
+        long startTime = System.currentTimeMillis();
+        Collection<Item> items = ForgeRegistries.ITEMS.getValues();
+        List<GunItem> weapons = items.stream().filter(it -> it instanceof GunItem).map(it -> (GunItem) it).collect(Collectors.toList());
+        List<IAmmoProvider> ammoProviders = items.stream().filter(it -> it instanceof IAmmoProvider).map(it -> (IAmmoProvider) it).collect(Collectors.toList());
+        for (GunItem weapon : weapons) {
+            AmmoType type = weapon.getAmmoType();
+            Set<IAmmoMaterial> materials = weapon.getCompatibleMaterials();
+            IAmmoProvider[] providers = ammoProviders.stream()
+                    .filter(provider -> provider.getAmmoType() == type && materials.contains(provider.getMaterial()))
+                    .toArray(IAmmoProvider[]::new);
+            weaponProviderMap.put(weapon, providers);
+        }
+        long len = System.currentTimeMillis() - startTime;
+        GunsRPG.log.debug(MARKER, "Weapon -> ammo mappings finished, took {}ms", len);
+    }
+
+    private void initOreToChunkMap() {
+        ore2ChunkMap.put(Blocks.IRON_ORE.asItem(), ModItems.IRON_ORE_CHUNK);
+        ore2ChunkMap.put(Blocks.GOLD_ORE.asItem(), ModItems.GOLD_ORE_CHUNK);
     }
 }

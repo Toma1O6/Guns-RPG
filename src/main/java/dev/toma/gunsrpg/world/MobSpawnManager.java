@@ -27,8 +27,8 @@ import java.util.function.BiFunction;
 
 public class MobSpawnManager {
 
-    private static final MobSpawnManager INSTANCE = new MobSpawnManager();
     private static final UUID HEALTH_BOOST_UUID = UUID.fromString("80096B27-0A64-47FF-A22A-06146FC42448");
+    private static final MobSpawnManager INSTANCE = new MobSpawnManager();
     private final List<EntityType<?>> healthExlusions = new ArrayList<>();
     private final Map<EntityType<?>, BooleanConsumer<? extends Entity>> postSpawn = new HashMap<>();
     private final Map<EntityType<?>, List<Pair<Integer, BiFunction<ServerWorld, Vector3d, LivingEntity>>>> bloodmoonEntries = new HashMap<>();

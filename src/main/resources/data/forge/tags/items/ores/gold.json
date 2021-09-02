@@ -1,8 +1,6 @@
 {
     "replace": false,
     "values": [
-        "#forge:ores/amethyst",
-        "gunsrpg:iron_ore_chunk",
         "gunsrpg:gold_ore_chunk"
     ]
 }

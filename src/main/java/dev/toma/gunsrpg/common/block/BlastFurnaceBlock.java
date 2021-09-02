@@ -1,7 +1,8 @@
 package dev.toma.gunsrpg.common.block;
 
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.container.BlastFurnaceContainer;
-import dev.toma.gunsrpg.common.init.ModBlocks;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.tileentity.BlastFurnaceTileEntity;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.block.Block;
@@ -9,6 +10,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
@@ -19,7 +22,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -40,12 +46,6 @@ public class BlastFurnaceBlock extends BaseBlock {
         registerDefaultState(stateDefinition.any().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH).setValue(BlockStateProperties.LIT, false));
     }
 
-    public static void updateBurnState(BlockPos pos, World world, boolean lit) {
-        BlockState currentState = world.getBlockState(pos);
-        if (currentState.getBlock() != ModBlocks.BLAST_FURNACE) return;
-        world.setBlock(pos, currentState.setValue(BlockStateProperties.LIT, lit), 3);
-    }
-
     @OnlyIn(Dist.CLIENT)
     @Override
     public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
@@ -54,7 +54,7 @@ public class BlastFurnaceBlock extends BaseBlock {
             worldIn.addParticle(ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 0.0, 0.0, 0.0);
             double rng = (rand.nextDouble() - rand.nextDouble()) / 3;
             if (rand.nextDouble() <= 0.2) {
-                worldIn.playSound(null, (double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                worldIn.playSound(null, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }
             switch (direction) {
                 case NORTH: {
@@ -85,9 +85,25 @@ public class BlastFurnaceBlock extends BaseBlock {
     @Override
     public void onRemove(BlockState state, World world, BlockPos pos, BlockState oldState, boolean p_196243_5_) {
         if (!state.is(oldState.getBlock())) {
-            ModUtils.dropInventoryItems(world, pos);
+            TileEntity tile = world.getBlockEntity(pos);
+            if (tile instanceof BlastFurnaceTileEntity) {
+                BlastFurnaceTileEntity tileEntity = (BlastFurnaceTileEntity) tile;
+                InventoryHelper.dropContents(world, pos, tileEntity);
+                tileEntity.getRecipesForAwardsWithExp(world, Vector3d.atCenterOf(pos));
+                world.updateNeighbourForOutputSignal(pos, this);
+            }
         }
-        super.onRemove(state, world, pos, state, p_196243_5_);
+        super.onRemove(state, world, pos, oldState, p_196243_5_);
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState state, World level, BlockPos pos) {
+        return Container.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
     }
 
     @Override
@@ -111,7 +127,11 @@ public class BlastFurnaceBlock extends BaseBlock {
         if (world.isClientSide)
             return ActionResultType.SUCCESS;
         else {
-            NetworkHooks.openGui((ServerPlayerEntity) player, getMenuProvider(state, world, pos), pos);
+            if (PlayerData.hasActiveSkill(player, Skills.BLACKSMITH)) {
+                NetworkHooks.openGui((ServerPlayerEntity) player, getMenuProvider(state, world, pos), pos);
+            } else {
+                player.displayClientMessage(new StringTextComponent(TextFormatting.RED + "You must have Blacksmith skill in order to use blast furnace!"), true);
+            }
             return ActionResultType.CONSUME;
         }
     }

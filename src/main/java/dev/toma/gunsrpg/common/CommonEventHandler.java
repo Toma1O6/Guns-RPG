@@ -448,7 +448,7 @@ public class CommonEventHandler {
             PlayerEntity player = event.player;
             PlayerData.get(player).ifPresent(data -> {
                 data.tick();
-                player.abilities.setWalkingSpeed(data.getSkills().getMovementSpeed());
+                player.abilities.walkingSpeed = data.getSkills().getMovementSpeed();
             });
         }
     }

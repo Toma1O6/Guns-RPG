@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+@Deprecated
 public class BlastFurnaceRecipe {
 
     private static final Map<Item, Supplier<ItemStack>> RECIPES = new HashMap<>();

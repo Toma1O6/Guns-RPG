@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.capability;
 
+import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.api.common.data.IAimInfo;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IReloadInfo;
@@ -9,7 +10,6 @@ import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
-import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -23,6 +23,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
@@ -49,7 +50,12 @@ public class PlayerData implements IPlayerData {
         this.aimInfo = new AimInfo(this);
         this.reloadInfo = new ReloadInfo(this);
         this.playerSkills = new PlayerSkills(this);
-        setSyncCallback(DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> ClientSideManager.instance()::onDataSync));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setSyncCallback);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void setSyncCallback() {
+        setSyncCallback(ClientSideManager.instance().onDataSync());
     }
 
     public static boolean hasActiveSkill(PlayerEntity player, SkillType<?> type) {

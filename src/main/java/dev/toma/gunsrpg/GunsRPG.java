@@ -86,8 +86,7 @@ public class GunsRPG {
         CapabilityManager.INSTANCE.register(IWorldData.class, new WorldDataStorage(), WorldData::new);
         SkillTreePlacement.generatePlacement();
         SmithingTableRecipes.register();
-        modLifecycle.initWeaponProviderMap();
-        modLifecycle.initOreToChunkMap();
+        modLifecycle.commonInit();
         MobSpawnManager.instance().initialize();
         BlastFurnaceRecipe.init();
     }

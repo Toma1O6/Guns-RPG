@@ -19,11 +19,13 @@ import java.util.function.Supplier;
 @SuppressWarnings("unchecked")
 public abstract class InventoryTileEntity extends TileEntity {
 
+    protected IItemHandlerModifiable itemHandler;
     private final LazyOptional<IItemHandlerModifiable> inventory;
 
     public InventoryTileEntity(TileEntityType<? extends InventoryTileEntity> tileEntityType) {
         super(tileEntityType);
-        this.inventory = LazyOptional.of(this::createInventory);
+        this.itemHandler = createInventory();
+        this.inventory = LazyOptional.of(() -> itemHandler);
     }
 
     public abstract IItemHandlerModifiable createInventory();

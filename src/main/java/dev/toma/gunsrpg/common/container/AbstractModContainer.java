@@ -26,7 +26,7 @@ public abstract class AbstractModContainer<T extends InventoryTileEntity> extend
     }
 
     @SuppressWarnings("unchecked")
-    protected static <T extends TileEntity> T readTileEntity(PacketBuffer buffer, PlayerInventory inventory) {
+    public static <T extends TileEntity> T readTileEntity(PacketBuffer buffer, PlayerInventory inventory) {
         return (T) inventory.player.level.getBlockEntity(buffer.readBlockPos());
     }
 
