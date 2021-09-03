@@ -5,7 +5,12 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class SmithingTableTileEntity extends InventoryTileEntity {
+import java.util.stream.IntStream;
+
+public class SmithingTableTileEntity extends VanillaInventoryTileEntity {
+
+    private static final int OUTPUT = 0;
+    private static final int[] INPUTS = IntStream.range(1, 11).toArray();
 
     public SmithingTableTileEntity() {
         this(ModBlockEntities.SMITHING_TABLE.get());
