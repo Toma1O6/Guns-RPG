@@ -4,9 +4,12 @@ import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.IContainerListener;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.NonNullList;
 
 public class SmithingTableContainer extends AbstractModContainer<SmithingTableTileEntity> {
 
@@ -18,6 +21,7 @@ public class SmithingTableContainer extends AbstractModContainer<SmithingTableTi
             }
         }
         addPlayerInventory(inventory, 90);
+        addSlotListener(new SlotListener(tileEntity));
     }
 
     public SmithingTableContainer(int windowID, PlayerInventory inventory, PacketBuffer buffer) {
@@ -44,5 +48,28 @@ public class SmithingTableContainer extends AbstractModContainer<SmithingTableTi
             }
         }
         return itemStack;
+    }
+
+    private static class SlotListener implements IContainerListener {
+
+        private final SmithingTableTileEntity tile;
+
+        public SlotListener(SmithingTableTileEntity tile) {
+            this.tile = tile;
+        }
+
+        @Override
+        public void refreshContainer(Container container, NonNullList<ItemStack> nonNullList) {
+        }
+
+        @Override
+        public void slotChanged(Container container, int i, ItemStack itemStack) {
+            if (i < 9)
+                tile.onSynch();
+        }
+
+        @Override
+        public void setContainerData(Container container, int i, int i1) {
+        }
     }
 }

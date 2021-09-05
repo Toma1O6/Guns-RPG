@@ -34,7 +34,6 @@ public class SmithingTableScreen extends ContainerScreen<SmithingTableContainer>
     public SmithingTableScreen(SmithingTableContainer container, PlayerInventory inventory, ITextComponent component) {
         super(container, inventory, component);
         this.smithingTable = container.getTileEntity();
-        this.smithingTable.attachCallback(this::onRecipeChanged);
         imageHeight = 172;
     }
 
@@ -49,6 +48,9 @@ public class SmithingTableScreen extends ContainerScreen<SmithingTableContainer>
         super.init();
         buttonCraft = addButton(new Button(leftPos + 7, topPos + 65, 54, 20, new StringTextComponent("Craft"), this::buttonCraft_Clicked));
         buttonCraft.active = false;
+
+        smithingTable.detachCallback();
+        smithingTable.attachCallback(this::onRecipeChanged);
     }
 
     @Override

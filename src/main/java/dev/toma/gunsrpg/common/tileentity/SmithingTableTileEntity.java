@@ -1,6 +1,9 @@
 package dev.toma.gunsrpg.common.tileentity;
 
+import dev.toma.gunsrpg.common.entity.ISynchronizable;
 import dev.toma.gunsrpg.common.init.ModBlockEntities;
+import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.CPacketSynchTile;
 import dev.toma.gunsrpg.util.recipes.smithing.SmithingRecipe;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.tileentity.TileEntityType;
@@ -9,7 +12,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.Optional;
 
-public class SmithingTableTileEntity extends VanillaInventoryTileEntity {
+public class SmithingTableTileEntity extends VanillaInventoryTileEntity implements ISynchronizable {
 
     private IGridChanged gridChanged;
 
@@ -29,7 +32,7 @@ public class SmithingTableTileEntity extends VanillaInventoryTileEntity {
     @Override
     public void setChanged() {
         super.setChanged();
-        onChanged();
+        onSynch();
     }
 
     /**
@@ -38,6 +41,7 @@ public class SmithingTableTileEntity extends VanillaInventoryTileEntity {
      */
     public void attachCallback(IGridChanged callback) {
         gridChanged = callback;
+        onSynch(); // immediately updates listener
     }
 
     /**
@@ -47,11 +51,16 @@ public class SmithingTableTileEntity extends VanillaInventoryTileEntity {
         attachCallback(null);
     }
 
-    private void onChanged() {
-        if (gridChanged != null) {
-            RecipeManager manager = level.getRecipeManager();
-            Optional<SmithingRecipe> optional = manager.getRecipeFor(SmithingRecipe.TYPE, this, level);
-            gridChanged.onChange(optional.orElse(null));
+    @Override
+    public void onSynch() {
+        if (level.isClientSide) {
+            if (gridChanged != null) {
+                RecipeManager manager = level.getRecipeManager();
+                Optional<SmithingRecipe> optional = manager.getRecipeFor(SmithingRecipe.TYPE, this, level);
+                gridChanged.onChange(optional.orElse(null));
+            }
+        } else {
+            NetworkManager.sendWorldPacket(level, new CPacketSynchTile(worldPosition));
         }
     }
 

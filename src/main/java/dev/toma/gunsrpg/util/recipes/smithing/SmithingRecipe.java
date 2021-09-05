@@ -104,6 +104,14 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
         return true;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     public boolean canCraft(PlayerEntity player) {
         for (ICraftingCondition condition : conditions) {
             if (!condition.canCraft(player))

@@ -52,6 +52,7 @@ public class NetworkManager {
         registerNetworkPacket(CPacketUpdateCap.class);
         registerNetworkPacket(CPacketSendAnimation.class);
         registerNetworkPacket(CPacketNewSkills.class);
+        registerNetworkPacket(CPacketSynchTile.class);
         // server packets
         registerNetworkPacket(SPacketShoot.class);
         registerNetworkPacket(SPacketRequestDataUpdate.class);
@@ -69,7 +70,7 @@ public class NetworkManager {
         try {
             packet = packetType.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new ReportedException(CrashReport.forThrowable(e, "Couldn't instantiate packet for registration. Make sure you have provided constructor with no parameters."));
+            throw new ReportedException(CrashReport.forThrowable(e, "Couldn't instantiate packet for registration. Make sure you have provided public constructor with no parameters."));
         }
         CHANNEL.registerMessage(ID++, packetType, INetworkPacket::encode, packet::decode, INetworkPacket::handle);
     }
