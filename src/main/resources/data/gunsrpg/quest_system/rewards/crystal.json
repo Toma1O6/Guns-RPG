@@ -1,0 +1,28 @@
+{
+    "min": 1,
+    "max": 8,
+    "category": "crystal",
+    "award": {
+        "entries": [
+            "gunsrpg:crystal"
+        ],
+        "count": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "data": [
+            "{level=1}",
+            "{level=2}",
+            "{level=3}",
+            "{level=4}",
+            "{level=5}",
+            "{level=6}",
+            "{level=7}"
+        ]
+    }
+}

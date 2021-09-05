@@ -1,0 +1,28 @@
+{
+    "min": 0,
+    "max": 8,
+    "category": "meds",
+    "award": {
+        "entries": [
+            "gunsrpg:antidotum_pills",
+            "gunsrpg:vaccine",
+            "gunsrpg:plaster_cast",
+            "gunsrpg:bandage",
+            "gunsrpg:analgetics",
+            "gunsrpg:stereoids",
+            "gunsrpg:adrenaline",
+            "gunsrpg:painkillers",
+            "gunsrpg:morphine"
+        ],
+        "count": [
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            3,
+            4
+        ]
+    }
+}

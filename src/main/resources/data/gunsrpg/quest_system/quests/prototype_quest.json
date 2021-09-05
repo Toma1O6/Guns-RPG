@@ -1,0 +1,19 @@
+{
+    "difficulty": "easy",
+    "tier": 0,
+    "title": "Arachnophobia I",
+    "info": "Kill 7 spiders",
+    "conditions": [
+        {
+            "type": "list",
+            "path": "namespace:path",
+            "excl": [
+                ""
+            ]
+        },
+        {
+            "type": "condition",
+            "path": "gunsrpg:use_pistols"
+        }
+    ]
+}

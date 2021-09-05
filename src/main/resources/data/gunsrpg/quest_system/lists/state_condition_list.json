@@ -1,0 +1,36 @@
+{
+    "list": [
+        {
+            "weight": 50,
+            "condition": "gunsrpg:empty"
+        },
+        {
+            "weight": 5,
+            "condition": "gunsrpg:have_bleed"
+        },
+        {
+            "weight": 5,
+            "condition": "gunsrpg:have_fracture"
+        },
+        {
+            "weight": 5,
+            "condition": "gunsrpg:have_poison"
+        },
+        {
+            "weight": 5,
+            "condition": "gunsrpg:have_infection"
+        },
+        {
+            "weight": 10,
+            "condition": "gunsrpg:no_armor"
+        },
+        {
+            "weight": 10,
+            "condition": "gunsrpg:no_heal"
+        },
+        {
+            "weight": 10,
+            "condition": "gunsrpg:no_food"
+        }
+    ]
+}

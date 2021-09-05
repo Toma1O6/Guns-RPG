@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
+import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.util.recipes.smithing.SmithingRecipe;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
@@ -24,11 +25,16 @@ public final class Lifecycle {
 
     private final Map<GunItem, IAmmoProvider[]> weaponProviderMap = new IdentityHashMap<>();
     private final Map<Item, Item> ore2ChunkMap = new IdentityHashMap<>(2);
+    private final QuestSystem questSystem = new QuestSystem();
 
     public void commonInit() {
         initWeaponProviderMap();
         initOreToChunkMap();
         SmithingRecipe.forceStaticInit();
+    }
+
+    public QuestSystem quests() {
+        return questSystem;
     }
 
     @Nullable

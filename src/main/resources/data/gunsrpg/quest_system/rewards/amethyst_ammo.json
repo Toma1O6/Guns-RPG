@@ -1,0 +1,21 @@
+{
+    "min": 4,
+    "max": 8,
+    "category": "ammo",
+    "award": {
+        "entries": [
+            "gunsrpg:amethyst_ammo_9mm",
+            "gunsrpg:amethyst_ammo_45acp",
+            "gunsrpg:amethyst_ammo_556mm",
+            "gunsrpg:amethyst_ammo_762mm",
+            "gunsrpg:amethyst_ammo_12g",
+            "gunsrpg:amethyst_ammo_crossbow_bolt"
+        ],
+        "count": [
+            30,
+            40,
+            50,
+            60
+        ]
+    }
+}

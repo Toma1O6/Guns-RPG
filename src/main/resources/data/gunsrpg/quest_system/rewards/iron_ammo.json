@@ -1,0 +1,23 @@
+{
+    "min": 0,
+    "max": 6,
+    "category": "ammo",
+    "award": {
+        "entries": [
+            "gunsrpg:iron_ammo_9mm",
+            "gunsrpg:iron_ammo_45acp",
+            "gunsrpg:iron_ammo_556mm",
+            "gunsrpg:iron_ammo_762mm",
+            "gunsrpg:iron_ammo_12g",
+            "gunsrpg:iron_ammo_crossbow_bolt"
+        ],
+        "count": [
+            20,
+            30,
+            40,
+            60,
+            70,
+            100
+        ]
+    }
+}

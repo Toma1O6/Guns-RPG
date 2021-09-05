@@ -31,6 +31,10 @@ public class WeightedRandom<T> {
         return null;
     }
 
+    public T[] getValues() {
+        return values;
+    }
+
     private int gatherAll() {
         int i = 0;
         for (T t : values)

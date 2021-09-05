@@ -29,13 +29,13 @@ public class GunDamageSource extends EntityDamageSource {
     @Nullable
     @Override
     public Entity getDirectEntity() {
-        return src;
+        return indirect;
     }
 
     @Nullable
     @Override
     public Entity getEntity() {
-        return indirect;
+        return src;
     }
 
     public Entity getSrc() {

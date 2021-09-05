@@ -1,0 +1,21 @@
+{
+    "min": 0,
+    "max": 4,
+    "category": "ammo",
+    "award": {
+        "entries": [
+            "gunsrpg:wooden_ammo_9mm",
+            "gunsrpg:wooden_ammo_45acp",
+            "gunsrpg:wooden_ammo_556mm",
+            "gunsrpg:wooden_ammo_762mm",
+            "gunsrpg:wooden_ammo_12g",
+            "gunsrpg:wooden_ammo_crossbow_bolt"
+        ],
+        "count": [
+            30,
+            50,
+            60,
+            80
+        ]
+    }
+}

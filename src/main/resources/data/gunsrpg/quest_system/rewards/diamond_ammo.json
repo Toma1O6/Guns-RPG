@@ -1,0 +1,24 @@
+{
+    "min": 1,
+    "max": 8,
+    "category": "ammo",
+    "award": {
+        "entries": [
+            "gunsrpg:diamond_ammo_9mm",
+            "gunsrpg:diamond_ammo_45acp",
+            "gunsrpg:diamond_ammo_556mm",
+            "gunsrpg:diamond_ammo_762mm",
+            "gunsrpg:diamond_ammo_12g",
+            "gunsrpg:diamond_ammo_crossbow_bolt"
+        ],
+        "count": [
+            10,
+            20,
+            40,
+            50,
+            65,
+            75,
+            90
+        ]
+    }
+}
