@@ -307,9 +307,10 @@ public class ClientEventHandler {
         NetworkManager.sendServerPacket(new SPacketShoot());
         gun.onShoot(player, stack);
         shootDelay = gun.getFirerate(player);
+        float recoilAnimationShakeScale = ModConfig.clientConfig.recoilAnimationScale.floatValue();
 
         IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
-        pipeline.insert(ModAnimations.RECOIL, new RecoilAnimation(xRot, yRot));
+        pipeline.insert(ModAnimations.RECOIL, new RecoilAnimation(xRot, yRot, recoilAnimationShakeScale));
     }
 
     private static class ChangeDetector {

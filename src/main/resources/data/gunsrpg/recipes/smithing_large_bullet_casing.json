@@ -1,0 +1,22 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "ss"
+  ],
+  "key": {
+    "s": {
+      "item": "gunsrpg:small_bullet_casing"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:large_bullet_casing"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:wooden_ammo_smith"
+      }
+    }
+  ]
+}

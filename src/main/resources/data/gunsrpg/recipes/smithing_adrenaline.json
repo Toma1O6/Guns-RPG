@@ -1,0 +1,36 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "igl",
+    "gfg",
+    "lgp"
+  ],
+  "key": {
+    "f": {
+      "item": "minecraft:fermented_spider_eye"
+    },
+    "p": {
+      "item": "minecraft:poppy"
+    },
+    "g": {
+      "item": "minecraft:glass_pane"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "l": {
+      "item": "minecraft:glistering_melon_slice"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:adrenaline"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:pharmacist_iii"
+      }
+    }
+  ]
+}

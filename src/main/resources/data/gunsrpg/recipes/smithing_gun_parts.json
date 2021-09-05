@@ -1,0 +1,33 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "iri",
+    "ono",
+    "iri"
+  ],
+  "key": {
+    "r": {
+      "item": "minecraft:iron_trapdoor"
+    },
+    "i": {
+      "item": "minecraft:iron_bars"
+    },
+    "n": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "o": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:gun_parts"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:gun_parts_smith"
+      }
+    }
+  ]
+}

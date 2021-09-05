@@ -60,7 +60,7 @@ public class NetworkManager {
         registerNetworkPacket(SPacketSetReloading.class);
         registerNetworkPacket(SPacketChangeFiremode.class);
         registerNetworkPacket(SPacketUnlockSkill.class);
-        registerNetworkPacket(SPacketCheckSmithingRecipe.class);
+        registerNetworkPacket(SPacketRequestSmithingCraft.class);
         registerNetworkPacket(SPacketSkillClicked.class);
     }
 

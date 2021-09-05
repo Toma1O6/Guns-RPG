@@ -1,0 +1,32 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "ooi",
+    " af"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:oak_slab"
+    },
+    "f": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "o": {
+      "item": "minecraft:oak_log"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:wooden_stock"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:gun_parts_smith"
+      }
+    }
+  ]
+}

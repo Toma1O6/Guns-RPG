@@ -1,0 +1,39 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "sss",
+    "sts",
+    " t "
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:stone"
+    },
+    "t": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:stone_hammer"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:hammer_ii"
+      }
+    },
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:heavy_pickaxe_iii"
+      }
+    },
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:mother_lode_iii"
+      }
+    }
+  ]
+}

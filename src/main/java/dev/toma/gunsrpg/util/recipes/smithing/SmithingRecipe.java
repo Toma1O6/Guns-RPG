@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.common.init.ModRecipeSerializers;
 import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -23,11 +24,11 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
 
     public static final IRecipeType<SmithingRecipe> TYPE = Registry.register(Registry.RECIPE_TYPE, GunsRPG.makeResource("smithing"), new IRecipeType<SmithingRecipe>() {});
-    public static final IRecipeSerializer<SmithingRecipe> SERIALIZER = new Serializer();
     public static final int GRID_SIZE = 3;
 
     private final NonNullList<Ingredient> ingredientList;
@@ -46,6 +47,8 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
         this.conditions = conditions;
     }
 
+    public static void forceStaticInit() {}
+
     @Override
     public ResourceLocation getId() {
         return id;
@@ -53,7 +56,7 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
 
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return ModRecipeSerializers.SMITHING_RECIPE_SERIALIZER.get();
     }
 
     @Override
@@ -73,8 +76,8 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
 
     @Override
     public boolean matches(SmithingTableTileEntity inventory, World world) {
-        for (int x = 0; x < GRID_SIZE - width; x++) {
-            for (int y = 0; y < GRID_SIZE - height; y++) {
+        for (int x = 0; x <= GRID_SIZE - width; x++) {
+            for (int y = 0; y <= GRID_SIZE - height; y++) {
                 if (matchesGrid(inventory, x, y, true)) {
                     return true;
                 }
@@ -96,6 +99,11 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
         return TYPE;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     public boolean canCraft(PlayerEntity player) {
         for (ICraftingCondition condition : conditions) {
             if (!condition.canCraft(player))
@@ -104,16 +112,24 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
         return true;
     }
 
+    public List<ICraftingCondition> getFailedChecks(PlayerEntity player) {
+        return conditions.stream().filter(condition -> !condition.canCraft(player)).collect(Collectors.toList());
+    }
+
     private boolean matchesGrid(SmithingTableTileEntity inventory, int right, int top, boolean bool) {
-        for (int x = 0; x < right; x++) {
-            for (int y = 0; y < top; y++) {
+        for (int x = 0; x < GRID_SIZE; x++) {
+            for (int y = 0; y < GRID_SIZE; y++) {
                 int xPos = x - right;
                 int yPos = y - top;
                 Ingredient ingredient = Ingredient.EMPTY;
                 if (xPos >= 0 && yPos >= 0 && xPos < width && yPos < height) {
-                    ingredient = ingredientList.get(bool ? width - xPos - 1 + yPos * width : xPos + yPos * width);
+                    if (bool) {
+                        ingredient = ingredientList.get(width - xPos - 1 + yPos * width);
+                    } else {
+                        ingredient = ingredientList.get(xPos + yPos * width);
+                    }
                 }
-                if (!ingredient.test(inventory.getItem(x + y * GRID_SIZE + 1))) {
+                if (!ingredient.test(inventory.getItem(x + y * GRID_SIZE))) {
                     return false;
                 }
             }
@@ -121,7 +137,7 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
         return true;
     }
 
-    private static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<SmithingRecipe> {
+    public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<SmithingRecipe> {
 
         @Override
         public SmithingRecipe fromJson(ResourceLocation id, JsonObject data) {
@@ -131,7 +147,7 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
             int height = optimizedPattern.length;
             NonNullList<Ingredient> ingredientList = processPatternAndMatch(optimizedPattern, ingredientKeys, width, height);
             ItemStack output = CraftingHelper.getItemStack(JSONUtils.getAsJsonObject(data, "result"), true);
-            List<ICraftingCondition> required = data.has("conditions") ? getRecipeConditions(JSONUtils.getAsJsonArray(data, "conditions")) : Collections.emptyList();
+            List<ICraftingCondition> required = data.has("requirements") ? getRecipeConditions(JSONUtils.getAsJsonArray(data, "requirements")) : Collections.emptyList();
             return new SmithingRecipe(id, width, height, ingredientList, output, required);
         }
 
@@ -195,7 +211,7 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
         }
 
         private static NonNullList<Ingredient> processPatternAndMatch(String[] pattern, Map<String, Ingredient> mappings, int width, int height) {
-            NonNullList<Ingredient> list = NonNullList.withSize(GRID_SIZE * GRID_SIZE, Ingredient.EMPTY);
+            NonNullList<Ingredient> list = NonNullList.withSize(width * height, Ingredient.EMPTY);
             Set<String> keySet = new HashSet<>(mappings.keySet());
             keySet.remove(" ");
 
@@ -277,7 +293,7 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
                 return new String[0];
             }
             String[] newLines = new String[lines.length - l - k];
-            for (int i = 0; i < lines.length; ++i) {
+            for (int i = 0; i < newLines.length; ++i) {
                 newLines[i] = lines[i + k].substring(leftTrim, rightTrim + 1);
             }
             return newLines;

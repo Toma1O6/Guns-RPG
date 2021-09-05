@@ -9,8 +9,11 @@ import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class SkillCondition implements ICraftingCondition {
@@ -36,6 +39,11 @@ public class SkillCondition implements ICraftingCondition {
         return Conditions.SKILL_CONDITION;
     }
 
+    @Override
+    public ITextComponent getDisplayInfo() {
+        return new TranslationTextComponent("condition.crafting.skill", skill.getDisplayName());
+    }
+
     public static class Serializer implements IConditionSerializer<SkillCondition> {
 
         @Override
@@ -46,6 +54,16 @@ public class SkillCondition implements ICraftingCondition {
             if (skillType == null)
                 throw new JsonSyntaxException("Unknown skill: " + id);
             return new SkillCondition(skillType);
+        }
+
+        @Override
+        public void toNetwork(PacketBuffer buffer, SkillCondition condition) {
+
+        }
+
+        @Override
+        public SkillCondition fromNetwork(PacketBuffer buffer) {
+            return null;
         }
     }
 }

@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "s",
+    "t",
+    "b"
+  ],
+  "key": {
+    "b": {
+      "item": "gunsrpg:bolt_fletching"
+    },
+    "s": {
+      "item": "minecraft:stone"
+    },
+    "t": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:stone_ammo_crossbow_bolt"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:stone_ammo_smith"
+      }
+    }
+  ]
+}

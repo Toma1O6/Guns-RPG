@@ -1,0 +1,29 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "iir",
+    " rf"
+  ],
+  "key": {
+    "r": {
+      "item": "minecraft:iron_ingot"
+    },
+    "f": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "i": {
+      "item": "minecraft:iron_block"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:iron_stock"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:gun_parts_smith"
+      }
+    }
+  ]
+}

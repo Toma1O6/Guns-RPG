@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "o ",
+    "gg",
+    "l "
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:gunpowder"
+    },
+    "l": {
+      "item": "gunsrpg:large_bullet_casing"
+    },
+    "o": {
+      "item": "minecraft:oak_planks"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:wooden_ammo_556mm"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:wooden_ammo_smith"
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "lgi",
+    " m "
+  ],
+  "key": {
+    "g": {
+      "item": "gunsrpg:gun_parts"
+    },
+    "i": {
+      "item": "gunsrpg:iron_stock"
+    },
+    "m": {
+      "item": "gunsrpg:magazine"
+    },
+    "l": {
+      "item": "gunsrpg:long_barrel"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:sks"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:sks_assembly"
+      }
+    }
+  ]
+}

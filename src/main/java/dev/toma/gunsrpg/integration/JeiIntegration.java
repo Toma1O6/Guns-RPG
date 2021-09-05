@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.integration;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.init.ModBlocks;
-import dev.toma.gunsrpg.util.recipes.SmithingTableRecipes;
+import dev.toma.gunsrpg.util.recipes.smithing.SmithingRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -48,7 +48,7 @@ public class JeiIntegration implements IModPlugin {
         return PLUGIN_UID;
     }
 
-    private static class SmithingRecipeCategory implements IRecipeCategory<SmithingTableRecipes.SmithingRecipe> {
+    private static class SmithingRecipeCategory implements IRecipeCategory<SmithingRecipe> {
 
         private static final ResourceLocation CATEGORY_UID = GunsRPG.makeResource("smithing");
         private static final ResourceLocation BACKGROUND_TEXTURE = GunsRPG.makeResource("textures/gui/jei_smithing.png");
@@ -68,8 +68,8 @@ public class JeiIntegration implements IModPlugin {
         }
 
         @Override
-        public Class<? extends SmithingTableRecipes.SmithingRecipe> getRecipeClass() {
-            return SmithingTableRecipes.SmithingRecipe.class;
+        public Class<? extends SmithingRecipe> getRecipeClass() {
+            return SmithingRecipe.class;
         }
 
         @Override
@@ -88,7 +88,7 @@ public class JeiIntegration implements IModPlugin {
         }
 
         @Override
-        public void setIngredients(SmithingTableRecipes.SmithingRecipe recipe, IIngredients ingredients) {
+        public void setIngredients(SmithingRecipe recipe, IIngredients ingredients) {
             List<List<ItemStack>> inputs = new ArrayList<>();
             for (SmithingTableRecipes.SmithingIngredient ingredient : recipe.getIngredients()) {
                 inputs.add(Arrays.stream(ingredient.getItems()).map(ItemStack::new).collect(Collectors.toList()));
@@ -98,7 +98,7 @@ public class JeiIntegration implements IModPlugin {
         }
 
         @Override
-        public void setRecipe(IRecipeLayout recipeLayout, SmithingTableRecipes.SmithingRecipe recipe, IIngredients ingredients) {
+        public void setRecipe(IRecipeLayout recipeLayout, SmithingRecipe recipe, IIngredients ingredients) {
             int index = 0;
             IGuiItemStackGroup group = recipeLayout.getItemStacks();
             for (List<ItemStack> inputs : ingredients.getInputs(VanillaTypes.ITEM)) {

@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "o  ",
+    "ggg",
+    "s  "
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:gunpowder"
+    },
+    "s": {
+      "item": "gunsrpg:shotgun_shell"
+    },
+    "o": {
+      "item": "minecraft:oak_planks"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:wooden_ammo_12g"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:wooden_ammo_smith"
+      }
+    }
+  ]
+}

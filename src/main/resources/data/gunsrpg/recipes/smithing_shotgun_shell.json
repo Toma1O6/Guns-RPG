@@ -1,0 +1,28 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "rlp"
+  ],
+  "key": {
+    "r": {
+      "item": "minecraft:red_dye"
+    },
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "l": {
+      "item": "gunsrpg:large_bullet_casing"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:shotgun_shell"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:wooden_ammo_smith"
+      }
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "bcb",
+    "oke",
+    "rrr"
+  ],
+  "key": {
+    "k": {
+      "item": "minecraft:cooked_beef"
+    },
+    "b": {
+      "item": "minecraft:baked_potato"
+    },
+    "r": {
+      "item": "minecraft:bread"
+    },
+    "c": {
+      "item": "minecraft:carrot"
+    },
+    "e": {
+      "item": "minecraft:cooked_chicken"
+    },
+    "o": {
+      "item": "minecraft:cooked_porkchop"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:deluxe_meal"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:master_chef"
+      }
+    }
+  ]
+}

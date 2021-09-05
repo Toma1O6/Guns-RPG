@@ -32,10 +32,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * TODO: Known issues
- *  - First item is immediately smelted
- */
 public class BlastFurnaceTileEntity extends VanillaInventoryTileEntity implements IRecipeHolder, IRecipeHelperPopulator, ITickableTileEntity, ISidedInventory {
 
     private static final byte SLOT_INPUT = 0;

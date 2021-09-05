@@ -504,6 +504,8 @@
     "ammo.material.gunsrpg.diamond": "Diamond",
     "ammo.material.gunsrpg.emerald": "Emerald",
     "ammo.material.gunsrpg.amethyst": "Amethyst",
+    "screen.smithing_table.condition": "Requirements:",
+    "condition.crafting.skill": "%1$s skill",
 
     "screen.animator.new_project": "New Project",
     "screen.animator.open": "Open Project",

@@ -1,0 +1,28 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "bgs"
+  ],
+  "key": {
+    "b": {
+      "item": "gunsrpg:barrel"
+    },
+    "g": {
+      "item": "gunsrpg:gun_parts"
+    },
+    "s": {
+      "item": "gunsrpg:small_iron_stock"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:m1911"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:m1911_assembly"
+      }
+    }
+  ]
+}

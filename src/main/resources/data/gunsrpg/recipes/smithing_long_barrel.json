@@ -1,0 +1,22 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    " bb"
+  ],
+  "key": {
+    "b": {
+      "item": "gunsrpg:barrel"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:long_barrel"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:gun_parts_smith"
+      }
+    }
+  ]
+}

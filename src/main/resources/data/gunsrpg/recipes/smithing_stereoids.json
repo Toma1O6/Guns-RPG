@@ -1,0 +1,36 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "igo",
+    "grg",
+    "ogs"
+  ],
+  "key": {
+    "r": {
+      "item": "minecraft:redstone_block"
+    },
+    "g": {
+      "item": "minecraft:glass_pane"
+    },
+    "s": {
+      "item": "minecraft:sugar"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "o": {
+      "item": "minecraft:golden_carrot"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:stereoids"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:pharmacist_ii"
+      }
+    }
+  ]
+}

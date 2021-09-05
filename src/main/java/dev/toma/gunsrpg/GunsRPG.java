@@ -12,7 +12,6 @@ import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.Lifecycle;
-import dev.toma.gunsrpg.util.recipes.SmithingTableRecipes;
 import dev.toma.gunsrpg.world.MobSpawnManager;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataStorage;
@@ -49,6 +48,7 @@ public class GunsRPG {
         ModContainers.subscribe(eventBus);
         ModFeatures.subscribe(eventBus);
         ModFeaturePlacements.subscribe(eventBus);
+        ModRecipeSerializers.subscribe(eventBus);
         // lifecycle events
         eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::commonSetup);
@@ -84,7 +84,6 @@ public class GunsRPG {
         CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData::new);
         CapabilityManager.INSTANCE.register(IWorldData.class, new WorldDataStorage(), WorldData::new);
         SkillTreePlacement.generatePlacement();
-        SmithingTableRecipes.register();
         modLifecycle.commonInit();
         MobSpawnManager.instance().initialize();
     }

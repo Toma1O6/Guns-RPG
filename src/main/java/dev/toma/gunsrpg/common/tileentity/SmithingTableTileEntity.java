@@ -1,16 +1,17 @@
 package dev.toma.gunsrpg.common.tileentity;
 
 import dev.toma.gunsrpg.common.init.ModBlockEntities;
+import dev.toma.gunsrpg.util.recipes.smithing.SmithingRecipe;
+import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-import java.util.stream.IntStream;
+import java.util.Optional;
 
 public class SmithingTableTileEntity extends VanillaInventoryTileEntity {
 
-    private static final int OUTPUT = 0;
-    private static final int[] INPUTS = IntStream.range(1, 11).toArray();
+    private IGridChanged gridChanged;
 
     public SmithingTableTileEntity() {
         this(ModBlockEntities.SMITHING_TABLE.get());
@@ -23,5 +24,38 @@ public class SmithingTableTileEntity extends VanillaInventoryTileEntity {
     @Override
     public IItemHandlerModifiable createInventory() {
         return new ItemStackHandler(9);
+    }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        onChanged();
+    }
+
+    /**
+     * Should be called only client-side for UI controls
+     * @param callback The callback
+     */
+    public void attachCallback(IGridChanged callback) {
+        gridChanged = callback;
+    }
+
+    /**
+     * Deletes callback reference
+     */
+    public void detachCallback() {
+        attachCallback(null);
+    }
+
+    private void onChanged() {
+        if (gridChanged != null) {
+            RecipeManager manager = level.getRecipeManager();
+            Optional<SmithingRecipe> optional = manager.getRecipeFor(SmithingRecipe.TYPE, this, level);
+            gridChanged.onChange(optional.orElse(null));
+        }
+    }
+
+    public interface IGridChanged {
+        void onChange(SmithingRecipe recipe);
     }
 }

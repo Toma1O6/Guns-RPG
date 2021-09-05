@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "   ",
+    "cbc",
+    "aba"
+  ],
+  "key": {
+    "b": {
+      "item": "minecraft:baked_potato"
+    },
+    "a": {
+      "item": "minecraft:carrot"
+    },
+    "c": {
+      "item": "minecraft:cooked_chicken"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:chicken_dinner"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:local_chef"
+      }
+    }
+  ]
+}

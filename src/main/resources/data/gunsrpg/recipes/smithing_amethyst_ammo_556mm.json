@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "a ",
+    "gg",
+    "l "
+  ],
+  "key": {
+    "a": {
+      "item": "gunsrpg:amethyst"
+    },
+    "g": {
+      "item": "minecraft:gunpowder"
+    },
+    "l": {
+      "item": "gunsrpg:large_bullet_casing"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:amethyst_ammo_556mm"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:amethyst_ammo_smith"
+      }
+    }
+  ]
+}

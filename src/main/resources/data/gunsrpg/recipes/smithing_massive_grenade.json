@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "gtg",
+    "grg",
+    "ggg"
+  ],
+  "key": {
+    "r": {
+      "item": "gunsrpg:grenade"
+    },
+    "g": {
+      "item": "minecraft:gold_nugget"
+    },
+    "t": {
+      "item": "minecraft:tnt"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:massive_grenade"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:massive_grenades"
+      }
+    }
+  ]
+}

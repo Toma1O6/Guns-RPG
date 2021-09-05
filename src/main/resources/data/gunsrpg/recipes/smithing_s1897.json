@@ -1,0 +1,32 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "lgw",
+    " m "
+  ],
+  "key": {
+    "g": {
+      "item": "gunsrpg:gun_parts"
+    },
+    "m": {
+      "item": "gunsrpg:magazine"
+    },
+    "l": {
+      "item": "gunsrpg:long_barrel"
+    },
+    "w": {
+      "item": "gunsrpg:wooden_stock"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:s1897"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:s1897_assembly"
+      }
+    }
+  ]
+}

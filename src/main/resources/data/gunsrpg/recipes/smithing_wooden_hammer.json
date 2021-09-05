@@ -1,0 +1,39 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "ooo",
+    "oso",
+    " s "
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "o": {
+      "item": "minecraft:oak_log"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:wooden_hammer"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:hammer_i"
+      }
+    },
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:heavy_pickaxe_ii"
+      }
+    },
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:mother_lode_ii"
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    " b ",
+    "tgw",
+    " b "
+  ],
+  "key": {
+    "b": {
+      "item": "minecraft:bow"
+    },
+    "g": {
+      "item": "gunsrpg:gun_parts"
+    },
+    "w": {
+      "item": "gunsrpg:wooden_stock"
+    },
+    "t": {
+      "item": "minecraft:tripwire_hook"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:wooden_crossbow"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:crossbow_assembly"
+      }
+    }
+  ]
+}

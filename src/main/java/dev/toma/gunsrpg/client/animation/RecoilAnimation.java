@@ -10,11 +10,14 @@ public class RecoilAnimation extends TickableAnimation {
 
     private final float x;
     private final float y;
+    private final float z;
 
-    public RecoilAnimation(float x, float y) {
+    public RecoilAnimation(float x, float y, float scale) {
         super(3);
-        this.x = x;
-        this.y = y;
+        float modifier = 0.5F + 0.5F * scale;
+        this.x = x * modifier;
+        this.y = y * modifier;
+        this.z = 0.09F * modifier;
     }
 
     @Override
@@ -24,7 +27,7 @@ public class RecoilAnimation extends TickableAnimation {
         float progress = getPartial(interpolated);
         float xRot = x * progress;
         float yRot = y * progress;
-        float zKick = 0.09F * progress;
+        float zKick = z * progress;
         matrixStack.translate(0.0, 0.0, zKick);
         matrixStack.mulPose(Vector3f.XP.rotationDegrees(xRot));
         matrixStack.mulPose(Vector3f.YP.rotationDegrees(yRot));

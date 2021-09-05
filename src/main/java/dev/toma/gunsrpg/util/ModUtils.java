@@ -45,6 +45,10 @@ import java.util.function.Supplier;
 
 public class ModUtils {
 
+    public static String convertToLocalization(ResourceLocation location) {
+        return location.toString().replaceAll(":", ".");
+    }
+
     public static int sum(int[] array) {
         int total = 0;
         for (int i : array)

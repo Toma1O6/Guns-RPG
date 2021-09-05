@@ -1,0 +1,24 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    " ii",
+    " ii",
+    "ii "
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:magazine"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:gun_parts_smith"
+      }
+    }
+  ]
+}

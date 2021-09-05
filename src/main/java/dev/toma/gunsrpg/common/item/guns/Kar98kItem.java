@@ -1,19 +1,19 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.IReloadManager;
+import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Kar98kRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
-import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
 import dev.toma.gunsrpg.sided.ClientSideManager;
@@ -64,7 +64,7 @@ public class Kar98kItem extends GunItem {
     public IReloadManager getReloadManager(PlayerEntity player) {
         ItemStack stack = player.getMainHandItem();
         return ReloadManagers.either(
-                getAmmo(stack) < getMaxAmmo(player),
+                getAmmo(stack) > 0,
                 ReloadManagers.singleBulletLoading(46, player, this, stack, LOAD_BULLET_ANIMATION),
                 ReloadManagers.fullMagLoading()
         );

@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "g  ",
+    "uuu",
+    "s  "
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:gold_ingot"
+    },
+    "s": {
+      "item": "gunsrpg:shotgun_shell"
+    },
+    "u": {
+      "item": "minecraft:gunpowder"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:gold_ammo_12g"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:gold_ammo_smith"
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "rbr",
+    "geg",
+    "rgr"
+  ],
+  "key": {
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "b": {
+      "item": "minecraft:blaze_powder"
+    },
+    "g": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "e": {
+      "item": "gunsrpg:grenade"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:impact_grenade"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:impact_grenades"
+      }
+    }
+  ]
+}

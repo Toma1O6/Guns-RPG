@@ -7,19 +7,16 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class SmithingTableContainer extends AbstractModContainer<SmithingTableTileEntity> {
 
     public SmithingTableContainer(int windowID, PlayerInventory inventory, SmithingTableTileEntity tileEntity) {
         super(ModContainers.SMITHING_TABLE.get(), windowID, inventory, tileEntity);
-        tileEntity.getInventory().ifPresent(handler -> {
-            for (int y = 0; y < 3; y++) {
-                for (int x = 0; x < 3; x++) {
-                    addSlot(new SlotItemHandler(handler, x + y * 3, 26 + x * 18, 8 + y * 18));
-                }
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
+                addSlot(new Slot(tileEntity, x + y * 3, 8 + x * 18, 8 + y * 18));
             }
-        });
+        }
         addPlayerInventory(inventory, 90);
     }
 

@@ -1,0 +1,40 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "psp",
+    "oeg",
+    "doo"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "g": {
+      "item": "minecraft:green_dye"
+    },
+    "s": {
+      "item": "minecraft:sugar"
+    },
+    "d": {
+      "item": "minecraft:dandelion"
+    },
+    "e": {
+      "item": "minecraft:emerald"
+    },
+    "o": {
+      "item": "minecraft:poppy"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:antidotum_pills",
+    "count": 2
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:doctor"
+      }
+    }
+  ]
+}

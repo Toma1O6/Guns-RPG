@@ -1,0 +1,39 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "igs",
+    "gpg",
+    "age"
+  ],
+  "key": {
+    "a": {
+      "item": "gunsrpg:adrenaline"
+    },
+    "p": {
+      "item": "gunsrpg:painkillers"
+    },
+    "g": {
+      "item": "minecraft:glass_pane"
+    },
+    "s": {
+      "item": "gunsrpg:stereoids"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "e": {
+      "item": "minecraft:ender_eye"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:morphine"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:pharmacist_v"
+      }
+    }
+  ]
+}

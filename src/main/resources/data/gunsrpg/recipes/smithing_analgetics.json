@@ -1,0 +1,40 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "psp",
+    "dgo",
+    "yyy"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "g": {
+      "item": "minecraft:green_dye"
+    },
+    "s": {
+      "item": "minecraft:sugar"
+    },
+    "y": {
+      "item": "minecraft:yellow_dye"
+    },
+    "d": {
+      "item": "minecraft:dandelion"
+    },
+    "o": {
+      "item": "minecraft:poppy"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:analgetics",
+    "count": 2
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:pharmacist_i"
+      }
+    }
+  ]
+}

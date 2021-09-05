@@ -1,0 +1,36 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "cok",
+    "cok",
+    "pwp"
+  ],
+  "key": {
+    "k": {
+      "item": "minecraft:cooked_beef"
+    },
+    "p": {
+      "item": "minecraft:potato"
+    },
+    "c": {
+      "item": "minecraft:cooked_mutton"
+    },
+    "w": {
+      "item": "minecraft:water_bucket"
+    },
+    "o": {
+      "item": "minecraft:cooked_porkchop"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:meaty_stew_xxl"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:master_chef"
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "asa",
+    "mpm"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:apple"
+    },
+    "p": {
+      "item": "minecraft:pumpkin"
+    },
+    "s": {
+      "item": "minecraft:sugar"
+    },
+    "m": {
+      "item": "minecraft:melon"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:fruit_salad"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:local_chef"
+      }
+    }
+  ]
+}

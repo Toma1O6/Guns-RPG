@@ -1,0 +1,36 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    " b ",
+    "cec",
+    "pwp"
+  ],
+  "key": {
+    "b": {
+      "item": "minecraft:brown_mushroom"
+    },
+    "p": {
+      "item": "minecraft:potato"
+    },
+    "c": {
+      "item": "minecraft:carrot"
+    },
+    "w": {
+      "item": "minecraft:water_bucket"
+    },
+    "e": {
+      "item": "minecraft:beetroot"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:garden_soup"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:local_chef"
+      }
+    }
+  ]
+}

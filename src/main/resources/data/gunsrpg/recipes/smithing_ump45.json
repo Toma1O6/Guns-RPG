@@ -1,0 +1,32 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "bgi",
+    " m "
+  ],
+  "key": {
+    "b": {
+      "item": "gunsrpg:barrel"
+    },
+    "g": {
+      "item": "gunsrpg:gun_parts"
+    },
+    "i": {
+      "item": "gunsrpg:iron_stock"
+    },
+    "m": {
+      "item": "gunsrpg:magazine"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:ump45"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:ump45_assembly"
+      }
+    }
+  ]
+}

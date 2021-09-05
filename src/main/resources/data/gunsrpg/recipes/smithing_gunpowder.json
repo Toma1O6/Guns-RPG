@@ -1,0 +1,29 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "ci",
+    "sc"
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:sugar"
+    },
+    "i": {
+      "item": "minecraft:ink_sac"
+    },
+    "c": {
+      "item": "minecraft:charcoal"
+    }
+  },
+  "result": {
+    "item": "minecraft:gunpowder"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:gunpowder_novice"
+      }
+    }
+  ]
+}
