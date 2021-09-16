@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.config.type.IconsType;
 import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.util.math.ConfigurableVec2i;
+import dev.toma.gunsrpg.util.math.IVec2i;
 import net.minecraft.util.ResourceLocation;
 
 import java.text.DecimalFormat;
@@ -21,7 +22,7 @@ public class ClientConfiguration extends ObjectType {
     };
     public final BooleanType developerMode;
     public final EnumType<ScopeRenderer> scopeRenderer;
-    public final ConfigurableVec2i debuffOverlay;
+    public final IVec2i debuffOverlay;
     public final ColorType reticleColor;
     public final IconsType reticleVariants;
     public final DoubleType recoilAnimationScale;

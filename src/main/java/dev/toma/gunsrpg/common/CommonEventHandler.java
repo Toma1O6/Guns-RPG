@@ -2,11 +2,12 @@ package dev.toma.gunsrpg.common;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IWorldData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataProvider;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
-import dev.toma.gunsrpg.common.debuffs.DamageContext;
-import dev.toma.gunsrpg.common.debuffs.Debuff;
+import dev.toma.gunsrpg.common.debuffs.IDebuffContext;
+import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import dev.toma.gunsrpg.common.entity.CrossbowBoltEntity;
 import dev.toma.gunsrpg.common.entity.ExplosiveArrowEntity;
 import dev.toma.gunsrpg.common.init.*;
@@ -20,7 +21,6 @@ import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.world.MobSpawnManager;
-import dev.toma.gunsrpg.api.common.data.IWorldData;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataProvider;
 import dev.toma.gunsrpg.world.feature.ModConfiguredFeatures;
@@ -339,7 +339,7 @@ public class CommonEventHandler {
     public static void onEntityDamaged(LivingHurtEvent event) {
         if (event.getAmount() >= 0.2F && event.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntity();
-            PlayerData.get(player).ifPresent(data -> data.getDebuffData().onPlayerAttackedFrom(DamageContext.getContext(event.getSource(), event.getAmount()), player));
+            PlayerData.get(player).ifPresent(data -> data.getDebuffControl().trigger(IDebuffType.TriggerFlags.HURT, IDebuffContext.of(event.getSource(), player, data, event.getAmount())));
         }
     }
 
@@ -378,10 +378,7 @@ public class CommonEventHandler {
                     }
                 }
                 if (!event.isCanceled()) {
-                    for (Debuff debuff : data.getDebuffData().getDebuffs()) {
-                        if (debuff != null && !debuff.isInvalid())
-                            debuff.invalidate();
-                    }
+                    data.getDebuffControl().clearActive();
                     if (ModConfig.worldConfig.createCrateOnPlayerDeath.get() && !player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
                         BlockPos pos = player.blockPosition();
                         World world = player.level;
@@ -416,7 +413,7 @@ public class CommonEventHandler {
                 skills.getSkill(Skills.WAR_MACHINE).onPurchase(player);
             }
             if (!event.isEndConquered()) {
-                data.setOnCooldown();
+                data.getDebuffControl().trigger(IDebuffType.TriggerFlags.RESPAWN, IDebuffContext.of(DamageSource.GENERIC, player, data, 0.0F));
             }
             data.sync();
         });

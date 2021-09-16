@@ -9,10 +9,12 @@ public class Quest implements IQuest {
 
     private final ResourceLocation questID;
     private final Set<IQuestCondition> conditions;
+    private final int tier;
 
-    public Quest(ResourceLocation questID, Set<IQuestCondition> conditions) {
+    public Quest(ResourceLocation questID, Set<IQuestCondition> conditions, int tier) {
         this.questID = questID;
         this.conditions = conditions;
+        this.tier = tier;
     }
 
     @Override
@@ -23,6 +25,11 @@ public class Quest implements IQuest {
     @Override
     public Set<IQuestCondition> getConditions() {
         return conditions;
+    }
+
+    @Override
+    public int getRewardTier() {
+        return tier;
     }
 
     @Override

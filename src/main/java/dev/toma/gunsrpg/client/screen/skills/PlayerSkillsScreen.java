@@ -4,18 +4,19 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.IClickableSkill;
+import dev.toma.gunsrpg.api.common.IOverlayRender;
+import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.client.screen.ConfirmSkillUnlockScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.GunData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.api.common.IClickableSkill;
-import dev.toma.gunsrpg.api.common.IOverlayRender;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.RenderUtils;
+import dev.toma.gunsrpg.util.math.IVec2i;
 import dev.toma.gunsrpg.util.math.Vec2i;
 import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.object.Pair;
@@ -288,7 +289,7 @@ public class PlayerSkillsScreen extends Screen {
 
         private final PlacementContext ctx;
         private final SkillType<?> type;
-        private final List<Pair<Vec2i, Vec2i>> lines = new ArrayList<>();
+        private final List<Pair<IVec2i, IVec2i>> lines = new ArrayList<>();
         private final boolean obtained;
         private final ITextComponent[] comments;
         private long hoverStartTime;
@@ -301,9 +302,9 @@ public class PlayerSkillsScreen extends Screen {
             super(context.pos.x(), context.pos.y(), 20, 20);
             this.ctx = context;
             this.type = context.type;
-            Vec2i parentPos = context.parentPos != null ? context.parentPos.get() : null;
+            IVec2i parentPos = context.parentPos != null ? context.parentPos.get() : null;
             if (parentPos != null) {
-                Vec2i p1 = context.pos;
+                IVec2i p1 = context.pos;
                 if (parentPos.x() == context.pos.x()) {
                     lines.add(Pair.of(new Vec2i(p1.x() + w / 2, p1.y()), new Vec2i(parentPos.x() + w / 2, parentPos.y() + h)));
                 } else {
@@ -379,7 +380,7 @@ public class PlayerSkillsScreen extends Screen {
             int px = x - offsetX;
             int py = y - offsetY;
             Matrix4f pose = stack.last().pose();
-            for (Pair<Vec2i, Vec2i> line : lines) {
+            for (Pair<IVec2i, IVec2i> line : lines) {
                 int x1 = line.getLeft().x() - offsetX;
                 int y1 = line.getLeft().y() - offsetY;
                 int x2 = line.getRight().x() - offsetX;
@@ -507,7 +508,7 @@ public class PlayerSkillsScreen extends Screen {
         public void init() {
             list.clear();
             int width = ctx.type.getChilds().size() * 25 + 15;
-            Vec2i pos = ctx.pos;
+            IVec2i pos = ctx.pos;
             this.x = pos.x() - width / 2 + 10;
             this.y = pos.y() + 25;
             this.w = width;

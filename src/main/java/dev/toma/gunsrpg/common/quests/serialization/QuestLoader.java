@@ -19,7 +19,7 @@ public final class QuestLoader {
     public IQuest load(ResourceLocation questID, JsonObject data, LoadingContext context) throws JsonParseException {
         Set<IQuestCondition> conditions = data.has("conditions") ? readConditions(JSONUtils.getAsJsonArray(data, "conditions"), context) : Collections.emptySet();
 
-        return new Quest(questID, conditions);
+        return new Quest(questID, conditions, 0);
     }
 
     private Set<IQuestCondition> readConditions(JsonArray conditions, LoadingContext context) throws JsonParseException {

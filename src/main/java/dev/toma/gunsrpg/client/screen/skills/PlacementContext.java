@@ -2,19 +2,19 @@ package dev.toma.gunsrpg.client.screen.skills;
 
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.util.math.Vec2i;
+import dev.toma.gunsrpg.util.math.IVec2i;
 import dev.toma.gunsrpg.util.object.LazyLoader;
 
 import java.util.List;
 
 public class PlacementContext {
 
-    public LazyLoader<Vec2i> parentPos = new LazyLoader<>(() -> null);
+    public LazyLoader<IVec2i> parentPos = new LazyLoader<>(() -> null);
     public SkillType<?> parent;
     public SkillType<?> type;
-    public Vec2i pos;
+    public IVec2i pos;
 
-    public PlacementContext(SkillType<?> parent, SkillType<?> type, Vec2i pos) {
+    public PlacementContext(SkillType<?> parent, SkillType<?> type, IVec2i pos) {
         this.type = type;
         this.pos = pos;
         this.parent = parent;

@@ -8,11 +8,11 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
+import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
-import dev.toma.gunsrpg.common.debuffs.DebuffType;
+import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.config.ModConfig;
 import net.minecraft.command.CommandSource;
@@ -80,14 +80,13 @@ public class GunsrpgCommand {
         if (registryKey == null) {
             throw MISSING_KEY_EXCEPTION.create();
         }
-        DebuffType<?> type = ModRegistries.DEBUFFS.getValue(registryKey);
+        IDebuffType<?> type = ModRegistries.DEBUFFS.getValue(registryKey);
         if (type == null) throw UNKNOWN_KEY_EXCEPTION.create(registryKey);
         PlayerEntity player = getPlayer(ctx);
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         optional.ifPresent(data -> {
-            DebuffData debuffs = data.getDebuffData();
+            IDebuffs debuffs = data.getDebuffControl();
             debuffs.toggle(type);
-            data.sync();
             ctx.getSource().sendSuccess(new TranslationTextComponent("gunsrpg.command.toggledebuff", type.getRegistryName().toString()), false);
         });
         return 0;

@@ -14,7 +14,6 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.skills.*;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -256,79 +255,11 @@ public class CommonRegistry {
     @SubscribeEvent
     public static void onDebuffRegister(RegistryEvent.Register<DebuffType<?>> event) {
         event.getRegistry().registerAll(
-                DebuffType.Builder.create()
-                        .factory(PoisonDebuff::new)
-                        .blacklistOn(() -> ModConfig.debuffConfig.disablePoison())
-                        .progress(DebuffHelper::p_progress)
-                        .resist(DebuffHelper::p_resist)
-                        .addStage(40, DebuffHelper::none)
-                        .addStage(70, DebuffHelper::p41_70eff)
-                        .addStage(85, DebuffHelper::p71_85eff)
-                        .addStage(99, DebuffHelper::p86_99eff)
-                        .addStage(100, DebuffHelper::p100eff)
-                        .condition(DebuffHelper::pSpiderCondition)
-                        .condition(DebuffHelper::pCaveSpiderCondition)
-                        .condition(DebuffHelper::pSkeletonCondition)
-                        .condition(DebuffHelper::pGuardianCondition)
-                        .condition(DebuffHelper::pElderGuardianCondition)
-                        .condition(DebuffHelper::pSlimeCondition)
-                        .condition(DebuffHelper::pStrayCondition)
-                        .condition(DebuffHelper::pSilverfishCondition)
-                        .build().setRegistryName("poison"),
-                DebuffType.Builder.create()
-                        .factory(InfectionDebuff::new)
-                        .blacklistOn(() -> ModConfig.debuffConfig.disableInfection())
-                        .progress(DebuffHelper::i_progress)
-                        .resist(DebuffHelper::i_resist)
-                        .addStage(35, DebuffHelper::none)
-                        .addStage(60, DebuffHelper::i36_60eff)
-                        .addStage(85, DebuffHelper::i61_85eff)
-                        .addStage(99, DebuffHelper::i86_99eff)
-                        .addStage(100, DebuffHelper::i100eff)
-                        .condition(DebuffHelper::iZombieVillagerCondition)
-                        .condition(DebuffHelper::iEndermanCondition)
-                        .condition(DebuffHelper::iVindicatorCondition)
-                        .condition(DebuffHelper::iWitherSkeletonCondition)
-                        .condition(DebuffHelper::iHuskCondition)
-                        .condition(DebuffHelper::iZombieCondition)
-                        .condition(DebuffHelper::iPigZombieCondition)
-                        .build().setRegistryName("infection"),
-                DebuffType.Builder.create()
-                        .factory(FractureDebuff::new)
-                        .blacklistOn(() -> ModConfig.debuffConfig.disableFractures())
-                        .progress(DebuffHelper::f_progress)
-                        .resist(DebuffHelper::f_resist)
-                        .addStage(30, DebuffHelper::f0_30eff)
-                        .addStage(55, DebuffHelper::f31_55eff)
-                        .addStage(75, DebuffHelper::f56_75eff)
-                        .addStage(99, DebuffHelper::f76_99eff)
-                        .addStage(100, DebuffHelper::f100eff)
-                        .condition(DebuffHelper::fGenericCondition)
-                        .condition(DebuffHelper::fExplosionCondition)
-                        .condition(DebuffHelper::fFallCondition)
-                        .build().setRegistryName("fracture"),
-                DebuffType.Builder.create()
-                        .factory(BleedDebuff::new)
-                        .blacklistOn(() -> ModConfig.debuffConfig.disableBleeding())
-                        .progress(DebuffHelper::b_progress)
-                        .resist(DebuffHelper::b_resist)
-                        .addStage(25, DebuffHelper::b0_25eff)
-                        .addStage(50, DebuffHelper::b26_50eff)
-                        .addStage(75, DebuffHelper::b51_75eff)
-                        .addStage(99, DebuffHelper::b76_99eff)
-                        .addStage(100, DebuffHelper::b100eff)
-                        .condition(DebuffHelper::bSpiderCondition)
-                        .condition(DebuffHelper::bZombieCondition)
-                        .condition(DebuffHelper::bZombieVillagerCondition)
-                        .condition(DebuffHelper::bStrayCondition)
-                        .condition(DebuffHelper::bSkeletonCondition)
-                        .condition(DebuffHelper::bEndermanCondition)
-                        .condition(DebuffHelper::bPigZombieCondition)
-                        .condition(DebuffHelper::bWitherSkeletonCondition)
-                        .condition(DebuffHelper::bExplosionCondition)
-                        .condition(DebuffHelper::bFallCondition)
-                        .condition(DebuffHelper::bGunshotWoundCondition)
-                        .build().setRegistryName("bleeding")
+                DebuffRegistration.createPoisonType(),
+                DebuffRegistration.createInfectionType(),
+                DebuffRegistration.createFractureType(),
+                DebuffRegistration.createBleedType(),
+                DebuffRegistration.createRespawnType()
         );
     }
 
@@ -378,8 +309,8 @@ public class CommonRegistry {
                         .build(),
                 DebuffHealItem.define("bandage")
                         .defineSound(() -> ModSounds.USE_BANDAGE)
-                        .canUse(data -> data.hasDebuff(Debuffs.BLEEDING))
-                        .onUse(data -> data.heal(Debuffs.BLEEDING, 25))
+                        .canUse(data -> data.hasDebuff(Debuffs.BLEED))
+                        .onUse(data -> data.heal(Debuffs.BLEED, 25))
                         .describe("Heals 25% of bleeding progress")
                         .animate(50, AnimationPaths.BANDAGE)
                         .build(),

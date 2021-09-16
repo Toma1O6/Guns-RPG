@@ -16,28 +16,25 @@ public class CPacketUpdateCap extends AbstractNetworkPacket<CPacketUpdateCap> {
 
     private final UUID uuid;
     private final CompoundNBT nbt;
-    private final int type;
 
     public CPacketUpdateCap() {
-        this(null, null, 0);
+        this(null, null);
     }
 
-    public CPacketUpdateCap(UUID uuid, CompoundNBT nbt, int type) {
+    public CPacketUpdateCap(UUID uuid, CompoundNBT nbt) {
         this.uuid = uuid;
         this.nbt = nbt;
-        this.type = type;
     }
 
     @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeUUID(uuid);
         buffer.writeNbt(nbt);
-        buffer.writeVarInt(type);
     }
 
     @Override
     public CPacketUpdateCap decode(PacketBuffer buffer) {
-        return new CPacketUpdateCap(buffer.readUUID(), buffer.readNbt(), buffer.readVarInt());
+        return new CPacketUpdateCap(buffer.readUUID(), buffer.readNbt());
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -48,14 +45,7 @@ public class CPacketUpdateCap extends AbstractNetworkPacket<CPacketUpdateCap> {
         if (player == null)
             return;
         PlayerData.get(player).ifPresent(data -> {
-            switch (type) {
-                case 0:
-                    data.deserializeNBT(nbt);
-                    break;
-                case 1:
-                    data.readPermanentData(nbt);
-                    break;
-            }
+            data.deserializeNBT(nbt);
             data.onSync();
         });
     }

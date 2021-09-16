@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.util.math;
 
-public class Vec2i {
+public class Vec2i implements IVec2i {
 
     private final int x, y;
 
@@ -9,10 +9,12 @@ public class Vec2i {
         this.y = y;
     }
 
+    @Override
     public int x() {
         return x;
     }
 
+    @Override
     public int y() {
         return y;
     }

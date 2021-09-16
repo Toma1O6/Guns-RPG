@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.screen.skills;
 
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.util.math.IVec2i;
 import dev.toma.gunsrpg.util.math.Vec2i;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class Node {
 
-    protected static final Vec2i startingPoint = new Vec2i(40, 60);
+    protected static final IVec2i startingPoint = new Vec2i(40, 60);
     protected static final int spacingHorizontal = 30;
     protected static final int spacingVerical = 30;
     public static int currentX, currentY;
@@ -60,7 +61,7 @@ public class Node {
             currentX = backup;
             return ctxs;
         } else {
-            Vec2i pos = new Vec2i(currentX, currentY);
+            IVec2i pos = new Vec2i(currentX, currentY);
             currentY += spacingVerical;
             return Collections.singletonList(new PlacementContext(parent, types[0], pos));
         }

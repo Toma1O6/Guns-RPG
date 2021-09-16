@@ -118,6 +118,59 @@ public class RenderUtils {
         resetColorRenderState();
     }
 
+    public static void drawTex(Matrix4f pose, int x1, int y1, int x2, int y2) {
+        drawTex(pose, x1, y1, x2, y2, 0);
+    }
+
+    public static void drawTex(Matrix4f pose, int x1, int y1, int x2, int y2, int depth) {
+        drawTex(pose, x1, y1, x2, y2, depth, 0.0F, 0.0F, 1.0F, 1.0F);
+    }
+
+    public static void drawTex(Matrix4f pose, int x1, int y1, int x2, int y2, float u1, float v1, float u2, float v2) {
+        drawTex(pose, x1, y1, x2, y2, 0, u1, v1, u2, v2);
+    }
+
+    public static void drawTex(Matrix4f pose, int x1, int y1, int x2, int y2, int depth, float u1, float v1, float u2, float v2) {
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder builder = tessellator.getBuilder();
+        builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        builder.vertex(pose, x1, y2, depth).uv(u1, v2).endVertex();
+        builder.vertex(pose, x2, y2, depth).uv(u2, v2).endVertex();
+        builder.vertex(pose, x2, y1, depth).uv(u2, v1).endVertex();
+        builder.vertex(pose, x1, y1, depth).uv(u1, v1).endVertex();
+        tessellator.end();
+        RenderSystem.disableBlend();
+    }
+
+    public static void drawColoredTex(Matrix4f pose, int x1, int y1, int x2, int y2, int color) {
+        drawColoredTex(pose, x1, y1, x2, y2, 0, 0.0F, 0.0F, 1.0F, 1.0F, color, color);
+    }
+
+    public static void drawColoredTex(Matrix4f pose, int x1, int y1, int x2, int y2, int depth, float u1, float v1, float u2, float v2, int color1, int color2) {
+        int a1 = alpha_i(color1);
+        int a2 = alpha_i(color2);
+        int r1 = red_i(color1);
+        int r2 = red_i(color2);
+        int g1 = green_i(color1);
+        int g2 = green_i(color2);
+        int b1 = blue_i(color1);
+        int b2 = blue_i(color2);
+
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder builder = tessellator.getBuilder();
+        builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
+        builder.vertex(pose, x1, y2, depth).color(r2, g2, b2, a2).uv(u1, v2).endVertex();
+        builder.vertex(pose, x2, y2, depth).color(r2, g2, b2, a2).uv(u2, v2).endVertex();
+        builder.vertex(pose, x2, y1, depth).color(r1, g1, b1, a1).uv(u2, v1).endVertex();
+        builder.vertex(pose, x1, y1, depth).color(r1, g1, b1, a1).uv(u1, v1).endVertex();
+        tessellator.end();
+        RenderSystem.disableBlend();
+    }
+
     public static void setupColorRenderState() {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();

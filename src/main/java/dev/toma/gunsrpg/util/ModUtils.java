@@ -86,6 +86,28 @@ public class ModUtils {
             ((ServerWorld) world).players().forEach(player -> player.connection.send(packet));
     }
 
+    public static <S, R> List<R> convertToList(Iterable<S> source, Function<S, R> convertor, int count) {
+        List<R> list = new ArrayList<>(count);
+        source.forEach(s -> list.add(convertor.apply(s)));
+        return list;
+    }
+
+    public static <T> T randomElement(T[] array, Random random) {
+        return array[random.nextInt(array.length)];
+    }
+
+    public static <T> T randomElement(T[] array) {
+        return randomElement(array, new Random());
+    }
+
+    public static <T> T randomElement(List<T> list, Random random) {
+        return list.get(random.nextInt(list.size()));
+    }
+
+    public static <T> T randomElement(List<T> list) {
+        return randomElement(list, new Random());
+    }
+
     public static double randomValue(Random random, double multiplier) {
         return randomValue(random, Random::nextDouble, d -> d * multiplier);
     }

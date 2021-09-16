@@ -1,26 +1,26 @@
 package dev.toma.gunsrpg.common.item;
 
+import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
-public class DebuffHealItem extends AbstractHealItem<DebuffData> {
+public class DebuffHealItem extends AbstractHealItem<IDebuffs> {
 
     protected DebuffHealItem(Builder builder) {
         super(builder);
     }
 
-    public static HealBuilder<DebuffData, DebuffHealItem> define(String name) {
+    public static HealBuilder<IDebuffs, DebuffHealItem> define(String name) {
         return new Builder(name);
     }
 
     @Override
-    public DebuffData getTargetObject(World world, PlayerEntity user, IPlayerData data) {
-        return data.getDebuffData();
+    public IDebuffs getTargetObject(World world, PlayerEntity user, IPlayerData data) {
+        return data.getDebuffControl();
     }
 
-    protected static class Builder extends HealBuilder<DebuffData, DebuffHealItem> {
+    protected static class Builder extends HealBuilder<IDebuffs, DebuffHealItem> {
 
         protected Builder(String name) {
             super(name);

@@ -5,7 +5,7 @@ import dev.toma.configuration.api.IObjectSpec;
 import dev.toma.configuration.api.type.IntType;
 import dev.toma.configuration.api.type.ObjectType;
 
-public class ConfigurableVec2i extends ObjectType {
+public class ConfigurableVec2i extends ObjectType implements IVec2i {
 
     private final IntType x;
     private final IntType y;
@@ -17,11 +17,13 @@ public class ConfigurableVec2i extends ObjectType {
         y = writer.writeInt("y", _y, "Y coordinate of two dimensional vector");
     }
 
-    public int getX() {
+    @Override
+    public int x() {
         return x.get();
     }
 
-    public int getY() {
+    @Override
+    public int y() {
         return y.get();
     }
 }

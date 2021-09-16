@@ -5,16 +5,15 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.ClientEventHandler;
 import dev.toma.gunsrpg.client.ModKeybinds;
 import dev.toma.gunsrpg.client.render.*;
+import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
+import dev.toma.gunsrpg.client.render.debuff.IconDebuffRenderer;
 import dev.toma.gunsrpg.client.screen.AirdropScreen;
 import dev.toma.gunsrpg.client.screen.BlastFurnaceScreen;
 import dev.toma.gunsrpg.client.screen.DeathCrateScreen;
 import dev.toma.gunsrpg.client.screen.SmithingTableScreen;
 import dev.toma.gunsrpg.client.screen.skills.PlayerSkillsScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.init.ModContainers;
-import dev.toma.gunsrpg.common.init.ModEntities;
-import dev.toma.gunsrpg.common.init.ModItems;
-import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.init.*;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;
 import lib.toma.animations.api.lifecycle.Registries;
@@ -44,6 +43,12 @@ public class ClientSideManager {
 
     private static final ClientSideManager INSTANCE = new ClientSideManager();
 
+    private final DebuffRenderManager debuffRenderManager = new DebuffRenderManager();
+
+    public DebuffRenderManager getDebuffRenderManager() {
+        return debuffRenderManager;
+    }
+
     public static ClientSideManager instance() {
         return INSTANCE;
     }
@@ -54,22 +59,34 @@ public class ClientSideManager {
     }
 
     public void clientSetup(FMLClientSetupEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.AIRDROP.get(), AirdropRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.EXPLOSIVE_SKELETON.get(), ExplosiveSkeletonRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.EXPLOSIVE_ARROW.get(), ExplosiveArrowRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.ZOMBIE_GUNNER.get(), ZombieGunnerRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.BLOODMOON_GOLEM.get(), BloodmoonGolemRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.CROSSBOW_BOLT.get(), CrossbowBoltRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.GRENADE.get(), GrenadeRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.ROCKET_ANGEL.get(), RocketAngelRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.GOLD_DRAGON.get(), GoldenDragonRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.SHOTGUN_PELLET.get(), NoOpRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.BULLET.get(), NoOpRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.FLARE.get(), NoOpRenderer::new);
+        // entity renderers
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.AIRDROP.get(),             AirdropRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.EXPLOSIVE_SKELETON.get(),  ExplosiveSkeletonRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.EXPLOSIVE_ARROW.get(),     ExplosiveArrowRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.ZOMBIE_GUNNER.get(),       ZombieGunnerRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.BLOODMOON_GOLEM.get(),     BloodmoonGolemRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.CROSSBOW_BOLT.get(),       CrossbowBoltRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.GRENADE.get(),             GrenadeRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.ROCKET_ANGEL.get(),        RocketAngelRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.GOLD_DRAGON.get(),         GoldenDragonRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.SHOTGUN_PELLET.get(),      NoOpRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.BULLET.get(),              NoOpRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.FLARE.get(),               NoOpRenderer::new);
+
+        // keybinds
         ModKeybinds.registerKeybinds();
         MinecraftForge.EVENT_BUS.register(new ModKeybinds());
+
+        // screens
         event.enqueueWork(this::screenSetup);
 
+        // debuff renderers
+        debuffRenderManager.registerRenderer(Debuffs.POISON,    new IconDebuffRenderer<>(IconDebuffRenderer.POISON_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.INFECTION, new IconDebuffRenderer<>(IconDebuffRenderer.INFECTION_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.FRACTURE,  new IconDebuffRenderer<>(IconDebuffRenderer.FRACTURE_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.BLEED,     new IconDebuffRenderer<>(IconDebuffRenderer.BLEED_ICON));
+
+        // animation setup
         setupRenderPipeline();
     }
 

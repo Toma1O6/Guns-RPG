@@ -3,29 +3,29 @@ package dev.toma.gunsrpg.client;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.IAmmoProvider;
+import dev.toma.gunsrpg.api.common.IOverlayRender;
+import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.api.common.data.IAimInfo;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.AimAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.animation.RecoilAnimation;
+import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.DebuffData;
 import dev.toma.gunsrpg.common.capability.object.GunData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
-import dev.toma.gunsrpg.common.debuffs.Debuff;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
-import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
-import dev.toma.gunsrpg.api.common.IOverlayRender;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
 import dev.toma.gunsrpg.network.packet.SPacketShoot;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
@@ -156,16 +156,11 @@ public class ClientEventHandler {
                 Matrix4f pose = matrixStack.last().pose();
                 RenderUtils.drawGradient(pose, x, y + 10, x + width + 22, y + 17, 0xFF << 24, 0xFF << 24);
                 RenderUtils.drawGradient(pose, x + 2, y + 12, x + (int) (levelProgress * (width + 20)), y + 15, 0xFF00FFFF, 0xFF008888);
-                if (data != null) {
-                    DebuffData debuffData = data.getDebuffData();
-                    int offset = 0;
-                    for (Debuff debuff : debuffData.getDebuffs()) {
-                        if (debuff == null) continue;
-                        int yStart = window.getGuiScaledHeight() + ModConfig.clientConfig.debuffOverlay.getY() - 50;
-                        debuff.draw(matrixStack, ModConfig.clientConfig.debuffOverlay.getX(), yStart + offset * 18, 50, 18, event.getPartialTicks(), renderer);
-                        ++offset;
-                    }
-                }
+
+                ClientSideManager manager = ClientSideManager.instance();
+                DebuffRenderManager debuffRenderManager = manager.getDebuffRenderManager();
+                debuffRenderManager.drawDebuffsOnScreen(matrixStack, data.getDebuffControl(), 0, window.getGuiScaledHeight() - 50, event.getPartialTicks());
+
                 int renderIndex = 0;
                 List<ISkill> list = skills.getUnlockedSkills().get(SkillCategory.SURVIVAL);
                 if (list == null) return;

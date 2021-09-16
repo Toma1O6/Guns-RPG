@@ -1,41 +1,32 @@
 package dev.toma.gunsrpg.common.capability;
 
 import dev.toma.gunsrpg.api.common.ISkill;
-import dev.toma.gunsrpg.api.common.data.IAimInfo;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.IReloadInfo;
-import dev.toma.gunsrpg.common.capability.object.AimInfo;
-import dev.toma.gunsrpg.common.capability.object.DebuffData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
-import dev.toma.gunsrpg.common.capability.object.ReloadInfo;
+import dev.toma.gunsrpg.api.common.data.*;
+import dev.toma.gunsrpg.common.capability.object.*;
 import dev.toma.gunsrpg.common.init.ModItems;
-import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketUpdateCap;
 import dev.toma.gunsrpg.sided.ClientSideManager;
-import net.minecraft.entity.ai.attributes.Attributes;
+import dev.toma.gunsrpg.util.IEventHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
 
 public class PlayerData implements IPlayerData {
 
+    private final IEventHandler<IPlayerCapEntry> saveHandler = IEventHandler.newEventHandler();
     private final PlayerEntity player;
-    private final DebuffData debuffData;
     private final AimInfo aimInfo;
     private final ReloadInfo reloadInfo;
     private final PlayerSkills playerSkills;
-    private int reducedHealthTimer;
+    private final PlayerQuests playerQuests;
+    private final PlayerDebuffs debuffs;
     private ISynchCallback callback;
 
     private boolean logged = false;
@@ -46,11 +37,17 @@ public class PlayerData implements IPlayerData {
 
     public PlayerData(PlayerEntity player) {
         this.player = player;
-        this.debuffData = new DebuffData(this);
+        this.debuffs = new PlayerDebuffs();
         this.aimInfo = new AimInfo(this);
         this.reloadInfo = new ReloadInfo(this);
         this.playerSkills = new PlayerSkills(this);
+        this.playerQuests = new PlayerQuests();
+
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setSyncCallback);
+
+        saveHandler.addListener(debuffs);
+
+        saveHandler.invoke(entry -> entry.setClientSynch(this::sync));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -83,43 +80,21 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public void setOnCooldown() {
-        if (!ModConfig.debuffConfig.disableRespawnDebuff()) {
-            reducedHealthTimer = 3600;
-        } else {
-            reducedHealthTimer = 0;
-            double d = getSkills().hasSkill(Skills.WAR_MACHINE) ? 40 : 20;
-            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(d);
-            player.setHealth(player.getMaxHealth());
-        }
+    public PlayerQuests getPlayerQuests() {
+        return playerQuests;
+    }
+
+    @Override
+    public IDebuffs getDebuffControl() {
+        return debuffs;
     }
 
     @Override
     public void tick() {
-        World world = player.level;
-        this.debuffData.tick(player, this);
+        this.debuffs.tick(player);
         this.aimInfo.update();
         this.reloadInfo.tick();
         this.playerSkills.update();
-        if (!world.isClientSide && reducedHealthTimer > 0) {
-            --reducedHealthTimer;
-            double value = player.getAttributeBaseValue(Attributes.MAX_HEALTH);
-            if (value != 6) {
-                player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(6.0);
-                if (player.getHealth() > player.getMaxHealth()) {
-                    player.setHealth(player.getMaxHealth());
-                }
-            }
-            if (reducedHealthTimer == 0) {
-                double d = getSkills().hasSkill(Skills.WAR_MACHINE) ? 40 : 20;
-                player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(d);
-            }
-        }
-    }
-
-    @Override
-    public DebuffData getDebuffData() {
-        return debuffData;
     }
 
     @Override
@@ -140,7 +115,7 @@ public class PlayerData implements IPlayerData {
     @Override
     public void sync() {
         if (player instanceof ServerPlayerEntity) {
-            NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketUpdateCap(player.getUUID(), this.serializeNBT(), 0));
+            NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketUpdateCap(player.getUUID(), this.serializeNBT()));
         }
     }
 
@@ -166,38 +141,18 @@ public class PlayerData implements IPlayerData {
         if (callback != null) callback.onSynch();
     }
 
-    public CompoundNBT writePermanentData() {
-        CompoundNBT nbtTagCompound = new CompoundNBT();
-        nbtTagCompound.putBoolean("logged", logged);
-        return nbtTagCompound;
-    }
-
-    public void readPermanentData(CompoundNBT nbt) {
-        logged = nbt.getBoolean("logged");
-    }
-
     @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
-        nbt.put("permanent", writePermanentData());
-        nbt.put("debuffs", debuffData.serializeNBT());
-        nbt.put("aimData", aimInfo.write());
-        nbt.put("playerSkills", playerSkills.writeData());
-        nbt.putInt("healthCooldown", reducedHealthTimer);
+        nbt.putBoolean("logged", logged);
+        saveHandler.invoke(entry -> entry.toNbt(nbt));
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-        if (nbt.contains("permanent")) readPermanentData(nbt.getCompound("permanent"));
-        debuffData.deserializeNBT(nbt.contains("debuffs", Constants.NBT.TAG_LIST) ? nbt.getList("debuffs", Constants.NBT.TAG_COMPOUND) : new ListNBT());
-        aimInfo.read(this.findNBTTag("aimData", nbt));
-        playerSkills.readData(this.findNBTTag("playerSkills", nbt));
-        reducedHealthTimer = nbt.getInt("healthCooldown");
-    }
-
-    private CompoundNBT findNBTTag(String key, CompoundNBT nbt) {
-        return nbt.contains(key) ? nbt.getCompound(key) : new CompoundNBT();
+        logged = nbt.getBoolean("logged");
+        saveHandler.invoke(entry -> entry.fromNbt(nbt));
     }
 
     public PlayerEntity getPlayer() {

@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.quests.reward;
 
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -7,29 +8,26 @@ import net.minecraft.nbt.CompoundNBT;
 
 import javax.annotation.Nullable;
 
-public final class Award {
+public final class Reward {
 
-    private final Item item;
+    private final Item[] items;
     private final int count;
     @Nullable
     private final CompoundNBT data;
 
-    private Award(Item item, int count, @Nullable CompoundNBT data) {
-        this.item = item;
+    private Reward(Item[] items, int count, @Nullable CompoundNBT data) {
+        this.items = items;
         this.count = count;
         this.data = data;
     }
 
-    public static Award newAward(Item item, int count, @Nullable CompoundNBT data) {
-        return new Award(item, count, data);
-    }
-
-    public static Award newAward(Item item, int count) {
-        return newAward(item, count, null);
+    public static Reward newAward(Item[] items, int count, @Nullable CompoundNBT data) {
+        return new Reward(items, count, data);
     }
 
     public void awardTo(PlayerEntity player) {
         int toDistribute = count;
+        Item item = ModUtils.randomElement(items);
         int max = Math.min(player.inventory.getMaxStackSize(), item.getMaxStackSize());
         while (toDistribute > 0) {
             int award = Math.min(toDistribute, max);
