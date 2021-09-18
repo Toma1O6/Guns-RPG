@@ -4,6 +4,8 @@ import net.minecraft.nbt.CompoundNBT;
 
 public interface IPlayerCapEntry {
 
+    int getFlag();
+
     void toNbt(CompoundNBT nbt);
 
     void fromNbt(CompoundNBT nbt);
@@ -11,6 +13,6 @@ public interface IPlayerCapEntry {
     void setClientSynch(IClientSynchReq request);
 
     interface IClientSynchReq {
-        void requestClientSynch();
+        void makeSyncRequest();
     }
 }

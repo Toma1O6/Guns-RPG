@@ -1,10 +1,11 @@
 package dev.toma.gunsrpg.api.common.data;
 
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.common.util.INBTSerializable;
 
-public interface IPlayerData extends INBTSerializable<CompoundNBT> {
+import java.util.List;
+
+public interface IPlayerData {
 
     IAimInfo getAimInfo();
 
@@ -14,17 +15,25 @@ public interface IPlayerData extends INBTSerializable<CompoundNBT> {
 
     IDebuffs getDebuffControl();
 
-    PlayerSkills getSkills();
+    IAttributeProvider getAttributes();
+
+    ISkills getSkills();
+
+    IData getGenericData();
+
+    List<IPlayerCapEntry> getSaveEntries();
 
     void tick();
 
-    void sync();
-
-    void handleLogin();
+    void sync(int flags);
 
     void setSyncCallback(ISynchCallback callback);
 
     void onSync();
+
+    CompoundNBT toNbt(int flags);
+
+    void fromNbt(CompoundNBT nbt, int flags);
 
     interface ISynchCallback {
         void onSynch();

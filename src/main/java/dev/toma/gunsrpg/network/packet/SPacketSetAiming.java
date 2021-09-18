@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.network.packet;
 
+import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IAimInfo;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
@@ -33,8 +34,8 @@ public class SPacketSetAiming extends AbstractNetworkPacket<SPacketSetAiming> {
         ServerPlayerEntity player = context.getSender();
         PlayerData.get(player).ifPresent(data -> {
             IAimInfo info = data.getAimInfo();
-            info.setAiming(aim);
-            data.sync();
+            info.setAiming(aim, player);
+            data.sync(DataFlags.AIM);
         });
     }
 }

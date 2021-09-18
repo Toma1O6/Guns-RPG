@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.common.item.guns.util;
 
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 
-public enum GunType {
+public enum WeaponCategory {
 
     PISTOL(AmmoType._9MM),
     SMG(AmmoType._45ACP),
@@ -13,7 +13,7 @@ public enum GunType {
 
     private final AmmoType ammoType;
 
-    GunType(AmmoType ammoType) {
+    WeaponCategory(AmmoType ammoType) {
         this.ammoType = ammoType;
     }
 

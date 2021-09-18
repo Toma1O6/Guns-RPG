@@ -1,25 +1,18 @@
 package dev.toma.gunsrpg.common.capability.object;
 
-import dev.toma.gunsrpg.api.common.data.IReloadInfo;
-import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IReloader;
+import dev.toma.gunsrpg.api.common.data.IReloadInfo;
+import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.util.AmmoLocator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 public class ReloadInfo implements IReloadInfo {
 
-    private final PlayerData factory;
-
     private IReloader activeReloadManager = IReloader.EMPTY;
     private int reloadingSlot;
-
-    public ReloadInfo(PlayerData factory) {
-        this.factory = factory;
-    }
 
     @Override
     public void enqueueCancel() {
@@ -27,14 +20,13 @@ public class ReloadInfo implements IReloadInfo {
     }
 
     @Override
-    public void tick() {
-        PlayerEntity owner = factory.getPlayer();
-        int equippedSlot = owner.inventory.selected;
+    public void tick(PlayerEntity player) {
+        int equippedSlot = player.inventory.selected;
         if (equippedSlot != reloadingSlot) {
             activeReloadManager.forceCancel();
             activeReloadManager = IReloader.EMPTY;
         }
-        activeReloadManager.tick(owner);
+        activeReloadManager.tick(player);
     }
 
     @Override

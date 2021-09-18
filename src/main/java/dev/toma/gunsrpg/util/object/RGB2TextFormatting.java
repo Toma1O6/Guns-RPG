@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.util.object;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.Arrays;
-import java.util.Map;
 
 public class RGB2TextFormatting {
 

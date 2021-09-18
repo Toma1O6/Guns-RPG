@@ -1,30 +1,29 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IAimInfo;
-import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
+import dev.toma.gunsrpg.api.common.data.IReloadInfo;
 import lib.toma.animations.Interpolate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.common.util.Constants;
 
-public class AimInfo implements IAimInfo {
+public class AimInfo implements IAimInfo, IPlayerCapEntry {
 
-    private final PlayerData parent;
-    public int slot;
-    public boolean aiming;
-    public float progress;
-    public float progressOld;
+    private IClientSynchReq request = () -> {};
+    private int slot;
+    private boolean aiming;
+    private float progress;
+    private float progressOld;
 
-    public AimInfo(PlayerData parent) {
-        this.parent = parent;
-    }
-
-    public void update() {
-        PlayerEntity player = parent.getPlayer();
+    @Override
+    public void tick(PlayerEntity player, IReloadInfo reloadStats) {
         boolean server = !player.level.isClientSide;
         int slotIn = player.inventory.selected;
-        if (server && aiming && (slotIn != slot || player.isSprinting() || parent.getReloadInfo().isReloading())) {
-            setAiming(false);
-            parent.sync();
+        if (server && aiming && (slotIn != slot || player.isSprinting() || reloadStats.isReloading())) {
+            setAiming(false, player);
+            request.makeSyncRequest();
         }
         float aimingSpeed = 0.25F;
         progressOld = progress;
@@ -33,6 +32,11 @@ public class AimInfo implements IAimInfo {
         } else if (!aiming && progress > 0.0F) {
             progress = Math.max(0.0F, progress - aimingSpeed);
         }
+    }
+
+    @Override
+    public int getFlag() {
+        return DataFlags.AIM;
     }
 
     @Override
@@ -46,9 +50,9 @@ public class AimInfo implements IAimInfo {
     }
 
     @Override
-    public void setAiming(boolean aiming) {
+    public void setAiming(boolean aiming, PlayerEntity player) {
         if (aiming) {
-            slot = parent.getPlayer().inventory.selected;
+            slot = player.inventory.selected;
         }
         this.aiming = aiming;
     }
@@ -63,17 +67,25 @@ public class AimInfo implements IAimInfo {
         return Interpolate.linear(deltaTime, progress, progressOld);
     }
 
-    public CompoundNBT write() {
-        CompoundNBT nbt = new CompoundNBT();
-        nbt.putInt("slot", slot);
-        nbt.putBoolean("aim", aiming);
-        nbt.putFloat("progress", progress);
-        return nbt;
+    @Override
+    public void toNbt(CompoundNBT nbt) {
+        CompoundNBT cnbt = new CompoundNBT();
+        cnbt.putInt("slot", slot);
+        cnbt.putBoolean("aim", aiming);
+        cnbt.putFloat("progress", progress);
+        nbt.put("aimInfo", cnbt);
     }
 
-    public void read(CompoundNBT nbt) {
-        slot = nbt.getInt("slot");
-        aiming = nbt.getBoolean("aim");
-        progress = nbt.getFloat("progress");
+    @Override
+    public void fromNbt(CompoundNBT nbt) {
+        CompoundNBT cnbt = nbt.contains("aimInfo", Constants.NBT.TAG_COMPOUND) ? nbt.getCompound("aimInfo") : new CompoundNBT();
+        slot = cnbt.getInt("slot");
+        aiming = cnbt.getBoolean("aim");
+        progress = cnbt.getFloat("progress");
+    }
+
+    @Override
+    public void setClientSynch(IClientSynchReq request) {
+        this.request = request;
     }
 }

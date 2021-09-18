@@ -1,5 +1,8 @@
 package dev.toma.gunsrpg.client;
 
+import dev.toma.gunsrpg.api.common.IAmmoMaterial;
+import dev.toma.gunsrpg.api.common.IAmmoProvider;
+import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.api.common.data.IReloadInfo;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.screen.ChooseAmmoScreen;
@@ -7,9 +10,6 @@ import dev.toma.gunsrpg.client.screen.skills.PlayerSkillsScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.api.common.IAmmoMaterial;
-import dev.toma.gunsrpg.api.common.IAmmoProvider;
-import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketChangeFiremode;
 import dev.toma.gunsrpg.network.packet.SPacketRequestDataUpdate;

@@ -1,6 +1,9 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.ModTabs;
+import dev.toma.gunsrpg.api.common.IAmmoMaterial;
+import dev.toma.gunsrpg.api.common.IReloadManager;
+import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.client.animation.BulletEjectAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -9,14 +12,11 @@ import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.item.BaseItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterialManager;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.api.common.IAmmoMaterial;
-import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
-import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
+import dev.toma.gunsrpg.common.item.guns.util.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.util.object.RGB2TextFormatting;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.AnimationList;
@@ -43,12 +43,12 @@ import java.util.Set;
 public abstract class GunItem extends BaseItem implements IAnimationEntry {
 
     protected static Random random = new Random();
-    protected final GunType gunType;
+    protected final WeaponCategory weaponCategory;
     private final MaterialContainer container = new MaterialContainer();
 
-    public GunItem(String name, GunType type, Properties properties) {
+    public GunItem(String name, WeaponCategory category, Properties properties) {
         super(name, properties.tab(ModTabs.ITEM_TAB).stacksTo(1));
-        this.gunType = type;
+        this.weaponCategory = category;
         this.fillAmmoMaterialData(container);
     }
 
@@ -191,11 +191,11 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
     }
 
     public AmmoType getAmmoType() {
-        return gunType.getAmmoType();
+        return weaponCategory.getAmmoType();
     }
 
-    public GunType getGunType() {
-        return gunType;
+    public WeaponCategory getWeaponCategory() {
+        return weaponCategory;
     }
 
     public void createNBT(ItemStack stack) {

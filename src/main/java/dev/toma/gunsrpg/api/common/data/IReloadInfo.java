@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 
 public interface IReloadInfo {
 
-    void tick();
+    void tick(PlayerEntity player);
 
     void startReloading(PlayerEntity player, GunItem item, ItemStack stack, int slot);
 

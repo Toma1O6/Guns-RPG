@@ -1,9 +1,9 @@
 package dev.toma.gunsrpg.common.entity;
 
+import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

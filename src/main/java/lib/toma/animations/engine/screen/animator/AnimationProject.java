@@ -3,8 +3,8 @@ package lib.toma.animations.engine.screen.animator;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.AnimationType;
 import lib.toma.animations.api.IAnimationPipeline;
-import lib.toma.animations.api.event.IAnimationEvent;
 import lib.toma.animations.api.IKeyframeProvider;
+import lib.toma.animations.api.event.IAnimationEvent;
 import lib.toma.animations.engine.frame.KeyframeProvider;
 
 import java.io.File;

@@ -2,8 +2,8 @@ package dev.toma.gunsrpg.client.model.weapon;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import dev.toma.gunsrpg.client.model.AbstractSolidEntityModel;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.client.model.AbstractSolidEntityModel;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IAnimationPipeline;

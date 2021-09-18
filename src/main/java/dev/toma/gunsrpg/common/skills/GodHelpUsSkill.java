@@ -1,12 +1,11 @@
 package dev.toma.gunsrpg.common.skills;
 
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.IClickableSkill;
+import dev.toma.gunsrpg.api.common.ICooldown;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.FlareEntity;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.api.common.IClickableSkill;
-import dev.toma.gunsrpg.api.common.ICooldown;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSkillClicked;
 import net.minecraft.entity.player.PlayerEntity;
@@ -42,7 +41,7 @@ public class GodHelpUsSkill extends BasicSkill implements ICooldown, IClickableS
         currentCooldown = maxCooldown;
         player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.FLARE_SHOOT, SoundCategory.MASTER, 10.0F, 1.0F);
         player.level.addFreshEntity(new FlareEntity(player.level, player));
-        PlayerData.get(player).ifPresent(IPlayerData::sync);
+        PlayerData.get(player).ifPresent(data -> data.sync());
     }
 
     @Override

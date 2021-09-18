@@ -1,11 +1,12 @@
 package dev.toma.gunsrpg.common;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.ISkills;
 import dev.toma.gunsrpg.api.common.data.IWorldData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataProvider;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.debuffs.IDebuffContext;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import dev.toma.gunsrpg.common.entity.CrossbowBoltEntity;
@@ -130,8 +131,8 @@ public class CommonEventHandler {
     public static void onLogIn(PlayerEvent.PlayerLoggedInEvent event) {
         PlayerEntity player = event.getPlayer();
         PlayerData.get(player).ifPresent(data -> {
-            data.sync();
-            data.handleLogin();
+            data.sync(DataFlags.WILDCARD);
+            data.getGenericData().onLogIn();
             ModList list = ModList.get();
             Optional<? extends ModContainer> optional = list.getModContainerById(GunsRPG.MODID);
             optional.ifPresent(container -> {
@@ -139,7 +140,7 @@ public class CommonEventHandler {
                 switch (result.status) {
                     case OUTDATED:
                     case BETA_OUTDATED:
-                        StringTextComponent textComponent = new StringTextComponent(getMessageLogo() + TextFormatting.GREEN + " Your mod is " + TextFormatting.DARK_RED + "outdated" + TextFormatting.GREEN + ". Click " + TextFormatting.BOLD + "HERE" + TextFormatting.RESET.toString() + TextFormatting.GREEN + " to get latest update");
+                        StringTextComponent textComponent = new StringTextComponent(getMessageLogo() + TextFormatting.GREEN + " Your mod is " + TextFormatting.DARK_RED + "outdated" + TextFormatting.GREEN + ". Click " + TextFormatting.BOLD + "HERE" + TextFormatting.RESET + TextFormatting.GREEN + " to get latest update");
                         String url = "https://www.curseforge.com/minecraft/mc-mods/guns-rpg";
                         textComponent.getStyle().withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
                         player.sendMessage(textComponent, Util.NIL_UUID);
@@ -161,7 +162,7 @@ public class CommonEventHandler {
         PlayerEntity player = event.getPlayer();
         ItemStack stack = player.getMainHandItem();
         PlayerData.get(player).ifPresent(data -> {
-            PlayerSkills skills = data.getSkills();
+            ISkills skills = data.getSkills();
             if (stack.getItem() instanceof AxeItem && skills.hasSkill(Skills.SHARP_AXE_I)) {
                 float f = event.getOriginalSpeed();
                 float f1 = skills.axeMiningSpeed * 2;
@@ -209,7 +210,7 @@ public class CommonEventHandler {
             if (food != null) {
                 int nutrition = food.getNutrition();
                 PlayerData.get(player).ifPresent(data -> {
-                    PlayerSkills skills = data.getSkills();
+                    ISkills skills = data.getSkills();
                     WellFedSkill skill = skills.getSkill(Skills.WELL_FED_I);
                     if (nutrition >= ModConfig.skillConfig.getWellFedMinNutrition() && skill != null) {
                         SkillUtil.getBestSkillFromOverrides(skill, player).applyEffects(player);
@@ -244,7 +245,7 @@ public class CommonEventHandler {
         if (source.getDirectEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) source.getDirectEntity();
             PlayerData.get(player).ifPresent(data -> {
-                PlayerSkills skills = data.getSkills();
+                ISkills skills = data.getSkills();
                 float health = event.getEntityLiving().getMaxHealth();
                 boolean instantKill = false;
                 if (health < 100.0F) {
@@ -272,7 +273,8 @@ public class CommonEventHandler {
     public static void clonePlayer(net.minecraftforge.event.entity.player.PlayerEvent.Clone event) {
         LazyOptional<IPlayerData> oldDataOptional = PlayerData.get(event.getOriginal());
         LazyOptional<IPlayerData> freshDataOptional = PlayerData.get(event.getPlayer());
-        oldDataOptional.ifPresent(oldData -> freshDataOptional.ifPresent(freshData -> freshData.deserializeNBT(oldData.serializeNBT())));
+        int flag = DataFlags.WILDCARD;
+        oldDataOptional.ifPresent(oldData -> freshDataOptional.ifPresent(freshData -> freshData.fromNbt(oldData.toNbt(flag), flag)));
     }
 
     @SubscribeEvent
@@ -349,12 +351,12 @@ public class CommonEventHandler {
         if (flag) {
             Entity source = ((GunDamageSource) event.getSource()).getSrc();
             if (source instanceof PlayerEntity) {
-                PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getSkills().onKillEntity(event.getEntity(), ((GunDamageSource) event.getSource()).getStacc()));
+                PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getGenericData().onEnemyKilled(event.getEntity(), ((GunDamageSource) event.getSource()).getStacc()));
             }
         } else {
             Entity source = event.getSource().getDirectEntity();
             if (source instanceof PlayerEntity) {
-                PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getSkills().onKillEntity(event.getEntity(), ItemStack.EMPTY));
+                PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getGenericData().onEnemyKilled(event.getEntity(), ItemStack.EMPTY));
             }
         }
         if (event.getEntity() instanceof IMob) {
@@ -366,7 +368,7 @@ public class CommonEventHandler {
         if (event.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntity();
             PlayerData.get(player).ifPresent(data -> {
-                PlayerSkills skills = data.getSkills();
+                ISkills skills = data.getSkills();
                 SecondChanceSkill secondChanceSkill = skills.getSkill(Skills.SECOND_CHANCE_I);
                 if (secondChanceSkill != null) {
                     secondChanceSkill = SkillUtil.getBestSkillFromOverrides(secondChanceSkill, player);
@@ -374,7 +376,7 @@ public class CommonEventHandler {
                         event.setCanceled(true);
                         secondChanceSkill.setOnCooldown();
                         secondChanceSkill.onUse(player);
-                        data.sync();
+                        data.sync(DataFlags.SKILLS);
                     }
                 }
                 if (!event.isCanceled()) {
@@ -408,14 +410,14 @@ public class CommonEventHandler {
     public static void respawnPlayer(PlayerEvent.PlayerRespawnEvent event) {
         PlayerEntity player = event.getPlayer();
         PlayerData.get(player).ifPresent(data -> {
-            PlayerSkills skills = data.getSkills();
+            ISkills skills = data.getSkills();
             if (skills.hasSkill(Skills.WAR_MACHINE)) {
                 skills.getSkill(Skills.WAR_MACHINE).onPurchase(player);
             }
             if (!event.isEndConquered()) {
                 data.getDebuffControl().trigger(IDebuffType.TriggerFlags.RESPAWN, IDebuffContext.of(DamageSource.GENERIC, player, data, 0.0F));
             }
-            data.sync();
+            data.sync(DataFlags.WILDCARD);
         });
     }
 

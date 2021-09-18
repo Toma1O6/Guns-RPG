@@ -1,15 +1,15 @@
 package dev.toma.gunsrpg.common.skills.criteria;
 
+import dev.toma.gunsrpg.api.common.data.IKillData;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.common.capability.object.GunData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
+import dev.toma.gunsrpg.api.common.data.ITransactionProcessor;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.common.skills.transaction.WeaponPointTransaction;
 
-import java.util.Map;
 import java.util.function.Supplier;
 
-public class GunCriteria extends DefaultUnlockCriteria {
+public class GunCriteria extends PlayerLevelCriteria {
 
     private final Supplier<GunItem> gunItemSupplier;
 
@@ -19,15 +19,12 @@ public class GunCriteria extends DefaultUnlockCriteria {
 
     @Override
     public boolean isUnlockAvailable(IPlayerData data, SkillType<?> skillType) {
-        Map<GunItem, GunData> stats = data.getSkills().getGunStats();
-        GunData v = stats.get(gunItemSupplier.get());
-        return v != null && v.getGunPoints() >= skillType.price && v.getLevel() >= skillType.levelRequirement;
+        IKillData killData = data.getGenericData().getWeaponStats(gunItemSupplier.get());
+        return killData != null && killData.getPoints() >= skillType.price && killData.getLevel() >= skillType.levelRequirement;
     }
 
     @Override
-    public void onActivated(IPlayerData data, SkillType<?> skillType) {
-        PlayerSkills skills = data.getSkills();
-        skills.getGunData(gunItemSupplier.get()).consumePoint();
-        skills.unlockSkill(skillType);
+    public void onActivated(ITransactionProcessor processor, SkillType<?> skillType) {
+        processor.processTransaction(new WeaponPointTransaction(WeaponPointTransaction.IWeaponData.of(gunItemSupplier.get(), skillType)));
     }
 }

@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.api.common;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.api.common.ISkill;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Ump45Renderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -9,11 +10,10 @@ import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
-import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
+import dev.toma.gunsrpg.common.item.guns.util.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.client.Minecraft;
@@ -37,7 +37,7 @@ public class Ump45Item extends GunItem {
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("ump45/reload");
 
     public Ump45Item(String name) {
-        super(name, GunType.SMG, new Properties().setISTER(() -> Ump45Renderer::new));
+        super(name, WeaponCategory.SMG, new Properties().setISTER(() -> Ump45Renderer::new));
     }
 
     @Override

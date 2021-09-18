@@ -5,7 +5,7 @@ import dev.toma.gunsrpg.common.init.ModItems;
 
 public class CriteriaTypes {
 
-    private static final IUnlockCriteria DEFAULT_CRITERIA = new DefaultUnlockCriteria();
+    private static final IUnlockCriteria DEFAULT_CRITERIA = new PlayerLevelCriteria();
     private static final IUnlockCriteria PISTOL_CRITERIA = new GunCriteria(() -> ModItems.M1911);
     private static final IUnlockCriteria SMG_CRITERIA = new GunCriteria(() -> ModItems.UMP45);
     private static final IUnlockCriteria CROSSBOW_CRITERIA = new GunCriteria(() -> ModItems.WOODEN_CROSSBOW);

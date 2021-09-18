@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.util;
 
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;

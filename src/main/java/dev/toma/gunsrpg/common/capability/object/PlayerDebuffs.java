@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.common.debuffs.IDebuff;
 import dev.toma.gunsrpg.common.debuffs.IDebuffContext;
@@ -79,7 +80,7 @@ public class PlayerDebuffs implements IDebuffs {
         if (debuff != null) {
             debuff.heal(amount, this);
         }
-        clientSynchReq.requestClientSynch();
+        clientSynchReq.makeSyncRequest();
     }
 
     @Override
@@ -133,9 +134,14 @@ public class PlayerDebuffs implements IDebuffs {
         return debuffMap.values();
     }
 
+    @Override
+    public int getFlag() {
+        return DataFlags.DEBUFF;
+    }
+
     private void sync() {
         if (clientSynchReq != null)
-            clientSynchReq.requestClientSynch();
+            clientSynchReq.makeSyncRequest();
     }
 
     private <D extends IDebuff> boolean tryCreate(IDebuffType<D> type, IDebuffContext context, Random random) {

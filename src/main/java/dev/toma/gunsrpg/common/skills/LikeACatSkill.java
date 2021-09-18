@@ -1,11 +1,10 @@
 package dev.toma.gunsrpg.common.skills;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.api.common.IClickableSkill;
 import dev.toma.gunsrpg.api.common.ICooldown;
+import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSkillClicked;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -76,7 +75,7 @@ public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSk
     public void clicked(PlayerEntity player) {
         effectLeft = effectLength;
         player.addEffect(new EffectInstance(Effects.NIGHT_VISION, effectLength, 0, false, false));
-        PlayerData.get(player).ifPresent(IPlayerData::sync);
+        PlayerData.get(player).ifPresent(data -> data.sync());
     }
 
     @Override

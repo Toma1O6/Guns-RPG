@@ -1,8 +1,8 @@
 package lib.toma.animations.engine.screen.animator.dialog;
 
+import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.lifecycle.Registries;
 import lib.toma.animations.engine.ByteFlags;
-import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.engine.screen.animator.AnimatorScreen;
 import lib.toma.animations.engine.screen.animator.widget.LabelWidget;
 import lib.toma.animations.engine.screen.animator.widget.MultiSelectListView;

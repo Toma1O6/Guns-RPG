@@ -1,8 +1,9 @@
 package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.DataFlags;
+import dev.toma.gunsrpg.api.common.data.ISkills;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
@@ -50,7 +51,7 @@ public class SPacketUnlockSkill extends AbstractNetworkPacket<SPacketUnlockSkill
     protected void handlePacket(NetworkEvent.Context context) {
         ServerPlayerEntity player = context.getSender();
         PlayerData.get(player).ifPresent(data -> {
-            PlayerSkills skills = data.getSkills();
+            ISkills skills = data.getSkills();
             if (clicked == null) {
                 logInvalidPacket("Clicked skill is null");
                 return;
@@ -80,8 +81,8 @@ public class SPacketUnlockSkill extends AbstractNetworkPacket<SPacketUnlockSkill
                 logInvalidPacket("Player cannot unlock this skill yet!");
                 return;
             }
-            clicked.getCriteria().onActivated(data, clicked);
-            data.sync();
+            clicked.getCriteria().onActivated(data.getGenericData(), clicked);
+            data.sync(DataFlags.SKILLS | DataFlags.DATA);
         });
     }
 

@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.IReloadManager;
+import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.S1897Renderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -10,13 +12,11 @@ import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
-import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
-import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
+import dev.toma.gunsrpg.common.item.guns.util.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -37,7 +37,7 @@ public class S1897Item extends GunItem {
     private static final ResourceLocation LOAD_BULLET_ANIMATION = GunsRPG.makeResource("s1897/load_bullet");
 
     public S1897Item(String name) {
-        super(name, GunType.SG, new Properties().setISTER(() -> S1897Renderer::new));
+        super(name, WeaponCategory.SG, new Properties().setISTER(() -> S1897Renderer::new));
     }
 
     @Override

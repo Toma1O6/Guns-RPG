@@ -2,8 +2,8 @@ package dev.toma.gunsrpg.common.capability;
 
 import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.api.common.data.*;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.object.*;
-import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketUpdateCap;
@@ -11,12 +11,13 @@ import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.IEventHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
+
+import java.util.List;
 
 public class PlayerData implements IPlayerData {
 
@@ -27,9 +28,9 @@ public class PlayerData implements IPlayerData {
     private final PlayerSkills playerSkills;
     private final PlayerQuests playerQuests;
     private final PlayerDebuffs debuffs;
+    private final PlayerAttributes attributes;
+    private final PlayerGenericData data;
     private ISynchCallback callback;
-
-    private boolean logged = false;
 
     public PlayerData() {
         this(null);
@@ -38,16 +39,108 @@ public class PlayerData implements IPlayerData {
     public PlayerData(PlayerEntity player) {
         this.player = player;
         this.debuffs = new PlayerDebuffs();
-        this.aimInfo = new AimInfo(this);
-        this.reloadInfo = new ReloadInfo(this);
-        this.playerSkills = new PlayerSkills(this);
+        this.aimInfo = new AimInfo();
+        this.reloadInfo = new ReloadInfo();
+        this.playerSkills = new PlayerSkills(player);
         this.playerQuests = new PlayerQuests();
+        this.attributes = new PlayerAttributes();
+        this.data = new PlayerGenericData(player, playerSkills);
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setSyncCallback);
 
         saveHandler.addListener(debuffs);
+        saveHandler.addListener(aimInfo);
+        saveHandler.addListener(playerSkills);
+        saveHandler.addListener(playerQuests);
+        saveHandler.addListener(attributes);
+        saveHandler.addListener(data);
 
-        saveHandler.invoke(entry -> entry.setClientSynch(this::sync));
+        saveHandler.invoke(entry -> entry.setClientSynch(() -> requestSync(entry.getFlag())));
+    }
+
+    @Override
+    public void tick() {
+        this.debuffs.tick(player);
+        this.reloadInfo.tick(player);
+        this.aimInfo.tick(player, reloadInfo);
+        this.playerSkills.tick(player);
+    }
+
+    @Override
+    public IAimInfo getAimInfo() {
+        return aimInfo;
+    }
+
+    @Override
+    public IReloadInfo getReloadInfo() {
+        return reloadInfo;
+    }
+
+    @Override
+    public ISkills getSkills() {
+        return playerSkills;
+    }
+
+    @Override
+    public IQuests getPlayerQuests() {
+        return playerQuests;
+    }
+
+    @Override
+    public IDebuffs getDebuffControl() {
+        return debuffs;
+    }
+
+    @Override
+    public IAttributeProvider getAttributes() {
+        return attributes;
+    }
+
+    @Override
+    public IData getGenericData() {
+        return data;
+    }
+
+    @Override
+    public void sync(int flags) {
+        if (player instanceof ServerPlayerEntity) {
+            NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketUpdateCap(player.getUUID(), toNbt(flags), flags));
+        }
+    }
+
+    @Override
+    public void setSyncCallback(ISynchCallback callback) {
+        this.callback = callback;
+    }
+
+    @Override
+    public void onSync() {
+        if (callback != null) callback.onSynch();
+    }
+
+    @Override
+    public List<IPlayerCapEntry> getSaveEntries() {
+        return saveHandler.listAll();
+    }
+
+    @Override
+    public CompoundNBT toNbt(int flags) {
+        CompoundNBT nbt = new CompoundNBT();
+        saveHandler.invokeIf(entry -> DataFlags.is(entry.getFlag(), flags), entry -> entry.toNbt(nbt));
+        return nbt;
+    }
+
+    @Override
+    public void fromNbt(CompoundNBT nbt, int flags) {
+        saveHandler.invokeIf(entry -> DataFlags.is(entry.getFlag(), flags), entry -> entry.fromNbt(nbt));
+    }
+
+    public PlayerEntity getPlayer() {
+        return player;
+    }
+
+    private void requestSync(int flag) {
+        sync(flag);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -77,85 +170,5 @@ public class PlayerData implements IPlayerData {
 
     public static IPlayerData getUnsafe(PlayerEntity player) {
         return get(player).orElseThrow(NullPointerException::new);
-    }
-
-    @Override
-    public PlayerQuests getPlayerQuests() {
-        return playerQuests;
-    }
-
-    @Override
-    public IDebuffs getDebuffControl() {
-        return debuffs;
-    }
-
-    @Override
-    public void tick() {
-        this.debuffs.tick(player);
-        this.aimInfo.update();
-        this.reloadInfo.tick();
-        this.playerSkills.update();
-    }
-
-    @Override
-    public IAimInfo getAimInfo() {
-        return aimInfo;
-    }
-
-    @Override
-    public IReloadInfo getReloadInfo() {
-        return reloadInfo;
-    }
-
-    @Override
-    public PlayerSkills getSkills() {
-        return playerSkills;
-    }
-
-    @Override
-    public void sync() {
-        if (player instanceof ServerPlayerEntity) {
-            NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketUpdateCap(player.getUUID(), this.serializeNBT()));
-        }
-    }
-
-    @Override
-    public void handleLogin() {
-        if (!logged) {
-            logged = true;
-            player.addItem(new ItemStack(ModItems.ANTIDOTUM_PILLS, 2));
-            player.addItem(new ItemStack(ModItems.BANDAGE, 2));
-            player.addItem(new ItemStack(ModItems.VACCINE));
-            player.addItem(new ItemStack(ModItems.PLASTER_CAST));
-            sync();
-        }
-    }
-
-    @Override
-    public void setSyncCallback(ISynchCallback callback) {
-        this.callback = callback;
-    }
-
-    @Override
-    public void onSync() {
-        if (callback != null) callback.onSynch();
-    }
-
-    @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT nbt = new CompoundNBT();
-        nbt.putBoolean("logged", logged);
-        saveHandler.invoke(entry -> entry.toNbt(nbt));
-        return nbt;
-    }
-
-    @Override
-    public void deserializeNBT(CompoundNBT nbt) {
-        logged = nbt.getBoolean("logged");
-        saveHandler.invoke(entry -> entry.fromNbt(nbt));
-    }
-
-    public PlayerEntity getPlayer() {
-        return player;
     }
 }

@@ -1,14 +1,16 @@
 package dev.toma.gunsrpg.api.common.data;
 
+import net.minecraft.entity.player.PlayerEntity;
+
 public interface IAimInfo {
 
-    void update();
+    void tick(PlayerEntity player, IReloadInfo reloadStats);
 
     boolean startedAiming();
 
     boolean isAiming();
 
-    void setAiming(boolean aiming);
+    void setAiming(boolean aiming, PlayerEntity player);
 
     float getProgress();
 

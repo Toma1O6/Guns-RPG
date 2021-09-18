@@ -46,7 +46,7 @@ public class GunAttackGoal extends Goal {
         if (target == null || !hasGun()) return;
         double dist = Math.sqrt(entity.distanceToSqr(target));
         GunItem gun = (GunItem) entity.getMainHandItem().getItem();
-        double attackRange = ATTACK_RANGE_TABLE[gun.getGunType().ordinal()];
+        double attackRange = ATTACK_RANGE_TABLE[gun.getWeaponCategory().ordinal()];
         boolean canSee = canSeeEntity(target);
         if (dist <= attackRange && canSee) {
             entity.getNavigation().stop();

@@ -10,8 +10,8 @@ import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
-import dev.toma.gunsrpg.common.item.guns.util.GunType;
 import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
+import dev.toma.gunsrpg.common.item.guns.util.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -40,7 +40,7 @@ public class Kar98kItem extends GunItem {
     private static final ResourceLocation LOAD_BULLET_ANIMATION = GunsRPG.makeResource("kar98k/load_bullet");
 
     public Kar98kItem(String name) {
-        super(name, GunType.SR, new Properties().setISTER(() -> Kar98kRenderer::new));
+        super(name, WeaponCategory.SR, new Properties().setISTER(() -> Kar98kRenderer::new));
     }
 
     @Override
