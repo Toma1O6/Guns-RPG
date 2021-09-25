@@ -477,12 +477,13 @@ public class PlayerSkillsScreen extends Screen {
         }
     }
 
-    private class GunDisplay {
+    @Deprecated
+    private class GunDisplay { // TODO delete
         private final PlacementContext ctx;
         private final GunItem gun;
         private final List<Component> list = new ArrayList<>();
         private int x, y, w, h;
-        private GunData gunData;
+        //private GunData gunData;
 
         public GunDisplay(PlacementContext ctx) {
             this.ctx = ctx;

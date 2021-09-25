@@ -18,6 +18,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class PlayerData implements IPlayerData {
 
@@ -170,5 +171,14 @@ public class PlayerData implements IPlayerData {
 
     public static IPlayerData getUnsafe(PlayerEntity player) {
         return get(player).orElseThrow(NullPointerException::new);
+    }
+
+    public static <T> T getValueSafe(PlayerEntity player, Function<IPlayerData, T> func, T fallback) {
+        LazyOptional<IPlayerData> optional = get(player);
+        if (optional.isPresent()) {
+            IPlayerData data = optional.orElse(null);
+            return func.apply(data);
+        }
+        return fallback;
     }
 }

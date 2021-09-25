@@ -64,11 +64,11 @@ public final class Attribs {
     public static final IAttributeId WELL_FED_DURATION          = createInternal("well_fed_duration");
     public static final IAttributeId MOTHERLODE_BONUS           = createInternal("motherlode_bonus");
     // weapon
-    public static final IAttributeId M1911_RELOAD_SPEED         = createInternal("m1911_reload_speed");
-    public static final IAttributeId M1911_MAG_CAPACITY         = createInternal("m1911_mag_capacity");
-    public static final IAttributeId M1911_FIRERATE             = createInternal("m1911_firerate");
-    public static final IAttributeId M1911_HORIZONTAL_RECOIL    = createInternal("m1911_horizontal_recoil");
-    public static final IAttributeId M1911_VERTICAL_RECOIL      = createInternal("m1911_vertical_recoil");
+    public static final IAttributeId M1911_RELOAD_SPEED         = createInternal("m1911_reload_speed", 35);
+    public static final IAttributeId M1911_MAG_CAPACITY         = createInternal("m1911_mag_capacity", 7);
+    public static final IAttributeId M1911_FIRERATE             = createInternal("m1911_firerate", 4);
+    public static final IAttributeId M1911_HORIZONTAL_RECOIL    = createInternal("m1911_horizontal_recoil", 1.4);
+    public static final IAttributeId M1911_VERTICAL_RECOIL      = createInternal("m1911_vertical_recoil", 3.1);
     public static final IAttributeId M1911_NOISE                = createInternal("m1911_noise");
     public static final IAttributeId UMP45_RELOAD_SPEED         = createInternal("ump45_reload_speed");
     public static final IAttributeId UMP45_MAG_CAPACITY         = createInternal("ump45_mag_capacity");

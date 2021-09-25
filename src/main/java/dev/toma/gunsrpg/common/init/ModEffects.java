@@ -9,6 +9,10 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * @deprecated Move to attribute system
+ */
+@Deprecated
 public class ModEffects {
     private static final DeferredRegister<Effect> EFFECTS = DeferredRegister.create(ForgeRegistries.POTIONS, GunsRPG.MODID);
     public static final RegistryObject<Effect> GUN_DAMAGE_BUFF = EFFECTS.register("gun_damage_buff", () -> new BaseEffect(EffectType.BENEFICIAL, 0xff1111));

@@ -8,6 +8,10 @@ public class AttributeModifier implements IAttributeModifier {
     private final IModifierOp op;
     private final double value;
 
+    AttributeModifier(String uid, IModifierOp op, double value) {
+        this(UUID.fromString(uid), op, value);
+    }
+
     AttributeModifier(UUID uid, IModifierOp op, double value) {
         this.uid = uid;
         this.op = op;

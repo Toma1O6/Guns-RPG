@@ -6,9 +6,10 @@ import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.client.animation.BulletEjectAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
+import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.entity.BulletEntity;
-import dev.toma.gunsrpg.common.init.ModEntities;
+import dev.toma.gunsrpg.common.entity.projectile.*;
 import dev.toma.gunsrpg.common.item.BaseItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterialManager;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
@@ -23,6 +24,7 @@ import lib.toma.animations.api.AnimationList;
 import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -40,7 +42,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public abstract class GunItem extends BaseItem implements IAnimationEntry {
+public abstract class GunItem extends BaseItem implements IAnimationEntry, IProjectileEjector {
 
     protected static Random random = new Random();
     protected final WeaponCategory weaponCategory;
@@ -112,6 +114,51 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
         return IRenderConfig.empty();
     }
 
+    public double getNoiseMultiplier(IAttributeProvider provider) {
+        return provider.getAttributeValue(Attribs.WEAPON_NOISE);
+    }
+
+    public double getHeadshotMultiplier(IAttributeProvider provider) {
+        return provider.getAttributeValue(Attribs.HEADSHOT_DAMAGE);
+    }
+
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return provider.getAttribute(Attribs.RECOIL_CONTROL).floatValue();
+    }
+
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return provider.getAttribute(Attribs.RECOIL_CONTROL).floatValue();
+    }
+
+    public int getMaxAmmo(IAttributeProvider provider) {
+        return 1;
+    }
+
+    public int getReloadTime(IAttributeProvider provider) {
+        return provider.getAttribute(Attribs.RELOAD_SPEED).intValue();
+    }
+
+    public int getFirerate(IAttributeProvider provider) {
+        return 1;
+    }
+
+    public IPenetrationConfig createPenetrationConfig() {
+        return IPenetrationConfig.none();
+    }
+
+    public IProjectileConfig createProjectileConfig(LivingEntity source) {
+        return new StandartProjectileConfig(source, this);
+    }
+
+    @Override
+    public Projectile createProjectile(EntityType<? extends Projectile> type, World level, LivingEntity source) {
+        IProjectileConfig config = this.createProjectileConfig(source);
+        Projectile projectile = new Projectile(type, level, config);
+        float inaccuracy = source instanceof PlayerEntity ? PlayerData.getValueSafe((PlayerEntity) source, data -> data.getAimInfo().isAiming() ? 0.0F : 0.3F, getMobInaccuracy(level)) : getMobInaccuracy(level);
+        projectile.fire(source.xRot, source.yRot, inaccuracy);
+        return projectile;
+    }
+
     @Override
     public boolean disableVanillaAnimations() {
         return true;
@@ -121,47 +168,12 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
         return ReloadManagers.fullMagLoading();
     }
 
-    public boolean isSilenced(PlayerEntity player) {
-        return false;
-    }
-
-    public int getFirerate(PlayerEntity player) {
-        return 0;
-    }
-
-    public int getMaxAmmo(PlayerEntity player) {
-        return 0;
-    }
-
-    public int getReloadTime(PlayerEntity player) {
-        return 50;
-    }
-
-    public float getVerticalRecoil(PlayerEntity player) {
-        return this.getWeaponConfig().getVerticalRecoil();
-    }
-
-    public float getHorizontalRecoil(PlayerEntity player) {
-        boolean f = random.nextBoolean();
-        float v = this.getWeaponConfig().getHorizontalRecoil();
-        return f ? v : -v;
-    }
-
-    public void onHitEntity(BulletEntity bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+    public void onHitEntity(Projectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
 
     }
 
-    public void onKillEntity(BulletEntity bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+    public void onKillEntity(Projectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
 
-    }
-
-    public void shootBullet(World world, LivingEntity entity, ItemStack stack) {
-        BulletEntity bullet = new BulletEntity(ModEntities.BULLET.get(), world, entity, this, stack);
-        boolean aim = entity instanceof PlayerEntity && PlayerData.getUnsafe((PlayerEntity) entity).getAimInfo().isAiming();
-        float pitch = entity.xRot + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 2);
-        float yaw = entity.yRot + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 2);
-        bullet.fire(pitch, yaw, getWeaponConfig().getVelocity());
-        world.addFreshEntity(bullet);
     }
 
     public final void shoot(World world, LivingEntity entity, ItemStack stack) {
@@ -177,11 +189,12 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
                 return;
             }
         }
-        this.shootBullet(world, entity, stack);
+        Projectile projectile = this.createProjectile(null, world, entity);
+        world.addFreshEntity(projectile);
         this.setAmmoCount(stack, this.getAmmo(stack) - 1);
         world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);
         if (tracker != null) {
-            tracker.addCooldown(item, this.getFirerate((PlayerEntity) entity));
+            tracker.addCooldown(item, this.getFirerate(PlayerData.getUnsafe((PlayerEntity) entity).getAttributes()));
         }
     }
 
@@ -253,5 +266,13 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry {
 
     public MaterialContainer getContainer() {
         return container;
+    }
+
+    protected float getMobInaccuracy(World level) {
+        return 0.5F;
+    }
+
+    protected boolean isSilenced(PlayerEntity player) {
+        return PlayerData.getValueSafe(player, data -> getNoiseMultiplier(data.getAttributes()) <= 0.2F, false);
     }
 }

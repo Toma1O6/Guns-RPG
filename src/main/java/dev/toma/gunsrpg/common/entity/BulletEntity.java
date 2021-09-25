@@ -32,6 +32,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.List;
 
+@Deprecated
 public class BulletEntity extends Entity {
 
     protected LivingEntity shooter;
@@ -75,13 +76,14 @@ public class BulletEntity extends Entity {
         Vector3d vec = Vector3d.directionFromRotation(pitch, yaw);
         setDeltaMovement(vec.multiply(velocity, velocity, velocity));
         updateHeading();
-        if (!level.isClientSide && shooter instanceof PlayerEntity && !((GunItem) stack.getItem()).isSilenced((PlayerEntity) shooter)) {
+        // TODO
+        /*if (!level.isClientSide && shooter instanceof PlayerEntity && !((GunItem) stack.getItem()).isSilenced((PlayerEntity) shooter)) {
             List<MobEntity> entityList = level.getEntitiesOfClass(MobEntity.class, this.getBoundingBox().inflate(25));
             for (MobEntity mobEntity : entityList) {
                 if (mobEntity == shooter) continue;
                 mobEntity.setTarget(shooter);
             }
-        }
+        }*/
     }
 
     public LivingEntity getShooter() {
@@ -241,9 +243,9 @@ public class BulletEntity extends Entity {
             damageTargetEntity(entity, isHeadshot);
             if (stack.getItem() instanceof GunItem) {
                 if (dead) {
-                    ((GunItem) stack.getItem()).onKillEntity(this, entityLivingBase, stack, shooter);
+                    //((GunItem) stack.getItem()).onKillEntity(this, entityLivingBase, stack, shooter);
                 } else {
-                    ((GunItem) stack.getItem()).onHitEntity(this, entityLivingBase, stack, shooter);
+                    //((GunItem) stack.getItem()).onHitEntity(this, entityLivingBase, stack, shooter);
                 }
             }
         } else if (entity instanceof PartEntity<?>) {

@@ -20,7 +20,7 @@ public class Attribute implements IAttribute {
     }
 
     @Override
-    public double getValue() {
+    public double value() {
         if (changed) {
             changed = false;
             value = computeValue();
@@ -30,8 +30,13 @@ public class Attribute implements IAttribute {
     }
 
     @Override
-    public int getValueAsInt() {
-        return (int) Math.round(getValue());
+    public int intValue() {
+        return (int) Math.round(value());
+    }
+
+    @Override
+    public float floatValue() {
+        return (float) value();
     }
 
     @Override

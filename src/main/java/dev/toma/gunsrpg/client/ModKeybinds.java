@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.client;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.api.common.IReloadManager;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IReloadInfo;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.screen.ChooseAmmoScreen;
@@ -46,7 +47,8 @@ public class ModKeybinds {
     private static void reloadPressed() {
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
-        IReloadInfo info = PlayerData.getUnsafe(player).getReloadInfo();
+        IPlayerData data = PlayerData.getUnsafe(player);
+        IReloadInfo info = data.getReloadInfo();
         ItemStack stack = player.getMainHandItem();
         if (player.isCrouching()) {
             if (stack.getItem() instanceof GunItem) {
@@ -70,13 +72,13 @@ public class ModKeybinds {
                 IAmmoMaterial material = gun.getMaterialFromNBT(stack);
                 if (material != null) {
                     int ammo = gun.getAmmo(stack);
-                    int max = gun.getMaxAmmo(player);
+                    int max = gun.getMaxAmmo(data.getAttributes());
                     boolean skip = player.isCreative();
                     boolean reloading = info.isReloading();
                     if (!reloading && ammo < max) {
                         if (skip) {
                             info.startReloading(player, gun, stack, player.inventory.selected);
-                            NetworkManager.sendServerPacket(new SPacketSetReloading(true, gun.getReloadTime(player)));
+                            NetworkManager.sendServerPacket(new SPacketSetReloading(true, gun.getReloadTime(data.getAttributes())));
                             return;
                         }
                         for (int i = 0; i < player.inventory.getContainerSize(); i++) {
@@ -84,7 +86,7 @@ public class ModKeybinds {
                             if (itemStack.getItem() instanceof IAmmoProvider) {
                                 IAmmoProvider itemAmmo = (IAmmoProvider) itemStack.getItem();
                                 if (itemAmmo.getAmmoType() == ammoType && itemAmmo.getMaterial().equals(material)) {
-                                    int time = gun.getReloadTime(player);
+                                    int time = gun.getReloadTime(data.getAttributes());
                                     info.startReloading(player, gun, stack, player.inventory.selected);
                                     NetworkManager.sendServerPacket(new SPacketSetReloading(true, time));
                                     break;

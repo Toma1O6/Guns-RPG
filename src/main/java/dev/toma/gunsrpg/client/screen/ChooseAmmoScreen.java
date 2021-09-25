@@ -4,8 +4,9 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
+import dev.toma.gunsrpg.api.common.data.IData;
+import dev.toma.gunsrpg.api.common.data.ISkills;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -87,11 +88,12 @@ public class ChooseAmmoScreen extends Screen {
             this.active = false;
             this.stack = new ItemStack((Item) ammo);
             PlayerData.get(player).ifPresent(data -> {
-                PlayerSkills skills = data.getSkills();
+                IData genericData = data.getGenericData();
+                ISkills skills = data.getSkills();
                 if (isGun) {
                     GunItem gun = (GunItem) stack.getItem();
                     MaterialContainer container = gun.getContainer();
-                    int weaponLevel = skills.getGunData(gun).getLevel() - 1;
+                    int weaponLevel = genericData.getWeaponStats(gun).getLevel() - 1;
                     requiredLevel = container.getRequiredLevel(ammo.getMaterial());
                     active = skills.hasSkill(gun.getRequiredSkill()) && weaponLevel >= requiredLevel;
                 }

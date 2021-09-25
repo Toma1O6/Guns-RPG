@@ -5,9 +5,11 @@ import java.util.UUID;
 
 public interface IAttribute {
 
-    double getValue();
+    double value();
 
-    int getValueAsInt();
+    int intValue();
+
+    float floatValue();
 
     void setValue(double value);
 

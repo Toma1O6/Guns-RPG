@@ -99,8 +99,7 @@ public class Kar98kItem extends GunItem {
         return (int) (time * SkillUtil.getReloadTimeMultiplier(player));
     }
 
-    @Override
-    public boolean isSilenced(PlayerEntity player) {
+    private boolean isSilenced(PlayerEntity player) {
         return PlayerData.hasActiveSkill(player, Skills.KAR98K_SUPPRESSOR);
     }
 

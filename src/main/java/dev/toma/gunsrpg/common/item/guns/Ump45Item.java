@@ -4,8 +4,10 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Ump45Renderer;
+import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.entity.BulletEntity;
+import dev.toma.gunsrpg.common.entity.projectile.Projectile;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -68,6 +70,11 @@ public class Ump45Item extends GunItem {
     }
 
     @Override
+    public int getMaxAmmo(IAttributeProvider provider) {
+        return provider.getAttribute(Attribs.UMP45_MAG_CAPACITY).intValue();
+    }
+
+    @Override
     public int getMaxAmmo(PlayerEntity player) {
         return PlayerData.hasActiveSkill(player, Skills.UMP45_EXTENDED) ? 40 : 25;
     }
@@ -79,18 +86,13 @@ public class Ump45Item extends GunItem {
     }
 
     @Override
-    public boolean isSilenced(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.UMP45_SUPPRESSOR);
-    }
-
-    @Override
     public int getReloadTime(PlayerEntity player) {
         int time = PlayerData.hasActiveSkill(player, Skills.UMP45_QUICKDRAW) ? 40 : 52;
         return (int) (time * SkillUtil.getReloadTimeMultiplier(player));
     }
 
     @Override
-    public void onKillEntity(BulletEntity bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+    public void onKillEntity(Projectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
         if (!shooter.level.isClientSide && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.UMP45_COMMANDO)) {
             shooter.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 100, 1, false, false));
             shooter.addEffect(new EffectInstance(Effects.REGENERATION, 60, 2, false, false));

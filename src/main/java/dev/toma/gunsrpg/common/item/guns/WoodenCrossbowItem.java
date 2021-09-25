@@ -5,8 +5,8 @@ import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.WoodenCrossbowRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.entity.BulletEntity;
 import dev.toma.gunsrpg.common.entity.CrossbowBoltEntity;
+import dev.toma.gunsrpg.common.entity.projectile.Projectile;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -40,12 +40,7 @@ public class WoodenCrossbowItem extends GunItem {
         super(name, WeaponCategory.CROSSBOW, new Properties().setISTER(() -> WoodenCrossbowRenderer::new));
     }
 
-    @Override
-    public boolean isSilenced(PlayerEntity player) {
-        return true;
-    }
-
-    @Override
+    /*@Override
     public int getMaxAmmo(PlayerEntity player) {
         return PlayerData.hasActiveSkill(player, Skills.CROSSBOW_REPEATER) ? 3 : 1;
     }
@@ -65,9 +60,9 @@ public class WoodenCrossbowItem extends GunItem {
             base = (int) (base * 1.25);
         }
         return (int) (base * SkillUtil.getReloadTimeMultiplier(player));
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void shootBullet(World world, LivingEntity entity, ItemStack stack) {
         CrossbowBoltEntity bolt = new CrossbowBoltEntity(ModEntities.CROSSBOW_BOLT.get(), world, entity, this, stack);
         boolean isPlayer = entity instanceof PlayerEntity;
@@ -78,17 +73,17 @@ public class WoodenCrossbowItem extends GunItem {
         float velocity = isPlayer && PlayerData.hasActiveSkill((PlayerEntity) entity, Skills.CROSSBOW_TOUGH_BOWSTRING) ? 1.5F * baseVelocity : baseVelocity;
         bolt.fire(pitch, yaw, velocity);
         world.addFreshEntity(bolt);
-    }
+    }*/
 
     @Override
-    public void onHitEntity(BulletEntity bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+    public void onHitEntity(Projectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
         if (!bullet.level.isClientSide && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_POISONED_BOLTS)) {
             victim.addEffect(new EffectInstance(Effects.WITHER, 140, 1, false, false));
         }
     }
 
     @Override
-    public void onKillEntity(BulletEntity bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+    public void onKillEntity(Projectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
         if (!bullet.level.isClientSide && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_HUNTER)) {
             shooter.heal(4.0F);
         }

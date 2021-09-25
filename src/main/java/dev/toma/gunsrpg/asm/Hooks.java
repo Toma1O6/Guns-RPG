@@ -2,8 +2,8 @@ package dev.toma.gunsrpg.asm;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.ISkills;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
 import dev.toma.gunsrpg.common.skills.MotherlodeSkill;
@@ -46,7 +46,7 @@ public class Hooks {
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         if (optional.isPresent()) {
             IPlayerData data = optional.orElse(null);
-            PlayerSkills skills = data.getSkills();
+            ISkills skills = data.getSkills();
             AdrenalineRushSkill adrenaline = SkillUtil.getBestSkillFromOverrides(skills.getSkill(Skills.ADRENALINE_RUSH_I), player);
             if (adrenaline != null && adrenaline.apply(player)) {
                 value *= adrenaline.getAttackSpeedBoost();
@@ -76,7 +76,7 @@ public class Hooks {
         IPlayerData data = PlayerData.get(player).orElse(null);
         if (data == null)
             return drops;
-        PlayerSkills skills = data.getSkills();
+        ISkills skills = data.getSkills();
         if (block.getTags().contains(BlockTags.LOGS.getName())) { // is log
             MinecraftServer server = entity.getServer();
             if (server == null || !skills.hasSkill(Skills.LUMBERJACK_I))

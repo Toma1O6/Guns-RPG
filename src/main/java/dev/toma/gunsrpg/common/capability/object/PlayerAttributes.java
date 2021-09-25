@@ -64,7 +64,7 @@ public class PlayerAttributes implements IAttributeProvider, IPlayerCapEntry {
     @Override
     public double getAttributeValue(IAttributeId id) {
         IAttribute attribute = getAttribute(id);
-        return attribute != null ? attribute.getValue() : id.getBaseValue();
+        return attribute != null ? attribute.value() : id.getBaseValue();
     }
 
     @Override

@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.client.render.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.ISkills;
 import dev.toma.gunsrpg.client.model.WeaponModels;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
@@ -44,7 +45,7 @@ public class Ump45Renderer extends AbstractWeaponRenderer {
 
     @Override
     protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
-        PlayerSkills skills = data.getSkills();
+        ISkills skills = data.getSkills();
         if (skills.hasSkill(Skills.UMP45_SUPPRESSOR)) {
             renderSuppressor(RenderConfigs.UMP45_SUPPRESSOR, matrix, typeBuffer, light, overlay, progress);
         }

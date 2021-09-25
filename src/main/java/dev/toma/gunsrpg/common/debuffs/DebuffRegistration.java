@@ -269,7 +269,7 @@ public final class DebuffRegistration {
         runServerSideDelayed(player, delay, () -> {
             player.hurt(ModDamageSources.BLEED_DAMAGE, 1.0F);
             if (delay < 20L) {
-                player.hurtTime = 9;
+                player.invulnerableTime = 0;
             }
         });
     }

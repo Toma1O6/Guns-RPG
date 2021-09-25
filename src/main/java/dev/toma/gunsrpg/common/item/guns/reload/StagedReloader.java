@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.api.common.IReloader;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.animation.ReloadAnimation;
 import dev.toma.gunsrpg.client.animation.StagedReloadAnimation;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.util.AmmoLocator;
@@ -45,7 +46,7 @@ public class StagedReloader implements IReloader {
     public void initiateReload(PlayerEntity player, GunItem item, ItemStack stack) {
         this.reloadingGun = item;
         this.stack = stack;
-        this.container.init(item.getReloadTime(player));
+        this.container.init(item.getReloadTime(PlayerData.getUnsafe(player).getAttributes()));
         if (player.level.isClientSide) {
             container.clientInit(item.getReloadAnimation(player));
         }
@@ -73,7 +74,7 @@ public class StagedReloader implements IReloader {
 
     private void loadBullet(PlayerEntity player) {
         if (!(stack.getItem() instanceof GunItem)) return;
-        int max = reloadingGun.getMaxAmmo(player);
+        int max = reloadingGun.getMaxAmmo(PlayerData.getUnsafe(player).getAttributes());
         AmmoType type = reloadingGun.getAmmoType();
         IAmmoMaterial material = reloadingGun.getMaterialFromNBT(stack);
         if (player.isCreative()) {

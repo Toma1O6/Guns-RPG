@@ -4,22 +4,20 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
+import dev.toma.gunsrpg.api.common.IDisplayableSkill;
 import dev.toma.gunsrpg.api.common.IOverlayRender;
 import dev.toma.gunsrpg.api.common.ISkill;
-import dev.toma.gunsrpg.api.common.data.IAimInfo;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.client.animation.AimAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.animation.RecoilAnimation;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.GunData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
-import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -62,8 +60,6 @@ import java.util.function.Function;
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = GunsRPG.MODID)
 public class ClientEventHandler {
 
-    public static final ResourceLocation SCOPE = GunsRPG.makeResource("textures/icons/scope_overlay.png");
-    public static final ResourceLocation SCOPE_OVERLAY = GunsRPG.makeResource("textures/icons/scope_full.png");
     private static final ChangeDetector startSprintListener = new ChangeDetector(() -> {
         PlayerEntity player = Minecraft.getInstance().player;
         ItemStack stack = player.getMainHandItem();
@@ -118,15 +114,15 @@ public class ClientEventHandler {
                 int width = 26;
                 int x = window.getGuiScaledWidth() - width - 34;
                 int y = window.getGuiScaledHeight() - 22;
-                PlayerSkills skills = data.getSkills();
+                IData genericData = data.getGenericData();
                 if (stack.getItem() instanceof GunItem) {
                     GunItem gun = (GunItem) stack.getItem();
-                    GunData gunData = skills.getGunData((GunItem) stack.getItem());
+                    IKillData gunData = genericData.getWeaponStats((GunItem) stack.getItem());
                     int gunKills = gunData.getKills();
-                    int gunRequiredKills = gunData.getRequiredKills();
+                    int gunRequiredKills = gunData.getRequiredKillCount();
                     int ammo = gun.getAmmo(stack);
-                    int max = gun.getMaxAmmo(player);
-                    float f = gunData.isAtMaxLevel() ? 1.0F : gunKills / (float) gunRequiredKills;
+                    int max = gun.getMaxAmmo(data.getAttributes());
+                    float f = gunData.getLevel() == gunData.getLevelLimit() ? 1.0F : gunKills / (float) gunRequiredKills;
                     Lifecycle lifecycle = GunsRPG.getModLifecycle();
                     IAmmoProvider itemAmmo = lifecycle.getAmmoForWeapon(gun, stack);
                     if (itemAmmo != null) {
@@ -150,9 +146,9 @@ public class ClientEventHandler {
                         mc.font.draw(matrixStack, text, x + 19, y - 14, 0xffffff);
                     }
                 }
-                int kills = skills.getKills();
-                int required = skills.getRequiredKills();
-                float levelProgress = skills.isMaxLevel() ? 1.0F : kills / (float) required;
+                int kills = genericData.getKills();
+                int required = genericData.getRequiredKillCount();
+                float levelProgress = genericData.getLevel() == genericData.getLevelLimit() ? 1.0F : kills / (float) required;
                 Matrix4f pose = matrixStack.last().pose();
                 RenderUtils.drawGradient(pose, x, y + 10, x + width + 22, y + 17, 0xFF << 24, 0xFF << 24);
                 RenderUtils.drawGradient(pose, x + 2, y + 12, x + (int) (levelProgress * (width + 20)), y + 15, 0xFF00FFFF, 0xFF008888);
@@ -162,7 +158,8 @@ public class ClientEventHandler {
                 debuffRenderManager.drawDebuffsOnScreen(matrixStack, data.getDebuffControl(), 0, window.getGuiScaledHeight() - 50, event.getPartialTicks());
 
                 int renderIndex = 0;
-                List<ISkill> list = skills.getUnlockedSkills().get(SkillCategory.SURVIVAL);
+                ISkills skills = data.getSkills();
+                List<IDisplayableSkill> list = skills.getDisplayableSkills(); // TODO rework
                 if (list == null) return;
                 int left = 5;
                 int top = window.getGuiScaledHeight() - 25;
@@ -194,11 +191,12 @@ public class ClientEventHandler {
             ItemStack stack = player.getMainHandItem();
             AnimationEngine engine = AnimationEngine.get();
             IAnimationPipeline pipeline = engine.pipeline();
+            LazyOptional<IPlayerData> optional = PlayerData.get(player);
             if (item != null) {
                 if (settings.keyAttack.isDown()) {
                     Firemode firemode = item.getFiremode(stack);
                     if (firemode == Firemode.SINGLE && ShootingManager.canShoot(player, stack)) {
-                        shoot(player, stack);
+                        shoot(player, stack, optional.orElse(null).getAttributes());
                     } else if (firemode == Firemode.BURST) {
                         if (!burst) {
                             burst = true;
@@ -206,7 +204,7 @@ public class ClientEventHandler {
                         }
                     }
                 } else if (settings.keyUse.isDown() && pipeline.get(ModAnimations.CHAMBER) == null && !player.isSprinting()) {
-                    LazyOptional<IPlayerData> optional = PlayerData.get(player);
+
                     boolean aim = optional.isPresent() && optional.orElse(null).getAimInfo().startedAiming();
                     if (!aim) {
                         preAimFov.map(settings.fov);
@@ -260,6 +258,11 @@ public class ClientEventHandler {
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
         if (event.phase == TickEvent.Phase.END && player != null) {
+            LazyOptional<IPlayerData> optional = PlayerData.get(player);
+            if (!optional.isPresent())
+                return;
+            IPlayerData data = optional.orElse(null);
+            IAttributeProvider provider = data.getAttributes();
             if (shootDelay > 0)
                 --shootDelay;
             startSprintListener.update(player);
@@ -270,7 +273,7 @@ public class ClientEventHandler {
                     if (stack.getItem() instanceof GunItem) {
                         if (shootDelay == 0) {
                             if (ShootingManager.canShoot(player, stack)) {
-                                shoot(player, stack);
+                                shoot(player, stack, provider);
                                 shotsLeft--;
                             } else burst = false;
                         }
@@ -281,7 +284,7 @@ public class ClientEventHandler {
                 if (stack.getItem() instanceof GunItem) {
                     GunItem gun = (GunItem) stack.getItem();
                     if (gun.getFiremode(stack) == Firemode.FULL_AUTO && shootDelay == 0 && ShootingManager.canShoot(player, stack)) {
-                        shoot(player, stack);
+                        shoot(player, stack, provider);
                     }
                 }
             }
@@ -293,15 +296,17 @@ public class ClientEventHandler {
         partialTicks = event.renderTickTime;
     }
 
-    private static void shoot(PlayerEntity player, ItemStack stack) {
+    private static void shoot(PlayerEntity player, ItemStack stack, IAttributeProvider provider) {
         GunItem gun = (GunItem) stack.getItem();
-        float xRot = gun.getVerticalRecoil(player);
-        float yRot = gun.getHorizontalRecoil(player);
+        float xRot = gun.getVerticalRecoil(provider);
+        float yRot = gun.getHorizontalRecoil(provider);
+        if (player.getRandom().nextBoolean())
+            yRot = -yRot;
         player.xRot -= xRot;
         player.yRot -= yRot;
         NetworkManager.sendServerPacket(new SPacketShoot());
         gun.onShoot(player, stack);
-        shootDelay = gun.getFirerate(player);
+        shootDelay = gun.getFirerate(provider);
         float recoilAnimationShakeScale = ModConfig.clientConfig.recoilAnimationScale.floatValue();
 
         IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
