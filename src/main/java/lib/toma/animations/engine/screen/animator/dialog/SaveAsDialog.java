@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 
 public class SaveAsDialog extends DialogScreen {
 
-    private final Pattern namePattern = Pattern.compile("[a-z][a-z0-9_]*");
+    private final Pattern namePattern = Pattern.compile("[a-zA-Z][A-Za-z0-9_]*");
     private TextFieldWidget filename;
     private CheckboxButton cleanFirstFrames;
     private boolean errored;

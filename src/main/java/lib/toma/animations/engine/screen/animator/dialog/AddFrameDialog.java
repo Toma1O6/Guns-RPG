@@ -45,7 +45,7 @@ public class AddFrameDialog extends DialogScreen {
         addButton(new LabelWidget(left() + 5, top() + 95, btnWidthP, 15, new StringTextComponent("Position"), font));
         position = addButton(new TextFieldWidget(font, left() + 5, top() + 110, btnWidthP, 20, StringTextComponent.EMPTY));
         position.setResponder(new SuggestionResponder("Frame position", position, this::pos_changed));
-        position.setValue(String.valueOf(pos));
+        position.setValue(AnimatorScreen.POSITION_FORMAT.format(pos));
         cancel = addButton(new Button(left() + 5, top() + 135, btnWidth, 20, CANCEL, this::cancel_clicked));
         confirm = addButton(new Button(left() + 10 + btnWidth, top() + 135, btnWidth, 20, CONFIRM, this::confirm_clicked));
         errorFlags.set(0);

@@ -7,7 +7,6 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class EditEventDialog extends DialogScreen {
@@ -40,7 +39,7 @@ public class EditEventDialog extends DialogScreen {
         int btnWidthPartial = (dWidth() - 20) / 3;
         position = addButton(new TextFieldWidget(font, left() + 5, top() + 15, btnWidthFull, 20, StringTextComponent.EMPTY));
         position.setResponder(new SuggestionResponder("Position", position, this::position_changed));
-        position.setValue(String.format(Locale.ROOT, "%.3f", clickedEvent.invokeAt()));
+        position.setValue(AnimatorScreen.POSITION_FORMAT.format(clickedEvent.invokeAt()));
         cancel = addButton(new Button(left() + 5, top() + 40, btnWidthPartial, 20, CANCEL, this::cancel_clicked));
         addButton(new Button(left() + 10 + btnWidthPartial, top() + 40, btnWidthPartial, 20, new StringTextComponent("Delete"), this::delete_clicked));
         confirm = addButton(new Button(left() + dWidth() - 5 - btnWidthPartial, top() + 40, btnWidthPartial, 20, CONFIRM, this::confirm_clicked));

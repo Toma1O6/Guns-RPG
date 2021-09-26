@@ -13,7 +13,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class AddEventDialog extends DialogScreen {
@@ -47,7 +46,7 @@ public class AddEventDialog extends DialogScreen {
         typeSelector.setResponder(this::selection_change);
         position = addButton(new TextFieldWidget(font, left() + 5, top() + 95, btnWidthP, 20, StringTextComponent.EMPTY));
         position.setResponder(new SuggestionResponder("Target", position, this::invokeTarget_change));
-        position.setValue(String.format(Locale.ROOT, "%.3f", pos));
+        position.setValue(AnimatorScreen.POSITION_FORMAT.format(pos));
         cancel = addButton(new Button(left() + 5, top() + 120, btnWidth, 20, CANCEL, this::cancel_clicked));
         confirm = addButton(new Button(left() + 10 + btnWidth, top() + 120, btnWidth, 20, NEXT, this::confirm_clicked));
 

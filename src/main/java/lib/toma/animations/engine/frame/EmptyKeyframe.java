@@ -45,6 +45,16 @@ public class EmptyKeyframe implements IKeyframe {
     }
 
     @Override
+    public Vector3d relativePos() {
+        return positionTarget();
+    }
+
+    @Override
+    public Quaternion relativeRot() {
+        return rotationTarget();
+    }
+
+    @Override
     public void baseOn(IKeyframe parent) {
         pos = Keyframes.getInitialPosition(parent);
         rot = Keyframes.getInitialRotation(parent);

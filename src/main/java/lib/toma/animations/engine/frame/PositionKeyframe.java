@@ -13,10 +13,12 @@ public class PositionKeyframe implements IKeyframe {
     private final float endpoint;
     private Vector3d staticPos = Vector3d.ZERO;
     private Quaternion staticRotation = Quaternion.ONE;
+    private Vector3d relativePos = Vector3d.ZERO;
 
     protected PositionKeyframe(Vector3d position, float endpoint) {
         this.position = Objects.requireNonNull(position);
         this.endpoint = endpoint;
+        calculateRelativePos();
     }
 
     public static IKeyframe positioned(Vector3d position, float endpoint) {
@@ -49,8 +51,23 @@ public class PositionKeyframe implements IKeyframe {
     }
 
     @Override
+    public Vector3d relativePos() {
+        return relativePos;
+    }
+
+    @Override
+    public Quaternion relativeRot() {
+        return rotationTarget();
+    }
+
+    @Override
     public void baseOn(IKeyframe parent) {
         this.staticPos = Keyframes.getInitialPosition(parent);
         this.staticRotation = Keyframes.getInitialRotation(parent);
+        this.calculateRelativePos();
+    }
+
+    protected void calculateRelativePos() {
+        this.relativePos = Keyframes.getRelativePosition(position, staticPos);
     }
 }

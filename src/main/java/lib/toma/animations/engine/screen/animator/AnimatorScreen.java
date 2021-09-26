@@ -34,6 +34,8 @@ import java.util.stream.Stream;
 
 public class AnimatorScreen extends Screen {
 
+    public static final DecimalFormat TRANSFORM_FORMAT = new DecimalFormat("0.0##");
+    public static final DecimalFormat POSITION_FORMAT = new DecimalFormat("0.0###");
     private static final ITextComponent NEW_PROJECT = new TranslationTextComponent("screen.animator.new_project");
     private static final ITextComponent OPEN = new TranslationTextComponent("screen.animator.open");
     private static final ITextComponent OPEN_FROM = new TranslationTextComponent("screen.animator.open_from");
@@ -45,7 +47,6 @@ public class AnimatorScreen extends Screen {
     private static final ITextComponent ADD_EVENT = new TranslationTextComponent("screen.animator.timeline.add_event");
     private static final ITextComponent REMOVE_FRAME = new TranslationTextComponent("screen.animator.timeline.remove_frame");
     private static final ITextComponent COPY_FRAME = new TranslationTextComponent("screen.animator.timeline.copy_frame");
-    private static final ITextComponent END_FRAMES = new TranslationTextComponent("screen.animator.timeline.end_frames");
     private static final ITextComponent PROGRESS2FRAME = new TranslationTextComponent("screen.animator.timeline.progress2frame");
     private static final ITextComponent SET2BEGINNING = new TranslationTextComponent("screen.animator.timeline.to_beginning");
     private static final ITextComponent SET2END = new TranslationTextComponent("screen.animator.timeline.to_end");
@@ -122,11 +123,10 @@ public class AnimatorScreen extends Screen {
         removeFrame = timeline.addWidget(new IconButton(30, 2, 16, 16, 1, this::buttonRemoveFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, REMOVE_FRAME, mx, my)));
         IconButton addEvent = timeline.addWidget(new IconButton(55, 2, 16, 16, 2, this::buttonAddEvent_clicked, (btn, poses, mx, my) -> renderTooltip(poses, ADD_EVENT, mx, my)));
         copyFrame = timeline.addWidget(new IconButton(80, 2, 16, 16, 3, this::buttonCopyFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, COPY_FRAME, mx, my)));
-        timeline.addWidget(new IconButton(105, 2, 16, 16, 4, this::buttonEndFrames_clicked, (btn, poses, mx, my) -> renderTooltip(poses, END_FRAMES, mx, my)));
-        progress2Frame = timeline.addWidget(new IconButton(130, 2, 16, 16, 5, this::buttonSetProgressToFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, PROGRESS2FRAME, mx, my)));
-        timeline.addWidget(new IconButton(155, 2, 16, 16, 6, this::resetToBeginning_clicked, (btn, poses, mx, my) -> renderTooltip(poses, SET2BEGINNING, mx, my)));
-        timeline.addWidget(new IconButton(180, 2, 16, 16, 7, this::setToEnd_clicked, (btn, poses, mx, my) -> renderTooltip(poses, SET2END, mx, my)));
-        timeline.addWidget(new IconButton(205, 2, 16, 16, 8, this::setToNextFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, NEXT_FRAME, mx, my)));
+        progress2Frame = timeline.addWidget(new IconButton(105, 2, 16, 16, 5, this::buttonSetProgressToFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, PROGRESS2FRAME, mx, my)));
+        timeline.addWidget(new IconButton(130, 2, 16, 16, 6, this::resetToBeginning_clicked, (btn, poses, mx, my) -> renderTooltip(poses, SET2BEGINNING, mx, my)));
+        timeline.addWidget(new IconButton(155, 2, 16, 16, 7, this::setToEnd_clicked, (btn, poses, mx, my) -> renderTooltip(poses, SET2END, mx, my)));
+        timeline.addWidget(new IconButton(180, 2, 16, 16, 8, this::setToNextFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, NEXT_FRAME, mx, my)));
         if (!timeline.getProject().hasEvents()) {
             addEvent.active = false;
         }
@@ -282,11 +282,6 @@ public class AnimatorScreen extends Screen {
         timeline.init();
     }
 
-    private void buttonEndFrames_clicked(Button button) {
-        // fill end frames
-        timeline.finishFrames();
-    }
-
     private void buttonSetProgressToFrame_clicked(Button button) {
         // set progress to selected frame
         timeline.getAnimation().setProgress(selectionContext.frame().endpoint());
@@ -352,16 +347,14 @@ public class AnimatorScreen extends Screen {
             Vector3d position = frame.positionTarget();
             Pair<Float, Vector3f> rotation = AnimationUtils.getVectorWithRotation(frame.rotationTarget());
             Vector3f rotV = rotation.getRight();
-            posX.setValue(String.valueOf(position.x));
-            posY.setValue(String.valueOf(position.y));
-            posZ.setValue(String.valueOf(position.z));
-            DecimalFormat formatter = new DecimalFormat("0.0##");
-            formatter.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.ROOT));
-            deg.setValue(formatter.format(rotation.getLeft()));
-            rotX.setValue(formatter.format(rotV.x()));
-            rotY.setValue(formatter.format(rotV.y()));
-            rotZ.setValue(formatter.format(rotV.z()));
-            end.setValue(String.valueOf(frame.endpoint()));
+            posX.setValue(TRANSFORM_FORMAT.format(position.x));
+            posY.setValue(TRANSFORM_FORMAT.format(position.y));
+            posZ.setValue(TRANSFORM_FORMAT.format(position.z));
+            deg.setValue(TRANSFORM_FORMAT.format(rotation.getLeft()));
+            rotX.setValue(TRANSFORM_FORMAT.format(rotV.x()));
+            rotY.setValue(TRANSFORM_FORMAT.format(rotV.y()));
+            rotZ.setValue(TRANSFORM_FORMAT.format(rotV.z()));
+            end.setValue(POSITION_FORMAT.format(frame.endpoint()));
         }
     }
 
@@ -417,5 +410,11 @@ public class AnimatorScreen extends Screen {
             list.add(Timeline.IKeyframeSelectContext.of(frame, entry.getKey()));
         }
         return list.stream();
+    }
+
+    static {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.ROOT);
+        TRANSFORM_FORMAT.setDecimalFormatSymbols(symbols);
+        POSITION_FORMAT.setDecimalFormatSymbols(symbols);
     }
 }

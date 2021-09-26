@@ -158,11 +158,6 @@ public class Timeline extends WidgetContainer {
         init();
     }
 
-    public void finishFrames() {
-        project.getFrameControl().getProvider().finish();
-        init();
-    }
-
     public void add(IAnimationEvent event) {
         project.getFrameControl().getProvider().addEvent(event);
         init();

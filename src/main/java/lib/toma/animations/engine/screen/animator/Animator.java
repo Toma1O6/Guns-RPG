@@ -158,7 +158,7 @@ public final class Animator {
         public void renderTick(float deltaRenderTime) {
             float prev = progressI;
             if (!isPausedSupp.getAsBoolean()) {
-                progressI = progressO + (progress - progressO) * deltaRenderTime;
+                progressI = Math.min(progressO + (progress - progressO) * deltaRenderTime, provider.getAnimationEnd());
                 advance(progressI, prev);
             }
         }

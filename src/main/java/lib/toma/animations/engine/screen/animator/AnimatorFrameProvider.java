@@ -1,6 +1,5 @@
 package lib.toma.animations.engine.screen.animator;
 
-import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.Keyframes;
 import lib.toma.animations.QuickSort;
 import lib.toma.animations.api.AnimationStage;
@@ -12,8 +11,6 @@ import lib.toma.animations.engine.frame.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -27,6 +24,9 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
     // stuff which is normally handled in FrameProviderInstances
     private final Map<AnimationStage, Integer> frameCache = new HashMap<>();
     private byte eventIndex;
+
+    // stopping on last frame
+    private float animationEnd;
 
     public AnimatorFrameProvider(IKeyframeProvider provider) {
         this.events = provider.getType().areEventsSupported();
@@ -44,6 +44,7 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
             frameMap.put(stage, list);
         }
         provider.initCache(frameCache);
+        computeAnimationEndpoint();
     }
 
     public AnimatorFrameProvider(Map<AnimationStage, List<MutableKeyframe>> frameMap) {
@@ -92,32 +93,21 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
 
     public void recompile(AnimationStage stage) {
         List<MutableKeyframe> list = frameMap.get(stage);
-        if (list != null && list.size() > 1) {
-            for (int i = 1; i < list.size(); i++) {
-                IKeyframe parent = list.get(i - 1);
-                IKeyframe child = list.get(i);
-                child.baseOn(parent);
+        sort(stage);
+        if (list != null) {
+            int size = list.size();
+            if (size > 0) {
+                resetFirstFrame(list.get(0));
+            }
+            if (size > 1) {
+                for (int i = 1; i < list.size(); i++) {
+                    IKeyframe parent = list.get(i - 1);
+                    IKeyframe child = list.get(i);
+                    child.baseOn(parent);
+                }
             }
         }
-    }
-
-    public void finish() {
-        for (List<MutableKeyframe> list : frameMap.values()) {
-            if (list.isEmpty()) continue;
-            MutableKeyframe last = list.get(list.size() - 1);
-            if (last.endpoint() == 1.0F) continue;
-            MutableKeyframe ending = new MutableKeyframe();
-            ending.baseOn(last);
-
-            Vector3d position = ending.initialPosition();
-            ending.setPosition(position.multiply(-1, -1, -1));
-            Pair<Float, Vector3f> rotation = AnimationUtils.getVectorWithRotation(ending.initialRotation());
-            float degrees = rotation.getKey();
-            ending.setRotation(new Quaternion(rotation.getValue().copy(), -degrees, true));
-            ending.setEndpoint(1.0F);
-
-            list.add(ending);
-        }
+        computeAnimationEndpoint();
     }
 
     public void deleteStage(AnimationStage stage) {
@@ -187,6 +177,7 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
         list.add(frame);
         sortAndCompile(list);
         onStageAdded(stage);
+        computeAnimationEndpoint();
     }
 
     public void removeFrame(AnimationStage stage, MutableKeyframe frame) {
@@ -203,12 +194,17 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
                 deleteStage(stage);
             }
         }
+        computeAnimationEndpoint();
     }
 
     public void sort(AnimationStage stage) {
-        List<? extends IKeyframe> list = frameMap.get(stage);
+        List<MutableKeyframe> list = frameMap.get(stage);
         if (list == null) return;
         sortAndCompile(list);
+    }
+
+    public float getAnimationEnd() {
+        return animationEnd;
     }
 
     private boolean checkSingleFrame() {
@@ -300,12 +296,28 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
         }
     }
 
-    private void sortAndCompile(List<? extends IKeyframe> list) {
+    private void sortAndCompile(List<MutableKeyframe> list) {
         list.sort(Comparator.comparingDouble(IKeyframe::endpoint));
+        if (!list.isEmpty())
+            resetFirstFrame(list.get(0));
         for (int i = 1; i < list.size(); i++) {
             IKeyframe parent = list.get(i - 1);
             IKeyframe child = list.get(i);
             child.baseOn(parent);
         }
+        computeAnimationEndpoint();
+    }
+
+    private void resetFirstFrame(MutableKeyframe keyframe) {
+        keyframe.setPos0(Vector3d.ZERO);
+        keyframe.setQuat0(Quaternion.ONE.copy());
+    }
+
+    private void computeAnimationEndpoint() {
+        OptionalDouble optional = frameMap.values().stream()
+                .flatMap(Collection::stream)
+                .mapToDouble(MutableKeyframe::endpoint)
+                .max();
+        this.animationEnd = (float) optional.orElse(1.0F);
     }
 }

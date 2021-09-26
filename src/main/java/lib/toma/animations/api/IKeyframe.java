@@ -48,6 +48,16 @@ public interface IKeyframe {
     Quaternion initialRotation();
 
     /**
+     * @return Relative position for animation
+     */
+    Vector3d relativePos();
+
+    /**
+     * @return Relative rotation for animation
+     */
+    Quaternion relativeRot();
+
+    /**
      * Used to calculate initial position and rotation
      * @param parent Parent keyframe
      */
