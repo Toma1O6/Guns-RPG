@@ -3,8 +3,8 @@ package lib.toma.animations.engine.screen.animator;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.AnimationStage;
-import lib.toma.animations.api.event.IAnimationEvent;
 import lib.toma.animations.api.IKeyframe;
+import lib.toma.animations.api.event.IAnimationEvent;
 import lib.toma.animations.engine.frame.MutableKeyframe;
 import lib.toma.animations.engine.screen.animator.dialog.*;
 import lib.toma.animations.engine.screen.animator.widget.*;
@@ -34,6 +34,8 @@ import java.util.stream.Stream;
 
 public class AnimatorScreen extends Screen {
 
+    public static final DecimalFormat TRANSFORM_FORMAT = new DecimalFormat("0.0##");
+    public static final DecimalFormat POSITION_FORMAT = new DecimalFormat("0.0###");
     private static final ITextComponent NEW_PROJECT = new TranslationTextComponent("screen.animator.new_project");
     private static final ITextComponent OPEN = new TranslationTextComponent("screen.animator.open");
     private static final ITextComponent OPEN_FROM = new TranslationTextComponent("screen.animator.open_from");
@@ -345,16 +347,14 @@ public class AnimatorScreen extends Screen {
             Vector3d position = frame.positionTarget();
             Pair<Float, Vector3f> rotation = AnimationUtils.getVectorWithRotation(frame.rotationTarget());
             Vector3f rotV = rotation.getRight();
-            posX.setValue(String.valueOf(position.x));
-            posY.setValue(String.valueOf(position.y));
-            posZ.setValue(String.valueOf(position.z));
-            DecimalFormat formatter = new DecimalFormat("0.0##");
-            formatter.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.ROOT));
-            deg.setValue(formatter.format(rotation.getLeft()));
-            rotX.setValue(formatter.format(rotV.x()));
-            rotY.setValue(formatter.format(rotV.y()));
-            rotZ.setValue(formatter.format(rotV.z()));
-            end.setValue(String.valueOf(frame.endpoint()));
+            posX.setValue(TRANSFORM_FORMAT.format(position.x));
+            posY.setValue(TRANSFORM_FORMAT.format(position.y));
+            posZ.setValue(TRANSFORM_FORMAT.format(position.z));
+            deg.setValue(TRANSFORM_FORMAT.format(rotation.getLeft()));
+            rotX.setValue(TRANSFORM_FORMAT.format(rotV.x()));
+            rotY.setValue(TRANSFORM_FORMAT.format(rotV.y()));
+            rotZ.setValue(TRANSFORM_FORMAT.format(rotV.z()));
+            end.setValue(POSITION_FORMAT.format(frame.endpoint()));
         }
     }
 
@@ -410,5 +410,11 @@ public class AnimatorScreen extends Screen {
             list.add(Timeline.IKeyframeSelectContext.of(frame, entry.getKey()));
         }
         return list.stream();
+    }
+
+    static {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.ROOT);
+        TRANSFORM_FORMAT.setDecimalFormatSymbols(symbols);
+        POSITION_FORMAT.setDecimalFormatSymbols(symbols);
     }
 }
