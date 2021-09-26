@@ -13,11 +13,15 @@ public class MutableKeyframe implements IKeyframe {
     public Quaternion rotation = Quaternion.ONE.copy();
     private Vector3d pos0 = Vector3d.ZERO;
     private Quaternion quat0 = Quaternion.ONE;
+    private Vector3d relPos = Vector3d.ZERO;
+    private Quaternion relRot = Quaternion.ONE.copy();
 
     public static MutableKeyframe fullCopyOf(IKeyframe frame) {
         MutableKeyframe mkf = copyOf(frame);
         mkf.setPos0(frame.initialPosition());
         mkf.setQuat0(frame.initialRotation());
+        mkf.updateRelativePos();
+        mkf.updateRelativeRot();
         return mkf;
     }
 
@@ -43,8 +47,14 @@ public class MutableKeyframe implements IKeyframe {
         return position;
     }
 
+    @Override
+    public Vector3d relativePos() {
+        return relPos;
+    }
+
     public void setPosition(Vector3d position) {
         this.position = position;
+        updateRelativePos();
     }
 
     @Override
@@ -52,8 +62,14 @@ public class MutableKeyframe implements IKeyframe {
         return rotation;
     }
 
+    @Override
+    public Quaternion relativeRot() {
+        return relRot;
+    }
+
     public void setRotation(Quaternion rotation) {
         this.rotation = rotation;
+        updateRelativeRot();
     }
 
     public void setRotation(Vector3f vec, float deg) {
@@ -67,6 +83,7 @@ public class MutableKeyframe implements IKeyframe {
 
     public void setPos0(Vector3d pos0) {
         this.pos0 = pos0;
+        updateRelativePos();
     }
 
     @Override
@@ -76,11 +93,22 @@ public class MutableKeyframe implements IKeyframe {
 
     public void setQuat0(Quaternion quat0) {
         this.quat0 = quat0;
+        updateRelativeRot();
     }
 
     @Override
     public void baseOn(IKeyframe parent) {
         pos0 = Keyframes.getInitialPosition(parent);
         quat0 = Keyframes.getInitialRotation(parent);
+        updateRelativePos();
+        updateRelativeRot();
+    }
+
+    private void updateRelativePos() {
+        relPos = Keyframes.getRelativePosition(position, pos0);
+    }
+
+    private void updateRelativeRot() {
+        relRot = Keyframes.getRelativeRotation(rotation, quat0);
     }
 }

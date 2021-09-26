@@ -28,6 +28,7 @@ public class AnimationUtils {
         buffer.writeResourceLocation(type.getKey());
     }
 
+    @SuppressWarnings("unchecked")
     public static <A extends IAnimation> AnimationType<A> decodeAnimationType(PacketBuffer buffer) {
         return (AnimationType<A>) Registries.ANIMATION_TYPES.getElement(buffer.readResourceLocation());
     }

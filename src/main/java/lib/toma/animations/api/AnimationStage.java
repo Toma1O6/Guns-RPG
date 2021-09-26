@@ -78,7 +78,7 @@ public final class AnimationStage implements Comparable<AnimationStage>, IRegist
 
     @Override
     public int compareTo(AnimationStage o) {
-        return this.getIndex() - o.getIndex();
+        return o.getIndex() - index;
     }
 
     @Override

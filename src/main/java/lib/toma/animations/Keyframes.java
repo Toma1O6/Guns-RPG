@@ -19,22 +19,33 @@ public class Keyframes {
     }
 
     public static Vector3d getInitialPosition(IKeyframe parent) {
-        return parent.initialPosition().add(parent.positionTarget());
+        return parent.initialPosition().add(parent.relativePos());
     }
 
     public static Quaternion getInitialRotation(IKeyframe parent) {
         Quaternion q1 = parent.initialRotation();
-        Quaternion q2 = parent.rotationTarget();
+        Quaternion q2 = parent.relativeRot();
         Quaternion q3 = q1.copy();
         q3.mul(q2);
         return q3;
     }
 
+    public static Vector3d getRelativePosition(Vector3d target, Vector3d initial) {
+        return target.subtract(initial);
+    }
+
+    public static Quaternion getRelativeRotation(Quaternion target, Quaternion initial) {
+        Quaternion quat = initial.copy();
+        quat.conj();
+        quat.mul(target);
+        return quat;
+    }
+
     public static void processFrame(IKeyframe keyframe, float percent, MatrixStack matrixStack) {
         Vector3d move1 = keyframe.initialPosition();
-        Vector3d move2 = keyframe.positionTarget();
+        Vector3d move2 = keyframe.relativePos();
         Quaternion q1 = keyframe.initialRotation();
-        Quaternion q2 = keyframe.rotationTarget();
+        Quaternion q2 = keyframe.relativeRot();
         Quaternion q3 = q2.copy();
         q3.mul(percent);
         matrixStack.translate(move1.x + move2.x * percent, move1.y + move2.y * percent, move1.z + move2.z * percent);

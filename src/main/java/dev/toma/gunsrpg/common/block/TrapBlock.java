@@ -141,7 +141,7 @@ public class TrapBlock extends BaseBlock {
         public boolean applyTrapEffects(World level, BlockPos pos, Entity entity) {
             if (!level.isClientSide) {
                 level.destroyBlock(pos, false);
-                level.explode(entity, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, explosionPower, explosionMode);
+                level.explode(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, explosionPower, explosionMode);
             }
             return true;
         }
