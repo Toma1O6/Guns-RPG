@@ -76,14 +76,6 @@ public class BulletEntity extends Entity {
         Vector3d vec = Vector3d.directionFromRotation(pitch, yaw);
         setDeltaMovement(vec.multiply(velocity, velocity, velocity));
         updateHeading();
-        // TODO
-        /*if (!level.isClientSide && shooter instanceof PlayerEntity && !((GunItem) stack.getItem()).isSilenced((PlayerEntity) shooter)) {
-            List<MobEntity> entityList = level.getEntitiesOfClass(MobEntity.class, this.getBoundingBox().inflate(25));
-            for (MobEntity mobEntity : entityList) {
-                if (mobEntity == shooter) continue;
-                mobEntity.setTarget(shooter);
-            }
-        }*/
     }
 
     public LivingEntity getShooter() {

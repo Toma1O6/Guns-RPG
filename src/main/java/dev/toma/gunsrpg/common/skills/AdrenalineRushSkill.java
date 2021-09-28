@@ -24,7 +24,7 @@ public class AdrenalineRushSkill extends BasicSkill {
     }
 
     @Override
-    public boolean apply(PlayerEntity user) {
+    public boolean canApply(PlayerEntity user) {
         return user.getHealth() <= 8;
     }
 }

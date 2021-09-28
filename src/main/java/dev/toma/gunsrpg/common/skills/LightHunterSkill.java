@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.skills;
 
 import dev.toma.gunsrpg.api.common.ITickableSkill;
+import dev.toma.gunsrpg.common.attribute.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -8,25 +9,34 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Items;
 
+import java.util.UUID;
+
 public class LightHunterSkill extends BasicSkill implements ITickableSkill {
+
+    private static final IAttributeModifier MOVEMENT_SPEED_MODIFIER = AttributeModifierFactory.modifier(UUID.fromString("9942EE39-CCD1-4F37-88E4-98711C2CF3EB"), AttributeOps.SUM, 0.015);
+    private boolean validityState;
 
     public LightHunterSkill(SkillType<?> type) {
         super(type);
     }
 
     @Override
-    public boolean apply(PlayerEntity user) {
+    public boolean canApply(PlayerEntity user) {
         return true;
     }
 
     @Override
     public void onUpdate(PlayerEntity player) {
         PlayerData.get(player).ifPresent(data -> {
-            PlayerSkills skills = data.getSkills();
-            if (hasArmor(player)) {
-                skills.lightHunterMovementSpeed = 0.015F;
-            } else {
-                skills.lightHunterMovementSpeed = 0.0F;
+            IAttributeProvider provider = data.getAttributes();
+            boolean lastState = validityState;
+            validityState = hasArmor(player);
+            if (lastState != validityState) {
+                IAttribute attribute = provider.getAttribute(Attribs.MOVEMENT_SPEED);
+                if (validityState)
+                    attribute.addModifier(MOVEMENT_SPEED_MODIFIER);
+                else
+                    attribute.removeModifier(MOVEMENT_SPEED_MODIFIER);
             }
         });
     }

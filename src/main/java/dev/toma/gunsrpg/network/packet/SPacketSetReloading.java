@@ -47,7 +47,6 @@ public class SPacketSetReloading extends AbstractNetworkPacket<SPacketSetReloadi
                     info.enqueueCancel();
                 }
             }
-            data.sync();
         });
     }
 }

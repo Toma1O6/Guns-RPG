@@ -9,14 +9,18 @@ public interface IWeaponConfig {
 
     float getVelocity();
 
+    @Deprecated
     float getVerticalRecoil();
 
+    @Deprecated
     float getHorizontalRecoil();
 
     int getGravityDelay();
 
+    @Deprecated
     int getFirerate();
 
+    @Deprecated
     int getUpgradedFirerate();
 
     static WeaponConfiguration configured(IObjectSpec specification, float damage, int velocity, int gravityDelay, float verticalRecoil, float horizontalRecoil, int baseFirerate) {

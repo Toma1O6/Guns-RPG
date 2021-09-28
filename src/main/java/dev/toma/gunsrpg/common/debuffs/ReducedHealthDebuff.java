@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.debuffs;
 
 import dev.toma.gunsrpg.api.common.data.IDebuffs;
+import dev.toma.gunsrpg.api.common.data.ISkills;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
@@ -31,7 +31,7 @@ public class ReducedHealthDebuff implements IDebuff {
         } else {
             if (!player.level.isClientSide) {
                 PlayerData.get(player).ifPresent(data -> {
-                    PlayerSkills skills = data.getSkills();
+                    ISkills skills = data.getSkills();
                     double health = skills.hasSkill(Skills.WAR_MACHINE) ? 40.0 : 20.0;
                     attribute.setBaseValue(health);
                 });

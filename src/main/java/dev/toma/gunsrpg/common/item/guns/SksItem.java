@@ -1,19 +1,19 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.SksRenderer;
+import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
+import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
+import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
-import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
-import dev.toma.gunsrpg.common.item.guns.util.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,24 +33,23 @@ public class SksItem extends GunItem {
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("sks/reload");
 
     public SksItem(String name) {
-        super(name, WeaponCategory.AR, new Properties().setISTER(() -> SksRenderer::new));
+        super(name, new Properties().setISTER(() -> SksRenderer::new));
     }
 
     @Override
-    public IWeaponConfig getWeaponConfig() {
-        return ModConfig.weaponConfig.sks;
-    }
-
-    @Override
-    public void fillAmmoMaterialData(MaterialContainer container) {
-        container
-                .add(AmmoMaterials.WOOD, 0)
-                .add(AmmoMaterials.STONE, 2)
-                .add(AmmoMaterials.IRON, 4)
-                .add(AmmoMaterials.GOLD, 6)
-                .add(AmmoMaterials.DIAMOND, 9)
-                .add(AmmoMaterials.EMERALD, 11)
-                .add(AmmoMaterials.AMETHYST, 14);
+    public void initializeWeapon(WeaponBuilder builder) {
+        builder
+                .category(WeaponCategory.AR)
+                .config(ModConfig.weaponConfig.sks)
+                .materials()
+                    .define(AmmoMaterials.WOOD, 0)
+                    .define(AmmoMaterials.STONE, 2)
+                    .define(AmmoMaterials.IRON, 4)
+                    .define(AmmoMaterials.GOLD, 6)
+                    .define(AmmoMaterials.DIAMOND, 9)
+                    .define(AmmoMaterials.EMERALD, 11)
+                    .define(AmmoMaterials.AMETHYST, 14)
+                .build();
     }
 
     @Override
@@ -63,43 +62,34 @@ public class SksItem extends GunItem {
         return ModSounds.SLR;
     }
 
-    private boolean isSilenced(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.SKS_SUPPRESSOR);
+    @Override
+    public int getMaxAmmo(IAttributeProvider provider) {
+        return provider.getAttribute(Attribs.SKS_MAG_CAPACITY).intValue();
     }
 
     @Override
-    public int getMaxAmmo(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.SKS_EXTENDED) ? 20 : 10;
+    public int getFirerate(IAttributeProvider provider) {
+        return provider.getAttribute(Attribs.SKS_FIRERATE).intValue();
     }
 
     @Override
-    public int getFirerate(PlayerEntity player) {
-        IWeaponConfig cfg = getWeaponConfig();
-        int firerate = PlayerData.hasActiveSkill(player, Skills.SKS_TOUGH_SPRING) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
-        if (PlayerData.hasActiveSkill(player, Skills.SKS_ADAPTIVE_CHAMBERING)) {
-            firerate -= 2;
-        }
-        return Math.max(firerate, 1);
+    public int getReloadTime(IAttributeProvider provider) {
+        return (int) (32 * provider.getAttributeValue(Attribs.RELOAD_SPEED));
     }
 
     @Override
-    public int getReloadTime(PlayerEntity player) {
-        return (int) (32 * SkillUtil.getReloadTimeMultiplier(player));
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return Attribs.SKS_VERTICAL.floatValue(provider);
     }
 
     @Override
-    public float getVerticalRecoil(PlayerEntity player) {
-        float f = super.getVerticalRecoil(player);
-        float mod = PlayerData.hasActiveSkill(player, Skills.SKS_VERTICAL_GRIP) ? ModConfig.weaponConfig.general.verticalGrip.floatValue() : 1.0F;
-        float mod2 = PlayerData.hasActiveSkill(player, Skills.SKS_CHEEKPAD) ? ModConfig.weaponConfig.general.cheekpad.floatValue() : 1.0F;
-        return mod * mod2 * f;
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return Attribs.SKS_HORIZONTAL.floatValue(provider);
     }
 
     @Override
-    public float getHorizontalRecoil(PlayerEntity player) {
-        float f = super.getHorizontalRecoil(player);
-        float mod = PlayerData.hasActiveSkill(player, Skills.SKS_CHEEKPAD) ? ModConfig.weaponConfig.general.cheekpad.floatValue() : 1.0F;
-        return mod * f;
+    public double getNoiseMultiplier(IAttributeProvider provider) {
+        return Attribs.SKS_LOUDNESS.value(provider);
     }
 
     @Override

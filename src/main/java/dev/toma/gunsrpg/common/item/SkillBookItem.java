@@ -1,8 +1,9 @@
 package dev.toma.gunsrpg.common.item;
 
 import dev.toma.gunsrpg.ModTabs;
+import dev.toma.gunsrpg.api.common.data.DataFlags;
+import dev.toma.gunsrpg.api.common.data.IData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -21,9 +22,9 @@ public class SkillBookItem extends BaseItem {
         ItemStack stack = player.getItemInHand(hand);
         if (!world.isClientSide) {
             PlayerData.get(player).ifPresent(data -> {
-                PlayerSkills skills = data.getSkills();
-                skills.addSkillPoints(1);
-                data.sync();
+                IData levelData = data.getGenericData();
+                levelData.awardPoints(1);
+                data.sync(DataFlags.DATA);
                 if (!player.isCreative())
                     stack.shrink(1);
                 player.playSound(SoundEvents.PLAYER_LEVELUP, 0.75F, 1.0F);

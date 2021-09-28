@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.debuffs;
 
+import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -33,13 +34,13 @@ public class StagedDebuff implements IStagedDebuff {
         if (optional.isPresent()) {
             updateRenderCounters();
             IPlayerData data = optional.orElse(null);
-            int progressionTarget = type.getProgressionTarget(data);
-            if (canSpread() && ++progressionCounter >= progressionTarget) {
+            int delay = type.getDelay(data);
+            if (canSpread() && ++progressionCounter >= delay) {
                 ++progression;
                 progressionCounter = 0;
                 ticksSinceProgressed = 0;
                 updateStage();
-                if (!player.level.isClientSide) data.sync();
+                if (!player.level.isClientSide) data.sync(DataFlags.DEBUFF);
             }
             current.getStageEvent().accept(player);
         }

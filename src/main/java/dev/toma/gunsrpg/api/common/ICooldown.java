@@ -38,7 +38,7 @@ public interface ICooldown extends ITickableSkill, IOverlayRender {
     @OnlyIn(Dist.CLIENT)
     @Override
     default void renderInHUD(MatrixStack stack, ISkill skill, int renderIndex, int left, int top) {
-        if (skill.apply(Minecraft.getInstance().player)) {
+        if (skill.canApply(Minecraft.getInstance().player)) {
             int x = left + renderIndex * 20;
             Matrix4f pose = stack.last().pose();
             ModUtils.renderColor(pose, x, top, x + 20, top + 20, 0.0F, 0.0F, 0.0F, 0.4F);

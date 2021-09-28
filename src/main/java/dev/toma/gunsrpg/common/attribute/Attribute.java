@@ -7,7 +7,7 @@ public class Attribute implements IAttribute {
 
     private final IAttributeId id;
     private final Map<UUID, IAttributeModifier> modifierMap = new HashMap<>();
-    private final List<ITickableModifier> temporaryModifiers = new ArrayList<>();
+    private final Set<ITickableModifier> temporaryModifiers = new HashSet<>();
     private final Set<IAttributeListener> listeners = new HashSet<>();
     private double baseValue;
     private boolean changed;
@@ -76,7 +76,10 @@ public class Attribute implements IAttribute {
 
     @Override
     public void addModifier(IAttributeModifier modifier) {
-        modifierMap.put(modifier.getUid(), modifier);
+        IAttributeModifier oldModifier = modifierMap.put(modifier.getUid(), modifier);
+        if (oldModifier instanceof ITickableModifier) {
+            temporaryModifiers.remove(oldModifier);
+        }
         if (modifier instanceof ITickableModifier) {
             temporaryModifiers.add((ITickableModifier) modifier);
         }
@@ -93,7 +96,7 @@ public class Attribute implements IAttribute {
     public void removeModifierById(UUID modifierId) {
         IAttributeModifier modifier = modifierMap.remove(modifierId);
         if (modifier instanceof ITickableModifier) {
-            removeTemporary(modifierId);
+            temporaryModifiers.remove(modifier);
         }
         markChanged();
     }
@@ -102,6 +105,11 @@ public class Attribute implements IAttribute {
     public void removeAllModifiers() {
         modifierMap.clear();
         markChanged();
+    }
+
+    @Override
+    public IAttributeModifier getModifier(IAttributeModifier modifier) {
+        return modifierMap.get(modifier.getUid());
     }
 
     @Override
@@ -128,17 +136,6 @@ public class Attribute implements IAttribute {
 
     private <P> void notifyListenerChange(P parameter, BiConsumer<IAttributeListener, P> notifyEvent) {
         listeners.forEach(listener -> notifyEvent.accept(listener, parameter));
-    }
-
-    private void removeTemporary(UUID uuid) {
-        ITickableModifier found = null;
-        for (ITickableModifier modifier : temporaryModifiers) {
-            if (modifier.getUid().equals(uuid)) {
-                found = modifier;
-                break;
-            }
-        }
-        temporaryModifiers.remove(found);
     }
 
     private double computeValue() {

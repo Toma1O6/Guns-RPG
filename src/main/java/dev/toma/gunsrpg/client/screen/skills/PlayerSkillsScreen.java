@@ -7,20 +7,18 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IClickableSkill;
 import dev.toma.gunsrpg.api.common.IOverlayRender;
 import dev.toma.gunsrpg.api.common.ISkill;
+import dev.toma.gunsrpg.api.common.data.IData;
+import dev.toma.gunsrpg.api.common.data.IKillData;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.screen.ConfirmSkillUnlockScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.GunData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
-import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.math.IVec2i;
 import dev.toma.gunsrpg.util.math.Vec2i;
-import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.object.Pair;
-import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.FontRenderer;
@@ -47,14 +45,13 @@ public class PlayerSkillsScreen extends Screen {
     private final List<Component> uiComponents = new ArrayList<>();
     private final List<CategoryComponent> categories = new ArrayList<>();
     private final List<SkillComponent> skillElements = new ArrayList<>();
-    private final OptionalObject<GunDisplay> display = OptionalObject.empty();
     private SkillCategory displayedCategory;
     private String headerText;
     private int headerWidth;
     private Tree displayTree;
     private int posX, posY;
     private int clickedX, clickedY;
-    private PlayerSkills skills;
+    private IPlayerData data;
     private SkillComponent hoveredSkill;
     private long hoverStartTime;
     private boolean wasHovered;
@@ -77,8 +74,9 @@ public class PlayerSkillsScreen extends Screen {
         headerWidth = minecraft.font.width(headerText);
         Tree tree = SkillTreePlacement.treeMap.get(displayedCategory);
         PlayerEntity player = minecraft.player;
-        skills = PlayerData.getUnsafe(player).getSkills();
-        int level = skills.getLevel();
+        data = PlayerData.getUnsafe(player);
+        IData genData = data.getGenericData();
+        int level = genData.getLevel();
         for (Branch branch : tree.branches) {
             for (PlacementContext ctx : branch.getPlacements()) {
                 if (ctx.type.levelRequirement <= level) {
@@ -95,24 +93,25 @@ public class PlayerSkillsScreen extends Screen {
         hoveredSkill = null;
         int gradientMin = 0x66 << 24;
         int gradientMax = 0xDD << 24;
-        int killed = skills.getKills();
-        int required = skills.getRequiredKills();
-        float decimal = skills.isMaxLevel() ? 1.0F : killed / (float) required;
+        IKillData killData = data.getGenericData();
+        int killed = killData.getKills();
+        int required = killData.getRequiredKillCount();
+        boolean isMaxLevel = ModUtils.isMaxLevel(killData);
+        float decimal = isMaxLevel ? 1.0F : killed / (float) required;
         int length = width / 2;
         Matrix4f pose = stack.last().pose();
         renderSkills(stack, mouseX, mouseY, partialTicks);
         RenderUtils.drawGradient(pose, 0, 0, width, 45, 0, gradientMax, gradientMin); // header
         renderCategories(stack, mouseX, mouseY, partialTicks); // categories
-        display.ifPresent(dsp -> dsp.draw(stack, minecraft, mouseX, mouseY, partialTicks, posX, posY)); // weapon skills
         renderHoverInfo(stack, mouseX, mouseY, partialTicks); // hovered data
         RenderUtils.drawGradient(pose, 0, height - 20, width, height, 0, gradientMin, gradientMax); // footer background
         RenderUtils.drawGradient(pose, 15, height - 15, length, height - 5, 0, 0xFF << 24, 0xFF << 24); // level progress background
         RenderUtils.drawGradient(pose, 17, height - 13, (int) (decimal * (length - 2)), height - 7, 0, 0xFF00FFFF, 0xFF006565); // level progress
         font.drawShadow(stack, TextFormatting.UNDERLINE + headerText, (width - headerWidth) / 2f, 8, 0xFFFFFFFF);
-        int level = skills.getLevel();
-        String foot = skills.isMaxLevel() ? String.format("Level: %d - %d kills", level, killed) : String.format("Level: %d (%d%%) - %d / %d kills", level, (int) (decimal * 100), killed, required);
+        int level = killData.getLevel();
+        String foot = isMaxLevel ? String.format("Level: %d - %d kills", level, killed) : String.format("Level: %d (%d%%) - %d / %d kills", level, (int) (decimal * 100), killed, required);
         font.drawShadow(stack, foot, 4 + length, height - 14, 0xffffff);
-        String text2 = skills.getSkillPoints() + " pts";
+        String text2 = killData.getPoints() + " pts";
         font.drawShadow(stack, text2, width - font.width(text2) - 5, height - 14, 0xffff00);
     }
 
@@ -128,7 +127,6 @@ public class PlayerSkillsScreen extends Screen {
             posX = ModUtils.clamp(posX + x, 0, 350);
             posY = ModUtils.clamp(posY + y, 0, 400);
             setClickPos((int) mouseX, (int) mouseY);
-            display.clear();
             return true;
         }
         return false;
@@ -137,12 +135,6 @@ public class PlayerSkillsScreen extends Screen {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (button == 0) setClickPos((int) mouseX, (int) mouseY);
-        if (display.isPresent()) {
-            if (display.get().isMouseOver(mouseX + posX, mouseY + posY)) {
-                display.get().mouseClicked(mouseX, mouseY, posX, posY, button);
-                return true;
-            }
-        }
         boolean clicked = false;
         for (Component component : uiComponents) {
             if (component.isMouseOver(mouseX, mouseY, posX, posY) && component.onClick(button)) {
@@ -227,7 +219,6 @@ public class PlayerSkillsScreen extends Screen {
     }
 
     private void switchCategory(SkillCategory category) {
-        this.display.clear();
         this.displayedCategory = category;
         this.posX = 0;
         this.posY = 0;
@@ -349,10 +340,7 @@ public class PlayerSkillsScreen extends Screen {
 
         @Override
         public boolean onClick(int mouseButton) {
-            if (mouseButton == 1 && type.hasCustomRenderFactory()) {
-                PlayerSkillsScreen.this.display.map(new GunDisplay(ctx));
-                return true;
-            } else if (mouseButton == 0) {
+            if (mouseButton == 0) {
                 PlayerEntity player = Minecraft.getInstance().player;
                 if (obtained) {
                     ISkill skill = PlayerData.getSkill(player, type);
@@ -474,74 +462,6 @@ public class PlayerSkillsScreen extends Screen {
             RenderSystem.shadeModel(GL11.GL_FLAT);
             RenderSystem.disableBlend();
             RenderSystem.enableTexture();
-        }
-    }
-
-    @Deprecated
-    private class GunDisplay { // TODO delete
-        private final PlacementContext ctx;
-        private final GunItem gun;
-        private final List<Component> list = new ArrayList<>();
-        private int x, y, w, h;
-        //private GunData gunData;
-
-        public GunDisplay(PlacementContext ctx) {
-            this.ctx = ctx;
-            this.gun = (GunItem) ctx.type.getRenderItem().getItem();
-            init();
-        }
-
-        public boolean isMouseOver(double mouseX, double mouseY) {
-            return mouseX >= this.x && mouseX <= this.x + this.w && mouseY >= this.y && mouseY <= this.y + this.h;
-        }
-
-        public void mouseClicked(double mouseX, double mouseY, int xOff, int yOff, int mouseButton) {
-            for (Component component : list) {
-                if (component.isMouseOver(mouseX, mouseY, xOff, yOff) && component.onClick(mouseButton)) {
-                    Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-                    MainWindow window = Minecraft.getInstance().getWindow();
-                    PlayerSkillsScreen.this.init(Minecraft.getInstance(), window.getGuiScaledWidth(), window.getGuiScaledHeight());
-                    break;
-                }
-            }
-        }
-
-        public void init() {
-            list.clear();
-            int width = ctx.type.getChilds().size() * 25 + 15;
-            IVec2i pos = ctx.pos;
-            this.x = pos.x() - width / 2 + 10;
-            this.y = pos.y() + 25;
-            this.w = width;
-            this.h = 60;
-            int px = x - PlayerSkillsScreen.this.posX;
-            int py = y - PlayerSkillsScreen.this.posY;
-            for (int i = 0; i < ctx.type.getChilds().size(); i++) {
-                SkillType<?> child = ctx.type.getChilds().get(i);
-                list.add(new SkillComponent(new PlacementContext(null, child, new Vec2i(x + 10 + 25 * i, y + 10))));
-            }
-            this.gunData = PlayerData.getUnsafe(Minecraft.getInstance().player).getSkills().getGunData(gun);
-        }
-
-        public void draw(MatrixStack stack, Minecraft mc, int mouseX, int mouseY, float partialTicks, int xOffset, int yOffset) {
-            int px = x - xOffset;
-            int py = y - yOffset;
-            Matrix4f pose = stack.last().pose();
-            ModUtils.renderColor(pose, px, py, px + w, py + h, 0.0F, 0.0F, 0.0F, 1.0F);
-            ModUtils.renderColor(pose, px + 1, py + 1, px + w - 1, py + h - 1, 0.5F, 0.5F, 0.5F, 1.0F);
-            String txt;
-            if (gunData.isAtMaxLevel()) {
-                txt = String.format("Level %d, kills %d", gunData.getLevel(), gunData.getKills());
-            } else {
-                txt = String.format("Level %d, kills %d/%d", gunData.getLevel(), gunData.getKills(), gunData.getRequiredKills());
-            }
-            mc.font.drawShadow(stack, txt, px + 10, py + h - 24, 0xffffff);
-            String txt2 = gunData.getGunPoints() + " pts";
-            mc.font.drawShadow(stack, txt2, px + w - 10 - mc.font.width(txt2), py + h - 24, 0xffff00);
-            ModUtils.renderColor(pose, px + 10, py + h - 15, px + w - 10, py + h - 5, 0.0F, 0.0F, 0.0F, 1.0F);
-            float levelPrg = gunData.isAtMaxLevel() ? 1.0F : ((float) gunData.getKills() / gunData.getRequiredKills());
-            ModUtils.renderColor(pose, px + 12, py + h - 13, (int) (px + (w - 12) * levelPrg), py + h - 7, 1.0F, 1.0F, 0.0F, 1.0F);
-            list.forEach(component -> component.draw(stack, mc, mouseX, mouseY, partialTicks, xOffset, yOffset));
         }
     }
 }

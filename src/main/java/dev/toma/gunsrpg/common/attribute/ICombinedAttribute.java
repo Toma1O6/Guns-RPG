@@ -2,9 +2,11 @@ package dev.toma.gunsrpg.common.attribute;
 
 public interface ICombinedAttribute {
 
-    double getValue(IAttributeProvider provider);
+    double value(IAttributeProvider provider);
 
-    int getIntValue(IAttributeProvider provider);
+    float floatValue(IAttributeProvider provider);
+
+    int intValue(IAttributeProvider provider);
 
     static ICombinedAttribute of(IAttributeId... keys) {
         return new SimpleCombinedAttribute(keys);
@@ -21,7 +23,7 @@ public interface ICombinedAttribute {
         }
 
         @Override
-        public double getValue(IAttributeProvider provider) {
+        public double value(IAttributeProvider provider) {
             double result = 1.0;
             for (IAttributeId id : keys) {
                 result *= provider.getAttributeValue(id);
@@ -30,8 +32,13 @@ public interface ICombinedAttribute {
         }
 
         @Override
-        public int getIntValue(IAttributeProvider provider) {
-            double result = getValue(provider);
+        public float floatValue(IAttributeProvider provider) {
+            return (float) value(provider);
+        }
+
+        @Override
+        public int intValue(IAttributeProvider provider) {
+            double result = value(provider);
             return (int) Math.round(result);
         }
     }

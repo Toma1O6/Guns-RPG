@@ -10,7 +10,7 @@ public class BasicSkill extends AbstractSkill {
     }
 
     @Override
-    public boolean apply(PlayerEntity user) {
+    public boolean canApply(PlayerEntity user) {
         return true;
     }
 }

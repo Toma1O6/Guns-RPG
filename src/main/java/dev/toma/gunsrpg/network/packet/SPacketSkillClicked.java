@@ -37,7 +37,7 @@ public class SPacketSkillClicked extends AbstractNetworkPacket<SPacketSkillClick
         ServerPlayerEntity player = context.getSender();
         if (type == null) return;
         ISkill skill = SkillUtil.getBestSkillFromOverrides(PlayerData.getSkill(player, type), player);
-        if (skill instanceof IClickableSkill && skill.apply(player)) {
+        if (skill instanceof IClickableSkill && skill.canApply(player)) {
             ((IClickableSkill) skill).clicked(player);
         }
     }

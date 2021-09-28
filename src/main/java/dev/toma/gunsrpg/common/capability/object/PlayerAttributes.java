@@ -75,13 +75,14 @@ public class PlayerAttributes implements IAttributeProvider, IPlayerCapEntry {
     @Override
     public void toNbt(CompoundNBT nbt) {
         CompoundNBT cnbt = new CompoundNBT();
+        // TODO
         nbt.put("attributes", cnbt);
     }
 
     @Override
     public void fromNbt(CompoundNBT nbt) {
         CompoundNBT cnbt = nbt.contains("attributes", Constants.NBT.TAG_COMPOUND) ? nbt.getCompound("attributes") : new CompoundNBT();
-
+        // TODO
     }
 
     @Override

@@ -2,22 +2,20 @@ package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IReloadManager;
-import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.S1897Renderer;
+import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.entity.ShotgunPelletEntity;
 import dev.toma.gunsrpg.common.entity.projectile.Projectile;
-import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
-import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
-import dev.toma.gunsrpg.common.item.guns.util.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
+import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +24,6 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -37,24 +34,48 @@ public class S1897Item extends GunItem {
     private static final ResourceLocation LOAD_BULLET_ANIMATION = GunsRPG.makeResource("s1897/load_bullet");
 
     public S1897Item(String name) {
-        super(name, WeaponCategory.SG, new Properties().setISTER(() -> S1897Renderer::new));
+        super(name, new Properties().setISTER(() -> S1897Renderer::new));
     }
 
     @Override
-    public IWeaponConfig getWeaponConfig() {
-        return ModConfig.weaponConfig.s1897;
+    public void initializeWeapon(WeaponBuilder builder) {
+        builder
+                .category(WeaponCategory.SG)
+                .config(ModConfig.weaponConfig.s1897)
+                .materials()
+                    .define(AmmoMaterials.WOOD, 0)
+                    .define(AmmoMaterials.STONE, 1)
+                    .define(AmmoMaterials.IRON, 2)
+                    .define(AmmoMaterials.GOLD, 3)
+                    .define(AmmoMaterials.DIAMOND, 5)
+                    .define(AmmoMaterials.EMERALD, 6)
+                    .define(AmmoMaterials.AMETHYST, 8)
+                .build();
     }
 
     @Override
-    public void fillAmmoMaterialData(MaterialContainer container) {
-        container
-                .add(AmmoMaterials.WOOD, 0)
-                .add(AmmoMaterials.STONE, 1)
-                .add(AmmoMaterials.IRON, 2)
-                .add(AmmoMaterials.GOLD, 3)
-                .add(AmmoMaterials.DIAMOND, 5)
-                .add(AmmoMaterials.EMERALD, 6)
-                .add(AmmoMaterials.AMETHYST, 8);
+    public int getMaxAmmo(IAttributeProvider provider) {
+        return provider.getAttribute(Attribs.S1897_MAG_CAPACITY).intValue();
+    }
+
+    @Override
+    public int getReloadTime(IAttributeProvider provider) {
+        return Attribs.S1897_RELOAD.intValue(provider);
+    }
+
+    @Override
+    public int getFirerate(IAttributeProvider provider) {
+        return provider.getAttribute(Attribs.S1897_FIRERATE).intValue();
+    }
+
+    @Override
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return 5.3F * super.getVerticalRecoil(provider);
+    }
+
+    @Override
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return 1.9F * super.getHorizontalRecoil(provider);
     }
 
     @Override
@@ -73,30 +94,13 @@ public class S1897Item extends GunItem {
     }
 
     @Override
-    public int getReloadTime(PlayerEntity player) {
-        int time = PlayerData.hasActiveSkill(player, Skills.S1897_BULLET_LOOPS) ? 12 : 17;
-        return (int) (time * SkillUtil.getReloadTimeMultiplier(player));
-    }
-
-    @Override
-    public int getMaxAmmo(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.S1897_EXTENDED) ? 8 : 5;
-    }
-
-    @Override
-    public int getFirerate(PlayerEntity player) {
-        IWeaponConfig cfg = getWeaponConfig();
-        return PlayerData.hasActiveSkill(player, Skills.S1897_PUMP_IN_ACTION) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
-    }
-
-    @Override
     public void onKillEntity(Projectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
         if (!shooter.level.isClientSide && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.S1897_NEVER_GIVE_UP)) {
             shooter.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 100, 0, false, false));
         }
     }
 
-    @Override
+    /*@Override
     public void shootBullet(World world, LivingEntity entity, ItemStack stack) {
         boolean choke = entity instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) entity, Skills.S1897_CHOKE);
         float modifier = 3.0F;
@@ -108,7 +112,7 @@ public class S1897Item extends GunItem {
             bullet.fire(pitch, yaw, velocity);
             world.addFreshEntity(bullet);
         }
-    }
+    }*/
 
     @Override
     public SkillType<?> getRequiredSkill() {

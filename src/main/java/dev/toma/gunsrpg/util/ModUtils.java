@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.util;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import dev.toma.gunsrpg.api.common.data.IKillData;
 import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -47,6 +48,10 @@ public class ModUtils {
 
     public static String convertToLocalization(ResourceLocation location) {
         return location.toString().replaceAll(":", ".");
+    }
+
+    public static boolean isMaxLevel(IKillData killData) {
+        return killData.getLevel() == killData.getLevelLimit();
     }
 
     public static int sum(int[] array) {

@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.network.packet;
 
+import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -35,8 +36,8 @@ public class SPacketRequestDataUpdate extends AbstractNetworkPacket<SPacketReque
     protected void handlePacket(NetworkEvent.Context context) {
         ServerPlayerEntity player = context.getSender();
         PlayerData.get(player).ifPresent(playerData -> {
-            CompoundNBT nbt = playerData.serializeNBT();
-            NetworkManager.sendClientPacket(player, new CPacketUpdateCap(uuid, nbt));
+            CompoundNBT nbt = playerData.toNbt(DataFlags.WILDCARD);
+            NetworkManager.sendClientPacket(player, new CPacketUpdateCap(uuid, nbt, DataFlags.WILDCARD));
         });
     }
 }

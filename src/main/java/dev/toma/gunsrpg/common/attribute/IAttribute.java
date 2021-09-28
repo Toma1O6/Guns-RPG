@@ -7,9 +7,9 @@ public interface IAttribute {
 
     double value();
 
-    int intValue();
-
     float floatValue();
+
+    int intValue();
 
     void setValue(double value);
 
@@ -26,6 +26,8 @@ public interface IAttribute {
     void removeModifierById(UUID modifierId);
 
     void removeAllModifiers();
+
+    IAttributeModifier getModifier(IAttributeModifier modifier);
 
     Collection<IAttributeModifier> listModifiers();
 

@@ -23,7 +23,6 @@ public class GunDamageSource extends EntityDamageSource {
         this.src = src;
         this.indirect = indirect;
         this.stacc = stacc;
-
     }
 
     @Nullable

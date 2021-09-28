@@ -1,7 +1,8 @@
 package dev.toma.gunsrpg.common.debuffs;
 
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
+import dev.toma.gunsrpg.common.attribute.IAttributeId;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.util.function.ToFloatFunction;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -10,27 +11,27 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
-import java.util.function.ToIntFunction;
 
 public class StagedDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
 
-    private final ToIntFunction<PlayerSkills> progress;
-    private final ToFloatFunction<IDebuffContext> resist;
+    private final IAttributeId delay;
+    private final IAttributeId resistance;
     private final ToFloatFunction<IDebuffContext>[] applyConditions;
     private final LinkedStage head;
 
     @SuppressWarnings("unchecked")
     private StagedDebuffType(StagedBuilder<D> builder) {
         super(builder);
-        this.progress = builder.progress;
-        this.resist = builder.resistChance;
+        this.delay = builder.delayAttribute;
+        this.resistance = builder.resistanceAttribute;
         this.applyConditions = builder.conditions.toArray(new ToFloatFunction[0]);
         this.head = builder.head;
     }
 
     @Override
     public D onTrigger(IDebuffContext context, Random random) {
-        float resist = this.resist.applyAsFloat(context);
+        IAttributeProvider provider = context.getData().getAttributes();
+        float resist = provider.getAttribute(resistance).floatValue();
         if (resist > 0 && random.nextFloat() < resist)
             return null; // blocked by resistance
         for (ToFloatFunction<IDebuffContext> function : applyConditions) {
@@ -44,8 +45,9 @@ public class StagedDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
         return null;
     }
 
-    public int getProgressionTarget(IPlayerData data) {
-        return progress.applyAsInt(data.getSkills());
+    public int getDelay(IPlayerData data) {
+        IAttributeProvider provider = data.getAttributes();
+        return provider.getAttribute(delay).intValue();
     }
 
     public LinkedStage firstStage() {
@@ -93,21 +95,21 @@ public class StagedDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
 
     public static class StagedBuilder<D extends IStagedDebuff> implements IDebuffBuilder<D> {
 
-        private ToIntFunction<PlayerSkills> progress;
-        private ToFloatFunction<IDebuffContext> resistChance;
+        private IAttributeId delayAttribute;
+        private IAttributeId resistanceAttribute;
         private List<ToFloatFunction<IDebuffContext>> conditions = new ArrayList<>();
         private LinkedStage head;
         private LinkedStage last;
         private IFactory<D> factory;
         private BooleanSupplier disabledStatus; // for configs
 
-        public StagedBuilder<D> progressTimeFunc(ToIntFunction<PlayerSkills> progress) {
-            this.progress = progress;
+        public StagedBuilder<D> delay(IAttributeId attributeId) {
+            this.delayAttribute = attributeId;
             return this;
         }
 
-        public StagedBuilder<D> resistance(ToFloatFunction<IDebuffContext> resistChance) {
-            this.resistChance = resistChance;
+        public StagedBuilder<D> resistance(IAttributeId attributeId) {
+            this.resistanceAttribute = attributeId;
             return this;
         }
 

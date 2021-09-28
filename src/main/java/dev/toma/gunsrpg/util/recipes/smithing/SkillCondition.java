@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.ISkills;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,7 +30,7 @@ public class SkillCondition implements ICraftingCondition {
         if (!dataOptional.isPresent()) {
             return false;
         }
-        PlayerSkills skills = dataOptional.orElseThrow(IllegalStateException::new).getSkills();
+        ISkills skills = dataOptional.orElseThrow(IllegalStateException::new).getSkills();
         return skills.hasSkill(skill);
     }
 

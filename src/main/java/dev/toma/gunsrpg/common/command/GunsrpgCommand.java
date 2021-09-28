@@ -8,10 +8,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import dev.toma.gunsrpg.api.common.data.IDebuffs;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.config.ModConfig;
@@ -112,7 +110,7 @@ public class GunsrpgCommand {
         PlayerEntity player = getPlayer(ctx);
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         optional.ifPresent(data -> {
-            PlayerSkills skills = data.getSkills();
+            ISkills skills = data.getSkills();
             action.apply(skills);
             String translationKey = "gunsrpg.command.editskills." + (skills.getUnlockedSkills().isEmpty() ? "lock" : "unlock");
             src.sendSuccess(new TranslationTextComponent(translationKey), false);
@@ -124,14 +122,14 @@ public class GunsrpgCommand {
         PlayerEntity player = getPlayer(ctx);
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         optional.ifPresent(data -> {
-            PlayerSkills skills = data.getSkills();
-            int currentLevel = skills.getLevel();
+            IData levelData = data.getGenericData();
+            int currentLevel = levelData.getLevel();
             int delta = 100 - currentLevel;
             int target = Math.min(levelCount, delta);
             for (int i = 0; i < target; i++) {
-                skills.nextLevel(false);
+                levelData.advanceLevel(false);
             }
-            data.sync();
+            data.sync(DataFlags.DATA);
             ctx.getSource().sendSuccess(new TranslationTextComponent("gunsrpg.command." + (target == 1 ? "addlevel" : "addlevels"), target), false);
         });
         return 0;
@@ -146,16 +144,16 @@ public class GunsrpgCommand {
     }
 
     private enum ModifyAction {
-        LOCK(PlayerSkills::revertToDefault),
-        UNLOCK(PlayerSkills::unlockAll);
+        LOCK(ILockStateChangeable::doLock),
+        UNLOCK(ILockStateChangeable::doUnlock);
 
-        final Consumer<PlayerSkills> action;
+        final Consumer<ILockStateChangeable> action;
 
-        ModifyAction(Consumer<PlayerSkills> action) {
+        ModifyAction(Consumer<ILockStateChangeable> action) {
             this.action = action;
         }
 
-        void apply(PlayerSkills skills) {
+        void apply(ILockStateChangeable skills) {
             action.accept(skills);
         }
     }

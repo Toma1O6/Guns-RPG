@@ -2,22 +2,22 @@ package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IReloadManager;
-import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Kar98kRenderer;
+import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
-import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
-import dev.toma.gunsrpg.common.item.guns.util.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
+import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
 import dev.toma.gunsrpg.sided.ClientSideManager;
-import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
@@ -40,24 +40,58 @@ public class Kar98kItem extends GunItem {
     private static final ResourceLocation LOAD_BULLET_ANIMATION = GunsRPG.makeResource("kar98k/load_bullet");
 
     public Kar98kItem(String name) {
-        super(name, WeaponCategory.SR, new Properties().setISTER(() -> Kar98kRenderer::new));
+        super(name, new Properties().setISTER(() -> Kar98kRenderer::new));
     }
 
     @Override
-    public IWeaponConfig getWeaponConfig() {
-        return ModConfig.weaponConfig.kar98k;
+    public void initializeWeapon(WeaponBuilder builder) {
+        builder
+                .category(WeaponCategory.SR)
+                .config(ModConfig.weaponConfig.kar98k)
+                .materials()
+                    .define(AmmoMaterials.WOOD, 0)
+                    .define(AmmoMaterials.STONE, 4)
+                    .define(AmmoMaterials.IRON, 9)
+                    .define(AmmoMaterials.GOLD, 13)
+                    .define(AmmoMaterials.DIAMOND, 17)
+                    .define(AmmoMaterials.EMERALD, 20)
+                    .define(AmmoMaterials.AMETHYST, 25)
+                .build();
     }
 
     @Override
-    public void fillAmmoMaterialData(MaterialContainer container) {
-        container
-                .add(AmmoMaterials.WOOD, 0)
-                .add(AmmoMaterials.STONE, 4)
-                .add(AmmoMaterials.IRON, 9)
-                .add(AmmoMaterials.GOLD, 13)
-                .add(AmmoMaterials.DIAMOND, 17)
-                .add(AmmoMaterials.EMERALD, 20)
-                .add(AmmoMaterials.AMETHYST, 25);
+    public int getMaxAmmo(IAttributeProvider provider) {
+        return provider.getAttribute(Attribs.KAR98K_MAG_CAPACITY).intValue();
+    }
+
+    @Override
+    public int getReloadTime(IAttributeProvider provider) {
+        return Attribs.KAR98K_RELOAD.intValue(provider);
+    }
+
+    @Override
+    public int getFirerate(IAttributeProvider provider) {
+        return provider.getAttribute(Attribs.KAR98K_FIRERATE).intValue();
+    }
+
+    @Override
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return Attribs.KAR98K_VERTICAL.floatValue(provider);
+    }
+
+    @Override
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return Attribs.KAR98K_HORIZONTAL.floatValue(provider);
+    }
+
+    @Override
+    public double getNoiseMultiplier(IAttributeProvider provider) {
+        return Attribs.KAR98K_LOUDNESS.value(provider);
+    }
+
+    @Override
+    public double getHeadshotMultiplier(IAttributeProvider provider) {
+        return Attribs.KAR98K_HEADSHOT.value(provider);
     }
 
     @Override
@@ -78,43 +112,6 @@ public class Kar98kItem extends GunItem {
     @Override
     protected SoundEvent getEntityShootSound(LivingEntity entity) {
         return ModSounds.M24;
-    }
-
-    @Override
-    public int getMaxAmmo(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.KAR98K_EXTENDED) ? 10 : 5;
-    }
-
-    @Override
-    public int getFirerate(PlayerEntity player) {
-        IWeaponConfig cfg = getWeaponConfig();
-        return PlayerData.hasActiveSkill(player, Skills.KAR98K_FAST_HANDS) ? cfg.getUpgradedFirerate() : cfg.getFirerate();
-    }
-
-    @Override
-    public int getReloadTime(PlayerEntity player) {
-        boolean empty = this.getAmmo(player.getMainHandItem()) == 0;
-        boolean magSkill = PlayerData.hasActiveSkill(player, Skills.KAR98K_FAST_HANDS);
-        int time = magSkill ? empty ? 40 : 20 : empty ? 66 : 33;
-        return (int) (time * SkillUtil.getReloadTimeMultiplier(player));
-    }
-
-    private boolean isSilenced(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.KAR98K_SUPPRESSOR);
-    }
-
-    @Override
-    public float getVerticalRecoil(PlayerEntity player) {
-        float f = super.getVerticalRecoil(player);
-        float mod = PlayerData.hasActiveSkill(player, Skills.KAR98K_CHEEKPAD) ? ModConfig.weaponConfig.general.cheekpad.floatValue() : 1.0F;
-        return mod * f;
-    }
-
-    @Override
-    public float getHorizontalRecoil(PlayerEntity player) {
-        float f = super.getHorizontalRecoil(player);
-        float mod = PlayerData.hasActiveSkill(player, Skills.KAR98K_CHEEKPAD) ? ModConfig.weaponConfig.general.cheekpad.floatValue() : 1.0F;
-        return mod * f;
     }
 
     @Override

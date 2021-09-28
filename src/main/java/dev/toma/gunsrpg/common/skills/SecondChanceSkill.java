@@ -30,7 +30,7 @@ public class SecondChanceSkill extends BasicSkill implements ICooldown {
     }
 
     @Override
-    public boolean apply(PlayerEntity user) {
+    public boolean canApply(PlayerEntity user) {
         return getCooldown() == 0;
     }
 

@@ -1,21 +1,19 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.WoodenCrossbowRenderer;
+import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.entity.CrossbowBoltEntity;
 import dev.toma.gunsrpg.common.entity.projectile.Projectile;
-import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
-import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
-import dev.toma.gunsrpg.common.item.guns.util.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
+import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,7 +22,6 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -37,30 +34,49 @@ public class WoodenCrossbowItem extends GunItem {
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("wooden_crossbow/reload");
 
     public WoodenCrossbowItem(String name) {
-        super(name, WeaponCategory.CROSSBOW, new Properties().setISTER(() -> WoodenCrossbowRenderer::new));
-    }
-
-    /*@Override
-    public int getMaxAmmo(PlayerEntity player) {
-        return PlayerData.hasActiveSkill(player, Skills.CROSSBOW_REPEATER) ? 3 : 1;
+        super(name, new Properties().setISTER(() -> WoodenCrossbowRenderer::new));
     }
 
     @Override
-    public int getFirerate(PlayerEntity player) {
-        return ModConfig.weaponConfig.crossbow.getFirerate();
+    public void initializeWeapon(WeaponBuilder builder) {
+        builder
+                .category(WeaponCategory.CROSSBOW)
+                .config(ModConfig.weaponConfig.crossbow)
+                .materials()
+                    .define(AmmoMaterials.WOOD, 0)
+                    .define(AmmoMaterials.STONE, 3)
+                    .define(AmmoMaterials.IRON, 6)
+                    .define(AmmoMaterials.GOLD, 9)
+                    .define(AmmoMaterials.DIAMOND, 14)
+                    .define(AmmoMaterials.EMERALD, 16)
+                    .define(AmmoMaterials.AMETHYST, 20)
+                .build();
     }
 
     @Override
-    public int getReloadTime(PlayerEntity player) {
-        int base = 60;
-        if (PlayerData.hasActiveSkill(player, Skills.CROSSBOW_QUIVER)) {
-            base = (int) (base * 0.65);
-        }
-        if (PlayerData.hasActiveSkill(player, Skills.CROSSBOW_REPEATER)) {
-            base = (int) (base * 1.25);
-        }
-        return (int) (base * SkillUtil.getReloadTimeMultiplier(player));
-    }*/
+    public int getMaxAmmo(IAttributeProvider provider) {
+        return provider.getAttribute(Attribs.CROSSBOW_MAG_CAPACITY).intValue();
+    }
+
+    @Override
+    public int getFirerate(IAttributeProvider provider) {
+        return 10;
+    }
+
+    @Override
+    public int getReloadTime(IAttributeProvider provider) {
+        return Attribs.CROSSBOW_RELOAD.intValue(provider);
+    }
+
+    @Override
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return 0.1F * super.getVerticalRecoil(provider);
+    }
+
+    @Override
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return 0.1F * super.getHorizontalRecoil(provider);
+    }
 
     /*@Override
     public void shootBullet(World world, LivingEntity entity, ItemStack stack) {
@@ -87,23 +103,6 @@ public class WoodenCrossbowItem extends GunItem {
         if (!bullet.level.isClientSide && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_HUNTER)) {
             shooter.heal(4.0F);
         }
-    }
-
-    @Override
-    public void fillAmmoMaterialData(MaterialContainer container) {
-        container
-                .add(AmmoMaterials.WOOD, 0)
-                .add(AmmoMaterials.STONE, 3)
-                .add(AmmoMaterials.IRON, 6)
-                .add(AmmoMaterials.GOLD, 9)
-                .add(AmmoMaterials.DIAMOND, 14)
-                .add(AmmoMaterials.EMERALD, 16)
-                .add(AmmoMaterials.AMETHYST, 20);
-    }
-
-    @Override
-    public IWeaponConfig getWeaponConfig() {
-        return ModConfig.weaponConfig.crossbow;
     }
 
     @Override

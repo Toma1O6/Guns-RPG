@@ -5,6 +5,9 @@ import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkills;
 import dev.toma.gunsrpg.api.common.data.IWorldData;
+import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.attribute.IAttributeId;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataProvider;
 import dev.toma.gunsrpg.common.debuffs.IDebuffContext;
@@ -153,37 +156,18 @@ public class CommonEventHandler {
         });
     }
 
-    private static String getMessageLogo() {
-        return TextFormatting.BLUE + "[" + TextFormatting.YELLOW + "GunsRPG" + TextFormatting.BLUE + "]" + TextFormatting.RESET;
-    }
-
     @SubscribeEvent
     public static void getDestructionSpeed(net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed event) {
         PlayerEntity player = event.getPlayer();
         ItemStack stack = player.getMainHandItem();
         PlayerData.get(player).ifPresent(data -> {
-            ISkills skills = data.getSkills();
-            if (stack.getItem() instanceof AxeItem && skills.hasSkill(Skills.SHARP_AXE_I)) {
-                float f = event.getOriginalSpeed();
-                float f1 = skills.axeMiningSpeed * 2;
-                if (f > 1.0F) {
-                    float f2 = f * (1.0F + f1);
-                    event.setNewSpeed(f2);
-                }
-            } else if (stack.getItem() instanceof PickaxeItem && skills.hasSkill(Skills.HEAVY_PICKAXE_I)) {
-                float f = event.getOriginalSpeed();
-                float f1 = skills.pickaxeMiningSpeed * 2;
-                if (f > 1.0F) {
-                    float f2 = f * (1.0F + f1);
-                    event.setNewSpeed(f2);
-                }
-            } else if (stack.getItem() instanceof ShovelItem && skills.hasSkill(Skills.GRAVE_DIGGER_I)) {
-                float f = event.getOriginalSpeed();
-                float f1 = skills.shovelMiningSpeed * 2;
-                if (f > 1.0F) {
-                    float f2 = f * (1.0F + f1);
-                    event.setNewSpeed(f2);
-                }
+            IAttributeProvider provider = data.getAttributes();
+            if (stack.getItem() instanceof AxeItem) {
+                editMiningSpeed(event, provider, Attribs.WOODCUTTING_SPEED);
+            } else if (stack.getItem() instanceof PickaxeItem) {
+                editMiningSpeed(event, provider, Attribs.MINING_SPEED);
+            } else if (stack.getItem() instanceof ShovelItem) {
+                editMiningSpeed(event, provider, Attribs.DIGGING_SPEED);
             }
         });
     }
@@ -245,25 +229,25 @@ public class CommonEventHandler {
         if (source.getDirectEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) source.getDirectEntity();
             PlayerData.get(player).ifPresent(data -> {
-                ISkills skills = data.getSkills();
+                IAttributeProvider provider = data.getAttributes();
                 float health = event.getEntityLiving().getMaxHealth();
                 boolean instantKill = false;
                 if (health < 100.0F) {
                     float f = random.nextFloat();
-                    boolean b = f < skills.instantKillChance;
+                    boolean b = f < provider.getAttributeValue(Attribs.INSTANT_KILL);
                     if (b) {
                         event.setAmount(event.getEntityLiving().getHealth());
                         instantKill = true;
                     }
                 }
                 if (!instantKill) {
-                    event.setAmount(event.getAmount() + skills.extraDamage);
+                    event.setAmount(event.getAmount() + provider.getAttribute(Attribs.MELEE_DAMAGE).floatValue());
                 }
             });
         } else if ((source.getDirectEntity() instanceof AbstractArrowEntity || source.getDirectEntity() instanceof CrossbowBoltEntity) && source.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) source.getEntity();
             LightHunterSkill skill = PlayerData.getSkill(player, Skills.LIGHT_HUNTER);
-            if (skill != null && skill.apply(player)) {
+            if (skill != null && skill.canApply(player)) {
                 event.setAmount(event.getAmount() * 1.2F);
             }
         }
@@ -372,7 +356,7 @@ public class CommonEventHandler {
                 SecondChanceSkill secondChanceSkill = skills.getSkill(Skills.SECOND_CHANCE_I);
                 if (secondChanceSkill != null) {
                     secondChanceSkill = SkillUtil.getBestSkillFromOverrides(secondChanceSkill, player);
-                    if (secondChanceSkill.apply(player)) {
+                    if (secondChanceSkill.canApply(player)) {
                         event.setCanceled(true);
                         secondChanceSkill.setOnCooldown();
                         secondChanceSkill.onUse(player);
@@ -447,7 +431,7 @@ public class CommonEventHandler {
             PlayerEntity player = event.player;
             PlayerData.get(player).ifPresent(data -> {
                 data.tick();
-                player.abilities.walkingSpeed = data.getSkills().getMovementSpeed();
+                player.abilities.walkingSpeed = data.getAttributes().getAttribute(Attribs.MOVEMENT_SPEED).floatValue();
             });
         }
     }
@@ -503,5 +487,19 @@ public class CommonEventHandler {
                     .build()
             );
         }
+    }
+
+    private static void editMiningSpeed(PlayerEvent.BreakSpeed event, IAttributeProvider provider, IAttributeId attributeId) {
+        float baseSpeed = event.getOriginalSpeed();
+        // values are >1.0 when breaking tool compatible material
+        if (baseSpeed > 1.0F) {
+            float multiplier = provider.getAttribute(attributeId).floatValue();
+            float newSpeed = baseSpeed * multiplier;
+            event.setNewSpeed(newSpeed);
+        }
+    }
+
+    private static String getMessageLogo() {
+        return TextFormatting.BLUE + "[" + TextFormatting.YELLOW + "GunsRPG" + TextFormatting.BLUE + "]" + TextFormatting.RESET;
     }
 }

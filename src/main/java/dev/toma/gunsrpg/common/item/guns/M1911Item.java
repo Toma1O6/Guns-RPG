@@ -11,9 +11,10 @@ import dev.toma.gunsrpg.common.entity.projectile.Projectile;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
+import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
-import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
-import dev.toma.gunsrpg.common.item.guns.util.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.setup.MaterialContainer;
+import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
@@ -41,24 +42,23 @@ public class M1911Item extends GunItem {
     };
 
     public M1911Item(String name) {
-        super(name, WeaponCategory.PISTOL, new Properties().setISTER(() -> M1911Renderer::new));
+        super(name, new Properties().setISTER(() -> M1911Renderer::new));
     }
 
     @Override
-    public IWeaponConfig getWeaponConfig() {
-        return ModConfig.weaponConfig.m1911;
-    }
-
-    @Override
-    public void fillAmmoMaterialData(MaterialContainer container) {
-        container
-                .add(AmmoMaterials.WOOD, 0)
-                .add(AmmoMaterials.STONE, 1)
-                .add(AmmoMaterials.IRON, 3)
-                .add(AmmoMaterials.GOLD, 4)
-                .add(AmmoMaterials.DIAMOND, 6)
-                .add(AmmoMaterials.EMERALD, 8)
-                .add(AmmoMaterials.AMETHYST, 11);
+    public void initializeWeapon(WeaponBuilder builder) {
+        builder
+                .category(WeaponCategory.PISTOL)
+                .config(ModConfig.weaponConfig.m1911)
+                .materials()
+                    .define(AmmoMaterials.WOOD, 0)
+                    .define(AmmoMaterials.STONE, 1)
+                    .define(AmmoMaterials.IRON, 3)
+                    .define(AmmoMaterials.GOLD, 4)
+                    .define(AmmoMaterials.DIAMOND, 6)
+                    .define(AmmoMaterials.EMERALD, 8)
+                    .define(AmmoMaterials.AMETHYST, 11)
+                .build();
     }
 
     @Override
@@ -91,22 +91,22 @@ public class M1911Item extends GunItem {
 
     @Override
     public int getReloadTime(IAttributeProvider provider) {
-        return Attribs.M1911_RELOAD.getIntValue(provider);
+        return Attribs.M1911_RELOAD.intValue(provider);
     }
 
     @Override
     public double getNoiseMultiplier(IAttributeProvider provider) {
-        return Attribs.M1911_LOUDNESS.getValue(provider);
+        return Attribs.M1911_LOUDNESS.value(provider);
     }
 
     @Override
     public float getVerticalRecoil(IAttributeProvider provider) {
-        return Attribs.M1911_VERTICAL.getIntValue(provider);
+        return Attribs.M1911_VERTICAL.floatValue(provider);
     }
 
     @Override
     public float getHorizontalRecoil(IAttributeProvider provider) {
-        return Attribs.M1911_HORIZONTAL.getIntValue(provider);
+        return Attribs.M1911_HORIZONTAL.floatValue(provider);
     }
 
     @Override

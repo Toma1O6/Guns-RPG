@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.item.guns.util;
+package dev.toma.gunsrpg.common.item.guns.setup;
 
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 

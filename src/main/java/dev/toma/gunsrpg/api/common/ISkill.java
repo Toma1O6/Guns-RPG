@@ -8,7 +8,7 @@ public interface ISkill {
 
     SkillType<?> getType();
 
-    boolean apply(PlayerEntity user);
+    boolean canApply(PlayerEntity user);
 
     default void onPurchase(PlayerEntity player) {
     }

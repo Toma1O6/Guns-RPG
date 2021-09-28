@@ -48,7 +48,7 @@ public class Hooks {
             IPlayerData data = optional.orElse(null);
             ISkills skills = data.getSkills();
             AdrenalineRushSkill adrenaline = SkillUtil.getBestSkillFromOverrides(skills.getSkill(Skills.ADRENALINE_RUSH_I), player);
-            if (adrenaline != null && adrenaline.apply(player)) {
+            if (adrenaline != null && adrenaline.canApply(player)) {
                 value *= adrenaline.getAttackSpeedBoost();
             }
         }

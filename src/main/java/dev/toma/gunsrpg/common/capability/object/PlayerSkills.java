@@ -26,6 +26,7 @@ import net.minecraft.util.text.TextFormatting;
 
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEntry {
 
@@ -67,6 +68,11 @@ public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEn
     @Override
     public void setClientSynch(IClientSynchReq request) {
         this.request = request;
+    }
+
+    @Override
+    public Collection<ISkill> getUnlockedSkills() {
+        return unlockedSkills.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     @Override

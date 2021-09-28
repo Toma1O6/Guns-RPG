@@ -37,10 +37,9 @@ public class BloodmoonGolemEntity extends CreatureEntity implements IMob {
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 100.0D)
+                .add(Attributes.MAX_HEALTH, 250.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
-                .add(Attributes.ARMOR, 20.0D)
                 .add(Attributes.ATTACK_DAMAGE, 15.0D);
     }
 

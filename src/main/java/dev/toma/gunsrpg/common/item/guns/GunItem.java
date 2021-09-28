@@ -10,65 +10,90 @@ import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.*;
-import dev.toma.gunsrpg.common.item.BaseItem;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterialManager;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
-import dev.toma.gunsrpg.common.item.guns.util.Firemode;
-import dev.toma.gunsrpg.common.item.guns.util.MaterialContainer;
-import dev.toma.gunsrpg.common.item.guns.util.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
+import dev.toma.gunsrpg.common.item.guns.setup.MaterialContainer;
+import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
+import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.util.object.RGB2TextFormatting;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.AnimationList;
 import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IRenderConfig;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
-public abstract class GunItem extends BaseItem implements IAnimationEntry, IProjectileEjector {
+public abstract class GunItem extends AbstractGun implements IAnimationEntry, IProjectileEjector {
 
-    protected static Random random = new Random();
-    protected final WeaponCategory weaponCategory;
-    private final MaterialContainer container = new MaterialContainer();
+    private final WeaponCategory weaponCategory;
+    private final IWeaponConfig config;
+    private final MaterialContainer container;
 
-    public GunItem(String name, WeaponCategory category, Properties properties) {
+    public GunItem(String name, Properties properties) {
         super(name, properties.tab(ModTabs.ITEM_TAB).stacksTo(1));
-        this.weaponCategory = category;
-        this.fillAmmoMaterialData(container);
+        WeaponBuilder builder = new WeaponBuilder();
+        initializeWeapon(builder);
+        builder.validate();
+        this.weaponCategory = builder.getWeaponCategory();
+        this.config = builder.getConfig();
+        this.container = builder.getMaterialContainer();
     }
 
-    public final SoundEvent getWeaponShootSound(LivingEntity entity) {
-        if (entity instanceof PlayerEntity) {
-            return getShootSound((PlayerEntity) entity);
-        }
-        return getEntityShootSound(entity);
-    }
+    /* ABSTRACT METHODS ------------------------------------------------------ */
+
+    public abstract void initializeWeapon(WeaponBuilder builder);
 
     public abstract SkillType<?> getRequiredSkill();
 
-    public abstract IWeaponConfig getWeaponConfig();
+    /* PROPERTIES FOR OVERRIDES ---------------------------------------------- */
 
-    public abstract void fillAmmoMaterialData(MaterialContainer container);
+    public int getMaxAmmo(IAttributeProvider provider) {
+        return 1;
+    }
 
-    @OnlyIn(Dist.CLIENT)
-    public abstract ResourceLocation getReloadAnimation(PlayerEntity player);
+    public int getReloadTime(IAttributeProvider provider) {
+        return provider.getAttribute(Attribs.RELOAD_SPEED).intValue();
+    }
+
+    public int getFirerate(IAttributeProvider provider) {
+        return 1;
+    }
+
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return provider.getAttribute(Attribs.RECOIL_CONTROL).floatValue();
+    }
+
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return provider.getAttribute(Attribs.RECOIL_CONTROL).floatValue();
+    }
+
+    public double getNoiseMultiplier(IAttributeProvider provider) {
+        return provider.getAttributeValue(Attribs.WEAPON_NOISE);
+    }
+
+    public double getHeadshotMultiplier(IAttributeProvider provider) {
+        return provider.getAttributeValue(Attribs.HEADSHOT_DAMAGE);
+    }
+
+    public boolean switchFiremode(ItemStack stack, PlayerEntity player) {
+        return false;
+    }
+
+    public void onHitEntity(Projectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+    }
+
+    public void onKillEntity(Projectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+    }
 
     protected SoundEvent getShootSound(PlayerEntity entity) {
         return SoundEvents.LEVER_CLICK;
@@ -78,14 +103,91 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry, IProj
         return SoundEvents.LEVER_CLICK;
     }
 
-    public final Firemode getFiremode(ItemStack stack) {
-        createNBT(stack);
-        return Firemode.get(stack.getTag().getInt("firemode"));
+    public IReloadManager getReloadManager(PlayerEntity player) {
+        return ReloadManagers.fullMagLoading();
     }
 
-    public boolean switchFiremode(ItemStack stack, PlayerEntity player) {
-        return false;
+    public IPenetrationConfig createPenetrationConfig() {
+        return IPenetrationConfig.none();
     }
+
+    public IProjectileConfig createProjectileConfig(LivingEntity source) {
+        return new StandartProjectileConfig(source, this);
+    }
+
+    @Override
+    public Projectile createProjectile(EntityType<? extends Projectile> type, World level, LivingEntity source) {
+        IProjectileConfig config = this.createProjectileConfig(source);
+        Projectile projectile = new Projectile(type, level, config);
+        float inaccuracy = source instanceof PlayerEntity ? PlayerData.getValueSafe((PlayerEntity) source, data -> data.getAimInfo().isAiming() ? 0.0F : 0.3F, getMobInaccuracy(level)) : getMobInaccuracy(level);
+        projectile.fire(source.xRot, source.yRot, inaccuracy);
+        return projectile;
+    }
+
+    /* FINAL METHODS ---------------------------------------------------------------- */
+
+    public final IWeaponConfig getWeaponConfig() {
+        return config;
+    }
+
+    public final SoundEvent getWeaponShootSound(LivingEntity entity) {
+        if (entity instanceof PlayerEntity) {
+            return getShootSound((PlayerEntity) entity);
+        }
+        return getEntityShootSound(entity);
+    }
+
+    public final void shoot(World world, LivingEntity entity, ItemStack stack) {
+        shoot(world, entity, stack, getWeaponShootSound(entity));
+    }
+
+    public final void shoot(World world, LivingEntity entity, ItemStack stack, SoundEvent event) {
+        Item item = stack.getItem();
+        CooldownTracker tracker = null;
+        if (entity instanceof PlayerEntity) {
+            tracker = ((PlayerEntity) entity).getCooldowns();
+            if (tracker.isOnCooldown(item)) {
+                return;
+            }
+        }
+        Projectile projectile = this.createProjectile(null, world, entity);
+        world.addFreshEntity(projectile);
+        this.setAmmoCount(stack, this.getAmmo(stack) - 1);
+        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);
+        if (tracker != null) {
+            tracker.addCooldown(item, this.getFirerate(PlayerData.getUnsafe((PlayerEntity) entity).getAttributes()));
+        }
+    }
+
+    public final AmmoType getAmmoType() {
+        return weaponCategory.getAmmoType();
+    }
+
+    public final WeaponCategory getWeaponCategory() {
+        return weaponCategory;
+    }
+
+    public final Set<IAmmoMaterial> getCompatibleMaterials() {
+        return container.getCompatible();
+    }
+
+    @Override
+    public final MaterialContainer getContainer() {
+        return container;
+    }
+
+    protected float getMobInaccuracy(World level) {
+        return 0.5F;
+    }
+
+    protected boolean isSilenced(PlayerEntity player) {
+        return PlayerData.getValueSafe(player, data -> getNoiseMultiplier(data.getAttributes()) <= 0.2F, false);
+    }
+
+    /* CLIENT-SIDE STUFF -------------------------------------------------------------------------- */
+
+    @OnlyIn(Dist.CLIENT)
+    public abstract ResourceLocation getReloadAnimation(PlayerEntity player);
 
     @OnlyIn(Dist.CLIENT)
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
@@ -114,165 +216,8 @@ public abstract class GunItem extends BaseItem implements IAnimationEntry, IProj
         return IRenderConfig.empty();
     }
 
-    public double getNoiseMultiplier(IAttributeProvider provider) {
-        return provider.getAttributeValue(Attribs.WEAPON_NOISE);
-    }
-
-    public double getHeadshotMultiplier(IAttributeProvider provider) {
-        return provider.getAttributeValue(Attribs.HEADSHOT_DAMAGE);
-    }
-
-    public float getVerticalRecoil(IAttributeProvider provider) {
-        return provider.getAttribute(Attribs.RECOIL_CONTROL).floatValue();
-    }
-
-    public float getHorizontalRecoil(IAttributeProvider provider) {
-        return provider.getAttribute(Attribs.RECOIL_CONTROL).floatValue();
-    }
-
-    public int getMaxAmmo(IAttributeProvider provider) {
-        return 1;
-    }
-
-    public int getReloadTime(IAttributeProvider provider) {
-        return provider.getAttribute(Attribs.RELOAD_SPEED).intValue();
-    }
-
-    public int getFirerate(IAttributeProvider provider) {
-        return 1;
-    }
-
-    public IPenetrationConfig createPenetrationConfig() {
-        return IPenetrationConfig.none();
-    }
-
-    public IProjectileConfig createProjectileConfig(LivingEntity source) {
-        return new StandartProjectileConfig(source, this);
-    }
-
-    @Override
-    public Projectile createProjectile(EntityType<? extends Projectile> type, World level, LivingEntity source) {
-        IProjectileConfig config = this.createProjectileConfig(source);
-        Projectile projectile = new Projectile(type, level, config);
-        float inaccuracy = source instanceof PlayerEntity ? PlayerData.getValueSafe((PlayerEntity) source, data -> data.getAimInfo().isAiming() ? 0.0F : 0.3F, getMobInaccuracy(level)) : getMobInaccuracy(level);
-        projectile.fire(source.xRot, source.yRot, inaccuracy);
-        return projectile;
-    }
-
     @Override
     public boolean disableVanillaAnimations() {
         return true;
-    }
-
-    public IReloadManager getReloadManager(PlayerEntity player) {
-        return ReloadManagers.fullMagLoading();
-    }
-
-    public void onHitEntity(Projectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-
-    }
-
-    public void onKillEntity(Projectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-
-    }
-
-    public final void shoot(World world, LivingEntity entity, ItemStack stack) {
-        shoot(world, entity, stack, getWeaponShootSound(entity));
-    }
-
-    public final void shoot(World world, LivingEntity entity, ItemStack stack, SoundEvent event) {
-        Item item = stack.getItem();
-        CooldownTracker tracker = null;
-        if (entity instanceof PlayerEntity) {
-            tracker = ((PlayerEntity) entity).getCooldowns();
-            if (tracker.isOnCooldown(item)) {
-                return;
-            }
-        }
-        Projectile projectile = this.createProjectile(null, world, entity);
-        world.addFreshEntity(projectile);
-        this.setAmmoCount(stack, this.getAmmo(stack) - 1);
-        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);
-        if (tracker != null) {
-            tracker.addCooldown(item, this.getFirerate(PlayerData.getUnsafe((PlayerEntity) entity).getAttributes()));
-        }
-    }
-
-    public final int getDamageBonus(ItemStack stack) {
-        IAmmoMaterial material = this.getMaterialFromNBT(stack);
-        return material != null ? container.getAdditionalDamage(material) : 0;
-    }
-
-    public AmmoType getAmmoType() {
-        return weaponCategory.getAmmoType();
-    }
-
-    public WeaponCategory getWeaponCategory() {
-        return weaponCategory;
-    }
-
-    public void createNBT(ItemStack stack) {
-        if (stack.hasTag()) {
-            return;
-        }
-        CompoundNBT nbt = new CompoundNBT();
-        nbt.putInt("ammo", 0);
-        nbt.putInt("firemode", 0);
-        stack.setTag(nbt);
-    }
-
-    public IAmmoMaterial getMaterialFromNBT(ItemStack stack) {
-        this.createNBT(stack);
-        CompoundNBT nbt = stack.getTag();
-        AmmoMaterialManager materialManager = AmmoMaterialManager.get();
-        return materialManager.parse(nbt);
-    }
-
-    public int getAmmo(ItemStack stack) {
-        this.createNBT(stack);
-        return stack.getTag().getInt("ammo");
-    }
-
-    public void setAmmoCount(ItemStack stack, int count) {
-        this.createNBT(stack);
-        CompoundNBT nbt = stack.getTag();
-        nbt.putInt("ammo", Math.max(0, count));
-    }
-
-    public boolean hasAmmo(ItemStack stack) {
-        return this.getAmmo(stack) > 0;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flags) {
-        IAmmoMaterial material = getMaterialFromNBT(stack);
-        TextFormatting formatting = material != null ? RGB2TextFormatting.getClosestFormat(material.getTextColor()) : TextFormatting.GRAY;
-        list.add(new StringTextComponent("Ammo material: " + formatting + (material != null ? material.getDisplayName().getString() : "???")));
-    }
-
-    @Override
-    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return false;
-    }
-
-    @Override
-    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-        return false;
-    }
-
-    public final Set<IAmmoMaterial> getCompatibleMaterials() {
-        return container.getCompatible();
-    }
-
-    public MaterialContainer getContainer() {
-        return container;
-    }
-
-    protected float getMobInaccuracy(World level) {
-        return 0.5F;
-    }
-
-    protected boolean isSilenced(PlayerEntity player) {
-        return PlayerData.getValueSafe(player, data -> getNoiseMultiplier(data.getAttributes()) <= 0.2F, false);
     }
 }

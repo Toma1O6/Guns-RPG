@@ -172,7 +172,7 @@ public class ClientEventHandler {
                 }
                 for (ISkill skill : renderSkills) {
                     IOverlayRender overlayRenderer = (IOverlayRender) skill;
-                    if (skill.apply(player) && overlayRenderer.shouldRenderOnHUD()) {
+                    if (skill.canApply(player) && overlayRenderer.shouldRenderOnHUD()) {
                         overlayRenderer.renderInHUD(matrixStack, skill, renderIndex, left, top);
                         ++renderIndex;
                     }

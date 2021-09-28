@@ -6,6 +6,10 @@ public class TemporaryModifier extends AttributeModifier implements ITickableMod
 
     private int ticksLeft;
 
+    TemporaryModifier(String uid, IModifierOp op, double value, int ticks) {
+        this(UUID.fromString(uid), op, value, ticks);
+    }
+
     TemporaryModifier(UUID uid, IModifierOp op, double value, int ticks) {
         super(uid, op, value);
         this.ticksLeft = ticks;

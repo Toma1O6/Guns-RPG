@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.debuffs;
 
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.init.GunDamageSourceSpecial;
 import dev.toma.gunsrpg.common.init.ModDamageSources;
 import dev.toma.gunsrpg.config.ModConfig;
@@ -26,8 +27,8 @@ public final class DebuffRegistration {
         return new StagedDebuffType.StagedBuilder<>()
                 .factory(type -> new StagedDebuff((StagedDebuffType<?>) type))
                 .disableOn(() -> ModConfig.debuffConfig.disablePoison())
-                .progressTimeFunc(skills -> 140 + skills.poisonResistance)
-                .resistance(ctx -> ctx.getData().getSkills().poisonChance)
+                .delay(Attribs.POISON_DELAY)
+                .resistance(Attribs.POISON_RESISTANCE)
                 .stage(40, DebuffRegistration::doNothing)
                 .stage(70, DebuffRegistration::applyPoisonStage2)
                 .stage(85, DebuffRegistration::applyPoisonStage3)
@@ -47,8 +48,8 @@ public final class DebuffRegistration {
         return new StagedDebuffType.StagedBuilder<>()
                 .factory(type -> new StagedDebuff((StagedDebuffType<?>) type))
                 .disableOn(() -> ModConfig.debuffConfig.disableInfection())
-                .progressTimeFunc(skills -> 200 + skills.infectionResistance)
-                .resistance(context -> context.getData().getSkills().infectionChance)
+                .delay(Attribs.INFECTION_DELAY)
+                .resistance(Attribs.INFECTION_RESISTANCE)
                 .stage(35, DebuffRegistration::doNothing)
                 .stage(60, DebuffRegistration::applyInfectionStage2)
                 .stage(85, DebuffRegistration::applyInfectionStage3)
@@ -69,8 +70,8 @@ public final class DebuffRegistration {
         return new StagedDebuffType.StagedBuilder<>()
                 .factory(type -> new StagedDebuff((StagedDebuffType<?>) type))
                 .disableOn(() -> ModConfig.debuffConfig.disableFractures())
-                .progressTimeFunc(skills -> 240 + skills.brokenBoneResistance)
-                .resistance(ctx -> ctx.getData().getSkills().brokenBoneChance)
+                .delay(Attribs.FRACTURE_DELAY)
+                .resistance(Attribs.FRACTURE_RESISTANCE)
                 .stage(30, DebuffRegistration::applyFractureStage1)
                 .stage(55, DebuffRegistration::applyFractureStage2)
                 .stage(75, DebuffRegistration::applyFractureStage3)
@@ -87,8 +88,8 @@ public final class DebuffRegistration {
         return new StagedDebuffType.StagedBuilder<>()
                 .factory(type -> new StagedDebuff((StagedDebuffType<?>) type))
                 .disableOn(() -> ModConfig.debuffConfig.disableBleeding())
-                .progressTimeFunc(skills -> 120 + skills.bleedResistance)
-                .resistance(ctx -> ctx.getData().getSkills().bleedChance)
+                .delay(Attribs.BLEED_DELAY)
+                .resistance(Attribs.BLEED_RESISTANCE)
                 .stage(25, DebuffRegistration::applyBleedingStage1)
                 .stage(50, DebuffRegistration::applyBleedingStage2)
                 .stage(75, DebuffRegistration::applyBleedingStage3)
@@ -130,7 +131,7 @@ public final class DebuffRegistration {
     }
 
     private static float explosionConstraint(IDebuffContext context) {
-        return context.getSource().isExplosion() ? 0.2F * (1.0F - context.getData().getSkills().acrobaticsExplosionResistance) : 0.0F;
+        return context.getSource().isExplosion() ? 0.2F * (1.0F - context.getData().getAttributes().getAttribute(Attribs.EXPLOSION_RESISTANCE).floatValue()) : 0.0F;
     }
 
     private static float fallConstraint(IDebuffContext context) {
@@ -139,7 +140,7 @@ public final class DebuffRegistration {
             float base = 0.6F;
             float taken = context.getReceivedDamage();
             float multiplier = 1.0F + ((taken - base) / base);
-            return multiplier * (1.0F - context.getData().getSkills().acrobaticsFallResistance);
+            return multiplier * (1.0F - context.getData().getAttributes().getAttribute(Attribs.FALL_RESISTANCE).floatValue());
         }
         return 0.0F;
     }
