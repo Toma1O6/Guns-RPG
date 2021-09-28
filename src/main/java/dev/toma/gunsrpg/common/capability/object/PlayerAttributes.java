@@ -28,7 +28,8 @@ public class PlayerAttributes implements IAttributeProvider, IPlayerCapEntry {
 
     @Override
     public void addAttribute(IAttributeId id) {
-        IAttribute attribute = attributeMap.put(id, id.createNewInstance());
+        IAttribute attribute = id.createNewInstance();
+        attributeMap.put(id, attribute);
         attribute.addAttributeListener(listener);
         safeSync();
     }

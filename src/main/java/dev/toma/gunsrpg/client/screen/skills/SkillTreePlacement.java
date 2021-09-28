@@ -27,9 +27,7 @@ public class SkillTreePlacement {
                     temp.put(category, getTree(category));
                 }
                 synchronized (treeMap) {
-                    for (Map.Entry<SkillCategory, Tree> entry : temp.entrySet()) {
-                        treeMap.put(entry.getKey(), entry.getValue());
-                    }
+                    treeMap.putAll(temp);
                 }
                 GunsRPG.log.info("Skill tree placement map created in {} ms", System.currentTimeMillis() - startTime);
             }

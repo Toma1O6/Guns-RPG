@@ -111,9 +111,13 @@ public class GunsrpgCommand {
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         optional.ifPresent(data -> {
             ISkills skills = data.getSkills();
-            action.apply(skills);
+            data.getSaveEntries().stream()
+                    .filter(entry -> entry instanceof ILockStateChangeable)
+                    .map(entry -> (ILockStateChangeable) entry)
+                    .forEach(action::apply);
             String translationKey = "gunsrpg.command.editskills." + (skills.getUnlockedSkills().isEmpty() ? "lock" : "unlock");
             src.sendSuccess(new TranslationTextComponent(translationKey), false);
+            data.sync(DataFlags.WILDCARD);
         });
         return 0;
     }

@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IDisplayableSkill;
 import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.api.common.ITickableSkill;
@@ -8,30 +9,33 @@ import dev.toma.gunsrpg.api.common.data.ILockStateChangeable;
 import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
 import dev.toma.gunsrpg.api.common.data.ISkills;
 import dev.toma.gunsrpg.common.init.ModRegistries;
-import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.criteria.GunCriteria;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.CPacketNewSkills;
-import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.util.Constants;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 
 import java.util.*;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEntry {
 
+    private static final Marker SKILLS = MarkerManager.getMarker("Skills");
     private final PlayerEntity player;
-    private final Map<SkillCategory, List<ISkill>> unlockedSkills = new HashMap<>();
+    private final Map<SkillType<?>, ISkill> unlockedSkills = new HashMap<>();
     private final SkillCache cache = new SkillCache();
     private IClientSynchReq request = () -> {};
 
@@ -46,23 +50,13 @@ public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEn
 
     @Override
     public boolean hasSkill(SkillType<?> type) {
-        List<ISkill> list = unlockedSkills.get(type.category);
-        if (list == null) return false;
-        return ModUtils.contains(type, list, SkillType::areTypesEqual);
+        return unlockedSkills.containsKey(type);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <S extends ISkill> S getSkill(SkillType<S> type) {
-        SkillCategory category = type.category;
-        List<ISkill> list = unlockedSkills.get(category);
-        if (list == null) return null;
-        for (ISkill skill : list) {
-            if (type.areTypesEqual(skill)) {
-                return (S) skill;
-            }
-        }
-        return null;
+        return (S) unlockedSkills.get(type);
     }
 
     @Override
@@ -72,7 +66,7 @@ public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEn
 
     @Override
     public Collection<ISkill> getUnlockedSkills() {
-        return unlockedSkills.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
+        return unlockedSkills.values();
     }
 
     @Override
@@ -103,10 +97,8 @@ public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEn
 
     @Override
     public void doLock() {
-        for (Map.Entry<SkillCategory, List<ISkill>> entry : unlockedSkills.entrySet()) {
-            for (ISkill skill : entry.getValue()) {
-                skill.onDeactivate(player);
-            }
+        for (ISkill skill : unlockedSkills.values()) {
+            skill.onDeactivate(player);
         }
         unlockedSkills.clear();
         cache.clear();
@@ -119,15 +111,11 @@ public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEn
 
     @Override
     public void unlock(SkillType<?> skillType, boolean sync) {
-        SkillCategory category = skillType.category;
-        List<ISkill> list = unlockedSkills.computeIfAbsent(category, cat -> new ArrayList<>());
-        if (!ModUtils.contains(skillType, list, SkillType::areTypesEqual)) {
-            cache.clear();
-            ISkill skill = skillType.instantiate();
-            skill.onPurchase(player);
-            list.add(skill);
-            if (sync) request.makeSyncRequest();
-        }
+        ISkill skill = skillType.instantiate();
+        skill.onPurchase(player);
+        unlockedSkills.put(skillType, skill);
+        if (sync)
+            request.makeSyncRequest();
     }
 
     @Override
@@ -142,12 +130,44 @@ public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEn
 
     @Override
     public void toNbt(CompoundNBT nbt) {
-        // TODO
+        ListNBT list = new ListNBT();
+        unlockedSkills.values().forEach(skill -> skillToNbt(skill, list));
+        nbt.put("skills", list);
     }
 
     @Override
     public void fromNbt(CompoundNBT nbt) {
-        // TODO
+        unlockedSkills.clear();
+        ListNBT list = nbt.contains("skills", Constants.NBT.TAG_COMPOUND) ? nbt.getList("skills", Constants.NBT.TAG_COMPOUND) : new ListNBT();
+        for (int i = 0; i < list.size(); i++) {
+            CompoundNBT cnbt = list.getCompound(i);
+            skillFromNbt(cnbt);
+        }
+    }
+
+    private void skillToNbt(ISkill skill, ListNBT listNBT) {
+        SkillType<?> type = skill.getType();
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.putString("type", type.getRegistryName().toString());
+        CompoundNBT data = skill.saveData();
+        if (data != null) {
+            nbt.put("data", data);
+        }
+        listNBT.add(nbt);
+    }
+
+    private void skillFromNbt(CompoundNBT nbt) {
+        ResourceLocation key = new ResourceLocation(nbt.getString("type"));
+        SkillType<?> type = ModRegistries.SKILLS.getValue(key);
+        if (type == null)
+            GunsRPG.log.error(SKILLS, "Unknown skill type: " + key);
+        ISkill skill = type.instantiate();
+        if (nbt.contains("data", Constants.NBT.TAG_COMPOUND)) {
+            CompoundNBT data = nbt.getCompound("data");
+            skill.readData(data);
+        }
+        unlockedSkills.put(type, skill);
+        skill.onPurchase(player);
     }
 
     private class SkillCache {
@@ -158,14 +178,12 @@ public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEn
 
         public void compute() {
             clear();
-            Collection<List<ISkill>> collection = PlayerSkills.this.unlockedSkills.values();
-            for (List<ISkill> list : collection) {
-                for (ISkill skill : list) {
-                    if (skill instanceof ITickableSkill)
-                        tickables.add((ITickableSkill) skill);
-                    if (skill instanceof IDisplayableSkill)
-                        displayables.add((IDisplayableSkill) skill);
-                }
+            Collection<ISkill> collection = PlayerSkills.this.unlockedSkills.values();
+            for (ISkill skill : collection) {
+                if (skill instanceof ITickableSkill)
+                    tickables.add((ITickableSkill) skill);
+                if (skill instanceof IDisplayableSkill)
+                    displayables.add((IDisplayableSkill) skill);
             }
             requiresComputation = false;
         }
