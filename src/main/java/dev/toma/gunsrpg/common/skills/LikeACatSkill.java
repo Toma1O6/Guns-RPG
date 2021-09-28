@@ -113,13 +113,15 @@ public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSk
     }
 
     @Override
-    public void writeExtra(CompoundNBT nbt) {
+    public CompoundNBT saveData() {
+        CompoundNBT nbt = new CompoundNBT();
         nbt.putInt("effect", effectLeft);
         nbt.putInt("cooldown", cooldown);
+        return nbt;
     }
 
     @Override
-    public void readExtra(CompoundNBT nbt) {
+    public void readData(CompoundNBT nbt) {
         effectLeft = nbt.getInt("effect");
         cooldown = nbt.getInt("cooldown");
     }

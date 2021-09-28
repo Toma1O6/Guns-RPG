@@ -42,18 +42,18 @@ public class PlayerData implements IPlayerData {
         this.debuffs = new PlayerDebuffs();
         this.aimInfo = new AimInfo();
         this.reloadInfo = new ReloadInfo();
+        this.attributes = new PlayerAttributes();
         this.playerSkills = new PlayerSkills(player);
         this.playerQuests = new PlayerQuests();
-        this.attributes = new PlayerAttributes();
         this.data = new PlayerGenericData(player, playerSkills);
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setSyncCallback);
 
         saveHandler.addListener(debuffs);
         saveHandler.addListener(aimInfo);
+        saveHandler.addListener(attributes);
         saveHandler.addListener(playerSkills);
         saveHandler.addListener(playerQuests);
-        saveHandler.addListener(attributes);
         saveHandler.addListener(data);
 
         saveHandler.invoke(entry -> entry.setClientSynch(() -> requestSync(entry.getFlag())));
@@ -105,7 +105,10 @@ public class PlayerData implements IPlayerData {
     @Override
     public void sync(int flags) {
         if (player instanceof ServerPlayerEntity) {
-            NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketUpdateCap(player.getUUID(), toNbt(flags), flags));
+            ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+            if (serverPlayer.connection == null)
+                return;
+            NetworkManager.sendClientPacket(serverPlayer, new CPacketUpdateCap(player.getUUID(), toNbt(flags), flags));
         }
     }
 

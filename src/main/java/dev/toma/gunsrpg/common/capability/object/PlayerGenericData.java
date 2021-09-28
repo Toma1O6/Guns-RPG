@@ -126,12 +126,20 @@ public class PlayerGenericData implements IData, IPlayerCapEntry {
     public void doUnlock() {
         level = getLevelLimit();
         skillPoints = Short.MAX_VALUE;
+        ForgeRegistries.ITEMS.getValues().stream()
+                .filter(item -> item instanceof GunItem)
+                .map(item -> (GunItem) item)
+                .forEach(gun -> {
+                    GunKillData killData = weaponStats.computeIfAbsent(gun, k -> new GunKillData(player));
+                    killData.doUnlock();
+                });
     }
 
     @Override
     public void doLock() {
         level = 0;
         skillPoints = 0;
+        weaponStats.clear();
     }
 
     @Override
@@ -152,6 +160,7 @@ public class PlayerGenericData implements IData, IPlayerCapEntry {
     @Override
     public void toNbt(CompoundNBT nbt) {
         CompoundNBT cnbt = new CompoundNBT();
+        cnbt.putBoolean("known", known);
         cnbt.putInt("killCount", kills);
         cnbt.putInt("requiredKillCount", requiredKills);
         cnbt.putInt("level", level);
@@ -169,6 +178,7 @@ public class PlayerGenericData implements IData, IPlayerCapEntry {
     public void fromNbt(CompoundNBT nbt) {
         weaponStats.clear();
         CompoundNBT cnbt = nbt.contains("genericData", Constants.NBT.TAG_COMPOUND) ? nbt.getCompound("genericData") : new CompoundNBT();
+        known = cnbt.getBoolean("known");
         kills = cnbt.getInt("killCount");
         requiredKills = cnbt.getInt("requiredKillCount");
         level = cnbt.getInt("level");

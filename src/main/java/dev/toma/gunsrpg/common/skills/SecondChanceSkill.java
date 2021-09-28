@@ -57,12 +57,14 @@ public class SecondChanceSkill extends BasicSkill implements ICooldown {
     }
 
     @Override
-    public void writeExtra(CompoundNBT nbt) {
+    public CompoundNBT saveData() {
+        CompoundNBT nbt = new CompoundNBT();
         nbt.putInt("cooldown", cooldown);
+        return nbt;
     }
 
     @Override
-    public void readExtra(CompoundNBT nbt) {
+    public void readData(CompoundNBT nbt) {
         cooldown = nbt.getInt("cooldown");
     }
 }

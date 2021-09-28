@@ -138,7 +138,7 @@ public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEn
     @Override
     public void fromNbt(CompoundNBT nbt) {
         unlockedSkills.clear();
-        ListNBT list = nbt.contains("skills", Constants.NBT.TAG_COMPOUND) ? nbt.getList("skills", Constants.NBT.TAG_COMPOUND) : new ListNBT();
+        ListNBT list = nbt.contains("skills", Constants.NBT.TAG_LIST) ? nbt.getList("skills", Constants.NBT.TAG_COMPOUND) : new ListNBT();
         for (int i = 0; i < list.size(); i++) {
             CompoundNBT cnbt = list.getCompound(i);
             skillFromNbt(cnbt);

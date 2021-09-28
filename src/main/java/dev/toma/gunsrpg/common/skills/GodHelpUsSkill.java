@@ -66,12 +66,14 @@ public class GodHelpUsSkill extends BasicSkill implements ICooldown, IClickableS
     }
 
     @Override
-    public void writeExtra(CompoundNBT nbt) {
+    public CompoundNBT saveData() {
+        CompoundNBT nbt = new CompoundNBT();
         nbt.putInt("cooldown", currentCooldown);
+        return nbt;
     }
 
     @Override
-    public void readExtra(CompoundNBT nbt) {
+    public void readData(CompoundNBT nbt) {
         currentCooldown = nbt.getInt("cooldown");
     }
 }
