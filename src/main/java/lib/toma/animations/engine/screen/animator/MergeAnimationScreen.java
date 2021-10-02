@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class MergeAnimationScreen extends AbstractImportScreen {
 
     private static final ITextComponent MERGE = new StringTextComponent("Merge into current");
-    private final ByteFlags errors = new ByteFlags(0, 1, 2);
+    private final ByteFlags errors = new ByteFlags(0, 1, 2, 3);
     private final Pattern pattern01Dec = Pattern.compile("(1(\\.0+)?)|(0(\\.[0-9]+)?)");
     private TextFieldWidget rangeMin;
     private TextFieldWidget rangeMax;
@@ -72,20 +72,19 @@ public class MergeAnimationScreen extends AbstractImportScreen {
     }
 
     private void rangeChanged(String value, TextFieldWidget widget, int index) {
-        boolean errored = true;
         if (pattern01Dec.matcher(value).matches()) {
-            float min = getMergeStart();
-            float max = getMergeEnd();
-            if (min < max) {
-                errored = false;
-            }
-        }
-        if (errored) {
-            errors.set(index);
-            widget.setTextColor(0xE0 << 16);
-        } else {
             errors.clear(index);
             widget.setTextColor(0xE0E0E0);
+        } else {
+            errors.set(index);
+            widget.setTextColor(0xE0 << 16);
+        }
+        float min = getMergeStart();
+        float max = getMergeEnd();
+        if (min < max) {
+            errors.clear(3);
+        } else {
+            errors.set(3);
         }
         updateDependents();
     }

@@ -393,7 +393,7 @@ public class AnimatorScreen extends Screen {
     }
 
     private void buttonMerge_Clicked(Button button) {
-
+        minecraft.setScreen(new MergeAnimationScreen(this));
     }
 
     private void buttonSave_Clicked(Button button) {
