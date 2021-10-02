@@ -211,14 +211,14 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
             for (MutableKeyframe keyframe : frames) {
                 MutableKeyframe copy = MutableKeyframe.copyOf(keyframe);
                 float endpoint = keyframe.endpoint();
-                float mergeEndpoint = start + endpoint * end;
+                float mergeEndpoint = start + endpoint * (end - start);
                 copy.setEndpoint(mergeEndpoint);
                 addFrame(stage, copy);
             }
         }
         // event merge
         for (IAnimationEvent event : provider.eventList) {
-            float mergePoint = start + event.invokeAt() * end;
+            float mergePoint = start + event.invokeAt() * (end - start);
             addEvent(event.copyAt(mergePoint));
         }
     }
