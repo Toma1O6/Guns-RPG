@@ -10,6 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Map;
 
@@ -20,12 +21,10 @@ public class ClientRegistry {
     public static void onModelBake(ModelBakeEvent event) {
         Map<ResourceLocation, IBakedModel> registry = event.getModelRegistry();
         IBakedModel model = new GunBakedModel();
-        registry.put(getGunModelResourceLocation(ModItems.M1911), model);
-        registry.put(getGunModelResourceLocation(ModItems.UMP45), model);
-        registry.put(getGunModelResourceLocation(ModItems.SKS), model);
-        registry.put(getGunModelResourceLocation(ModItems.KAR98K), model);
-        registry.put(getGunModelResourceLocation(ModItems.S1897), model);
-        registry.put(getGunModelResourceLocation(ModItems.WOODEN_CROSSBOW), model);
+        ForgeRegistries.ITEMS.getValues().stream()
+                .filter(item -> item instanceof GunItem)
+                .map(item -> (GunItem) item)
+                .forEach(gun -> registry.put(getGunModelResourceLocation(gun), model));
     }
 
     protected static ModelResourceLocation getGunModelResourceLocation(GunItem gunItem) {

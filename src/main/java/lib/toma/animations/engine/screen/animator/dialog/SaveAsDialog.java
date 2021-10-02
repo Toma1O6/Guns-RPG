@@ -73,6 +73,7 @@ public class SaveAsDialog extends DialogScreen {
             confirm.active = !errored;
     }
 
+    // TODO: BUG resets frames which were not parented by source animation
     private void cleanFramesForConnector(AnimatorFrameProvider provider) {
         Map<AnimationStage, List<MutableKeyframe>> frames = provider.getFrames();
         for (List<MutableKeyframe> list : frames.values()) {

@@ -20,7 +20,7 @@ public final class WeaponBuilder {
         return this;
     }
 
-    public MaterialContainerBuilder materials() {
+    public MaterialContainerBuilder ammo() {
         return new MaterialContainerBuilder(this);
     }
 

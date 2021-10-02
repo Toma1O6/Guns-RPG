@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.client.model.weapon;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
@@ -53,6 +54,10 @@ public abstract class AbstractWeaponModel extends AbstractSolidEntityModel {
         return bulletRenderer;
     }
 
+    public List<SpecialRenderer<?>> getSpecialRenderers() {
+        return ImmutableList.copyOf(specialRenderers);
+    }
+
     protected abstract void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay);
 
     protected SpecialRenderer<?> setBulletRenderer(SpecialRenderer<?> renderer) {
@@ -102,6 +107,10 @@ public abstract class AbstractWeaponModel extends AbstractSolidEntityModel {
 
         public boolean builtInAnimations() {
             return specialAnimations;
+        }
+
+        public AnimationStage target() {
+            return targetStage;
         }
     }
 

@@ -42,7 +42,7 @@ public class WoodenCrossbowItem extends GunItem {
         builder
                 .category(WeaponCategory.CROSSBOW)
                 .config(ModConfig.weaponConfig.crossbow)
-                .materials()
+                .ammo()
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 3)
                     .define(AmmoMaterials.IRON, 6)

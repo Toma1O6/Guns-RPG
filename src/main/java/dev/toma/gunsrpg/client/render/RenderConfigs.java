@@ -16,6 +16,10 @@ public class RenderConfigs {
     public static final IRenderConfig M1911_RIGHT = RenderConfig.newDef().withPosition(0.3, -0.25, -0.3).withScale(1.0F, 1.0F, 1.0F).withRotation(new Quaternion(0.152F, -0.216F, 0.000F, 0.976F)).finish();
     public static final IRenderConfig M1911_LEFT_DUAL = RenderConfig.newDef().withPosition(-0.67, -0.44, 0.47).withScale(1.0F, 1.0F, 1.0F).withRotation(new Quaternion(0.106F, -0.423F, -0.042F, 0.906F)).finish();
     public static final IRenderConfig M1911_RIGHT_DUAL = RenderConfig.newDef().withPosition(0.28, -0.23, -0.35).withScale(1.0F, 1.0F, 1.0F).withRotation(new Quaternion(0.129F, -0.259F, 0.000F, 0.966F)).finish();
+    public static final IRenderConfig R45_LEFT = RenderConfig.newDef().withPosition(0.350, -0.540, 0.300).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.100F, -0.500F, 0.000F, 0.866F)).finish();
+    public static final IRenderConfig R45_RIGHT = RenderConfig.newDef().withPosition(0.500, -0.270, -0.500).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.087F, -0.216F, -0.000F, 0.976F)).finish();
+    public static final IRenderConfig DESERT_EAGLE_LEFT = RenderConfig.newDef().withPosition(0.350, -0.600, 0.000).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.125F, -0.500F, 0.000F, 0.866F)).finish();
+    public static final IRenderConfig DESERT_EAGLE_RIGHT = RenderConfig.newDef().withPosition(0.400, -0.350, -0.800).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.150F, -0.300F, 0.000F, 0.866F)).finish();
     public static final IRenderConfig UMP45_LEFT = RenderConfig.newDef().withPosition(-0.2, -0.53, 0.6).withScale(1.0F, 1.0F, 1.9F).withRotation(new Quaternion(0.122F, -0.609F, 0.000F, 0.793F)).finish();
     public static final IRenderConfig UMP45_RIGHT = RenderConfig.newDef().withPosition(0.3, -0.3, -0.1).withScale(1.0F, 1.0F, 1.0F).withRotation(new Quaternion(0.052F, -0.174F, 0.000F, 0.985F)).finish();
     public static final IRenderConfig SKS_LEFT = RenderConfig.newDef().withPosition(0.0, -0.6, 1.2).withScale(1.0F, 1.0F, 2.5F).withRotation(new Quaternion(0.115F, -0.574F, 0.000F, 0.819F)).finish();

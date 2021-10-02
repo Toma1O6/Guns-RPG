@@ -1,8 +1,13 @@
 package dev.toma.gunsrpg.client.model;
 
 import dev.toma.gunsrpg.client.model.weapon.*;
+import lib.toma.animations.api.AnimationStage;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public final class WeaponModels {
+
     private WeaponModels() {}
 
     public static final AbstractWeaponModel M1911 = new M1911Model();
@@ -28,4 +33,19 @@ public final class WeaponModels {
     public static final AbstractAttachmentModel SCOPE = new ScopeModel();
     public static final AbstractAttachmentModel SUPPRESSOR = new SuppressorModel();
     public static final AbstractAttachmentModel REFLEX = new ReflexSightModel();
+
+    public static Map<AbstractWeaponModel, Collection<AnimationStage>> getSupportedPartAnimations() {
+        List<AbstractWeaponModel> list = Arrays.asList(
+                M1911, R45, DESERT_EAGLE, WOODEN_CROSSBOW, CHU_KO_NU, UMP_45, THOMPSON, VECTOR, S1897, S686,
+                S12K, SKS, AKM, HK416, KAR98K, WINCHESTER, MK14, GRENADE_LAUNCHER, ROCKET_LAUNCHER
+        );
+        Map<AbstractWeaponModel, Collection<AnimationStage>> map = new LinkedHashMap<>();
+        for (AbstractWeaponModel weaponModel : list) {
+            map.put(
+                    weaponModel,
+                    weaponModel.getSpecialRenderers().stream().map(AbstractWeaponModel.SpecialRenderer::target).collect(Collectors.toList())
+            );
+        }
+        return map;
+    }
 }

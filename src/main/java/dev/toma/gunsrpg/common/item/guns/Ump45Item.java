@@ -45,7 +45,7 @@ public class Ump45Item extends GunItem {
         builder
                 .category(WeaponCategory.SMG)
                 .config(ModConfig.weaponConfig.ump)
-                .materials()
+                .ammo()
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 1)
                     .define(AmmoMaterials.IRON, 3)

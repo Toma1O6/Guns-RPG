@@ -42,7 +42,7 @@ public class S1897Item extends GunItem {
         builder
                 .category(WeaponCategory.SG)
                 .config(ModConfig.weaponConfig.s1897)
-                .materials()
+                .ammo()
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 1)
                     .define(AmmoMaterials.IRON, 2)

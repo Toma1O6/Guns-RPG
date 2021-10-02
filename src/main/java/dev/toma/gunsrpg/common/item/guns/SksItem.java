@@ -41,7 +41,7 @@ public class SksItem extends GunItem {
         builder
                 .category(WeaponCategory.AR)
                 .config(ModConfig.weaponConfig.sks)
-                .materials()
+                .ammo()
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 2)
                     .define(AmmoMaterials.IRON, 4)

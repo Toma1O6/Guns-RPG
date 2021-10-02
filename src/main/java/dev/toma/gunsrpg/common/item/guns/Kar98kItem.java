@@ -48,7 +48,7 @@ public class Kar98kItem extends GunItem {
         builder
                 .category(WeaponCategory.SR)
                 .config(ModConfig.weaponConfig.kar98k)
-                .materials()
+                .ammo()
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 4)
                     .define(AmmoMaterials.IRON, 9)

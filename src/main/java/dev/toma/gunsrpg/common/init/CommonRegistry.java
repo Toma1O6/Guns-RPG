@@ -348,6 +348,8 @@ public class CommonRegistry {
                 new AmmoItem("amethyst_ammo_12g", AmmoType._12G, AmmoMaterials.AMETHYST),
                 new AmmoItem("amethyst_ammo_crossbow_bolt", AmmoType.CROSSBOW, AmmoMaterials.AMETHYST),
                 new M1911Item("m1911"),
+                new R45Item("r45"),
+                new DesertEagleItem("desert_eagle"),
                 new Ump45Item("ump45"),
                 new SksItem("sks"),
                 new Kar98kItem("kar98k"),
