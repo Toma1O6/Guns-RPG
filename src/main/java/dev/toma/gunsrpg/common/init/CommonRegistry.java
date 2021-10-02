@@ -351,6 +351,8 @@ public class CommonRegistry {
                 new R45Item("r45"),
                 new DesertEagleItem("desert_eagle"),
                 new Ump45Item("ump45"),
+                new ThompsonItem("thompson"),
+                new VectorItem("vector"),
                 new SksItem("sks"),
                 new Kar98kItem("kar98k"),
                 new S1897Item("s1897"),

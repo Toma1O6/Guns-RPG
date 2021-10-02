@@ -10,7 +10,6 @@ import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.*;
-import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
