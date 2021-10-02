@@ -1,6 +1,7 @@
 package lib.toma.animations.api;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.util.HandSide;
 

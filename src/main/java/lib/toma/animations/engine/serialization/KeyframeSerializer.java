@@ -1,8 +1,8 @@
 package lib.toma.animations.engine.serialization;
 
 import com.google.gson.*;
-import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.IKeyframe;
+import lib.toma.animations.Keyframes;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;

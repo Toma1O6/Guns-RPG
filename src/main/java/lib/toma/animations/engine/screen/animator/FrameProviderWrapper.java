@@ -39,4 +39,8 @@ public final class FrameProviderWrapper {
     public boolean hasEventSupport() {
         return provider.canAddEvents();
     }
+
+    public void merge(FrameProviderWrapper wrapper, float mergeStart, float mergeEnd) {
+        provider.merge(wrapper.provider, mergeStart, mergeEnd);
+    }
 }

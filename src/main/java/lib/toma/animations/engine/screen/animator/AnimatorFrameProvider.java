@@ -203,6 +203,26 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
         sortAndCompile(list);
     }
 
+    public void merge(AnimatorFrameProvider provider, float start, float end) {
+        // frame merge
+        for (Map.Entry<AnimationStage, List<MutableKeyframe>> entry : provider.frameMap.entrySet()) {
+            AnimationStage stage = entry.getKey();
+            List<MutableKeyframe> frames = entry.getValue();
+            for (MutableKeyframe keyframe : frames) {
+                MutableKeyframe copy = MutableKeyframe.copyOf(keyframe);
+                float endpoint = keyframe.endpoint();
+                float mergeEndpoint = start + endpoint * end;
+                copy.setEndpoint(mergeEndpoint);
+                addFrame(stage, copy);
+            }
+        }
+        // event merge
+        for (IAnimationEvent event : provider.eventList) {
+            float mergePoint = start + event.invokeAt() * end;
+            addEvent(event.copyAt(mergePoint));
+        }
+    }
+
     public float getAnimationEnd() {
         return animationEnd;
     }

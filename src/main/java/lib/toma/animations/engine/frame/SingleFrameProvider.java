@@ -3,11 +3,11 @@ package lib.toma.animations.engine.frame;
 import com.google.gson.*;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.Keyframes;
-import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.IKeyframeProvider;
-import lib.toma.animations.api.IKeyframeTypeSerializer;
+import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.event.IAnimationEvent;
+import lib.toma.animations.api.IKeyframeTypeSerializer;
 import lib.toma.animations.api.lifecycle.Registries;
 import net.minecraft.util.ResourceLocation;
 

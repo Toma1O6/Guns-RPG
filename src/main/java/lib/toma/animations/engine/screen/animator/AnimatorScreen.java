@@ -39,6 +39,7 @@ public class AnimatorScreen extends Screen {
     private static final ITextComponent NEW_PROJECT = new TranslationTextComponent("screen.animator.new_project");
     private static final ITextComponent OPEN = new TranslationTextComponent("screen.animator.open");
     private static final ITextComponent OPEN_FROM = new TranslationTextComponent("screen.animator.open_from");
+    private static final ITextComponent MERGE = new TranslationTextComponent("screen.animator.merge");
     private static final ITextComponent SAVE = new TranslationTextComponent("screen.animator.save");
     private static final ITextComponent SAVE_AS = new TranslationTextComponent("screen.animator.save_as");
     private static final ITextComponent SETTINGS = new TranslationTextComponent("screen.animator.settings");
@@ -47,6 +48,7 @@ public class AnimatorScreen extends Screen {
     private static final ITextComponent ADD_EVENT = new TranslationTextComponent("screen.animator.timeline.add_event");
     private static final ITextComponent REMOVE_FRAME = new TranslationTextComponent("screen.animator.timeline.remove_frame");
     private static final ITextComponent COPY_FRAME = new TranslationTextComponent("screen.animator.timeline.copy_frame");
+    private static final ITextComponent DUPLICATE_FRAME = new TranslationTextComponent("screen.animator.timeline.duplicate_frame");
     private static final ITextComponent PROGRESS2FRAME = new TranslationTextComponent("screen.animator.timeline.progress2frame");
     private static final ITextComponent SET2BEGINNING = new TranslationTextComponent("screen.animator.timeline.to_beginning");
     private static final ITextComponent SET2END = new TranslationTextComponent("screen.animator.timeline.to_end");
@@ -74,6 +76,7 @@ public class AnimatorScreen extends Screen {
     private Timeline timeline;
     private IconButton removeFrame;
     private IconButton copyFrame;
+    private IconButton duplicateFrame;
     private IconButton progress2Frame;
 
     public AnimatorScreen() {
@@ -87,9 +90,10 @@ public class AnimatorScreen extends Screen {
         addButton(new IconButton(5, 5, 20, 20, 0, this::buttonNewProject_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, NEW_PROJECT, mx, my)));
         addButton(new IconButton(30, 5, 20, 20, 1, this::buttonOpen_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, OPEN, mx, my)));
         addButton(new IconButton(55, 5, 20, 20, 4, this::buttonOpenFrom_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, OPEN_FROM, mx, my)));
-        addButton(new IconButton(80, 5, 20, 20, 2, this::buttonSave_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SAVE, mx, my)));
-        addButton(new IconButton(105, 5, 20, 20, 2, this::buttonSaveAs_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SAVE_AS, mx, my)));
-        addButton(new IconButton(130, 5, 20, 20, 3, this::buttonSettings_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SETTINGS, mx, my)));
+        addButton(new IconButton(80, 5, 20, 20, 5, this::buttonMerge_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, MERGE, mx, my)));
+        addButton(new IconButton(105, 5, 20, 20, 2, this::buttonSave_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SAVE, mx, my)));
+        addButton(new IconButton(130, 5, 20, 20, 2, this::buttonSaveAs_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SAVE_AS, mx, my)));
+        addButton(new IconButton(155, 5, 20, 20, 3, this::buttonSettings_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SETTINGS, mx, my)));
         addButton(new ControlButton(width - 70, 5, 65, 20, PAUSED, this::isPaused, this::setPaused));
         // ---- KEYFRAME INSPECTOR
         keyframeEditor = addButton(new WidgetContainer(0, height - 175, 140, 95));
@@ -123,10 +127,11 @@ public class AnimatorScreen extends Screen {
         removeFrame = timeline.addWidget(new IconButton(30, 2, 16, 16, 1, this::buttonRemoveFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, REMOVE_FRAME, mx, my)));
         IconButton addEvent = timeline.addWidget(new IconButton(55, 2, 16, 16, 2, this::buttonAddEvent_clicked, (btn, poses, mx, my) -> renderTooltip(poses, ADD_EVENT, mx, my)));
         copyFrame = timeline.addWidget(new IconButton(80, 2, 16, 16, 3, this::buttonCopyFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, COPY_FRAME, mx, my)));
-        progress2Frame = timeline.addWidget(new IconButton(105, 2, 16, 16, 5, this::buttonSetProgressToFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, PROGRESS2FRAME, mx, my)));
-        timeline.addWidget(new IconButton(130, 2, 16, 16, 6, this::resetToBeginning_clicked, (btn, poses, mx, my) -> renderTooltip(poses, SET2BEGINNING, mx, my)));
-        timeline.addWidget(new IconButton(155, 2, 16, 16, 7, this::setToEnd_clicked, (btn, poses, mx, my) -> renderTooltip(poses, SET2END, mx, my)));
-        timeline.addWidget(new IconButton(180, 2, 16, 16, 8, this::setToNextFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, NEXT_FRAME, mx, my)));
+        duplicateFrame = timeline.addWidget(new IconButton(105, 2, 16, 16, 4, this::buttonDuplicateFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, DUPLICATE_FRAME, mx, my)));
+        progress2Frame = timeline.addWidget(new IconButton(130, 2, 16, 16, 5, this::buttonSetProgressToFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, PROGRESS2FRAME, mx, my)));
+        timeline.addWidget(new IconButton(155, 2, 16, 16, 6, this::resetToBeginning_clicked, (btn, poses, mx, my) -> renderTooltip(poses, SET2BEGINNING, mx, my)));
+        timeline.addWidget(new IconButton(180, 2, 16, 16, 7, this::setToEnd_clicked, (btn, poses, mx, my) -> renderTooltip(poses, SET2END, mx, my)));
+        timeline.addWidget(new IconButton(205, 2, 16, 16, 8, this::setToNextFrame_clicked, (btn, poses, mx, my) -> renderTooltip(poses, NEXT_FRAME, mx, my)));
         if (!timeline.getProject().hasEvents()) {
             addEvent.active = false;
         }
@@ -274,6 +279,16 @@ public class AnimatorScreen extends Screen {
         minecraft.setScreen(dialog);
     }
 
+    private void buttonDuplicateFrame_clicked(Button button) {
+        // duplicate selected frame into the same timeline
+        IKeyframe keyframe = selectionContext.frame();
+        MutableKeyframe duplicated = MutableKeyframe.copyOf(keyframe);
+        duplicated.setEndpoint(Math.min(keyframe.endpoint() + 0.05F, 1.0F));
+        timeline.add(selectionContext.owner(), duplicated);
+        timeline.init();
+        keyframe_select(Timeline.IKeyframeSelectContext.of(duplicated, selectionContext.owner()));
+    }
+
     private void copyFrames(List<AnimationStage> targets) {
         for (AnimationStage stage : targets) {
             MutableKeyframe kf = MutableKeyframe.copyOf(selectionContext.frame());
@@ -341,6 +356,7 @@ public class AnimatorScreen extends Screen {
         keyframeEditor.visible = hasFrame;
         removeFrame.active = hasFrame;
         copyFrame.active = hasFrame;
+        duplicateFrame.active = hasFrame && selectionContext.frame().endpoint() <= 0.95F;
         progress2Frame.active = hasFrame;
         if (hasFrame) {
             IKeyframe frame = selectionContext.frame();
@@ -374,6 +390,10 @@ public class AnimatorScreen extends Screen {
 
     private void buttonOpenFrom_Clicked(Button button) {
         minecraft.setScreen(new ImportFromAnimationScreen(this));
+    }
+
+    private void buttonMerge_Clicked(Button button) {
+
     }
 
     private void buttonSave_Clicked(Button button) {

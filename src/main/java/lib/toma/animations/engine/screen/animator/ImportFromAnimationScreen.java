@@ -1,10 +1,10 @@
 package lib.toma.animations.engine.screen.animator;
 
-import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.AnimationStage;
-import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.event.IAnimationEvent;
+import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.engine.frame.KeyframeProvider;
+import lib.toma.animations.Keyframes;
 import lib.toma.animations.engine.frame.MutableKeyframe;
 
 import java.util.HashMap;
