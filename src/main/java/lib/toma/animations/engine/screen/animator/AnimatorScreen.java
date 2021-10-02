@@ -1,10 +1,10 @@
 package lib.toma.animations.engine.screen.animator;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.event.IAnimationEvent;
+import lib.toma.animations.engine.Vector4f;
 import lib.toma.animations.engine.frame.MutableKeyframe;
 import lib.toma.animations.engine.screen.animator.dialog.*;
 import lib.toma.animations.engine.screen.animator.widget.*;
@@ -12,13 +12,10 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
@@ -179,45 +176,34 @@ public class AnimatorScreen extends Screen {
 
     private void rotX_change(String value) {
         if (tryValidate(value, rotVec, rotX)) {
-            setRotation(value, (pair, x) -> {
-                Vector3f vec3f = pair.getRight();
-                vec3f.setX(x);
-                return new Quaternion(vec3f, pair.getLeft(), true);
-            });
+            setRotation(value, (vec, f) -> new Vector4f(vec.rotation(), f, vec.y(), vec.z()));
         }
     }
 
     private void rotY_change(String value) {
         if (tryValidate(value, rotVec, rotY)) {
-            setRotation(value, (pair, y) -> {
-                Vector3f vec3f = pair.getRight();
-                vec3f.setY(y);
-                return new Quaternion(vec3f, pair.getLeft(), true);
-            });
+            setRotation(value, (vec, f) -> new Vector4f(vec.rotation(), vec.x(), f, vec.z()));
         }
     }
 
     private void rotZ_change(String value) {
         if (tryValidate(value, rotVec, rotZ)) {
-            setRotation(value, (pair, z) -> {
-                Vector3f vec3f = pair.getRight();
-                vec3f.setZ(z);
-                return new Quaternion(vec3f, pair.getLeft(), true);
-            });
+            setRotation(value, (vec, f) -> new Vector4f(vec.rotation(), vec.x(), vec.y(), f));
         }
     }
 
     private void degrees_change(String value) {
         if (tryValidate(value, posScaleDeg, deg)) {
-            setRotation(value, (pair, d) -> new Quaternion(pair.getRight(), d, true));
+            setRotation(value, (vec, f) -> new Vector4f(f, vec.x(), vec.y(), vec.z()));
         }
     }
 
-    private void setRotation(String value, BiFunction<Pair<Float, Vector3f>, Float, Quaternion> setter) {
+    private void setRotation(String value, BiFunction<Vector4f, Float, Vector4f> setter) {
         float f = Float.parseFloat(value);
         MutableKeyframe keyframe = selectionContext.frame();
-        Pair<Float, Vector3f> rotationPair = AnimationUtils.getVectorWithRotation(keyframe.rotation);
-        keyframe.setRotation(setter.apply(rotationPair, f));
+        Vector4f rotation = keyframe.rotationTarget();
+        Vector4f newRot = setter.apply(rotation, f);
+        keyframe.setRotation(newRot);
         timeline.recompile(selectionContext.owner());
     }
 
@@ -361,15 +347,14 @@ public class AnimatorScreen extends Screen {
         if (hasFrame) {
             IKeyframe frame = selectionContext.frame();
             Vector3d position = frame.positionTarget();
-            Pair<Float, Vector3f> rotation = AnimationUtils.getVectorWithRotation(frame.rotationTarget());
-            Vector3f rotV = rotation.getRight();
+            Vector4f rotation = frame.rotationTarget();
             posX.setValue(TRANSFORM_FORMAT.format(position.x));
             posY.setValue(TRANSFORM_FORMAT.format(position.y));
             posZ.setValue(TRANSFORM_FORMAT.format(position.z));
-            deg.setValue(TRANSFORM_FORMAT.format(rotation.getLeft()));
-            rotX.setValue(TRANSFORM_FORMAT.format(rotV.x()));
-            rotY.setValue(TRANSFORM_FORMAT.format(rotV.y()));
-            rotZ.setValue(TRANSFORM_FORMAT.format(rotV.z()));
+            deg.setValue(TRANSFORM_FORMAT.format(rotation.rotation()));
+            rotX.setValue(TRANSFORM_FORMAT.format(rotation.x()));
+            rotY.setValue(TRANSFORM_FORMAT.format(rotation.y()));
+            rotZ.setValue(TRANSFORM_FORMAT.format(rotation.z()));
             end.setValue(POSITION_FORMAT.format(frame.endpoint()));
         }
     }

@@ -9,12 +9,12 @@ import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.IAnimationLoader;
 import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.IKeyframeProvider;
+import lib.toma.animations.engine.Vector4f;
 import lib.toma.animations.engine.frame.KeyframeProvider;
 import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import org.apache.logging.log4j.Logger;
@@ -35,7 +35,7 @@ public final class AnimationLoader extends JsonReloadListener implements IAnimat
             .registerTypeHierarchyAdapter(IKeyframe.class, new KeyframeSerializer())
             .registerTypeAdapter(Vector3d.class, new Vector3dSerializer())
             .registerTypeAdapter(Vector3f.class, new Vector3fSerializer())
-            .registerTypeAdapter(Quaternion.class, new QuaternionSerializer())
+            .registerTypeAdapter(Vector4f.class, new Vector4fSerializer())
             .create();
     private final Map<ResourceLocation, IKeyframeProvider> animationDefinitions = new HashMap<>();
     private final List<ILoadingFinished> loadListeners = new ArrayList<>();

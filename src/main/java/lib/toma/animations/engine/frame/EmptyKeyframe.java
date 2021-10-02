@@ -2,6 +2,7 @@ package lib.toma.animations.engine.frame;
 
 import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.IKeyframe;
+import lib.toma.animations.engine.Vector4f;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -9,7 +10,8 @@ public class EmptyKeyframe implements IKeyframe {
 
     private final float endpoint;
     private Vector3d pos = Vector3d.ZERO;
-    private Quaternion rot = Quaternion.ONE;
+    private Vector4f rot = Vector4f.ZERO;
+    private Quaternion rotQuat = Quaternion.ONE;
 
     protected EmptyKeyframe(float endpoint) {
         this.endpoint = endpoint;
@@ -30,8 +32,8 @@ public class EmptyKeyframe implements IKeyframe {
     }
 
     @Override
-    public Quaternion rotationTarget() {
-        return Quaternion.ONE;
+    public Vector4f rotationTarget() {
+        return Vector4f.ZERO;
     }
 
     @Override
@@ -40,7 +42,7 @@ public class EmptyKeyframe implements IKeyframe {
     }
 
     @Override
-    public Quaternion initialRotation() {
+    public Vector4f initialRotation() {
         return rot;
     }
 
@@ -50,13 +52,24 @@ public class EmptyKeyframe implements IKeyframe {
     }
 
     @Override
-    public Quaternion relativeRot() {
+    public Vector4f relativeRot() {
         return rotationTarget();
+    }
+
+    @Override
+    public Quaternion getInitialRotationQuaternion() {
+        return Quaternion.ONE;
+    }
+
+    @Override
+    public Quaternion getRotationQuaternion() {
+        return rotQuat;
     }
 
     @Override
     public void baseOn(IKeyframe parent) {
         pos = Keyframes.getInitialPosition(parent);
         rot = Keyframes.getInitialRotation(parent);
+        rotQuat = rot.toQuaternion();
     }
 }

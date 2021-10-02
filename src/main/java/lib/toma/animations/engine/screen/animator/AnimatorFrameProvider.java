@@ -7,9 +7,9 @@ import lib.toma.animations.api.IAnimation;
 import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.IKeyframeProvider;
 import lib.toma.animations.api.event.IAnimationEvent;
+import lib.toma.animations.engine.Vector4f;
 import lib.toma.animations.engine.frame.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.*;
@@ -330,7 +330,7 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
 
     public void resetFirstFrame(MutableKeyframe keyframe) {
         keyframe.setPos0(Vector3d.ZERO);
-        keyframe.setQuat0(Quaternion.ONE.copy());
+        keyframe.setRot0(Vector4f.ZERO);
     }
 
     private void computeAnimationEndpoint() {

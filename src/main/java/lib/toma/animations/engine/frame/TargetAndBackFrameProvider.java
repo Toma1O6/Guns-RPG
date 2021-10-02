@@ -9,11 +9,10 @@ import lib.toma.animations.api.IKeyframeProvider;
 import lib.toma.animations.api.IKeyframeTypeSerializer;
 import lib.toma.animations.api.event.IAnimationEvent;
 import lib.toma.animations.api.lifecycle.Registries;
+import lib.toma.animations.engine.Vector4f;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
 
 import java.util.Map;
 
@@ -22,9 +21,9 @@ public class TargetAndBackFrameProvider implements IKeyframeProvider {
     private final AnimationStage targetStage;
     private final FramePair frames;
 
-    public TargetAndBackFrameProvider(AnimationStage stage, Vector3d position, Vector3f rotation, float rotationDegrees) {
+    public TargetAndBackFrameProvider(AnimationStage stage, Vector3d position, Vector4f rotation) {
         this.targetStage = stage;
-        this.frames = new FramePair(position, rotation, rotationDegrees);
+        this.frames = new FramePair(position, rotation);
     }
 
     public TargetAndBackFrameProvider(AnimationStage stage, IKeyframe mov, IKeyframe ret) {
@@ -77,10 +76,10 @@ public class TargetAndBackFrameProvider implements IKeyframeProvider {
         private final IKeyframe mov;
         private final IKeyframe ret;
 
-        public FramePair(Vector3d position, Vector3f rotation, float rotationScale) {
+        public FramePair(Vector3d position, Vector4f rotation) {
             this(
-                    new Keyframe(position, new Quaternion(rotation, rotationScale, true), 0.5F),
-                    new Keyframe(new Vector3d(-position.x, -position.y, -position.z), new Quaternion(rotation, -rotationScale, true), 1.0F)
+                    new Keyframe(position, rotation, 0.5F),
+                    new Keyframe(new Vector3d(-position.x, -position.y, -position.z), rotation.inverseRotation(), 1.0F)
             );
         }
 

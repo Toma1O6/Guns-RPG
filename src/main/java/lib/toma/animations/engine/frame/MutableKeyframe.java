@@ -2,24 +2,26 @@ package lib.toma.animations.engine.frame;
 
 import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.IKeyframe;
+import lib.toma.animations.engine.Vector4f;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
 
 public class MutableKeyframe implements IKeyframe {
 
     public float endpoint;
     public Vector3d position = Vector3d.ZERO;
-    public Quaternion rotation = Quaternion.ONE.copy();
+    public Vector4f rotation = Vector4f.ZERO;
     private Vector3d pos0 = Vector3d.ZERO;
-    private Quaternion quat0 = Quaternion.ONE;
+    private Vector4f rot0 = Vector4f.ZERO;
     private Vector3d relPos = Vector3d.ZERO;
-    private Quaternion relRot = Quaternion.ONE.copy();
+    private Vector4f relRot = Vector4f.ZERO;
+    private Quaternion rot0Quat = Quaternion.ONE;
+    private Quaternion relRotQuat = Quaternion.ONE;
 
     public static MutableKeyframe fullCopyOf(IKeyframe frame) {
         MutableKeyframe mkf = copyOf(frame);
         mkf.setPos0(frame.initialPosition());
-        mkf.setQuat0(frame.initialRotation());
+        mkf.setRot0(frame.initialRotation());
         mkf.updateRelativePos();
         mkf.updateRelativeRot();
         return mkf;
@@ -58,22 +60,18 @@ public class MutableKeyframe implements IKeyframe {
     }
 
     @Override
-    public Quaternion rotationTarget() {
+    public Vector4f rotationTarget() {
         return rotation;
     }
 
     @Override
-    public Quaternion relativeRot() {
+    public Vector4f relativeRot() {
         return relRot;
     }
 
-    public void setRotation(Quaternion rotation) {
+    public void setRotation(Vector4f rotation) {
         this.rotation = rotation;
         updateRelativeRot();
-    }
-
-    public void setRotation(Vector3f vec, float deg) {
-        setRotation(new Quaternion(vec, deg, true));
     }
 
     @Override
@@ -87,21 +85,32 @@ public class MutableKeyframe implements IKeyframe {
     }
 
     @Override
-    public Quaternion initialRotation() {
-        return quat0;
+    public Vector4f initialRotation() {
+        return rot0;
     }
 
-    public void setQuat0(Quaternion quat0) {
-        this.quat0 = quat0;
+    public void setRot0(Vector4f vector4f) {
+        this.rot0 = vector4f;
         updateRelativeRot();
     }
 
     @Override
     public void baseOn(IKeyframe parent) {
         pos0 = Keyframes.getInitialPosition(parent);
-        quat0 = Keyframes.getInitialRotation(parent);
+        rot0 = Keyframes.getInitialRotation(parent);
+        rot0Quat = rot0.toQuaternion();
         updateRelativePos();
         updateRelativeRot();
+    }
+
+    @Override
+    public Quaternion getInitialRotationQuaternion() {
+        return rot0Quat;
+    }
+
+    @Override
+    public Quaternion getRotationQuaternion() {
+        return relRotQuat;
     }
 
     private void updateRelativePos() {
@@ -109,6 +118,7 @@ public class MutableKeyframe implements IKeyframe {
     }
 
     private void updateRelativeRot() {
-        relRot = Keyframes.getRelativeRotation(rotation, quat0);
+        relRot = Keyframes.getRelativeRotation(rotation, rot0);
+        relRotQuat = relRot.toQuaternion();
     }
 }
