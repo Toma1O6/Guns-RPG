@@ -328,7 +328,7 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
         computeAnimationEndpoint();
     }
 
-    private void resetFirstFrame(MutableKeyframe keyframe) {
+    public void resetFirstFrame(MutableKeyframe keyframe) {
         keyframe.setPos0(Vector3d.ZERO);
         keyframe.setQuat0(Quaternion.ONE.copy());
     }

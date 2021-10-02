@@ -78,14 +78,16 @@ public class SaveAsDialog extends DialogScreen {
         for (List<MutableKeyframe> list : frames.values()) {
             if (list.isEmpty()) continue;
             MutableKeyframe first = list.get(0);
-            first.setEndpoint(0.0F);
-            first.setPosition(Vector3d.ZERO);
-            first.setRotation(Quaternion.ONE.copy());
-            first.setPos0(Vector3d.ZERO);
-            first.setQuat0(Quaternion.ONE.copy());
-            if (list.size() > 1) {
-                for (int i = 1; i < list.size(); i++) {
-                    list.get(i).baseOn(list.get(i - 1));
+            float endpoint = first.endpoint();
+            if (endpoint > 0.0F)
+                continue;
+            list.remove(0);
+            if (!list.isEmpty()) {
+                provider.resetFirstFrame(list.get(0));
+                if (list.size() > 1) {
+                    for (int i = 1; i < list.size(); i++) {
+                        list.get(i).baseOn(list.get(i - 1));
+                    }
                 }
             }
         }
