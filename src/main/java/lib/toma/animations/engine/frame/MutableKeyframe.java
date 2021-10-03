@@ -1,5 +1,7 @@
 package lib.toma.animations.engine.frame;
 
+import lib.toma.animations.AnimationUtils;
+import lib.toma.animations.Easing;
 import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.IKeyframe;
 import net.minecraft.util.math.vector.Quaternion;
@@ -8,6 +10,7 @@ import net.minecraft.util.math.vector.Vector3d;
 public class MutableKeyframe implements IKeyframe {
 
     public float endpoint;
+    public Easing easing = AnimationUtils.DEFAULT_EASING;
     public Vector3d position = Vector3d.ZERO;
     public Vector3d rotation = Vector3d.ZERO;
     private Vector3d pos0 = Vector3d.ZERO;
@@ -110,6 +113,15 @@ public class MutableKeyframe implements IKeyframe {
     @Override
     public Quaternion getRotationQuaternion() {
         return relRotQuat;
+    }
+
+    @Override
+    public Easing getEasing() {
+        return easing;
+    }
+
+    public void setEasing(Easing easing) {
+        this.easing = easing;
     }
 
     private void updateRelativePos() {

@@ -4,7 +4,7 @@ import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IAimInfo;
 import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
 import dev.toma.gunsrpg.api.common.data.IReloadInfo;
-import lib.toma.animations.Interpolate;
+import lib.toma.animations.AnimationUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants;
@@ -64,7 +64,7 @@ public class AimInfo implements IAimInfo, IPlayerCapEntry {
 
     @Override
     public float getProgress(float deltaTime) {
-        return Interpolate.linear(deltaTime, progress, progressOld);
+        return AnimationUtils.linearInterpolate(progress, progressOld, deltaTime);
     }
 
     @Override

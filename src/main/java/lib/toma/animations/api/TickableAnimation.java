@@ -1,6 +1,6 @@
 package lib.toma.animations.api;
 
-import lib.toma.animations.Interpolate;
+import lib.toma.animations.AnimationUtils;
 
 /**
  * Animation implementation where animation progress is based on defined time (ticks).
@@ -22,7 +22,7 @@ public abstract class TickableAnimation implements IAnimation {
     @Override
     public final void renderTick(float deltaRenderTime) {
         float old = progressInterpolated;
-        progressInterpolated = Interpolate.linear(deltaRenderTime, progress, progressOld);
+        progressInterpolated = AnimationUtils.linearInterpolate(progress, progressOld, deltaRenderTime);
         nextFrame(progressInterpolated, old);
     }
 

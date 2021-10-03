@@ -1,6 +1,7 @@
 package lib.toma.animations.engine.screen.animator;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import lib.toma.animations.Easing;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.event.IAnimationEvent;
@@ -49,6 +50,7 @@ public class AnimatorScreen extends Screen {
     private static final ITextComponent SET2BEGINNING = new TranslationTextComponent("screen.animator.timeline.to_beginning");
     private static final ITextComponent SET2END = new TranslationTextComponent("screen.animator.timeline.to_end");
     private static final ITextComponent NEXT_FRAME = new TranslationTextComponent("screen.animator.timeline.next_frame");
+    private static final ITextComponent EASING = new TranslationTextComponent("screen.animation.inspector.easing");
     private static final ResourceLocation ANIMATOR_ICONS = new ResourceLocation("textures/icons/animator/animator_icons.png");
     private static final ResourceLocation TIMELINE_ICONS = new ResourceLocation("textures/icons/animator/timeline_icons.png");
 
@@ -66,6 +68,7 @@ public class AnimatorScreen extends Screen {
     private TextFieldWidget rotY;
     private TextFieldWidget rotZ;
     private TextFieldWidget end;
+    private Button easing;
 
     private Timeline timeline;
     private IconButton removeFrame;
@@ -107,8 +110,9 @@ public class AnimatorScreen extends Screen {
         rotY.setResponder(new SuggestionResponder("Y rot", rotY, this::rotY_change));
         rotZ = keyframeEditor.addWidget(new TextFieldWidget(font, 95, 45, 40, 20, StringTextComponent.EMPTY));
         rotZ.setResponder(new SuggestionResponder("Z rot", rotZ, this::rotZ_change));
-        end = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 70, 85, 20, StringTextComponent.EMPTY));
+        end = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 70, 65, 20, StringTextComponent.EMPTY));
         end.setResponder(new SuggestionResponder("Pos", end, this::endpoint_change));
+        easing = keyframeEditor.addWidget(new Button(70, 70, 65, 20, StringTextComponent.EMPTY, this::buttonEasing_clicked, (btn, poses, mx, my) -> renderTooltip(poses, EASING, mx, my)));
         // ---- TIMELINE
         timeline = addButton(new Timeline(0, height - 80, width, 80, () -> selectionContext));
         timeline.setProgressBarClickHandler(this::animationProgressBar_clicked);
@@ -203,6 +207,16 @@ public class AnimatorScreen extends Screen {
             timeline.getProject().getFrameControl().getProvider().sort(selectionContext.owner());
             timeline.init();
         }
+    }
+
+    private void buttonEasing_clicked(Button button) {
+        DialogScreen screen = new ChangeEasingDialog(this, this::onEasingChanged);
+        minecraft.setScreen(screen);
+    }
+
+    private void onEasingChanged(Easing easing) {
+        selectionContext.frame().setEasing(easing);
+        this.easing.setMessage(new StringTextComponent(easing.getShortName()));
     }
 
     private boolean tryValidate(String value, Pattern pattern, TextFieldWidget widget) {
@@ -344,6 +358,7 @@ public class AnimatorScreen extends Screen {
             rotY.setValue(TRANSFORM_FORMAT.format(rotation.y()));
             rotZ.setValue(TRANSFORM_FORMAT.format(rotation.z()));
             end.setValue(POSITION_FORMAT.format(frame.endpoint()));
+            easing.setMessage(new StringTextComponent(frame.getEasing().getShortName()));
         }
     }
 

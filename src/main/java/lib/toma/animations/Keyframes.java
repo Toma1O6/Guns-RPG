@@ -13,7 +13,7 @@ import java.util.Comparator;
 
 public class Keyframes {
 
-    private static final IKeyframe NULL_FRAME = wait(0.0F);
+    private static final IKeyframe NULL_FRAME = wait(0.0F, AnimationUtils.DEFAULT_EASING);
 
     public static void sortFrames(IKeyframe[] array) {
         QuickSort.sort(array, Comparator.comparingDouble(IKeyframe::endpoint));
@@ -38,13 +38,14 @@ public class Keyframes {
     }
 
     public static void processFrame(IKeyframe keyframe, float percent, MatrixStack matrixStack) {
+        float easedProgresss = keyframe.getEasing().ease(percent);
         Vector3d move1 = keyframe.initialPosition();
         Vector3d move2 = keyframe.relativePos();
         Quaternion q1 = keyframe.getInitialRotationQuaternion();
         Quaternion q2 = keyframe.getRotationQuaternion();
         Quaternion q3 = q2.copy();
-        q3.mul(percent);
-        matrixStack.translate(move1.x + move2.x * percent, move1.y + move2.y * percent, move1.z + move2.z * percent);
+        q3.mul(easedProgresss);
+        matrixStack.translate(move1.x + move2.x * easedProgresss, move1.y + move2.y * easedProgresss, move1.z + move2.z * easedProgresss);
         matrixStack.mulPose(q1);
         matrixStack.mulPose(q3);
     }
@@ -63,16 +64,16 @@ public class Keyframes {
         return NULL_FRAME;
     }
 
-    public static IKeyframe wait(float endpoint) {
-        return EmptyKeyframe.wait(endpoint);
+    public static IKeyframe wait(float endpoint, Easing easing) {
+        return EmptyKeyframe.wait(endpoint, easing);
     }
 
-    public static IKeyframe position(Vector3d position, float endpoint) {
-        return PositionKeyframe.positioned(position, endpoint);
+    public static IKeyframe position(Vector3d position, Easing easing, float endpoint) {
+        return PositionKeyframe.positioned(position, easing, endpoint);
     }
 
-    public static IKeyframe keyframe(Vector3d position, Vector3d rotation, float endpoint) {
-        return Keyframe.of(position, rotation, endpoint);
+    public static IKeyframe keyframe(Vector3d position, Vector3d rotation, Easing easing, float endpoint) {
+        return Keyframe.of(position, rotation, easing, endpoint);
     }
 
     private static double max(Vector3d vector3d) {

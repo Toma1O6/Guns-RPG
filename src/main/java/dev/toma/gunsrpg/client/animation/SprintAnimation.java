@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.client.animation;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lib.toma.animations.Interpolate;
+import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IAnimation;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -40,7 +40,7 @@ public class SprintAnimation implements IAnimation {
 
     @Override
     public void renderTick(float deltaRenderTime) {
-        progressInterpolated = Interpolate.linear(deltaRenderTime, progress, progressOld);
+        progressInterpolated = AnimationUtils.linearInterpolate(progress, progressOld, deltaRenderTime);
     }
 
     @Override

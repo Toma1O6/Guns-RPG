@@ -1,6 +1,8 @@
 package lib.toma.animations.engine.serialization;
 
 import com.google.gson.*;
+import lib.toma.animations.AnimationUtils;
+import lib.toma.animations.Easing;
 import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.IKeyframe;
 import net.minecraft.util.JSONUtils;
@@ -18,6 +20,7 @@ public class KeyframeSerializer implements JsonSerializer<IKeyframe>, JsonDeseri
         Vector3d pos = src.positionTarget();
         Vector3d rotation = src.rotationTarget();
         object.addProperty("e", endpoint);
+        object.addProperty("ease", src.getEasing().ordinal());
         if (!pos.equals(Vector3d.ZERO)) {
             object.add("pos", context.serialize(pos, Vector3d.class));
         }
@@ -33,18 +36,19 @@ public class KeyframeSerializer implements JsonSerializer<IKeyframe>, JsonDeseri
             throw new JsonSyntaxException("Not a Json object!");
         JsonObject object = json.getAsJsonObject();
         float endpoint = JSONUtils.getAsFloat(object, "e");
+        Easing easing = Easing.values()[JSONUtils.getAsInt(object, "ease", AnimationUtils.DEFAULT_EASING.ordinal()) % Easing.values().length];
         boolean positioned = object.has("pos");
         boolean rotated = object.has("rot");
         if (!positioned && !rotated) {
-            return endpoint == 0.0F ? Keyframes.none() : Keyframes.wait(endpoint);
+            return endpoint == 0.0F ? Keyframes.none() : Keyframes.wait(endpoint, easing);
         }
         if (rotated) {
             Vector3d pos = positioned ? context.deserialize(object.get("pos"), Vector3d.class) : Vector3d.ZERO;
             Vector3d rot = context.deserialize(object.get("rot"), Vector3d.class);
-            return Keyframes.keyframe(pos, rot, endpoint);
+            return Keyframes.keyframe(pos, rot, easing, endpoint);
         } else {
             Vector3d pos = context.deserialize(object.get("pos"), Vector3d.class);
-            return Keyframes.position(pos, endpoint);
+            return Keyframes.position(pos, easing, endpoint);
         }
     }
 }

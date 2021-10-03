@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.client.animation;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.client.IModifiableProgress;
-import lib.toma.animations.Interpolate;
+import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IKeyframe;
@@ -47,7 +47,7 @@ public class StagedReloadAnimation implements IModifiableProgress {
     @Override
     public void renderTick(float deltaRenderTime) {
         float old = progressInterpolated;
-        progressInterpolated = Interpolate.linear(deltaRenderTime, progress, progressOld);
+        progressInterpolated = AnimationUtils.linearInterpolate(progress, progressOld, deltaRenderTime);
         if (progressInterpolated != old) {
             updateCache();
         }

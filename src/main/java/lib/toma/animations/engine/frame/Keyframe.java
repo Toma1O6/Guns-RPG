@@ -1,5 +1,6 @@
 package lib.toma.animations.engine.frame;
 
+import lib.toma.animations.Easing;
 import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.IKeyframe;
 import net.minecraft.util.math.vector.Quaternion;
@@ -11,14 +12,14 @@ public class Keyframe extends PositionKeyframe {
     private Vector3d relativeRotation = Vector3d.ZERO;
     private Quaternion rotationQuat = Quaternion.ONE;
 
-    protected Keyframe(Vector3d position, Vector3d rotation, float endpoint) {
-        super(position, endpoint);
+    protected Keyframe(Vector3d position, Vector3d rotation, Easing easing, float endpoint) {
+        super(position, easing, endpoint);
         this.rotation = rotation;
         calculateRelativeRotation();
     }
 
-    public static IKeyframe of(Vector3d position, Vector3d rotation, float endpoint) {
-        return new Keyframe(position, rotation, endpoint);
+    public static IKeyframe of(Vector3d position, Vector3d rotation, Easing easing, float endpoint) {
+        return new Keyframe(position, rotation, easing, endpoint);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.util.math;
 
-import lib.toma.animations.Interpolate;
+import lib.toma.animations.AnimationUtils;
 import net.minecraft.util.math.MathHelper;
 
 public final class Mth {
@@ -33,7 +33,7 @@ public final class Mth {
         int old = value - 1;
         float f1 = asLinearFunction(value, min, max);
         float f2 = asLinearFunction(old, min, max);
-        return Interpolate.linear(partial, f1, f2);
+        return AnimationUtils.linearInterpolate(f1, f2, partial);
     }
 
     public static int isWithinOrDefault(int value, int min, int max, int _default) {
