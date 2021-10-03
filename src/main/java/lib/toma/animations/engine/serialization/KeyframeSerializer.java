@@ -3,7 +3,6 @@ package lib.toma.animations.engine.serialization;
 import com.google.gson.*;
 import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.IKeyframe;
-import lib.toma.animations.engine.Vector4f;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
@@ -17,12 +16,12 @@ public class KeyframeSerializer implements JsonSerializer<IKeyframe>, JsonDeseri
         JsonObject object = new JsonObject();
         float endpoint = src.endpoint();
         Vector3d pos = src.positionTarget();
-        Vector4f rotation = src.rotationTarget();
+        Vector3d rotation = src.rotationTarget();
         object.addProperty("e", endpoint);
         if (!pos.equals(Vector3d.ZERO)) {
             object.add("pos", context.serialize(pos, Vector3d.class));
         }
-        if (!rotation.equals(Vector4f.ZERO)) {
+        if (!rotation.equals(Vector3d.ZERO)) {
             object.add("rot", context.serialize(rotation, Quaternion.class));
         }
         return object;
@@ -41,7 +40,7 @@ public class KeyframeSerializer implements JsonSerializer<IKeyframe>, JsonDeseri
         }
         if (rotated) {
             Vector3d pos = positioned ? context.deserialize(object.get("pos"), Vector3d.class) : Vector3d.ZERO;
-            Vector4f rot = context.deserialize(object.get("rot"), Vector4f.class);
+            Vector3d rot = context.deserialize(object.get("rot"), Vector3d.class);
             return Keyframes.keyframe(pos, rot, endpoint);
         } else {
             Vector3d pos = context.deserialize(object.get("pos"), Vector3d.class);

@@ -1,6 +1,5 @@
 package lib.toma.animations.api;
 
-import lib.toma.animations.engine.Vector4f;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -34,7 +33,7 @@ public interface IKeyframe {
      * it will be added to initial rotation.
      * @return Rotation target. Animation rotation after this keyframe is going to be {@code Initial rotation + Target rotation}
      */
-    Vector4f rotationTarget();
+    Vector3d rotationTarget();
 
     /**
      * @return Initial position of this keyframe. Should be calculated in {@link IKeyframe#baseOn(IKeyframe)} method via
@@ -46,7 +45,7 @@ public interface IKeyframe {
      * @return Initial rotation of this keyframe. Should be calculated in {@link IKeyframe#baseOn(IKeyframe)} method via
      * {@link lib.toma.animations.Keyframes#getInitialRotation(IKeyframe)}
      */
-    Vector4f initialRotation();
+    Vector3d initialRotation();
 
     /**
      * @return Relative position for animation
@@ -56,7 +55,7 @@ public interface IKeyframe {
     /**
      * @return Relative rotation for animation
      */
-    Vector4f relativeRot();
+    Vector3d relativeRot();
 
     /**
      * @return Initial quaternion for rotations

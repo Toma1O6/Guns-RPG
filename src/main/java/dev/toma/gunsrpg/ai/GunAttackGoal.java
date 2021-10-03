@@ -58,7 +58,8 @@ public class GunAttackGoal extends Goal {
             ZombieGunnerEntity.GunData data = entity.getWeaponData();
             if (stack.getItem() instanceof GunItem) {
                 SoundEvent event = data.event.apply((GunItem) stack.getItem(), entity);
-                gun.shoot(entity.level, entity, stack, event);
+                // TODO
+                //gun.shoot(entity.level, entity, stack, event);
                 timeRemaining = data.rof;
             }
         }

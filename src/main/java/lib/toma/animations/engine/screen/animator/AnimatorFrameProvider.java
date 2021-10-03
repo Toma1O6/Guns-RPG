@@ -7,7 +7,6 @@ import lib.toma.animations.api.IAnimation;
 import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.IKeyframeProvider;
 import lib.toma.animations.api.event.IAnimationEvent;
-import lib.toma.animations.engine.Vector4f;
 import lib.toma.animations.engine.frame.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.vector.Vector3d;
@@ -330,7 +329,7 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
 
     public void resetFirstFrame(MutableKeyframe keyframe) {
         keyframe.setPos0(Vector3d.ZERO);
-        keyframe.setRot0(Vector4f.ZERO);
+        keyframe.setRot0(Vector3d.ZERO);
     }
 
     private void computeAnimationEndpoint() {

@@ -4,7 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.event.IAnimationEvent;
-import lib.toma.animations.engine.Vector4f;
 import lib.toma.animations.engine.frame.MutableKeyframe;
 import lib.toma.animations.engine.screen.animator.dialog.*;
 import lib.toma.animations.engine.screen.animator.widget.*;
@@ -53,8 +52,7 @@ public class AnimatorScreen extends Screen {
     private static final ResourceLocation ANIMATOR_ICONS = new ResourceLocation("textures/icons/animator/animator_icons.png");
     private static final ResourceLocation TIMELINE_ICONS = new ResourceLocation("textures/icons/animator/timeline_icons.png");
 
-    private final Pattern posScaleDeg = Pattern.compile("-?[0-9]+(\\.[0-9]*)?");
-    private final Pattern rotVec = Pattern.compile("-?(1(\\.0)?)|-?(0(\\.[0-9]+)?)");
+    private final Pattern posRotPattern = Pattern.compile("-?[0-9]+(\\.[0-9]*)?");
     private final Pattern endpoint = Pattern.compile("(1(\\.0)?)|(0(\\.[0-9]+)?)");
 
     @Nullable
@@ -67,7 +65,6 @@ public class AnimatorScreen extends Screen {
     private TextFieldWidget rotX;
     private TextFieldWidget rotY;
     private TextFieldWidget rotZ;
-    private TextFieldWidget deg;
     private TextFieldWidget end;
 
     private Timeline timeline;
@@ -110,8 +107,6 @@ public class AnimatorScreen extends Screen {
         rotY.setResponder(new SuggestionResponder("Y rot", rotY, this::rotY_change));
         rotZ = keyframeEditor.addWidget(new TextFieldWidget(font, 95, 45, 40, 20, StringTextComponent.EMPTY));
         rotZ.setResponder(new SuggestionResponder("Z rot", rotZ, this::rotZ_change));
-        deg = keyframeEditor.addWidget(new TextFieldWidget(font, 95, 70, 40, 20, StringTextComponent.EMPTY));
-        deg.setResponder(new SuggestionResponder("Deg", deg, this::degrees_change));
         end = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 70, 85, 20, StringTextComponent.EMPTY));
         end.setResponder(new SuggestionResponder("Pos", end, this::endpoint_change));
         // ---- TIMELINE
@@ -149,19 +144,19 @@ public class AnimatorScreen extends Screen {
     }
 
     private void posX_change(String value) {
-        if (tryValidate(value, posScaleDeg, posX)) {
+        if (tryValidate(value, posRotPattern, posX)) {
             setPos(value, (old, x) -> new Vector3d(x, old.y, old.z));
         }
     }
 
     private void posY_change(String value) {
-        if (tryValidate(value, posScaleDeg, posY)) {
+        if (tryValidate(value, posRotPattern, posY)) {
             setPos(value, (old, y) -> new Vector3d(old.x, y, old.z));
         }
     }
 
     private void posZ_change(String value) {
-        if (tryValidate(value, posScaleDeg, posZ)) {
+        if (tryValidate(value, posRotPattern, posZ)) {
             setPos(value, (old, z) -> new Vector3d(old.x, old.y, z));
         }
     }
@@ -175,34 +170,28 @@ public class AnimatorScreen extends Screen {
     }
 
     private void rotX_change(String value) {
-        if (tryValidate(value, rotVec, rotX)) {
-            setRotation(value, (vec, f) -> new Vector4f(vec.rotation(), f, vec.y(), vec.z()));
+        if (tryValidate(value, posRotPattern, rotX)) {
+            setRotation(value, (vec, d) -> new Vector3d(d, vec.y, vec.z));
         }
     }
 
     private void rotY_change(String value) {
-        if (tryValidate(value, rotVec, rotY)) {
-            setRotation(value, (vec, f) -> new Vector4f(vec.rotation(), vec.x(), f, vec.z()));
+        if (tryValidate(value, posRotPattern, rotY)) {
+            setRotation(value, (vec, d) -> new Vector3d(vec.x, d, vec.z));
         }
     }
 
     private void rotZ_change(String value) {
-        if (tryValidate(value, rotVec, rotZ)) {
-            setRotation(value, (vec, f) -> new Vector4f(vec.rotation(), vec.x(), vec.y(), f));
+        if (tryValidate(value, posRotPattern, rotZ)) {
+            setRotation(value, (vec, d) -> new Vector3d(vec.x, vec.y, d));
         }
     }
 
-    private void degrees_change(String value) {
-        if (tryValidate(value, posScaleDeg, deg)) {
-            setRotation(value, (vec, f) -> new Vector4f(f, vec.x(), vec.y(), vec.z()));
-        }
-    }
-
-    private void setRotation(String value, BiFunction<Vector4f, Float, Vector4f> setter) {
-        float f = Float.parseFloat(value);
+    private void setRotation(String value, BiFunction<Vector3d, Double, Vector3d> setter) {
+        double d = Double.parseDouble(value);
         MutableKeyframe keyframe = selectionContext.frame();
-        Vector4f rotation = keyframe.rotationTarget();
-        Vector4f newRot = setter.apply(rotation, f);
+        Vector3d rotation = keyframe.rotationTarget();
+        Vector3d newRot = setter.apply(rotation, d);
         keyframe.setRotation(newRot);
         timeline.recompile(selectionContext.owner());
     }
@@ -347,11 +336,10 @@ public class AnimatorScreen extends Screen {
         if (hasFrame) {
             IKeyframe frame = selectionContext.frame();
             Vector3d position = frame.positionTarget();
-            Vector4f rotation = frame.rotationTarget();
+            Vector3d rotation = frame.rotationTarget();
             posX.setValue(TRANSFORM_FORMAT.format(position.x));
             posY.setValue(TRANSFORM_FORMAT.format(position.y));
             posZ.setValue(TRANSFORM_FORMAT.format(position.z));
-            deg.setValue(TRANSFORM_FORMAT.format(rotation.rotation()));
             rotX.setValue(TRANSFORM_FORMAT.format(rotation.x()));
             rotY.setValue(TRANSFORM_FORMAT.format(rotation.y()));
             rotZ.setValue(TRANSFORM_FORMAT.format(rotation.z()));
