@@ -527,12 +527,14 @@
     "screen.animator.timeline.to_end": "Move animation to end",
     "screen.animator.timeline.next_frame": "Next frame",
 
+    "screen.animation.inspector.easing": "Easing",
     "screen.animator.dialog.new_project": "Create new project",
     "screen.animator.dialog.settings": "Project settings",
     "screen.animator.dialog.save_as": "Save as",
     "screen.animator.dialog.add_frame": "Add frame",
     "screen.animator.dialog.add_event": "Add event",
     "screen.animator.dialog.edit_event": "Edit event",
+    "screen.animator.dialog.change_easing": "Change easing function",
 
     "animation.stage.minecraft:item.heldfp": "Mainhand item",
     "animation.stage.minecraft:hands.left": "Left hand",

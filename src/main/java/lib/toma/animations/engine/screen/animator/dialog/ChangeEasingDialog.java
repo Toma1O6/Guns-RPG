@@ -12,29 +12,28 @@ import java.util.Arrays;
 public class ChangeEasingDialog extends DialogScreen {
 
     private final IEasingSelected easingSelected;
-    private ListView<Easing> easingListView;
     private Easing easing;
 
     public ChangeEasingDialog(AnimatorScreen screen, IEasingSelected easingSelected) {
         super(new TranslationTextComponent("screen.animator.dialog.change_easing"), screen);
         this.easingSelected = easingSelected;
 
-        setDimensions(176, 120);
+        setDimensions(176, 180);
     }
 
     @Override
     protected void init() {
         super.init();
 
-        easingListView = addButton(new ListView<>(left() + 5, top() + 15, dWidth() - 10, 75, Arrays.asList(Easing.values())));
+        ListView<Easing> easingListView = addButton(new ListView<>(left() + 5, top() + 15, dWidth() - 10, 135, Arrays.asList(Easing.values())));
         easingListView.setResponder(this::easingSelected);
         easingListView.setFormatter(e -> e.getDisplayComponent().getString());
 
         int totalWidth = dWidth() - 10;
         int buttonWidth = (totalWidth - 5) / 2;
 
-        cancel = addButton(new Button(left() + 5, top() + 95, buttonWidth, 20, CANCEL, this::cancel_clicked));
-        confirm = addButton(new Button(left() + 10 + buttonWidth, top() + 95, buttonWidth, 20, CONFIRM, this::confirm_clicked));
+        cancel = addButton(new Button(left() + 5, top() + 155, buttonWidth, 20, CANCEL, this::cancel_clicked));
+        confirm = addButton(new Button(left() + 10 + buttonWidth, top() + 155, buttonWidth, 20, CONFIRM, this::confirm_clicked));
         updateConfirmButton();
     }
 
@@ -49,6 +48,7 @@ public class ChangeEasingDialog extends DialogScreen {
 
     private void confirm_clicked(Button button) {
         easingSelected.onEasingConfirmSelect(easing);
+        showParent();
     }
 
     @FunctionalInterface

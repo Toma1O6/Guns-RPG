@@ -76,7 +76,7 @@ public enum Easing {
     private TextFormatting getColor() {
         int i = ordinal();
         if (i == 0)
-            return TextFormatting.WHITE;
+            return TextFormatting.RED;
         int j = (i - 1) % 3;
         switch (j) {
             case 0:

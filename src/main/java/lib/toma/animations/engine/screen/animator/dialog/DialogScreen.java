@@ -29,10 +29,10 @@ public abstract class DialogScreen extends Screen {
 
     public static void handleDefaultKeys(int keycode, Button confirm, Button cancel) {
         if (keycode == GLFW.GLFW_KEY_ENTER || keycode == GLFW.GLFW_KEY_KP_ENTER) {
-            if (confirm != null)
+            if (confirm != null && confirm.active)
                 confirm.onPress();
         } else if (keycode == GLFW.GLFW_KEY_ESCAPE) {
-            if (cancel != null)
+            if (cancel != null && cancel.active)
                 cancel.onPress();
         }
     }

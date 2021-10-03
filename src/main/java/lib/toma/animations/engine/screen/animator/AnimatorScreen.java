@@ -110,9 +110,9 @@ public class AnimatorScreen extends Screen {
         rotY.setResponder(new SuggestionResponder("Y rot", rotY, this::rotY_change));
         rotZ = keyframeEditor.addWidget(new TextFieldWidget(font, 95, 45, 40, 20, StringTextComponent.EMPTY));
         rotZ.setResponder(new SuggestionResponder("Z rot", rotZ, this::rotZ_change));
-        end = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 70, 65, 20, StringTextComponent.EMPTY));
+        end = keyframeEditor.addWidget(new TextFieldWidget(font, 5, 70, 50, 20, StringTextComponent.EMPTY));
         end.setResponder(new SuggestionResponder("Pos", end, this::endpoint_change));
-        easing = keyframeEditor.addWidget(new Button(70, 70, 65, 20, StringTextComponent.EMPTY, this::buttonEasing_clicked, (btn, poses, mx, my) -> renderTooltip(poses, EASING, mx, my)));
+        easing = keyframeEditor.addWidget(new Button(60, 70, 75, 20, StringTextComponent.EMPTY, this::buttonEasing_clicked, (btn, poses, mx, my) -> renderTooltip(poses, EASING, mx, my)));
         // ---- TIMELINE
         timeline = addButton(new Timeline(0, height - 80, width, 80, () -> selectionContext));
         timeline.setProgressBarClickHandler(this::animationProgressBar_clicked);
