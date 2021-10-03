@@ -1,10 +1,6 @@
 package lib.toma.animations.engine.frame;
 
-import lib.toma.animations.api.IFrameProviderInstance;
-import lib.toma.animations.api.IKeyframe;
-import lib.toma.animations.api.IKeyframeProvider;
-import lib.toma.animations.api.AnimationStage;
-import lib.toma.animations.api.IAnimation;
+import lib.toma.animations.api.*;
 import lib.toma.animations.api.event.IAnimationEvent;
 import net.minecraft.client.Minecraft;
 

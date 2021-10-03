@@ -1,8 +1,8 @@
 package lib.toma.animations.engine.screen.animator.dialog;
 
 import lib.toma.animations.AnimationEngine;
-import lib.toma.animations.engine.ByteFlags;
 import lib.toma.animations.api.IAnimationPipeline;
+import lib.toma.animations.engine.ByteFlags;
 import lib.toma.animations.engine.screen.animator.AnimationProject;
 import lib.toma.animations.engine.screen.animator.Animator;
 import lib.toma.animations.engine.screen.animator.AnimatorScreen;

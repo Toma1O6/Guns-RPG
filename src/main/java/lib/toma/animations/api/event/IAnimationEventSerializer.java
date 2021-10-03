@@ -4,7 +4,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
-import lib.toma.animations.api.event.IAnimationEvent;
 
 public interface IAnimationEventSerializer<E extends IAnimationEvent> {
 

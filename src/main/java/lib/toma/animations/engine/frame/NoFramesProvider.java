@@ -5,11 +5,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import lib.toma.animations.Keyframes;
+import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.IKeyframeProvider;
-import lib.toma.animations.api.AnimationStage;
-import lib.toma.animations.api.event.IAnimationEvent;
 import lib.toma.animations.api.IKeyframeTypeSerializer;
+import lib.toma.animations.api.event.IAnimationEvent;
 
 import java.util.Collections;
 import java.util.Map;

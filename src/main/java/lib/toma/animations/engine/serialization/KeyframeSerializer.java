@@ -6,7 +6,6 @@ import lib.toma.animations.Easing;
 import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.IKeyframe;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 
 import java.lang.reflect.Type;
@@ -25,7 +24,7 @@ public class KeyframeSerializer implements JsonSerializer<IKeyframe>, JsonDeseri
             object.add("pos", context.serialize(pos, Vector3d.class));
         }
         if (!rotation.equals(Vector3d.ZERO)) {
-            object.add("rot", context.serialize(rotation, Quaternion.class));
+            object.add("rot", context.serialize(rotation, Vector3d.class));
         }
         return object;
     }
