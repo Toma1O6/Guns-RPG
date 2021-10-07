@@ -5,9 +5,7 @@ import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.engine.frame.EmptyKeyframe;
 import lib.toma.animations.engine.frame.Keyframe;
 import lib.toma.animations.engine.frame.PositionKeyframe;
-import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
 
 import java.util.Comparator;
 
@@ -41,23 +39,21 @@ public class Keyframes {
         float easedProgresss = keyframe.getEasing().ease(percent);
         Vector3d move1 = keyframe.initialPosition();
         Vector3d move2 = keyframe.relativePos();
-        Quaternion q1 = keyframe.getInitialRotationQuaternion();
-        Quaternion q2 = keyframe.getRotationQuaternion();
-        Quaternion q3 = q2.copy();
-        q3.mul(easedProgresss);
+        RotationContext ctx1 = keyframe.getInitialRotationContext();
+        RotationContext ctx2 = keyframe.getRelativeRotationContext();
         matrixStack.translate(move1.x + move2.x * easedProgresss, move1.y + move2.y * easedProgresss, move1.z + move2.z * easedProgresss);
-        matrixStack.mulPose(q1);
-        matrixStack.mulPose(q3);
+        ctx1.apply(matrixStack, easedProgresss);
+        ctx2.apply(matrixStack, easedProgresss);
     }
 
-    public static Quaternion rotationVector2Quaternion(Vector3d rotation) {
+    public static RotationContext rotationVector2Context(Vector3d rotation) {
+        return rotationVector2Context(rotation, false);
+    }
+
+    public static RotationContext rotationVector2Context(Vector3d rotation, boolean isInitial) {
         if (rotation.equals(Vector3d.ZERO))
-            return Quaternion.ONE;
-        float r = (float) max(rotation);
-        float x = (float) (rotation.x / r);
-        float y = (float) (rotation.y / r);
-        float z = (float) (rotation.z / r);
-        return new Quaternion(new Vector3f(x, y, z), r, true);
+            return RotationContext.EMPTY;
+        return RotationContext.forXYZ(rotation, isInitial);
     }
 
     public static IKeyframe none() {
@@ -74,12 +70,5 @@ public class Keyframes {
 
     public static IKeyframe keyframe(Vector3d position, Vector3d rotation, Easing easing, float endpoint) {
         return Keyframe.of(position, rotation, easing, endpoint);
-    }
-
-    private static double max(Vector3d vector3d) {
-        double x = Math.abs(vector3d.x);
-        double y = Math.abs(vector3d.y);
-        double z = Math.abs(vector3d.z);
-        return Math.max(x, Math.max(y, z));
     }
 }

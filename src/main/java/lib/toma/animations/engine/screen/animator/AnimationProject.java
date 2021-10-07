@@ -1,6 +1,8 @@
 package lib.toma.animations.engine.screen.animator;
 
 import lib.toma.animations.AnimationEngine;
+import lib.toma.animations.AnimationUtils;
+import lib.toma.animations.Easing;
 import lib.toma.animations.api.AnimationType;
 import lib.toma.animations.api.IAnimationPipeline;
 import lib.toma.animations.api.IKeyframeProvider;
@@ -98,6 +100,7 @@ public class AnimationProject {
         private int animationTime = 50;
         private boolean isOnRepeat = false;
         private boolean paused = true;
+        private Easing easing = AnimationUtils.DEFAULT_EASING;
 
         public void setAnimationTime(int animationTime) {
             this.animationTime = animationTime;
@@ -127,6 +130,14 @@ public class AnimationProject {
 
         public boolean isPaused() {
             return paused;
+        }
+
+        public void setEasing(Easing easing) {
+            this.easing = easing;
+        }
+
+        public Easing getEasing() {
+            return easing;
         }
     }
 }

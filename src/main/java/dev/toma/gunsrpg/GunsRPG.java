@@ -54,6 +54,7 @@ public class GunsRPG {
         eventBus.addListener(this::commonSetup);
         // other events
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
+        // TODO move to client side manager?
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             ClientSideManager.instance().animationSetup();
             IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
