@@ -17,6 +17,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
@@ -146,6 +147,26 @@ public class AnimatorScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keycode, int scancode, int modifiers) {
+        switch (keycode) {
+            case GLFW.GLFW_KEY_SPACE:
+                setPaused(!isPaused());
+                break;
+            case GLFW.GLFW_KEY_TAB:
+                setToNextFrame_clicked(null);
+                break;
+            case GLFW.GLFW_KEY_LEFT:
+                resetToBeginning_clicked(null);
+                break;
+            case GLFW.GLFW_KEY_RIGHT:
+                setToEnd_clicked(null);
+                break;
+            case GLFW.GLFW_KEY_KP_ADD:
+                buttonAddFrame_clicked(null);
+                break;
+            case GLFW.GLFW_KEY_KP_MULTIPLY:
+                buttonSetProgressToFrame_clicked(null);
+                break;
+        }
         return super.keyPressed(keycode, scancode, modifiers);
     }
 

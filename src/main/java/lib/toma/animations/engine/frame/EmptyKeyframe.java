@@ -65,12 +65,12 @@ public class EmptyKeyframe implements IKeyframe {
 
     @Override
     public Quaternion getInitialRotationQuaternion() {
-        return Quaternion.ONE;
+        return rotQuat;
     }
 
     @Override
     public Quaternion getRotationQuaternion() {
-        return rotQuat;
+        return Quaternion.ONE;
     }
 
     @Override
