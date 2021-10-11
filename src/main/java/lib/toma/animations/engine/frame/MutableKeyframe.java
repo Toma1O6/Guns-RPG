@@ -3,8 +3,8 @@ package lib.toma.animations.engine.frame;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.Easing;
 import lib.toma.animations.Keyframes;
-import lib.toma.animations.RotationContext;
 import lib.toma.animations.api.IKeyframe;
+import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 
 public class MutableKeyframe implements IKeyframe {
@@ -17,8 +17,8 @@ public class MutableKeyframe implements IKeyframe {
     private Vector3d rot0 = Vector3d.ZERO;
     private Vector3d relPos = Vector3d.ZERO;
     private Vector3d relRot = Vector3d.ZERO;
-    private RotationContext rot0ctx = RotationContext.EMPTY;
-    private RotationContext relRotCtx = RotationContext.EMPTY;
+    private Quaternion rot0Quat = Quaternion.ONE;
+    private Quaternion relRotQuat = Quaternion.ONE;
 
     public static MutableKeyframe fullCopyOf(IKeyframe frame) {
         MutableKeyframe mkf = copyOf(frame);
@@ -34,6 +34,7 @@ public class MutableKeyframe implements IKeyframe {
         mkf.setEndpoint(keyframe.endpoint());
         mkf.setPosition(keyframe.positionTarget());
         mkf.setRotation(keyframe.rotationTarget());
+        mkf.setEasing(keyframe.getEasing());
         return mkf;
     }
 
@@ -93,6 +94,7 @@ public class MutableKeyframe implements IKeyframe {
 
     public void setRot0(Vector3d vector3d) {
         this.rot0 = vector3d;
+        this.rot0Quat = Keyframes.rotationVector2Quaternion(rot0);
         updateRelativeRot();
     }
 
@@ -100,19 +102,19 @@ public class MutableKeyframe implements IKeyframe {
     public void baseOn(IKeyframe parent) {
         pos0 = Keyframes.getInitialPosition(parent);
         rot0 = Keyframes.getInitialRotation(parent);
-        rot0ctx = Keyframes.rotationVector2Context(rot0, true);
+        rot0Quat = Keyframes.rotationVector2Quaternion(rot0);
         updateRelativePos();
         updateRelativeRot();
     }
 
     @Override
-    public RotationContext getInitialRotationContext() {
-        return rot0ctx;
+    public Quaternion getInitialRotationQuaternion() {
+        return rot0Quat;
     }
 
     @Override
-    public RotationContext getRelativeRotationContext() {
-        return relRotCtx;
+    public Quaternion getRotationQuaternion() {
+        return relRotQuat;
     }
 
     @Override
@@ -130,6 +132,6 @@ public class MutableKeyframe implements IKeyframe {
 
     private void updateRelativeRot() {
         relRot = Keyframes.getRelativeRotation(rotation, rot0);
-        relRotCtx = Keyframes.rotationVector2Context(relRot);
+        relRotQuat = Keyframes.rotationVector2Quaternion(relRot);
     }
 }

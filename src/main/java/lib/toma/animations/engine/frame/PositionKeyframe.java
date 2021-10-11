@@ -2,8 +2,8 @@ package lib.toma.animations.engine.frame;
 
 import lib.toma.animations.Easing;
 import lib.toma.animations.Keyframes;
-import lib.toma.animations.RotationContext;
 import lib.toma.animations.api.IKeyframe;
+import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.Objects;
@@ -15,7 +15,7 @@ public class PositionKeyframe implements IKeyframe {
     private final float endpoint;
     private Vector3d staticPos = Vector3d.ZERO;
     private Vector3d staticRotation = Vector3d.ZERO;
-    private RotationContext staticRotationContext = RotationContext.EMPTY;
+    private Quaternion staticRotationQuat = Quaternion.ONE;
     private Vector3d relativePos = Vector3d.ZERO;
 
     protected PositionKeyframe(Vector3d position, Easing easing, float endpoint) {
@@ -65,13 +65,13 @@ public class PositionKeyframe implements IKeyframe {
     }
 
     @Override
-    public RotationContext getInitialRotationContext() {
-        return staticRotationContext;
+    public Quaternion getInitialRotationQuaternion() {
+        return staticRotationQuat;
     }
 
     @Override
-    public RotationContext getRelativeRotationContext() {
-        return RotationContext.EMPTY;
+    public Quaternion getRotationQuaternion() {
+        return Quaternion.ONE;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class PositionKeyframe implements IKeyframe {
     public void baseOn(IKeyframe parent) {
         this.staticPos = Keyframes.getInitialPosition(parent);
         this.staticRotation = Keyframes.getInitialRotation(parent);
-        this.staticRotationContext = Keyframes.rotationVector2Context(staticRotation, true);
+        this.staticRotationQuat = Keyframes.rotationVector2Quaternion(staticRotation);
         this.calculateRelativePos();
     }
 

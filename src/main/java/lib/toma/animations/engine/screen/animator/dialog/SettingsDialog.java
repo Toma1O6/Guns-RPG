@@ -1,5 +1,6 @@
 package lib.toma.animations.engine.screen.animator.dialog;
 
+import lib.toma.animations.Easing;
 import lib.toma.animations.engine.screen.animator.AnimationProject;
 import lib.toma.animations.engine.screen.animator.Animator;
 import lib.toma.animations.engine.screen.animator.AnimatorScreen;
@@ -17,12 +18,13 @@ public class SettingsDialog extends DialogScreen {
     private final Pattern cyclePattern = Pattern.compile("[1-9][0-9]{0,2}");
     private TextFieldWidget cycleField;
     private CheckboxButton onRepeat;
+    private Button easingButton;
 
     private boolean errored;
 
     public SettingsDialog(AnimatorScreen screen) {
         super(new TranslationTextComponent("screen.animator.dialog.settings"), screen);
-        setDimensions(135, 105);
+        setDimensions(135, 130);
     }
 
     @Override
@@ -34,12 +36,13 @@ public class SettingsDialog extends DialogScreen {
         cycleField = addButton(new TextFieldWidget(font, left() + 5, top() + 30, dWidth() - 10, 20, StringTextComponent.EMPTY));
         cycleField.setResponder(new SuggestionResponder("Ticks", cycleField, this::cycleField_changed));
         cycleField.setValue(String.valueOf(controller.getAnimationTime()));
-        onRepeat = addButton(new CheckboxButton(left() + 5, top() + 55, dWidth() - 10, 20, new StringTextComponent("On repeat"), controller.isOnRepeat()));
+        easingButton = addButton(new Button(left() + 5, top() + 55, dWidth() - 10, 20, controller.getEasing().getDisplayComponent(), this::setDefaultEasing_Clicked));
+        onRepeat = addButton(new CheckboxButton(left() + 5, top() + 80, dWidth() - 10, 20, new StringTextComponent("On repeat"), controller.isOnRepeat()));
 
         int btnWidthP = dWidth() - 10;
         int btnWidth = (btnWidthP - 5) / 2;
-        cancel = addButton(new Button(left() + 5, top() + 80, btnWidth, 20, new StringTextComponent("Cancel"), this::cancel_clicked));
-        confirm = addButton(new Button(left() + 10 + btnWidth, top() + 80, btnWidth, 20, new StringTextComponent("Save"), this::save_clicked));
+        cancel = addButton(new Button(left() + 5, top() + 105, btnWidth, 20, new StringTextComponent("Cancel"), this::cancel_clicked));
+        confirm = addButton(new Button(left() + 10 + btnWidth, top() + 105, btnWidth, 20, new StringTextComponent("Save"), this::save_clicked));
         updateConfirmState();
     }
 
@@ -61,6 +64,18 @@ public class SettingsDialog extends DialogScreen {
             errored = true;
         }
         updateConfirmState();
+    }
+
+    private void setDefaultEasing_Clicked(Button button) {
+        DialogScreen screen = new ChangeEasingDialog(getParent(), this::onEasingSelected);
+        minecraft.setScreen(screen);
+    }
+
+    private void onEasingSelected(Easing easing) {
+        AnimationProject project = Animator.get().getProject();
+        AnimationProject.AnimationController controller = project.getAnimationControl();
+        controller.setEasing(easing);
+        easingButton.setMessage(easing.getDisplayComponent());
     }
 
     private void updateConfirmState() {

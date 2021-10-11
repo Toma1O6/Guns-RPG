@@ -10,6 +10,7 @@ import lib.toma.animations.engine.screen.animator.dialog.*;
 import lib.toma.animations.engine.screen.animator.widget.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
@@ -88,7 +89,8 @@ public class AnimatorScreen extends Screen {
         addButton(new IconButton(30, 5, 20, 20, 1, this::buttonOpen_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, OPEN, mx, my)));
         addButton(new IconButton(55, 5, 20, 20, 4, this::buttonOpenFrom_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, OPEN_FROM, mx, my)));
         addButton(new IconButton(80, 5, 20, 20, 5, this::buttonMerge_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, MERGE, mx, my)));
-        addButton(new IconButton(105, 5, 20, 20, 2, this::buttonSave_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SAVE, mx, my)));
+        Widget widget = addButton(new IconButton(105, 5, 20, 20, 2, this::buttonSave_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SAVE, mx, my)));
+        widget.active = false; // TODO fix saving
         addButton(new IconButton(130, 5, 20, 20, 2, this::buttonSaveAs_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SAVE_AS, mx, my)));
         addButton(new IconButton(155, 5, 20, 20, 3, this::buttonSettings_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SETTINGS, mx, my)));
         addButton(new ControlButton(width - 70, 5, 65, 20, PAUSED, this::isPaused, this::setPaused));
@@ -140,6 +142,11 @@ public class AnimatorScreen extends Screen {
     public void render(MatrixStack stack, int mouseX, int mouseY, float deltaRenderTime) {
         drawToolbarBackground(stack);
         super.render(stack, mouseX, mouseY, deltaRenderTime);
+    }
+
+    @Override
+    public boolean keyPressed(int keycode, int scancode, int modifiers) {
+        return super.keyPressed(keycode, scancode, modifiers);
     }
 
     @Override
@@ -238,10 +245,12 @@ public class AnimatorScreen extends Screen {
     private void addFrames(float progress, List<AnimationStage> frameOwners) {
         AnimationStage lastStage = null;
         MutableKeyframe mutable = null;
+        AnimationProject.AnimationController controller = Animator.get().getProject().getAnimationControl();
         for (AnimationStage stage : frameOwners) {
             lastStage = stage;
             mutable = new MutableKeyframe();
             mutable.setEndpoint(progress);
+            mutable.setEasing(controller.getEasing());
             timeline.add(stage, mutable);
         }
         timeline.init();

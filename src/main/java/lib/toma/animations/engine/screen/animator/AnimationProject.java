@@ -132,12 +132,12 @@ public class AnimationProject {
             return paused;
         }
 
-        public void setEasing(Easing easing) {
-            this.easing = easing;
-        }
-
         public Easing getEasing() {
             return easing;
+        }
+
+        public void setEasing(Easing easing) {
+            this.easing = easing;
         }
     }
 }
