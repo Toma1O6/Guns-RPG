@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.common.init.ModItems;
+import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
@@ -26,6 +27,10 @@ public final class Lifecycle {
     private final Map<GunItem, IAmmoProvider[]> weaponProviderMap = new IdentityHashMap<>();
     private final Map<Item, Item> ore2ChunkMap = new IdentityHashMap<>(2);
     private final QuestSystem questSystem = new QuestSystem();
+
+    public void modInit() {
+        ModTags.init();
+    }
 
     public void commonInit() {
         initWeaponProviderMap();

@@ -58,8 +58,9 @@ public class StorageItem extends BaseItem {
             ITextComponent title = getContainerName();
             INamedContainerProvider provider = new SimpleNamedContainerProvider((id, inv, own) -> containerProvider.createContainerInstance(inv, id), title);
             NetworkHooks.openGui((ServerPlayerEntity) player, provider);
+            return ActionResult.success(stack);
         }
-        return ActionResult.success(stack);
+        return ActionResult.pass(stack);
     }
 
     public IDimensions getDimensions() {

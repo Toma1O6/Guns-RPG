@@ -7,10 +7,7 @@ import dev.toma.gunsrpg.client.ModKeybinds;
 import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
 import dev.toma.gunsrpg.client.render.debuff.IconDebuffRenderer;
-import dev.toma.gunsrpg.client.screen.AirdropScreen;
-import dev.toma.gunsrpg.client.screen.BlastFurnaceScreen;
-import dev.toma.gunsrpg.client.screen.DeathCrateScreen;
-import dev.toma.gunsrpg.client.screen.SmithingTableScreen;
+import dev.toma.gunsrpg.client.screen.*;
 import dev.toma.gunsrpg.client.screen.skills.PlayerSkillsScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.*;
@@ -114,6 +111,11 @@ public class ClientSideManager {
         ScreenManager.register(ModContainers.BLAST_FURNACE.get(), BlastFurnaceScreen::new);
         ScreenManager.register(ModContainers.DEATH_CRATE.get(), DeathCrateScreen::new);
         ScreenManager.register(ModContainers.SMITHING_TABLE.get(), SmithingTableScreen::new);
+        ScreenManager.register(ModContainers.LUNCH_BOX.get(), LunchBoxScreen::new);
+        ScreenManager.register(ModContainers.AMMO_CASE.get(), AmmoCaseScreen::new);
+        ScreenManager.register(ModContainers.GRENADE_CASE.get(), GrenadeCaseScreen::new);
+        ScreenManager.register(ModContainers.MEDS_CASE.get(), MedsCaseScreen::new);
+        ScreenManager.register(ModContainers.ITEM_CASE.get(), ItemCaseScreen::new);
     }
 
     private void setupRenderPipeline() {

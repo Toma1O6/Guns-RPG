@@ -62,7 +62,7 @@ public class GunsRPG {
             AnimationEngine.get().startEngine(ModConfig.clientConfig.developerMode.get());
         });
 
-        ModTags.init();
+        modLifecycle.modInit();
 
         // TODO
         // GameRules.GAME_RULE_TYPES.put(GameRules.RULE_NATURAL_REGENERATION, GameRules.BooleanValue.create(false));

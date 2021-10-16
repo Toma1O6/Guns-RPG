@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.init;
 
+import dev.toma.gunsrpg.GunsRPG;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tags.BlockTags;
@@ -31,13 +32,21 @@ public class ModTags {
     }
 
     public static class Items {
+
         public static final Tags.IOptionalNamedTag<Item> ORES_AMETHYST = forge("ores/amethyst");
+        public static final Tags.IOptionalNamedTag<Item> HEALING_ITEM = modded("cases/meds");
+        public static final Tags.IOptionalNamedTag<Item> EXPLOSIVE_ITEM = modded("cases/explosives");
+        public static final Tags.IOptionalNamedTag<Item> INVENTORY_ITEM = modded("cases/item_case_blacklist");
 
         private static void init() {
         }
 
         private static Tags.IOptionalNamedTag<Item> forge(String path) {
             return tag("forge", path);
+        }
+
+        private static Tags.IOptionalNamedTag<Item> modded(String path) {
+            return tag(GunsRPG.MODID, path);
         }
 
         private static Tags.IOptionalNamedTag<Item> tag(String namespace, String path) {

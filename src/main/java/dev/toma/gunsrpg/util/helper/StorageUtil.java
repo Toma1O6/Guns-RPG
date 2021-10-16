@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.util.helper;
 
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
+import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.common.item.AbstractHealItem;
 import dev.toma.gunsrpg.common.item.GrenadeItem;
 import net.minecraft.item.Food;
@@ -31,14 +32,26 @@ public final class StorageUtil {
         Item item = stack.getItem();
         if (item instanceof IAmmoProvider) {
             return ((IAmmoProvider) item).getAmmoType().isExplosive();
-        } return item instanceof GrenadeItem;
+        } return item instanceof GrenadeItem || item.is(ModTags.Items.EXPLOSIVE_ITEM);
     }
 
     public static boolean isMed(ItemStack stack) {
-        return stack.getItem() instanceof AbstractHealItem;
+        return stack.getItem().is(ModTags.Items.HEALING_ITEM) || stack.getItem() instanceof AbstractHealItem;
     }
 
+    /**
+     * Check if provided itemstack contains inventory.
+     * This method looks for NBT tag 'BlockEntityTag' which is used by vanilla inventories,
+     * ItemHandler capability which is part of Forge API and should be used by mods and in case these 2
+     * checks don't find all inventories, datapack makers can add specific items (by ID) to blacklist.
+     *
+     * @param stack ItemStack to check
+     * @return {@code True} if this item doesn't contain any inventory and isn't blacklisted
+     */
     public static boolean notAnInventory(ItemStack stack) {
+        if (stack.getItem().is(ModTags.Items.INVENTORY_ITEM)) {
+            return false; // datapack controlled blacklist
+        }
         CompoundNBT nbt = stack.getTag();
         if (nbt != null) {
             return !nbt.contains("BlockEntityTag"); // vanilla inventories
@@ -47,5 +60,8 @@ public final class StorageUtil {
         return !optional.isPresent();
     }
 
+    /**
+     * Private constructor because this is just utility class
+     */
     private StorageUtil() {}
 }
