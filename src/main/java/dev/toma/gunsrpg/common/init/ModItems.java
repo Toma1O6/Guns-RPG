@@ -99,4 +99,9 @@ public class ModItems {
     public static final ModFoodItem FRUIT_SALAD = null;
     public static final ModFoodItem EGG_SALAD = null;
     public static final ModFoodItem CHOCOLATE_GLAZED_APPLE_PIE = null;
+    public static final StorageItem LUNCH_BOX = null;
+    public static final StorageItem AMMO_CASE = null;
+    public static final StorageItem GRENADE_CASE = null;
+    public static final StorageItem MEDS_CASE = null;
+    public static final StorageItem ITEM_CASE = null;
 }

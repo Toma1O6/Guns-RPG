@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.common.AnimationPaths;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.attribute.Modifiers;
 import dev.toma.gunsrpg.common.block.*;
+import dev.toma.gunsrpg.common.container.*;
 import dev.toma.gunsrpg.common.debuffs.DebuffRegistration;
 import dev.toma.gunsrpg.common.debuffs.DebuffType;
 import dev.toma.gunsrpg.common.entity.*;
@@ -18,6 +19,7 @@ import dev.toma.gunsrpg.common.skills.*;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.helper.StorageUtil;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -389,7 +391,12 @@ public class CommonRegistry {
                 new ModFoodItem("shepherds_pie", ModFoods.SHEPHERDS_PIE),
                 new ModFoodItem("fruit_salad", ModFoods.FRUIT_SALAD).buff(player -> player.heal(2.0F)),
                 new ModFoodItem("egg_salad", ModFoods.EGG_SALAD),
-                new ModFoodItem("chocolate_glazed_apple_pie", ModFoods.CHOCOLATE_GLAZED_APPLE_PIE).buff(player -> player.heal(3.0F))
+                new ModFoodItem("chocolate_glazed_apple_pie", ModFoods.CHOCOLATE_GLAZED_APPLE_PIE).buff(player -> player.heal(3.0F)),
+                new StorageItem("lunch_box", new Item.Properties(), 6, 3, 2, StorageUtil::isFood, LunchBoxContainer::new),
+                new StorageItem("ammo_case", new Item.Properties(), 16, 4, 4, StorageUtil::isAmmo, AmmoCaseContainer::new),
+                new StorageItem("grenade_case", new Item.Properties(), 12, 4, 3, StorageUtil::isExplosive, GrenadeCaseContainer::new),
+                new StorageItem("meds_case", new Item.Properties(), 16, 4, 4, StorageUtil::isMed, MedsCaseContainer::new),
+                new StorageItem("item_case", new Item.Properties(), 24, 6, 4, StorageUtil::notAnInventory, ItemCaseContainer::new)
         );
         queue.forEach(registry::register);
         queue = null;

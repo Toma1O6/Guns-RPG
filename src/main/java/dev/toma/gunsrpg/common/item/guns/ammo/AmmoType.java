@@ -8,5 +8,9 @@ public enum AmmoType {
     _12G,
     CROSSBOW,
     GRENADE,
-    ROCKET
+    ROCKET;
+
+    public boolean isExplosive() {
+        return this == GRENADE || this == ROCKET;
+    }
 }
