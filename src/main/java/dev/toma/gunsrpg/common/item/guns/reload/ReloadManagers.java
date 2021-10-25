@@ -6,7 +6,7 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.util.AmmoLocator;
+import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -21,14 +21,13 @@ public final class ReloadManagers {
     }
 
     public static IReloadManager singleBulletLoading(int preparationTicks, PlayerEntity player, GunItem item, ItemStack stack, ResourceLocation bulletLoadPath) {
-        AmmoLocator locator = new AmmoLocator();
         AmmoType type = item.getAmmoType();
         IAmmoMaterial material = item.getMaterialFromNBT(stack);
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         int maxAmmo = optional.isPresent() ? item.getMaxAmmo(optional.orElse(null).getAttributes()) : 0;
         int actAmmo = item.getAmmo(stack);
         int remAmmo = maxAmmo - actAmmo;
-        int invAmmo = player.isCreative() ? Integer.MAX_VALUE : locator.count(player.inventory, AmmoLocator.ISearchConstraint.typeAndMaterial(type, material));
+        int invAmmo = player.isCreative() ? Integer.MAX_VALUE : ItemLocator.countItems(player.inventory, ItemLocator.typeAndMaterial(type, material));
         int target = Math.min(remAmmo, invAmmo);
         return new StagedReloadManager(preparationTicks, target, bulletLoadPath);
     }

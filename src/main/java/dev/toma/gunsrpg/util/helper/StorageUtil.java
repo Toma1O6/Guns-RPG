@@ -54,7 +54,7 @@ public final class StorageUtil {
         }
         CompoundNBT nbt = stack.getTag();
         if (nbt != null) {
-            return !nbt.contains("BlockEntityTag"); // vanilla inventories
+            return !nbt.contains("BlockEntityTag") && !nbt.contains("Items"); // vanilla inventories
         }
         LazyOptional<IItemHandler> optional = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY); // modded inventories, as long as they follow Forge API
         return !optional.isPresent();

@@ -392,11 +392,11 @@ public class CommonRegistry {
                 new ModFoodItem("fruit_salad", ModFoods.FRUIT_SALAD).buff(player -> player.heal(2.0F)),
                 new ModFoodItem("egg_salad", ModFoods.EGG_SALAD),
                 new ModFoodItem("chocolate_glazed_apple_pie", ModFoods.CHOCOLATE_GLAZED_APPLE_PIE).buff(player -> player.heal(3.0F)),
-                new StorageItem("lunch_box", new Item.Properties(), 6, 3, 2, StorageUtil::isFood, LunchBoxContainer::new),
-                new StorageItem("ammo_case", new Item.Properties(), 16, 4, 4, StorageUtil::isAmmo, AmmoCaseContainer::new),
-                new StorageItem("grenade_case", new Item.Properties(), 12, 4, 3, StorageUtil::isExplosive, GrenadeCaseContainer::new),
-                new StorageItem("meds_case", new Item.Properties(), 16, 4, 4, StorageUtil::isMed, MedsCaseContainer::new),
-                new StorageItem("item_case", new Item.Properties(), 24, 6, 4, StorageUtil::notAnInventory, ItemCaseContainer::new)
+                new StorageItem("lunch_box", new Item.Properties(), 3, 2, StorageUtil::isFood, LunchBoxContainer::new),
+                new StorageItem("ammo_case", new Item.Properties(), 4, 4, StorageUtil::isAmmo, AmmoCaseContainer::new),
+                new StorageItem("grenade_case", new Item.Properties(), 4, 3, StorageUtil::isExplosive, GrenadeCaseContainer::new),
+                new StorageItem("meds_case", new Item.Properties(), 4, 4, StorageUtil::isMed, MedsCaseContainer::new),
+                new StorageItem("item_case", new Item.Properties(), 6, 4, StorageUtil::notAnInventory, ItemCaseContainer::new)
         );
         queue.forEach(registry::register);
         queue = null;

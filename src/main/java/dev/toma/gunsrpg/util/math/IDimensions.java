@@ -6,8 +6,12 @@ public interface IDimensions {
 
     int getHeight();
 
+    default int getArea() {
+        return getWidth() * getHeight();
+    }
+
     default boolean validate(int expectedLength) {
-        return getWidth() * getHeight() == expectedLength;
+        return getArea() == expectedLength;
     }
 
     static IDimensions of(int widthAndHeight) {

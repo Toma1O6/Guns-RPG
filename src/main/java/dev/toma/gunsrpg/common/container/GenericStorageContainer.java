@@ -5,19 +5,18 @@ import dev.toma.gunsrpg.common.item.StorageItem;
 import dev.toma.gunsrpg.util.math.IDimensions;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
 public abstract class GenericStorageContainer extends AbstractContainer {
 
     private final ItemStack stack;
+    private final IInventory inventory;
     private final int slotCount;
 
     public GenericStorageContainer(ContainerType<? extends GenericStorageContainer> type, PlayerInventory inventory, int windowId) {
@@ -26,22 +25,26 @@ public abstract class GenericStorageContainer extends AbstractContainer {
         StorageItem item = (StorageItem) stack.getItem(); // quite unsafe
         StorageItem.IInputFilter filter = item.getInputFilter();
         IDimensions dimensions = item.getDimensions();
-        LazyOptional<IItemHandler> optional = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+        this.inventory = item.getInventory(stack, this::onChangedCallback);
         int left = 8;
         int top = 18;
         int width = dimensions.getWidth();
         int height = dimensions.getHeight();
         slotCount = width * height;
-        optional.ifPresent(handler -> {
-            double offset = getOffsetModifier(width);
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
-                    int xPosition = getOffset(x, offset);
-                    addSlot(new RestrictedSlot(handler, filter, y * width + x, left + xPosition, top + y * 18));
-                }
+        double offset = getOffsetModifier(width);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int xPosition = getOffset(x, offset);
+                addSlot(new RestrictedSlot(this.inventory, filter, y * width + x, left + xPosition, top + y * 18));
             }
-        });
+        }
         addPlayerInventory(inventory, height * 18 + 38);
+    }
+
+    @Override
+    public void removed(PlayerEntity player) {
+        super.removed(player);
+        this.onChangedCallback();
     }
 
     @Override
@@ -56,10 +59,11 @@ public abstract class GenericStorageContainer extends AbstractContainer {
                     return ItemStack.EMPTY;
             } else if (!moveItemStackTo(slotStack, 0, slotCount, false))
                 return ItemStack.EMPTY;
-            if (slotStack.isEmpty())
+            if (slotStack.isEmpty()) {
                 slot.set(ItemStack.EMPTY);
-            else
+            } else {
                 slot.setChanged();
+            }
         }
         return stack;
     }
@@ -67,6 +71,11 @@ public abstract class GenericStorageContainer extends AbstractContainer {
     @Override
     public boolean stillValid(PlayerEntity player) {
         return player.isAlive() && stack == player.getMainHandItem();
+    }
+
+    private void onChangedCallback() {
+        if (inventory != null)
+            StorageItem.saveInventoryContents(stack, inventory);
     }
 
     @VisibleForTesting
@@ -80,18 +89,34 @@ public abstract class GenericStorageContainer extends AbstractContainer {
         return (int) (left + x * 18);
     }
 
-    public static class RestrictedSlot extends SlotItemHandler {
+    public static class RestrictedSlot extends Slot {
 
         final StorageItem.IInputFilter filter;
 
-        public RestrictedSlot(IItemHandler handler, StorageItem.IInputFilter filter, int id, int x, int y) {
-            super(handler, id, x, y);
+        public RestrictedSlot(IInventory inventory, StorageItem.IInputFilter filter, int id, int x, int y) {
+            super(inventory, id, x, y);
             this.filter = filter;
         }
 
         @Override
         public boolean mayPlace(@Nonnull ItemStack stack) {
             return filter.isValidInput(stack);
+        }
+    }
+
+    public static class SavingInventory extends Inventory {
+
+        private final Runnable callback;
+
+        public SavingInventory(int size, Runnable callback) {
+            super(size);
+            this.callback = callback;
+        }
+
+        @Override
+        public void setChanged() {
+            super.setChanged();
+            callback.run();
         }
     }
 }

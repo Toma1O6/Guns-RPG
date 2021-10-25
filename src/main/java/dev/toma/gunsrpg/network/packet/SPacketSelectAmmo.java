@@ -6,8 +6,8 @@ import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterialManager;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
-import dev.toma.gunsrpg.util.AmmoLocator;
 import dev.toma.gunsrpg.util.Lifecycle;
+import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
@@ -56,10 +56,10 @@ public class SPacketSelectAmmo extends AbstractNetworkPacket<SPacketSelectAmmo> 
 
     private void clearWeapon(PlayerEntity player, GunItem gun, ItemStack stack, int ammoAmount) {
         Item item = null;
-        AmmoLocator.ISearchConstraint constraint = AmmoLocator.ISearchConstraint.typeAndMaterial(gun.getAmmoType(), gun.getMaterialFromNBT(stack));
+        ILocatorPredicate<IAmmoProvider> predicate = provider -> provider.getAmmoType() == gun.getAmmoType() && provider.getMaterial() == gun.getMaterialFromNBT(stack);
         Lifecycle lifecycle = GunsRPG.getModLifecycle();
         for (IAmmoProvider ammo : lifecycle.getAllCompatibleAmmoProviders(gun)) {
-            if (constraint.isValidItem(ammo)) {
+            if (predicate.isValidResult(ammo)) {
                 item = (Item) ammo;
                 break;
             }

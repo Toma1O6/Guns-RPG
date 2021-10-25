@@ -10,7 +10,7 @@ import dev.toma.gunsrpg.client.animation.StagedReloadAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.util.AmmoLocator;
+import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.IAnimationLoader;
 import lib.toma.animations.api.IAnimationPipeline;
@@ -28,7 +28,6 @@ import java.util.List;
 public class StagedReloader implements IReloader {
 
     private final StageDefinitionContainer container;
-    private final AmmoLocator locator = new AmmoLocator();
 
     private GunItem reloadingGun;
     private ItemStack stack;
@@ -80,7 +79,7 @@ public class StagedReloader implements IReloader {
         if (player.isCreative()) {
             reloadingGun.setAmmoCount(stack, Math.min(reloadingGun.getAmmo(stack) + 1, max));
         } else {
-            ItemStack ammo = locator.findFirst(player.inventory, AmmoLocator.ISearchConstraint.typeAndMaterial(type, material));
+            ItemStack ammo = ItemLocator.findFirst(player.inventory, ItemLocator.typeAndMaterial(type, material));
             if (!ammo.isEmpty()) {
                 ammo.shrink(1);
                 reloadingGun.setAmmoCount(stack, Math.min(reloadingGun.getAmmo(stack) + 1, max));

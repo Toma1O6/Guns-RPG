@@ -11,10 +11,10 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.MaterialContainer;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSelectAmmo;
-import dev.toma.gunsrpg.util.AmmoLocator;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.RenderUtils;
+import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
@@ -84,7 +84,7 @@ public class ChooseAmmoScreen extends Screen {
             PlayerEntity player = Minecraft.getInstance().player;
             ItemStack stack = player.getMainHandItem();
             boolean isGun = stack.getItem() instanceof GunItem;
-            this.count = new AmmoLocator().count(player.inventory, provider -> provider.equals(ammo));
+            this.count = ItemLocator.countItems(player.inventory, ItemLocator.typeAndMaterial(ammo));
             this.active = false;
             this.stack = new ItemStack((Item) ammo);
             PlayerData.get(player).ifPresent(data -> {

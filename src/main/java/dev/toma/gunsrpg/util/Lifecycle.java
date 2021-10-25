@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
+import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
 import dev.toma.gunsrpg.util.recipes.smithing.SmithingRecipe;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
@@ -52,9 +53,9 @@ public final class Lifecycle {
         IAmmoMaterial material = item.getMaterialFromNBT(stack);
         if (material == null) return null;
         AmmoType ammoType = item.getAmmoType();
-        AmmoLocator.ISearchConstraint constraint = AmmoLocator.ISearchConstraint.typeAndMaterial(ammoType, material);
+        ILocatorPredicate<IAmmoProvider> predicate = provider -> ammoType == provider.getAmmoType() && material == provider.getMaterial();
         for (IAmmoProvider provider : getAllCompatibleAmmoProviders(item)) {
-            if (constraint.isValidItem(provider)) {
+            if (predicate.isValidResult(provider)) {
                 return provider;
             }
         }

@@ -5,7 +5,7 @@ import dev.toma.gunsrpg.api.common.IReloader;
 import dev.toma.gunsrpg.api.common.data.IReloadInfo;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.util.AmmoLocator;
+import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
@@ -31,10 +31,9 @@ public class ReloadInfo implements IReloadInfo {
 
     @Override
     public void startReloading(PlayerEntity player, GunItem gun, ItemStack stack, int slot) {
-        AmmoLocator locator = new AmmoLocator();
         AmmoType ammoType = gun.getAmmoType();
         IAmmoMaterial material = gun.getMaterialFromNBT(stack);
-        if (material != null && (player.isCreative() || locator.hasAmmo(player.inventory, AmmoLocator.ISearchConstraint.typeAndMaterial(ammoType, material)))) {
+        if (material != null && (player.isCreative() || !ItemLocator.findFirst(player.inventory, ItemLocator.typeAndMaterial(ammoType, material)).isEmpty())) {
             activeReloadManager = gun.getReloadManager(player).createReloadHandler();
             activeReloadManager.initiateReload(player, gun, stack);
             reloadingSlot = slot;
