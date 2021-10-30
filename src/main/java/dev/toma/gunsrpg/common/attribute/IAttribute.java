@@ -19,15 +19,15 @@ public interface IAttribute {
 
     void tickAttributes();
 
-    void addModifier(IAttributeModifier modifier);
+    void addModifier(IModifierProvider provider);
 
-    void removeModifier(IAttributeModifier modifier);
+    void removeModifier(IModifierProvider provider);
 
     void removeModifierById(UUID modifierId);
 
     void removeAllModifiers();
 
-    IAttributeModifier getModifier(IAttributeModifier modifier);
+    IAttributeModifier getModifier(IModifierProvider provider);
 
     Collection<IAttributeModifier> listModifiers();
 

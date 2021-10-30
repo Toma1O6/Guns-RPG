@@ -178,7 +178,7 @@ public final class MainRenderPipeline implements IRenderPipeline {
                 stack.translate(-0.5F, 0.6F, -0.36F);
                 playerRenderer.renderLeftHand(stack, buffer, light, mc.player);
             }
-            stack.mulPose(Vector3f.ZP.rotationDegrees(-41.0F)); // ??? what is this doing
+            stack.mulPose(Vector3f.ZP.rotationDegrees(-41.0F));
         }
         stack.popPose();
     }

@@ -15,9 +15,14 @@ import dev.toma.gunsrpg.common.item.guns.*;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.common.item.heal.AttributeAccessHealItem;
+import dev.toma.gunsrpg.common.item.heal.ContinuousHealingItem;
+import dev.toma.gunsrpg.common.item.heal.DebuffHealItem;
+import dev.toma.gunsrpg.common.item.heal.PlayerHealItem;
 import dev.toma.gunsrpg.common.skills.*;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
+import dev.toma.gunsrpg.util.Constants;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.helper.StorageUtil;
 import net.minecraft.block.AbstractBlock;
@@ -273,6 +278,48 @@ public class CommonRegistry {
                         .onUse(data -> data.heal(Debuffs.BLEED, 25))
                         .describe("Heals 25% of bleeding progress")
                         .animate(50, AnimationPaths.BANDAGE)
+                        .build(),
+                AttributeAccessHealItem.define("hemostat")
+                        .modifyAttributes(Attribs.BLEED_BLOCK, Constants.ModifierIds.MED_BLEEDING_BLOCK, Attribs.BLEED_DELAY, Constants.ModifierIds.MED_BLEEDING_DELAY)
+                        .defineSound(() -> ModSounds.USE_VACCINE)
+                        .describe("Bleeding:", "Disabled for 60 seconds", "Spread speed: -30%")
+                        .animate(60, AnimationPaths.HEMOSTAT)
+                        .build(),
+                AttributeAccessHealItem.define("vitamins")
+                        .modifyAttributes(Attribs.INFECTION_BLOCK, Constants.ModifierIds.MED_INFECTION_BLOCK, Attribs.INFECTION_DELAY, Constants.ModifierIds.MED_INFECTION_DELAY)
+                        .defineSound(() -> ModSounds.USE_ANTIDOTUM_PILLS)
+                        .describe("Infection:", "Disabled for 60 seconds", "Spread speed: -30%")
+                        .animate(60, AnimationPaths.VITAMINS)
+                        .build(),
+                AttributeAccessHealItem.define("propital")
+                        .modifyAttributes(Attribs.FRACTURE_BLOCK, Constants.ModifierIds.MED_FRACTURE_BLOCK, Attribs.FRACTURE_DELAY, Constants.ModifierIds.MED_FRACTURE_DELAY)
+                        .defineSound(() -> ModSounds.USE_VACCINE)
+                        .describe("Fracture:", "Disabled for 60 seconds", "Spread speed: -30%")
+                        .animate(60, AnimationPaths.INJECTION)
+                        .build(),
+                AttributeAccessHealItem.define("calcium_shot")
+                        .modifyAttributes(Attribs.POISON_BLOCK, Constants.ModifierIds.MED_POISON_BLOCK, Attribs.POISON_DELAY, Constants.ModifierIds.MED_POISON_DELAY)
+                        .defineSound(() -> ModSounds.USE_ANTIDOTUM_PILLS)
+                        .describe("Poison:", "Disabled for 60 seconds", "Spread speed: -30%")
+                        .animate(60, AnimationPaths.PILLS)
+                        .build(),
+                ContinuousHealingItem.define("ufak")
+                        .uses(65)
+                        .prepareIn(50)
+                        .defineSound(() -> ModSounds.USE_BANDAGE)
+                        .canUse(player -> player.getHealth() < player.getMaxHealth())
+                        .onUse(player -> player.heal(1))
+                        .describe("Recovers 0.5 hearts")
+                        .animate(20, AnimationPaths.BANDAGE)
+                        .build(),
+                ContinuousHealingItem.define("kodiak")
+                        .uses(150)
+                        .prepareIn(50)
+                        .defineSound(() -> ModSounds.USE_BANDAGE)
+                        .canUse(player -> player.getHealth() < player.getMaxHealth())
+                        .onUse(player -> player.heal(1))
+                        .describe("Recovers 0.5 hearts")
+                        .animate(30, AnimationPaths.BANDAGE)
                         .build(),
                 PlayerHealItem.define("analgetics")
                         .defineSound(() -> ModSounds.USE_ANTIDOTUM_PILLS)

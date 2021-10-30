@@ -24,10 +24,6 @@ public final class ItemLocator extends AbstractLocator<ItemStack, IInventory> {
         return stack.isEmpty();
     }
 
-    public static ILocatorPredicate<IAmmoProvider> ammoProviderPredicate(IAmmoProvider provider) {
-        return provider1 -> provider1.getAmmoType() == provider.getAmmoType() && provider1.getMaterial() == provider.getMaterial();
-    }
-
     public static ILocatorPredicate<ItemStack> typeAndMaterial(IAmmoProvider provider) {
         return typeAndMaterial(provider.getAmmoType(), provider.getMaterial());
     }

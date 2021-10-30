@@ -1,23 +1,10 @@
 package dev.toma.gunsrpg.common.attribute;
 
 import java.util.UUID;
+import static dev.toma.gunsrpg.util.Constants.ModifierIds.*;
 
 public final class Modifiers {
 
-    /* COMMON UIDS */
-    private static final UUID GUNPOWDER_CRAFTING                        = UUID.fromString("CEDCAFA0-D339-468E-BF56-D453F699150C");
-    private static final UUID BONEMEAL_CRAFTING                         = UUID.fromString("AA74ADD7-9563-4010-B297-C306D62DBFBB");
-    private static final UUID BLAZEPOWEDER_CRAFTING                     = UUID.fromString("95D99500-1C6B-4606-B538-4D2E6BEEE992");
-    private static final UUID DEBUFF_RESISTANCE                         = UUID.fromString("350CA2D7-CAF4-45D8-BAB5-6D771B91E730");
-    private static final UUID DEBUFF_DELAY                              = UUID.fromString("6A1CA092-663E-4D93-9C2C-293D7F00E8BC");
-    private static final UUID FALL_RESIST                               = UUID.fromString("F5D40845-1AF8-4161-BFE5-CA9FA2E1262D");
-    private static final UUID EXPLOSION_RESIST                          = UUID.fromString("CA61F3D5-F9BC-403A-938A-975267FE9BC5");
-    private static final UUID CHOPPING_SPEED                            = UUID.fromString("577D3670-CAB2-4F8B-9234-CAB30C9D2A83");
-    private static final UUID MINING_SPEED                              = UUID.fromString("6F0F3C0C-A60B-407E-8549-6043B233413D");
-    private static final UUID DIGGING_SPEED                             = UUID.fromString("E3ED52EF-9DDC-493C-96AF-7EF87E9997B7");
-    private static final UUID STRONG_MUSCLES                            = UUID.fromString("63A449AE-F2B0-4A23-8775-4768F31AAC85");
-    private static final UUID AGILITY                                   = UUID.fromString("78FA0A5E-8710-4B1A-B045-4DBDE8F00C40");
-    private static final UUID SKULL_CRUSHER                             = UUID.fromString("64D17643-9A3C-4468-8944-16319D0C24E6");
     /* Crafting modifiers */
     public static final IAttributeModifier GUNPOWDER_I                  = new AttributeModifier(GUNPOWDER_CRAFTING, AttributeOps.SUM, 2);
     public static final IAttributeModifier GUNPOWDER_II                 = new AttributeModifier(GUNPOWDER_CRAFTING, AttributeOps.SUM, 4);

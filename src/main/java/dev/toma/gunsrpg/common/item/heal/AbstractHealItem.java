@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.item;
+package dev.toma.gunsrpg.common.item.heal;
 
 import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.item.BaseItem;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;
 import net.minecraft.client.util.ITooltipFlag;
@@ -37,7 +38,11 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
     private final ResourceLocation useAnimation;
 
     protected AbstractHealItem(HealBuilder<T, ?> builder) {
-        super(builder.name, new Properties().tab(ModTabs.ITEM_TAB));
+        this(builder, new Properties().stacksTo(10));
+    }
+
+    protected AbstractHealItem(HealBuilder<T, ?> builder, Properties properties) {
+        super(builder.name, properties.tab(ModTabs.ITEM_TAB));
         useTime = builder.useTime;
         description = builder.description;
         useSound = builder.useSound;
@@ -99,7 +104,7 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
                 PlayerEntity player = (PlayerEntity) entity;
                 PlayerData.get(player).ifPresent(data -> {
                     T target = getTargetObject(world, player, data);
-                    useAction.accept(target);
+                    applyAction(target);
                     if (data.getSkills().hasSkill(Skills.EFFICIENT_MEDS))
                         player.heal(4.0F);
                     if (!player.isCreative())
@@ -124,6 +129,22 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
     @Override
     public boolean disableVanillaAnimations() {
         return false;
+    }
+
+    public int getUseTime() {
+        return useTime;
+    }
+
+    protected void applyAction(T target) {
+        useAction.accept(target);
+    }
+
+    protected int getAnimationLength() {
+        return useTime;
+    }
+
+    protected IAnimation constructAnimation(IKeyframeProvider provider, int length) {
+        return new Animation(provider, length);
     }
 
     public static abstract class HealBuilder<T, H extends AbstractHealItem<T>> {

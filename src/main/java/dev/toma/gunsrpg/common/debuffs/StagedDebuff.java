@@ -42,7 +42,9 @@ public class StagedDebuff implements IStagedDebuff {
                 updateStage();
                 if (!player.level.isClientSide) data.sync(DataFlags.DEBUFF);
             }
-            current.getStageEvent().accept(player);
+            if (!type.isTemporarilyDisabled(data.getAttributes())) {
+                current.getStageEvent().accept(player);
+            }
         }
     }
 

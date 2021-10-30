@@ -19,7 +19,7 @@ public class VectorRenderer extends AbstractWeaponRenderer {
                 stack.translate(-0.2, 0.28, 0.3);
                 break;
             case FIRST_PERSON_RIGHT_HAND:
-                stack.translate(0.0, 0.25, 0.0);
+                stack.translate(-0.1, 0.4, 0.0);
                 break;
         }
     }

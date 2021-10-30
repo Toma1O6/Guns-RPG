@@ -126,6 +126,13 @@ public class MutableKeyframe implements IKeyframe {
         this.easing = easing;
     }
 
+    @Override
+    public String toString() {
+        return "rotation=" + rotation +
+                ", rot0=" + rot0 +
+                ", relRot=" + relRot;
+    }
+
     private void updateRelativePos() {
         relPos = Keyframes.getRelativePosition(position, pos0);
     }

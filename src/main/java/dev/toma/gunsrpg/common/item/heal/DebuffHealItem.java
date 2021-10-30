@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.item;
+package dev.toma.gunsrpg.common.item.heal;
 
 import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;

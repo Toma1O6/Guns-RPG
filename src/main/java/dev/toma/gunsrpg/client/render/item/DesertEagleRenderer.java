@@ -19,7 +19,7 @@ public class DesertEagleRenderer extends AbstractWeaponRenderer {
                 stack.translate(-0.2, 0.1, 0.6);
                 break;
             case FIRST_PERSON_RIGHT_HAND:
-                stack.translate(0.0, 0.15, 0.0);
+                stack.translate(0.0, 0.15, 0.2);
                 break;
         }
     }

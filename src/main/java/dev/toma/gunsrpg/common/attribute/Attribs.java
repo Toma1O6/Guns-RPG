@@ -28,12 +28,16 @@ public final class Attribs {
     public static final IAttributeId BANDAGE_EFFECT             = createInternal("bandage_effect");
     public static final IAttributeId POISON_RESISTANCE          = createInternal("poison_resistance", 0.0);
     public static final IAttributeId POISON_DELAY               = createInternal("poison_delay", 140);
+    public static final IAttributeId POISON_BLOCK               = createInternal("poison_block", 0);
     public static final IAttributeId INFECTION_RESISTANCE       = createInternal("infection_resistance", 0.0);
     public static final IAttributeId INFECTION_DELAY            = createInternal("infection_delay", 200);
+    public static final IAttributeId INFECTION_BLOCK            = createInternal("infection_block", 0);
     public static final IAttributeId FRACTURE_RESISTANCE        = createInternal("fracture_resistance", 0.0);
     public static final IAttributeId FRACTURE_DELAY             = createInternal("fracture_delay", 240);
+    public static final IAttributeId FRACTURE_BLOCK             = createInternal("fracture_block", 0);
     public static final IAttributeId BLEED_RESISTANCE           = createInternal("bleed_resistance", 0.0);
     public static final IAttributeId BLEED_DELAY                = createInternal("bleed_delay", 120);
+    public static final IAttributeId BLEED_BLOCK                = createInternal("bleed_block", 0);
     public static final IAttributeId EXPLOSION_RESISTANCE       = createInternal("explosion_resistance", 0.0);
     public static final IAttributeId FALL_RESISTANCE            = createInternal("fall_resistance", 0.0);
     // global weapon attributes

@@ -4,6 +4,8 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.item.*;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
+import dev.toma.gunsrpg.common.item.heal.DebuffHealItem;
+import dev.toma.gunsrpg.common.item.heal.PlayerHealItem;
 import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder(GunsRPG.MODID)

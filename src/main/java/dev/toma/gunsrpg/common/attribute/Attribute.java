@@ -75,7 +75,8 @@ public class Attribute implements IAttribute {
     }
 
     @Override
-    public void addModifier(IAttributeModifier modifier) {
+    public void addModifier(IModifierProvider provider) {
+        IAttributeModifier modifier = provider.getModifier();
         IAttributeModifier oldModifier = modifierMap.put(modifier.getUid(), modifier);
         if (oldModifier instanceof ITickableModifier) {
             temporaryModifiers.remove(oldModifier);
@@ -88,8 +89,8 @@ public class Attribute implements IAttribute {
     }
 
     @Override
-    public void removeModifier(IAttributeModifier modifier) {
-        removeModifierById(modifier.getUid());
+    public void removeModifier(IModifierProvider provider) {
+        removeModifierById(provider.getModifier().getUid());
     }
 
     @Override
@@ -108,8 +109,8 @@ public class Attribute implements IAttribute {
     }
 
     @Override
-    public IAttributeModifier getModifier(IAttributeModifier modifier) {
-        return modifierMap.get(modifier.getUid());
+    public IAttributeModifier getModifier(IModifierProvider provider) {
+        return modifierMap.get(provider.getModifier().getUid());
     }
 
     @Override

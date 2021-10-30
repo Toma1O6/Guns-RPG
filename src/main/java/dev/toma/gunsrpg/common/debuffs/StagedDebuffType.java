@@ -16,6 +16,7 @@ public class StagedDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
 
     private final IAttributeId delay;
     private final IAttributeId resistance;
+    private final IAttributeId blockingAttribute;
     private final ToFloatFunction<IDebuffContext>[] applyConditions;
     private final LinkedStage head;
 
@@ -24,6 +25,7 @@ public class StagedDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
         super(builder);
         this.delay = builder.delayAttribute;
         this.resistance = builder.resistanceAttribute;
+        this.blockingAttribute = builder.blockingAttribute;
         this.applyConditions = builder.conditions.toArray(new ToFloatFunction[0]);
         this.head = builder.head;
     }
@@ -50,6 +52,10 @@ public class StagedDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
         return provider.getAttribute(delay).intValue();
     }
 
+    public boolean isTemporarilyDisabled(IAttributeProvider provider) {
+        return provider.getAttribute(blockingAttribute).intValue() > 0;
+    }
+
     public LinkedStage firstStage() {
         return head;
     }
@@ -57,12 +63,6 @@ public class StagedDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
     @Override
     public int getFlags() {
         return TriggerFlags.HURT.getValue();
-    }
-
-    public static StagedDebuffType<IStagedDebuff> createPoisonType() {
-        return new StagedBuilder<>()
-
-                .build();
     }
 
     public static class LinkedStage {
@@ -95,9 +95,10 @@ public class StagedDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
 
     public static class StagedBuilder<D extends IStagedDebuff> implements IDebuffBuilder<D> {
 
+        private final List<ToFloatFunction<IDebuffContext>> conditions = new ArrayList<>();
         private IAttributeId delayAttribute;
         private IAttributeId resistanceAttribute;
-        private List<ToFloatFunction<IDebuffContext>> conditions = new ArrayList<>();
+        private IAttributeId blockingAttribute;
         private LinkedStage head;
         private LinkedStage last;
         private IFactory<D> factory;
@@ -110,6 +111,11 @@ public class StagedDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
 
         public StagedBuilder<D> resistance(IAttributeId attributeId) {
             this.resistanceAttribute = attributeId;
+            return this;
+        }
+
+        public StagedBuilder<D> blockingAttribute(IAttributeId attributeId) {
+            this.blockingAttribute = attributeId;
             return this;
         }
 
