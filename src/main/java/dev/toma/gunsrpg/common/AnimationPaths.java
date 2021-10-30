@@ -10,6 +10,9 @@ public final class AnimationPaths {
     public static final ResourceLocation PILLS = GunsRPG.makeResource("pills");
     public static final ResourceLocation BANDAGE = GunsRPG.makeResource("bandage");
     public static final ResourceLocation SPLINT = GunsRPG.makeResource("splint");
+    public static final ResourceLocation HEMOSTAT = GunsRPG.makeResource("hemostat");
+    public static final ResourceLocation VITAMINS = GunsRPG.makeResource("vitamins");
+    public static final ResourceLocation STIM = GunsRPG.makeResource("stim");
 
     private AnimationPaths() {}
 }
