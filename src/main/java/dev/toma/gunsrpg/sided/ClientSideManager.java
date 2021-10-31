@@ -11,6 +11,7 @@ import dev.toma.gunsrpg.client.screen.*;
 import dev.toma.gunsrpg.client.screen.skills.PlayerSkillsScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.*;
+import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;
 import lib.toma.animations.api.lifecycle.Registries;
@@ -56,6 +57,7 @@ public class ClientSideManager {
     }
 
     public void clientSetup(FMLClientSetupEvent event) {
+
         // entity renderers
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.AIRDROP.get(),             AirdropRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.EXPLOSIVE_SKELETON.get(),  ExplosiveSkeletonRenderer::new);

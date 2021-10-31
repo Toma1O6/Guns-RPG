@@ -5,5 +5,5 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
 
 public interface IProjectileEjector {
-    Projectile createProjectile(EntityType<? extends Projectile> type, World level, LivingEntity source);
+    AbstractProjectile createProjectile(EntityType<? extends AbstractProjectile> type, World level, LivingEntity source);
 }

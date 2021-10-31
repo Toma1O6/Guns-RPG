@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.debuffs;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -42,10 +43,15 @@ public class StagedDebuff implements IStagedDebuff {
                 updateStage();
                 if (!player.level.isClientSide) data.sync(DataFlags.DEBUFF);
             }
-            if (!type.isTemporarilyDisabled(data.getAttributes())) {
+            if (!isFrozen(data.getAttributes())) {
                 current.getStageEvent().accept(player);
             }
         }
+    }
+
+    @Override
+    public boolean isFrozen(IAttributeProvider attributes) {
+        return type.isTemporarilyDisabled(attributes);
     }
 
     @Override

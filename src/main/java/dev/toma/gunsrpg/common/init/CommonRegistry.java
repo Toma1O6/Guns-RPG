@@ -283,25 +283,25 @@ public class CommonRegistry {
                         .modifyAttributes(Attribs.BLEED_BLOCK, Constants.ModifierIds.MED_BLEEDING_BLOCK, Attribs.BLEED_DELAY, Constants.ModifierIds.MED_BLEEDING_DELAY)
                         .defineSound(() -> ModSounds.USE_VACCINE)
                         .describe("Bleeding:", "Disabled for 60 seconds", "Spread speed: -30%")
-                        .animate(60, AnimationPaths.HEMOSTAT)
+                        .animate(40, AnimationPaths.HEMOSTAT)
                         .build(),
                 AttributeAccessHealItem.define("vitamins")
                         .modifyAttributes(Attribs.INFECTION_BLOCK, Constants.ModifierIds.MED_INFECTION_BLOCK, Attribs.INFECTION_DELAY, Constants.ModifierIds.MED_INFECTION_DELAY)
                         .defineSound(() -> ModSounds.USE_ANTIDOTUM_PILLS)
                         .describe("Infection:", "Disabled for 60 seconds", "Spread speed: -30%")
-                        .animate(60, AnimationPaths.VITAMINS)
+                        .animate(30, AnimationPaths.VITAMINS)
                         .build(),
                 AttributeAccessHealItem.define("propital")
                         .modifyAttributes(Attribs.FRACTURE_BLOCK, Constants.ModifierIds.MED_FRACTURE_BLOCK, Attribs.FRACTURE_DELAY, Constants.ModifierIds.MED_FRACTURE_DELAY)
                         .defineSound(() -> ModSounds.USE_VACCINE)
                         .describe("Fracture:", "Disabled for 60 seconds", "Spread speed: -30%")
-                        .animate(60, AnimationPaths.INJECTION)
+                        .animate(30, AnimationPaths.STIM)
                         .build(),
                 AttributeAccessHealItem.define("calcium_shot")
                         .modifyAttributes(Attribs.POISON_BLOCK, Constants.ModifierIds.MED_POISON_BLOCK, Attribs.POISON_DELAY, Constants.ModifierIds.MED_POISON_DELAY)
                         .defineSound(() -> ModSounds.USE_ANTIDOTUM_PILLS)
                         .describe("Poison:", "Disabled for 60 seconds", "Spread speed: -30%")
-                        .animate(60, AnimationPaths.PILLS)
+                        .animate(30, AnimationPaths.STIM)
                         .build(),
                 ContinuousHealingItem.define("ufak")
                         .uses(65)
@@ -310,7 +310,7 @@ public class CommonRegistry {
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> player.heal(1))
                         .describe("Recovers 0.5 hearts")
-                        .animate(20, AnimationPaths.BANDAGE)
+                        .animate(20, AnimationPaths.UFAK)
                         .build(),
                 ContinuousHealingItem.define("kodiak")
                         .uses(150)
@@ -319,7 +319,7 @@ public class CommonRegistry {
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> player.heal(1))
                         .describe("Recovers 0.5 hearts")
-                        .animate(30, AnimationPaths.BANDAGE)
+                        .animate(30, AnimationPaths.KODIAK)
                         .build(),
                 PlayerHealItem.define("analgetics")
                         .defineSound(() -> ModSounds.USE_ANTIDOTUM_PILLS)
@@ -350,9 +350,9 @@ public class CommonRegistry {
                 PlayerHealItem.define("morphine")
                         .defineSound(() -> ModSounds.USE_VACCINE)
                         .onUse(PlayerHealItem::onMorphineUsed)
-                        .describe("Recovers 7 hearts", "Effects:", "Regeneration II for 15 seconds", "Strength II for 30 seconds",
-                                "Resistance I for 45 seconds", "Additional 20% to projectile damage")
-                        .animate(32, AnimationPaths.PILLS)
+                        .describe("Recovers 7 hearts", "Effects:", "Regeneration II for 15 seconds", "Strength II for 45 seconds",
+                                "Resistance I for 60 seconds")
+                        .animate(32, AnimationPaths.INJECTION)
                         .build(),
                 new AmmoItem("wooden_ammo_9mm", AmmoType._9MM, AmmoMaterials.WOOD),
                 new AmmoItem("wooden_ammo_45acp", AmmoType._45ACP, AmmoMaterials.WOOD),

@@ -31,5 +31,5 @@ Hardcore Minecraft mod with RPG elements.
     modId="configuration"
     mandatory=true
     versionRange="[1.2.1,1.3)"
-    ordering="BEFORE"
+    ordering="NONE"
     side="BOTH"

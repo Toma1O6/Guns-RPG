@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.debuffs;
 
 import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.api.common.data.ISkills;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -64,6 +65,11 @@ public class ReducedHealthDebuff implements IDebuff {
     @Override
     public boolean shouldRemove() {
         return !isActive();
+    }
+
+    @Override
+    public boolean isFrozen(IAttributeProvider attributes) {
+        return false;
     }
 
     private boolean isActive() {

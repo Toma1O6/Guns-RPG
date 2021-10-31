@@ -26,6 +26,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.thread.SidedThreadGroups;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -54,13 +55,14 @@ public class GunsRPG {
         eventBus.addListener(this::commonSetup);
         // other events
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
-        // TODO move to client side manager?
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+
+        ThreadGroup group = Thread.currentThread().getThreadGroup();
+        if (group.getName().equals("main")) {
             ClientSideManager.instance().animationSetup();
             IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
             renderPipeline.register(MinecraftForge.EVENT_BUS);
             AnimationEngine.get().startEngine(ModConfig.clientConfig.developerMode.get());
-        });
+        }
 
         modLifecycle.modInit();
 

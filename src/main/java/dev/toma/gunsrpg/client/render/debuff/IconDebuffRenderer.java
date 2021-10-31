@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.client.render.debuff;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.debuffs.IStagedDebuff;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.math.Mth;
@@ -35,7 +36,7 @@ public class IconDebuffRenderer<D extends IStagedDebuff> implements IDebuffRende
     }
 
     @Override
-    public void drawOnScreen(D debuff, MatrixStack poseStack, int left, int top, int width, int height, float partialTicks) {
+    public void drawOnScreen(D debuff, IAttributeProvider attributes, MatrixStack poseStack, int left, int top, int width, int height, float partialTicks) {
         Minecraft mc = Minecraft.getInstance();
         TextureManager manager = mc.getTextureManager();
         Matrix4f pose = poseStack.last().pose();
@@ -52,15 +53,18 @@ public class IconDebuffRenderer<D extends IStagedDebuff> implements IDebuffRende
         RenderUtils.drawColoredTex(pose, left + 2, top + 2, left + 18, top + 18, 0xFFFFFF | iconFadeIn);
         String text = debuff.getCurrentProgress() + " %";
         int textWidth = font.width(text);
-        int resultColor = getTextColor(debuff, textFadeIn, colorFadeInEffect);
+        int resultColor = getTextColor(debuff, attributes, textFadeIn, colorFadeInEffect);
         font.draw(poseStack, text, left + width - 5 - textWidth, top + 6.5F, resultColor);
     }
 
-    private int getTextColor(D debuff, int textFadeIn, int colorFadeIn) {
+    private int getTextColor(D debuff, IAttributeProvider attributes, int textFadeIn, int colorFadeIn) {
         int healProgress = debuff.ticksSinceHealed();
         int damageProgress = debuff.ticksSinceProgressed();
         boolean isHealing = healProgress < damageProgress && healProgress < 15;
         float effect;
+        if (debuff.isFrozen(attributes)) {
+            return 0xffff;
+        }
         if (isHealing) {
             effect = Mth.asLinearFunction(healProgress, 0, controls.effectLength);
             int clr = Math.min((int) (effect * 0xff), colorFadeIn);

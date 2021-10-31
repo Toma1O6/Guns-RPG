@@ -14,10 +14,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -110,7 +107,8 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
                     if (!player.isCreative())
                         stack.shrink(1);
                 });
-
+                CooldownTracker tracker = player.getCooldowns();
+                tracker.addCooldown(stack.getItem(), 30);
             }
         }
         return stack;

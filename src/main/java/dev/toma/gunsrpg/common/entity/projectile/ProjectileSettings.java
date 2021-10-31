@@ -6,7 +6,6 @@ import net.minecraft.util.SoundEvent;
 
 public final class ProjectileSettings {
 
-    private final float gravityForce = 0.002F;
     private final int delay;
     private final boolean supersonic;
     private final float damage;
@@ -36,7 +35,7 @@ public final class ProjectileSettings {
         return velocity;
     }
 
-    public boolean shouldApplyGravity(Projectile projectile) {
+    public boolean shouldApplyGravity(AbstractProjectile projectile) {
         return projectile.tickCount > delay;
     }
 

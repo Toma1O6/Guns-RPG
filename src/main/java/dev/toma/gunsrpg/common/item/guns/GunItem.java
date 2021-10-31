@@ -89,10 +89,10 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry, IP
         return false;
     }
 
-    public void onHitEntity(Projectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+    public void onHitEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
     }
 
-    public void onKillEntity(Projectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+    public void onKillEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
     }
 
     protected SoundEvent getShootSound(PlayerEntity entity) {
@@ -107,18 +107,9 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry, IP
         return ReloadManagers.fullMagLoading();
     }
 
-    public IPenetrationConfig createPenetrationConfig() {
-        return IPenetrationConfig.none();
-    }
-
-    public IProjectileConfig createProjectileConfig(LivingEntity source) {
-        return new StandartProjectileConfig(source, this);
-    }
-
     @Override
-    public Projectile createProjectile(EntityType<? extends Projectile> type, World level, LivingEntity source) {
-        IProjectileConfig config = this.createProjectileConfig(source);
-        Projectile projectile = new Projectile(type, level, config);
+    public AbstractProjectile createProjectile(EntityType<? extends AbstractProjectile> type, World level, LivingEntity source) {
+        AbstractProjectile projectile = new Bullet(type, level, null, null);
         float inaccuracy = source instanceof PlayerEntity ? PlayerData.getValueSafe((PlayerEntity) source, data -> data.getAimInfo().isAiming() ? 0.0F : 0.3F, getMobInaccuracy(level)) : getMobInaccuracy(level);
         projectile.fire(source.xRot, source.yRot, inaccuracy);
         return projectile;
@@ -151,7 +142,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry, IP
             }
         }
         // TODO projectile type
-        Projectile projectile = this.createProjectile(null, world, entity);
+        AbstractProjectile projectile = this.createProjectile(null, world, entity);
         world.addFreshEntity(projectile);
         this.setAmmoCount(stack, this.getAmmo(stack) - 1);
         world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);

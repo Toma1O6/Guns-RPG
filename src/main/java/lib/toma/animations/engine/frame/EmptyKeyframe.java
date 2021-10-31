@@ -13,7 +13,10 @@ public class EmptyKeyframe implements IKeyframe {
     private final Easing easing;
     private Vector3d pos = Vector3d.ZERO;
     private Vector3d rot = Vector3d.ZERO;
+    private Vector3d relativePos = Vector3d.ZERO;
+    private Vector3d relativeRot = Vector3d.ZERO;
     private Quaternion rotQuat = Quaternion.ONE;
+    private Quaternion relativeRotQuat = Quaternion.ONE;
 
     protected EmptyKeyframe(float endpoint, Easing easing) {
         this.endpoint = endpoint;
@@ -55,12 +58,12 @@ public class EmptyKeyframe implements IKeyframe {
 
     @Override
     public Vector3d relativePos() {
-        return positionTarget();
+        return relativePos;
     }
 
     @Override
     public Vector3d relativeRot() {
-        return rotationTarget();
+        return relativeRot;
     }
 
     @Override
@@ -70,7 +73,7 @@ public class EmptyKeyframe implements IKeyframe {
 
     @Override
     public Quaternion getRotationQuaternion() {
-        return Quaternion.ONE;
+        return relativeRotQuat;
     }
 
     @Override
@@ -82,6 +85,9 @@ public class EmptyKeyframe implements IKeyframe {
     public void baseOn(IKeyframe parent) {
         pos = Keyframes.getInitialPosition(parent);
         rot = Keyframes.getInitialRotation(parent);
+        relativePos = Vector3d.ZERO.subtract(pos);
+        relativeRot = Vector3d.ZERO.subtract(rot);
         rotQuat = Keyframes.rotationVector2Quaternion(rot);
+        relativeRotQuat = Keyframes.rotationVector2Quaternion(relativeRot);
     }
 }

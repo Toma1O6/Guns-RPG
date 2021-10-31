@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.entity.projectile;
 
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.ModDamageSources;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,10 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -26,10 +24,8 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import java.util.*;
 import java.util.function.Consumer;
 
-public final class Projectile extends ProjectileEntity {
+public abstract class AbstractProjectile extends ProjectileEntity {
 
-    private final IProjectileConfig config;
-    private final EnumProjectileType renderType;
     private final ProjectileSettings settings;
     private final Set<UUID> passedPlayers;
 
@@ -37,21 +33,32 @@ public final class Projectile extends ProjectileEntity {
     private float projectileDamage;
     boolean invalid;
 
-    public Projectile(EntityType<? extends Projectile> type, World world, IProjectileConfig config) {
+    public AbstractProjectile(EntityType<? extends AbstractProjectile> type, World world, ProjectileSettings settings, LivingEntity owner) {
         super(type, world);
-        this.config = config;
-        this.renderType = config.getRenderType();
-        this.settings = config.getSettings();
-        this.config.assignControlObj(this);
-
+        this.settings = settings;
         this.passedPlayers = settings.isSuperSonic() ? new HashSet<>() : Collections.emptySet();
-
-        LivingEntity owner = config.getOwner();
         this.setOwner(owner);
         this.weapon = owner.getMainHandItem();
     }
 
+    @Override
+    public abstract boolean shouldRenderAtSqrDistance(double distance);
+
+    public abstract void preTick();
+
+    public abstract void postTick();
+
+    @Override
+    protected abstract void onHitBlock(BlockRayTraceResult result);
+
+    @Override
+    protected abstract void onHitEntity(EntityRayTraceResult result);
+
     /* Public methods */
+
+    public boolean allowBaseTick() {
+        return true;
+    }
 
     public void fire(float xRot, float yRot, float inaccuracy) {
         float velocity = settings.getActualVelocity();
@@ -107,14 +114,9 @@ public final class Projectile extends ProjectileEntity {
     }
 
     @Override
-    public boolean shouldRenderAtSqrDistance(double dist) {
-        return renderType.shouldRender();
-    }
-
-    @Override
     public void tick() {
-        config.tickPre();
-        if (config.allowBaseTick())
+        preTick();
+        if (allowBaseTick())
             super.tick();
         updateDirection();
         Vector3d v1 = position();
@@ -122,8 +124,7 @@ public final class Projectile extends ProjectileEntity {
         checkForCollisions(v1, v2);
         if (settings.isSuperSonic())
             passAround();
-        config.tickSettings(settings);
-        config.tickPost();
+        postTick();
     }
 
     public ItemStack getWeapon() {
@@ -137,21 +138,6 @@ public final class Projectile extends ProjectileEntity {
     /* Protected methods */
 
     @Override
-    protected void onHitBlock(BlockRayTraceResult rayTrace) {
-        config.hitBlock(rayTrace);
-    }
-
-    @Override
-    protected void onHitEntity(EntityRayTraceResult rayTrace) {
-        config.hitEntity(rayTrace);
-    }
-
-    @Override
-    protected boolean canHitEntity(Entity entity) {
-        return entity != config.getPenetrationConfig().getLastHit() && super.canHitEntity(entity);
-    }
-
-    @Override
     protected void defineSynchedData() {}
 
     /* Package methods */
@@ -159,8 +145,13 @@ public final class Projectile extends ProjectileEntity {
     /**
      * Updates projectile direction
      */
-    void updateDirection() {
-        config.updateDirection();
+    protected void updateDirection() {
+        Vector3d delta = getDeltaMovement();
+        float motionSqrt = MathHelper.sqrt(delta.x * delta.x + delta.z * delta.z);
+        yRot = (float) (MathHelper.atan2(delta.x, delta.z) * (180.0F / Math.PI));
+        xRot = (float) (MathHelper.atan2(delta.y, motionSqrt) * (180.0F / Math.PI));
+        yRotO = yRot;
+        xRotO = xRot;
     }
 
     /**
@@ -205,7 +196,7 @@ public final class Projectile extends ProjectileEntity {
         if (living) {
             LivingEntity livingEntity = (LivingEntity) entity;
             boolean willDie = livingEntity.getHealth() - projectileDamage <= 0.0F;
-            config.hurtTarget(owner, entity, damage);
+            livingEntity.hurt(ModDamageSources.dealWeaponDamage(owner, this, weapon), damage);
             if (weapon.getItem() instanceof GunItem) {
                 GunItem gun = (GunItem) weapon.getItem();
                 if (willDie)
@@ -214,7 +205,7 @@ public final class Projectile extends ProjectileEntity {
                     gun.onHitEntity(this, livingEntity, weapon, (LivingEntity) owner);
             }
         } else if (entity instanceof PartEntity<?>) {
-            config.hurtTarget(owner, entity, damage);
+            entity.hurt(ModDamageSources.dealWeaponDamage(owner, this, weapon), damage);
         }
     }
 
@@ -235,7 +226,8 @@ public final class Projectile extends ProjectileEntity {
     private void aggroNearby(PlayerEntity player) {
         PlayerData.get(player).ifPresent(data -> {
             double mobScareRange = 25.0;
-            double noiseMultiplier = config.getNoiseMultiplier(data.getAttributes());
+            GunItem gun = (GunItem) weapon.getItem();
+            double noiseMultiplier = gun.getNoiseMultiplier(data.getAttributes());
             double actualScareRange = mobScareRange * noiseMultiplier;
             Entity owner = getOwner();
             if (owner instanceof PlayerEntity) {
@@ -253,7 +245,8 @@ public final class Projectile extends ProjectileEntity {
             LazyOptional<IPlayerData> optional = PlayerData.get((PlayerEntity) src);
             if (optional.isPresent()) {
                 IPlayerData data = optional.orElse(null);
-                return (float) config.getHeadshotMultiplier(data.getAttributes());
+                GunItem item = (GunItem) weapon.getItem();
+                return (float) item.getHeadshotMultiplier(data.getAttributes());
             }
         }
         return 1.0f;

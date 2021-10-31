@@ -155,7 +155,7 @@ public class ClientEventHandler {
 
                 ClientSideManager manager = ClientSideManager.instance();
                 DebuffRenderManager debuffRenderManager = manager.getDebuffRenderManager();
-                debuffRenderManager.drawDebuffsOnScreen(matrixStack, data.getDebuffControl(), 0, window.getGuiScaledHeight() - 50, event.getPartialTicks());
+                debuffRenderManager.drawDebuffsOnScreen(matrixStack, data.getAttributes(), data.getDebuffControl(), 0, window.getGuiScaledHeight() - 50, event.getPartialTicks());
 
                 int renderIndex = 0;
                 ISkills skills = data.getSkills();

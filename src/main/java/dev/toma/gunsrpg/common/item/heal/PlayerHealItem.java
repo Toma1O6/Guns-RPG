@@ -30,9 +30,8 @@ public class PlayerHealItem extends AbstractHealItem<PlayerEntity> {
     public static void onMorphineUsed(PlayerEntity player) {
         player.heal(14);
         player.addEffect(new EffectInstance(Effects.REGENERATION, 300, 1, false, false));
-        player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 600, 1, false, false));
-        player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 900, 0, false, false));
-        player.addEffect(new EffectInstance(ModEffects.GUN_DAMAGE_BUFF.get(), 600, 0, false, false));
+        player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 900, 1, false, false));
+        player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 1200, 0, false, false));
     }
 
     @Override

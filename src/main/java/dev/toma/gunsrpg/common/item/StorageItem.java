@@ -37,7 +37,7 @@ public class StorageItem extends BaseItem {
     public IInventory getInventory(ItemStack stack, Runnable callback) {
         CompoundNBT nbt = stack.getTag();
         if (nbt == null)
-            throw new IllegalArgumentException("Cannot create inventory from non existent data");
+            nbt = new CompoundNBT();
         ListNBT list = nbt.contains("Items", Constants.NBT.TAG_LIST) ? nbt.getList("Items", Constants.NBT.TAG_COMPOUND) : new ListNBT();
         return createInventoryFromData(list, dimensions.getArea(), callback);
     }
