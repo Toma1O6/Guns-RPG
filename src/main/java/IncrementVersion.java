@@ -70,7 +70,9 @@ public class IncrementVersion {
             }
         }
         try (FileWriter writer = new FileWriter(file)) {
-
+            for (String line : lines) {
+                writer.write(line + "\n");
+            }
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }
