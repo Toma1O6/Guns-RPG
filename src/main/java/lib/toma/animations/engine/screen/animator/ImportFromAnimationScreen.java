@@ -35,6 +35,6 @@ public class ImportFromAnimationScreen extends ImportProjectScreen {
             next.setEndpoint(0.0F);
             frames.put(entry.getKey(), new IKeyframe[] {next});
         }
-        return FrameProviderWrapper.modded(source.getName() + "_based", new KeyframeProvider(frames, IAnimationEvent.NO_EVENTS));
+        return FrameProviderWrapper.combined(source.getName() + "_based", new KeyframeProvider(frames, IAnimationEvent.NO_EVENTS));
     }
 }

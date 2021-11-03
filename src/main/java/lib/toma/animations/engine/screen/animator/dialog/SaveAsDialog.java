@@ -1,5 +1,6 @@
 package lib.toma.animations.engine.screen.animator.dialog;
 
+import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.engine.frame.MutableKeyframe;
 import lib.toma.animations.engine.screen.animator.*;
@@ -7,11 +8,12 @@ import lib.toma.animations.engine.screen.animator.widget.LabelWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.CheckboxButton;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class SaveAsDialog extends DialogScreen {
@@ -49,7 +51,7 @@ public class SaveAsDialog extends DialogScreen {
         if (cleanFirstFrames.selected()) {
             FrameProviderWrapper wrapper = project.getFrameControl();
             AnimatorFrameProvider provider = wrapper.getProvider();
-            cleanFramesForConnector(provider);
+            cleanParentFrames(provider);
         }
         project.saveProjectAs(filename.getValue());
         showParent();
@@ -71,22 +73,17 @@ public class SaveAsDialog extends DialogScreen {
             confirm.active = !errored;
     }
 
-    private void cleanFramesForConnector(AnimatorFrameProvider provider) {
-        Map<AnimationStage, List<MutableKeyframe>> frames = provider.getFrames();
-        for (List<MutableKeyframe> list : frames.values()) {
-            if (list.isEmpty()) continue;
-            MutableKeyframe first = list.get(0);
-            float endpoint = first.endpoint();
-            if (endpoint > 0.0F)
-                continue;
-            list.remove(0);
-            if (!list.isEmpty()) {
-                provider.resetFirstFrame(list.get(0));
-                if (list.size() > 1) {
-                    for (int i = 1; i < list.size(); i++) {
-                        list.get(i).baseOn(list.get(i - 1));
-                    }
-                }
+    private void cleanParentFrames(AnimatorFrameProvider provider) {
+        Set<AnimationStage> stagesToClear = provider.getParentStages();
+        if (stagesToClear != null) {
+            for (AnimationStage stage : stagesToClear) {
+                List<MutableKeyframe> frames = provider.getFrames().get(stage);
+                if (frames == null || frames.isEmpty()) continue;
+                MutableKeyframe mkf = frames.get(0);
+                mkf.setEndpoint(0);
+                mkf.setPosition(Vector3d.ZERO);
+                mkf.setRotation(Vector3d.ZERO);
+                mkf.baseOn(Keyframes.none());
             }
         }
     }

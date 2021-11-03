@@ -27,7 +27,10 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
     // stopping on last frame
     private float animationEnd;
 
-    public AnimatorFrameProvider(IKeyframeProvider provider) {
+    // in case this provider is based on other provider we store its stages in set
+    private Set<AnimationStage> parentStages;
+
+    public AnimatorFrameProvider(IKeyframeProvider provider, boolean hasParent) {
         this.events = provider.getType().areEventsSupported();
         if (events) {
             eventList.addAll(Arrays.asList(provider.getEvents()));
@@ -44,6 +47,9 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
         }
         provider.initCache(frameCache);
         computeAnimationEndpoint();
+        if (hasParent) {
+            parentStages = new HashSet<>(rawFrames.keySet());
+        }
     }
 
     public AnimatorFrameProvider(Map<AnimationStage, List<MutableKeyframe>> frameMap) {
@@ -330,6 +336,10 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
     public void resetFirstFrame(MutableKeyframe keyframe) {
         keyframe.setPos0(Vector3d.ZERO);
         keyframe.setRot0(Vector3d.ZERO);
+    }
+
+    public Set<AnimationStage> getParentStages() {
+        return parentStages;
     }
 
     private void computeAnimationEndpoint() {
