@@ -19,14 +19,11 @@ import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.IRenderPipeline;
 import net.minecraft.command.CommandSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.thread.SidedThreadGroups;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -57,7 +54,7 @@ public class GunsRPG {
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 
         ThreadGroup group = Thread.currentThread().getThreadGroup();
-        if (group.getName().equals("main")) {
+        if (group.getName().equals("main")) { // fragile code, handle with care
             ClientSideManager.instance().animationSetup();
             IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
             renderPipeline.register(MinecraftForge.EVENT_BUS);

@@ -1,0 +1,15 @@
+{
+    "items": [
+        { "item": "gunsrpg:antidotum_pills" },
+        { "item": "gunsrpg:bandage" },
+        { "item": "gunsrpg:vaccine" },
+        { "item": "gunsrpg:plaster_cast" },
+        { "item": "gunsrpg:ufak" },
+        { "item": "gunsrpg:hemostat", "count": 2 },
+        { "item": "gunsrpg:calcium_shot", "count": 2 },
+        { "item": "gunsrpg:vitamins", "count": 2 },
+        { "item": "gunsrpg:propital", "count": 2 },
+        { "item": "gunsrpg:chocolate_glazed_apple_pie" },
+        { "item": "gunsrpg:deluxe_meal" }
+    ]
+}

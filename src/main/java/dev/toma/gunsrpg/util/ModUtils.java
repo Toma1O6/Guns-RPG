@@ -38,6 +38,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import org.lwjgl.opengl.GL11;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
@@ -48,6 +49,11 @@ public class ModUtils {
 
     public static String convertToLocalization(ResourceLocation location) {
         return location.toString().replaceAll(":", ".");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T[] trimArray(T[] in, Class<T> cls) {
+        return Arrays.stream(in).filter(Objects::nonNull).toArray(size -> (T[]) Array.newInstance(cls, size));
     }
 
     public static boolean isMaxLevel(IKillData killData) {

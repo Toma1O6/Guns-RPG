@@ -8,11 +8,14 @@ import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
+import dev.toma.gunsrpg.resource.startgear.StartGearManager;
 import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
 import dev.toma.gunsrpg.util.recipes.smithing.SmithingRecipe;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
@@ -28,15 +31,21 @@ public final class Lifecycle {
     private final Map<GunItem, IAmmoProvider[]> weaponProviderMap = new IdentityHashMap<>();
     private final Map<Item, Item> ore2ChunkMap = new IdentityHashMap<>(2);
     private final QuestSystem questSystem = new QuestSystem();
+    private final StartGearManager startingGearManager = new StartGearManager();
 
     public void modInit() {
         ModTags.init();
+        MinecraftForge.EVENT_BUS.addListener(this::onDatapackReload);
     }
 
     public void commonInit() {
         initWeaponProviderMap();
         initOreToChunkMap();
         SmithingRecipe.forceStaticInit();
+    }
+
+    public StartGearManager getStartingGearManager() {
+        return startingGearManager;
     }
 
     public QuestSystem quests() {
@@ -87,5 +96,9 @@ public final class Lifecycle {
     private void initOreToChunkMap() {
         ore2ChunkMap.put(Blocks.IRON_ORE.asItem(), ModItems.IRON_ORE_CHUNK);
         ore2ChunkMap.put(Blocks.GOLD_ORE.asItem(), ModItems.GOLD_ORE_CHUNK);
+    }
+
+    private void onDatapackReload(AddReloadListenerEvent event) {
+        event.addListener(startingGearManager);
     }
 }

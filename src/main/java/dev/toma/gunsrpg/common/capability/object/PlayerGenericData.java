@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.ITransaction;
 import dev.toma.gunsrpg.api.common.data.*;
-import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.transaction.TransactionManager;
@@ -13,7 +13,6 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
@@ -65,17 +64,7 @@ public class PlayerGenericData implements IData, IPlayerCapEntry {
     public void onLogIn() {
         if (!known) {
             known = true;
-            player.addItem(new ItemStack(ModItems.ANTIDOTUM_PILLS));
-            player.addItem(new ItemStack(ModItems.BANDAGE));
-            player.addItem(new ItemStack(ModItems.VACCINE));
-            player.addItem(new ItemStack(ModItems.PLASTER_CAST));
-            player.addItem(new ItemStack(ModItems.UFAK));
-            player.addItem(new ItemStack(ModItems.HEMOSTAT, 2));
-            player.addItem(new ItemStack(ModItems.CALCIUM_SHOT, 2));
-            player.addItem(new ItemStack(ModItems.VITAMINS, 2));
-            player.addItem(new ItemStack(ModItems.PROPITAL, 2));
-            player.addItem(new ItemStack(ModItems.CHOCOLATE_GLAZED_APPLE_PIE));
-            player.addItem(new ItemStack(ModItems.DELUXE_MEAL));
+            GunsRPG.getModLifecycle().getStartingGearManager().giveStartingGear(player);
             request.makeSyncRequest();
         }
     }
