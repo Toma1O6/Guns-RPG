@@ -13,10 +13,14 @@ public final class AmmoMaterials {
     public static final IAmmoMaterial WOOD = AmmoMaterialManager.get().createMaterial("wood", 0xB54800, 0);
     public static final IAmmoMaterial STONE = AmmoMaterialManager.get().createMaterial("stone", 0x565656, 1);
     public static final IAmmoMaterial IRON = AmmoMaterialManager.get().createMaterial("iron", 0xAFAFAF, 2);
+    public static final IAmmoMaterial LAPIS = AmmoMaterialManager.get().createMaterial("lapis", 0x3700FF, 2);
     public static final IAmmoMaterial GOLD = AmmoMaterialManager.get().createMaterial("gold", 0xF2C100, 3);
+    public static final IAmmoMaterial REDSTONE = AmmoMaterialManager.get().createMaterial("redstone", 0xB70300, 3);
     public static final IAmmoMaterial DIAMOND = AmmoMaterialManager.get().createMaterial("diamond", 0x4CC4EF, 4);
+    public static final IAmmoMaterial QUARTZ = AmmoMaterialManager.get().createMaterial("quartz", 0xCCCCCC, 4);
     public static final IAmmoMaterial EMERALD = AmmoMaterialManager.get().createMaterial("emerald", 0x41C409, 5);
     public static final IAmmoMaterial AMETHYST = AmmoMaterialManager.get().createMaterial("amethyst", 0xC100BB, 6);
+    public static final IAmmoMaterial NETHERITE = AmmoMaterialManager.get().createMaterial("netherite", 0x8F6365, 7);
 
     // grenade launcher
     public static final IAmmoMaterial GRENADE = AmmoMaterialManager.get().createMaterial("grenade", 0xFFFF00, 0);

@@ -57,6 +57,7 @@ public class Kar98kModel extends AbstractWeaponModel {
     private final ModelRenderer bone42;
     private final ModelRenderer bullets;
     private final ModelRenderer bullet;
+    private final ModelRenderer clip;
 
     public Kar98kModel() {
         texWidth = 512;
@@ -606,9 +607,42 @@ public class Kar98kModel extends AbstractWeaponModel {
         bullet.texOffs(8, 496).addBox(-1.4188F, -2.3F, -11.0F, 2.0F, 2.0F, 7.0F, 0.0F, true);
         bullet.texOffs(8, 496).addBox(-1.4188F, -1.7F, -11.0F, 2.0F, 2.0F, 7.0F, 0.0F, true);
 
+        clip = new ModelRenderer(this);
+        clip.setPos(0.0F, 42.0F, 0.0F);
+        clip.texOffs(0, 0).addBox(-1.5F, -6.0F, 70.0F, 3.0F, 10.0F, 1.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-1.0F, -5.5F, 69.5F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-1.0F, -5.5F, 63.25F, 2.0F, 2.0F, 6.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.75F, -5.25F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.25F, -5.25F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.25F, -4.75F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.5F, -5.0F, 62.1F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.75F, -4.75F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-1.0F, -3.25F, 69.5F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-1.0F, -3.25F, 63.25F, 2.0F, 2.0F, 6.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.25F, -3.0F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.75F, -3.0F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.25F, -2.5F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.75F, -2.5F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.5F, -2.75F, 62.1F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-1.0F, -1.0F, 69.5F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-1.0F, -1.0F, 63.25F, 2.0F, 2.0F, 6.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.25F, -0.75F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.75F, -0.75F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.25F, -0.25F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.75F, -0.25F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.5F, -0.5F, 62.1F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-1.0F, 1.25F, 69.5F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-1.0F, 1.25F, 63.25F, 2.0F, 2.0F, 6.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.25F, 1.5F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.75F, 1.5F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.25F, 2.0F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.75F, 2.0F, 62.6F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        clip.texOffs(15, 487).addBox(-0.5F, 1.75F, 62.1F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+
         setSpecialRenderer(ModAnimations.BOLT, bolt);
         setSpecialRenderer(ModAnimations.BOLT_CARRIER, boltcarrier);
         setSpecialRenderer(ModAnimations.BULLET, bullet);
+        setSpecialRenderer(ModAnimations.MAGAZINE, clip);
     }
 
     @Override

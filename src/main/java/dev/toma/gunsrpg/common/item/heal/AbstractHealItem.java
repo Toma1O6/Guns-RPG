@@ -78,7 +78,8 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
                     AnimationEngine engine = AnimationEngine.get();
                     IAnimationLoader loader = engine.loader();
                     IAnimationPipeline pipeline = engine.pipeline();
-                    pipeline.insert(ModAnimations.HEAL, new Animation(loader.getProvider(useAnimation), useTime));
+                    IAnimation animation = constructAnimation(loader.getProvider(useAnimation), useTime);
+                    pipeline.insert(ModAnimations.HEAL, animation);
                 }
                 player.startUsingItem(hand);
                 return ActionResult.pass(stack);

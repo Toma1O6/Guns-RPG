@@ -7,30 +7,28 @@ import java.util.Set;
 
 public final class MaterialContainer {
 
-    private final Map<IAmmoMaterial, IMaterialStat> damageModifiers;
+    private final Map<IAmmoMaterial, IMaterialStat> stats;
 
     public MaterialContainer(MaterialContainerBuilder builder) {
-        this.damageModifiers = builder.modifierMap;
+        this.stats = builder.modifierMap;
+    }
+
+    public IMaterialStat getStat(IAmmoMaterial material) {
+        return stats.get(material);
     }
 
     public int getAdditionalDamage(IAmmoMaterial material) {
-        IMaterialStat stat = damageModifiers.get(material);
+        IMaterialStat stat = getStat(material);
         return stat != null ? stat.value() : 0;
     }
 
     public int getRequiredLevel(IAmmoMaterial material) {
-        IMaterialStat stat = damageModifiers.get(material);
+        IMaterialStat stat = getStat(material);
         if (stat == null) return 0;
         return stat.requiredLevel();
     }
 
-    public boolean canUse(IAmmoMaterial material, int weaponLevel) {
-        IMaterialStat stat = damageModifiers.get(material);
-        if (stat == null) return false;
-        return stat.requiredLevel() <= weaponLevel;
-    }
-
     public Set<IAmmoMaterial> getCompatible() {
-        return damageModifiers.keySet();
+        return stats.keySet();
     }
 }

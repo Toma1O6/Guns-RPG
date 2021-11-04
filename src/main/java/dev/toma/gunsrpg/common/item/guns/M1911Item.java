@@ -11,8 +11,8 @@ import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
-import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
@@ -46,9 +46,8 @@ public class M1911Item extends GunItem {
     @Override
     public void initializeWeapon(WeaponBuilder builder) {
         builder
-                .category(WeaponCategory.PISTOL)
                 .config(ModConfig.weaponConfig.m1911)
-                .ammo()
+                .ammo(WeaponCategory.PISTOL)
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 1)
                     .define(AmmoMaterials.IRON, 3)

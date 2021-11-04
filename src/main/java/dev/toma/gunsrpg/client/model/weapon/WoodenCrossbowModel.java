@@ -3,6 +3,9 @@ package dev.toma.gunsrpg.client.model.weapon;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.client.animation.ModAnimations;
+import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
+import lib.toma.animations.api.AnimationStage;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Vector3f;
@@ -112,6 +115,8 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
     private final ModelRenderer cube_r77;
     private final ModelRenderer right_cable2;
     private final ModelRenderer cube_r78;
+    private final ModelRenderer arrow;
+    private final ModelRenderer fletch;
 
     public WoodenCrossbowModel() {
         texWidth = 512;
@@ -119,6 +124,7 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
 
         crossbow = new ModelRenderer(this);
         crossbow.setPos(0.0F, 24.0F, 0.0F);
+
 
         stock = new ModelRenderer(this);
         stock.setPos(2.2071F, -4.5858F, -26.0F);
@@ -242,40 +248,48 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
         grip.addChild(cube_r16);
         setRotationAngle(cube_r16, 0.0F, 0.0F, 0.5236F);
 
+
         cube_r17 = new ModelRenderer(this);
         cube_r17.setPos(1.366F, -0.634F, 0.5F);
         grip.addChild(cube_r17);
         setRotationAngle(cube_r17, 0.0F, 0.0F, -0.5236F);
+
 
         cube_r18 = new ModelRenderer(this);
         cube_r18.setPos(1.5F, 9.4657F, -4.965F);
         grip.addChild(cube_r18);
         setRotationAngle(cube_r18, -1.0472F, 0.0F, 0.0F);
 
+
         cube_r19 = new ModelRenderer(this);
         cube_r19.setPos(1.5F, 8.3729F, -3.4044F);
         grip.addChild(cube_r19);
         setRotationAngle(cube_r19, -0.8727F, 0.0F, 0.0F);
+
 
         cube_r20 = new ModelRenderer(this);
         cube_r20.setPos(1.5F, 7.0257F, -2.0571F);
         grip.addChild(cube_r20);
         setRotationAngle(cube_r20, -0.6981F, 0.0F, 0.0F);
 
+
         cube_r21 = new ModelRenderer(this);
         cube_r21.setPos(1.5F, 5.465F, -0.9643F);
         grip.addChild(cube_r21);
         setRotationAngle(cube_r21, -0.5236F, 0.0F, 0.0F);
+
 
         cube_r22 = new ModelRenderer(this);
         cube_r22.setPos(1.5F, 3.7383F, -0.1592F);
         grip.addChild(cube_r22);
         setRotationAngle(cube_r22, -0.3491F, 0.0F, 0.0F);
 
+
         cube_r23 = new ModelRenderer(this);
         cube_r23.setPos(1.5F, 1.898F, 0.3339F);
         grip.addChild(cube_r23);
         setRotationAngle(cube_r23, -0.1745F, 0.0F, 0.0F);
+
 
         grip1 = new ModelRenderer(this);
         grip1.setPos(1.5F, 1.0F, -8.366F);
@@ -345,10 +359,12 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
         receiver.addChild(cube_r30);
         setRotationAngle(cube_r30, -0.5236F, 0.0F, 0.0F);
 
+
         cube_r31 = new ModelRenderer(this);
         cube_r31.setPos(0.0F, -3.317F, 26.317F);
         receiver.addChild(cube_r31);
         setRotationAngle(cube_r31, 0.5236F, 0.0F, 0.0F);
+
 
         cube_r32 = new ModelRenderer(this);
         cube_r32.setPos(-0.683F, -2.817F, 18.0F);
@@ -367,75 +383,90 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
         receiver.addChild(cube_r34);
         setRotationAngle(cube_r34, -0.3054F, 0.0F, 0.0F);
 
+
         cube_r35 = new ModelRenderer(this);
         cube_r35.setPos(1.744F, -7.3F, 0.4469F);
         receiver.addChild(cube_r35);
         setRotationAngle(cube_r35, 0.0F, -0.0873F, 0.0F);
+
 
         cube_r36 = new ModelRenderer(this);
         cube_r36.setPos(-1.744F, -7.3F, 0.4469F);
         receiver.addChild(cube_r36);
         setRotationAngle(cube_r36, 0.0F, 0.0873F, 0.0F);
 
+
         cube_r37 = new ModelRenderer(this);
         cube_r37.setPos(3.0F, -3.683F, 9.9869F);
         receiver.addChild(cube_r37);
         setRotationAngle(cube_r37, 0.5236F, 0.0F, 0.0F);
+
 
         cube_r38 = new ModelRenderer(this);
         cube_r38.setPos(3.9999F, -3.683F, -10.2811F);
         receiver.addChild(cube_r38);
         setRotationAngle(cube_r38, 0.5236F, 0.0F, 0.0F);
 
+
         cube_r39 = new ModelRenderer(this);
         cube_r39.setPos(3.9999F, -3.683F, -1.0131F);
         receiver.addChild(cube_r39);
         setRotationAngle(cube_r39, 0.5236F, 0.0F, 0.0F);
+
 
         cube_r40 = new ModelRenderer(this);
         cube_r40.setPos(0.0F, -6.9821F, -8.701F);
         receiver.addChild(cube_r40);
         setRotationAngle(cube_r40, -0.5236F, 0.0F, 0.0F);
 
+
         cube_r41 = new ModelRenderer(this);
         cube_r41.setPos(-1.909F, -6.0336F, 9.0F);
         receiver.addChild(cube_r41);
         setRotationAngle(cube_r41, 0.0F, 0.0F, -0.1309F);
+
 
         cube_r42 = new ModelRenderer(this);
         cube_r42.setPos(1.909F, -6.0336F, 9.0F);
         receiver.addChild(cube_r42);
         setRotationAngle(cube_r42, 0.0F, 0.0F, 0.1309F);
 
+
         cube_r43 = new ModelRenderer(this);
         cube_r43.setPos(-1.909F, -7.8946F, 9.0F);
         receiver.addChild(cube_r43);
         setRotationAngle(cube_r43, 0.0F, 0.0F, 0.1309F);
+
 
         cube_r44 = new ModelRenderer(this);
         cube_r44.setPos(1.909F, -7.8946F, 9.0F);
         receiver.addChild(cube_r44);
         setRotationAngle(cube_r44, 0.0F, 0.0F, -0.1309F);
 
+
         cube_r45 = new ModelRenderer(this);
         cube_r45.setPos(-1.683F, -8.7811F, 0.5F);
         receiver.addChild(cube_r45);
         setRotationAngle(cube_r45, 0.0F, 0.0F, -0.5236F);
+
 
         cube_r46 = new ModelRenderer(this);
         cube_r46.setPos(1.317F, -8.7811F, 4.5F);
         receiver.addChild(cube_r46);
         setRotationAngle(cube_r46, 0.0F, 0.0F, -0.5236F);
 
+
         cube_r47 = new ModelRenderer(this);
         cube_r47.setPos(1.683F, -8.7811F, 0.5F);
         receiver.addChild(cube_r47);
         setRotationAngle(cube_r47, 0.0F, 0.0F, 0.5236F);
 
+
         cube_r48 = new ModelRenderer(this);
         cube_r48.setPos(-1.317F, -8.7811F, 4.5F);
         receiver.addChild(cube_r48);
         setRotationAngle(cube_r48, 0.0F, 0.0F, 0.5236F);
+
 
         toprail = new ModelRenderer(this);
         toprail.setPos(-0.5F, -9.366F, -7.0F);
@@ -493,23 +524,28 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
         arms_charged = new ModelRenderer(this);
         arms_charged.setPos(0.0F, 24.0F, 0.0F);
 
+
         left = new ModelRenderer(this);
         left.setPos(0.0F, 0.0F, 0.0F);
         arms_charged.addChild(left);
 
+
         left_base = new ModelRenderer(this);
         left_base.setPos(-2.183F, -2.683F, 15.5F);
         left.addChild(left_base);
+
 
         cube_r57 = new ModelRenderer(this);
         cube_r57.setPos(0.0F, 0.0F, 0.0F);
         left_base.addChild(cube_r57);
         setRotationAngle(cube_r57, 0.0F, 0.0F, -0.5236F);
 
+
         cube_r58 = new ModelRenderer(this);
         cube_r58.setPos(0.0F, -1.634F, 0.0F);
         left_base.addChild(cube_r58);
         setRotationAngle(cube_r58, 0.0F, 0.0F, 0.5236F);
+
 
         left_1 = new ModelRenderer(this);
         left_1.setPos(-4.183F, -0.817F, 0.5F);
@@ -550,6 +586,7 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
         left_3.addChild(left_cable);
         setRotationAngle(left_cable, 0.0F, -0.0873F, 0.0F);
 
+
         cube_r61 = new ModelRenderer(this);
         cube_r61.setPos(0.5F, -0.5F, -2.0F);
         left_cable.addChild(cube_r61);
@@ -566,26 +603,32 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
         right3.setPos(0.0F, 0.0F, 0.0F);
         arms_charged.addChild(right3);
 
+
         right_base3 = new ModelRenderer(this);
         right_base3.setPos(2.183F, -2.683F, 15.5F);
         right3.addChild(right_base3);
+
 
         cube_r63 = new ModelRenderer(this);
         cube_r63.setPos(0.0F, 0.0F, 0.0F);
         right_base3.addChild(cube_r63);
         setRotationAngle(cube_r63, 0.0F, 0.0F, 0.5236F);
 
+
         cube_r64 = new ModelRenderer(this);
         cube_r64.setPos(0.0F, -1.634F, 0.0F);
         right_base3.addChild(cube_r64);
         setRotationAngle(cube_r64, 0.0F, 0.0F, -0.5236F);
 
+
         arms = new ModelRenderer(this);
         arms.setPos(0.0F, 24.0F, 0.0F);
+
 
         left2 = new ModelRenderer(this);
         left2.setPos(0.0F, 0.0F, 0.0F);
         arms.addChild(left2);
+
 
         left_base2 = new ModelRenderer(this);
         left_base2.setPos(-2.183F, -2.683F, 15.5F);
@@ -612,39 +655,47 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
         left_base2.addChild(left_4);
         setRotationAngle(left_4, 0.0F, -0.0436F, 0.0F);
 
+
         left_5 = new ModelRenderer(this);
         left_5.setPos(-4.0F, 0.0F, 0.0F);
         left_4.addChild(left_5);
         setRotationAngle(left_5, 0.0F, -0.0436F, 0.0F);
+
 
         left_6 = new ModelRenderer(this);
         left_6.setPos(-4.0F, 0.0F, 0.0F);
         left_5.addChild(left_6);
         setRotationAngle(left_6, 0.0F, -0.0436F, 0.0F);
 
+
         cube_r71 = new ModelRenderer(this);
         cube_r71.setPos(-2.884F, -1.567F, -0.5F);
         left_6.addChild(cube_r71);
         setRotationAngle(cube_r71, 0.0F, 0.0F, -0.5236F);
+
 
         cube_r72 = new ModelRenderer(this);
         cube_r72.setPos(-2.884F, 1.567F, -0.5F);
         left_6.addChild(cube_r72);
         setRotationAngle(cube_r72, 0.0F, 0.0F, 0.5236F);
 
+
         left_cable2 = new ModelRenderer(this);
         left_cable2.setPos(-4.366F, 0.0F, -1.0F);
         left_6.addChild(left_cable2);
         setRotationAngle(left_cable2, 0.0F, -1.0472F, 0.0F);
+
 
         cube_r73 = new ModelRenderer(this);
         cube_r73.setPos(0.0F, -0.5F, -0.5F);
         left_cable2.addChild(cube_r73);
         setRotationAngle(cube_r73, 0.0F, -0.7854F, 0.0F);
 
+
         right2 = new ModelRenderer(this);
         right2.setPos(0.0F, 0.0F, 0.0F);
         arms.addChild(right2);
+
 
         right_base2 = new ModelRenderer(this);
         right_base2.setPos(2.183F, -2.683F, 15.5F);
@@ -678,10 +729,12 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
         right_2.addChild(right_3);
         setRotationAngle(right_3, 0.0F, 0.0436F, 0.0F);
 
+
         right_7 = new ModelRenderer(this);
         right_7.setPos(4.0F, 0.0F, 0.0F);
         right_3.addChild(right_7);
         setRotationAngle(right_7, 0.0F, 0.0436F, 0.0F);
+
 
         right_8 = new ModelRenderer(this);
         right_8.setPos(-4.0F, 0.0F, 0.0F);
@@ -715,10 +768,10 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
         right_9.addChild(right_cable3);
         setRotationAngle(right_cable3, 0.0F, 0.0873F, 0.0F);
 
+
         cube_r67 = new ModelRenderer(this);
         cube_r67.setPos(-0.5F, -0.5F, -2.0F);
         right_cable3.addChild(cube_r67);
-        setRotationAngle(cube_r67, 0.0F, 0.0F, 0.0F);
         cube_r67.texOffs(200, 144).addBox(0.0F, -1.0F, -23.0F, 1.0F, 1.0F, 24.0F, 0.0F, true);
 
         cube_r68 = new ModelRenderer(this);
@@ -732,20 +785,41 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
         right_7.addChild(cube_r76);
         setRotationAngle(cube_r76, 0.0F, 0.0F, 0.5236F);
 
+
         cube_r77 = new ModelRenderer(this);
         cube_r77.setPos(2.884F, 1.567F, -0.5F);
         right_7.addChild(cube_r77);
         setRotationAngle(cube_r77, 0.0F, 0.0F, -0.5236F);
+
 
         right_cable2 = new ModelRenderer(this);
         right_cable2.setPos(4.366F, 0.0F, -1.0F);
         right_7.addChild(right_cable2);
         setRotationAngle(right_cable2, 0.0F, 1.0472F, 0.0F);
 
+
         cube_r78 = new ModelRenderer(this);
         cube_r78.setPos(0.0F, -0.5F, -0.5F);
         right_cable2.addChild(cube_r78);
         setRotationAngle(cube_r78, 0.0F, 0.7854F, 0.0F);
+
+
+        arrow = new ModelRenderer(this);
+        arrow.setPos(-2.65F, 23.15F, -8.0F);
+        setRotationAngle(arrow, 0.0F, 0.0F, 0.7854F);
+        arrow.texOffs(64, 70).addBox(-0.5F, -4.25F, 0.0F, 1.0F, 1.0F, 29.0F, 0.0F, false);
+        arrow.texOffs(89, 81).addBox(-0.5F, -4.25F, 29.0F, 1.0F, 1.0F, 4.0F, 0.0F, false);
+
+        fletch = new ModelRenderer(this);
+        fletch.setPos(3.0F, -2.0F, 0.0F);
+        arrow.addChild(fletch);
+        setRotationAngle(fletch, 0.0F, 0.0F, -0.7854F);
+        fletch.texOffs(83, 147).addBox(-0.8839F, -5.0659F, 0.0F, 0.0F, 1.0F, 5.0F, 0.0F, false);
+        fletch.texOffs(83, 147).addBox(-2.591F, -3.3578F, 0.0F, 1.0F, 0.0F, 5.0F, 0.0F, false);
+        fletch.texOffs(83, 147).addBox(-0.1768F, -3.3578F, 0.0F, 1.0F, 0.0F, 5.0F, 0.0F, false);
+        fletch.texOffs(85, 147).addBox(-0.8839F, -2.6517F, 0.0F, 0.0F, 1.0F, 5.0F, 0.0F, false);
+
+        setSpecialRenderer(ModAnimations.BULLET, stack -> AbstractGun.getAmmoCount(stack) > 0, arrow);
     }
 
     @Override
@@ -755,6 +829,7 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
         crossbow.render(matrix, builder, light, overlay);
         arms.render(matrix, builder, light, overlay);
         arms_charged.render(matrix, builder, light, overlay);
+        arrow.render(matrix, builder, light, overlay);
         matrix.popPose();
     }
 }

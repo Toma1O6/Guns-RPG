@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.client.model.AbstractSolidEntityModel;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IAnimationPipeline;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
@@ -15,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public abstract class AbstractWeaponModel extends AbstractSolidEntityModel {
 
@@ -27,6 +29,15 @@ public abstract class AbstractWeaponModel extends AbstractSolidEntityModel {
 
     public SpecialRenderer<?> setSpecialRenderer(AnimationStage stage, Function<IPlayerData, ModelRenderer> selector) {
         return setSpecialRenderer(new SpecialRenderer<>(stage, selector, (renderObj, data, poseStack, vertexBuilder, light, overlay) -> renderObj.apply(data).render(poseStack, vertexBuilder, light, overlay)));
+    }
+
+    public SpecialRenderer<?> setSpecialRenderer(AnimationStage stage, Predicate<ItemStack> condition, ModelRenderer renderer) {
+        return setSpecialRenderer(new SpecialRenderer<>(stage, condition, (renderObj, data, poseStack, vertexBuilder, light, overlay) -> {
+            ItemStack held = Minecraft.getInstance().player.getMainHandItem();
+            if (condition.test(held)) {
+                renderer.render(poseStack, vertexBuilder, light, overlay);
+            }
+        }));
     }
 
     public SpecialRenderer<?> setSpecialRenderer(SpecialRenderer<?> cubeRenderer) {

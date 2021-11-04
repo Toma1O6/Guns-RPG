@@ -50,7 +50,7 @@ public class NetworkManager {
     public static void init() {
         // client packets
         registerNetworkPacket(CPacketUpdateCap.class);
-        registerNetworkPacket(CPacketSendAnimation.class);
+        registerNetworkPacket(CPacketAnimation.class);
         registerNetworkPacket(CPacketNewSkills.class);
         registerNetworkPacket(CPacketSynchTile.class);
         // server packets

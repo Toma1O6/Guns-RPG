@@ -20,8 +20,8 @@ public final class ItemLocator extends AbstractLocator<ItemStack, IInventory> {
     }
 
     @Override
-    public boolean isEmptyResult(ItemStack stack) {
-        return stack.isEmpty();
+    public boolean isValidResult(ItemStack stack) {
+        return !stack.isEmpty();
     }
 
     public static ILocatorPredicate<ItemStack> typeAndMaterial(IAmmoProvider provider) {

@@ -3,6 +3,8 @@ package dev.toma.gunsrpg.client.model.weapon;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.client.animation.ModAnimations;
+import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
 
@@ -89,14 +91,6 @@ public class ChuKoNuModel extends AbstractWeaponModel {
     private final ModelRenderer right_base3;
     private final ModelRenderer cube_r63;
     private final ModelRenderer cube_r64;
-    private final ModelRenderer right_7;
-    private final ModelRenderer right_8;
-    private final ModelRenderer right_9;
-    private final ModelRenderer cube_r65;
-    private final ModelRenderer cube_r66;
-    private final ModelRenderer right_cable3;
-    private final ModelRenderer cube_r67;
-    private final ModelRenderer cube_r68;
     private final ModelRenderer arms;
     private final ModelRenderer left2;
     private final ModelRenderer left_base2;
@@ -115,11 +109,20 @@ public class ChuKoNuModel extends AbstractWeaponModel {
     private final ModelRenderer cube_r75;
     private final ModelRenderer right_2;
     private final ModelRenderer right_3;
-    private final ModelRenderer right__7;
+    private final ModelRenderer right_7;
+    private final ModelRenderer right_8;
+    private final ModelRenderer right_9;
+    private final ModelRenderer cube_r65;
+    private final ModelRenderer cube_r66;
+    private final ModelRenderer right_cable3;
+    private final ModelRenderer cube_r67;
+    private final ModelRenderer cube_r68;
     private final ModelRenderer cube_r76;
     private final ModelRenderer cube_r77;
     private final ModelRenderer right_cable2;
     private final ModelRenderer cube_r78;
+    private final ModelRenderer arrow;
+    private final ModelRenderer cube_r79;
 
     @Override
     protected void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay) {
@@ -822,64 +825,6 @@ public class ChuKoNuModel extends AbstractWeaponModel {
         setRotationAngle(cube_r64, 0.0F, 0.0F, -0.5236F);
         cube_r64.texOffs(84, 40).addBox(-0.5F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
 
-        right_7 = new ModelRenderer(this);
-        right_7.setPos(4.183F, -0.817F, 0.5F);
-        right_base3.addChild(right_7);
-        setRotationAngle(right_7, 0.0F, 0.2182F, 0.0F);
-        right_7.texOffs(84, 40).addBox(0.0F, -1.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
-        right_7.texOffs(84, 40).addBox(2.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        right_7.texOffs(84, 40).addBox(0.0F, 0.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
-        right_7.texOffs(84, 40).addBox(0.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-
-        right_8 = new ModelRenderer(this);
-        right_8.setPos(4.0F, 0.0F, 0.0F);
-        right_7.addChild(right_8);
-        setRotationAngle(right_8, 0.0F, 0.2182F, 0.0F);
-        right_8.texOffs(84, 40).addBox(0.0F, -1.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
-        right_8.texOffs(84, 40).addBox(2.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        right_8.texOffs(84, 40).addBox(0.0F, 0.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
-        right_8.texOffs(84, 40).addBox(0.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-
-        right_9 = new ModelRenderer(this);
-        right_9.setPos(4.0F, 0.0F, 0.0F);
-        right_8.addChild(right_9);
-        setRotationAngle(right_9, 0.0F, 0.2182F, 0.0F);
-        right_9.texOffs(84, 40).addBox(0.0F, -1.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
-        right_9.texOffs(84, 40).addBox(3.866F, -1.0F, -1.0F, 1.0F, 2.0F, 1.0F, 0.0F, true);
-        right_9.texOffs(84, 40).addBox(2.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        right_9.texOffs(84, 40).addBox(0.0F, 0.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
-        right_9.texOffs(84, 40).addBox(0.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-
-        cube_r65 = new ModelRenderer(this);
-        cube_r65.setPos(2.884F, -1.567F, -0.5F);
-        right_9.addChild(cube_r65);
-        setRotationAngle(cube_r65, 0.0F, 0.0F, 0.5236F);
-        cube_r65.texOffs(84, 40).addBox(1.0F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-
-        cube_r66 = new ModelRenderer(this);
-        cube_r66.setPos(2.884F, 1.567F, -0.5F);
-        right_9.addChild(cube_r66);
-        setRotationAngle(cube_r66, 0.0F, 0.0F, -0.5236F);
-        cube_r66.texOffs(84, 40).addBox(1.0F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-
-        right_cable3 = new ModelRenderer(this);
-        right_cable3.setPos(4.366F, 0.0F, -1.0F);
-        right_9.addChild(right_cable3);
-        setRotationAngle(right_cable3, 0.0F, 0.0873F, 0.0F);
-
-
-        cube_r67 = new ModelRenderer(this);
-        cube_r67.setPos(-0.5F, -0.5F, -2.0F);
-        right_cable3.addChild(cube_r67);
-        setRotationAngle(cube_r67, 0.0F, -0.0436F, 0.0F);
-        cube_r67.texOffs(200, 144).addBox(0.0F, -1.0F, -22.0F, 1.0F, 1.0F, 23.0F, 0.0F, true);
-
-        cube_r68 = new ModelRenderer(this);
-        cube_r68.setPos(0.0F, -0.5F, -0.5F);
-        right_cable3.addChild(cube_r68);
-        setRotationAngle(cube_r68, 0.0F, 0.7854F, 0.0F);
-        cube_r68.texOffs(84, 40).addBox(-1.0F, -1.5F, -1.0F, 2.0F, 3.0F, 2.0F, 0.0F, true);
-
         arms = new ModelRenderer(this);
         arms.setPos(0.0F, 24.0F, 0.0F);
 
@@ -1006,31 +951,84 @@ public class ChuKoNuModel extends AbstractWeaponModel {
         right_3.texOffs(84, 40).addBox(0.0F, 0.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
         right_3.texOffs(84, 40).addBox(0.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
 
-        right__7 = new ModelRenderer(this);
-        right__7.setPos(4.0F, 0.0F, 0.0F);
-        right_3.addChild(right__7);
-        setRotationAngle(right__7, 0.0F, 0.0436F, 0.0F);
-        right__7.texOffs(84, 40).addBox(0.0F, -1.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
-        right__7.texOffs(84, 40).addBox(3.866F, -1.0F, -1.0F, 1.0F, 2.0F, 1.0F, 0.0F, true);
-        right__7.texOffs(84, 40).addBox(2.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        right__7.texOffs(84, 40).addBox(0.0F, 0.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
-        right__7.texOffs(84, 40).addBox(0.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        right_7 = new ModelRenderer(this);
+        right_7.setPos(4.0F, 0.0F, 0.0F);
+        right_3.addChild(right_7);
+        setRotationAngle(right_7, 0.0F, 0.0436F, 0.0F);
+        right_7.texOffs(84, 40).addBox(6.366F, 19.0F, 15.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
+        right_7.texOffs(84, 40).addBox(8.866F, 20.0F, 15.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        right_7.texOffs(84, 40).addBox(6.366F, 21.0F, 15.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
+        right_7.texOffs(84, 40).addBox(6.866F, 20.0F, 15.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        right_7.texOffs(84, 40).addBox(0.0F, -1.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
+        right_7.texOffs(84, 40).addBox(3.866F, -1.0F, -1.0F, 1.0F, 2.0F, 1.0F, 0.0F, true);
+        right_7.texOffs(84, 40).addBox(2.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        right_7.texOffs(84, 40).addBox(0.0F, 0.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
+        right_7.texOffs(84, 40).addBox(0.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+
+        right_8 = new ModelRenderer(this);
+        right_8.setPos(-4.0F, 0.0F, 0.0F);
+        right_7.addChild(right_8);
+        setRotationAngle(right_8, 0.0F, 0.2182F, 0.0F);
+        right_8.texOffs(84, 40).addBox(0.0F, -1.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
+        right_8.texOffs(84, 40).addBox(2.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        right_8.texOffs(84, 40).addBox(0.0F, 0.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
+        right_8.texOffs(84, 40).addBox(0.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+
+        right_9 = new ModelRenderer(this);
+        right_9.setPos(4.0F, 0.0F, 0.0F);
+        right_8.addChild(right_9);
+        setRotationAngle(right_9, 0.0F, 0.2182F, 0.0F);
+        right_9.texOffs(84, 40).addBox(0.0F, -1.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
+        right_9.texOffs(84, 40).addBox(3.866F, -1.0F, -1.0F, 1.0F, 2.0F, 1.0F, 0.0F, true);
+        right_9.texOffs(84, 40).addBox(2.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        right_9.texOffs(84, 40).addBox(0.0F, 0.5F, -1.0F, 4.0F, 1.0F, 1.0F, 0.0F, true);
+        right_9.texOffs(84, 40).addBox(0.5F, -0.5F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+
+        cube_r65 = new ModelRenderer(this);
+        cube_r65.setPos(2.884F, -1.567F, -0.5F);
+        right_9.addChild(cube_r65);
+        setRotationAngle(cube_r65, 0.0F, 0.0F, 0.5236F);
+        cube_r65.texOffs(84, 40).addBox(1.0F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+
+        cube_r66 = new ModelRenderer(this);
+        cube_r66.setPos(2.884F, 1.567F, -0.5F);
+        right_9.addChild(cube_r66);
+        setRotationAngle(cube_r66, 0.0F, 0.0F, -0.5236F);
+        cube_r66.texOffs(84, 40).addBox(1.0F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+
+        right_cable3 = new ModelRenderer(this);
+        right_cable3.setPos(4.366F, 0.0F, -1.0F);
+        right_9.addChild(right_cable3);
+        setRotationAngle(right_cable3, 0.0F, 0.0873F, 0.0F);
+
+
+        cube_r67 = new ModelRenderer(this);
+        cube_r67.setPos(-0.5F, -0.5F, -2.0F);
+        right_cable3.addChild(cube_r67);
+        setRotationAngle(cube_r67, 0.0F, -0.0436F, 0.0F);
+        cube_r67.texOffs(198, 144).addBox(0.0F, -1.0F, -25.0F, 1.0F, 1.0F, 26.0F, 0.0F, true);
+
+        cube_r68 = new ModelRenderer(this);
+        cube_r68.setPos(0.0F, -0.5F, -0.5F);
+        right_cable3.addChild(cube_r68);
+        setRotationAngle(cube_r68, 0.0F, 0.7854F, 0.0F);
+        cube_r68.texOffs(84, 40).addBox(-1.0F, -1.5F, -1.0F, 2.0F, 3.0F, 2.0F, 0.0F, true);
 
         cube_r76 = new ModelRenderer(this);
         cube_r76.setPos(2.884F, -1.567F, -0.5F);
-        right__7.addChild(cube_r76);
+        right_7.addChild(cube_r76);
         setRotationAngle(cube_r76, 0.0F, 0.0F, 0.5236F);
         cube_r76.texOffs(84, 40).addBox(1.0F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
 
         cube_r77 = new ModelRenderer(this);
         cube_r77.setPos(2.884F, 1.567F, -0.5F);
-        right__7.addChild(cube_r77);
+        right_7.addChild(cube_r77);
         setRotationAngle(cube_r77, 0.0F, 0.0F, -0.5236F);
         cube_r77.texOffs(84, 40).addBox(1.0F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
 
         right_cable2 = new ModelRenderer(this);
         right_cable2.setPos(4.366F, 0.0F, -1.0F);
-        right__7.addChild(right_cable2);
+        right_7.addChild(right_cable2);
         setRotationAngle(right_cable2, 0.0F, 1.0472F, 0.0F);
         right_cable2.texOffs(213, 162).addBox(-0.5F, -1.5F, -19.0F, 1.0F, 1.0F, 18.0F, 0.0F, true);
 
@@ -1039,5 +1037,16 @@ public class ChuKoNuModel extends AbstractWeaponModel {
         right_cable2.addChild(cube_r78);
         setRotationAngle(cube_r78, 0.0F, 0.7854F, 0.0F);
         cube_r78.texOffs(84, 40).addBox(-1.0F, -1.5F, -1.0F, 2.0F, 3.0F, 2.0F, 0.0F, true);
+
+        arrow = new ModelRenderer(this);
+        arrow.setPos(0.7F, 34.6F, 11.0F);
+
+        cube_r79 = new ModelRenderer(this);
+        cube_r79.setPos(0.0F, 0.0F, 0.0F);
+        arrow.addChild(cube_r79);
+        setRotationAngle(cube_r79, 0.0F, 0.0F, 0.7854F);
+        cube_r79.texOffs(79, 83).addBox(-11.0F, -10.0F, -2.0F, 1.0F, 1.0F, 14.0F, 0.0F, false);
+
+        setSpecialRenderer(ModAnimations.BULLET, stack -> AbstractGun.getAmmoCount(stack) > 0, arrow);
     }
 }

@@ -25,8 +25,6 @@ public class AnimationUtils {
     }
 
     public static void encodeAnimationType(AnimationType<?> type, PacketBuffer buffer) {
-        if (!type.hasCreator())
-            throw new IllegalArgumentException(String.format("Animation type (%s) doesn't support raw animation creation!", type.getKey()));
         buffer.writeResourceLocation(type.getKey());
     }
 

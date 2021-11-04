@@ -25,18 +25,19 @@ public class Kar98kRenderer extends AbstractWeaponRenderer {
     @Override
     public void positionModel(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
         if (transform == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
-            stack.translate(0.2, 0.392, 0.0);
+            stack.translate(0.2, 0.65, -0.35);
         } else if(transform == ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND) {
             stack.translate(-0.2, 0.3, 0.3);
         }
     }
 
     @Override
-    protected float scaleForTransform(ItemCameraTransforms.TransformType transform) {
-        if (transform == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
-            return 0.4F;
+    protected void scaleModel(MatrixStack matrixStack, ItemCameraTransforms.TransformType transform) {
+        if (transform.firstPerson()) {
+            matrixStack.scale(0.6F, 0.6F, 0.25F);
+        } else {
+            matrixStack.scale(0.15F, 0.15F, 0.15F);
         }
-        return 0.15F;
     }
 
     @Override

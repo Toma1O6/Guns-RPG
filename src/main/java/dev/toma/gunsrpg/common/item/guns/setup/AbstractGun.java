@@ -27,6 +27,14 @@ public abstract class AbstractGun extends BaseItem {
 
     public abstract MaterialContainer getContainer();
 
+    public static int getAmmoCount(ItemStack stack) {
+        CompoundNBT nbt = stack.getTag();
+        if (nbt != null) {
+            return nbt.getInt("ammo");
+        }
+        return 0;
+    }
+
     public final Firemode getFiremode(ItemStack stack) {
         createNBT(stack);
         return Firemode.get(stack.getTag().getInt("firemode"));

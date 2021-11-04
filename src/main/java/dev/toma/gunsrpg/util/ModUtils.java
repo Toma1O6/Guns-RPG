@@ -40,10 +40,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Array;
 import java.util.*;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 public class ModUtils {
 
@@ -58,6 +55,11 @@ public class ModUtils {
 
     public static boolean isMaxLevel(IKillData killData) {
         return killData.getLevel() == killData.getLevelLimit();
+    }
+
+    public static <T> T init(T t, Consumer<T> initializer) {
+        initializer.accept(t);
+        return t;
     }
 
     public static int sum(int[] array) {

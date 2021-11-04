@@ -86,6 +86,11 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
         pose.popPose();
     }
 
+    protected void scaleModel(MatrixStack matrixStack, ItemCameraTransforms.TransformType transform) {
+        float factor = scaleForTransform(transform);
+        matrixStack.scale(factor, factor, factor);
+    }
+
     private void defaultUITransform(MatrixStack matrix) {
         transformUI(matrix);
         matrix.translate(-0.25, -0.3, 0.0);
@@ -102,8 +107,7 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
         matrix.translate(0.7, 0.5, 0.05);
         matrix.mulPose(Vector3f.XP.rotationDegrees(180));
         matrix.mulPose(Vector3f.YP.rotationDegrees(180));
-        float scaleFactor = scaleForTransform(transformType);
-        matrix.scale(scaleFactor, scaleFactor, scaleFactor);
+        scaleModel(matrix, transformType);
         if (transformType == ItemCameraTransforms.TransformType.GUI) {
             defaultUITransform(matrix);
         }

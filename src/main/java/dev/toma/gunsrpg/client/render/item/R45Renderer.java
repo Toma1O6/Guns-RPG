@@ -19,13 +19,13 @@ public class R45Renderer extends AbstractWeaponRenderer {
                 stack.translate(-0.21, 0.37, 0.4);
                 break;
             case FIRST_PERSON_RIGHT_HAND:
-                stack.translate(0.0, 0.5, 0.0);
+                stack.translate(0.0, 0.63, 0.0);
                 break;
         }
     }
 
     @Override
     protected float scaleForTransform(ItemCameraTransforms.TransformType transform) {
-        return transform.firstPerson() ? 0.35F : 0.25F;
+        return transform.firstPerson() ? 0.47F : 0.25F;
     }
 }

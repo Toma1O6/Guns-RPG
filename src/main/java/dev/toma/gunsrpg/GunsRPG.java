@@ -58,7 +58,7 @@ public class GunsRPG {
             ClientSideManager.instance().animationSetup();
             IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
             renderPipeline.register(MinecraftForge.EVENT_BUS);
-            AnimationEngine.get().startEngine(ModConfig.clientConfig.developerMode.get());
+            AnimationEngine.get().startEngine(true); // TODO config value
         }
 
         modLifecycle.modInit();

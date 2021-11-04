@@ -1,6 +1,9 @@
 package dev.toma.gunsrpg.common.item.guns.setup;
 
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
+import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialData;
+import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialDataContainer;
+import dev.toma.gunsrpg.common.item.guns.ammo.MaterialData;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -14,6 +17,13 @@ public class MaterialContainerBuilder {
         this.builder = builder;
     }
 
+    /**
+     * Adds new material stats into internal ammo mappings.
+     * @param material The ammo material
+     * @param value Added damage value
+     * @param levelPredicate Required level for use
+     * @return Current builder instance
+     */
     public MaterialContainerBuilder define(IAmmoMaterial material, int value, int levelPredicate) {
         if (modifierMap.put(material, IMaterialStat.of(value, levelPredicate)) != null) {
             throw new IllegalStateException("Duplicate material definition: " + material);
@@ -21,6 +31,12 @@ public class MaterialContainerBuilder {
         return this;
     }
 
+    /**
+     * Adds new material stats into internal ammo mappings.
+     * @param material The ammo material
+     * @param value Added damage value
+     * @return Current builder instance
+     */
     public MaterialContainerBuilder define(IAmmoMaterial material, int value) {
         return define(material, value, material.defaultLevelRequirement());
     }

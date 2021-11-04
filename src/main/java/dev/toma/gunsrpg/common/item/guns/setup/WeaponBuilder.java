@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns.setup;
 
 import dev.toma.gunsrpg.api.common.IWeaponConfig;
+import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialDataContainer;
 
 public final class WeaponBuilder {
 
@@ -22,6 +23,11 @@ public final class WeaponBuilder {
 
     public MaterialContainerBuilder ammo() {
         return new MaterialContainerBuilder(this);
+    }
+
+    public MaterialContainerBuilder ammo(WeaponCategory category) {
+        this.category(category);
+        return ammo();
     }
 
     /* INTERNAL SET methods */

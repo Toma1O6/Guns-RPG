@@ -28,7 +28,7 @@ public class SPacketChangeFiremode extends AbstractHandlePacket<SPacketChangeFir
             if (gun.switchFiremode(stack, player)) {
                 Firemode currentMode = gun.getFiremode(stack);
                 player.sendMessage(new StringTextComponent("Firemode: " + currentMode.getName()), ChatType.GAME_INFO, Util.NIL_UUID);
-                NetworkManager.sendClientPacket(player, new CPacketSendAnimation(ModAnimations.FIREMODE));
+                NetworkManager.sendClientPacket(player, new CPacketAnimation(CPacketAnimation.Action.PLAY, ModAnimations.FIREMODE));
             }
         }
     }
