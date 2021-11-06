@@ -281,7 +281,7 @@ public class StagedReloader implements IReloader {
             if (isPrepStage) {
                 PreparationStage preparationStage = (PreparationStage) stage;
                 float stageProgress = preparationStage.remainingTicks() / (float) preparationStageLength;
-                return 1.0F - stageProgress;
+                return preparationStage.inverseProgress ? stageProgress : 1.0F - stageProgress;
             }
             return 1.0F;
         }
