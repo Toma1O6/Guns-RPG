@@ -9,15 +9,17 @@ public enum WeaponCategory {
     AR(AmmoType._556MM),
     SR(AmmoType._762MM),
     SG(AmmoType._12G),
-    CROSSBOW(AmmoType.CROSSBOW);
+    CROSSBOW(AmmoType.CROSSBOW),
+    GRENADE_LAUNCHER(AmmoType.GRENADE),
+    ROCKET_LAUNCHER(AmmoType.ROCKET);
 
-    private final AmmoType ammoType;
+    private final AmmoType defaultAmmoType;
 
     WeaponCategory(AmmoType ammoType) {
-        this.ammoType = ammoType;
+        this.defaultAmmoType = ammoType;
     }
 
-    public AmmoType getAmmoType() {
-        return ammoType;
+    public AmmoType getDefaultAmmoType() {
+        return defaultAmmoType;
     }
 }

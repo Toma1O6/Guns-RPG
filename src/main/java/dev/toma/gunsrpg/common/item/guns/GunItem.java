@@ -38,6 +38,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry, IP
     private final WeaponCategory weaponCategory;
     private final IWeaponConfig config;
     private final MaterialContainer container;
+    private final AmmoType ammoType;
 
     public GunItem(String name, Properties properties) {
         super(name, properties.tab(ModTabs.ITEM_TAB).stacksTo(1));
@@ -47,6 +48,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry, IP
         this.weaponCategory = builder.getWeaponCategory();
         this.config = builder.getConfig();
         this.container = builder.getMaterialContainer();
+        this.ammoType = builder.getAmmoType();
     }
 
     /* ABSTRACT METHODS ------------------------------------------------------ */
@@ -152,7 +154,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry, IP
     }
 
     public final AmmoType getAmmoType() {
-        return weaponCategory.getAmmoType();
+        return ammoType;
     }
 
     public final WeaponCategory getWeaponCategory() {
