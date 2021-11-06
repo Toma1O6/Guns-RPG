@@ -6,11 +6,11 @@ import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.render.item.AbstractWeaponRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 
-public class WinchesterRenderer extends AbstractWeaponRenderer {
+public class GrenadeLauncherRenderer extends AbstractWeaponRenderer {
 
     @Override
     public AbstractWeaponModel getWeaponModel() {
-        return WeaponModels.WINCHESTER;
+        return WeaponModels.GRENADE_LAUNCHER;
     }
 
     @Override

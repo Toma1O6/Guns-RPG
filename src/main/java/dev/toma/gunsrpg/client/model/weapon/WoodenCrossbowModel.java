@@ -819,17 +819,14 @@ public class WoodenCrossbowModel extends AbstractWeaponModel {
         fletch.texOffs(83, 147).addBox(-0.1768F, -3.3578F, 0.0F, 1.0F, 0.0F, 5.0F, 0.0F, false);
         fletch.texOffs(85, 147).addBox(-0.8839F, -2.6517F, 0.0F, 0.0F, 1.0F, 5.0F, 0.0F, false);
 
-        setSpecialRenderer(ModAnimations.BULLET, stack -> AbstractGun.getAmmoCount(stack) > 0, arrow);
+        setSpecialRenderer(ModAnimations.BULLET, arrow);
     }
 
     @Override
     public void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay) {
-        matrix.pushPose();
         matrix.mulPose(Vector3f.YN.rotation((float) Math.PI));
         crossbow.render(matrix, builder, light, overlay);
         arms.render(matrix, builder, light, overlay);
         arms_charged.render(matrix, builder, light, overlay);
-        arrow.render(matrix, builder, light, overlay);
-        matrix.popPose();
     }
 }

@@ -112,6 +112,8 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
             defaultUITransform(matrix);
         }
         AbstractWeaponModel weaponModel = getWeaponModel();
+        matrix.pushPose();
         weaponModel.render(stack, data, matrix, renderBuffer, renderBuffer.getBuffer(weaponModel.renderType(WEAPON)), light, overlay, animate && transformType.firstPerson());
+        matrix.popPose();
     }
 }
