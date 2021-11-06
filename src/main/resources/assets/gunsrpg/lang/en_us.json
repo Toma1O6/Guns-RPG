@@ -509,7 +509,7 @@
 
     "screen.animator.new_project": "New Project",
     "screen.animator.open": "Open Project",
-    "screen.animator.open_from": "Open & Base on",
+    "screen.animator.set_background": "Background Animation",
     "screen.animator.merge": "Merge",
     "screen.animator.save": "Save",
     "screen.animator.save_as": "Save As",

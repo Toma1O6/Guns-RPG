@@ -38,7 +38,7 @@ public class AnimatorScreen extends Screen {
     public static final DecimalFormat POSITION_FORMAT = new DecimalFormat("0.0###");
     private static final ITextComponent NEW_PROJECT = new TranslationTextComponent("screen.animator.new_project");
     private static final ITextComponent OPEN = new TranslationTextComponent("screen.animator.open");
-    private static final ITextComponent OPEN_FROM = new TranslationTextComponent("screen.animator.open_from");
+    private static final ITextComponent SET_BACKGROUND = new TranslationTextComponent("screen.animator.set_background");
     private static final ITextComponent MERGE = new TranslationTextComponent("screen.animator.merge");
     private static final ITextComponent SAVE = new TranslationTextComponent("screen.animator.save");
     private static final ITextComponent SAVE_AS = new TranslationTextComponent("screen.animator.save_as");
@@ -89,7 +89,7 @@ public class AnimatorScreen extends Screen {
         IconButton.SETTINGS.set(ANIMATOR_ICONS, 3, 16);
         addButton(new IconButton(5, 5, 20, 20, 0, this::buttonNewProject_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, NEW_PROJECT, mx, my)));
         addButton(new IconButton(30, 5, 20, 20, 1, this::buttonOpen_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, OPEN, mx, my)));
-        addButton(new IconButton(55, 5, 20, 20, 4, this::buttonOpenFrom_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, OPEN_FROM, mx, my)));
+        addButton(new IconButton(55, 5, 20, 20, 4, this::buttonSetBackgroundAnimation, (btn, poses, mx, my) -> renderTooltip(poses, SET_BACKGROUND, mx, my)));
         addButton(new IconButton(80, 5, 20, 20, 5, this::buttonMerge_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, MERGE, mx, my)));
         Widget widget = addButton(new IconButton(105, 5, 20, 20, 2, this::buttonSave_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SAVE, mx, my)));
         widget.active = false; // TODO fix saving
@@ -154,12 +154,6 @@ public class AnimatorScreen extends Screen {
                 break;
             case GLFW.GLFW_KEY_TAB:
                 setToNextFrame_clicked(null);
-                break;
-            case GLFW.GLFW_KEY_LEFT:
-                resetToBeginning_clicked(null);
-                break;
-            case GLFW.GLFW_KEY_RIGHT:
-                setToEnd_clicked(null);
                 break;
             case GLFW.GLFW_KEY_KP_ADD:
                 buttonAddFrame_clicked(null);
@@ -412,11 +406,11 @@ public class AnimatorScreen extends Screen {
     }
 
     private void buttonOpen_Clicked(Button button) {
-        minecraft.setScreen(new ImportProjectScreen(this));
+        minecraft.setScreen(new ImportProjectScreen(this, this::clearBackgroundAnimation));
     }
 
-    private void buttonOpenFrom_Clicked(Button button) {
-        minecraft.setScreen(new ImportFromAnimationScreen(this));
+    private void buttonSetBackgroundAnimation(Button button) {
+        minecraft.setScreen(new SetBackgroundAnimationScreen(this, this::clearBackgroundAnimation, this::setBackgroundAnimation));
     }
 
     private void buttonMerge_Clicked(Button button) {

@@ -64,7 +64,8 @@ public final class Animator {
     }
 
     public FrameProviderWrapper getWrapper(String path) {
-        return configurables.get(path);
+        FrameProviderWrapper wrapper = configurables.get(path);
+        return wrapper.deepCopy();
     }
 
     private void loadModProviders(Set<Map.Entry<ResourceLocation, IKeyframeProvider>> set) {

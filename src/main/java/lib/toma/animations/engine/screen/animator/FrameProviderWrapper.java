@@ -1,8 +1,12 @@
 package lib.toma.animations.engine.screen.animator;
 
+import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IKeyframeProvider;
+import lib.toma.animations.engine.frame.MutableKeyframe;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 public final class FrameProviderWrapper {
 
@@ -16,12 +20,22 @@ public final class FrameProviderWrapper {
         this.provider = new AnimatorFrameProvider(provider);
     }
 
+    private FrameProviderWrapper(String name, File directory, Map<AnimationStage, List<MutableKeyframe>> frames) {
+        this.name = name;
+        this.directory = directory;
+        this.provider = new AnimatorFrameProvider(frames);
+    }
+
     public static FrameProviderWrapper modded(String name, IKeyframeProvider provider) {
         return new FrameProviderWrapper(name, new File("./export/providers"), provider);
     }
 
     public static FrameProviderWrapper userCreated(String name, File dir, IKeyframeProvider provider) {
         return new FrameProviderWrapper(name, dir, provider);
+    }
+
+    public FrameProviderWrapper deepCopy() {
+        return new FrameProviderWrapper(name, directory, provider.getFrames());
     }
 
     public String getName() {

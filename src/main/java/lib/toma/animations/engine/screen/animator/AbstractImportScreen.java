@@ -83,10 +83,6 @@ public abstract class AbstractImportScreen extends Screen {
         minecraft.setScreen(screen);
     }
 
-    protected AnimatorScreen getParent() {
-        return screen;
-    }
-
     protected String getSelectedPath() {
         return selectedPath;
     }

@@ -9,9 +9,11 @@ import net.minecraft.util.text.StringTextComponent;
 public class ImportProjectScreen extends AbstractImportScreen {
 
     protected static final ITextComponent IMPORT = new StringTextComponent("Import");
+    private final IBackgroundAnimationUnsetter unsetter;
 
-    public ImportProjectScreen(AnimatorScreen screen) {
+    public ImportProjectScreen(AnimatorScreen screen, IBackgroundAnimationUnsetter unsetter) {
         super(screen);
+        this.unsetter = unsetter;
     }
 
     @Override
@@ -28,12 +30,21 @@ public class ImportProjectScreen extends AbstractImportScreen {
     @Override
     protected void confirmClicked(Button button) {
         Animator animator = Animator.get();
-        getParent().clearBackgroundAnimation();
+        unsetBackgroundAnimation();
         FrameProviderWrapper wrapper = obtainWrapper(animator, getSelectedPath());
         if (wrapper != null) {
             animator.setUsingProject(new AnimationProject(wrapper));
             AnimationEngine.get().pipeline().insert(Animator.ANIMATOR_TYPE);
         }
         showParent();
+    }
+
+    protected void unsetBackgroundAnimation() {
+        unsetter.clearBackgroundAnimation();
+    }
+
+    @FunctionalInterface
+    public interface IBackgroundAnimationUnsetter {
+        void clearBackgroundAnimation();
     }
 }

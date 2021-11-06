@@ -28,9 +28,8 @@ public class VectorItem extends GunItem {
     @Override
     public void initializeWeapon(WeaponBuilder builder) {
         builder
-                .category(WeaponCategory.SMG)
                 .config(ModConfig.weaponConfig.vector)
-                .ammo()
+                .ammo(WeaponCategory.SMG)
                 .build();
     }
 

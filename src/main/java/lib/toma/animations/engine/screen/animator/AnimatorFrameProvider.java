@@ -13,6 +13,7 @@ import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class AnimatorFrameProvider implements IKeyframeProvider {
 
@@ -48,7 +49,10 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
 
     public AnimatorFrameProvider(Map<AnimationStage, List<MutableKeyframe>> frameMap) {
         this.events = true;
-        this.frameMap.putAll(frameMap);
+        frameMap.forEach((stage, list) -> {
+            List<MutableKeyframe> copyList = list.stream().map(MutableKeyframe::fullCopyOf).collect(Collectors.toList());
+            this.frameMap.put(stage, copyList);
+        });
         this.frameMap.keySet().forEach(stage -> frameCache.put(stage, 0));
     }
 

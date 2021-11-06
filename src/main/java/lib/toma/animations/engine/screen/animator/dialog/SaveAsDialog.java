@@ -6,7 +6,6 @@ import lib.toma.animations.engine.screen.animator.AnimatorScreen;
 import lib.toma.animations.engine.screen.animator.widget.LabelWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.widget.button.CheckboxButton;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -16,12 +15,11 @@ public class SaveAsDialog extends DialogScreen {
 
     private final Pattern namePattern = Pattern.compile("[a-zA-Z][A-Za-z0-9_]*");
     private TextFieldWidget filename;
-    private CheckboxButton cleanFirstFrames;
     private boolean errored;
 
     public SaveAsDialog(AnimatorScreen screen) {
         super(new TranslationTextComponent("screen.animator.dialog.save_as"), screen);
-        setDimensions(140, 105);
+        setDimensions(140, 80);
     }
 
     @Override
@@ -32,12 +30,10 @@ public class SaveAsDialog extends DialogScreen {
         addButton(new LabelWidget(left() + 5, top() + 15, btnWidthP, 15, new StringTextComponent("Filename"), font));
         filename = addButton(new TextFieldWidget(font, left() + 5, top() + 30, btnWidthP, 20, StringTextComponent.EMPTY));
         filename.setResponder(new SuggestionResponder("Filename", filename, this::filename_changed));
-        cleanFirstFrames = addButton(new CheckboxButton(left() + 5, top() + 55, btnWidthP, 20, new StringTextComponent("Clean first frames"), false));
-        cleanFirstFrames.active = false;
         errored = true;
 
-        cancel = addButton(new Button(left() + 5, top() + 80, btnWidth, 20, new StringTextComponent("Cancel"), this::cancel_clicked));
-        confirm = addButton(new Button(left() + 10 + btnWidth, top() + 80, btnWidth, 20, new StringTextComponent("Save"), this::save_clicked));
+        cancel = addButton(new Button(left() + 5, top() + 55, btnWidth, 20, new StringTextComponent("Cancel"), this::cancel_clicked));
+        confirm = addButton(new Button(left() + 10 + btnWidth, top() + 55, btnWidth, 20, new StringTextComponent("Save"), this::save_clicked));
 
         updateSaveButtonState();
     }
