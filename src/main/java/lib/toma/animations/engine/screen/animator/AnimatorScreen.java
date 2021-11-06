@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import lib.toma.animations.Easing;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IKeyframe;
+import lib.toma.animations.api.IKeyframeProvider;
 import lib.toma.animations.api.event.IAnimationEvent;
 import lib.toma.animations.engine.frame.MutableKeyframe;
 import lib.toma.animations.engine.screen.animator.dialog.*;
@@ -173,6 +174,14 @@ public class AnimatorScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return false;
+    }
+
+    public void setBackgroundAnimation(IKeyframeProvider provider) {
+        timeline.setBackgroundAnimation(provider);
+    }
+
+    public void clearBackgroundAnimation() {
+        timeline.clearBackgroundAnimation();
     }
 
     private void posX_change(String value) {

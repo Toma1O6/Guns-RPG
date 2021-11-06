@@ -11,21 +11,13 @@ public final class FrameProviderWrapper {
     private final AnimatorFrameProvider provider;
 
     private FrameProviderWrapper(String name, File directory, IKeyframeProvider provider) {
-        this(name, directory, provider, false);
-    }
-
-    private FrameProviderWrapper(String name, File directory, IKeyframeProvider provider, boolean isBasedOn) {
         this.name = name;
         this.directory = directory;
-        this.provider = new AnimatorFrameProvider(provider, isBasedOn);
+        this.provider = new AnimatorFrameProvider(provider);
     }
 
     public static FrameProviderWrapper modded(String name, IKeyframeProvider provider) {
         return new FrameProviderWrapper(name, new File("./export/providers"), provider);
-    }
-
-    public static FrameProviderWrapper combined(String name, IKeyframeProvider provider) {
-        return new FrameProviderWrapper(name, new File("./export/providers"), provider, true);
     }
 
     public static FrameProviderWrapper userCreated(String name, File dir, IKeyframeProvider provider) {

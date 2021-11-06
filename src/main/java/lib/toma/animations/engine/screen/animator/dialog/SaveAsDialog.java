@@ -1,19 +1,15 @@
 package lib.toma.animations.engine.screen.animator.dialog;
 
-import lib.toma.animations.Keyframes;
-import lib.toma.animations.api.AnimationStage;
-import lib.toma.animations.engine.frame.MutableKeyframe;
-import lib.toma.animations.engine.screen.animator.*;
+import lib.toma.animations.engine.screen.animator.AnimationProject;
+import lib.toma.animations.engine.screen.animator.Animator;
+import lib.toma.animations.engine.screen.animator.AnimatorScreen;
 import lib.toma.animations.engine.screen.animator.widget.LabelWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.CheckboxButton;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import java.util.List;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 public class SaveAsDialog extends DialogScreen {
@@ -37,6 +33,7 @@ public class SaveAsDialog extends DialogScreen {
         filename = addButton(new TextFieldWidget(font, left() + 5, top() + 30, btnWidthP, 20, StringTextComponent.EMPTY));
         filename.setResponder(new SuggestionResponder("Filename", filename, this::filename_changed));
         cleanFirstFrames = addButton(new CheckboxButton(left() + 5, top() + 55, btnWidthP, 20, new StringTextComponent("Clean first frames"), false));
+        cleanFirstFrames.active = false;
         errored = true;
 
         cancel = addButton(new Button(left() + 5, top() + 80, btnWidth, 20, new StringTextComponent("Cancel"), this::cancel_clicked));
@@ -48,11 +45,6 @@ public class SaveAsDialog extends DialogScreen {
     private void save_clicked(Button button) {
         Animator animator = Animator.get();
         AnimationProject project = animator.getProject();
-        if (cleanFirstFrames.selected()) {
-            FrameProviderWrapper wrapper = project.getFrameControl();
-            AnimatorFrameProvider provider = wrapper.getProvider();
-            cleanParentFrames(provider);
-        }
         project.saveProjectAs(filename.getValue());
         showParent();
     }
@@ -71,20 +63,5 @@ public class SaveAsDialog extends DialogScreen {
     private void updateSaveButtonState() {
         if (confirm != null)
             confirm.active = !errored;
-    }
-
-    private void cleanParentFrames(AnimatorFrameProvider provider) {
-        Set<AnimationStage> stagesToClear = provider.getParentStages();
-        if (stagesToClear != null) {
-            for (AnimationStage stage : stagesToClear) {
-                List<MutableKeyframe> frames = provider.getFrames().get(stage);
-                if (frames == null || frames.isEmpty()) continue;
-                MutableKeyframe mkf = frames.get(0);
-                mkf.setEndpoint(0);
-                mkf.setPosition(Vector3d.ZERO);
-                mkf.setRotation(Vector3d.ZERO);
-                mkf.baseOn(Keyframes.none());
-            }
-        }
     }
 }

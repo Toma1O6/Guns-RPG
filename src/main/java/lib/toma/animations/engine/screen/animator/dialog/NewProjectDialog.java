@@ -111,6 +111,7 @@ public class NewProjectDialog extends DialogScreen {
         Animator.get().setUsingProject(project);
         IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
         pipeline.insert(Animator.ANIMATOR_TYPE);
+        getParent().clearBackgroundAnimation();
         showParent();
     }
 

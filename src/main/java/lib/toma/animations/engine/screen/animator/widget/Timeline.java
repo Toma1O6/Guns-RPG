@@ -2,10 +2,7 @@ package lib.toma.animations.engine.screen.animator.widget;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lib.toma.animations.AnimationEngine;
-import lib.toma.animations.api.AnimationStage;
-import lib.toma.animations.api.AnimationType;
-import lib.toma.animations.api.IAnimationPipeline;
-import lib.toma.animations.api.IKeyframe;
+import lib.toma.animations.api.*;
 import lib.toma.animations.api.event.IAnimationEvent;
 import lib.toma.animations.engine.frame.MutableKeyframe;
 import lib.toma.animations.engine.screen.animator.AnimationProject;
@@ -32,6 +29,7 @@ public class Timeline extends WidgetContainer {
     private final List<Display> displayList = new ArrayList<>();
     private int scrollIndex;
     private final int displaySize;
+    private IKeyframeProvider backgroundProvider;
 
     private IProgressBarChange progressBarChange;
     private IKeyframeSelected keyframeSelected;
@@ -197,11 +195,24 @@ public class Timeline extends WidgetContainer {
         if (pipeline.get(type) == null) {
             pipeline.insert(type);
         }
+        if (pipeline.get(Animator.BACKGROUND_TYPE) == null) {
+            playBackgroundAnimation();
+        }
     }
 
     public float getAnimationProgress() {
         Animator.CustomizableAnimation animation = AnimationEngine.get().pipeline().get(Animator.ANIMATOR_TYPE);
         return animation != null ? animation.getProgress() : 0.0F;
+    }
+
+    public void setBackgroundAnimation(IKeyframeProvider provider) {
+        backgroundProvider = provider;
+        playBackgroundAnimation();
+    }
+
+    public void clearBackgroundAnimation() {
+        backgroundProvider = null;
+        playBackgroundAnimation();
     }
 
     @Override
@@ -248,6 +259,15 @@ public class Timeline extends WidgetContainer {
         if (keyframeSelected != null) {
             keyframeSelected.onSelect(iKeyframe != null ? IKeyframeSelectContext.of(iKeyframe, stage) : null);
         }
+    }
+
+    private void playBackgroundAnimation() {
+        IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
+        if (backgroundProvider == null) {
+            pipeline.remove(Animator.BACKGROUND_TYPE);
+            return;
+        }
+        pipeline.insert(Animator.BACKGROUND_TYPE, new Animator.BackgroundAnimation(backgroundProvider));
     }
 
     @FunctionalInterface

@@ -28,6 +28,7 @@ public class ImportProjectScreen extends AbstractImportScreen {
     @Override
     protected void confirmClicked(Button button) {
         Animator animator = Animator.get();
+        getParent().clearBackgroundAnimation();
         FrameProviderWrapper wrapper = obtainWrapper(animator, getSelectedPath());
         if (wrapper != null) {
             animator.setUsingProject(new AnimationProject(wrapper));

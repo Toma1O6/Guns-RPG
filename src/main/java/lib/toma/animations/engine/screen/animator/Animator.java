@@ -7,6 +7,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.*;
+import lib.toma.animations.engine.frame.MutableKeyframe;
 import lib.toma.animations.engine.serialization.AnimationLoader;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,6 +25,7 @@ public final class Animator {
 
     private static final Animator INSTANCE = new Animator();
     public static final AnimationType<CustomizableAnimation> ANIMATOR_TYPE = AnimationType.create(new ResourceLocation("animator"), Animator.get()::getAnimation);
+    public static final AnimationType<BackgroundAnimation> BACKGROUND_TYPE = AnimationType.create(new ResourceLocation("background"));
     private final File exportDir = new File("./export/providers");
     private final Map<String, FrameProviderWrapper> configurables;
     private AnimationProject project = AnimationProject.createEmpty();
@@ -220,6 +222,44 @@ public final class Animator {
             progressO = 0.0F;
             progressI = 0.0F;
             provider.forceProgress(0.0F);
+        }
+    }
+
+    public static class BackgroundAnimation implements IAnimation {
+
+        private final Map<AnimationStage, IKeyframe> map = new IdentityHashMap<>();
+
+        public BackgroundAnimation(IKeyframeProvider provider) {
+            if (!(provider instanceof AnimatorFrameProvider)) {
+                provider = new AnimatorFrameProvider(provider);
+            }
+            AnimatorFrameProvider frameProvider = (AnimatorFrameProvider) provider;
+            for (Map.Entry<AnimationStage, List<MutableKeyframe>> entry : frameProvider.getFrames().entrySet()) {
+                map.put(entry.getKey(), this.mergeKeyframesIntoOne(entry.getValue()));
+            }
+        }
+
+        @Override
+        public void animate(AnimationStage stage, MatrixStack matrixStack, IRenderTypeBuffer typeBuffer, int light, int overlay) {
+            IKeyframe keyframe = map.get(stage);
+            if (keyframe == null) return;
+            Keyframes.processFrame(keyframe, 1.0F, matrixStack);
+        }
+
+        @Override
+        public void gameTick() {}
+
+        @Override
+        public void renderTick(float deltaRenderTime) {}
+
+        @Override
+        public boolean hasFinished() {
+            IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
+            return !pipeline.has(Animator.ANIMATOR_TYPE);
+        }
+
+        private IKeyframe mergeKeyframesIntoOne(List<? extends IKeyframe> iKeyframes) {
+            return MutableKeyframe.fullCopyOf(iKeyframes.get(iKeyframes.size() - 1));
         }
     }
 }
