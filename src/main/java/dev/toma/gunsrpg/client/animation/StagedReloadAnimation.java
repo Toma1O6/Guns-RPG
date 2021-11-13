@@ -42,8 +42,14 @@ public class StagedReloadAnimation implements IModifiableProgress {
         IKeyframe[] frames = frameCache.get(stage);
         if (frames == null)
             return;
-        IKeyframe frame = getFrame(frames);
-        Keyframes.processFrame(frame, progressInterpolated, matrixStack);
+        int frameIndex = getFrameIndex(frames);
+        IKeyframe frame = getKeyframe(frameIndex, frames);
+        IKeyframe old = getKeyframe(frameIndex - 1, frames);
+        float actualProgress = frame.endpoint();
+        float prevProgress = old.endpoint();
+        float min = actualProgress - prevProgress;
+        float progress = min == 0.0F ? 1.0F : (progressInterpolated - prevProgress) / (actualProgress - prevProgress);
+        Keyframes.processFrame(frame, progress, matrixStack);
     }
 
     @Override
@@ -56,13 +62,13 @@ public class StagedReloadAnimation implements IModifiableProgress {
         return progressFetcher.get();
     }
 
-    private IKeyframe getFrame(IKeyframe[] frames) {
+    private int getFrameIndex(IKeyframe[] frames) {
         boolean inverse = progressInterpolated > 0.5;
         if (inverse) {
             for (int i = frames.length - 2; i >= 0; i--) {
                 IKeyframe keyframe = frames[i];
                 if (keyframe.endpoint() <= progressInterpolated) {
-                    return frames[i + 1];
+                    return i + 1;
                 }
             }
         } else {
@@ -70,11 +76,15 @@ public class StagedReloadAnimation implements IModifiableProgress {
             for (int i = 1; i < frames.length; i++) {
                 IKeyframe keyframe = frames[i];
                 if (last.endpoint() <= progressInterpolated && keyframe.endpoint() > progressInterpolated) {
-                    return keyframe;
+                    return i;
                 }
                 last = keyframe;
             }
         }
-        return Keyframes.none();
+        return -1;
+    }
+
+    private IKeyframe getKeyframe(int index, IKeyframe[] frames) {
+        return index < 0 ? Keyframes.none() : frames[index];
     }
 }
