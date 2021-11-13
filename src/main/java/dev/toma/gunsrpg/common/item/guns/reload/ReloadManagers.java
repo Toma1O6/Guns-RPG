@@ -36,5 +36,9 @@ public final class ReloadManagers {
         return constraint ? valid : invalid;
     }
 
+    public static IReloadManager clip(ResourceLocation clipReloadAnimation) {
+        return new ClipReloadManager((item, player) -> clipReloadAnimation);
+    }
+
     private ReloadManagers() {}
 }

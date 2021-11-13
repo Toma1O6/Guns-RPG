@@ -38,6 +38,7 @@ public class Kar98kItem extends GunItem {
     };
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("kar98k/reload");
     private static final ResourceLocation LOAD_BULLET_ANIMATION = GunsRPG.makeResource("kar98k/load_bullet");
+    private static final ResourceLocation RELOAD_CLIP_ANIMATION = GunsRPG.makeResource("kar98k/reload_clip");
 
     public Kar98kItem(String name) {
         super(name, new Properties().setISTER(() -> Kar98kRenderer::new));
@@ -100,7 +101,7 @@ public class Kar98kItem extends GunItem {
         return ReloadManagers.either(
                 getAmmo(stack) > 0,
                 ReloadManagers.singleBulletLoading(46, player, this, stack, LOAD_BULLET_ANIMATION),
-                ReloadManagers.fullMagLoading()
+                ReloadManagers.clip(RELOAD_CLIP_ANIMATION)
         );
     }
 

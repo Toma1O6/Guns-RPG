@@ -21,10 +21,19 @@ import net.minecraftforge.fml.DistExecutor;
 
 public class FullReloader implements IReloader {
 
+    private final IAnimationProvider animationProvider;
     private boolean reloading;
     private int ticksLeft;
     private GunItem gun;
     private ItemStack stack;
+
+    public FullReloader() {
+        this(IAnimationProvider.DEFAULT_PROVIDER);
+    }
+
+    public FullReloader(IAnimationProvider provider) {
+        this.animationProvider = provider;
+    }
 
     @Override
     public void initiateReload(PlayerEntity player, GunItem item, ItemStack _stack) {
@@ -93,7 +102,7 @@ public class FullReloader implements IReloader {
     @OnlyIn(Dist.CLIENT)
     private void playAnimation(PlayerEntity player) {
         IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
-        ResourceLocation path = gun.getReloadAnimation(player);
+        ResourceLocation path = animationProvider.getReloadAnimationPath(gun, player);
         ReloadAnimation animation = AnimationUtils.createAnimation(path, provider -> new ReloadAnimation(provider, ticksLeft));
         pipeline.insert(ModAnimations.RELOAD, animation);
     }
@@ -102,5 +111,13 @@ public class FullReloader implements IReloader {
     private void cancelAnimations() {
         IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
         pipeline.remove(ModAnimations.RELOAD);
+    }
+
+    @FunctionalInterface
+    public interface IAnimationProvider {
+
+        IAnimationProvider DEFAULT_PROVIDER = GunItem::getReloadAnimation;
+
+        ResourceLocation getReloadAnimationPath(GunItem item, PlayerEntity player);
     }
 }
