@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.client.render.item.R45Renderer;
 import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
@@ -29,8 +30,19 @@ public class R45Item extends GunItem {
     public void initializeWeapon(WeaponBuilder builder) {
         builder
                 .config(ModConfig.weaponConfig.r45)
+                .caliber(AmmoType.AMMO_45ACP)
                 .ammo(WeaponCategory.PISTOL)
                     .define(AmmoMaterials.WOOD, 0)
+                    .define(AmmoMaterials.STONE, 2)
+                    .define(AmmoMaterials.IRON, 4)
+                    .define(AmmoMaterials.LAPIS, 4)
+                    .define(AmmoMaterials.GOLD, 6)
+                    .define(AmmoMaterials.REDSTONE, 6)
+                    .define(AmmoMaterials.DIAMOND, 9)
+                    .define(AmmoMaterials.QUARTZ, 9)
+                    .define(AmmoMaterials.EMERALD, 11)
+                    .define(AmmoMaterials.AMETHYST, 14)
+                    .define(AmmoMaterials.NETHERITE, 17)
                 .build();
     }
 
