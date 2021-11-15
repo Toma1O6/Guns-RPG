@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.ChuKoNuRenderer;
 import dev.toma.gunsrpg.client.render.item.RocketLauncherRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -25,6 +26,17 @@ public class ChuKoNuItem extends GunItem {
         builder
                 .config(ModConfig.weaponConfig.chukonu)
                 .ammo(WeaponCategory.CROSSBOW)
+                    .define(AmmoMaterials.WOOD, 0)
+                    .define(AmmoMaterials.STONE, 2)
+                    .define(AmmoMaterials.IRON, 4)
+                    .define(AmmoMaterials.LAPIS, 4)
+                    .define(AmmoMaterials.GOLD, 6)
+                    .define(AmmoMaterials.REDSTONE, 6)
+                    .define(AmmoMaterials.DIAMOND, 9)
+                    .define(AmmoMaterials.QUARTZ, 9)
+                    .define(AmmoMaterials.EMERALD, 11)
+                    .define(AmmoMaterials.AMETHYST, 14)
+                    .define(AmmoMaterials.NETHERITE, 17)
                 .build();
     }
 
