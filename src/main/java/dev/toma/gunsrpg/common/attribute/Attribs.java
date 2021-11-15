@@ -97,7 +97,7 @@ public final class Attribs {
     public static final IAttributeId KAR98K_VERTICAL_RECOIL     = createInternal("kar98k_vertical_recoil", 8.0);
     public static final IAttributeId KAR98K_HORIZONTAL_RECOIL   = createInternal("kar98k_horizontal_recoil", 0.9);
     public static final IAttributeId KAR98K_MAG_CAPACITY        = createInternal("kar98k_mag_capacity", 5);
-    public static final IAttributeId KAR98K_RELOAD_SPEED        = createInternal("kar98k_reload_speed", 66);
+    public static final IAttributeId KAR98K_RELOAD_SPEED        = createInternal("kar98k_reload_speed", 30);
     public static final IAttributeId KAR98K_NOISE               = createInternal("kar98k_noise");
     public static final IAttributeId KAR98K_FIRERATE            = createInternal("kar98k_firerate", 40);
     public static final IAttributeId KAR98K_HS_DAMAGE           = createInternal("kar98k_hs_damage");

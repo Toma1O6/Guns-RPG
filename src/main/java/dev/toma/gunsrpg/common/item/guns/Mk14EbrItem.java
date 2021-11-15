@@ -24,7 +24,7 @@ public class Mk14EbrItem extends GunItem {
     public void initializeWeapon(WeaponBuilder builder) {
         builder
                 .config(ModConfig.weaponConfig.mk14)
-                .ammo(WeaponCategory.SR)
+                .ammo(WeaponCategory.DMR)
                 .build();
     }
 

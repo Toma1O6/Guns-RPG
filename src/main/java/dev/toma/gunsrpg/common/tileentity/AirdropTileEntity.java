@@ -200,115 +200,115 @@ public class AirdropTileEntity extends InventoryTileEntity {
 
         private List<Supplier<ItemStack>> getCommonAmmo() {
             return listOf(
-                    () -> new ItemStack(ModItems.WOODEN_AMMO_9MM, 25),
-                    () -> new ItemStack(ModItems.STONE_AMMO_9MM, 25),
-                    () -> new ItemStack(ModItems.IRON_AMMO_9MM, 25),
-                    () -> new ItemStack(ModItems.WOODEN_AMMO_9MM, 50),
-                    () -> new ItemStack(ModItems.STONE_AMMO_9MM, 50),
-                    () -> new ItemStack(ModItems.WOODEN_AMMO_45ACP, 25),
-                    () -> new ItemStack(ModItems.STONE_AMMO_45ACP, 25),
-                    () -> new ItemStack(ModItems.IRON_AMMO_45ACP, 25),
-                    () -> new ItemStack(ModItems.WOODEN_AMMO_45ACP, 50),
-                    () -> new ItemStack(ModItems.WOODEN_AMMO_556MM, 25),
-                    () -> new ItemStack(ModItems.STONE_AMMO_556MM, 25),
-                    () -> new ItemStack(ModItems.WOODEN_AMMO_762MM, 25),
-                    () -> new ItemStack(ModItems.WOODEN_AMMO_12G, 25),
-                    () -> new ItemStack(ModItems.WOODEN_AMMO_CROSSBOW_BOLT, 25),
-                    () -> new ItemStack(ModItems.STONE_AMMO_CROSSBOW_BOLT, 25)
+                    () -> new ItemStack(ModItems.WOODEN_9MM, 25),
+                    () -> new ItemStack(ModItems.STONE_9MM, 25),
+                    () -> new ItemStack(ModItems.IRON_9MM, 25),
+                    () -> new ItemStack(ModItems.WOODEN_9MM, 50),
+                    () -> new ItemStack(ModItems.STONE_9MM, 50),
+                    () -> new ItemStack(ModItems.WOODEN_45ACP, 25),
+                    () -> new ItemStack(ModItems.STONE_45ACP, 25),
+                    () -> new ItemStack(ModItems.IRON_45ACP, 25),
+                    () -> new ItemStack(ModItems.WOODEN_45ACP, 50),
+                    () -> new ItemStack(ModItems.WOODEN_556MM, 25),
+                    () -> new ItemStack(ModItems.STONE_556MM, 25),
+                    () -> new ItemStack(ModItems.WOODEN_762MM, 25),
+                    () -> new ItemStack(ModItems.WOODEN_12G, 25),
+                    () -> new ItemStack(ModItems.WOODEN_BOLT, 25),
+                    () -> new ItemStack(ModItems.STONE_BOLT, 25)
             );
         }
 
         private List<Supplier<ItemStack>> getUncommonAmmo() {
             return listOf(
-                    () -> new ItemStack(ModItems.GOLD_AMMO_9MM, 25),
-                    () -> new ItemStack(ModItems.DIAMOND_AMMO_9MM, 25),
-                    () -> new ItemStack(ModItems.IRON_AMMO_9MM, 50),
-                    () -> new ItemStack(ModItems.GOLD_AMMO_45ACP, 25),
-                    () -> new ItemStack(ModItems.DIAMOND_AMMO_45ACP, 25),
-                    () -> new ItemStack(ModItems.STONE_AMMO_45ACP, 50),
-                    () -> new ItemStack(ModItems.IRON_AMMO_556MM, 25),
-                    () -> new ItemStack(ModItems.GOLD_AMMO_556MM, 25),
-                    () -> new ItemStack(ModItems.WOODEN_AMMO_556MM, 50),
-                    () -> new ItemStack(ModItems.STONE_AMMO_556MM, 50),
-                    () -> new ItemStack(ModItems.STONE_AMMO_762MM, 25),
-                    () -> new ItemStack(ModItems.IRON_AMMO_762MM, 25),
-                    () -> new ItemStack(ModItems.WOODEN_AMMO_762MM, 50),
-                    () -> new ItemStack(ModItems.STONE_AMMO_12G, 25),
-                    () -> new ItemStack(ModItems.IRON_AMMO_12G, 25),
-                    () -> new ItemStack(ModItems.WOODEN_AMMO_12G, 50),
-                    () -> new ItemStack(ModItems.WOODEN_AMMO_CROSSBOW_BOLT, 50),
-                    () -> new ItemStack(ModItems.STONE_AMMO_CROSSBOW_BOLT, 50),
-                    () -> new ItemStack(ModItems.IRON_AMMO_CROSSBOW_BOLT, 25)
+                    () -> new ItemStack(ModItems.GOLD_9MM, 25),
+                    () -> new ItemStack(ModItems.DIAMOND_9MM, 25),
+                    () -> new ItemStack(ModItems.IRON_9MM, 50),
+                    () -> new ItemStack(ModItems.GOLD_45ACP, 25),
+                    () -> new ItemStack(ModItems.DIAMOND_45ACP, 25),
+                    () -> new ItemStack(ModItems.STONE_45ACP, 50),
+                    () -> new ItemStack(ModItems.IRON_556MM, 25),
+                    () -> new ItemStack(ModItems.GOLD_556MM, 25),
+                    () -> new ItemStack(ModItems.WOODEN_556MM, 50),
+                    () -> new ItemStack(ModItems.STONE_556MM, 50),
+                    () -> new ItemStack(ModItems.STONE_762MM, 25),
+                    () -> new ItemStack(ModItems.IRON_762MM, 25),
+                    () -> new ItemStack(ModItems.WOODEN_762MM, 50),
+                    () -> new ItemStack(ModItems.STONE_12G, 25),
+                    () -> new ItemStack(ModItems.IRON_12G, 25),
+                    () -> new ItemStack(ModItems.WOODEN_12G, 50),
+                    () -> new ItemStack(ModItems.WOODEN_BOLT, 50),
+                    () -> new ItemStack(ModItems.STONE_BOLT, 50),
+                    () -> new ItemStack(ModItems.IRON_BOLT, 25)
             );
         }
 
         private List<Supplier<ItemStack>> getRareAmmo() {
             return listOf(
-                    () -> new ItemStack(ModItems.EMERALD_AMMO_9MM, 25),
-                    () -> new ItemStack(ModItems.AMETHYST_AMMO_9MM, 25),
-                    () -> new ItemStack(ModItems.GOLD_AMMO_9MM, 50),
-                    () -> new ItemStack(ModItems.DIAMOND_AMMO_9MM, 50),
-                    () -> new ItemStack(ModItems.EMERALD_AMMO_45ACP, 25),
-                    () -> new ItemStack(ModItems.IRON_AMMO_45ACP, 50),
-                    () -> new ItemStack(ModItems.GOLD_AMMO_45ACP, 50),
-                    () -> new ItemStack(ModItems.DIAMOND_AMMO_556MM, 25),
-                    () -> new ItemStack(ModItems.IRON_AMMO_556MM, 50),
-                    () -> new ItemStack(ModItems.GOLD_AMMO_762MM, 25),
-                    () -> new ItemStack(ModItems.STONE_AMMO_762MM, 50),
-                    () -> new ItemStack(ModItems.GOLD_AMMO_12G, 25),
-                    () -> new ItemStack(ModItems.STONE_AMMO_12G, 50),
-                    () -> new ItemStack(ModItems.GOLD_AMMO_CROSSBOW_BOLT, 25),
-                    () -> new ItemStack(ModItems.DIAMOND_AMMO_CROSSBOW_BOLT, 25),
-                    () -> new ItemStack(ModItems.IRON_AMMO_CROSSBOW_BOLT, 50)
+                    () -> new ItemStack(ModItems.EMERALD_9MM, 25),
+                    () -> new ItemStack(ModItems.AMETHYST_9MM, 25),
+                    () -> new ItemStack(ModItems.GOLD_9MM, 50),
+                    () -> new ItemStack(ModItems.DIAMOND_9MM, 50),
+                    () -> new ItemStack(ModItems.EMERALD_45ACP, 25),
+                    () -> new ItemStack(ModItems.IRON_45ACP, 50),
+                    () -> new ItemStack(ModItems.GOLD_45ACP, 50),
+                    () -> new ItemStack(ModItems.DIAMOND_556MM, 25),
+                    () -> new ItemStack(ModItems.IRON_556MM, 50),
+                    () -> new ItemStack(ModItems.GOLD_762MM, 25),
+                    () -> new ItemStack(ModItems.STONE_762MM, 50),
+                    () -> new ItemStack(ModItems.GOLD_12G, 25),
+                    () -> new ItemStack(ModItems.STONE_12G, 50),
+                    () -> new ItemStack(ModItems.GOLD_BOLT, 25),
+                    () -> new ItemStack(ModItems.DIAMOND_BOLT, 25),
+                    () -> new ItemStack(ModItems.IRON_BOLT, 50)
             );
         }
 
         private List<Supplier<ItemStack>> getVeryRareAmmo() {
             return listOf(
-                    () -> new ItemStack(ModItems.EMERALD_AMMO_9MM, 50),
-                    () -> new ItemStack(ModItems.AMETHYST_AMMO_9MM, 50),
-                    () -> new ItemStack(ModItems.AMETHYST_AMMO_45ACP, 25),
-                    () -> new ItemStack(ModItems.DIAMOND_AMMO_45ACP, 50),
-                    () -> new ItemStack(ModItems.EMERALD_AMMO_556MM, 25),
-                    () -> new ItemStack(ModItems.GOLD_AMMO_556MM, 50),
-                    () -> new ItemStack(ModItems.DIAMOND_AMMO_762MM, 25),
-                    () -> new ItemStack(ModItems.EMERALD_AMMO_762MM, 25),
-                    () -> new ItemStack(ModItems.IRON_AMMO_762MM, 50),
-                    () -> new ItemStack(ModItems.DIAMOND_AMMO_12G, 25),
-                    () -> new ItemStack(ModItems.IRON_AMMO_12G, 50),
-                    () -> new ItemStack(ModItems.EMERALD_AMMO_CROSSBOW_BOLT, 25),
-                    () -> new ItemStack(ModItems.AMETHYST_AMMO_CROSSBOW_BOLT, 25),
-                    () -> new ItemStack(ModItems.GOLD_AMMO_CROSSBOW_BOLT, 50)
+                    () -> new ItemStack(ModItems.EMERALD_9MM, 50),
+                    () -> new ItemStack(ModItems.AMETHYST_9MM, 50),
+                    () -> new ItemStack(ModItems.AMETHYST_45ACP, 25),
+                    () -> new ItemStack(ModItems.DIAMOND_45ACP, 50),
+                    () -> new ItemStack(ModItems.EMERALD_556MM, 25),
+                    () -> new ItemStack(ModItems.GOLD_556MM, 50),
+                    () -> new ItemStack(ModItems.DIAMOND_762MM, 25),
+                    () -> new ItemStack(ModItems.EMERALD_762MM, 25),
+                    () -> new ItemStack(ModItems.IRON_762MM, 50),
+                    () -> new ItemStack(ModItems.DIAMOND_12G, 25),
+                    () -> new ItemStack(ModItems.IRON_12G, 50),
+                    () -> new ItemStack(ModItems.EMERALD_BOLT, 25),
+                    () -> new ItemStack(ModItems.AMETHYST_BOLT, 25),
+                    () -> new ItemStack(ModItems.GOLD_BOLT, 50)
             );
         }
 
         private List<Supplier<ItemStack>> getEpicAmmo() {
             return listOf(
-                    () -> new ItemStack(ModItems.EMERALD_AMMO_45ACP, 50),
-                    () -> new ItemStack(ModItems.AMETHYST_AMMO_45ACP, 50),
-                    () -> new ItemStack(ModItems.AMETHYST_AMMO_556MM, 25),
-                    () -> new ItemStack(ModItems.DIAMOND_AMMO_556MM, 50),
-                    () -> new ItemStack(ModItems.EMERALD_AMMO_556MM, 50),
-                    () -> new ItemStack(ModItems.AMETHYST_AMMO_762MM, 25),
-                    () -> new ItemStack(ModItems.GOLD_AMMO_762MM, 50),
-                    () -> new ItemStack(ModItems.DIAMOND_AMMO_762MM, 50),
-                    () -> new ItemStack(ModItems.EMERALD_AMMO_12G, 25),
-                    () -> new ItemStack(ModItems.AMETHYST_AMMO_12G, 25),
-                    () -> new ItemStack(ModItems.GOLD_AMMO_12G, 50),
-                    () -> new ItemStack(ModItems.DIAMOND_AMMO_12G, 50),
-                    () -> new ItemStack(ModItems.DIAMOND_AMMO_CROSSBOW_BOLT, 50),
-                    () -> new ItemStack(ModItems.EMERALD_AMMO_CROSSBOW_BOLT, 50),
-                    () -> new ItemStack(ModItems.AMETHYST_AMMO_CROSSBOW_BOLT, 50)
+                    () -> new ItemStack(ModItems.EMERALD_45ACP, 50),
+                    () -> new ItemStack(ModItems.AMETHYST_45ACP, 50),
+                    () -> new ItemStack(ModItems.AMETHYST_556MM, 25),
+                    () -> new ItemStack(ModItems.DIAMOND_556MM, 50),
+                    () -> new ItemStack(ModItems.EMERALD_556MM, 50),
+                    () -> new ItemStack(ModItems.AMETHYST_762MM, 25),
+                    () -> new ItemStack(ModItems.GOLD_762MM, 50),
+                    () -> new ItemStack(ModItems.DIAMOND_762MM, 50),
+                    () -> new ItemStack(ModItems.EMERALD_12G, 25),
+                    () -> new ItemStack(ModItems.AMETHYST_12G, 25),
+                    () -> new ItemStack(ModItems.GOLD_12G, 50),
+                    () -> new ItemStack(ModItems.DIAMOND_12G, 50),
+                    () -> new ItemStack(ModItems.DIAMOND_BOLT, 50),
+                    () -> new ItemStack(ModItems.EMERALD_BOLT, 50),
+                    () -> new ItemStack(ModItems.AMETHYST_BOLT, 50)
             );
         }
 
         private List<Supplier<ItemStack>> getLegendaryAmmo() {
             return listOf(
-                    () -> new ItemStack(ModItems.AMETHYST_AMMO_556MM, 50),
-                    () -> new ItemStack(ModItems.EMERALD_AMMO_762MM, 50),
-                    () -> new ItemStack(ModItems.AMETHYST_AMMO_762MM, 50),
-                    () -> new ItemStack(ModItems.EMERALD_AMMO_12G, 50),
-                    () -> new ItemStack(ModItems.AMETHYST_AMMO_12G, 50)
+                    () -> new ItemStack(ModItems.AMETHYST_556MM, 50),
+                    () -> new ItemStack(ModItems.EMERALD_762MM, 50),
+                    () -> new ItemStack(ModItems.AMETHYST_762MM, 50),
+                    () -> new ItemStack(ModItems.EMERALD_12G, 50),
+                    () -> new ItemStack(ModItems.AMETHYST_12G, 50)
             );
         }
 

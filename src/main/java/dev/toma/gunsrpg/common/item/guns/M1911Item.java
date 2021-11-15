@@ -51,10 +51,14 @@ public class M1911Item extends GunItem {
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 1)
                     .define(AmmoMaterials.IRON, 3)
+                    .define(AmmoMaterials.LAPIS, 3)
                     .define(AmmoMaterials.GOLD, 4)
+                    .define(AmmoMaterials.REDSTONE, 4)
                     .define(AmmoMaterials.DIAMOND, 6)
+                    .define(AmmoMaterials.QUARTZ, 6)
                     .define(AmmoMaterials.EMERALD, 8)
                     .define(AmmoMaterials.AMETHYST, 11)
+                    .define(AmmoMaterials.NETHERITE, 13)
                 .build();
     }
 

@@ -4,12 +4,13 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 
 public enum WeaponCategory {
 
-    PISTOL(AmmoType._9MM),
-    SMG(AmmoType._45ACP),
-    AR(AmmoType._556MM),
-    SR(AmmoType._762MM),
-    SG(AmmoType._12G),
-    CROSSBOW(AmmoType.CROSSBOW),
+    PISTOL(AmmoType.AMMO_9MM),
+    SMG(AmmoType.AMMO_45ACP),
+    AR(AmmoType.AMMO_556MM),
+    DMR(AmmoType.AMMO_762MM),
+    SR(AmmoType.AMMO_762MM),
+    SG(AmmoType.AMMO_12G),
+    CROSSBOW(AmmoType.BOLT),
     GRENADE_LAUNCHER(AmmoType.GRENADE),
     ROCKET_LAUNCHER(AmmoType.ROCKET);
 

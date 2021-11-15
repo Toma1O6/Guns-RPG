@@ -39,7 +39,7 @@ public class SksItem extends GunItem {
     @Override
     public void initializeWeapon(WeaponBuilder builder) {
         builder
-                .category(WeaponCategory.AR)
+                .category(WeaponCategory.DMR)
                 .config(ModConfig.weaponConfig.sks)
                 .ammo()
                     .define(AmmoMaterials.WOOD, 0)

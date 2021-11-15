@@ -1,12 +1,12 @@
 package dev.toma.gunsrpg.common.item.guns.ammo;
 
 public enum AmmoType {
-    _9MM(MaterialDataList.CONTAINER_9MM),
-    _45ACP(MaterialDataList.CONTAINER_45ACP),
-    _556MM(MaterialDataList.CONTAINER_556MM),
-    _762MM(MaterialDataList.CONTAINER_762MM),
-    _12G(MaterialDataList.CONTAINER_12G),
-    CROSSBOW(MaterialDataList.CONTAINER_BOLTS),
+    AMMO_9MM(MaterialDataList.CONTAINER_9MM),
+    AMMO_45ACP(MaterialDataList.CONTAINER_45ACP),
+    AMMO_556MM(MaterialDataList.CONTAINER_556MM),
+    AMMO_762MM(MaterialDataList.CONTAINER_762MM),
+    AMMO_12G(MaterialDataList.CONTAINER_12G),
+    BOLT(MaterialDataList.CONTAINER_BOLTS),
     GRENADE,
     ROCKET;
 
