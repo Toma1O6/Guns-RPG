@@ -22,7 +22,7 @@ public class AwmItem extends GunItem {
     @Override
     public void initializeWeapon(WeaponBuilder builder) {
         builder
-                .category(WeaponCategory.AR)
+                .category(WeaponCategory.SR)
                 .config(ModConfig.weaponConfig.akm)
                 .ammo()
                 .build();

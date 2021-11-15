@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item.guns;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.AkmRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -23,6 +24,7 @@ public class VssItem extends GunItem {
     public void initializeWeapon(WeaponBuilder builder) {
         builder
                 .category(WeaponCategory.DMR)
+                .caliber(AmmoType.AMMO_9MM)
                 .config(ModConfig.weaponConfig.akm)
                 .ammo()
                 .build();
