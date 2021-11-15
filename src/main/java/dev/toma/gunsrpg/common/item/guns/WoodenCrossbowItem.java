@@ -46,10 +46,14 @@ public class WoodenCrossbowItem extends GunItem {
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 3)
                     .define(AmmoMaterials.IRON, 6)
+                    .define(AmmoMaterials.LAPIS, 6)
                     .define(AmmoMaterials.GOLD, 9)
+                    .define(AmmoMaterials.REDSTONE, 9)
                     .define(AmmoMaterials.DIAMOND, 14)
+                    .define(AmmoMaterials.QUARTZ, 14)
                     .define(AmmoMaterials.EMERALD, 16)
                     .define(AmmoMaterials.AMETHYST, 20)
+                    .define(AmmoMaterials.NETHERITE, 25)
                 .build();
     }
 
