@@ -45,10 +45,14 @@ public class SksItem extends GunItem {
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 2)
                     .define(AmmoMaterials.IRON, 4)
-                    .define(AmmoMaterials.GOLD, 6)
-                    .define(AmmoMaterials.DIAMOND, 9)
-                    .define(AmmoMaterials.EMERALD, 11)
-                    .define(AmmoMaterials.AMETHYST, 14)
+                    .define(AmmoMaterials.LAPIS, 4)
+                    .define(AmmoMaterials.GOLD, 7)
+                    .define(AmmoMaterials.REDSTONE, 7)
+                    .define(AmmoMaterials.DIAMOND, 10)
+                    .define(AmmoMaterials.QUARTZ, 10)
+                    .define(AmmoMaterials.EMERALD, 12)
+                    .define(AmmoMaterials.AMETHYST, 15)
+                    .define(AmmoMaterials.NETHERITE, 18)
                 .build();
     }
 

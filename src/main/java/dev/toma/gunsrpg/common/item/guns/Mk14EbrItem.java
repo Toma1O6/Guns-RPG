@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.Mk14EbrRenderer;
 import dev.toma.gunsrpg.client.render.item.WinchesterRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -25,6 +26,17 @@ public class Mk14EbrItem extends GunItem {
         builder
                 .config(ModConfig.weaponConfig.mk14)
                 .ammo(WeaponCategory.DMR)
+                    .define(AmmoMaterials.WOOD)
+                    .define(AmmoMaterials.STONE, 3)
+                    .define(AmmoMaterials.IRON, 5)
+                    .define(AmmoMaterials.LAPIS, 5)
+                    .define(AmmoMaterials.GOLD, 8)
+                    .define(AmmoMaterials.REDSTONE, 8)
+                    .define(AmmoMaterials.DIAMOND, 11)
+                    .define(AmmoMaterials.QUARTZ, 11)
+                    .define(AmmoMaterials.EMERALD, 15)
+                    .define(AmmoMaterials.AMETHYST, 18)
+                    .define(AmmoMaterials.NETHERITE, 22)
                 .build();
     }
 

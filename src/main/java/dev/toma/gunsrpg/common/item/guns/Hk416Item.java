@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.AkmRenderer;
 import dev.toma.gunsrpg.client.render.item.Hk416Renderer;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -26,6 +27,17 @@ public class Hk416Item extends GunItem {
                 .category(WeaponCategory.AR)
                 .config(ModConfig.weaponConfig.hk416)
                 .ammo()
+                    .define(AmmoMaterials.WOOD)
+                    .define(AmmoMaterials.STONE, 2)
+                    .define(AmmoMaterials.IRON, 4)
+                    .define(AmmoMaterials.LAPIS, 4)
+                    .define(AmmoMaterials.GOLD, 6)
+                    .define(AmmoMaterials.REDSTONE, 6)
+                    .define(AmmoMaterials.DIAMOND, 8)
+                    .define(AmmoMaterials.QUARTZ, 8)
+                    .define(AmmoMaterials.EMERALD, 10)
+                    .define(AmmoMaterials.AMETHYST, 12)
+                    .define(AmmoMaterials.NETHERITE, 15)
                 .build();
     }
 

@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item.guns;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.AkmRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -25,6 +26,17 @@ public class AugItem extends GunItem {
                 .category(WeaponCategory.AR)
                 .config(ModConfig.weaponConfig.akm)
                 .ammo()
+                    .define(AmmoMaterials.WOOD)
+                    .define(AmmoMaterials.STONE, 2)
+                    .define(AmmoMaterials.IRON, 4)
+                    .define(AmmoMaterials.LAPIS, 4)
+                    .define(AmmoMaterials.GOLD, 7)
+                    .define(AmmoMaterials.REDSTONE, 7)
+                    .define(AmmoMaterials.DIAMOND, 9)
+                    .define(AmmoMaterials.QUARTZ, 9)
+                    .define(AmmoMaterials.EMERALD, 11)
+                    .define(AmmoMaterials.AMETHYST, 13)
+                    .define(AmmoMaterials.NETHERITE, 17)
                 .build();
     }
 

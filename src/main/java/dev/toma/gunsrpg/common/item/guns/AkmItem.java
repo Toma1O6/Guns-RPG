@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item.guns;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.AkmRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
@@ -27,6 +28,17 @@ public class AkmItem extends GunItem {
                 .caliber(AmmoType.AMMO_762MM)
                 .config(ModConfig.weaponConfig.akm)
                 .ammo()
+                    .define(AmmoMaterials.WOOD)
+                    .define(AmmoMaterials.STONE, 2)
+                    .define(AmmoMaterials.IRON, 4)
+                    .define(AmmoMaterials.LAPIS, 4)
+                    .define(AmmoMaterials.GOLD, 6)
+                    .define(AmmoMaterials.REDSTONE, 6)
+                    .define(AmmoMaterials.DIAMOND, 9)
+                    .define(AmmoMaterials.QUARTZ, 9)
+                    .define(AmmoMaterials.EMERALD, 11)
+                    .define(AmmoMaterials.AMETHYST, 14)
+                    .define(AmmoMaterials.NETHERITE, 17)
                 .build();
     }
 

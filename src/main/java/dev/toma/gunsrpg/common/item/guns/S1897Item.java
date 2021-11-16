@@ -46,10 +46,14 @@ public class S1897Item extends GunItem {
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 1)
                     .define(AmmoMaterials.IRON, 2)
+                    .define(AmmoMaterials.LAPIS, 2)
                     .define(AmmoMaterials.GOLD, 3)
+                    .define(AmmoMaterials.REDSTONE, 3)
                     .define(AmmoMaterials.DIAMOND, 5)
+                    .define(AmmoMaterials.QUARTZ, 5)
                     .define(AmmoMaterials.EMERALD, 6)
                     .define(AmmoMaterials.AMETHYST, 8)
+                    .define(AmmoMaterials.NETHERITE, 10)
                 .build();
     }
 
