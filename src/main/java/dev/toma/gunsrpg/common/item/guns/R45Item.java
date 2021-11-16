@@ -57,7 +57,7 @@ public class R45Item extends GunItem {
     }
 
     @Override
-    public IReloadManager getReloadManager(PlayerEntity player) {
+    public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
         return ReloadManagers.singleBulletLoading(26, player, this, player.getMainHandItem(), RELOAD_BULLET);
     }
 

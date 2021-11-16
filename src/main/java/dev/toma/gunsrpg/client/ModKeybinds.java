@@ -60,7 +60,7 @@ public class ModKeybinds {
             if (stack.getItem() instanceof GunItem && !player.isSprinting() && pipeline.get(ModAnimations.CHAMBER) == null) {
                 GunItem gun = (GunItem) stack.getItem();
                 if (info.isReloading()) {
-                    IReloadManager manager = gun.getReloadManager(player);
+                    IReloadManager manager = gun.getReloadManager(player, data.getAttributes());
                     if (manager.isCancelable()) {
                         info.enqueueCancel();
                         pipeline.remove(ModAnimations.RELOAD);

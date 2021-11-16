@@ -5,6 +5,8 @@ import java.util.UUID;
 
 public interface IAttribute {
 
+    double getModifier();
+
     double value();
 
     float floatValue();

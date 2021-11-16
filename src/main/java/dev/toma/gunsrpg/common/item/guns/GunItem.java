@@ -105,7 +105,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry, IP
         return SoundEvents.LEVER_CLICK;
     }
 
-    public IReloadManager getReloadManager(PlayerEntity player) {
+    public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
         return ReloadManagers.fullMagLoading();
     }
 

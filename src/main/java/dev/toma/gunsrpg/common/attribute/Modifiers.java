@@ -73,7 +73,4 @@ public final class Modifiers {
     public static final IAttributeModifier KAR98K_EXTENDED              = new AttributeModifier("195ED54A-A61C-4A25-A603-9BC15889033F", AttributeOps.SUM, 5);
     public static final IAttributeModifier KAR98K_FAST_HANDS_ROF        = new AttributeModifier("7F330435-D62F-4921-B2A3-3B06F37C2FEC", AttributeOps.MUL, 0.6);
     public static final IAttributeModifier KAR98K_FAST_HANDS_RELOAD     = new AttributeModifier("CAE9F279-C696-46A3-8E09-8BC21460F12D", AttributeOps.MUL, 0.5);
-
-    // TODO use attribute modifier factory, requires instances
-    public static final IAttributeModifier MORPHINE_WEAPON_DAMAGE       = new TemporaryModifier("DB60A6B1-B1FE-4ECC-8D25-CDABBC7DB5EB", AttributeOps.MUL, 1.2, 600);
 }

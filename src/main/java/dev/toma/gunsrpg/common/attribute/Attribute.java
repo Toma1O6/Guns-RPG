@@ -12,6 +12,7 @@ public class Attribute implements IAttribute {
     private double baseValue;
     private boolean changed;
     private double value;
+    private double modifier;
 
     public Attribute(IAttributeId id) {
         this.id = id;
@@ -20,10 +21,16 @@ public class Attribute implements IAttribute {
     }
 
     @Override
+    public double getModifier() {
+        return modifier;
+    }
+
+    @Override
     public double value() {
         if (changed) {
             changed = false;
-            value = computeValue();
+            modifier = calcModifier();
+            value = baseValue * modifier;
             notifyListenerChange(value, IAttributeListener::onValueChanged);
         }
         return value;
@@ -139,17 +146,14 @@ public class Attribute implements IAttribute {
         listeners.forEach(listener -> notifyEvent.accept(listener, parameter));
     }
 
-    private double computeValue() {
+    private double calcModifier() {
         Collection<IAttributeModifier> modifiers = listModifiers();
-        double result = baseValue;
+        double value = 1.0;
         for (IAttributeModifier modifier : modifiers) {
-            result = combine(result, modifier);
+            IModifierOp op = modifier.getOperation();
+            double modValue = modifier.getModifierValue();
+            value = op.combine(value, modValue);
         }
-        return result;
-    }
-
-    private double combine(double input, IAttributeModifier modifier) {
-        IModifierOp op = modifier.getOperation();
-        return op.combine(input, modifier.getModifierValue());
+        return value;
     }
 }

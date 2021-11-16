@@ -83,7 +83,7 @@ public class S1897Item extends GunItem {
     }
 
     @Override
-    public IReloadManager getReloadManager(PlayerEntity player) {
+    public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
         return ReloadManagers.singleBulletLoading(30, player, this, player.getMainHandItem(), LOAD_BULLET_ANIMATION);
     }
 

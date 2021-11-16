@@ -41,7 +41,7 @@ public class PlayerData implements IPlayerData {
         this.player = player;
         this.debuffs = new PlayerDebuffs();
         this.aimInfo = new AimInfo();
-        this.reloadInfo = new ReloadInfo();
+        this.reloadInfo = new ReloadInfo(this::getAttributes);
         this.attributes = new PlayerAttributes();
         this.playerSkills = new PlayerSkills(player);
         this.playerQuests = new PlayerQuests();

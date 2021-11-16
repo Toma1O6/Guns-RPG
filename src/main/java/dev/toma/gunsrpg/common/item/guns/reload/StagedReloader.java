@@ -107,13 +107,12 @@ public class StagedReloader implements IReloader {
         @OnlyIn(Dist.CLIENT) void initClient(ResourceLocation path, StageDefinitionContainer container);
         void tick(PlayerEntity player);
         boolean isFinished();
-        int remainingTicks();
         void setRemainingTicks(int remainingTicks);
     }
 
     public static abstract class AbstractReloadingStage implements IReloadingStage {
 
-        private int ticks;
+        protected int ticks;
 
         @Override
         public boolean isFinished() {
@@ -123,11 +122,6 @@ public class StagedReloader implements IReloader {
         @Override
         public void tick(PlayerEntity player) {
             --ticks;
-        }
-
-        @Override
-        public int remainingTicks() {
-            return ticks;
         }
 
         @Override
@@ -194,7 +188,7 @@ public class StagedReloader implements IReloader {
             IAnimationPipeline pipeline = engine.pipeline();
             IAnimationLoader loader = engine.loader();
             IKeyframeProvider provider = loader.getProvider(animationPath);
-            IModifiableProgress modifiableProgressAnimation = new ReloadAnimation(provider, remainingTicks());
+            IModifiableProgress modifiableProgressAnimation = new ReloadAnimation(provider, ticks);
             pipeline.insert(ModAnimations.RELOAD_BULLET, modifiableProgressAnimation);
         }
     }
@@ -217,7 +211,7 @@ public class StagedReloader implements IReloader {
         private boolean awaitingCancelation;
 
         private StageDefinitionContainer(StageDefinitionContainerBuilder builder) {
-            this.preparationStageLength = builder.prepTicks / 2;
+            this.preparationStageLength = (int) Math.ceil(builder.prepTicks / 2d);
             this.definitions = builder.reloadingStages.toArray(new IReloadingStage[0]);
         }
 
@@ -280,7 +274,7 @@ public class StagedReloader implements IReloader {
             boolean isPrepStage = stage.stageType() == ReloadingStageType.PREPARATION;
             if (isPrepStage) {
                 PreparationStage preparationStage = (PreparationStage) stage;
-                float stageProgress = preparationStage.remainingTicks() / (float) preparationStageLength;
+                float stageProgress = preparationStage.ticks / (float) preparationStageLength;
                 return preparationStage.inverseProgress ? stageProgress : 1.0F - stageProgress;
             }
             return 1.0F;
@@ -292,6 +286,7 @@ public class StagedReloader implements IReloader {
     }
 
     public static class StageDefinitionContainerBuilder {
+
         private int prepTicks;
         private final List<IReloadingStage> reloadingStages = new ArrayList<>();
 
@@ -310,7 +305,7 @@ public class StagedReloader implements IReloader {
 
         public StagedReloader build() {
             Preconditions.checkState(prepTicks > 5, "Preparation stage must be atleast 6 ticks long");
-            Preconditions.checkState(prepTicks % 2 == 0, "Preparation stage length must be even number");
+            //Preconditions.checkState(prepTicks % 2 == 0, "Preparation stage length must be even number");
             Preconditions.checkState(reloadingStages.size() > 2, "You must define atleast 3 stages");
             return new StagedReloader(new StageDefinitionContainer(this));
         }
