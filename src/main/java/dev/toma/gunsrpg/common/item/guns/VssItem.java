@@ -26,7 +26,7 @@ public class VssItem extends GunItem {
         builder
                 .category(WeaponCategory.DMR)
                 .caliber(AmmoType.AMMO_9MM)
-                .config(ModConfig.weaponConfig.akm)
+                .config(ModConfig.weaponConfig.vss)
                 .ammo()
                     .define(AmmoMaterials.WOOD)
                     .define(AmmoMaterials.STONE, 2)

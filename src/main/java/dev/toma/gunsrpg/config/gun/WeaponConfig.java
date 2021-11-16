@@ -19,13 +19,15 @@ public class WeaponConfig extends ObjectType {
     public final IWeaponConfig s1897;
     public final IWeaponConfig s686;
     public final IWeaponConfig s12k;
-    public final IWeaponConfig sks;
     public final IWeaponConfig akm;
     public final IWeaponConfig hk416;
+    public final IWeaponConfig aug;
+    public final IWeaponConfig sks;
+    public final IWeaponConfig vss;
+    public final IWeaponConfig mk14;
     public final IWeaponConfig kar98k;
     public final IWeaponConfig winchester;
-    public final IWeaponConfig mk14;
-
+    public final IWeaponConfig awm;
 
     public WeaponConfig(IObjectSpec objectSpecification) {
         super(objectSpecification);
@@ -42,11 +44,14 @@ public class WeaponConfig extends ObjectType {
         s1897 = writer.writeObject(specification -> IWeaponConfig.configured(specification, 2.0F, 220, 1), "S1897");
         s686 = writer.writeObject(specification -> IWeaponConfig.configured(specification, 2.0F, 220, 1), "S686");
         s12k = writer.writeObject(specification -> IWeaponConfig.configured(specification, 2.0F, 220, 1), "S12k");
-        sks = writer.writeObject(specification -> IWeaponConfig.configured(specification, 7.0F, 380, 6), "SKS");
         akm = writer.writeObject(speicification -> IWeaponConfig.configured(speicification, 6.0F, 330, 4), "AKM");
         hk416 = writer.writeObject(specification -> IWeaponConfig.configured(specification, 5.0F, 380, 6), "HK 416");
+        aug = writer.writeObject(specification -> IWeaponConfig.configured(specification, 5.0F, 380, 6), "AUG");
+        sks = writer.writeObject(specification -> IWeaponConfig.configured(specification, 7.0F, 380, 6), "SKS");
+        vss = writer.writeObject(specification -> IWeaponConfig.configured(specification, 6.0F, 140, 2), "VSS");
+        mk14 = writer.writeObject(specification -> IWeaponConfig.configured(specification, 8.0F, 440, 7), "Mk-14");
         kar98k = writer.writeObject(specification -> IWeaponConfig.configured(specification, 15.0F, 440, 7), "Kar98k");
         winchester = writer.writeObject(specification -> IWeaponConfig.configured(specification, 10.0F, 340, 5), "Winchester");
-        mk14 = writer.writeObject(specification -> IWeaponConfig.configured(specification, 8.0F, 440, 7), "Mk-14");
+        awm = writer.writeObject(specification -> IWeaponConfig.configured(specification, 18.0F, 480, 8), "AWM");
     }
 }

@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item.guns;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.AkmRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -23,8 +24,19 @@ public class AwmItem extends GunItem {
     public void initializeWeapon(WeaponBuilder builder) {
         builder
                 .category(WeaponCategory.SR)
-                .config(ModConfig.weaponConfig.akm)
+                .config(ModConfig.weaponConfig.awm)
                 .ammo()
+                    .define(AmmoMaterials.WOOD, 0)
+                    .define(AmmoMaterials.STONE, 5)
+                    .define(AmmoMaterials.IRON, 10)
+                    .define(AmmoMaterials.LAPIS, 10)
+                    .define(AmmoMaterials.GOLD, 15)
+                    .define(AmmoMaterials.REDSTONE, 15)
+                    .define(AmmoMaterials.DIAMOND, 21)
+                    .define(AmmoMaterials.QUARTZ, 21)
+                    .define(AmmoMaterials.EMERALD, 30)
+                    .define(AmmoMaterials.AMETHYST, 35)
+                    .define(AmmoMaterials.NETHERITE, 42)
                 .build();
     }
 

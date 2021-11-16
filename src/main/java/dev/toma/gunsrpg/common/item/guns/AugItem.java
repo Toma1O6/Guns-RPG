@@ -24,7 +24,7 @@ public class AugItem extends GunItem {
     public void initializeWeapon(WeaponBuilder builder) {
         builder
                 .category(WeaponCategory.AR)
-                .config(ModConfig.weaponConfig.akm)
+                .config(ModConfig.weaponConfig.aug)
                 .ammo()
                     .define(AmmoMaterials.WOOD)
                     .define(AmmoMaterials.STONE, 2)

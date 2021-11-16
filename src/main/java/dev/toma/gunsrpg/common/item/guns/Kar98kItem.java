@@ -53,10 +53,14 @@ public class Kar98kItem extends GunItem {
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 4)
                     .define(AmmoMaterials.IRON, 9)
-                    .define(AmmoMaterials.GOLD, 13)
+                    .define(AmmoMaterials.LAPIS, 9)
+                    .define(AmmoMaterials.GOLD, 14)
+                    .define(AmmoMaterials.REDSTONE, 14)
                     .define(AmmoMaterials.DIAMOND, 17)
+                    .define(AmmoMaterials.QUARTZ, 17)
                     .define(AmmoMaterials.EMERALD, 20)
-                    .define(AmmoMaterials.AMETHYST, 25)
+                    .define(AmmoMaterials.AMETHYST, 24)
+                    .define(AmmoMaterials.NETHERITE, 29)
                 .build();
     }
 
