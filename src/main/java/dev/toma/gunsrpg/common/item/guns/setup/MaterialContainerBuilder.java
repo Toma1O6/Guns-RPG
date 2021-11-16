@@ -41,6 +41,10 @@ public class MaterialContainerBuilder {
         return define(material, value, material.defaultLevelRequirement());
     }
 
+    public MaterialContainerBuilder define(IAmmoMaterial material) {
+        return define(material, 0);
+    }
+
     public WeaponBuilder build() {
         return builder.materialContainer(new MaterialContainer(this));
     }
