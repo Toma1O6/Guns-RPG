@@ -1,5 +1,9 @@
 package dev.toma.gunsrpg.common.attribute;
 
+import dev.toma.gunsrpg.common.attribute.serialization.IModifierSeralizer;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+
 import java.util.*;
 import java.util.function.BiConsumer;
 
@@ -10,7 +14,7 @@ public class Attribute implements IAttribute {
     private final Set<ITickableModifier> temporaryModifiers = new HashSet<>();
     private final Set<IAttributeListener> listeners = new HashSet<>();
     private double baseValue;
-    private boolean changed;
+    private boolean requireUpdate;
     private double value;
     private double modifier;
 
@@ -18,6 +22,7 @@ public class Attribute implements IAttribute {
         this.id = id;
         this.baseValue = id.getBaseValue();
         this.value = getBaseValue();
+        this.requireUpdate = true;
     }
 
     @Override
@@ -27,8 +32,8 @@ public class Attribute implements IAttribute {
 
     @Override
     public double value() {
-        if (changed) {
-            changed = false;
+        if (requireUpdate) {
+            requireUpdate = false;
             modifier = calcModifier();
             value = baseValue * modifier;
             notifyListenerChange(value, IAttributeListener::onValueChanged);
@@ -63,7 +68,7 @@ public class Attribute implements IAttribute {
 
     @Override
     public void markChanged() {
-        changed = true;
+        requireUpdate = true;
     }
 
     @Override
@@ -142,6 +147,21 @@ public class Attribute implements IAttribute {
         return id;
     }
 
+    @Override
+    public CompoundNBT serializeNBT() {
+        CompoundNBT nbt = new CompoundNBT();
+        ListNBT modifiers = new ListNBT();
+        for (IAttributeModifier modifier : modifierMap.values()) {
+            modifiers.add(serializeModifier(modifier));
+        }
+        return nbt;
+    }
+
+    @Override
+    public void deserializeNBT(CompoundNBT nbt) {
+
+    }
+
     private <P> void notifyListenerChange(P parameter, BiConsumer<IAttributeListener, P> notifyEvent) {
         listeners.forEach(listener -> notifyEvent.accept(listener, parameter));
     }
@@ -155,5 +175,13 @@ public class Attribute implements IAttribute {
             value = op.combine(value, modValue);
         }
         return value;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <M extends IAttributeModifier> CompoundNBT serializeModifier(M modifier) {
+        IModifierSeralizer<M> seralizer = (IModifierSeralizer<M>) modifier.getSerizalizer();
+        CompoundNBT data = new CompoundNBT();
+        seralizer.toNbtStructure(modifier, data);
+        return data;
     }
 }

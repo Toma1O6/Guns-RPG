@@ -32,10 +32,6 @@ public final class AttributeModifierFactory {
         return new TemporaryModifier(uid, op, value, ticks);
     }
 
-    public static PredicateModifier adrenalineRushReloadFor(AdrenalineRushSkill skill, PlayerEntity player) {
-        return new PredicateModifier(ADRENALINE_RUSH_RELOAD_MODIFIER_UID, AttributeOps.MUL, skill.getReloadMultiplier(), player, skill::canApply);
-    }
-
     /**
      * Private constructor, this is just a utility class
      */

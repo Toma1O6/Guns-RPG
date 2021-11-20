@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg;
 
 import com.mojang.brigadier.CommandDispatcher;
+import dev.toma.configuration.Configuration;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IWorldData;
 import dev.toma.gunsrpg.client.screen.skills.SkillTreePlacement;
@@ -38,6 +39,7 @@ public class GunsRPG {
     private static final Lifecycle modLifecycle = new Lifecycle();
 
     public GunsRPG() {
+        Configuration.loadConfig(new ModConfig());
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         // deferred registries
         ModEntities.subscribe(eventBus);
@@ -58,7 +60,7 @@ public class GunsRPG {
             ClientSideManager.instance().animationSetup();
             IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
             renderPipeline.register(MinecraftForge.EVENT_BUS);
-            AnimationEngine.get().startEngine(true); // TODO config value
+            AnimationEngine.get().startEngine(ModConfig.clientConfig.developerMode.get());
         }
 
         modLifecycle.modInit();

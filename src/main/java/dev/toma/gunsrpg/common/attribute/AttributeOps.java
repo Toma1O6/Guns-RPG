@@ -20,7 +20,7 @@ public final class AttributeOps {
         return op;
     }
 
-    public static  IModifierOp find(ResourceLocation id) {
+    public static IModifierOp find(ResourceLocation id) {
         return OPERATION_MAP.get(id);
     }
 

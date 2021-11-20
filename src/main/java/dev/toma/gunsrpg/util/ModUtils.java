@@ -3,7 +3,10 @@ package dev.toma.gunsrpg.util;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.api.common.data.IKillData;
+import dev.toma.gunsrpg.common.skills.core.SkillCategory;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
+import dev.toma.gunsrpg.util.function.ISplitter;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -41,8 +44,15 @@ import org.lwjgl.opengl.GL11;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.*;
+import java.util.stream.Stream;
 
 public class ModUtils {
+
+    public static final ISplitter<SkillCategory, SkillType<?>> SKILLS_BY_CATEGORY = ModUtils::splitSkillsIntoCategories;
+
+    public static <K, V> Stream<Map.Entry<K, V>> filteredDataStream(Map<K, V> source, Set<K> allowedKeys) {
+        return source.entrySet().stream().filter(kvEntry -> allowedKeys.contains(kvEntry.getKey()));
+    }
 
     public static String convertToLocalization(ResourceLocation location) {
         return location.toString().replaceAll(":", ".");
@@ -60,23 +70,6 @@ public class ModUtils {
     public static <T> T init(T t, Consumer<T> initializer) {
         initializer.accept(t);
         return t;
-    }
-
-    public static int sum(int[] array) {
-        int total = 0;
-        for (int i : array)
-            total += i;
-        return total;
-    }
-
-    public static <T, U> U extractOptionalOrElse(LazyOptional<T> optional, Function<T, U> extractor, U fallback) {
-        if (!optional.isPresent())
-            return fallback;
-        return extractor.apply(optional.orElse(null));
-    }
-
-    public static <NBT extends INBT> void saveSerializable(String name, INBTSerializable<NBT> serializable, CompoundNBT nbt) {
-        nbt.put(name, serializable.serializeNBT());
     }
 
     public static <NBT extends INBT> void loadDeserializable(String name, INBTSerializable<NBT> serializable, INBTDeserializer<NBT> deserializer, Supplier<NBT> fallback, CompoundNBT nbt) {
@@ -146,6 +139,15 @@ public class ModUtils {
                 InventoryHelper.dropItemStack(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, handler.getStackInSlot(i));
             }
         });
+    }
+
+    public static <K, V> void noDupInsert(Map<K, V> map, V value, Function<V, K> keyExtractor) {
+        noDupInsert(map, keyExtractor.apply(value), value);
+    }
+
+    public static <K, V> void noDupInsert(Map<K, V> map, K key, V value) {
+        if (map.put(key, value) != null)
+            throw new IllegalStateException("Duplicate key: " + key);
     }
 
     public static float alpha(int color) {
@@ -343,20 +345,9 @@ public class ModUtils {
         return count;
     }
 
-    public static int getLastIndexOfArray(Object[] array) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == null) return i;
-        }
-        return array.length - 1;
-    }
-
     public static <K, V> V getNonnullFromMap(Map<K, V> map, K key, V def) {
         V v = map.get(key);
         return v != null ? v : Objects.requireNonNull(def);
-    }
-
-    public static <T> Predicate<T> truePredicate() {
-        return t -> true;
     }
 
     public static RayTraceResult raytraceBlocksIgnoreGlass(Vector3d start, Vector3d end, IBlockReader reader) {
@@ -391,6 +382,23 @@ public class ModUtils {
     public static float getReachDistance(PlayerEntity player) {
         float attrib = (float) player.getAttributeValue(ForgeMod.REACH_DISTANCE.get());
         return player.isCreative() ? attrib : attrib - 0.5F;
+    }
+
+    public static <T> T getTreeRoot(T treeElement, Function<T, T> parentGetter) {
+        T next = parentGetter.apply(treeElement);
+        if (next == null || Objects.equals(treeElement, next)) {
+            return treeElement;
+        }
+        return getTreeRoot(next, parentGetter);
+    }
+
+    private static Map<SkillCategory, List<SkillType<?>>> splitSkillsIntoCategories(Iterable<SkillType<?>> iterable) {
+        Map<SkillCategory, List<SkillType<?>>> map = new EnumMap<>(SkillCategory.class);
+        for (SkillType<?> type : iterable) {
+            SkillCategory category = type.category;
+            map.computeIfAbsent(category, cat -> new ArrayList<>()).add(type);
+        }
+        return map;
     }
 
     public interface INBTDeserializer<NBT extends INBT> {

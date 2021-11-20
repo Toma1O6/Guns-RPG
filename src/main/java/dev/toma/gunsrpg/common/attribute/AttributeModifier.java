@@ -1,5 +1,8 @@
 package dev.toma.gunsrpg.common.attribute;
 
+import dev.toma.gunsrpg.common.attribute.serialization.IModifierSeralizer;
+import dev.toma.gunsrpg.common.attribute.serialization.ModifierSerialization;
+
 import java.util.UUID;
 
 public class AttributeModifier implements IAttributeModifier {
@@ -8,11 +11,11 @@ public class AttributeModifier implements IAttributeModifier {
     private final IModifierOp op;
     private final double value;
 
-    AttributeModifier(String uid, IModifierOp op, double value) {
+    public AttributeModifier(String uid, IModifierOp op, double value) {
         this(UUID.fromString(uid), op, value);
     }
 
-    AttributeModifier(UUID uid, IModifierOp op, double value) {
+    public AttributeModifier(UUID uid, IModifierOp op, double value) {
         this.uid = uid;
         this.op = op;
         this.value = value;
@@ -31,6 +34,11 @@ public class AttributeModifier implements IAttributeModifier {
     @Override
     public double getModifierValue() {
         return value;
+    }
+
+    @Override
+    public IModifierSeralizer<?> getSerizalizer() {
+        return ModifierSerialization.DEFAULT;
     }
 
     @Override

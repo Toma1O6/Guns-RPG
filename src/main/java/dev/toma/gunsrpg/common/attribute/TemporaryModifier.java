@@ -1,16 +1,19 @@
 package dev.toma.gunsrpg.common.attribute;
 
+import dev.toma.gunsrpg.common.attribute.serialization.IModifierSeralizer;
+import dev.toma.gunsrpg.common.attribute.serialization.ModifierSerialization;
+
 import java.util.UUID;
 
 public class TemporaryModifier extends AttributeModifier implements ITickableModifier {
 
     private int ticksLeft;
 
-    TemporaryModifier(String uid, IModifierOp op, double value, int ticks) {
+    public TemporaryModifier(String uid, IModifierOp op, double value, int ticks) {
         this(UUID.fromString(uid), op, value, ticks);
     }
 
-    TemporaryModifier(UUID uid, IModifierOp op, double value, int ticks) {
+    public TemporaryModifier(UUID uid, IModifierOp op, double value, int ticks) {
         super(uid, op, value);
         this.ticksLeft = ticks;
     }
@@ -23,5 +26,14 @@ public class TemporaryModifier extends AttributeModifier implements ITickableMod
     @Override
     public boolean shouldRemove() {
         return ticksLeft <= 0;
+    }
+
+    @Override
+    public IModifierSeralizer<?> getSerizalizer() {
+        return ModifierSerialization.TEMPORARY;
+    }
+
+    public int getTicksLeft() {
+        return ticksLeft;
     }
 }

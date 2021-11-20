@@ -1,6 +1,5 @@
 package dev.toma.gunsrpg.config;
 
-import dev.toma.configuration.api.Config;
 import dev.toma.configuration.api.IConfigPlugin;
 import dev.toma.configuration.api.IConfigWriter;
 import dev.toma.gunsrpg.GunsRPG;
@@ -9,7 +8,6 @@ import dev.toma.gunsrpg.config.debuff.DebuffConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfig;
 import dev.toma.gunsrpg.config.world.WorldConfiguration;
 
-@Config
 public class ModConfig implements IConfigPlugin {
 
     public static ClientConfiguration clientConfig;

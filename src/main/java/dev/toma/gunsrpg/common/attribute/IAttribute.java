@@ -1,9 +1,12 @@
 package dev.toma.gunsrpg.common.attribute;
 
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.common.util.INBTSerializable;
+
 import java.util.Collection;
 import java.util.UUID;
 
-public interface IAttribute {
+public interface IAttribute extends INBTSerializable<CompoundNBT> {
 
     double getModifier();
 
