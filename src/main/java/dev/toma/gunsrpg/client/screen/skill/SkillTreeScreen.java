@@ -1,11 +1,13 @@
 package dev.toma.gunsrpg.client.screen.skill;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IKillData;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.ModUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -16,13 +18,36 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class SkillTreeScreen<D extends IKillData> extends Screen {
+public class SkillTreeScreen extends Screen {
 
     private static final ITextComponent TITLE = new TranslationTextComponent("screen.skill_tree");
+    private final Options usedOptions;
     private IViewManager manager;
 
-    public SkillTreeScreen(D data, Options options) {
+    public SkillTreeScreen() {
+        this(new Options(new IViewManager.ViewManager()));
+    }
+
+    public SkillTreeScreen(Options options) {
         super(TITLE);
+        this.usedOptions = options;
+        this.manager = options.manager;
+    }
+
+    @Override
+    protected void init() {
+        addWidget(manager.getActive());
+    }
+
+    @Override
+    public void tick() {
+        manager.getActive().tick();
+    }
+
+    @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(matrixStack);
+        manager.getActive().render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
     public static class Options {
@@ -31,6 +56,7 @@ public class SkillTreeScreen<D extends IKillData> extends Screen {
 
         public Options(IViewManager manager) {
             this.manager = manager;
+            this.manager.init(IViewFactory.LOADING_VIEW_SUPPLIER.get());
         }
     }
 

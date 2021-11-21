@@ -2,9 +2,12 @@ package dev.toma.gunsrpg.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.GameSettings;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.settings.GraphicsFanciness;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 import org.lwjgl.opengl.GL11;
@@ -182,5 +185,29 @@ public class RenderUtils {
         RenderSystem.shadeModel(GL11.GL_FLAT);
         RenderSystem.enableTexture();
         RenderSystem.disableBlend();
+    }
+
+    public static void drawSolid(Matrix4f pose, float x1, float y1, float x2, float y2, int color) {
+        int a = alpha_i(color);
+        int r = red_i(color);
+        int g = green_i(color);
+        int b = blue_i(color);
+        setupColorRenderState();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder builder = tessellator.getBuilder();
+        builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        builder.vertex(pose, x1, y2, 0).color(r, g, b, a).endVertex();
+        builder.vertex(pose, x2, y2, 0).color(r, g, b, a).endVertex();
+        builder.vertex(pose, x2, y1, 0).color(r, g, b, a).endVertex();
+        builder.vertex(pose, x1, y1, 0).color(r, g, b, a).endVertex();
+        tessellator.end();
+        resetColorRenderState();
+    }
+
+    public static boolean hasGraphicsMode(GraphicsFanciness fanciness) {
+        GameSettings settings = Minecraft.getInstance().options;
+        int id = settings.graphicsMode.getId();
+        int requireId = fanciness.getId();
+        return id >= requireId;
     }
 }

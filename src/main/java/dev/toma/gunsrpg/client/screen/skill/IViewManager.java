@@ -20,6 +20,7 @@ public interface IViewManager {
         @Override
         public void init(View view) {
             active = view;
+            view.init();
         }
 
         @Override

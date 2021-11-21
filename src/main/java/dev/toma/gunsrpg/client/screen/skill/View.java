@@ -1,5 +1,9 @@
 package dev.toma.gunsrpg.client.screen.skill;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.configuration.api.client.widget.ITickable;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.INestedGuiEventHandler;
 import net.minecraft.client.gui.widget.Widget;
@@ -13,25 +17,31 @@ import java.util.List;
  */
 public abstract class View extends Widget implements INestedGuiEventHandler {
 
+    protected final Minecraft client;
+    protected final FontRenderer font;
     private final IViewManager manager;
     private final List<IGuiEventListener> eventListeners = new ArrayList<>();
     private final List<Widget> widgets = new ArrayList<>();
+    private final List<ITickable> tickables = new ArrayList<>();
     private IGuiEventListener focused;
     private boolean dragging;
 
     public View(int windowWidth, int windowHeight, IViewManager manager) {
         super(0, 0, windowWidth, windowHeight, StringTextComponent.EMPTY);
         this.manager = manager;
-
-        init();
+        this.client = Minecraft.getInstance();
+        this.font = client.font;
     }
 
     protected void init() {
+    }
+
+    protected void renderView(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
 
     }
 
-    private void prevViewClicked() {
-
+    public void tick() {
+        tickables.forEach(ITickable::tick);
     }
 
     @Override
@@ -92,5 +102,26 @@ public abstract class View extends Widget implements INestedGuiEventHandler {
     @Override
     public void setFocused(IGuiEventListener focused) {
         this.focused = focused;
+    }
+
+    @Override
+    public final void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+        renderView(stack, mouseX, mouseY, partialTicks);
+        for (Widget widget : widgets) {
+            widget.render(stack, mouseX, mouseY, partialTicks);
+        }
+    }
+
+    public void addEventListener(IGuiEventListener listener) {
+        if (listener instanceof ITickable) {
+            tickables.add((ITickable) listener);
+        }
+        eventListeners.add(listener);
+    }
+
+    public <T extends Widget> T addWidget(T widget) {
+        addEventListener(widget);
+        widgets.add(widget);
+        return widget;
     }
 }

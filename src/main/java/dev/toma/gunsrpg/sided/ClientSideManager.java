@@ -8,10 +8,8 @@ import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
 import dev.toma.gunsrpg.client.render.debuff.IconDebuffRenderer;
 import dev.toma.gunsrpg.client.screen.*;
-import dev.toma.gunsrpg.client.screen.skills.PlayerSkillsScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.*;
-import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;
 import lib.toma.animations.api.lifecycle.Registries;
@@ -98,9 +96,6 @@ public class ClientSideManager {
     public IPlayerData.ISynchCallback onDataSync() {
         return () -> {
             Minecraft mc = Minecraft.getInstance();
-            if (mc.screen instanceof PlayerSkillsScreen) {
-                mc.screen.init(mc, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight());
-            }
             if (!PlayerData.getUnsafe(mc.player).getAimInfo().startedAiming()) {
                 ClientEventHandler.preAimFov.ifPresent(value -> mc.options.fov = value);
                 ClientEventHandler.preAimSens.ifPresent(value -> mc.options.sensitivity = value);

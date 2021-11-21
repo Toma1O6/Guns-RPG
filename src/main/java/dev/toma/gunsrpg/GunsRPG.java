@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import dev.toma.configuration.Configuration;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IWorldData;
-import dev.toma.gunsrpg.client.screen.skills.SkillTreePlacement;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
 import dev.toma.gunsrpg.common.command.GunsrpgCommand;
@@ -85,7 +84,6 @@ public class GunsRPG {
         NetworkManager.init();
         CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData::new);
         CapabilityManager.INSTANCE.register(IWorldData.class, new WorldDataStorage(), WorldData::new);
-        SkillTreePlacement.generatePlacement();
         modLifecycle.commonInit();
         MobSpawnManager.instance().initialize();
     }
