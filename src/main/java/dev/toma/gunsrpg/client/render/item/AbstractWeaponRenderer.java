@@ -26,7 +26,7 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
     @Override
     public final void renderByItem(ItemStack stack, ItemCameraTransforms.TransformType transformType, MatrixStack matrix, IRenderTypeBuffer renderBuffer, int light, int overlay) {
         Minecraft mc = Minecraft.getInstance();
-        boolean held = stack == mc.player.getMainHandItem();
+        boolean held = ItemStack.isSame(stack, mc.player.getMainHandItem());
         PlayerData.get(mc.player).ifPresent(data -> {
             matrix.pushPose();
             {
