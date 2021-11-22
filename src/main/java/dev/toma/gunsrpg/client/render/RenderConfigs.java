@@ -32,6 +32,8 @@ public class RenderConfigs {
     public static final IRenderConfig KAR98K_RIGHT = RenderConfig.newDef().withPosition(0.400, -0.600, -0.500).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.115F, -0.383F, 0.000F, 0.924F)).finish();
     public static final IRenderConfig S1897_LEFT = RenderConfig.newDef().withPosition(0.15, -0.423, 0.4).withScale(1.0F, 1.0F, 1.5F).withRotation(new Quaternion(0.1F, -0.5F, 0.0F, 0.866F)).finish();
     public static final IRenderConfig S1897_RIGHT = RenderConfig.newDef().withPosition(0.27, -0.3, 0.0).withScale(1.0F, 1.0F, 1.0F).withRotation(new Quaternion(0.152F, -0.216F, 0.0F, 0.976F)).finish();
+    public static final IRenderConfig S686_LEFT = RenderConfig.newDef().withPosition(0.050, -0.420, 0.000).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.086F, -0.574F, 0.000F, 0.819F)).finish();
+    public static final IRenderConfig S686_RIGHT = RenderConfig.newDef().withPosition(0.350, -0.270, -0.200).withScale(0.700F, 0.700F, 1.000F).withRotation(new Quaternion(0.085F, -0.423F, 0.000F, 0.906F)).finish();
     public static final IRenderConfig CROSSBOW_LEFT = RenderConfig.newDef().withPosition(0.250, -0.900, -0.200).withScale(1.000F, 1.000F, 1.500F).withRotation(new Quaternion(0.122F, -0.609F, 0.000F, 0.793F)).finish();
     public static final IRenderConfig CROSSBOW_RIGHT = RenderConfig.newDef().withPosition(0.600, -0.800, -0.500).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.152F, -0.216F, 0.000F, 0.976F)).finish();
     public static final IRenderConfig AKM_LEFT = RenderConfig.newDef().withPosition(-0.050, -0.450, 0.150).withScale(0.800F, 1.000F, 1.000F).withRotation(new Quaternion(0.122F, -0.609F, 0.000F, 0.793F)).finish();
