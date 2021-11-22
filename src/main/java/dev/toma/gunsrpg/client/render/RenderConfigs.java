@@ -36,6 +36,8 @@ public class RenderConfigs {
     public static final IRenderConfig CROSSBOW_RIGHT = RenderConfig.newDef().withPosition(0.600, -0.800, -0.500).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.152F, -0.216F, 0.000F, 0.976F)).finish();
     public static final IRenderConfig AKM_LEFT = RenderConfig.newDef().withPosition(-0.050, -0.450, 0.150).withScale(0.800F, 1.000F, 1.000F).withRotation(new Quaternion(0.122F, -0.609F, 0.000F, 0.793F)).finish();
     public static final IRenderConfig AKM_RIGHT = RenderConfig.newDef().withPosition(0.200, -0.250, -0.120).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.068F, -0.342F, 0.000F, 0.940F)).finish();
+    public static final IRenderConfig HK416_LEFT = RenderConfig.newDef().withPosition(0.200, -0.500, -0.100).withScale(0.700F, 0.700F, 1.000F).withRotation(new Quaternion(0.115F, -0.574F, 0.000F, 0.819F)).finish();
+    public static final IRenderConfig HK416_RIGHT = RenderConfig.newDef().withPosition(0.280, -0.300, -0.200).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.068F, -0.342F, 0.000F, 0.940F)).finish();
 
     // ATTACHMENTS ===============================
     public static final IRenderConfig M1911_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -0.17, 0.0).withScale(1.1F, 1.1F, 1.5F).finish();
