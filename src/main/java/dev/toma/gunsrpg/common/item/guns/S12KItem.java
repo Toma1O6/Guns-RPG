@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.S12KRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -52,11 +53,11 @@ public class S12KItem extends GunItem {
 
     @Override
     public IRenderConfig left() {
-        return super.left();
+        return RenderConfigs.S12K_LEFT;
     }
 
     @Override
     public IRenderConfig right() {
-        return super.right();
+        return RenderConfigs.S12K_RIGHT;
     }
 }
