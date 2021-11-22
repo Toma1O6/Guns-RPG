@@ -19,18 +19,28 @@ public class AkmRenderer extends AbstractWeaponRenderer {
                 stack.translate(-0.2, -0.2, 0.35);
                 break;
             case FIRST_PERSON_RIGHT_HAND:
-                stack.translate(-0.2, -0.2, 0.4);
+                stack.translate(-0.2, -0.2, 0.5);
                 break;
         }
     }
 
     @Override
+    protected void scaleModel(MatrixStack matrixStack, ItemCameraTransforms.TransformType transform) {
+        if (transform.firstPerson()) {
+            matrixStack.scale(0.18F, 0.18F, 0.12F);
+        } else {
+            float factor = scaleForTransform(transform);
+            matrixStack.scale(factor, factor, factor);
+        }
+    }
+
+    @Override
     protected float scaleForTransform(ItemCameraTransforms.TransformType transform) {
-        return transform.firstPerson() ? 0.18F : 0.15F;
+        return 0.15F;
     }
 
     @Override
     protected void transformUI(MatrixStack matrix) {
-
+        matrix.translate(1.8, 1.4, 0.0);
     }
 }

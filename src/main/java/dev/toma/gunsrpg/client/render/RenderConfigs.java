@@ -34,6 +34,8 @@ public class RenderConfigs {
     public static final IRenderConfig S1897_RIGHT = RenderConfig.newDef().withPosition(0.27, -0.3, 0.0).withScale(1.0F, 1.0F, 1.0F).withRotation(new Quaternion(0.152F, -0.216F, 0.0F, 0.976F)).finish();
     public static final IRenderConfig CROSSBOW_LEFT = RenderConfig.newDef().withPosition(0.250, -0.900, -0.200).withScale(1.000F, 1.000F, 1.500F).withRotation(new Quaternion(0.122F, -0.609F, 0.000F, 0.793F)).finish();
     public static final IRenderConfig CROSSBOW_RIGHT = RenderConfig.newDef().withPosition(0.600, -0.800, -0.500).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.152F, -0.216F, 0.000F, 0.976F)).finish();
+    public static final IRenderConfig AKM_LEFT = RenderConfig.newDef().withPosition(-0.050, -0.450, 0.150).withScale(0.800F, 1.000F, 1.000F).withRotation(new Quaternion(0.122F, -0.609F, 0.000F, 0.793F)).finish();
+    public static final IRenderConfig AKM_RIGHT = RenderConfig.newDef().withPosition(0.200, -0.250, -0.120).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.068F, -0.342F, 0.000F, 0.940F)).finish();
 
     // ATTACHMENTS ===============================
     public static final IRenderConfig M1911_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -0.17, 0.0).withScale(1.1F, 1.1F, 1.5F).finish();
