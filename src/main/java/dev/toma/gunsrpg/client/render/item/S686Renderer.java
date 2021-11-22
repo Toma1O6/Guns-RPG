@@ -5,13 +5,7 @@ import dev.toma.gunsrpg.client.model.WeaponModels;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.render.item.AbstractWeaponRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-/*
-//Hand render config
-//right
 
-//left
-
- */
 public class S686Renderer extends AbstractWeaponRenderer {
 
     @Override
