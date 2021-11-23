@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.GrenadeLauncherRenderer;
 import dev.toma.gunsrpg.client.render.item.Mk14EbrRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -9,6 +10,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
+import lib.toma.animations.engine.RenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
@@ -40,11 +42,11 @@ public class GrenadeLauncherItem extends GunItem {
 
     @Override
     public IRenderConfig left() {
-        return super.left();
+        return RenderConfigs.M203_LEFT;
     }
 
     @Override
     public IRenderConfig right() {
-        return super.right();
+        return RenderConfigs.M203_RIGHT;
     }
 }
