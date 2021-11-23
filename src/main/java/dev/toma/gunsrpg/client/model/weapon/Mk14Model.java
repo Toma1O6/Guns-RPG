@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class Mk14Model extends AbstractWeaponModel {
 
@@ -88,6 +89,7 @@ public class Mk14Model extends AbstractWeaponModel {
 
     @Override
     protected void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay) {
+        matrix.mulPose(Vector3f.YP.rotation((float) Math.PI));
         mk14.render(matrix, builder, light, overlay);
         ironsights.render(matrix, builder, light, overlay);
     }
