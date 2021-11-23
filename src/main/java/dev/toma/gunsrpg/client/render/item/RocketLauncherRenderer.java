@@ -17,19 +17,26 @@ public class RocketLauncherRenderer extends AbstractWeaponRenderer {
     protected void positionModel(MatrixStack stack, ItemCameraTransforms.TransformType transform) {
         switch (transform) {
             case THIRD_PERSON_RIGHT_HAND:
+                stack.translate(-0.2, 0.7, 0.1);
                 break;
             case FIRST_PERSON_RIGHT_HAND:
+                stack.translate(-0.2, 0.7, 0.0);
                 break;
         }
     }
 
     @Override
     protected float scaleForTransform(ItemCameraTransforms.TransformType transform) {
-        return super.scaleForTransform(transform);
+        return transform == ItemCameraTransforms.TransformType.GUI ? 0.25F : 0.35F;
+    }
+
+    @Override
+    protected void scaleModel(MatrixStack matrixStack, ItemCameraTransforms.TransformType transform) {
+        super.scaleModel(matrixStack, transform);
     }
 
     @Override
     protected void transformUI(MatrixStack matrix) {
-
+        matrix.translate(0.7, -0.7, 0.0);
     }
 }
