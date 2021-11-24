@@ -19,7 +19,7 @@ public class AwmRenderer extends AbstractWeaponRenderer {
                 stack.translate(-0.2, 0.05, 0.5);
                 break;
             case FIRST_PERSON_RIGHT_HAND:
-                stack.translate(-0.25, 0.05, 0.4);
+                stack.translate(-0.25, 0.15, 0.55);
                 break;
         }
     }

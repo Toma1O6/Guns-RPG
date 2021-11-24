@@ -5,13 +5,6 @@ import dev.toma.gunsrpg.client.model.WeaponModels;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 
-/*
-//Hand render config
-//right
-RenderConfig.newDef().withPosition(0.150, -0.340, -0.400).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.077F, -0.383F, 0.000F, 0.924F)).finish();
-//left
-RenderConfig.newDef().withPosition(0.130, -0.500, -0.150).withScale(0.700F, 0.700F, 1.000F).withRotation(new Quaternion(0.086F, -0.574F, 0.000F, 0.819F)).finish();
- */
 public class VssRenderer extends AbstractWeaponRenderer {
 
     @Override

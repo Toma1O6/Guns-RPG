@@ -8,9 +8,9 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 /*
 //Hand render config
 //right
-RenderConfig.newDef().withPosition(0.150, -0.340, -0.500).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.077F, -0.383F, 0.000F, 0.924F)).finish();
+
 //left
-RenderConfig.newDef().withPosition(0.100, -0.500, -0.100).withScale(0.700F, 0.700F, 1.000F).withRotation(new Quaternion(0.086F, -0.574F, 0.000F, 0.819F)).finish();
+
  */
 public class AugRenderer extends AbstractWeaponRenderer {
 
@@ -29,11 +29,6 @@ public class AugRenderer extends AbstractWeaponRenderer {
                 stack.translate(-0.2, 0.2, 0.85);
                 break;
         }
-    }
-
-    @Override
-    protected void scaleModel(MatrixStack matrixStack, ItemCameraTransforms.TransformType transform) {
-        super.scaleModel(matrixStack, transform);
     }
 
     @Override

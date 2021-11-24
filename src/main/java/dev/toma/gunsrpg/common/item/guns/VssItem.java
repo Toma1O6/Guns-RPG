@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.VssRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -54,11 +55,11 @@ public class VssItem extends GunItem {
 
     @Override
     public IRenderConfig left() {
-        return super.left();
+        return RenderConfigs.VSS_LEFT;
     }
 
     @Override
     public IRenderConfig right() {
-        return super.right();
+        return RenderConfigs.VSS_RIGHT;
     }
 }
