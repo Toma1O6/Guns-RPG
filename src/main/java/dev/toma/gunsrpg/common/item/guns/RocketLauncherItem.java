@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.GrenadeLauncherRenderer;
 import dev.toma.gunsrpg.client.render.item.RocketLauncherRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -25,7 +26,12 @@ public class RocketLauncherItem extends GunItem {
     public void initializeWeapon(WeaponBuilder builder) {
         builder
                 .config(ModConfig.weaponConfig.mk14)
-                .ammo(WeaponCategory.SR)
+                .ammo(WeaponCategory.ROCKET_LAUNCHER)
+                .define(AmmoMaterials.ROCKET)
+                .define(AmmoMaterials.HE_ROCKET)
+                .define(AmmoMaterials.DEMOLITION)
+                .define(AmmoMaterials.NAPALM)
+                .define(AmmoMaterials.TOXIN)
                 .build();
     }
 

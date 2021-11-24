@@ -1,10 +1,12 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.GrenadeLauncherRenderer;
 import dev.toma.gunsrpg.client.render.item.Mk14EbrRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -26,7 +28,12 @@ public class GrenadeLauncherItem extends GunItem {
     public void initializeWeapon(WeaponBuilder builder) {
         builder
                 .config(ModConfig.weaponConfig.mk14)
-                .ammo(WeaponCategory.SR)
+                .ammo(WeaponCategory.GRENADE_LAUNCHER)
+                    .define(AmmoMaterials.GRENADE)
+                    .define(AmmoMaterials.HE_GRENADE)
+                    .define(AmmoMaterials.IMPACT)
+                    .define(AmmoMaterials.STICKY)
+                    .define(AmmoMaterials.TEAR_GAS)
                 .build();
     }
 

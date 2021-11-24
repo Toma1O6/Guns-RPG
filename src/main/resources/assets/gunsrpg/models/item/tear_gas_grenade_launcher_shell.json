@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "gunsrpg:item/tear_gas_grenade_launcher_shell"
+    }
+}
