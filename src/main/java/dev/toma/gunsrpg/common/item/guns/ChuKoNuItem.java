@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.ChuKoNuRenderer;
-import dev.toma.gunsrpg.client.render.item.RocketLauncherRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
@@ -52,11 +52,11 @@ public class ChuKoNuItem extends GunItem {
 
     @Override
     public IRenderConfig left() {
-        return super.left();
+        return RenderConfigs.CHUKONU_LEFT;
     }
 
     @Override
     public IRenderConfig right() {
-        return super.right();
+        return RenderConfigs.CHUKONU_RIGHT;
     }
 }
