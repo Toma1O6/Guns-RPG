@@ -28,7 +28,7 @@ public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
         glass.render(matrix, reticleVertexBuilder, light, overlay, r, g, b, a);
     }
 
-    protected static void renderScopeWithGlass(MatrixStack matrix, IRenderTypeBuffer buffer, ModelRenderer scopeModel, ModelRenderer reticleModel, ModelRenderer overlayModel, float progress, ResourceLocation reticleTexture, int light, int overlay) {
+    public static void renderScopeWithGlass(MatrixStack matrix, IRenderTypeBuffer buffer, ModelRenderer scopeModel, ModelRenderer reticleModel, ModelRenderer overlayModel, float progress, ResourceLocation reticleTexture, int light, int overlay) {
         float inv = 1.0F - progress;
         float sizeProgress = progress >= 0.9F ? progress : 0.0F;
         float sizeProgressInv = 1.0F - sizeProgress;

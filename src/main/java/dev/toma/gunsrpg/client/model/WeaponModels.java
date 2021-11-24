@@ -22,11 +22,14 @@ public final class WeaponModels {
     public static final AbstractWeaponModel S686 = new S686Model();
     public static final AbstractWeaponModel S12K = new S12kModel();
     public static final AbstractWeaponModel SKS = new SksModel();
+    public static final AbstractWeaponModel VSS = new VssModel();
     public static final AbstractWeaponModel AKM = new AKMModel();
     public static final AbstractWeaponModel HK416 = new HK416Model();
+    public static final AbstractWeaponModel AUG = new AugModel();
     public static final AbstractWeaponModel KAR98K = new Kar98kModel();
     public static final AbstractWeaponModel WINCHESTER = new WinchesterModel();
     public static final AbstractWeaponModel MK14 = new Mk14Model();
+    public static final AbstractWeaponModel AWM = new AwmModel();
     public static final AbstractWeaponModel GRENADE_LAUNCHER = new GrenadeLauncherModel();
     public static final AbstractWeaponModel ROCKET_LAUNCHER = new RocketLauncherModel();
 
@@ -37,7 +40,7 @@ public final class WeaponModels {
     public static Map<AbstractWeaponModel, Collection<AnimationStage>> getSupportedPartAnimations() {
         List<AbstractWeaponModel> list = Arrays.asList(
                 M1911, R45, DESERT_EAGLE, WOODEN_CROSSBOW, CHU_KO_NU, UMP_45, THOMPSON, VECTOR, S1897, S686,
-                S12K, SKS, AKM, HK416, KAR98K, WINCHESTER, MK14, GRENADE_LAUNCHER, ROCKET_LAUNCHER
+                S12K, SKS, VSS, AKM, HK416, AUG, KAR98K, WINCHESTER, MK14, AWM, GRENADE_LAUNCHER, ROCKET_LAUNCHER
         );
         Map<AbstractWeaponModel, Collection<AnimationStage>> map = new LinkedHashMap<>();
         for (AbstractWeaponModel weaponModel : list) {

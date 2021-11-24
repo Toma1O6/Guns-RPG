@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.render.item.AkmRenderer;
+import dev.toma.gunsrpg.client.render.item.VssRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
@@ -18,7 +18,7 @@ public class VssItem extends GunItem {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("vss/reload");
 
     public VssItem(String name) {
-        super(name, new Properties().setISTER(() -> AkmRenderer::new));
+        super(name, new Properties().setISTER(() -> VssRenderer::new));
     }
 
     @Override

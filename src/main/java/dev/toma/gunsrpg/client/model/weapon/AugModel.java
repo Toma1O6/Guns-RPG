@@ -1,0 +1,557 @@
+package dev.toma.gunsrpg.client.model.weapon;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.client.animation.ModAnimations;
+import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.vector.Vector3f;
+
+public class AugModel extends AbstractWeaponModel {
+
+    private final ModelRenderer slide;
+    private final ModelRenderer bone20;
+    private final ModelRenderer bone19;
+    private final ModelRenderer ironsights;
+    private final ModelRenderer bone29;
+    private final ModelRenderer bone30;
+    private final ModelRenderer bone31;
+    private final ModelRenderer bone32;
+    private final ModelRenderer bone27;
+    private final ModelRenderer bone28;
+    private final ModelRenderer bullet;
+    private final ModelRenderer magazine;
+    private final ModelRenderer bone11;
+    private final ModelRenderer bone33;
+    private final ModelRenderer bone34;
+    private final ModelRenderer bone;
+    private final ModelRenderer bone2;
+    private final ModelRenderer bolt;
+    private final ModelRenderer aug;
+    private final ModelRenderer bone12;
+    private final ModelRenderer bone25;
+    private final ModelRenderer bone26;
+    private final ModelRenderer bone16;
+    private final ModelRenderer bone17;
+    private final ModelRenderer bone15;
+    private final ModelRenderer bone14;
+    private final ModelRenderer bone23;
+    private final ModelRenderer bone21;
+    private final ModelRenderer bone22;
+    private final ModelRenderer bone18;
+    private final ModelRenderer bone9;
+    private final ModelRenderer bone8;
+    private final ModelRenderer bone10;
+    private final ModelRenderer bone7;
+    private final ModelRenderer bone3;
+    private final ModelRenderer bone5;
+    private final ModelRenderer bone4;
+    private final ModelRenderer bone6;
+    private final ModelRenderer bone13;
+
+    @Override
+    protected void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay) {
+        matrix.mulPose(Vector3f.YP.rotation((float) Math.PI));
+        aug.render(matrix, builder, light, overlay);
+        bolt.render(matrix, builder, light, overlay);
+        ironsights.render(matrix, builder, light, overlay);
+    }
+
+    public AugModel() {
+        texWidth = 512;
+        texHeight = 512;
+
+        slide = new ModelRenderer(this);
+        slide.setPos(-1.3477F, 2.1556F, 30.198F);
+        setRotationAngle(slide, 0.0F, 0.0F, 0.2618F);
+        slide.texOffs(92, 27).addBox(-1.7766F, -0.5076F, -1.302F, 2.0F, 1.0F, 2.0F, 0.0F, false);
+        slide.texOffs(92, 27).addBox(-2.7766F, -0.5076F, -0.302F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+
+        bone20 = new ModelRenderer(this);
+        bone20.setPos(12.0046F, -9.2788F, -3.698F);
+        slide.addChild(bone20);
+        setRotationAngle(bone20, 0.0F, -0.3491F, 0.0F);
+        bone20.texOffs(92, 27).addBox(-12.1046F, 8.7712F, 7.784F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+
+        bone19 = new ModelRenderer(this);
+        bone19.setPos(11.2546F, -9.2788F, -3.698F);
+        slide.addChild(bone19);
+        setRotationAngle(bone19, 0.0F, -0.7854F, 0.0F);
+        bone19.texOffs(92, 27).addBox(-7.5202F, 8.7712F, 10.9087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone19.texOffs(92, 27).addBox(-7.5202F, 8.7712F, 11.3229F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+
+        ironsights = new ModelRenderer(this);
+        ironsights.setPos(-4.5F, 24.0F, 0.0F);
+        ironsights.texOffs(37, 12).addBox(3.0F, -28.364F, 9.75F, 3.0F, 1.0F, 1.0F, 0.0F, true);
+        ironsights.texOffs(37, 12).addBox(2.5F, -29.364F, 9.75F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        ironsights.texOffs(37, 12).addBox(4.0F, -28.864F, 29.75F, 1.0F, 2.0F, 1.0F, 0.0F, true);
+        ironsights.texOffs(37, 12).addBox(5.5F, -29.364F, 9.75F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        ironsights.texOffs(37, 12).addBox(3.0F, -27.4063F, 9.25F, 3.0F, 1.0F, 2.0F, 0.0F, true);
+        ironsights.texOffs(37, 12).addBox(3.0F, -27.6F, 29.25F, 3.0F, 1.0F, 2.0F, 0.0F, true);
+        ironsights.texOffs(37, 12).addBox(2.5774F, -26.6937F, 29.25F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        ironsights.texOffs(37, 12).addBox(5.4226F, -26.6937F, 29.25F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+
+        bone29 = new ModelRenderer(this);
+        bone29.setPos(-12.8F, -5.9F, 0.0F);
+        ironsights.addChild(bone29);
+        setRotationAngle(bone29, 0.0F, 0.0F, 0.5236F);
+
+
+        bone30 = new ModelRenderer(this);
+        bone30.setPos(21.8F, -5.9F, 0.0F);
+        ironsights.addChild(bone30);
+        setRotationAngle(bone30, 0.0F, 0.0F, -0.5236F);
+
+
+        bone31 = new ModelRenderer(this);
+        bone31.setPos(3.4F, -29.364F, 10.25F);
+        ironsights.addChild(bone31);
+        setRotationAngle(bone31, 0.0F, 0.0F, 0.5236F);
+        bone31.texOffs(37, 12).addBox(2.1847F, -0.684F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+
+        bone32 = new ModelRenderer(this);
+        bone32.setPos(5.6F, -29.364F, 10.25F);
+        ironsights.addChild(bone32);
+        setRotationAngle(bone32, 0.0F, 0.0F, -0.5236F);
+        bone32.texOffs(37, 12).addBox(-3.1847F, -0.684F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+
+        bone27 = new ModelRenderer(this);
+        bone27.setPos(3.0F, -26.4F, 10.25F);
+        ironsights.addChild(bone27);
+        setRotationAngle(bone27, 0.0F, 0.0F, 0.4363F);
+        bone27.texOffs(37, 12).addBox(-0.4193F, -0.9149F, -1.0F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        bone27.texOffs(37, 12).addBox(2.0537F, -1.5342F, -1.0F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        bone27.texOffs(37, 12).addBox(-0.5071F, -1.0876F, 19.0F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+
+        bone28 = new ModelRenderer(this);
+        bone28.setPos(6.0F, -26.4F, 10.25F);
+        ironsights.addChild(bone28);
+        setRotationAngle(bone28, 0.0F, 0.0F, -0.4363F);
+        bone28.texOffs(37, 12).addBox(-0.5807F, -0.9149F, -1.0F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        bone28.texOffs(37, 12).addBox(-3.0537F, -1.5342F, -1.0F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        bone28.texOffs(37, 12).addBox(-0.4929F, -1.0876F, 19.0F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+
+        bullet = new ModelRenderer(this);
+        bullet.setPos(0.5F, 27.0F, 0.0F);
+        bullet.texOffs(14, 497).addBox(-1.5F, -21.628F, 8.8F, 2.0F, 2.0F, 2.0F, 0.0F, true);
+        bullet.texOffs(14, 497).addBox(-1.65F, -21.778F, 6.8F, 2.0F, 2.0F, 2.0F, 0.0F, false);
+        bullet.texOffs(14, 497).addBox(-1.35F, -21.778F, 6.8F, 2.0F, 2.0F, 2.0F, 0.0F, true);
+        bullet.texOffs(14, 497).addBox(-1.9F, -22.028F, 2.8F, 2.0F, 2.0F, 4.0F, 0.0F, false);
+        bullet.texOffs(14, 497).addBox(-1.1F, -22.028F, 2.8F, 2.0F, 2.0F, 4.0F, 0.0F, true);
+        bullet.texOffs(14, 497).addBox(-1.5F, -21.628F, 2.3F, 2.0F, 2.0F, 1.0F, 0.0F, true);
+        bullet.texOffs(14, 497).addBox(-1.1F, -22.028F, 1.3F, 2.0F, 2.0F, 1.0F, 0.0F, true);
+        bullet.texOffs(14, 497).addBox(-1.9F, -22.028F, 1.3F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+        bullet.texOffs(14, 497).addBox(-1.1F, -21.228F, 1.3F, 2.0F, 2.0F, 1.0F, 0.0F, true);
+        bullet.texOffs(14, 497).addBox(-1.9F, -21.228F, 1.3F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+        bullet.texOffs(14, 497).addBox(-1.9F, -21.228F, 2.8F, 2.0F, 2.0F, 4.0F, 0.0F, false);
+        bullet.texOffs(14, 497).addBox(-1.65F, -21.478F, 6.8F, 2.0F, 2.0F, 2.0F, 0.0F, false);
+        bullet.texOffs(14, 497).addBox(-1.1F, -21.228F, 2.8F, 2.0F, 2.0F, 4.0F, 0.0F, true);
+        bullet.texOffs(14, 497).addBox(-1.35F, -21.478F, 6.8F, 2.0F, 2.0F, 2.0F, 0.0F, true);
+
+        magazine = new ModelRenderer(this);
+        magazine.setPos(0.0F, 25.1F, 0.0F);
+        magazine.texOffs(76, 29).addBox(-2.5F, -16.0F, -1.0F, 5.0F, 7.0F, 2.0F, 0.0F, false);
+        magazine.texOffs(76, 29).addBox(-2.5F, -16.0F, 3.0F, 5.0F, 7.0F, 2.0F, 0.0F, false);
+        magazine.texOffs(76, 29).addBox(-2.5F, -16.0F, 7.0F, 5.0F, 7.0F, 2.0F, 0.0F, false);
+        magazine.texOffs(76, 29).addBox(-2.5F, -16.0F, 11.0F, 5.0F, 7.0F, 2.0F, 0.0F, false);
+        magazine.texOffs(76, 29).addBox(-1.0F, -18.0F, 12.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+        magazine.texOffs(76, 29).addBox(-1.0F, -18.0F, -1.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+        magazine.texOffs(76, 29).addBox(1.0F, -19.0F, -1.0F, 1.0F, 3.0F, 14.0F, 0.0F, false);
+        magazine.texOffs(76, 29).addBox(-2.0F, -19.0F, -1.0F, 1.0F, 3.0F, 14.0F, 0.0F, true);
+        magazine.texOffs(76, 29).addBox(-2.0F, -16.0F, 1.0F, 4.0F, 7.0F, 10.0F, 0.0F, false);
+
+        bone11 = new ModelRenderer(this);
+        bone11.setPos(-2.5F, 2.0F, 0.0F);
+        magazine.addChild(bone11);
+        setRotationAngle(bone11, 0.0873F, 0.0F, 0.0F);
+        bone11.texOffs(76, 29).addBox(0.0F, -11.0453F, 11.9625F, 5.0F, 6.0F, 2.0F, 0.0F, false);
+        bone11.texOffs(76, 29).addBox(0.5F, -11.0453F, 1.9625F, 4.0F, 6.0F, 10.0F, 0.0F, false);
+        bone11.texOffs(76, 29).addBox(0.0F, -11.0453F, 7.9625F, 5.0F, 6.0F, 2.0F, 0.0F, false);
+        bone11.texOffs(76, 29).addBox(0.0F, -11.0453F, 3.9625F, 5.0F, 6.0F, 2.0F, 0.0F, false);
+        bone11.texOffs(76, 29).addBox(0.0F, -11.0453F, -0.0375F, 5.0F, 6.0F, 2.0F, 0.0F, false);
+
+        bone33 = new ModelRenderer(this);
+        bone33.setPos(0.0F, -6.0453F, 6.9625F);
+        magazine.addChild(bone33);
+        setRotationAngle(bone33, 0.1745F, 0.0F, 0.0F);
+        bone33.texOffs(76, 29).addBox(-2.5F, 1.6847F, 4.1486F, 5.0F, 6.0F, 2.0F, 0.0F, false);
+        bone33.texOffs(76, 29).addBox(-2.0F, 1.6847F, -5.8514F, 4.0F, 6.0F, 10.0F, 0.0F, false);
+        bone33.texOffs(76, 29).addBox(-2.5F, 1.6847F, 0.1486F, 5.0F, 6.0F, 2.0F, 0.0F, false);
+        bone33.texOffs(76, 29).addBox(-2.5F, 1.6847F, -3.8514F, 5.0F, 6.0F, 2.0F, 0.0F, false);
+        bone33.texOffs(76, 29).addBox(-2.5F, 1.6847F, -7.8514F, 5.0F, 6.0F, 2.0F, 0.0F, false);
+
+        bone34 = new ModelRenderer(this);
+        bone34.setPos(0.0F, -6.0453F, 6.9625F);
+        magazine.addChild(bone34);
+        setRotationAngle(bone34, 0.2618F, 0.0F, 0.0F);
+        bone34.texOffs(76, 29).addBox(-2.5F, 6.9711F, 3.5087F, 5.0F, 6.0F, 2.0F, 0.0F, false);
+        bone34.texOffs(76, 29).addBox(-2.0F, 6.9711F, -6.4913F, 4.0F, 6.0F, 10.0F, 0.0F, false);
+        bone34.texOffs(76, 29).addBox(-2.5F, 6.9711F, -0.4913F, 5.0F, 6.0F, 2.0F, 0.0F, false);
+        bone34.texOffs(76, 29).addBox(-2.5F, 6.9711F, -4.4913F, 5.0F, 6.0F, 2.0F, 0.0F, false);
+        bone34.texOffs(76, 29).addBox(-2.5F, 6.9711F, -8.4913F, 5.0F, 6.0F, 2.0F, 0.0F, false);
+
+        bone = new ModelRenderer(this);
+        bone.setPos(14.0F, -8.0F, 0.0F);
+        magazine.addChild(bone);
+        setRotationAngle(bone, 0.0F, 0.0F, -0.5236F);
+        bone.texOffs(76, 29).addBox(-6.9593F, -13.6782F, 11.0F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        bone.texOffs(76, 29).addBox(-6.9593F, -13.6782F, 7.0F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        bone.texOffs(76, 29).addBox(-6.9593F, -13.6782F, 3.0F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        bone.texOffs(76, 29).addBox(-6.9593F, -13.6782F, -1.0F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+
+        bone2 = new ModelRenderer(this);
+        bone2.setPos(-14.0F, -8.0F, 0.0F);
+        magazine.addChild(bone2);
+        setRotationAngle(bone2, 0.0F, 0.0F, 0.5236F);
+        bone2.texOffs(76, 29).addBox(5.9593F, -13.6782F, 11.0F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        bone2.texOffs(76, 29).addBox(5.9593F, -13.6782F, 7.0F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        bone2.texOffs(76, 29).addBox(5.9593F, -13.6782F, 3.0F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        bone2.texOffs(76, 29).addBox(5.9593F, -13.6782F, -1.0F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+
+        bolt = new ModelRenderer(this);
+        bolt.setPos(0.0F, 24.0F, 0.0F);
+        bolt.texOffs(0, 24).addBox(1.6F, -20.0F, 1.0F, 1.0F, 3.0F, 10.0F, 0.0F, false);
+
+        aug = new ModelRenderer(this);
+        aug.setPos(0.0F, 24.0F, 0.0F);
+        aug.texOffs(210, 84).addBox(-3.0F, -21.0F, -2.0F, 6.0F, 4.0F, 3.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -21.0F, 11.0F, 6.0F, 4.0F, 3.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -21.0F, 1.0F, 6.0F, 1.0F, 10.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -20.0F, 1.0F, 1.0F, 3.0F, 10.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.65F, -19.9F, -16.0F, 3.0F, 2.0F, 13.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(0.65F, -19.9F, -16.0F, 3.0F, 2.0F, 13.0F, 0.0F, true);
+        aug.texOffs(210, 84).addBox(-3.65F, -19.9F, -3.0F, 3.0F, 2.0F, 13.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(0.25F, -19.9F, -18.2F, 3.0F, 4.0F, 18.0F, 0.0F, true);
+        aug.texOffs(210, 84).addBox(0.25F, -15.9F, -18.2F, 3.0F, 4.0F, 6.0F, 0.0F, true);
+        aug.texOffs(210, 84).addBox(-3.0F, -19.0F, 14.0F, 6.0F, 3.0F, 20.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -19.0F, 34.0F, 6.0F, 3.0F, 1.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(2.0F, -19.0F, 35.0F, 1.0F, 3.0F, 7.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -19.0F, 35.0F, 1.0F, 3.0F, 7.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -21.0F, 14.0F, 6.0F, 2.0F, 13.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -21.0F, 27.0F, 6.0F, 2.0F, 8.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(2.0F, -21.0F, 35.0F, 1.0F, 2.0F, 7.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -21.0F, 35.0F, 1.0F, 2.0F, 7.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-0.4142F, -16.5858F, 14.0F, 2.0F, 2.0F, 20.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-0.4142F, -16.5858F, 34.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-0.4142F, -15.5858F, 35.0F, 2.0F, 1.0F, 7.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-1.5858F, -16.5858F, 34.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-1.5858F, -15.5858F, 35.0F, 2.0F, 1.0F, 7.0F, 0.0F, false);
+        aug.texOffs(83, 96).addBox(-0.5F, -19.0358F, 35.0F, 1.0F, 1.0F, 14.0F, 0.0F, false);
+        aug.texOffs(83, 96).addBox(-0.5F, -21.7678F, 35.0F, 1.0F, 1.0F, 14.0F, 0.0F, false);
+        aug.texOffs(83, 96).addBox(-1.866F, -20.4018F, 35.0F, 1.0F, 1.0F, 14.0F, 0.0F, false);
+        aug.texOffs(83, 96).addBox(0.866F, -20.4018F, 35.0F, 1.0F, 1.0F, 14.0F, 0.0F, true);
+        aug.texOffs(83, 96).addBox(-0.5F, -19.0358F, 49.0F, 1.0F, 1.0F, 6.0F, 0.0F, false);
+        aug.texOffs(83, 96).addBox(-0.5F, -21.7678F, 49.0F, 1.0F, 1.0F, 6.0F, 0.0F, false);
+        aug.texOffs(83, 96).addBox(-1.866F, -20.4018F, 49.0F, 1.0F, 1.0F, 6.0F, 0.0F, false);
+        aug.texOffs(83, 96).addBox(0.866F, -20.4018F, 49.0F, 1.0F, 1.0F, 6.0F, 0.0F, true);
+        aug.texOffs(210, 84).addBox(-1.5858F, -16.5858F, 14.0F, 2.0F, 2.0F, 20.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-2.0F, -15.0858F, 20.0F, 4.0F, 4.0F, 5.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-2.0F, -4.7361F, 17.3848F, 4.0F, 2.0F, 5.0F, 0.0F, false);
+        aug.texOffs(17, 92).addBox(-1.5F, -3.4861F, 17.8848F, 3.0F, 1.0F, 8.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-1.5F, -14.5858F, 25.0F, 3.0F, 3.0F, 1.0F, 0.0F, false);
+        aug.texOffs(91, 94).addBox(-1.0F, -15.2858F, 25.75F, 2.0F, 3.0F, 1.0F, 0.0F, false);
+        aug.texOffs(206, 83).addBox(-1.0F, -23.0F, -4.0F, 2.0F, 2.0F, 18.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-1.0F, -23.0F, 14.0F, 2.0F, 2.0F, 13.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -27.0F, 31.75F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -27.0F, 29.75F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -27.0F, 27.75F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -27.0F, 25.75F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -27.0F, 23.75F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -27.0F, 21.75F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -27.0F, 19.75F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -27.0F, 17.75F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -27.0F, 15.75F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -27.0F, 13.75F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -27.0F, 11.75F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -27.0F, 9.75F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -27.0F, 7.75F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.5F, -26.4F, 20.75F, 3.0F, 1.0F, 12.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.5F, -26.4F, 7.75F, 3.0F, 1.0F, 13.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -25.4F, 14.75F, 2.0F, 3.0F, 2.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.0F, -23.8F, 32.1F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.866F, -26.5F, 30.75F, 2.0F, 0.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.866F, -26.5F, 28.75F, 2.0F, 0.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.866F, -26.5F, 26.75F, 2.0F, 0.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.866F, -26.5F, 24.75F, 2.0F, 0.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.866F, -26.5F, 22.75F, 2.0F, 0.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.866F, -26.5F, 20.75F, 2.0F, 0.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.866F, -26.5F, 18.75F, 2.0F, 0.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.866F, -26.5F, 16.75F, 2.0F, 0.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.866F, -26.5F, 14.75F, 2.0F, 0.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.866F, -26.5F, 12.75F, 2.0F, 0.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.866F, -26.5F, 10.75F, 2.0F, 0.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-1.866F, -26.5F, 8.75F, 2.0F, 0.0F, 1.0F, 0.0F, false);
+        aug.texOffs(0, 75).addBox(-0.134F, -26.5F, 30.75F, 2.0F, 0.0F, 1.0F, 0.0F, true);
+        aug.texOffs(0, 75).addBox(-0.134F, -26.5F, 28.75F, 2.0F, 0.0F, 1.0F, 0.0F, true);
+        aug.texOffs(0, 75).addBox(-0.134F, -26.5F, 26.75F, 2.0F, 0.0F, 1.0F, 0.0F, true);
+        aug.texOffs(0, 75).addBox(-0.134F, -26.5F, 24.75F, 2.0F, 0.0F, 1.0F, 0.0F, true);
+        aug.texOffs(0, 75).addBox(-0.134F, -26.5F, 22.75F, 2.0F, 0.0F, 1.0F, 0.0F, true);
+        aug.texOffs(0, 75).addBox(-0.134F, -26.5F, 20.75F, 2.0F, 0.0F, 1.0F, 0.0F, true);
+        aug.texOffs(0, 75).addBox(-0.134F, -26.5F, 18.75F, 2.0F, 0.0F, 1.0F, 0.0F, true);
+        aug.texOffs(0, 75).addBox(-0.134F, -26.5F, 16.75F, 2.0F, 0.0F, 1.0F, 0.0F, true);
+        aug.texOffs(0, 75).addBox(-0.134F, -26.5F, 14.75F, 2.0F, 0.0F, 1.0F, 0.0F, true);
+        aug.texOffs(0, 75).addBox(-0.134F, -26.5F, 12.75F, 2.0F, 0.0F, 1.0F, 0.0F, true);
+        aug.texOffs(0, 75).addBox(-0.134F, -26.5F, 10.75F, 2.0F, 0.0F, 1.0F, 0.0F, true);
+        aug.texOffs(0, 75).addBox(-0.134F, -26.5F, 8.75F, 2.0F, 0.0F, 1.0F, 0.0F, true);
+        aug.texOffs(210, 84).addBox(-1.0F, -23.0F, 27.0F, 2.0F, 2.0F, 8.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-1.0F, -23.0F, 35.0F, 2.0F, 1.0F, 7.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-1.0F, -23.0F, -20.0F, 2.0F, 1.0F, 16.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -21.0F, -16.0F, 6.0F, 3.0F, 14.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -21.0F, -20.0F, 6.0F, 4.0F, 4.0F, 0.0F, false);
+        aug.texOffs(29, 88).addBox(-3.0F, -21.001F, -22.0F, 6.0F, 4.0F, 2.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -17.0F, -20.0F, 6.0F, 12.0F, 4.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -17.0F, -21.0F, 6.0F, 12.0F, 1.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -18.0F, -16.0F, 6.0F, 6.0F, 2.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -18.0F, -14.0F, 6.0F, 4.0F, 1.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -18.0F, -13.0F, 6.0F, 3.0F, 2.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -18.0F, -11.0F, 6.0F, 2.0F, 3.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -18.0F, -8.0F, 6.0F, 1.0F, 3.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-2.5F, -7.0F, -16.0F, 5.0F, 2.0F, 1.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-2.0F, -5.4805F, -20.9766F, 4.0F, 1.0F, 6.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-2.0F, -7.0F, -15.2695F, 4.0F, 2.0F, 1.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.0F, -17.0F, -1.0F, 1.0F, 7.0F, 14.0F, 0.0F, false);
+        aug.texOffs(5, 70).addBox(-3.5F, -17.0F, 8.0F, 1.0F, 3.0F, 2.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(-3.2F, -21.0F, -21.0F, 1.0F, 16.0F, 2.0F, 0.0F, false);
+        aug.texOffs(210, 84).addBox(2.2F, -21.0F, -21.0F, 1.0F, 16.0F, 2.0F, 0.0F, true);
+        aug.texOffs(50, 38).addBox(-3.1F, -17.3F, 34.2F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(50, 38).addBox(-3.1F, -17.3F, 40.7F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(50, 38).addBox(2.1F, -17.3F, 40.7F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        aug.texOffs(50, 38).addBox(2.1F, -17.3F, 34.2F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        aug.texOffs(50, 38).addBox(-3.1F, -20.5F, 34.2F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(50, 38).addBox(-3.1F, -20.5F, 40.7F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(50, 38).addBox(2.1F, -20.5F, 40.7F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        aug.texOffs(50, 38).addBox(-3.1F, -20.5F, 25.2F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(50, 38).addBox(2.1F, -20.5F, 25.2F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        aug.texOffs(50, 38).addBox(-3.1F, -20.5F, 16.2F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        aug.texOffs(50, 38).addBox(2.1F, -20.5F, 16.2F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        aug.texOffs(50, 38).addBox(2.1F, -20.5F, 34.2F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        aug.texOffs(210, 84).addBox(2.0F, -17.0F, -1.0F, 1.0F, 7.0F, 14.0F, 0.0F, true);
+        aug.texOffs(210, 84).addBox(-3.0F, -17.0F, -2.0F, 6.0F, 7.0F, 1.0F, 0.0F, true);
+        aug.texOffs(210, 84).addBox(-3.0F, -17.0F, 13.0F, 6.0F, 7.0F, 1.0F, 0.0F, true);
+
+        bone12 = new ModelRenderer(this);
+        bone12.setPos(4.0F, 0.0F, 0.0F);
+        aug.addChild(bone12);
+        setRotationAngle(bone12, 0.0F, 0.0F, -0.7854F);
+        bone12.texOffs(210, 84).addBox(8.6066F, -14.0208F, 14.0F, 2.0F, 2.0F, 20.0F, 0.0F, false);
+        bone12.texOffs(210, 84).addBox(8.6066F, -14.0208F, 34.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+        bone12.texOffs(210, 84).addBox(8.6066F, -13.0208F, 35.0F, 2.0F, 1.0F, 7.0F, 0.0F, false);
+        bone12.texOffs(210, 84).addBox(6.364F, -16.2635F, 34.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+        bone12.texOffs(210, 84).addBox(6.364F, -16.2635F, 35.0F, 1.0F, 2.0F, 7.0F, 0.0F, false);
+        bone12.texOffs(210, 84).addBox(6.364F, -16.2635F, 14.0F, 2.0F, 2.0F, 20.0F, 0.0F, false);
+
+        bone25 = new ModelRenderer(this);
+        bone25.setPos(4.0858F, 0.0F, 0.0F);
+        aug.addChild(bone25);
+        setRotationAngle(bone25, 0.0F, 0.0F, -0.5236F);
+        bone25.texOffs(83, 96).addBox(5.9125F, -18.4123F, 35.0F, 1.0F, 1.0F, 14.0F, 0.0F, false);
+        bone25.texOffs(83, 96).addBox(4.5465F, -19.7784F, 35.0F, 1.0F, 1.0F, 14.0F, 0.0F, false);
+        bone25.texOffs(83, 96).addBox(7.2785F, -19.7784F, 35.0F, 1.0F, 1.0F, 14.0F, 0.0F, false);
+        bone25.texOffs(83, 96).addBox(5.9125F, -21.1444F, 35.0F, 1.0F, 1.0F, 14.0F, 0.0F, false);
+        bone25.texOffs(83, 96).addBox(5.9125F, -18.4123F, 49.0F, 1.0F, 1.0F, 6.0F, 0.0F, false);
+        bone25.texOffs(83, 96).addBox(4.5465F, -19.7784F, 49.0F, 1.0F, 1.0F, 6.0F, 0.0F, false);
+        bone25.texOffs(83, 96).addBox(7.2785F, -19.7784F, 49.0F, 1.0F, 1.0F, 6.0F, 0.0F, false);
+        bone25.texOffs(83, 96).addBox(5.9125F, -21.1444F, 49.0F, 1.0F, 1.0F, 6.0F, 0.0F, false);
+
+        bone26 = new ModelRenderer(this);
+        bone26.setPos(-4.0858F, 0.0F, 0.0F);
+        aug.addChild(bone26);
+        setRotationAngle(bone26, 0.0F, 0.0F, 0.5236F);
+        bone26.texOffs(83, 96).addBox(-6.9125F, -18.4123F, 35.0F, 1.0F, 1.0F, 14.0F, 0.0F, true);
+        bone26.texOffs(83, 96).addBox(-5.5465F, -19.7784F, 35.0F, 1.0F, 1.0F, 14.0F, 0.0F, true);
+        bone26.texOffs(83, 96).addBox(-6.9125F, -21.1444F, 35.0F, 1.0F, 1.0F, 14.0F, 0.0F, true);
+        bone26.texOffs(83, 96).addBox(-8.2785F, -19.7784F, 35.0F, 1.0F, 1.0F, 14.0F, 0.0F, true);
+        bone26.texOffs(83, 96).addBox(-6.9125F, -18.4123F, 49.0F, 1.0F, 1.0F, 6.0F, 0.0F, true);
+        bone26.texOffs(83, 96).addBox(-5.5465F, -19.7784F, 49.0F, 1.0F, 1.0F, 6.0F, 0.0F, true);
+        bone26.texOffs(83, 96).addBox(-6.9125F, -21.1444F, 49.0F, 1.0F, 1.0F, 6.0F, 0.0F, true);
+        bone26.texOffs(83, 96).addBox(-8.2785F, -19.7784F, 49.0F, 1.0F, 1.0F, 6.0F, 0.0F, true);
+
+        bone16 = new ModelRenderer(this);
+        bone16.setPos(0.0F, -2.9861F, 21.8848F);
+        aug.addChild(bone16);
+        setRotationAngle(bone16, 0.5236F, 0.0F, 0.0F);
+        bone16.texOffs(17, 92).addBox(-1.5F, 1.433F, 3.2141F, 3.0F, 1.0F, 2.0F, 0.0F, false);
+
+        bone17 = new ModelRenderer(this);
+        bone17.setPos(0.0F, -2.9861F, 21.8848F);
+        aug.addChild(bone17);
+        setRotationAngle(bone17, 1.0472F, 0.0F, 0.0F);
+        bone17.texOffs(17, 92).addBox(-1.5F, 3.7141F, 3.299F, 3.0F, 1.0F, 13.0F, 0.0F, false);
+
+        bone15 = new ModelRenderer(this);
+        bone15.setPos(4.0858F, 0.0F, 0.0F);
+        aug.addChild(bone15);
+        setRotationAngle(bone15, 0.6109F, 0.0F, 0.0F);
+        bone15.texOffs(210, 84).addBox(-5.5858F, 4.4225F, 24.9433F, 3.0F, 1.0F, 3.0F, 0.0F, false);
+
+        bone14 = new ModelRenderer(this);
+        bone14.setPos(3.5858F, -4.5F, -3.25F);
+        aug.addChild(bone14);
+        setRotationAngle(bone14, -0.2618F, 0.0F, 0.0F);
+        bone14.texOffs(210, 84).addBox(-5.5858F, -15.5687F, 19.8706F, 4.0F, 10.0F, 5.0F, 0.0F, false);
+
+        bone23 = new ModelRenderer(this);
+        bone23.setPos(0.0F, -23.6F, 34.4F);
+        aug.addChild(bone23);
+        setRotationAngle(bone23, 0.6109F, 0.0F, 0.0F);
+        bone23.texOffs(0, 75).addBox(-1.0F, -3.3853F, -1.8362F, 2.0F, 5.0F, 2.0F, 0.0F, false);
+
+        bone21 = new ModelRenderer(this);
+        bone21.setPos(0.0F, -27.5F, 29.25F);
+        aug.addChild(bone21);
+        setRotationAngle(bone21, 0.0F, 0.0F, -0.5236F);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, 2.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, 0.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -1.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -3.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -5.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -7.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -9.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -11.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -13.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -15.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -17.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -19.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -21.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, 1.5F, 0.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -0.5F, 0.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -2.5F, 0.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -4.5F, 0.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -6.5F, 0.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -8.5F, 0.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -10.5F, 0.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -12.5F, 0.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -14.5F, 0.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -16.5F, 0.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -18.5F, 0.0F, 1.0F, 1.0F, 0.0F, false);
+        bone21.texOffs(0, 75).addBox(-2.116F, -0.067F, -20.5F, 0.0F, 1.0F, 1.0F, 0.0F, false);
+
+        bone22 = new ModelRenderer(this);
+        bone22.setPos(0.0F, -27.5F, 29.25F);
+        aug.addChild(bone22);
+        setRotationAngle(bone22, 0.0F, 0.0F, 0.5236F);
+        bone22.texOffs(0, 75).addBox(1.116F, -0.067F, 2.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(1.116F, -0.067F, 0.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(1.116F, -0.067F, -1.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(1.116F, -0.067F, -3.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(1.116F, -0.067F, -5.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(1.116F, -0.067F, -7.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(1.116F, -0.067F, -9.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(1.116F, -0.067F, -11.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(1.116F, -0.067F, -13.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(1.116F, -0.067F, -15.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(1.116F, -0.067F, -17.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(1.116F, -0.067F, -19.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(1.116F, -0.067F, -21.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(2.116F, -0.067F, 1.5F, 0.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(2.116F, -0.067F, -0.5F, 0.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(2.116F, -0.067F, -2.5F, 0.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(2.116F, -0.067F, -4.5F, 0.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(2.116F, -0.067F, -6.5F, 0.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(2.116F, -0.067F, -8.5F, 0.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(2.116F, -0.067F, -10.5F, 0.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(2.116F, -0.067F, -12.5F, 0.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(2.116F, -0.067F, -14.5F, 0.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(2.116F, -0.067F, -16.5F, 0.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(2.116F, -0.067F, -18.5F, 0.0F, 1.0F, 1.0F, 0.0F, true);
+        bone22.texOffs(0, 75).addBox(2.116F, -0.067F, -20.5F, 0.0F, 1.0F, 1.0F, 0.0F, true);
+
+        bone18 = new ModelRenderer(this);
+        bone18.setPos(0.0F, -22.0F, 28.5F);
+        aug.addChild(bone18);
+        setRotationAngle(bone18, 0.0F, 0.0F, 0.7854F);
+        bone18.texOffs(210, 84).addBox(0.0F, -1.4142F, -14.5F, 2.0F, 2.0F, 12.0F, 0.0F, false);
+        bone18.texOffs(210, 84).addBox(0.0F, -1.4142F, -2.5F, 2.0F, 2.0F, 9.0F, 0.0F, false);
+        bone18.texOffs(210, 84).addBox(0.0F, -1.4142F, 6.5F, 1.0F, 1.0F, 7.0F, 0.0F, false);
+        bone18.texOffs(210, 84).addBox(1.0F, -1.4142F, 6.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone18.texOffs(210, 84).addBox(1.0F, -1.4142F, 9.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone18.texOffs(210, 84).addBox(1.0F, -1.4142F, 12.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone18.texOffs(210, 84).addBox(1.8284F, -1.4142F, -14.5F, 1.0F, 1.0F, 12.0F, 0.0F, false);
+        bone18.texOffs(210, 84).addBox(1.8284F, -1.4142F, -2.5F, 1.0F, 1.0F, 9.0F, 0.0F, false);
+        bone18.texOffs(210, 84).addBox(1.8284F, -1.4142F, 6.5F, 1.0F, 1.0F, 7.0F, 0.0F, false);
+        bone18.texOffs(206, 83).addBox(-1.4142F, 0.0F, -14.5F, 2.0F, 2.0F, 5.0F, 0.0F, false);
+        bone18.texOffs(206, 83).addBox(-1.4142F, 0.0F, -7.5F, 1.0F, 1.0F, 10.0F, 0.0F, false);
+        bone18.texOffs(19, 166).addBox(-1.1642F, 0.0F, -9.5F, 1.0F, 2.0F, 12.0F, 0.0F, false);
+        bone18.texOffs(206, 83).addBox(-1.4142F, 0.0F, 2.5F, 2.0F, 2.0F, 4.0F, 0.0F, false);
+        bone18.texOffs(206, 83).addBox(-1.4142F, 0.0F, 6.5F, 1.0F, 1.0F, 7.0F, 0.0F, false);
+        bone18.texOffs(206, 83).addBox(-1.4142F, 1.0F, 6.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone18.texOffs(206, 83).addBox(-1.4142F, 1.0F, 9.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone18.texOffs(206, 83).addBox(-1.4142F, 1.0F, 12.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone18.texOffs(206, 83).addBox(-1.4142F, 1.8284F, -14.5F, 1.0F, 1.0F, 12.0F, 0.0F, false);
+        bone18.texOffs(206, 83).addBox(-1.4142F, 1.8284F, -2.5F, 1.0F, 1.0F, 9.0F, 0.0F, false);
+        bone18.texOffs(206, 83).addBox(-1.4142F, 1.8284F, 6.5F, 1.0F, 1.0F, 7.0F, 0.0F, false);
+
+        bone9 = new ModelRenderer(this);
+        bone9.setPos(3.5F, 0.0F, 0.0F);
+        aug.addChild(bone9);
+        setRotationAngle(bone9, 0.7854F, 0.0F, 0.0F);
+        bone9.texOffs(29, 88).addBox(-4.5F, -30.1581F, -0.9107F, 2.0F, 1.0F, 3.0F, 0.0F, false);
+        bone9.texOffs(29, 88).addBox(-5.0F, -30.0255F, -0.4687F, 3.0F, 1.0F, 2.0F, 0.0F, false);
+        bone9.texOffs(29, 88).addBox(-5.5F, -29.6333F, -0.7946F, 4.0F, 1.0F, 2.0F, 0.0F, false);
+
+        bone8 = new ModelRenderer(this);
+        bone8.setPos(13.8995F, -19.299F, -13.0F);
+        aug.addChild(bone8);
+        setRotationAngle(bone8, 0.0F, 0.0F, -0.6109F);
+        bone8.texOffs(210, 84).addBox(-12.8676F, -11.0865F, -7.0F, 2.0F, 1.0F, 17.0F, 0.0F, false);
+        bone8.texOffs(206, 83).addBox(-12.8676F, -11.0865F, 10.0F, 2.0F, 1.0F, 17.0F, 0.0F, false);
+        bone8.texOffs(210, 84).addBox(-9.4438F, -10.4305F, -7.0F, 1.0F, 2.0F, 17.0F, 0.0F, false);
+        bone8.texOffs(210, 84).addBox(-9.4438F, -10.4305F, 10.0F, 1.0F, 2.0F, 17.0F, 0.0F, false);
+
+        bone10 = new ModelRenderer(this);
+        bone10.setPos(-13.8995F, -19.299F, -13.0F);
+        aug.addChild(bone10);
+        setRotationAngle(bone10, 0.0F, 0.0F, 0.6109F);
+        bone10.texOffs(210, 84).addBox(8.4438F, -10.4305F, -7.0F, 1.0F, 2.0F, 17.0F, 0.0F, true);
+        bone10.texOffs(206, 83).addBox(8.4438F, -10.4305F, 10.0F, 1.0F, 2.0F, 17.0F, 0.0F, true);
+        bone10.texOffs(210, 84).addBox(10.8676F, -11.0865F, -7.0F, 2.0F, 1.0F, 17.0F, 0.0F, true);
+        bone10.texOffs(210, 84).addBox(10.8676F, -11.0865F, 10.0F, 2.0F, 1.0F, 17.0F, 0.0F, true);
+
+        bone7 = new ModelRenderer(this);
+        bone7.setPos(3.5F, 0.0F, 0.0F);
+        aug.addChild(bone7);
+        setRotationAngle(bone7, 0.0873F, 0.0F, 0.0F);
+        bone7.texOffs(29, 88).addBox(-6.5F, -18.8527F, -20.4346F, 6.0F, 12.0F, 1.0F, 0.0F, false);
+
+        bone3 = new ModelRenderer(this);
+        bone3.setPos(0.0F, -15.0391F, -10.8008F);
+        aug.addChild(bone3);
+        setRotationAngle(bone3, 0.3491F, 0.0F, 0.0F);
+        bone3.texOffs(210, 84).addBox(-1.5858F, 2.4774F, -2.7201F, 2.0F, 2.0F, 13.0F, 0.0F, false);
+        bone3.texOffs(210, 84).addBox(-3.0F, -0.9369F, -2.7201F, 6.0F, 4.0F, 13.0F, 0.0F, false);
+        bone3.texOffs(210, 84).addBox(-0.4142F, 2.4774F, -2.7201F, 2.0F, 2.0F, 13.0F, 0.0F, true);
+
+        bone5 = new ModelRenderer(this);
+        bone5.setPos(0.0F, 0.0F, 0.0F);
+        bone3.addChild(bone5);
+        setRotationAngle(bone5, 0.0F, 0.0F, -0.7854F);
+        bone5.texOffs(210, 84).addBox(-4.2873F, 0.0447F, -2.7201F, 1.0F, 2.0F, 13.0F, 0.0F, false);
+        bone5.texOffs(210, 84).addBox(-2.0447F, 3.2873F, -2.7201F, 2.0F, 1.0F, 13.0F, 0.0F, false);
+
+        bone4 = new ModelRenderer(this);
+        bone4.setPos(0.0F, -11.2188F, -16.7109F);
+        aug.addChild(bone4);
+        setRotationAngle(bone4, 0.6109F, 0.0F, 0.0F);
+        bone4.texOffs(210, 84).addBox(-1.5858F, 2.4774F, -2.7201F, 2.0F, 2.0F, 13.0F, 0.0F, false);
+        bone4.texOffs(210, 84).addBox(-3.0F, -0.9369F, -2.7201F, 6.0F, 4.0F, 13.0F, 0.0F, false);
+        bone4.texOffs(210, 84).addBox(-0.4142F, 2.4774F, -2.7201F, 2.0F, 2.0F, 13.0F, 0.0F, true);
+
+        bone6 = new ModelRenderer(this);
+        bone6.setPos(0.0F, 0.0F, 0.0F);
+        bone4.addChild(bone6);
+        setRotationAngle(bone6, 0.0F, 0.0F, -0.7854F);
+        bone6.texOffs(210, 84).addBox(-4.2873F, 0.0447F, -2.7201F, 1.0F, 2.0F, 13.0F, 0.0F, false);
+        bone6.texOffs(210, 84).addBox(-2.0447F, 3.2873F, -2.7201F, 2.0F, 1.0F, 13.0F, 0.0F, false);
+
+        bone13 = new ModelRenderer(this);
+        bone13.setPos(-3.0F, 0.0F, 0.0F);
+        aug.addChild(bone13);
+        setRotationAngle(bone13, -0.5236F, 0.0F, 0.0F);
+        bone13.texOffs(210, 84).addBox(0.0F, -22.3923F, 4.1244F, 6.0F, 5.0F, 2.0F, 0.0F, true);
+
+        setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
+        setSpecialRenderer(ModAnimations.SLIDE, slide);
+        setBulletRenderer(setSpecialRenderer(ModAnimations.BULLET, bullet));
+    }
+}
