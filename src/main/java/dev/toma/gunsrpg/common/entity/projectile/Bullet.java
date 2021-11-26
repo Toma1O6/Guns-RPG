@@ -1,39 +1,26 @@
 package dev.toma.gunsrpg.common.entity.projectile;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 
-public class Bullet extends AbstractProjectile {
+public class Bullet extends AbstractPenetratingProjectile {
 
-    private PenetrationData penetrationData;
+    public Bullet(EntityType<? extends Bullet> type, World world) {
+        super(type, world);
+    }
 
-    public Bullet(EntityType<? extends AbstractProjectile> type, World world, ProjectileSettings settings, LivingEntity owner) {
-        super(type, world, settings, owner);
+    public Bullet(EntityType<? extends Bullet> type, World world, LivingEntity owner) {
+        super(type, world, owner);
     }
 
     @Override
-    public void preTick() {
-
-    }
+    public void preTick() {}
 
     @Override
-    public void postTick() {
-
-    }
-
-    @Override
-    protected void onHitBlock(BlockRayTraceResult result) {
-
-    }
-
-    @Override
-    protected void onHitEntity(EntityRayTraceResult result) {
-
-    }
+    public void postTick() {}
 
     @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
@@ -41,12 +28,13 @@ public class Bullet extends AbstractProjectile {
     }
 
     @Override
-    protected boolean canHitEntity(Entity entity) {
-        return (penetrationData != null && entity != penetrationData.entity) && super.canHitEntity(entity);
-    }
+    protected void onHitBlock(BlockRayTraceResult result) {}
 
-    private static class PenetrationData {
+    @Override
+    protected void handleEntityCollision(EntityRayTraceResult result) {}
 
-        private Entity entity;
+    @Override
+    protected float getPenetrationDamageMultiplier() {
+        return 1;
     }
 }

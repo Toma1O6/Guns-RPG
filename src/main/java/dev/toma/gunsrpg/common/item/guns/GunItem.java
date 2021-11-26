@@ -33,7 +33,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Set;
 
-public abstract class GunItem extends AbstractGun implements IAnimationEntry, IProjectileEjector {
+public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
     private final WeaponCategory weaponCategory;
     private final IWeaponConfig config;
@@ -109,12 +109,8 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry, IP
         return ReloadManagers.fullMagLoading();
     }
 
-    @Override
-    public AbstractProjectile createProjectile(EntityType<? extends AbstractProjectile> type, World level, LivingEntity source) {
-        AbstractProjectile projectile = new Bullet(type, level, null, null);
-        float inaccuracy = source instanceof PlayerEntity ? PlayerData.getValueSafe((PlayerEntity) source, data -> data.getAimInfo().isAiming() ? 0.0F : 0.3F, getMobInaccuracy(level)) : getMobInaccuracy(level);
-        projectile.fire(source.xRot, source.yRot, inaccuracy);
-        return projectile;
+    public void shootProjectile(World level, LivingEntity shooter, ItemStack stack) {
+        // TODO implementations
     }
 
     /* FINAL METHODS ---------------------------------------------------------------- */
@@ -137,17 +133,17 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry, IP
     public final void shoot(World world, LivingEntity entity, ItemStack stack, SoundEvent event) {
         Item item = stack.getItem();
         CooldownTracker tracker = null;
+        // TODO remove
         if (entity instanceof PlayerEntity) {
             tracker = ((PlayerEntity) entity).getCooldowns();
             if (tracker.isOnCooldown(item)) {
                 return;
             }
         }
-        // TODO projectile type
-        AbstractProjectile projectile = this.createProjectile(null, world, entity);
-        world.addFreshEntity(projectile);
+        shootProjectile(world, entity, stack);
         this.setAmmoCount(stack, this.getAmmo(stack) - 1);
         world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);
+        // TODO remove
         if (tracker != null) {
             tracker.addCooldown(item, this.getFirerate(PlayerData.getUnsafe((PlayerEntity) entity).getAttributes()));
         }
@@ -168,6 +164,11 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry, IP
     @Override
     public final MaterialContainer getContainer() {
         return container;
+    }
+
+    protected float getInaccuracy(LivingEntity shooter) {
+        World level = shooter.level;
+        return shooter instanceof PlayerEntity ? PlayerData.getValueSafe((PlayerEntity) shooter, data -> data.getAimInfo().isAiming() ? 0.0F : 0.3F, getMobInaccuracy(level)) : getMobInaccuracy(level);
     }
 
     protected float getMobInaccuracy(World level) {

@@ -2,6 +2,9 @@ package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.entity.*;
+import dev.toma.gunsrpg.common.entity.projectile.Bolt;
+import dev.toma.gunsrpg.common.entity.projectile.Bullet;
+import dev.toma.gunsrpg.common.entity.projectile.Pellet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -43,14 +46,14 @@ public class ModEntities {
     public static final RegistryObject<EntityType<ExplosiveArrowEntity>> EXPLOSIVE_ARROW = register("explosive_arrow", ExplosiveArrowEntity::new, EntityClassification.MISC,
             builder -> builder.setTrackingRange(64).setUpdateInterval(20).setShouldReceiveVelocityUpdates(true).sized(0.5F, 0.5F).clientTrackingRange(4)
     );
-    public static final RegistryObject<EntityType<BulletEntity>> BULLET = register("bullet", BulletEntity::new, EntityClassification.MISC,
-            builder -> builder.setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).sized(0.05F, 0.05F).noSummon().noSave()
+    public static final RegistryObject<EntityType<Bullet>> BULLET = register("bullet", Bullet::new, EntityClassification.MISC,
+            builder -> builder.sized(0.001F, 0.001F).noSummon().noSave()
     );
-    public static final RegistryObject<EntityType<ShotgunPelletEntity>> SHOTGUN_PELLET = register("shotgun_pellet", ShotgunPelletEntity::new, EntityClassification.MISC,
-            builder -> builder.setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).sized(0.05F, 0.05F).noSummon().noSave()
+    public static final RegistryObject<EntityType<Pellet>> PELLET = register("pellet", Pellet::new, EntityClassification.MISC,
+            builder -> builder.sized(0.001F, 0.001F).noSummon().noSave()
     );
-    public static final RegistryObject<EntityType<CrossbowBoltEntity>> CROSSBOW_BOLT = register("crossbow_bolt", CrossbowBoltEntity::new, EntityClassification.MISC,
-            builder -> builder.setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).sized(0.5F, 0.5F).noSummon().noSave()
+    public static final RegistryObject<EntityType<Bolt>> BOLT = register("bolt", Bolt::new, EntityClassification.MISC,
+            builder -> builder.sized(0.01F, 0.01F).noSummon().noSave()
     );
 
     private static <E extends Entity> RegistryObject<EntityType<E>> register(

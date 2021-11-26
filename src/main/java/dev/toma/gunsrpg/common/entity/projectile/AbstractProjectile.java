@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.entity.projectile;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModDamageSources;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,18 +27,27 @@ import java.util.function.Consumer;
 
 public abstract class AbstractProjectile extends ProjectileEntity {
 
-    private final ProjectileSettings settings;
     private final Set<UUID> passedPlayers;
 
     private final ItemStack weapon;
     private float projectileDamage;
+    private float velocity;
+    private int delay;
+    private boolean isPenetratingRound;
+    private boolean supersonic;
     boolean invalid;
 
-    public AbstractProjectile(EntityType<? extends AbstractProjectile> type, World world, ProjectileSettings settings, LivingEntity owner) {
+    public AbstractProjectile(EntityType<? extends AbstractProjectile> type, World level) {
+        super(type, level);
+        this.passedPlayers = Collections.emptySet();
+        this.weapon = ItemStack.EMPTY;
+    }
+
+    public AbstractProjectile(EntityType<? extends AbstractProjectile> type, World world, LivingEntity owner) {
         super(type, world);
-        this.settings = settings;
-        this.passedPlayers = settings.isSuperSonic() ? new HashSet<>() : Collections.emptySet();
+        this.passedPlayers = new HashSet<>();
         this.setOwner(owner);
+        this.passedPlayers.add(owner.getUUID()); // owner will never hear bullet whizz
         this.weapon = owner.getMainHandItem();
     }
 
@@ -60,8 +70,16 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         return true;
     }
 
+    public void setup(float damage, float velocity, int delay, boolean isPenetratingRound) {
+        this.projectileDamage = damage;
+        this.velocity = velocity;
+        this.delay = delay;
+        this.isPenetratingRound = isPenetratingRound;
+        this.supersonic = velocity > 10.0F;
+        onDamageChanged();
+    }
+
     public void fire(float xRot, float yRot, float inaccuracy) {
-        float velocity = settings.getActualVelocity();
         float inX = 0.0F;
         float inY = 0.0F;
         if (inaccuracy != 0.0) {
@@ -105,10 +123,6 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         return ProjectileHelper.getEntityHitResult(level, this, v1, v2, getBoundingBox().expandTowards(getDeltaMovement()).inflate(1.0), this::canHitEntity);
     }
 
-    public void reduceDamage(float amount) {
-        this.projectileDamage -= amount;
-    }
-
     public float getProjectileDamage() {
         return projectileDamage;
     }
@@ -122,7 +136,7 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         Vector3d v1 = position();
         Vector3d v2 = v1.add(getDeltaMovement());
         checkForCollisions(v1, v2);
-        if (settings.isSuperSonic())
+        if (supersonic)
             passAround();
         postTick();
     }
@@ -131,16 +145,34 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         return weapon;
     }
 
-    public void applyGravity() {
-        setDeltaMovement(getDeltaMovement().add(0.0, -0.05, 0.0));
-    }
-
     /* Protected methods */
 
     @Override
     protected void defineSynchedData() {}
 
-    /* Package methods */
+    protected boolean canApplyGravity() {
+        return tickCount >= delay;
+    }
+
+    protected void applyGravity(float amount) {
+        setDeltaMovement(getDeltaMovement().add(0.0, -amount, 0.0));
+    }
+
+    protected void applyGravity() {
+        applyGravity(0.05F);
+    }
+
+    protected void reduceDamage(float amount) {
+        this.projectileDamage -= amount;
+        onDamageChanged();
+    }
+
+    protected void mulDamage(float f) {
+        projectileDamage *= f;
+        onDamageChanged();
+    }
+
+    /* Internal methods */
 
     /**
      * Updates projectile direction
@@ -152,14 +184,6 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         xRot = (float) (MathHelper.atan2(delta.y, motionSqrt) * (180.0F / Math.PI));
         yRotO = yRot;
         xRotO = xRot;
-    }
-
-    /**
-     * Multiplies projectile damage by f value
-     * @param f The multiplier
-     */
-    void mulDamage(float f) {
-        projectileDamage *= f;
     }
 
     /**
@@ -218,7 +242,7 @@ public abstract class AbstractProjectile extends ProjectileEntity {
             List<ServerPlayerEntity> players = serverLevel.getEntitiesOfClass(ServerPlayerEntity.class, getBoundingBox().inflate(6.0F), pl -> !passedPlayers.contains(pl.getUUID()));
             for (ServerPlayerEntity player : players) {
                 passedPlayers.add(player.getUUID());
-                player.connection.send(new SPlaySoundEffectPacket(settings.getPassBySound(), SoundCategory.MASTER, pos.x, pos.y, pos.z, 0.6F, 1.0F));
+                player.connection.send(new SPlaySoundEffectPacket(ModSounds.BULLET_WHIZZ, SoundCategory.MASTER, pos.x, pos.y, pos.z, 0.6F, 1.0F));
             }
         }
     }
@@ -230,11 +254,9 @@ public abstract class AbstractProjectile extends ProjectileEntity {
             double noiseMultiplier = gun.getNoiseMultiplier(data.getAttributes());
             double actualScareRange = mobScareRange * noiseMultiplier;
             Entity owner = getOwner();
-            if (owner instanceof PlayerEntity) {
-                List<MobEntity> list = level.getEntitiesOfClass(MobEntity.class, getBoundingBox().inflate(actualScareRange), ent -> ent != owner);
-                for (MobEntity mobEntity : list) {
-                    mobEntity.setTarget((PlayerEntity) owner);
-                }
+            List<MobEntity> list = level.getEntitiesOfClass(MobEntity.class, getBoundingBox().inflate(actualScareRange), ent -> ent != owner);
+            for (MobEntity mobEntity : list) {
+                mobEntity.setTarget((PlayerEntity) owner);
             }
         });
     }
@@ -250,5 +272,11 @@ public abstract class AbstractProjectile extends ProjectileEntity {
             }
         }
         return 1.0f;
+    }
+
+    private void onDamageChanged() {
+        if (projectileDamage <= 0.0F) {
+            remove();
+        }
     }
 }
