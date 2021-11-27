@@ -1,8 +1,11 @@
 package dev.toma.gunsrpg.common.item.guns.util;
 
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.util.IFlags;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.LazyLoader;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 
 public enum Firemode {
 
@@ -16,7 +19,7 @@ public enum Firemode {
             "Burst",
             new LazyLoader<>(IInputEventHandler.Burst::new),
             InputEventListenerType.ON_INPUT,
-            InputEventListenerType.ON_TICK
+            InputEventListenerType.ON_BURST_TICK
     ),
 
     FULL_AUTO(
@@ -53,7 +56,14 @@ public enum Firemode {
         this.eventFlags = IFlags.combine(InputEventListenerType::getFlag, eventFlags);
     }
 
-    public boolean isSubscribedTo(InputEventListenerType event) {
+    public void triggerEvent(InputEventListenerType event, PlayerEntity player, ItemStack stack, IPlayerData data) {
+        if (this.isListeningFor(event)) {
+            IInputEventHandler handler = this.getHandler();
+            handler.invokeEvent(event, player, stack, data);
+        }
+    }
+
+    private boolean isListeningFor(InputEventListenerType event) {
         int id = event.getFlag();
         return (eventFlags & id) == id;
     }

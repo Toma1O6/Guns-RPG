@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.util.IFlags;
 public enum InputEventListenerType implements IFlags {
 
     ON_INPUT,
+    ON_BURST_TICK,
     ON_TICK;
 
     private final int flag;

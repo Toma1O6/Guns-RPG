@@ -11,13 +11,13 @@ import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.client.animation.AimAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
-import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.InputEventListenerType;
+import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -26,7 +26,6 @@ import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
-import dev.toma.gunsrpg.util.object.OptionalObject;
 import dev.toma.gunsrpg.util.object.PropertyChangeListener;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
@@ -56,7 +55,6 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = GunsRPG.MODID)
 public class ClientEventHandler {
@@ -65,11 +63,6 @@ public class ClientEventHandler {
             Entity::isSprinting,
             ClientEventHandler::dispatchSprintAnimation
     );
-    public static OptionalObject<Double> preAimFov = OptionalObject.empty();
-    public static OptionalObject<Double> preAimSens = OptionalObject.empty();
-    public static int shootDelay;
-    static boolean burst;
-    static int shotsLeft = 2;
     public static float partialTicks;
 
     @SubscribeEvent
@@ -192,39 +185,9 @@ public class ClientEventHandler {
                 if (settings.keyAttack.isDown()) {
                     Firemode firemode = item.getFiremode(stack);
                     InputEventListenerType inputEvent = InputEventListenerType.ON_INPUT;
-                    if (firemode.isSubscribedTo(inputEvent)) {
-                        firemode.getHandler().invokeEvent(inputEvent);
-                    }
-                    if (firemode == Firemode.SINGLE && ShootingManager.canShoot(player, stack)) {
-                        ShootingManager.Client.shoot(player, stack, optional.orElse(null).getAttributes());
-                    } else if (firemode == Firemode.BURST) {
-                        if (!burst) {
-                            burst = true;
-                            shotsLeft = 2;
-                        }
-                    }
+                    optional.ifPresent(data -> firemode.triggerEvent(inputEvent, player, stack, data));
                 } else if (settings.keyUse.isDown() && pipeline.get(ModAnimations.CHAMBER) == null && !player.isSprinting()) {
-
-                    boolean aim = optional.isPresent() && optional.orElse(null).getAimInfo().startedAiming();
-                    if (!aim) {
-                        preAimFov.map(settings.fov);
-                        preAimSens.map(settings.sensitivity);
-                        if (item == ModItems.KAR98K && PlayerData.hasActiveSkill(player, Skills.KAR98K_SCOPE)) {
-                            settings.sensitivity = preAimSens.get() * 0.3F;
-                            settings.fov = 15.0F;
-                        } else if (item == ModItems.WOODEN_CROSSBOW && PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE)) {
-                            settings.sensitivity = preAimSens.get() * 0.4F;
-                            settings.fov = 25.0F;
-                        }
-                        ResourceLocation aimAnimationPath = item.getAimAnimationPath(stack, player);
-                        if (aimAnimationPath != null) {
-                            pipeline.insert(ModAnimations.AIM_ANIMATION, AnimationUtils.createAnimation(aimAnimationPath, AimAnimation::new));
-                        }
-                    } else {
-                        preAimFov.ifPresent(value -> settings.fov = value);
-                        preAimSens.ifPresent(value -> settings.sensitivity = value);
-                    }
-                    NetworkManager.sendServerPacket(new SPacketSetAiming(!aim));
+                    handleAim(optional, settings, player, item, stack, pipeline);
                 }
             }
         }
@@ -262,38 +225,14 @@ public class ClientEventHandler {
             if (!optional.isPresent())
                 return;
             IPlayerData data = optional.orElse(null);
-            IAttributeProvider provider = data.getAttributes();
-            if (shootDelay > 0) {
-                --shootDelay;
-                ShootingManager.Client.tickShootingDelay();
-            }
+            ShootingManager.tickShootingDelay();
             startSprintListener.refresh(player);
             GameSettings settings = mc.options;
-            // TODO remove
-            if (burst) {
-                if (shotsLeft > 0) {
-                    ItemStack stack = player.getMainHandItem();
-                    if (stack.getItem() instanceof GunItem) {
-                        if (shootDelay == 0) {
-                            if (ShootingManager.canShoot(player, stack)) {
-                                ShootingManager.Client.shoot(player, stack, provider);
-                                shotsLeft--;
-                            } else burst = false;
-                        }
-                    }
-                } else burst = false;
-            } else if (settings.keyAttack.isDown()) {
-                ItemStack stack = player.getMainHandItem();
-                if (stack.getItem() instanceof GunItem) {
-                    GunItem gun = (GunItem) stack.getItem();
-                    Firemode firemode = gun.getFiremode(stack);
-                    if (firemode.isSubscribedTo(InputEventListenerType.ON_TICK)) {
-                        firemode.getHandler().invokeEvent(InputEventListenerType.ON_TICK);
-                    }
-                    if (gun.getFiremode(stack) == Firemode.FULL_AUTO && shootDelay == 0 && ShootingManager.canShoot(player, stack)) {
-                        ShootingManager.Client.shoot(player, stack, provider);
-                    }
-                }
+            if (settings.keyAttack.isDown()) {
+                dispatchWeaponInputEvent(InputEventListenerType.ON_TICK, player, data);
+            }
+            if (ShootingManager.Client.isBurstModeActive()) {
+                dispatchWeaponInputEvent(InputEventListenerType.ON_BURST_TICK, player, data);
             }
         }
     }
@@ -301,6 +240,27 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onRenderTick(TickEvent.RenderTickEvent event) {
         partialTicks = event.renderTickTime;
+    }
+
+    private static void handleAim(LazyOptional<IPlayerData> optional, GameSettings settings, PlayerEntity player, GunItem item, ItemStack stack, IAnimationPipeline pipeline) {
+        boolean aim = optional.isPresent() && optional.orElse(null).getAimInfo().startedAiming();
+        if (!aim) {
+            ShootingManager.Client.saveSettings(settings);
+            ScopeDataRegistry.Entry entry = ScopeDataRegistry.getRegistry().getRegistryEntry(item);
+            optional.ifPresent(data -> {
+                ISkills skills = data.getSkills();
+                if (entry.isApplicable(skills)) {
+                    ShootingManager.Client.applySettings(settings, entry);
+                }
+            });
+            ResourceLocation aimAnimationPath = item.getAimAnimationPath(stack, player);
+            if (aimAnimationPath != null) {
+                pipeline.insert(ModAnimations.AIM_ANIMATION, AnimationUtils.createAnimation(aimAnimationPath, AimAnimation::new));
+            }
+        } else {
+            ShootingManager.Client.loadSettings(settings);
+        }
+        NetworkManager.sendServerPacket(new SPacketSetAiming(!aim));
     }
 
     private static void dispatchSprintAnimation(boolean isSprinting, PlayerEntity player) {
@@ -315,24 +275,12 @@ public class ClientEventHandler {
         });
     }
 
-    @Deprecated
-    private static class ChangeDetector {
-
-        private final Function<PlayerEntity, Boolean> stateGetter;
-        private final Runnable onChange;
-        private boolean lastState;
-
-        public ChangeDetector(Runnable onChange, Function<PlayerEntity, Boolean> stateGetter) {
-            this.onChange = onChange;
-            this.stateGetter = stateGetter;
-        }
-
-        public void update(PlayerEntity player) {
-            boolean current = stateGetter.apply(player);
-            if (!lastState && current) {
-                onChange.run();
-            }
-            lastState = current;
+    private static void dispatchWeaponInputEvent(InputEventListenerType event, PlayerEntity player, IPlayerData data) {
+        ItemStack stack = player.getMainHandItem();
+        if (stack.getItem() instanceof GunItem) {
+            GunItem item = (GunItem) stack.getItem();
+            Firemode firemode = item.getFiremode(stack);
+            firemode.triggerEvent(event, player, stack, data);
         }
     }
 }

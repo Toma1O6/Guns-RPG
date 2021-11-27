@@ -10,12 +10,14 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.MaterialContainer;
+import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetReloading;
 import dev.toma.gunsrpg.network.packet.SPacketShoot;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.IAnimationPipeline;
+import net.minecraft.client.GameSettings;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -25,12 +27,14 @@ import javax.annotation.Nullable;
 
 public class ShootingManager {
 
+    private static int shootingDelay;
+
     public static boolean canShoot(PlayerEntity player, ItemStack stack) {
         IPlayerData data = PlayerData.get(player).orElseThrow(NullPointerException::new);
         IReloadInfo reloadInfo = data.getReloadInfo();
         IData levelData = data.getGenericData();
         GunItem item = (GunItem) stack.getItem();
-        if (!player.isSprinting() && ClientEventHandler.shootDelay == 0) {
+        if (!player.isSprinting() && isShootingReady()) {
             IAmmoMaterial material = item.getMaterialFromNBT(stack);
             if (material == null) return false;
             if (reloadInfo.isReloading()) {
@@ -52,14 +56,20 @@ public class ShootingManager {
         return player.getMainHandItem().getItem() instanceof GunItem ? (GunItem) player.getMainHandItem().getItem() : null;
     }
 
+    public static void tickShootingDelay() {
+        if (shootingDelay > 0) --shootingDelay;
+    }
+
+    public static boolean isShootingReady() {
+        return shootingDelay <= 0;
+    }
+
     @OnlyIn(Dist.CLIENT)
     public static class Client {
 
-        private static int shootingDelay;
-
-        public static void tickShootingDelay() {
-            if (shootingDelay > 0) --shootingDelay;
-        }
+        private static final OptionalObject<Double> fov = OptionalObject.empty();
+        private static final OptionalObject<Double> sensitivity = OptionalObject.empty();
+        private static boolean burstActive;
 
         public static void shoot(PlayerEntity player, ItemStack stack, IAttributeProvider provider) {
             GunItem gun = (GunItem) stack.getItem();
@@ -73,9 +83,31 @@ public class ShootingManager {
             gun.onShoot(player, stack);
             shootingDelay = gun.getFirerate(provider);
             float recoilAnimationShakeScale = ModConfig.clientConfig.recoilAnimationScale.floatValue();
-
             IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
             pipeline.insert(ModAnimations.RECOIL, new RecoilAnimation(xRot, yRot, recoilAnimationShakeScale));
+        }
+
+        public static void saveSettings(GameSettings settings) {
+            fov.map(settings.fov);
+            sensitivity.map(settings.sensitivity);
+        }
+
+        public static void loadSettings(GameSettings settings) {
+            fov.ifPresent(value -> settings.fov = value);
+            sensitivity.ifPresent(value -> settings.sensitivity = value);
+        }
+
+        public static void applySettings(GameSettings settings, ScopeDataRegistry.Entry entry) {
+            settings.fov = entry.getFov();
+            settings.sensitivity = sensitivity.get() * entry.getSensitivityMultiplier();
+        }
+
+        public static void setBurstActive(boolean state) {
+            burstActive = state;
+        }
+
+        public static boolean isBurstModeActive() {
+            return burstActive;
         }
     }
 }

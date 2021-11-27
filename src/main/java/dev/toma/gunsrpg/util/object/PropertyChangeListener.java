@@ -30,8 +30,8 @@ public final class PropertyChangeListener<T, C> {
     }
 
     private static <T> boolean defaultCompare(T p1, T p2) {
-        boolean nullValue = p1 == null || p2 == null;
-        return !nullValue || p1.equals(p2);
+        boolean nonnull = p1 != null && p2 != null;
+        return nonnull && p1.equals(p2);
     }
 
     @FunctionalInterface

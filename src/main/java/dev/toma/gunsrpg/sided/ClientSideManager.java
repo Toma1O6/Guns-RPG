@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.client.render.debuff.IconDebuffRenderer;
 import dev.toma.gunsrpg.client.screen.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.*;
+import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;
 import lib.toma.animations.api.lifecycle.Registries;
@@ -97,8 +98,7 @@ public class ClientSideManager {
         return () -> {
             Minecraft mc = Minecraft.getInstance();
             if (!PlayerData.getUnsafe(mc.player).getAimInfo().startedAiming()) {
-                ClientEventHandler.preAimFov.ifPresent(value -> mc.options.fov = value);
-                ClientEventHandler.preAimSens.ifPresent(value -> mc.options.sensitivity = value);
+                ShootingManager.Client.loadSettings(mc.options);
             }
         };
     }

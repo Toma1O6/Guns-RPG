@@ -63,7 +63,6 @@ public class ModKeybinds {
                     IReloadManager manager = gun.getReloadManager(player, data.getAttributes());
                     if (manager.isCancelable()) {
                         info.enqueueCancel();
-                        pipeline.remove(ModAnimations.RELOAD);
                         NetworkManager.sendServerPacket(new SPacketSetReloading(false, 0));
                         return;
                     }
