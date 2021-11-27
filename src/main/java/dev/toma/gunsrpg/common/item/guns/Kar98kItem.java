@@ -13,6 +13,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -62,6 +63,8 @@ public class Kar98kItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 24)
                     .define(AmmoMaterials.NETHERITE, 29)
                 .build();
+
+        ScopeDataRegistry.getRegistry().register(this, 15.0F, 0.3F);
     }
 
     @Override

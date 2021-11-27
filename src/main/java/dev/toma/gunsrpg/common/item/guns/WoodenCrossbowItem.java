@@ -12,6 +12,7 @@ import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
@@ -55,6 +56,8 @@ public class WoodenCrossbowItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 20)
                     .define(AmmoMaterials.NETHERITE, 25)
                 .build();
+
+        ScopeDataRegistry.getRegistry().register(this, 25.0F, 0.4F);
     }
 
     @Override

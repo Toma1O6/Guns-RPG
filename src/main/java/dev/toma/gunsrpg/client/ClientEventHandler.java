@@ -10,7 +10,6 @@ import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.client.animation.AimAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
-import dev.toma.gunsrpg.client.animation.RecoilAnimation;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
 import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -18,16 +17,17 @@ import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
+import dev.toma.gunsrpg.common.item.guns.util.InputEventListenerType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
-import dev.toma.gunsrpg.network.packet.SPacketShoot;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.OptionalObject;
+import dev.toma.gunsrpg.util.object.PropertyChangeListener;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
@@ -37,6 +37,7 @@ import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -60,15 +61,10 @@ import java.util.function.Function;
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = GunsRPG.MODID)
 public class ClientEventHandler {
 
-    private static final ChangeDetector startSprintListener = new ChangeDetector(() -> {
-        PlayerEntity player = Minecraft.getInstance().player;
-        ItemStack stack = player.getMainHandItem();
-        LazyOptional<IPlayerData> optional = PlayerData.get(player);
-        optional.ifPresent(data -> {
-            if (stack.getItem() instanceof GunItem && !data.getReloadInfo().isReloading())
-                AnimationEngine.get().pipeline().insert(ModAnimations.SPRINT);
-        });
-    }, PlayerEntity::isSprinting);
+    private static final PropertyChangeListener<Boolean, PlayerEntity> startSprintListener = new PropertyChangeListener<>(
+            Entity::isSprinting,
+            ClientEventHandler::dispatchSprintAnimation
+    );
     public static OptionalObject<Double> preAimFov = OptionalObject.empty();
     public static OptionalObject<Double> preAimSens = OptionalObject.empty();
     public static int shootDelay;
@@ -195,8 +191,12 @@ public class ClientEventHandler {
             if (item != null) {
                 if (settings.keyAttack.isDown()) {
                     Firemode firemode = item.getFiremode(stack);
+                    InputEventListenerType inputEvent = InputEventListenerType.ON_INPUT;
+                    if (firemode.isSubscribedTo(inputEvent)) {
+                        firemode.getHandler().invokeEvent(inputEvent);
+                    }
                     if (firemode == Firemode.SINGLE && ShootingManager.canShoot(player, stack)) {
-                        shoot(player, stack, optional.orElse(null).getAttributes());
+                        ShootingManager.Client.shoot(player, stack, optional.orElse(null).getAttributes());
                     } else if (firemode == Firemode.BURST) {
                         if (!burst) {
                             burst = true;
@@ -263,17 +263,20 @@ public class ClientEventHandler {
                 return;
             IPlayerData data = optional.orElse(null);
             IAttributeProvider provider = data.getAttributes();
-            if (shootDelay > 0)
+            if (shootDelay > 0) {
                 --shootDelay;
-            startSprintListener.update(player);
+                ShootingManager.Client.tickShootingDelay();
+            }
+            startSprintListener.refresh(player);
             GameSettings settings = mc.options;
+            // TODO remove
             if (burst) {
                 if (shotsLeft > 0) {
                     ItemStack stack = player.getMainHandItem();
                     if (stack.getItem() instanceof GunItem) {
                         if (shootDelay == 0) {
                             if (ShootingManager.canShoot(player, stack)) {
-                                shoot(player, stack, provider);
+                                ShootingManager.Client.shoot(player, stack, provider);
                                 shotsLeft--;
                             } else burst = false;
                         }
@@ -283,8 +286,12 @@ public class ClientEventHandler {
                 ItemStack stack = player.getMainHandItem();
                 if (stack.getItem() instanceof GunItem) {
                     GunItem gun = (GunItem) stack.getItem();
+                    Firemode firemode = gun.getFiremode(stack);
+                    if (firemode.isSubscribedTo(InputEventListenerType.ON_TICK)) {
+                        firemode.getHandler().invokeEvent(InputEventListenerType.ON_TICK);
+                    }
                     if (gun.getFiremode(stack) == Firemode.FULL_AUTO && shootDelay == 0 && ShootingManager.canShoot(player, stack)) {
-                        shoot(player, stack, provider);
+                        ShootingManager.Client.shoot(player, stack, provider);
                     }
                 }
             }
@@ -296,23 +303,19 @@ public class ClientEventHandler {
         partialTicks = event.renderTickTime;
     }
 
-    private static void shoot(PlayerEntity player, ItemStack stack, IAttributeProvider provider) {
-        GunItem gun = (GunItem) stack.getItem();
-        float xRot = gun.getVerticalRecoil(provider);
-        float yRot = gun.getHorizontalRecoil(provider);
-        if (player.getRandom().nextBoolean())
-            yRot = -yRot;
-        player.xRot -= xRot;
-        player.yRot -= yRot;
-        NetworkManager.sendServerPacket(new SPacketShoot());
-        gun.onShoot(player, stack);
-        shootDelay = gun.getFirerate(provider);
-        float recoilAnimationShakeScale = ModConfig.clientConfig.recoilAnimationScale.floatValue();
-
-        IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
-        pipeline.insert(ModAnimations.RECOIL, new RecoilAnimation(xRot, yRot, recoilAnimationShakeScale));
+    private static void dispatchSprintAnimation(boolean isSprinting, PlayerEntity player) {
+        ItemStack stack = player.getMainHandItem();
+        LazyOptional<IPlayerData> optional = PlayerData.get(player);
+        optional.ifPresent(data -> {
+            IReloadInfo info = data.getReloadInfo();
+            if (stack.getItem() instanceof GunItem && !info.isReloading()) {
+                IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
+                pipeline.insert(ModAnimations.SPRINT);
+            }
+        });
     }
 
+    @Deprecated
     private static class ChangeDetector {
 
         private final Function<PlayerEntity, Boolean> stateGetter;

@@ -2,14 +2,14 @@ package dev.toma.gunsrpg.common.item.guns.util;
 
 import dev.toma.gunsrpg.util.IFlags;
 
-public enum FiremodeHandlerFlags implements IFlags {
+public enum InputEventListenerType implements IFlags {
 
     ON_INPUT,
     ON_TICK;
 
     private final int flag;
 
-    FiremodeHandlerFlags() {
+    InputEventListenerType() {
         this.flag = 1 << ordinal();
     }
 
