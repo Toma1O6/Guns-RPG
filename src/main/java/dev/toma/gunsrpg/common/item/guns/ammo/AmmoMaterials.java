@@ -34,7 +34,7 @@ public final class AmmoMaterials {
     // rocket launcher
     public static final IAmmoMaterial ROCKET = AmmoMaterialManager.get().createMaterial("rocket", 0xFF0000, 0,
             (projectile, world, impactPos, impactedOn) -> explode(world, impactPos, 6.0F));
-    public static final IAmmoMaterial HE_ROCKET = AmmoMaterialManager.get().createMaterial("he_rocket", 0xAFAFAF, 1,
+    public static final IAmmoMaterial HE_ROCKET = AmmoMaterialManager.get().createMaterial("he_rocket", 0x298FAD, 1,
             (projectile, world, impactPos, impactedOn) -> explode(world, impactPos, 8.0F));
     public static final IAmmoMaterial DEMOLITION = AmmoMaterialManager.get().createMaterial("demolition", 0x565656, 2,
             (projectile, world, impactPos, impactedOn) -> explode(world, impactPos, 8.0F, Explosion.Mode.DESTROY));
