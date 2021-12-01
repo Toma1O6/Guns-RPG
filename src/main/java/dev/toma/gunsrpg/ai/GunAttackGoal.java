@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.ai;
 
+import dev.toma.gunsrpg.common.IShootProps;
 import dev.toma.gunsrpg.common.entity.ZombieGunnerEntity;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -16,9 +17,11 @@ public class GunAttackGoal extends Goal {
     protected static final int[] ATTACK_RANGE_TABLE = {10, 15, 20, 25, 10};
     protected final ZombieGunnerEntity entity;
     protected int timeRemaining = 10;
+    private final IShootProps props;
 
     public GunAttackGoal(ZombieGunnerEntity gunner) {
         this.entity = gunner;
+        this.props = new GunnerProjectileProperties(gunner);
         setFlags(EnumSet.of(Flag.TARGET));
     }
 
@@ -45,7 +48,8 @@ public class GunAttackGoal extends Goal {
         LivingEntity target = entity.getTarget();
         if (target == null || !hasGun()) return;
         double dist = Math.sqrt(entity.distanceToSqr(target));
-        GunItem gun = (GunItem) entity.getMainHandItem().getItem();
+        ItemStack stack = entity.getMainHandItem();
+        GunItem gun = (GunItem) stack.getItem();
         double attackRange = ATTACK_RANGE_TABLE[gun.getWeaponCategory().ordinal()];
         boolean canSee = canSeeEntity(target);
         if (dist <= attackRange && canSee) {
@@ -54,14 +58,9 @@ public class GunAttackGoal extends Goal {
         this.entity.lookAt(target, 30, 30);
         this.entity.getLookControl().setLookAt(target, 30, 30);
         if (canSee && dist < attackRange * 3 && --timeRemaining <= 0 && !entity.level.isClientSide) {
-            ItemStack stack = entity.getMainHandItem();
-            ZombieGunnerEntity.GunData data = entity.getWeaponData();
-            if (stack.getItem() instanceof GunItem) {
-                SoundEvent event = data.event.apply((GunItem) stack.getItem(), entity);
-                // TODO
-                //gun.shoot(entity.level, entity, stack, event);
-                timeRemaining = data.rof;
-            }
+            SoundEvent event = gun.getWeaponShootSound(entity);
+            gun.shoot(entity.level, entity, stack, props, event);
+            timeRemaining = entity.getFirerate();
         }
     }
 
@@ -75,5 +74,24 @@ public class GunAttackGoal extends Goal {
                 new Vector3d(target.getX(), target.getY() + target.getEyeHeight(), target.getZ()),
                 entity.level
         ) != null;
+    }
+
+    private static class GunnerProjectileProperties implements IShootProps {
+
+        private final ZombieGunnerEntity entity;
+
+        public GunnerProjectileProperties(ZombieGunnerEntity entity) {
+            this.entity = entity;
+        }
+
+        @Override
+        public float getDamageMultiplier() {
+            return entity.getDamageMultiplier();
+        }
+
+        @Override
+        public float getInaccuracy() {
+            return entity.getInaccuracy();
+        }
     }
 }

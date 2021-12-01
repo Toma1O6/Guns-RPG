@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
+import dev.toma.gunsrpg.resource.gunner.ZombieGunnerWeaponManager;
 import dev.toma.gunsrpg.resource.startgear.StartGearManager;
 import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
 import dev.toma.gunsrpg.util.recipes.smithing.SmithingRecipe;
@@ -32,6 +33,7 @@ public final class Lifecycle {
     private final Map<Item, Item> ore2ChunkMap = new IdentityHashMap<>(2);
     private final QuestSystem questSystem = new QuestSystem();
     private final StartGearManager startingGearManager = new StartGearManager();
+    private final ZombieGunnerWeaponManager zombieGunnerWeaponManager = new ZombieGunnerWeaponManager();
 
     public void modInit() {
         ModTags.init();
@@ -46,6 +48,10 @@ public final class Lifecycle {
 
     public StartGearManager getStartingGearManager() {
         return startingGearManager;
+    }
+
+    public ZombieGunnerWeaponManager getZombieGunnerWeaponManager() {
+        return zombieGunnerWeaponManager;
     }
 
     public QuestSystem quests() {
@@ -100,5 +106,6 @@ public final class Lifecycle {
 
     private void onDatapackReload(AddReloadListenerEvent event) {
         event.addListener(startingGearManager);
+        event.addListener(zombieGunnerWeaponManager);
     }
 }

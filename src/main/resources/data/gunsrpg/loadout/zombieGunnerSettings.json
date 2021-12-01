@@ -1,0 +1,50 @@
+{
+    "globalProps": {
+        "damageMultiplier": 0.5,
+        "inaccuracy": 0.1,
+        "accuracyBonus": 0.025
+    },
+    "loadouts": [
+        {
+            "weight": 15,
+            "gun": "weaponID",
+            "magazine": 7,
+            "reloadTime": 40,
+            "firerate": 20,
+            "ammo": "materialID",
+            "capColor": "ffffff"
+        },
+        {
+            "weight": 30,
+            "gun": "weaponID",
+            "magazine": 13,
+            "reloadTime": 60,
+            "firerate": 4,
+            "ammo": "materialID",
+            "capColor": "ff0000",
+            "shootTask": {
+                "inaccuracy": 0.2,
+                "accuracyBonus": 0.05,
+                "damageMultiplier": 0.7,
+                "burstSize": 3,
+                "burstDelay": 15
+            }
+        },
+        {
+            "weight": 5,
+            "gun": "weaponID",
+            "magazine": 30,
+            "reloadTime": 45,
+            "firerate": [ 10, 8, 6 ],
+            "ammo": [ "materialIDforEasyDiff", "materialIDforMediumDiff", "materialIDforHardDiff" ],
+            "capColor": "00ff00",
+            "shootTask": {
+                "inaccuracy": 0.15,
+                "accuracyBonus": 0.03,
+                "damageMultiplier": [ 0.5, 0.75, 1.0 ],
+                "burstSize": 2,
+                "burstDelay": 6
+            }
+        }
+    ]
+}

@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.client.animation.BulletEjectAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
+import dev.toma.gunsrpg.common.IShootProps;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -109,7 +110,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         return ReloadManagers.fullMagLoading();
     }
 
-    public void shootProjectile(World level, LivingEntity shooter, ItemStack stack) {
+    public void shootProjectile(World level, LivingEntity shooter, ItemStack stack, IShootProps props) {
         // TODO implementations
     }
 
@@ -126,11 +127,11 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         return getEntityShootSound(entity);
     }
 
-    public final void shoot(World world, LivingEntity entity, ItemStack stack) {
-        shoot(world, entity, stack, getWeaponShootSound(entity));
+    public final void shoot(World world, LivingEntity entity, ItemStack stack, IShootProps props) {
+        shoot(world, entity, stack, props, getWeaponShootSound(entity));
     }
 
-    public final void shoot(World world, LivingEntity entity, ItemStack stack, SoundEvent event) {
+    public final void shoot(World world, LivingEntity entity, ItemStack stack, IShootProps props, SoundEvent event) {
         Item item = stack.getItem();
         CooldownTracker tracker = null;
         // TODO remove
@@ -140,7 +141,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
                 return;
             }
         }
-        shootProjectile(world, entity, stack);
+        shootProjectile(world, entity, stack, props);
         this.setAmmoCount(stack, this.getAmmo(stack) - 1);
         world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);
         // TODO remove
@@ -164,15 +165,6 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     @Override
     public final MaterialContainer getContainer() {
         return container;
-    }
-
-    protected float getInaccuracy(LivingEntity shooter) {
-        World level = shooter.level;
-        return shooter instanceof PlayerEntity ? PlayerData.getValueSafe((PlayerEntity) shooter, data -> data.getAimInfo().isAiming() ? 0.0F : 0.3F, getMobInaccuracy(level)) : getMobInaccuracy(level);
-    }
-
-    protected float getMobInaccuracy(World level) {
-        return 0.5F;
     }
 
     protected boolean isSilenced(PlayerEntity player) {

@@ -86,10 +86,10 @@ public final class AnimationPipeline implements IAnimationPipeline {
     @Override
     public void handleGameTick() {
         IProfiler profiler = Minecraft.getInstance().getProfiler();
-        profiler.push("Animation tick");
-        profiler.push("Scheduled animations");
+        profiler.push("animationTick");
+        profiler.push("scheduledTick");
         tickScheduled();
-        profiler.popPush("Live animations");
+        profiler.popPush("activeTick");
         Iterator<IAnimation> it1 = playingAnimations.values().iterator();
         while (it1.hasNext()) {
             IAnimation animation = it1.next();
@@ -108,7 +108,10 @@ public final class AnimationPipeline implements IAnimationPipeline {
 
     @Override
     public void animateStage(AnimationStage stage, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay) {
+        IProfiler profiler = Minecraft.getInstance().getProfiler();
+        profiler.push("animationRender");
         playingAnimations.values().forEach(anim -> anim.animate(stage, matrix, buffer, light, overlay));
+        profiler.pop();
     }
 
     @SuppressWarnings("unchecked")

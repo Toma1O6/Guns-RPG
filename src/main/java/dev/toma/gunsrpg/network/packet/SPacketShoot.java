@@ -1,10 +1,14 @@
 package dev.toma.gunsrpg.network.packet;
 
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.common.IShootProps;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.network.AbstractHandlePacket;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SPacketShoot extends AbstractHandlePacket<SPacketShoot> {
@@ -21,7 +25,11 @@ public class SPacketShoot extends AbstractHandlePacket<SPacketShoot> {
         Item item = stack.getItem();
         if (item instanceof GunItem) {
             GunItem gun = (GunItem) item;
-            gun.shoot(player.level, player, stack);
+            LazyOptional<IPlayerData> optional = PlayerData.get(player);
+            optional.ifPresent(data -> {
+                boolean aiming = data.getAimInfo().isAiming();
+                gun.shoot(player.level, player, stack, () -> aiming ? 0.0F : 0.25F);
+            });
         }
     }
 }

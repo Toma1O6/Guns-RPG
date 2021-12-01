@@ -1,11 +1,14 @@
 package dev.toma.gunsrpg.common.entity;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ai.GunAttackGoal;
 import dev.toma.gunsrpg.common.init.ModEntities;
-import dev.toma.gunsrpg.common.init.ModItems;
-import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.resource.gunner.ZombieGunnerLoadout;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
+import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
@@ -25,25 +28,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.LazyOptional;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiFunction;
 
 public class ZombieGunnerEntity extends MonsterEntity {
 
-    // loaded lazily to prevent getting null items
-    public static final LazyOptional<List<GunData>> DATA = LazyOptional.of(() -> {
-        List<GunData> list = new ArrayList<>();
-        list.add(GunData.from(ModItems.M1911, 30));
-        list.add(GunData.from(ModItems.UMP45, 15));
-        list.add(GunData.from(ModItems.SKS, 30));
-        list.add(GunData.from(ModItems.KAR98K, 80));
-        list.add(GunData.from(ModItems.S1897, 50));
-        return list;
-    });
-    private int weaponDataIndex;
+    private float damageMultiplier = 1.0F;
+    private float inaccuracy = 0.15F;
+    private int firerate = 20;
+    private int magCapacity = 10;
+    private int reloadTime = 40;
 
     public ZombieGunnerEntity(World world) {
         this(ModEntities.ZOMBIE_GUNNER.get(), world);
@@ -152,56 +144,52 @@ public class ZombieGunnerEntity extends MonsterEntity {
     @Override
     protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
         super.populateDefaultEquipmentSlots(difficulty);
-        List<GunData> lootpools = getWeaponDataList();
-        weaponDataIndex = random.nextInt(lootpools.size());
-        GunData data = lootpools.get(weaponDataIndex);
-        setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(data.gun));
+        ZombieGunnerLoadout loadout = GunsRPG.getModLifecycle().getZombieGunnerWeaponManager().getLoadout();
+        loadout.applyGear(this, difficulty.getDifficulty());
         setItemSlot(EquipmentSlotType.HEAD, new ItemStack(Items.LEATHER_HELMET));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundNBT compound) {
         super.addAdditionalSaveData(compound);
-        compound.putInt("dataIndex", weaponDataIndex);
+        compound.putFloat("damageMultiplier", damageMultiplier);
+        compound.putFloat("inaccuracy", inaccuracy);
+        compound.putInt("magCapacity", magCapacity);
+        compound.putInt("firerate", firerate);
+        compound.putInt("reloadTime", reloadTime);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundNBT compound) {
         super.readAdditionalSaveData(compound);
-        weaponDataIndex = compound.getInt("dataIndex");
-        List<GunData> list = getWeaponDataList();
-        int range = list.size();
-        if (weaponDataIndex >= range)
-            weaponDataIndex = random.nextInt(range);
+        damageMultiplier = compound.getFloat("damageMultiplier");
+        inaccuracy = compound.getFloat("inaccuracy");
+        magCapacity = compound.getInt("magCapacity");
+        firerate = compound.getInt("firerate");
+        reloadTime = compound.getInt("reloadTime");
     }
 
-    public GunData getWeaponData() {
-        List<GunData> list = getWeaponDataList();
-        int max = list.size();
-        if (weaponDataIndex >= max) {
-            weaponDataIndex = random.nextInt(max);
-        }
-        return list.get(weaponDataIndex);
+    public void setFirerate(int firerate) {
+        this.firerate = firerate;
     }
 
-    private List<GunData> getWeaponDataList() {
-        return DATA.orElseThrow(() -> new IllegalStateException("Zombie gunner equipment pool is not populated!"));
+    public float getDamageMultiplier() {
+        return damageMultiplier;
     }
 
-    public static class GunData {
+    public float getInaccuracy() {
+        return inaccuracy;
+    }
 
-        public final GunItem gun;
-        public final int rof;
-        public final BiFunction<GunItem, LivingEntity, SoundEvent> event;
+    public int getFirerate() {
+        return firerate;
+    }
 
-        public GunData(GunItem gun, int rof, BiFunction<GunItem, LivingEntity, SoundEvent> event) {
-            this.gun = gun;
-            this.rof = rof;
-            this.event = event;
-        }
+    public int getMagCapacity() {
+        return magCapacity;
+    }
 
-        public static GunData from(GunItem item, int firerate) {
-            return new GunData(item, firerate, GunItem::getWeaponShootSound);
-        }
+    public int getReloadTime() {
+        return reloadTime;
     }
 }
