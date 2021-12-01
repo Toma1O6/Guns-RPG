@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.common.IShootProps;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.network.AbstractHandlePacket;
@@ -11,11 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SPacketShoot extends AbstractHandlePacket<SPacketShoot> {
+public class C2S_ShootPacket extends AbstractHandlePacket<C2S_ShootPacket> {
 
     @Override
-    public SPacketShoot thisPacket() {
-        return new SPacketShoot();
+    public C2S_ShootPacket thisPacket() {
+        return new C2S_ShootPacket();
     }
 
     @Override

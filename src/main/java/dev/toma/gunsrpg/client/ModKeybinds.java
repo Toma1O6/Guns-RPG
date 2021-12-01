@@ -12,9 +12,9 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.SPacketChangeFiremode;
-import dev.toma.gunsrpg.network.packet.SPacketRequestDataUpdate;
-import dev.toma.gunsrpg.network.packet.SPacketSetReloading;
+import dev.toma.gunsrpg.network.packet.C2S_ChangeFiremodePacket;
+import dev.toma.gunsrpg.network.packet.C2S_RequestDataUpdatePacket;
+import dev.toma.gunsrpg.network.packet.C2S_SetReloadingPacket;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.IAnimationPipeline;
 import net.minecraft.client.Minecraft;
@@ -39,7 +39,7 @@ public class ModKeybinds {
         register("firemode", GLFW.GLFW_KEY_B, () -> {
             PlayerEntity player = Minecraft.getInstance().player;
             if (player.getMainHandItem().getItem() instanceof GunItem) {
-                NetworkManager.sendServerPacket(new SPacketChangeFiremode());
+                NetworkManager.sendServerPacket(new C2S_ChangeFiremodePacket());
             }
         });
     }
@@ -63,7 +63,7 @@ public class ModKeybinds {
                     IReloadManager manager = gun.getReloadManager(player, data.getAttributes());
                     if (manager.isCancelable()) {
                         info.enqueueCancel();
-                        NetworkManager.sendServerPacket(new SPacketSetReloading(false, 0));
+                        NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(false, 0));
                         return;
                     }
                 }
@@ -77,7 +77,7 @@ public class ModKeybinds {
                     if (!reloading && ammo < max) {
                         if (skip) {
                             info.startReloading(player, gun, stack, player.inventory.selected);
-                            NetworkManager.sendServerPacket(new SPacketSetReloading(true, gun.getReloadTime(data.getAttributes())));
+                            NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(true, gun.getReloadTime(data.getAttributes())));
                             return;
                         }
                         for (int i = 0; i < player.inventory.getContainerSize(); i++) {
@@ -87,7 +87,7 @@ public class ModKeybinds {
                                 if (itemAmmo.getAmmoType() == ammoType && itemAmmo.getMaterial().equals(material)) {
                                     int time = gun.getReloadTime(data.getAttributes());
                                     info.startReloading(player, gun, stack, player.inventory.selected);
-                                    NetworkManager.sendServerPacket(new SPacketSetReloading(true, time));
+                                    NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(true, time));
                                     break;
                                 }
                             }
@@ -102,7 +102,7 @@ public class ModKeybinds {
 
     private static void showClassesPressed() {
         Minecraft mc = Minecraft.getInstance();
-        NetworkManager.sendServerPacket(new SPacketRequestDataUpdate(mc.player.getUUID()));
+        NetworkManager.sendServerPacket(new C2S_RequestDataUpdatePacket(mc.player.getUUID()));
         mc.setScreen(new SkillTreeScreen());
     }
 

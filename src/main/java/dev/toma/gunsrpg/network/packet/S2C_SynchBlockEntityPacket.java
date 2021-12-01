@@ -11,15 +11,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class CPacketSynchTile extends AbstractNetworkPacket<CPacketSynchTile> {
+public class S2C_SynchBlockEntityPacket extends AbstractNetworkPacket<S2C_SynchBlockEntityPacket> {
 
     private final BlockPos pos;
 
-    public CPacketSynchTile() {
+    public S2C_SynchBlockEntityPacket() {
         this(null);
     }
 
-    public CPacketSynchTile(BlockPos tilePos) {
+    public S2C_SynchBlockEntityPacket(BlockPos tilePos) {
         pos = tilePos;
     }
 
@@ -29,8 +29,8 @@ public class CPacketSynchTile extends AbstractNetworkPacket<CPacketSynchTile> {
     }
 
     @Override
-    public CPacketSynchTile decode(PacketBuffer buffer) {
-        return new CPacketSynchTile(buffer.readBlockPos());
+    public S2C_SynchBlockEntityPacket decode(PacketBuffer buffer) {
+        return new S2C_SynchBlockEntityPacket(buffer.readBlockPos());
     }
 
     @OnlyIn(Dist.CLIENT)

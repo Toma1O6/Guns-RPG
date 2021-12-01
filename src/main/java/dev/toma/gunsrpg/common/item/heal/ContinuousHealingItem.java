@@ -4,7 +4,7 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.InfiniteAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.CPacketAnimation;
+import dev.toma.gunsrpg.network.packet.S2C_AnimationPacket;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.IAnimation;
 import lib.toma.animations.api.IAnimationPipeline;
@@ -51,7 +51,7 @@ public class ContinuousHealingItem extends AbstractHealItem<PlayerEntity> {
             applyAction(player);
             stack.hurtAndBreak(1, player, user -> {
                 user.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
-                NetworkManager.sendClientPacket(user, new CPacketAnimation(CPacketAnimation.Action.STOP, ModAnimations.HEAL));
+                NetworkManager.sendClientPacket(user, new S2C_AnimationPacket(S2C_AnimationPacket.Action.STOP, ModAnimations.HEAL));
             });
         }
     }

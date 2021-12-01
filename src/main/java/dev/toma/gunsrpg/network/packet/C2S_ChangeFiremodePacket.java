@@ -12,11 +12,11 @@ import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SPacketChangeFiremode extends AbstractHandlePacket<SPacketChangeFiremode> {
+public class C2S_ChangeFiremodePacket extends AbstractHandlePacket<C2S_ChangeFiremodePacket> {
 
     @Override
-    public SPacketChangeFiremode thisPacket() {
-        return new SPacketChangeFiremode();
+    public C2S_ChangeFiremodePacket thisPacket() {
+        return new C2S_ChangeFiremodePacket();
     }
 
     @Override
@@ -28,7 +28,7 @@ public class SPacketChangeFiremode extends AbstractHandlePacket<SPacketChangeFir
             if (gun.switchFiremode(stack, player)) {
                 Firemode currentMode = gun.getFiremode(stack);
                 player.sendMessage(new StringTextComponent("Firemode: " + currentMode.getName()), ChatType.GAME_INFO, Util.NIL_UUID);
-                NetworkManager.sendClientPacket(player, new CPacketAnimation(CPacketAnimation.Action.PLAY, ModAnimations.FIREMODE));
+                NetworkManager.sendClientPacket(player, new S2C_AnimationPacket(S2C_AnimationPacket.Action.PLAY, ModAnimations.FIREMODE));
             }
         }
     }

@@ -12,15 +12,15 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CPacketNewSkills extends AbstractNetworkPacket<CPacketNewSkills> {
+public class S2C_NewSkillsPacket extends AbstractNetworkPacket<S2C_NewSkillsPacket> {
 
     private final List<SkillType<?>> unlocked;
 
-    public CPacketNewSkills() {
+    public S2C_NewSkillsPacket() {
         this(null);
     }
 
-    public CPacketNewSkills(List<SkillType<?>> list) {
+    public S2C_NewSkillsPacket(List<SkillType<?>> list) {
         unlocked = list;
     }
 
@@ -33,7 +33,7 @@ public class CPacketNewSkills extends AbstractNetworkPacket<CPacketNewSkills> {
     }
 
     @Override
-    public CPacketNewSkills decode(PacketBuffer buffer) {
+    public S2C_NewSkillsPacket decode(PacketBuffer buffer) {
         List<SkillType<?>> unlocked = new ArrayList<>();
         int n = buffer.readVarInt();
         for (int i = 0; i < n; i++) {
@@ -42,7 +42,7 @@ public class CPacketNewSkills extends AbstractNetworkPacket<CPacketNewSkills> {
             if (type != null)
                 unlocked.add(type);
         }
-        return new CPacketNewSkills(unlocked);
+        return new S2C_NewSkillsPacket(unlocked);
     }
 
     @OnlyIn(Dist.CLIENT)

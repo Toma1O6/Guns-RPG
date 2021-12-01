@@ -8,14 +8,14 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SPacketSetAiming extends AbstractNetworkPacket<SPacketSetAiming> {
+public class C2S_SetAimingPacket extends AbstractNetworkPacket<C2S_SetAimingPacket> {
 
     private boolean aim;
 
-    public SPacketSetAiming() {
+    public C2S_SetAimingPacket() {
     }
 
-    public SPacketSetAiming(boolean aim) {
+    public C2S_SetAimingPacket(boolean aim) {
         this.aim = aim;
     }
 
@@ -25,8 +25,8 @@ public class SPacketSetAiming extends AbstractNetworkPacket<SPacketSetAiming> {
     }
 
     @Override
-    public SPacketSetAiming decode(PacketBuffer buf) {
-        return new SPacketSetAiming(buf.readBoolean());
+    public C2S_SetAimingPacket decode(PacketBuffer buf) {
+        return new C2S_SetAimingPacket(buf.readBoolean());
     }
 
     @Override

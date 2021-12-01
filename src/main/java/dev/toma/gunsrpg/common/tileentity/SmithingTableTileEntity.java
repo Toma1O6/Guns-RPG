@@ -3,7 +3,7 @@ package dev.toma.gunsrpg.common.tileentity;
 import dev.toma.gunsrpg.common.entity.ISynchronizable;
 import dev.toma.gunsrpg.common.init.ModBlockEntities;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.CPacketSynchTile;
+import dev.toma.gunsrpg.network.packet.S2C_SynchBlockEntityPacket;
 import dev.toma.gunsrpg.util.recipes.smithing.SmithingRecipe;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.tileentity.TileEntityType;
@@ -60,7 +60,7 @@ public class SmithingTableTileEntity extends VanillaInventoryTileEntity implemen
                 gridChanged.onChange(optional.orElse(null));
             }
         } else {
-            NetworkManager.sendWorldPacket(level, new CPacketSynchTile(worldPosition));
+            NetworkManager.sendWorldPacket(level, new S2C_SynchBlockEntityPacket(worldPosition));
         }
     }
 

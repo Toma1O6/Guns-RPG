@@ -8,7 +8,7 @@ import dev.toma.gunsrpg.common.entity.FlareEntity;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.SPacketSkillClicked;
+import dev.toma.gunsrpg.network.packet.C2S_SkillClickedPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
@@ -34,7 +34,7 @@ public class GodHelpUsSkill extends BasicSkill implements ICooldown, IClickableS
 
     @Override
     public void clientHandleClicked() {
-        NetworkManager.sendServerPacket(new SPacketSkillClicked(this.getType()));
+        NetworkManager.sendServerPacket(new C2S_SkillClickedPacket(this.getType()));
     }
 
     @Override

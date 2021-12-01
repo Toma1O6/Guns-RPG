@@ -11,14 +11,14 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.UUID;
 
-public class SPacketRequestDataUpdate extends AbstractNetworkPacket<SPacketRequestDataUpdate> {
+public class C2S_RequestDataUpdatePacket extends AbstractNetworkPacket<C2S_RequestDataUpdatePacket> {
 
     private UUID uuid;
 
-    public SPacketRequestDataUpdate() {
+    public C2S_RequestDataUpdatePacket() {
     }
 
-    public SPacketRequestDataUpdate(UUID uuid) {
+    public C2S_RequestDataUpdatePacket(UUID uuid) {
         this.uuid = uuid;
     }
 
@@ -28,8 +28,8 @@ public class SPacketRequestDataUpdate extends AbstractNetworkPacket<SPacketReque
     }
 
     @Override
-    public SPacketRequestDataUpdate decode(PacketBuffer buffer) {
-        return new SPacketRequestDataUpdate(buffer.readUUID());
+    public C2S_RequestDataUpdatePacket decode(PacketBuffer buffer) {
+        return new C2S_RequestDataUpdatePacket(buffer.readUUID());
     }
 
     @Override
@@ -37,7 +37,7 @@ public class SPacketRequestDataUpdate extends AbstractNetworkPacket<SPacketReque
         ServerPlayerEntity player = context.getSender();
         PlayerData.get(player).ifPresent(playerData -> {
             CompoundNBT nbt = playerData.toNbt(DataFlags.WILDCARD);
-            NetworkManager.sendClientPacket(player, new CPacketUpdateCap(uuid, nbt, DataFlags.WILDCARD));
+            NetworkManager.sendClientPacket(player, new S2C_UpdateCapabilityPacket(uuid, nbt, DataFlags.WILDCARD));
         });
     }
 }

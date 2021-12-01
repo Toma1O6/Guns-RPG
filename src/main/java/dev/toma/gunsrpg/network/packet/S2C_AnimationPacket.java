@@ -12,15 +12,15 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.BiConsumer;
 
-public class CPacketAnimation extends AbstractNetworkPacket<CPacketAnimation> {
+public class S2C_AnimationPacket extends AbstractNetworkPacket<S2C_AnimationPacket> {
 
     private Action action;
     private AnimationType<?> type;
 
-    public CPacketAnimation() {
+    public S2C_AnimationPacket() {
     }
 
-    public CPacketAnimation(Action action, AnimationType<?> type) {
+    public S2C_AnimationPacket(Action action, AnimationType<?> type) {
         this.action = action;
         this.type = type;
         if (action.requiresInstanceFactory() && !type.hasCreator()) {
@@ -35,8 +35,8 @@ public class CPacketAnimation extends AbstractNetworkPacket<CPacketAnimation> {
     }
 
     @Override
-    public CPacketAnimation decode(PacketBuffer buffer) {
-        return new CPacketAnimation(buffer.readEnum(Action.class), AnimationUtils.decodeAnimationType(buffer));
+    public S2C_AnimationPacket decode(PacketBuffer buffer) {
+        return new S2C_AnimationPacket(buffer.readEnum(Action.class), AnimationUtils.decodeAnimationType(buffer));
     }
 
     @OnlyIn(Dist.CLIENT)

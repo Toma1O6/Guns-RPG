@@ -10,7 +10,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.MaterialContainer;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.SPacketSelectAmmo;
+import dev.toma.gunsrpg.network.packet.C2S_SelectAmmoPacket;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.RenderUtils;
@@ -132,7 +132,7 @@ public class ChooseAmmoScreen extends Screen {
 
         @Override
         public void onClick(double p_230982_1_, double p_230982_3_) {
-            NetworkManager.sendServerPacket(new SPacketSelectAmmo(ammo.getMaterial()));
+            NetworkManager.sendServerPacket(new C2S_SelectAmmoPacket(ammo.getMaterial()));
         }
     }
 }

@@ -49,20 +49,20 @@ public class NetworkManager {
 
     public static void init() {
         // client packets
-        registerNetworkPacket(CPacketUpdateCap.class);
-        registerNetworkPacket(CPacketAnimation.class);
-        registerNetworkPacket(CPacketNewSkills.class);
-        registerNetworkPacket(CPacketSynchTile.class);
+        registerNetworkPacket(S2C_UpdateCapabilityPacket.class);
+        registerNetworkPacket(S2C_AnimationPacket.class);
+        registerNetworkPacket(S2C_NewSkillsPacket.class);
+        registerNetworkPacket(S2C_SynchBlockEntityPacket.class);
         // server packets
-        registerNetworkPacket(SPacketShoot.class);
-        registerNetworkPacket(SPacketRequestDataUpdate.class);
-        registerNetworkPacket(SPacketSelectAmmo.class);
-        registerNetworkPacket(SPacketSetAiming.class);
-        registerNetworkPacket(SPacketSetReloading.class);
-        registerNetworkPacket(SPacketChangeFiremode.class);
-        registerNetworkPacket(SPacketUnlockSkill.class);
-        registerNetworkPacket(SPacketRequestSmithingCraft.class);
-        registerNetworkPacket(SPacketSkillClicked.class);
+        registerNetworkPacket(C2S_ShootPacket.class);
+        registerNetworkPacket(C2S_RequestDataUpdatePacket.class);
+        registerNetworkPacket(C2S_SelectAmmoPacket.class);
+        registerNetworkPacket(C2S_SetAimingPacket.class);
+        registerNetworkPacket(C2S_SetReloadingPacket.class);
+        registerNetworkPacket(C2S_ChangeFiremodePacket.class);
+        registerNetworkPacket(C2S_UnlockSkillPacket.class);
+        registerNetworkPacket(C2S_RequestSmithingCraftPacket.class);
+        registerNetworkPacket(C2S_SkillClickedPacket.class);
     }
 
     private static <P extends INetworkPacket<P>> void registerNetworkPacket(Class<P> packetType) {

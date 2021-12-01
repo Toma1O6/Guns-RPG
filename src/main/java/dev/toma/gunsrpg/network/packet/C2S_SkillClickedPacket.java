@@ -11,14 +11,14 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SPacketSkillClicked extends AbstractNetworkPacket<SPacketSkillClicked> {
+public class C2S_SkillClickedPacket extends AbstractNetworkPacket<C2S_SkillClickedPacket> {
 
     private SkillType<?> type;
 
-    public SPacketSkillClicked() {
+    public C2S_SkillClickedPacket() {
     }
 
-    public SPacketSkillClicked(SkillType<?> type) {
+    public C2S_SkillClickedPacket(SkillType<?> type) {
         this.type = type;
     }
 
@@ -28,8 +28,8 @@ public class SPacketSkillClicked extends AbstractNetworkPacket<SPacketSkillClick
     }
 
     @Override
-    public SPacketSkillClicked decode(PacketBuffer buffer) {
-        return new SPacketSkillClicked(ModRegistries.SKILLS.getValue(buffer.readResourceLocation()));
+    public C2S_SkillClickedPacket decode(PacketBuffer buffer) {
+        return new C2S_SkillClickedPacket(ModRegistries.SKILLS.getValue(buffer.readResourceLocation()));
     }
 
     @Override

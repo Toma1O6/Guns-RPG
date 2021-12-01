@@ -17,7 +17,7 @@ import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
+import dev.toma.gunsrpg.network.packet.C2S_SetAimingPacket;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.client.Minecraft;
@@ -146,7 +146,7 @@ public class Kar98kItem extends GunItem {
     @Override
     public void onShoot(PlayerEntity player, ItemStack stack) {
         //ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltKar98k(this.getFirerate(player)));
-        NetworkManager.sendServerPacket(new SPacketSetAiming(false));
+        NetworkManager.sendServerPacket(new C2S_SetAimingPacket(false));
         ClientSideManager.instance().playDelayedSound(player.blockPosition(), 1.0F, 1.0F, ModSounds.KAR98K_BOLT, SoundCategory.MASTER, 15);
     }
 

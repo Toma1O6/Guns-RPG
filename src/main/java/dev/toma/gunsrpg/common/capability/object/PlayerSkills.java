@@ -12,7 +12,7 @@ import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.criteria.GunCriteria;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.CPacketNewSkills;
+import dev.toma.gunsrpg.network.packet.S2C_NewSkillsPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -80,7 +80,7 @@ public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEn
         int count = newlyAvailableList.size();
         if (count > 0) {
             player.sendMessage(new StringTextComponent(String.format(TextFormatting.YELLOW + "New skills available: %d", count)), Util.NIL_UUID);
-            NetworkManager.sendClientPacket((ServerPlayerEntity) player, new CPacketNewSkills(newlyAvailableList));
+            NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_NewSkillsPacket(newlyAvailableList));
         }
         if (!player.level.isClientSide()) {
             ((ServerPlayerEntity) player).connection.send(new SPlaySoundEffectPacket(SoundEvents.PLAYER_LEVELUP, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 0.75F, 1.0F));

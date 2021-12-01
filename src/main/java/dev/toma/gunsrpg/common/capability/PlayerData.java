@@ -6,7 +6,7 @@ import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.object.*;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.CPacketUpdateCap;
+import dev.toma.gunsrpg.network.packet.S2C_UpdateCapabilityPacket;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.IEventHandler;
 import net.minecraft.entity.player.PlayerEntity;
@@ -108,7 +108,7 @@ public class PlayerData implements IPlayerData {
             ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
             if (serverPlayer.connection == null)
                 return;
-            NetworkManager.sendClientPacket(serverPlayer, new CPacketUpdateCap(player.getUUID(), toNbt(flags), flags));
+            NetworkManager.sendClientPacket(serverPlayer, new S2C_UpdateCapabilityPacket(player.getUUID(), toNbt(flags), flags));
         }
     }
 

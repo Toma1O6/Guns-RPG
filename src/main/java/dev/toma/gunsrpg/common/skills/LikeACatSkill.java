@@ -7,7 +7,7 @@ import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.SPacketSkillClicked;
+import dev.toma.gunsrpg.network.packet.C2S_SkillClickedPacket;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -69,7 +69,7 @@ public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSk
 
     @Override
     public void clientHandleClicked() {
-        NetworkManager.sendServerPacket(new SPacketSkillClicked(this.getType()));
+        NetworkManager.sendServerPacket(new C2S_SkillClickedPacket(this.getType()));
     }
 
     @Override

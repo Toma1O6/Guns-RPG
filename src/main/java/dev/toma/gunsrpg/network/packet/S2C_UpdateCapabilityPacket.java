@@ -12,17 +12,17 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.UUID;
 
-public class CPacketUpdateCap extends AbstractNetworkPacket<CPacketUpdateCap> {
+public class S2C_UpdateCapabilityPacket extends AbstractNetworkPacket<S2C_UpdateCapabilityPacket> {
 
     private final UUID uuid;
     private final CompoundNBT nbt;
     private final int flags;
 
-    public CPacketUpdateCap() {
+    public S2C_UpdateCapabilityPacket() {
         this(null, null, -1);
     }
 
-    public CPacketUpdateCap(UUID uuid, CompoundNBT nbt, int flags) {
+    public S2C_UpdateCapabilityPacket(UUID uuid, CompoundNBT nbt, int flags) {
         this.uuid = uuid;
         this.nbt = nbt;
         this.flags = flags;
@@ -36,8 +36,8 @@ public class CPacketUpdateCap extends AbstractNetworkPacket<CPacketUpdateCap> {
     }
 
     @Override
-    public CPacketUpdateCap decode(PacketBuffer buffer) {
-        return new CPacketUpdateCap(buffer.readUUID(), buffer.readNbt(), buffer.readInt());
+    public S2C_UpdateCapabilityPacket decode(PacketBuffer buffer) {
+        return new S2C_UpdateCapabilityPacket(buffer.readUUID(), buffer.readNbt(), buffer.readInt());
     }
 
     @OnlyIn(Dist.CLIENT)

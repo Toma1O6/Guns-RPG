@@ -16,14 +16,14 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SPacketSelectAmmo extends AbstractNetworkPacket<SPacketSelectAmmo> {
+public class C2S_SelectAmmoPacket extends AbstractNetworkPacket<C2S_SelectAmmoPacket> {
 
     private IAmmoMaterial material;
 
-    public SPacketSelectAmmo() {
+    public C2S_SelectAmmoPacket() {
     }
 
-    public SPacketSelectAmmo(IAmmoMaterial material) {
+    public C2S_SelectAmmoPacket(IAmmoMaterial material) {
         this.material = material;
     }
 
@@ -33,9 +33,9 @@ public class SPacketSelectAmmo extends AbstractNetworkPacket<SPacketSelectAmmo> 
     }
 
     @Override
-    public SPacketSelectAmmo decode(PacketBuffer buffer) {
+    public C2S_SelectAmmoPacket decode(PacketBuffer buffer) {
         IAmmoMaterial material = AmmoMaterialManager.get().findMaterial(buffer.readResourceLocation());
-        return new SPacketSelectAmmo(material);
+        return new C2S_SelectAmmoPacket(material);
     }
 
     @Override

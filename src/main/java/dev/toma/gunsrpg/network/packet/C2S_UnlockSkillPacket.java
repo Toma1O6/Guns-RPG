@@ -12,20 +12,20 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SPacketUnlockSkill extends AbstractNetworkPacket<SPacketUnlockSkill> {
+public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkillPacket> {
 
     private boolean hasParent;
     private SkillType<?> clicked;
     private SkillType<?> parent;
 
-    public SPacketUnlockSkill() {
+    public C2S_UnlockSkillPacket() {
     }
 
-    public SPacketUnlockSkill(SkillType<?> clicked) {
+    public C2S_UnlockSkillPacket(SkillType<?> clicked) {
         this(clicked, null);
     }
 
-    public SPacketUnlockSkill(SkillType<?> clicked, SkillType<?> parent) {
+    public C2S_UnlockSkillPacket(SkillType<?> clicked, SkillType<?> parent) {
         this.clicked = clicked;
         this.parent = parent;
         this.hasParent = parent != null;
@@ -40,11 +40,11 @@ public class SPacketUnlockSkill extends AbstractNetworkPacket<SPacketUnlockSkill
     }
 
     @Override
-    public SPacketUnlockSkill decode(PacketBuffer buffer) {
+    public C2S_UnlockSkillPacket decode(PacketBuffer buffer) {
         boolean hasParent = buffer.readBoolean();
         SkillType<?> clicked = ModRegistries.SKILLS.getValue(buffer.readResourceLocation());
         SkillType<?> parent = hasParent ? ModRegistries.SKILLS.getValue(buffer.readResourceLocation()) : null;
-        return new SPacketUnlockSkill(clicked, parent);
+        return new C2S_UnlockSkillPacket(clicked, parent);
     }
 
     @Override

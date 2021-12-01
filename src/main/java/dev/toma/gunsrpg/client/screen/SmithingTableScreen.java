@@ -5,7 +5,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.container.SmithingTableContainer;
 import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.SPacketRequestSmithingCraft;
+import dev.toma.gunsrpg.network.packet.C2S_RequestSmithingCraftPacket;
 import dev.toma.gunsrpg.util.recipes.smithing.ICraftingCondition;
 import dev.toma.gunsrpg.util.recipes.smithing.SmithingRecipe;
 import net.minecraft.client.gui.screen.Screen;
@@ -88,7 +88,7 @@ public class SmithingTableScreen extends ContainerScreen<SmithingTableContainer>
 
     private void buttonCraft_Clicked(Button button) {
         boolean shiftKey = Screen.hasShiftDown();
-        NetworkManager.sendServerPacket(new SPacketRequestSmithingCraft(smithingTable.getBlockPos(), shiftKey));
+        NetworkManager.sendServerPacket(new C2S_RequestSmithingCraftPacket(smithingTable.getBlockPos(), shiftKey));
     }
 
     private void onRecipeChanged(SmithingRecipe recipe) {

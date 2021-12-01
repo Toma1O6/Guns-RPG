@@ -9,15 +9,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SPacketSetReloading extends AbstractNetworkPacket<SPacketSetReloading> {
+public class C2S_SetReloadingPacket extends AbstractNetworkPacket<C2S_SetReloadingPacket> {
 
     boolean reloading;
     int time;
 
-    public SPacketSetReloading() {
+    public C2S_SetReloadingPacket() {
     }
 
-    public SPacketSetReloading(boolean reload, int time) {
+    public C2S_SetReloadingPacket(boolean reload, int time) {
         this.reloading = reload;
         this.time = time;
     }
@@ -29,8 +29,8 @@ public class SPacketSetReloading extends AbstractNetworkPacket<SPacketSetReloadi
     }
 
     @Override
-    public SPacketSetReloading decode(PacketBuffer buffer) {
-        return new SPacketSetReloading(buffer.readBoolean(), buffer.readInt());
+    public C2S_SetReloadingPacket decode(PacketBuffer buffer) {
+        return new C2S_SetReloadingPacket(buffer.readBoolean(), buffer.readInt());
     }
 
     @Override

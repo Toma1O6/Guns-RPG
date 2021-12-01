@@ -21,7 +21,7 @@ import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.SPacketSetAiming;
+import dev.toma.gunsrpg.network.packet.C2S_SetAimingPacket;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.RenderUtils;
@@ -260,7 +260,7 @@ public class ClientEventHandler {
         } else {
             ShootingManager.Client.loadSettings(settings);
         }
-        NetworkManager.sendServerPacket(new SPacketSetAiming(!aim));
+        NetworkManager.sendServerPacket(new C2S_SetAimingPacket(!aim));
     }
 
     private static void dispatchSprintAnimation(boolean isSprinting, PlayerEntity player) {

@@ -15,16 +15,16 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.Optional;
 
-public class SPacketRequestSmithingCraft extends AbstractNetworkPacket<SPacketRequestSmithingCraft> {
+public class C2S_RequestSmithingCraftPacket extends AbstractNetworkPacket<C2S_RequestSmithingCraftPacket> {
 
     private final BlockPos pos;
     private final boolean shiftKey;
 
-    public SPacketRequestSmithingCraft() {
+    public C2S_RequestSmithingCraftPacket() {
         this(null, false);
     }
 
-    public SPacketRequestSmithingCraft(BlockPos pos, boolean shiftKey) {
+    public C2S_RequestSmithingCraftPacket(BlockPos pos, boolean shiftKey) {
         this.pos = pos;
         this.shiftKey = shiftKey;
     }
@@ -36,8 +36,8 @@ public class SPacketRequestSmithingCraft extends AbstractNetworkPacket<SPacketRe
     }
 
     @Override
-    public SPacketRequestSmithingCraft decode(PacketBuffer buffer) {
-        return new SPacketRequestSmithingCraft(buffer.readBlockPos(), buffer.readBoolean());
+    public C2S_RequestSmithingCraftPacket decode(PacketBuffer buffer) {
+        return new C2S_RequestSmithingCraftPacket(buffer.readBlockPos(), buffer.readBoolean());
     }
 
     @Override

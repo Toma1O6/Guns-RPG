@@ -2,19 +2,17 @@ package dev.toma.gunsrpg.util.object;
 
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.data.*;
-import dev.toma.gunsrpg.client.ClientEventHandler;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.animation.RecoilAnimation;
 import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.MaterialContainer;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.SPacketSetReloading;
-import dev.toma.gunsrpg.network.packet.SPacketShoot;
+import dev.toma.gunsrpg.network.packet.C2S_SetReloadingPacket;
+import dev.toma.gunsrpg.network.packet.C2S_ShootPacket;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.IAnimationPipeline;
 import net.minecraft.client.GameSettings;
@@ -40,7 +38,7 @@ public class ShootingManager {
             if (reloadInfo.isReloading()) {
                 reloadInfo.enqueueCancel();
                 if (player.level.isClientSide) {
-                    NetworkManager.sendServerPacket(new SPacketSetReloading(false, 0));
+                    NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(false, 0));
                 }
                 return false;
             }
@@ -79,7 +77,7 @@ public class ShootingManager {
                 yRot = -yRot;
             player.xRot -= xRot;
             player.yRot -= yRot;
-            NetworkManager.sendServerPacket(new SPacketShoot());
+            NetworkManager.sendServerPacket(new C2S_ShootPacket());
             gun.onShoot(player, stack);
             shootingDelay = gun.getFirerate(provider);
             float recoilAnimationShakeScale = ModConfig.clientConfig.recoilAnimationScale.floatValue();
