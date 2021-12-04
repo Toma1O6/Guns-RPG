@@ -1,7 +1,7 @@
 package lib.toma.animations.engine.screen.animator;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lib.toma.animations.Easing;
+import lib.toma.animations.IEasing;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.IKeyframeProvider;
@@ -245,9 +245,9 @@ public class AnimatorScreen extends Screen {
         minecraft.setScreen(screen);
     }
 
-    private void onEasingChanged(Easing easing) {
+    private void onEasingChanged(IEasing easing) {
         selectionContext.frame().setEasing(easing);
-        this.easing.setMessage(new StringTextComponent(easing.getShortName()));
+        this.easing.setMessage(new StringTextComponent(easing.getEasingName()));
     }
 
     private boolean tryValidate(String value, Pattern pattern, TextFieldWidget widget) {
@@ -391,7 +391,7 @@ public class AnimatorScreen extends Screen {
             rotY.setValue(TRANSFORM_FORMAT.format(rotation.y()));
             rotZ.setValue(TRANSFORM_FORMAT.format(rotation.z()));
             end.setValue(POSITION_FORMAT.format(frame.endpoint()));
-            easing.setMessage(new StringTextComponent(frame.getEasing().getShortName()));
+            easing.setMessage(new StringTextComponent(frame.getEasing().getEasingName()));
         }
     }
 

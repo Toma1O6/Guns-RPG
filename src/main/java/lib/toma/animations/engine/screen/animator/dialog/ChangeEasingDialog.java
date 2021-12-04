@@ -1,18 +1,20 @@
 package lib.toma.animations.engine.screen.animator.dialog;
 
-import lib.toma.animations.Easing;
+import lib.toma.animations.EasingRegistry;
+import lib.toma.animations.IEasing;
 import lib.toma.animations.engine.screen.animator.AnimatorScreen;
 import lib.toma.animations.engine.screen.animator.widget.ListView;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class ChangeEasingDialog extends DialogScreen {
 
     private final IEasingSelected easingSelected;
-    private Easing easing;
+    private IEasing easing;
 
     public ChangeEasingDialog(AnimatorScreen screen, IEasingSelected easingSelected) {
         super(new TranslationTextComponent("screen.animator.dialog.change_easing"), screen);
@@ -25,9 +27,10 @@ public class ChangeEasingDialog extends DialogScreen {
     protected void init() {
         super.init();
 
-        ListView<Easing> easingListView = addButton(new ListView<>(left() + 5, top() + 15, dWidth() - 10, 135, Arrays.asList(Easing.values())));
+        Collection<IEasing> easings = EasingRegistry.getRegistry().getRegisteredEasings();
+        ListView<IEasing> easingListView = addButton(new ListView<>(left() + 5, top() + 15, dWidth() - 10, 135, new ArrayList<>(easings)));
         easingListView.setResponder(this::easingSelected);
-        easingListView.setFormatter(e -> e.getDisplayComponent().getString());
+        easingListView.setFormatter(e -> e.getDisplayText().getString());
 
         int totalWidth = dWidth() - 10;
         int buttonWidth = (totalWidth - 5) / 2;
@@ -37,7 +40,7 @@ public class ChangeEasingDialog extends DialogScreen {
         updateConfirmButton();
     }
 
-    private void easingSelected(@Nullable Easing easing) {
+    private void easingSelected(@Nullable IEasing easing) {
         this.easing = easing;
         updateConfirmButton();
     }
@@ -53,6 +56,6 @@ public class ChangeEasingDialog extends DialogScreen {
 
     @FunctionalInterface
     public interface IEasingSelected {
-        void onEasingConfirmSelect(Easing easing);
+        void onEasingConfirmSelect(IEasing easing);
     }
 }

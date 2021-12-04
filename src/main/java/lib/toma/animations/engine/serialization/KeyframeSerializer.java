@@ -2,7 +2,8 @@ package lib.toma.animations.engine.serialization;
 
 import com.google.gson.*;
 import lib.toma.animations.AnimationUtils;
-import lib.toma.animations.Easing;
+import lib.toma.animations.EasingRegistry;
+import lib.toma.animations.IEasing;
 import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.IKeyframe;
 import net.minecraft.util.JSONUtils;
@@ -19,7 +20,7 @@ public class KeyframeSerializer implements JsonSerializer<IKeyframe>, JsonDeseri
         Vector3d pos = src.positionTarget();
         Vector3d rotation = src.rotationTarget();
         object.addProperty("e", endpoint);
-        object.addProperty("ease", src.getEasing().ordinal());
+        object.addProperty("ease", src.getEasing().getEasingId());
         if (!pos.equals(Vector3d.ZERO)) {
             object.add("pos", context.serialize(pos, Vector3d.class));
         }
@@ -35,7 +36,9 @@ public class KeyframeSerializer implements JsonSerializer<IKeyframe>, JsonDeseri
             throw new JsonSyntaxException("Not a Json object!");
         JsonObject object = json.getAsJsonObject();
         float endpoint = JSONUtils.getAsFloat(object, "e");
-        Easing easing = Easing.values()[JSONUtils.getAsInt(object, "ease", AnimationUtils.DEFAULT_EASING.ordinal()) % Easing.values().length];
+        EasingRegistry registry = EasingRegistry.getRegistry();
+        byte easingId = JSONUtils.getAsByte(object, "ease", AnimationUtils.DEFAULT_EASE_FUNC.getEasingId());
+        IEasing easing = registry.getEasing(easingId);
         boolean positioned = object.has("pos");
         boolean rotated = object.has("rot");
         if (!positioned && !rotated) {

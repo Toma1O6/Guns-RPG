@@ -1,6 +1,6 @@
 package lib.toma.animations.api;
 
-import lib.toma.animations.Easing;
+import lib.toma.animations.IEasing;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -71,7 +71,7 @@ public interface IKeyframe {
     /**
      * @return Easing function which should be used on this keyframe
      */
-    Easing getEasing();
+    IEasing getEasing();
 
     /**
      * Used to calculate initial position and rotation

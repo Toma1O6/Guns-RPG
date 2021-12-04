@@ -13,7 +13,7 @@ import java.util.Comparator;
 
 public class Keyframes {
 
-    private static final IKeyframe NULL_FRAME = wait(0.0F, AnimationUtils.DEFAULT_EASING);
+    private static final IKeyframe NULL_FRAME = wait(0.0F, AnimationUtils.DEFAULT_EASE_FUNC);
 
     public static void sortFrames(IKeyframe[] array) {
         QuickSort.sort(array, Comparator.comparingDouble(IKeyframe::endpoint));
@@ -66,15 +66,15 @@ public class Keyframes {
         return NULL_FRAME;
     }
 
-    public static IKeyframe wait(float endpoint, Easing easing) {
+    public static IKeyframe wait(float endpoint, IEasing easing) {
         return EmptyKeyframe.wait(endpoint, easing);
     }
 
-    public static IKeyframe position(Vector3d position, Easing easing, float endpoint) {
+    public static IKeyframe position(Vector3d position, IEasing easing, float endpoint) {
         return PositionKeyframe.positioned(position, easing, endpoint);
     }
 
-    public static IKeyframe keyframe(Vector3d position, Vector3d rotation, Easing easing, float endpoint) {
+    public static IKeyframe keyframe(Vector3d position, Vector3d rotation, IEasing easing, float endpoint) {
         return Keyframe.of(position, rotation, easing, endpoint);
     }
 

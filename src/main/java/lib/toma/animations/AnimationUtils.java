@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 public class AnimationUtils {
 
-    public static final Easing DEFAULT_EASING = Easing.EASE_IN_OUT_SINE;
+    public static final IEasing DEFAULT_EASE_FUNC = Easings.EASE_IN_OUT_SINE;
 
     public static <A extends IAnimation> A createAnimation(ResourceLocation providerPath, Function<IKeyframeProvider, A> creatorFunction) {
         AnimationEngine engine = AnimationEngine.get();

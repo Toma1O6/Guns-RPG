@@ -1,6 +1,6 @@
 package lib.toma.animations.engine.screen.animator.dialog;
 
-import lib.toma.animations.Easing;
+import lib.toma.animations.IEasing;
 import lib.toma.animations.engine.screen.animator.AnimationProject;
 import lib.toma.animations.engine.screen.animator.Animator;
 import lib.toma.animations.engine.screen.animator.AnimatorScreen;
@@ -36,7 +36,7 @@ public class SettingsDialog extends DialogScreen {
         cycleField = addButton(new TextFieldWidget(font, left() + 5, top() + 30, dWidth() - 10, 20, StringTextComponent.EMPTY));
         cycleField.setResponder(new SuggestionResponder("Ticks", cycleField, this::cycleField_changed));
         cycleField.setValue(String.valueOf(controller.getAnimationTime()));
-        easingButton = addButton(new Button(left() + 5, top() + 55, dWidth() - 10, 20, controller.getEasing().getDisplayComponent(), this::setDefaultEasing_Clicked));
+        easingButton = addButton(new Button(left() + 5, top() + 55, dWidth() - 10, 20, controller.getEasing().getDisplayText(), this::setDefaultEasing_Clicked));
         onRepeat = addButton(new CheckboxButton(left() + 5, top() + 80, dWidth() - 10, 20, new StringTextComponent("On repeat"), controller.isOnRepeat()));
 
         int btnWidthP = dWidth() - 10;
@@ -71,11 +71,11 @@ public class SettingsDialog extends DialogScreen {
         minecraft.setScreen(screen);
     }
 
-    private void onEasingSelected(Easing easing) {
+    private void onEasingSelected(IEasing easing) {
         AnimationProject project = Animator.get().getProject();
         AnimationProject.AnimationController controller = project.getAnimationControl();
         controller.setEasing(easing);
-        easingButton.setMessage(easing.getDisplayComponent());
+        easingButton.setMessage(easing.getDisplayText());
     }
 
     private void updateConfirmState() {

@@ -7,7 +7,13 @@ import net.minecraft.util.text.TextFormatting;
 
 import java.util.Locale;
 
-public enum Easing {
+/**
+ * List of all easing functions
+ *
+ * @author Toma
+ * @see <a href="https://easings.net/">Easing functions are implemented according to this website</a>
+ */
+public enum Easings implements IEasing {
 
     LINEAR(x -> x, "LIN"),
 
@@ -30,18 +36,45 @@ public enum Easing {
     EASE_IN_OUT_QUINT(x -> x < 0.5F ? 16.0F * x * x * x * x * x : 1.0F - (float) Math.pow(-2.0F * x + 2.0F, 5) / 2.0F, "INOUT QUINT"),
     EASE_IN_OUT_QUAD(x -> x < 0.5F ? 2.0F * x * x : 1.0F - (float) Math.pow(-2.0F * x + 2.0F, 2.0F) / 2.0F, "INOUT QUAD"),
     EASE_IN_OUT_QUART(x -> x < 0.5F ? 8.0F * x * x * x * x : 1.0F - (float) Math.pow(-2.0F * x + 2.0F, 4.0F) / 2.0F, "INOUT QUART"),
-    EASE_IN_OUT_EXP(x -> x == 0.0F ? 0.0F : x == 1.0F ? 1.0F : x < 0.5F ? (float) Math.pow(2.0F, 20.0F * x - 10.0F) / 2.0F : (2.0F - (float) Math.pow(2.0F, -20.0F * x + 10.0F)) / 2.0F, "INOUT EXP");
+    EASE_IN_OUT_EXP(x -> x == 0.0F ? 0.0F : x == 1.0F ? 1.0F : x < 0.5F ? (float) Math.pow(2.0F, 20.0F * x - 10.0F) / 2.0F : (2.0F - (float) Math.pow(2.0F, -20.0F * x + 10.0F)) / 2.0F, "INOUT EXP"),
+
+    JUMP_START(x -> x > 0.0F ? 1.0F : 0.0F, "JUMP START"),
+    JUMP_MIDDLE(x -> x > 0.5F ? 1.0F : 0.0F, "JUMP MIDDLE"),
+    JUMP_END(x -> x == 1.0F ? 1.0F : 0.0F, "JUMP END");
 
     private final IEasingFunction function;
     private final String shortName;
     private ITextComponent displayComponent;
 
-    Easing(IEasingFunction function, String shortName) {
+    Easings(IEasingFunction function, String shortName) {
         this.function = function;
         this.shortName = shortName;
+
+        EasingRegistry.getRegistry().register(this, (byte) ordinal());
     }
 
-    public ITextComponent getDisplayComponent() {
+    @Override
+    public float ease(float in) {
+        return function.ease(in);
+    }
+
+    @Override
+    public byte getEasingId() {
+        return (byte) ordinal();
+    }
+
+    @Override
+    public void setEasingId(byte id) {
+        throw new UnsupportedOperationException("Cannot set easing ID on enum type!");
+    }
+
+    @Override
+    public String getEasingName() {
+        return shortName;
+    }
+
+    @Override
+    public ITextComponent getDisplayText() {
         if (displayComponent == null) {
             TextFormatting color = getColor();
             String name = getFullDisplayName();
@@ -50,11 +83,7 @@ public enum Easing {
         return displayComponent;
     }
 
-    public String getShortName() {
-        return shortName;
-    }
-
-    public String getFullDisplayName() {
+    private String getFullDisplayName() {
         String lowercase = name().toLowerCase(Locale.ROOT);
         String[] words = lowercase.split("_");
         for (int i = 0; i < words.length; i++) {
@@ -63,10 +92,6 @@ public enum Easing {
             words[i] = formatted;
         }
         return String.join(" ", words);
-    }
-
-    public float ease(float x) {
-        return function.ease(x);
     }
 
     private static float piMulX(float x) {
