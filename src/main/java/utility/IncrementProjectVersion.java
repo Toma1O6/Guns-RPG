@@ -1,3 +1,5 @@
+package utility;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,7 +8,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class IncrementVersion {
+public class IncrementProjectVersion {
 
     private static final String[] VERSIONS = { "major", "minor", "patch", "build" };
 
@@ -15,9 +17,10 @@ public class IncrementVersion {
         if (args.length == 1) {
             input = args[0];
         } else {
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Version (" + String.join(".", VERSIONS) + ") [build]: ");
-            input = scanner.nextLine();
+            try (Scanner scanner = new Scanner(System.in)) {
+                System.out.print("Version (" + String.join(".", VERSIONS) + ") [build]: ");
+                input = scanner.nextLine();
+            }
         }
         int index = 0;
         boolean valid = false;
@@ -29,7 +32,8 @@ public class IncrementVersion {
             ++index;
         }
         if (!valid) {
-            throw new IllegalArgumentException("Unknown version " + input);
+            input = "build";
+            index = VERSIONS.length - 1;
         }
         System.out.println("\nIncreasing " + input + " version...");
         File file = new File("./build.gradle");
