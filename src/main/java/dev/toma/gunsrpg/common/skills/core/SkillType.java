@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
+// TODO major rework
 public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>> {
 
     public final int levelRequirement;
