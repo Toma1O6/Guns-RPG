@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.api.common.IUnlockCriteria;
 import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
+import dev.toma.gunsrpg.resource.skill.SkillPropertyLoader;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,10 +20,14 @@ import java.util.function.Supplier;
 // TODO major rework
 public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>> {
 
+    private int level;
+    public int price;
+    public SkillCategory category;
+    private SkillType<?>[] children;
+
+    // legacy
     public final int levelRequirement;
-    public final int price;
     public final ResourceLocation icon;
-    public final SkillCategory category;
     private final boolean enableCustomChildDisplay;
     private final IUnlockCriteria criteria;
     private final IFactory<S> instanceFactory;
@@ -54,6 +59,27 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
         this.enableCustomChildDisplay = builder.enableCustomChildDisplay;
         this.customRenderFactory = builder.customRenderFactory;
     }
+
+    public SkillType<?>[] getChildren() {
+        return children;
+    }
+
+    public SkillCategory getCategory() {
+        return category;
+    }
+
+    /**
+     * Called when data are loaded from datapack for this particular instance.
+     * @param props The loaded properties
+     */
+    public void onDataAssign(SkillPropertyLoader.Properties props) {
+        level = props.getLevel();
+        price = props.getPrice();
+        category = props.getCategory();
+        children = props.getChildren();
+    }
+
+    // LEGACY CODE -----------------------------------------------------------------------------------------------------
 
     public List<SkillType<?>> getChilds() {
         if (childList == null) {

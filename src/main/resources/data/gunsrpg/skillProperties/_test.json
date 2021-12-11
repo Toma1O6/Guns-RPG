@@ -1,0 +1,8 @@
+{
+    "level": 15,
+    "price": 2,
+    "category": "weapon",
+    "children": [
+        "gunsrpg:test_child"
+    ]
+}

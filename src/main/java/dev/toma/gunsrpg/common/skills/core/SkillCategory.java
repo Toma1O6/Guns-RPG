@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.skills.core;
 
+import java.util.Locale;
 import java.util.function.Supplier;
 
 public enum SkillCategory {
@@ -18,6 +19,11 @@ public enum SkillCategory {
 
     SkillCategory(Supplier<SkillCategory> parent) {
         this.parent = parent;
+    }
+
+    public static SkillCategory get(String key) {
+        String lookupKey = key.toUpperCase(Locale.ROOT);
+        return valueOf(lookupKey);
     }
 
     public SkillCategory getParent() {

@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.resource.gunner.ZombieGunnerWeaponManager;
+import dev.toma.gunsrpg.resource.skill.SkillPropertyLoader;
 import dev.toma.gunsrpg.resource.startgear.StartGearManager;
 import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
 import dev.toma.gunsrpg.util.recipes.smithing.SmithingRecipe;
@@ -107,5 +108,6 @@ public final class Lifecycle {
     private void onDatapackReload(AddReloadListenerEvent event) {
         event.addListener(startingGearManager);
         event.addListener(zombieGunnerWeaponManager);
+        event.addListener(new SkillPropertyLoader());
     }
 }
