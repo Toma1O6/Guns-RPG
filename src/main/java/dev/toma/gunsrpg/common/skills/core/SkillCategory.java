@@ -1,52 +1,29 @@
 package dev.toma.gunsrpg.common.skills.core;
 
-import java.util.Locale;
-import java.util.function.Supplier;
-
 public enum SkillCategory {
 
     RESISTANCE(),
     MINING(),
     SURVIVAL(),
     GUN(),
-    ATTACHMENT(() -> GUN);
+    ATTACHMENT(true);
 
-    private final Supplier<SkillCategory> parent;
+    private final boolean internal;
 
     SkillCategory() {
-        this(() -> null);
+        this(false);
     }
 
-    SkillCategory(Supplier<SkillCategory> parent) {
-        this.parent = parent;
+    SkillCategory(boolean internal) {
+        this.internal = internal;
+    }
+
+    public boolean isInternal() {
+        return internal;
     }
 
     public static SkillCategory get(String key) {
-        String lookupKey = key.toUpperCase(Locale.ROOT);
+        String lookupKey = key.toUpperCase();
         return valueOf(lookupKey);
-    }
-
-    public SkillCategory getParent() {
-        return parent.get();
-    }
-
-    @Deprecated
-    public static SkillCategory[] mainCategories() {
-        return values();
-    }
-
-    @Deprecated
-    public boolean isChild() {
-        return false;
-    }
-
-    @Deprecated
-    public boolean hasChild() {
-        return false;
-    }
-
-    @Deprecated
-    public SkillCategory getChild() {
-        return null;
     }
 }

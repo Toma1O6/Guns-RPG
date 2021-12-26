@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.client.model;
 
+import dev.toma.gunsrpg.client.model.component.*;
 import dev.toma.gunsrpg.client.model.weapon.*;
 import lib.toma.animations.api.AnimationStage;
 
@@ -36,6 +37,7 @@ public final class WeaponModels {
     public static final AbstractAttachmentModel SCOPE = new ScopeModel();
     public static final AbstractAttachmentModel SUPPRESSOR = new SuppressorModel();
     public static final AbstractAttachmentModel REFLEX = new ReflexSightModel();
+    public static final AbstractAttachmentModel PSO_SCOPE = new PSOScopeModel();
 
     public static Map<AbstractWeaponModel, Collection<AnimationStage>> getSupportedPartAnimations() {
         List<AbstractWeaponModel> list = Arrays.asList(

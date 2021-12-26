@@ -30,11 +30,13 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Locale;
+
 @Mod(GunsRPG.MODID)
 public class GunsRPG {
 
     public static final String MODID = "gunsrpg";
-    public static Logger log = LogManager.getLogger();
+    public static Logger log = LogManager.getLogger(MODID.toUpperCase());
     private static final Lifecycle modLifecycle = new Lifecycle();
 
     public GunsRPG() {

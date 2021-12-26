@@ -1,13 +1,15 @@
-package dev.toma.gunsrpg.client.model;
+package dev.toma.gunsrpg.client.model.component;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import dev.toma.gunsrpg.client.render.item.AbstractWeaponRenderer;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.config.client.ClientConfiguration;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 
-public class ReflexSightModel extends AbstractAttachmentModel {
+public class ReflexSightModel extends AbstractAttachmentModel implements IOpticsProvider {
 
     private final ModelRenderer sight;
     private final ModelRenderer base;
@@ -24,8 +26,37 @@ public class ReflexSightModel extends AbstractAttachmentModel {
     @Override
     public void renderAttachment(MatrixStack stack, IRenderTypeBuffer buffer, int light, int overlay, float aimingProgress) {
         stack.mulPose(Vector3f.YP.rotation((float) Math.PI));
-        ClientConfiguration config = ModConfig.clientConfig;
-        renderReflexSight(stack, buffer, sight, reticle, aimingProgress, config.reticleVariants.getAsResource(), config.reticleColor.getColor(), light, overlay);
+        renderReflexSight(stack, buffer, this, aimingProgress, light, overlay);
+    }
+
+    @Override
+    public ResourceLocation getComponentTextureMap() {
+        return AbstractWeaponRenderer.ATTACHMENTS;
+    }
+
+    @Override
+    public ResourceLocation getReticleTextureMap() {
+        return ModConfig.clientConfig.reticleVariants.getAsResource();
+    }
+
+    @Override
+    public ModelRenderer getGlassModel() {
+        return reticle;
+    }
+
+    @Override
+    public ModelRenderer getOverlayModel() {
+        throw new UnsupportedOperationException("This type of reticle doesn't support 'overlay' model");
+    }
+
+    @Override
+    public int getReticleTintARGB() {
+        return ModConfig.clientConfig.reticleColor.getColor();
+    }
+
+    @Override
+    public void renderOptic(MatrixStack stack, IVertexBuilder builder, int light, int overlay) {
+        sight.render(stack, builder, light, overlay);
     }
 
     public ReflexSightModel() {

@@ -19,7 +19,7 @@ public class ZombieGunnerWeaponManager extends SingleJsonFileReloadListener {
     private WeightedRandom<ZombieGunnerLoadout> randomGear;
 
     public ZombieGunnerWeaponManager() {
-        super(GunsRPG.makeResource("loadout/zombieGunnerWeapons.json"), GSON);
+        super(GunsRPG.makeResource("loadout/gunner_settings.json"), GSON);
     }
 
     public ZombieGunnerLoadout getLoadout() {
@@ -28,10 +28,10 @@ public class ZombieGunnerWeaponManager extends SingleJsonFileReloadListener {
 
     @Override
     protected void apply(JsonElement data, IResourceManager manager, IProfiler profiler) {
-        if (!data.isJsonArray()) {
+       /* if (!data.isJsonObject()) {
             throw new JsonSyntaxException("Data must be in array structure!");
         }
-        JsonArray array = data.getAsJsonArray();
+        JsonObject object = data.getAsJsonObject();
         List<ZombieGunnerLoadout> list = new ArrayList<>();
         for (JsonElement element : array) {
             try {
@@ -41,6 +41,6 @@ public class ZombieGunnerWeaponManager extends SingleJsonFileReloadListener {
                 GunsRPG.log.error(MARKER, "Error processing element ({}), error occurred: {}", element.toString(), e.toString());
             }
         }
-        randomGear = new WeightedRandom<>(ZombieGunnerLoadout::getWeight, list.toArray(new ZombieGunnerLoadout[0]));
+        randomGear = new WeightedRandom<>(ZombieGunnerLoadout::getWeight, list.toArray(new ZombieGunnerLoadout[0]));*/
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.client.resources.I18n;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 
@@ -15,8 +16,9 @@ public final class ExportAnimatedParts {
 
     public static void main(String[] args) {
         Map<AbstractWeaponModel, Collection<AnimationStage>> map = WeaponModels.getSupportedPartAnimations();
+        String filename = String.format("animatable-components-%s.txt", LocalDateTime.now().toString().replaceAll(":", "_").replaceAll("\\..+", ""));
         try {
-            File file = new File("./export/animation_parts.txt");
+            File file = new File("./export/" + filename);
             if (!file.exists()) {
                 if (file.createNewFile())
                     System.out.println("File created");
@@ -24,7 +26,7 @@ public final class ExportAnimatedParts {
             PrintWriter writer = new PrintWriter(file);
             for (Map.Entry<AbstractWeaponModel, Collection<AnimationStage>> entry : map.entrySet()) {
                 String key = getWeaponModelName(entry.getKey().getClass().getSimpleName());
-                writer.println(key + "{");
+                writer.println(key + " {");
                 for (AnimationStage stage : entry.getValue()) {
                     String st = "\t" + I18n.get("animation.stage." + stage.getKey().toString());
                     writer.println(st);

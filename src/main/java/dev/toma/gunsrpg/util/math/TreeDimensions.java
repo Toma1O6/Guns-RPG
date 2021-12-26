@@ -2,19 +2,17 @@ package dev.toma.gunsrpg.util.math;
 
 import java.util.Arrays;
 import java.util.function.Function;
-import java.util.stream.IntStream;
 
-public final class TreeDimensions<T> implements IDimensions {
+public final class TreeDimensions<T> implements ITreeDimensions {
 
-    private final T root;
-    private final Node<T> rootNode;
     private final int height, width;
+    private final int[] widthArray;
 
     public TreeDimensions(T root, Function<T, T[]> childrenGetter) {
-        this.root = root;
-        this.rootNode = new Node<>(root, childrenGetter);
-        this.height = rootNode.getDepth();
-        this.width = rootNode.getWidth();
+        Node<T> node = new Node<>(root, childrenGetter);
+        this.height = node.getDepth();
+        this.width = node.getWidth();
+        this.widthArray = node.getTreeWidths();
     }
 
     @Override
@@ -25,6 +23,11 @@ public final class TreeDimensions<T> implements IDimensions {
     @Override
     public int getWidth() {
         return width;
+    }
+
+    @Override
+    public int[] getTreeLevelWidths() {
+        return widthArray;
     }
 
     private static class Node<T> {
@@ -48,9 +51,14 @@ public final class TreeDimensions<T> implements IDimensions {
             }
         }
 
-        public int getWidth() {
+        public int[] getTreeWidths() {
             int[] data = new int[getDepth()];
             incrementWidthAt(data, this);
+            return data;
+        }
+
+        public int getWidth() {
+            int[] data = getTreeWidths();
             return Arrays.stream(data).max().orElse(0);
         }
 

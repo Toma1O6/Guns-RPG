@@ -1,12 +1,14 @@
-package dev.toma.gunsrpg.client.model;
+package dev.toma.gunsrpg.client.model.component;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.client.render.item.AbstractWeaponRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 
-public class ScopeModel extends AbstractAttachmentModel {
+public class ScopeModel extends AbstractAttachmentModel implements IOpticsProvider {
 
     private static ResourceLocation reticlePath = GunsRPG.makeResource("textures/scope/sniper_reticle.png");
 
@@ -23,7 +25,37 @@ public class ScopeModel extends AbstractAttachmentModel {
 
     @Override
     public void renderAttachment(MatrixStack stack, IRenderTypeBuffer buffer, int light, int overlay, float progress) {
-        renderScopeWithGlass(stack, buffer, scope, reticle, this.overlay, progress, reticlePath, light, overlay);
+        renderScopeWithGlass(stack, buffer, this, progress, light, overlay);
+    }
+
+    @Override
+    public ResourceLocation getComponentTextureMap() {
+        return AbstractWeaponRenderer.ATTACHMENTS;
+    }
+
+    @Override
+    public ResourceLocation getReticleTextureMap() {
+        return reticlePath;
+    }
+
+    @Override
+    public ModelRenderer getGlassModel() {
+        return reticle;
+    }
+
+    @Override
+    public ModelRenderer getOverlayModel() {
+        return overlay;
+    }
+
+    @Override
+    public int getReticleTintARGB() {
+        return 0;
+    }
+
+    @Override
+    public void renderOptic(MatrixStack stack, IVertexBuilder builder, int light, int overlay) {
+        scope.render(stack, builder, light, overlay);
     }
 
     public ScopeModel() {

@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.client.model;
+package dev.toma.gunsrpg.client.model.component;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.render.item.AbstractWeaponRenderer;

@@ -1,9 +1,9 @@
-package dev.toma.gunsrpg.client.model;
+package dev.toma.gunsrpg.client.model.component;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.client.render.item.AbstractWeaponRenderer;
+import dev.toma.gunsrpg.client.model.AbstractSolidEntityModel;
 import dev.toma.gunsrpg.config.ModConfig;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
@@ -16,31 +16,32 @@ public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
 
     public abstract void renderAttachment(MatrixStack stack, IRenderTypeBuffer buffer, int light, int overlay, float aimingProgress);
 
-    protected static void renderReflexSight(MatrixStack matrix, IRenderTypeBuffer buffer, ModelRenderer bone, ModelRenderer glass, float progress, ResourceLocation reticleTexture, int reticleColor, int light, int overlay) {
-        IVertexBuilder modelVertexBuilder = buffer.getBuffer(RenderType.entitySolid(AbstractWeaponRenderer.ATTACHMENTS));
-        bone.render(matrix, modelVertexBuilder, light, overlay);
-        IVertexBuilder reticleVertexBuilder = buffer.getBuffer(RenderType.entityShadow(reticleTexture));
+    protected static void renderReflexSight(MatrixStack matrix, IRenderTypeBuffer buffer, IOpticsProvider provider, float progress, int light, int overlay) {
+        IVertexBuilder modelVertexBuilder = buffer.getBuffer(RenderType.entitySolid(provider.getComponentTextureMap()));
+        provider.renderOptic(matrix, modelVertexBuilder, light, overlay);
+        IVertexBuilder reticleVertexBuilder = buffer.getBuffer(RenderType.entityShadow(provider.getReticleTextureMap()));
+        int reticleColor = provider.getReticleTintARGB();
         float cfgA = ((reticleColor >> 24) & 255) / 255.0F;
         float a = ModConfig.clientConfig.developerMode.get() ? 1.0F : Math.min(cfgA, progress);
         float r = ((reticleColor >> 16) & 255) / 255.0F;
         float g = ((reticleColor >>  8) & 255) / 255.0F;
         float b = ( reticleColor        & 255) / 255.0F;
-        glass.render(matrix, reticleVertexBuilder, light, overlay, r, g, b, a);
+        provider.getGlassModel().render(matrix, reticleVertexBuilder, light, overlay, r, g, b, a);
     }
 
-    public static void renderScopeWithGlass(MatrixStack matrix, IRenderTypeBuffer buffer, ModelRenderer scopeModel, ModelRenderer reticleModel, ModelRenderer overlayModel, float progress, ResourceLocation reticleTexture, int light, int overlay) {
+    public static void renderScopeWithGlass(MatrixStack matrix, IRenderTypeBuffer buffer, IOpticsProvider provider, float progress, int light, int overlay) {
         float inv = 1.0F - progress;
         float sizeProgress = progress >= 0.9F ? progress : 0.0F;
         float sizeProgressInv = 1.0F - sizeProgress;
         matrix.pushPose();
         matrix.translate(0.0F, 0.0F, 0.78F * sizeProgress);
         matrix.scale(1.0F, 1.0F, 0.07F + 0.93F * sizeProgressInv);
-        IVertexBuilder modelVertexBuilder = buffer.getBuffer(RenderType.entitySolid(AbstractWeaponRenderer.ATTACHMENTS));
-        scopeModel.render(matrix, modelVertexBuilder, light, overlay);
-        IVertexBuilder reticleVertexBuilder = buffer.getBuffer(RenderType.entityShadow(reticleTexture));
-        reticleModel.render(matrix, reticleVertexBuilder, light, overlay, 1.0F, 1.0F, 1.0F, progress);
+        IVertexBuilder modelVertexBuilder = buffer.getBuffer(RenderType.entitySolid(provider.getComponentTextureMap()));
+        provider.renderOptic(matrix, modelVertexBuilder, light, overlay);
+        IVertexBuilder reticleVertexBuilder = buffer.getBuffer(RenderType.entityShadow(provider.getReticleTextureMap()));
+        provider.getGlassModel().render(matrix, reticleVertexBuilder, light, overlay, 1.0F, 1.0F, 1.0F, progress);
         IVertexBuilder overlayVertexBuilder = buffer.getBuffer(RenderType.entityShadow(GLASS_TEXTURE)); // shadow works best for this use case
-        overlayModel.render(matrix, overlayVertexBuilder, light, overlay, 0.0F, 0.0F, 0.0F, inv);
+        provider.getOverlayModel().render(matrix, overlayVertexBuilder, light, overlay, 0.0F, 0.0F, 0.0F, inv);
         matrix.popPose();
     }
 

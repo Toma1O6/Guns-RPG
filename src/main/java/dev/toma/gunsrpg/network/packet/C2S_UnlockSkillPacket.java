@@ -77,11 +77,11 @@ public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkill
                     }
                 }
             }
-            if (!clicked.getCriteria().isUnlockAvailable(data, clicked)) {
+            if (!clicked.getCriteria().canUnlock(data, clicked)) {
                 logInvalidPacket("Player cannot unlock this skill yet!");
                 return;
             }
-            clicked.getCriteria().onActivated(data.getGenericData(), clicked);
+            clicked.getCriteria().onUnlocked(data.getGenericData(), clicked);
             data.sync(DataFlags.SKILLS | DataFlags.DATA);
         });
     }

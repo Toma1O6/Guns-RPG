@@ -10,7 +10,7 @@ import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
 import dev.toma.gunsrpg.api.common.data.ISkills;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.common.skills.criteria.GunCriteria;
+import dev.toma.gunsrpg.common.skills.core.WeaponTransactionValidator;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.S2C_NewSkillsPacket;
 import net.minecraft.entity.player.PlayerEntity;
@@ -73,7 +73,7 @@ public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEn
     public void onLevelUp(int level, PlayerEntity player) {
         List<SkillType<?>> newlyAvailableList = new ArrayList<>();
         for (SkillType<?> type : ModRegistries.SKILLS) {
-            if (!(type.getCriteria() instanceof GunCriteria) && type.levelRequirement == level) {
+            if (!(type.getCriteria() instanceof WeaponTransactionValidator) && type.levelRequirement == level) {
                 newlyAvailableList.add(type);
             }
         }

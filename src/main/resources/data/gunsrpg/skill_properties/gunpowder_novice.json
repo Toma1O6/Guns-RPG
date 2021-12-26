@@ -1,0 +1,16 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "children": {
+            "overrides": true,
+            "values": [ "gunsrpg:gunpowder_expert" ]
+        }
+    },
+    "properties": {
+        "level": 0,
+        "price": 1,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

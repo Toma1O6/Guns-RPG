@@ -2,21 +2,21 @@ package dev.toma.gunsrpg.client.screen.skill;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.data.IKillData;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.ModUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class SkillTreeScreen extends Screen {
 
@@ -32,6 +32,7 @@ public class SkillTreeScreen extends Screen {
         super(TITLE);
         this.usedOptions = options;
         this.manager = options.manager;
+        this.queryCache();
     }
 
     @Override
@@ -50,6 +51,25 @@ public class SkillTreeScreen extends Screen {
         manager.getActive().render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
+    private void queryCache() {
+        if (Cache.hasBeenBuilt()) {
+            updateView();
+            return;
+        }
+        CompletableFuture
+                .supplyAsync(Cache::buildCacheAsync)
+                .exceptionally(Cache::onBuildFailed)
+                .thenAccept(this::onSkillTreeReady);
+    }
+
+    private void updateView() {
+
+    }
+
+    private void onSkillTreeReady(Map<SkillCategory, SkillTrees> result) {
+        Cache.onBuildFinished(result);
+    }
+
     public static class Options {
 
         private IViewManager manager;
@@ -63,34 +83,39 @@ public class SkillTreeScreen extends Screen {
     public static final class Cache {
 
         private static final Marker MARKER = MarkerManager.getMarker("SkillCache");
-        private static CompletableFuture<Map<SkillCategory, TreeCollection<SkillType<?>>>> buildTask;
+        private static Map<SkillCategory, SkillTrees> treeMap;
 
-        public static void buildCache() {
-            GunsRPG.log.info(MARKER, "Initializing skill placement cache");
-            buildTask = CompletableFuture.supplyAsync(Cache::buildCacheAsync);
+        public static boolean hasBeenBuilt() {
+            return treeMap != null;
         }
 
-        public static boolean dataReady() {
-            return buildTask.isDone();
+        public static Map<SkillCategory, SkillTrees> queryData() {
+            return treeMap;
         }
 
-        public static Map<SkillCategory, TreeCollection<SkillType<?>>> queryData() {
-            if (buildTask == null) {
-                GunsRPG.log.fatal(MARKER, "Build task hasn't started yet! Cannot query data.");
-                return Collections.emptyMap();
-            }
-            try {
-                return buildTask.get();
-            } catch (ExecutionException | InterruptedException e) {
-                GunsRPG.log.fatal(MARKER, "Cache building task failed: ", e);
-                return Collections.emptyMap();
-            }
-        }
-
-        private static Map<SkillCategory, TreeCollection<SkillType<?>>> buildCacheAsync() {
-            Map<SkillCategory, TreeCollection<SkillType<?>>> result = new EnumMap<>(SkillCategory.class);
+        private static Map<SkillCategory, SkillTrees> buildCacheAsync() {
+            GunsRPG.log.info("Starting skill placement cache build.");
+            long time = System.currentTimeMillis();
+            Map<SkillCategory, SkillTrees> result = new EnumMap<>(SkillCategory.class);
             Map<SkillCategory, List<SkillType<?>>> data = ModUtils.SKILLS_BY_CATEGORY.split(ModRegistries.SKILLS);
+            for (Map.Entry<SkillCategory, List<SkillType<?>>> entry : data.entrySet()) {
+                SkillCategory category = entry.getKey();
+                List<SkillType<?>> skillTypes = entry.getValue();
+                SkillTrees trees = new SkillTrees(category);
+                trees.populate(skillTypes);
+                result.put(category, trees);
+            }
+            GunsRPG.log.info("Skill tree cache has been built after {} ms", System.currentTimeMillis() - time);
             return result;
+        }
+
+        private static Map<SkillCategory, SkillTrees> onBuildFailed(Throwable throwable) {
+            GunsRPG.log.fatal(MARKER, "Skill placement cache build failed, no skills can be displayed. ", throwable);
+            return Collections.emptyMap();
+        }
+
+        private static void onBuildFinished(Map<SkillCategory, SkillTrees> result) {
+            treeMap = result;
         }
     }
 }

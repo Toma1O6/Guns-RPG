@@ -2,142 +2,51 @@ package dev.toma.gunsrpg.common.skills.core;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.ISkill;
-import dev.toma.gunsrpg.api.common.IUnlockCriteria;
-import dev.toma.gunsrpg.common.skills.criteria.CriteriaTypes;
+import dev.toma.gunsrpg.api.common.skill.ISkillDisplay;
+import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
+import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.resource.skill.SkillPropertyLoader;
-import dev.toma.gunsrpg.util.ModUtils;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Supplier;
 
 // TODO major rework
 public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>> {
 
-    private int level;
-    public int price;
-    public SkillCategory category;
-    private SkillType<?>[] children;
-
-    // legacy
-    public final int levelRequirement;
-    public final ResourceLocation icon;
-    private final boolean enableCustomChildDisplay;
-    private final IUnlockCriteria criteria;
     private final IFactory<S> instanceFactory;
-    private final ITextComponent textComponent;
-    private final ITextComponent[] description;
-    private final Supplier<SkillType<S>> skillOverride;
-    private final Supplier<Item> customRenderFactory;
-    public ItemStack cachedRenderStack;
-    private Supplier<List<SkillType<?>>> uninitializedChildList;
-    private List<SkillType<?>> childList;
-    private boolean isNew;
+    private final S dataInstance;
+    private ISkillHierarchy<S> hierarchy;
+    private ISkillProperties properties;
+    private ISkillDisplay display;
 
     private SkillType(Builder<S> builder) {
         this.instanceFactory = builder.factory;
-        this.levelRequirement = builder.levelRequirement;
-        this.price = builder.skillPointPrice;
-        this.uninitializedChildList = builder.childs;
-        this.skillOverride = builder.skillOverride;
-        this.category = builder.category;
-        this.criteria = builder.criteria;
-        this.icon = builder.icon != null ? builder.icon : GunsRPG.makeResource("textures/icons/" + builder.registryName.getPath() + ".png");
-        this.textComponent = builder.textComponent != null ? builder.textComponent : new TranslationTextComponent("skill." + builder.registryName.getPath());
-        if (builder.descriptionLines > 0) {
-            description = new ITextComponent[builder.descriptionLines];
-            for (int i = 0; i < builder.descriptionLines; i++) {
-                description[i] = new TranslationTextComponent(builder.registryName.getPath() + ".description.line_" + (i + 1));
-            }
-        } else description = new ITextComponent[0];
-        this.enableCustomChildDisplay = builder.enableCustomChildDisplay;
-        this.customRenderFactory = builder.customRenderFactory;
-    }
-
-    public SkillType<?>[] getChildren() {
-        return children;
-    }
-
-    public SkillCategory getCategory() {
-        return category;
-    }
-
-    /**
-     * Called when data are loaded from datapack for this particular instance.
-     * @param props The loaded properties
-     */
-    public void onDataAssign(SkillPropertyLoader.Properties props) {
-        level = props.getLevel();
-        price = props.getPrice();
-        category = props.getCategory();
-        children = props.getChildren();
-    }
-
-    // LEGACY CODE -----------------------------------------------------------------------------------------------------
-
-    public List<SkillType<?>> getChilds() {
-        if (childList == null) {
-            childList = uninitializedChildList != null ? uninitializedChildList.get() : Collections.emptyList();
-            uninitializedChildList = null;
-        }
-        return childList;
-    }
-
-    public boolean isOverriden() {
-        return skillOverride != null;
-    }
-
-    public SkillType<?> getOverride() {
-        return skillOverride.get();
-    }
-
-    public String getDisplayName() {
-        return textComponent.getString();
-    }
-
-    public ITextComponent[] getDescription() {
-        return description;
-    }
-
-    public IUnlockCriteria getCriteria() {
-        return criteria;
-    }
-
-    public boolean areTypesEqual(ISkill skill) {
-        return getRegistryName().equals(skill.getType().getRegistryName());
+        this.dataInstance = this.instantiate();
     }
 
     public S instantiate() {
         return instanceFactory.create(this);
     }
 
-    public boolean isCustomDisplayEnabled() {
-        return enableCustomChildDisplay;
+    public ISkillHierarchy<S> getHierarchy() {
+        return hierarchy;
     }
 
-    public boolean hasCustomRenderFactory() {
-        return customRenderFactory != null;
+    public ISkillProperties getProperties() {
+        return properties;
     }
 
-    public ItemStack getRenderItem() {
-        if (cachedRenderStack == null) {
-            cachedRenderStack = new ItemStack(customRenderFactory.get());
-        }
-        return cachedRenderStack;
+    public ISkillDisplay getDisplay() {
+        return display;
     }
 
-    public void setFresh(boolean isNew) {
-        this.isNew = isNew;
-    }
-
-    public boolean isFreshUnlock() {
-        return isNew;
+    /**
+     * Called when data are loaded from datapack for this particular instance.
+     * @param result The loaded data
+     */
+    public void onDataAssign(SkillPropertyLoader.ILoadResult<S> result) {
+        hierarchy = result.hierarchy();
+        properties = result.properties();
+        display = result.display();
     }
 
     public interface IFactory<S extends ISkill> {
@@ -148,18 +57,9 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
     public static class Builder<S extends ISkill> {
 
         private final IFactory<S> factory;
-        private int levelRequirement;
-        private int skillPointPrice = 1;
-        private Supplier<List<SkillType<?>>> childs;
-        private Supplier<SkillType<S>> skillOverride;
-        private SkillCategory category;
         private ResourceLocation registryName;
         private ResourceLocation icon;
-        private ITextComponent textComponent;
-        private IUnlockCriteria criteria = CriteriaTypes.getDefaultCriteria();
         private int descriptionLines = 1;
-        private boolean enableCustomChildDisplay;
-        private Supplier<Item> customRenderFactory;
 
         private Builder(IFactory<S> factory) {
             this.factory = factory;
@@ -169,64 +69,9 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
             return new Builder<>(factory);
         }
 
-        public Builder<S> requiredLevel(int levelRequirement) {
-            this.levelRequirement = levelRequirement;
-            return this;
-        }
-
-        public Builder<S> price(int price) {
-            this.skillPointPrice = price;
-            return this;
-        }
-
-        public Builder<S> childs(Supplier<List<SkillType<?>>> childs) {
-            this.childs = childs;
-            return this;
-        }
-
-        public Builder<S> setOverride(Supplier<SkillType<S>> skillOverride) {
-            this.skillOverride = skillOverride;
-            return this;
-        }
-
-        public Builder<S> childAndOverride(Supplier<SkillType<S>> childOverride) {
-            this.childs(() -> ModUtils.newList(childOverride.get()));
-            return this.setOverride(childOverride);
-        }
-
-        public Builder<S> descriptionLength(int lines) {
+        public Builder<S> description(int lines) {
             this.descriptionLines = lines;
             return this;
-        }
-
-        public Builder<S> criteria(IUnlockCriteria criteria) {
-            this.criteria = criteria;
-            return this;
-        }
-
-        public Builder<S> category(SkillCategory category) {
-            this.category = category;
-            return this;
-        }
-
-        public Builder<S> setGunCategory() {
-            return this.category(SkillCategory.GUN);
-        }
-
-        public Builder<S> setResistanceCategory() {
-            return this.category(SkillCategory.RESISTANCE);
-        }
-
-        public Builder<S> setMiningCategory() {
-            return this.category(SkillCategory.MINING);
-        }
-
-        public Builder<S> setSurvivalCategory() {
-            return this.category(SkillCategory.SURVIVAL);
-        }
-
-        public Builder<S> setAttachmentCategory() {
-            return this.category(SkillCategory.ATTACHMENT);
         }
 
         public Builder<S> icon(ResourceLocation location) {
@@ -236,11 +81,6 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
 
         public Builder<S> icon(String resource) {
             return icon(new ResourceLocation(resource));
-        }
-
-        public Builder<S> displayName(ITextComponent component) {
-            this.textComponent = component;
-            return this;
         }
 
         public Builder<S> iconPathNormal(String pathInIconsFolder) {
@@ -260,16 +100,6 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
 
         public Builder<S> setRegistryName(String path) {
             this.registryName = GunsRPG.makeResource(path);
-            return this;
-        }
-
-        public Builder<S> setCustomDisplay() {
-            this.enableCustomChildDisplay = true;
-            return this;
-        }
-
-        public Builder<S> renderFactory(Supplier<Item> itemToRender) {
-            this.customRenderFactory = itemToRender;
             return this;
         }
 

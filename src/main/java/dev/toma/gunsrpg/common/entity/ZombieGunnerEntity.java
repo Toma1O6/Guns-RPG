@@ -145,6 +145,10 @@ public class ZombieGunnerEntity extends MonsterEntity {
     protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
         super.populateDefaultEquipmentSlots(difficulty);
         ZombieGunnerLoadout loadout = GunsRPG.getModLifecycle().getZombieGunnerWeaponManager().getLoadout();
+        if (loadout == null) {
+            GunsRPG.log.fatal("Cannot generate loadout for " + this + ", loadout configuration not found!");
+            return;
+        }
         loadout.applyGear(this, difficulty.getDifficulty());
         setItemSlot(EquipmentSlotType.HEAD, new ItemStack(Items.LEATHER_HELMET));
     }

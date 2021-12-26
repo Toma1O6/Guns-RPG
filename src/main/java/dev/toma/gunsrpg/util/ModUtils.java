@@ -54,6 +54,14 @@ public class ModUtils {
 
     public static final ISplitter<SkillCategory, SkillType<?>> SKILLS_BY_CATEGORY = ModUtils::splitSkillsIntoCategories;
 
+    public static boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
+    }
+
+    public static boolean isNullOrEmpty(Object[] arr) {
+        return arr == null || arr.length == 0;
+    }
+
     public static <K, V> Stream<Map.Entry<K, V>> filteredDataStream(Map<K, V> source, Set<K> allowedKeys) {
         return source.entrySet().stream().filter(kvEntry -> allowedKeys.contains(kvEntry.getKey()));
     }
@@ -388,18 +396,13 @@ public class ModUtils {
         return player.isCreative() ? attrib : attrib - 0.5F;
     }
 
-    public static <T> T getTreeRoot(T treeElement, Function<T, T> parentGetter) {
-        T next = parentGetter.apply(treeElement);
-        if (next == null || Objects.equals(treeElement, next)) {
-            return treeElement;
-        }
-        return getTreeRoot(next, parentGetter);
-    }
-
     private static Map<SkillCategory, List<SkillType<?>>> splitSkillsIntoCategories(Iterable<SkillType<?>> iterable) {
         Map<SkillCategory, List<SkillType<?>>> map = new EnumMap<>(SkillCategory.class);
         for (SkillType<?> type : iterable) {
             SkillCategory category = type.category;
+            if (category.isInternal()) {
+                continue;
+            }
             map.computeIfAbsent(category, cat -> new ArrayList<>()).add(type);
         }
         return map;
