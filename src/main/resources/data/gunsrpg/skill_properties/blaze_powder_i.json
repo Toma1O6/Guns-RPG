@@ -1,14 +1,13 @@
 {
     "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:gunpowder_novice",
+        "category": "mining",
         "children": {
-            "values": [ "gunsrpg:gunpowder_master" ]
+            "values": [ "gunsrpg:blaze_powder_ii" ]
         }
     },
     "properties": {
-        "level": 15,
-        "price": 2,
+        "level": 45,
+        "price": 3,
         "transactionValidator": {
             "type": "gunsrpg:level"
         }

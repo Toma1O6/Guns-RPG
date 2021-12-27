@@ -1,15 +1,17 @@
 {
     "hierarchy": {
         "category": "gun",
-        "parent": "gunsrpg:gunpowder_novice",
         "children": {
-            "values": [ "gunsrpg:gunpowder_master" ]
+            "values": [
+                "gunsrpg:massive_grenades",
+                "gunsrpg:impact_grenades"
+            ]
         }
     },
     "properties": {
         "level": 15,
-        "price": 2,
-        "transactionValidator": {
+        "price": 3,
+        "trasactionValidator": {
             "type": "gunsrpg:level"
         }
     }

@@ -1,13 +1,11 @@
 {
     "hierarchy": {
         "category": "gun",
-        "children": {
-            "values": [ "gunsrpg:gunpowder_expert" ]
-        }
+        "parent": "gunsrpg:iron_ammo_smith"
     },
     "properties": {
-        "level": 0,
-        "price": 1,
+        "level": 10,
+        "price": 3,
         "transactionValidator": {
             "type": "gunsrpg:level"
         }

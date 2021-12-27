@@ -1,0 +1,22 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "parent": "gunsrpg:gun_parts_smith",
+        "extensions": [
+            "gunsrpg:sks_tough_spring",
+            "gunsrpg:sks_vertical_grip",
+            "gunsrpg:sks_extended",
+            "gunsrpg:sks_red_dot",
+            "gunsrpg:sks_suppressor",
+            "gunsrpg:sks_cheekpad",
+            "gunsrpg:sks_adaptive_chambering"
+        ]
+    },
+    "properties": {
+        "level": 25,
+        "price": 4,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

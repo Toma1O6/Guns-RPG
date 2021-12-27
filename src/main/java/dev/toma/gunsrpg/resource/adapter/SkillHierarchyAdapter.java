@@ -14,10 +14,10 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import java.lang.reflect.Type;
 
-public class SkillHierarchyAdapter implements JsonDeserializer<ISkillHierarchy> {
+public class SkillHierarchyAdapter implements JsonDeserializer<ISkillHierarchy<?>> {
 
     @Override
-    public ISkillHierarchy deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public ISkillHierarchy<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject object = JsonHelper.asJsonObject(json);
         String categoryKey = JSONUtils.getAsString(object, "category");
         SkillCategory category = deserializeCategory(categoryKey);
@@ -25,6 +25,7 @@ public class SkillHierarchyAdapter implements JsonDeserializer<ISkillHierarchy> 
 
         JsonObject childStructure = getChildObject(object);
         boolean childOverrides = childStructure != null && useOnlyChildAsOverride(childStructure);
+        boolean isContainer = childStructure != null && isContainerForChildSkills(childStructure);
         SkillType<?>[] children = childStructure != null ? deserializeChildren(childStructure) : null;
 
         SkillType<?> override;
@@ -37,7 +38,7 @@ public class SkillHierarchyAdapter implements JsonDeserializer<ISkillHierarchy> 
             override = deserializeOverride(object);
         }
         validateSkillOverride(children, override);
-        return new SkillHierarchy(category, parent, children, override);
+        return new SkillHierarchy<>(category, parent, children, override, isContainer);
     }
 
     private static void validateSkillOverride(SkillType<?>[] children, SkillType<?> override) throws JsonParseException {
@@ -54,6 +55,10 @@ public class SkillHierarchyAdapter implements JsonDeserializer<ISkillHierarchy> 
 
     private static boolean useOnlyChildAsOverride(JsonObject object) throws JsonParseException {
         return JSONUtils.getAsBoolean(object, "overrides", false);
+    }
+
+    private static boolean isContainerForChildSkills(JsonObject object) throws JsonParseException {
+        return JSONUtils.getAsBoolean(object, "container", false);
     }
 
     private static SkillType<?>[] deserializeChildren(JsonObject object) throws JsonParseException {

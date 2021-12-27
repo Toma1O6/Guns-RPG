@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.ISkill;
-import dev.toma.gunsrpg.api.common.skill.ISkillDisplay;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.common.init.ModRegistries;
@@ -70,20 +69,16 @@ public final class SkillPropertyLoader extends JsonReloadListener {
         ISkillHierarchy<S> hierarchy();
 
         ISkillProperties properties();
-
-        ISkillDisplay display();
     }
 
     public static class Result<S extends ISkill> implements ILoadResult<S> {
 
         private final ISkillHierarchy<S> hierarchy;
         private final ISkillProperties properties;
-        private final ISkillDisplay display;
 
-        public Result(ISkillHierarchy<S> hierarchy, ISkillProperties properties, ISkillDisplay display) {
+        public Result(ISkillHierarchy<S> hierarchy, ISkillProperties properties) {
             this.hierarchy = hierarchy;
             this.properties = properties;
-            this.display = display;
         }
 
         @Override
@@ -94,11 +89,6 @@ public final class SkillPropertyLoader extends JsonReloadListener {
         @Override
         public ISkillProperties properties() {
             return properties;
-        }
-
-        @Override
-        public ISkillDisplay display() {
-            return display;
         }
     }
 }

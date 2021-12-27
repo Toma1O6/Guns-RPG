@@ -1,26 +1,38 @@
 package dev.toma.gunsrpg.common.skills.core;
 
-import dev.toma.gunsrpg.GunsRPG;
+import com.google.common.base.Preconditions;
 import dev.toma.gunsrpg.api.common.ISkill;
-import dev.toma.gunsrpg.api.common.skill.ISkillDisplay;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.resource.skill.SkillPropertyLoader;
-import net.minecraft.util.ResourceLocation;
+import dev.toma.gunsrpg.util.SkillUtil;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
-// TODO major rework
+import java.util.function.Function;
+
 public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>> {
 
+    // builder configurable data
     private final IFactory<S> instanceFactory;
     private final S dataInstance;
+    private final Localization<S> localization;
+    private final Function<SkillType<S>, DisplayData> displayDataFactory;
+    // internal data
+    private DisplayData displayData;
+    // datapack controlled data
     private ISkillHierarchy<S> hierarchy;
     private ISkillProperties properties;
-    private ISkillDisplay display;
 
     private SkillType(Builder<S> builder) {
         this.instanceFactory = builder.factory;
         this.dataInstance = this.instantiate();
+        this.localization = new Localization<>(builder.descriptionLines, this, builder.titleBuilder, builder.descriptionBuilder);
+        this.displayDataFactory = builder.displayDataFactory;
+    }
+
+    public S getDataInstance() {
+        return dataInstance;
     }
 
     public S instantiate() {
@@ -35,10 +47,6 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
         return properties;
     }
 
-    public ISkillDisplay getDisplay() {
-        return display;
-    }
-
     /**
      * Called when data are loaded from datapack for this particular instance.
      * @param result The loaded data
@@ -46,19 +54,35 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
     public void onDataAssign(SkillPropertyLoader.ILoadResult<S> result) {
         hierarchy = result.hierarchy();
         properties = result.properties();
-        display = result.display();
+        displayData = displayDataFactory.apply(this);
     }
 
+    public ITextComponent getTitle() {
+        return localization.getTitle();
+    }
+
+    public ITextComponent[] getDescription() {
+        return localization.getDescription();
+    }
+
+    @FunctionalInterface
     public interface IFactory<S extends ISkill> {
 
         S create(SkillType<S> type);
     }
 
+    @FunctionalInterface
+    public interface IDescriptionBuilder<S extends ISkill> {
+
+        ITextComponent[] getDescription(int lineCount, SkillType<S> type);
+    }
+
     public static class Builder<S extends ISkill> {
 
         private final IFactory<S> factory;
-        private ResourceLocation registryName;
-        private ResourceLocation icon;
+        private Function<SkillType<S>, ITextComponent> titleBuilder = SkillUtil::getDefaultTitle;
+        private IDescriptionBuilder<S> descriptionBuilder = SkillUtil::getDefaultDescription;
+        private Function<SkillType<S>, DisplayData> displayDataFactory = SkillUtil::getDefaultDisplayData;
         private int descriptionLines = 1;
 
         private Builder(IFactory<S> factory) {
@@ -74,39 +98,67 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
             return this;
         }
 
-        public Builder<S> icon(ResourceLocation location) {
-            this.icon = location;
+        public Builder<S> description(int lines, IDescriptionBuilder<S> builder) {
+            this.descriptionBuilder = builder;
+            return this.description(lines);
+        }
+
+        public Builder<S> title(Function<SkillType<S>, ITextComponent> titleBuilder) {
+            this.titleBuilder = titleBuilder;
             return this;
         }
 
-        public Builder<S> icon(String resource) {
-            return icon(new ResourceLocation(resource));
-        }
-
-        public Builder<S> iconPathNormal(String pathInIconsFolder) {
-            this.icon = GunsRPG.makeResource("textures/icons/" + pathInIconsFolder + ".png");
-            return this;
-        }
-
-        public Builder<S> iconPathItem(String itemPath) {
-            this.icon = GunsRPG.makeResource("textures/items/" + itemPath + ".png");
-            return this;
-        }
-
-        public Builder<S> setRegistryName(ResourceLocation location) {
-            this.registryName = location;
-            return this;
-        }
-
-        public Builder<S> setRegistryName(String path) {
-            this.registryName = GunsRPG.makeResource(path);
+        public Builder<S> render(Function<SkillType<S>, DisplayData> displayDataFactory) {
+            this.displayDataFactory = displayDataFactory;
             return this;
         }
 
         public SkillType<S> build() {
-            SkillType<S> type = new SkillType<>(this);
-            type.setRegistryName(registryName);
-            return type;
+            validate();
+            return new SkillType<>(this);
+        }
+
+        private void validate() {
+            Preconditions.checkNotNull(factory, "Instance factory cannot be null");
+            Preconditions.checkState(descriptionLines > 0, "Skill type must have atleast one description line");
+        }
+    }
+
+    protected static class Localization<S extends ISkill> {
+
+        private final int lineCount;
+        private final SkillType<S> type;
+        private final Function<SkillType<S>, ITextComponent> titleBuilder;
+        private final IDescriptionBuilder<S> descriptionBuilder;
+        private boolean loaded;
+        private ITextComponent title;
+        private ITextComponent[] description;
+
+        public Localization(int lines, SkillType<S> type, Function<SkillType<S>, ITextComponent> titleBuilder, IDescriptionBuilder<S> descriptionBuilder) {
+            this.lineCount = lines;
+            this.type = type;
+            this.titleBuilder = titleBuilder;
+            this.descriptionBuilder = descriptionBuilder;
+        }
+
+        protected ITextComponent getTitle() {
+            if (!loaded) {
+                loadData();
+            }
+            return title;
+        }
+
+        protected ITextComponent[] getDescription() {
+            if (!loaded) {
+                loadData();
+            }
+            return description;
+        }
+
+        private void loadData() {
+            title = titleBuilder.apply(type);
+            description = descriptionBuilder.getDescription(lineCount, type);
+            loaded = true;
         }
     }
 }

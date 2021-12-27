@@ -13,4 +13,6 @@ public interface ISkillHierarchy<S extends ISkill> {
     SkillType<?>[] getChildren();
 
     SkillType<S> getOverride();
+
+    boolean isContainer();
 }

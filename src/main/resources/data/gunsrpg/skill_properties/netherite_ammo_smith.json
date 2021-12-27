@@ -1,14 +1,14 @@
 {
     "hierarchy": {
         "category": "gun",
-        "parent": "gunsrpg:gunpowder_novice",
+        "parent": "gunsrpg:amethyst_ammo_smith",
         "children": {
-            "values": [ "gunsrpg:gunpowder_master" ]
+            "values": [ "gunsrpg:ammo_smithing_mastery" ]
         }
     },
     "properties": {
-        "level": 15,
-        "price": 2,
+        "level": 55,
+        "price": 8,
         "transactionValidator": {
             "type": "gunsrpg:level"
         }

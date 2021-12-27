@@ -1,15 +1,14 @@
 {
     "hierarchy": {
         "category": "gun",
-        "children": {
-            "values": [ "gunsrpg:gunpowder_expert" ]
-        }
+        "parent": "gunsrpg:m1911_assembly"
     },
     "properties": {
         "level": 0,
         "price": 1,
         "transactionValidator": {
-            "type": "gunsrpg:level"
+            "type": "gunsrpg:weapon",
+            "data": "gunsrpg:m1911"
         }
     }
 }

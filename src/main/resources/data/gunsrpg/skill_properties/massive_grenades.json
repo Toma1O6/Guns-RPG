@@ -1,0 +1,13 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "parent": "gunsrpg:grenades"
+    },
+    "properties": {
+        "level": 30,
+        "price": 5,
+        "trasactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

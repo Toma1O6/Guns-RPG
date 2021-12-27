@@ -1,0 +1,22 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "parent": "gunsrpg:gun_parts_smith",
+        "extensions": [
+            "gunsrpg:crossbow_quiver",
+            "gunsrpg:crossbow_poisoned_bolts",
+            "gunsrpg:crossbow_hunter",
+            "gunsrpg:crossbow_tough_bowstring",
+            "gunsrpg:crossbow_penetrator",
+            "gunsrpg:crossbow_scope",
+            "gunsrpg:crossbow_repeater"
+        ]
+    },
+    "properties": {
+        "level": 15,
+        "price": 3,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

@@ -20,6 +20,8 @@ import dev.toma.gunsrpg.common.item.heal.ContinuousHealingItem;
 import dev.toma.gunsrpg.common.item.heal.DebuffHealItem;
 import dev.toma.gunsrpg.common.item.heal.PlayerHealItem;
 import dev.toma.gunsrpg.common.skills.*;
+import dev.toma.gunsrpg.common.skills.core.DisplayData;
+import dev.toma.gunsrpg.common.skills.core.DisplayType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;
 import dev.toma.gunsrpg.util.Constants;
@@ -30,6 +32,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
@@ -65,33 +68,37 @@ public class CommonRegistry {
     @SubscribeEvent
     public static void onSkillRegister(RegistryEvent.Register<SkillType<?>> event) {
         event.getRegistry().registerAll(
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.GUNPOWDER_OUTPUT, Modifiers.GUNPOWDER_I))).setGunCategory().setRegistryName("gunpowder_novice").requiredLevel(0).price(1).childs(() -> ModUtils.newList(Skills.GUNPOWDER_EXPERT)).build(),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.GUNPOWDER_OUTPUT, Modifiers.GUNPOWDER_II))).setGunCategory().setRegistryName("gunpowder_expert").requiredLevel(15).price(2).childs(() -> ModUtils.newList(Skills.GUNPOWDER_MASTER)).build(),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.GUNPOWDER_OUTPUT, Modifiers.GUNPOWDER_III))).setGunCategory().setRegistryName("gunpowder_master").requiredLevel(30).price(3).build(),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.BONEMEAL_OUTPUT, Modifiers.BONEMEAL_I))).setGunCategory().setRegistryName("bone_grinder_i").requiredLevel(0).price(1).childs(() -> Collections.singletonList(Skills.BONE_GRINDER_II)).build(),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.BONEMEAL_OUTPUT, Modifiers.BONEMEAL_II))).setGunCategory().setRegistryName("bone_grinder_ii").requiredLevel(15).price(2).childs(() -> Collections.singletonList(Skills.BONE_GRINDER_III)).build(),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.BONEMEAL_OUTPUT, Modifiers.BONEMEAL_III))).setGunCategory().setRegistryName("bone_grinder_iii").requiredLevel(30).price(3).build(),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.BLAZEPOWDER_OUTPUT, Modifiers.BLAZEPOWDER_I))).setMiningCategory().setRegistryName("blaze_powder_i").requiredLevel(45).price(3).childs(() -> Collections.singletonList(Skills.BLAZE_POWDER_II)).build(),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.BLAZEPOWDER_OUTPUT, Modifiers.BLAZEPOWDER_II))).setMiningCategory().setRegistryName("blaze_powder_ii").requiredLevel(55).price(4).childs(() -> Collections.singletonList(Skills.BLAZE_POWDER_III)).build(),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.BLAZEPOWDER_OUTPUT, Modifiers.BLAZEPOWDER_III))).setMiningCategory().setRegistryName("blaze_powder_iii").requiredLevel(65).price(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("wooden_ammo_smith").requiredLevel(0).price(1).childs(() -> ModUtils.newList(Skills.STONE_AMMO_SMITH)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("stone_ammo_smith").requiredLevel(5).price(1).childs(() -> ModUtils.newList(Skills.IRON_AMMO_SMITH)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("iron_ammo_smith").requiredLevel(10).price(2).childs(() -> ModUtils.newList(Skills.GOLD_AMMO_SMITH)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("gold_ammo_smith").requiredLevel(15).price(2).childs(() -> ModUtils.newList(Skills.DIAMOND_AMMO_SMITH)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("diamond_ammo_smith").requiredLevel(20).price(3).childs(() -> ModUtils.newList(Skills.EMERALD_AMMO_SMITH)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("emerald_ammo_smith").requiredLevel(30).price(4).childs(() -> ModUtils.newList(Skills.AMETHYST_AMMO_SMITH)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("amethyst_ammo_smith").requiredLevel(45).price(6).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("ammo_smithing_mastery").requiredLevel(60).price(10).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("gun_parts_smith").requiredLevel(5).price(1).childs(() -> ModUtils.newList(Skills.M1911_ASSEMBLY, Skills.UMP45_ASSEMBLY, Skills.CROSSBOW_ASSEMBLY, Skills.S1897_ASSEMBLY, Skills.SKS_ASSEMBLY, Skills.KAR98K_ASSEMBLY)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("m1911_assembly").requiredLevel(5).price(2).setCustomDisplay().renderFactory(() -> ModItems.M1911).childs(() -> ModUtils.newList(Skills.M1911_QUICKDRAW, Skills.M1911_EXTENDED, Skills.M1911_TOUGH_SPRING, Skills.M1911_CARBON_BARREL, Skills.M1911_SUPPRESSOR, Skills.M1911_HEAVY_BULLETS, Skills.M1911_DUAL_WIELD)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("ump45_assembly").requiredLevel(10).price(3).setCustomDisplay().renderFactory(() -> ModItems.UMP45).childs(() -> ModUtils.newList(Skills.UMP45_QUICKDRAW, Skills.UMP45_EXTENDED, Skills.UMP45_VERTICAL_GRIP, Skills.UMP45_TOUGH_SPRING, Skills.UMP45_RED_DOT, Skills.UMP45_SUPPRESSOR, Skills.UMP45_COMMANDO)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("crossbow_assembly").requiredLevel(15).price(3).setCustomDisplay().renderFactory(() -> ModItems.WOODEN_CROSSBOW).childs(() -> ModUtils.newList(Skills.CROSSBOW_QUIVER, Skills.CROSSBOW_POISONED_BOLTS, Skills.CROSSBOW_HUNTER, Skills.CROSSBOW_TOUGH_BOWSTRING, Skills.CROSSBOW_PENETRATOR, Skills.CROSSBOW_SCOPE, Skills.CROSSBOW_REPEATER)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("s1897_assembly").requiredLevel(20).price(4).setCustomDisplay().renderFactory(() -> ModItems.S1897).childs(() -> ModUtils.newList(Skills.S1897_BULLET_LOOPS, Skills.S1897_EXTENDED, Skills.S1897_PUMP_IN_ACTION, Skills.S1897_CHOKE, Skills.S1897_NEVER_GIVE_UP, Skills.S1897_EXTENDED_BARREL)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("sks_assembly").requiredLevel(25).price(4).setCustomDisplay().renderFactory(() -> ModItems.SKS).childs(() -> ModUtils.newList(Skills.SKS_TOUGH_SPRING, Skills.SKS_VERTICAL_GRIP, Skills.SKS_EXTENDED, Skills.SKS_RED_DOT, Skills.SKS_SUPPRESSOR, Skills.SKS_CHEEKPAD, Skills.SKS_ADAPTIVE_CHAMBERING)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("kar98k_assembly").requiredLevel(35).price(5).setCustomDisplay().renderFactory(() -> ModItems.KAR98K).childs(() -> ModUtils.newList(Skills.KAR98K_SCOPE, Skills.KAR98K_CHEEKPAD, Skills.KAR98K_EXTENDED, Skills.KAR98K_SUPPRESSOR, Skills.KAR98K_FAST_HANDS, Skills.KAR98K_PENETRATOR, Skills.KAR98K_DEAD_EYE)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("grenades").requiredLevel(15).price(3).childs(() -> ModUtils.newList(Skills.MASSIVE_GRENADES, Skills.IMPACT_GRENADES)).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("massive_grenades").requiredLevel(30).price(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setGunCategory().setRegistryName("impact_grenades").requiredLevel(40).price(5).build(),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.GUNPOWDER_OUTPUT, Modifiers.GUNPOWDER_I))).build().setRegistryName("gunpowder_novice"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.GUNPOWDER_OUTPUT, Modifiers.GUNPOWDER_II))).build().setRegistryName("gunpowder_expert"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.GUNPOWDER_OUTPUT, Modifiers.GUNPOWDER_III))).build().setRegistryName("gunpowder_master"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.BONEMEAL_OUTPUT, Modifiers.BONEMEAL_I))).build().setRegistryName("bone_grinder_i"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.BONEMEAL_OUTPUT, Modifiers.BONEMEAL_II))).build().setRegistryName("bone_grinder_ii"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.BONEMEAL_OUTPUT, Modifiers.BONEMEAL_III))).build().setRegistryName("bone_grinder_iii"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.BLAZEPOWDER_OUTPUT, Modifiers.BLAZEPOWDER_I))).build().setRegistryName("blaze_powder_i"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.BLAZEPOWDER_OUTPUT, Modifiers.BLAZEPOWDER_II))).build().setRegistryName("blaze_powder_ii"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.BLAZEPOWDER_OUTPUT, Modifiers.BLAZEPOWDER_III))).build().setRegistryName("blaze_powder_iii"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("wooden_ammo_smith"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("stone_ammo_smith"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("iron_ammo_smith"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("lapis_ammo_smith"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("gold_ammo_smith"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("redstone_ammo_smith"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("diamond_ammo_smith"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("quartz_ammo_smith"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("emerald_ammo_smith"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("amethyst_ammo_smith"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("netherite_ammo_smith"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("ammo_smithing_mastery"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("gun_parts_smith"),
+                SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModItems.M1911))).build().setRegistryName("m1911_assembly"),
+                SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModItems.UMP45))).build().setRegistryName("ump45_assembly"),
+                SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModItems.WOODEN_CROSSBOW))).build().setRegistryName("crossbow_assembly"),
+                SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModItems.S1897))).build().setRegistryName("s1897_assembly"),
+                SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModItems.SKS))).build().setRegistryName("sks_assembly"),
+                SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModItems.KAR98K))).build().setRegistryName("kar98k_assembly"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("grenades"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("massive_grenades"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("impact_grenades"),
                 // TODO grenade launcher lvl 40, rocket launcher 60
                 SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("medic").requiredLevel(10).price(3).childs(() -> ModUtils.newList(Skills.DOCTOR)).build(),
                 SkillType.Builder.create(BasicSkill::new).setResistanceCategory().setRegistryName("doctor").requiredLevel(25).price(3).build(),

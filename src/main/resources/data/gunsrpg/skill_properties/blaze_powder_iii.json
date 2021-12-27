@@ -1,0 +1,13 @@
+{
+    "hierarchy": {
+        "category": "mining",
+        "parent": "gunsrpg:blaze_powder_ii"
+    },
+    "properties": {
+        "level": 65,
+        "price": 5,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

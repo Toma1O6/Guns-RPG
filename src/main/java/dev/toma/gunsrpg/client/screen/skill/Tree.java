@@ -75,8 +75,8 @@ public class Tree {
         }
 
         TreeNode[] getChildrenNodes() {
-            SkillType<?>[] children = value.getChildren();
-            if (ModUtils.isNullOrEmpty(children)) {
+            SkillType<?>[] children = value.getHierarchy().getChildren();
+            if (ModUtils.isNullOrEmpty(children) || value.getHierarchy().isContainer()) {
                 return null;
             }
             TreeNode[] out = new TreeNode[children.length];

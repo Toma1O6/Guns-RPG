@@ -1,14 +1,13 @@
 {
     "hierarchy": {
         "category": "gun",
-        "parent": "gunsrpg:gunpowder_novice",
         "children": {
-            "values": [ "gunsrpg:gunpowder_master" ]
+            "values": [ "gunsrpg:bone_grinder_ii" ]
         }
     },
     "properties": {
-        "level": 15,
-        "price": 2,
+        "level": 0,
+        "price": 1,
         "transactionValidator": {
             "type": "gunsrpg:level"
         }

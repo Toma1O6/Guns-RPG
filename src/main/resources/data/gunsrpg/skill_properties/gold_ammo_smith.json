@@ -1,9 +1,12 @@
 {
     "hierarchy": {
         "category": "gun",
-        "parent": "gunsrpg:gunpowder_novice",
+        "parent": "gunsrpg:iron_ammo_smith",
         "children": {
-            "values": [ "gunsrpg:gunpowder_master" ]
+            "values": [
+                "gunsrpg:redstone_ammo_smith",
+                "gunsrpg:diamond_ammo_smith"
+            ]
         }
     },
     "properties": {

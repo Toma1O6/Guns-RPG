@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.skills.core;
 import dev.toma.gunsrpg.api.common.data.IKillData;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ITransactionProcessor;
+import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.transaction.WeaponPointTransaction;
 
@@ -17,7 +18,8 @@ public class WeaponTransactionValidator extends PlayerLevelTransactionValidator 
     @Override
     public boolean canUnlock(IPlayerData data, SkillType<?> skillType) {
         IKillData killData = data.getGenericData().getWeaponStats(item);
-        return killData != null && killData.getPoints() >= skillType.price && killData.getLevel() >= skillType.levelRequirement;
+        ISkillProperties properties = skillType.getProperties();
+        return killData != null && killData.getPoints() >= properties.getPrice() && killData.getLevel() >= properties.getRequiredLevel();
     }
 
     @Override

@@ -9,12 +9,14 @@ public class SkillHierarchy<S extends ISkill> implements ISkillHierarchy<S> {
     private final SkillType<?> parent;
     private final SkillType<?>[] children;
     private final SkillType<S> override;
+    private final boolean isContainer;
 
-    public SkillHierarchy(SkillCategory category, SkillType<?> parent, SkillType<?>[] children, SkillType<S> override) {
+    public SkillHierarchy(SkillCategory category, SkillType<?> parent, SkillType<?>[] children, SkillType<S> override, boolean isContainer) {
         this.category = category;
         this.parent = parent;
         this.children = children;
         this.override = override;
+        this.isContainer = isContainer;
     }
 
     @Override
@@ -35,5 +37,10 @@ public class SkillHierarchy<S extends ISkill> implements ISkillHierarchy<S> {
     @Override
     public SkillType<S> getOverride() {
         return override;
+    }
+
+    @Override
+    public boolean isContainer() {
+        return isContainer;
     }
 }

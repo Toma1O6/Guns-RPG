@@ -1,0 +1,22 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "parent": "gunsrpg:gun_parts_smith",
+        "extensions": [
+            "gunsrpg:kar98k_scope",
+            "gunsrpg:kar98k_cheekpad",
+            "gunsrpg:kar98k_extended",
+            "gunsrpg:kar98k_suppressor",
+            "gunsrpg:kar98k_fast_hands",
+            "gunsrpg:kar98k_penetrator",
+            "gunsrpg:kar98k_dead_eye"
+        ]
+    },
+    "properties": {
+        "level": 35,
+        "price": 5,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

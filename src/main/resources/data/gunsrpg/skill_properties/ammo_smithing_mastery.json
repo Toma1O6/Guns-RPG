@@ -1,13 +1,11 @@
 {
     "hierarchy": {
         "category": "gun",
-        "children": {
-            "values": [ "gunsrpg:gunpowder_expert" ]
-        }
+        "parent": "gunsrpg:netherite_ammo_smith"
     },
     "properties": {
-        "level": 0,
-        "price": 1,
+        "level": 60,
+        "price": 10,
         "transactionValidator": {
             "type": "gunsrpg:level"
         }
