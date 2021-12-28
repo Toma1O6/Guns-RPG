@@ -2,9 +2,9 @@
     "hierarchy": {
         "category": "gun",
         "parent": "gunsrpg:bone_grinder_i",
-        "children": {
-            "values": [ "gunsrpg:bone_grinder_iii" ]
-        }
+        "children": [
+            "gunsrpg:bone_grinder_iii"
+        ]
     },
     "properties": {
         "level": 15,

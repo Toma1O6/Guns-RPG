@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.common.init.ModRegistries;
@@ -54,35 +53,34 @@ public final class SkillPropertyLoader extends JsonReloadListener {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <S extends ISkill> void finishLoading(ResourceLocation skillKey, SkillType<S> context, JsonElement data) {
+    private void finishLoading(ResourceLocation skillKey, SkillType<?> context, JsonElement data) {
         try {
-            ILoadResult<S> result = GSON.fromJson(data, ILoadResult.class);
+            ILoadResult result = GSON.fromJson(data, ILoadResult.class);
             context.onDataAssign(result);
         } catch (JsonParseException jpe) {
             GunsRPG.log.error(MARKER, "Unable to load skill data for skill {}, error occurred {}", skillKey, jpe);
         }
     }
 
-    public interface ILoadResult<S extends ISkill> {
+    public interface ILoadResult {
 
-        ISkillHierarchy<S> hierarchy();
+        ISkillHierarchy hierarchy();
 
         ISkillProperties properties();
     }
 
-    public static class Result<S extends ISkill> implements ILoadResult<S> {
+    public static class Result implements ILoadResult {
 
-        private final ISkillHierarchy<S> hierarchy;
+        private final ISkillHierarchy hierarchy;
         private final ISkillProperties properties;
 
-        public Result(ISkillHierarchy<S> hierarchy, ISkillProperties properties) {
+        public Result(ISkillHierarchy hierarchy, ISkillProperties properties) {
             this.hierarchy = hierarchy;
             this.properties = properties;
         }
 
         @Override
-        public ISkillHierarchy<S> hierarchy() {
+        public ISkillHierarchy hierarchy() {
             return hierarchy;
         }
 

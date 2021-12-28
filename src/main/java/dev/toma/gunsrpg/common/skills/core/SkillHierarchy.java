@@ -1,22 +1,19 @@
 package dev.toma.gunsrpg.common.skills.core;
 
-import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 
-public class SkillHierarchy<S extends ISkill> implements ISkillHierarchy<S> {
+public class SkillHierarchy implements ISkillHierarchy {
 
     private final SkillCategory category;
     private final SkillType<?> parent;
     private final SkillType<?>[] children;
-    private final SkillType<S> override;
-    private final boolean isContainer;
+    private final SkillType<?>[] extensions;
 
-    public SkillHierarchy(SkillCategory category, SkillType<?> parent, SkillType<?>[] children, SkillType<S> override, boolean isContainer) {
+    public SkillHierarchy(SkillCategory category, SkillType<?> parent, SkillType<?>[] children, SkillType<?>[] extensions) {
         this.category = category;
         this.parent = parent;
         this.children = children;
-        this.override = override;
-        this.isContainer = isContainer;
+        this.extensions = extensions;
     }
 
     @Override
@@ -35,12 +32,7 @@ public class SkillHierarchy<S extends ISkill> implements ISkillHierarchy<S> {
     }
 
     @Override
-    public SkillType<S> getOverride() {
-        return override;
-    }
-
-    @Override
-    public boolean isContainer() {
-        return isContainer;
+    public SkillType<?>[] getExtensions() {
+        return extensions;
     }
 }

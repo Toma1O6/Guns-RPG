@@ -6,7 +6,6 @@ import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillHierarchy;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
@@ -14,61 +13,43 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import java.lang.reflect.Type;
 
-public class SkillHierarchyAdapter implements JsonDeserializer<ISkillHierarchy<?>> {
+public class SkillHierarchyAdapter implements JsonDeserializer<ISkillHierarchy> {
 
     @Override
-    public ISkillHierarchy<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public ISkillHierarchy deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject object = JsonHelper.asJsonObject(json);
         String categoryKey = JSONUtils.getAsString(object, "category");
         SkillCategory category = deserializeCategory(categoryKey);
         SkillType<?> parent = deserializeParent(object);
+        SkillType<?>[] children = deserializeChildren(object);
+        SkillType<?>[] extensions = deserializeExtensions(object);
+        return new SkillHierarchy(category, parent, children, extensions);
+    }
 
-        JsonObject childStructure = getChildObject(object);
-        boolean childOverrides = childStructure != null && useOnlyChildAsOverride(childStructure);
-        boolean isContainer = childStructure != null && isContainerForChildSkills(childStructure);
-        SkillType<?>[] children = childStructure != null ? deserializeChildren(childStructure) : null;
-
-        SkillType<?> override;
-        if (childOverrides) {
-            if (children.length != 1) {
-                throw new JsonSyntaxException("Cannot setup children array as automatic override because exactly 1 child is required. Got " + children.length);
-            }
-            override = children[0];
-        } else {
-            override = deserializeOverride(object);
+    private static SkillType<?>[] deserializeExtensions(JsonObject object) throws JsonParseException {
+        if (!object.has("extensions")) {
+            return null;
         }
-        validateSkillOverride(children, override);
-        return new SkillHierarchy<>(category, parent, children, override, isContainer);
-    }
-
-    private static void validateSkillOverride(SkillType<?>[] children, SkillType<?> override) throws JsonParseException {
-        if (override == null)
-            return;
-        if ((children == null && override != null) || !ModUtils.contains(override, children)) {
-            throw new JsonSyntaxException("Skill cannot be overriden by non-child skill type!");
+        JsonArray array = JSONUtils.getAsJsonArray(object, "extensions");
+        SkillType<?>[] ext = new SkillType[array.size()];
+        int index = 0;
+        for (JsonElement element : array) {
+            ext[index++] = parseSkillByKey(element.getAsString());
         }
-    }
-
-    private static SkillType<?> deserializeOverride(JsonObject object) throws JsonParseException {
-        return parseSkillFromObject(object, "override");
-    }
-
-    private static boolean useOnlyChildAsOverride(JsonObject object) throws JsonParseException {
-        return JSONUtils.getAsBoolean(object, "overrides", false);
-    }
-
-    private static boolean isContainerForChildSkills(JsonObject object) throws JsonParseException {
-        return JSONUtils.getAsBoolean(object, "container", false);
+        return ext;
     }
 
     private static SkillType<?>[] deserializeChildren(JsonObject object) throws JsonParseException {
-        JsonArray array = JSONUtils.getAsJsonArray(object, "values");
-        SkillType<?>[] children = new SkillType[array.size()];
-        int index = 0;
-        for (JsonElement element : array) {
-            children[index++] = parseSkillByKey(element.getAsString());
+        if (object.has("children")) {
+            JsonArray array = JSONUtils.getAsJsonArray(object, "children");
+            SkillType<?>[] children = new SkillType[array.size()];
+            int index = 0;
+            for (JsonElement element : array) {
+                children[index++] = parseSkillByKey(element.getAsString());
+            }
+            return children;
         }
-        return children;
+        return null;
     }
 
     private static SkillType<?> deserializeParent(JsonObject object) throws JsonParseException {

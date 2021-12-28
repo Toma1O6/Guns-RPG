@@ -1,17 +1,15 @@
 {
     "hierarchy": {
         "category": "gun",
-        "children": {
-            "values": [
-                "gunsrpg:m1911_assembly",
-                "gunsrpg:ump45_assembly",
-                "gunsrpg:crossbow_assembly",
-                "gunsrpg:s1897_assembly",
-                "gunsrpg:sks_assembly",
-                "gunsrpg:kar98k_assembly",
-                "gunsrpg:grenade_launcher_assembly"
-            ]
-        }
+        "children": [
+            "gunsrpg:m1911_assembly",
+            "gunsrpg:ump45_assembly",
+            "gunsrpg:crossbow_assembly",
+            "gunsrpg:s1897_assembly",
+            "gunsrpg:sks_assembly",
+            "gunsrpg:kar98k_assembly",
+            "gunsrpg:grenade_launcher_assembly"
+        ]
     },
     "properties": {
         "level": 5,

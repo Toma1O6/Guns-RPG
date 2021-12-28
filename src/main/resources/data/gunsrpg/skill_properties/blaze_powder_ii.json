@@ -2,9 +2,9 @@
     "hierarchy": {
         "category": "mining",
         "parent": "gunsrpg:blaze_powder_i",
-        "children": {
-            "values": [ "gunsrpg:blaze_powder_iii" ]
-        }
+        "children": [
+            "gunsrpg:blaze_powder_iii"
+        ]
     },
     "properties": {
         "level": 55,

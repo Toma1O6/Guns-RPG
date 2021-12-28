@@ -21,7 +21,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
     // internal data
     private DisplayData displayData;
     // datapack controlled data
-    private ISkillHierarchy<S> hierarchy;
+    private ISkillHierarchy hierarchy;
     private ISkillProperties properties;
 
     private SkillType(Builder<S> builder) {
@@ -39,7 +39,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
         return instanceFactory.create(this);
     }
 
-    public ISkillHierarchy<S> getHierarchy() {
+    public ISkillHierarchy getHierarchy() {
         return hierarchy;
     }
 

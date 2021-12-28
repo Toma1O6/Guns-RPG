@@ -2,12 +2,9 @@
     "hierarchy": {
         "category": "resistance",
         "parent": "gunsrpg:bleeding_resistance_i",
-        "children": {
-            "overrides": true,
-            "values": [
-                "gunsrpg:bleeding_resistance_iii"
-            ]
-        }
+        "children": [
+            "gunsrpg:bleeding_resistance_iii"
+        ]
     },
     "properties": {
         "level": 20,

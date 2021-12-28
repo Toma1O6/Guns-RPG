@@ -2,9 +2,9 @@
     "hierarchy": {
         "category": "gun",
         "parent": "gunsrpg:emerald_ammo_smith",
-        "children": {
-            "values": [ "gunsrpg:netherite_ammo_smith" ]
-        }
+        "children": [
+            "gunsrpg:netherite_ammo_smith"
+        ]
     },
     "properties": {
         "level": 45,

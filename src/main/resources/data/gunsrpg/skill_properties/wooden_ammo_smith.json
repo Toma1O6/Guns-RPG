@@ -1,9 +1,9 @@
 {
     "hierarchy": {
         "category": "gun",
-        "children": {
-            "values": [ "gunsrpg:stone_ammo_smith" ]
-        }
+        "children": [
+            "gunsrpg:stone_ammo_smith"
+        ]
     },
     "properties": {
         "level": 0,

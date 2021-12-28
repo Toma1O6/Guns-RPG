@@ -2,9 +2,9 @@
     "hierarchy": {
         "category": "gun",
         "parent": "gunsrpg:amethyst_ammo_smith",
-        "children": {
-            "values": [ "gunsrpg:ammo_smithing_mastery" ]
-        }
+        "children": [
+            "gunsrpg:ammo_smithing_mastery"
+        ]
     },
     "properties": {
         "level": 55,

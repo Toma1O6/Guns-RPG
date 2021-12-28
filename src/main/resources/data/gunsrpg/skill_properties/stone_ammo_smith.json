@@ -2,9 +2,9 @@
     "hierarchy": {
         "category": "gun",
         "parent": "gunsrpg:wooden_ammo_smith",
-        "children": {
-            "values": [ "gunsrpg:iron_ammo_smith" ]
-        }
+        "children": [
+            "gunsrpg:iron_ammo_smith"
+        ]
     },
     "properties": {
         "level": 5,

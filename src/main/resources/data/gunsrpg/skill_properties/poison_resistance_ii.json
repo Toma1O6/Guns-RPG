@@ -2,12 +2,9 @@
     "hierarchy": {
         "category": "resistance",
         "parent": "gunsrpg:poison_resistance_i",
-        "children": {
-            "overrides": true,
-            "values": [
-                "gunsrpg:poison_resistance_iii"
-            ]
-        }
+        "children": [
+            "gunsrpg:poison_resistance_iii"
+        ]
     },
     "properties": {
         "level": 20,

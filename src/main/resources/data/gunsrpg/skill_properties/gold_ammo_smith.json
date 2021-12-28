@@ -2,12 +2,10 @@
     "hierarchy": {
         "category": "gun",
         "parent": "gunsrpg:iron_ammo_smith",
-        "children": {
-            "values": [
-                "gunsrpg:redstone_ammo_smith",
-                "gunsrpg:diamond_ammo_smith"
-            ]
-        }
+        "children": [
+            "gunsrpg:redstone_ammo_smith",
+            "gunsrpg:diamond_ammo_smith"
+        ]
     },
     "properties": {
         "level": 15,

@@ -2,11 +2,9 @@
     "hierarchy": {
         "category": "resistance",
         "parent": "gunsrpg:pharmacist_i",
-        "children": {
-            "values": [
-                "gunsrpg:pharmacist_iii"
-            ]
-        }
+        "children": [
+            "gunsrpg:pharmacist_iii"
+        ]
     },
     "properties": {
         "level": 20,

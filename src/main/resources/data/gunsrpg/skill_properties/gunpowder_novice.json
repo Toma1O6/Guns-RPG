@@ -1,9 +1,9 @@
 {
     "hierarchy": {
         "category": "gun",
-        "children": {
-            "values": [ "gunsrpg:gunpowder_expert" ]
-        }
+        "children": [
+            "gunsrpg:gunpowder_expert"
+        ]
     },
     "properties": {
         "level": 0,

@@ -2,12 +2,10 @@
     "hierarchy": {
         "category": "gun",
         "parent": "gunsrpg:stone_ammo_smith",
-        "children": {
-            "values": [
-                "gunsrpg:lapis_ammo_smith",
-                "gunsrpg:gold_ammo_smith"
-            ]
-        }
+        "children": [
+            "gunsrpg:lapis_ammo_smith",
+            "gunsrpg:gold_ammo_smith"
+        ]
     },
     "properties": {
         "level": 10,

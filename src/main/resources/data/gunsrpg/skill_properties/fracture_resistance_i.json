@@ -1,12 +1,9 @@
 {
     "hierarchy": {
         "category": "resistance",
-        "children": {
-            "overrides": true,
-            "values": [
-                "gunsrpg:fracture_resistance_ii"
-            ]
-        }
+        "children": [
+            "gunsrpg:fracture_resistance_ii"
+        ]
     },
     "properties": {
         "level": 5,

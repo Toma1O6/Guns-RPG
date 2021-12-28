@@ -1,12 +1,9 @@
 {
     "hierarchy": {
         "category": "resistance",
-        "children": {
-            "overrides": true,
-            "values": [
-                "gunsrpg:acrobatics_ii"
-            ]
-        }
+        "children": [
+            "gunsrpg:acrobatics_ii"
+        ]
     },
     "properties": {
         "level": 5,

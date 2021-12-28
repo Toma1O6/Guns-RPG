@@ -2,9 +2,9 @@
     "hierarchy": {
         "category": "gun",
         "parent": "gunsrpg:gunpowder_novice",
-        "children": {
-            "values": [ "gunsrpg:gunpowder_master" ]
-        }
+        "children": [
+            "gunsrpg:gunpowder_master"
+        ]
     },
     "properties": {
         "level": 15,

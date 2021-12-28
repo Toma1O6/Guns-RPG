@@ -1,11 +1,9 @@
 {
     "hierarchy": {
         "category": "resistance",
-        "children": {
-            "values": [
-                "gunsrpg:doctor"
-            ]
-        }
+        "children": [
+            "gunsrpg:doctor"
+        ]
     },
     "properties": {
         "level": 10,

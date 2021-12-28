@@ -1,12 +1,10 @@
 {
     "hierarchy": {
         "category": "gun",
-        "children": {
-            "values": [
-                "gunsrpg:massive_grenades",
-                "gunsrpg:impact_grenades"
-            ]
-        }
+        "children": [
+            "gunsrpg:massive_grenades",
+            "gunsrpg:impact_grenades"
+        ]
     },
     "properties": {
         "level": 15,

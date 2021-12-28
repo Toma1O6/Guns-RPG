@@ -1,10 +1,9 @@
 package dev.toma.gunsrpg.api.common.skill;
 
-import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 
-public interface ISkillHierarchy<S extends ISkill> {
+public interface ISkillHierarchy {
 
     SkillCategory getCategory();
 
@@ -12,7 +11,5 @@ public interface ISkillHierarchy<S extends ISkill> {
 
     SkillType<?>[] getChildren();
 
-    SkillType<S> getOverride();
-
-    boolean isContainer();
+    SkillType<?>[] getExtensions();
 }
