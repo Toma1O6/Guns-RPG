@@ -1,0 +1,19 @@
+{
+    "hierarchy": {
+        "category": "resistance",
+        "parent": "gunsrpg:acrobatics_i",
+        "children": {
+            "overrides": true,
+            "values": [
+                "gunsrpg:acrobatics_iii"
+            ]
+        }
+    },
+    "properties": {
+        "level": 15,
+        "price": 3,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

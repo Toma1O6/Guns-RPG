@@ -103,6 +103,10 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
             return this.description(lines);
         }
 
+        public Builder<S> description(IDescriptionBuilder<S> builder) {
+            return this.description(1, builder);
+        }
+
         public Builder<S> title(Function<SkillType<S>, ITextComponent> titleBuilder) {
             this.titleBuilder = titleBuilder;
             return this;

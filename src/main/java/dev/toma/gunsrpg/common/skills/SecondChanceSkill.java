@@ -3,9 +3,12 @@ package dev.toma.gunsrpg.common.skills;
 import dev.toma.gunsrpg.api.common.ICooldown;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.util.IIntervalProvider;
+import dev.toma.gunsrpg.util.Interval;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 
 import java.util.function.Supplier;
@@ -17,11 +20,11 @@ public class SecondChanceSkill extends BasicSkill implements ICooldown {
     private final Supplier<EffectInstance> effectSupplier;
     private int cooldown;
 
-    public SecondChanceSkill(SkillType<?> type, int maxCooldown, int healAmount, Supplier<EffectInstance> effectSupplier) {
+    public SecondChanceSkill(SkillType<?> type, IIntervalProvider cooldown, int healAmount, int power) {
         super(type);
-        this.maxCooldown = maxCooldown;
+        this.maxCooldown = cooldown.getTicks();
         this.healAmount = healAmount;
-        this.effectSupplier = effectSupplier;
+        this.effectSupplier = () -> new EffectInstance(Effects.REGENERATION, Interval.seconds(10).valueIn(Interval.Unit.TICK), power);
     }
 
     @Override

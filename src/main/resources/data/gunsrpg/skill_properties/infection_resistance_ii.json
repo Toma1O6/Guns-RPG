@@ -1,0 +1,19 @@
+{
+    "hierarchy": {
+        "category": "resistance",
+        "parent": "gunsrpg:infection_resistance_i",
+        "children": {
+            "overrides": true,
+            "values": [
+                "gunsrpg:infection_resistance_iii"
+            ]
+        }
+    },
+    "properties": {
+        "level": 20,
+        "price": 3,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "hierarchy": {
+        "category": "resistance",
+        "parent": "gunsrpg:pharmacist_ii",
+        "children": {
+            "values": [
+                "gunsrpg:pharmacist_iv"
+            ]
+        }
+    },
+    "properties": {
+        "level": 35,
+        "price": 4,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

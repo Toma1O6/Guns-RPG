@@ -1,0 +1,18 @@
+{
+    "hierarchy": {
+        "category": "resistance",
+        "children": {
+            "overrides": true,
+            "values": [
+                "gunsrpg:bleeding_resistance_ii"
+            ]
+        }
+    },
+    "properties": {
+        "level": 5,
+        "price": 2,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

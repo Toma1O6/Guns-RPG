@@ -1,6 +1,5 @@
 package dev.toma.gunsrpg.common.attribute;
 
-import java.util.UUID;
 import static dev.toma.gunsrpg.util.Constants.ModifierIds.*;
 
 public final class Modifiers {

@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_SkillClickedPacket;
+import dev.toma.gunsrpg.util.Interval;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
@@ -20,7 +21,7 @@ public class GodHelpUsSkill extends BasicSkill implements ICooldown, IClickableS
 
     public GodHelpUsSkill(SkillType<?> type) {
         super(type);
-        this.maxCooldown = 108000;
+        this.maxCooldown = Interval.hours(1).merge(Interval.minutes(30)).valueIn(Interval.Unit.TICK);
     }
 
     @Override

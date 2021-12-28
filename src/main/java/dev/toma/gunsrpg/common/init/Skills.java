@@ -14,12 +14,7 @@ import net.minecraftforge.registries.ObjectHolder;
  */
 @ObjectHolder(GunsRPG.MODID)
 public class Skills {
-    public static final SkillType<AttributeSkill> GUNPOWDER_NOVICE = null;
-    public static final SkillType<AttributeSkill> GUNPOWDER_EXPERT = null;
-    public static final SkillType<AttributeSkill> GUNPOWDER_MASTER = null;
-    public static final SkillType<AttributeSkill> BONE_GRINDER_I = null;
-    public static final SkillType<AttributeSkill> BONE_GRINDER_II = null;
-    public static final SkillType<AttributeSkill> BONE_GRINDER_III = null;
+
     public static final SkillType<AttributeSkill> BLAZE_POWDER_I = null;
     public static final SkillType<AttributeSkill> BLAZE_POWDER_II = null;
     public static final SkillType<AttributeSkill> BLAZE_POWDER_III = null;
@@ -30,40 +25,10 @@ public class Skills {
     public static final SkillType<BasicSkill> S1897_ASSEMBLY = null;
     public static final SkillType<BasicSkill> SKS_ASSEMBLY = null;
     public static final SkillType<BasicSkill> KAR98K_ASSEMBLY = null;
-    public static final SkillType<BasicSkill> WOODEN_AMMO_SMITH = null;
-    public static final SkillType<BasicSkill> STONE_AMMO_SMITH = null;
-    public static final SkillType<BasicSkill> IRON_AMMO_SMITH = null;
-    public static final SkillType<BasicSkill> GOLD_AMMO_SMITH = null;
-    public static final SkillType<BasicSkill> DIAMOND_AMMO_SMITH = null;
-    public static final SkillType<BasicSkill> EMERALD_AMMO_SMITH = null;
-    public static final SkillType<BasicSkill> AMETHYST_AMMO_SMITH = null;
-    public static final SkillType<BasicSkill> AMMO_SMITHING_MASTERY = null;
     public static final SkillType<BasicSkill> GRENADES = null; // 5s fuse
     public static final SkillType<BasicSkill> MASSIVE_GRENADES = null; // +2 power
     public static final SkillType<BasicSkill> IMPACT_GRENADES = null;
-    public static final SkillType<BasicSkill> MEDIC = null;
-    public static final SkillType<BasicSkill> DOCTOR = null;
     public static final SkillType<BasicSkill> EFFICIENT_MEDS = null;
-    public static final SkillType<BasicSkill> PHARMACIST_I = null;
-    public static final SkillType<BasicSkill> PHARMACIST_II = null;
-    public static final SkillType<BasicSkill> PHARMACIST_III = null;
-    public static final SkillType<BasicSkill> PHARMACIST_IV = null;
-    public static final SkillType<BasicSkill> PHARMACIST_V = null;
-    public static final SkillType<AttributeSkill> POISON_RESISTANCE_I = null;
-    public static final SkillType<AttributeSkill> POISON_RESISTANCE_II = null;
-    public static final SkillType<AttributeSkill> POISON_RESISTANCE_III = null;
-    public static final SkillType<AttributeSkill> INFECTION_RESISTANCE_I = null;
-    public static final SkillType<AttributeSkill> INFECTION_RESISTANCE_II = null;
-    public static final SkillType<AttributeSkill> INFECTION_RESISTANCE_III = null;
-    public static final SkillType<AttributeSkill> FRACTURE_RESISTANCE_I = null;
-    public static final SkillType<AttributeSkill> FRACTURE_RESISTANCE_II = null;
-    public static final SkillType<AttributeSkill> FRACTURE_RESISTANCE_III = null;
-    public static final SkillType<AttributeSkill> BLEEDING_RESISTANCE_I = null;
-    public static final SkillType<AttributeSkill> BLEEDING_RESISTANCE_II = null;
-    public static final SkillType<AttributeSkill> BLEEDING_RESISTANCE_III = null;
-    public static final SkillType<AttributeSkill> ACROBATICS_I = null;
-    public static final SkillType<AttributeSkill> ACROBATICS_II = null;
-    public static final SkillType<AttributeSkill> ACROBATICS_III = null;
     public static final SkillType<AttributeSkill> SHARP_AXE_I = null;
     public static final SkillType<AttributeSkill> SHARP_AXE_II = null;
     public static final SkillType<AttributeSkill> SHARP_AXE_III = null;

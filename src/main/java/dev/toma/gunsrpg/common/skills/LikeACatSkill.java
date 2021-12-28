@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_SkillClickedPacket;
+import dev.toma.gunsrpg.util.IIntervalProvider;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -24,10 +25,10 @@ public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSk
     private int effectLeft;
     private int cooldown;
 
-    public LikeACatSkill(SkillType<?> type, int totalCooldown, int effectLength) {
+    public LikeACatSkill(SkillType<?> type, IIntervalProvider totalCooldown, IIntervalProvider effectLength) {
         super(type);
-        this.totalCooldown = totalCooldown;
-        this.effectLength = effectLength;
+        this.totalCooldown = totalCooldown.getTicks();
+        this.effectLength = effectLength.getTicks();
     }
 
     @Override
