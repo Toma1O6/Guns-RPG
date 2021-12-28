@@ -51,7 +51,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
      * Called when data are loaded from datapack for this particular instance.
      * @param result The loaded data
      */
-    public void onDataAssign(SkillPropertyLoader.ILoadResult<S> result) {
+    public void onDataAssign(SkillPropertyLoader.ILoadResult result) {
         hierarchy = result.hierarchy();
         properties = result.properties();
         displayData = displayDataFactory.apply(this);

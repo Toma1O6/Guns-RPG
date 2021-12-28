@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.client.screen.skill;
 
+import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -75,8 +76,9 @@ public class Tree {
         }
 
         TreeNode[] getChildrenNodes() {
-            SkillType<?>[] children = value.getHierarchy().getChildren();
-            if (ModUtils.isNullOrEmpty(children) || value.getHierarchy().isContainer()) {
+            ISkillHierarchy hierarchy = value.getHierarchy();
+            SkillType<?>[] children = hierarchy.getChildren();
+            if (ModUtils.isNullOrEmpty(children)) {
                 return null;
             }
             TreeNode[] out = new TreeNode[children.length];
