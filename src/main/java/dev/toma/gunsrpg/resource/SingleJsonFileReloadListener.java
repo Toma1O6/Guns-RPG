@@ -36,7 +36,7 @@ public abstract class SingleJsonFileReloadListener extends ReloadListener<JsonEl
         try (
             IResource resource = resourceManager.getResource(path);
             InputStream stream = resource.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))
         ) {
             JsonElement element = JSONUtils.fromJson(gson, reader, JsonElement.class);
             if (element != null) {

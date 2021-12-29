@@ -14,9 +14,9 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.Arrays;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
-@SuppressWarnings("unchecked")
 public class SkillUtil {
 
     public static ITextComponent getDefaultTitle(SkillType<?> type) {
@@ -65,6 +65,73 @@ public class SkillUtil {
 
     public static class Localizations {
 
+        public static <S extends ISkill> ITextComponent[] localizeWithInternalData(int lines, SkillType<S> type, Function<S, ITextComponent[]> generator) {
+            S data = type.getDataInstance();
+            ITextComponent[] components = generator.apply(data);
+            appendRequirementData(type, components);
+            return components;
+        }
+
+        public static ITextComponent[] localizeSharpAxeI(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.CHOPPING_I);
+        }
+
+        public static ITextComponent[] localizeSharpAxeII(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.CHOPPING_II);
+        }
+
+        public static ITextComponent[] localizeSharpAxeIII(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.CHOPPING_III);
+        }
+
+        public static ITextComponent[] localizeSharpAxeIV(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.CHOPPING_IV);
+        }
+
+        public static ITextComponent[] localizeSharpAxeV(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.CHOPPING_V);
+        }
+
+        public static ITextComponent[] localizeGraveDiggerI(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.DIGGING_I);
+        }
+
+        public static ITextComponent[] localizeGraveDiggerII(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.DIGGING_II);
+        }
+
+        public static ITextComponent[] localizeGraveDiggerIII(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.DIGGING_III);
+        }
+
+        public static ITextComponent[] localizeGraveDiggerIV(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.DIGGING_IV);
+        }
+
+        public static ITextComponent[] localizeGraveDiggerV(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.DIGGING_V);
+        }
+
+        public static ITextComponent[] localizeMiningI(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.MINING_I);
+        }
+
+        public static ITextComponent[] localizeMiningII(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.MINING_II);
+        }
+
+        public static ITextComponent[] localizeMiningIII(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.MINING_III);
+        }
+
+        public static ITextComponent[] localizeMiningIV(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.MINING_IV);
+        }
+
+        public static ITextComponent[] localizeMiningV(int lines, SkillType<AttributeSkill> type) {
+            return localizeMiningSkill(type, Modifiers.MINING_V);
+        }
+
         public static ITextComponent[] localizeAcrobaticsI(int lines, SkillType<AttributeSkill> type) {
             return localizeAcrobatics(type, Modifiers.ACROBATICS_FALL_I, Modifiers.ACROBATICS_EXPLOSION_I);
         }
@@ -89,7 +156,14 @@ public class SkillUtil {
             return localizeResist(type, Modifiers.DEBUFF_RESIST_III, Modifiers.DEBUFF_DELAY_III);
         }
 
-        private static ITextComponent[] localizeAcrobatics(SkillType<?> type, IAttributeModifier fall, IAttributeModifier explosion) {
+        public static ITextComponent[] localizeMiningSkill(SkillType<?> type, IAttributeModifier chop) {
+            ITextComponent[] components = new ITextComponent[3];
+            components[0] = translation(type, "speed", percent(chop));
+            appendRequirementData(type, components);
+            return components;
+        }
+
+        public static ITextComponent[] localizeAcrobatics(SkillType<?> type, IAttributeModifier fall, IAttributeModifier explosion) {
             ITextComponent[] components = new ITextComponent[5];
             components[0] = translation(type, "info");
             components[1] = translation(type, "fall", percent(fall));
@@ -98,7 +172,7 @@ public class SkillUtil {
             return components;
         }
 
-        private static ITextComponent[] localizeResist(SkillType<?> type, IAttributeModifier resist, IAttributeModifier delay) {
+        public static ITextComponent[] localizeResist(SkillType<?> type, IAttributeModifier resist, IAttributeModifier delay) {
             ITextComponent[] components = new ITextComponent[4];
             components[0] = translation(type, "chance", percent(resist));
             components[1] = translation(type, "delay", seconds(delay));
@@ -106,19 +180,23 @@ public class SkillUtil {
             return components;
         }
 
-        private static ITextComponent translation(SkillType<?> type, String name, IAttributeModifier... modifiers) {
+        public static ITextComponent translation(SkillType<?> type, String name, IAttributeModifier... modifiers) {
             return translation(type, name, Arrays.stream(modifiers).map(Localizations::seconds).toArray(Object[]::new));
         }
 
-        private static ITextComponent translation(SkillType<?> type, String name, Object... data) {
+        public static ITextComponent translation(SkillType<?> type, String name, Object... data) {
             return new TranslationTextComponent("skill." + ModUtils.convertToLocalization(type.getRegistryName()) + ".description." + name, data);
         }
 
-        private static int percent(IAttributeModifier modifier) {
-            return (int) (modifier.getModifierValue() * 100);
+        public static int percent(double value) {
+            return (int) (value * 100);
         }
 
-        private static int seconds(IAttributeModifier modifier) {
+        public static int percent(IAttributeModifier modifier) {
+            return percent(modifier.getModifierValue());
+        }
+
+        public static int seconds(IAttributeModifier modifier) {
             return (int) (modifier.getModifierValue() / 20);
         }
     }

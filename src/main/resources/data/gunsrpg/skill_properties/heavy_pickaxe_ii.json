@@ -1,0 +1,16 @@
+{
+    "hierarchy": {
+        "category": "mining",
+        "parent": "gunsrpg:heavy_pickaxe_i",
+        "children": [
+            "gunsrpg:heavy_pickaxe_iii"
+        ]
+    },
+    "properties": {
+        "level": 10,
+        "price": 2,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

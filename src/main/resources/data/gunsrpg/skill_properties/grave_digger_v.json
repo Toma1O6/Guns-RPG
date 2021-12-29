@@ -1,0 +1,13 @@
+{
+    "hierarchy": {
+        "category": "mining",
+        "parent": "gunsrpg:grave_digger_iv"
+    },
+    "properties": {
+        "level": 40,
+        "price": 4,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

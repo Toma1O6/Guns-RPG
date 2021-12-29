@@ -5,14 +5,6 @@ import dev.toma.gunsrpg.client.model.WeaponModels;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 
-
-/*
-//Hand render config
-//right
-
-//left
-
- */
 public class WinchesterRenderer extends AbstractWeaponRenderer {
 
     @Override

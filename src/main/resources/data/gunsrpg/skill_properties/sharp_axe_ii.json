@@ -1,0 +1,16 @@
+{
+    "hierarchy": {
+        "category": "mining",
+        "parent": "gunsrpg:sharp_axe_i",
+        "children": [
+            "gunsrpg:sharp_axe_iii"
+        ]
+    },
+    "properties": {
+        "level": 10,
+        "price": 2,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

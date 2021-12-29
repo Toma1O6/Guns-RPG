@@ -1,7 +1,10 @@
 package dev.toma.gunsrpg.common.skills;
 
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.Pair;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class LumberjackSkill extends BasicSkill {
 
@@ -19,6 +22,13 @@ public class LumberjackSkill extends BasicSkill {
         return Pair.of(chancesContainer.extraPlanks, chancesContainer.extraSticks);
     }
 
+    public ITextComponent[] generateDescription() {
+        ChancesContainer container = data[level - 1];
+        ITextComponent[] components = new ITextComponent[4];
+        container.append(getType(), components);
+        return components;
+    }
+
     private static final class ChancesContainer {
 
         private final float extraPlanks;
@@ -27,6 +37,11 @@ public class LumberjackSkill extends BasicSkill {
         public ChancesContainer(float extraPlanks, float extraSticks) {
             this.extraPlanks = extraPlanks;
             this.extraSticks = extraSticks;
+        }
+
+        private void append(SkillType<?> type, ITextComponent[] desc) {
+            desc[0] = SkillUtil.Localizations.translation(type, "planks", SkillUtil.Localizations.percent(extraPlanks));
+            desc[1] = SkillUtil.Localizations.translation(type, "sticks", SkillUtil.Localizations.percent(extraSticks));
         }
     }
 

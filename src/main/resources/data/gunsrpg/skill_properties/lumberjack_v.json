@@ -1,0 +1,13 @@
+{
+    "hierarchy": {
+        "category": "mining",
+        "parent": "gunsrpg:lumberjack_iv"
+    },
+    "properties": {
+        "level": 55,
+        "price": 6,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}
