@@ -11,9 +11,9 @@ public final class Attribs {
     private static final Map<ResourceLocation, IAttributeId> KEY_MAP = new HashMap<>();
 
     // crafting
-    public static final IAttributeId GUNPOWDER_OUTPUT           = createInternal("gunpowder_out", 0);
-    public static final IAttributeId BONEMEAL_OUTPUT            = createInternal("bonemeal_out", 0);
-    public static final IAttributeId BLAZEPOWDER_OUTPUT         = createInternal("blazepowder_out", 0);
+    public static final IAttributeId GUNPOWDER_OUTPUT           = createInternal("gunpowder_out", 0).display("count");
+    public static final IAttributeId BONEMEAL_OUTPUT            = createInternal("bonemeal_out", 0).display("count");
+    public static final IAttributeId BLAZEPOWDER_OUTPUT         = createInternal("blazepowder_out", 0).display("count");
     public static final IAttributeId AMMO_OUTPUT                = createInternal("ammo_output");
     public static final IAttributeId BOLT_OUTPUT                = createInternal("bolt_output", 2);
     // debuffs, healing
@@ -26,22 +26,22 @@ public final class Attribs {
     public static final IAttributeId VACCINE_EFFECT             = createInternal("vaccine_effect");
     public static final IAttributeId SPLINT_EFFECT              = createInternal("splint_effect");
     public static final IAttributeId BANDAGE_EFFECT             = createInternal("bandage_effect");
-    public static final IAttributeId POISON_RESISTANCE          = createInternal("poison_resistance", 0.0);
-    public static final IAttributeId POISON_DELAY               = createInternal("poison_delay", 140);
+    public static final IAttributeId POISON_RESISTANCE          = createInternal("poison_resistance", 0.0).display("resist", IValueFormatter.PERCENT);
+    public static final IAttributeId POISON_DELAY               = createInternal("poison_delay", 140).display("delay", IValueFormatter.SECONDS);
     public static final IAttributeId POISON_BLOCK               = createInternal("poison_block", 0);
-    public static final IAttributeId INFECTION_RESISTANCE       = createInternal("infection_resistance", 0.0);
-    public static final IAttributeId INFECTION_DELAY            = createInternal("infection_delay", 200);
+    public static final IAttributeId INFECTION_RESISTANCE       = createInternal("infection_resistance", 0.0).display("resist", IValueFormatter.PERCENT);
+    public static final IAttributeId INFECTION_DELAY            = createInternal("infection_delay", 200).display("delay", IValueFormatter.SECONDS);
     public static final IAttributeId INFECTION_BLOCK            = createInternal("infection_block", 0);
-    public static final IAttributeId FRACTURE_RESISTANCE        = createInternal("fracture_resistance", 0.0);
-    public static final IAttributeId FRACTURE_DELAY             = createInternal("fracture_delay", 240);
+    public static final IAttributeId FRACTURE_RESISTANCE        = createInternal("fracture_resistance", 0.0).display("resist", IValueFormatter.PERCENT);
+    public static final IAttributeId FRACTURE_DELAY             = createInternal("fracture_delay", 240).display("delay", IValueFormatter.SECONDS);
     public static final IAttributeId FRACTURE_BLOCK             = createInternal("fracture_block", 0);
-    public static final IAttributeId BLEED_RESISTANCE           = createInternal("bleed_resistance", 0.0);
-    public static final IAttributeId BLEED_DELAY                = createInternal("bleed_delay", 120);
+    public static final IAttributeId BLEED_RESISTANCE           = createInternal("bleed_resistance", 0.0).display("resist", IValueFormatter.PERCENT);
+    public static final IAttributeId BLEED_DELAY                = createInternal("bleed_delay", 120).display("delay", IValueFormatter.SECONDS);
     public static final IAttributeId BLEED_BLOCK                = createInternal("bleed_block", 0);
     public static final IAttributeId EXPLOSION_RESISTANCE       = createInternal("explosion_resistance", 0.0);
     public static final IAttributeId FALL_RESISTANCE            = createInternal("fall_resistance", 0.0);
     // global weapon attributes
-    public static final IAttributeId MELEE_DAMAGE               = createInternal("melee_damage"); // bonus damage
+    public static final IAttributeId MELEE_DAMAGE               = createInternal("melee_damage").display("damage"); // bonus damage
     public static final IAttributeId MELEE_COOLDOWN             = createInternal("melee_cooldown");
     public static final IAttributeId BOW_DAMAGE                 = createInternal("bow_damage");
     public static final IAttributeId PISTOL_DAMAGE              = createInternal("pistol_damage");
@@ -60,13 +60,13 @@ public final class Attribs {
     // general gameplay attributes
     public static final IAttributeId DAMAGE_TAKEN               = createInternal("damage_taken");
     public static final IAttributeId FALL_DAMAGE                = createInternal("fall_damage");
-    public static final IAttributeId DIGGING_SPEED              = createInternal("digging_speed"); // shovel
-    public static final IAttributeId MINING_SPEED               = createInternal("mining_speed"); // pickaxe
-    public static final IAttributeId WOODCUTTING_SPEED          = createInternal("woodcutting_speed"); // axe
-    public static final IAttributeId MOVEMENT_SPEED             = createInternal("movement_speed", 0.1);
+    public static final IAttributeId DIGGING_SPEED              = createInternal("digging_speed").display("speed", IValueFormatter.PERCENT); // shovel
+    public static final IAttributeId MINING_SPEED               = createInternal("mining_speed").display("speed", IValueFormatter.PERCENT); // pickaxe
+    public static final IAttributeId WOODCUTTING_SPEED          = createInternal("woodcutting_speed").display("speed", IValueFormatter.PERCENT); // axe
+    public static final IAttributeId MOVEMENT_SPEED             = createInternal("movement_speed", 0.1).display("speed", IValueFormatter.PERCENT);
     public static final IAttributeId PERK_BOOK_CHANCE           = createInternal("perk_book_chance");
     public static final IAttributeId SKILL_BOOK_CHANCE          = createInternal("skill_book_chance");
-    public static final IAttributeId INSTANT_KILL               = createInternal("instant_kill", 0.0);
+    public static final IAttributeId INSTANT_KILL               = createInternal("instant_kill", 0.0).display("chance", IValueFormatter.PERCENT);
     // skill attributes
     public static final IAttributeId AIRDROP_CALL_COOLDOWN      = createInternal("airdrop_call_cooldown");
     public static final IAttributeId SECOND_CHANCE_COOLDOWN     = createInternal("second_chance_cooldown");
@@ -131,21 +131,21 @@ public final class Attribs {
         }
     }
 
-    public static IAttributeId registerId(IAttributeId id) {
+    public static <I extends IAttributeId> I registerId(I id) {
         KEY_MAP.put(id.getId(), id);
         return id;
     }
 
-    private static IAttributeId createInternal(String name) {
+    private static AttributeId createInternal(String name) {
         return createInternal(name, 1.0D);
     }
 
-    private static IAttributeId createInternal(String name, double base) {
+    private static AttributeId createInternal(String name, double base) {
         return createInternal(name, base, Attribute::new);
     }
 
-    private static IAttributeId createInternal(String name, double base, AttributeId.IAttribFactory factory) {
-        IAttributeId id = AttributeId.create(GunsRPG.makeResource(name), base, factory);
+    private static AttributeId createInternal(String name, double base, AttributeId.IAttribFactory factory) {
+        AttributeId id = AttributeId.create(GunsRPG.makeResource(name), base, factory);
         return registerId(id);
     }
 

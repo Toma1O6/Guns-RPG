@@ -1,14 +1,13 @@
 {
     "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:blacksmith",
+        "category": "survival",
         "children": [
-            "gunsrpg:blaze_powder_ii"
+            "gunsrpg:master_chef"
         ]
     },
     "properties": {
-        "level": 45,
-        "price": 3,
+        "level": 20,
+        "price": 2,
         "transactionValidator": {
             "type": "gunsrpg:level"
         }

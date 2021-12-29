@@ -80,8 +80,8 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
     public static class Builder<S extends ISkill> {
 
         private final IFactory<S> factory;
-        private Function<SkillType<S>, ITextComponent> titleBuilder = SkillUtil::getDefaultTitle;
-        private IDescriptionBuilder<S> descriptionBuilder = SkillUtil::getDefaultDescription;
+        private Function<SkillType<S>, ITextComponent> titleBuilder = SkillUtil.Localizations::getDefaultTitle;
+        private IDescriptionBuilder<S> descriptionBuilder = SkillUtil.Localizations::getDefaultDescription;
         private Function<SkillType<S>, DisplayData> displayDataFactory = SkillUtil::getDefaultDisplayData;
         private int descriptionLines = 1;
 
@@ -124,7 +124,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
 
         private void validate() {
             Preconditions.checkNotNull(factory, "Instance factory cannot be null");
-            Preconditions.checkState(descriptionLines > 0, "Skill type must have atleast one description line");
+            Preconditions.checkState(descriptionLines >= 0, "Skill type cannot have negative count of description lines");
         }
     }
 

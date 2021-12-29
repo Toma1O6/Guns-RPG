@@ -15,7 +15,7 @@ public final class Interval implements IIntervalProvider {
         this.value = value;
     }
 
-    public Interval merge(Interval other) {
+    public Interval append(Interval other) {
         int value = convert(other.unit, other.value, unit);
         return new Interval(unit, this.value + value);
     }

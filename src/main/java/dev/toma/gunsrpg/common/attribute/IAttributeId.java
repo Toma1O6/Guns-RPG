@@ -9,4 +9,10 @@ public interface IAttributeId {
     IAttribute createNewInstance();
 
     double getBaseValue();
+
+    String getDisplayTag();
+
+    boolean hasDisplayTag();
+
+    IValueFormatter getFormatter();
 }

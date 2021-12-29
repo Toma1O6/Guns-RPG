@@ -18,7 +18,7 @@ public class TestIntervals {
     public void testToTicks() {
         assertEquals(60, Interval.seconds(3).valueIn(Interval.Unit.TICK));
         assertEquals(4800, Interval.minutes(4800).valueIn(Interval.Unit.TICK));
-        assertEquals(108000, Interval.hours(1).merge(Interval.minutes(30)).valueIn(Interval.Unit.TICK));
+        assertEquals(108000, Interval.hours(1).append(Interval.minutes(30)).valueIn(Interval.Unit.TICK));
         assertEquals(48000, Interval.mcDays(2).valueIn(Interval.Unit.TICK));
     }
 

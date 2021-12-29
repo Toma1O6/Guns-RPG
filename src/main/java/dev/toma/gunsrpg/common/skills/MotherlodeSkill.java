@@ -1,7 +1,9 @@
 package dev.toma.gunsrpg.common.skills;
 
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.Pair;
+import net.minecraft.util.text.ITextComponent;
 
 public class MotherlodeSkill extends BasicSkill {
 
@@ -19,6 +21,13 @@ public class MotherlodeSkill extends BasicSkill {
         return Pair.of(chancesContainer.doubleDrop, chancesContainer.trippleDrop);
     }
 
+    public ITextComponent[] generateDescription() {
+        ChancesContainer chancesContainer = data[level - 1];
+        ITextComponent[] components = new ITextComponent[chancesContainer.getParameterCount() + 2];
+        chancesContainer.appendInfo(getType(), components);
+        return components;
+    }
+
     private static class ChancesContainer {
 
         private final float doubleDrop;
@@ -27,6 +36,17 @@ public class MotherlodeSkill extends BasicSkill {
         public ChancesContainer(float doubleDrop, float trippleDrop) {
             this.doubleDrop = doubleDrop;
             this.trippleDrop = trippleDrop;
+        }
+
+        int getParameterCount() {
+            return trippleDrop > 0 ? 2 : 1;
+        }
+
+        void appendInfo(SkillType<?> type, ITextComponent[] components) {
+            components[0] = SkillUtil.Localizations.translation(type, "double", SkillUtil.Localizations.percent(doubleDrop));
+            if (trippleDrop > 0) {
+                components[1] = SkillUtil.Localizations.translation(type, "tripple", SkillUtil.Localizations.percent(trippleDrop));
+            }
         }
     }
 

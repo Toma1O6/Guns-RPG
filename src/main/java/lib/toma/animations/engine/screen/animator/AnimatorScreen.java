@@ -39,7 +39,7 @@ public class AnimatorScreen extends Screen {
     private static final ITextComponent NEW_PROJECT = new TranslationTextComponent("screen.animator.new_project");
     private static final ITextComponent OPEN = new TranslationTextComponent("screen.animator.open");
     private static final ITextComponent SET_BACKGROUND = new TranslationTextComponent("screen.animator.set_background");
-    private static final ITextComponent MERGE = new TranslationTextComponent("screen.animator.merge");
+    private static final ITextComponent MERGE = new TranslationTextComponent("screen.animator.append");
     private static final ITextComponent SAVE = new TranslationTextComponent("screen.animator.save");
     private static final ITextComponent SAVE_AS = new TranslationTextComponent("screen.animator.save_as");
     private static final ITextComponent SETTINGS = new TranslationTextComponent("screen.animator.settings");

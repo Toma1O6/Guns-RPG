@@ -1,10 +1,10 @@
 {
     "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:blaze_powder_ii"
+        "category": "survival",
+        "parent": "gunsrpg:adrenaline_rush_ii"
     },
     "properties": {
-        "level": 65,
+        "level": 40,
         "price": 5,
         "transactionValidator": {
             "type": "gunsrpg:level"

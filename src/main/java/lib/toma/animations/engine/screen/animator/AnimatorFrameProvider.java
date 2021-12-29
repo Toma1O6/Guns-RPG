@@ -207,7 +207,7 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
     }
 
     public void merge(AnimatorFrameProvider provider, float start, float end) {
-        // frame merge
+        // frame append
         for (Map.Entry<AnimationStage, List<MutableKeyframe>> entry : provider.frameMap.entrySet()) {
             AnimationStage stage = entry.getKey();
             List<MutableKeyframe> frames = entry.getValue();
@@ -219,7 +219,7 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
                 addFrame(stage, copy);
             }
         }
-        // event merge
+        // event append
         for (IAnimationEvent event : provider.eventList) {
             float mergePoint = start + event.invokeAt() * (end - start);
             addEvent(event.copyAt(mergePoint));

@@ -1,6 +1,6 @@
 {
     "hierarchy": {
-        "category": "mining",
+        "category": "gun",
         "parent": "gunsrpg:blaze_powder_i",
         "children": [
             "gunsrpg:blaze_powder_iii"

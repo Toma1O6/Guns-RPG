@@ -1,7 +1,6 @@
 {
     "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:blaze_powder_ii"
+        "category": "survival"
     },
     "properties": {
         "level": 65,

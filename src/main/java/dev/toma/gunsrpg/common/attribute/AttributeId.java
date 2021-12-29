@@ -9,6 +9,8 @@ public class AttributeId implements IAttributeId {
     private final ResourceLocation id;
     private final IAttribFactory factory;
     private final double baseValue;
+    private String displayTag;
+    private IValueFormatter formatter = IValueFormatter.IDENTITY;
 
     private AttributeId(ResourceLocation id, IAttribFactory factory, double baseValue) {
         this.id = id;
@@ -16,12 +18,22 @@ public class AttributeId implements IAttributeId {
         this.baseValue = baseValue;
     }
 
-    public static IAttributeId create(ResourceLocation id, double base, IAttribFactory factory) {
+    public static AttributeId create(ResourceLocation id, double base, IAttribFactory factory) {
         return new AttributeId(
                 Objects.requireNonNull(id),
                 Objects.requireNonNull(factory),
                 base
         );
+    }
+
+    public AttributeId display(String tag) {
+        return this.display(tag, formatter);
+    }
+
+    public AttributeId display(String tag, IValueFormatter formatter) {
+        this.displayTag = tag;
+        this.formatter = formatter;
+        return this;
     }
 
     @Override
@@ -37,6 +49,21 @@ public class AttributeId implements IAttributeId {
     @Override
     public IAttribute createNewInstance() {
         return factory.constructAttribute(this);
+    }
+
+    @Override
+    public String getDisplayTag() {
+        return displayTag;
+    }
+
+    @Override
+    public boolean hasDisplayTag() {
+        return displayTag != null && !displayTag.isEmpty();
+    }
+
+    @Override
+    public IValueFormatter getFormatter() {
+        return formatter;
     }
 
     @Override

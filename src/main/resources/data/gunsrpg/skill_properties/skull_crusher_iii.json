@@ -1,11 +1,11 @@
 {
     "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:blaze_powder_ii"
+        "category": "survival",
+        "parent": "gunsrpg:skull_crusher_ii"
     },
     "properties": {
-        "level": 65,
-        "price": 5,
+        "level": 60,
+        "price": 6,
         "transactionValidator": {
             "type": "gunsrpg:level"
         }

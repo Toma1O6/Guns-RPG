@@ -1,11 +1,11 @@
 {
     "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:blaze_powder_ii"
+        "category": "mining",
+        "parent": "gunsrpg:motherlode_iv"
     },
     "properties": {
         "level": 65,
-        "price": 5,
+        "price": 7,
         "transactionValidator": {
             "type": "gunsrpg:level"
         }

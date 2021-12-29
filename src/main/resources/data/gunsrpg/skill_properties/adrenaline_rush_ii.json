@@ -1,13 +1,13 @@
 {
     "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:blacksmith",
+        "category": "survival",
+        "parent": "gunsrpg:adrenaline_rush_i",
         "children": [
-            "gunsrpg:blaze_powder_ii"
+            "gunsrpg:adrenaline_rush_iii"
         ]
     },
     "properties": {
-        "level": 45,
+        "level": 25,
         "price": 3,
         "transactionValidator": {
             "type": "gunsrpg:level"

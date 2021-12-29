@@ -21,7 +21,7 @@ public class GodHelpUsSkill extends BasicSkill implements ICooldown, IClickableS
 
     public GodHelpUsSkill(SkillType<?> type) {
         super(type);
-        this.maxCooldown = Interval.hours(1).merge(Interval.minutes(30)).valueIn(Interval.Unit.TICK);
+        this.maxCooldown = Interval.hours(1).append(Interval.minutes(30)).valueIn(Interval.Unit.TICK);
     }
 
     @Override

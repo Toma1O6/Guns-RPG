@@ -1,13 +1,13 @@
 {
     "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:blacksmith",
+        "category": "survival",
+        "parent": "gunsrpg:agility_i",
         "children": [
-            "gunsrpg:blaze_powder_ii"
+            "gunsrpg:agility_iii"
         ]
     },
     "properties": {
-        "level": 45,
+        "level": 20,
         "price": 3,
         "transactionValidator": {
             "type": "gunsrpg:level"
