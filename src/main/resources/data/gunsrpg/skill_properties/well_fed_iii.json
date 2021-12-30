@@ -1,0 +1,13 @@
+{
+    "hierarchy": {
+        "category": "survival",
+        "parent": "gunsrpg:well_fed_ii"
+    },
+    "properties": {
+        "level": 55,
+        "price": 5,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

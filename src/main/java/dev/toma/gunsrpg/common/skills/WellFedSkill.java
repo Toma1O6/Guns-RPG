@@ -1,18 +1,24 @@
 package dev.toma.gunsrpg.common.skills;
 
+import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
+import dev.toma.gunsrpg.common.attribute.IValueFormatter;
 import dev.toma.gunsrpg.common.init.ModSounds;
+import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.ITextComponent;
 
 import java.util.Random;
 
-public class WellFedSkill extends BasicSkill {
+public class WellFedSkill extends BasicSkill implements IDescriptionProvider {
 
+    private final DescriptionContainer container;
     private final int level;
     private final float chance;
 
@@ -20,6 +26,13 @@ public class WellFedSkill extends BasicSkill {
         super(type);
         this.level = level;
         this.chance = chance;
+        this.container = new DescriptionContainer(type);
+        this.container.addProperty("chance", IValueFormatter.PERCENT.formatAttributeValue(chance));
+    }
+
+    @Override
+    public ITextComponent[] supplyDescription(int desiredLineCount) {
+        return container.getLines();
     }
 
     public void applyEffects(PlayerEntity player) {

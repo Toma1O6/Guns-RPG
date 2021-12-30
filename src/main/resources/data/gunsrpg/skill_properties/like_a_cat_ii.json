@@ -1,0 +1,16 @@
+{
+    "hierarchy": {
+        "category": "survival",
+        "parent": "gunsrpg:like_a_cat_i",
+        "children": [
+            "gunsrpg:like_a_cat_iii"
+        ]
+    },
+    "properties": {
+        "level": 30,
+        "price": 3,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

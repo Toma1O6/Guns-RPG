@@ -27,7 +27,7 @@ public class AdrenalineRushSkill extends BasicSkill implements IDescriptionProvi
         int first = desiredLineCount - 1;
         components[first] = SkillUtil.Localizations.translation(getType(), "attack", IValueFormatter.INV_PERCENT.formatAttributeValue(getAttackSpeedBoost()));
         components[first + 1] = SkillUtil.Localizations.translation(getType(), "reload", IValueFormatter.PERCENT.formatAttributeValue(getReloadMultiplier()));
-        return new ITextComponent[0];
+        return components;
     }
 
     public float getAttackSpeedBoost() {

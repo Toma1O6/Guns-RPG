@@ -1,0 +1,13 @@
+{
+    "hierarchy": {
+        "category": "survival",
+        "parent": "gunsrpg:second_chance_ii"
+    },
+    "properties": {
+        "level": 90,
+        "price": 10,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

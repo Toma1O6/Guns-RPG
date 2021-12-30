@@ -4,11 +4,14 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.common.IClickableSkill;
 import dev.toma.gunsrpg.api.common.ICooldown;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
+import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_SkillClickedPacket;
 import dev.toma.gunsrpg.util.IIntervalProvider;
+import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -17,9 +20,11 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.text.ITextComponent;
 
-public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSkill {
+public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSkill, IDescriptionProvider {
 
+    private final DescriptionContainer container;
     private final int effectLength;
     private final int totalCooldown;
     private int effectLeft;
@@ -29,6 +34,14 @@ public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSk
         super(type);
         this.totalCooldown = totalCooldown.getTicks();
         this.effectLength = effectLength.getTicks();
+        this.container = new DescriptionContainer(type);
+        this.container.addProperty("effect", Interval.format(effectLeft, Interval.Unit.TICK, Interval.Unit.MINUTE, Interval.Unit.SECOND));
+        this.container.addProperty("cooldown", Interval.format(this.totalCooldown, Interval.Unit.TICK, Interval.Unit.MINUTE, Interval.Unit.SECOND));
+    }
+
+    @Override
+    public ITextComponent[] supplyDescription(int desiredLineCount) {
+        return container.getLines();
     }
 
     @Override

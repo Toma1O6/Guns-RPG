@@ -1,7 +1,9 @@
 package dev.toma.gunsrpg.common.skills;
 
 import dev.toma.gunsrpg.api.common.ICooldown;
+import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
 import dev.toma.gunsrpg.common.init.ModSounds;
+import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.IIntervalProvider;
 import dev.toma.gunsrpg.util.Interval;
@@ -10,11 +12,13 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.ITextComponent;
 
 import java.util.function.Supplier;
 
-public class SecondChanceSkill extends BasicSkill implements ICooldown {
+public class SecondChanceSkill extends BasicSkill implements ICooldown, IDescriptionProvider {
 
+    private final DescriptionContainer container;
     private final int maxCooldown;
     private final int healAmount;
     private final Supplier<EffectInstance> effectSupplier;
@@ -25,6 +29,14 @@ public class SecondChanceSkill extends BasicSkill implements ICooldown {
         this.maxCooldown = cooldown.getTicks();
         this.healAmount = healAmount;
         this.effectSupplier = () -> new EffectInstance(Effects.REGENERATION, Interval.seconds(10).valueIn(Interval.Unit.TICK), power);
+        this.container = new DescriptionContainer(type);
+        this.container.addProperty("heal", healAmount);
+        this.container.addProperty("cooldown", Interval.format(maxCooldown, Interval.Unit.TICK, Interval.Unit.MINUTE, Interval.Unit.SECOND));
+    }
+
+    @Override
+    public ITextComponent[] supplyDescription(int desiredLineCount) {
+        return container.getLines();
     }
 
     @Override

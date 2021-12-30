@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.util;
 
+import java.util.Arrays;
+
 /**
  * Helper class which converts various time units to mc time
  *
@@ -30,6 +32,20 @@ public final class Interval implements IIntervalProvider {
     @Override
     public int getTicks() {
         return unit == Unit.TICK ? value : valueIn(Unit.TICK);
+    }
+
+    public String format(Unit... values) {
+        StringBuilder builder = new StringBuilder();
+        Unit[] sorted = Arrays.stream(values).sorted((o1, o2) -> o2.tickValue - o1.tickValue).toArray(Unit[]::new);
+        int value = this.value;
+        for (Unit unit : sorted) {
+            int unitValue = value / unit.tickValue;
+            if (unitValue > 0) {
+                value = value % unit.tickValue;
+            }
+            builder.append(unitValue).append(unit.id);
+        }
+        return builder.toString();
     }
 
     /**
@@ -63,18 +79,25 @@ public final class Interval implements IIntervalProvider {
         return new Interval(Unit.MC_DAY, days);
     }
 
+    public static String format(int value, Unit unit, Unit... out) {
+        Interval interval = new Interval(unit, value);
+        return interval.format(out);
+    }
+
     public enum Unit {
 
-        TICK(1),
-        SECOND(20),
-        MINUTE(60 * 20),
-        HOUR(60 * 60 * 20),
-        MC_DAY(24000);
+        TICK(1, 't'),
+        SECOND(20, 's'),
+        MINUTE(60 * 20, 'm'),
+        HOUR(60 * 60 * 20, 'h'),
+        MC_DAY(24000, 'd');
 
         final int tickValue;
+        final char id;
 
-        Unit(int tickValue) {
+        Unit(int tickValue, char id) {
             this.tickValue = tickValue;
+            this.id = id;
         }
     }
 }
