@@ -3,6 +3,7 @@ package lib.toma.animations.api.event;
 import com.google.gson.*;
 import lib.toma.animations.api.IAnimation;
 import lib.toma.animations.engine.AbstractAnimationEvent;
+import lib.toma.animations.engine.screen.SelectionButton;
 import lib.toma.animations.engine.screen.animator.dialog.EventCreateDialog;
 import lib.toma.animations.engine.screen.animator.dialog.EventDialogContext;
 import lib.toma.animations.engine.screen.animator.dialog.SuggestionResponder;
@@ -26,26 +27,39 @@ public class SoundAnimationEvent extends AbstractAnimationEvent {
     private final SoundEvent sound;
     private final float volume;
     private final float pitch;
+    private final FlowDirection direction;
 
-    protected SoundAnimationEvent(AnimationEventType<? extends SoundAnimationEvent> type, float target, SoundEvent sound, float volume, float pitch) {
+    protected SoundAnimationEvent(AnimationEventType<? extends SoundAnimationEvent> type, float target, SoundEvent sound, float volume, float pitch, FlowDirection direction) {
         super(type, target);
         this.sound = sound;
         this.volume = volume;
         this.pitch = pitch;
+        this.direction = direction;
     }
 
-    public SoundAnimationEvent(float target, SoundEvent sound, float volume, float pitch) {
-        this(AnimationEventType.SOUND, target, sound, volume, pitch);
+    public SoundAnimationEvent(float target, SoundEvent sound, float volume, float pitch, FlowDirection direction) {
+        this(AnimationEventType.SOUND, target, sound, volume, pitch, direction);
     }
 
     @Override
     public void dispatch(Minecraft client, IAnimation fromAnimation) {
+        if (fromAnimation instanceof IAnimationDirectionProvider) {
+            FlowDirection direction = ((IAnimationDirectionProvider) fromAnimation).getDirection();
+            if (this.direction.isMatch(direction)) {
+                play(client);
+            }
+        } else {
+            play(client);
+        }
+    }
+
+    private void play(Minecraft client) {
         client.player.playSound(sound, volume, pitch);
     }
 
     @Override
     public IAnimationEvent copyAt(float target) {
-        return new SoundAnimationEvent(target, sound, volume, pitch);
+        return new SoundAnimationEvent(target, sound, volume, pitch, direction);
     }
 
     public static final class Serializer implements IAnimationEventSerializer<SoundAnimationEvent> {
@@ -56,6 +70,7 @@ public class SoundAnimationEvent extends AbstractAnimationEvent {
             object.addProperty("sound", event.sound.getRegistryName().toString());
             object.addProperty("volume", event.volume);
             object.addProperty("pitch", event.pitch);
+            object.addProperty("direction", event.direction.ordinal());
             return object;
         }
 
@@ -70,7 +85,8 @@ public class SoundAnimationEvent extends AbstractAnimationEvent {
                 throw new JsonSyntaxException("Unknown sound: " + location);
             float volume = JSONUtils.getAsFloat(object, "volume", 1.0F);
             float pitch = JSONUtils.getAsFloat(object, "pitch", 1.0F);
-            return new SoundAnimationEvent(target, event, volume, pitch);
+            FlowDirection direction = FlowDirection.byId(JSONUtils.getAsInt(object, "direction", 0));
+            return new SoundAnimationEvent(target, event, volume, pitch, direction);
         }
     }
 
@@ -80,6 +96,7 @@ public class SoundAnimationEvent extends AbstractAnimationEvent {
         private Slider pitchSlider;
         private SoundEvent selectedSound;
         private ListView<SoundEvent> soundSelector;
+        private SelectionButton<FlowDirection> directionSelector;
 
         public AddSoundEventDialog(EventDialogContext<SoundAnimationEvent> context) {
             super(context);
@@ -90,12 +107,13 @@ public class SoundAnimationEvent extends AbstractAnimationEvent {
             EventDialogContext<SoundAnimationEvent> context = getContext();
             float volume = (float) volumeSlider.getValue();
             float pitch = (float) pitchSlider.getValue();
-            return new SoundAnimationEvent(context.getTarget(), selectedSound, volume, pitch);
+            FlowDirection direction = directionSelector.getValue();
+            return new SoundAnimationEvent(context.getTarget(), selectedSound, volume, pitch, direction);
         }
 
         @Override
         protected void preInit() {
-            setDimensions(width - 20, 240);
+            setDimensions(width - 20, 265);
         }
 
         @Override
@@ -110,8 +128,9 @@ public class SoundAnimationEvent extends AbstractAnimationEvent {
             soundSelector.setFormatter(sound -> sound.getRegistryName().toString());
             volumeSlider = addButton(new Slider(left() + 5, top() + 165, elWidth, 20, new StringTextComponent("Volume: "), StringTextComponent.EMPTY, 0.0, 1.0, 1.0, true, true, btn -> {}));
             pitchSlider = addButton(new Slider(left() + 5, top() + 190, elWidth, 20, new StringTextComponent("Pitch: "), StringTextComponent.EMPTY, 0.0, 1.0, 1.0, true, true, btn -> {}));
-            cancel = addButton(new Button(left() + 5, top() + 215, btWidth, 20, CANCEL, this::cancel_clicked));
-            confirm = addButton(new Button(left() + 10 + btWidth, top() + 215, btWidth, 20, CONFIRM, this::confirm_clicked));
+            directionSelector = addButton(new SelectionButton<>(left() + 5, top() + 215, elWidth, 20, FlowDirection.values())).formatter(FlowDirection::format);
+            cancel = addButton(new Button(left() + 5, top() + 240, btWidth, 20, CANCEL, this::cancel_clicked));
+            confirm = addButton(new Button(left() + 10 + btWidth, top() + 240, btWidth, 20, CONFIRM, this::confirm_clicked));
 
             updateConfirmButton();
         }
