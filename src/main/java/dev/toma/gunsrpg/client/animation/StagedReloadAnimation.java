@@ -7,18 +7,21 @@ import lib.toma.animations.Keyframes;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.IKeyframeProvider;
+import lib.toma.animations.api.event.FlowDirection;
+import lib.toma.animations.api.event.IAnimationDirectionProvider;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-public class StagedReloadAnimation implements IModifiableProgress {
+public class StagedReloadAnimation implements IModifiableProgress, IAnimationDirectionProvider {
 
     private final BooleanSupplier finished;
     private final Supplier<Float> progressFetcher;
     private final Map<AnimationStage, IKeyframe[]> frameCache;
     private float progress, progressOld, progressInterpolated;
+    private FlowDirection direction = FlowDirection.FORWARD;
 
     public StagedReloadAnimation(IKeyframeProvider provider, BooleanSupplier finished, Supplier<Float> progressFetcher) {
         this.frameCache = provider.getFrameMap();
@@ -27,9 +30,15 @@ public class StagedReloadAnimation implements IModifiableProgress {
     }
 
     @Override
+    public FlowDirection getDirection() {
+        return direction;
+    }
+
+    @Override
     public void gameTick() {
         progressOld = progress;
         progress = getProgress();
+        direction = progress > progressOld ? FlowDirection.FORWARD : progress < progressOld ? FlowDirection.BACKWARD : direction;
     }
 
     @Override
