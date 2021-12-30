@@ -1,13 +1,16 @@
 package lib.toma.animations;
 
 import lib.toma.animations.api.*;
+import lib.toma.animations.api.event.IAnimationEvent;
 import lib.toma.animations.api.lifecycle.Registries;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -61,5 +64,10 @@ public class AnimationUtils {
 
     public static float linearInterpolate(float value, float prevValue, float delta) {
         return prevValue + (value - prevValue) * delta;
+    }
+
+    public static void dispatchEvents(float current, float prev, IAnimation source, IAnimationEvent[] eventCollection) {
+        Minecraft client = Minecraft.getInstance();
+        Arrays.stream(eventCollection).filter(event -> event.invokeAt() <= current && event.invokeAt() > prev).forEach(event -> event.dispatch(client, source));
     }
 }
