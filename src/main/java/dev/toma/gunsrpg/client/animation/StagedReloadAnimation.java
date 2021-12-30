@@ -9,6 +9,7 @@ import lib.toma.animations.api.IKeyframe;
 import lib.toma.animations.api.IKeyframeProvider;
 import lib.toma.animations.api.event.FlowDirection;
 import lib.toma.animations.api.event.IAnimationDirectionProvider;
+import lib.toma.animations.api.event.IAnimationEvent;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 
 import java.util.Map;
@@ -20,6 +21,7 @@ public class StagedReloadAnimation implements IModifiableProgress, IAnimationDir
     private final BooleanSupplier finished;
     private final Supplier<Float> progressFetcher;
     private final Map<AnimationStage, IKeyframe[]> frameCache;
+    private final IAnimationEvent[] events;
     private float progress, progressOld, progressInterpolated;
     private FlowDirection direction = FlowDirection.FORWARD;
 
@@ -27,6 +29,7 @@ public class StagedReloadAnimation implements IModifiableProgress, IAnimationDir
         this.frameCache = provider.getFrameMap();
         this.finished = finished;
         this.progressFetcher = progressFetcher;
+        this.events = provider.getEvents();
     }
 
     @Override
@@ -43,7 +46,9 @@ public class StagedReloadAnimation implements IModifiableProgress, IAnimationDir
 
     @Override
     public void renderTick(float deltaRenderTime) {
+        float old = progressInterpolated;
         progressInterpolated = AnimationUtils.linearInterpolate(progress, progressOld, deltaRenderTime);
+        AnimationUtils.dispatchEvents(progressInterpolated, old, this, events);
     }
 
     @Override
