@@ -47,7 +47,7 @@ public class Hooks {
         if (optional.isPresent()) {
             IPlayerData data = optional.orElse(null);
             ISkills skills = data.getSkills();
-            AdrenalineRushSkill adrenaline = SkillUtil.getBestSkillFromOverrides(skills.getSkill(Skills.ADRENALINE_RUSH_I), player);
+            AdrenalineRushSkill adrenaline = SkillUtil.getTopHierarchySkill(Skills.ADRENALINE_RUSH_I, skills);
             if (adrenaline != null && adrenaline.canApply(player)) {
                 value *= adrenaline.getAttackSpeedBoost();
             }
@@ -89,7 +89,7 @@ public class Hooks {
                     Ingredient ingredient = ingredients.get(0);
                     if (ingredient.test(new ItemStack(block))) {
                         ItemStack result = recipe.getResultItem();
-                        Pair<Float, Float> chances = SkillUtil.getBestSkillFromOverrides(skills.getSkill(Skills.LUMBERJACK_I), player).getDropChances();
+                        Pair<Float, Float> chances = SkillUtil.getTopHierarchySkill(Skills.LUMBERJACK_I, skills).getDropChances();
                         if (player.getRandom().nextFloat() < chances.getLeft()) {
                             drops.add(new ItemStack(result.getItem(), 1));
                         }
@@ -101,9 +101,8 @@ public class Hooks {
                 }
             }
         } else if (block.getTags().contains(Tags.Blocks.ORES.getName())) {
-            MotherlodeSkill skill = skills.getSkill(Skills.MOTHER_LODE_I);
+            MotherlodeSkill skill = SkillUtil.getTopHierarchySkill(Skills.MOTHER_LODE_I, skills);
             if (skill != null) {
-                skill = SkillUtil.getBestSkillFromOverrides(skill, player);
                 Pair<Float, Float> multiplierChances = skill.getDropChances();
                 Random random = player.getRandom();
                 int multiplier = random.nextFloat() < multiplierChances.getRight() ? 3 : random.nextFloat() < multiplierChances.getLeft() ? 2 : 1;

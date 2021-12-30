@@ -4,7 +4,8 @@
         "parent": "gunsrpg:second_chance_i",
         "children": [
             "gunsrpg:second_chance_iii"
-        ]
+        ],
+        "override": "gunsrpg:second_chance_iii"
     },
     "properties": {
         "level": 75,

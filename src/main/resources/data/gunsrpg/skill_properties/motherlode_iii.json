@@ -4,7 +4,8 @@
         "parent": "gunsrpg:motherlode_ii",
         "children": [
             "gunsrpg:motherlode_iv"
-        ]
+        ],
+        "override": "gunsrpg:motherlode_iv"
     },
     "properties": {
         "level": 30,

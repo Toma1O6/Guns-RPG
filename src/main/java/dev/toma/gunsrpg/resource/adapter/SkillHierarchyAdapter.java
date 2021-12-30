@@ -13,17 +13,28 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import java.lang.reflect.Type;
 
-public class SkillHierarchyAdapter implements JsonDeserializer<ISkillHierarchy> {
+public class SkillHierarchyAdapter implements JsonDeserializer<ISkillHierarchy<?>> {
 
     @Override
-    public ISkillHierarchy deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public ISkillHierarchy<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject object = JsonHelper.asJsonObject(json);
         String categoryKey = JSONUtils.getAsString(object, "category");
         SkillCategory category = deserializeCategory(categoryKey);
         SkillType<?> parent = deserializeParent(object);
+        SkillType<?> override = deserializeOverride(object);
         SkillType<?>[] children = deserializeChildren(object);
         SkillType<?>[] extensions = deserializeExtensions(object);
-        return new SkillHierarchy(category, parent, children, extensions);
+        return new SkillHierarchy<>(category, parent, override, children, extensions);
+    }
+
+    private static SkillType<?> deserializeOverride(JsonObject object) throws JsonParseException {
+        if (!object.has("override")) {
+            return null;
+        }
+        JsonElement overrideJson = object.get("override");
+        if (overrideJson.isJsonNull())
+            return null;
+        return parseSkillByKey(overrideJson.getAsString());
     }
 
     private static SkillType<?>[] deserializeExtensions(JsonObject object) throws JsonParseException {

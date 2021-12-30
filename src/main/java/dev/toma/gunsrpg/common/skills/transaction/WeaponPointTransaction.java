@@ -15,7 +15,7 @@ public class WeaponPointTransaction implements ITransaction<WeaponPointTransacti
 
     @Override
     public int total() {
-        return data.skill().price;
+        return data.skill().getProperties().getPrice();
     }
 
     @Override

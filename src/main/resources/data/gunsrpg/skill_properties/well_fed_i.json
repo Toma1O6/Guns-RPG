@@ -3,7 +3,8 @@
         "category": "survival",
         "children": [
             "gunsrpg:well_fed_ii"
-        ]
+        ],
+        "override": "gunsrpg:well_fed_ii"
     },
     "properties": {
         "level": 20,

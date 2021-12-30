@@ -3,7 +3,8 @@
         "category": "survival",
         "children": [
             "gunsrpg:like_a_cat_ii"
-        ]
+        ],
+        "override": "gunsrpg:like_a_cat_ii"
     },
     "properties": {
         "level": 15,

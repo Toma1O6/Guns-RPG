@@ -2,9 +2,10 @@ package dev.toma.gunsrpg.util;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.ISkill;
+import dev.toma.gunsrpg.api.common.data.ISkills;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
+import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
-import dev.toma.gunsrpg.common.attribute.IAttributeModifier;
 import dev.toma.gunsrpg.common.skills.core.DisplayData;
 import dev.toma.gunsrpg.common.skills.core.DisplayType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -12,10 +13,22 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import java.util.Arrays;
 import java.util.function.Function;
 
 public class SkillUtil {
+
+    public static <S extends ISkill> S getTopHierarchySkill(SkillType<S> head, ISkills skills) {
+        S value = skills.getSkill(head);
+        if (value == null)
+            return null;
+        ISkillHierarchy<S> hierarchy = head.getHierarchy();
+        SkillType<S> override = hierarchy.getOverride();
+        if (override != null && skills.hasSkill(override)) {
+            return getTopHierarchySkill(override, skills);
+        } else {
+            return value;
+        }
+    }
 
     public static DisplayData getDefaultDisplayData(SkillType<?> type) {
         ResourceLocation name = type.getRegistryName();
@@ -71,21 +84,6 @@ public class SkillUtil {
             array[l - 1] = new TranslationTextComponent("skill.requirement.price", properties.getPrice());
         }
 
-        public static <S extends ISkill> ITextComponent[] localizeWithInternalData(int lines, SkillType<S> type, Function<S, ITextComponent[]> generator) {
-            S data = type.getDataInstance();
-            ITextComponent[] components = generator.apply(data);
-            appendRequirementData(type, components);
-            return components;
-        }
-
-        public static ITextComponent[] localizeSingleAttributePct(SkillType<?> type, IAttributeModifier modifier, String property) {
-            return localizeSingleAttribute(type, modifier, property, Localizations::percent);
-        }
-
-        public static ITextComponent[] localizeSingleAttributeVal(SkillType<?> type, IAttributeModifier modifier, String property) {
-            return localizeSingleAttribute(type, modifier, property, modifier1 -> (int) modifier1.getModifierValue());
-        }
-
         public static <T> ITextComponent[] localizeSingleAttribute(SkillType<?> type, T modifier, String property, Function<T, Integer> toIntFunc) {
             ITextComponent[] components = new ITextComponent[3];
             components[0] = translation(type, property, toIntFunc.apply(modifier));
@@ -93,24 +91,8 @@ public class SkillUtil {
             return components;
         }
 
-        public static ITextComponent translation(SkillType<?> type, String name, IAttributeModifier... modifiers) {
-            return translation(type, name, Arrays.stream(modifiers).map(Localizations::seconds).toArray(Object[]::new));
-        }
-
         public static ITextComponent translation(SkillType<?> type, String name, Object... data) {
             return new TranslationTextComponent("skill." + ModUtils.convertToLocalization(type.getRegistryName()) + ".description." + name, data);
-        }
-
-        public static int percent(double value) {
-            return (int) (value * 100);
-        }
-
-        public static int percent(IAttributeModifier modifier) {
-            return percent(modifier.getModifierValue());
-        }
-
-        public static int seconds(IAttributeModifier modifier) {
-            return (int) (modifier.getModifierValue() / 20);
         }
     }
 }

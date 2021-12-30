@@ -18,7 +18,7 @@ public class SkillPointTransaction implements ITransaction<SkillType<?>> {
 
     @Override
     public int total() {
-        return type.price;
+        return type.getProperties().getPrice();
     }
 
     @Override

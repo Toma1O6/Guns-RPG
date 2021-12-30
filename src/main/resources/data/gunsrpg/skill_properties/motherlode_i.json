@@ -3,7 +3,8 @@
         "category": "mining",
         "children": [
             "gunsrpg:motherlode_ii"
-        ]
+        ],
+        "override": "gunsrpg:motherlode_ii"
     },
     "properties": {
         "level": 5,

@@ -3,7 +3,8 @@
         "category": "mining",
         "children": [
             "gunsrpg:lumberjack_ii"
-        ]
+        ],
+        "override": "gunsrpg:lumberjack_ii"
     },
     "properties": {
         "level": 5,

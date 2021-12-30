@@ -4,7 +4,8 @@
         "parent": "gunsrpg:adrenaline_rush_i",
         "children": [
             "gunsrpg:adrenaline_rush_iii"
-        ]
+        ],
+        "override": "gunsrpg:adrenaline_rush_iii"
     },
     "properties": {
         "level": 25,

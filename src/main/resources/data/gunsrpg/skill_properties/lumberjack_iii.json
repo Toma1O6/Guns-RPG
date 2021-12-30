@@ -4,7 +4,8 @@
         "parent": "gunsrpg:lumberjack_ii",
         "children": [
             "gunsrpg:lumberjack_iv"
-        ]
+        ],
+        "override": "gunsrpg:lumberjack_iv"
     },
     "properties": {
         "level": 25,

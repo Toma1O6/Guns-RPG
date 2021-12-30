@@ -3,7 +3,8 @@
         "category": "survival",
         "children": [
             "gunsrpg:adrenaline_rush_ii"
-        ]
+        ],
+        "override": "gunsrpg:adrenaline_rush_ii"
     },
     "properties": {
         "level": 15,

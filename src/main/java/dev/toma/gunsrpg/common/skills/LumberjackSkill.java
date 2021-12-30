@@ -1,32 +1,36 @@
 package dev.toma.gunsrpg.common.skills;
 
+import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
+import dev.toma.gunsrpg.common.attribute.IValueFormatter;
+import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.Pair;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class LumberjackSkill extends BasicSkill {
+public class LumberjackSkill extends BasicSkill implements IDescriptionProvider {
 
     private static final ChancesContainer[] data;
 
+    private final DescriptionContainer container;
     private final int level;
 
     public LumberjackSkill(SkillType<?> type, int level) {
         super(type);
         this.level = level;
+        this.container = new DescriptionContainer(type);
+        data[level - 1].append(container);
+    }
+
+    @Override
+    public ITextComponent[] supplyDescription(int desiredLineCount) {
+        return container.getLines();
     }
 
     public Pair<Float, Float> getDropChances() {
         ChancesContainer chancesContainer = data[level - 1];
         return Pair.of(chancesContainer.extraPlanks, chancesContainer.extraSticks);
-    }
-
-    public ITextComponent[] generateDescription() {
-        ChancesContainer container = data[level - 1];
-        ITextComponent[] components = new ITextComponent[4];
-        container.append(getType(), components);
-        return components;
     }
 
     private static final class ChancesContainer {
@@ -39,9 +43,9 @@ public class LumberjackSkill extends BasicSkill {
             this.extraSticks = extraSticks;
         }
 
-        private void append(SkillType<?> type, ITextComponent[] desc) {
-            desc[0] = SkillUtil.Localizations.translation(type, "planks", SkillUtil.Localizations.percent(extraPlanks));
-            desc[1] = SkillUtil.Localizations.translation(type, "sticks", SkillUtil.Localizations.percent(extraSticks));
+        private void append(DescriptionContainer container) {
+            container.addProperty("plank", IValueFormatter.PERCENT.formatAttributeValue(extraPlanks));
+            container.addProperty("stick", IValueFormatter.PERCENT.formatAttributeValue(extraSticks));
         }
     }
 

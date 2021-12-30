@@ -4,15 +4,11 @@ import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.ModUtils;
-import dev.toma.gunsrpg.util.math.IDimensions;
 import dev.toma.gunsrpg.util.math.IVec2i;
-import dev.toma.gunsrpg.util.math.TreeDimensions;
 import dev.toma.gunsrpg.util.math.Vec2iMutable;
 import dev.toma.gunsrpg.util.object.Pair;
 
-import java.util.HashMap;
 import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class Tree {
@@ -31,18 +27,6 @@ public class Tree {
     private void fillPositionMap(SkillType<?> root) {
         TreeNode node = new TreeNode(root, 0, 0);
         generateViewDataForNode(node);
-        filterSkills();
-    }
-
-    private void filterSkills() {
-        Iterator<SkillViewData> iterator = dataViewMap.values().iterator();
-        while (iterator.hasNext()) {
-            SkillViewData data = iterator.next();
-            if (data.isValidForDisplay()) {
-                continue;
-            }
-            iterator.remove();
-        }
     }
 
     private void generateViewDataForNode(TreeNode node) {
@@ -76,7 +60,7 @@ public class Tree {
         }
 
         TreeNode[] getChildrenNodes() {
-            ISkillHierarchy hierarchy = value.getHierarchy();
+            ISkillHierarchy<?> hierarchy = value.getHierarchy();
             SkillType<?>[] children = hierarchy.getChildren();
             if (ModUtils.isNullOrEmpty(children)) {
                 return null;

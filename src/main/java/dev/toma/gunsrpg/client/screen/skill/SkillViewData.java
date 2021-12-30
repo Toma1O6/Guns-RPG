@@ -10,13 +10,9 @@ public final class SkillViewData {
     private final Vec2iMutable pos;
 
     public SkillViewData(SkillType<?> skill, SkillCategory category, Vec2iMutable pos) {
-        SkillCategory skillCategory = skill.getCategory();
-        this.type = skillCategory.isInternal() ? Type.NONE : skillCategory == category ? Type.DEFAULT : Type.FOREIGN;
+        SkillCategory skillCategory = skill.getHierarchy().getCategory();
+        this.type = skillCategory == category ? Type.DEFAULT : Type.FOREIGN;
         this.pos = pos;
-    }
-
-    public boolean isValidForDisplay() {
-        return type != Type.NONE;
     }
 
     public void move(int x, int y) {
@@ -26,7 +22,6 @@ public final class SkillViewData {
 
     public enum Type {
         DEFAULT,
-        FOREIGN,
-        NONE
+        FOREIGN
     }
 }

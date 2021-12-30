@@ -4,7 +4,8 @@
         "parent": "gunsrpg:well_fed_i",
         "children": [
             "gunsrpg:well_fed_iii"
-        ]
+        ],
+        "override": "gunsrpg:well_fed_iii"
     },
     "properties": {
         "level": 35,

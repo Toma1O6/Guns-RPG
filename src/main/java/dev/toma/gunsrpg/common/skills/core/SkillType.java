@@ -21,7 +21,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
     // internal data
     private DisplayData displayData;
     // datapack controlled data
-    private ISkillHierarchy hierarchy;
+    private ISkillHierarchy<S> hierarchy;
     private ISkillProperties properties;
 
     private SkillType(Builder<S> builder) {
@@ -39,7 +39,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
         return instanceFactory.create(this);
     }
 
-    public ISkillHierarchy getHierarchy() {
+    public ISkillHierarchy<S> getHierarchy() {
         return hierarchy;
     }
 
@@ -51,7 +51,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
      * Called when data are loaded from datapack for this particular instance.
      * @param result The loaded data
      */
-    public void onDataAssign(SkillPropertyLoader.ILoadResult result) {
+    public void onDataAssign(SkillPropertyLoader.ILoadResult<S> result) {
         hierarchy = result.hierarchy();
         properties = result.properties();
         displayData = displayDataFactory.apply(this);
@@ -115,6 +115,10 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
         public Builder<S> render(Function<SkillType<S>, DisplayData> displayDataFactory) {
             this.displayDataFactory = displayDataFactory;
             return this;
+        }
+
+        public Builder<S> renderModIcon(String icon) {
+            return this.render(type -> DisplayData.create(DisplayType.ICON, SkillUtil.moddedIcon(icon)));
         }
 
         public SkillType<S> build() {

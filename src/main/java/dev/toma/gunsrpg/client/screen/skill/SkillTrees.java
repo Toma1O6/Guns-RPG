@@ -37,11 +37,11 @@ public class SkillTrees {
         return !extensions.contains(in);
     }
 
-    private Stream<SkillType<?>> extensionsAsStream(ISkillHierarchy hierarchy) {
+    private Stream<SkillType<?>> extensionsAsStream(ISkillHierarchy<?> hierarchy) {
         return Arrays.stream(hierarchy.getExtensions());
     }
 
-    private boolean hasExtensions(ISkillHierarchy hierarchy) {
+    private boolean hasExtensions(ISkillHierarchy<?> hierarchy) {
         return hierarchy.getExtensions() != null;
     }
 }

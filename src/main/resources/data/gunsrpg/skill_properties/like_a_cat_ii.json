@@ -4,7 +4,8 @@
         "parent": "gunsrpg:like_a_cat_i",
         "children": [
             "gunsrpg:like_a_cat_iii"
-        ]
+        ],
+        "override": "gunsrpg:like_a_cat_iii"
     },
     "properties": {
         "level": 30,

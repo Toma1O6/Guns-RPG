@@ -66,6 +66,7 @@ public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkill
                     return;
                 }
             } else {
+
                 // validates that parent skill is unlocked
                 for (SkillType<?> type : ModRegistries.SKILLS) {
                     if (ModUtils.contains(clicked, type.getChilds())) {

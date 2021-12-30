@@ -1,31 +1,34 @@
 package dev.toma.gunsrpg.common.skills;
 
+import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
+import dev.toma.gunsrpg.common.attribute.IValueFormatter;
+import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.Pair;
 import net.minecraft.util.text.ITextComponent;
 
-public class MotherlodeSkill extends BasicSkill {
+public class MotherlodeSkill extends BasicSkill implements IDescriptionProvider {
 
     private static ChancesContainer[] data;
 
+    private final DescriptionContainer container;
     private final int level;
 
     public MotherlodeSkill(SkillType<?> type, int level) {
         super(type);
         this.level = level;
+        this.container = new DescriptionContainer(type);
+        data[level - 1].appendInfo(container);
+    }
+
+    @Override
+    public ITextComponent[] supplyDescription(int desiredLineCount) {
+        return container.getLines();
     }
 
     public Pair<Float, Float> getDropChances() {
         ChancesContainer chancesContainer = data[level - 1];
         return Pair.of(chancesContainer.doubleDrop, chancesContainer.trippleDrop);
-    }
-
-    public ITextComponent[] generateDescription() {
-        ChancesContainer chancesContainer = data[level - 1];
-        ITextComponent[] components = new ITextComponent[chancesContainer.getParameterCount() + 2];
-        chancesContainer.appendInfo(getType(), components);
-        return components;
     }
 
     private static class ChancesContainer {
@@ -38,14 +41,10 @@ public class MotherlodeSkill extends BasicSkill {
             this.trippleDrop = trippleDrop;
         }
 
-        int getParameterCount() {
-            return trippleDrop > 0 ? 2 : 1;
-        }
-
-        void appendInfo(SkillType<?> type, ITextComponent[] components) {
-            components[0] = SkillUtil.Localizations.translation(type, "double", SkillUtil.Localizations.percent(doubleDrop));
+        void appendInfo(DescriptionContainer container) {
+            container.addProperty("double", IValueFormatter.PERCENT.formatAttributeValue(doubleDrop));
             if (trippleDrop > 0) {
-                components[1] = SkillUtil.Localizations.translation(type, "tripple", SkillUtil.Localizations.percent(trippleDrop));
+                container.addProperty("tripple", IValueFormatter.PERCENT.formatAttributeValue(trippleDrop));
             }
         }
     }
