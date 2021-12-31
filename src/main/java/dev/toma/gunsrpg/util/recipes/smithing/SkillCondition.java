@@ -41,7 +41,7 @@ public class SkillCondition implements ICraftingCondition {
 
     @Override
     public ITextComponent getDisplayInfo() {
-        return new TranslationTextComponent("condition.crafting.skill", skill.getDisplayName());
+        return new TranslationTextComponent("condition.crafting.skill", skill.getTitle());
     }
 
     public static class Serializer implements IConditionSerializer<SkillCondition> {

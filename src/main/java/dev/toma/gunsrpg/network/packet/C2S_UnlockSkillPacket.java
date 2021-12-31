@@ -3,6 +3,9 @@ package dev.toma.gunsrpg.network.packet;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.ISkills;
+import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
+import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
+import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -57,7 +60,8 @@ public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkill
                 return;
             }
             if (parent != null) {
-                if (!ModUtils.contains(clicked, parent.getChilds())) {
+                ISkillHierarchy<?> hierarchy = parent.getHierarchy();
+                if (hierarchy.getChildren() != null && !ModUtils.contains(clicked, hierarchy.getChildren())) {
                     logInvalidPacket("Supplied parent skill is not actual parent!");
                     return;
                 }
@@ -66,10 +70,10 @@ public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkill
                     return;
                 }
             } else {
-
                 // validates that parent skill is unlocked
                 for (SkillType<?> type : ModRegistries.SKILLS) {
-                    if (ModUtils.contains(clicked, type.getChilds())) {
+                    ISkillHierarchy<?> hierarchy = type.getHierarchy();
+                    if (hierarchy.getChildren() != null && ModUtils.contains(clicked, hierarchy.getChildren())) {
                         if (!skills.hasSkill(type)) {
                             logInvalidPacket("Parent skill is not unlocked!");
                             return;
@@ -78,11 +82,13 @@ public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkill
                     }
                 }
             }
-            if (!clicked.getCriteria().canUnlock(data, clicked)) {
+            ISkillProperties properties = clicked.getProperties();
+            ITransactionValidator validator = properties.getTransactionValidator();
+            if (!validator.canUnlock(data, clicked)) {
                 logInvalidPacket("Player cannot unlock this skill yet!");
                 return;
             }
-            clicked.getCriteria().onUnlocked(data.getGenericData(), clicked);
+            validator.onUnlocked(data.getGenericData(), clicked);
             data.sync(DataFlags.SKILLS | DataFlags.DATA);
         });
     }

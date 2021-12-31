@@ -36,9 +36,10 @@ public class C2S_SkillClickedPacket extends AbstractNetworkPacket<C2S_SkillClick
     protected void handlePacket(NetworkEvent.Context context) {
         ServerPlayerEntity player = context.getSender();
         if (type == null) return;
-        ISkill skill = SkillUtil.getBestSkillFromOverrides(PlayerData.getSkill(player, type), player);
+        // TODO
+        /*ISkill skill = SkillUtil.getBestSkillFromOverrides(PlayerData.getSkill(player, type), player);
         if (skill instanceof IClickableSkill && skill.canApply(player)) {
             ((IClickableSkill) skill).clicked(player);
-        }
+        }*/
     }
 }

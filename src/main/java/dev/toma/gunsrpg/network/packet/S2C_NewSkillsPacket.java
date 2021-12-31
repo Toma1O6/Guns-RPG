@@ -49,7 +49,8 @@ public class S2C_NewSkillsPacket extends AbstractNetworkPacket<S2C_NewSkillsPack
     @Override
     protected void handlePacket(NetworkEvent.Context context) {
         for (SkillType<?> type : unlocked) {
-            type.setFresh(true);
+            // TODO
+            //type.setFresh(true);
         }
     }
 }

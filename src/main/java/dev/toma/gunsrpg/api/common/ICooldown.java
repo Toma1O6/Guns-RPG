@@ -42,7 +42,7 @@ public interface ICooldown extends ITickableSkill, IOverlayRender {
             int x = left + renderIndex * 20;
             Matrix4f pose = stack.last().pose();
             ModUtils.renderColor(pose, x, top, x + 20, top + 20, 0.0F, 0.0F, 0.0F, 0.4F);
-            ModUtils.renderTexture(pose, x + 2, top + 2, x + 18, top + 18, skill.getType().icon);
+            //ModUtils.renderTexture(pose, x + 2, top + 2, x + 18, top + 18, skill.getType().icon);
         }
     }
 }

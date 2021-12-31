@@ -1,8 +1,11 @@
 package dev.toma.gunsrpg.common.item;
 
 import dev.toma.gunsrpg.ModTabs;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.common.entity.GrenadeEntity;
 import dev.toma.gunsrpg.common.init.ModEntities;
+import lib.toma.animations.api.IAnimationEntry;
+import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,7 +15,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
-public class GrenadeItem extends BaseItem {
+public class GrenadeItem extends BaseItem implements IAnimationEntry {
 
     private final int blastSize;
     private final boolean explodeOnImpact;
@@ -39,5 +42,20 @@ public class GrenadeItem extends BaseItem {
             }
         }
         return ActionResult.pass(stack);
+    }
+
+    @Override
+    public IRenderConfig right() {
+        return RenderConfigs.HEAL_CONFIG;
+    }
+
+    @Override
+    public IRenderConfig left() {
+        return RenderConfigs.HEAL_CONFIG;
+    }
+
+    @Override
+    public boolean disableVanillaAnimations() {
+        return true;
     }
 }

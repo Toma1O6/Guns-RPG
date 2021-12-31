@@ -5,8 +5,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.api.common.IDisplayableSkill;
-import dev.toma.gunsrpg.api.common.IOverlayRender;
-import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.client.animation.AimAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
@@ -25,7 +23,6 @@ import dev.toma.gunsrpg.network.packet.C2S_SetAimingPacket;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.RenderUtils;
-import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.PropertyChangeListener;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
@@ -53,7 +50,6 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = GunsRPG.MODID)
@@ -152,6 +148,7 @@ public class ClientEventHandler {
                 if (list == null) return;
                 int left = 5;
                 int top = window.getGuiScaledHeight() - 25;
+                /*
                 List<ISkill> renderSkills = new ArrayList<>();
                 for (ISkill skill : list) {
                     if (skill instanceof IOverlayRender) {
@@ -166,6 +163,7 @@ public class ClientEventHandler {
                         ++renderIndex;
                     }
                 }
+                */
             });
         }
     }

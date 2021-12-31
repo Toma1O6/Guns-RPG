@@ -23,10 +23,8 @@ import dev.toma.gunsrpg.common.skills.*;
 import dev.toma.gunsrpg.common.skills.core.DisplayData;
 import dev.toma.gunsrpg.common.skills.core.DisplayType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;
 import dev.toma.gunsrpg.util.Constants;
 import dev.toma.gunsrpg.util.Interval;
-import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.helper.StorageUtil;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -44,7 +42,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = GunsRPG.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -193,33 +190,33 @@ public class CommonRegistry {
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("red_dot").build().setRegistryName("ump45_red_dot"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeSkill.IAttributeTarget.of(Attribs.UMP45_NOISE, Modifiers.NOISE))).renderModIcon("suppressor").build().setRegistryName("ump45_suppressor"),
                 SkillType.Builder.create(BasicSkill::new).description(3).build().setRegistryName("ump45_commando"),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("crossbow_quiver").build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("crossbow_poisoned_bolts").build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("crossbow_hunter").build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("crossbow_tough_bowstring").requiredLevel(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("crossbow_penetrator").iconPathNormal("penetrator").requiredLevel(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("crossbow_scope").iconPathNormal("scope").requiredLevel(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("crossbow_repeater").descriptionLength(2).requiredLevel(7).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("s1897_bullet_loops").build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("s1897_extended").iconPathNormal("extended").build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("s1897_pump_in_action").requiredLevel(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("s1897_choke").requiredLevel(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("s1897_never_give_up").requiredLevel(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("s1897_extended_barrel").requiredLevel(7).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sks_tough_spring").iconPathNormal("tough_spring").build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sks_vertical_grip").iconPathNormal("vertical_grip").build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sks_extended").iconPathNormal("extended").requiredLevel(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sks_red_dot").iconPathNormal("red_dot").requiredLevel(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sks_suppressor").iconPathNormal("suppressor").requiredLevel(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sks_cheekpad").iconPathNormal("cheekpad").requiredLevel(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("sks_adaptive_chambering").descriptionLength(2).requiredLevel(7).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("kar98k_scope").iconPathNormal("scope").build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("kar98k_cheekpad").iconPathNormal("cheekpad").build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("kar98k_extended").iconPathNormal("extended").requiredLevel(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("kar98k_suppressor").iconPathNormal("suppressor").requiredLevel(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("kar98k_fast_hands").requiredLevel(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("kar98k_penetrator").iconPathNormal("penetrator").requiredLevel(5).build(),
-                SkillType.Builder.create(BasicSkill::new).setAttachmentCategory().setRegistryName("kar98k_dead_eye").requiredLevel(7).build()
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("crossbow_quiver"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("crossbow_poisoned_bolts"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("crossbow_hunter"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("crossbow_tough_bowstring"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("penetrator").build().setRegistryName("crossbow_penetrator"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("scope").build().setRegistryName("crossbow_scope"),
+                SkillType.Builder.create(BasicSkill::new).description(2).build().setRegistryName("crossbow_repeater"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("s1897_bullet_loops"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("extended").build().setRegistryName("s1897_extended"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("s1897_pump_in_action"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("s1897_choke"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("s1897_never_give_up"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("s1897_extended_barrel"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("tough_spring").build().setRegistryName("sks_tough_spring"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("vertical_grip").build().setRegistryName("sks_vertical_grip"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("extended").build().setRegistryName("sks_extended"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("red_dot").build().setRegistryName("sks_red_dot"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("suppressor").build().setRegistryName("sks_suppressor"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("cheekpad").build().setRegistryName("sks_cheekpad"),
+                SkillType.Builder.create(BasicSkill::new).description(2).build().setRegistryName("sks_adaptive_chambering"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("scope").build().setRegistryName("kar98k_scope"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("cheekpad").build().setRegistryName("kar98k_cheekpad"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("extended").build().setRegistryName("kar98k_extended"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("suppressor").build().setRegistryName("kar98k_suppressor"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("kar98k_fast_hands"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("penetrator").build().setRegistryName("kar98k_penetrator"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("kar98k_dead_eye")
         );
     }
 

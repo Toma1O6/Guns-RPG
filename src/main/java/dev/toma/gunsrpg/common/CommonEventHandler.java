@@ -19,7 +19,6 @@ import dev.toma.gunsrpg.common.item.HammerItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.LightHunterSkill;
 import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
-import dev.toma.gunsrpg.common.skills.WellFedSkill;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -193,13 +192,14 @@ public class CommonEventHandler {
             Food food = item.getFoodProperties();
             if (food != null) {
                 int nutrition = food.getNutrition();
-                PlayerData.get(player).ifPresent(data -> {
-                    ISkills skills = data.getSkills();
-                    WellFedSkill skill = skills.getSkill(Skills.WELL_FED_I);
-                    if (nutrition >= ModConfig.skillConfig.getWellFedMinNutrition() && skill != null) {
-                        SkillUtil.getBestSkillFromOverrides(skill, player).applyEffects(player);
-                    }
-                });
+                if (nutrition >= ModConfig.skillConfig.getWellFedMinNutrition()) {
+                    PlayerData.get(player).ifPresent(data -> {
+                        ISkills skills = data.getSkills();
+                        if (skills.hasSkill(Skills.WELL_FED_I)) {
+                            SkillUtil.getTopHierarchySkill(Skills.WELL_FED_I, skills).applyEffects(player);
+                        }
+                    });
+                }
             }
         }
     }
@@ -353,9 +353,8 @@ public class CommonEventHandler {
             PlayerEntity player = (PlayerEntity) event.getEntity();
             PlayerData.get(player).ifPresent(data -> {
                 ISkills skills = data.getSkills();
-                SecondChanceSkill secondChanceSkill = skills.getSkill(Skills.SECOND_CHANCE_I);
-                if (secondChanceSkill != null) {
-                    secondChanceSkill = SkillUtil.getBestSkillFromOverrides(secondChanceSkill, player);
+                if (skills.hasSkill(Skills.SECOND_CHANCE_I)) {
+                    SecondChanceSkill secondChanceSkill = SkillUtil.getTopHierarchySkill(Skills.SECOND_CHANCE_I, skills);
                     if (secondChanceSkill.canApply(player)) {
                         event.setCanceled(true);
                         secondChanceSkill.setOnCooldown();

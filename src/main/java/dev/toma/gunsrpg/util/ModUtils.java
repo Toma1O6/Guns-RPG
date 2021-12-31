@@ -8,13 +8,11 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
 import dev.toma.gunsrpg.util.function.ISplitter;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.settings.GraphicsFanciness;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.IInventory;
@@ -37,8 +35,6 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -47,7 +43,10 @@ import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Array;
 import java.util.*;
-import java.util.function.*;
+import java.util.function.BiPredicate;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class ModUtils {
@@ -399,10 +398,7 @@ public class ModUtils {
     private static Map<SkillCategory, List<SkillType<?>>> splitSkillsIntoCategories(Iterable<SkillType<?>> iterable) {
         Map<SkillCategory, List<SkillType<?>>> map = new EnumMap<>(SkillCategory.class);
         for (SkillType<?> type : iterable) {
-            SkillCategory category = type.category;
-            if (category.isInternal()) {
-                continue;
-            }
+            SkillCategory category = type.getHierarchy().getCategory();
             map.computeIfAbsent(category, cat -> new ArrayList<>()).add(type);
         }
         return map;
