@@ -24,23 +24,23 @@ public final class AmmoMaterials {
 
     // grenade launcher
     public static final IAmmoMaterial GRENADE = AmmoMaterialManager.get().createMaterial("grenade", 0xFFFF00, 0);
-    public static final IAmmoMaterial HE_GRENADE = AmmoMaterialManager.get().createMaterial("he_grenade", 0xAFAFAF, 1);
-    public static final IAmmoMaterial IMPACT = AmmoMaterialManager.get().createMaterial("impact_grenade", 0xFF0000, 2,
+    public static final IAmmoMaterial HE_GRENADE = AmmoMaterialManager.get().createMaterial("he_grenade", 0xAFAFAF, 5);
+    public static final IAmmoMaterial IMPACT = AmmoMaterialManager.get().createMaterial("impact_grenade", 0xFF0000, 6,
             (projectile, world, impactPos, impactedOn) -> explode(world, impactPos, 4.0F));
     public static final IAmmoMaterial STICKY = AmmoMaterialManager.get().createMaterial("sticky", 0xFFFFFF, 3, AmmoMaterials::stick);
-    public static final IAmmoMaterial TEAR_GAS = AmmoMaterialManager.get().createMaterial("tear_gas", 0x74E074, 4,
+    public static final IAmmoMaterial TEAR_GAS = AmmoMaterialManager.get().createMaterial("tear_gas", 0x74E074, 1,
             (projectile, world, impactPos, impactedOn) -> effect(world, impactPos));
 
     // rocket launcher
     public static final IAmmoMaterial ROCKET = AmmoMaterialManager.get().createMaterial("rocket", 0xFF0000, 0,
             (projectile, world, impactPos, impactedOn) -> explode(world, impactPos, 6.0F));
-    public static final IAmmoMaterial HE_ROCKET = AmmoMaterialManager.get().createMaterial("he_rocket", 0x298FAD, 1,
+    public static final IAmmoMaterial HE_ROCKET = AmmoMaterialManager.get().createMaterial("he_rocket", 0x298FAD, 6,
             (projectile, world, impactPos, impactedOn) -> explode(world, impactPos, 8.0F));
-    public static final IAmmoMaterial DEMOLITION = AmmoMaterialManager.get().createMaterial("demolition", 0x565656, 2,
+    public static final IAmmoMaterial DEMOLITION = AmmoMaterialManager.get().createMaterial("demolition", 0x565656, 3,
             (projectile, world, impactPos, impactedOn) -> explode(world, impactPos, 8.0F, Explosion.Mode.DESTROY));
-    public static final IAmmoMaterial NAPALM = AmmoMaterialManager.get().createMaterial("napalm", 0xFF6A00, 3,
+    public static final IAmmoMaterial NAPALM = AmmoMaterialManager.get().createMaterial("napalm", 0xFF6A00, 5,
             (projectile, world, impactPos, impactedOn) -> effect(world, impactPos));
-    public static final IAmmoMaterial TOXIN = AmmoMaterialManager.get().createMaterial("toxin", 0x8400C1, 4,
+    public static final IAmmoMaterial TOXIN = AmmoMaterialManager.get().createMaterial("toxin", 0x8400C1, 1,
             (projectile, world, impactPos, impactedOn) -> effect(world, impactPos));
 
 

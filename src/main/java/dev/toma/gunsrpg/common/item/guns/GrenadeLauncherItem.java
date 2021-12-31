@@ -30,10 +30,10 @@ public class GrenadeLauncherItem extends GunItem {
                 .config(ModConfig.weaponConfig.mk14)
                 .ammo(WeaponCategory.GRENADE_LAUNCHER)
                     .define(AmmoMaterials.GRENADE)
+                    .define(AmmoMaterials.TEAR_GAS)
+                    .define(AmmoMaterials.STICKY)
                     .define(AmmoMaterials.HE_GRENADE)
                     .define(AmmoMaterials.IMPACT)
-                    .define(AmmoMaterials.STICKY)
-                    .define(AmmoMaterials.TEAR_GAS)
                 .build();
     }
 

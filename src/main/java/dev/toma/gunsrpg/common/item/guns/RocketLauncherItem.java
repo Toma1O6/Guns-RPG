@@ -27,11 +27,11 @@ public class RocketLauncherItem extends GunItem {
         builder
                 .config(ModConfig.weaponConfig.mk14)
                 .ammo(WeaponCategory.ROCKET_LAUNCHER)
-                .define(AmmoMaterials.ROCKET)
-                .define(AmmoMaterials.HE_ROCKET)
-                .define(AmmoMaterials.DEMOLITION)
-                .define(AmmoMaterials.NAPALM)
-                .define(AmmoMaterials.TOXIN)
+                    .define(AmmoMaterials.ROCKET)
+                    .define(AmmoMaterials.TOXIN)
+                    .define(AmmoMaterials.DEMOLITION)
+                    .define(AmmoMaterials.NAPALM)
+                    .define(AmmoMaterials.HE_ROCKET)
                 .build();
     }
 
