@@ -18,14 +18,21 @@ public final class Interval implements IIntervalProvider {
     }
 
     public Interval append(Interval other) {
-        int value = convert(other.unit, other.value, unit);
-        return new Interval(unit, this.value + value);
+        int ticks1 = valueIn(Unit.TICK);
+        int ticks2 = other.valueIn(Unit.TICK);
+        int total = ticks1 + ticks2;
+        Unit target = this.unit;
+        while (total % target.tickValue != 0 && target.ordinal() > 0) {
+            target = Unit.values()[target.ordinal() - 1];
+        }
+        int value = total / target.tickValue;
+        return new Interval(target, value);
     }
 
     public int valueIn(Unit unit) {
         if (unit == this.unit)
             return value;
-        int ticks = this.unit == Unit.TICK ? value : value * unit.tickValue;
+        int ticks = value * this.unit.tickValue;
         return ticks / unit.tickValue;
     }
 
