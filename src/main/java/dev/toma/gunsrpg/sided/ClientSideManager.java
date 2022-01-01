@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.client.render.debuff.IconDebuffRenderer;
 import dev.toma.gunsrpg.client.screen.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.*;
+import dev.toma.gunsrpg.common.item.guns.util.IDualWieldGun;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
@@ -134,13 +135,16 @@ public class ClientSideManager {
 
         IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
         IItemRenderer itemRenderer = renderPipeline.getItemRenderer();
-        if (stack.getItem() == ModItems.M1911 && PlayerData.hasActiveSkill(player, Skills.M1911_DUAL_WIELD)) {
-            poseStack.pushPose();
-            {
-                pipeline.animateStage(DUAL_WIELD_ITEM, poseStack, buffer, light, OverlayTexture.NO_OVERLAY);
-                itemRenderer.renderItem(fpRenderer, player, stack, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, true, poseStack, buffer, light, swing, equip);
+        if (stack.getItem() instanceof IDualWieldGun) {
+            IDualWieldGun dualWieldGun = (IDualWieldGun) stack.getItem();
+            if (PlayerData.hasActiveSkill(player, dualWieldGun.getSkillForDualWield())) {
+                poseStack.pushPose();
+                {
+                    pipeline.animateStage(DUAL_WIELD_ITEM, poseStack, buffer, light, OverlayTexture.NO_OVERLAY);
+                    itemRenderer.renderItem(fpRenderer, player, stack, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, true, poseStack, buffer, light, swing, equip);
+                }
+                poseStack.popPose();
             }
-            poseStack.popPose();
         }
     }
 

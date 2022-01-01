@@ -13,6 +13,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
+import dev.toma.gunsrpg.common.item.guns.util.IDualWieldGun;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
@@ -27,7 +28,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class M1911Item extends GunItem {
+public class M1911Item extends GunItem implements IDualWieldGun {
 
     private static final ResourceLocation EJECT = GunsRPG.makeResource("m1911/eject");
     private static final ResourceLocation[] AIM_ANIMATIONS = {
@@ -120,6 +121,11 @@ public class M1911Item extends GunItem {
     @Override
     public SkillType<?> getRequiredSkill() {
         return Skills.M1911_ASSEMBLY;
+    }
+
+    @Override
+    public SkillType<?> getSkillForDualWield() {
+        return Skills.M1911_DUAL_WIELD;
     }
 
     @OnlyIn(Dist.CLIENT)
