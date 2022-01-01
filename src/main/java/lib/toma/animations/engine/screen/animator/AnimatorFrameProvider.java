@@ -47,13 +47,14 @@ public class AnimatorFrameProvider implements IKeyframeProvider {
         computeAnimationEndpoint();
     }
 
-    public AnimatorFrameProvider(Map<AnimationStage, List<MutableKeyframe>> frameMap) {
+    public AnimatorFrameProvider(Map<AnimationStage, List<MutableKeyframe>> frameMap, IAnimationEvent... events) {
         this.events = true;
         frameMap.forEach((stage, list) -> {
             List<MutableKeyframe> copyList = list.stream().map(MutableKeyframe::fullCopyOf).collect(Collectors.toList());
             this.frameMap.put(stage, copyList);
         });
         this.frameMap.keySet().forEach(stage -> frameCache.put(stage, 0));
+        Arrays.stream(events).map(event -> event.copyAt(event.invokeAt())).forEach(eventList::add);
     }
 
     @Override
