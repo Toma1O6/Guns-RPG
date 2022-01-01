@@ -191,6 +191,10 @@ public class ModSounds {
     public static final SoundEvent UNJAM39 = null;
     public static final SoundEvent UNJAM4 = null;
     public static final SoundEvent UNJAM40 = null;
+    public static final SoundEvent UNJAM41 = null;
+    public static final SoundEvent UNJAM42 = null;
+    public static final SoundEvent UNJAM43 = null;
+    public static final SoundEvent UNJAM44 = null;
     public static final SoundEvent UNJAM5 = null;
     public static final SoundEvent UNJAM6 = null;
     public static final SoundEvent UNJAM7 = null;
@@ -212,10 +216,14 @@ public class ModSounds {
     public static final SoundEvent BAND1 = null;
     public static final SoundEvent BAND2 = null;
     public static final SoundEvent BAND3 = null;
+    public static final SoundEvent BAND4 = null;
     public static final SoundEvent HEMO1 = null;
     public static final SoundEvent MED1 = null;
     public static final SoundEvent MED2 = null;
     public static final SoundEvent PEN1 = null;
     public static final SoundEvent PEN2 = null;
     public static final SoundEvent PEN3 = null;
+    public static final SoundEvent PILLS1 = null;
+    public static final SoundEvent PILLS2 = null;
+    public static final SoundEvent PILLS3 = null;
 }

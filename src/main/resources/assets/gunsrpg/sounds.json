@@ -1888,5 +1888,77 @@
                 "stream": true
             }
         ]
+    },
+    "band4": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:band4",
+                "stream": true
+            }
+        ]
+    },
+    "pills1": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:pills1",
+                "stream": true
+            }
+        ]
+    },
+    "pills2": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:pills2",
+                "stream": true
+            }
+        ]
+    },
+    "pills3": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:pills3",
+                "stream": true
+            }
+        ]
+    },
+    "unjam41": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:unjam41",
+                "stream": true
+            }
+        ]
+    },
+    "unjam42": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:unjam42",
+                "stream": true
+            }
+        ]
+    },
+    "unjam43": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:unjam43",
+                "stream": true
+            }
+        ]
+    },
+    "unjam44": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:unjam44",
+                "stream": true
+            }
+        ]
     }
 }

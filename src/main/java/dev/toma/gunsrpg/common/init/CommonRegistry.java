@@ -689,6 +689,10 @@ public class CommonRegistry {
                 sound("unjam39"),
                 sound("unjam4"),
                 sound("unjam40"),
+                sound("unjam41"),
+                sound("unjam42"),
+                sound("unjam43"),
+                sound("unjam44"),
                 sound("unjam5"),
                 sound("unjam6"),
                 sound("unjam7"),
@@ -710,12 +714,16 @@ public class CommonRegistry {
                 sound("band1"),
                 sound("band2"),
                 sound("band3"),
+                sound("band4"),
                 sound("hemo1"),
                 sound("med1"),
                 sound("med2"),
                 sound("pen1"),
                 sound("pen2"),
-                sound("pen3")
+                sound("pen3"),
+                sound("pills1"),
+                sound("pills2"),
+                sound("pills3")
         );
     }
 
