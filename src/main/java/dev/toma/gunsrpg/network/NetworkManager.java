@@ -53,6 +53,7 @@ public class NetworkManager {
         registerNetworkPacket(S2C_AnimationPacket.class);
         registerNetworkPacket(S2C_NewSkillsPacket.class);
         registerNetworkPacket(S2C_SynchBlockEntityPacket.class);
+        registerNetworkPacket(S2C_SendSkillDataPacket.class);
         // server packets
         registerNetworkPacket(C2S_ShootPacket.class);
         registerNetworkPacket(C2S_RequestDataUpdatePacket.class);

@@ -7,8 +7,7 @@
             "gunsrpg:crossbow_assembly",
             "gunsrpg:s1897_assembly",
             "gunsrpg:sks_assembly",
-            "gunsrpg:kar98k_assembly",
-            "gunsrpg:grenade_launcher_assembly"
+            "gunsrpg:kar98k_assembly"
         ]
     },
     "properties": {

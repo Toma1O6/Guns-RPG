@@ -133,7 +133,7 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
         this.lastRotation = this.rotation;
         if (level.isClientSide && !this.onGround) {
             if (!getDeltaMovement().equals(Vector3d.ZERO)) {
-                this.rotation += 45F;
+                this.rotation += 15F;
             }
         }
 

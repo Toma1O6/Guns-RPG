@@ -19,10 +19,12 @@ import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.IRenderPipeline;
 import net.minecraft.command.CommandSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -36,7 +38,7 @@ import java.util.Locale;
 public class GunsRPG {
 
     public static final String MODID = "gunsrpg";
-    public static Logger log = LogManager.getLogger(MODID.toUpperCase());
+    public static Logger log = LogManager.getLogger("Guns-RPG");
     private static final Lifecycle modLifecycle = new Lifecycle();
 
     public GunsRPG() {
@@ -56,18 +58,9 @@ public class GunsRPG {
         // other events
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 
-        ThreadGroup group = Thread.currentThread().getThreadGroup();
-        if (group.getName().equals("main")) { // fragile code, handle with care
-            ClientSideManager.instance().animationSetup();
-            IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
-            renderPipeline.register(MinecraftForge.EVENT_BUS);
-            AnimationEngine.get().startEngine(ModConfig.clientConfig.developerMode.get());
-        }
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> ClientSideManager.instance().clientInit());
 
         modLifecycle.modInit();
-
-        // TODO
-        // GameRules.GAME_RULE_TYPES.put(GameRules.RULE_NATURAL_REGENERATION, GameRules.BooleanValue.create(false));
     }
 
     public static Lifecycle getModLifecycle() {

@@ -1,9 +1,8 @@
 package dev.toma.gunsrpg.common.skills.core;
 
 import com.google.gson.JsonElement;
-import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 import dev.toma.gunsrpg.api.common.skill.IDataResolver;
+import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidatorFactory;
 import net.minecraft.util.ResourceLocation;
 
@@ -47,7 +46,7 @@ public final class TransactionValidatorRegistry {
     }
 
     static {
-        registerValidatorFactory(GunsRPG.makeResource("level"), new PlayerLevelTransactionValidatorFactory());
-        registerValidatorFactory(GunsRPG.makeResource("weapon"), new WeaponLevelTransactionValidatorFactory());
+        registerValidatorFactory(PlayerLevelTransactionValidator.ID, new PlayerLevelTransactionValidatorFactory());
+        registerValidatorFactory(WeaponTransactionValidator.ID, new WeaponLevelTransactionValidatorFactory());
     }
 }

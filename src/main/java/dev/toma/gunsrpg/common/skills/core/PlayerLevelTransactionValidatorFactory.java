@@ -17,6 +17,6 @@ public class PlayerLevelTransactionValidatorFactory implements ITransactionValid
 
     @Override
     public IDataResolver<Object> resolver() {
-        return null;
+        return json -> null;
     }
 }

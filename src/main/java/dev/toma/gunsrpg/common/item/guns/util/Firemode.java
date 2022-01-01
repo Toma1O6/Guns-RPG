@@ -34,8 +34,8 @@ public enum Firemode {
             InputEventListenerType.ON_INPUT
     ),
 
-    BOTH_BARRELS(
-            "Both Barrels",
+    DOUBLE_ACTION(
+            "Double Action",
             new LazyLoader<>(IInputEventHandler.Barrage::new),
             InputEventListenerType.ON_INPUT
     ),

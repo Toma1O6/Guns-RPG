@@ -6,7 +6,7 @@
     "properties": {
         "level": 40,
         "price": 5,
-        "trasactionValidator": {
+        "transactionValidator": {
             "type": "gunsrpg:level"
         }
     }

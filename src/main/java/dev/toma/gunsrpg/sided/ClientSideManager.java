@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.client.render.debuff.IconDebuffRenderer;
 import dev.toma.gunsrpg.client.screen.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.*;
+import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;
@@ -48,6 +49,13 @@ public class ClientSideManager {
 
     public static ClientSideManager instance() {
         return INSTANCE;
+    }
+
+    public void clientInit() {
+        animationSetup();
+        IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
+        renderPipeline.register(MinecraftForge.EVENT_BUS);
+        AnimationEngine.get().startEngine(ModConfig.clientConfig.developerMode.get());
     }
 
     public void animationSetup() {

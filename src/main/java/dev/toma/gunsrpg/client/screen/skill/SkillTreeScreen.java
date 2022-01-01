@@ -111,7 +111,7 @@ public class SkillTreeScreen extends Screen {
 
         private static Map<SkillCategory, SkillTrees> onBuildFailed(Throwable throwable) {
             GunsRPG.log.fatal(MARKER, "Skill placement cache build failed, no skills can be displayed. ", throwable);
-            return Collections.emptyMap();
+            return null;
         }
 
         private static void onBuildFinished(Map<SkillCategory, SkillTrees> result) {

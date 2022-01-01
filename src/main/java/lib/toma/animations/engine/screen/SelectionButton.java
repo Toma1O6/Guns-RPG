@@ -12,7 +12,7 @@ public class SelectionButton<T> extends Widget {
     private IFormatter<T> formatter = Object::toString;
 
     public SelectionButton(int x, int y, int width, int height, T[] values, int value) {
-        super(x, y, width, height, null);
+        super(x, y, width, height, StringTextComponent.EMPTY);
         this.values = values;
         this.index = value;
         this.setMessage(this.getText());

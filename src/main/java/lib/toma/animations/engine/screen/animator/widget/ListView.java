@@ -90,6 +90,7 @@ public class ListView<T> extends Widget {
 
     public void setFilter(Predicate<T> entryFilter) {
         this.filter = Objects.requireNonNull(entryFilter);
+        this.scrollOffset = 0;
         updateDisplayList();
     }
 

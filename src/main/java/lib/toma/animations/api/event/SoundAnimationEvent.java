@@ -113,7 +113,7 @@ public class SoundAnimationEvent extends AbstractAnimationEvent {
 
         @Override
         protected void preInit() {
-            setDimensions(width - 20, 265);
+            setDimensions(width - 20, 240);
         }
 
         @Override
@@ -127,10 +127,10 @@ public class SoundAnimationEvent extends AbstractAnimationEvent {
             soundSelector.setResponder(this::sound_select);
             soundSelector.setFormatter(sound -> sound.getRegistryName().toString());
             volumeSlider = addButton(new Slider(left() + 5, top() + 165, elWidth, 20, new StringTextComponent("Volume: "), StringTextComponent.EMPTY, 0.0, 1.0, 1.0, true, true, btn -> {}));
-            pitchSlider = addButton(new Slider(left() + 5, top() + 190, elWidth, 20, new StringTextComponent("Pitch: "), StringTextComponent.EMPTY, 0.0, 1.0, 1.0, true, true, btn -> {}));
-            directionSelector = addButton(new SelectionButton<>(left() + 5, top() + 215, elWidth, 20, FlowDirection.values())).formatter(FlowDirection::format);
-            cancel = addButton(new Button(left() + 5, top() + 240, btWidth, 20, CANCEL, this::cancel_clicked));
-            confirm = addButton(new Button(left() + 10 + btWidth, top() + 240, btWidth, 20, CONFIRM, this::confirm_clicked));
+            pitchSlider = addButton(new Slider(left() + 5, top() + 190, btWidth, 20, new StringTextComponent("Pitch: "), StringTextComponent.EMPTY, 0.0, 1.0, 1.0, true, true, btn -> {}));
+            directionSelector = addButton(new SelectionButton<>(left() + 10 + btWidth, top() + 190, btWidth, 20, FlowDirection.values())).formatter(FlowDirection::format);
+            cancel = addButton(new Button(left() + 5, top() + 215, btWidth, 20, CANCEL, this::cancel_clicked));
+            confirm = addButton(new Button(left() + 10 + btWidth, top() + 215, btWidth, 20, CONFIRM, this::confirm_clicked));
 
             updateConfirmButton();
         }

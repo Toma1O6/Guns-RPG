@@ -5,13 +5,6 @@ import dev.toma.gunsrpg.common.skills.*;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraftforge.registries.ObjectHolder;
 
-/*
- * TODO
- * netherite ammo = after amethyst (8 weapon level)
- * lapis = iron (3) (depends on)
- * gold = redstone (4)
- * diamond = quartz (5)
- */
 @ObjectHolder(GunsRPG.MODID)
 public class Skills {
 

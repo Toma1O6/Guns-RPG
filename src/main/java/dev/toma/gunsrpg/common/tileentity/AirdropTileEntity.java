@@ -11,14 +11,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import java.util.*;
 import java.util.function.Supplier;
 
-/*
- * TODO
- * New ammo loot pools
- * lapis = iron
- * redstone = gold
- * quartz = diamond
- * netherite = > amethyst ( 10 & 20 count )
- */
 public class AirdropTileEntity extends InventoryTileEntity {
 
     public static final WeightedRandom<LootCategory> CATEGORIES = new WeightedRandom<>(LootCategory::getChances, LootCategory.values());
