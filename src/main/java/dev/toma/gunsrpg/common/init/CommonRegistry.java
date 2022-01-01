@@ -706,7 +706,16 @@ public class CommonRegistry {
                 sound("vss_mag2"),
                 sound("gun_win94"),
                 sound("win_bolt1"),
-                sound("win_bolt2")
+                sound("win_bolt2"),
+                sound("band1"),
+                sound("band2"),
+                sound("band3"),
+                sound("hemo1"),
+                sound("med1"),
+                sound("med2"),
+                sound("pen1"),
+                sound("pen2"),
+                sound("pen3")
         );
     }
 

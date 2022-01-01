@@ -1807,5 +1807,86 @@
                 "stream": true
             }
         ]
+    },
+    "band1": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:band1",
+                "stream": true
+            }
+        ]
+    },
+    "band2": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:band2",
+                "stream": true
+            }
+        ]
+    },
+    "band3": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:band3",
+                "stream": true
+            }
+        ]
+    },
+    "hemo1": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:hemo1",
+                "stream": true
+            }
+        ]
+    },
+    "med1": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:med1",
+                "stream": true
+            }
+        ]
+    },
+    "med2": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:med2",
+                "stream": true
+            }
+        ]
+    },
+    "pen1": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:pen1",
+                "stream": true
+            }
+        ]
+    },
+    "pen2": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:pen2",
+                "stream": true
+            }
+        ]
+    },
+    "pen3": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:pen3",
+                "stream": true
+            }
+        ]
     }
 }

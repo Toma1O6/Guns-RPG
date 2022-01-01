@@ -209,4 +209,13 @@ public class ModSounds {
     public static final SoundEvent GUN_WIN94 = null;
     public static final SoundEvent WIN_BOLT1 = null;
     public static final SoundEvent WIN_BOLT2 = null;
+    public static final SoundEvent BAND1 = null;
+    public static final SoundEvent BAND2 = null;
+    public static final SoundEvent BAND3 = null;
+    public static final SoundEvent HEMO1 = null;
+    public static final SoundEvent MED1 = null;
+    public static final SoundEvent MED2 = null;
+    public static final SoundEvent PEN1 = null;
+    public static final SoundEvent PEN2 = null;
+    public static final SoundEvent PEN3 = null;
 }
