@@ -15,6 +15,7 @@ import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
+import dev.toma.gunsrpg.util.math.IDimensions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
@@ -44,13 +45,14 @@ public class ChooseAmmoScreen extends Screen {
         int y = height / 2;
         double horizontalScale = x / 2.4f;
         double verticalScale = y / 1.5f;
+        IDimensions dimensions = IDimensions.of(width, height);
         for (int i = 0; i < items.length; i++) {
             double angle = Math.toRadians(i * diff * 360.0);
             double sin = Math.sin(angle);
             double cos = Math.cos(Math.PI - angle);
             int btnX = (int) (sin * horizontalScale) - 16;
             int btnY = (int) (cos * verticalScale) - 16;
-            addButton(new AmmoButton(x + btnX, y + btnY, items[i]));
+            addButton(new AmmoButton(x + btnX, y + btnY, items[i], dimensions));
         }
     }
 
@@ -73,14 +75,16 @@ public class ChooseAmmoScreen extends Screen {
 
     private static class AmmoButton extends Widget {
 
+        private final IDimensions parentDimensions;
         private final IAmmoProvider ammo;
         private final int count;
         private int requiredLevel;
         private ItemStack stack;
 
-        public AmmoButton(int x, int y, IAmmoProvider ammo) {
+        public AmmoButton(int x, int y, IAmmoProvider ammo, IDimensions parentDimensions) {
             super(x, y, 32, 32, StringTextComponent.EMPTY);
             this.ammo = ammo;
+            this.parentDimensions = parentDimensions;
             PlayerEntity player = Minecraft.getInstance().player;
             ItemStack stack = player.getMainHandItem();
             boolean isGun = stack.getItem() instanceof GunItem;
@@ -121,7 +125,10 @@ public class ChooseAmmoScreen extends Screen {
             font.drawShadow(matrix, count + "", x + 25 - countWidth, y + height - 11, 0xffffff);
             if (isHovered && !active) {
                 String text = String.format("Requires weapon level %d", requiredLevel);
-                font.drawShadow(matrix, text, x + (width - font.width(text)) / 2.0F, y + height + 10, 0xdd0000);
+                int textWidth = font.width(text);
+                int centerX = parentDimensions.getWidth() / 2 - textWidth / 2;
+                int centerY = parentDimensions.getHeight() / 2 - font.lineHeight / 2;
+                font.drawShadow(matrix, text, centerX, centerY, 0xdd0000);
             }
         }
 
