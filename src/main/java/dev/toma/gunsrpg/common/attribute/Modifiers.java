@@ -58,6 +58,7 @@ public final class Modifiers {
     public static final IAttributeModifier QUICKDRAW_MAG                = new AttributeModifier("640F448C-136C-470B-A9DD-95B9D51BF502", AttributeOps.MUL, 0.7);
     public static final IAttributeModifier VERTICAL_GRIP                = new AttributeModifier("1CD5BFD7-6FB6-41A8-83F9-D5FD554269C8", AttributeOps.MUL, 0.7);
     public static final IAttributeModifier BULLET_LOOPS                 = new AttributeModifier("DF644018-1CF2-4DB4-83E8-0F2A65FDD984", AttributeOps.MUL, 0.8);
+    public static final IAttributeModifier CHEEKPAD                     = new AttributeModifier("531F8EF1-15FA-4BF0-883D-F6B445644CC4", AttributeOps.MUL, 0.75);
     public static final IAttributeModifier NOISE                        = new AttributeModifier("2485AB60-AF4F-4074-A689-DFE4A083CC19", AttributeOps.MUL, 0.2);
     /* Specific attachments */
     public static final IAttributeModifier M1911_EXTENDED_MAG           = new AttributeModifier("205CBB5C-0D78-4ABB-A623-F7AB91AF256C", AttributeOps.SUM, 6);
@@ -73,4 +74,5 @@ public final class Modifiers {
     public static final IAttributeModifier KAR98K_EXTENDED              = new AttributeModifier("195ED54A-A61C-4A25-A603-9BC15889033F", AttributeOps.SUM, 5);
     public static final IAttributeModifier KAR98K_FAST_HANDS_ROF        = new AttributeModifier("7F330435-D62F-4921-B2A3-3B06F37C2FEC", AttributeOps.MUL, 0.6);
     public static final IAttributeModifier KAR98K_FAST_HANDS_RELOAD     = new AttributeModifier("CAE9F279-C696-46A3-8E09-8BC21460F12D", AttributeOps.MUL, 0.5);
+    public static final IAttributeModifier KAR98K_DEAD_EYE              = new AttributeModifier("3EF88EFE-B623-4F78-A272-B2E981A9A3E1", AttributeOps.MUL, 2.5);
 }

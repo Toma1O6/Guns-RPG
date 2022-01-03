@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import dev.toma.gunsrpg.api.common.ISkill;
+import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;

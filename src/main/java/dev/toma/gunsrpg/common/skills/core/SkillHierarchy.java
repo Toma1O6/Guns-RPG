@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.skills.core;
 
-import dev.toma.gunsrpg.api.common.ISkill;
+import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 
 public class SkillHierarchy<S extends ISkill> implements ISkillHierarchy<S> {

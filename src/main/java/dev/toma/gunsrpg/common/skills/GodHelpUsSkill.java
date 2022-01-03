@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.skills;
 
-import dev.toma.gunsrpg.api.common.IClickableSkill;
-import dev.toma.gunsrpg.api.common.ICooldown;
+import dev.toma.gunsrpg.api.common.skill.IClickableSkill;
+import dev.toma.gunsrpg.api.common.skill.ICooldown;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.FlareEntity;

@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.ISkill;
+import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.common.init.ModRegistries;

@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.skills;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.api.common.IClickableSkill;
-import dev.toma.gunsrpg.api.common.ICooldown;
+import dev.toma.gunsrpg.api.common.skill.IClickableSkill;
+import dev.toma.gunsrpg.api.common.skill.ICooldown;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;

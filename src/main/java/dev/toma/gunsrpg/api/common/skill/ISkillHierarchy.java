@@ -1,6 +1,5 @@
 package dev.toma.gunsrpg.api.common.skill;
 
-import dev.toma.gunsrpg.api.common.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 

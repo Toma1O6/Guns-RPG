@@ -1,9 +1,8 @@
 package dev.toma.gunsrpg.common.skills;
 
-import dev.toma.gunsrpg.api.common.ITickableSkill;
+import dev.toma.gunsrpg.api.common.skill.ITickableSkill;
 import dev.toma.gunsrpg.common.attribute.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;

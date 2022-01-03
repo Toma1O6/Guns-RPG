@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.util;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.ISkill;
+import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.api.common.data.ISkills;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;

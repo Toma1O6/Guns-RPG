@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.api.common.data;
 
-import dev.toma.gunsrpg.api.common.IDisplayableSkill;
-import dev.toma.gunsrpg.api.common.ISkill;
+import dev.toma.gunsrpg.api.common.skill.IDisplayableSkill;
+import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.entity.player.PlayerEntity;
 

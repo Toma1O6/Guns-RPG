@@ -1,6 +1,7 @@
-package dev.toma.gunsrpg.api.common;
+package dev.toma.gunsrpg.api.common.skill;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.api.common.IOverlayRender;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

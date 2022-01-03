@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.skills.core;
 
 import com.google.common.base.Preconditions;
-import dev.toma.gunsrpg.api.common.ISkill;
+import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.resource.skill.SkillPropertyLoader;
