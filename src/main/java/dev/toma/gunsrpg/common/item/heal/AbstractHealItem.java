@@ -103,7 +103,7 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
                 PlayerData.get(player).ifPresent(data -> {
                     T target = getTargetObject(world, player, data);
                     applyAction(target);
-                    if (data.getSkills().hasSkill(Skills.EFFICIENT_MEDS))
+                    if (data.getSkillProvider().hasSkill(Skills.EFFICIENT_MEDS))
                         player.heal(4.0F);
                     if (!player.isCreative())
                         stack.shrink(1);

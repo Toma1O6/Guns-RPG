@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns.util;
 
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -51,8 +50,7 @@ public interface IInputEventHandler {
         private void handleTick(PlayerEntity player, ItemStack stack, IPlayerData data) {
             if (shootReady.getAsBoolean()) {
                 if (heldItem == stack.getItem() && ShootingManager.canShoot(player, stack)) {
-                    IAttributeProvider provider = data.getAttributes();
-                    ShootingManager.Client.shoot(player, stack, provider);
+                    ShootingManager.Client.shoot(player, stack, data);
                     if (--shotsLeft <= 0) {
                         ShootingManager.Client.setBurstActive(false);
                     }
@@ -82,9 +80,8 @@ public interface IInputEventHandler {
 
     class Utils {
         static void shootWithValidation(PlayerEntity player, ItemStack stack, IPlayerData data) {
-            IAttributeProvider provider = data.getAttributes();
             if (ShootingManager.canShoot(player, stack)) {
-                ShootingManager.Client.shoot(player, stack, provider);
+                ShootingManager.Client.shoot(player, stack, data);
             }
         }
     }

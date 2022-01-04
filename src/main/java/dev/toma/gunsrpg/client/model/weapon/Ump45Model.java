@@ -704,7 +704,7 @@ public class Ump45Model extends AbstractWeaponModel {
     @Override
     public void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay) {
         gun.render(matrix, builder, light, overlay);
-        if (!data.getSkills().hasSkill(Skills.UMP45_RED_DOT))
+        if (!data.getSkillProvider().hasSkill(Skills.UMP45_RED_DOT))
             ironsights.render(matrix, builder, light, overlay);
         bolt.render(matrix, builder, light, overlay);
     }

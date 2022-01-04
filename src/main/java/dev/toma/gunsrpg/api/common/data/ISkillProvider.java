@@ -8,7 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import java.util.Collection;
 import java.util.List;
 
-public interface ISkills extends ILockStateChangeable {
+public interface ISkillProvider extends ILockStateChangeable {
 
     void tick(PlayerEntity player);
 

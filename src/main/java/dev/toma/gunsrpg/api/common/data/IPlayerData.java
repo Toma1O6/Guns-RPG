@@ -17,7 +17,7 @@ public interface IPlayerData {
 
     IAttributeProvider getAttributes();
 
-    ISkills getSkills();
+    ISkillProvider getSkillProvider();
 
     IData getGenericData();
 

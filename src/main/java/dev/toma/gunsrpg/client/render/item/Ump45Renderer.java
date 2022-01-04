@@ -2,11 +2,10 @@ package dev.toma.gunsrpg.client.render.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.ISkills;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.model.WeaponModels;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
-import dev.toma.gunsrpg.common.capability.object.PlayerSkills;
 import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -45,11 +44,11 @@ public class Ump45Renderer extends AbstractWeaponRenderer {
 
     @Override
     protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
-        ISkills skills = data.getSkills();
-        if (skills.hasSkill(Skills.UMP45_SUPPRESSOR)) {
+        ISkillProvider provider = data.getSkillProvider();
+        if (provider.hasSkill(Skills.UMP45_SUPPRESSOR)) {
             renderSuppressor(RenderConfigs.UMP45_SUPPRESSOR, matrix, typeBuffer, light, overlay, progress);
         }
-        if (skills.hasSkill(Skills.UMP45_RED_DOT)) {
+        if (provider.hasSkill(Skills.UMP45_RED_DOT)) {
             renderReflex(RenderConfigs.UMP45_REFLEX, matrix, typeBuffer, light, overlay, progress);
         }
     }

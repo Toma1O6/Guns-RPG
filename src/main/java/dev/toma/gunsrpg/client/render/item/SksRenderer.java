@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.client.render.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.ISkills;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.model.WeaponModels;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
@@ -48,11 +48,11 @@ public class SksRenderer extends AbstractWeaponRenderer {
 
     @Override
     protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
-        ISkills skills = data.getSkills();
-        if (skills.hasSkill(Skills.SKS_SUPPRESSOR)) {
+        ISkillProvider provider = data.getSkillProvider();
+        if (provider.hasSkill(Skills.SKS_SUPPRESSOR)) {
             renderSuppressor(RenderConfigs.SKS_SUPPRESSOR, matrix, typeBuffer, light, overlay, progress);
         }
-        if (skills.hasSkill(Skills.SKS_RED_DOT)) {
+        if (provider.hasSkill(Skills.SKS_RED_DOT)) {
             renderReflex(RenderConfigs.SKS_REFLEX, matrix, typeBuffer, light, overlay, progress);
         }
     }

@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.util;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.skill.ISkill;
-import dev.toma.gunsrpg.api.common.data.ISkills;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
@@ -17,14 +17,14 @@ import java.util.function.Function;
 
 public class SkillUtil {
 
-    public static <S extends ISkill> S getTopHierarchySkill(SkillType<S> head, ISkills skills) {
-        S value = skills.getSkill(head);
+    public static <S extends ISkill> S getTopHierarchySkill(SkillType<S> head, ISkillProvider provider) {
+        S value = provider.getSkill(head);
         if (value == null)
             return null;
         ISkillHierarchy<S> hierarchy = head.getHierarchy();
         SkillType<S> override = hierarchy.getOverride();
-        if (override != null && skills.hasSkill(override)) {
-            return getTopHierarchySkill(override, skills);
+        if (override != null && provider.hasSkill(override)) {
+            return getTopHierarchySkill(override, provider);
         } else {
             return value;
         }

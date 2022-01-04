@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
-import dev.toma.gunsrpg.api.common.data.ISkills;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
@@ -54,7 +54,7 @@ public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkill
     protected void handlePacket(NetworkEvent.Context context) {
         ServerPlayerEntity player = context.getSender();
         PlayerData.get(player).ifPresent(data -> {
-            ISkills skills = data.getSkills();
+            ISkillProvider provider = data.getSkillProvider();
             if (clicked == null) {
                 logInvalidPacket("Clicked skill is null");
                 return;
@@ -65,7 +65,7 @@ public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkill
                     logInvalidPacket("Supplied parent skill is not actual parent!");
                     return;
                 }
-                if (!skills.hasSkill(parent)) {
+                if (!provider.hasSkill(parent)) {
                     logInvalidPacket("Parent skill is not unlocked!");
                     return;
                 }
@@ -74,7 +74,7 @@ public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkill
                 for (SkillType<?> type : ModRegistries.SKILLS) {
                     ISkillHierarchy<?> hierarchy = type.getHierarchy();
                     if (hierarchy.getChildren() != null && ModUtils.contains(clicked, hierarchy.getChildren())) {
-                        if (!skills.hasSkill(type)) {
+                        if (!provider.hasSkill(type)) {
                             logInvalidPacket("Parent skill is not unlocked!");
                             return;
                         }

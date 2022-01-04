@@ -7,7 +7,7 @@ import dev.toma.gunsrpg.api.common.skill.ITickableSkill;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.ILockStateChangeable;
 import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
-import dev.toma.gunsrpg.api.common.data.ISkills;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -30,7 +30,7 @@ import org.apache.logging.log4j.MarkerManager;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEntry {
+public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable, IPlayerCapEntry {
 
     private static final Marker SKILLS = MarkerManager.getMarker("Skills");
     private final PlayerEntity player;
@@ -38,7 +38,7 @@ public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEn
     private final SkillCache cache = new SkillCache();
     private IClientSynchReq request = () -> {};
 
-    public PlayerSkills(PlayerEntity player) {
+    public PlayerSkillProvider(PlayerEntity player) {
         this.player = player;
     }
 
@@ -177,7 +177,7 @@ public class PlayerSkills implements ISkills, ILockStateChangeable, IPlayerCapEn
 
         public void compute() {
             clear();
-            Collection<ISkill> collection = PlayerSkills.this.unlockedSkills.values();
+            Collection<ISkill> collection = PlayerSkillProvider.this.unlockedSkills.values();
             for (ISkill skill : collection) {
                 if (skill instanceof ITickableSkill)
                     tickables.add((ITickableSkill) skill);

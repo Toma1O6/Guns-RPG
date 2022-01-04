@@ -143,8 +143,8 @@ public class ClientEventHandler {
                 debuffRenderManager.drawDebuffsOnScreen(matrixStack, data.getAttributes(), data.getDebuffControl(), 0, window.getGuiScaledHeight() - 50, event.getPartialTicks());
 
                 int renderIndex = 0;
-                ISkills skills = data.getSkills();
-                List<IDisplayableSkill> list = skills.getDisplayableSkills(); // TODO rework
+                ISkillProvider provider = data.getSkillProvider();
+                List<IDisplayableSkill> list = provider.getDisplayableSkills(); // TODO rework
                 if (list == null) return;
                 int left = 5;
                 int top = window.getGuiScaledHeight() - 25;
@@ -246,8 +246,8 @@ public class ClientEventHandler {
             ShootingManager.Client.saveSettings(settings);
             ScopeDataRegistry.Entry entry = ScopeDataRegistry.getRegistry().getRegistryEntry(item);
             optional.ifPresent(data -> {
-                ISkills skills = data.getSkills();
-                if (entry.isApplicable(skills)) {
+                ISkillProvider provider = data.getSkillProvider();
+                if (entry.isApplicable(provider)) {
                     ShootingManager.Client.applySettings(settings, entry);
                 }
             });

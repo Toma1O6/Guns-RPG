@@ -69,20 +69,22 @@ public class ShootingManager {
         private static final OptionalObject<Double> sensitivity = OptionalObject.empty();
         private static boolean burstActive;
 
-        public static void shoot(PlayerEntity player, ItemStack stack, IAttributeProvider provider) {
+        public static void shoot(PlayerEntity player, ItemStack stack, IPlayerData dataProvider) {
             GunItem gun = (GunItem) stack.getItem();
-            float xRot = gun.getVerticalRecoil(provider);
-            float yRot = gun.getHorizontalRecoil(provider);
+            IAttributeProvider attributeProvider = dataProvider.getAttributes();
+            ISkillProvider skillProvider = dataProvider.getSkillProvider();
+            float xRot = gun.getVerticalRecoil(attributeProvider);
+            float yRot = gun.getHorizontalRecoil(attributeProvider);
             if (player.getRandom().nextBoolean())
                 yRot = -yRot;
             player.xRot -= xRot;
             player.yRot -= yRot;
             NetworkManager.sendServerPacket(new C2S_ShootPacket());
             gun.onShoot(player, stack);
-            shootingDelay = gun.getFirerate(provider);
+            shootingDelay = gun.getFirerate(attributeProvider);
             float recoilAnimationShakeScale = ModConfig.clientConfig.recoilAnimationScale.floatValue();
             IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
-            pipeline.insert(ModAnimations.RECOIL, new RecoilAnimation(xRot, yRot, recoilAnimationShakeScale));
+            pipeline.insert(ModAnimations.RECOIL, new RecoilAnimation(xRot, yRot, recoilAnimationShakeScale, gun, stack, skillProvider));
         }
 
         public static void saveSettings(GameSettings settings) {

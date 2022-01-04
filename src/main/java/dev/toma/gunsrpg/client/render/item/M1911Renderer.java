@@ -46,7 +46,7 @@ public class M1911Renderer extends AbstractWeaponRenderer {
 
     @Override
     protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
-        if (data.getSkills().hasSkill(Skills.M1911_SUPPRESSOR)) {
+        if (data.getSkillProvider().hasSkill(Skills.M1911_SUPPRESSOR)) {
             renderSuppressor(RenderConfigs.M1911_SUPPRESSOR, matrix, typeBuffer, light, overlay, progress);
         }
     }

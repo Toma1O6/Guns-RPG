@@ -5,7 +5,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.api.common.data.IData;
-import dev.toma.gunsrpg.api.common.data.ISkills;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.MaterialContainer;
@@ -93,13 +93,13 @@ public class ChooseAmmoScreen extends Screen {
             this.stack = new ItemStack((Item) ammo);
             PlayerData.get(player).ifPresent(data -> {
                 IData genericData = data.getGenericData();
-                ISkills skills = data.getSkills();
+                ISkillProvider provider = data.getSkillProvider();
                 if (isGun) {
                     GunItem gun = (GunItem) stack.getItem();
                     MaterialContainer container = gun.getContainer();
                     int weaponLevel = genericData.getWeaponStats(gun).getLevel() - 1;
                     requiredLevel = container.getRequiredLevel(ammo.getMaterial());
-                    active = skills.hasSkill(gun.getRequiredSkill()) && weaponLevel >= requiredLevel;
+                    active = provider.hasSkill(gun.getRequiredSkill()) && weaponLevel >= requiredLevel;
                 }
             });
         }

@@ -3,7 +3,7 @@ package dev.toma.gunsrpg.client.model.weapon;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.ISkills;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.model.ModelRenderer;
@@ -897,8 +897,8 @@ public class SksModel extends AbstractWeaponModel {
     @Override
     public void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay) {
         sks.render(matrix, builder, light, overlay);
-        ISkills skills = data.getSkills();
-        boolean sight = skills.hasSkill(Skills.SKS_RED_DOT);
+        ISkillProvider provider = data.getSkillProvider();
+        boolean sight = provider.hasSkill(Skills.SKS_RED_DOT);
         ironsights.visible = !sight;
         ironsights.render(matrix, builder, light, overlay);
     }

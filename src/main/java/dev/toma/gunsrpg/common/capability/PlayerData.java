@@ -26,7 +26,7 @@ public class PlayerData implements IPlayerData {
     private final PlayerEntity player;
     private final AimInfo aimInfo;
     private final ReloadInfo reloadInfo;
-    private final PlayerSkills playerSkills;
+    private final PlayerSkillProvider skillProvider;
     private final PlayerQuests playerQuests;
     private final PlayerDebuffs debuffs;
     private final PlayerAttributes attributes;
@@ -43,16 +43,16 @@ public class PlayerData implements IPlayerData {
         this.aimInfo = new AimInfo();
         this.reloadInfo = new ReloadInfo(this::getAttributes);
         this.attributes = new PlayerAttributes();
-        this.playerSkills = new PlayerSkills(player);
+        this.skillProvider = new PlayerSkillProvider(player);
         this.playerQuests = new PlayerQuests();
-        this.data = new PlayerGenericData(player, playerSkills);
+        this.data = new PlayerGenericData(player, skillProvider);
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setSyncCallback);
 
         saveHandler.addListener(debuffs);
         saveHandler.addListener(aimInfo);
         saveHandler.addListener(attributes);
-        saveHandler.addListener(playerSkills);
+        saveHandler.addListener(skillProvider);
         saveHandler.addListener(playerQuests);
         saveHandler.addListener(data);
 
@@ -64,7 +64,7 @@ public class PlayerData implements IPlayerData {
         this.debuffs.tick(player);
         this.reloadInfo.tick(player);
         this.aimInfo.tick(player, reloadInfo);
-        this.playerSkills.tick(player);
+        this.skillProvider.tick(player);
     }
 
     @Override
@@ -78,8 +78,8 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public ISkills getSkills() {
-        return playerSkills;
+    public ISkillProvider getSkillProvider() {
+        return skillProvider;
     }
 
     @Override
@@ -155,7 +155,7 @@ public class PlayerData implements IPlayerData {
     public static boolean hasActiveSkill(PlayerEntity player, SkillType<?> type) {
         LazyOptional<IPlayerData> optional = get(player);
         if (optional.isPresent()) {
-            return optional.orElse(null).getSkills().hasSkill(type);
+            return optional.orElse(null).getSkillProvider().hasSkill(type);
         }
         return false;
     }
@@ -163,7 +163,7 @@ public class PlayerData implements IPlayerData {
     public static <S extends ISkill> S getSkill(PlayerEntity player, SkillType<S> type) {
         LazyOptional<IPlayerData> optional = get(player);
         if (optional.isPresent()) {
-            return optional.orElse(null).getSkills().getSkill(type);
+            return optional.orElse(null).getSkillProvider().getSkill(type);
         }
         return null;
     }

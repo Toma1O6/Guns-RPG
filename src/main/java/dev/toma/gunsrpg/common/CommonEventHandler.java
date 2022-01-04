@@ -3,7 +3,7 @@ package dev.toma.gunsrpg.common;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.ISkills;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.api.common.data.IWorldData;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.attribute.IAttributeId;
@@ -21,8 +21,6 @@ import dev.toma.gunsrpg.common.skills.LightHunterSkill;
 import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.S2C_SendSkillDataPacket;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.world.MobSpawnManager;
@@ -198,9 +196,9 @@ public class CommonEventHandler {
                 int nutrition = food.getNutrition();
                 if (nutrition >= ModConfig.skillConfig.getWellFedMinNutrition()) {
                     PlayerData.get(player).ifPresent(data -> {
-                        ISkills skills = data.getSkills();
-                        if (skills.hasSkill(Skills.WELL_FED_I)) {
-                            SkillUtil.getTopHierarchySkill(Skills.WELL_FED_I, skills).applyEffects(player);
+                        ISkillProvider provider = data.getSkillProvider();
+                        if (provider.hasSkill(Skills.WELL_FED_I)) {
+                            SkillUtil.getTopHierarchySkill(Skills.WELL_FED_I, provider).applyEffects(player);
                         }
                     });
                 }
@@ -356,9 +354,9 @@ public class CommonEventHandler {
         if (event.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntity();
             PlayerData.get(player).ifPresent(data -> {
-                ISkills skills = data.getSkills();
-                if (skills.hasSkill(Skills.SECOND_CHANCE_I)) {
-                    SecondChanceSkill secondChanceSkill = SkillUtil.getTopHierarchySkill(Skills.SECOND_CHANCE_I, skills);
+                ISkillProvider provider = data.getSkillProvider();
+                if (provider.hasSkill(Skills.SECOND_CHANCE_I)) {
+                    SecondChanceSkill secondChanceSkill = SkillUtil.getTopHierarchySkill(Skills.SECOND_CHANCE_I, provider);
                     if (secondChanceSkill.canApply(player)) {
                         event.setCanceled(true);
                         secondChanceSkill.setOnCooldown();
@@ -380,7 +378,7 @@ public class CommonEventHandler {
                             ((DeathCrateTileEntity) tileEntity).fillInventory(player);
                         }
                     }
-                    if (skills.hasSkill(Skills.AVENGE_ME_FRIENDS) && !player.level.isClientSide) {
+                    if (provider.hasSkill(Skills.AVENGE_ME_FRIENDS) && !player.level.isClientSide) {
                         List<PlayerEntity> players = player.level.getEntitiesOfClass(PlayerEntity.class, VoxelShapes.block().bounds().move(player.blockPosition()).inflate(30));
                         players.forEach(p -> {
                             p.addEffect(new EffectInstance(Effects.ABSORPTION, 400, 2));
@@ -397,9 +395,9 @@ public class CommonEventHandler {
     public static void respawnPlayer(PlayerEvent.PlayerRespawnEvent event) {
         PlayerEntity player = event.getPlayer();
         PlayerData.get(player).ifPresent(data -> {
-            ISkills skills = data.getSkills();
-            if (skills.hasSkill(Skills.WAR_MACHINE)) {
-                skills.getSkill(Skills.WAR_MACHINE).onPurchase(player);
+            ISkillProvider provider = data.getSkillProvider();
+            if (provider.hasSkill(Skills.WAR_MACHINE)) {
+                provider.getSkill(Skills.WAR_MACHINE).onPurchase(player);
             }
             if (!event.isEndConquered()) {
                 data.getDebuffControl().trigger(IDebuffType.TriggerFlags.RESPAWN, IDebuffContext.of(DamageSource.GENERIC, player, data, 0.0F));

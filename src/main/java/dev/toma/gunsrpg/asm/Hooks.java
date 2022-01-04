@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.asm;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.ISkills;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
@@ -46,8 +46,8 @@ public class Hooks {
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         if (optional.isPresent()) {
             IPlayerData data = optional.orElse(null);
-            ISkills skills = data.getSkills();
-            AdrenalineRushSkill adrenaline = SkillUtil.getTopHierarchySkill(Skills.ADRENALINE_RUSH_I, skills);
+            ISkillProvider provider = data.getSkillProvider();
+            AdrenalineRushSkill adrenaline = SkillUtil.getTopHierarchySkill(Skills.ADRENALINE_RUSH_I, provider);
             if (adrenaline != null && adrenaline.canApply(player)) {
                 value *= adrenaline.getAttackSpeedBoost();
             }
@@ -76,10 +76,10 @@ public class Hooks {
         IPlayerData data = PlayerData.get(player).orElse(null);
         if (data == null)
             return drops;
-        ISkills skills = data.getSkills();
+        ISkillProvider provider = data.getSkillProvider();
         if (block.getTags().contains(BlockTags.LOGS.getName())) { // is log
             MinecraftServer server = entity.getServer();
-            if (server == null || !skills.hasSkill(Skills.LUMBERJACK_I))
+            if (server == null || !provider.hasSkill(Skills.LUMBERJACK_I))
                 return drops;
             RecipeManager manager = server.getRecipeManager();
             List<ICraftingRecipe> craftingRecipes = manager.getAllRecipesFor(IRecipeType.CRAFTING);
@@ -89,7 +89,7 @@ public class Hooks {
                     Ingredient ingredient = ingredients.get(0);
                     if (ingredient.test(new ItemStack(block))) {
                         ItemStack result = recipe.getResultItem();
-                        Pair<Float, Float> chances = SkillUtil.getTopHierarchySkill(Skills.LUMBERJACK_I, skills).getDropChances();
+                        Pair<Float, Float> chances = SkillUtil.getTopHierarchySkill(Skills.LUMBERJACK_I, provider).getDropChances();
                         if (player.getRandom().nextFloat() < chances.getLeft()) {
                             drops.add(new ItemStack(result.getItem(), 1));
                         }
@@ -101,7 +101,7 @@ public class Hooks {
                 }
             }
         } else if (block.getTags().contains(Tags.Blocks.ORES.getName())) {
-            MotherlodeSkill skill = SkillUtil.getTopHierarchySkill(Skills.MOTHER_LODE_I, skills);
+            MotherlodeSkill skill = SkillUtil.getTopHierarchySkill(Skills.MOTHER_LODE_I, provider);
             if (skill != null) {
                 Pair<Float, Float> multiplierChances = skill.getDropChances();
                 Random random = player.getRandom();

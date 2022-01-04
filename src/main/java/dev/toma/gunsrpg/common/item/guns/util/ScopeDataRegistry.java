@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns.util;
 
-import dev.toma.gunsrpg.api.common.data.ISkills;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 
 import java.util.IdentityHashMap;
@@ -20,7 +20,7 @@ public final class ScopeDataRegistry {
         register(gun, scopeFov, sensitivityMultiplier, skills -> true);
     }
 
-    public void register(AbstractGun gun, float scopeFov, float sensitivityMultiplier, Predicate<ISkills> condition) {
+    public void register(AbstractGun gun, float scopeFov, float sensitivityMultiplier, Predicate<ISkillProvider> condition) {
         data.put(gun, new Entry(scopeFov, sensitivityMultiplier, condition));
     }
 
@@ -33,9 +33,9 @@ public final class ScopeDataRegistry {
 
         public static final Entry NO_DATA = new Entry(0.0F, 0.0F, skills -> false);
         private final float fov, sensMultiplier;
-        private final Predicate<ISkills> skillCondition;
+        private final Predicate<ISkillProvider> skillCondition;
 
-        private Entry(float fov, float sensMultiplier, Predicate<ISkills> skillCondition) {
+        private Entry(float fov, float sensMultiplier, Predicate<ISkillProvider> skillCondition) {
             this.fov = fov;
             this.sensMultiplier = sensMultiplier;
             this.skillCondition = skillCondition;
@@ -49,8 +49,8 @@ public final class ScopeDataRegistry {
             return sensMultiplier;
         }
 
-        public boolean isApplicable(ISkills skills) {
-            return skillCondition.test(skills);
+        public boolean isApplicable(ISkillProvider provider) {
+            return skillCondition.test(provider);
         }
     }
 }

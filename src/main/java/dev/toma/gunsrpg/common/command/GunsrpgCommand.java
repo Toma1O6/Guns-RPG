@@ -110,12 +110,12 @@ public class GunsrpgCommand {
         PlayerEntity player = getPlayer(ctx);
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         optional.ifPresent(data -> {
-            ISkills skills = data.getSkills();
+            ISkillProvider provider = data.getSkillProvider();
             data.getSaveEntries().stream()
                     .filter(entry -> entry instanceof ILockStateChangeable)
                     .map(entry -> (ILockStateChangeable) entry)
                     .forEach(action::apply);
-            String translationKey = "gunsrpg.command.editskills." + (skills.getUnlockedSkills().isEmpty() ? "lock" : "unlock");
+            String translationKey = "gunsrpg.command.editskills." + (provider.getUnlockedSkills().isEmpty() ? "lock" : "unlock");
             src.sendSuccess(new TranslationTextComponent(translationKey), false);
             data.sync(DataFlags.WILDCARD);
         });

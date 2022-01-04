@@ -27,7 +27,7 @@ import java.util.Map;
 public class PlayerGenericData implements IData, IPlayerCapEntry {
 
     private final PlayerEntity player;
-    private final ISkills skills;
+    private final ISkillProvider skillProvider;
     private final ITransactionManager transactionManager = new TransactionManager();
     private final Map<GunItem, GunKillData> weaponStats = new HashMap<>();
     private IClientSynchReq request = () -> {};
@@ -37,9 +37,9 @@ public class PlayerGenericData implements IData, IPlayerCapEntry {
     private int kills;
     private int requiredKills;
 
-    public PlayerGenericData(PlayerEntity player, ISkills skills) {
+    public PlayerGenericData(PlayerEntity player, ISkillProvider skillProvider) {
         this.player = player;
-        this.skills = skills;
+        this.skillProvider = skillProvider;
 
         this.transactionManager.registerHandler(TransactionTypes.SKILLPOINT_TRANSACTION, this::hasEnoughSkillpoints, this::handleSkillpointTransaction);
         this.transactionManager.registerHandler(TransactionTypes.WEAPON_POINT_TRANSACTION, this::hasEnoughWeaponPoints, this::handleWeaponPointTransaction);
@@ -89,7 +89,7 @@ public class PlayerGenericData implements IData, IPlayerCapEntry {
         if (notify) {
             player.sendMessage(new StringTextComponent(TextFormatting.YELLOW + "=====[ LEVEL UP ]====="), Util.NIL_UUID);
             player.sendMessage(new StringTextComponent(TextFormatting.YELLOW + "Current level: " + level), Util.NIL_UUID);
-            skills.onLevelUp(level, player);
+            skillProvider.onLevelUp(level, player);
             request.makeSyncRequest();
         }
     }
@@ -240,7 +240,7 @@ public class PlayerGenericData implements IData, IPlayerCapEntry {
 
     private void handleSkillpointTransaction(ITransaction<SkillType<?>> transaction) {
         skillPoints -= transaction.total();
-        skills.unlock(transaction.getData());
+        skillProvider.unlock(transaction.getData());
     }
 
     private boolean hasEnoughWeaponPoints(ITransaction<WeaponPointTransaction.IWeaponData> transaction) {
@@ -253,6 +253,6 @@ public class PlayerGenericData implements IData, IPlayerCapEntry {
         GunItem item = transaction.getData().item();
         IKillData data = getWeaponStats(item);
         data.awardPoints(-transaction.total());
-        skills.unlock(transaction.getData().skill());
+        skillProvider.unlock(transaction.getData().skill());
     }
 }
