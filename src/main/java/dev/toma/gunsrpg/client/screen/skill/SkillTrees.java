@@ -3,9 +3,9 @@ package dev.toma.gunsrpg.client.screen.skill;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import lib.toma.animations.QuickSort;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,6 +27,18 @@ public class SkillTrees {
         for (int i = 0; i < roots.size(); i++) {
             trees[i] = new Tree(category, roots.get(i));
         }
+        QuickSort.sort(trees, this::compareTrees);
+        int xCorrection = Tree.GRID_UNIT_SIZE;
+        int yCorrection = Tree.GRID_UNIT_SIZE;
+        for (Tree tree : trees) {
+            tree.move(xCorrection, yCorrection);
+            int width = tree.getWidth();
+            xCorrection = width + Tree.GRID_UNIT_SIZE;
+        }
+    }
+
+    public Tree[] getTrees() {
+        return trees;
     }
 
     private boolean isRoot(SkillType<?> type) {
@@ -43,5 +55,11 @@ public class SkillTrees {
 
     private boolean hasExtensions(ISkillHierarchy<?> hierarchy) {
         return hierarchy.getExtensions() != null;
+    }
+
+    private int compareTrees(Tree tree1, Tree tree2) {
+        int level1 = tree1.getRoot().getProperties().getRequiredLevel();
+        int level2 = tree2.getRoot().getProperties().getRequiredLevel();
+        return level1 - level2;
     }
 }

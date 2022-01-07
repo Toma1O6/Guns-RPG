@@ -20,13 +20,23 @@ public class Tree implements IDimensions {
 
     private final SkillCategory category;
     private final Map<SkillType<?>, SkillViewData> dataViewMap = new IdentityHashMap<>();
+    private final SkillType<?> root;
     private final int width, height;
 
     public Tree(SkillCategory category, SkillType<?> root) {
         this.category = category;
+        this.root = root;
         fillPositionMap(root);
         this.width = calculateMaxWidth();
         this.height = calculateMaxHeight();
+    }
+
+    public SkillType<?> getRoot() {
+        return root;
+    }
+
+    public void move(int xCorrection, int yCorrection) {
+        dataViewMap.values().forEach(data -> data.move(xCorrection, yCorrection));
     }
 
     @Override
@@ -74,11 +84,11 @@ public class Tree implements IDimensions {
     }
 
     private int calculateMaxWidth() {
-        return dataViewMap.values().stream().mapToInt(value -> value.getPos().x() + GRID_UNIT_SIZE).map(operand -> (int) Math.ceil(operand / (double) GRID_UNIT_SIZE)).max().orElse(GRID_UNIT_SIZE);
+        return dataViewMap.values().stream().mapToInt(value -> value.getPos().x()).map(operand -> (int) Math.ceil(operand / (double) GRID_UNIT_SIZE)).max().orElse(GRID_UNIT_SIZE);
     }
 
     private int calculateMaxHeight() {
-        return dataViewMap.values().stream().mapToInt(value -> value.getPos().y() + GRID_UNIT_SIZE).max().orElse(GRID_UNIT_SIZE);
+        return dataViewMap.values().stream().mapToInt(value -> value.getPos().y()).max().orElse(GRID_UNIT_SIZE);
     }
 
     private static class TreeNode {
