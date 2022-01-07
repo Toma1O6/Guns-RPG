@@ -20,6 +20,10 @@ public final class SkillViewData {
         pos.growY(y);
     }
 
+    public Vec2iMutable getPos() {
+        return pos;
+    }
+
     public enum Type {
         DEFAULT,
         FOREIGN
