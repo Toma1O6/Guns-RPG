@@ -65,6 +65,24 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
         return localization.getDescription();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        SkillType<?> type = (SkillType<?>) obj;
+        return type.getRegistryName().equals(getRegistryName());
+    }
+
+    @Override
+    public int hashCode() {
+        return getRegistryName().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "SkillType{" + getRegistryName().toString() + "}";
+    }
+
     @FunctionalInterface
     public interface IFactory<S extends ISkill> {
 
