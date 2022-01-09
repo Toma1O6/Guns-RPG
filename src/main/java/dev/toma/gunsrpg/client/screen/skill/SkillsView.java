@@ -5,7 +5,6 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IPointProvider;
 import dev.toma.gunsrpg.client.screen.widgets.*;
-import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.util.ResourceLocation;
@@ -46,13 +45,12 @@ public class SkillsView extends View {
         footerWidget = addWidget(new FooterWidget(x, y + height - 20, width, 20, client.font, pointProvider));
         footerWidget.setColorSchema(0xFFFF, 0xCCCC);
         // add skill info panel
-        skillInfoWidget = addWidget(new SkillInfoWidget(x, y + height - 80, width, 50));
-        skillInfoWidget.updateSource(ModRegistries.SKILLS.getValues().stream().findAny().orElse(null));
+        skillInfoWidget = addWidget(new SkillInfoWidget(x, y + height - 80, width, 80, manager.getContext()));
         // add perk/skill switch
         viewSwitchWidget = addWidget(new ViewSwitchWidget(x + width - 42, y + height - 62, 32, 32, PERK_VIEW));
         viewSwitchWidget.setClickEvent(this::openPerkView);
 
-        this.updateSkillInformationVisibility(true); // TODO set to false after testing
+        this.updateSkillInformationVisibility(false);
     }
 
     @Override

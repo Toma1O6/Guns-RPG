@@ -36,12 +36,14 @@ public class SkillTreeScreen extends Screen implements IViewContext {
     @Override
     protected void init() {
         this.data = PlayerData.get(minecraft.player).orElseThrow(NullPointerException::new);
+        MainWindow window = minecraft.getWindow();
         View view = manager.getView();
         if (view == null) {
-            view = new LoadingView(minecraft.getWindow(), this::checkLoaded, this::onLoadCorrection);
+            view = new LoadingView(window, this::checkLoaded, this::onLoadCorrection);
             manager.setView(view);
         }
         addWidget(view);
+        view.resizeFor(window);
         synchronized (view.lock) {
             view.init();
         }

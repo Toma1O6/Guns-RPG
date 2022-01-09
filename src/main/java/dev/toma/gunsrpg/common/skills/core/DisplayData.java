@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.common.skills.core;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -14,10 +16,10 @@ public final class DisplayData {
 
     @OnlyIn(Dist.CLIENT)
     @SuppressWarnings("unchecked")
-    public <D> void renderAt(int x, int y) {
+    public <D> void renderAt(MatrixStack stack, int x, int y) {
         DisplayType.IRenderFactory<D> factory = (DisplayType.IRenderFactory<D>) type.getRenderFactory();
         D data = getRenderData();
-        factory.render(x, y, data);
+        factory.render(stack, x, y, data);
     }
 
     @SuppressWarnings("unchecked")

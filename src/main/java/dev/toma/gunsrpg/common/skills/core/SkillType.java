@@ -47,6 +47,10 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
         return properties;
     }
 
+    public DisplayData getDisplayData() {
+        return displayData;
+    }
+
     /**
      * Called when data are loaded from datapack for this particular instance.
      * @param result The loaded data

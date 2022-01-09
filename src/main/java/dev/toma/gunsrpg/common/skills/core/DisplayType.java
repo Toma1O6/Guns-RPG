@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.skills.core;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.render.skill.SkillRenderFactories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -30,6 +31,6 @@ public final class DisplayType<D> {
 
     @FunctionalInterface
     public interface IRenderFactory<D> {
-        void render(int x, int y, D data);
+        void render(MatrixStack stack, int x, int y, D data);
     }
 }

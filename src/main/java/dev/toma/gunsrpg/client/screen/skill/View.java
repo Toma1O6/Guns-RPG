@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.client.screen.skill;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.configuration.api.client.widget.ITickable;
+import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.IGuiEventListener;
@@ -33,6 +34,11 @@ public abstract class View extends Widget implements INestedGuiEventHandler {
         this.manager = manager;
         this.client = Minecraft.getInstance();
         this.font = client.font;
+    }
+
+    public void resizeFor(MainWindow window) {
+        this.width = window.getGuiScaledWidth();
+        this.height = window.getGuiScaledHeight();
     }
 
     protected void init() {
