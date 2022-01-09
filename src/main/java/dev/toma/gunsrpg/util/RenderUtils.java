@@ -152,7 +152,11 @@ public class RenderUtils {
     }
 
     public static void drawColoredTex(Matrix4f pose, int x1, int y1, int x2, int y2, int color) {
-        drawColoredTex(pose, x1, y1, x2, y2, 0, 0.0F, 0.0F, 1.0F, 1.0F, color, color);
+        drawColoredTex(pose, x1, y1, x2, y2, color, color);
+    }
+
+    public static void drawColoredTex(Matrix4f pose, int x1, int y1, int x2, int y2, int color1, int color2) {
+        drawColoredTex(pose, x1, y1, x2, y2, 0, 0.0F, 0.0F, 1.0F, 1.0F, color1, color2);
     }
 
     public static void drawColoredTex(Matrix4f pose, int x1, int y1, int x2, int y2, int depth, float u1, float v1, float u2, float v2, int color1, int color2) {

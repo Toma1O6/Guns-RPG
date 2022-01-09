@@ -20,8 +20,6 @@ import java.util.List;
  */
 public abstract class View extends Widget implements INestedGuiEventHandler {
 
-    public static final ResourceLocation SWITCH = GunsRPG.makeResource("textures/screen/view_switch.png");
-
     protected final Minecraft client;
     protected final FontRenderer font;
     protected final IViewManager manager;

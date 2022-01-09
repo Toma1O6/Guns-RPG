@@ -39,6 +39,12 @@ public class ContainerWidget extends Widget implements INestedGuiEventHandler {
         removeGuiEventListener(widget);
     }
 
+    public void clear() {
+        listeners.clear();
+        widgets.clear();
+        focused = null;
+    }
+
     @Override
     public void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         widgets.forEach(widget -> widget.render(stack, mouseX, mouseY, partialTicks));

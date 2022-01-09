@@ -122,7 +122,7 @@ public class PlayerGenericData implements IData, IPlayerCapEntry {
     @Override
     public void doUnlock() {
         level = getLevelLimit();
-        skillPoints = Short.MAX_VALUE;
+        skillPoints = Integer.MAX_VALUE;
         ForgeRegistries.ITEMS.getValues().stream()
                 .filter(item -> item instanceof GunItem)
                 .map(item -> (GunItem) item)

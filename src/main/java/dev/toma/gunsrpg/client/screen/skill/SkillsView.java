@@ -1,13 +1,14 @@
 package dev.toma.gunsrpg.client.screen.skill;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IPointProvider;
-import dev.toma.gunsrpg.client.screen.widgets.FooterWidget;
-import dev.toma.gunsrpg.client.screen.widgets.HeaderWidget;
-import dev.toma.gunsrpg.client.screen.widgets.NavigatorWidget;
+import dev.toma.gunsrpg.client.screen.widgets.*;
+import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
-import net.minecraft.client.Minecraft;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -16,7 +17,10 @@ import java.util.Locale;
 
 public class SkillsView extends View {
 
+    private static final ResourceLocation PERK_VIEW = GunsRPG.makeResource("textures/screen/perk_view_icon.png");
     private FooterWidget footerWidget;
+    private SkillInfoWidget skillInfoWidget;
+    private ViewSwitchWidget viewSwitchWidget;
 
     public SkillsView(int windowWidth, int windowHeight, IViewManager manager) {
         super(windowWidth, windowHeight, manager);
@@ -42,9 +46,13 @@ public class SkillsView extends View {
         footerWidget = addWidget(new FooterWidget(x, y + height - 20, width, 20, client.font, pointProvider));
         footerWidget.setColorSchema(0xFFFF, 0xCCCC);
         // add skill info panel
+        skillInfoWidget = addWidget(new SkillInfoWidget(x, y + height - 80, width, 50));
+        skillInfoWidget.updateSource(ModRegistries.SKILLS.getValues().stream().findAny().orElse(null));
         // add perk/skill switch
+        viewSwitchWidget = addWidget(new ViewSwitchWidget(x + width - 42, y + height - 62, 32, 32, PERK_VIEW));
+        viewSwitchWidget.setClickEvent(this::openPerkView);
 
-        this.updateSkillInformationVisibility(false);
+        this.updateSkillInformationVisibility(true); // TODO set to false after testing
     }
 
     @Override
@@ -52,11 +60,22 @@ public class SkillsView extends View {
         super.renderView(stack, mouseX, mouseY, partialTicks);
     }
 
+    private void openPerkView() {
+
+    }
+
     private void updateCanvasSource(SkillCategory category) {
         updateSkillInformationVisibility(false);
     }
 
+    private void skillClicked(SkillType<?> type) {
+        skillInfoWidget.updateSource(type);
+        this.updateSkillInformationVisibility(type != null);
+    }
+
     private void updateSkillInformationVisibility(boolean visibilityState) {
         this.footerWidget.visible = !visibilityState;
+        this.viewSwitchWidget.visible = !visibilityState;
+        this.skillInfoWidget.visible = visibilityState;
     }
 }

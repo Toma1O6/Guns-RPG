@@ -586,6 +586,7 @@
     "ammo.material.gunsrpg.toxin": "Toxin Rocket",
 
     "view.skill.header": "%s's skill tree",
+    "view.skill.extensions": "Extensions",
     "nav.entry.resistance": "Resistance",
     "nav.entry.mining": "Mining",
     "nav.entry.survival": "Survival",

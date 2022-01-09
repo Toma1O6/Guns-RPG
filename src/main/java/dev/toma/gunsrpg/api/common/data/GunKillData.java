@@ -83,7 +83,7 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
     public void doUnlock() {
         level = getLevelLimit();
         requiredKillCount = 0;
-        points = Short.MAX_VALUE;
+        points = Integer.MAX_VALUE;
     }
 
     @Override
