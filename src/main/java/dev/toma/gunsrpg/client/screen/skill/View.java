@@ -2,14 +2,11 @@ package dev.toma.gunsrpg.client.screen.skill;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.configuration.api.client.widget.ITickable;
-import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.command.GunsrpgCommand;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.INestedGuiEventHandler;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 
 import java.util.ArrayList;
@@ -19,6 +16,8 @@ import java.util.List;
  * View represents currently displayed page in UI
  */
 public abstract class View extends Widget implements INestedGuiEventHandler {
+
+    protected final Object lock = new Object();
 
     protected final Minecraft client;
     protected final FontRenderer font;
@@ -44,7 +43,9 @@ public abstract class View extends Widget implements INestedGuiEventHandler {
     }
 
     public void tick() {
-        tickables.forEach(ITickable::tick);
+        synchronized (lock) {
+            tickables.forEach(ITickable::tick);
+        }
     }
 
     @Override
@@ -110,28 +111,34 @@ public abstract class View extends Widget implements INestedGuiEventHandler {
     @Override
     public final void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         renderView(stack, mouseX, mouseY, partialTicks);
-        for (Widget widget : widgets) {
-            widget.render(stack, mouseX, mouseY, partialTicks);
+        synchronized (lock) {
+            widgets.forEach(widget -> widget.render(stack, mouseX, mouseY, partialTicks));
         }
     }
 
     public void addEventListener(IGuiEventListener listener) {
-        if (listener instanceof ITickable) {
-            tickables.add((ITickable) listener);
+        synchronized (lock) {
+            if (listener instanceof ITickable) {
+                tickables.add((ITickable) listener);
+            }
+            eventListeners.add(listener);
         }
-        eventListeners.add(listener);
     }
 
     public <T extends Widget> T addWidget(T widget) {
         addEventListener(widget);
-        widgets.add(widget);
+        synchronized (lock) {
+            widgets.add(widget);
+        }
         return widget;
     }
 
     protected void clear() {
-        this.widgets.clear();
-        this.eventListeners.clear();
-        this.tickables.clear();
+        synchronized (lock) {
+            this.widgets.clear();
+            this.eventListeners.clear();
+            this.tickables.clear();
+        }
         this.focused = null;
         this.dragging = false;
     }

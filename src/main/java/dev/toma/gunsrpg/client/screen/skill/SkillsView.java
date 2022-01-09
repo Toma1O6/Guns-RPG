@@ -74,8 +74,10 @@ public class SkillsView extends View {
     }
 
     private void updateSkillInformationVisibility(boolean visibilityState) {
-        this.footerWidget.visible = !visibilityState;
-        this.viewSwitchWidget.visible = !visibilityState;
-        this.skillInfoWidget.visible = visibilityState;
+        synchronized (lock) {
+            this.footerWidget.visible = !visibilityState;
+            this.viewSwitchWidget.visible = !visibilityState;
+            this.skillInfoWidget.visible = visibilityState;
+        }
     }
 }
