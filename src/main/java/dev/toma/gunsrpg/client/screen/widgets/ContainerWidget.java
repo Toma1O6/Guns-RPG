@@ -1,52 +1,47 @@
-package dev.toma.gunsrpg.client.screen.skill;
+package dev.toma.gunsrpg.client.screen.widgets;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.configuration.api.client.widget.ITickable;
-import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.command.GunsrpgCommand;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.INestedGuiEventHandler;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * View represents currently displayed page in UI
- */
-public abstract class View extends Widget implements INestedGuiEventHandler {
+public class ContainerWidget extends Widget implements INestedGuiEventHandler {
 
-    public static final ResourceLocation SWITCH = GunsRPG.makeResource("textures/screen/view_switch.png");
-
-    protected final Minecraft client;
-    protected final FontRenderer font;
-    protected final IViewManager manager;
-    private final List<IGuiEventListener> eventListeners = new ArrayList<>();
+    private final List<IGuiEventListener> listeners = new ArrayList<>();
     private final List<Widget> widgets = new ArrayList<>();
-    private final List<ITickable> tickables = new ArrayList<>();
     private IGuiEventListener focused;
     private boolean dragging;
 
-    public View(int windowWidth, int windowHeight, IViewManager manager) {
-        super(0, 0, windowWidth, windowHeight, StringTextComponent.EMPTY);
-        this.manager = manager;
-        this.client = Minecraft.getInstance();
-        this.font = client.font;
+    public ContainerWidget(int x, int y, int width, int height) {
+        super(x, y, width, height, StringTextComponent.EMPTY);
     }
 
-    protected void init() {
+    public <L extends IGuiEventListener> L addGuiEventListener(L listener) {
+        this.listeners.add(listener);
+        return listener;
     }
 
-    protected void renderView(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
-
+    public void removeGuiEventListener(IGuiEventListener listener) {
+        listeners.remove(listener);
     }
 
-    public void tick() {
-        tickables.forEach(ITickable::tick);
+    public <W extends Widget> W addWidget(W widget) {
+        widgets.add(widget);
+        return addGuiEventListener(widget);
+    }
+
+    public void removeWidget(Widget widget) {
+        widgets.remove(widget);
+        removeGuiEventListener(widget);
+    }
+
+    @Override
+    public void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+        widgets.forEach(widget -> widget.render(stack, mouseX, mouseY, partialTicks));
     }
 
     @Override
@@ -86,7 +81,7 @@ public abstract class View extends Widget implements INestedGuiEventHandler {
 
     @Override
     public List<? extends IGuiEventListener> children() {
-        return eventListeners;
+        return listeners;
     }
 
     @Override
@@ -107,34 +102,5 @@ public abstract class View extends Widget implements INestedGuiEventHandler {
     @Override
     public void setFocused(IGuiEventListener focused) {
         this.focused = focused;
-    }
-
-    @Override
-    public final void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
-        renderView(stack, mouseX, mouseY, partialTicks);
-        for (Widget widget : widgets) {
-            widget.render(stack, mouseX, mouseY, partialTicks);
-        }
-    }
-
-    public void addEventListener(IGuiEventListener listener) {
-        if (listener instanceof ITickable) {
-            tickables.add((ITickable) listener);
-        }
-        eventListeners.add(listener);
-    }
-
-    public <T extends Widget> T addWidget(T widget) {
-        addEventListener(widget);
-        widgets.add(widget);
-        return widget;
-    }
-
-    protected void clear() {
-        this.widgets.clear();
-        this.eventListeners.clear();
-        this.tickables.clear();
-        this.focused = null;
-        this.dragging = false;
     }
 }

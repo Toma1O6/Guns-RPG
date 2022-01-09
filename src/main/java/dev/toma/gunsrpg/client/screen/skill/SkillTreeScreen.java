@@ -2,53 +2,63 @@ package dev.toma.gunsrpg.client.screen.skill;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.ModUtils;
+import net.minecraft.client.MainWindow;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-public class SkillTreeScreen extends Screen {
+public class SkillTreeScreen extends Screen implements IViewContext {
 
     private static final ITextComponent TITLE = new TranslationTextComponent("screen.skill_tree");
-    private final Options usedOptions;
-    private IViewManager manager;
+    private final IViewManager manager;
+    private IPlayerData data;
 
     public SkillTreeScreen() {
-        this(new Options(new IViewManager.ViewManager()));
-    }
-
-    public SkillTreeScreen(Options options) {
         super(TITLE);
-        this.usedOptions = options;
-        this.manager = options.manager;
+        this.manager = this.new ViewManager();
         this.queryCache();
     }
 
     @Override
     protected void init() {
-        addWidget(manager.getActive());
+        this.data = PlayerData.get(minecraft.player).orElseThrow(NullPointerException::new);
+        View view = manager.getView();
+        if (view == null) {
+            view = new LoadingView(minecraft.getWindow());
+            manager.setView(view);
+        }
+        addWidget(view);
+        view.init();
+    }
+
+    @Override
+    public IPlayerData getData() {
+        return data;
     }
 
     @Override
     public void tick() {
-        manager.getActive().tick();
+        manager.getView().tick();
     }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         renderBackground(matrixStack);
-        manager.getActive().render(matrixStack, mouseX, mouseY, partialTicks);
+        manager.getView().render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
     private void queryCache() {
@@ -63,20 +73,39 @@ public class SkillTreeScreen extends Screen {
     }
 
     private void updateView() {
-
+        MainWindow window = Minecraft.getInstance().getWindow();
+        setView(new SkillsView(window.getGuiScaledWidth(), window.getGuiScaledHeight(), manager));
     }
 
     private void onSkillTreeReady(Map<SkillCategory, SkillTrees> result) {
         Cache.onBuildFinished(result);
+        updateView();
     }
 
-    public static class Options {
+    private synchronized void setView(View view) {
+        this.manager.setView(view);
+        Minecraft mc = Minecraft.getInstance();
+        MainWindow window = mc.getWindow();
+        this.init(mc, window.getGuiScaledWidth(), window.getGuiScaledHeight());
+    }
 
-        private IViewManager manager;
+    public class ViewManager implements IViewManager {
 
-        public Options(IViewManager manager) {
-            this.manager = manager;
-            this.manager.init(IViewFactory.LOADING_VIEW_SUPPLIER.get());
+        private View view;
+
+        @Override
+        public IViewContext getContext() {
+            return SkillTreeScreen.this;
+        }
+
+        @Override
+        public void setView(View view) {
+            this.view = view;
+        }
+
+        @Override
+        public View getView() {
+            return view;
         }
     }
 

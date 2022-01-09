@@ -1,15 +1,19 @@
 package dev.toma.gunsrpg.util;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.GraphicsFanciness;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.opengl.GL11;
 
 public class RenderUtils {
@@ -209,5 +213,25 @@ public class RenderUtils {
         int id = settings.graphicsMode.getId();
         int requireId = fanciness.getId();
         return id >= requireId;
+    }
+
+    public static void drawCenteredText(MatrixStack stack, ITextComponent component, FontRenderer renderer, Widget widget, int color) {
+        float x = getHorizontalCenter(component, renderer, widget);
+        float y = getVerticalCenter(renderer, widget);
+        renderer.draw(stack, component, x, y, color);
+    }
+
+    public static void drawCenteredShadowText(MatrixStack stack, ITextComponent component, FontRenderer renderer, Widget widget, int color) {
+        float x = getHorizontalCenter(component, renderer, widget);
+        float y = getVerticalCenter(renderer, widget);
+        renderer.drawShadow(stack, component, x, y, color);
+    }
+
+    public static float getHorizontalCenter(ITextComponent component, FontRenderer renderer, Widget widget) {
+        return widget.x + (widget.getWidth() - renderer.width(component)) / 2.0F;
+    }
+
+    public static float getVerticalCenter(FontRenderer renderer, Widget widget) {
+        return widget.y + (widget.getHeight() - renderer.lineHeight) / 2.0F;
     }
 }

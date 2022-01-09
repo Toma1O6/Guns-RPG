@@ -585,6 +585,12 @@
     "ammo.material.gunsrpg.napalm": "Napalm Rocket",
     "ammo.material.gunsrpg.toxin": "Toxin Rocket",
 
+    "view.skill.header": "%s's skill tree",
+    "nav.entry.resistance": "Resistance",
+    "nav.entry.mining": "Mining",
+    "nav.entry.survival": "Survival",
+    "nav.entry.gun": "Weapon",
+
     "screen.smithing_table.condition": "Requirements:",
     "condition.crafting.skill": "%1$s skill",
     "screen.animator.new_project": "New Project",

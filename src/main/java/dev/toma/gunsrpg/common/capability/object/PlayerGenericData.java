@@ -136,7 +136,9 @@ public class PlayerGenericData implements IData, IPlayerCapEntry {
     public void doLock() {
         level = 0;
         skillPoints = 0;
+        kills = 0;
         weaponStats.clear();
+        updateRequiredKills();
     }
 
     @Override

@@ -42,4 +42,9 @@ public class WeaponTransactionValidator extends PlayerLevelTransactionValidator 
     public void onUnlocked(ITransactionProcessor processor, SkillType<?> skillType) {
         processor.processTransaction(new WeaponPointTransaction(WeaponPointTransaction.IWeaponData.of(item, skillType)));
     }
+
+    @Override
+    public IKillData getData(IPlayerData data) {
+        return data.getGenericData().getWeaponStats(item);
+    }
 }

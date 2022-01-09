@@ -24,6 +24,10 @@ public final class SkillViewData {
         return pos;
     }
 
+    public boolean isForeign() {
+        return type == Type.FOREIGN;
+    }
+
     public enum Type {
         DEFAULT,
         FOREIGN

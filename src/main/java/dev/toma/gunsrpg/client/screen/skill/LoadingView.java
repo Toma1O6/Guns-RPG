@@ -25,6 +25,5 @@ public class LoadingView extends View {
 
     @Override
     protected void renderView(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
-
     }
 }

@@ -37,4 +37,9 @@ public class PlayerLevelTransactionValidator implements ITransactionValidator {
     public void onUnlocked(ITransactionProcessor processor, SkillType<?> skillType) {
         processor.processTransaction(new SkillPointTransaction(skillType));
     }
+
+    @Override
+    public IKillData getData(IPlayerData data) {
+        return data.getGenericData();
+    }
 }
