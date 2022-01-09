@@ -5,10 +5,13 @@ import dev.toma.gunsrpg.common.item.BaseItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterialManager;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.util.object.RGB2TextFormatting;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -75,6 +78,11 @@ public abstract class AbstractGun extends BaseItem {
     public final int getDamageBonus(ItemStack stack) {
         IAmmoMaterial material = this.getMaterialFromNBT(stack);
         return material != null ? getContainer().getAdditionalDamage(material) : 0;
+    }
+
+    @Override
+    public boolean canAttackBlock(BlockState blockState, World world, BlockPos pos, PlayerEntity player) {
+        return false;
     }
 
     @Override
