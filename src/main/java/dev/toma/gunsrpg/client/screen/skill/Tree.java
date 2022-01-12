@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.screen.skill;
 
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -23,10 +24,12 @@ public class Tree implements IDimensions {
     private final Map<SkillType<?>, SkillViewData> dataViewMap = new IdentityHashMap<>();
     private final SkillType<?> root;
     private final int width, height;
+    private final boolean useSimplePlacement;
 
     public Tree(SkillCategory category, SkillType<?> root) {
         this.category = category;
         this.root = root;
+        this.useSimplePlacement = this.shouldUseSimplePlacement(root);
         fillPositionMap(root);
         this.width = calculateMaxWidth();
         this.height = calculateMaxHeight();
@@ -61,7 +64,7 @@ public class Tree implements IDimensions {
 
     private void generateViewDataForNode(TreeNode node) {
         int childCount = node.childrenNodes != null ? node.childrenNodes.length : 0;
-        boolean shouldCenter = childCount > 1;
+        boolean shouldCenter = !useSimplePlacement && childCount > 1;
         Vec2iMutable pos = new Vec2iMutable(node.xLevel * GRID_UNIT_SIZE, node.yLevel * GRID_UNIT_SIZE);
         if (shouldCenter) {
             int toCenter = (childCount - 1) * HALF_UNIT;
@@ -94,6 +97,10 @@ public class Tree implements IDimensions {
 
     private int calculateMaxHeight() {
         return dataViewMap.values().stream().mapToInt(value -> value.getPos().y()).max().orElse(GRID_UNIT_SIZE);
+    }
+
+    private boolean shouldUseSimplePlacement(SkillType<?> root) {
+        return root == Skills.WOODEN_AMMO_SMITH;
     }
 
     private static class TreeNode {
