@@ -45,7 +45,7 @@ public class SkillWidget extends Widget implements ITickable {
     @Override
     public void tick() {
         lastAnimationTime = animationTime;
-        animationTime = MathHelper.clamp((isHovered ? ++animationTime : --animationTime), 0, 30);
+        animationTime = MathHelper.clamp((isHovered ? ++animationTime : --animationTime), 0, 15);
         ++glowTimer;
     }
 
@@ -101,7 +101,7 @@ public class SkillWidget extends Widget implements ITickable {
     }
 
     private float getAnimationProgress(int value) {
-        return value / 30.0F;
+        return value / 15.0F;
     }
 
     private float getComponentCenter() {
