@@ -587,7 +587,8 @@
 
     "view.skill.header": "%s's skill tree",
     "view.skill.extensions": "Extensions",
-    "view.skill.purchase": "Unlock",
+    "view.skill.purchase": "Purchase",
+    "view.skill.use": "Use",
     "view.skill.required_level": "Level: %s",
     "view.skill.price": "Price: %s",
     "nav.entry.resistance": "Resistance",

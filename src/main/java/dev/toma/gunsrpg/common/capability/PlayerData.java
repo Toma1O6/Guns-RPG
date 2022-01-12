@@ -30,7 +30,7 @@ public class PlayerData implements IPlayerData {
     private final PlayerQuests playerQuests;
     private final PlayerDebuffs debuffs;
     private final PlayerAttributes attributes;
-    private final PlayerGenericData data;
+    private final PlayerProgressionData data;
     private ISynchCallback callback;
 
     public PlayerData() {
@@ -45,7 +45,7 @@ public class PlayerData implements IPlayerData {
         this.attributes = new PlayerAttributes();
         this.skillProvider = new PlayerSkillProvider(player);
         this.playerQuests = new PlayerQuests();
-        this.data = new PlayerGenericData(player, skillProvider);
+        this.data = new PlayerProgressionData(player, skillProvider);
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setSyncCallback);
 
@@ -98,7 +98,7 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public IData getGenericData() {
+    public IProgressData getProgressData() {
         return data;
     }
 

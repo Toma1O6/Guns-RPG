@@ -10,44 +10,30 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
-import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkillPacket> {
 
-    private boolean hasParent;
-    private SkillType<?> clicked;
-    private SkillType<?> parent;
+    private SkillType<?> toUnlock;
 
     public C2S_UnlockSkillPacket() {
     }
 
-    public C2S_UnlockSkillPacket(SkillType<?> clicked) {
-        this(clicked, null);
-    }
-
-    public C2S_UnlockSkillPacket(SkillType<?> clicked, SkillType<?> parent) {
-        this.clicked = clicked;
-        this.parent = parent;
-        this.hasParent = parent != null;
+    public C2S_UnlockSkillPacket(SkillType<?> toUnlock) {
+        this.toUnlock = toUnlock;
     }
 
     @Override
     public void encode(PacketBuffer buffer) {
-        buffer.writeBoolean(hasParent);
-        buffer.writeResourceLocation(clicked.getRegistryName());
-        if (hasParent)
-            buffer.writeResourceLocation(parent.getRegistryName());
+        buffer.writeResourceLocation(toUnlock.getRegistryName());
     }
 
     @Override
     public C2S_UnlockSkillPacket decode(PacketBuffer buffer) {
-        boolean hasParent = buffer.readBoolean();
-        SkillType<?> clicked = ModRegistries.SKILLS.getValue(buffer.readResourceLocation());
-        SkillType<?> parent = hasParent ? ModRegistries.SKILLS.getValue(buffer.readResourceLocation()) : null;
-        return new C2S_UnlockSkillPacket(clicked, parent);
+        SkillType<?> toUnlock = ModRegistries.SKILLS.getValue(buffer.readResourceLocation());
+        return new C2S_UnlockSkillPacket(toUnlock);
     }
 
     @Override
@@ -55,45 +41,34 @@ public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkill
         ServerPlayerEntity player = context.getSender();
         PlayerData.get(player).ifPresent(data -> {
             ISkillProvider provider = data.getSkillProvider();
-            if (clicked == null) {
+            if (toUnlock == null) {
                 logInvalidPacket("Clicked skill is null");
                 return;
             }
+            if (provider.hasSkill(toUnlock)) {
+                logInvalidPacket("Skill is already unlocked");
+                return;
+            }
+            ISkillHierarchy<?> hierarchy = toUnlock.getHierarchy();
+            SkillType<?> parent = hierarchy.getParent();
             if (parent != null) {
-                ISkillHierarchy<?> hierarchy = parent.getHierarchy();
-                if (hierarchy.getChildren() != null && !ModUtils.contains(clicked, hierarchy.getChildren())) {
-                    logInvalidPacket("Supplied parent skill is not actual parent!");
-                    return;
-                }
                 if (!provider.hasSkill(parent)) {
                     logInvalidPacket("Parent skill is not unlocked!");
                     return;
                 }
-            } else {
-                // validates that parent skill is unlocked
-                for (SkillType<?> type : ModRegistries.SKILLS) {
-                    ISkillHierarchy<?> hierarchy = type.getHierarchy();
-                    if (hierarchy.getChildren() != null && ModUtils.contains(clicked, hierarchy.getChildren())) {
-                        if (!provider.hasSkill(type)) {
-                            logInvalidPacket("Parent skill is not unlocked!");
-                            return;
-                        }
-                        break;
-                    }
-                }
             }
-            ISkillProperties properties = clicked.getProperties();
+            ISkillProperties properties = toUnlock.getProperties();
             ITransactionValidator validator = properties.getTransactionValidator();
-            if (!validator.canUnlock(data, clicked)) {
+            if (!validator.canUnlock(data, toUnlock)) {
                 logInvalidPacket("Player cannot unlock this skill yet!");
                 return;
             }
-            validator.onUnlocked(data.getGenericData(), clicked);
+            validator.onUnlocked(data.getProgressData(), toUnlock);
             data.sync(DataFlags.SKILLS | DataFlags.DATA);
         });
     }
 
     private void logInvalidPacket(String message) {
-        GunsRPG.log.fatal("Received invalid skill activation packet - {}", message);
+        GunsRPG.log.fatal("Received invalid skill unlock packet - {}", message);
     }
 }

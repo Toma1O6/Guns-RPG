@@ -10,6 +10,7 @@ import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+@Deprecated
 public interface ICooldown extends ITickableSkill, IOverlayRender {
 
     int getCooldown();
@@ -20,6 +21,7 @@ public interface ICooldown extends ITickableSkill, IOverlayRender {
 
     void onUse(PlayerEntity player);
 
+    @Deprecated
     @OnlyIn(Dist.CLIENT)
     @Override
     default void drawOnTop(MatrixStack stack, int x, int y, int width, int heigth) {

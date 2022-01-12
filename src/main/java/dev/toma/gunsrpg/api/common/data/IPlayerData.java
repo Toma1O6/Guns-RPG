@@ -19,7 +19,7 @@ public interface IPlayerData {
 
     ISkillProvider getSkillProvider();
 
-    IData getGenericData();
+    IProgressData getProgressData();
 
     List<IPlayerCapEntry> getSaveEntries();
 

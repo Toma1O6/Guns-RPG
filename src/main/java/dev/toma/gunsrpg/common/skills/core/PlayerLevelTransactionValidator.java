@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.skills.core;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
@@ -28,7 +27,7 @@ public class PlayerLevelTransactionValidator implements ITransactionValidator {
 
     @Override
     public boolean canUnlock(IPlayerData data, SkillType<?> skillType) {
-        IKillData killData = data.getGenericData();
+        IKillData killData = data.getProgressData();
         ISkillProperties properties = skillType.getProperties();
         return killData.getLevel() >= properties.getRequiredLevel() && killData.getPoints() >= properties.getPrice();
     }
@@ -40,6 +39,6 @@ public class PlayerLevelTransactionValidator implements ITransactionValidator {
 
     @Override
     public IKillData getData(IPlayerData data) {
-        return data.getGenericData();
+        return data.getProgressData();
     }
 }

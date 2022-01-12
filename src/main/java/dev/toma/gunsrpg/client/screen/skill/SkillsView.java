@@ -7,16 +7,19 @@ import dev.toma.gunsrpg.api.common.data.IPointProvider;
 import dev.toma.gunsrpg.client.screen.widgets.*;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.util.math.IVec2i;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Map;
 
 public class SkillsView extends View {
 
     private static final ResourceLocation PERK_VIEW = GunsRPG.makeResource("textures/screen/perk_view_icon.png");
+    private PannableWidget skillViewWidget;
     private FooterWidget footerWidget;
     private SkillInfoWidget skillInfoWidget;
     private ViewSwitchWidget viewSwitchWidget;
@@ -28,6 +31,9 @@ public class SkillsView extends View {
     @Override
     protected void init() {
         clear();
+        // add skill view
+        skillViewWidget = addWidget(new PannableWidget(x, y + 40, width, height - 60));
+        skillViewWidget.setEmptyClickResponder(this::skillClicked);
         // add header
         ITextComponent username = client.player.getName();
         ITextComponent header = new TranslationTextComponent("view.skill.header", username.getString());
@@ -37,19 +43,19 @@ public class SkillsView extends View {
         NavigatorWidget<SkillCategory> nav = addWidget(new NavigatorWidget<>(x, y + 20, width, 20, navEntries));
         nav.setTextFormatter(cat -> cat.name().toLowerCase(Locale.ROOT));
         nav.setClickResponder(this::updateCanvasSource);
-        // add canvas
         // add footer with data
         IViewContext context = manager.getContext();
         IPlayerData data = context.getData();
-        IPointProvider pointProvider = data.getGenericData();
+        IPointProvider pointProvider = data.getProgressData();
         footerWidget = addWidget(new FooterWidget(x, y + height - 20, width, 20, client.font, pointProvider));
         footerWidget.setColorSchema(0xFFFF, 0xCCCC);
         // add skill info panel
         skillInfoWidget = addWidget(new SkillInfoWidget(x, y + height - 80, width, 80, manager.getContext()));
         // add perk/skill switch
-        viewSwitchWidget = addWidget(new ViewSwitchWidget(x + width - 42, y + height - 62, 32, 32, PERK_VIEW));
+        viewSwitchWidget = addWidget(new ViewSwitchWidget(x + width - 42, height - 62, 32, 32, PERK_VIEW));
         viewSwitchWidget.setClickEvent(this::openPerkView);
 
+        this.updateCanvasSource(nav.getSelectedValue());
         this.updateSkillInformationVisibility(false);
     }
 
@@ -64,6 +70,25 @@ public class SkillsView extends View {
 
     private void updateCanvasSource(SkillCategory category) {
         updateSkillInformationVisibility(false);
+        Map<SkillCategory, SkillTrees> map = SkillTreeScreen.Cache.queryData();
+        SkillTrees skillTrees = map.get(category);
+        int xUnitSize = 6;
+        int yUnitSize = 10;
+        int level = manager.getContext().getData().getProgressData().getLevel();
+        skillViewWidget.fill((filler, x, y) -> {
+            Tree[] trees = skillTrees.getTrees();
+            for (Tree tree : trees) {
+                for (Map.Entry<SkillType<?>, SkillViewData> entry : tree.getDataSet()) {
+                    SkillType<?> source = entry.getKey();
+                    if (source.getProperties().getRequiredLevel() > level)
+                        continue;
+                    SkillViewData data = entry.getValue();
+                    IVec2i pos = data.getPos();
+                    SkillWidget widget = filler.add(new SkillWidget(x + pos.x() * xUnitSize, y + pos.y() * yUnitSize, 22, 22, source, manager.getContext()));
+                    widget.setClickResponder(this::skillClicked);
+                }
+            }
+        });
     }
 
     private void skillClicked(SkillType<?> type) {
@@ -76,6 +101,7 @@ public class SkillsView extends View {
             this.footerWidget.visible = !visibilityState;
             this.viewSwitchWidget.visible = !visibilityState;
             this.skillInfoWidget.visible = visibilityState;
+            this.skillViewWidget.updateSize(width, height - (visibilityState ? 120 : 60));
         }
     }
 }

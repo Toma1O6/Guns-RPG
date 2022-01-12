@@ -56,7 +56,8 @@ public class FooterWidget extends Widget {
             float progress = amount / (float) required;
             int pct = IValueFormatter.PERCENT.formatAttributeValue(progress);
             RenderUtils.drawSolid(pose, left, top, right, bottom, 0xFF << 24);
-            RenderUtils.drawGradient(pose, left + 2, top + 2, left + 2 + (int) (progress * (right - 2)), bottom - 2, progressColor1 | 0xFF << 24, progressColor2 | 0xFF << 24);
+            int diff = right - left - 2;
+            RenderUtils.drawGradient(pose, left + 2, top + 2, left + (int) (progress * diff), bottom - 2, progressColor1 | 0xFF << 24, progressColor2 | 0xFF << 24);
             levelInfo.append(" (").append(pct).append("%)").append(" - ").append(amount).append(" / ").append(required).append(" kills");
         } else {
             right = left;

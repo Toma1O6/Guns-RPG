@@ -31,7 +31,7 @@ public class SecondChanceSkill extends BasicSkill implements ICooldown, IDescrip
         this.effectSupplier = () -> new EffectInstance(Effects.REGENERATION, Interval.seconds(10).valueIn(Interval.Unit.TICK), power);
         this.container = new DescriptionContainer(type);
         this.container.addProperty("heal", healAmount);
-        this.container.addProperty("cooldown", Interval.format(maxCooldown, Interval.Unit.TICK, Interval.Unit.MINUTE, Interval.Unit.SECOND));
+        this.container.addProperty("cooldown", Interval.format(maxCooldown, f -> f.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND)));
     }
 
     @Override

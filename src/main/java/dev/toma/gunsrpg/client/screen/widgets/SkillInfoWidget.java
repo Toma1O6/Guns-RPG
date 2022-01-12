@@ -3,13 +3,16 @@ package dev.toma.gunsrpg.client.screen.widgets;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
-import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
-import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
+import dev.toma.gunsrpg.api.common.skill.*;
 import dev.toma.gunsrpg.client.screen.skill.IViewContext;
 import dev.toma.gunsrpg.common.skills.core.DisplayData;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.C2S_SkillClickedPacket;
+import dev.toma.gunsrpg.network.packet.C2S_UnlockSkillPacket;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.RenderUtils;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.Widget;
@@ -26,13 +29,17 @@ public class SkillInfoWidget extends ContainerWidget {
 
     private static final ITextComponent EXTENSIONS = new TranslationTextComponent("view.skill.extensions");
     private static final ITextComponent PURCHASE = new TranslationTextComponent("view.skill.purchase");
+    private static final ITextComponent USE = new TranslationTextComponent("view.skill.use");
 
     private final IViewContext context;
     private SkillType<?> src;
     private ITextComponent title;
     private ITextComponent[] description;
     private boolean extensions;
-    private int unlockState;
+    private boolean clickable;
+
+    private Button buyWidget;
+    private Button useWidget;
 
     public SkillInfoWidget(int x, int y, int width, int height, IViewContext context) {
         super(x, y, width, height);
@@ -42,10 +49,14 @@ public class SkillInfoWidget extends ContainerWidget {
 
     public void updateSource(SkillType<?> type) {
         this.src = type;
+        this.clickable = false;
         if (src != null) {
             title = type.getTitle();
             description = type.getDescription();
             extensions = !ModUtils.isNullOrEmpty(type.getHierarchy().getExtensions());
+            ISkillProvider provider = context.getData().getSkillProvider();
+            ISkill top = SkillUtil.getTopHierarchySkill(src, provider);
+            clickable = src.getDataInstance() instanceof IClickableSkill && (top == null || top.getType().equals(src));
         }
         init();
     }
@@ -53,7 +64,7 @@ public class SkillInfoWidget extends ContainerWidget {
     @Override
     public void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         Matrix4f pose = stack.last().pose();
-        RenderUtils.drawSolid(pose, x, y, x + width, y + height, 0x44 << 24);
+        RenderUtils.drawSolid(pose, x, y, x + width, y + height, 0xAB << 24);
 
         super.renderButton(stack, mouseX, mouseY, partialTicks);
     }
@@ -70,9 +81,14 @@ public class SkillInfoWidget extends ContainerWidget {
         int rightColX = x + width - 90;
         Button ext = addWidget(new Button(rightColX, y + 5, 80, 20, EXTENSIONS, this::showExtensionsView));
         ext.active = extensions;
-        Button buy = addWidget(new Button(rightColX, y + 27, 80, 20, PURCHASE, this::purchaseClicked));
-        buy.active = unlockState == 1;
-        buy.visible = unlockState > 0;
+        buyWidget = addWidget(new Button(rightColX, y + 27, 80, 20, PURCHASE, this::purchaseClicked));
+        buyWidget.active = unlockState == 1;
+        buyWidget.visible = unlockState > 0;
+        if (clickable) {
+            useWidget = addWidget(new Button(rightColX, y + 27, 80, 20, USE, this::useClicked));
+            useWidget.visible = unlockState == 0;
+            useWidget.active = false;
+        }
 
         ISkillProperties properties = src.getProperties();
         ITextComponent levelCondiditon = new TranslationTextComponent("view.skill.required_level", properties.getRequiredLevel());
@@ -91,24 +107,55 @@ public class SkillInfoWidget extends ContainerWidget {
         }
     }
 
-    private void showExtensionsView(Button button) {
+    @Override
+    public void tick() {
+        super.tick();
+        if (clickable && useWidget != null) {
+            ISkillProvider provider = context.getData().getSkillProvider();
+            ISkill skill = SkillUtil.getTopHierarchySkill(src, provider);
+            if (skill != null) {
+                useWidget.active = ((IClickableSkill) skill).canUse();
+            } else useWidget.active = false;
+        }
+    }
 
+    private void showExtensionsView(Button button) {
+        // TODO switch to extensions view
+    }
+
+    private void useClicked(Button button) {
+        NetworkManager.sendServerPacket(new C2S_SkillClickedPacket(validateSourceClickable()));
+        useWidget.active = false;
     }
 
     private void purchaseClicked(Button button) {
-
-        init();
+        NetworkManager.sendServerPacket(new C2S_UnlockSkillPacket(src));
+        buyWidget.visible = false;
+        if (clickable) {
+            useWidget.visible = true;
+        }
     }
 
     private int getUnlockState() {
         IPlayerData data = context.getData();
-        ITransactionValidator validator = src.getProperties().getTransactionValidator();
+        ISkillProperties properties = src.getProperties();
+        ISkillHierarchy<?> hierarchy = src.getHierarchy();
+        ITransactionValidator validator = properties.getTransactionValidator();
         ISkillProvider provider = data.getSkillProvider();
+        SkillType<?> parentType = hierarchy.getParent();
         if (provider.hasSkill(src)) {
             return 0;
         } else {
-            return validator.canUnlock(data, src) ? 1 : 2;
+            return (provider.hasSkill(parentType) || parentType == null) && validator.canUnlock(data, src) ? 1 : 2;
         }
+    }
+
+    private <S extends ISkill & IClickableSkill, T extends SkillType<S>> T validateSourceClickable() {
+        ISkill skill = src.getDataInstance();
+        if (skill instanceof IClickableSkill) {
+            return (T) src;
+        }
+        throw new IllegalArgumentException("Attempted to send C2S click event with unlickable skill type [" + src + "]");
     }
 
     private static class Label extends Widget {

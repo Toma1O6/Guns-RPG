@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.common.item;
 
 import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
-import dev.toma.gunsrpg.api.common.data.IData;
+import dev.toma.gunsrpg.api.common.data.IProgressData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -22,7 +22,7 @@ public class SkillBookItem extends BaseItem {
         ItemStack stack = player.getItemInHand(hand);
         if (!world.isClientSide) {
             PlayerData.get(player).ifPresent(data -> {
-                IData levelData = data.getGenericData();
+                IProgressData levelData = data.getProgressData();
                 levelData.awardPoints(1);
                 data.sync(DataFlags.DATA);
                 if (!player.isCreative())

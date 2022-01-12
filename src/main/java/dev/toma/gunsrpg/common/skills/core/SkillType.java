@@ -20,6 +20,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
     private final Function<SkillType<S>, DisplayData> displayDataFactory;
     // internal data
     private DisplayData displayData;
+    private ClientState state;
     // datapack controlled data
     private ISkillHierarchy<S> hierarchy;
     private ISkillProperties properties;
@@ -29,6 +30,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
         this.dataInstance = this.instantiate();
         this.localization = new Localization<>(builder.descriptionLines, this, builder.titleBuilder, builder.descriptionBuilder);
         this.displayDataFactory = builder.displayDataFactory;
+        this.state = ClientState.NORMAL;
     }
 
     public S getDataInstance() {
@@ -49,6 +51,18 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
 
     public DisplayData getDisplayData() {
         return displayData;
+    }
+
+    public void setFresh() {
+        this.state = ClientState.NEW;
+    }
+
+    public boolean isFresh() {
+        return state == ClientState.NEW;
+    }
+
+    public void acknowledge() {
+        this.state = ClientState.NORMAL;
     }
 
     /**
@@ -190,5 +204,10 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
             description = descriptionBuilder.getDescription(lineCount, type);
             loaded = true;
         }
+    }
+
+    public enum ClientState {
+        NORMAL,
+        NEW
     }
 }

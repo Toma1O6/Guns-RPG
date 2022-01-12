@@ -136,7 +136,7 @@ public class CommonEventHandler {
         //NetworkManager.sendClientPacket(serverPlayer, new S2C_SendSkillDataPacket(ModRegistries.SKILLS.getValues()));
         PlayerData.get(player).ifPresent(data -> {
             data.sync(DataFlags.WILDCARD);
-            data.getGenericData().onLogIn();
+            data.getProgressData().onLogIn();
             ModList list = ModList.get();
             Optional<? extends ModContainer> optional = list.getModContainerById(GunsRPG.MODID);
             optional.ifPresent(container -> {
@@ -337,12 +337,12 @@ public class CommonEventHandler {
         if (flag) {
             Entity source = ((GunDamageSource) event.getSource()).getSrc();
             if (source instanceof PlayerEntity) {
-                PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getGenericData().onEnemyKilled(event.getEntity(), ((GunDamageSource) event.getSource()).getStacc()));
+                PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getProgressData().onEnemyKilled(event.getEntity(), ((GunDamageSource) event.getSource()).getStacc()));
             }
         } else {
             Entity source = event.getSource().getDirectEntity();
             if (source instanceof PlayerEntity) {
-                PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getGenericData().onEnemyKilled(event.getEntity(), ItemStack.EMPTY));
+                PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getProgressData().onEnemyKilled(event.getEntity(), ItemStack.EMPTY));
             }
         }
         if (event.getEntity() instanceof IMob) {

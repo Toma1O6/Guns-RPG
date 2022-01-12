@@ -135,7 +135,7 @@ public class SkillTreeScreen extends Screen implements IViewContext {
         }
 
         private static Map<SkillCategory, SkillTrees> buildCacheAsync() {
-            GunsRPG.log.info("Starting skill placement cache build.");
+            GunsRPG.log.debug(MARKER, "Starting skill placement cache build.");
             long time = System.currentTimeMillis();
             Map<SkillCategory, SkillTrees> result = new EnumMap<>(SkillCategory.class);
             Map<SkillCategory, List<SkillType<?>>> data = ModUtils.SKILLS_BY_CATEGORY.split(ModRegistries.SKILLS);
@@ -146,7 +146,7 @@ public class SkillTreeScreen extends Screen implements IViewContext {
                 trees.populate(skillTypes);
                 result.put(category, trees);
             }
-            GunsRPG.log.info("Skill tree cache has been built after {} ms", System.currentTimeMillis() - time);
+            GunsRPG.log.debug(MARKER, "Skill tree cache has been built after {} ms", System.currentTimeMillis() - time);
             return result;
         }
 

@@ -33,7 +33,7 @@ public class WeaponTransactionValidator extends PlayerLevelTransactionValidator 
 
     @Override
     public boolean canUnlock(IPlayerData data, SkillType<?> skillType) {
-        IKillData killData = data.getGenericData().getWeaponStats(item);
+        IKillData killData = data.getProgressData().getWeaponStats(item);
         ISkillProperties properties = skillType.getProperties();
         return killData != null && killData.getPoints() >= properties.getPrice() && killData.getLevel() >= properties.getRequiredLevel();
     }
@@ -45,6 +45,6 @@ public class WeaponTransactionValidator extends PlayerLevelTransactionValidator 
 
     @Override
     public IKillData getData(IPlayerData data) {
-        return data.getGenericData().getWeaponStats(item);
+        return data.getProgressData().getWeaponStats(item);
     }
 }

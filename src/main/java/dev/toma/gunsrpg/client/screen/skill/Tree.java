@@ -12,6 +12,7 @@ import dev.toma.gunsrpg.util.object.Pair;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class Tree implements IDimensions {
 
@@ -49,6 +50,10 @@ public class Tree implements IDimensions {
         return height;
     }
 
+    public Set<Map.Entry<SkillType<?>, SkillViewData>> getDataSet() {
+        return dataViewMap.entrySet();
+    }
+
     private void fillPositionMap(SkillType<?> root) {
         TreeNode node = new TreeNode(root, 0, 0);
         generateViewDataForNode(node);
@@ -84,7 +89,7 @@ public class Tree implements IDimensions {
     }
 
     private int calculateMaxWidth() {
-        return dataViewMap.values().stream().mapToInt(value -> value.getPos().x()).map(operand -> (int) Math.ceil(operand / (double) GRID_UNIT_SIZE)).max().orElse(GRID_UNIT_SIZE);
+        return dataViewMap.values().stream().mapToInt(value -> value.getPos().x()).max().orElse(GRID_UNIT_SIZE);
     }
 
     private int calculateMaxHeight() {

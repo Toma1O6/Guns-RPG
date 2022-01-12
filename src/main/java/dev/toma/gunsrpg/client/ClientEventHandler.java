@@ -99,7 +99,7 @@ public class ClientEventHandler {
                 int width = 26;
                 int x = window.getGuiScaledWidth() - width - 34;
                 int y = window.getGuiScaledHeight() - 22;
-                IData genericData = data.getGenericData();
+                IProgressData genericData = data.getProgressData();
                 if (stack.getItem() instanceof GunItem) {
                     GunItem gun = (GunItem) stack.getItem();
                     IKillData gunData = genericData.getWeaponStats((GunItem) stack.getItem());

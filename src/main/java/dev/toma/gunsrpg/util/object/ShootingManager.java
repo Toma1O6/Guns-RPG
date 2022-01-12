@@ -30,7 +30,7 @@ public class ShootingManager {
     public static boolean canShoot(PlayerEntity player, ItemStack stack) {
         IPlayerData data = PlayerData.get(player).orElseThrow(NullPointerException::new);
         IReloadInfo reloadInfo = data.getReloadInfo();
-        IData levelData = data.getGenericData();
+        IProgressData levelData = data.getProgressData();
         GunItem item = (GunItem) stack.getItem();
         if (!player.isSprinting() && isShootingReady()) {
             IAmmoMaterial material = item.getMaterialFromNBT(stack);

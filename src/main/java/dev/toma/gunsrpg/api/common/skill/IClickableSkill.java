@@ -1,10 +1,10 @@
 package dev.toma.gunsrpg.api.common.skill;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
 public interface IClickableSkill {
 
-    void clientHandleClicked();
+    boolean canUse();
 
-    void clicked(PlayerEntity player);
+    void onSkillUsed(ServerPlayerEntity player);
 }

@@ -3,11 +3,13 @@ package dev.toma.gunsrpg.client.screen.skill;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.util.helper.TreeHelper;
 import lib.toma.animations.QuickSort;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,12 +30,11 @@ public class SkillTrees {
             trees[i] = new Tree(category, roots.get(i));
         }
         QuickSort.sort(trees, this::compareTrees);
-        int xCorrection = Tree.GRID_UNIT_SIZE;
-        int yCorrection = Tree.GRID_UNIT_SIZE;
+        int xCorrection = Tree.GRID_UNIT_SIZE + Tree.HALF_UNIT;
         for (Tree tree : trees) {
-            tree.move(xCorrection, yCorrection);
+            tree.move(xCorrection, 0);
             int width = tree.getWidth();
-            xCorrection = width + Tree.GRID_UNIT_SIZE;
+            xCorrection += width + Tree.GRID_UNIT_SIZE + Tree.HALF_UNIT;
         }
     }
 
@@ -58,8 +59,19 @@ public class SkillTrees {
     }
 
     private int compareTrees(Tree tree1, Tree tree2) {
-        int level1 = tree1.getRoot().getProperties().getRequiredLevel();
-        int level2 = tree2.getRoot().getProperties().getRequiredLevel();
-        return level1 - level2;
+        SkillType<?> root1 = tree1.getRoot();
+        SkillType<?> root2 = tree2.getRoot();
+        int level1 = root1.getProperties().getRequiredLevel();
+        int level2 = root2.getProperties().getRequiredLevel();
+        int levelDiff = level1 - level2;
+        if (levelDiff == 0) {
+            return compareChildren(root1, root2);
+        }
+        return levelDiff;
+    }
+
+    private int compareChildren(SkillType<?> type1, SkillType<?> type2) {
+        Function<SkillType<?>, SkillType<?>[]> child = type -> type.getHierarchy().getChildren();
+        return TreeHelper.getChildCount(type1, child) - TreeHelper.getChildCount(type2, child);
     }
 }

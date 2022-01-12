@@ -29,6 +29,7 @@ import org.apache.logging.log4j.MarkerManager;
 
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable, IPlayerCapEntry {
 
@@ -70,12 +71,9 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
 
     @Override
     public void onLevelUp(int level, PlayerEntity player) {
-        List<SkillType<?>> newlyAvailableList = new ArrayList<>();
-        for (SkillType<?> type : ModRegistries.SKILLS) {
-            if (type.getProperties().getRequiredLevel() == level) {
-                newlyAvailableList.add(type);
-            }
-        }
+        List<SkillType<?>> newlyAvailableList = ModRegistries.SKILLS.getValues().stream()
+                .filter(type -> type.getProperties().getRequiredLevel() == level)
+                .collect(Collectors.toList());
         int count = newlyAvailableList.size();
         if (count > 0) {
             player.sendMessage(new StringTextComponent(String.format(TextFormatting.YELLOW + "New skills available: %d", count)), Util.NIL_UUID);

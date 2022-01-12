@@ -86,9 +86,10 @@ public final class Interval implements IIntervalProvider {
         return new Interval(Unit.MC_DAY, days);
     }
 
-    public static String format(int value, Unit unit, Unit... out) {
-        Interval interval = new Interval(unit, value);
-        return interval.format(out);
+    public static String format(int value, IFormatFactory formatFactory) {
+        Format format = formatFactory.configure(new Format());
+        Interval interval = new Interval(format.source, value);
+        return interval.format(format.output);
     }
 
     public enum Unit {
@@ -106,5 +107,26 @@ public final class Interval implements IIntervalProvider {
             this.tickValue = tickValue;
             this.id = id;
         }
+    }
+
+    public static final class Format {
+
+        private Unit source;
+        private Unit[] output;
+
+        public Format src(Unit unit) {
+            this.source = unit;
+            return this;
+        }
+
+        public Format out(Unit... units) {
+            this.output = units;
+            return this;
+        }
+    }
+
+    @FunctionalInterface
+    public interface IFormatFactory {
+        Format configure(Format initial);
     }
 }

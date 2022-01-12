@@ -24,7 +24,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlayerGenericData implements IData, IPlayerCapEntry {
+public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
 
     private final PlayerEntity player;
     private final ISkillProvider skillProvider;
@@ -37,7 +37,7 @@ public class PlayerGenericData implements IData, IPlayerCapEntry {
     private int kills;
     private int requiredKills;
 
-    public PlayerGenericData(PlayerEntity player, ISkillProvider skillProvider) {
+    public PlayerProgressionData(PlayerEntity player, ISkillProvider skillProvider) {
         this.player = player;
         this.skillProvider = skillProvider;
 

@@ -126,7 +126,7 @@ public class GunsrpgCommand {
         PlayerEntity player = getPlayer(ctx);
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         optional.ifPresent(data -> {
-            IData levelData = data.getGenericData();
+            IProgressData levelData = data.getProgressData();
             int currentLevel = levelData.getLevel();
             int delta = 100 - currentLevel;
             int target = Math.min(levelCount, delta);

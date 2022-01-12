@@ -8,14 +8,13 @@ import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.C2S_SkillClickedPacket;
 import dev.toma.gunsrpg.util.IIntervalProvider;
 import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -35,8 +34,8 @@ public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSk
         this.totalCooldown = totalCooldown.getTicks();
         this.effectLength = effectLength.getTicks();
         this.container = new DescriptionContainer(type);
-        this.container.addProperty("effect", Interval.format(effectLeft, Interval.Unit.TICK, Interval.Unit.MINUTE, Interval.Unit.SECOND));
-        this.container.addProperty("cooldown", Interval.format(this.totalCooldown, Interval.Unit.TICK, Interval.Unit.MINUTE, Interval.Unit.SECOND));
+        this.container.addProperty("effect", Interval.format(effectLeft, f -> f.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND)));
+        this.container.addProperty("cooldown", Interval.format(this.totalCooldown + this.effectLength, f -> f.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND)));
     }
 
     @Override
@@ -56,7 +55,8 @@ public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSk
             if (effectLeft == 0) {
                 setOnCooldown();
             }
-        } else if (cooldown > 0) {
+        }
+        if (cooldown > 0) {
             --cooldown;
         }
     }
@@ -73,7 +73,7 @@ public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSk
 
     @Override
     public void setOnCooldown() {
-        this.cooldown = totalCooldown;
+        this.cooldown = totalCooldown + effectLength;
     }
 
     @Override
@@ -82,48 +82,24 @@ public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSk
     }
 
     @Override
-    public void clientHandleClicked() {
-        NetworkManager.sendServerPacket(new C2S_SkillClickedPacket(this.getType()));
+    public boolean canUse() {
+        return cooldown == 0;
     }
 
     @Override
-    public void clicked(PlayerEntity player) {
+    public void onSkillUsed(ServerPlayerEntity player) {
         effectLeft = effectLength;
+        setOnCooldown();
         player.addEffect(new EffectInstance(Effects.NIGHT_VISION, effectLength, 0, false, false));
         PlayerData.get(player).ifPresent(data -> data.sync(DataFlags.SKILLS));
     }
 
-    @Override
-    public void drawOnTop(MatrixStack stack, int x, int y, int width, int heigth) {
-        float f;
-        float r;
-        float g;
-        float b;
-        int time;
-        if (effectLeft > 0) {
-            f = 1.0F - effectLeft / (float) effectLength;
-            if (f == 0) return;
-            r = 0.0F;
-            g = 1.0F;
-            b = 0.2F;
-            time = effectLeft;
-        } else {
-            f = getCooldown() / (float) getMaxCooldown();
-            if (f == 0) return;
-            r = 1.0F;
-            g = 0.2F;
-            b = 0.0F;
-            time = getCooldown();
-        }
-        stack.pushPose();
-        stack.translate(0, 0, 1);
-        Matrix4f pose = stack.last().pose();
-        ModUtils.renderColor(pose, x, y + heigth, x + width, y + heigth + 3, 0.0F, 0.0F, 0.0F, 1.0F);
-        ModUtils.renderColor(pose, x + 1, y + heigth + 1, x + 1 + (int) ((width - 1) * f), y + heigth + 2, r, g, b, 1.0F);
-        String cooldown = ModUtils.formatTicksToTime(time);
-        FontRenderer renderer = Minecraft.getInstance().font;
-        renderer.draw(stack, cooldown, x + (width - renderer.width(cooldown)) / 2f, y + heigth + 4, 0xffffff);
-        stack.popPose();
+    public float getEffectPct() {
+        return effectLeft / (float) effectLength;
+    }
+
+    public float getCooldownPct() {
+        return cooldown / (float) totalCooldown;
     }
 
     @Override

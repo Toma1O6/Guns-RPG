@@ -2,14 +2,18 @@ package dev.toma.gunsrpg.sided;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.client.ClientEventHandler;
 import dev.toma.gunsrpg.client.ModKeybinds;
 import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
 import dev.toma.gunsrpg.client.render.debuff.IconDebuffRenderer;
+import dev.toma.gunsrpg.client.render.skill.LikeACatRenderer;
+import dev.toma.gunsrpg.client.render.skill.SkillRendererRegistry;
 import dev.toma.gunsrpg.client.screen.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.init.*;
+import dev.toma.gunsrpg.common.init.Debuffs;
+import dev.toma.gunsrpg.common.init.ModContainers;
+import dev.toma.gunsrpg.common.init.ModEntities;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.util.IDualWieldGun;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.object.ShootingManager;
@@ -95,6 +99,9 @@ public class ClientSideManager {
 
         // animation setup
         setupRenderPipeline();
+
+        // skill renderers
+        SkillRendererRegistry.registerRenderers(new LikeACatRenderer(), Skills.LIKE_A_CAT_I, Skills.LIKE_A_CAT_II, Skills.LIKE_A_CAT_III);
     }
 
     public void playDelayedSound(BlockPos pos, float volume, float pitch, SoundEvent event, SoundCategory category, int tickDelay) {

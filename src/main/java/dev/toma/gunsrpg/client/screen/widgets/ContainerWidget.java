@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.screen.widgets;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.configuration.api.client.widget.ITickable;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.INestedGuiEventHandler;
 import net.minecraft.client.gui.widget.Widget;
@@ -8,11 +9,13 @@ import net.minecraft.util.text.StringTextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
-public class ContainerWidget extends Widget implements INestedGuiEventHandler {
+public class ContainerWidget extends Widget implements INestedGuiEventHandler, ITickable {
 
     private final List<IGuiEventListener> listeners = new ArrayList<>();
     private final List<Widget> widgets = new ArrayList<>();
+    private final List<ITickable> tickables = new ArrayList<>();
     private IGuiEventListener focused;
     private boolean dragging;
 
@@ -22,11 +25,17 @@ public class ContainerWidget extends Widget implements INestedGuiEventHandler {
 
     public <L extends IGuiEventListener> L addGuiEventListener(L listener) {
         this.listeners.add(listener);
+        if (listener instanceof ITickable) {
+            tickables.add((ITickable) listener);
+        }
         return listener;
     }
 
     public void removeGuiEventListener(IGuiEventListener listener) {
         listeners.remove(listener);
+        if (listener instanceof ITickable) {
+            tickables.remove(listener);
+        }
     }
 
     public <W extends Widget> W addWidget(W widget) {
@@ -43,6 +52,15 @@ public class ContainerWidget extends Widget implements INestedGuiEventHandler {
         listeners.clear();
         widgets.clear();
         focused = null;
+    }
+
+    @Override
+    public void tick() {
+        tickables.forEach(ITickable::tick);
+    }
+
+    public Stream<Widget> childrenAsStream() {
+        return widgets.stream();
     }
 
     @Override
