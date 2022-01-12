@@ -92,7 +92,8 @@ public class ModItems {
     public static final GrenadeItem IMPACT_GRENADE = null;
     public static final BaseItem IRON_ORE_CHUNK = null;
     public static final BaseItem GOLD_ORE_CHUNK = null;
-    public static final SkillBookItem SKILLPOINT_BOOK = null;
+    public static final PointAwardItem SKILLPOINT_BOOK = null;
+    public static final PointAwardItem PERKPOINT_BOOK = null;
     public static final HammerItem WOODEN_HAMMER = null;
     public static final HammerItem STONE_HAMMER = null;
     public static final HammerItem IRON_HAMMER = null;

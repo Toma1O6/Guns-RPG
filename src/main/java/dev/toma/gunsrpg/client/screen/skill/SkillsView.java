@@ -1,14 +1,14 @@
 package dev.toma.gunsrpg.client.screen.skill;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IPointProvider;
 import dev.toma.gunsrpg.client.screen.widgets.*;
+import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.math.IVec2i;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -18,7 +18,6 @@ import java.util.Map;
 
 public class SkillsView extends View {
 
-    private static final ResourceLocation PERK_VIEW = GunsRPG.makeResource("textures/screen/perk_view_icon.png");
     private PannableWidget skillViewWidget;
     private FooterWidget footerWidget;
     private SkillInfoWidget skillInfoWidget;
@@ -52,8 +51,10 @@ public class SkillsView extends View {
         // add skill info panel
         skillInfoWidget = addWidget(new SkillInfoWidget(x, y + height - 80, width, 80, manager.getContext()));
         // add perk/skill switch
-        viewSwitchWidget = addWidget(new ViewSwitchWidget(x + width - 42, height - 62, 32, 32, PERK_VIEW));
+        viewSwitchWidget = addWidget(new ViewSwitchWidget(x + width - 42, height - 62, 32, 32, new ItemStack(ModItems.PERKPOINT_BOOK)));
         viewSwitchWidget.setClickEvent(this::openPerkView);
+        // viewSwitchWidget.setColorSchema(0x49A1FF, 0x49D8FF); perk color schema
+        viewSwitchWidget.setColorSchema(0xFFA60C, 0xFFD21E);
 
         this.updateCanvasSource(nav.getSelectedValue());
         this.updateSkillInformationVisibility(false);

@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.AnimationPaths;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.attribute.AttributeTarget;
@@ -475,7 +476,8 @@ public class CommonRegistry {
                 new GrenadeItem("impact_grenade", 4, true),
                 BaseItem.basic("iron_ore_chunk"),
                 BaseItem.basic("gold_ore_chunk"),
-                new SkillBookItem("skillpoint_book"),
+                new PointAwardItem("skillpoint_book", IPlayerData::getProgressData),
+                new PointAwardItem("perkpoint_book", IPlayerData::getProgressData), // TODO perk data
                 new HammerItem("wooden_hammer", HammerItem.WOOD_HAMMER_MATERIAL),
                 new HammerItem("stone_hammer", HammerItem.STONE_HAMMER_MATERIAL),
                 new HammerItem("iron_hammer", HammerItem.IRON_HAMMER_MATERIAL),

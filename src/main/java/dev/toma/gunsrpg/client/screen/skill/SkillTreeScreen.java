@@ -65,6 +65,11 @@ public class SkillTreeScreen extends Screen implements IViewContext {
         manager.getView().render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
+
     private void queryCache() {
         if (Cache.hasBeenBuilt()) {
             updateView();

@@ -114,7 +114,8 @@
     "item.gunsrpg.impact_grenade": "Impact Grenade",
     "item.gunsrpg.iron_ore_chunk": "Iron Ore Chunk",
     "item.gunsrpg.gold_ore_chunk": "Gold Ore Chunk",
-    "item.gunsrpg.skillpoint_book": "Skillpoint Book",
+    "item.gunsrpg.skillpoint_book": "Skill Point Book",
+    "item.gunsrpg.perkpoint_book": "Perk Point Book",
     "item.gunsrpg.wooden_hammer": "Wooden Hammer",
     "item.gunsrpg.stone_hammer": "Stone Hammer",
     "item.gunsrpg.iron_hammer": "Iron Hammer",
@@ -595,6 +596,7 @@
     "nav.entry.mining": "Mining",
     "nav.entry.survival": "Survival",
     "nav.entry.gun": "Weapon",
+    "point.award.success": "Point has been awarded",
 
     "screen.smithing_table.condition": "Requirements:",
     "condition.crafting.skill": "%1$s skill",
