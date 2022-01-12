@@ -128,6 +128,7 @@ public class SkillWidget extends Widget implements ITickable {
         if (renderer == null) return;
         S skill = SkillUtil.getTopHierarchySkill(type, provider);
         if (skill == null) return;
+        if (skill.getType() != type) return;
         float raw = AnimationUtils.linearInterpolate(
                 getAnimationProgress(animationTime),
                 getAnimationProgress(lastAnimationTime),
