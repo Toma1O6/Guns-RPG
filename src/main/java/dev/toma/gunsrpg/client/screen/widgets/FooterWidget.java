@@ -45,7 +45,7 @@ public class FooterWidget extends Widget {
         if (killData == null) return;
         int left = 15;
         int top = y + 5;
-        int right = left + (int) (width / 2.0);
+        int right = left + (int) (width / 2.5);
         int bottom = y + height - 5;
         StringBuilder levelInfo = new StringBuilder();
         int level = killData.getLevel();
