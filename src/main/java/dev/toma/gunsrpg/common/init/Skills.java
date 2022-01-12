@@ -11,6 +11,7 @@ public class Skills {
     public static final SkillType<AttributeSkill> BLAZE_POWDER_I = null;
     public static final SkillType<AttributeSkill> BLAZE_POWDER_II = null;
     public static final SkillType<AttributeSkill> BLAZE_POWDER_III = null;
+    public static final SkillType<BasicSkill> WOODEN_AMMO_SMITH = null;
     public static final SkillType<BasicSkill> GUN_PARTS_SMITH = null;
     public static final SkillType<BasicSkill> M1911_ASSEMBLY = null;
     public static final SkillType<BasicSkill> UMP45_ASSEMBLY = null;
