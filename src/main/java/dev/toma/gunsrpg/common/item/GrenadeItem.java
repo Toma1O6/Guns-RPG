@@ -38,7 +38,6 @@ public class GrenadeItem extends BaseItem implements IAnimationEntry {
     public ItemStack finishUsingItem(ItemStack itemStack, World world, LivingEntity livingEntity) {
         if (!world.isClientSide) {
             world.addFreshEntity(new GrenadeEntity(ModEntities.GRENADE.get(), world, livingEntity, 80, blastSize, explodeOnImpact, itemStack.getItem()));
-            livingEntity.playSound(SoundEvents.SNOWBALL_THROW, 1.0F, 1.0F);
             if (livingEntity instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) livingEntity;
                 if (!player.isCreative()) {
