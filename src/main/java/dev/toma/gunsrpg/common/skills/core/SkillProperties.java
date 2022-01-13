@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.skills.core;
 
-import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
+import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 
 public class SkillProperties implements ISkillProperties {
 

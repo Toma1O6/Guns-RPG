@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.client.render.item;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.client.model.WeaponModels;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
-import dev.toma.gunsrpg.client.render.item.AbstractWeaponRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 
 public class S12KRenderer extends AbstractWeaponRenderer {

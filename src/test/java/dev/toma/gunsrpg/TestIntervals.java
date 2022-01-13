@@ -3,7 +3,8 @@ package dev.toma.gunsrpg;
 import dev.toma.gunsrpg.util.Interval;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.annotation.Testable;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Testable
 public class TestIntervals {

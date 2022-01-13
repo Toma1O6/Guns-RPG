@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.resource.adapter;
 
 import com.google.gson.*;
-import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
+import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidatorFactory;
 import dev.toma.gunsrpg.common.skills.core.SkillProperties;
 import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;

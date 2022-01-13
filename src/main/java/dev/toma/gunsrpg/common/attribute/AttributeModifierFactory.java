@@ -1,8 +1,5 @@
 package dev.toma.gunsrpg.common.attribute;
 
-import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
-import net.minecraft.entity.player.PlayerEntity;
-
 import java.util.UUID;
 
 public final class AttributeModifierFactory {

@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.skills.core;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

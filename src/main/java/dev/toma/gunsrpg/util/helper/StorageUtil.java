@@ -2,8 +2,8 @@ package dev.toma.gunsrpg.util.helper;
 
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.common.init.ModTags;
-import dev.toma.gunsrpg.common.item.heal.AbstractHealItem;
 import dev.toma.gunsrpg.common.item.GrenadeItem;
+import dev.toma.gunsrpg.common.item.heal.AbstractHealItem;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

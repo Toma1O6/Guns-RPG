@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.common.item.guns.setup;
 
 import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialDataContainer;
 
 import java.util.Objects;
 

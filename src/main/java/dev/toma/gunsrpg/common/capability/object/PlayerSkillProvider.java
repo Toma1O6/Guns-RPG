@@ -1,13 +1,13 @@
 package dev.toma.gunsrpg.common.capability.object;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.skill.IDisplayableSkill;
-import dev.toma.gunsrpg.api.common.skill.ISkill;
-import dev.toma.gunsrpg.api.common.skill.ITickableSkill;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.ILockStateChangeable;
 import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
+import dev.toma.gunsrpg.api.common.skill.IDisplayableSkill;
+import dev.toma.gunsrpg.api.common.skill.ISkill;
+import dev.toma.gunsrpg.api.common.skill.ITickableSkill;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;

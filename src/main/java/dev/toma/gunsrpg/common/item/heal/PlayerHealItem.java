@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.item.heal;
 
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.common.init.ModEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;

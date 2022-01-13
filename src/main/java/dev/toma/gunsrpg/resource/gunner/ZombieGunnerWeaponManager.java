@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.resource.gunner;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.resource.SingleJsonFileReloadListener;
 import dev.toma.gunsrpg.util.math.WeightedRandom;
@@ -8,9 +10,6 @@ import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ZombieGunnerWeaponManager extends SingleJsonFileReloadListener {
 

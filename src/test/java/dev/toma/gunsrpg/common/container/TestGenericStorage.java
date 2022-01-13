@@ -5,7 +5,7 @@ import org.junit.platform.commons.annotation.Testable;
 
 import static dev.toma.gunsrpg.common.container.GenericStorageContainer.getOffset;
 import static dev.toma.gunsrpg.common.container.GenericStorageContainer.getOffsetModifier;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Testable
 public class TestGenericStorage {

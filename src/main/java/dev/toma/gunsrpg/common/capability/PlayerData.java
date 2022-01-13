@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.capability;
 
-import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.api.common.data.*;
+import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.object.*;
 import dev.toma.gunsrpg.common.skills.core.SkillType;

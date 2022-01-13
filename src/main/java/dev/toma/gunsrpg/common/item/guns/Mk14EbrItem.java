@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.common.item.guns;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Mk14EbrRenderer;
-import dev.toma.gunsrpg.client.render.item.WinchesterRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;

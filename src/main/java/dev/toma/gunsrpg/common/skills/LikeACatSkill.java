@@ -1,24 +1,19 @@
 package dev.toma.gunsrpg.common.skills;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.skill.IClickableSkill;
 import dev.toma.gunsrpg.api.common.skill.ICooldown;
-import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.IIntervalProvider;
 import dev.toma.gunsrpg.util.Interval;
-import dev.toma.gunsrpg.util.ModUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 
 public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSkill, IDescriptionProvider {

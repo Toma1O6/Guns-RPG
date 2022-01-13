@@ -15,8 +15,6 @@ import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.world.MobSpawnManager;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataStorage;
-import lib.toma.animations.AnimationEngine;
-import lib.toma.animations.api.IRenderPipeline;
 import net.minecraft.command.CommandSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -31,8 +29,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Locale;
 
 @Mod(GunsRPG.MODID)
 public class GunsRPG {

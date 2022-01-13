@@ -3,8 +3,8 @@ package dev.toma.gunsrpg;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.annotation.Testable;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static dev.toma.gunsrpg.util.math.Mth.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Testable
 public class TestMth {

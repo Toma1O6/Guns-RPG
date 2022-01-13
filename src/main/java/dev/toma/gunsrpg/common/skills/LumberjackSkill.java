@@ -4,10 +4,8 @@ import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
 import dev.toma.gunsrpg.common.attribute.IValueFormatter;
 import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.Pair;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class LumberjackSkill extends BasicSkill implements IDescriptionProvider {
 
