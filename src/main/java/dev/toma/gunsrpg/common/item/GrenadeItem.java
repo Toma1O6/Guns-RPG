@@ -1,19 +1,22 @@
 package dev.toma.gunsrpg.common.item;
 
 import dev.toma.gunsrpg.ModTabs;
+import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
+import dev.toma.gunsrpg.common.AnimationPaths;
 import dev.toma.gunsrpg.common.entity.GrenadeEntity;
 import dev.toma.gunsrpg.common.init.ModEntities;
-import lib.toma.animations.api.IAnimationEntry;
-import lib.toma.animations.api.IRenderConfig;
+import lib.toma.animations.AnimationEngine;
+import lib.toma.animations.api.*;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class GrenadeItem extends BaseItem implements IAnimationEntry {
 
@@ -27,20 +30,39 @@ public class GrenadeItem extends BaseItem implements IAnimationEntry {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+    public int getUseDuration(ItemStack stack) {
+        return 45;
+    }
+
+    @Override
+    public ItemStack finishUsingItem(ItemStack itemStack, World world, LivingEntity livingEntity) {
         if (!world.isClientSide) {
-            CooldownTracker tracker = player.getCooldowns();
-            Item item = stack.getItem();
-            if (!tracker.isOnCooldown(item)) {
-                world.addFreshEntity(new GrenadeEntity(ModEntities.GRENADE.get(), world, player, 80, blastSize, explodeOnImpact, item));
-                player.playSound(SoundEvents.SNOWBALL_THROW, 1.0F, 1.0F);
+            world.addFreshEntity(new GrenadeEntity(ModEntities.GRENADE.get(), world, livingEntity, 80, blastSize, explodeOnImpact, itemStack.getItem()));
+            livingEntity.playSound(SoundEvents.SNOWBALL_THROW, 1.0F, 1.0F);
+            if (livingEntity instanceof PlayerEntity) {
+                PlayerEntity player = (PlayerEntity) livingEntity;
                 if (!player.isCreative()) {
-                    stack.shrink(1);
+                    itemStack.shrink(1);
                 }
-                tracker.addCooldown(item, 60);
             }
         }
+        return itemStack;
+    }
+
+    @Override
+    public void releaseUsing(ItemStack itemStack, World world, LivingEntity entity, int timeLeft) {
+        if (world.isClientSide) {
+            stopThrowAnimation();
+        }
+    }
+
+    @Override
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (world.isClientSide) {
+            startThrowAnimation();
+        }
+        player.startUsingItem(hand);
         return ActionResult.pass(stack);
     }
 
@@ -57,5 +79,20 @@ public class GrenadeItem extends BaseItem implements IAnimationEntry {
     @Override
     public boolean disableVanillaAnimations() {
         return true;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void stopThrowAnimation() {
+        IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
+        pipeline.remove(ModAnimations.GRENADE);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void startThrowAnimation() {
+        AnimationEngine engine = AnimationEngine.get();
+        IAnimationPipeline pipeline = engine.pipeline();
+        IAnimationLoader loader = engine.loader();
+        IKeyframeProvider provider = loader.getProvider(AnimationPaths.GRENADE);
+        pipeline.insert(ModAnimations.GRENADE, new Animation(provider, this.getUseDuration(ItemStack.EMPTY)));
     }
 }
