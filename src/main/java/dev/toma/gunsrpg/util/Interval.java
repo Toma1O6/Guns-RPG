@@ -41,18 +41,20 @@ public final class Interval implements IIntervalProvider {
         return unit == Unit.TICK ? value : valueIn(Unit.TICK);
     }
 
-    public String format(Unit... values) {
+    public String format(boolean compact, Unit... values) {
         StringBuilder builder = new StringBuilder();
         Unit[] sorted = Arrays.stream(values).sorted((o1, o2) -> o2.tickValue - o1.tickValue).toArray(Unit[]::new);
-        int value = this.value;
+        int value = this.value * this.unit.tickValue;
+        boolean blockSkipping = false;
         for (Unit unit : sorted) {
             int unitValue = value / unit.tickValue;
-            if (unitValue > 0) {
+            if (unitValue > 0 || !blockSkipping) {
                 value = value % unit.tickValue;
+                builder.append(unitValue).append(compact ? "" : " ").append(unit.getName(compact)).append(!compact && unitValue > 1 ? "s" : "").append(compact ? "" : " ");
+                blockSkipping = true;
             }
-            builder.append(unitValue).append(unit.id);
         }
-        return builder.toString();
+        return builder.toString().trim();
     }
 
     /**
@@ -89,23 +91,29 @@ public final class Interval implements IIntervalProvider {
     public static String format(int value, IFormatFactory formatFactory) {
         Format format = formatFactory.configure(new Format());
         Interval interval = new Interval(format.source, value);
-        return interval.format(format.output);
+        return interval.format(format.compact, format.output);
     }
 
     public enum Unit {
 
-        TICK(1, 't'),
-        SECOND(20, 's'),
-        MINUTE(60 * 20, 'm'),
-        HOUR(60 * 60 * 20, 'h'),
-        MC_DAY(24000, 'd');
+        TICK(1, 't', "Tick"),
+        SECOND(20, 's', "Second"),
+        MINUTE(60 * 20, 'm', "Minute"),
+        HOUR(60 * 60 * 20, 'h', "Hour"),
+        MC_DAY(24000, 'd', "MC Day");
 
         final int tickValue;
         final char id;
+        final String formattedName;
 
-        Unit(int tickValue, char id) {
+        Unit(int tickValue, char id, String formattedName) {
             this.tickValue = tickValue;
             this.id = id;
+            this.formattedName = formattedName;
+        }
+
+        public String getName(boolean compact) {
+            return compact ? String.valueOf(id) : formattedName;
         }
     }
 
@@ -113,6 +121,7 @@ public final class Interval implements IIntervalProvider {
 
         private Unit source;
         private Unit[] output;
+        private boolean compact;
 
         public Format src(Unit unit) {
             this.source = unit;
@@ -121,6 +130,11 @@ public final class Interval implements IIntervalProvider {
 
         public Format out(Unit... units) {
             this.output = units;
+            return this;
+        }
+
+        public Format compact() {
+            this.compact = true;
             return this;
         }
     }

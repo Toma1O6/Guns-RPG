@@ -37,4 +37,13 @@ public class TestIntervals {
         assertEquals(5, Interval.seconds(300).valueIn(Interval.Unit.MINUTE));
         assertEquals(120, Interval.hours(2).valueIn(Interval.Unit.MINUTE));
     }
+
+    @Test
+    public void testSimpleFormatting() {
+        assertEquals("4m", Interval.format(4, f -> f.src(Interval.Unit.MINUTE).out(Interval.Unit.MINUTE).compact()));
+        Interval complex = Interval.minutes(2).append(Interval.seconds(15));
+        assertEquals("2m15s", Interval.format(complex.valueIn(Interval.Unit.SECOND), f -> f.src(Interval.Unit.SECOND).out(Interval.Unit.MINUTE, Interval.Unit.SECOND).compact()));
+        complex = Interval.hours(4).append(Interval.seconds(37));
+        assertEquals("4h37s", Interval.format(complex.valueIn(Interval.Unit.SECOND), f -> f.src(Interval.Unit.SECOND).out(Interval.Unit.HOUR, Interval.Unit.MINUTE, Interval.Unit.SECOND).compact()));
+    }
 }
