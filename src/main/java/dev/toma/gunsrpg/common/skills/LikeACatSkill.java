@@ -26,11 +26,11 @@ public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSk
 
     public LikeACatSkill(SkillType<?> type, IIntervalProvider totalCooldown, IIntervalProvider effectLength) {
         super(type);
-        this.totalCooldown = totalCooldown.getTicks();
         this.effectLength = effectLength.getTicks();
+        this.totalCooldown = totalCooldown.getTicks() + this.effectLength;
         this.container = new DescriptionContainer(type);
-        this.container.addProperty("effect", Interval.format(effectLeft, f -> f.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND)));
-        this.container.addProperty("cooldown", Interval.format(this.totalCooldown + this.effectLength, f -> f.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND)));
+        this.container.addProperty("effect", Interval.format(this.effectLength, f -> f.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND)));
+        this.container.addProperty("cooldown", Interval.format(this.totalCooldown, f -> f.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND)));
     }
 
     @Override
@@ -47,9 +47,6 @@ public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSk
     public void onUpdate(PlayerEntity player) {
         if (effectLeft > 0) {
             --effectLeft;
-            if (effectLeft == 0) {
-                setOnCooldown();
-            }
         }
         if (cooldown > 0) {
             --cooldown;
@@ -68,7 +65,7 @@ public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSk
 
     @Override
     public void setOnCooldown() {
-        this.cooldown = totalCooldown + effectLength;
+        this.cooldown = totalCooldown;
     }
 
     @Override

@@ -75,7 +75,7 @@ public class Skills {
     public static final SkillType<AttributeSkill> SKULL_CRUSHER_II = null;
     public static final SkillType<AttributeSkill> SKULL_CRUSHER_III = null;
     public static final SkillType<LightHunterSkill> LIGHT_HUNTER = null;
-    public static final SkillType<BasicSkill> AVENGE_ME_FRIENDS = null;
+    public static final SkillType<AvengeMeFriendsSkill> AVENGE_ME_FRIENDS = null;
     public static final SkillType<LikeACatSkill> LIKE_A_CAT_I = null;
     public static final SkillType<LikeACatSkill> LIKE_A_CAT_II = null;
     public static final SkillType<LikeACatSkill> LIKE_A_CAT_III = null;

@@ -17,6 +17,7 @@ import dev.toma.gunsrpg.common.entity.ExplosiveArrowEntity;
 import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.common.item.HammerItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.skills.AvengeMeFriendsSkill;
 import dev.toma.gunsrpg.common.skills.LightHunterSkill;
 import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
@@ -45,15 +46,12 @@ import net.minecraft.loot.ItemLootEntry;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.RandomValueRange;
 import net.minecraft.loot.functions.SetCount;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
@@ -86,7 +84,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -101,8 +98,8 @@ public class CommonEventHandler {
         BiomeGenerationSettingsBuilder builder = event.getGeneration();
         MobSpawnInfoBuilder mobSpawnBuilder = event.getSpawns();
         if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
-            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_GUNNER.get(), ModConfig.worldConfig.zombieGunnerSpawn.get(), 1, 3));
-            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.EXPLOSIVE_SKELETON.get(), ModConfig.worldConfig.explosiveSkeletonSpawn.get(), 1, 3));
+            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_GUNNER.get(), ModConfig.worldConfig.zombieGunnerSpawn.get(), 1, 2));
+            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.EXPLOSIVE_SKELETON.get(), ModConfig.worldConfig.explosiveSkeletonSpawn.get(), 1, 2));
         }
         if (category != Biome.Category.NETHER && category != Biome.Category.THEEND) {
             builder.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ModConfiguredFeatures.ORE_AMETHYST);
@@ -250,7 +247,7 @@ public class CommonEventHandler {
             PlayerEntity player = (PlayerEntity) source.getEntity();
             LightHunterSkill skill = PlayerData.getSkill(player, Skills.LIGHT_HUNTER);
             if (skill != null && skill.canApply(player)) {
-                event.setAmount(event.getAmount() * 1.2F);
+                event.setAmount(event.getAmount() * LightHunterSkill.ARROW_DAMAGE_MULTIPLIER);
             }
         }
     }
@@ -378,13 +375,9 @@ public class CommonEventHandler {
                             ((DeathCrateTileEntity) tileEntity).fillInventory(player);
                         }
                     }
-                    if (provider.hasSkill(Skills.AVENGE_ME_FRIENDS) && !player.level.isClientSide) {
-                        List<PlayerEntity> players = player.level.getEntitiesOfClass(PlayerEntity.class, VoxelShapes.block().bounds().move(player.blockPosition()).inflate(30));
-                        players.forEach(p -> {
-                            p.addEffect(new EffectInstance(Effects.ABSORPTION, 400, 2));
-                            p.addEffect(new EffectInstance(Effects.REGENERATION, 500, 1));
-                            p.level.playSound(p, p.getX(), p.getY(), p.getZ(), ModSounds.USE_AVENGE_ME_FRIENDS, SoundCategory.MASTER, 1.0F, 1.0F);
-                        });
+                    AvengeMeFriendsSkill avengeSkill = provider.getSkill(Skills.AVENGE_ME_FRIENDS);
+                    if (avengeSkill != null) {
+                        avengeSkill.applyEffects(player);
                     }
                 }
             });

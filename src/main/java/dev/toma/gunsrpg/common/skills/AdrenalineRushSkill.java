@@ -7,11 +7,12 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 
-// TODO apply temporary attribute modifier to reload speed and attack speed
 public class AdrenalineRushSkill extends BasicSkill implements IDescriptionProvider {
 
+    private static final float[] MODIFIERS = new float[]{0.15F, 0.3F, 0.5F};
+    private static final int HEALTH_LIMIT = 8;
+
     private final DescriptionContainer container;
-    private static final float[] MODIFIERS = new float[]{0.85F, 0.70F, 0.50F};
     private final int level;
     private final float reloadMultiplier;
 
@@ -20,7 +21,8 @@ public class AdrenalineRushSkill extends BasicSkill implements IDescriptionProvi
         this.level = level;
         this.reloadMultiplier = reloadMultiplier;
         this.container = new DescriptionContainer(type);
-        this.container.addProperty("attack", IValueFormatter.INV_PERCENT.formatAttributeValue(getAttackSpeedBoost()));
+        this.container.addProperty("predicate", HEALTH_LIMIT);
+        this.container.addProperty("attack", 100 - Math.round( this.getAttackSpeedBoost() * 100 ));
         this.container.addProperty("reload", IValueFormatter.PERCENT.formatAttributeValue(reloadMultiplier));
     }
 
@@ -30,7 +32,7 @@ public class AdrenalineRushSkill extends BasicSkill implements IDescriptionProvi
     }
 
     public float getAttackSpeedBoost() {
-        return MODIFIERS[level];
+        return 1.0F - MODIFIERS[level];
     }
 
     public float getReloadMultiplier() {
@@ -39,6 +41,6 @@ public class AdrenalineRushSkill extends BasicSkill implements IDescriptionProvi
 
     @Override
     public boolean canApply(PlayerEntity user) {
-        return user.getHealth() <= 8;
+        return user.getHealth() <= HEALTH_LIMIT;
     }
 }

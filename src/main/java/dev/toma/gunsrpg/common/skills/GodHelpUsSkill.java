@@ -3,24 +3,36 @@ package dev.toma.gunsrpg.common.skills;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.skill.IClickableSkill;
 import dev.toma.gunsrpg.api.common.skill.ICooldown;
+import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.FlareEntity;
 import dev.toma.gunsrpg.common.init.ModSounds;
+import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.Interval;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.ITextComponent;
 
-public class GodHelpUsSkill extends BasicSkill implements ICooldown, IClickableSkill {
+public class GodHelpUsSkill extends BasicSkill implements ICooldown, IClickableSkill, IDescriptionProvider {
 
+    private final DescriptionContainer container;
     private final int maxCooldown;
     private int currentCooldown;
 
     public GodHelpUsSkill(SkillType<?> type) {
         super(type);
         this.maxCooldown = Interval.hours(1).append(Interval.minutes(30)).valueIn(Interval.Unit.TICK);
+        this.container = new DescriptionContainer(type);
+        this.container.addProperty("info");
+        this.container.addProperty("cooldown", Interval.format(maxCooldown, f -> f.src(Interval.Unit.TICK).out(Interval.Unit.HOUR, Interval.Unit.MINUTE)));
+    }
+
+    @Override
+    public ITextComponent[] supplyDescription(int desiredLineCount) {
+        return container.getLines();
     }
 
     @Override
