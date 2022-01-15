@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.Difficulty;
 
-public final class ZombieGunnerLoadout {
+public final class GunnerLoadoutInstance {
 
     // general
     private final int weight;
@@ -28,7 +28,7 @@ public final class ZombieGunnerLoadout {
     // cosmetic
     private final int capColor;
 
-    private ZombieGunnerLoadout(Builder builder) {
+    private GunnerLoadoutInstance(Builder builder) {
         weight = builder.weight;
         weapon = builder.weapon;
         ammo = builder.ammo;
@@ -73,43 +73,66 @@ public final class ZombieGunnerLoadout {
         private float baseInaccuracy;
         private float accuracyBonus;
         private int burstSize;
-        private IDifficultyProperty<Integer> burstDelay;
+        private IDifficultyProperty<Integer> burstDelay = diff -> 0;
         // cosmetic
         private int capColor;
 
-        public Builder chance(int weight) {
+        public void setupGlobal(GunnerGlobalProperties properties) {
+            this.damageMultiplier = new SimpleDifficultyProperty<>(properties.getDamageMultiplier());
+            this.baseInaccuracy = properties.getInaccuracy();
+            this.accuracyBonus = properties.getAccuracyBonus();
+        }
+
+        public void weight(int weight) {
             this.weight = weight;
-            return this;
         }
 
-        public Builder weapon(GunItem weapon, IDifficultyProperty<IAmmoMaterial> ammo) {
+        public void weapon(GunItem weapon) {
             this.weapon = weapon;
+        }
+
+        public void ammo(IDifficultyProperty<IAmmoMaterial> ammo) {
             this.ammo = ammo;
-            return this;
         }
 
-        public Builder weaponProps(int magCapacity, IDifficultyProperty<Integer> reloadTime, IDifficultyProperty<Integer> firerate) {
+        public void magCapacity(int magCapacity) {
             this.magCapacity = magCapacity;
+        }
+
+        public void reloadTime(IDifficultyProperty<Integer> reloadTime) {
             this.reloadTime = reloadTime;
+        }
+
+        public void firerate(IDifficultyProperty<Integer> firerate) {
             this.firerate = firerate;
-            return this;
         }
 
-        public Builder AI(IDifficultyProperty<Float> damageMultiplier, float baseInaccuracy, float accuracyBonus, int burstSize, IDifficultyProperty<Integer> burstDelay) {
+        public void damageMultiplier(IDifficultyProperty<Float> damageMultiplier) {
             this.damageMultiplier = damageMultiplier;
-            this.baseInaccuracy = baseInaccuracy;
+        }
+
+        public void inaccuracy(float inaccuracy) {
+            this.baseInaccuracy = inaccuracy;
+        }
+
+        public void accuracyBonus(float accuracyBonus) {
             this.accuracyBonus = accuracyBonus;
+        }
+
+        public void burstSize(int burstSize) {
             this.burstSize = burstSize;
+        }
+
+        public void burstDelay(IDifficultyProperty<Integer> burstDelay) {
             this.burstDelay = burstDelay;
-            return this;
         }
 
-        public Builder cosmetics(int capColor) {
+        public void cap(int capColor) {
             this.capColor = capColor;
-            return this;
         }
 
-        public ZombieGunnerLoadout buildLoadout() {
+        public GunnerLoadoutInstance buildLoadout() {
+            if (burstSize == 0) burstSize = magCapacity;
             Preconditions.checkState(weight > 0, "Weight must be bigger than 0");
             Preconditions.checkNotNull(weapon, "Weapon cannot be null");
             Preconditions.checkNotNull(ammo, "Ammo cannot be null");
@@ -122,7 +145,7 @@ public final class ZombieGunnerLoadout {
             Preconditions.checkState((baseInaccuracy - (3 * accuracyBonus)) >= 0, "(Inaccuracy-3*bonus) cannot be smaller than 0");
             Preconditions.checkState(burstSize >= 0, "Burst size cannot be smaller than 0");
             Preconditions.checkNotNull(burstDelay, "Burst delay cannot be null");
-            return new ZombieGunnerLoadout(this);
+            return new GunnerLoadoutInstance(this);
         }
     }
 }

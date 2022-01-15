@@ -3,7 +3,7 @@ package dev.toma.gunsrpg.common.entity;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ai.GunAttackGoal;
 import dev.toma.gunsrpg.common.init.ModEntities;
-import dev.toma.gunsrpg.resource.gunner.ZombieGunnerLoadout;
+import dev.toma.gunsrpg.resource.gunner.GunnerLoadoutInstance;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.EntityType;
@@ -144,7 +144,7 @@ public class ZombieGunnerEntity extends MonsterEntity {
     @Override
     protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
         super.populateDefaultEquipmentSlots(difficulty);
-        ZombieGunnerLoadout loadout = GunsRPG.getModLifecycle().getZombieGunnerWeaponManager().getLoadout();
+        GunnerLoadoutInstance loadout = GunsRPG.getModLifecycle().getZombieGunnerWeaponManager().getLoadout();
         if (loadout == null) {
             GunsRPG.log.fatal("Cannot generate loadout for " + this + ", loadout configuration not found!");
             return;
