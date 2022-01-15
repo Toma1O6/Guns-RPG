@@ -18,6 +18,7 @@ import java.util.Map;
 
 public class SkillsView extends View {
 
+    private NavigatorWidget<SkillCategory> navigatorWidget;
     private PannableWidget skillViewWidget;
     private FooterWidget footerWidget;
     private SkillInfoWidget skillInfoWidget;
@@ -39,9 +40,9 @@ public class SkillsView extends View {
         addWidget(new HeaderWidget(0, 0, width, 20, header, font));
         // add category selector
         SkillCategory[] navEntries = Arrays.stream(SkillCategory.values()).sorted((o1, o2) -> o2.ordinal() - o1.ordinal()).toArray(SkillCategory[]::new);
-        NavigatorWidget<SkillCategory> nav = addWidget(new NavigatorWidget<>(x, y + 20, width, 20, navEntries));
-        nav.setTextFormatter(cat -> cat.name().toLowerCase(Locale.ROOT));
-        nav.setClickResponder(this::updateCanvasSource);
+        navigatorWidget = addWidget(new NavigatorWidget<>(x, y + 20, width, 20, navEntries));
+        navigatorWidget.setTextFormatter(cat -> cat.name().toLowerCase(Locale.ROOT));
+        navigatorWidget.setClickResponder(this::updateCanvasSource);
         // add footer with data
         IViewContext context = manager.getContext();
         IPlayerData data = context.getData();
@@ -56,8 +57,12 @@ public class SkillsView extends View {
         // viewSwitchWidget.setColorSchema(0x49A1FF, 0x49D8FF); perk color schema
         viewSwitchWidget.setColorSchema(0xFFA60C, 0xFFD21E);
 
-        this.updateCanvasSource(nav.getSelectedValue());
+        this.loadTree();
         this.updateSkillInformationVisibility(false);
+    }
+
+    public void loadTree() {
+        this.updateCanvasSource(this.navigatorWidget.getSelectedValue());
     }
 
     @Override
@@ -70,6 +75,8 @@ public class SkillsView extends View {
     }
 
     private void updateCanvasSource(SkillCategory category) {
+        if (!SkillTreeScreen.Cache.hasBeenBuilt())
+            return;
         updateSkillInformationVisibility(false);
         Map<SkillCategory, SkillTrees> map = SkillTreeScreen.Cache.queryData();
         SkillTrees skillTrees = map.get(category);

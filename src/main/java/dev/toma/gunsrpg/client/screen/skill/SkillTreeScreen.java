@@ -39,7 +39,7 @@ public class SkillTreeScreen extends Screen implements IViewContext {
         MainWindow window = minecraft.getWindow();
         View view = manager.getView();
         if (view == null) {
-            view = new LoadingView(window, this::checkLoaded, this::onLoadCorrection);
+            view = new SkillsView(width, height, manager);
             manager.setView(view);
         }
         addWidget(view);
@@ -81,14 +81,6 @@ public class SkillTreeScreen extends Screen implements IViewContext {
                 .thenAccept(this::onSkillTreeReady);
     }
 
-    private boolean checkLoaded() {
-        return Cache.hasBeenBuilt();
-    }
-
-    private void onLoadCorrection() {
-        updateView();
-    }
-
     private void updateView() {
         MainWindow window = Minecraft.getInstance().getWindow();
         setView(new SkillsView(window.getGuiScaledWidth(), window.getGuiScaledHeight(), manager));
@@ -96,7 +88,9 @@ public class SkillTreeScreen extends Screen implements IViewContext {
 
     private void onSkillTreeReady(Map<SkillCategory, SkillTrees> result) {
         Cache.onBuildFinished(result);
-        updateView();
+        if (manager.getView() instanceof SkillsView) {
+            ((SkillsView) manager.getView()).loadTree();
+        }
     }
 
     private void setView(View view) {
