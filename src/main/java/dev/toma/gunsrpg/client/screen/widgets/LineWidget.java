@@ -2,11 +2,12 @@ package dev.toma.gunsrpg.client.screen.widgets;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import dev.toma.gunsrpg.client.render.IOrderedRender;
 import dev.toma.gunsrpg.util.RenderUtils;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.text.StringTextComponent;
 
-public class LineWidget extends Widget {
+public class LineWidget extends Widget implements IOrderedRender {
 
     private final int initialX;
     private final int initialY;
@@ -28,5 +29,10 @@ public class LineWidget extends Widget {
         RenderSystem.lineWidth(3);
         RenderUtils.drawLine(matrix.last().pose(), x, y, x2 + diffX, y2 + diffY, 0xFF777777);
         RenderSystem.lineWidth(1);
+    }
+
+    @Override
+    public int getRenderIndex() {
+        return -1;
     }
 }

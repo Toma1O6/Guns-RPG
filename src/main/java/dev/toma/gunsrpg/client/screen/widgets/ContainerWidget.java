@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.client.screen.widgets;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.configuration.api.client.widget.ITickable;
+import dev.toma.gunsrpg.client.render.IOrderedRender;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.INestedGuiEventHandler;
 import net.minecraft.client.gui.widget.Widget;
@@ -52,6 +53,10 @@ public class ContainerWidget extends Widget implements INestedGuiEventHandler, I
         listeners.clear();
         widgets.clear();
         focused = null;
+    }
+
+    public void sortRenderOrder() {
+        widgets.sort(this::compareWidgets);
     }
 
     @Override
@@ -126,5 +131,11 @@ public class ContainerWidget extends Widget implements INestedGuiEventHandler, I
     @Override
     public void setFocused(IGuiEventListener focused) {
         this.focused = focused;
+    }
+
+    private int compareWidgets(Widget w1, Widget w2) {
+        int v1 = w1 instanceof IOrderedRender ? ((IOrderedRender) w1).getRenderIndex() : 0;
+        int v2 = w2 instanceof IOrderedRender ? ((IOrderedRender) w2).getRenderIndex() : 0;
+        return v1 - v2;
     }
 }

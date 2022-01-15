@@ -104,6 +104,9 @@ public class SkillsView extends View {
                 }
             }
         });
+        synchronized (lock) {
+            skillViewWidget.sortRenderOrder();
+        }
     }
 
     private void skillClicked(SkillType<?> type) {
