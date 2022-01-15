@@ -42,7 +42,7 @@ public class Mk14EbrItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.KAR98K_ASSEMBLY;
+        return Skills.MK14EBR_ASSEMBLY;
     }
 
     @Override

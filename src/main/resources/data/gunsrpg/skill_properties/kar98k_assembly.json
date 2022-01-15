@@ -10,6 +10,9 @@
             "gunsrpg:kar98k_fast_hands",
             "gunsrpg:kar98k_penetrator",
             "gunsrpg:kar98k_dead_eye"
+        ],
+        "children": [
+            "gunsrpg:winchester_assembly"
         ]
     },
     "properties": {

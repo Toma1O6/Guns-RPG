@@ -1,0 +1,16 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "parent": "gunsrpg:gun_parts_smith",
+        "children": [
+            "gunsrpg:rocket_launcher_assembly"
+        ]
+    },
+    "properties": {
+        "level": 40,
+        "price": 5,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

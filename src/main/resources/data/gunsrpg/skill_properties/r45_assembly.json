@@ -1,0 +1,16 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "parent": "gunsrpg:m1911_assembly",
+        "children": [
+            "gunsrpg:desert_eagle_assembly"
+        ]
+    },
+    "properties": {
+        "level": 20,
+        "price": 2,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

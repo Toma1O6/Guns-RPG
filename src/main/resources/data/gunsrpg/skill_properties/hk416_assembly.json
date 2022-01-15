@@ -1,0 +1,16 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "parent": "gunsrpg:akm_assembly",
+        "children": [
+            "gunsrpg:aug_assembly"
+        ]
+    },
+    "properties": {
+        "level": 40,
+        "price": 4,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

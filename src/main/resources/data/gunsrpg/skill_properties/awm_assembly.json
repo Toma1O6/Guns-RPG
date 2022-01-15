@@ -1,0 +1,13 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "parent": "gunsrpg:winchester_assembly"
+    },
+    "properties": {
+        "level": 75,
+        "price": 5,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

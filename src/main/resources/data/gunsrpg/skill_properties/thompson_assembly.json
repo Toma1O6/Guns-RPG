@@ -1,0 +1,16 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "parent": "gunsrpg:ump45_assembly",
+        "children": [
+            "gunsrpg:vector_assembly"
+        ]
+    },
+    "properties": {
+        "level": 25,
+        "price": 3,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

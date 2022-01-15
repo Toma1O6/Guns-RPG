@@ -45,7 +45,7 @@ public class DesertEagleItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.M1911_ASSEMBLY;
+        return Skills.DESERT_EAGLE_ASSEMBLY;
     }
 
     @Override

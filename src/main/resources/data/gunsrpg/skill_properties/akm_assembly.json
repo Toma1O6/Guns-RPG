@@ -1,0 +1,16 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "parent": "gunsrpg:gun_parts_smith",
+        "children": [
+            "gunsrpg:hk416_assembly"
+        ]
+    },
+    "properties": {
+        "level": 25,
+        "price": 4,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

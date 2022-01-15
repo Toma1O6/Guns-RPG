@@ -43,7 +43,7 @@ public class AugItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.SKS_ASSEMBLY;
+        return Skills.AUG_ASSEMBLY;
     }
 
     @Override

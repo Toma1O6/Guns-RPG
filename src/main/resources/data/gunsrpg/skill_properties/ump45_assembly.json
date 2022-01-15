@@ -10,6 +10,9 @@
             "gunsrpg:ump45_suppressor",
             "gunsrpg:ump45_red_dot",
             "gunsrpg:ump45_commando"
+        ],
+        "children": [
+            "gunsrpg:thompson_assembly"
         ]
     },
     "properties": {

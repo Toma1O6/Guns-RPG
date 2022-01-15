@@ -1,0 +1,13 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "parent": "gunsrpg:hk416_assembly"
+    },
+    "properties": {
+        "level": 60,
+        "price": 4,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

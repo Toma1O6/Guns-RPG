@@ -44,7 +44,7 @@ public class WinchesterItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.SKS_ASSEMBLY;
+        return Skills.WINCHESTER_ASSEMBLY;
     }
 
     @Override

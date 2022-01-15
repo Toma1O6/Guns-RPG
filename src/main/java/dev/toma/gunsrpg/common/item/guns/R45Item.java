@@ -63,7 +63,7 @@ public class R45Item extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.M1911_ASSEMBLY;
+        return Skills.R45_ASSEMBLY;
     }
 
     @Override

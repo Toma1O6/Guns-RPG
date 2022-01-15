@@ -10,6 +10,9 @@
             "gunsrpg:crossbow_penetrator",
             "gunsrpg:crossbow_scope",
             "gunsrpg:crossbow_repeater"
+        ],
+        "children": [
+            "gunsrpg:chukonu_assembly"
         ]
     },
     "properties": {

@@ -1,0 +1,16 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "parent": "gunsrpg:s1897_assembly",
+        "children": [
+            "gunsrpg:s12k_assembly"
+        ]
+    },
+    "properties": {
+        "level": 35,
+        "price": 4,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

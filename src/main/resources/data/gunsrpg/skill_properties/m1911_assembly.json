@@ -10,6 +10,9 @@
             "gunsrpg:m1911_suppressor",
             "gunsrpg:m1911_heavy_bullets",
             "gunsrpg:m1911_dual_wield"
+        ],
+        "children": [
+            "gunsrpg:r45_assembly"
         ]
     },
     "properties": {

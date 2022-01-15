@@ -36,7 +36,7 @@ public class GrenadeLauncherItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.KAR98K_ASSEMBLY;
+        return Skills.GRENADE_LAUNCHER_ASSEMBLY;
     }
 
     @Override

@@ -45,7 +45,7 @@ public class AkmItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.SKS_ASSEMBLY;
+        return Skills.AKM_ASSEMBLY;
     }
 
     @Override

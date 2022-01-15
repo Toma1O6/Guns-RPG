@@ -36,7 +36,7 @@ public class RocketLauncherItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.KAR98K_ASSEMBLY;
+        return Skills.ROCKET_LAUNCHER_ASSEMBLY;
     }
 
     @Override

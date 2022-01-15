@@ -24,7 +24,7 @@ public class VectorItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.UMP45_ASSEMBLY;
+        return Skills.VECTOR_ASSEMBLY;
     }
 
     @Override

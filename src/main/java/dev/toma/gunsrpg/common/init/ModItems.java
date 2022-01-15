@@ -13,11 +13,27 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(GunsRPG.MODID)
 public class ModItems {
     public static final GunItem M1911 = null;
+    public static final GunItem R45 = null;
+    public static final GunItem DESERT_EAGLE = null;
     public static final GunItem UMP45 = null;
+    public static final GunItem THOMPSON = null;
+    public static final GunItem VECTOR = null;
+    public static final GunItem AKM = null;
+    public static final GunItem HK416 = null;
+    public static final GunItem AUG = null;
     public static final GunItem SKS = null;
+    public static final GunItem VSS = null;
+    public static final GunItem MK14EBR = null;
     public static final GunItem KAR98K = null;
+    public static final GunItem WINCHESTER = null;
+    public static final GunItem AWM = null;
     public static final GunItem S1897 = null;
+    public static final GunItem S686 = null;
+    public static final GunItem S12K = null;
     public static final GunItem WOODEN_CROSSBOW = null;
+    public static final GunItem CHUKONU = null;
+    public static final GunItem GRENADE_LAUNCHER = null;
+    public static final GunItem ROCKET_LAUNCHER = null;
     public static final BaseItem AMETHYST = null;
     public static final DebuffHealItem ANTIDOTUM_PILLS = null;
     public static final DebuffHealItem VACCINE = null;

@@ -24,7 +24,7 @@ public class ThompsonItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.UMP45_ASSEMBLY;
+        return Skills.THOMPSON_ASSEMBLY;
     }
 
     @Override

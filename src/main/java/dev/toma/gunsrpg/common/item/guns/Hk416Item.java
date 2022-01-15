@@ -43,7 +43,7 @@ public class Hk416Item extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.SKS_ASSEMBLY;
+        return Skills.HK416_ASSEMBLY;
     }
 
     @Override

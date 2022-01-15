@@ -45,7 +45,7 @@ public class VssItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.SKS_ASSEMBLY;
+        return Skills.VSS_ASSEMBLY;
     }
 
     @Override

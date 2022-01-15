@@ -10,10 +10,13 @@
             "gunsrpg:sks_suppressor",
             "gunsrpg:sks_cheekpad",
             "gunsrpg:sks_adaptive_chambering"
+        ],
+        "children": [
+            "gunsrpg:vss_assembly"
         ]
     },
     "properties": {
-        "level": 25,
+        "level": 30,
         "price": 4,
         "transactionValidator": {
             "type": "gunsrpg:level"

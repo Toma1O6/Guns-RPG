@@ -43,7 +43,7 @@ public class S12KItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.S1897_ASSEMBLY;
+        return Skills.S12K_ASSEMBLY;
     }
 
     @Override

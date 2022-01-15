@@ -42,7 +42,7 @@ public class ChuKoNuItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.CROSSBOW_ASSEMBLY;
+        return Skills.CHUKONU_ASSEMBLY;
     }
 
     @Override

@@ -9,6 +9,9 @@
             "gunsrpg:s1897_choke",
             "gunsrpg:s1897_never_give_up",
             "gunsrpg:s1897_extended_barrel"
+        ],
+        "children": [
+            "gunsrpg:s686_assembly"
         ]
     },
     "properties": {

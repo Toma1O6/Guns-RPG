@@ -43,7 +43,7 @@ public class AwmItem extends GunItem {
 
     @Override
     public SkillType<?> getRequiredSkill() {
-        return Skills.SKS_ASSEMBLY;
+        return Skills.AWM_ASSEMBLY;
     }
 
     @Override
