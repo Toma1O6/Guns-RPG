@@ -75,8 +75,8 @@ public class PannableWidget extends ContainerWidget {
     protected void onDrag(double mouseX, double mouseY, double moveX, double moveY) {
         this.posX += moveValue(moveX);
         this.posY += moveValue(moveY);
-        this.posX = MathHelper.clamp(posX, -boundX, 0);
-        this.posY = MathHelper.clamp(posY, -boundY, 0);
+        this.posX = MathHelper.clamp(posX, Math.min(-boundX, 0), 0);
+        this.posY = MathHelper.clamp(posY, Math.min(-boundY, 0), 0);
         updateChildren();
     }
 
