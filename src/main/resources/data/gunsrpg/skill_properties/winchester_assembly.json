@@ -8,7 +8,7 @@
     },
     "properties": {
         "level": 50,
-        "price": 5,
+        "price": 8,
         "transactionValidator": {
             "type": "gunsrpg:level"
         }
