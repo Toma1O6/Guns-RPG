@@ -7,13 +7,10 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.math.IDimensions;
 import dev.toma.gunsrpg.util.math.IVec2i;
+import dev.toma.gunsrpg.util.math.Vec2i;
 import dev.toma.gunsrpg.util.math.Vec2iMutable;
-import dev.toma.gunsrpg.util.object.Pair;
 
-import java.util.IdentityHashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class Tree implements IDimensions {
 
@@ -25,6 +22,7 @@ public class Tree implements IDimensions {
     private final SkillType<?> root;
     private final int width, height;
     private final boolean useSimplePlacement;
+    private final List<Connector> connectorList = new ArrayList<>();
 
     public Tree(SkillCategory category, SkillType<?> root) {
         this.category = category;
@@ -33,6 +31,15 @@ public class Tree implements IDimensions {
         fillPositionMap(root);
         this.width = calculateMaxWidth();
         this.height = calculateMaxHeight();
+    }
+
+    public void makeConnections(SkillType<?> head) {
+        SkillType<?>[] children = head.getHierarchy().getChildren();
+        if (children == null) return;
+        for (SkillType<?> child : children) {
+            connect(head, child);
+            makeConnections(child);
+        }
     }
 
     public SkillType<?> getRoot() {
@@ -55,6 +62,10 @@ public class Tree implements IDimensions {
 
     public Set<Map.Entry<SkillType<?>, SkillViewData>> getDataSet() {
         return dataViewMap.entrySet();
+    }
+
+    public List<Connector> getConnectorList() {
+        return connectorList;
     }
 
     private void fillPositionMap(SkillType<?> root) {
@@ -103,6 +114,28 @@ public class Tree implements IDimensions {
         return root == Skills.WOODEN_AMMO_SMITH;
     }
 
+    private void connect(SkillType<?> parent, SkillType<?> child) {
+        IVec2i pos1 = getPosition(parent);
+        IVec2i pos2 = getPosition(child);
+        if (pos1.x() == pos2.x()) {
+            Connector connector = new Connector(pos1, pos2);
+            this.connectorList.add(connector);
+        } else {
+            int diffY = pos2.y() - pos1.y();
+            int halfY = pos1.y() + diffY / 2;
+            IVec2i pos3 = new Vec2i(pos1.x(), halfY);
+            IVec2i pos4 = new Vec2i(pos2.x(), halfY);
+            connectorList.add(new Connector(pos1, pos3));
+            connectorList.add(new Connector(pos3, pos4));
+            connectorList.add(new Connector(pos4, pos2));
+        }
+    }
+
+    private IVec2i getPosition(SkillType<?> type) {
+        SkillViewData data = dataViewMap.get(type);
+        return data.getPos();
+    }
+
     private static class TreeNode {
 
         private final int xLevel;
@@ -139,8 +172,22 @@ public class Tree implements IDimensions {
         }
     }
 
-    private static class SkillLink {
+    public static final class Connector {
 
-        private Pair<IVec2i, IVec2i>[] lines;
+        private final IVec2i pos1;
+        private final IVec2i pos2;
+
+        private Connector(IVec2i pos1, IVec2i pos2) {
+            this.pos1 = pos1;
+            this.pos2 = pos2;
+        }
+
+        public IVec2i getStart() {
+            return pos1;
+        }
+
+        public IVec2i getEnd() {
+            return pos2;
+        }
     }
 }

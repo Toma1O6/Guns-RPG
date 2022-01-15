@@ -82,17 +82,24 @@ public class SkillsView extends View {
         SkillTrees skillTrees = map.get(category);
         int xUnitSize = 6;
         int yUnitSize = 10;
+        int componentSize = 22;
+        int lineOff = componentSize / 2;
         int level = manager.getContext().getData().getProgressData().getLevel();
         skillViewWidget.fill((filler, x, y) -> {
             Tree[] trees = skillTrees.getTrees();
             for (Tree tree : trees) {
+                for (Tree.Connector connector : tree.getConnectorList()) {
+                    IVec2i start = connector.getStart();
+                    IVec2i end = connector.getEnd();
+                    filler.add(new LineWidget(x + start.x() * xUnitSize + lineOff, y + start.y() * yUnitSize + lineOff, x + end.x() * xUnitSize + lineOff, y + end.y() * yUnitSize + lineOff));
+                }
                 for (Map.Entry<SkillType<?>, SkillViewData> entry : tree.getDataSet()) {
                     SkillType<?> source = entry.getKey();
                     if (source.getProperties().getRequiredLevel() > level)
                         continue;
                     SkillViewData data = entry.getValue();
                     IVec2i pos = data.getPos();
-                    SkillWidget widget = filler.add(new SkillWidget(x + pos.x() * xUnitSize, y + pos.y() * yUnitSize, 22, 22, source, manager.getContext()));
+                    SkillWidget widget = filler.add(new SkillWidget(x + pos.x() * xUnitSize, y + pos.y() * yUnitSize, componentSize, componentSize, source, manager.getContext()));
                     widget.setClickResponder(this::skillClicked);
                 }
             }

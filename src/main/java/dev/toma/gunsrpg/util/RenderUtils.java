@@ -103,6 +103,29 @@ public class RenderUtils {
         builder.vertex(pose, x1, y1, depth).color(r1, g1, b1, a1).endVertex();
     }
 
+    public static void drawLine(Matrix4f pose, int x1, int y1, int x2, int y2, int color) {
+        drawLine(pose, x1, y1, x2, y2, color, color);
+    }
+
+    public static void drawLine(Matrix4f pose, int x1, int y1, int x2, int y2, int color1, int color2) {
+        int a1 = alpha_i(color1);
+        int a2 = alpha_i(color2);
+        int r1 = red_i(color1);
+        int r2 = red_i(color2);
+        int g1 = green_i(color1);
+        int g2 = green_i(color2);
+        int b1 = blue_i(color1);
+        int b2 = blue_i(color2);
+        setupColorRenderState();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder builder = tessellator.getBuilder();
+        builder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+        builder.vertex(pose, x1, y1, 0).color(r1, g1, b1, a1).endVertex();
+        builder.vertex(pose, x2, y2, 0).color(r2, g2, b2, a2).endVertex();
+        tessellator.end();
+        resetColorRenderState();
+    }
+
     public static void drawSolid(Matrix4f pose, int x1, int y1, int x2, int y2, int color) {
         drawSolid(pose, x1, y1, x2, y2, 0, color);
     }

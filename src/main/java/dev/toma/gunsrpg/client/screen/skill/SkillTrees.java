@@ -33,6 +33,7 @@ public class SkillTrees {
         int xCorrection = Tree.GRID_UNIT_SIZE + Tree.HALF_UNIT;
         for (Tree tree : trees) {
             tree.move(xCorrection, 0);
+            tree.makeConnections(tree.getRoot());
             int width = tree.getWidth();
             xCorrection += width + Tree.GRID_UNIT_SIZE + Tree.HALF_UNIT;
         }
