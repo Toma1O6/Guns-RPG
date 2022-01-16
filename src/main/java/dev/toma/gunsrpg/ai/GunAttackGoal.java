@@ -14,7 +14,7 @@ import java.util.EnumSet;
 
 public class GunAttackGoal extends Goal {
 
-    protected static final int[] ATTACK_RANGE_TABLE = {10, 15, 20, 25, 10};
+    protected static final int[] ATTACK_RANGE_TABLE = {10, 15, 20, 25, 10, 25};
     protected final ZombieGunnerEntity entity;
     protected int timeRemaining = 10;
     private final IShootProps props;
