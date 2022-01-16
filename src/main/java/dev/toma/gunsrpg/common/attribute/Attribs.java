@@ -38,8 +38,8 @@ public final class Attribs {
     public static final IAttributeId BLEED_RESISTANCE           = createInternal("bleed_resistance", 0.0).display("resist", IValueFormatter.PERCENT);
     public static final IAttributeId BLEED_DELAY                = createInternal("bleed_delay", 120).display("delay", IValueFormatter.SECONDS);
     public static final IAttributeId BLEED_BLOCK                = createInternal("bleed_block", 0);
-    public static final IAttributeId EXPLOSION_RESISTANCE       = createInternal("explosion_resistance", 0.0);
-    public static final IAttributeId FALL_RESISTANCE            = createInternal("fall_resistance", 0.0);
+    public static final IAttributeId EXPLOSION_RESISTANCE       = createInternal("explosion_resistance", 0.0).display("explosion", IValueFormatter.PERCENT);
+    public static final IAttributeId FALL_RESISTANCE            = createInternal("fall_resistance", 0.0).display("fall", IValueFormatter.PERCENT);
     // global weapon attributes
     public static final IAttributeId MELEE_DAMAGE               = createInternal("melee_damage").display("damage"); // bonus damage
     public static final IAttributeId MELEE_COOLDOWN             = createInternal("melee_cooldown");
