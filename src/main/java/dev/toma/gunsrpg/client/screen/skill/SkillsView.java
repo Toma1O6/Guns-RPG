@@ -50,7 +50,7 @@ public class SkillsView extends View {
         footerWidget = addWidget(new FooterWidget(x, y + height - 20, width, 20, client.font, pointProvider));
         footerWidget.setColorSchema(0xFFFF, 0xCCCC);
         // add skill info panel
-        skillInfoWidget = addWidget(new SkillInfoWidget(x, y + height - 80, width, 80, manager.getContext()));
+        skillInfoWidget = addWidget(new SkillInfoWidget(x, y + height - 80, width, 80, manager));
         // add perk/skill switch
         viewSwitchWidget = addWidget(new ViewSwitchWidget(x + width - 42, height - 62, 32, 32, new ItemStack(ModItems.PERKPOINT_BOOK)));
         viewSwitchWidget.setClickEvent(this::openPerkView);

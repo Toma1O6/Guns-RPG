@@ -4,7 +4,9 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.api.common.skill.*;
-import dev.toma.gunsrpg.client.screen.skill.IViewContext;
+import dev.toma.gunsrpg.client.screen.skill.ExtensionsView;
+import dev.toma.gunsrpg.client.screen.skill.IViewManager;
+import dev.toma.gunsrpg.client.screen.skill.View;
 import dev.toma.gunsrpg.common.skills.core.DisplayData;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -31,7 +33,7 @@ public class SkillInfoWidget extends ContainerWidget {
     private static final ITextComponent PURCHASE = new TranslationTextComponent("view.skill.purchase");
     private static final ITextComponent USE = new TranslationTextComponent("view.skill.use");
 
-    private final IViewContext context;
+    private final IViewManager manager;
     private SkillType<?> src;
     private ITextComponent title;
     private ITextComponent[] description;
@@ -41,9 +43,9 @@ public class SkillInfoWidget extends ContainerWidget {
     private Button buyWidget;
     private Button useWidget;
 
-    public SkillInfoWidget(int x, int y, int width, int height, IViewContext context) {
+    public SkillInfoWidget(int x, int y, int width, int height, IViewManager manager) {
         super(x, y, width, height);
-        this.context = context;
+        this.manager = manager;
         init();
     }
 
@@ -54,7 +56,7 @@ public class SkillInfoWidget extends ContainerWidget {
             title = type.getTitle();
             description = type.getDescription();
             extensions = !ModUtils.isNullOrEmpty(type.getHierarchy().getExtensions());
-            ISkillProvider provider = context.getData().getSkillProvider();
+            ISkillProvider provider = manager.getContext().getData().getSkillProvider();
             ISkill top = SkillUtil.getTopHierarchySkill(src, provider);
             clickable = src.getDataInstance() instanceof IClickableSkill && (top == null || top.getType().equals(src));
         }
@@ -111,7 +113,7 @@ public class SkillInfoWidget extends ContainerWidget {
     public void tick() {
         super.tick();
         if (clickable && useWidget != null) {
-            ISkillProvider provider = context.getData().getSkillProvider();
+            ISkillProvider provider = manager.getContext().getData().getSkillProvider();
             ISkill skill = SkillUtil.getTopHierarchySkill(src, provider);
             if (skill != null) {
                 useWidget.active = ((IClickableSkill) skill).canUse();
@@ -120,7 +122,10 @@ public class SkillInfoWidget extends ContainerWidget {
     }
 
     private void showExtensionsView(Button button) {
-        // TODO switch to extensions view
+        int width = manager.getWidth();
+        int height = manager.getHeight();
+        View last = manager.getView();
+        manager.setView(new ExtensionsView(width, height, manager, last, src));
     }
 
     private void useClicked(Button button) {
@@ -137,7 +142,7 @@ public class SkillInfoWidget extends ContainerWidget {
     }
 
     private int getUnlockState() {
-        IPlayerData data = context.getData();
+        IPlayerData data = manager.getContext().getData();
         ISkillProperties properties = src.getProperties();
         ISkillHierarchy<?> hierarchy = src.getHierarchy();
         ITransactionValidator validator = properties.getTransactionValidator();

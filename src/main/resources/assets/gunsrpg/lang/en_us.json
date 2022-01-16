@@ -531,6 +531,7 @@
     "view.skill.use": "Use",
     "view.skill.required_level": "Level: %s",
     "view.skill.price": "Price: %s",
+    "view.extension.header": "%s Extensions",
     "nav.entry.resistance": "Resistance",
     "nav.entry.mining": "Mining",
     "nav.entry.survival": "Survival",

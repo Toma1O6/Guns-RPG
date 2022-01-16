@@ -7,4 +7,8 @@ public interface IViewManager {
     View getView();
 
     void setView(View view);
+
+    int getWidth();
+
+    int getHeight();
 }

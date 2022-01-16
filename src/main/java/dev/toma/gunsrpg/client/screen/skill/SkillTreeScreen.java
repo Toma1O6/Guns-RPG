@@ -95,6 +95,9 @@ public class SkillTreeScreen extends Screen implements IViewContext {
 
     private void setView(View view) {
         this.manager.setView(view);
+    }
+
+    private void updateWidgets() {
         Minecraft mc = Minecraft.getInstance();
         MainWindow window = mc.getWindow();
         this.init(mc, window.getGuiScaledWidth(), window.getGuiScaledHeight());
@@ -112,11 +115,22 @@ public class SkillTreeScreen extends Screen implements IViewContext {
         @Override
         public void setView(View view) {
             this.view = view;
+            SkillTreeScreen.this.updateWidgets();
         }
 
         @Override
         public View getView() {
             return view;
+        }
+
+        @Override
+        public int getWidth() {
+            return SkillTreeScreen.this.width;
+        }
+
+        @Override
+        public int getHeight() {
+            return SkillTreeScreen.this.height;
         }
     }
 

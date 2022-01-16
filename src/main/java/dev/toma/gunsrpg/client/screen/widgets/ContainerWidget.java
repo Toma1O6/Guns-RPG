@@ -56,7 +56,7 @@ public class ContainerWidget extends Widget implements INestedGuiEventHandler, I
     }
 
     public void sortRenderOrder() {
-        widgets.sort(this::compareWidgets);
+        widgets.sort(ContainerWidget::compareWidgets);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class ContainerWidget extends Widget implements INestedGuiEventHandler, I
         this.focused = focused;
     }
 
-    private int compareWidgets(Widget w1, Widget w2) {
+    public static int compareWidgets(Widget w1, Widget w2) {
         int v1 = w1 instanceof IOrderedRender ? ((IOrderedRender) w1).getRenderIndex() : 0;
         int v2 = w2 instanceof IOrderedRender ? ((IOrderedRender) w2).getRenderIndex() : 0;
         return v1 - v2;

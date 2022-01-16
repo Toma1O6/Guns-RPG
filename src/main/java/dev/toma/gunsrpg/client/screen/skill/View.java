@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.client.screen.skill;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.configuration.api.client.widget.ITickable;
+import dev.toma.gunsrpg.client.screen.widgets.ContainerWidget;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -51,6 +52,12 @@ public abstract class View extends Widget implements INestedGuiEventHandler {
     public void tick() {
         synchronized (lock) {
             tickables.forEach(ITickable::tick);
+        }
+    }
+
+    public void sortRenderOrder() {
+        synchronized (lock) {
+            widgets.sort(ContainerWidget::compareWidgets);
         }
     }
 
