@@ -27,6 +27,7 @@ import dev.toma.gunsrpg.common.skills.core.DisplayType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.Constants;
 import dev.toma.gunsrpg.util.Interval;
+import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.helper.StorageUtil;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -193,13 +194,13 @@ public class CommonRegistry {
                 SkillType.Builder.<LikeACatSkill>create(type -> new LikeACatSkill(type, Interval.minutes(5), Interval.minutes(7))).build().setRegistryName("like_a_cat_iii"),
                 SkillType.Builder.create(AvengeMeFriendsSkill::new).build().setRegistryName("avenge_me_friends"),
                 SkillType.Builder.create(WarMachineSkill::new).build().setRegistryName("war_machine"),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.QUICKDRAW_MAG, Attribs.M1911_RELOAD_SPEED))).renderModIcon("quickdraw").build().setRegistryName("m1911_quickdraw"),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.M1911_EXTENDED_MAG, Attribs.M1911_MAG_CAPACITY))).renderModIcon("extended").build().setRegistryName("m1911_extended"),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.TOUGH_SPRING, Attribs.M1911_FIRERATE))).renderModIcon("tough_spring").build().setRegistryName("m1911_tough_spring"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.QUICKDRAW_MAG, Attribs.M1911_RELOAD_SPEED))).renderModIcon("quickdraw").description(0).build().setRegistryName("m1911_quickdraw"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.M1911_EXTENDED_MAG, Attribs.M1911_MAG_CAPACITY))).renderModIcon("extended").description(0).build().setRegistryName("m1911_extended"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.TOUGH_SPRING, Attribs.M1911_FIRERATE))).renderModIcon("tough_spring").description(0).build().setRegistryName("m1911_tough_spring"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.M1911_CARBON_BARREL, Attribs.M1911_HORIZONTAL_RECOIL), AttributeTarget.create(Modifiers.M1911_CARBON_BARREL, Attribs.M1911_VERTICAL_RECOIL))).build().setRegistryName("m1911_carbon_barrel"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.NOISE, Attribs.M1911_NOISE))).renderModIcon("suppressor").build().setRegistryName("m1911_suppressor"),
                 SkillType.Builder.create(BasicSkill::new).description(3).build().setRegistryName("m1911_heavy_bullets"),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.DUAL_WIELD, Attribs.M1911_MAG_CAPACITY, Attribs.M1911_RELOAD_SPEED))).build().setRegistryName("m1911_dual_wield"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.DUAL_WIELD, Attribs.M1911_MAG_CAPACITY, Attribs.M1911_RELOAD_SPEED))).description(SkillUtil.Localizations::generateSimpleDescription).build().setRegistryName("m1911_dual_wield"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.QUICKDRAW_MAG, Attribs.UMP45_RELOAD_SPEED))).renderModIcon("quickdraw").build().setRegistryName("ump45_quickdraw"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.UMP45_EXTENDED, Attribs.UMP45_MAG_CAPACITY))).renderModIcon("extended").build().setRegistryName("ump45_extended"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.VERTICAL_GRIP, Attribs.UMP45_VERTICAL_RECOIL))).renderModIcon("vertical_grip").build().setRegistryName("ump45_vertical_grip"),

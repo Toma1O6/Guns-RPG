@@ -58,6 +58,12 @@ public class SkillUtil {
             return description;
         }
 
+        public static ITextComponent[] generateSimpleDescription(int lines, SkillType<?> type) {
+            ITextComponent[] components = new ITextComponent[lines];
+            prepareEmptyDescriptionLines(type, lines, components);
+            return components;
+        }
+
         public static void prepareEmptyDescriptionLines(SkillType<?> type, int lines, ITextComponent[] description) {
             String rawString = String.format("skill.%s.description.", ModUtils.convertToLocalization(type.getRegistryName()));
             for (int i = 0; i < lines; i++) {

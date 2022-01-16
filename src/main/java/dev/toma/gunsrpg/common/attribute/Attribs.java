@@ -73,20 +73,20 @@ public final class Attribs {
     public static final IAttributeId WELL_FED_DURATION          = createInternal("well_fed_duration");
     public static final IAttributeId MOTHERLODE_BONUS           = createInternal("motherlode_bonus");
     // weapon
-    public static final IAttributeId M1911_RELOAD_SPEED         = createInternal("m1911_reload_speed", 35).display("speed", IValueFormatter.PERCENT);
+    public static final IAttributeId M1911_RELOAD_SPEED         = createInternal("m1911_reload_speed", 35).display("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeId M1911_MAG_CAPACITY         = createInternal("m1911_mag_capacity", 7).display("capacity");
     public static final IAttributeId M1911_FIRERATE             = createInternal("m1911_firerate", 4).display("rate");
     public static final IAttributeId M1911_HORIZONTAL_RECOIL    = createInternal("m1911_horizontal_recoil", 1.4);
     public static final IAttributeId M1911_VERTICAL_RECOIL      = createInternal("m1911_vertical_recoil", 3.1);
     public static final IAttributeId M1911_NOISE                = createInternal("m1911_noise");
-    public static final IAttributeId UMP45_RELOAD_SPEED         = createInternal("ump45_reload_speed", 52).display("speed", IValueFormatter.PERCENT);
+    public static final IAttributeId UMP45_RELOAD_SPEED         = createInternal("ump45_reload_speed", 52).display("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeId UMP45_MAG_CAPACITY         = createInternal("ump45_mag_capacity", 25).display("capacity");
     public static final IAttributeId UMP45_VERTICAL_RECOIL      = createInternal("ump45_vertical_recoil", 1.8);
     public static final IAttributeId UMP45_FIRERATE             = createInternal("ump45_firerate", 3).display("rate");
     public static final IAttributeId UMP45_NOISE                = createInternal("ump45_noise");
-    public static final IAttributeId CROSSBOW_RELOAD_SPEED      = createInternal("crossbow_reload_speed", 60).display("speed", IValueFormatter.PERCENT);
+    public static final IAttributeId CROSSBOW_RELOAD_SPEED      = createInternal("crossbow_reload_speed", 60).display("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeId CROSSBOW_MAG_CAPACITY      = createInternal("crossbow_mag_capacity").display("capacity");
-    public static final IAttributeId S1897_RELOAD_SPEED         = createInternal("s1897_reload_speed", 17).display("speed", IValueFormatter.PERCENT);
+    public static final IAttributeId S1897_RELOAD_SPEED         = createInternal("s1897_reload_speed", 17).display("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeId S1897_MAG_CAPACITY         = createInternal("s1897_mag_capacity", 5).display("capacity");
     public static final IAttributeId S1897_FIRERATE             = createInternal("s1897_firerate", 25).display("rate");
     public static final IAttributeId SKS_FIRERATE               = createInternal("sks_firerate", 7).display("rate");
@@ -97,7 +97,7 @@ public final class Attribs {
     public static final IAttributeId KAR98K_VERTICAL_RECOIL     = createInternal("kar98k_vertical_recoil", 8.0);
     public static final IAttributeId KAR98K_HORIZONTAL_RECOIL   = createInternal("kar98k_horizontal_recoil", 0.9);
     public static final IAttributeId KAR98K_MAG_CAPACITY        = createInternal("kar98k_mag_capacity", 5).display("capacity");
-    public static final IAttributeId KAR98K_RELOAD_SPEED        = createInternal("kar98k_reload_speed", 30).display("speed", IValueFormatter.PERCENT);
+    public static final IAttributeId KAR98K_RELOAD_SPEED        = createInternal("kar98k_reload_speed", 30).display("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeId KAR98K_NOISE               = createInternal("kar98k_noise");
     public static final IAttributeId KAR98K_FIRERATE            = createInternal("kar98k_firerate", 40).display("rate");
     public static final IAttributeId KAR98K_HS_DAMAGE           = createInternal("kar98k_hs_damage");
