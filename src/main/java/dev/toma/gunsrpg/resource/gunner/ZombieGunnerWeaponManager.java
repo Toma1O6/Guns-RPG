@@ -30,12 +30,18 @@ public class ZombieGunnerWeaponManager extends SingleJsonFileReloadListener {
 
     @Override
     protected void apply(JsonElement data, IResourceManager manager, IProfiler profiler) {
-        if (!data.isJsonObject()) {
-            throw new JsonSyntaxException("Data must be in object structure!");
+        try {
+            GunsRPG.log.info(MARKER, "Loading zombie gunner loadouts");
+            if (!data.isJsonObject()) {
+                throw new JsonSyntaxException("Data must be in object structure!");
+            }
+            JsonObject object = data.getAsJsonObject();
+            GunnerLoadouts loadouts = GSON.fromJson(object, GunnerLoadouts.class);
+            GunnerLoadoutInstance[] instances = loadouts.getLoadouts();
+            randomGear = new WeightedRandom<>(GunnerLoadoutInstance::getWeight, instances);
+            GunsRPG.log.info(MARKER, "Zombie gunner loadouts loaded, total {} entries", instances.length);
+        } catch (JsonParseException jpe) {
+            GunsRPG.log.error(MARKER, "Error loading zombie gunner loadouts, ", jpe);
         }
-        JsonObject object = data.getAsJsonObject();
-        GunnerLoadouts loadouts = GSON.fromJson(object, GunnerLoadouts.class);
-        GunnerLoadoutInstance[] instances = loadouts.getLoadouts();
-        randomGear = new WeightedRandom<>(GunnerLoadoutInstance::getWeight, instances);
     }
 }
