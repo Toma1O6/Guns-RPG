@@ -17,6 +17,13 @@ public class ModFoods {
     public static final Food FRUIT_SALAD = nutritionAndSaturation(10, 11).build();
     public static final Food EGG_SALAD = nutritionAndSaturation(11, 16).build();
     public static final Food CHOCOLATE_GLAZED_APPLE_PIE = nutritionAndSaturation(16, 17).effect(() -> new EffectInstance(Effects.MOVEMENT_SPEED, 400), 1.0F).build();
+    public static final Food FRIED_EGG = nutritionAndSaturation(3, 2).build();
+    public static final Food FRIES = nutritionAndSaturation(5, 8).effect(() -> new EffectInstance(Effects.FIRE_RESISTANCE, 200), 1.0F).build();
+    public static final Food CHICKEN_NUGGETS = nutritionAndSaturation(3, 2).build();
+    public static final Food SCHNITZEL = nutritionAndSaturation(9, 17).effect(() -> new EffectInstance(Effects.DAMAGE_RESISTANCE, 200), 1.0F).build();
+    public static final Food RAW_DOUGHNUT = nutritionAndSaturation(4, 2).effect(() -> new EffectInstance(Effects.POISON, 600), 0.8F).build();
+    public static final Food DOUGHNUT = nutritionAndSaturation(11, 15).effect(() -> new EffectInstance(Effects.DIG_SPEED, 500), 1.0F).build();
+    public static final Food SUSHI_MAKI = nutritionAndSaturation(4, 2).effect(() -> new EffectInstance(Effects.WATER_BREATHING, 400), 1.0F).build();
 
     private static Food.Builder nutritionAndSaturation(int nutrition, int saturation) {
         float modifier = saturation / (nutrition * 2.0F);
