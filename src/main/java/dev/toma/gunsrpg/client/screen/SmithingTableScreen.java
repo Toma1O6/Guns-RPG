@@ -23,7 +23,7 @@ import java.util.List;
 
 public class SmithingTableScreen extends ContainerScreen<SmithingTableContainer> {
 
-    public static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/gui/smithing_table.png");
+    public static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/screen/smithing_table.png");
     private static final ITextComponent INFO_LABEL = new TranslationTextComponent("screen.smithing_table.condition").withStyle(TextFormatting.BOLD);
     private final SmithingTableTileEntity smithingTable;
     private List<IRecipeCondition> failedCheckList = Collections.emptyList();

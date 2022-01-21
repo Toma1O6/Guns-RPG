@@ -69,7 +69,7 @@ public class JeiIntegration implements IModPlugin {
         private static final int INPUT_1 = 1;
 
         private static final ResourceLocation CATEGORY_UID = GunsRPG.makeResource("smithing");
-        private static final ResourceLocation BACKGROUND_TEXTURE = GunsRPG.makeResource("textures/gui/jei_smithing.png");
+        private static final ResourceLocation BACKGROUND_TEXTURE = GunsRPG.makeResource("textures/screen/jei_smithing.png");
         private final String title;
         private final IDrawable background;
         private final IDrawable icon;

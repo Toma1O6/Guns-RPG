@@ -22,6 +22,11 @@ public abstract class GenericContainerScreen<C extends Container> extends Contai
     }
 
     @Override
+    protected void renderLabels(MatrixStack stack, int mouseX, int mouseY) {
+        this.font.draw(stack, this.title, (float)this.titleLabelX, (float)this.titleLabelY, 4210752);
+    }
+
+    @Override
     public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         renderBackground(matrix);
         super.render(matrix, mouseX, mouseY, partialTicks);

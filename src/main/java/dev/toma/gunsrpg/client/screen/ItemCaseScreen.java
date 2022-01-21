@@ -12,6 +12,7 @@ public class ItemCaseScreen extends GenericContainerScreen<ItemCaseContainer> {
 
     public ItemCaseScreen(ItemCaseContainer container, PlayerInventory inventory, ITextComponent title) {
         super(container, inventory, title);
+        imageHeight = 192;
     }
 
     @Override

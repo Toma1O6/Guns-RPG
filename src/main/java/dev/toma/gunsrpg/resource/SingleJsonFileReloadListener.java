@@ -44,7 +44,7 @@ public abstract class SingleJsonFileReloadListener extends ReloadListener<JsonEl
             }
             GunsRPG.log.error(MARKER, "Couldn't load data file {} as it's null or doesn't exist.", path);
         } catch (IllegalArgumentException | IOException | JsonParseException e) {
-            GunsRPG.log.error("Couldn't parse data file {} because {} exception was thrown.", path, e);
+            GunsRPG.log.error(MARKER, "Couldn't parse data file {} because {} exception was thrown.", path, e);
         }
         return new JsonObject(); // empty result on error
     }

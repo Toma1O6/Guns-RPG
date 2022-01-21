@@ -12,6 +12,7 @@ public class GrenadeCaseScreen extends GenericContainerScreen<GrenadeCaseContain
 
     public GrenadeCaseScreen(GrenadeCaseContainer container, PlayerInventory inventory, ITextComponent title) {
         super(container, inventory, title);
+        imageHeight = 174;
     }
 
     @Override

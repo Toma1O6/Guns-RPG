@@ -10,7 +10,7 @@ import net.minecraft.util.text.ITextComponent;
 
 public class DeathCrateScreen extends ContainerScreen<DeathCrateContainer> {
 
-    static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/gui/death_crate.png");
+    static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/screen/death_crate.png");
 
     public DeathCrateScreen(DeathCrateContainer container, PlayerInventory inventory, ITextComponent component) {
         super(container, inventory, component);

@@ -588,6 +588,11 @@
     "nav.entry.gun": "Weapon",
     "point.award.success": "Point has been awarded",
 
+    "screen.gunsrpg.lunchbox": "Lunchbox",
+    "screen.gunsrpg.ammo_case": "Ammo Case",
+    "screen.gunsrpg.grenade_case": "Grenade Case",
+    "screen.gunsrpg.meds_case": "Medicine Case",
+    "screen.gunsrpg.item_case": "Item Case",
     "screen.smithing_table.condition": "Requirements:",
     "condition.crafting.skill": "%1$s skill",
     "screen.animator.new_project": "New Project",

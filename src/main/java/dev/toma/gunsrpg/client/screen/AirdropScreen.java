@@ -10,7 +10,7 @@ import net.minecraft.util.text.ITextComponent;
 
 public class AirdropScreen extends ContainerScreen<AirdropContainer> {
 
-    private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/gui/airdrop.png");
+    private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/screen/airdrop.png");
 
     public AirdropScreen(AirdropContainer container, PlayerInventory inventory, ITextComponent title) {
         super(container, inventory, title);

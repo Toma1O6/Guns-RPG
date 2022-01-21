@@ -8,10 +8,11 @@ import net.minecraft.util.text.ITextComponent;
 
 public class LunchBoxScreen extends GenericContainerScreen<LunchBoxContainer> {
 
-    private static final ResourceLocation BACKGROUND = GunsRPG.makeResource("textures/screen/lunchbox.png");
+    private static final ResourceLocation BACKGROUND = GunsRPG.makeResource("textures/screen/lunch_box.png");
 
     public LunchBoxScreen(LunchBoxContainer container, PlayerInventory inventory, ITextComponent title) {
         super(container, inventory, title);
+        imageHeight = 156;
     }
 
     @Override

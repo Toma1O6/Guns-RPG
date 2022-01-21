@@ -8,10 +8,11 @@ import net.minecraft.util.text.ITextComponent;
 
 public class AmmoCaseScreen extends GenericContainerScreen<AmmoCaseContainer> {
 
-    private static final ResourceLocation BACKGROUND = GunsRPG.makeResource("textures/screen/ammo_case.png");
+    private static final ResourceLocation BACKGROUND = GunsRPG.makeResource("textures/screen/case4x4.png");
 
     public AmmoCaseScreen(AmmoCaseContainer container, PlayerInventory inventory, ITextComponent title) {
         super(container, inventory, title);
+        imageHeight = 192;
     }
 
     @Override
