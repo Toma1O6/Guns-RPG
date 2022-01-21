@@ -1,9 +1,9 @@
-package dev.toma.gunsrpg.util.recipes.smithing;
+package dev.toma.gunsrpg.resource.util.conditions;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 
-public final class ConditionType<C extends ICraftingCondition> {
+public final class ConditionType<C extends IRecipeCondition> {
 
     private final ResourceLocation id;
     private final IConditionSerializer<C> serializer;
@@ -35,7 +35,7 @@ public final class ConditionType<C extends ICraftingCondition> {
     }
 
     @SuppressWarnings("unchecked")
-    public static <C extends ICraftingCondition> void toNetwork(PacketBuffer buffer, C condition) {
+    public static <C extends IRecipeCondition> void toNetwork(PacketBuffer buffer, C condition) {
         ResourceLocation id = condition.getType().id;
         ConditionType<C> type = (ConditionType<C>) condition.getType();
 
@@ -43,7 +43,7 @@ public final class ConditionType<C extends ICraftingCondition> {
         type.serializer.toNetwork(buffer, condition);
     }
 
-    public static <C extends ICraftingCondition> C fromNetwork(PacketBuffer buffer) {
+    public static <C extends IRecipeCondition> C fromNetwork(PacketBuffer buffer) {
         ResourceLocation id = buffer.readResourceLocation();
         ConditionType<C> type = Conditions.find(id);
         return type.serializer.fromNetwork(buffer);

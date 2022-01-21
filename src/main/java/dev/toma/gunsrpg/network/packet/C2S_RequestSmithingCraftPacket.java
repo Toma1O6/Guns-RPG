@@ -1,8 +1,9 @@
 package dev.toma.gunsrpg.network.packet;
 
+import dev.toma.gunsrpg.common.init.ModRecipeTypes;
 import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
-import dev.toma.gunsrpg.util.recipes.smithing.SmithingRecipe;
+import dev.toma.gunsrpg.resource.smithing.SmithingRecipe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -64,7 +65,7 @@ public class C2S_RequestSmithingCraftPacket extends AbstractNetworkPacket<C2S_Re
 
     private boolean tryCraft(World world, SmithingTableTileEntity inventory, PlayerEntity player) {
         RecipeManager manager = world.getRecipeManager();
-        Optional<SmithingRecipe> optional = manager.getRecipeFor(SmithingRecipe.TYPE, inventory, world);
+        Optional<SmithingRecipe> optional = manager.getRecipeFor(ModRecipeTypes.SMITHING_RECIPE_TYPE, inventory, world);
         if (optional.isPresent()) {
             SmithingRecipe recipe = optional.orElseThrow(IllegalStateException::new);
             if (recipe.canCraft(player)) {

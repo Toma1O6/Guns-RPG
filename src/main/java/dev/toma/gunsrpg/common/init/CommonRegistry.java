@@ -265,7 +265,8 @@ public class CommonRegistry {
                 new TrapBlock("large_landmine", AbstractBlock.Properties.of(Material.METAL).noOcclusion(), new TrapBlock.MineReaction(5.0F)),
                 new TrapBlock("hidden_landmine", AbstractBlock.Properties.of(Material.METAL).noOcclusion(), new TrapBlock.MineReaction(3.0F)),
                 new BaseBlock("crystal_fuse", AbstractBlock.Properties.of(Material.STONE).noOcclusion()),
-                new BaseBlock("crystal_purification", AbstractBlock.Properties.of(Material.STONE).noOcclusion())
+                new BaseBlock("crystal_purification", AbstractBlock.Properties.of(Material.STONE).noOcclusion()),
+                new CookerBlock("cooker")
         );
     }
 
@@ -518,7 +519,7 @@ public class CommonRegistry {
                 new ModFoodItem("raw_doughnut", ModFoods.RAW_DOUGHNUT),
                 new ModFoodItem("doughnut", ModFoods.DOUGHNUT),
                 new ModFoodItem("sushi_maki", ModFoods.SUSHI_MAKI).buff(player -> player.heal(1.0F)),
-                BaseItem.simpleItem("oil"),
+                new CookingOilItem("cooking_oil"),
                 BaseItem.simpleItem("repair_kit"),
                 new StorageItem("lunch_box", new Item.Properties(), 3, 2, StorageUtil::isFood, LunchBoxContainer::new),
                 new StorageItem("ammo_case", new Item.Properties(), 4, 4, StorageUtil::isAmmo, AmmoCaseContainer::new),

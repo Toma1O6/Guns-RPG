@@ -170,6 +170,7 @@
     "block.gunsrpg.hidden_landmine": "Hidden Landmine",
     "block.gunsrpg.crystal_fuse": "Crystal Fuse",
     "block.gunsrpg.crystal_purification": "Crystal Purification",
+    "block.gunsrpg.cooker": "Cooker",
 
     "death.attack.poison": "%1$s has died from poisoning",
     "death.attack.infection": "%1$s has died from infection",

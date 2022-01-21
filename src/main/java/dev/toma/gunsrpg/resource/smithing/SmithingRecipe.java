@@ -1,12 +1,15 @@
-package dev.toma.gunsrpg.util.recipes.smithing;
+package dev.toma.gunsrpg.resource.smithing;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.init.ModRecipeSerializers;
+import dev.toma.gunsrpg.common.init.ModRecipeTypes;
 import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
+import dev.toma.gunsrpg.resource.util.ResourceUtils;
+import dev.toma.gunsrpg.resource.util.conditions.ConditionType;
+import dev.toma.gunsrpg.resource.util.conditions.IRecipeCondition;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -17,7 +20,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -28,17 +30,16 @@ import java.util.stream.Collectors;
 
 public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
 
-    public static final IRecipeType<SmithingRecipe> TYPE = Registry.register(Registry.RECIPE_TYPE, GunsRPG.makeResource("smithing"), new IRecipeType<SmithingRecipe>() {});
     public static final int GRID_SIZE = 3;
 
     private final NonNullList<Ingredient> ingredientList;
-    private final List<ICraftingCondition> conditions;
+    private final List<IRecipeCondition> conditions;
     private final ItemStack output;
     private final ResourceLocation id;
     private final int width;
     private final int height;
 
-    public SmithingRecipe(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredientList, ItemStack output, List<ICraftingCondition> conditions) {
+    public SmithingRecipe(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredientList, ItemStack output, List<IRecipeCondition> conditions) {
         this.id = id;
         this.width = width;
         this.height = height;
@@ -46,8 +47,6 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
         this.output = output;
         this.conditions = conditions;
     }
-
-    public static void forceStaticInit() {}
 
     @Override
     public ResourceLocation getId() {
@@ -96,7 +95,7 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
 
     @Override
     public IRecipeType<?> getType() {
-        return TYPE;
+        return ModRecipeTypes.SMITHING_RECIPE_TYPE;
     }
 
     @Override
@@ -113,14 +112,14 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
     }
 
     public boolean canCraft(PlayerEntity player) {
-        for (ICraftingCondition condition : conditions) {
+        for (IRecipeCondition condition : conditions) {
             if (!condition.canCraft(player))
                 return false;
         }
         return true;
     }
 
-    public List<ICraftingCondition> getFailedChecks(PlayerEntity player) {
+    public List<IRecipeCondition> getFailedChecks(PlayerEntity player) {
         return conditions.stream().filter(condition -> !condition.canCraft(player)).collect(Collectors.toList());
     }
 
@@ -155,7 +154,7 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
             int height = optimizedPattern.length;
             NonNullList<Ingredient> ingredientList = processPatternAndMatch(optimizedPattern, ingredientKeys, width, height);
             ItemStack output = CraftingHelper.getItemStack(JSONUtils.getAsJsonObject(data, "result"), true);
-            List<ICraftingCondition> required = data.has("requirements") ? getRecipeConditions(JSONUtils.getAsJsonArray(data, "requirements")) : Collections.emptyList();
+            List<IRecipeCondition> required = data.has("requirements") ? ResourceUtils.getConditionsFromJson(JSONUtils.getAsJsonArray(data, "requirements")) : Collections.emptyList();
             return new SmithingRecipe(id, width, height, ingredientList, output, required);
         }
 
@@ -170,7 +169,7 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
             }
             ItemStack out = buffer.readItem();
             int conditionCount = buffer.readVarInt();
-            List<ICraftingCondition> conditions;
+            List<IRecipeCondition> conditions;
             if (conditionCount == 0) {
                 conditions = Collections.emptyList();
             } else {
@@ -191,31 +190,9 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
             }
             buffer.writeItem(recipe.output);
             buffer.writeVarInt(recipe.conditions.size());
-            for (ICraftingCondition craftingCondition : recipe.conditions) {
+            for (IRecipeCondition craftingCondition : recipe.conditions) {
                 ConditionType.toNetwork(buffer, craftingCondition);
             }
-        }
-
-        private static List<ICraftingCondition> getRecipeConditions(JsonArray array) {
-            List<ICraftingCondition> list = new ArrayList<>();
-            for (int i = 0; i < array.size(); i++) {
-                list.add(getCondition(array.get(i)));
-            }
-            return list;
-        }
-
-        private static <C extends ICraftingCondition> C getCondition(JsonElement element) {
-            if (!element.isJsonObject())
-                throw new JsonSyntaxException("Expected JsonObject, got " + element.getClass().getSimpleName());
-            JsonObject object = element.getAsJsonObject();
-            String id = JSONUtils.getAsString(object, "type");
-            ResourceLocation location = new ResourceLocation(id);
-            ConditionType<C> conditionType = Conditions.find(location);
-            if (conditionType == null)
-                throw new JsonSyntaxException("Unknown condition type: " + id);
-            JsonObject predicate = JSONUtils.getAsJsonObject(object, "predicate");
-            IConditionSerializer<C> serializer = conditionType.getSerializer();
-            return serializer.deserialize(predicate);
         }
 
         private static NonNullList<Ingredient> processPatternAndMatch(String[] pattern, Map<String, Ingredient> mappings, int width, int height) {

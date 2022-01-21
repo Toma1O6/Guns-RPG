@@ -6,8 +6,8 @@ import dev.toma.gunsrpg.common.container.SmithingTableContainer;
 import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_RequestSmithingCraftPacket;
-import dev.toma.gunsrpg.util.recipes.smithing.ICraftingCondition;
-import dev.toma.gunsrpg.util.recipes.smithing.SmithingRecipe;
+import dev.toma.gunsrpg.resource.util.conditions.IRecipeCondition;
+import dev.toma.gunsrpg.resource.smithing.SmithingRecipe;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -26,7 +26,7 @@ public class SmithingTableScreen extends ContainerScreen<SmithingTableContainer>
     public static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/gui/smithing_table.png");
     private static final ITextComponent INFO_LABEL = new TranslationTextComponent("screen.smithing_table.condition").withStyle(TextFormatting.BOLD);
     private final SmithingTableTileEntity smithingTable;
-    private List<ICraftingCondition> failedCheckList = Collections.emptyList();
+    private List<IRecipeCondition> failedCheckList = Collections.emptyList();
 
     // widgets
     private Button buttonCraft;
@@ -66,7 +66,7 @@ public class SmithingTableScreen extends ContainerScreen<SmithingTableContainer>
         CharacterManager splitter = font.getSplitter();
         LanguageMap map = LanguageMap.getInstance();
         List<IReorderingProcessor> list = new ArrayList<>();
-        for (ICraftingCondition condition : failedCheckList) {
+        for (IRecipeCondition condition : failedCheckList) {
             ITextComponent info = new StringTextComponent("- " + condition.getDisplayInfo().getString());
             splitter.splitLines(info, imageWidth - 71, info.getStyle()).stream().map(map::getVisualOrder).forEach(list::add);
         }
@@ -109,7 +109,7 @@ public class SmithingTableScreen extends ContainerScreen<SmithingTableContainer>
         failedCheckList.clear();
     }
 
-    private void populateFailedCheckMap(List<ICraftingCondition> conditions) {
+    private void populateFailedCheckMap(List<IRecipeCondition> conditions) {
         failedCheckList = conditions;
     }
 }

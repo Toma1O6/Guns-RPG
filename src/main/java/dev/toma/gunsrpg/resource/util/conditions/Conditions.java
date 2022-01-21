@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.util.recipes.smithing;
+package dev.toma.gunsrpg.resource.util.conditions;
 
 import dev.toma.gunsrpg.GunsRPG;
 import net.minecraft.util.ResourceLocation;
@@ -12,14 +12,14 @@ public final class Conditions {
 
     public static final ConditionType<SkillCondition> SKILL_CONDITION = register(GunsRPG.makeResource("skill"), new SkillCondition.Serializer());
 
-    public static <C extends ICraftingCondition> ConditionType<C> register(ResourceLocation location, IConditionSerializer<C> serializer) {
+    public static <C extends IRecipeCondition> ConditionType<C> register(ResourceLocation location, IConditionSerializer<C> serializer) {
         ConditionType<C> type = new ConditionType<>(location, serializer);
         MAP.put(location, type);
         return type;
     }
 
     @SuppressWarnings("unchecked")
-    public static <C extends ICraftingCondition> ConditionType<C> find(ResourceLocation location) {
+    public static <C extends IRecipeCondition> ConditionType<C> find(ResourceLocation location) {
         return (ConditionType<C>) MAP.get(location);
     }
 }

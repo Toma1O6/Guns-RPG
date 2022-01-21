@@ -1,7 +1,8 @@
 package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.util.recipes.smithing.SmithingRecipe;
+import dev.toma.gunsrpg.resource.cooking.CookingRecipe;
+import dev.toma.gunsrpg.resource.smithing.SmithingRecipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -16,6 +17,7 @@ public class ModRecipeSerializers {
     private static final DeferredRegister<IRecipeSerializer<?>> TYPE = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, GunsRPG.MODID);
 
     public static final RegistryObject<IRecipeSerializer<SmithingRecipe>> SMITHING_RECIPE_SERIALIZER = register("smithing_table", SmithingRecipe.Serializer::new);
+    public static final RegistryObject<IRecipeSerializer<CookingRecipe>> COOKING_RECIPE_SERIALIZER = register("cooker", CookingRecipe.Serializer::new);
 
     public static void subscribe(IEventBus bus) {
         TYPE.register(bus);

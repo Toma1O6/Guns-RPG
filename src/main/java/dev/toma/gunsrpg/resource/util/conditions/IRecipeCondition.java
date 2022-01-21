@@ -1,9 +1,9 @@
-package dev.toma.gunsrpg.util.recipes.smithing;
+package dev.toma.gunsrpg.resource.util.conditions;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 
-public interface ICraftingCondition {
+public interface IRecipeCondition {
 
     boolean canCraft(PlayerEntity player);
 

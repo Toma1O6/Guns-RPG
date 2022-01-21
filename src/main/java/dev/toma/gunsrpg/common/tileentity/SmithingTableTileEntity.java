@@ -2,9 +2,10 @@ package dev.toma.gunsrpg.common.tileentity;
 
 import dev.toma.gunsrpg.common.entity.ISynchronizable;
 import dev.toma.gunsrpg.common.init.ModBlockEntities;
+import dev.toma.gunsrpg.common.init.ModRecipeTypes;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.S2C_SynchBlockEntityPacket;
-import dev.toma.gunsrpg.util.recipes.smithing.SmithingRecipe;
+import dev.toma.gunsrpg.resource.smithing.SmithingRecipe;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -56,7 +57,7 @@ public class SmithingTableTileEntity extends VanillaInventoryTileEntity implemen
         if (level.isClientSide) {
             if (gridChanged != null) {
                 RecipeManager manager = level.getRecipeManager();
-                Optional<SmithingRecipe> optional = manager.getRecipeFor(SmithingRecipe.TYPE, this, level);
+                Optional<SmithingRecipe> optional = manager.getRecipeFor(ModRecipeTypes.SMITHING_RECIPE_TYPE, this, level);
                 gridChanged.onChange(optional.orElse(null));
             }
         } else {

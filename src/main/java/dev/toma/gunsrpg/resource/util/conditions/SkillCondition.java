@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.util.recipes.smithing;
+package dev.toma.gunsrpg.resource.util.conditions;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -16,7 +16,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class SkillCondition implements ICraftingCondition {
+public class SkillCondition implements IRecipeCondition {
 
     private final SkillType<?> skill;
 
