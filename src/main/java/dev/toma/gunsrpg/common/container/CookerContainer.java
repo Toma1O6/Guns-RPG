@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.container;
 
 import dev.toma.gunsrpg.common.init.ModContainers;
-import dev.toma.gunsrpg.common.init.ModRecipeTypes;
+import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.tileentity.CookerTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -10,7 +10,6 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 
 public class CookerContainer extends AbstractModContainer<CookerTileEntity> {
 
@@ -85,7 +84,7 @@ public class CookerContainer extends AbstractModContainer<CookerTileEntity> {
     }
 
     private boolean isFuel(ItemStack stack) {
-        return ForgeHooks.getBurnTime(stack, ModRecipeTypes.COOKING_RECIPE_TYPE) > 0;
+        return stack.getItem() == ModItems.COOKING_OIL;
     }
 
     private static class OutputSlot extends Slot {

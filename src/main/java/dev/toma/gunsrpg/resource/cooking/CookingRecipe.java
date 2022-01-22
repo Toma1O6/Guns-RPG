@@ -98,7 +98,7 @@ public class CookingRecipe implements IRecipe<CookerTileEntity> {
             JsonObject outJson = JSONUtils.getAsJsonObject(object, "output");
             ItemStack result = itemFromJson(outJson);
             int cookTime = JSONUtils.getAsInt(object, "cookTime", 200);
-            List<IRecipeCondition> conditions = object.has("conditions") ? ResourceUtils.getConditionsFromJson(JSONUtils.getAsJsonArray(object, "conditions")) : Collections.emptyList();
+            List<IRecipeCondition> conditions = object.has("requirements") ? ResourceUtils.getConditionsFromJson(JSONUtils.getAsJsonArray(object, "requirements")) : Collections.emptyList();
             float exp = JSONUtils.getAsFloat(object, "exp", 0.0F);
             return new CookingRecipe(id, in, result, exp, cookTime, conditions);
         }

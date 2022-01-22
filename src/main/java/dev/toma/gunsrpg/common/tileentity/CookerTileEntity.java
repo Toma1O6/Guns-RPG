@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.tileentity;
 
 import dev.toma.gunsrpg.common.init.ModBlockEntities;
+import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.ModRecipeTypes;
 import dev.toma.gunsrpg.resource.cooking.CookingRecipe;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -23,7 +24,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -162,7 +162,7 @@ public class CookerTileEntity extends VanillaInventoryTileEntity implements IRec
         } else if (slot != SLOT_FUEL) {
             return true;
         } else {
-            return ForgeHooks.getBurnTime(stack, ModRecipeTypes.COOKING_RECIPE_TYPE) > 0;
+            return stack.getItem() == ModItems.COOKING_OIL;
         }
     }
 
@@ -231,7 +231,7 @@ public class CookerTileEntity extends VanillaInventoryTileEntity implements IRec
     }
 
     public int getBurnDuration(ItemStack fuel) {
-        return ForgeHooks.getBurnTime(fuel, ModRecipeTypes.COOKING_RECIPE_TYPE);
+        return fuel.getItem() == ModItems.COOKING_OIL ? 200 : 0;
     }
 
     public int getItemCookTimeSlow() {
