@@ -42,21 +42,14 @@ public class CookerBlock extends BaseBlock {
     @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
         if (state.getValue(BlockStateProperties.LIT)) {
-            double x = (double)pos.getX() + 0.5D;
-            double y = pos.getY();
-            double z = (double)pos.getZ() + 0.5D;
+            double y = pos.getY() + 1;
             if (random.nextDouble() <= 0.2) {
-                world.playSound(null, x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                world.playSound(null, pos.getX(), y, pos.getZ(), SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }
-            Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-            Direction.Axis axis = direction.getAxis();
-            double posOffset = 0.52D;
-            double randomOffset = random.nextDouble() * 0.6D - 0.3D;
-            double xPos = axis == Direction.Axis.X ? (double)direction.getStepX() * posOffset : randomOffset;
-            double yPos = random.nextDouble() * 6.0D / 16.0D;
-            double zPos = axis == Direction.Axis.Z ? (double)direction.getStepZ() * posOffset : randomOffset;
-            world.addParticle(ParticleTypes.SMOKE, x + xPos, y + yPos, z + zPos, 0.0D, 0.0D, 0.0D);
-            world.addParticle(ParticleTypes.FLAME, x + xPos, y + yPos, z + zPos, 0.0D, 0.0D, 0.0D);
+
+            double randomX = (random.nextDouble() - random.nextDouble()) * 0.4;
+            double randomZ = (random.nextDouble() - random.nextDouble()) * 0.4;
+            world.addParticle(ParticleTypes.FLAME, pos.getX() + 0.5 + randomX, y + 0.05, pos.getZ() + 0.5 + randomZ, 0.0, 0.0, 0.0);
         }
     }
 

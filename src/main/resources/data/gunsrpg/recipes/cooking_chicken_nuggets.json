@@ -1,0 +1,10 @@
+{
+    "type": "gunsrpg:cooking",
+    "input": "minecraft:chicken",
+    "output": {
+        "item": "gunsrpg:chicken_nuggets",
+        "count": 3
+    },
+    "cookTime": 200,
+    "exp": 0.7
+}

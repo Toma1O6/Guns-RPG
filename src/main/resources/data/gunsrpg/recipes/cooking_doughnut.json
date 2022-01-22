@@ -1,0 +1,9 @@
+{
+    "type": "gunsrpg:cooking",
+    "input": "gunsrpg:raw_doughnut",
+    "output": {
+        "item": "gunsrpg:doughnut"
+    },
+    "cookTime": 200,
+    "exp": 0.7
+}

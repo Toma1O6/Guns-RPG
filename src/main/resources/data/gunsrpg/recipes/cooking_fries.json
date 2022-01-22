@@ -1,0 +1,9 @@
+{
+    "type": "gunsrpg:cooking",
+    "input": "minecraft:potato",
+    "output": {
+        "item": "gunsrpg:fries"
+    },
+    "cookTime": 200,
+    "exp": 0.7
+}

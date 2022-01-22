@@ -1,0 +1,9 @@
+{
+    "type": "gunsrpg:cooking",
+    "input": "minecraft:egg",
+    "output": {
+        "item": "gunsrpg:fried_egg"
+    },
+    "cookTime": 200,
+    "exp": 0.7
+}
