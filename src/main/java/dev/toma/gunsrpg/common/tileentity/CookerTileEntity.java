@@ -240,7 +240,7 @@ public class CookerTileEntity extends VanillaInventoryTileEntity implements IRec
     }
 
     public int getItemCookTime(CookingRecipe recipe) {
-        return recipe.getCookTime();
+        return recipe != null ? recipe.getCookTime() : 200;
     }
 
     public void cook(CookingRecipe recipe) {

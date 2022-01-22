@@ -129,6 +129,7 @@ public class ClientSideManager {
         ScreenManager.register(ModContainers.GRENADE_CASE.get(), GrenadeCaseScreen::new);
         ScreenManager.register(ModContainers.MEDS_CASE.get(), MedsCaseScreen::new);
         ScreenManager.register(ModContainers.ITEM_CASE.get(), ItemCaseScreen::new);
+        ScreenManager.register(ModContainers.COOKER.get(), CookerScreen::new);
     }
 
     private void setupRenderPipeline() {

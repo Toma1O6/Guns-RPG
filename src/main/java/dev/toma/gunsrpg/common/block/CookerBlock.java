@@ -1,13 +1,16 @@
 package dev.toma.gunsrpg.common.block;
 
+import dev.toma.gunsrpg.common.container.CookerContainer;
 import dev.toma.gunsrpg.common.tileentity.CookerTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.StateContainer;
@@ -22,6 +25,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -106,15 +110,18 @@ public class CookerBlock extends BaseBlock {
         builder.add(BlockStateProperties.HORIZONTAL_FACING).add(BlockStateProperties.LIT);
     }
 
-    // TODO --- all below
     @Override
-    public ActionResultType use(BlockState p_225533_1_, World p_225533_2_, BlockPos p_225533_3_, PlayerEntity p_225533_4_, Hand p_225533_5_, BlockRayTraceResult p_225533_6_) {
-        return super.use(p_225533_1_, p_225533_2_, p_225533_3_, p_225533_4_, p_225533_5_, p_225533_6_);
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+        if (world.isClientSide) {
+            return ActionResultType.PASS;
+        }
+        NetworkHooks.openGui((ServerPlayerEntity) player, this.getMenuProvider(state, world, pos), pos);
+        return ActionResultType.CONSUME;
     }
 
     @Nullable
     @Override
-    public INamedContainerProvider getMenuProvider(BlockState p_220052_1_, World p_220052_2_, BlockPos p_220052_3_) {
-        return super.getMenuProvider(p_220052_1_, p_220052_2_, p_220052_3_);
+    public INamedContainerProvider getMenuProvider(BlockState state, World world, BlockPos pos) {
+        return new SimpleNamedContainerProvider((id, inv, player) -> new CookerContainer(id, inv, (CookerTileEntity) world.getBlockEntity(pos)), TITLE);
     }
 }
