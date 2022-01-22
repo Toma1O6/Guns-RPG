@@ -128,7 +128,7 @@ public class CookerContainer extends AbstractModContainer<CookerTileEntity> {
             stack.onCraftedBy(level, interactingPlayer, takeCount);
             if (!level.isClientSide && container instanceof CookerTileEntity) {
                 CookerTileEntity tileEntity = (CookerTileEntity) container;
-                tileEntity.awardUsedRecipes(interactingPlayer);
+                tileEntity.awardExperienceFromRecipes(interactingPlayer);
             }
             takeCount = 0;
         }

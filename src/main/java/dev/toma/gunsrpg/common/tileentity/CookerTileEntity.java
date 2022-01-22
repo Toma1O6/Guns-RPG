@@ -130,11 +130,6 @@ public class CookerTileEntity extends VanillaInventoryTileEntity implements IRec
     }
 
     @Override
-    public void awardUsedRecipes(PlayerEntity p_201560_1_) {
-
-    }
-
-    @Override
     public int[] getSlotsForFace(Direction direction) {
         if (direction == Direction.DOWN) {
             return new int[] { SLOT_INPUT, SLOT_FUEL };
