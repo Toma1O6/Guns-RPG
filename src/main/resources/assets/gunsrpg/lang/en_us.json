@@ -623,6 +623,7 @@
     "screen.animator.timeline.to_beginning": "Move animation to start",
     "screen.animator.timeline.to_end": "Move animation to end",
     "screen.animator.timeline.next_frame": "Next frame",
+    "screen.gunsrpg.category.cooking": "Cooking",
 
     "screen.animation.inspector.easing": "Easing",
     "screen.animator.dialog.new_project": "Create new project",

@@ -113,7 +113,7 @@ public class CookerBlock extends BaseBlock {
     @Override
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         if (world.isClientSide) {
-            return ActionResultType.PASS;
+            return ActionResultType.SUCCESS;
         }
         NetworkHooks.openGui((ServerPlayerEntity) player, this.getMenuProvider(state, world, pos), pos);
         return ActionResultType.CONSUME;

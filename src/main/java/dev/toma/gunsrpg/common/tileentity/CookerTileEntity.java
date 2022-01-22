@@ -231,7 +231,7 @@ public class CookerTileEntity extends VanillaInventoryTileEntity implements IRec
     }
 
     public int getBurnDuration(ItemStack fuel) {
-        return fuel.getItem() == ModItems.COOKING_OIL ? 200 : 0;
+        return fuel.getItem() == ModItems.COOKING_OIL ? 1600 : 0;
     }
 
     public int getItemCookTimeSlow() {
