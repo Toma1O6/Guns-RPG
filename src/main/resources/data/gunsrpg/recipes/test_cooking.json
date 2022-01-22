@@ -1,0 +1,20 @@
+{
+    "type": "gunsrpg:cooking",
+    "input": {
+        "item": "minecraft:chicken"
+    },
+    "output": {
+        "item": "minecraft:cooked_chicken",
+        "count": 3
+    },
+    "cookTime": 200,
+    "exp": 0.7,
+    "requirements": [
+        {
+            "type": "gunsrpg:skill",
+            "predicate": {
+                "skill": "gunsrpg:local_chef"
+            }
+        }
+    ]
+}

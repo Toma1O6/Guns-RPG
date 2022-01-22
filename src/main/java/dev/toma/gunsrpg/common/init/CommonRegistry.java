@@ -520,7 +520,6 @@ public class CommonRegistry {
                 new ModFoodItem("doughnut", ModFoods.DOUGHNUT),
                 new ModFoodItem("sushi_maki", ModFoods.SUSHI_MAKI).buff(player -> player.heal(1.0F)),
                 new CookingOilItem("cooking_oil"),
-                BaseItem.simpleItem("repair_kit"),
                 new StorageItem("lunch_box", new Item.Properties(), 3, 2, StorageUtil::isFood, LunchBoxContainer::new),
                 new StorageItem("ammo_case", new Item.Properties(), 4, 4, StorageUtil::isAmmo, AmmoCaseContainer::new),
                 new StorageItem("grenade_case", new Item.Properties(), 4, 3, StorageUtil::isExplosive, GrenadeCaseContainer::new),
