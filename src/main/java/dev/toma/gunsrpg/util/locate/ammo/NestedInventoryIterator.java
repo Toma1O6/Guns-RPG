@@ -40,8 +40,6 @@ public class NestedInventoryIterator<C> implements IContextIterator<ItemStack> {
             if (!stack.isEmpty())
                 return stack;
         }
-        if (size.apply(context) <= currentIndex)
-            return ItemStack.EMPTY;
         ItemStack result = stackFetcher.apply(context, currentIndex++);
         LazyOptional<IItemHandler> optional = result.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
         if (optional.isPresent()) {
@@ -52,6 +50,11 @@ public class NestedInventoryIterator<C> implements IContextIterator<ItemStack> {
                 return first;
         }
         return result;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return size.apply(context) > currentIndex;
     }
 
     private ItemStack walkThroughNested() {

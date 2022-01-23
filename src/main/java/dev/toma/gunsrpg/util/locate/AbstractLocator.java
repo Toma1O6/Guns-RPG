@@ -12,14 +12,12 @@ public abstract class AbstractLocator<T, CTX> implements ILocator<T, CTX> {
         this.fallbackValue = fallbackValue;
     }
 
-    public abstract boolean isValidResult(T t);
-
     @Override
     public T locateFirst(CTX context, IContextIterator<T> iterator, ILocatorPredicate<T> predicate) {
-        T result;
-        while (isValidResult((result = iterator.next()))) {
-            if (predicate.isValidResult(result)) {
-                return result;
+        while (iterator.hasNext()) {
+            T t = iterator.next();
+            if (predicate.isValidResult(t)) {
+                return t;
             }
         }
         return fallbackValue;
@@ -28,8 +26,8 @@ public abstract class AbstractLocator<T, CTX> implements ILocator<T, CTX> {
     @Override
     public Stream<T> locateAll(CTX context, IContextIterator<T> iterator, ILocatorPredicate<T> predicate) {
         List<T> list = new ArrayList<>();
-        T t;
-        while (isValidResult((t = iterator.next()))) {
+        while (iterator.hasNext()) {
+            T t = iterator.next();
             if (predicate.isValidResult(t)) {
                 list.add(t);
             }
