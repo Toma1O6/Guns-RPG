@@ -21,7 +21,7 @@ public class ModFoods {
     public static final Food FRIES = nutritionAndSaturation(5, 8).effect(() -> new EffectInstance(Effects.FIRE_RESISTANCE, 200), 1.0F).build();
     public static final Food CHICKEN_NUGGETS = nutritionAndSaturation(3, 2).build();
     public static final Food SCHNITZEL = nutritionAndSaturation(9, 17).effect(() -> new EffectInstance(Effects.DAMAGE_RESISTANCE, 200), 1.0F).build();
-    public static final Food RAW_DOUGHNUT = nutritionAndSaturation(4, 2).effect(() -> new EffectInstance(Effects.HUNGER, 600, 2), 1.0F).build();
+    public static final Food RAW_DOUGHNUT = nutritionAndSaturation(4, 2).effect(() -> new EffectInstance(Effects.HUNGER, 600), 1.0F).build();
     public static final Food DOUGHNUT = nutritionAndSaturation(11, 15).effect(() -> new EffectInstance(Effects.DIG_SPEED, 500), 1.0F).build();
     public static final Food SUSHI_MAKI = nutritionAndSaturation(4, 2).effect(() -> new EffectInstance(Effects.WATER_BREATHING, 400), 1.0F).build();
 
