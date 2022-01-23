@@ -5,7 +5,7 @@ import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterialManager;
 import dev.toma.gunsrpg.resource.gunner.*;
-import dev.toma.gunsrpg.util.RenderUtils;
+import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.item.Item;
 import net.minecraft.util.JSONUtils;
@@ -42,7 +42,7 @@ public class GunnerLoadoutsAdapter implements JsonDeserializer<GunnerLoadouts> {
         builder.reloadTime(this.resolveReloadTime(object));
         builder.firerate(this.resolveFirerate(object));
         // loading optional
-        loadOptional(object, "capColor", builder, element -> RenderUtils.string2colorRgb(element.getAsString()), GunnerLoadoutInstance.Builder::cap);
+        loadOptional(object, "capColor", builder, element -> ModUtils.string2colorRgb(element.getAsString()), GunnerLoadoutInstance.Builder::cap);
         if (object.has("shootTask")) {
             loadShootTaskProps(JSONUtils.getAsJsonObject(object, "shootTask"), builder);
         }

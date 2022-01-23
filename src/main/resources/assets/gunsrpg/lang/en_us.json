@@ -353,6 +353,8 @@
     "skill.gunsrpg.crossbow_repeater.title": "Repeater",
     "skill.gunsrpg.crossbow_repeater.description.0": "Unlocks the ability to shoot up to 3 bolts without reloading",
     "skill.gunsrpg.crossbow_repeater.description.1": "Slightly increases reload time",
+    "skill.gunsrpg.s1897_bullet_loops.title": "Bullet Loops",
+    "skill.gunsrpg.s1897_bullet_loops.description.speed": "%s%% faster reload",
 
     "skill.gunsrpg.agility_i.title": "Agility I",
     "skill.gunsrpg.agility_i.description.speed": "Increases movement speed by %s%%",
