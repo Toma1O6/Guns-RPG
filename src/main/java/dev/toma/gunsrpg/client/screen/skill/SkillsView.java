@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.client.screen.skill;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.IPointProvider;
+import dev.toma.gunsrpg.api.common.data.*;
+import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.client.screen.widgets.*;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
@@ -84,21 +84,28 @@ public class SkillsView extends View {
         int yUnitSize = 10;
         int componentSize = 22;
         int lineOff = componentSize / 2;
-        int level = manager.getContext().getData().getProgressData().getLevel();
+        IPlayerData data = manager.getContext().getData();
+        IProgressData progressData = data.getProgressData();
+        int level = progressData.getLevel();
         skillViewWidget.fill((filler, x, y) -> {
             Tree[] trees = skillTrees.getTrees();
             for (Tree tree : trees) {
                 for (Tree.Connector connector : tree.getConnectorList()) {
                     IVec2i start = connector.getStart();
                     IVec2i end = connector.getEnd();
-                    filler.add(new LineWidget(x + start.x() * xUnitSize + lineOff, y + start.y() * yUnitSize + lineOff, x + end.x() * xUnitSize + lineOff, y + end.y() * yUnitSize + lineOff));
+                    SkillType<?> dest = connector.getDestinationSkill();
+                    ISkillProperties properties = dest.getProperties();
+                    IKillData killData = properties.getTransactionValidator().getData(data);
+                    if (properties.getRequiredLevel() <= killData.getLevel()) {
+                        filler.add(new LineWidget(x + start.x() * xUnitSize + lineOff, y + start.y() * yUnitSize + lineOff, x + end.x() * xUnitSize + lineOff, y + end.y() * yUnitSize + lineOff));
+                    }
                 }
                 for (Map.Entry<SkillType<?>, SkillViewData> entry : tree.getDataSet()) {
                     SkillType<?> source = entry.getKey();
                     if (source.getProperties().getRequiredLevel() > level)
                         continue;
-                    SkillViewData data = entry.getValue();
-                    IVec2i pos = data.getPos();
+                    SkillViewData viewData = entry.getValue();
+                    IVec2i pos = viewData.getPos();
                     SkillWidget widget = filler.add(new SkillWidget(x + pos.x() * xUnitSize, y + pos.y() * yUnitSize, componentSize, componentSize, source, manager.getContext()));
                     widget.setClickResponder(this::skillClicked);
                 }

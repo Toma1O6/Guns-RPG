@@ -118,16 +118,16 @@ public class Tree implements IDimensions {
         IVec2i pos1 = getPosition(parent);
         IVec2i pos2 = getPosition(child);
         if (pos1.x() == pos2.x()) {
-            Connector connector = new Connector(pos1, pos2);
+            Connector connector = new Connector(pos1, pos2, child);
             this.connectorList.add(connector);
         } else {
             int diffY = pos2.y() - pos1.y();
             int halfY = pos1.y() + diffY / 2;
             IVec2i pos3 = new Vec2i(pos1.x(), halfY);
             IVec2i pos4 = new Vec2i(pos2.x(), halfY);
-            connectorList.add(new Connector(pos1, pos3));
-            connectorList.add(new Connector(pos3, pos4));
-            connectorList.add(new Connector(pos4, pos2));
+            connectorList.add(new Connector(pos1, pos3, child));
+            connectorList.add(new Connector(pos3, pos4, child));
+            connectorList.add(new Connector(pos4, pos2, child));
         }
     }
 
@@ -176,10 +176,12 @@ public class Tree implements IDimensions {
 
         private final IVec2i pos1;
         private final IVec2i pos2;
+        private final SkillType<?> dest;
 
-        private Connector(IVec2i pos1, IVec2i pos2) {
+        private Connector(IVec2i pos1, IVec2i pos2, SkillType<?> dest) {
             this.pos1 = pos1;
             this.pos2 = pos2;
+            this.dest = dest;
         }
 
         public IVec2i getStart() {
@@ -188,6 +190,10 @@ public class Tree implements IDimensions {
 
         public IVec2i getEnd() {
             return pos2;
+        }
+
+        public SkillType<?> getDestinationSkill() {
+            return dest;
         }
     }
 }
