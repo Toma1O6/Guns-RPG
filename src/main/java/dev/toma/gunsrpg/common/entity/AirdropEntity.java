@@ -40,6 +40,9 @@ public class AirdropEntity extends Entity {
             this.setDeltaMovement(0, -0.075, 0);
         } else {
             if (!level.isClientSide) {
+                if (!level.isEmptyBlock(pos)) {
+                    pos = pos.above();
+                }
                 onLanding(pos);
             }
         }
