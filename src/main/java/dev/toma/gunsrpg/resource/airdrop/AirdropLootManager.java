@@ -41,7 +41,7 @@ public class AirdropLootManager extends SingleJsonFileReloadListener {
             configuration = GSON.fromJson(element, AirdropLootConfiguration.class);
             GunsRPG.log.info(MARKER, "Airdrop loot configuration has been loaded");
         } catch (JsonParseException jpe) {
-            GunsRPG.log.error(MARKER, "Error loading airdrop configurations, ", jpe);
+            GunsRPG.log.error(MARKER, "Error loading airdrop configurations, {}", jpe.toString());
         }
     }
 }
