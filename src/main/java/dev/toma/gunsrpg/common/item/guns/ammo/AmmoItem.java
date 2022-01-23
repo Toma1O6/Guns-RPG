@@ -39,16 +39,18 @@ public class AmmoItem extends BaseItem implements IAmmoProvider {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable World level, List<ITextComponent> text, ITooltipFlag flags) {
-        text.add(new StringTextComponent("Attributes:"));
         ITextComponent recoil = formatNumber("Recoil", data.getAddedRecoil());
         ITextComponent durability = formatNumber("Durability", data.getAddedDurability(), true);
         ITextComponent jam = formatNumber("Jamming", data.getAddedJamChance());
-        if (recoil != null)
-            text.add(recoil);
-        if (durability != null)
-            text.add(durability);
-        if (jam != null)
-            text.add(jam);
+        if (recoil != null || durability != null || jam != null) {
+            text.add(new StringTextComponent("Attributes:"));
+            if (recoil != null)
+                text.add(recoil);
+            if (durability != null)
+                text.add(durability);
+            if (jam != null)
+                text.add(jam);
+        }
     }
 
     private ITextComponent formatNumber(String key, float value) {
