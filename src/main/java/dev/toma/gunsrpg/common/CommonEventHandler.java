@@ -39,6 +39,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -344,10 +345,11 @@ public class CommonEventHandler {
                 PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getProgressData().onEnemyKilled(event.getEntity(), ItemStack.EMPTY));
             }
         }
-        if (event.getEntity() instanceof IMob) {
+        if (event.getEntity() instanceof IMob && !(event.getEntity() instanceof SlimeEntity)) {
             if (!event.getEntity().level.isClientSide && random.nextFloat() <= 0.016) {
                 Entity entity = event.getEntity();
-                entity.level.addFreshEntity(new ItemEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(ModItems.SKILLPOINT_BOOK)));
+                Item item = random.nextBoolean() ? ModItems.PERKPOINT_BOOK : ModItems.SKILLPOINT_BOOK;
+                entity.level.addFreshEntity(new ItemEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(item)));
             }
         }
         if (event.getEntity() instanceof PlayerEntity) {
