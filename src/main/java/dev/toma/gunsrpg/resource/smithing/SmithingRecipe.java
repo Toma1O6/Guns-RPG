@@ -175,7 +175,7 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
             } else {
                 conditions = new ArrayList<>(conditionCount);
                 for (int i = 0; i < conditionCount; i++) {
-                    conditions.set(i, ConditionType.fromNetwork(buffer));
+                    conditions.add(ConditionType.fromNetwork(buffer));
                 }
             }
             return new SmithingRecipe(id, width, height, ingredients, out, conditions);

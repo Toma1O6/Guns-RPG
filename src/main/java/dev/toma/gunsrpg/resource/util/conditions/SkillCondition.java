@@ -6,6 +6,7 @@ import com.google.gson.JsonSyntaxException;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.ModRecipeTypes;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -58,12 +59,14 @@ public class SkillCondition implements IRecipeCondition {
 
         @Override
         public void toNetwork(PacketBuffer buffer, SkillCondition condition) {
-
+            buffer.writeResourceLocation(condition.skill.getRegistryName());
         }
 
         @Override
         public SkillCondition fromNetwork(PacketBuffer buffer) {
-            return null;
+            ResourceLocation location = buffer.readResourceLocation();
+            SkillType<?> type = ModRegistries.SKILLS.getValue(location);
+            return new SkillCondition(type);
         }
     }
 }
