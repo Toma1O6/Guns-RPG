@@ -132,4 +132,5 @@ public class ModItems {
     public static final StorageItem MEDS_CASE = null;
     public static final StorageItem ITEM_CASE = null;
     public static final CookingOilItem COOKING_OIL = null;
+    public static final BaseItem SMALL_STONE = null;
 }

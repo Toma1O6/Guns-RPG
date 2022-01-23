@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.util.locate.AbstractLocator;
 import dev.toma.gunsrpg.util.locate.IContextIterator;
 import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.stream.Stream;
@@ -36,6 +37,10 @@ public final class ItemLocator extends AbstractLocator<ItemStack, IInventory> {
             }
             return false;
         };
+    }
+
+    public static boolean hasItem(IInventory inventory, Item item) {
+        return !findFirst(inventory, stack -> stack.getItem() == item).isEmpty();
     }
 
     public static ItemStack findFirst(IInventory inventory, IContextIterator<ItemStack> iterator, ILocatorPredicate<ItemStack> predicate) {
