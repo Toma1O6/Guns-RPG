@@ -261,8 +261,4 @@ public class RenderUtils {
     public static float getVerticalCenter(FontRenderer renderer, Widget widget) {
         return widget.y + (widget.getHeight() - renderer.lineHeight) / 2.0F;
     }
-
-    public static int string2colorRgb(String hexCode) {
-        return Integer.decode("0x" + hexCode);
-    }
 }

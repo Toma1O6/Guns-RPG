@@ -395,6 +395,10 @@ public class ModUtils {
         return player.isCreative() ? attrib : attrib - 0.5F;
     }
 
+    public static int string2colorRgb(String hexCode) {
+        return Integer.decode("0x" + hexCode);
+    }
+
     private static Map<SkillCategory, List<SkillType<?>>> splitSkillsIntoCategories(Iterable<SkillType<?>> iterable) {
         Map<SkillCategory, List<SkillType<?>>> map = new EnumMap<>(SkillCategory.class);
         for (SkillType<?> type : iterable) {
