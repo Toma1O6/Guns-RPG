@@ -12,12 +12,13 @@ import net.minecraft.util.math.vector.Vector3f;
 public class SprintAnimation implements IAnimation {
 
     private final PlayerEntity player;
-    private final int length = 10;
+    private final int length;
     private int sprintTime;
     private float progress, progressOld, progressInterpolated;
 
     public SprintAnimation(PlayerEntity player) {
         this.player = player;
+        this.length = 10;
     }
 
     @Override

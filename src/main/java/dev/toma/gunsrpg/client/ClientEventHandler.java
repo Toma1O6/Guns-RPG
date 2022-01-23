@@ -262,6 +262,9 @@ public class ClientEventHandler {
     }
 
     private static void dispatchSprintAnimation(boolean isSprinting, PlayerEntity player) {
+        if (!isSprinting) {
+            return;
+        }
         ItemStack stack = player.getMainHandItem();
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         optional.ifPresent(data -> {
