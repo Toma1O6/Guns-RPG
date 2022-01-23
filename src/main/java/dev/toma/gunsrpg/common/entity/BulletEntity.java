@@ -54,10 +54,6 @@ public class BulletEntity extends Entity {
         this.effect = config.getGravityDelay();
         this.ogDamage = config.getDamage() + gun.getDamageBonus(stack);
         this.damage = ogDamage;
-        EffectInstance effect = shooter.getEffect(ModEffects.GUN_DAMAGE_BUFF.get());
-        if (effect != null) {
-            damage *= 1.0F + (0.2F * (effect.getAmplifier() + 1));
-        }
         this.setPos(shooter.getX(), shooter.getY() + shooter.getEyeHeight(), shooter.getZ());
         if (shooter instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) shooter;

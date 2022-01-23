@@ -42,7 +42,6 @@ public class GunsRPG {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         // deferred registries
         ModEntities.subscribe(eventBus);
-        ModEffects.subscribe(eventBus);
         ModBlockEntities.subscribe(eventBus);
         ModContainers.subscribe(eventBus);
         ModFeatures.subscribe(eventBus);
