@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.common.skills.transaction.TransactionTypes;
 import dev.toma.gunsrpg.common.skills.transaction.WeaponPointTransaction;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -106,7 +107,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
 
     @Override
     public void onEnemyKilled(Entity enemy, ItemStack weapon) {
-        if (!(enemy instanceof IMob))
+        if (!(enemy instanceof IMob) || enemy instanceof SlimeEntity)
             return;
         ++kills;
         if (level < getLevelLimit() && kills > requiredKills) {
