@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import dev.toma.gunsrpg.GunsRPG;
 import net.minecraft.util.JSONUtils;
-import org.codehaus.plexus.util.dag.DAG;
 
 import java.util.Random;
 
