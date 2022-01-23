@@ -80,6 +80,6 @@ public class GunsRPG {
 
     private void registerCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSource> dispatcher = event.getDispatcher();
-        GunsrpgCommand.register(dispatcher);
+        GunsrpgCommand.registerCommandTree(dispatcher);
     }
 }

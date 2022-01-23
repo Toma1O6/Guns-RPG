@@ -11,16 +11,20 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
+import dev.toma.gunsrpg.common.entity.AirdropEntity;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.config.ModConfig;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.command.arguments.ResourceLocationArgument;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.IServerWorldInfo;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -32,9 +36,10 @@ public class GunsrpgCommand {
     private static final SuggestionProvider<CommandSource> DEBUFF_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(ModRegistries.DEBUFFS.getKeys(), builder);
     private static final SimpleCommandExceptionType MISSING_KEY_EXCEPTION = new SimpleCommandExceptionType(new LiteralMessage("Undefined key!"));
     private static final SimpleCommandExceptionType NO_ARGUMENTS_EXCEPTION = new SimpleCommandExceptionType(new LiteralMessage("Not enough arguments!"));
+    private static final SimpleCommandExceptionType LOCATION_OBSTRUCTED = new SimpleCommandExceptionType(new LiteralMessage("Location is obstructed!"));
     private static final DynamicCommandExceptionType UNKNOWN_KEY_EXCEPTION = new DynamicCommandExceptionType(o -> new LiteralMessage("Unknown key " + o.toString() + "!"));
 
-    public static void register(CommandDispatcher<CommandSource> dispatcher) {
+    public static void registerCommandTree(CommandDispatcher<CommandSource> dispatcher) {
         dispatcher.register(
                 Commands.literal("gunsrpg")
                         .requires(src -> src.hasPermission(2) && src.getEntity() instanceof PlayerEntity)
@@ -47,8 +52,15 @@ public class GunsrpgCommand {
                                         )
                         )
                         .then(
-                                Commands.literal("bloodmoon")
-                                        .executes(GunsrpgCommand::forceBloodmoon)
+                                Commands.literal("event")
+                                        .then(
+                                                Commands.literal("bloodmoon")
+                                                        .executes(GunsrpgCommand::forceBloodmoon)
+                                        )
+                                        .then(
+                                                Commands.literal("airdrop")
+                                                        .executes(GunsrpgCommand::callAirdrop)
+                                        )
                         )
                         .then(
                                 Commands.literal("skilltree")
@@ -87,6 +99,24 @@ public class GunsrpgCommand {
             debuffs.toggle(type);
             ctx.getSource().sendSuccess(new TranslationTextComponent("gunsrpg.command.toggledebuff", type.getRegistryName().toString()), false);
         });
+        return 0;
+    }
+
+    private static int callAirdrop(CommandContext<CommandSource> ctx) throws CommandSyntaxException {
+        CommandSource source = ctx.getSource();
+        ServerWorld world = source.getLevel();
+        Entity entity = source.getEntity();
+        if (entity == null) {
+            return -1;
+        }
+        BlockPos pos = new BlockPos(entity.getX(), entity.getY() + 10, entity.getZ());
+        if (!world.isEmptyBlock(pos)) {
+            throw LOCATION_OBSTRUCTED.create();
+        }
+        AirdropEntity airdrop = new AirdropEntity(world);
+        airdrop.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+        world.addFreshEntity(airdrop);
+        source.sendSuccess(new TranslationTextComponent("gunsrpg.command.airdrop"), false);
         return 0;
     }
 
