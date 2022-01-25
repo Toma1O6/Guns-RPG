@@ -4,11 +4,18 @@ import dev.toma.gunsrpg.common.IShootProps;
 import dev.toma.gunsrpg.common.entity.ZombieGunnerEntity;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.util.ModUtils;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.World;
 
 import java.util.EnumSet;
 
@@ -69,11 +76,22 @@ public class GunAttackGoal extends Goal {
     }
 
     private boolean canSeeEntity(LivingEntity target) {
-        return ModUtils.raytraceBlocksIgnoreGlass(
+        World world = entity.level;
+        BlockRayTraceResult result = ModUtils.raytraceBlocksIgnoreGlass(
                 new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()),
                 new Vector3d(target.getX(), target.getY() + target.getEyeHeight(), target.getZ()),
-                entity.level
-        ) != null;
+                world
+        );
+        if (result == null || result.getType() == RayTraceResult.Type.MISS) {
+            return true;
+        }
+        BlockPos pos = result.getBlockPos();
+        BlockState state = world.getBlockState(pos);
+        VoxelShape shape = state.getCollisionShape(world, pos);
+        if (shape.isEmpty()) {
+            return true;
+        }
+        return state.getMaterial().isReplaceable() || state.getMaterial() == Material.GLASS;
     }
 
     private static class GunnerProjectileProperties implements IShootProps {
