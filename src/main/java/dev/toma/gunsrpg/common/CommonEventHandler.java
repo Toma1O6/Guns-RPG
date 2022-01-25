@@ -126,7 +126,7 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onCapAttachW(AttachCapabilitiesEvent<World> event) {
-        event.addCapability(GunsRPG.makeResource("worldcap"), new WorldDataProvider());
+        event.addCapability(GunsRPG.makeResource("worldcap"), new WorldDataProvider(event.getObject()));
     }
 
     @SubscribeEvent
