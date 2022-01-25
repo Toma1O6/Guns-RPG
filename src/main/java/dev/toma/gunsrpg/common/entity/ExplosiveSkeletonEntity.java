@@ -185,12 +185,12 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
 
     @Override
     public void performRangedAttack(LivingEntity target, float distanceFactor) {
-        AbstractArrowEntity entityarrow = new ExplosiveArrowEntity(level, this, 3);
+        AbstractArrowEntity entityarrow = new ExplosiveArrowEntity(level, this, 1);
         double x = target.getX() - this.getX();
         double y = target.getY(0.3333) - entityarrow.getY();
         double z = target.getZ() - this.getZ();
         double dist = MathHelper.sqrt(x * x + z * z);
-        entityarrow.shoot(x, y + dist * 0.20000000298023224D, z, 1.6F, (float) (23 - this.level.getDifficulty().getId() * 4));
+        entityarrow.shoot(x, y + dist * 0.2D, z, 1.6F, (float) (23 - this.level.getDifficulty().getId() * 4));
         this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         this.level.addFreshEntity(entityarrow);
     }
