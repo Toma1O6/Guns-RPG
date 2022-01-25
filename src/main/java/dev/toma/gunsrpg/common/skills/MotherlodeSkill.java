@@ -4,12 +4,13 @@ import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
 import dev.toma.gunsrpg.common.attribute.IValueFormatter;
 import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.util.object.Pair;
 import net.minecraft.util.text.ITextComponent;
+
+import java.util.Random;
 
 public class MotherlodeSkill extends BasicSkill implements IDescriptionProvider {
 
-    private static ChancesContainer[] data;
+    private static final ChancesContainer[] DATA;
 
     private final DescriptionContainer container;
     private final int level;
@@ -18,17 +19,18 @@ public class MotherlodeSkill extends BasicSkill implements IDescriptionProvider 
         super(type);
         this.level = level;
         this.container = new DescriptionContainer(type);
-        data[level - 1].appendInfo(container);
+        DATA[level - 1].appendInfo(container);
+    }
+
+    public int getDropMultiplier(Random random) {
+        ChancesContainer container = DATA[level - 1];
+        float f = random.nextFloat();
+        return f < container.trippleDrop ? 3 : (f - container.trippleDrop) < container.doubleDrop ? 2 : 1;
     }
 
     @Override
     public ITextComponent[] supplyDescription(int desiredLineCount) {
         return container.getLines();
-    }
-
-    public Pair<Float, Float> getDropChances() {
-        ChancesContainer chancesContainer = data[level - 1];
-        return Pair.of(chancesContainer.doubleDrop, chancesContainer.trippleDrop);
     }
 
     private static class ChancesContainer {
@@ -50,7 +52,7 @@ public class MotherlodeSkill extends BasicSkill implements IDescriptionProvider 
     }
 
     static {
-        data = new ChancesContainer[] {
+        DATA = new ChancesContainer[] {
                 new ChancesContainer(0.10F, 0.00F),
                 new ChancesContainer(0.20F, 0.00F),
                 new ChancesContainer(0.35F, 0.00F),

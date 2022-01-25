@@ -37,7 +37,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 public class Hooks {
 
@@ -102,25 +101,24 @@ public class Hooks {
             }
         } else if (block.getTags().contains(Tags.Blocks.ORES.getName())) {
             MotherlodeSkill skill = SkillUtil.getTopHierarchySkill(Skills.MOTHER_LODE_I, provider);
+            int dropMultiplier = 1;
             if (skill != null) {
-                Pair<Float, Float> multiplierChances = skill.getDropChances();
-                Random random = player.getRandom();
-                int multiplier = random.nextFloat() < multiplierChances.getRight() ? 3 : random.nextFloat() < multiplierChances.getLeft() ? 2 : 1;
-                Iterator<ItemStack> iterator = drops.iterator();
-                List<ItemStack> pending = new ArrayList<>();
-                Lifecycle modLifecycle = GunsRPG.getModLifecycle();
-                while (iterator.hasNext()) {
-                    ItemStack stack = iterator.next();
-                    Item replacement = modLifecycle.getOreDropReplacement(stack.getItem());
-                    if (replacement != null) {
-                        pending.add(new ItemStack(replacement, Math.min(64, stack.getCount() * multiplier)));
-                        iterator.remove();
-                    } else if (stack.getItem() != block.asItem()) {
-                        stack.setCount(Math.min(64, stack.getCount() * multiplier));
-                    }
-                }
-                drops.addAll(pending);
+                dropMultiplier = skill.getDropMultiplier(player.getRandom());
             }
+            Iterator<ItemStack> iterator = drops.iterator();
+            List<ItemStack> pendingDrops = new ArrayList<>();
+            Lifecycle lifecycle = GunsRPG.getModLifecycle();
+            while (iterator.hasNext()) {
+                ItemStack stack = iterator.next();
+                Item replacement = lifecycle.getOreDropReplacement(stack.getItem());
+                if (replacement != null) {
+                    pendingDrops.add(new ItemStack(replacement, Math.min(64, stack.getCount() * dropMultiplier)));
+                    iterator.remove();
+                } else if (stack.getItem() != block.asItem()) {
+                    stack.setCount(Math.min(64, stack.getCount() * dropMultiplier));
+                }
+            }
+            drops.addAll(pendingDrops);
         }
         return drops;
     }
