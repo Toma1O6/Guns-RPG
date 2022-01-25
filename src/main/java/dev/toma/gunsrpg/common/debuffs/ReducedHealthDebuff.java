@@ -28,6 +28,7 @@ public class ReducedHealthDebuff implements IDebuff {
             double health = attribute.getBaseValue();
             if (health != 6.0) {
                 attribute.setBaseValue(6.0);
+                player.setHealth(Math.min(player.getHealth(), 6.0F));
             }
         } else {
             if (!player.level.isClientSide) {

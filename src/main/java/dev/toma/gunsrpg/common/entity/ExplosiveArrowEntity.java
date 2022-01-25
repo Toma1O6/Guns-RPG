@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -41,7 +42,7 @@ public class ExplosiveArrowEntity extends AbstractArrowEntity {
     protected void onHitEntity(EntityRayTraceResult result) {
         if (!level.isClientSide) {
             Entity entity = result.getEntity();
-            level.explode(this, entity.getX(), entity.getY() + 2, entity.getZ(), getOwner() instanceof ExplosiveSkeletonEntity ? 2 : 1, Explosion.Mode.DESTROY);
+            level.explode(this, entity.getX(), entity.getY() + 1.5, entity.getZ(), blastSize, Explosion.Mode.DESTROY);
             remove();
         }
     }
