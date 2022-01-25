@@ -85,7 +85,7 @@ public class ClientEventHandler {
             LazyOptional<IPlayerData> optional = PlayerData.get(player);
             optional.ifPresent(data -> {
                 FontRenderer renderer = mc.font;
-                long day = player.level.getGameTime() / 24000L;
+                long day = player.level.getDayTime() / 24000L;
                 int cycle = ModConfig.worldConfig.bloodmoonCycle.get();
                 MainWindow window = event.getWindow();
                 if (cycle >= 0) {

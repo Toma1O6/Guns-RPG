@@ -47,7 +47,8 @@ public class WorldData implements IWorldData {
 
     @Override
     public void tick(World world) {
-        long day = world.getGameTime() / 24000L;
+        long time = world.getDayTime();
+        long day = time / 24000L;
         events.forEach(spec -> spec.tick(world, day));
     }
 
