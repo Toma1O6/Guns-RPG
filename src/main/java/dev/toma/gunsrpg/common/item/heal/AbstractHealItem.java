@@ -14,7 +14,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.CooldownTracker;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -23,13 +26,15 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.IntFunction;
+import java.util.function.Predicate;
 
 public abstract class AbstractHealItem<T> extends BaseItem implements IAnimationEntry {
 
     private final int useTime;
     private final ITextComponent[] description;
-    private final Supplier<SoundEvent> useSound;
     private final Predicate<T> useCondition;
     private final Consumer<T> useAction;
     private final ResourceLocation useAnimation;
@@ -42,7 +47,6 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
         super(builder.name, properties.tab(ModTabs.ITEM_TAB));
         useTime = builder.useTime;
         description = builder.description;
-        useSound = builder.useSound;
         useCondition = builder.useCondition;
         useAction = builder.useAction;
         useAnimation = builder.useAnimation;
@@ -74,11 +78,10 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
             T target = getTargetObject(level, player, data);
             if (useCondition.test(target)) {
                 if (level.isClientSide) {
-                    player.playSound(useSound.get(), 1.0F, 1.0F);
                     AnimationEngine engine = AnimationEngine.get();
                     IAnimationLoader loader = engine.loader();
                     IAnimationPipeline pipeline = engine.pipeline();
-                    IAnimation animation = constructAnimation(loader.getProvider(useAnimation), useTime);
+                    IAnimation animation = constructAnimation(loader.getProvider(useAnimation), this.getAnimationLength());
                     pipeline.insert(ModAnimations.HEAL, animation);
                 }
                 player.startUsingItem(hand);
@@ -151,7 +154,6 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
         protected final String name;
         private int useTime;
         private ITextComponent[] description = new ITextComponent[0];
-        private Supplier<SoundEvent> useSound;
         private Predicate<T> useCondition = t -> true;
         private Consumer<T> useAction;
         private ResourceLocation useAnimation;
@@ -165,11 +167,6 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
         }
 
         public abstract H build();
-
-        public HealBuilder<T, H> defineSound(Supplier<SoundEvent> useSound) {
-            this.useSound = useSound;
-            return this;
-        }
 
         public HealBuilder<T, H> canUse(Predicate<T> useCondition) {
             this.useCondition = useCondition;
