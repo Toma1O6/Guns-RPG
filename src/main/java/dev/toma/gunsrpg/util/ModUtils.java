@@ -361,7 +361,7 @@ public class ModUtils {
         return v != null ? v : Objects.requireNonNull(def);
     }
 
-    public static RayTraceResult raytraceBlocksIgnoreGlass(Vector3d start, Vector3d end, IBlockReader reader) {
+    public static BlockRayTraceResult raytraceBlocksIgnoreGlass(Vector3d start, Vector3d end, IBlockReader reader) {
         RayTraceContext context = new RayTraceContext(start, end, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, null);
         return IBlockReader.traverseBlocks(context, (ctx, pos) -> {
             BlockState blockstate = reader.getBlockState(pos);
