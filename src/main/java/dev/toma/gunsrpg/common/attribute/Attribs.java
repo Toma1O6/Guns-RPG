@@ -124,13 +124,6 @@ public final class Attribs {
         return KEY_MAP.get(id);
     }
 
-    public static void addIfAbsent(IAttributeProvider provider, IAttributeId id, IAttributeModifier modifier) {
-        IAttribute attribute = provider.getAttribute(id);
-        if (attribute.getModifier(modifier) == null) {
-            attribute.addModifier(modifier);
-        }
-    }
-
     public static <I extends IAttributeId> I registerId(I id) {
         KEY_MAP.put(id.getId(), id);
         return id;

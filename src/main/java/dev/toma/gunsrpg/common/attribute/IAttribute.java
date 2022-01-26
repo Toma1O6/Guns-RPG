@@ -20,19 +20,15 @@ public interface IAttribute extends INBTSerializable<CompoundNBT> {
 
     double getBaseValue();
 
-    void setBaseValue(double value);
-
     void tickAttributes();
 
-    void addModifier(IModifierProvider provider);
+    void addModifier(IAttributeModifier modifier);
 
-    void removeModifier(IModifierProvider provider);
+    void removeModifier(IAttributeModifier modifier);
 
     void removeModifierById(UUID modifierId);
 
     void removeAllModifiers();
-
-    IAttributeModifier getModifier(IModifierProvider provider);
 
     Collection<IAttributeModifier> listModifiers();
 

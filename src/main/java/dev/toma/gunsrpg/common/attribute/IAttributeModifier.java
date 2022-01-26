@@ -1,10 +1,10 @@
 package dev.toma.gunsrpg.common.attribute;
 
-import dev.toma.gunsrpg.common.attribute.serialization.IModifierSeralizer;
+import dev.toma.gunsrpg.common.attribute.serialization.IModifierSerializer;
 
 import java.util.UUID;
 
-public interface IAttributeModifier extends IModifierProvider {
+public interface IAttributeModifier {
 
     UUID getUid();
 
@@ -12,10 +12,7 @@ public interface IAttributeModifier extends IModifierProvider {
 
     double getModifierValue();
 
-    IModifierSeralizer<?> getSerizalizer();
+    IModifierSerializer<?> getSerializer();
 
-    @Override
-    default IAttributeModifier getModifier() {
-        return this;
-    }
+    IAttributeModifier copy();
 }

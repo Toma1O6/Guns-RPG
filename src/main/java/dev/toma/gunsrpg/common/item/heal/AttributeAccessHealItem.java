@@ -1,10 +1,8 @@
 package dev.toma.gunsrpg.common.item.heal;
 
+import dev.toma.gunsrpg.api.common.attribute.IAttributeTarget;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.common.attribute.AttributeModifierFactory;
-import dev.toma.gunsrpg.common.attribute.AttributeOps;
-import dev.toma.gunsrpg.common.attribute.IAttributeId;
-import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.attribute.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
@@ -31,10 +29,14 @@ public class AttributeAccessHealItem extends AbstractHealItem<IAttributeProvider
             super(name);
         }
 
-        public Builder modifyAttributes(IAttributeId blockingAttribute, UUID blockingUid, IAttributeId delayAttribute, UUID delayUid) {
+        public Builder defineModifiers(IAttributeTarget... targets) {
             return (Builder) onUse(provider -> {
-                provider.getAttribute(blockingAttribute).addModifier(AttributeModifierFactory.temporary(blockingUid, AttributeOps.SUM, 1, 1200));
-                provider.getAttribute(delayAttribute).addModifier(AttributeModifierFactory.temporary(delayUid, AttributeOps.MUL, 0.7, 1200));
+                for (IAttributeTarget target : targets) {
+                    IAttributeModifier modifier = target.getModifier();
+                    for (IAttributeId id : target.getTargetAttributes()) {
+                        provider.getAttribute(id).addModifier(modifier);
+                    }
+                }
             });
         }
 

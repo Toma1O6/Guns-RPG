@@ -4,9 +4,9 @@ import dev.toma.gunsrpg.common.attribute.IAttributeModifier;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 
-public interface IModifierSeralizer<M extends IAttributeModifier> {
+public interface IModifierSerializer<M extends IAttributeModifier> {
 
-    ResourceLocation getSerizalizerUid();
+    ResourceLocation getSerializerUid();
 
     void toNbtStructure(M modifier, CompoundNBT data);
 

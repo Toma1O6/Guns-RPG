@@ -1,8 +1,11 @@
 package dev.toma.gunsrpg.common.attribute;
 
-import dev.toma.gunsrpg.common.attribute.serialization.IModifierSeralizer;
+import dev.toma.gunsrpg.common.attribute.serialization.IModifierSerializer;
+import dev.toma.gunsrpg.common.attribute.serialization.ModifierSerialization;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -13,7 +16,7 @@ public class Attribute implements IAttribute {
     private final Map<UUID, IAttributeModifier> modifierMap = new HashMap<>();
     private final Set<ITickableModifier> temporaryModifiers = new HashSet<>();
     private final Set<IAttributeListener> listeners = new HashSet<>();
-    private double baseValue;
+    private final double baseValue;
     private boolean requireUpdate;
     private double value;
     private double modifier;
@@ -27,7 +30,7 @@ public class Attribute implements IAttribute {
 
     @Override
     public double getModifier() {
-        return modifier;
+        return (modifier = calcModifier());
     }
 
     @Override
@@ -62,11 +65,6 @@ public class Attribute implements IAttribute {
     }
 
     @Override
-    public void setBaseValue(double value) {
-        this.baseValue = value;
-    }
-
-    @Override
     public void markChanged() {
         requireUpdate = true;
     }
@@ -87,8 +85,7 @@ public class Attribute implements IAttribute {
     }
 
     @Override
-    public void addModifier(IModifierProvider provider) {
-        IAttributeModifier modifier = provider.getModifier();
+    public void addModifier(IAttributeModifier modifier) {
         IAttributeModifier oldModifier = modifierMap.put(modifier.getUid(), modifier);
         if (oldModifier instanceof ITickableModifier) {
             temporaryModifiers.remove(oldModifier);
@@ -101,8 +98,8 @@ public class Attribute implements IAttribute {
     }
 
     @Override
-    public void removeModifier(IModifierProvider provider) {
-        removeModifierById(provider.getModifier().getUid());
+    public void removeModifier(IAttributeModifier modifier) {
+        removeModifierById(modifier.getUid());
     }
 
     @Override
@@ -118,11 +115,6 @@ public class Attribute implements IAttribute {
     public void removeAllModifiers() {
         modifierMap.clear();
         markChanged();
-    }
-
-    @Override
-    public IAttributeModifier getModifier(IModifierProvider provider) {
-        return modifierMap.get(provider.getModifier().getUid());
     }
 
     @Override
@@ -152,14 +144,21 @@ public class Attribute implements IAttribute {
         CompoundNBT nbt = new CompoundNBT();
         ListNBT modifiers = new ListNBT();
         for (IAttributeModifier modifier : modifierMap.values()) {
-            modifiers.add(serializeModifier(modifier));
+            modifiers.add(this.serializeModifier(modifier));
         }
+        nbt.put("modifiers", modifiers);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-
+        modifierMap.clear();
+        temporaryModifiers.clear();
+        ListNBT modifiers = nbt.getList("modifiers", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < modifiers.size(); i++) {
+            CompoundNBT data = modifiers.getCompound(i);
+            addModifier(this.deserializeModifier(data));
+        }
     }
 
     private <P> void notifyListenerChange(P parameter, BiConsumer<IAttributeListener, P> notifyEvent) {
@@ -179,9 +178,16 @@ public class Attribute implements IAttribute {
 
     @SuppressWarnings("unchecked")
     private <M extends IAttributeModifier> CompoundNBT serializeModifier(M modifier) {
-        IModifierSeralizer<M> seralizer = (IModifierSeralizer<M>) modifier.getSerizalizer();
+        IModifierSerializer<M> serializer = (IModifierSerializer<M>) modifier.getSerializer();
         CompoundNBT data = new CompoundNBT();
-        seralizer.toNbtStructure(modifier, data);
+        data.putString("serializer", serializer.getSerializerUid().toString());
+        serializer.toNbtStructure(modifier, data);
         return data;
+    }
+
+    private <M extends IAttributeModifier> M deserializeModifier(CompoundNBT data) {
+        ResourceLocation type = new ResourceLocation(data.getString("serializer"));
+        IModifierSerializer<M> serializer = ModifierSerialization.getSerializer(type);
+        return serializer.fromNbtStructure(data);
     }
 }

@@ -300,22 +300,34 @@ public class CommonRegistry {
                         .animate(70, AnimationPaths.BANDAGE)
                         .build(),
                 AttributeAccessHealItem.define("hemostat")
-                        .modifyAttributes(Attribs.BLEED_BLOCK, Constants.ModifierIds.MED_BLEEDING_BLOCK, Attribs.BLEED_DELAY, Constants.ModifierIds.MED_BLEEDING_DELAY)
+                        .defineModifiers(
+                                AttributeTarget.create(Modifiers.BLEED_BLOCKING, Attribs.BLEED_BLOCK),
+                                AttributeTarget.create(Modifiers.BLEED_DELAYING, Attribs.BLEED_DELAY)
+                        )
                         .describe("Bleeding:", "Disabled for 60 seconds", "Spread speed: -30%")
                         .animate(50, AnimationPaths.HEMOSTAT)
                         .build(),
                 AttributeAccessHealItem.define("vitamins")
-                        .modifyAttributes(Attribs.INFECTION_BLOCK, Constants.ModifierIds.MED_INFECTION_BLOCK, Attribs.INFECTION_DELAY, Constants.ModifierIds.MED_INFECTION_DELAY)
+                        .defineModifiers(
+                                AttributeTarget.create(Modifiers.INFECTION_BLOCKING, Attribs.INFECTION_BLOCK),
+                                AttributeTarget.create(Modifiers.INFECTION_DELAYING, Attribs.INFECTION_DELAY)
+                        )
                         .describe("Infection:", "Disabled for 60 seconds", "Spread speed: -30%")
                         .animate(40, AnimationPaths.VITAMINS)
                         .build(),
                 AttributeAccessHealItem.define("propital")
-                        .modifyAttributes(Attribs.FRACTURE_BLOCK, Constants.ModifierIds.MED_FRACTURE_BLOCK, Attribs.FRACTURE_DELAY, Constants.ModifierIds.MED_FRACTURE_DELAY)
+                        .defineModifiers(
+                                AttributeTarget.create(Modifiers.FRACTURE_BLOCKING, Attribs.FRACTURE_BLOCK),
+                                AttributeTarget.create(Modifiers.FRACTURE_DELAYING, Attribs.FRACTURE_DELAY)
+                        )
                         .describe("Fracture:", "Disabled for 60 seconds", "Spread speed: -30%")
                         .animate(30, AnimationPaths.STIM)
                         .build(),
                 AttributeAccessHealItem.define("calcium_shot")
-                        .modifyAttributes(Attribs.POISON_BLOCK, Constants.ModifierIds.MED_POISON_BLOCK, Attribs.POISON_DELAY, Constants.ModifierIds.MED_POISON_DELAY)
+                        .defineModifiers(
+                                AttributeTarget.create(Modifiers.POISON_BLOCKING, Attribs.POISON_BLOCK),
+                                AttributeTarget.create(Modifiers.POISON_DELAYING, Attribs.POISON_DELAY)
+                        )
                         .describe("Poison:", "Disabled for 60 seconds", "Spread speed: -30%")
                         .animate(30, AnimationPaths.STIM)
                         .build(),
