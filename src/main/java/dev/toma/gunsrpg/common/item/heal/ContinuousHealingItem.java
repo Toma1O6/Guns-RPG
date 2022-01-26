@@ -40,19 +40,18 @@ public class ContinuousHealingItem extends AbstractHealItem<PlayerEntity> {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, LivingEntity entity, int count) {
+    public void onUsingTick(ItemStack stack, LivingEntity entity, int timeLeft) {
         if (entity.level.isClientSide)
             return;
-        if (count < medPrepareDelay)
+        int usingTime = getUseDuration(stack) - timeLeft;
+        if (usingTime < medPrepareDelay)
             return;
-        int ticksBeforeEffect = (getUseDuration(stack) - count - medPrepareDelay) % getUseTime();
+        int ticksBeforeEffect = (usingTime - medPrepareDelay) % getUseTime();
         if (ticksBeforeEffect == 0 && entity instanceof ServerPlayerEntity) {
             ServerPlayerEntity player = (ServerPlayerEntity) entity;
             applyAction(player);
-            stack.hurtAndBreak(1, player, user -> {
-                user.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
-                NetworkManager.sendClientPacket(user, new S2C_AnimationPacket(S2C_AnimationPacket.Action.STOP, ModAnimations.HEAL));
-            });
+            stack.hurtAndBreak(1, player, user -> user.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+            NetworkManager.sendClientPacket(player, new S2C_AnimationPacket(S2C_AnimationPacket.Action.STOP, ModAnimations.HEAL));
         }
     }
 
