@@ -36,6 +36,10 @@ public class ZombieGunnerEntity extends MonsterEntity {
     private int firerate = 20;
     private int magCapacity = 10;
     private int reloadTime = 40;
+    private int burstSize;
+    private int burstDelay;
+    private int capColor;
+    private boolean loaded;
 
     public ZombieGunnerEntity(World world) {
         this(ModEntities.ZOMBIE_GUNNER.get(), world);
@@ -150,7 +154,17 @@ public class ZombieGunnerEntity extends MonsterEntity {
             return;
         }
         loadout.applyGear(this, difficulty.getDifficulty());
-        setItemSlot(EquipmentSlotType.HEAD, new ItemStack(Items.LEATHER_HELMET));
+        boolean coloredCap = capColor >= 0;
+        ItemStack head = new ItemStack(Items.LEATHER_HELMET);
+        if (coloredCap) {
+            CompoundNBT data = new CompoundNBT();
+            CompoundNBT display = new CompoundNBT();
+            display.putInt("color", capColor);
+            data.put("display", display);
+            head.setTag(data);
+        }
+        setItemSlot(EquipmentSlotType.HEAD, head);
+        loaded = true;
     }
 
     @Override
@@ -161,6 +175,9 @@ public class ZombieGunnerEntity extends MonsterEntity {
         compound.putInt("magCapacity", magCapacity);
         compound.putInt("firerate", firerate);
         compound.putInt("reloadTime", reloadTime);
+        compound.putInt("burstSize", burstSize);
+        compound.putInt("burstDelay", burstDelay);
+        compound.putBoolean("initializedLoadout", loaded);
     }
 
     @Override
@@ -171,10 +188,41 @@ public class ZombieGunnerEntity extends MonsterEntity {
         magCapacity = compound.getInt("magCapacity");
         firerate = compound.getInt("firerate");
         reloadTime = compound.getInt("reloadTime");
+        burstSize = compound.getInt("burstSize");
+        burstDelay = compound.getInt("burstDelay");
+        loaded = compound.getBoolean("initializedLoadout");
+    }
+
+    public void setDamageMultiplier(float damageMultiplier) {
+        this.damageMultiplier = damageMultiplier;
+    }
+
+    public void setInaccuracy(float inaccuracy) {
+        this.inaccuracy = inaccuracy;
     }
 
     public void setFirerate(int firerate) {
         this.firerate = firerate;
+    }
+
+    public void setMagCapacity(int magCapacity) {
+        this.magCapacity = magCapacity;
+    }
+
+    public void setReloadTime(int reloadTime) {
+        this.reloadTime = reloadTime;
+    }
+
+    public void setBurstSize(int burstSize) {
+        this.burstSize = burstSize;
+    }
+
+    public void setBurstDelay(int burstDelay) {
+        this.burstDelay = burstDelay;
+    }
+
+    public void setCapColor(int capColor) {
+        this.capColor = capColor;
     }
 
     public float getDamageMultiplier() {
@@ -195,5 +243,17 @@ public class ZombieGunnerEntity extends MonsterEntity {
 
     public int getReloadTime() {
         return reloadTime;
+    }
+
+    public int getBurstSize() {
+        return burstSize;
+    }
+
+    public int getBurstDelay() {
+        return burstDelay;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
     }
 }
