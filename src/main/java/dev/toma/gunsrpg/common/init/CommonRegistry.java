@@ -218,23 +218,23 @@ public class CommonRegistry {
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.BULLET_LOOPS, Attribs.S1897_RELOAD_SPEED))).description(0).build().setRegistryName("s1897_bullet_loops"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.S1897_EXTENDED, Attribs.S1897_MAG_CAPACITY))).description(0).renderModIcon("extended").build().setRegistryName("s1897_extended"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.S1897_FAST_PUMP, Attribs.S1897_FIRERATE))).description(0).build().setRegistryName("s1897_pump_in_action"),
-                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("s1897_choke"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.S1897_CHOKE, Attribs.S1897_PELLET_SPREAD))).build().setRegistryName("s1897_choke"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("s1897_never_give_up"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("s1897_extended_barrel"),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.TOUGH_SPRING, Attribs.SKS_FIRERATE))).renderModIcon("tough_spring").build().setRegistryName("sks_tough_spring"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.TOUGH_SPRING, Attribs.SKS_FIRERATE))).description(0).renderModIcon("tough_spring").build().setRegistryName("sks_tough_spring"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.VERTICAL_GRIP, Attribs.SKS_VERTICAL_RECOIL))).renderModIcon("vertical_grip").build().setRegistryName("sks_vertical_grip"),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.SKS_EXTENDED, Attribs.SKS_MAG_CAPACITY))).renderModIcon("extended").build().setRegistryName("sks_extended"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.SKS_EXTENDED, Attribs.SKS_MAG_CAPACITY))).description(0).renderModIcon("extended").build().setRegistryName("sks_extended"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("red_dot").build().setRegistryName("sks_red_dot"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.NOISE, Attribs.SKS_NOISE))).renderModIcon("suppressor").build().setRegistryName("sks_suppressor"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.CHEEKPAD, Attribs.SKS_VERTICAL_RECOIL, Attribs.SKS_HORIZONTAL_RECOIL))).renderModIcon("cheekpad").build().setRegistryName("sks_cheekpad"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.SKS_ADAPTIVE, Attribs.SKS_FIRERATE))).build().setRegistryName("sks_adaptive_chambering"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("scope").build().setRegistryName("kar98k_scope"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.CHEEKPAD, Attribs.KAR98K_HORIZONTAL_RECOIL, Attribs.KAR98K_VERTICAL_RECOIL))).renderModIcon("cheekpad").build().setRegistryName("kar98k_cheekpad"),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.KAR98K_EXTENDED, Attribs.KAR98K_MAG_CAPACITY))).renderModIcon("extended").build().setRegistryName("kar98k_extended"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.KAR98K_EXTENDED, Attribs.KAR98K_MAG_CAPACITY))).description(0).renderModIcon("extended").build().setRegistryName("kar98k_extended"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.NOISE, Attribs.KAR98K_NOISE))).renderModIcon("suppressor").build().setRegistryName("kar98k_suppressor"),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.KAR98K_FAST_HANDS_RELOAD, Attribs.KAR98K_RELOAD_SPEED), AttributeTarget.create(Modifiers.KAR98K_FAST_HANDS_ROF, Attribs.KAR98K_FIRERATE))).build().setRegistryName("kar98k_fast_hands"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.KAR98K_FAST_HANDS_RELOAD, Attribs.KAR98K_RELOAD_SPEED), AttributeTarget.create(Modifiers.KAR98K_FAST_HANDS_ROF, Attribs.KAR98K_FIRERATE))).description(0).build().setRegistryName("kar98k_fast_hands"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("penetrator").build().setRegistryName("kar98k_penetrator"),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.KAR98K_DEAD_EYE, Attribs.KAR98K_HS_DAMAGE))).build().setRegistryName("kar98k_dead_eye")
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.KAR98K_DEAD_EYE, Attribs.KAR98K_HS_DAMAGE))).description(0).build().setRegistryName("kar98k_dead_eye")
         );
     }
 

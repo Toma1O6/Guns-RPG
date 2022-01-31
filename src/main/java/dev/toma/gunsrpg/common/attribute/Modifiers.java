@@ -73,6 +73,7 @@ public final class Modifiers {
     public static final IAttributeModifier SKS_ADAPTIVE                 = new AttributeModifier("6FA1DA42-2CF1-41A2-B548-A056DB214927", AttributeOps.SUB, 2);
     public static final IAttributeModifier S1897_EXTENDED               = new AttributeModifier("29BBE0CB-B953-4EF1-AB49-036A39058A0D", AttributeOps.SUM, 3);
     public static final IAttributeModifier S1897_FAST_PUMP              = new AttributeModifier("68F45BF3-85BF-4F5D-AF80-85771DECF85F", AttributeOps.SUB, 10);
+    public static final IAttributeModifier S1897_CHOKE                  = new AttributeModifier("4A2A2F96-8EF1-4E6B-882D-1B88910D0D11", AttributeOps.MUL, 0.7);
     public static final IAttributeModifier KAR98K_EXTENDED              = new AttributeModifier("195ED54A-A61C-4A25-A603-9BC15889033F", AttributeOps.SUM, 5);
     public static final IAttributeModifier KAR98K_FAST_HANDS_ROF        = new AttributeModifier("7F330435-D62F-4921-B2A3-3B06F37C2FEC", AttributeOps.MUL, 0.6);
     public static final IAttributeModifier KAR98K_FAST_HANDS_RELOAD     = new AttributeModifier("CAE9F279-C696-46A3-8E09-8BC21460F12D", AttributeOps.MUL, 0.5);
