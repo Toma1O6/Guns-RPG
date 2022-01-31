@@ -51,11 +51,22 @@ public final class GunnerLoadoutInstance {
         nbt.putString("material", material.getMaterialID().toString());
         stack.setTag(nbt);
         entity.setItemSlot(EquipmentSlotType.MAINHAND, stack);
+        entity.setDamageMultiplier(damageMultiplier.getProperty(difficulty));
+        entity.setInaccuracy(this.getCalculatedInaccuracy(difficulty));
         entity.setFirerate(firerate.getProperty(difficulty));
+        entity.setMagCapacity(magCapacity);
+        entity.setReloadTime(reloadTime.getProperty(difficulty));
+        entity.setBurstSize(burstSize);
+        entity.setBurstDelay(burstDelay.getProperty(difficulty));
+        entity.setCapColor(capColor);
     }
 
     public int getWeight() {
         return weight;
+    }
+
+    public float getCalculatedInaccuracy(Difficulty difficulty) {
+        return baseInaccuracy + (difficulty.getId() * accuracyBonus);
     }
 
     public static class Builder {
@@ -75,7 +86,7 @@ public final class GunnerLoadoutInstance {
         private int burstSize;
         private IDifficultyProperty<Integer> burstDelay = diff -> 0;
         // cosmetic
-        private int capColor;
+        private int capColor = -1;
 
         public void setupGlobal(GunnerGlobalProperties properties) {
             this.damageMultiplier = new SimpleDifficultyProperty<>(properties.getDamageMultiplier());
