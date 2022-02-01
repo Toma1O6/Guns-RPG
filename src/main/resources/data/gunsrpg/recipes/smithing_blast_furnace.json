@@ -1,5 +1,5 @@
 {
-    "type": "minecraft:crafting_shaped",
+    "type": "gunsrpg:smithing_table",
     "pattern": [
         "IRI",
         "BFB",
@@ -22,5 +22,13 @@
     "result": {
         "item": "gunsrpg:blast_furnace",
         "count": 1
-    }
+    },
+    "requirements": [
+        {
+            "type": "gunsrpg:skill",
+            "predicate": {
+                "skill": "gunsrpg:blacksmith"
+            }
+        }
+    ]
 }

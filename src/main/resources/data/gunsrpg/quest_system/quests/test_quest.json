@@ -13,7 +13,7 @@
             "count": 7
         }
     },
-    "conditions": [
+    "additionalConditions": [
         {
             "type": "list",
             "path": "gunsrpg:item_condition_list"

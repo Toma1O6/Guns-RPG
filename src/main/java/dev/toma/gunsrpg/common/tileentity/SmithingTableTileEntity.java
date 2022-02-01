@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.common.init.ModRecipeTypes;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.S2C_SynchBlockEntityPacket;
 import dev.toma.gunsrpg.resource.smithing.SmithingRecipe;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -34,6 +35,11 @@ public class SmithingTableTileEntity extends VanillaInventoryTileEntity implemen
     public void setChanged() {
         super.setChanged();
         onSynch();
+    }
+
+    @Override
+    public void setItem(int id, ItemStack stack) {
+        super.setItem(id, stack);
     }
 
     /**
