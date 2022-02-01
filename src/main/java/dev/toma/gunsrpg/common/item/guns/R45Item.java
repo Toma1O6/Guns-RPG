@@ -11,13 +11,14 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.util.IDualWieldGun;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class R45Item extends GunItem {
+public class R45Item extends GunItem implements IDualWieldGun {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("r45/reload");
     private static final ResourceLocation RELOAD_BULLET = GunsRPG.makeResource("r45/load_bullet");
@@ -44,6 +45,11 @@ public class R45Item extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 14)
                     .define(AmmoMaterials.NETHERITE, 17)
                 .build();
+    }
+
+    @Override
+    public SkillType<?> getSkillForDualWield() {
+        return Skills.R45_DUAL_WIELD;
     }
 
     @Override

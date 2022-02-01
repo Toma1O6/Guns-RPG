@@ -201,6 +201,14 @@ public class CommonRegistry {
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.NOISE, Attribs.M1911_NOISE))).renderModIcon("suppressor").build().setRegistryName("m1911_suppressor"),
                 SkillType.Builder.create(BasicSkill::new).description(3).build().setRegistryName("m1911_heavy_bullets"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.DUAL_WIELD, Attribs.M1911_MAG_CAPACITY, Attribs.M1911_RELOAD_SPEED))).description(SkillUtil.Localizations::generateSimpleDescription).build().setRegistryName("m1911_dual_wield"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("fast_hands").description(0).build().setRegistryName("r45_fast_hands"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("carbon_barrel").build().setRegistryName("r45_carbon_barrel"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("extended").description(0).build().setRegistryName("r45_extended"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("suppressor").build().setRegistryName("r45_suppressor"),
+                SkillType.Builder.create(BasicSkill::new).description(0).build().setRegistryName("r45_light_trigger"),
+                SkillType.Builder.create(BasicSkill::new).description(0).build().setRegistryName("r45_ace_of_hearts"),
+                SkillType.Builder.create(BasicSkill::new).description(SkillUtil.Localizations::generateSimpleDescription).build().setRegistryName("r45_dual_wield"),
+
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.QUICKDRAW_MAG, Attribs.UMP45_RELOAD_SPEED))).renderModIcon("quickdraw").description(0).build().setRegistryName("ump45_quickdraw"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.UMP45_EXTENDED, Attribs.UMP45_MAG_CAPACITY))).renderModIcon("extended").description(0).build().setRegistryName("ump45_extended"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.VERTICAL_GRIP, Attribs.UMP45_VERTICAL_RECOIL))).renderModIcon("vertical_grip").build().setRegistryName("ump45_vertical_grip"),
@@ -333,19 +341,19 @@ public class CommonRegistry {
                         .build(),
                 ContinuousHealingItem.define("ufak")
                         .uses(65)
-                        .prepareIn(50)
+                        .prepareIn(45)
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> player.heal(1))
                         .describe("Recovers 0.5 hearts")
-                        .animate(45, AnimationPaths.UFAK)
+                        .animate(20, AnimationPaths.UFAK)
                         .build(),
                 ContinuousHealingItem.define("kodiak")
                         .uses(150)
-                        .prepareIn(50)
+                        .prepareIn(60)
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> player.heal(1))
                         .describe("Recovers 0.5 hearts")
-                        .animate(60, AnimationPaths.KODIAK)
+                        .animate(30, AnimationPaths.KODIAK)
                         .build(),
                 PlayerHealItem.define("analgetics")
                         .canUse(player -> player.getHealth() < player.getMaxHealth())

@@ -102,6 +102,7 @@ public class Skills {
     public static final SkillType<BasicSkill> M1911_SUPPRESSOR = null;
     public static final SkillType<BasicSkill> M1911_HEAVY_BULLETS = null;
     public static final SkillType<BasicSkill> M1911_DUAL_WIELD = null;
+    public static final SkillType<BasicSkill> R45_DUAL_WIELD = null;
     public static final SkillType<BasicSkill> UMP45_QUICKDRAW = null;
     public static final SkillType<BasicSkill> UMP45_EXTENDED = null;
     public static final SkillType<BasicSkill> UMP45_VERTICAL_GRIP = null;
