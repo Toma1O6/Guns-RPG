@@ -51,13 +51,12 @@ public class ContinuousHealingItem extends AbstractHealItem<PlayerEntity> {
             ServerPlayerEntity player = (ServerPlayerEntity) entity;
             applyAction(player);
             stack.hurtAndBreak(1, player, user -> user.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
-            NetworkManager.sendClientPacket(player, new S2C_AnimationPacket(S2C_AnimationPacket.Action.STOP, ModAnimations.HEAL));
         }
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, World world, LivingEntity entity) {
-        if (entity.level.isClientSide) { // cleanup
+        if (entity.level.isClientSide) {
             AnimationEngine engine = AnimationEngine.get();
             IAnimationPipeline pipeline = engine.pipeline();
             pipeline.remove(ModAnimations.HEAL);

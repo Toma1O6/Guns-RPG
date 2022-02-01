@@ -10,6 +10,11 @@ public class InfiniteAnimation extends Animation {
     }
 
     @Override
+    public float getProgress() {
+        return Math.min(1.0F, super.getProgress());
+    }
+
+    @Override
     public boolean hasFinished() {
         return false;
     }
