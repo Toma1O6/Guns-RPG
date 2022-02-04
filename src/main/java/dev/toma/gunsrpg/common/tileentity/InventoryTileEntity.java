@@ -75,10 +75,6 @@ public abstract class InventoryTileEntity extends TileEntity {
         inventory.ifPresent(handler -> handler.getStackInSlot(id).shrink(1));
     }
 
-    public void setItem(int id, ItemStack stack) {
-        inventory.ifPresent(handler -> handler.setStackInSlot(id, stack));
-    }
-
     public void clear() {
         fill(() -> ItemStack.EMPTY);
     }

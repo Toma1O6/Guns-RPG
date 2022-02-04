@@ -18,6 +18,11 @@ public abstract class VanillaInventoryTileEntity extends InventoryTileEntity imp
     }
 
     @Override
+    public void setItem(int id, ItemStack stack) {
+        itemHandler.setStackInSlot(id, stack);
+    }
+
+    @Override
     public ItemStack getItem(int index) {
         return itemHandler.getStackInSlot(index);
     }

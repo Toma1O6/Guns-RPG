@@ -83,11 +83,15 @@ public class Tree implements IDimensions {
             centerBranch(node, toCenter);
         }
         if (childCount > 0) {
-            for (TreeNode child : node.childrenNodes) {
-                generateViewDataForNode(child);
-            }
+            generateDefaultPositions(node);
         }
         dataViewMap.put(node.value, new SkillViewData(node.value, category, pos));
+    }
+
+    private void generateDefaultPositions(TreeNode node) {
+        for (TreeNode node1 : node.childrenNodes) {
+            generateViewDataForNode(node1);
+        }
     }
 
     private void centerBranch(TreeNode node, int correction) {
@@ -136,7 +140,7 @@ public class Tree implements IDimensions {
         return data.getPos();
     }
 
-    private static class TreeNode {
+    private class TreeNode {
 
         private final int xLevel;
         private final int yLevel;
@@ -162,6 +166,20 @@ public class Tree implements IDimensions {
             if (ModUtils.isNullOrEmpty(children)) {
                 return null;
             }
+            TreeNode[] out;
+            if (Tree.this.useSimplePlacement && children.length == 2) {
+                out = new TreeNode[2];
+                SkillType<?> right = children[1];
+                SkillType<?> below = children[0];
+                out[0] = new TreeNode(right, this, xLevel + 1, yLevel);
+                out[1] = new TreeNode(below, this, xLevel, yLevel + 1);
+            } else {
+                out = generateDefaultPlacement(children);
+            }
+            return out;
+        }
+
+        private TreeNode[] generateDefaultPlacement(SkillType<?>[] children) {
             TreeNode[] out = new TreeNode[children.length];
             for (int i = 0; i < children.length; i++) {
                 SkillType<?> child = children[i];

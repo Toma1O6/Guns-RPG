@@ -71,7 +71,7 @@ public class SkillsView extends View {
     }
 
     private void openPerkView() {
-
+        // TODO
     }
 
     private void updateCanvasSource(SkillCategory category) {

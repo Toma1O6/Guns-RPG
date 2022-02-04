@@ -31,7 +31,7 @@ public class AirdropTileEntity extends InventoryTileEntity {
         IAirdropContentProvider contentProvider = lootManager.getGeneratedContent();
         ItemStack[] itemStacks = contentProvider.getItems();
         for (int i = 0; i < itemStacks.length; i++) {
-            setItem(i, itemStacks[i]);
+            itemHandler.setStackInSlot(i, itemStacks[i]);
         }
     }
 }

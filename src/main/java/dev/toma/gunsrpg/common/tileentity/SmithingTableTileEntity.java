@@ -37,11 +37,6 @@ public class SmithingTableTileEntity extends VanillaInventoryTileEntity implemen
         onSynch();
     }
 
-    @Override
-    public void setItem(int id, ItemStack stack) {
-        super.setItem(id, stack);
-    }
-
     /**
      * Should be called only client-side for UI controls
      * @param callback The callback
