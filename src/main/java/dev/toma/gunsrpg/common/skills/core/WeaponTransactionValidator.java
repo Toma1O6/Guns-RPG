@@ -47,4 +47,19 @@ public class WeaponTransactionValidator extends PlayerLevelTransactionValidator 
     public IKillData getData(IPlayerData data) {
         return data.getProgressData().getWeaponStats(item);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WeaponTransactionValidator that = (WeaponTransactionValidator) o;
+        return ID.equals(that.getId()) && item.getRegistryName().equals(that.item.getRegistryName());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = ID.hashCode();
+        result = 31 * result + item.hashCode();
+        return result;
+    }
 }

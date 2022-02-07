@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 
 public interface IKillData extends IPointProvider {
 
+    void addLevels(int levels);
+
     int getLevel();
 
     void advanceLevel(boolean notify);

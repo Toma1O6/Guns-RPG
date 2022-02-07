@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.util;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IKillData;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -39,6 +40,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Array;
@@ -175,6 +177,10 @@ public class ModUtils {
 
     public static float blue(int color) {
         return (color & 255) / 255.0F;
+    }
+
+    public static boolean isOurs(IForgeRegistryEntry<?> entry) {
+        return entry.getRegistryName().getNamespace().equals(GunsRPG.MODID);
     }
 
     @Deprecated

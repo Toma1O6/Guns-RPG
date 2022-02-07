@@ -60,6 +60,16 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
     }
 
     @Override
+    public void lock(SkillType<?> type) {
+        ISkill skill = getSkill(type);
+        if (skill == null) return;
+        skill.onDeactivate(player);
+        unlockedSkills.remove(type);
+        cache.compute();
+        request.makeSyncRequest();
+    }
+
+    @Override
     public void setClientSynch(IClientSynchReq request) {
         this.request = request;
     }

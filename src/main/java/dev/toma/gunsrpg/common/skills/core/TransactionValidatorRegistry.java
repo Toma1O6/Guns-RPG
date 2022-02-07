@@ -45,6 +45,10 @@ public final class TransactionValidatorRegistry {
         TYPE_FACTORY_MAP.put(key, factory);
     }
 
+    public static Set<ResourceLocation> getRegisteredValidatorTypes() {
+        return TYPE_FACTORY_MAP.keySet();
+    }
+
     static {
         registerValidatorFactory(PlayerLevelTransactionValidator.ID, new PlayerLevelTransactionValidatorFactory());
         registerValidatorFactory(WeaponTransactionValidator.ID, new WeaponLevelTransactionValidatorFactory());

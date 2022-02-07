@@ -16,6 +16,8 @@ public interface ISkillProvider extends ILockStateChangeable {
 
     void unlock(SkillType<?> type, boolean shouldSyncClient);
 
+    void lock(SkillType<?> type);
+
     boolean hasSkill(SkillType<?> type);
 
     <S extends ISkill> S getSkill(SkillType<S> type);

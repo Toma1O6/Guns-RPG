@@ -23,6 +23,11 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
     }
 
     @Override
+    public void addLevels(int levels) {
+        this.level = Math.min(getLevelLimit(), level + levels);
+    }
+
+    @Override
     public int getLevel() {
         return level;
     }
