@@ -25,7 +25,6 @@ import dev.toma.gunsrpg.common.skills.*;
 import dev.toma.gunsrpg.common.skills.core.DisplayData;
 import dev.toma.gunsrpg.common.skills.core.DisplayType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.util.Constants;
 import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.helper.StorageUtil;
@@ -222,6 +221,13 @@ public class CommonRegistry {
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("red_dot").build().setRegistryName("ump45_red_dot"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.NOISE, Attribs.UMP45_NOISE))).renderModIcon("suppressor").build().setRegistryName("ump45_suppressor"),
                 SkillType.Builder.create(BasicSkill::new).description(3).build().setRegistryName("ump45_commando"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("quickdraw").description(0).build().setRegistryName("thompson_quickdraw"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("vertical").build().setRegistryName("thompson_vertical"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("red_dot").build().setRegistryName("thompson_red_dot"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("extended").description(0).build().setRegistryName("thompson_extended"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("tough_spring").description(0).build().setRegistryName("thompson_tough_spring"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("suppressor").build().setRegistryName("thompson_suppressor"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("thompson_soul_taker"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.CROSSBOW_QUIVER, Attribs.CROSSBOW_RELOAD_SPEED))).description(0).build().setRegistryName("crossbow_quiver"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("crossbow_poisoned_bolts"),
                 SkillType.Builder.create(BasicSkill::new).description(2).build().setRegistryName("crossbow_hunter"),

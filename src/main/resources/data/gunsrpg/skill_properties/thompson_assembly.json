@@ -4,6 +4,15 @@
         "parent": "gunsrpg:ump45_assembly",
         "children": [
             "gunsrpg:vector_assembly"
+        ],
+        "extensions": [
+            "gunsrpg:thompson_quickdraw",
+            "gunsrpg:thompson_vertical",
+            "gunsrpg:thompson_red_dot",
+            "gunsrpg:thompson_extended",
+            "gunsrpg:thompson_tough_spring",
+            "gunsrpg:thompson_suppressor",
+            "gunsrpg:thompson_soul_taker"
         ]
     },
     "properties": {

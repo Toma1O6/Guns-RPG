@@ -1,0 +1,14 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "parent": "gunsrpg:thompson_assembly"
+    },
+    "properties": {
+        "level": 7,
+        "price": 1,
+        "transactionValidator": {
+            "type": "gunsrpg:weapon",
+            "data": "gunsrpg:thompson"
+        }
+    }
+}
