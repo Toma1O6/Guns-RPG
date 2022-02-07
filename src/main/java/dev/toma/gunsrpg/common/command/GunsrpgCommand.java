@@ -114,7 +114,7 @@ public class GunsrpgCommand {
                                                         )
                                                         .executes(ctx -> noArgsProvided(ctx, "level", "point"))
                                         )
-                                        .executes(ctx -> forceProgression(ctx, null))
+                                        .executes(ctx -> noArgsProvided(ctx, "reset", "unlockAll"))
                         )
                         .then(
                                 Commands.literal("skill")
@@ -151,7 +151,7 @@ public class GunsrpgCommand {
         optional.ifPresent(data -> {
             IDebuffs debuffs = data.getDebuffControl();
             debuffs.toggle(type);
-            ctx.getSource().sendSuccess(new TranslationTextComponent("gunsrpg.command.toggledebuff", type.getRegistryName().toString()), false);
+            ctx.getSource().sendSuccess(new TranslationTextComponent("command.gunsrpg.toggle_debuff", type.getRegistryName().toString()), false);
         });
         return 0;
     }
@@ -170,7 +170,7 @@ public class GunsrpgCommand {
         AirdropEntity airdrop = new AirdropEntity(world);
         airdrop.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
         world.addFreshEntity(airdrop);
-        source.sendSuccess(new TranslationTextComponent("gunsrpg.command.airdrop"), false);
+        source.sendSuccess(new TranslationTextComponent("command.gunsrpg.airdrop"), false);
         return 0;
     }
 
@@ -181,16 +181,12 @@ public class GunsrpgCommand {
         long newGameTime = ModConfig.worldConfig.bloodmoonCycle.get() * 24000L + 13000L;
         worldInfo.setGameTime(newGameTime);
         src.getLevel().setDayTime(newGameTime);
-        src.sendSuccess(new TranslationTextComponent("gunsrpg.command.setbloodmoon"), false);
+        src.sendSuccess(new TranslationTextComponent("command.gunsrpg.set_bloodmoon"), false);
         return 0;
     }
 
-    private static int forceProgression(CommandContext<CommandSource> ctx, @Nullable ModifyAction action) {
+    private static int forceProgression(CommandContext<CommandSource> ctx, ModifyAction action) {
         CommandSource src = ctx.getSource();
-        if (action == null) {
-            src.sendFailure(new TranslationTextComponent("gunsrpg.command.editskills.fail"));
-            return -1;
-        }
         PlayerEntity player = getPlayer(ctx);
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         optional.ifPresent(data -> {
@@ -199,7 +195,7 @@ public class GunsrpgCommand {
                     .filter(entry -> entry instanceof ILockStateChangeable)
                     .map(entry -> (ILockStateChangeable) entry)
                     .forEach(action::apply);
-            String translationKey = "gunsrpg.command.editskills." + (provider.getUnlockedSkills().isEmpty() ? "lock" : "unlock");
+            String translationKey = "command.gunsrpg.progression." + (action == ModifyAction.LOCK ? "reset" : "unlock");
             src.sendSuccess(new TranslationTextComponent(translationKey), false);
             data.sync(DataFlags.WILDCARD);
         });
@@ -246,6 +242,7 @@ public class GunsrpgCommand {
             optional.ifPresent(data -> {
                 IKillData killData = validator.getData(data);
                 action.accept(killData, amount);
+                source.sendSuccess(new TranslationTextComponent("command.gunsrpg.progression.modify"), false);
             });
             return 0;
         }
@@ -293,6 +290,7 @@ public class GunsrpgCommand {
                 }
                 provider.lock(type);
             }
+            context.getSource().sendSuccess(new TranslationTextComponent("command.gunsrpg.skill." + (action == ModifyAction.UNLOCK ? "unlock" : "lock"), id), false);
             return 0;
         }
         return -1;
