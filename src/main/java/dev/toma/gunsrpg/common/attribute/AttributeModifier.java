@@ -37,8 +37,8 @@ public class AttributeModifier implements IAttributeModifier {
     }
 
     @Override
-    public IAttributeModifier copy() {
-        return new AttributeModifier(uid, op, value);
+    public IAttributeModifier instance() {
+        return this;
     }
 
     @Override

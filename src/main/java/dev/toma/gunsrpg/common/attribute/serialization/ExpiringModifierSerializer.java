@@ -23,7 +23,8 @@ public class ExpiringModifierSerializer implements IModifierSerializer<ExpiringM
         data.putUUID("uid", modifier.getUid());
         data.putString("op", modifier.getOperation().getId().toString());
         data.putDouble("value", modifier.getModifierValue());
-        data.putInt("expiryTime", modifier.getTimeLeft());
+        data.putInt("initialTime", modifier.getInitialTime());
+        data.putInt("timeLeft", modifier.getTimeLeft());
     }
 
     @Override
@@ -32,7 +33,10 @@ public class ExpiringModifierSerializer implements IModifierSerializer<ExpiringM
         ResourceLocation opKey = new ResourceLocation(data.getString("op"));
         double value = data.getDouble("value");
         IModifierOp op = AttributeOps.find(opKey);
-        int time = data.getInt("expiryTime");
-        return new ExpiringModifier(uuid, op, value, time);
+        int time = data.getInt("initialTime");
+        ExpiringModifier modifier = new ExpiringModifier(uuid, op, value, time);
+        int timeLeft = data.getInt("timeLeft");
+        modifier.setTimeLeft(timeLeft);
+        return modifier;
     }
 }

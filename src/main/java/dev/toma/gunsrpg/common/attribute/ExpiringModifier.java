@@ -10,6 +10,7 @@ public class ExpiringModifier implements IAttributeModifier, ITickableModifier {
     private final UUID uuid;
     private final IModifierOp op;
     private final double value;
+    private final int initialTime;
     private int time;
 
     public ExpiringModifier(String uuid, IModifierOp op, double value, int expiryTime) {
@@ -20,6 +21,7 @@ public class ExpiringModifier implements IAttributeModifier, ITickableModifier {
         this.uuid = uuid;
         this.op = op;
         this.value = value;
+        this.initialTime = expiryTime;
         this.time = expiryTime;
     }
 
@@ -44,8 +46,8 @@ public class ExpiringModifier implements IAttributeModifier, ITickableModifier {
     }
 
     @Override
-    public IAttributeModifier copy() {
-        return null;
+    public IAttributeModifier instance() {
+        return new ExpiringModifier(uuid, op, value, initialTime);
     }
 
     @Override
@@ -60,5 +62,13 @@ public class ExpiringModifier implements IAttributeModifier, ITickableModifier {
 
     public int getTimeLeft() {
         return time;
+    }
+
+    public int getInitialTime() {
+        return initialTime;
+    }
+
+    public void setTimeLeft(int time) {
+        this.time = time;
     }
 }

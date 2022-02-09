@@ -14,5 +14,5 @@ public interface IAttributeModifier {
 
     IModifierSerializer<?> getSerializer();
 
-    IAttributeModifier copy();
+    IAttributeModifier instance();
 }
