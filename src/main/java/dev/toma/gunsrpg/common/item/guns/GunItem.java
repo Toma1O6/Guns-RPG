@@ -11,6 +11,8 @@ import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
+import dev.toma.gunsrpg.common.entity.projectile.Bullet;
+import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
@@ -110,7 +112,13 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     }
 
     public void shootProjectile(World level, LivingEntity shooter, ItemStack stack, IShootProps props) {
-        // TODO implementations
+        Bullet bullet = new Bullet(ModEntities.BULLET.get(), level, shooter);
+        float damage = 1.0f;
+        float velocity = 1.0f;
+        int firerate = props.getFirerate();
+        bullet.setup(damage, velocity, firerate, false);
+        bullet.fire(shooter.xRot, shooter.yRot, props.getInaccuracy());
+        level.addFreshEntity(bullet);
     }
 
     /* FINAL METHODS ---------------------------------------------------------------- */

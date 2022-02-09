@@ -49,6 +49,8 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         this.setOwner(owner);
         this.passedPlayers.add(owner.getUUID()); // owner will never hear bullet whizz
         this.weapon = owner.getMainHandItem();
+        Vector3d position = owner.position();
+        setPos(position.x, position.y + owner.getEyeHeight(), position.z);
     }
 
     @Override
