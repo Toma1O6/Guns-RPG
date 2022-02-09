@@ -193,6 +193,11 @@
                     "require": 350
                 },
                 {
+                    "function": "equal",
+                    "value": 7,
+                    "require": 400
+                },
+                {
                     "function": "true",
                     "require": 2147483647
                 }
@@ -200,12 +205,12 @@
             "rewards": [
                 {
                     "function": "equal",
-                    "value": 7,
+                    "value": 8,
                     "rewards": [
                         {
                             "type": "gunsrpg:point",
                             "target": "gunsrpg:weapon",
-                            "amount": 2
+                            "amount": 1
                         },
                         {
                             "type": "gunsrpg:item",
@@ -217,6 +222,7 @@
                 {
                     "function": "oneOf",
                     "list": [
+                        7,
                         6,
                         4,
                         2
