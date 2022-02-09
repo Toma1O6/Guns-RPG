@@ -1,7 +1,16 @@
 {
     "hierarchy": {
         "category": "gun",
-        "parent": "gunsrpg:thompson_assembly"
+        "parent": "gunsrpg:thompson_assembly",
+        "extensions": [
+            "gunsrpg:vector_quickdraw",
+            "gunsrpg:vector_vertical",
+            "gunsrpg:vector_red_dot",
+            "gunsrpg:vector_tough_spring",
+            "gunsrpg:vector_extended",
+            "gunsrpg:vector_suppressor",
+            "gunsrpg:vector_overloaded"
+        ]
     },
     "properties": {
         "level": 45,
