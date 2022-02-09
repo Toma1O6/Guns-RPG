@@ -1,7 +1,8 @@
 package dev.toma.gunsrpg.common;
 
-@FunctionalInterface
 public interface IShootProps {
+
+    int getFirerate();
 
     float getInaccuracy();
 

@@ -141,10 +141,7 @@ public final class DebuffRegistration {
     private static float fallConstraint(IDebuffContext context) {
         DamageSource source = context.getSource();
         if (source == DamageSource.FALL) {
-            float base = 0.6F;
-            float taken = context.getReceivedDamage();
-            float multiplier = 1.0F + ((taken - base) / base);
-            return multiplier * (1.0F - context.getData().getAttributes().getAttribute(Attribs.FALL_RESISTANCE).floatValue());
+            return Math.max(0.0F, 0.3F - context.getData().getAttributes().getAttribute(Attribs.FALL_RESISTANCE).floatValue());
         }
         return 0.0F;
     }

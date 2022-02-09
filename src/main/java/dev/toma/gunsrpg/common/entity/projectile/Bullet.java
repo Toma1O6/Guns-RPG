@@ -28,7 +28,9 @@ public class Bullet extends AbstractPenetratingProjectile {
     }
 
     @Override
-    protected void onHitBlock(BlockRayTraceResult result) {}
+    protected void onHitBlock(BlockRayTraceResult result) {
+        remove();
+    }
 
     @Override
     protected void handleEntityCollision(EntityRayTraceResult result) {}

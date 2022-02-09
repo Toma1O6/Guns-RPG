@@ -139,6 +139,7 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         if (supersonic)
             passAround();
         postTick();
+        move(MoverType.SELF, getDeltaMovement());
     }
 
     public ItemStack getWeapon() {

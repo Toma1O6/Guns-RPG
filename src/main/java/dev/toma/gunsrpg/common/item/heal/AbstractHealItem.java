@@ -76,7 +76,8 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
         if (optional.isPresent()) {
             IPlayerData data = optional.orElse(null);
             T target = getTargetObject(level, player, data);
-            if (useCondition.test(target)) {
+            CooldownTracker tracker = player.getCooldowns();
+            if (useCondition.test(target) && !tracker.isOnCooldown(stack.getItem())) {
                 if (level.isClientSide) {
                     AnimationEngine engine = AnimationEngine.get();
                     IAnimationLoader loader = engine.loader();
