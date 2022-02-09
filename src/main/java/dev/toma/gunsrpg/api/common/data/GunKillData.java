@@ -36,13 +36,13 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
     public void advanceLevel(boolean notify) {
         requiredKillCount = updateKillRequirement();
         switch (level) {
-            case 8:
+            case 7:
                 awardPoints(2);
                 player.addItem(new ItemStack(ModItems.GOLD_EGG_SHARD));
                 break;
-            case 7:
-            case 5:
-            case 3:
+            case 6:
+            case 4:
+            case 2:
                 awardPoints(1);
                 break;
         }

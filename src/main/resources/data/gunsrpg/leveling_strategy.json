@@ -1,0 +1,235 @@
+{
+    "types": [
+        "playerLevel",
+        "weaponLevel"
+    ],
+    "targets": [
+        {
+            "key": "gunsrpg:level",
+            "identification": [
+                null
+            ],
+            "strategy": "playerLevel"
+        },
+        {
+            "key": "gunsrpg:weapon",
+            "identification": [
+                "gunsrpg:m1911",
+                "gunsrpg:r45",
+                "gunsrpg:desert_eagle",
+                "gunsrpg:ump45",
+                "gunsrpg:thompson",
+                "gunsrpg:vector",
+                "gunsrpg:akm",
+                "gunsrpg:hk416",
+                "gunsrpg:aug",
+                "gunsrpg:sks",
+                "gunsrpg:vss",
+                "gunsrpg:mk14ebr",
+                "gunsrpg:kar98k",
+                "gunsrpg:winchester",
+                "gunsrpg:awm",
+                "gunsrpg:s1897",
+                "gunsrpg:s686",
+                "gunsrpg:s12k",
+                "gunsrpg:wooden_crossbow",
+                "gunsrpg:chukonu",
+                "gunsrpg:grenade_launcher",
+                "gunsrpg:rocket_launcher"
+            ],
+            "strategy": "weaponLevel"
+        }
+    ],
+    "definitions": {
+        "playerLevel": {
+            "killRequirements": [
+                {
+                    "function": "biggerOrEqual",
+                    "value": 95,
+                    "require": 100
+                },
+                {
+                    "function": "biggerOrEqual",
+                    "value": 90,
+                    "require": 85
+                },
+                {
+                    "function": "biggerOrEqual",
+                    "value": 80,
+                    "require": 70
+                },
+                {
+                    "function": "biggerOrEqual",
+                    "value": 70,
+                    "require": 60
+                },
+                {
+                    "function": "biggerOrEqual",
+                    "value": 60,
+                    "require": 50
+                },
+                {
+                    "function": "biggerOrEqual",
+                    "value": 50,
+                    "require": 45
+                },
+                {
+                    "function": "biggerOrEqual",
+                    "value": 40,
+                    "require": 35
+                },
+                {
+                    "function": "biggerOrEqual",
+                    "value": 30,
+                    "require": 30
+                },
+                {
+                    "function": "biggerOrEqual",
+                    "value": 20,
+                    "require": 25
+                },
+                {
+                    "function": "biggerOrEqual",
+                    "value": 10,
+                    "require": 15
+                },
+                {
+                    "function": "true",
+                    "require": 10
+                }
+            ],
+            "rewards": [
+                {
+                    "function": "equal",
+                    "value": 100,
+                    "rewards": [
+                        {
+                            "type": "gunsrpg:point",
+                            "target": "gunsrpg:level",
+                            "amount": 25
+                        }
+                    ]
+                },
+                {
+                    "function": "equal",
+                    "value": 50,
+                    "rewards": [
+                        {
+                            "type": "gunsrpg:point",
+                            "target": "gunsrpg:level",
+                            "amount": 20
+                        }
+                    ]
+                },
+                {
+                    "function": "each",
+                    "value": 10,
+                    "rewards": [
+                        {
+                            "type": "gunsrpg:point",
+                            "target": "gunsrpg:level",
+                            "amount": 5
+                        }
+                    ]
+                },
+                {
+                    "function": "each",
+                    "value": 5,
+                    "rewards": [
+                        {
+                            "type": "gunsrpg:point",
+                            "target": "gunsrpg:level",
+                            "amount": 4
+                        }
+                    ]
+                },
+                {
+                    "function": "true",
+                    "rewards": [
+                        {
+                            "type": "gunsrpg:point",
+                            "target": "gunsrpg:level",
+                            "amount": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        "weaponLevel": {
+            "killRequirements": [
+                {
+                    "function": "equal",
+                    "value": 0,
+                    "require": 15
+                },
+                {
+                    "function": "equal",
+                    "value": 1,
+                    "require": 30
+                },
+                {
+                    "function": "equal",
+                    "value": 2,
+                    "require": 50
+                },
+                {
+                    "function": "equal",
+                    "value": 3,
+                    "require": 100
+                },
+                {
+                    "function": "equal",
+                    "value": 4,
+                    "require": 180
+                },
+                {
+                    "function": "equal",
+                    "value": 5,
+                    "require": 240
+                },
+                {
+                    "function": "equal",
+                    "value": 6,
+                    "require": 350
+                },
+                {
+                    "function": "true",
+                    "require": 2147483647
+                }
+            ],
+            "rewards": [
+                {
+                    "function": "equal",
+                    "value": 7,
+                    "rewards": [
+                        {
+                            "type": "gunsrpg:point",
+                            "target": "gunsrpg:weapon",
+                            "amount": 2
+                        },
+                        {
+                            "type": "gunsrpg:item",
+                            "item": "gunsrpg:gold_egg_shard",
+                            "count": 1
+                        }
+                    ]
+                },
+                {
+                    "function": "contains",
+                    "list": [
+                        6,
+                        4,
+                        2
+                    ],
+                    "rewards": [
+                        {
+                            "type": "gunsrpg:point",
+                            "target": "gunsrpg:weapon",
+                            "amount": 1
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
