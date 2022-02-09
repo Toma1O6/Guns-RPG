@@ -215,7 +215,7 @@
                     ]
                 },
                 {
-                    "function": "contains",
+                    "function": "oneOf",
                     "list": [
                         6,
                         4,
