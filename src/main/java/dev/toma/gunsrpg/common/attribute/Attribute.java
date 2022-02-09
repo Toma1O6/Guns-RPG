@@ -86,14 +86,15 @@ public class Attribute implements IAttribute {
 
     @Override
     public void addModifier(IAttributeModifier modifier) {
-        IAttributeModifier oldModifier = modifierMap.put(modifier.getUid(), modifier);
+        IAttributeModifier instance = modifier.instance();
+        IAttributeModifier oldModifier = modifierMap.put(modifier.getUid(), instance);
         if (oldModifier instanceof ITickableModifier) {
             temporaryModifiers.remove(oldModifier);
         }
-        if (modifier instanceof ITickableModifier) {
-            temporaryModifiers.add((ITickableModifier) modifier);
+        if (instance instanceof ITickableModifier) {
+            temporaryModifiers.add((ITickableModifier) instance);
         }
-        notifyListenerChange(modifier, IAttributeListener::onModifierAdded);
+        notifyListenerChange(instance, IAttributeListener::onModifierAdded);
         markChanged();
     }
 
