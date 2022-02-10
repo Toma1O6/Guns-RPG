@@ -19,7 +19,6 @@ public class GunDamageSource extends EntityDamageSource {
 
     protected GunDamageSource(Entity src, Entity indirect, ItemStack stacc) {
         super("mob", src);
-        setThorns();
         this.src = src;
         this.indirect = indirect;
         this.stacc = stacc;
