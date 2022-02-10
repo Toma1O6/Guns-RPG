@@ -5,6 +5,15 @@ import net.minecraft.entity.Entity;
 public final class PenetrationData {
 
     private Entity lastHit;
+    private float multiplier;
+
+    public void setMultiplier(float multiplier) {
+        this.multiplier = multiplier;
+    }
+
+    public float getMultiplier() {
+        return multiplier;
+    }
 
     public Entity getLastHit() {
         return lastHit;

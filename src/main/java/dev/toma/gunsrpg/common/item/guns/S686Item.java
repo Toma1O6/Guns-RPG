@@ -10,15 +10,22 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class S686Item extends GunItem {
+public class S686Item extends AbstractShotgun {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("s686/reload");
 
     public S686Item(String name) {
         super(name, new Properties().setISTER(() -> S686Renderer::new));
+    }
+
+    @Override
+    public int getPelletCount(LivingEntity shooter, ItemStack stack) {
+        return 5;
     }
 
     @Override

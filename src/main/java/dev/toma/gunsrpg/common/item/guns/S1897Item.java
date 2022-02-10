@@ -27,7 +27,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class S1897Item extends GunItem {
+public class S1897Item extends AbstractShotgun {
 
     private static final ResourceLocation AIM_ANIMATION = GunsRPG.makeResource("s1897/aim");
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("s1897/reload");
@@ -55,6 +55,11 @@ public class S1897Item extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 8)
                     .define(AmmoMaterials.NETHERITE, 10)
                 .build();
+    }
+
+    @Override
+    public int getPelletCount(LivingEntity shooter, ItemStack stack) {
+        return 5;
     }
 
     @Override

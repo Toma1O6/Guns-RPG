@@ -116,11 +116,6 @@ public class GunAttackGoal extends Goal {
         }
 
         @Override
-        public int getFirerate() {
-            return entity.getFirerate();
-        }
-
-        @Override
         public float getDamageMultiplier() {
             return entity.getDamageMultiplier();
         }

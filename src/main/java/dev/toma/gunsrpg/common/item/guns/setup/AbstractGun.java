@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.item.guns.setup;
 
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.common.entity.projectile.PenetrationData;
 import dev.toma.gunsrpg.common.item.BaseItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterialManager;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
@@ -29,6 +31,10 @@ public abstract class AbstractGun extends BaseItem {
     }
 
     public abstract MaterialContainer getContainer();
+
+    public PenetrationData getPenetrationData(IPlayerData data) {
+        return null;
+    }
 
     public static int getAmmoCount(ItemStack stack) {
         CompoundNBT nbt = stack.getTag();

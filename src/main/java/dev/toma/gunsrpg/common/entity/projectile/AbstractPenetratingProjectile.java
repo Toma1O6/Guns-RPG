@@ -6,6 +6,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public abstract class AbstractPenetratingProjectile extends AbstractProjectile {
 
     private PenetrationData penetrationData;
@@ -20,12 +22,8 @@ public abstract class AbstractPenetratingProjectile extends AbstractProjectile {
 
     protected abstract void handleEntityCollision(EntityRayTraceResult result);
 
-    protected abstract float getPenetrationDamageMultiplier();
-
-    @Override
-    public void setup(float damage, float velocity, int delay, boolean isPenetratingRound) {
-        super.setup(damage, velocity, delay, isPenetratingRound);
-        this.penetrationData = isPenetratingRound ? new PenetrationData() : null;
+    public void setPenetrationData(@Nullable PenetrationData data) {
+        this.penetrationData = data;
     }
 
     @Override
@@ -33,7 +31,7 @@ public abstract class AbstractPenetratingProjectile extends AbstractProjectile {
         handleEntityCollision(result);
         if (penetrationData != null) {
             boolean noEnergy = penetrationData.collide(result.getEntity());
-            mulDamage(this.getPenetrationDamageMultiplier());
+            mulDamage(penetrationData.getMultiplier());
             if (noEnergy) {
                 remove();
             }
@@ -42,6 +40,6 @@ public abstract class AbstractPenetratingProjectile extends AbstractProjectile {
 
     @Override
     protected boolean canHitEntity(Entity entity) {
-        return (penetrationData != null && entity != penetrationData.getLastHit()) && super.canHitEntity(entity);
+        return super.canHitEntity(entity) && (penetrationData == null || penetrationData.getLastHit() != entity);
     }
 }

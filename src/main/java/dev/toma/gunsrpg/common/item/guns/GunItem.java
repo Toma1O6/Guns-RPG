@@ -12,6 +12,7 @@ import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.entity.projectile.Bullet;
+import dev.toma.gunsrpg.common.entity.projectile.PenetrationData;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
@@ -26,9 +27,11 @@ import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -60,6 +63,13 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     public abstract SkillType<?> getRequiredSkill();
 
     /* PROPERTIES FOR OVERRIDES ---------------------------------------------- */
+
+    public float getWeaponDamage(ItemStack stack) {
+        IWeaponConfig config = getWeaponConfig();
+        float base = config.getDamage();
+        IAmmoMaterial material = this.getMaterialFromNBT(stack);
+        return base + this.container.getAdditionalDamage(material);
+    }
 
     public int getMaxAmmo(IAttributeProvider provider) {
         return 1;
@@ -113,11 +123,21 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
     public void shootProjectile(World level, LivingEntity shooter, ItemStack stack, IShootProps props) {
         Bullet bullet = new Bullet(ModEntities.BULLET.get(), level, shooter);
-        float damage = 1.0f;
-        float velocity = 1.0f;
-        int firerate = props.getFirerate();
-        bullet.setup(damage, velocity, firerate, false);
+        IWeaponConfig config = this.getWeaponConfig();
+        float damage = this.getWeaponDamage(stack) * props.getDamageMultiplier();
+        float velocity = config.getVelocity();
+        int delay = config.getGravityDelay();
+        bullet.setup(damage, velocity, delay);
         bullet.fire(shooter.xRot, shooter.yRot, props.getInaccuracy());
+        if (shooter instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) shooter;
+            PlayerData.get(player).ifPresent(data -> {
+                PenetrationData penetrationData = getPenetrationData(data);
+                if (penetrationData != null) {
+                    bullet.setPenetrationData(penetrationData);
+                }
+            });
+        }
         level.addFreshEntity(bullet);
     }
 
@@ -139,22 +159,9 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     }
 
     public final void shoot(World world, LivingEntity entity, ItemStack stack, IShootProps props, SoundEvent event) {
-        Item item = stack.getItem();
-        CooldownTracker tracker = null;
-        // TODO remove
-        if (entity instanceof PlayerEntity) {
-            tracker = ((PlayerEntity) entity).getCooldowns();
-            if (tracker.isOnCooldown(item)) {
-                return;
-            }
-        }
         shootProjectile(world, entity, stack, props);
         this.setAmmoCount(stack, this.getAmmo(stack) - 1);
         world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);
-        // TODO remove
-        if (tracker != null) {
-            tracker.addCooldown(item, this.getFirerate(PlayerData.getUnsafe((PlayerEntity) entity).getAttributes()));
-        }
     }
 
     public final AmmoType getAmmoType() {

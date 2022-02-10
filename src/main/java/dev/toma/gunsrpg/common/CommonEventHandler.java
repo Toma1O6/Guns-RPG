@@ -12,7 +12,6 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataProvider;
 import dev.toma.gunsrpg.common.debuffs.IDebuffContext;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
-import dev.toma.gunsrpg.common.entity.CrossbowBoltEntity;
 import dev.toma.gunsrpg.common.entity.ExplosiveArrowEntity;
 import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.common.item.HammerItem;
@@ -243,10 +242,12 @@ public class CommonEventHandler {
                     }
                 }
                 if (!instantKill) {
-                    event.setAmount(event.getAmount() + provider.getAttribute(Attribs.MELEE_DAMAGE).floatValue());
+                    float amount = event.getAmount() + provider.getAttribute(Attribs.MELEE_DAMAGE).floatValue();
+                    event.setAmount(amount);
                 }
             });
-        } else if ((source.getDirectEntity() instanceof AbstractArrowEntity || source.getDirectEntity() instanceof CrossbowBoltEntity) && source.getEntity() instanceof PlayerEntity) {
+            // TODO implement arrow damage boost
+        } else if (source.getDirectEntity() instanceof AbstractArrowEntity && source.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) source.getEntity();
             LightHunterSkill skill = PlayerData.getSkill(player, Skills.LIGHT_HUNTER);
             if (skill != null && skill.canApply(player)) {

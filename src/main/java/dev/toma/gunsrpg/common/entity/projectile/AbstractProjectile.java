@@ -33,7 +33,6 @@ public abstract class AbstractProjectile extends ProjectileEntity {
     private float projectileDamage;
     private float velocity;
     private int delay;
-    private boolean isPenetratingRound;
     private boolean supersonic;
     boolean invalid;
 
@@ -49,6 +48,7 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         this.setOwner(owner);
         this.passedPlayers.add(owner.getUUID()); // owner will never hear bullet whizz
         this.weapon = owner.getMainHandItem();
+        this.noPhysics = true;
         Vector3d position = owner.position();
         setPos(position.x, position.y + owner.getEyeHeight(), position.z);
     }
@@ -72,11 +72,10 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         return true;
     }
 
-    public void setup(float damage, float velocity, int delay, boolean isPenetratingRound) {
+    public void setup(float damage, float velocity, int delay) {
         this.projectileDamage = damage;
         this.velocity = velocity;
         this.delay = delay;
-        this.isPenetratingRound = isPenetratingRound;
         this.supersonic = velocity > 10.0F;
         onDamageChanged();
     }
