@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item.guns;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Hk416Renderer;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
@@ -10,8 +11,10 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 
 public class Hk416Item extends GunItem {
 
@@ -59,5 +62,15 @@ public class Hk416Item extends GunItem {
     @Override
     public IRenderConfig right() {
         return RenderConfigs.HK416_RIGHT;
+    }
+
+    @Override
+    protected SoundEvent getShootSound(PlayerEntity entity) {
+        return super.getShootSound(entity);
+    }
+
+    @Override
+    protected SoundEvent getEntityShootSound(LivingEntity entity) {
+        return ModSounds.M16;
     }
 }

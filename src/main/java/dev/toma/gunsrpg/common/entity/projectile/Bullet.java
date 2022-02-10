@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.entity.projectile;
 
 import dev.toma.gunsrpg.common.init.ModDamageSources;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

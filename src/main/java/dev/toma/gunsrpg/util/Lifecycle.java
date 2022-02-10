@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.ModRecipeTypes;
 import dev.toma.gunsrpg.common.init.ModTags;
+import dev.toma.gunsrpg.common.item.SlingItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
@@ -47,6 +48,7 @@ public final class Lifecycle {
         initWeaponProviderMap();
         initOreToChunkMap();
         ModRecipeTypes.register();
+        SlingItem.initAmmoRegistry();
     }
 
     public StartGearManager getStartingGearManager() {

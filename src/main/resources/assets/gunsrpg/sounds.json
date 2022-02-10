@@ -260,6 +260,15 @@
             }
         ]
     },
+    "m16": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:m16",
+                "stream": true
+            }
+        ]
+    },
     "kar98k_reload_clip": {
         "category": "master",
         "sounds": [

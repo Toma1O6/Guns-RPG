@@ -35,6 +35,7 @@ public class ModSounds {
     public static final SoundEvent SLR = null;
     public static final SoundEvent M24 = null;
     public static final SoundEvent S686 = null;
+    public static final SoundEvent M16 = null;
     public static final SoundEvent KAR98K_RELOAD_CLIP = null;
     public static final SoundEvent KAR98K_RELOAD_CLIP_FAST = null;
     public static final SoundEvent CROSSBOW_RELOAD = null;

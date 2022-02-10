@@ -244,12 +244,12 @@ public abstract class AbstractProjectile extends ProjectileEntity {
             List<ServerPlayerEntity> players = serverLevel.getEntitiesOfClass(ServerPlayerEntity.class, getBoundingBox().inflate(3.0F), pl -> !passedPlayers.contains(pl.getUUID()));
             for (ServerPlayerEntity player : players) {
                 passedPlayers.add(player.getUUID());
-                player.connection.send(new SPlaySoundEffectPacket(ModSounds.BULLET_WHIZZ, SoundCategory.MASTER, pos.x, pos.y, pos.z, 0.6F, 1.0F));
+                player.connection.send(new SPlaySoundEffectPacket(ModSounds.BULLET_WHIZZ, SoundCategory.MASTER, pos.x, pos.y, pos.z, 0.2F, 1.0F));
             }
         }
     }
 
-    private void aggroNearby(PlayerEntity player) {
+    protected void aggroNearby(PlayerEntity player) {
         PlayerData.get(player).ifPresent(data -> {
             double mobScareRange = 25.0;
             GunItem gun = (GunItem) weapon.getItem();

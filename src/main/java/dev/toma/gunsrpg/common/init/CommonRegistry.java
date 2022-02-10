@@ -331,7 +331,7 @@ public class CommonRegistry {
                                 AttributeTarget.create(Modifiers.BLEED_BLOCKING, Attribs.BLEED_BLOCK),
                                 AttributeTarget.create(Modifiers.BLEED_DELAYING, Attribs.BLEED_DELAY)
                         )
-                        .describe("Bleeding:", "Disabled for 60 seconds", "Spread speed: -30%")
+                        .describe("Bleeding:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(50, AnimationPaths.HEMOSTAT)
                         .build(),
                 AttributeAccessHealItem.define("vitamins")
@@ -339,7 +339,7 @@ public class CommonRegistry {
                                 AttributeTarget.create(Modifiers.INFECTION_BLOCKING, Attribs.INFECTION_BLOCK),
                                 AttributeTarget.create(Modifiers.INFECTION_DELAYING, Attribs.INFECTION_DELAY)
                         )
-                        .describe("Infection:", "Disabled for 60 seconds", "Spread speed: -30%")
+                        .describe("Infection:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(40, AnimationPaths.VITAMINS)
                         .build(),
                 AttributeAccessHealItem.define("propital")
@@ -347,7 +347,7 @@ public class CommonRegistry {
                                 AttributeTarget.create(Modifiers.FRACTURE_BLOCKING, Attribs.FRACTURE_BLOCK),
                                 AttributeTarget.create(Modifiers.FRACTURE_DELAYING, Attribs.FRACTURE_DELAY)
                         )
-                        .describe("Fracture:", "Disabled for 60 seconds", "Spread speed: -30%")
+                        .describe("Fracture:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(30, AnimationPaths.STIM)
                         .build(),
                 AttributeAccessHealItem.define("calcium_shot")
@@ -355,7 +355,7 @@ public class CommonRegistry {
                                 AttributeTarget.create(Modifiers.POISON_BLOCKING, Attribs.POISON_BLOCK),
                                 AttributeTarget.create(Modifiers.POISON_DELAYING, Attribs.POISON_DELAY)
                         )
-                        .describe("Poison:", "Disabled for 60 seconds", "Spread speed: -30%")
+                        .describe("Poison:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(30, AnimationPaths.STIM)
                         .build(),
                 ContinuousHealingItem.define("ufak")
@@ -589,6 +589,7 @@ public class CommonRegistry {
                 sound("slr"),
                 sound("m24"),
                 sound("s686"),
+                sound("m16"),
                 sound("kar98k_reload_clip"),
                 sound("kar98k_reload_clip_fast"),
                 sound("crossbow_reload"),

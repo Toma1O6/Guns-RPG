@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.entity.*;
 import dev.toma.gunsrpg.common.entity.projectile.Bolt;
 import dev.toma.gunsrpg.common.entity.projectile.Bullet;
+import dev.toma.gunsrpg.common.entity.projectile.Pebble;
 import dev.toma.gunsrpg.common.entity.projectile.Pellet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
@@ -54,6 +55,9 @@ public class ModEntities {
     );
     public static final RegistryObject<EntityType<Bolt>> BOLT = register("bolt", Bolt::new, EntityClassification.MISC,
             builder -> builder.sized(0.01F, 0.01F).noSummon().noSave()
+    );
+    public static final RegistryObject<EntityType<Pebble>> PEBBLE = register("pebble", Pebble::new, EntityClassification.MISC,
+            builder -> builder.sized(0.1F, 0.1F).noSummon().noSave().clientTrackingRange(4).updateInterval(20)
     );
 
     private static <E extends Entity> RegistryObject<EntityType<E>> register(

@@ -83,6 +83,7 @@ public class ClientSideManager {
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.PELLET.get(),              NoOpRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.BULLET.get(),              NoOpRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.FLARE.get(),               NoOpRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.PEBBLE.get(),              NoOpRenderer::new);
 
         // keybinds
         ModKeybinds.registerKeybinds();

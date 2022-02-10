@@ -1,20 +1,25 @@
 package dev.toma.gunsrpg.common.item;
 
 import dev.toma.gunsrpg.ModTabs;
+import dev.toma.gunsrpg.common.entity.projectile.Pebble;
+import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import lib.toma.animations.Easings;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
+
+import java.util.IdentityHashMap;
+import java.util.Map;
 
 public class SlingItem extends BaseItem {
 
@@ -25,7 +30,7 @@ public class SlingItem extends BaseItem {
     @Override
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        boolean hasAmmo = player.isCreative() || ItemLocator.hasItem(player.inventory, ModItems.SMALL_STONE);
+        boolean hasAmmo = player.isCreative() || ItemLocator.hasItem(player.inventory, AmmoRegistry::isValidAmmo);
         if (hasAmmo) {
             player.startUsingItem(hand);
             return ActionResult.consume(stack);
@@ -39,7 +44,7 @@ public class SlingItem extends BaseItem {
             return;
         }
         PlayerEntity player = (PlayerEntity) entity;
-        ItemStack ammoStack = ItemLocator.findFirst(player.inventory, found -> found.getItem() == ModItems.SMALL_STONE);
+        ItemStack ammoStack = ItemLocator.findFirst(player.inventory, AmmoRegistry::isValidAmmo);
         boolean hasAmmo = !ammoStack.isEmpty() || player.isCreative();
 
         int pullTime = getUseDuration(stack) - timeLeft;
@@ -53,10 +58,14 @@ public class SlingItem extends BaseItem {
         }
 
         if (!world.isClientSide) {
-            ArrowEntity arrowEntity = new ArrowEntity(world, player);
-            arrowEntity.shootFromRotation(player, player.xRot, player.yRot, 0.0F, power * 2.0F, 1.0F);
-            arrowEntity.pickup = AbstractArrowEntity.PickupStatus.DISALLOWED;
-            world.addFreshEntity(arrowEntity);
+            Pebble pebble = new Pebble(ModEntities.PEBBLE.get(), world, entity);
+            int damage = AmmoRegistry.getDamage(ammoStack);
+            if (damage == 0 && player.isCreative()) {
+                damage = 4;
+            }
+            pebble.setup(damage, power * 2.5F, 0);
+            pebble.fire(player.xRot, player.yRot, 0.5F);
+            world.addFreshEntity(pebble);
             if (!player.isCreative()) {
                 stack.hurtAndBreak(1, player, playerArg -> playerArg.broadcastBreakEvent(player.getUsedItemHand()));
             }
@@ -81,5 +90,31 @@ public class SlingItem extends BaseItem {
     private static float getPowerForTime(int time) {
         float rawPower = time / 15.0F;
         return rawPower >= 1.0F ? 1.0F : Easings.EASE_OUT_QUAD.ease(rawPower);
+    }
+
+    public static void initAmmoRegistry() {
+        AmmoRegistry.register(ModItems.SMALL_STONE, 2);
+        AmmoRegistry.register(Items.IRON_NUGGET, 3);
+        AmmoRegistry.register(Items.GOLD_NUGGET, 4);
+    }
+
+    public static final class AmmoRegistry {
+
+        private static final Map<Item, Integer> DAMAGE_TABLE = new IdentityHashMap<>();
+
+        public static void register(Item item, int value) {
+            if (value <= 0) {
+                throw new IllegalArgumentException("Damage must be bigger than 0");
+            }
+            DAMAGE_TABLE.put(item, value);
+        }
+
+        public static int getDamage(ItemStack stack) {
+            return DAMAGE_TABLE.getOrDefault(stack.getItem(), 0);
+        }
+
+        public static boolean isValidAmmo(ItemStack stack) {
+            return DAMAGE_TABLE.containsKey(stack.getItem());
+        }
     }
 }

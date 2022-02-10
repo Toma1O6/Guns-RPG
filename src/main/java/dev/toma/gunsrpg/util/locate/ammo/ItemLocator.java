@@ -10,6 +10,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public final class ItemLocator extends AbstractLocator<ItemStack, IInventory> {
@@ -34,8 +35,12 @@ public final class ItemLocator extends AbstractLocator<ItemStack, IInventory> {
         };
     }
 
+    public static boolean hasItem(IInventory inventory, Predicate<ItemStack> condition) {
+        return !findFirst(inventory, condition::test).isEmpty();
+    }
+
     public static boolean hasItem(IInventory inventory, Item item) {
-        return !findFirst(inventory, stack -> stack.getItem() == item).isEmpty();
+        return hasItem(inventory, stack -> stack.getItem() == item);
     }
 
     public static ItemStack findFirst(IInventory inventory, IContextIterator<ItemStack> iterator, ILocatorPredicate<ItemStack> predicate) {
