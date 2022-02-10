@@ -28,7 +28,7 @@ public abstract class AbstractShotgun extends GunItem {
     protected void shootPellet(World level, LivingEntity shooter, ItemStack stack, IShootProps props, float baseSpread) {
         Pellet pellet = new Pellet(ModEntities.PELLET.get(), level, shooter);
         IWeaponConfig config = this.getWeaponConfig();
-        float damage = this.getWeaponDamage(stack);
+        float damage = this.getWeaponDamage(stack) * props.getDamageMultiplier();
         float velocity = config.getVelocity();
         int delay = config.getGravityDelay();
         pellet.setup(damage, velocity, delay);

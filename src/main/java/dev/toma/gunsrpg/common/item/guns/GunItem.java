@@ -67,8 +67,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     public float getWeaponDamage(ItemStack stack) {
         IWeaponConfig config = getWeaponConfig();
         float base = config.getDamage();
-        IAmmoMaterial material = this.getMaterialFromNBT(stack);
-        return base + this.container.getAdditionalDamage(material);
+        return base + getDamageBonus(stack);
     }
 
     public int getMaxAmmo(IAttributeProvider provider) {

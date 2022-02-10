@@ -134,6 +134,11 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
         return false;
     }
 
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
+    }
+
     public int getUseTime() {
         return useTime;
     }

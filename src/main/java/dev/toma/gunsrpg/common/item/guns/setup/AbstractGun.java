@@ -87,6 +87,11 @@ public abstract class AbstractGun extends BaseItem {
     }
 
     @Override
+    public boolean isEnchantable(ItemStack p_77616_1_) {
+        return false;
+    }
+
+    @Override
     public boolean canAttackBlock(BlockState blockState, World world, BlockPos pos, PlayerEntity player) {
         return false;
     }
