@@ -29,7 +29,7 @@ public class GunAttackGoal extends Goal {
     public GunAttackGoal(ZombieGunnerEntity gunner) {
         this.entity = gunner;
         this.props = new GunnerProjectileProperties(gunner);
-        setFlags(EnumSet.of(Flag.TARGET));
+        setFlags(EnumSet.of(Flag.TARGET, Flag.LOOK));
     }
 
     @Override
@@ -220,6 +220,12 @@ public class GunAttackGoal extends Goal {
         }
 
         @Override
+        protected void finishReloading() {
+            super.finishReloading();
+            shotsFired = 0;
+        }
+
+        @Override
         protected boolean doShooting() {
             if (actualDelay > 0) {
                 --actualDelay;
@@ -227,7 +233,7 @@ public class GunAttackGoal extends Goal {
                 return false;
             }
             ++shotsFired;
-            if (shotsFired > burstSize.getInt()) {
+            if (shotsFired >= burstSize.getInt()) {
                 actualDelay = burstDelayTotal.getInt();
             }
             return super.doShooting();

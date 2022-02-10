@@ -241,7 +241,7 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         if (!level.isClientSide) {
             ServerWorld serverLevel = (ServerWorld) level;
             Vector3d pos = position();
-            List<ServerPlayerEntity> players = serverLevel.getEntitiesOfClass(ServerPlayerEntity.class, getBoundingBox().inflate(6.0F), pl -> !passedPlayers.contains(pl.getUUID()));
+            List<ServerPlayerEntity> players = serverLevel.getEntitiesOfClass(ServerPlayerEntity.class, getBoundingBox().inflate(3.0F), pl -> !passedPlayers.contains(pl.getUUID()));
             for (ServerPlayerEntity player : players) {
                 passedPlayers.add(player.getUUID());
                 player.connection.send(new SPlaySoundEffectPacket(ModSounds.BULLET_WHIZZ, SoundCategory.MASTER, pos.x, pos.y, pos.z, 0.6F, 1.0F));
