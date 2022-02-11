@@ -58,7 +58,7 @@ public class SlingItem extends BaseItem {
         }
 
         float power = getPowerForTime(pullTime);
-        if (power < 1.0) {
+        if (power < 0.75) {
             return;
         }
 
@@ -68,7 +68,7 @@ public class SlingItem extends BaseItem {
             if (damage == 0 && player.isCreative()) {
                 damage = 4;
             }
-            pebble.setup(damage, power * 1.5F, 0);
+            pebble.setup(damage * power, power * 1.5F, 0);
             pebble.fire(player.xRot, player.yRot, 0.5F);
             pebble.setAmmoSource(ammoStack.isEmpty() ? new ItemStack(ModItems.SMALL_STONE) : ammoStack.copy());
             world.addFreshEntity(pebble);
@@ -95,7 +95,7 @@ public class SlingItem extends BaseItem {
 
     private static float getPowerForTime(int time) {
         float rawPower = time / 11.0F;
-        return rawPower >= 1.0F ? 1.0F : Easings.EASE_OUT_QUAD.ease(rawPower);
+        return rawPower >= 1.0F ? 1.0F : Easings.EASE_OUT_QUAD.ease((rawPower - 0.75F) / 0.25F);
     }
 
     public static void initAmmoRegistry() {
