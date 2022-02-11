@@ -38,6 +38,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
@@ -50,6 +51,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Collection;
 import java.util.List;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = GunsRPG.MODID)
@@ -92,7 +94,24 @@ public class ClientEventHandler {
                     boolean b = day % cycle == 0 && day > 0;
                     long l = b ? 0 : cycle - day % cycle;
                     String remainingDays = l + "";
-                    mc.font.draw(matrixStack, remainingDays, window.getGuiScaledWidth() - 10 - mc.font.width(remainingDays) / 2f, 6, b ? 0xff0000 : l > 0 && l < 3 ? 0xffff00 : 0xffffff);
+                    FontRenderer font = mc.font;
+                    int warningWidth = font.width(remainingDays);
+                    int x = window.getGuiScaledWidth() - 9;
+                    Collection<EffectInstance> effects = player.getActiveEffects();
+                    boolean renderEffectBg = false;
+                    for (EffectInstance instance : effects) {
+                        if (instance.isVisible()) {
+                            renderEffectBg = true;
+                            break;
+                        }
+                    }
+                    int color = b ? 0xff0000 : l > 0 && l < 3 ? 0xffff00 : 0xffffff;
+                    if (renderEffectBg) {
+                        RenderUtils.drawSolid(matrixStack.last().pose(), x - warningWidth / 2f - 3, 3, x - warningWidth / 2f + warningWidth + 3, 16, 0xFF << 24 | color);
+                        RenderUtils.drawSolid(matrixStack.last().pose(), x - warningWidth / 2f - 2, 4, x - warningWidth / 2f + warningWidth + 2, 15, 0xFF << 24);
+                    }
+
+                    font.drawShadow(matrixStack, remainingDays, 0.5F + x - warningWidth / 2f, 6, color);
                 }
                 RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
                 ItemStack stack = player.getMainHandItem();
