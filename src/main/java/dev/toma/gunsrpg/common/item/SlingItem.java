@@ -24,7 +24,7 @@ import java.util.Map;
 public class SlingItem extends BaseItem {
 
     public SlingItem(String name) {
-        super(name, new Properties().tab(ModTabs.ITEM_TAB).durability(75));
+        super(name, new Properties().tab(ModTabs.ITEM_TAB).durability(130));
     }
 
     @Override
@@ -36,6 +36,11 @@ public class SlingItem extends BaseItem {
             return ActionResult.consume(stack);
         }
         return ActionResult.fail(stack);
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
     }
 
     @Override
@@ -53,7 +58,7 @@ public class SlingItem extends BaseItem {
         }
 
         float power = getPowerForTime(pullTime);
-        if (power < 0.1) {
+        if (power < 1.0) {
             return;
         }
 
@@ -63,7 +68,7 @@ public class SlingItem extends BaseItem {
             if (damage == 0 && player.isCreative()) {
                 damage = 4;
             }
-            pebble.setup(damage, power * 2.5F, 0);
+            pebble.setup(damage, power * 1.5F, 0);
             pebble.fire(player.xRot, player.yRot, 0.5F);
             pebble.setAmmoSource(ammoStack.isEmpty() ? new ItemStack(ModItems.SMALL_STONE) : ammoStack.copy());
             world.addFreshEntity(pebble);
@@ -89,7 +94,7 @@ public class SlingItem extends BaseItem {
     }
 
     private static float getPowerForTime(int time) {
-        float rawPower = time / 15.0F;
+        float rawPower = time / 11.0F;
         return rawPower >= 1.0F ? 1.0F : Easings.EASE_OUT_QUAD.ease(rawPower);
     }
 
