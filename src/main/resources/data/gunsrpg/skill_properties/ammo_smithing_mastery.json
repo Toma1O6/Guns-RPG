@@ -4,7 +4,7 @@
         "parent": "gunsrpg:netherite_ammo_smith"
     },
     "properties": {
-        "level": 60,
+        "level": 65,
         "price": 10,
         "transactionValidator": {
             "type": "gunsrpg:level"
