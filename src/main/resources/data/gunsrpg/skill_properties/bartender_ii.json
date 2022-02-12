@@ -4,7 +4,8 @@
         "parent": "gunsrpg:bartender_i",
         "children": [
             "gunsrpg:bartender_iii"
-        ]
+        ],
+        "override": "gunsrpg:bartender_iii"
     },
     "properties": {
         "level": 25,

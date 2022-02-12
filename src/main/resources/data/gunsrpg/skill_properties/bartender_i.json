@@ -3,7 +3,8 @@
         "category": "survival",
         "children": [
             "gunsrpg:bartender_ii"
-        ]
+        ],
+        "override": "gunsrpg:bartender_ii"
     },
     "properties": {
         "level": 15,
