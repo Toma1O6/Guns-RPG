@@ -1,0 +1,15 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "children": [
+            "gunsrpg:careful_gunner_ii"
+        ]
+    },
+    "properties": {
+        "level": 20,
+        "price": 3,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

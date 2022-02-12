@@ -1,0 +1,15 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "children": [
+            "gunsrpg:repair_man_ii"
+        ]
+    },
+    "properties": {
+        "level": 20,
+        "price": 2,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

@@ -58,6 +58,13 @@ public class SkillUtil {
             return description;
         }
 
+        public static ITextComponent[] generateAndMerge(int lines, SkillType<?> type, ITextComponent[] components) {
+            ITextComponent[] description = new ITextComponent[lines + components.length];
+            prepareEmptyDescriptionLines(type, lines, description);
+            System.arraycopy(components, 0, description, lines, components.length);
+            return description;
+        }
+
         public static ITextComponent[] generateSimpleDescription(int lines, SkillType<?> type) {
             ITextComponent[] components = new ITextComponent[lines];
             prepareEmptyDescriptionLines(type, lines, components);

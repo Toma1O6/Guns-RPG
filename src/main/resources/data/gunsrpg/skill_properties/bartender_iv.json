@@ -1,0 +1,16 @@
+{
+    "hierarchy": {
+        "category": "survival",
+        "parent": "gunsrpg:bartender_iii",
+        "children": [
+            "gunsrpg:bartender_v"
+        ]
+    },
+    "properties": {
+        "level": 55,
+        "price": 6,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}
