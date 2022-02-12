@@ -1,6 +1,13 @@
 package dev.toma.gunsrpg.api.common.data;
 
-import dev.toma.gunsrpg.common.init.ModItems;
+import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
+import dev.toma.gunsrpg.api.common.skill.ITransactionValidatorFactory;
+import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;
+import dev.toma.gunsrpg.common.skills.core.WeaponTransactionValidator;
+import dev.toma.gunsrpg.resource.progression.IProgressionStrategy;
+import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -13,13 +20,17 @@ import net.minecraftforge.common.util.INBTSerializable;
 public class GunKillData implements IKillData, ILockStateChangeable, INBTSerializable<CompoundNBT> {
 
     private final PlayerEntity player;
+    private final IProgressionStrategy strategy;
     private int killCount;
     private int requiredKillCount;
     private int level;
     private int points;
 
-    public GunKillData(PlayerEntity player) {
+    public GunKillData(PlayerEntity player, GunItem gunItem) {
         this.player = player;
+        ITransactionValidatorFactory<?, ?> factory = TransactionValidatorRegistry.getValidatorFactory(WeaponTransactionValidator.ID);
+        ITransactionValidator validator = TransactionValidatorRegistry.getTransactionValidator(factory, JsonHelper.toSimpleJson(gunItem.getRegistryName()));
+        this.strategy = GunsRPG.getModLifecycle().getProgressionStrategyManager().getStrategy(validator);
     }
 
     @Override
@@ -35,17 +46,7 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
     @Override
     public void advanceLevel(boolean notify) {
         requiredKillCount = updateKillRequirement();
-        switch (level) {
-            case 7:
-                awardPoints(2);
-                player.addItem(new ItemStack(ModItems.GOLD_EGG_SHARD));
-                break;
-            case 6:
-            case 4:
-            case 2:
-                awardPoints(1);
-                break;
-        }
+        strategy.applyRewards(player, this, level);
     }
 
     @Override
@@ -81,7 +82,7 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
 
     @Override
     public int getLevelLimit() {
-        return 7;
+        return 8;
     }
 
     @Override
@@ -118,23 +119,6 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
     }
 
     private int updateKillRequirement() {
-        switch (level) {
-            case 0:
-                return 15;
-            case 1:
-                return 30;
-            case 2:
-                return 50;
-            case 3:
-                return 100;
-            case 4:
-                return 180;
-            case 5:
-                return 240;
-            case 6:
-                return 350;
-            default:
-                return 0;
-        }
+        return strategy.getRequiredKillCount(level);
     }
 }

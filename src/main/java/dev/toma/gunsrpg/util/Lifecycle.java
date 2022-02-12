@@ -12,6 +12,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.resource.airdrop.AirdropLootManager;
 import dev.toma.gunsrpg.resource.gunner.ZombieGunnerWeaponManager;
+import dev.toma.gunsrpg.resource.progression.ProgressionStrategyManager;
 import dev.toma.gunsrpg.resource.skill.SkillPropertyLoader;
 import dev.toma.gunsrpg.resource.startgear.StartGearManager;
 import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
@@ -38,6 +39,7 @@ public final class Lifecycle {
     private final StartGearManager startingGearManager = new StartGearManager();
     private final ZombieGunnerWeaponManager zombieGunnerWeaponManager = new ZombieGunnerWeaponManager();
     private final AirdropLootManager airdropLootManager = new AirdropLootManager();
+    private final ProgressionStrategyManager progressionStrategyManager = new ProgressionStrategyManager();
 
     public void modInit() {
         ModTags.init();
@@ -61,6 +63,10 @@ public final class Lifecycle {
 
     public AirdropLootManager getAirdropLootManager() {
         return airdropLootManager;
+    }
+
+    public ProgressionStrategyManager getProgressionStrategyManager() {
+        return progressionStrategyManager;
     }
 
     public QuestSystem quests() {
@@ -118,5 +124,6 @@ public final class Lifecycle {
         event.addListener(zombieGunnerWeaponManager);
         event.addListener(new SkillPropertyLoader());
         event.addListener(airdropLootManager);
+        event.addListener(progressionStrategyManager);
     }
 }

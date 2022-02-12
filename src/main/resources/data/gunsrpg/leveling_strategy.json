@@ -105,7 +105,6 @@
                     "rewards": [
                         {
                             "type": "gunsrpg:point",
-                            "target": "gunsrpg:level",
                             "amount": 25
                         }
                     ]
@@ -116,7 +115,6 @@
                     "rewards": [
                         {
                             "type": "gunsrpg:point",
-                            "target": "gunsrpg:level",
                             "amount": 20
                         }
                     ]
@@ -127,7 +125,6 @@
                     "rewards": [
                         {
                             "type": "gunsrpg:point",
-                            "target": "gunsrpg:level",
                             "amount": 5
                         }
                     ]
@@ -138,7 +135,6 @@
                     "rewards": [
                         {
                             "type": "gunsrpg:point",
-                            "target": "gunsrpg:level",
                             "amount": 4
                         }
                     ]
@@ -148,7 +144,6 @@
                     "rewards": [
                         {
                             "type": "gunsrpg:point",
-                            "target": "gunsrpg:level",
                             "amount": 2
                         }
                     ]
@@ -209,7 +204,6 @@
                     "rewards": [
                         {
                             "type": "gunsrpg:point",
-                            "target": "gunsrpg:weapon",
                             "amount": 1
                         },
                         {
@@ -230,7 +224,6 @@
                     "rewards": [
                         {
                             "type": "gunsrpg:point",
-                            "target": "gunsrpg:weapon",
                             "amount": 1
                         }
                     ]

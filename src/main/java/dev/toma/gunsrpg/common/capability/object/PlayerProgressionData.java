@@ -3,11 +3,16 @@ package dev.toma.gunsrpg.common.capability.object;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.ITransaction;
 import dev.toma.gunsrpg.api.common.data.*;
+import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
+import dev.toma.gunsrpg.api.common.skill.ITransactionValidatorFactory;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.skills.core.PlayerLevelTransactionValidator;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;
 import dev.toma.gunsrpg.common.skills.transaction.TransactionManager;
 import dev.toma.gunsrpg.common.skills.transaction.TransactionTypes;
 import dev.toma.gunsrpg.common.skills.transaction.WeaponPointTransaction;
+import dev.toma.gunsrpg.resource.progression.IProgressionStrategy;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.SlimeEntity;
@@ -31,6 +36,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     private final ISkillProvider skillProvider;
     private final ITransactionManager transactionManager = new TransactionManager();
     private final Map<GunItem, GunKillData> weaponStats = new HashMap<>();
+    private final IProgressionStrategy strategy;
     private IClientSynchReq request = () -> {};
     private boolean known;
     private int level;
@@ -41,14 +47,16 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     public PlayerProgressionData(PlayerEntity player, ISkillProvider skillProvider) {
         this.player = player;
         this.skillProvider = skillProvider;
-
         this.transactionManager.registerHandler(TransactionTypes.SKILLPOINT_TRANSACTION, this::hasEnoughSkillpoints, this::handleSkillpointTransaction);
         this.transactionManager.registerHandler(TransactionTypes.WEAPON_POINT_TRANSACTION, this::hasEnoughWeaponPoints, this::handleWeaponPointTransaction);
+        ITransactionValidatorFactory<?, ?> factory = TransactionValidatorRegistry.getValidatorFactory(PlayerLevelTransactionValidator.ID);
+        ITransactionValidator validator = TransactionValidatorRegistry.getTransactionValidator(factory, null);
+        this.strategy = GunsRPG.getModLifecycle().getProgressionStrategyManager().getStrategy(validator);
     }
 
     @Override
     public IKillData getWeaponStats(GunItem item) {
-        return weaponStats.computeIfAbsent(item, k -> new GunKillData(player));
+        return weaponStats.computeIfAbsent(item, k -> new GunKillData(player, item));
     }
 
     @Override
@@ -89,7 +97,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     public void advanceLevel(boolean notify) {
         this.level = Math.min(level + 1, getLevelLimit());
         this.kills = 0;
-        awardPoints(this.getPointsToAward());
+        strategy.applyRewards(player, this, level);
         updateRequiredKills();
 
         if (notify) {
@@ -133,7 +141,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
                 .filter(item -> item instanceof GunItem)
                 .map(item -> (GunItem) item)
                 .forEach(gun -> {
-                    GunKillData killData = weaponStats.computeIfAbsent(gun, k -> new GunKillData(player));
+                    GunKillData killData = weaponStats.computeIfAbsent(gun, k -> new GunKillData(player, gun));
                     killData.doUnlock();
                 });
     }
@@ -193,7 +201,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
             if (item instanceof GunItem) {
                 GunItem gun = (GunItem) item;
-                GunKillData data = new GunKillData(player);
+                GunKillData data = new GunKillData(player, gun);
                 CompoundNBT dataNbt = killData.getCompound(key);
                 data.deserializeNBT(dataNbt);
                 weaponStats.put(gun, data);
@@ -206,40 +214,8 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
         this.request = request;
     }
 
-    private int getPointsToAward() {
-        if (level == 100) {
-            return 25;
-        } else if (level == 50) {
-            return 20;
-        } else if (level % 10 == 0) {
-            return 5;
-        } else if (level % 5 == 0) {
-            return 4;
-        } else return 1;
-    }
-
     private void updateRequiredKills() {
-        if (level >= 95) {
-            requiredKills = 100;
-        } else if (level >= 90) {
-            requiredKills = 85;
-        } else if (level >= 80) {
-            requiredKills = 70;
-        } else if (level >= 70) {
-            requiredKills = 60;
-        } else if (level >= 60) {
-            requiredKills = 50;
-        } else if (level >= 50) {
-            requiredKills = 45;
-        } else if (level >= 40) {
-            requiredKills = 35;
-        } else if (level >= 30) {
-            requiredKills = 30;
-        } else if (level >= 20) {
-            requiredKills = 25;
-        } else if (level >= 10) {
-            requiredKills = 15;
-        } else requiredKills = 10;
+        requiredKills = strategy.getRequiredKillCount(level);
     }
 
     private boolean hasEnoughSkillpoints(ITransaction<SkillType<?>> transaction) {

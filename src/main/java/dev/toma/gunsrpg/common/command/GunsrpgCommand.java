@@ -243,6 +243,7 @@ public class GunsrpgCommand {
                 IKillData killData = validator.getData(data);
                 action.accept(killData, amount);
                 source.sendSuccess(new TranslationTextComponent("command.gunsrpg.progression.modify"), false);
+                data.sync(DataFlags.WILDCARD);
             });
             return 0;
         }
