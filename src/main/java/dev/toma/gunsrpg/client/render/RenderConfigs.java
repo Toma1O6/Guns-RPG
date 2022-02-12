@@ -18,6 +18,8 @@ public class RenderConfigs {
     public static final IRenderConfig M1911_RIGHT_DUAL = RenderConfig.newDef().withPosition(0.28, -0.23, -0.35).withScale(1.0F, 1.0F, 1.0F).withRotation(new Quaternion(0.129F, -0.259F, 0.000F, 0.966F)).finish();
     public static final IRenderConfig R45_LEFT = RenderConfig.newDef().withPosition(0.350, -0.540, 0.300).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.100F, -0.500F, 0.000F, 0.866F)).finish();
     public static final IRenderConfig R45_RIGHT = RenderConfig.newDef().withPosition(0.500, -0.270, -0.500).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.087F, -0.216F, -0.000F, 0.976F)).finish();
+    public static final IRenderConfig R45_LEFT_DUAL = RenderConfig.newDef().withPosition(-0.250, -0.380, 0.250).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.054F, -0.216F, -0.065F, 0.976F)).finish();
+    public static final IRenderConfig R45_RIGHT_DUAL = RenderConfig.newDef().withPosition(0.340, -0.220, -0.600).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.077F, -0.383F, 0.000F, 0.924F)).finish();
     public static final IRenderConfig DESERT_EAGLE_LEFT = RenderConfig.newDef().withPosition(0.300, -0.450, 0.300).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.050F, -0.500F, 0.000F, 0.866F)).finish();
     public static final IRenderConfig DESERT_EAGLE_RIGHT = RenderConfig.newDef().withPosition(0.400, -0.350, -0.500).withScale(1.000F, 1.000F, 1.000F).withRotation(new Quaternion(0.104F, -0.259F, 0.000F, 0.966F)).finish();
     public static final IRenderConfig UMP45_LEFT = RenderConfig.newDef().withPosition(-0.2, -0.53, 0.6).withScale(1.0F, 1.0F, 1.9F).withRotation(new Quaternion(0.122F, -0.609F, 0.000F, 0.793F)).finish();

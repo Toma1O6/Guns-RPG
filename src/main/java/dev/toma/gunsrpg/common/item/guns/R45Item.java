@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.R45Renderer;
 import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
@@ -15,8 +16,11 @@ import dev.toma.gunsrpg.common.item.guns.util.IDualWieldGun;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class R45Item extends GunItem implements IDualWieldGun {
 
@@ -79,11 +83,16 @@ public class R45Item extends GunItem implements IDualWieldGun {
 
     @Override
     public IRenderConfig left() {
-        return RenderConfigs.R45_LEFT;
+        return isDualWieldActive() ? RenderConfigs.R45_LEFT_DUAL : RenderConfigs.R45_LEFT;
     }
 
     @Override
     public IRenderConfig right() {
-        return RenderConfigs.R45_RIGHT;
+        return isDualWieldActive() ? RenderConfigs.R45_RIGHT_DUAL : RenderConfigs.R45_RIGHT;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private boolean isDualWieldActive() {
+        return PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.R45_DUAL_WIELD);
     }
 }

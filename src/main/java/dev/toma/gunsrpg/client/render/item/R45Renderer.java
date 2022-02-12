@@ -21,6 +21,9 @@ public class R45Renderer extends AbstractWeaponRenderer {
             case FIRST_PERSON_RIGHT_HAND:
                 stack.translate(0.0, 0.63, 0.0);
                 break;
+            case FIRST_PERSON_LEFT_HAND:
+                stack.translate(-0.3, 0.64, 0.0);
+                break;
         }
     }
 
