@@ -97,7 +97,7 @@ public class ChooseAmmoScreen extends Screen {
                 if (isGun) {
                     GunItem gun = (GunItem) stack.getItem();
                     MaterialContainer container = gun.getContainer();
-                    int weaponLevel = genericData.getWeaponStats(gun).getLevel() - 1;
+                    int weaponLevel = genericData.getWeaponStats(gun).getLevel();
                     requiredLevel = container.getRequiredLevel(ammo.getMaterial());
                     active = provider.hasSkill(gun.getRequiredSkill()) && weaponLevel >= requiredLevel;
                 }
