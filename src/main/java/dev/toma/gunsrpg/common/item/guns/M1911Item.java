@@ -41,7 +41,7 @@ public class M1911Item extends GunItem implements IDualWieldGun {
     };
 
     public M1911Item(String name) {
-        super(name, new Properties().setISTER(() -> M1911Renderer::new));
+        super(name, new Properties().setISTER(() -> M1911Renderer::new).durability(650));
     }
 
     @Override

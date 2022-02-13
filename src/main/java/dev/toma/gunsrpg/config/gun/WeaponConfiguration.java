@@ -5,24 +5,28 @@ import dev.toma.configuration.api.IObjectSpec;
 import dev.toma.configuration.api.type.DoubleType;
 import dev.toma.configuration.api.type.IntType;
 import dev.toma.configuration.api.type.ObjectType;
+import dev.toma.gunsrpg.api.common.IJamConfig;
 import dev.toma.gunsrpg.api.common.IWeaponConfig;
+import lib.toma.animations.Easings;
 
 public class WeaponConfiguration extends ObjectType implements IWeaponConfig {
 
     private final IntType gravityDelay;
     private final IntType velocity;
     private final DoubleType damage;
+    private final IJamConfig jamConfig;
 
-    protected WeaponConfiguration(IObjectSpec spec, float damage, int velocity, int delay) {
+    public WeaponConfiguration(IObjectSpec spec, float damage, int velocity, int delay, float jamMin, float jamMax) {
+        this(spec, damage, velocity, delay, jamMin, jamMax, IJamConfig.DEFAULT_EASING);
+    }
+
+    public WeaponConfiguration(IObjectSpec spec, float damage, int velocity, int delay, float jamMin, float jamMax, Easings easing) {
         super(spec);
         IConfigWriter writer = spec.getWriter();
         this.gravityDelay = writer.writeBoundedInt("Gravity effect delay", delay, 0, Short.MAX_VALUE, "Defines how many ticks it takes before gravity", "starts taking effect on projectiles");
         this.damage = writer.writeBoundedDouble("Base projectile damage", damage, 1.0, Double.MAX_VALUE);
         this.velocity = writer.writeBoundedInt("Projectile velocity", velocity, 1, 10000, "Projectile velocity in m/s");
-    }
-
-    public static WeaponConfiguration basic(IObjectSpec spec, float damage, int velocity, int gravityDelay) {
-        return new WeaponConfiguration(spec, damage, velocity, gravityDelay);
+        this.jamConfig = writer.writeObject(specification -> new JamConfig(specification, jamMin, jamMax, easing), "Jam Settings");
     }
 
     @Override
@@ -39,5 +43,10 @@ public class WeaponConfiguration extends ObjectType implements IWeaponConfig {
     @Override
     public int getGravityDelay() {
         return gravityDelay.get();
+    }
+
+    @Override
+    public IJamConfig getJamConfig() {
+        return jamConfig;
     }
 }

@@ -20,12 +20,12 @@ public class S686Item extends AbstractShotgun {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("s686/reload");
 
     public S686Item(String name) {
-        super(name, new Properties().setISTER(() -> S686Renderer::new));
+        super(name, new Properties().setISTER(() -> S686Renderer::new).durability(230));
     }
 
     @Override
     public int getPelletCount(LivingEntity shooter, ItemStack stack) {
-        return 5;
+        return 8;
     }
 
     @Override

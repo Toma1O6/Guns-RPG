@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IReloadManager;
@@ -27,6 +28,7 @@ import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -46,7 +48,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     private final AmmoType ammoType;
 
     public GunItem(String name, Properties properties) {
-        super(name, properties.tab(ModTabs.ITEM_TAB).stacksTo(1));
+        super(name, properties.tab(ModTabs.ITEM_TAB));
         WeaponBuilder builder = new WeaponBuilder();
         initializeWeapon(builder);
         builder.validate();
@@ -158,7 +160,15 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     }
 
     public final void shoot(World world, LivingEntity entity, ItemStack stack, IShootProps props, SoundEvent event) {
+        if (stack.getDamageValue() >= stack.getMaxDamage()) {
+            GunsRPG.log.warn("{} has tried to shoot with weapon which has no durability", entity.getName().getString());
+            return;
+        }
         shootProjectile(world, entity, stack, props);
+        if (entity instanceof ServerPlayerEntity) {
+            ServerPlayerEntity player = (ServerPlayerEntity) entity;
+            stack.hurt(1, world.getRandom(), player);
+        }
         this.setAmmoCount(stack, this.getAmmo(stack) - 1);
         world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);
     }
@@ -218,6 +228,16 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
     @Override
     public boolean disableVanillaAnimations() {
+        return true;
+    }
+
+    @Override
+    public int getRGBDurabilityForDisplay(ItemStack stack) {
+        return 0xFFFF;
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
         return true;
     }
 }

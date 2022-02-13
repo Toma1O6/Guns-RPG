@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.entity.projectile;
 
 import dev.toma.gunsrpg.common.init.ModDamageSources;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -42,6 +43,12 @@ public class Bullet extends AbstractPenetratingProjectile {
         if (!level.isClientSide) {
             BlockPos pos = result.getBlockPos();
             BlockState state = level.getBlockState(pos);
+            if (state.getMaterial() == Material.GLASS) {
+                level.destroyBlock(pos, false);
+                Vector3d projectilePos = position();
+                checkForCollisions(projectilePos, projectilePos.add(this.getDeltaMovement()));
+                return;
+            }
             Vector3d vec = result.getLocation();
             Vector3i normal = result.getDirection().getNormal();
             float dirX = normal.getX() / 5.0f;
@@ -49,6 +56,7 @@ public class Bullet extends AbstractPenetratingProjectile {
             float dirZ = normal.getX() / 5.0f;
             SSpawnParticlePacket packet = new SSpawnParticlePacket(new BlockParticleData(ParticleTypes.BLOCK, state), true, vec.x, vec.y, vec.z, dirX, dirY, dirZ, 0.01F, 3);
             ((ServerWorld) level).players().forEach(player -> player.connection.send(packet));
+            state.onProjectileHit(level, state, result, this);
             remove();
         }
     }

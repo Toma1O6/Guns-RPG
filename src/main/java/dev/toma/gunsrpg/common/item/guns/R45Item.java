@@ -28,7 +28,7 @@ public class R45Item extends GunItem implements IDualWieldGun {
     private static final ResourceLocation RELOAD_BULLET = GunsRPG.makeResource("r45/load_bullet");
 
     public R45Item(String name) {
-        super(name, new Properties().setISTER(() -> R45Renderer::new));
+        super(name, new Properties().setISTER(() -> R45Renderer::new).durability(500));
     }
 
     @Override

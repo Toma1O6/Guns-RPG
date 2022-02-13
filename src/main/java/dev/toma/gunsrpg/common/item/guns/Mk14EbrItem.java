@@ -18,7 +18,7 @@ public class Mk14EbrItem extends GunItem {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("mk14ebr/reload");
 
     public Mk14EbrItem(String name) {
-        super(name, new Properties().setISTER(() -> Mk14EbrRenderer::new));
+        super(name, new Properties().setISTER(() -> Mk14EbrRenderer::new).durability(750));
     }
 
     @Override

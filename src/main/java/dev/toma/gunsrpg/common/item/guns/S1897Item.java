@@ -34,7 +34,7 @@ public class S1897Item extends AbstractShotgun {
     private static final ResourceLocation LOAD_BULLET_ANIMATION = GunsRPG.makeResource("s1897/load_bullet");
 
     public S1897Item(String name) {
-        super(name, new Properties().setISTER(() -> S1897Renderer::new));
+        super(name, new Properties().setISTER(() -> S1897Renderer::new).durability(320));
     }
 
     @Override
@@ -59,7 +59,7 @@ public class S1897Item extends AbstractShotgun {
 
     @Override
     public int getPelletCount(LivingEntity shooter, ItemStack stack) {
-        return 5;
+        return 6;
     }
 
     @Override

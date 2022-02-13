@@ -45,11 +45,11 @@ public abstract class AbstractGun extends BaseItem {
     }
 
     public final Firemode getFiremode(ItemStack stack) {
-        createNBT(stack);
+        ensureHasNBT(stack);
         return Firemode.get(stack.getTag().getInt("firemode"));
     }
 
-    public void createNBT(ItemStack stack) {
+    public void ensureHasNBT(ItemStack stack) {
         if (stack.hasTag()) {
             return;
         }
@@ -60,19 +60,19 @@ public abstract class AbstractGun extends BaseItem {
     }
 
     public IAmmoMaterial getMaterialFromNBT(ItemStack stack) {
-        this.createNBT(stack);
+        this.ensureHasNBT(stack);
         CompoundNBT nbt = stack.getTag();
         AmmoMaterialManager materialManager = AmmoMaterialManager.get();
         return materialManager.parse(nbt);
     }
 
     public int getAmmo(ItemStack stack) {
-        this.createNBT(stack);
+        this.ensureHasNBT(stack);
         return stack.getTag().getInt("ammo");
     }
 
     public void setAmmoCount(ItemStack stack, int count) {
-        this.createNBT(stack);
+        this.ensureHasNBT(stack);
         CompoundNBT nbt = stack.getTag();
         nbt.putInt("ammo", Math.max(0, count));
     }
@@ -84,6 +84,17 @@ public abstract class AbstractGun extends BaseItem {
     public final int getDamageBonus(ItemStack stack) {
         IAmmoMaterial material = this.getMaterialFromNBT(stack);
         return material != null ? getContainer().getAdditionalDamage(material) : 0;
+    }
+
+    public final void setJammedState(ItemStack stack, boolean state) {
+        this.ensureHasNBT(stack);
+        CompoundNBT nbt = stack.getTag();
+        nbt.putBoolean("jammed", state);
+    }
+
+    public final boolean isJammed(ItemStack stack) {
+        this.ensureHasNBT(stack);
+        return stack.getTag().getBoolean("jammed");
     }
 
     @Override

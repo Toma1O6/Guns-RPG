@@ -18,13 +18,13 @@ public class GrenadeLauncherItem extends GunItem {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("grenade_launcher/reload");
 
     public GrenadeLauncherItem(String name) {
-        super(name, new Properties().setISTER(() -> GrenadeLauncherRenderer::new));
+        super(name, new Properties().setISTER(() -> GrenadeLauncherRenderer::new).durability(200));
     }
 
     @Override
     public void initializeWeapon(WeaponBuilder builder) {
         builder
-                .config(ModConfig.weaponConfig.mk14)
+                .config(ModConfig.weaponConfig.grenadeLauncher)
                 .ammo(WeaponCategory.GRENADE_LAUNCHER)
                     .define(AmmoMaterials.GRENADE)
                     .define(AmmoMaterials.TEAR_GAS)

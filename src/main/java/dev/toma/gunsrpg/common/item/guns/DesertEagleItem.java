@@ -19,7 +19,7 @@ public class DesertEagleItem extends GunItem {
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("deagle/reload");
 
     public DesertEagleItem(String name) {
-        super(name, new Properties().setISTER(() -> DesertEagleRenderer::new));
+        super(name, new Properties().setISTER(() -> DesertEagleRenderer::new).durability(520));
     }
 
     @Override

@@ -18,7 +18,7 @@ public class AugItem extends GunItem {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("aug/reload");
 
     public AugItem(String name) {
-        super(name, new Properties().setISTER(() -> AugRenderer::new));
+        super(name, new Properties().setISTER(() -> AugRenderer::new).durability(1350));
     }
 
     @Override

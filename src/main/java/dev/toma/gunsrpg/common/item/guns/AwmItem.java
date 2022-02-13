@@ -18,7 +18,7 @@ public class AwmItem extends GunItem {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("awm/reload");
 
     public AwmItem(String name) {
-        super(name, new Properties().setISTER(() -> AwmRenderer::new));
+        super(name, new Properties().setISTER(() -> AwmRenderer::new).durability(550));
     }
 
     @Override

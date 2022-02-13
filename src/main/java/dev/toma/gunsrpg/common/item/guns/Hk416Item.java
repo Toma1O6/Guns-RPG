@@ -21,7 +21,7 @@ public class Hk416Item extends GunItem {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("hk416/reload");
 
     public Hk416Item(String name) {
-        super(name, new Properties().setISTER(() -> Hk416Renderer::new));
+        super(name, new Properties().setISTER(() -> Hk416Renderer::new).durability(1050));
     }
 
     @Override

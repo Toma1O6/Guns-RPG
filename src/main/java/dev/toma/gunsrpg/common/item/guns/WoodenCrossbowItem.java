@@ -35,7 +35,7 @@ public class WoodenCrossbowItem extends GunItem {
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("wooden_crossbow/reload");
 
     public WoodenCrossbowItem(String name) {
-        super(name, new Properties().setISTER(() -> WoodenCrossbowRenderer::new));
+        super(name, new Properties().setISTER(() -> WoodenCrossbowRenderer::new).durability(350));
     }
 
     @Override

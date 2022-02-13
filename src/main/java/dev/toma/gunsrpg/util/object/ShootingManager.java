@@ -47,7 +47,7 @@ public class ShootingManager {
             }
             MaterialContainer container = item.getContainer();
             int weaponLevel = levelData.getWeaponStats(item).getLevel();
-            return item.hasAmmo(stack) && weaponLevel >= container.getRequiredLevel(material);
+            return item.hasAmmo(stack) && weaponLevel >= container.getRequiredLevel(material) && stack.getDamageValue() < stack.getMaxDamage() && !item.isJammed(stack);
         }
         return false;
     }

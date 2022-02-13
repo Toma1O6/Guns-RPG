@@ -33,7 +33,7 @@ public class SksItem extends GunItem {
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("sks/reload");
 
     public SksItem(String name) {
-        super(name, new Properties().setISTER(() -> SksRenderer::new));
+        super(name, new Properties().setISTER(() -> SksRenderer::new).durability(700));
     }
 
     @Override

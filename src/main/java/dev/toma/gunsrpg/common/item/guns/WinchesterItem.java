@@ -19,7 +19,7 @@ public class WinchesterItem extends GunItem {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("winchester/reload");
 
     public WinchesterItem(String name) {
-        super(name, new Properties().setISTER(() -> WinchesterRenderer::new));
+        super(name, new Properties().setISTER(() -> WinchesterRenderer::new).durability(450));
     }
 
     @Override

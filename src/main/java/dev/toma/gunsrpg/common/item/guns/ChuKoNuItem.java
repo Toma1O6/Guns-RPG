@@ -18,7 +18,7 @@ public class ChuKoNuItem extends GunItem {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("chukonu/reload");
 
     public ChuKoNuItem(String name) {
-        super(name, new Properties().setISTER(() -> ChuKoNuRenderer::new));
+        super(name, new Properties().setISTER(() -> ChuKoNuRenderer::new).durability(450));
     }
 
     @Override

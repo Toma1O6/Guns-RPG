@@ -19,7 +19,7 @@ public class VssItem extends GunItem {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("vss/reload");
 
     public VssItem(String name) {
-        super(name, new Properties().setISTER(() -> VssRenderer::new));
+        super(name, new Properties().setISTER(() -> VssRenderer::new).durability(750));
     }
 
     @Override

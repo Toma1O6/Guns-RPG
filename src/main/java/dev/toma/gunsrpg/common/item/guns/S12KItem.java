@@ -20,12 +20,12 @@ public class S12KItem extends AbstractShotgun {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("s12k/reload");
 
     public S12KItem(String name) {
-        super(name, new Properties().setISTER(() -> S12KRenderer::new));
+        super(name, new Properties().setISTER(() -> S12KRenderer::new).durability(370));
     }
 
     @Override
     public int getPelletCount(LivingEntity shooter, ItemStack stack) {
-        return 5;
+        return 6;
     }
 
     @Override

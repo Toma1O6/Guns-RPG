@@ -18,13 +18,13 @@ public class RocketLauncherItem extends GunItem {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("rocket_launcher/reload");
 
     public RocketLauncherItem(String name) {
-        super(name, new Properties().setISTER(() -> RocketLauncherRenderer::new));
+        super(name, new Properties().setISTER(() -> RocketLauncherRenderer::new).durability(150));
     }
 
     @Override
     public void initializeWeapon(WeaponBuilder builder) {
         builder
-                .config(ModConfig.weaponConfig.mk14)
+                .config(ModConfig.weaponConfig.rocketLauncher)
                 .ammo(WeaponCategory.ROCKET_LAUNCHER)
                     .define(AmmoMaterials.ROCKET)
                     .define(AmmoMaterials.TOXIN)

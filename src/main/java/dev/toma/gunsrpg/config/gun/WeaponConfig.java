@@ -28,30 +28,34 @@ public class WeaponConfig extends ObjectType {
     public final IWeaponConfig kar98k;
     public final IWeaponConfig winchester;
     public final IWeaponConfig awm;
+    public final IWeaponConfig grenadeLauncher;
+    public final IWeaponConfig rocketLauncher;
 
     public WeaponConfig(IObjectSpec objectSpecification) {
         super(objectSpecification);
         IConfigWriter writer = objectSpecification.getWriter();
         general = writer.writeObject(GeneralSettings::new, "Attachment settings");
-        m1911 = writer.writeObject(specification -> IWeaponConfig.configured(specification, 4.0F, 280, 3), "M1911");
-        r45 = writer.writeObject(specification -> IWeaponConfig.configured(specification, 7.0F, 320, 4), "R45");
-        desertEagle = writer.writeObject(specification -> IWeaponConfig.configured(specification, 8.0F, 330, 5), "Desert Eagle");
-        ump = writer.writeObject(specification -> IWeaponConfig.configured(specification, 3.0F, 320, 5), "UMP-45");
-        thompson = writer.writeObject(specification -> IWeaponConfig.configured(specification, 5.0F, 320, 5), "Thompson");
-        vector = writer.writeObject(specification -> IWeaponConfig.configured(specification, 3.0F, 280, 3), "Vector");
-        crossbow = writer.writeObject(specification -> IWeaponConfig.configured(specification, 10.0F, 64, 3), "Crossbow");
-        chukonu = writer.writeObject(specification -> IWeaponConfig.configured(specification, 6.0F, 98, 2), "Chu-Ko-Nu");
-        s1897 = writer.writeObject(specification -> IWeaponConfig.configured(specification, 2.0F, 220, 1), "S1897");
-        s686 = writer.writeObject(specification -> IWeaponConfig.configured(specification, 2.0F, 220, 1), "S686");
-        s12k = writer.writeObject(specification -> IWeaponConfig.configured(specification, 2.0F, 220, 1), "S12k");
-        akm = writer.writeObject(speicification -> IWeaponConfig.configured(speicification, 6.0F, 330, 4), "AKM");
-        hk416 = writer.writeObject(specification -> IWeaponConfig.configured(specification, 5.0F, 380, 6), "HK 416");
-        aug = writer.writeObject(specification -> IWeaponConfig.configured(specification, 5.0F, 380, 6), "AUG");
-        sks = writer.writeObject(specification -> IWeaponConfig.configured(specification, 7.0F, 380, 6), "SKS");
-        vss = writer.writeObject(specification -> IWeaponConfig.configured(specification, 6.0F, 140, 2), "VSS");
-        mk14 = writer.writeObject(specification -> IWeaponConfig.configured(specification, 8.0F, 440, 7), "Mk-14");
-        kar98k = writer.writeObject(specification -> IWeaponConfig.configured(specification, 15.0F, 440, 7), "Kar98k");
-        winchester = writer.writeObject(specification -> IWeaponConfig.configured(specification, 10.0F, 340, 5), "Winchester");
-        awm = writer.writeObject(specification -> IWeaponConfig.configured(specification, 18.0F, 480, 8), "AWM");
+        m1911 = writer.writeObject(specification -> new WeaponConfiguration(specification, 4.0F, 280, 3, 0.005F, 0.22F), "M1911");
+        r45 = writer.writeObject(specification -> new WeaponConfiguration(specification, 7.0F, 320, 4, 0.005F, 0.22F), "R45");
+        desertEagle = writer.writeObject(specification -> new WeaponConfiguration(specification, 8.0F, 330, 5, 0.005F, 0.22F), "Desert Eagle");
+        ump = writer.writeObject(specification -> new WeaponConfiguration(specification, 3.0F, 320, 5, 0.005F, 0.15F), "UMP-45");
+        thompson = writer.writeObject(specification -> new WeaponConfiguration(specification, 5.0F, 320, 5, 0.005F, 0.15F), "Thompson");
+        vector = writer.writeObject(specification -> new WeaponConfiguration(specification, 3.0F, 280, 3, 0.005F, 0.15F), "Vector");
+        crossbow = writer.writeObject(specification -> new WeaponConfiguration(specification, 10.0F, 64, 3, 0.02F, 0.30F), "Crossbow");
+        chukonu = writer.writeObject(specification -> new WeaponConfiguration(specification, 6.0F, 98, 2, 0.02F, 0.30F), "Chu-Ko-Nu");
+        s1897 = writer.writeObject(specification -> new WeaponConfiguration(specification, 2.0F, 220, 1, 0.01F, 0.30F), "S1897");
+        s686 = writer.writeObject(specification -> new WeaponConfiguration(specification, 2.0F, 220, 1, 0.02F, 0.33F), "S686");
+        s12k = writer.writeObject(specification -> new WeaponConfiguration(specification, 2.0F, 220, 1, 0.01F, 0.30F), "S12k");
+        akm = writer.writeObject(specification -> new WeaponConfiguration(specification, 6.0F, 330, 4, 0.005F, 0.17F), "AKM");
+        hk416 = writer.writeObject(specification -> new WeaponConfiguration(specification, 5.0F, 380, 6, 0.005F, 0.20F), "HK 416");
+        aug = writer.writeObject(specification -> new WeaponConfiguration(specification, 5.0F, 380, 6, 0.005F, 0.20F), "AUG");
+        sks = writer.writeObject(specification -> new WeaponConfiguration(specification, 7.0F, 380, 6, 0.005F, 0.20F), "SKS");
+        vss = writer.writeObject(specification -> new WeaponConfiguration(specification, 6.0F, 140, 2, 0.005F, 0.22F), "VSS");
+        mk14 = writer.writeObject(specification -> new WeaponConfiguration(specification, 9.0F, 440, 7, 0.005F, 0.22F), "Mk-14");
+        kar98k = writer.writeObject(specification -> new WeaponConfiguration(specification, 14.0F, 440, 7, 0.02F, 0.33F), "Kar98k");
+        winchester = writer.writeObject(specification -> new WeaponConfiguration(specification, 10.0F, 340, 5, 0.01F, 0.28F), "Winchester");
+        awm = writer.writeObject(specification -> new WeaponConfiguration(specification, 18.0F, 480, 8, 0.01F, 0.28F), "AWM");
+        grenadeLauncher = writer.writeObject(specification -> new SimpleWeaponConfiguration(specification, 150, 0.02F, 0.33F), "Grenade Launcher");
+        rocketLauncher = writer.writeObject(specification -> new SimpleWeaponConfiguration(specification, 250, 0.02F, 0.33F), "Rocket Launcher");
     }
 }

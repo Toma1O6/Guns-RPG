@@ -19,7 +19,7 @@ public class AkmItem extends GunItem {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("akm/reload");
 
     public AkmItem(String name) {
-        super(name, new Properties().setISTER(() -> AkmRenderer::new));
+        super(name, new Properties().setISTER(() -> AkmRenderer::new).durability(1100));
     }
 
     @Override

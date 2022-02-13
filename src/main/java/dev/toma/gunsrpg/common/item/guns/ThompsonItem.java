@@ -19,7 +19,7 @@ public class ThompsonItem extends GunItem {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("thompson/reload");
 
     public ThompsonItem(String name) {
-        super(name, new Properties().setISTER(() -> ThompsonRenderer::new));
+        super(name, new Properties().setISTER(() -> ThompsonRenderer::new).durability(850));
     }
 
     @Override

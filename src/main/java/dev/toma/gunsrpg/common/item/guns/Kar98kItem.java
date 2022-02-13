@@ -42,7 +42,7 @@ public class Kar98kItem extends GunItem {
     private static final ResourceLocation RELOAD_CLIP_ANIMATION = GunsRPG.makeResource("kar98k/reload_clip");
 
     public Kar98kItem(String name) {
-        super(name, new Properties().setISTER(() -> Kar98kRenderer::new));
+        super(name, new Properties().setISTER(() -> Kar98kRenderer::new).durability(450));
     }
 
     @Override

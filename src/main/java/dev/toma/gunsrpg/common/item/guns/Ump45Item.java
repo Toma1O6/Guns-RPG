@@ -37,7 +37,7 @@ public class Ump45Item extends GunItem {
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("ump45/reload");
 
     public Ump45Item(String name) {
-        super(name, new Properties().setISTER(() -> Ump45Renderer::new));
+        super(name, new Properties().setISTER(() -> Ump45Renderer::new).durability(950));
     }
 
     @Override
