@@ -10,6 +10,8 @@
         { "item": "gunsrpg:vitamins", "count": 2 },
         { "item": "gunsrpg:propital", "count": 2 },
         { "item": "gunsrpg:chocolate_glazed_apple_pie" },
-        { "item": "gunsrpg:deluxe_meal" }
+        { "item": "gunsrpg:deluxe_meal" },
+        { "item": "gunsrpg:sling" },
+        { "item": "gunsrpg:small_stone", "count": 64 }
     ]
 }
