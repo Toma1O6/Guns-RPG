@@ -565,7 +565,8 @@ public class CommonRegistry {
                 new StorageItem("meds_case", new Item.Properties(), 4, 4, StorageUtil::isMed, MedsCaseContainer::new),
                 new StorageItem("item_case", new Item.Properties(), 6, 4, StorageUtil::notAnInventory, ItemCaseContainer::new),
                 new WeaponRepairKitItem("weapon_repair_kit"),
-                BaseItem.simpleItem("small_stone")
+                BaseItem.simpleItem("small_stone"),
+                new StarterGearItem("starter_gear")
         );
         queue.forEach(registry::register);
         queue = null;

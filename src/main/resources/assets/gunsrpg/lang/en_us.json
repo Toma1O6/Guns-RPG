@@ -165,6 +165,7 @@
     "item.gunsrpg.sushi_maki": "Sushi Maki",
     "item.gunsrpg.sling": "Sling",
     "item.gunsrpg.small_stone": "Small Stone",
+    "item.gunsrpg.starter_gear": "Starter Gear",
 
     "block.gunsrpg.amethyst_ore": "Amethyst Ore",
     "block.gunsrpg.blast_furnace": "Blast Furnace",
@@ -195,15 +196,6 @@
     "entity.gunsrpg:bloodmoon_golem": "Bloodmoon Golem",
     "entity.gunsrpg:rocket_angel": "Rocket Angel",
     "entity.gunsrpg:golden_dragon": "Golden Dragon",
-
-    "advancements.grpg.blast_furnace.title": "Blast Furnace",
-    "advancements.grpg.blast_furnace.description": "Obtain Blast Furnace",
-    "advancements.grpg.gold_egg_shard.title": "What Can I Do With This?",
-    "advancements.grpg.gold_egg_shard.description": "Obtain 4 gold egg shards",
-    "advancements.grpg.gold_dragon_egg.title": "Really Expensive Egg",
-    "advancements.grpg.gold_dragon_egg.description": "Obtain gold dragon egg",
-    "advancements.grpg.kill_gold_dragon.title": "Who\u0027s The Boss Now?!",
-    "advancements.grpg.kill_gold_dragon.description": "Personally kill Gold Dragon in natural way",
 
     "itemGroup.grpg.items": "GunsRPG: Items",
     "itemGroup.grpg.blocks": "GunsRPG: Blocks",
@@ -719,6 +711,7 @@
     "nav.entry.survival": "Survival",
     "nav.entry.gun": "Weapon",
     "point.award.success": "Point has been awarded",
+    "item.gunsrpg.starter_gear.use": "RIGHT-CLICK to receive items",
 
     "command.gunsrpg.exception.missing_key": "Undefined ID",
     "command.gunsrpg.exception.missing_args": "Missing argument, use one from [%s] list",

@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.common.ITransaction;
 import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidatorFactory;
+import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.PlayerLevelTransactionValidator;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -73,7 +74,8 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     public void onLogIn() {
         if (!known) {
             known = true;
-            GunsRPG.getModLifecycle().getStartingGearManager().giveStartingGear(player);
+            if (!player.isCreative())
+                player.addItem(new ItemStack(ModItems.STARTER_GEAR));
             request.makeSyncRequest();
         }
     }
