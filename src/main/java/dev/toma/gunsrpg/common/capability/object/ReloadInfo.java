@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.capability.object;
 
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IReloader;
+import dev.toma.gunsrpg.api.common.data.IHandState;
 import dev.toma.gunsrpg.api.common.data.IReloadInfo;
 import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
@@ -13,11 +14,13 @@ import net.minecraft.item.ItemStack;
 public class ReloadInfo implements IReloadInfo {
 
     private final IAttributeRef attrRef;
+    private final IHandState handState;
     private IReloader activeReloadManager = IReloader.EMPTY;
     private int reloadingSlot;
 
-    public ReloadInfo(IAttributeRef attrRef) {
+    public ReloadInfo(IAttributeRef attrRef, IHandState state) {
         this.attrRef = attrRef;
+        this.handState = state;
     }
 
     @Override
@@ -31,6 +34,7 @@ public class ReloadInfo implements IReloadInfo {
         if (equippedSlot != reloadingSlot) {
             activeReloadManager.forceCancel();
             activeReloadManager = IReloader.EMPTY;
+            handState.freeHands();
         }
         activeReloadManager.tick(player);
     }
@@ -43,6 +47,7 @@ public class ReloadInfo implements IReloadInfo {
             activeReloadManager = gun.getReloadManager(player, attrRef.getProviderReference()).createReloadHandler();
             activeReloadManager.initiateReload(player, gun, stack);
             reloadingSlot = slot;
+            handState.setHandsBusy();
         }
     }
 

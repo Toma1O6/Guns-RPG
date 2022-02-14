@@ -14,6 +14,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
 
@@ -23,6 +24,7 @@ import java.util.function.Function;
 public class PlayerData implements IPlayerData {
 
     private final IEventHandler<IPlayerCapEntry> saveHandler = IEventHandler.newEventHandler();
+    private final HandState handState;
     private final PlayerEntity player;
     private final AimInfo aimInfo;
     private final ReloadInfo reloadInfo;
@@ -39,9 +41,10 @@ public class PlayerData implements IPlayerData {
 
     public PlayerData(PlayerEntity player) {
         this.player = player;
+        this.handState = new HandState(() -> sync(0));
         this.debuffs = new PlayerDebuffs();
-        this.aimInfo = new AimInfo();
-        this.reloadInfo = new ReloadInfo(this::getAttributes);
+        this.aimInfo = new AimInfo(handState);
+        this.reloadInfo = new ReloadInfo(this::getAttributes, handState);
         this.attributes = new PlayerAttributes();
         this.skillProvider = new PlayerSkillProvider(player);
         this.playerQuests = new PlayerQuests();
@@ -63,8 +66,13 @@ public class PlayerData implements IPlayerData {
     public void tick() {
         this.debuffs.tick(player);
         this.reloadInfo.tick(player);
-        this.aimInfo.tick(player, reloadInfo);
+        this.aimInfo.tick(player);
         this.skillProvider.tick(player);
+    }
+
+    @Override
+    public IHandState getHandState() {
+        return handState;
     }
 
     @Override
@@ -131,12 +139,14 @@ public class PlayerData implements IPlayerData {
     public CompoundNBT toNbt(int flags) {
         CompoundNBT nbt = new CompoundNBT();
         saveHandler.invokeIf(entry -> DataFlags.is(entry.getFlag(), flags), entry -> entry.toNbt(nbt));
+        nbt.put("handState", handState.serializeNBT());
         return nbt;
     }
 
     @Override
     public void fromNbt(CompoundNBT nbt, int flags) {
         saveHandler.invokeIf(entry -> DataFlags.is(entry.getFlag(), flags), entry -> entry.fromNbt(nbt));
+        handState.deserializeNBT(nbt.contains("handState", Constants.NBT.TAG_COMPOUND) ? nbt.getCompound("handState") : new CompoundNBT());
     }
 
     public PlayerEntity getPlayer() {

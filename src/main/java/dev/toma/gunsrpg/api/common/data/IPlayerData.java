@@ -21,6 +21,8 @@ public interface IPlayerData {
 
     IProgressData getProgressData();
 
+    IHandState getHandState();
+
     List<IPlayerCapEntry> getSaveEntries();
 
     void tick();

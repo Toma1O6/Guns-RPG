@@ -45,6 +45,9 @@ public class ShootingManager {
                 }
                 return false;
             }
+            if (data.getHandState().areHandsBusy()) {
+                return false;
+            }
             MaterialContainer container = item.getContainer();
             int weaponLevel = levelData.getWeaponStats(item).getLevel();
             return item.hasAmmo(stack) && weaponLevel >= container.getRequiredLevel(material) && stack.getDamageValue() < stack.getMaxDamage() && !item.isJammed(stack);

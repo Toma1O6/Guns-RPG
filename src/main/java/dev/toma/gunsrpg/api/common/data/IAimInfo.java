@@ -4,7 +4,7 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public interface IAimInfo {
 
-    void tick(PlayerEntity player, IReloadInfo reloadStats);
+    void tick(PlayerEntity player);
 
     boolean startedAiming();
 

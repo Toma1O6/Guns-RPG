@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item.guns.reload;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.api.common.IReloader;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.animation.ReloadAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -71,12 +72,14 @@ public class FullReloader implements IReloader {
 
     private void onReload(PlayerEntity player) {
         if (!(gun instanceof GunItem)) return;
-        int weaponLimit = gun.getMaxAmmo(PlayerData.getUnsafe(player).getAttributes());
+        IPlayerData data = PlayerData.getUnsafe(player);
+        int weaponLimit = gun.getMaxAmmo(data.getAttributes());
         int currentAmmo = gun.getAmmo(stack);
         int toLoad = weaponLimit - currentAmmo;
         AmmoType ammoType = gun.getAmmoType();
         IAmmoMaterial material = gun.getMaterialFromNBT(stack);
         PlayerInventory inventory = player.inventory;
+        // TODO move to ItemLocator API
         if (!player.isCreative()) {
             for (int i = 0; i < inventory.getContainerSize(); i++) {
                 ItemStack stack = inventory.getItem(i);
@@ -97,6 +100,7 @@ public class FullReloader implements IReloader {
             toLoad = 0;
         }
         gun.setAmmoCount(stack, weaponLimit - toLoad);
+        data.getHandState().freeHands();
     }
 
     @OnlyIn(Dist.CLIENT)

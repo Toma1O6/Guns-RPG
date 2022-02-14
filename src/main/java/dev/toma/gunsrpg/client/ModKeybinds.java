@@ -69,6 +69,7 @@ public class ModKeybinds {
                 }
                 AmmoType ammoType = gun.getAmmoType();
                 IAmmoMaterial material = gun.getMaterialFromNBT(stack);
+                // TODO move to ItemLocator API
                 if (material != null) {
                     int ammo = gun.getAmmo(stack);
                     int max = gun.getMaxAmmo(data.getAttributes());

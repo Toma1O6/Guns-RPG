@@ -287,8 +287,8 @@ public class ClientEventHandler {
         ItemStack stack = player.getMainHandItem();
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         optional.ifPresent(data -> {
-            IReloadInfo info = data.getReloadInfo();
-            if (stack.getItem() instanceof GunItem && !info.isReloading()) {
+            IHandState handState = data.getHandState();
+            if (stack.getItem() instanceof GunItem && !handState.areHandsBusy()) {
                 IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
                 pipeline.insert(ModAnimations.SPRINT);
             }

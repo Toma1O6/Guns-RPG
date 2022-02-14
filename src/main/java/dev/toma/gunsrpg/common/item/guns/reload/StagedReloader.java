@@ -246,6 +246,7 @@ public class StagedReloader implements IReloader {
                     stageFinishCallback.onStageFinished(player, stage, !willAdvance);
                     if (!willAdvance) {
                         finished = true;
+                        PlayerData.get(player).ifPresent(data -> data.getHandState().freeHands());
                         return;
                     } else {
                         if (awaitingCancelation) {
