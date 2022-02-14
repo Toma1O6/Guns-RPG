@@ -11,12 +11,15 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 
 import java.util.function.Predicate;
 
 public class NetworkManager {
 
-    private static final String VERSION = "gunsrpg1";
+    public static final Marker MARKER = MarkerManager.getMarker("Networking");
+    private static final String VERSION = "gunsrpg-1.0.5";
     private static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder
             .named(GunsRPG.makeResource("network"))
             .networkProtocolVersion(() -> VERSION)
@@ -64,6 +67,7 @@ public class NetworkManager {
         registerNetworkPacket(C2S_UnlockSkillPacket.class);
         registerNetworkPacket(C2S_RequestSmithingCraftPacket.class);
         registerNetworkPacket(C2S_SkillClickedPacket.class);
+        registerNetworkPacket(C2S_PacketSetJamming.class);
     }
 
     private static <P extends INetworkPacket<P>> void registerNetworkPacket(Class<P> packetType) {

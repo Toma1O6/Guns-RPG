@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IReloadManager;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.R45Renderer;
 import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
@@ -18,6 +19,7 @@ import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -26,6 +28,7 @@ public class R45Item extends GunItem implements IDualWieldGun {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("r45/reload");
     private static final ResourceLocation RELOAD_BULLET = GunsRPG.makeResource("r45/load_bullet");
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("r45/unjam");
 
     public R45Item(String name) {
         super(name, new Properties().setISTER(() -> R45Renderer::new).durability(500));
@@ -49,6 +52,11 @@ public class R45Item extends GunItem implements IDualWieldGun {
                     .define(AmmoMaterials.AMETHYST, 14)
                     .define(AmmoMaterials.NETHERITE, 17)
                 .build();
+    }
+
+    @Override
+    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+        return 60;
     }
 
     @Override
@@ -79,6 +87,12 @@ public class R45Item extends GunItem implements IDualWieldGun {
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ResourceLocation getUnjamAnimationPath() {
+        return UNJAM;
     }
 
     @Override

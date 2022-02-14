@@ -9,6 +9,7 @@ public final class DataFlags {
     public static final int DEBUFF      = 1 << 3;
     public static final int ATTRIB      = 1 << 4;
     public static final int DATA        = 1 << 5;
+    public static final int JAMS        = 1 << 6;
 
     public static boolean isWildcard(int flags) {
         return flags == WILDCARD;

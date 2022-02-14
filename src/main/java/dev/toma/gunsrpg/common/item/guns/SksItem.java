@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.SksRenderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
@@ -31,6 +32,7 @@ public class SksItem extends GunItem {
             GunsRPG.makeResource("sks/aim_red_dot")
     };
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("sks/reload");
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("sks/unjam");
 
     public SksItem(String name) {
         super(name, new Properties().setISTER(() -> SksRenderer::new).durability(700));
@@ -54,6 +56,11 @@ public class SksItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 15)
                     .define(AmmoMaterials.NETHERITE, 18)
                 .build();
+    }
+
+    @Override
+    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+        return 75;
     }
 
     @Override
@@ -129,6 +136,11 @@ public class SksItem extends GunItem {
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD_ANIMATION;
+    }
+
+    @Override
+    public ResourceLocation getUnjamAnimationPath() {
+        return UNJAM;
     }
 
     @Override

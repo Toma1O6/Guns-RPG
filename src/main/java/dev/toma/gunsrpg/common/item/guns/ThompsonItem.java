@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.ThompsonRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -12,11 +13,13 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class ThompsonItem extends GunItem {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("thompson/reload");
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("thompson/unjam");
 
     public ThompsonItem(String name) {
         super(name, new Properties().setISTER(() -> ThompsonRenderer::new).durability(850));
@@ -49,8 +52,18 @@ public class ThompsonItem extends GunItem {
     }
 
     @Override
+    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+        return 70;
+    }
+
+    @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD;
+    }
+
+    @Override
+    public ResourceLocation getUnjamAnimationPath() {
+        return UNJAM;
     }
 
     @Override

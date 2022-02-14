@@ -11,6 +11,8 @@ public interface IPlayerData {
 
     IReloadInfo getReloadInfo();
 
+    IJamInfo getJamInfo();
+
     IQuests getPlayerQuests();
 
     IDebuffs getDebuffControl();

@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.M1911Renderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
@@ -39,6 +40,7 @@ public class M1911Item extends GunItem implements IDualWieldGun {
             GunsRPG.makeResource("m1911/reload"),
             GunsRPG.makeResource("m1911/reload_dual")
     };
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("m1911/unjam");
 
     public M1911Item(String name) {
         super(name, new Properties().setISTER(() -> M1911Renderer::new).durability(650));
@@ -61,6 +63,11 @@ public class M1911Item extends GunItem implements IDualWieldGun {
                     .define(AmmoMaterials.AMETHYST, 11)
                     .define(AmmoMaterials.NETHERITE, 13)
                 .build();
+    }
+
+    @Override
+    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+        return 50;
     }
 
     @Override
@@ -138,6 +145,12 @@ public class M1911Item extends GunItem implements IDualWieldGun {
     @Override
     public ResourceLocation getBulletEjectAnimationPath() {
         return EJECT;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ResourceLocation getUnjamAnimationPath() {
+        return UNJAM;
     }
 
     @OnlyIn(Dist.CLIENT)

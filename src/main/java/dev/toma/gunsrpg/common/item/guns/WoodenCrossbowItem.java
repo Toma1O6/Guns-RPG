@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.WoodenCrossbowRenderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
@@ -33,6 +34,7 @@ public class WoodenCrossbowItem extends GunItem {
             GunsRPG.makeResource("wooden_crossbow/aim_scoped")
     };
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("wooden_crossbow/reload");
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("wooden_crossbow/unjam");
 
     public WoodenCrossbowItem(String name) {
         super(name, new Properties().setISTER(() -> WoodenCrossbowRenderer::new).durability(350));
@@ -61,6 +63,11 @@ public class WoodenCrossbowItem extends GunItem {
     }
 
     @Override
+    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+        return 60;
+    }
+
+    @Override
     public int getMaxAmmo(IAttributeProvider provider) {
         return provider.getAttribute(Attribs.CROSSBOW_MAG_CAPACITY).intValue();
     }
@@ -84,19 +91,6 @@ public class WoodenCrossbowItem extends GunItem {
     public float getHorizontalRecoil(IAttributeProvider provider) {
         return 0.1F * super.getHorizontalRecoil(provider);
     }
-
-    /*@Override
-    public void shootBullet(World world, LivingEntity entity, ItemStack stack) {
-        CrossbowBoltEntity bolt = new CrossbowBoltEntity(ModEntities.CROSSBOW_BOLT.get(), world, entity, this, stack);
-        boolean isPlayer = entity instanceof PlayerEntity;
-        boolean aim = isPlayer && PlayerData.getUnsafe((PlayerEntity) entity).getAimInfo().isAiming();
-        float pitch = entity.xRot + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 5);
-        float yaw = entity.yRot + (aim ? 0.0F : (random.nextFloat() - random.nextFloat()) * 5);
-        float baseVelocity = getWeaponConfig().getVelocity();
-        float velocity = isPlayer && PlayerData.hasActiveSkill((PlayerEntity) entity, Skills.CROSSBOW_TOUGH_BOWSTRING) ? 1.5F * baseVelocity : baseVelocity;
-        bolt.fire(pitch, yaw, velocity);
-        world.addFreshEntity(bolt);
-    }*/
 
     @Override
     public void onHitEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
@@ -147,6 +141,11 @@ public class WoodenCrossbowItem extends GunItem {
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD_ANIMATION;
+    }
+
+    @Override
+    public ResourceLocation getUnjamAnimationPath() {
+        return UNJAM;
     }
 
     @OnlyIn(Dist.CLIENT)

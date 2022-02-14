@@ -28,6 +28,7 @@ public class PlayerData implements IPlayerData {
     private final PlayerEntity player;
     private final AimInfo aimInfo;
     private final ReloadInfo reloadInfo;
+    private final JamInfo jamInfo;
     private final PlayerSkillProvider skillProvider;
     private final PlayerQuests playerQuests;
     private final PlayerDebuffs debuffs;
@@ -45,6 +46,7 @@ public class PlayerData implements IPlayerData {
         this.debuffs = new PlayerDebuffs();
         this.aimInfo = new AimInfo(handState);
         this.reloadInfo = new ReloadInfo(this::getAttributes, handState);
+        this.jamInfo = new JamInfo(handState, player);
         this.attributes = new PlayerAttributes();
         this.skillProvider = new PlayerSkillProvider(player);
         this.playerQuests = new PlayerQuests();
@@ -54,6 +56,7 @@ public class PlayerData implements IPlayerData {
 
         saveHandler.addListener(debuffs);
         saveHandler.addListener(aimInfo);
+        saveHandler.addListener(jamInfo);
         saveHandler.addListener(attributes);
         saveHandler.addListener(skillProvider);
         saveHandler.addListener(playerQuests);
@@ -67,6 +70,7 @@ public class PlayerData implements IPlayerData {
         this.debuffs.tick(player);
         this.reloadInfo.tick(player);
         this.aimInfo.tick(player);
+        this.jamInfo.tick();
         this.skillProvider.tick(player);
     }
 
@@ -83,6 +87,11 @@ public class PlayerData implements IPlayerData {
     @Override
     public IReloadInfo getReloadInfo() {
         return reloadInfo;
+    }
+
+    @Override
+    public IJamInfo getJamInfo() {
+        return jamInfo;
     }
 
     @Override

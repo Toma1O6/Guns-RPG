@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Hk416Renderer;
 import dev.toma.gunsrpg.common.init.ModSounds;
@@ -13,12 +14,14 @@ import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
 public class Hk416Item extends GunItem {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("hk416/reload");
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("hk416/unjam");
 
     public Hk416Item(String name) {
         super(name, new Properties().setISTER(() -> Hk416Renderer::new).durability(1050));
@@ -45,6 +48,11 @@ public class Hk416Item extends GunItem {
     }
 
     @Override
+    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+        return 70;
+    }
+
+    @Override
     public SkillType<?> getRequiredSkill() {
         return Skills.HK416_ASSEMBLY;
     }
@@ -52,6 +60,11 @@ public class Hk416Item extends GunItem {
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD;
+    }
+
+    @Override
+    public ResourceLocation getUnjamAnimationPath() {
+        return UNJAM;
     }
 
     @Override

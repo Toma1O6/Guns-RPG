@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Ump45Renderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
@@ -35,6 +36,7 @@ public class Ump45Item extends GunItem {
             GunsRPG.makeResource("ump45/aim_red_dot")
     };
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("ump45/reload");
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("ump45/unjam");
 
     public Ump45Item(String name) {
         super(name, new Properties().setISTER(() -> Ump45Renderer::new).durability(950));
@@ -58,6 +60,11 @@ public class Ump45Item extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 9)
                     .define(AmmoMaterials.NETHERITE, 11)
                 .build();
+    }
+
+    @Override
+    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+        return 60;
     }
 
     @Override
@@ -137,6 +144,12 @@ public class Ump45Item extends GunItem {
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD_ANIMATION;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ResourceLocation getUnjamAnimationPath() {
+        return UNJAM;
     }
 
     @Override

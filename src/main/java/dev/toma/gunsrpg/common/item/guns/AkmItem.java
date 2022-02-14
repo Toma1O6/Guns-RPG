@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.AkmRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -12,11 +13,13 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class AkmItem extends GunItem {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("akm/reload");
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("akm/unjam");
 
     public AkmItem(String name) {
         super(name, new Properties().setISTER(() -> AkmRenderer::new).durability(1100));
@@ -44,6 +47,11 @@ public class AkmItem extends GunItem {
     }
 
     @Override
+    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+        return 70;
+    }
+
+    @Override
     public SkillType<?> getRequiredSkill() {
         return Skills.AKM_ASSEMBLY;
     }
@@ -51,6 +59,11 @@ public class AkmItem extends GunItem {
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD;
+    }
+
+    @Override
+    public ResourceLocation getUnjamAnimationPath() {
+        return UNJAM;
     }
 
     @Override

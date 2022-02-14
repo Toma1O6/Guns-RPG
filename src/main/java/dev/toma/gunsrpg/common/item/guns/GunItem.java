@@ -3,8 +3,10 @@ package dev.toma.gunsrpg.common.item.guns;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
+import dev.toma.gunsrpg.api.common.IJamConfig;
 import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.api.common.IWeaponConfig;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.BulletEjectAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.IShootProps;
@@ -65,6 +67,10 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     public abstract SkillType<?> getRequiredSkill();
 
     /* PROPERTIES FOR OVERRIDES ---------------------------------------------- */
+
+    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+        return 20;
+    }
 
     public float getWeaponDamage(ItemStack stack) {
         IWeaponConfig config = getWeaponConfig();
@@ -168,6 +174,12 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         if (entity instanceof ServerPlayerEntity) {
             ServerPlayerEntity player = (ServerPlayerEntity) entity;
             stack.hurt(1, world.getRandom(), player);
+            IWeaponConfig config = this.getWeaponConfig();
+            IJamConfig jamConfig = config.getJamConfig();
+            float jamChance = jamConfig.getJamChance(stack);
+            if (entity.getRandom().nextFloat() <= jamChance) {
+                setJammedState(stack, true);
+            }
         }
         this.setAmmoCount(stack, this.getAmmo(stack) - 1);
         world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);
@@ -206,6 +218,11 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
     @OnlyIn(Dist.CLIENT)
     public ResourceLocation getBulletEjectAnimationPath() {
+        return null;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public ResourceLocation getUnjamAnimationPath() {
         return null;
     }
 

@@ -227,6 +227,7 @@ public class ClientEventHandler {
             IAimInfo info = data.getAimInfo();
             ScopeRenderer renderer = ModConfig.clientConfig.scopeRenderer.get();
             Item item = stack.getItem();
+            // TODO improve
             if (info.isAiming() && renderer == ScopeRenderer.TEXTURE && (PlayerData.hasActiveSkill(player, Skills.KAR98K_SCOPE) && item == ModItems.KAR98K || PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) && item == ModItems.WOODEN_CROSSBOW)) {
                 event.setCanceled(true);
             }

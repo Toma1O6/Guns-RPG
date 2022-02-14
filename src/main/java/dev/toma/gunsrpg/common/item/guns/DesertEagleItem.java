@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.DesertEagleRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -12,11 +13,15 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class DesertEagleItem extends GunItem {
 
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("deagle/reload");
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("deagle/unjam");
 
     public DesertEagleItem(String name) {
         super(name, new Properties().setISTER(() -> DesertEagleRenderer::new).durability(520));
@@ -44,13 +49,25 @@ public class DesertEagleItem extends GunItem {
     }
 
     @Override
+    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+        return 55;
+    }
+
+    @Override
     public SkillType<?> getRequiredSkill() {
         return Skills.DESERT_EAGLE_ASSEMBLY;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD_ANIMATION;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ResourceLocation getUnjamAnimationPath() {
+        return UNJAM;
     }
 
     @Override

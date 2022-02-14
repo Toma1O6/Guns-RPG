@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.S686Renderer;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -18,6 +19,7 @@ import net.minecraft.util.ResourceLocation;
 public class S686Item extends AbstractShotgun {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("s686/reload");
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("s686/unjam");
 
     public S686Item(String name) {
         super(name, new Properties().setISTER(() -> S686Renderer::new).durability(230));
@@ -49,6 +51,11 @@ public class S686Item extends AbstractShotgun {
     }
 
     @Override
+    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+        return 70;
+    }
+
+    @Override
     public SkillType<?> getRequiredSkill() {
         return Skills.S686_ASSEMBLY;
     }
@@ -56,6 +63,11 @@ public class S686Item extends AbstractShotgun {
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD;
+    }
+
+    @Override
+    public ResourceLocation getUnjamAnimationPath() {
+        return UNJAM;
     }
 
     @Override

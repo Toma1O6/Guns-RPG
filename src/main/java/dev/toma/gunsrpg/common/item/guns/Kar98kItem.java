@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IReloadManager;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Kar98kRenderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
@@ -40,6 +41,7 @@ public class Kar98kItem extends GunItem {
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("kar98k/reload");
     private static final ResourceLocation LOAD_BULLET_ANIMATION = GunsRPG.makeResource("kar98k/load_bullet");
     private static final ResourceLocation RELOAD_CLIP_ANIMATION = GunsRPG.makeResource("kar98k/reload_clip");
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("kar98k/unjam");
 
     public Kar98kItem(String name) {
         super(name, new Properties().setISTER(() -> Kar98kRenderer::new).durability(450));
@@ -65,6 +67,11 @@ public class Kar98kItem extends GunItem {
                 .build();
 
         ScopeDataRegistry.getRegistry().register(this, 15.0F, 0.3F);
+    }
+
+    @Override
+    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+        return 80;
     }
 
     @Override
@@ -139,6 +146,11 @@ public class Kar98kItem extends GunItem {
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD_ANIMATION;
+    }
+
+    @Override
+    public ResourceLocation getUnjamAnimationPath() {
+        return UNJAM;
     }
 
     // TODO

@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IReloadManager;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.S1897Renderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
@@ -32,6 +33,7 @@ public class S1897Item extends AbstractShotgun {
     private static final ResourceLocation AIM_ANIMATION = GunsRPG.makeResource("s1897/aim");
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("s1897/reload");
     private static final ResourceLocation LOAD_BULLET_ANIMATION = GunsRPG.makeResource("s1897/load_bullet");
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("s1897/unjam");
 
     public S1897Item(String name) {
         super(name, new Properties().setISTER(() -> S1897Renderer::new).durability(320));
@@ -55,6 +57,11 @@ public class S1897Item extends AbstractShotgun {
                     .define(AmmoMaterials.AMETHYST, 8)
                     .define(AmmoMaterials.NETHERITE, 10)
                 .build();
+    }
+
+    @Override
+    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+        return 70;
     }
 
     @Override
@@ -109,20 +116,6 @@ public class S1897Item extends AbstractShotgun {
         }
     }
 
-    /*@Override
-    public void shootBullet(World world, LivingEntity entity, ItemStack stack) {
-        boolean choke = entity instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) entity, Skills.S1897_CHOKE);
-        float modifier = 3.0F;
-        float velocity = this.getWeaponConfig().getVelocity();
-        for (int i = 0; i < 6; i++) {
-            ShotgunPelletEntity bullet = new ShotgunPelletEntity(ModEntities.SHOTGUN_PELLET.get(), world, entity, this, stack);
-            float pitch = choke ? entity.xRot + (random.nextFloat() * modifier - random.nextFloat() * modifier) : entity.xRot + (random.nextFloat() * modifier * 2 - random.nextFloat() * modifier * 2);
-            float yaw = choke ? entity.yRot + (random.nextFloat() * modifier - random.nextFloat() * modifier) : entity.yRot + (random.nextFloat() * modifier * 2 - random.nextFloat() * modifier * 2);
-            bullet.fire(pitch, yaw, velocity);
-            world.addFreshEntity(bullet);
-        }
-    }*/
-
     @Override
     public SkillType<?> getRequiredSkill() {
         return Skills.S1897_ASSEMBLY;
@@ -138,6 +131,11 @@ public class S1897Item extends AbstractShotgun {
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD_ANIMATION;
+    }
+
+    @Override
+    public ResourceLocation getUnjamAnimationPath() {
+        return UNJAM;
     }
 
     // TODO

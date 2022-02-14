@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.client;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.api.common.IReloadManager;
+import dev.toma.gunsrpg.api.common.data.IJamInfo;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IReloadInfo;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
@@ -13,14 +14,18 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_ChangeFiremodePacket;
+import dev.toma.gunsrpg.network.packet.C2S_PacketSetJamming;
 import dev.toma.gunsrpg.network.packet.C2S_RequestDataUpdatePacket;
 import dev.toma.gunsrpg.network.packet.C2S_SetReloadingPacket;
 import lib.toma.animations.AnimationEngine;
+import lib.toma.animations.AnimationUtils;
+import lib.toma.animations.api.Animation;
 import lib.toma.animations.api.IAnimationPipeline;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -49,12 +54,16 @@ public class ModKeybinds {
         PlayerEntity player = mc.player;
         IPlayerData data = PlayerData.getUnsafe(player);
         IReloadInfo info = data.getReloadInfo();
+        IJamInfo jamInfo = data.getJamInfo();
         ItemStack stack = player.getMainHandItem();
         if (player.isCrouching()) {
             if (stack.getItem() instanceof GunItem) {
                 mc.setScreen(new ChooseAmmoScreen((GunItem) stack.getItem()));
             }
         } else {
+            if (jamInfo.isUnjamming()) {
+                return;
+            }
             AnimationEngine engine = AnimationEngine.get();
             IAnimationPipeline pipeline = engine.pipeline();
             if (stack.getItem() instanceof GunItem && !player.isSprinting() && pipeline.get(ModAnimations.CHAMBER) == null) {
@@ -66,6 +75,14 @@ public class ModKeybinds {
                         NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(false, 0));
                         return;
                     }
+                } else if (gun.isJammed(stack)) {
+                    int slot = player.inventory.selected;
+                    int time = gun.getUnjamTime(stack, data);
+                    ResourceLocation animationPath = gun.getUnjamAnimationPath();
+                    jamInfo.startUnjamming(player.inventory.selected, gun.getUnjamTime(stack, data));
+                    NetworkManager.sendServerPacket(new C2S_PacketSetJamming(true, slot, time));
+                    pipeline.insert(ModAnimations.UNJAM, AnimationUtils.createAnimation(animationPath, provider -> new Animation(provider, time)));
+                    return;
                 }
                 AmmoType ammoType = gun.getAmmoType();
                 IAmmoMaterial material = gun.getMaterialFromNBT(stack);

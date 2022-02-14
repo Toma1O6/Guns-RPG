@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.RocketLauncherRenderer;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -11,11 +12,13 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class RocketLauncherItem extends GunItem {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("rocket_launcher/reload");
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("rocket_launcher/unjam");
 
     public RocketLauncherItem(String name) {
         super(name, new Properties().setISTER(() -> RocketLauncherRenderer::new).durability(150));
@@ -35,6 +38,11 @@ public class RocketLauncherItem extends GunItem {
     }
 
     @Override
+    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+        return 65;
+    }
+
+    @Override
     public SkillType<?> getRequiredSkill() {
         return Skills.ROCKET_LAUNCHER_ASSEMBLY;
     }
@@ -42,6 +50,11 @@ public class RocketLauncherItem extends GunItem {
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD;
+    }
+
+    @Override
+    public ResourceLocation getUnjamAnimationPath() {
+        return UNJAM;
     }
 
     @Override
