@@ -80,7 +80,7 @@ public class ModKeybinds {
                     int time = gun.getUnjamTime(stack, data);
                     ResourceLocation animationPath = gun.getUnjamAnimationPath();
                     jamInfo.startUnjamming(player.inventory.selected, gun.getUnjamTime(stack, data));
-                    NetworkManager.sendServerPacket(new C2S_PacketSetJamming(true, slot, time));
+                    NetworkManager.sendServerPacket(new C2S_PacketSetJamming(true, time, slot));
                     pipeline.insert(ModAnimations.UNJAM, AnimationUtils.createAnimation(animationPath, provider -> new Animation(provider, time)));
                     return;
                 }

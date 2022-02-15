@@ -21,7 +21,7 @@ public final class ItemLocator extends AbstractLocator<ItemStack, IInventory> {
         super(ItemStack.EMPTY);
     }
 
-    public static ILocatorPredicate<ItemStack> typeAndMaterial(IAmmoProvider provider) {
+    public static ILocatorPredicate<ItemStack> compatible(IAmmoProvider provider) {
         return typeAndMaterial(provider.getAmmoType(), provider.getMaterial());
     }
 

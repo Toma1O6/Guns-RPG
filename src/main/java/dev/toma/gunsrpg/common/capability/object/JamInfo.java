@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Constants;
 
 public class JamInfo implements IJamInfo, IPlayerCapEntry {
 
@@ -30,16 +31,17 @@ public class JamInfo implements IJamInfo, IPlayerCapEntry {
 
     @Override
     public void startUnjamming(int slot, int time) {
-        setUnjamming(true);
         handState.setHandsBusy();
         this.activeSlot = slot;
         this.remainingTime = time;
+        setUnjamming(true);
         syncRequestFactory.makeSyncRequest();
     }
 
     @Override
     public void tick() {
         if (unjamming) {
+            System.out.println(remainingTime);
             if (--remainingTime <= 0) {
                 completeUnjamming();
             } else if (player.inventory.selected != activeSlot) {
@@ -67,14 +69,17 @@ public class JamInfo implements IJamInfo, IPlayerCapEntry {
     }
 
     @Override
-    public void toNbt(CompoundNBT nbt) {
+    public void toNbt(CompoundNBT cnbt) {
+        CompoundNBT nbt = new CompoundNBT();
         nbt.putBoolean("unjamming", unjamming);
         nbt.putInt("slot", activeSlot);
         nbt.putInt("remainingTime", remainingTime);
+        cnbt.put("jamInfo", nbt);
     }
 
     @Override
-    public void fromNbt(CompoundNBT nbt) {
+    public void fromNbt(CompoundNBT cnbt) {
+        CompoundNBT nbt = cnbt.contains("jamInfo", Constants.NBT.TAG_COMPOUND) ? cnbt.getCompound("jamInfo") : new CompoundNBT();
         unjamming = nbt.getBoolean("unjamming");
         activeSlot = nbt.getInt("slot");
         remainingTime = nbt.getInt("remainingTime");

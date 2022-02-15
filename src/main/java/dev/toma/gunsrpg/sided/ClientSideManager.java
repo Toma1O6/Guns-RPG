@@ -103,6 +103,9 @@ public class ClientSideManager {
 
         // skill renderers
         SkillRendererRegistry.registerRenderers(new LikeACatRenderer(), Skills.LIKE_A_CAT_I, Skills.LIKE_A_CAT_II, Skills.LIKE_A_CAT_III);
+
+        // event handlers
+        MinecraftForge.EVENT_BUS.register(new HUDRenderer());
     }
 
     public void playDelayedSound(BlockPos pos, float volume, float pitch, SoundEvent event, SoundCategory category, int tickDelay) {

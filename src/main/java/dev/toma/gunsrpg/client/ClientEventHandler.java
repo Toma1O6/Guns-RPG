@@ -63,7 +63,7 @@ public class ClientEventHandler {
     );
     public static float partialTicks;
 
-    @SubscribeEvent
+    //@SubscribeEvent
     public static void cancelOverlays(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
             Minecraft mc = Minecraft.getInstance();
@@ -78,7 +78,7 @@ public class ClientEventHandler {
     }
 
     // TODO clean up
-    @SubscribeEvent
+    //@SubscribeEvent
     public static void renderOverlay(RenderGameOverlayEvent.Post event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
             Minecraft mc = Minecraft.getInstance();
@@ -87,33 +87,7 @@ public class ClientEventHandler {
             LazyOptional<IPlayerData> optional = PlayerData.get(player);
             optional.ifPresent(data -> {
                 FontRenderer renderer = mc.font;
-                long day = player.level.getDayTime() / 24000L;
-                int cycle = ModConfig.worldConfig.bloodmoonCycle.get();
                 MainWindow window = event.getWindow();
-                if (cycle >= 0) {
-                    boolean b = day % cycle == 0 && day > 0;
-                    long l = b ? 0 : cycle - day % cycle;
-                    String remainingDays = l + "";
-                    FontRenderer font = mc.font;
-                    int warningWidth = font.width(remainingDays);
-                    int x = window.getGuiScaledWidth() - 9;
-                    Collection<EffectInstance> effects = player.getActiveEffects();
-                    boolean renderEffectBg = false;
-                    for (EffectInstance instance : effects) {
-                        if (instance.isVisible()) {
-                            renderEffectBg = true;
-                            break;
-                        }
-                    }
-                    int color = b ? 0xff0000 : l > 0 && l < 3 ? 0xffff00 : 0xffffff;
-                    if (renderEffectBg) {
-                        RenderUtils.drawSolid(matrixStack.last().pose(), x - warningWidth / 2f - 3, 3, x - warningWidth / 2f + warningWidth + 3, 16, 0xFF << 24 | color);
-                        RenderUtils.drawSolid(matrixStack.last().pose(), x - warningWidth / 2f - 2, 4, x - warningWidth / 2f + warningWidth + 2, 15, 0xFF << 24);
-                    }
-
-                    font.drawShadow(matrixStack, remainingDays, 0.5F + x - warningWidth / 2f, 6, color);
-                }
-                RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
                 ItemStack stack = player.getMainHandItem();
                 int width = 26;
                 int x = window.getGuiScaledWidth() - width - 34;
@@ -156,10 +130,6 @@ public class ClientEventHandler {
                 Matrix4f pose = matrixStack.last().pose();
                 RenderUtils.drawGradient(pose, x, y + 10, x + width + 22, y + 17, 0xFF << 24, 0xFF << 24);
                 RenderUtils.drawGradient(pose, x + 2, y + 12, x + (int) (levelProgress * (width + 20)), y + 15, 0xFF00FFFF, 0xFF008888);
-
-                ClientSideManager manager = ClientSideManager.instance();
-                DebuffRenderManager debuffRenderManager = manager.getDebuffRenderManager();
-                debuffRenderManager.drawDebuffsOnScreen(matrixStack, data.getAttributes(), data.getDebuffControl(), 0, window.getGuiScaledHeight() - 50, event.getPartialTicks());
 
                 int renderIndex = 0;
                 ISkillProvider provider = data.getSkillProvider();

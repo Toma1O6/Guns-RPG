@@ -1,10 +1,7 @@
 package dev.toma.gunsrpg.util.object;
 
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.IProgressData;
-import dev.toma.gunsrpg.api.common.data.IReloadInfo;
-import dev.toma.gunsrpg.api.common.data.ISkillProvider;
+import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.animation.RecoilAnimation;
 import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
@@ -50,7 +47,8 @@ public class ShootingManager {
             }
             MaterialContainer container = item.getContainer();
             int weaponLevel = levelData.getWeaponStats(item).getLevel();
-            return item.hasAmmo(stack) && weaponLevel >= container.getRequiredLevel(material) && stack.getDamageValue() < stack.getMaxDamage() && !item.isJammed(stack);
+            IHandState state = data.getHandState();
+            return item.hasAmmo(stack) && weaponLevel >= container.getRequiredLevel(material) && stack.getDamageValue() < stack.getMaxDamage() && !item.isJammed(stack) && !state.areHandsBusy();
         }
         return false;
     }

@@ -88,7 +88,7 @@ public class ChooseAmmoScreen extends Screen {
             PlayerEntity player = Minecraft.getInstance().player;
             ItemStack stack = player.getMainHandItem();
             boolean isGun = stack.getItem() instanceof GunItem;
-            this.count = ItemLocator.countItems(player.inventory, ItemLocator.typeAndMaterial(ammo));
+            this.count = ItemLocator.countItems(player.inventory, ItemLocator.compatible(ammo));
             this.active = false;
             this.stack = new ItemStack((Item) ammo);
             PlayerData.get(player).ifPresent(data -> {
