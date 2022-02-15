@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.VssRenderer;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
@@ -44,6 +45,11 @@ public class VssItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 12)
                     .define(AmmoMaterials.NETHERITE, 14)
                 .build();
+    }
+
+    @Override
+    public int getMaxAmmo(IAttributeProvider provider) {
+        return 20;
     }
 
     @Override

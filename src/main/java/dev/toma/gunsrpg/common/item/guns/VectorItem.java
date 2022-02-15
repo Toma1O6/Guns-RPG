@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.VectorRenderer;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
@@ -53,6 +54,11 @@ public class VectorItem extends GunItem {
     @Override
     public int getUnjamTime(ItemStack stack, IPlayerData data) {
         return 55;
+    }
+
+    @Override
+    public int getMaxAmmo(IAttributeProvider provider) {
+        return 13;
     }
 
     @Override

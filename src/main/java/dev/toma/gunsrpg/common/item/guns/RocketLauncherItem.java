@@ -17,8 +17,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class RocketLauncherItem extends GunItem {
 
-    private static final ResourceLocation RELOAD = GunsRPG.makeResource("rocket_launcher/reload");
-    private static final ResourceLocation UNJAM = GunsRPG.makeResource("rocket_launcher/unjam");
+    private static final ResourceLocation RELOAD = GunsRPG.makeResource("rl/reload");
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("rl/unjam");
 
     public RocketLauncherItem(String name) {
         super(name, new Properties().setISTER(() -> RocketLauncherRenderer::new).durability(150));

@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Mk14EbrRenderer;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
@@ -17,8 +18,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class Mk14EbrItem extends GunItem {
 
-    private static final ResourceLocation RELOAD = GunsRPG.makeResource("mk14ebr/reload");
-    private static final ResourceLocation UNJAM = GunsRPG.makeResource("mk14ebr/unjam");
+    private static final ResourceLocation RELOAD = GunsRPG.makeResource("mk14/reload");
+    private static final ResourceLocation UNJAM = GunsRPG.makeResource("mk14/unjam");
 
     public Mk14EbrItem(String name) {
         super(name, new Properties().setISTER(() -> Mk14EbrRenderer::new).durability(750));
@@ -41,6 +42,11 @@ public class Mk14EbrItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 18)
                     .define(AmmoMaterials.NETHERITE, 22)
                 .build();
+    }
+
+    @Override
+    public int getMaxAmmo(IAttributeProvider provider) {
+        return 20;
     }
 
     @Override

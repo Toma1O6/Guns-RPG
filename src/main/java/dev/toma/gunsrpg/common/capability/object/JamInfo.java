@@ -41,7 +41,6 @@ public class JamInfo implements IJamInfo, IPlayerCapEntry {
     @Override
     public void tick() {
         if (unjamming) {
-            System.out.println(remainingTime);
             if (--remainingTime <= 0) {
                 completeUnjamming();
             } else if (player.inventory.selected != activeSlot) {

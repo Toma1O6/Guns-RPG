@@ -23,4 +23,8 @@ public enum AmmoType {
     public boolean isExplosive() {
         return this == GRENADE || this == ROCKET;
     }
+
+    public IMaterialDataContainer getContainer() {
+        return container;
+    }
 }

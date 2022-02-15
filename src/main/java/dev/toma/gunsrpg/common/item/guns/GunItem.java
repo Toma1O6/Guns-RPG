@@ -18,6 +18,8 @@ import dev.toma.gunsrpg.common.entity.projectile.Bullet;
 import dev.toma.gunsrpg.common.entity.projectile.PenetrationData;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialData;
+import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialDataContainer;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.item.guns.setup.MaterialContainer;
@@ -40,6 +42,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.Random;
 import java.util.Set;
 
 public abstract class GunItem extends AbstractGun implements IAnimationEntry {
@@ -173,10 +176,18 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         shootProjectile(world, entity, stack, props);
         if (entity instanceof ServerPlayerEntity) {
             ServerPlayerEntity player = (ServerPlayerEntity) entity;
-            stack.hurt(1, world.getRandom(), player);
+            Random random = world.getRandom();
+            AmmoType type = getAmmoType();
+            IAmmoMaterial material = getMaterialFromNBT(stack);
+            IMaterialDataContainer container = type.getContainer();
+            IMaterialData materialData = container.getMaterialData(material);
+            float noDamageChance = 1.0F - materialData.getAddedDurability();
+            if (random.nextFloat() >= noDamageChance) {
+                stack.hurt(1, world.getRandom(), player);
+            }
             IWeaponConfig config = this.getWeaponConfig();
             IJamConfig jamConfig = config.getJamConfig();
-            float jamChance = jamConfig.getJamChance(stack);
+            float jamChance = jamConfig.getJamChance(stack) + materialData.getAddedJamChance();
             if (entity.getRandom().nextFloat() <= jamChance) {
                 setJammedState(stack, true);
             }

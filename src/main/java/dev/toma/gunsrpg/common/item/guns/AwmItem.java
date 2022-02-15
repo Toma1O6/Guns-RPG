@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.AwmRenderer;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
@@ -42,6 +43,11 @@ public class AwmItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 35)
                     .define(AmmoMaterials.NETHERITE, 42)
                 .build();
+    }
+
+    @Override
+    public int getMaxAmmo(IAttributeProvider provider) {
+        return 5;
     }
 
     @Override
