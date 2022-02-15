@@ -5,12 +5,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import dev.toma.gunsrpg.api.common.skill.*;
+import dev.toma.gunsrpg.client.screen.skill.SkillTreeScreen;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.*;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import dev.toma.gunsrpg.resource.skill.SkillPropertyLoader;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.ArrayList;
@@ -53,9 +56,11 @@ public class S2C_SendSkillDataPacket extends AbstractNetworkPacket<S2C_SendSkill
         return new S2C_SendSkillDataPacket(list);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     protected void handlePacket(NetworkEvent.Context context) {
         data.forEach(this::assign);
+        SkillTreeScreen.Cache.invalidate();
     }
 
     @SuppressWarnings("unchecked")

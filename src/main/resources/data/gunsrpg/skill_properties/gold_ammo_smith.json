@@ -3,7 +3,7 @@
         "category": "gun",
         "parent": "gunsrpg:iron_ammo_smith",
         "children": [
-            "gunsrpg:diamond_ammo_smith",
+            "gunsrpg:emerald_ammo_smith",
             "gunsrpg:redstone_ammo_smith"
         ]
     },

@@ -1,7 +1,7 @@
 {
     "hierarchy": {
         "category": "gun",
-        "parent": "gunsrpg:diamond_ammo_smith"
+        "parent": "gunsrpg:emerald_ammo_smith"
     },
     "properties": {
         "level": 20,

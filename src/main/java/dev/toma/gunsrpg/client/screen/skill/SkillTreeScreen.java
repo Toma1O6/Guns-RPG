@@ -139,6 +139,10 @@ public class SkillTreeScreen extends Screen implements IViewContext {
         private static final Marker MARKER = MarkerManager.getMarker("SkillCache");
         private static Map<SkillCategory, SkillTrees> treeMap;
 
+        public static void invalidate() {
+            treeMap = null;
+        }
+
         public static boolean hasBeenBuilt() {
             return treeMap != null;
         }
