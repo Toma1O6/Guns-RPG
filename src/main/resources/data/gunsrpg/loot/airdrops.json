@@ -1345,7 +1345,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:diamond_9mm",
+                "item": "gunsrpg:emerald_9mm",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 25
@@ -1353,7 +1353,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:diamond_45acp",
+                "item": "gunsrpg:emerald_45acp",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 25
@@ -1361,7 +1361,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:diamond_556mm",
+                "item": "gunsrpg:emerald_556mm",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 25
@@ -1369,7 +1369,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:diamond_762mm",
+                "item": "gunsrpg:emerald_762mm",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 25
@@ -1377,7 +1377,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:diamond_12g",
+                "item": "gunsrpg:emerald_12g",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 25
@@ -1385,7 +1385,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:diamond_bolt",
+                "item": "gunsrpg:emerald_bolt",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 25
@@ -1755,7 +1755,7 @@
         "epic": [
             {
                 "weight": 50,
-                "item": "gunsrpg:diamond_9mm",
+                "item": "gunsrpg:emerald_9mm",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 50
@@ -1763,7 +1763,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:diamond_45acp",
+                "item": "gunsrpg:emerald_45acp",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 50
@@ -1771,7 +1771,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:diamond_556mm",
+                "item": "gunsrpg:emerald_556mm",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 50
@@ -1779,7 +1779,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:diamond_762mm",
+                "item": "gunsrpg:emerald_762mm",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 50
@@ -1787,7 +1787,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:diamond_12g",
+                "item": "gunsrpg:emerald_12g",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 50
@@ -1795,7 +1795,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:diamond_bolt",
+                "item": "gunsrpg:emerald_bolt",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 50
@@ -1851,7 +1851,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:emerald_9mm",
+                "item": "gunsrpg:diamond_9mm",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 25
@@ -1859,7 +1859,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:emerald_45acp",
+                "item": "gunsrpg:diamond_45acp",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 25
@@ -1867,7 +1867,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:emerald_556mm",
+                "item": "gunsrpg:diamond_556mm",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 25
@@ -1875,7 +1875,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:emerald_762mm",
+                "item": "gunsrpg:diamond_762mm",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 25
@@ -1883,7 +1883,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:emerald_12g",
+                "item": "gunsrpg:diamond_12g",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 25
@@ -1891,7 +1891,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:emerald_bolt",
+                "item": "gunsrpg:diamond_bolt",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 25
@@ -2213,7 +2213,7 @@
         "legendary": [
             {
                 "weight": 50,
-                "item": "gunsrpg:emerald_9mm",
+                "item": "gunsrpg:diamond_9mm",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 50
@@ -2221,7 +2221,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:emerald_45acp",
+                "item": "gunsrpg:diamond_45acp",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 50
@@ -2229,7 +2229,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:emerald_556mm",
+                "item": "gunsrpg:diamond_556mm",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 50
@@ -2237,7 +2237,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:emerald_762mm",
+                "item": "gunsrpg:diamond_762mm",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 50
@@ -2245,7 +2245,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:emerald_12g",
+                "item": "gunsrpg:diamond_12g",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 50
@@ -2253,7 +2253,7 @@
             },
             {
                 "weight": 50,
-                "item": "gunsrpg:emerald_bolt",
+                "item": "gunsrpg:diamond_bolt",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 50
