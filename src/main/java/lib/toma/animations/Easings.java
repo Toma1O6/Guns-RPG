@@ -40,7 +40,11 @@ public enum Easings implements IEasing {
 
     JUMP_START(x -> x > 0.0F ? 1.0F : 0.0F, "JUMP START"),
     JUMP_MIDDLE(x -> x > 0.5F ? 1.0F : 0.0F, "JUMP MIDDLE"),
-    JUMP_END(x -> x == 1.0F ? 1.0F : 0.0F, "JUMP END");
+    JUMP_END(x -> x == 1.0F ? 1.0F : 0.0F, "JUMP END"),
+    EASE_IN_BACK(Easings::easeInBack, "IN BACK"),
+    EASE_OUT_BACK(Easings::easeOutBack, "OUT BACK"),
+    EASE_IN_OUT_BACK(Easings::easeInOutBack, "INOUT BACK");
+
 
     private final IEasingFunction function;
     private final String shortName;
@@ -51,6 +55,28 @@ public enum Easings implements IEasing {
         this.shortName = shortName;
 
         EasingRegistry.getRegistry().register(this, (byte) ordinal());
+    }
+
+    private static float piMulX(float x) {
+        return x * (float) Math.PI;
+    }
+
+    private static float easeInBack(float in) {
+        float c1 = 1.70158f;
+        float c3 = c1 + 1;
+        return c3 * in * in * in - c1 * in * in;
+    }
+
+    private static float easeOutBack(float in) {
+        float c1 = 1.70158F;
+        float c3 = c1 + 1.0F;
+        return (float) (1 + c3 * Math.pow(in - 1, 3) + c1 * Math.pow(in - 1, 2));
+    }
+
+    private static float easeInOutBack(float in) {
+        float c1 = 1.70158f;
+        float c2 = c1 * 1.525f;
+        return (float) (in < 0.5 ? (Math.pow(2 * in, 2) * ((c2 + 1) * 2 * in - c2)) / 2 : (Math.pow(2 * in - 2, 2) * ((c2 + 1) * (in * 2 - 2) + c2) + 2) / 2);
     }
 
     @Override
@@ -92,10 +118,6 @@ public enum Easings implements IEasing {
             words[i] = formatted;
         }
         return String.join(" ", words);
-    }
-
-    private static float piMulX(float x) {
-        return x * (float) Math.PI;
     }
 
     private TextFormatting getColor() {
