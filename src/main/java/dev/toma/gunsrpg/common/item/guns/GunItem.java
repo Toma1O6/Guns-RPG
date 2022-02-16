@@ -182,13 +182,13 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
             IMaterialDataContainer container = type.getContainer();
             IMaterialData materialData = container.getMaterialData(material);
             float noDamageChance = 1.0F - materialData.getAddedDurability();
-            if (random.nextFloat() >= noDamageChance) {
-                stack.hurt(1, world.getRandom(), player);
+            if (noDamageChance <= random.nextFloat()) {
+                stack.hurt(1, random, player);
             }
             IWeaponConfig config = this.getWeaponConfig();
             IJamConfig jamConfig = config.getJamConfig();
-            float jamChance = jamConfig.getJamChance(stack) + materialData.getAddedJamChance();
-            if (entity.getRandom().nextFloat() <= jamChance) {
+            float jamChance = jamConfig.getJamChance(stack) * (1.0F + materialData.getAddedJamChance());
+            if (random.nextFloat() <= jamChance) {
                 setJammedState(stack, true);
             }
         }
