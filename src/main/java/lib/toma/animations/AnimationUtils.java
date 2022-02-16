@@ -70,4 +70,9 @@ public class AnimationUtils {
         Minecraft client = Minecraft.getInstance();
         Arrays.stream(eventCollection).filter(event -> event.invokeAt() <= current && event.invokeAt() > prev).forEach(event -> event.dispatch(client, source));
     }
+
+    public static void dispatchEventsMultiFlow(float progress1, float progress2, IAnimation source, IAnimationEvent[] events) {
+        dispatchEvents(progress1, progress2, source, events);
+        dispatchEvents(progress2, progress1, source, events);
+    }
 }
