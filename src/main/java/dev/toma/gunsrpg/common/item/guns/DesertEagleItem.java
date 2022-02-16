@@ -50,6 +50,16 @@ public class DesertEagleItem extends GunItem {
     }
 
     @Override
+    public int getReloadTime(IAttributeProvider provider) {
+        return 60;
+    }
+
+    @Override
+    public int getFirerate(IAttributeProvider provider) {
+        return 5;
+    }
+
+    @Override
     public int getUnjamTime(ItemStack stack, IPlayerData data) {
         return 55;
     }

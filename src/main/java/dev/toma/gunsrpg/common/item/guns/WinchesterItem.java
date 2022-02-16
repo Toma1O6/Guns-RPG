@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.WinchesterRenderer;
@@ -8,6 +9,7 @@ import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -20,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 public class WinchesterItem extends GunItem {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("winchester/reload");
+    private static final ResourceLocation BULLET = GunsRPG.makeResource("winchester/load_bullet");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("winchester/unjam");
 
     public WinchesterItem(String name) {
@@ -44,6 +47,21 @@ public class WinchesterItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 19)
                     .define(AmmoMaterials.NETHERITE, 23)
                 .build();
+    }
+
+    @Override
+    public int getReloadTime(IAttributeProvider provider) {
+        return 25;
+    }
+
+    @Override
+    public int getFirerate(IAttributeProvider provider) {
+        return 15;
+    }
+
+    @Override
+    public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
+        return ReloadManagers.singleBulletLoading(12, player, this, player.getMainHandItem(), BULLET);
     }
 
     @Override

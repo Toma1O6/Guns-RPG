@@ -52,6 +52,16 @@ public class VectorItem extends GunItem {
     }
 
     @Override
+    public int getReloadTime(IAttributeProvider provider) {
+        return 70;
+    }
+
+    @Override
+    public int getFirerate(IAttributeProvider provider) {
+        return 0;
+    }
+
+    @Override
     public int getUnjamTime(ItemStack stack, IPlayerData data) {
         return 55;
     }

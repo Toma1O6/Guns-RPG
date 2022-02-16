@@ -2,6 +2,8 @@ package dev.toma.gunsrpg.api.common;
 
 public interface IWeaponConfig {
 
+    float getRecoilAnimationScale();
+
     float getDamage();
 
     float getVelocity();

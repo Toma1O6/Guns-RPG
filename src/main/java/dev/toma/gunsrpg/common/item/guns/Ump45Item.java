@@ -89,7 +89,7 @@ public class Ump45Item extends GunItem {
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return provider.getAttribute(Attribs.UMP45_FIRERATE).intValue();
+        return 2;
     }
 
     @Override

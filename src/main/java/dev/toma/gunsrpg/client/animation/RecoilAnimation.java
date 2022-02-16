@@ -1,6 +1,9 @@
 package dev.toma.gunsrpg.client.animation;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.api.common.IWeaponConfig;
+import dev.toma.gunsrpg.api.common.data.IAimInfo;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
@@ -20,13 +23,15 @@ public class RecoilAnimation extends TickableAnimation {
     private IStagePredicate predicate;
     private boolean mainHand;
 
-    public RecoilAnimation(float x, float y, float scale, GunItem source, ItemStack data, ISkillProvider provider) {
+    public RecoilAnimation(float x, float y, GunItem source, ItemStack data, IPlayerData provider) {
         super(3);
-        float modifier = 0.5F + 0.5F * scale;
+        IWeaponConfig config = source.getWeaponConfig();
+        IAimInfo aimInfo = provider.getAimInfo();
+        float modifier = aimInfo.isAiming() ? 0.2F + 0.8F * config.getRecoilAnimationScale() : 1.0F;
         this.x = x * modifier;
         this.y = y * modifier;
         this.z = 0.09F * modifier;
-        this.initDataStates(source, data, provider);
+        this.initDataStates(source, data, provider.getSkillProvider());
     }
 
     @Override

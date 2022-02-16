@@ -52,6 +52,16 @@ public class S12KItem extends AbstractShotgun {
     }
 
     @Override
+    public int getReloadTime(IAttributeProvider provider) {
+        return 80;
+    }
+
+    @Override
+    public int getFirerate(IAttributeProvider provider) {
+        return 6;
+    }
+
+    @Override
     public int getMaxAmmo(IAttributeProvider provider) {
         return 5;
     }

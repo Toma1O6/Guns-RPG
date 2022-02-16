@@ -9,6 +9,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.Heightmap;
 
 import java.util.List;
 import java.util.Random;
@@ -45,14 +46,12 @@ public class AirdropEventHandler implements IWorldEventHandler {
         int maxDist = 35;
         int x = randomInRange(maxDist);
         int z = randomInRange(maxDist);
-        BlockPos.Mutable dynamicPos = new BlockPos.Mutable(player.getX(x), 255, player.getZ(z));
-        while (!world.isEmptyBlock(dynamicPos) && dynamicPos.getY() > 1) {
-            dynamicPos.setY(dynamicPos.getY() - 1);
-        }
-        if (world.isEmptyBlock(dynamicPos)) {
+        int y = world.getHeight(Heightmap.Type.WORLD_SURFACE, x, z) + 100;
+        BlockPos pos = new BlockPos(x, y, z);
+        if (world.isEmptyBlock(pos)) {
             AirdropEntity entity = new AirdropEntity(world);
-            entity.setPos(dynamicPos.getX(), dynamicPos.getY(), dynamicPos.getZ());
-            world.playSound(null, dynamicPos.getX(), player.getY(), dynamicPos.getZ(), ModSounds.PLANE_FLY_BY, SoundCategory.MASTER, 15.0F, 1.0F);
+            entity.setPos(pos.getX(), pos.getY(), pos.getZ());
+            world.playSound(null, pos.getX(), player.getY(), pos.getZ(), ModSounds.PLANE_FLY_BY, SoundCategory.MASTER, 15.0F, 1.0F);
             world.addFreshEntity(entity);
         }
         float anotherAirdropChance = 0.005F;

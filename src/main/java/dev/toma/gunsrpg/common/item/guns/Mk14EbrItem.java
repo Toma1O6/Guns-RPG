@@ -45,6 +45,16 @@ public class Mk14EbrItem extends GunItem {
     }
 
     @Override
+    public int getReloadTime(IAttributeProvider provider) {
+        return 75;
+    }
+
+    @Override
+    public int getFirerate(IAttributeProvider provider) {
+        return 2;
+    }
+
+    @Override
     public int getMaxAmmo(IAttributeProvider provider) {
         return 20;
     }

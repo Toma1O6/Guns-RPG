@@ -53,6 +53,16 @@ public class ThompsonItem extends GunItem {
     }
 
     @Override
+    public int getReloadTime(IAttributeProvider provider) {
+        return 75;
+    }
+
+    @Override
+    public int getFirerate(IAttributeProvider provider) {
+        return 2;
+    }
+
+    @Override
     public int getUnjamTime(ItemStack stack, IPlayerData data) {
         return 70;
     }

@@ -1,11 +1,14 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.RocketLauncherRenderer;
+import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
+import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -18,6 +21,7 @@ import net.minecraft.util.ResourceLocation;
 public class RocketLauncherItem extends GunItem {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("rl/reload");
+    private static final ResourceLocation LOAD_SINGLE = GunsRPG.makeResource("rl/load_bullet");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("rl/unjam");
 
     public RocketLauncherItem(String name) {
@@ -35,6 +39,26 @@ public class RocketLauncherItem extends GunItem {
                     .define(AmmoMaterials.NAPALM)
                     .define(AmmoMaterials.HE_ROCKET)
                 .build();
+    }
+
+    @Override
+    public int getMaxAmmo(IAttributeProvider provider) {
+        return 4;
+    }
+
+    @Override
+    public int getReloadTime(IAttributeProvider provider) {
+        return 40;
+    }
+
+    @Override
+    public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
+        return ReloadManagers.singleBulletLoading(25, player, this, player.getMainHandItem(), LOAD_SINGLE);
+    }
+
+    @Override
+    public int getFirerate(IAttributeProvider provider) {
+        return 8;
     }
 
     @Override

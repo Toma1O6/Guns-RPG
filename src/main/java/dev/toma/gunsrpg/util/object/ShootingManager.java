@@ -7,9 +7,11 @@ import dev.toma.gunsrpg.client.animation.RecoilAnimation;
 import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialData;
+import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialDataContainer;
 import dev.toma.gunsrpg.common.item.guns.setup.MaterialContainer;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_SetReloadingPacket;
 import dev.toma.gunsrpg.network.packet.C2S_ShootPacket;
@@ -76,9 +78,16 @@ public class ShootingManager {
         public static void shoot(PlayerEntity player, ItemStack stack, IPlayerData dataProvider) {
             GunItem gun = (GunItem) stack.getItem();
             IAttributeProvider attributeProvider = dataProvider.getAttributes();
-            ISkillProvider skillProvider = dataProvider.getSkillProvider();
-            float xRot = gun.getVerticalRecoil(attributeProvider);
-            float yRot = gun.getHorizontalRecoil(attributeProvider);
+            AmmoType type = gun.getAmmoType();
+            IAmmoMaterial material = gun.getMaterialFromNBT(stack);
+            IMaterialDataContainer materialDataContainer = type.getContainer();
+            float recoilModifier = 1.0F;
+            if (materialDataContainer != null) {
+                IMaterialData materialData = materialDataContainer.getMaterialData(material);
+                recoilModifier += materialData.getAddedRecoil();
+            }
+            float xRot = gun.getVerticalRecoil(attributeProvider) * recoilModifier;
+            float yRot = gun.getHorizontalRecoil(attributeProvider) * recoilModifier;
             if (player.getRandom().nextBoolean())
                 yRot = -yRot;
             player.xRot -= xRot;
@@ -86,9 +95,8 @@ public class ShootingManager {
             NetworkManager.sendServerPacket(new C2S_ShootPacket());
             gun.onShoot(player, stack);
             shootingDelay = gun.getFirerate(attributeProvider);
-            float recoilAnimationShakeScale = ModConfig.clientConfig.recoilAnimationScale.floatValue();
             IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
-            pipeline.insert(ModAnimations.RECOIL, new RecoilAnimation(xRot, yRot, recoilAnimationShakeScale, gun, stack, skillProvider));
+            pipeline.insert(ModAnimations.RECOIL, new RecoilAnimation(xRot, yRot, gun, stack, dataProvider));
         }
 
         public static void saveSettings(GameSettings settings) {

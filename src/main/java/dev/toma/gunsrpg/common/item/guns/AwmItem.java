@@ -46,6 +46,16 @@ public class AwmItem extends GunItem {
     }
 
     @Override
+    public int getReloadTime(IAttributeProvider provider) {
+        return 100;
+    }
+
+    @Override
+    public int getFirerate(IAttributeProvider provider) {
+        return 30;
+    }
+
+    @Override
     public int getMaxAmmo(IAttributeProvider provider) {
         return 5;
     }

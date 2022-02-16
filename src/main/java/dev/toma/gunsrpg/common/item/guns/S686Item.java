@@ -19,7 +19,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class S686Item extends AbstractShotgun {
 
-    private static final ResourceLocation RELOAD = GunsRPG.makeResource("s686/reload");
+    private static final ResourceLocation RELOAD = GunsRPG.makeResource("s686/reload_both");
+    private static final ResourceLocation RELOAD_SINGLE = GunsRPG.makeResource("s686/reload_single");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("s686/unjam");
 
     public S686Item(String name) {
@@ -52,6 +53,16 @@ public class S686Item extends AbstractShotgun {
     }
 
     @Override
+    public int getReloadTime(IAttributeProvider provider) {
+        return 60;
+    }
+
+    @Override
+    public int getFirerate(IAttributeProvider provider) {
+        return 8;
+    }
+
+    @Override
     public int getMaxAmmo(IAttributeProvider provider) {
         return 2;
     }
@@ -68,7 +79,9 @@ public class S686Item extends AbstractShotgun {
 
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
-        return RELOAD;
+        ItemStack stack = player.getMainHandItem();
+        int count = getAmmoCount(stack);
+        return count == 0 ? RELOAD : RELOAD_SINGLE;
     }
 
     @Override

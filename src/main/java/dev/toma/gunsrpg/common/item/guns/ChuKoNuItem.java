@@ -1,12 +1,14 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.ChuKoNuRenderer;
 import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
+import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -19,6 +21,7 @@ import net.minecraft.util.ResourceLocation;
 public class ChuKoNuItem extends GunItem {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("chukonu/reload");
+    private static final ResourceLocation BULLET = GunsRPG.makeResource("chukonu/load_bullet");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("chukonu/unjam");
 
     public ChuKoNuItem(String name) {
@@ -42,6 +45,21 @@ public class ChuKoNuItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 14)
                     .define(AmmoMaterials.NETHERITE, 17)
                 .build();
+    }
+
+    @Override
+    public int getReloadTime(IAttributeProvider provider) {
+        return 35;
+    }
+
+    @Override
+    public int getFirerate(IAttributeProvider provider) {
+        return 4;
+    }
+
+    @Override
+    public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
+        return ReloadManagers.singleBulletLoading(15, player, this, player.getMainHandItem(), BULLET);
     }
 
     @Override

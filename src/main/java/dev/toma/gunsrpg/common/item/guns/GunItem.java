@@ -27,6 +27,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import lib.toma.animations.AnimationUtils;
+import lib.toma.animations.Easings;
 import lib.toma.animations.api.AnimationList;
 import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IRenderConfig;
@@ -180,14 +181,29 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
             AmmoType type = getAmmoType();
             IAmmoMaterial material = getMaterialFromNBT(stack);
             IMaterialDataContainer container = type.getContainer();
-            IMaterialData materialData = container.getMaterialData(material);
-            float noDamageChance = 1.0F - materialData.getAddedDurability();
-            if (noDamageChance <= random.nextFloat()) {
+            float addedJamChance = 0.0F;
+            float addedDurability = 0.0F;
+            if (container != null) {
+                IMaterialData materialData = container.getMaterialData(material);
+                addedDurability = materialData.getAddedDurability();
+                addedJamChance = materialData.getAddedJamChance();
+            }
+            float noDamageChance = 1.0F - addedDurability;
+            float chance = random.nextFloat();
+            boolean damaged = false;
+            if (noDamageChance > 1.0F) {
+                float doubleDmgChance = noDamageChance - 1.0F;
+                if (doubleDmgChance >= chance) {
+                    stack.hurt(2, random, player);
+                    damaged = true;
+                }
+            }
+            if (!damaged && noDamageChance >= chance) {
                 stack.hurt(1, random, player);
             }
             IWeaponConfig config = this.getWeaponConfig();
             IJamConfig jamConfig = config.getJamConfig();
-            float jamChance = jamConfig.getJamChance(stack) * (1.0F + materialData.getAddedJamChance());
+            float jamChance = jamConfig.getJamChance(stack) * (1.0F + addedJamChance);
             if (random.nextFloat() <= jamChance) {
                 setJammedState(stack, true);
             }
@@ -261,11 +277,25 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
     @Override
     public int getRGBDurabilityForDisplay(ItemStack stack) {
-        return 0xFFFF;
+        float damage = this.getDurability(stack);
+        if (damage < 0.4) {
+            float f = damage / 0.4F;
+            int blue = (int) ((1.0F - f) * 255);
+            return 0xFF << 8 | blue;
+        } else {
+            float value = Easings.EASE_OUT_CUBIC.ease((damage - 0.4F) / 0.6F);
+            int red = (int) (255 * value);
+            int green = (int) (255 * (1.0F - value));
+            return red << 16 | green << 8;
+        }
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        return true;
+        return super.showDurabilityBar(stack);
+    }
+
+    private float getDurability(ItemStack stack) {
+        return stack.getDamageValue() / (float) stack.getMaxDamage();
     }
 }
