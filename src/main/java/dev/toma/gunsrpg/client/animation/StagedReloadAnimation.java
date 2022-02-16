@@ -48,7 +48,7 @@ public class StagedReloadAnimation implements IModifiableProgress, IAnimationDir
     public void renderTick(float deltaRenderTime) {
         float old = progressInterpolated;
         progressInterpolated = AnimationUtils.linearInterpolate(progress, progressOld, deltaRenderTime);
-        AnimationUtils.dispatchEvents(progressInterpolated, old, this, events);
+        AnimationUtils.dispatchEventsMultiFlow(progressInterpolated, old, this, events);
     }
 
     @Override
