@@ -9,8 +9,12 @@ import net.minecraft.util.ResourceLocation;
  *
  * @param <A> Type of animation
  */
-public final class AnimationType<A extends IAnimation> implements IRegistryEntry {
+public final class AnimationType<A extends IAnimation> implements IRegistryEntry, Comparable<AnimationType<?>> {
 
+    private static int indexPool;
+
+    // internal id used mainly for sorting
+    private final int internalId = indexPool++;
     // unique id
     private final ResourceLocation name;
     // animation instance creator, can be null
@@ -84,5 +88,10 @@ public final class AnimationType<A extends IAnimation> implements IRegistryEntry
     @Override
     public int hashCode() {
         return name.hashCode();
+    }
+
+    @Override
+    public int compareTo(AnimationType<?> o) {
+        return internalId - o.internalId;
     }
 }

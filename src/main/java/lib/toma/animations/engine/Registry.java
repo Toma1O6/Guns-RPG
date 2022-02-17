@@ -39,12 +39,12 @@ public class Registry<T extends IRegistryEntry> implements IRegistry<T> {
         return elementMap.values();
     }
 
-    public void load() {
-        registryListeners.forEach(this::register);
+    public void load(boolean isDevMode) {
+        registryListeners.forEach(listener -> register(listener, isDevMode));
     }
 
-    private void register(IRegistrationListener<T> listener) {
-        for (T t : listener.getAll()) {
+    private void register(IRegistrationListener<T> listener, boolean isDevMode) {
+        for (T t : listener.getAll(isDevMode)) {
             register(t);
         }
     }

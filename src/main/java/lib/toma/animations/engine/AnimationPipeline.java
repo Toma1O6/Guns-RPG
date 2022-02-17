@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 public final class AnimationPipeline implements IAnimationPipeline {
 
     private final Marker MARKER = MarkerManager.getMarker("Pipeline");
-    private final Map<AnimationType<?>, IAnimation> playingAnimations = new IdentityHashMap<>();
+    private final Map<AnimationType<?>, IAnimation> playingAnimations = new TreeMap<>();
     private final List<ScheduledElement<?>> scheduledAnimations = new ArrayList<>();
 
     public AnimationPipeline() {}

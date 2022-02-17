@@ -106,6 +106,7 @@ public class AnimationProject {
             this.animationTime = animationTime;
             IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
             AnimationType<Animator.CustomizableAnimation> type = Animator.ANIMATOR_TYPE;
+            if (type == null) return;
             Animator.CustomizableAnimation animation = pipeline.get(type);
             if (animation != null) {
                 animation.setTickLength(animationTime);

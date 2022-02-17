@@ -64,8 +64,8 @@ public class ClientSideManager {
     }
 
     public void animationSetup() {
-        Registries.ANIMATION_TYPES.addCallback(this::gatherAnimationTypes);
-        Registries.ANIMATION_STAGES.addCallback(this::gatherAnimationStages);
+        Registries.ANIMATION_TYPES.addCallback(dev -> gatherAnimationTypes());
+        Registries.ANIMATION_STAGES.addCallback(dev -> gatherAnimationStages());
     }
 
     public void clientSetup(FMLClientSetupEvent event) {

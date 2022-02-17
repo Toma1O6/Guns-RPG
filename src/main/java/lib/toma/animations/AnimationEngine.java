@@ -26,7 +26,7 @@ public final class AnimationEngine {
 
     public static final Marker MARKER = MarkerManager.getMarker("Engine");
     public static final Logger logger = LogManager.getLogger("AnimationLib");
-    private static final String ENGINE_VERSION = "1.2.20";
+    private static final String ENGINE_VERSION = "1.3.0";
 
     public int handConfigKey = GLFW.GLFW_KEY_KP_9;
     public int animatorKey = GLFW.GLFW_KEY_KP_8;
@@ -57,7 +57,7 @@ public final class AnimationEngine {
         logger.info(MARKER, "Starting animation engine [{} mode]", enableDeveloperTools ? "Developer" : "User");
         logger.info(MARKER, "Engine version {}", ENGINE_VERSION);
         logger.info(MARKER, "Creating registries");
-        initRegistries();
+        initRegistries(enableDeveloperTools);
         IEventBus eventBus = MinecraftForge.EVENT_BUS;
         eventBus.addListener(tickHandler::onGameTick);
         eventBus.addListener(tickHandler::onFrameTick);
@@ -69,8 +69,8 @@ public final class AnimationEngine {
         logger.info(MARKER, "Animation engine - READY");
     }
 
-    private void initRegistries() {
-        Stream.of(Registries.ANIMATION_TYPES, Registries.ANIMATION_STAGES, Registries.EVENTS).map(iRegistry -> (Registry<?>) iRegistry).forEach(Registry::load);
+    private void initRegistries(boolean isDevMode) {
+        Stream.of(Registries.ANIMATION_TYPES, Registries.ANIMATION_STAGES, Registries.EVENTS).map(iRegistry -> (Registry<?>) iRegistry).forEach(registry -> registry.load(isDevMode));
     }
 
     private void devSetup() {

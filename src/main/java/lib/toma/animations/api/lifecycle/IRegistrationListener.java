@@ -12,6 +12,7 @@ public interface IRegistrationListener<T extends IRegistryEntry> {
     /**
      * Retrieves array of all entries for registration
      * @return Array of all entries for registration
+     * @param isDeveloperMode
      */
-    T[] getAll();
+    T[] getAll(boolean isDeveloperMode);
 }

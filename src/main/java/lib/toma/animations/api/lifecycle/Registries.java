@@ -16,14 +16,14 @@ import java.util.TreeMap;
 public class Registries {
 
     public static final IRegistry<AnimationType<?>> ANIMATION_TYPES = new Registry.RegistryBuilder<AnimationType<?>>().map(new TreeMap<>(ResourceLocation::compareNamespaced)).vanillaListener(Registries::registerAnimationTypes).buildRegistry();
-    public static final IRegistry<AnimationStage> ANIMATION_STAGES = new Registry.RegistryBuilder<AnimationStage>().map(new LinkedHashMap<>()).vanillaListener(Registries::registerAnimationStages).buildRegistry();
-    public static final IRegistry<AnimationEventType<?>> EVENTS = new Registry.RegistryBuilder<AnimationEventType<?>>().map(new TreeMap<>(ResourceLocation::compareNamespaced)).vanillaListener(Registries::registerEvents).buildRegistry();
+    public static final IRegistry<AnimationStage> ANIMATION_STAGES = new Registry.RegistryBuilder<AnimationStage>().map(new LinkedHashMap<>()).vanillaListener(devMode -> registerAnimationStages()).buildRegistry();
+    public static final IRegistry<AnimationEventType<?>> EVENTS = new Registry.RegistryBuilder<AnimationEventType<?>>().map(new TreeMap<>(ResourceLocation::compareNamespaced)).vanillaListener(devMode -> registerEvents()).buildRegistry();
 
     // Vanilla registration =============================
-    private static AnimationType<?>[] registerAnimationTypes() {
-        return new AnimationType[]{
-                Animator.ANIMATOR_TYPE
-        };
+    private static AnimationType<?>[] registerAnimationTypes(boolean devMode) {
+        if (devMode)
+            return new AnimationType[]{Animator.ANIMATOR_TYPE};
+        else return new AnimationType[0];
     }
 
     private static AnimationStage[] registerAnimationStages() {

@@ -24,8 +24,8 @@ public final class ModAnimations {
     public static final AnimationType<SprintAnimation> SPRINT = AnimationType.create(GunsRPG.makeResource("sprinting"), SprintAnimation::new);
     public static final AnimationType<IAnimation> CHAMBER = AnimationType.create(GunsRPG.makeResource("chamber"));
     public static final AnimationType<IAnimation> HEAL = AnimationType.create(GunsRPG.makeResource("heal"));
-    public static final AnimationType<IModifiableProgress> RELOAD = AnimationType.create(GunsRPG.makeResource("reload"));
     public static final AnimationType<IModifiableProgress> RELOAD_BULLET = AnimationType.create(GunsRPG.makeResource("reload_bullet"));
+    public static final AnimationType<IModifiableProgress> RELOAD = AnimationType.create(GunsRPG.makeResource("reload"));
     public static final AnimationType<Animation> FIREMODE = AnimationType.create(GunsRPG.makeResource("firemode"), ModAnimations::createFiremodeAnimation);
     public static final AnimationType<AnimationList<BulletEjectAnimation>> BULLET_EJECTION = AnimationType.create(GunsRPG.makeResource("bullet_eject"), AnimationList::newList);
     public static final AnimationType<RecoilAnimation> RECOIL = AnimationType.create(GunsRPG.makeResource("recoil"));
