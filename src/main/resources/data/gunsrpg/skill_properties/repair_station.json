@@ -1,0 +1,12 @@
+{
+    "hierarchy": {
+        "category": "gun"
+    },
+    "properties": {
+        "level": 10,
+        "price": 2,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

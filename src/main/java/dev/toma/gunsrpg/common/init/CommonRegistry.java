@@ -88,6 +88,7 @@ public class CommonRegistry {
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("netherite_ammo_smith"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("ammo_smithing_mastery"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("gun_parts_smith"),
+                SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModBlocks.REPAIR_STATION))).build().setRegistryName("repair_station"),
                 SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModItems.M1911))).build().setRegistryName("m1911_assembly"),
                 SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModItems.R45))).build().setRegistryName("r45_assembly"),
                 SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModItems.DESERT_EAGLE))).build().setRegistryName("desert_eagle_assembly"),
@@ -307,7 +308,8 @@ public class CommonRegistry {
                 new TrapBlock("hidden_landmine", AbstractBlock.Properties.of(Material.METAL).noOcclusion(), new TrapBlock.MineReaction(3.0F)),
                 new BaseBlock("crystal_fuse", AbstractBlock.Properties.of(Material.STONE).noOcclusion()),
                 new BaseBlock("crystal_purification", AbstractBlock.Properties.of(Material.STONE).noOcclusion()),
-                new CookerBlock("cooker")
+                new CookerBlock("cooker"),
+                new BaseBlock("repair_station", AbstractBlock.Properties.of(Material.STONE).noOcclusion())
         );
     }
 
