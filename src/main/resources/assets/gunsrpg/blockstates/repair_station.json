@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "": {
+            "model": "gunsrpg:block/repair_station"
+        }
+    }
+}

@@ -1,10 +1,11 @@
 {
 	"credit": "Made with Blockbench",
+	"parent": "block/block",
 	"ambientocclusion": false,
 	"texture_size": [256, 256],
 	"textures": {
 		"0": "gunsrpg:block/repair_station",
-		"particle": "Desktop/repair station"
+		"particle": "gunsrpg:block/repair_station"
 	},
 	"elements": [
 		{
