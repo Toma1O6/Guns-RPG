@@ -1,0 +1,36 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "ldl",
+    "pap",
+    "lml"
+  ],
+  "key": {
+    "a": {
+      "item": "gunsrpg:analgetics"
+    },
+    "l": {
+        "item": "minecraft:leather"
+    },
+    "m": {
+        "item": "gunsrpg:morphine"
+    },
+    "d": {
+        "item": "gunsrpg:adrenaline"
+    },
+    "p": {
+        "item": "gunsrpg:painkillers"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:kodiak"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:pharmacist_v"
+      }
+    }
+  ]
+}

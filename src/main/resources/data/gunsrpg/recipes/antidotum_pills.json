@@ -2,8 +2,8 @@
   "type": "gunsrpg:smithing_table",
   "pattern": [
     "psp",
-    "oeg",
-    "doo"
+    "aeg",
+    "dbo"
   ],
   "key": {
     "p": {
@@ -23,6 +23,12 @@
     },
     "o": {
       "item": "minecraft:poppy"
+    },
+    "b": {
+      "item": "minecraft:blue_orchid"
+    },
+    "a": {
+      "item": "minecraft:allium"
     }
   },
   "result": {

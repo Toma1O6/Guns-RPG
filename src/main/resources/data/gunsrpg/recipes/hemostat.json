@@ -1,26 +1,23 @@
 {
   "type": "gunsrpg:smithing_table",
   "pattern": [
-    "yps",
-    "pwp",
-    "spy"
+    "c c",
+    "psp",
+    " p "
   ],
   "key": {
-    "p": {
-      "item": "minecraft:paper"
+    "c": {
+      "item": "minecraft:clay_ball"
     },
-    "y": {
-      "item": "minecraft:yellow_dye"
+    "p": {
+        "item": "minecraft:paper"
     },
     "s": {
-      "item": "minecraft:slime_ball"
-    },
-    "w": {
-      "item": "minecraft:white_wool"
+        "item": "minecraft:slime_ball"
     }
   },
   "result": {
-    "item": "gunsrpg:bandage",
+    "item": "gunsrpg:hemostat",
     "count": 2
   },
   "requirements": [
