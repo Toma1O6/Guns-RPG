@@ -1,27 +1,29 @@
 {
   "type": "gunsrpg:smithing_table",
   "pattern": [
-    "lgw"
+    "llg",
+    "lli",
+    " g "
   ],
   "key": {
+    "i": {
+      "item": "gunsrpg:iron_stock"
+    },
     "g": {
       "item": "gunsrpg:gun_parts"
     },
     "l": {
       "item": "gunsrpg:long_barrel"
-    },
-    "w": {
-      "item": "gunsrpg:wooden_stock"
     }
   },
   "result": {
-    "item": "gunsrpg:kar98k"
+    "item": "gunsrpg:rocket_launcher"
   },
   "requirements": [
     {
       "type": "gunsrpg:skill",
       "predicate": {
-        "skill": "gunsrpg:kar98k_assembly"
+        "skill": "gunsrpg:rocket_launcher_assembly"
       }
     }
   ]

@@ -1,0 +1,33 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "l  ",
+    " g ",
+    "mgi"
+  ],
+  "key": {
+    "i": {
+      "item": "gunsrpg:iron_stock"
+    },
+    "g": {
+      "item": "gunsrpg:gun_parts"
+    },
+    "m": {
+      "item": "gunsrpg:magazine"
+    },
+    "l": {
+      "item": "gunsrpg:long_barrel"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:hk416"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:hk416_assembly"
+      }
+    }
+  ]
+}

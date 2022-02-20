@@ -1,0 +1,33 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "lgw",
+    " ge",
+    "   "
+  ],
+  "key": {
+    "w": {
+      "item": "gunsrpg:wooden_stock"
+    },
+    "g": {
+      "item": "gunsrpg:gun_parts"
+    },
+    "e": {
+      "item": "minecraft:lever"
+    },
+    "l": {
+        "item": "gunsrpg:long_barrel"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:winchester"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:winchester_assembly"
+      }
+    }
+  ]
+}

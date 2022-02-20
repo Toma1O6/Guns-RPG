@@ -1,0 +1,33 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "l  ",
+    " g ",
+    "m w"
+  ],
+  "key": {
+    "w": {
+      "item": "gunsrpg:wooden_stock"
+    },
+    "g": {
+      "item": "gunsrpg:gun_parts"
+    },
+    "m": {
+      "item": "gunsrpg:magazine"
+    },
+    "l": {
+      "item": "gunsrpg:long_barrel"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:akm"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:akm_assembly"
+      }
+    }
+  ]
+}

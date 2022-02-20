@@ -1,0 +1,33 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "lgi",
+    "gmg",
+    "   "
+  ],
+  "key": {
+    "i": {
+      "item": "gunsrpg:iron_stock"
+    },
+    "g": {
+      "item": "gunsrpg:gun_parts"
+    },
+    "m": {
+      "item": "gunsrpg:magazine"
+    },
+    "l": {
+        "item": "gunsrpg:long_barrel"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:mk14ebr"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:mk14ebr_assembly"
+      }
+    }
+  ]
+}

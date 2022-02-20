@@ -1,0 +1,33 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    " c ",
+    "hgi",
+    " c "
+  ],
+  "key": {
+    "i": {
+      "item": "gunsrpg:iron_stock"
+    },
+    "g": {
+      "item": "gunsrpg:gun_parts"
+    },
+    "c": {
+      "item": "minecraft:crossbow"
+    },
+    "h": {
+      "item": "minecraft:tripwire_hook"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:chukonu"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:chukonu_assembly"
+      }
+    }
+  ]
+}

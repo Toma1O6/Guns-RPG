@@ -1,0 +1,33 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "bgs",
+    " mg",
+    "   "
+  ],
+  "key": {
+    "s": {
+      "item": "gunsrpg:small_iron_stock"
+    },
+    "g": {
+      "item": "gunsrpg:gun_parts"
+    },
+    "m": {
+      "item": "gunsrpg:magazine"
+    },
+    "b": {
+        "item": "gunsrpg:barrel"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:vector"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:vector_assembly"
+      }
+    }
+  ]
+}

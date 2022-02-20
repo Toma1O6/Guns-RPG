@@ -1,31 +1,29 @@
 {
   "type": "gunsrpg:smithing_table",
   "pattern": [
-    "lgi",
-    " m "
+    " l ",
+    "ogo",
+    " l "
   ],
   "key": {
+    "o": {
+      "item": "gunsrpg:cooking_oil"
+    },
     "g": {
       "item": "gunsrpg:gun_parts"
     },
-    "i": {
-      "item": "gunsrpg:iron_stock"
-    },
-    "m": {
-      "item": "gunsrpg:magazine"
-    },
     "l": {
-      "item": "gunsrpg:long_barrel"
+      "item": "minecraft:leather"
     }
   },
   "result": {
-    "item": "gunsrpg:sks"
+    "item": "gunsrpg:weapon_repair_kit"
   },
   "requirements": [
     {
       "type": "gunsrpg:skill",
       "predicate": {
-        "skill": "gunsrpg:sks_assembly"
+        "skill": "gunsrpg:repair_station"
       }
     }
   ]
