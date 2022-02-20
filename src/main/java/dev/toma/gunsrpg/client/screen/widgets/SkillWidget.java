@@ -2,12 +2,14 @@ package dev.toma.gunsrpg.client.screen.widgets;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.configuration.api.client.widget.ITickable;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.client.ISkillRenderer;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.client.render.skill.SkillRendererRegistry;
 import dev.toma.gunsrpg.client.screen.skill.IViewContext;
 import dev.toma.gunsrpg.common.skills.core.DisplayData;
+import dev.toma.gunsrpg.common.skills.core.DisplayType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
@@ -25,21 +27,25 @@ import java.util.Objects;
 
 public class SkillWidget extends Widget implements ITickable {
 
+    public static final DisplayData UNKNOWN = DisplayData.create(DisplayType.ICON, GunsRPG.makeResource("textures/icons/unknown.png"));
+
     private final SkillType<?> source;
     private final IViewContext context;
     private final FontRenderer renderer;
     private final int tagSize;
+    private final boolean invisible;
     private IClickResponder<SkillType<?>> responder = type -> {};
     private int lastAnimationTime;
     private int animationTime;
     private int glowTimer;
 
-    public SkillWidget(int x, int y, int width, int height, SkillType<?> source, IViewContext context) {
+    public SkillWidget(int x, int y, int width, int height, SkillType<?> source, IViewContext context, boolean invisible) {
         super(x, y, width, height, StringTextComponent.EMPTY);
         this.source = source;
         this.context = context;
         this.renderer = Minecraft.getInstance().font;
-        this.tagSize = renderer.width(source.getTitle());
+        this.tagSize = invisible ? renderer.width("???") : renderer.width(source.getTitle());
+        this.invisible = invisible;
     }
 
     @Override
@@ -56,12 +62,12 @@ public class SkillWidget extends Widget implements ITickable {
         }
         Matrix4f pose = matrix.last().pose();
         ISkillProvider provider = context.getData().getSkillProvider();
-        boolean unlocked = provider.hasSkill(source);
+        boolean unlocked = !invisible && provider.hasSkill(source);
         int primary = unlocked ? 0xFF00BB00 : 0xFF343434;
         int secondary = unlocked ? 0xFF006600 : 0xFF232323;
         renderBackgroundFrame(pose);
         RenderUtils.drawGradient(pose, x + 1, y + 1, x + width - 1, y + height - 1, primary, secondary);
-        DisplayData data = source.getDisplayData();
+        DisplayData data = invisible ? UNKNOWN : source.getDisplayData();
         data.renderAt(matrix, x + 3, y + 3);
         renderExtraData(matrix, source, provider, partialTicks);
         renderHoverInfo(partialTicks, matrix, pose);
@@ -97,6 +103,10 @@ public class SkillWidget extends Widget implements ITickable {
     private void renderTag(float raw, MatrixStack stack) {
         if (raw < 0.2F) return;
         int alpha = (int) (255 * raw);
+        if (invisible) {
+            renderer.draw(stack, "???", getComponentCenter() - tagSize / 2.0F, y + height + 6, alpha << 24 | 0xFFFFFF);
+            return;
+        }
         renderer.draw(stack, source.getTitle(), getComponentCenter() - tagSize / 2.0F, y + height + 6, alpha << 24 | 0xFFFFFF);
     }
 
@@ -110,7 +120,7 @@ public class SkillWidget extends Widget implements ITickable {
 
     private void renderBackgroundFrame(Matrix4f pose) {
         int bgColor;
-        if (source.isFresh()) {
+        if (!invisible && source.isFresh()) {
             int glowTime = this.glowTimer % 40;
             float raw = Mth.triangleFunc(glowTime / 40.0F);
             float eased = Easings.EASE_IN_OUT_QUAD.ease(raw);
@@ -125,7 +135,7 @@ public class SkillWidget extends Widget implements ITickable {
 
     private <S extends ISkill> void renderExtraData(MatrixStack stack, SkillType<S> type, ISkillProvider provider, float partialTicks) {
         ISkillRenderer<S> renderer = SkillRendererRegistry.getRendererFor(type);
-        if (renderer == null) return;
+        if (invisible || renderer == null) return;
         S skill = SkillUtil.getTopHierarchySkill(type, provider);
         if (skill == null) return;
         if (skill.getType() != type) return;

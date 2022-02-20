@@ -93,20 +93,14 @@ public class SkillsView extends View {
                 for (Tree.Connector connector : tree.getConnectorList()) {
                     IVec2i start = connector.getStart();
                     IVec2i end = connector.getEnd();
-                    SkillType<?> dest = connector.getDestinationSkill();
-                    ISkillProperties properties = dest.getProperties();
-                    IKillData killData = properties.getTransactionValidator().getData(data);
-                    if (properties.getRequiredLevel() <= killData.getLevel()) {
-                        filler.add(new LineWidget(x + start.x() * xUnitSize + lineOff, y + start.y() * yUnitSize + lineOff, x + end.x() * xUnitSize + lineOff, y + end.y() * yUnitSize + lineOff));
-                    }
+                    filler.add(new LineWidget(x + start.x() * xUnitSize + lineOff, y + start.y() * yUnitSize + lineOff, x + end.x() * xUnitSize + lineOff, y + end.y() * yUnitSize + lineOff));
                 }
                 for (Map.Entry<SkillType<?>, SkillViewData> entry : tree.getDataSet()) {
                     SkillType<?> source = entry.getKey();
-                    if (source.getProperties().getRequiredLevel() > level)
-                        continue;
+                    boolean invisible = source.getProperties().getRequiredLevel() > level;
                     SkillViewData viewData = entry.getValue();
                     IVec2i pos = viewData.getPos();
-                    SkillWidget widget = filler.add(new SkillWidget(x + pos.x() * xUnitSize, y + pos.y() * yUnitSize, componentSize, componentSize, source, manager.getContext()));
+                    SkillWidget widget = filler.add(new SkillWidget(x + pos.x() * xUnitSize, y + pos.y() * yUnitSize, componentSize, componentSize, source, manager.getContext(), invisible));
                     widget.setClickResponder(this::skillClicked);
                 }
             }

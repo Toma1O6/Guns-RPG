@@ -29,9 +29,11 @@ import java.util.List;
 
 public class SkillInfoWidget extends ContainerWidget {
 
+    private static final ITextComponent QUESTIONMARK = new StringTextComponent("?");
     private static final ITextComponent EXTENSIONS = new TranslationTextComponent("view.skill.extensions");
     private static final ITextComponent PURCHASE = new TranslationTextComponent("view.skill.purchase");
     private static final ITextComponent USE = new TranslationTextComponent("view.skill.use");
+    private static final ITextComponent UNKNOWN = new TranslationTextComponent("view.skill.unknown");
 
     private final IViewManager manager;
     private SkillType<?> src;
@@ -39,6 +41,7 @@ public class SkillInfoWidget extends ContainerWidget {
     private ITextComponent[] description;
     private boolean extensions;
     private boolean clickable;
+    private boolean invisible;
 
     private Button buyWidget;
     private Button useWidget;
@@ -77,28 +80,34 @@ public class SkillInfoWidget extends ContainerWidget {
             addWidget(new Label(x, y, width, height, new StringTextComponent("Nothing to show")));
             return;
         }
+        ISkillProperties properties = src.getProperties();
+        this.invisible = properties.getRequiredLevel() > manager.getContext().getData().getProgressData().getLevel();
         int unlockState = this.getUnlockState();
-        addWidget(new Icon(x + 5, y + 5, 16, 16, src.getDisplayData()));
-        addWidget(new Label(x + 26, y + 5, width - 100, 15, title));
+        addWidget(new Icon(x + 5, y + 5, 16, 16, invisible ? SkillWidget.UNKNOWN : src.getDisplayData()));
+        addWidget(new Label(x + 26, y + 5, width - 100, 15, invisible ? StringTextComponent.EMPTY : title));
         int rightColX = x + width - 90;
         Button ext = addWidget(new Button(rightColX, y + 5, 80, 20, EXTENSIONS, this::showExtensionsView));
         ext.active = extensions;
+        ext.visible = !invisible;
         buyWidget = addWidget(new Button(rightColX, y + 27, 80, 20, PURCHASE, this::purchaseClicked));
-        buyWidget.active = unlockState == 1;
-        buyWidget.visible = unlockState > 0;
-        if (clickable) {
+        buyWidget.active = !invisible && unlockState == 1;
+        buyWidget.visible = !invisible && unlockState > 0;
+        if (!invisible && clickable) {
             useWidget = addWidget(new Button(rightColX, y + 27, 80, 20, USE, this::useClicked));
             useWidget.visible = unlockState == 0;
             useWidget.active = false;
         }
 
-        ISkillProperties properties = src.getProperties();
-        ITextComponent levelCondiditon = new TranslationTextComponent("view.skill.required_level", properties.getRequiredLevel());
-        ITextComponent price = new TranslationTextComponent("view.skill.price", properties.getPrice());
+        ITextComponent levelCondiditon = invisible ? StringTextComponent.EMPTY : new TranslationTextComponent("view.skill.required_level", properties.getRequiredLevel());
+        ITextComponent price = invisible ? StringTextComponent.EMPTY : new TranslationTextComponent("view.skill.price", properties.getPrice());
         addWidget(new Label(rightColX, y + 50, 80, 15, levelCondiditon));
         addWidget(new Label(rightColX, y + 65, 80, 15, price));
 
         FontRenderer renderer = Minecraft.getInstance().font;
+        if (invisible) {
+            addWidget(new Label(x + 5, y + 25, 100, 10, UNKNOWN));
+            return;
+        }
         int maxWidth = width - 130;
         int lineIndex = 0;
         for (ITextComponent component : description) {

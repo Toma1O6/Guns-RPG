@@ -68,7 +68,7 @@ public class SlingItem extends BaseItem {
             if (damage == 0 && player.isCreative()) {
                 damage = 4;
             }
-            pebble.setup(damage * power, power * 1.5F, 0);
+            pebble.setup(damage * power, power * 2.0F, 0);
             pebble.fire(player.xRot, player.yRot, 0.5F);
             pebble.setAmmoSource(ammoStack.isEmpty() ? new ItemStack(ModItems.SMALL_STONE) : ammoStack.copy());
             world.addFreshEntity(pebble);

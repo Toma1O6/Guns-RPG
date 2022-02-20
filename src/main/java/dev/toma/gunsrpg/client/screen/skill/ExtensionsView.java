@@ -87,7 +87,7 @@ public class ExtensionsView extends View {
                 posY += 40;
                 index = 0;
             }
-            SkillWidget widget = manager.add(new SkillWidget(x + 40 + (index++) * 35, 30 + posY, 22, 22, type, context));
+            SkillWidget widget = manager.add(new SkillWidget(x + 40 + (index++) * 35, 30 + posY, 22, 22, type, context, false));
             widget.setClickResponder(this::skillClicked);
         }
     }
