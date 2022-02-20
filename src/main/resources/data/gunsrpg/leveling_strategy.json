@@ -46,56 +46,56 @@
                 {
                     "function": "biggerOrEqual",
                     "value": 95,
-                    "require": 100
+                    "require": 150
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 90,
-                    "require": 85
+                    "require": 120
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 80,
-                    "require": 70
+                    "require": 105
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 70,
-                    "require": 60
+                    "require": 90
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 60,
-                    "require": 50
+                    "require": 75
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 50,
-                    "require": 45
+                    "require": 65
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 40,
-                    "require": 35
+                    "require": 50
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 30,
-                    "require": 30
+                    "require": 40
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 20,
-                    "require": 25
+                    "require": 30
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 10,
-                    "require": 15
+                    "require": 20
                 },
                 {
                     "function": "true",
-                    "require": 10
+                    "require": 12
                 }
             ],
             "rewards": [
@@ -105,7 +105,7 @@
                     "rewards": [
                         {
                             "type": "gunsrpg:point",
-                            "amount": 25
+                            "amount": 40
                         }
                     ]
                 },
@@ -115,7 +115,7 @@
                     "rewards": [
                         {
                             "type": "gunsrpg:point",
-                            "amount": 20
+                            "amount": 25
                         }
                     ]
                 },
@@ -125,7 +125,7 @@
                     "rewards": [
                         {
                             "type": "gunsrpg:point",
-                            "amount": 5
+                            "amount": 7
                         }
                     ]
                 },
@@ -135,7 +135,7 @@
                     "rewards": [
                         {
                             "type": "gunsrpg:point",
-                            "amount": 4
+                            "amount": 5
                         }
                     ]
                 },
@@ -155,42 +155,42 @@
                 {
                     "function": "equal",
                     "value": 0,
-                    "require": 15
+                    "require": 20
                 },
                 {
                     "function": "equal",
                     "value": 1,
-                    "require": 30
+                    "require": 35
                 },
                 {
                     "function": "equal",
                     "value": 2,
-                    "require": 50
+                    "require": 60
                 },
                 {
                     "function": "equal",
                     "value": 3,
-                    "require": 100
+                    "require": 95
                 },
                 {
                     "function": "equal",
                     "value": 4,
-                    "require": 180
+                    "require": 140
                 },
                 {
                     "function": "equal",
                     "value": 5,
-                    "require": 240
+                    "require": 190
                 },
                 {
                     "function": "equal",
                     "value": 6,
-                    "require": 350
+                    "require": 250
                 },
                 {
                     "function": "equal",
                     "value": 7,
-                    "require": 400
+                    "require": 300
                 },
                 {
                     "function": "true",

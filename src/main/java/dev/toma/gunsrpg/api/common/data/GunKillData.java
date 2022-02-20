@@ -45,6 +45,7 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
 
     @Override
     public void advanceLevel(boolean notify) {
+        this.level = Math.min(level + 1, getLevelLimit());
         requiredKillCount = updateKillRequirement();
         strategy.applyRewards(player, this, level);
     }

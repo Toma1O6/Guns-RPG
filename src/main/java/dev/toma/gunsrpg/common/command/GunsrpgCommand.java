@@ -35,7 +35,6 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.IServerWorldInfo;
 import net.minecraftforge.common.util.LazyOptional;
 
-import javax.annotation.Nullable;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -112,7 +111,19 @@ public class GunsrpgCommand {
                                                                                         )
                                                                         )
                                                         )
-                                                        .executes(ctx -> noArgsProvided(ctx, "level", "point"))
+                                                        .then(
+                                                                Commands.literal("progress")
+                                                                        .executes(ctx -> progressAdd(ctx, 1, null))
+                                                                        .then(
+                                                                                Commands.argument("amount", IntegerArgumentType.integer(1))
+                                                                                        .executes(ctx -> progressAdd(ctx, IntegerArgumentType.getInteger(ctx, "amount"), null))
+                                                                                        .then(
+                                                                                                Commands.argument("txData", JsonArgumentType.json())
+                                                                                                        .executes(ctx -> progressAdd(ctx, IntegerArgumentType.getInteger(ctx, "amount"), JsonArgumentType.getJson(ctx, "txData")))
+                                                                                        )
+                                                                        )
+                                                        )
+                                                        .executes(ctx -> noArgsProvided(ctx, "level", "point", "progress"))
                                         )
                                         .executes(ctx -> noArgsProvided(ctx, "reset", "unlockAll"))
                         )
@@ -137,6 +148,14 @@ public class GunsrpgCommand {
                         )
                         .executes(ctx -> noArgsProvided(ctx, "debuff", "event", "progression", "skill"))
         );
+    }
+
+    private static int progressAdd(CommandContext<CommandSource> ctx, int amount, JsonElement data) throws CommandSyntaxException {
+        return modifyProgression(ctx, amount, data, (killData, count) -> {
+            for (int i = 0; i < count; i++) {
+                killData.advanceLevel(false);
+            }
+        });
     }
 
     private static int toggleDebuff(CommandContext<CommandSource> ctx) throws CommandSyntaxException {
