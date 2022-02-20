@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    " f ",
+    "sss",
+    "lll"
+  ],
+  "key": {
+    "f": {
+      "item": "minecraft:flint"
+    },
+    "s": {
+        "item": "minecraft:stick"
+    },
+    "l": {
+        "item": "minecraft:oak_slab"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:spikes_wooden"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:traps_i"
+      }
+    }
+  ]
+}

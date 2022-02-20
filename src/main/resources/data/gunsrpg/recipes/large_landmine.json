@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    " t ",
+    "imi",
+    " i "
+  ],
+  "key": {
+    "t": {
+      "item": "minecraft:tnt"
+    },
+    "i": {
+        "item": "minecraft:iron_ingot"
+    },
+    "m": {
+        "item": "gunsrpg:landmine"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:large_landmine"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:traps_iii"
+      }
+    }
+  ]
+}

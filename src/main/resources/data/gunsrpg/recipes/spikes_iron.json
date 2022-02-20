@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    " f ",
+    "fbf",
+    "iii"
+  ],
+  "key": {
+    "f": {
+      "item": "minecraft:flint"
+    },
+    "b": {
+        "item": "minecraft:iron_bars"
+    },
+    "i": {
+        "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:spikes_iron"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:traps_ii"
+      }
+    }
+  ]
+}

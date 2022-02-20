@@ -1,0 +1,33 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "obo",
+    "hth",
+    "oho"
+  ],
+  "key": {
+    "o": {
+      "item": "minecraft:oak_leaves"
+    },
+    "b": {
+        "item": "minecraft:stone_button"
+    },
+    "h": {
+        "item": "minecraft:heavy_weighted_pressure_plate"
+    },
+    "t": {
+        "item": "minecraft:tnt"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:hidden_landmine"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:traps_iii"
+      }
+    }
+  ]
+}

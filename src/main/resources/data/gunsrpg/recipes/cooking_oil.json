@@ -1,0 +1,22 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "sss"
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:sunflower"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:cooking_oil"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:gun_parts_smith"
+      }
+    }
+  ]
+}

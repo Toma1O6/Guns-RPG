@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    " b ",
+    "hth",
+    " h "
+  ],
+  "key": {
+    "b": {
+      "item": "minecraft:stone_button"
+    },
+    "h": {
+        "item": "minecraft:heavy_weighted_pressure_plate"
+    },
+    "t": {
+        "item": "minecraft:tnt"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:landmine"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:traps_ii"
+      }
+    }
+  ]
+}

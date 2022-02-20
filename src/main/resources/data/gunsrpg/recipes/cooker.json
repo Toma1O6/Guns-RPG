@@ -1,0 +1,33 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "qtq",
+    "qfq",
+    "qiq"
+  ],
+  "key": {
+    "q": {
+      "item": "minecraft:quartz_block"
+    },
+    "t": {
+        "item": "minecraft:iron_trapdoor"
+    },
+    "f": {
+        "item": "minecraft:smoker"
+    },
+    "i": {
+        "item": "minecraft:iron_block"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:cooker"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:local_chef"
+      }
+    }
+  ]
+}
