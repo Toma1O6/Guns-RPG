@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "umu",
+    "uru",
+    " u "
+  ],
+  "key": {
+    "m": {
+      "item": "gunsrpg:massive_grenade"
+    },
+    "u": {
+        "item": "minecraft:gunpowder"
+    },
+    "r": {
+        "item": "gunsrpg:rocket_shell"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:high_explosive_rocket"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:heavy_demolisher"
+      }
+    }
+  ]
+}

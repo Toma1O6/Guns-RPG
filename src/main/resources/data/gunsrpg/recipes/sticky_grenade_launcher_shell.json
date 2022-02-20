@@ -1,0 +1,25 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "ses"
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:slime_ball"
+    },
+    "e": {
+      "item": "gunsrpg:explosive_grenade_launcher_shell"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:sticky_grenade_launcher_shell"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:demolisher"
+      }
+    }
+  ]
+}

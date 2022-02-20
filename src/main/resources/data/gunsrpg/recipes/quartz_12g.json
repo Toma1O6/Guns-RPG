@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "q  ",
+    "ggg",
+    "h  "
+  ],
+  "key": {
+    "q": {
+      "item": "minecraft:quartz_block"
+    },
+    "g": {
+        "item": "minecraft:gunpowder"
+    },
+    "h": {
+        "item": "gunsrpg:shotgun_shell"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:quartz_12g"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:quartz_ammo_smith"
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    " g ",
+    "usu",
+    "   "
+  ],
+  "key": {
+    "u": {
+      "item": "minecraft:gunpowder"
+    },
+    "g": {
+        "item": "gunsrpg:grenade"
+    },
+    "s": {
+        "item": "gunsrpg:grenade_launcher_shell"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:explosive_grenade_launcher_shell"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:demolisher"
+      }
+    }
+  ]
+}

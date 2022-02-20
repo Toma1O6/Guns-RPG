@@ -1,0 +1,33 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "ogo",
+    "uru",
+    " u "
+  ],
+  "key": {
+    "o": {
+      "item": "minecraft:obsidian"
+    },
+    "g": {
+        "item": "gunsrpg:grenade"
+    },
+    "r": {
+        "item": "gunsrpg:rocket_shell"
+    },
+    "u": {
+        "item": "minecraft:gunpowder"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:demolition_rocket"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:heavy_demolisher"
+      }
+    }
+  ]
+}

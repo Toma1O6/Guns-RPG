@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "n  ",
+    "s  ",
+    "f  "
+  ],
+  "key": {
+    "n": {
+      "item": "minecraft:netherite_scrap"
+    },
+    "s": {
+        "item": "minecraft:stick"
+    },
+    "f": {
+        "item": "gunsrpg:bolt_fletching"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:netherite_bolt"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:netherite_ammo_smith"
+      }
+    }
+  ]
+}

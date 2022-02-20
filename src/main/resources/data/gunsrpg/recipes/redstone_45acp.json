@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "rrr",
+    "gg ",
+    "s  "
+  ],
+  "key": {
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "g": {
+        "item": "minecraft:gunpowder"
+    },
+    "s": {
+        "item": "gunsrpg:small_bullet_casing"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:redstone_45acp"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:redstone_ammo_smith"
+      }
+    }
+  ]
+}

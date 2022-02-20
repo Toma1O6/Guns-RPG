@@ -1,0 +1,36 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "bib",
+    "uru",
+    "eue"
+  ],
+  "key": {
+    "i": {
+      "item": "gunsrpg:impact_grenade"
+    },
+    "u": {
+        "item": "minecraft:gunpowder"
+    },
+    "r": {
+        "item": "gunsrpg:rocket_shell"
+    },
+    "b": {
+        "item": "minecraft:blaze_powder"
+    },
+    "e": {
+        "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:napalm_rocket"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:heavy_demolisher"
+      }
+    }
+  ]
+}

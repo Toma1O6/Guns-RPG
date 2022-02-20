@@ -1,14 +1,13 @@
 {
     "hierarchy": {
-        "category": "gun",
+        "category": "survival",
+        "parent": "gunsrpg:traps_i",
         "children": [
-            "gunsrpg:massive_grenades",
-            "gunsrpg:impact_grenades",
-            "gunsrpg:demolisher"
+            "gunsrpg:traps_iii"
         ]
     },
     "properties": {
-        "level": 15,
+        "level": 25,
         "price": 3,
         "transactionValidator": {
             "type": "gunsrpg:level"

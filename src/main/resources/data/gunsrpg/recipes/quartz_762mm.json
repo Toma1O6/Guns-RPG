@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "q  ",
+    "ggg",
+    "b  "
+  ],
+  "key": {
+    "q": {
+      "item": "minecraft:quartz_block"
+    },
+    "g": {
+        "item": "minecraft:gunpowder"
+    },
+    "b": {
+        "item": "gunsrpg:large_bullet_casing"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:quartz_762mm"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:quartz_ammo_smith"
+      }
+    }
+  ]
+}

@@ -1,15 +1,14 @@
 {
     "hierarchy": {
         "category": "gun",
+        "parent": "gunsrpg:grenades",
         "children": [
-            "gunsrpg:massive_grenades",
-            "gunsrpg:impact_grenades",
-            "gunsrpg:demolisher"
+            "gunsrpg:heavy_demolisher"
         ]
     },
     "properties": {
-        "level": 15,
-        "price": 3,
+        "level": 45,
+        "price": 6,
         "transactionValidator": {
             "type": "gunsrpg:level"
         }

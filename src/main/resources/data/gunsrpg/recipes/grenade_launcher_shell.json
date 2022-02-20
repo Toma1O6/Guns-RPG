@@ -1,0 +1,25 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "ugu"
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:green_dye"
+    },
+    "u": {
+        "item": "gunsrpg:large_bullet_casing"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:grenade_launcher_shell"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:demolisher"
+      }
+    }
+  ]
+}

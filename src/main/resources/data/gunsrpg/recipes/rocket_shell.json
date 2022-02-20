@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    " g ",
+    "rgr",
+    " b "
+  ],
+  "key": {
+    "b": {
+      "item": "minecraft:blaze_powder"
+    },
+    "g": {
+        "item": "gunsrpg:grenade_launcher_shell"
+    },
+    "r": {
+        "item": "minecraft:iron_bars"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:rocket_shell"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:heavy_demolisher"
+      }
+    }
+  ]
+}

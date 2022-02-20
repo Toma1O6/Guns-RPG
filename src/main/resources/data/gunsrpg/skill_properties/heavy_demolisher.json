@@ -1,0 +1,13 @@
+{
+    "hierarchy": {
+        "category": "gun",
+        "parent": "gunsrpg:demolisher"
+    },
+    "properties": {
+        "level": 70,
+        "price": 7,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

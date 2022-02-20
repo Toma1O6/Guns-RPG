@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "n  ",
+    "ggg",
+    "h  "
+  ],
+  "key": {
+    "n": {
+      "item": "minecraft:netherite_scrap"
+    },
+    "g": {
+        "item": "minecraft:gunpowder"
+    },
+    "h": {
+        "item": "gunsrpg:shotgun_shell"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:netherite_12g"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:netherite_ammo_smith"
+      }
+    }
+  ]
+}

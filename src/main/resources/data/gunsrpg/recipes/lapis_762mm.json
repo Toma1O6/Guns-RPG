@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "lll",
+    "ggg",
+    "b  "
+  ],
+  "key": {
+    "l": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "g": {
+        "item": "minecraft:gunpowder"
+    },
+    "b": {
+        "item": "gunsrpg:large_bullet_casing"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:lapis_762mm"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:lapis_ammo_smith"
+      }
+    }
+  ]
+}

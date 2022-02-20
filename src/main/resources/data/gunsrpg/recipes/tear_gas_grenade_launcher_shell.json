@@ -1,0 +1,33 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "apa",
+    "usu",
+    " p "
+  ],
+  "key": {
+    "u": {
+      "item": "minecraft:gunpowder"
+    },
+    "p": {
+      "item": "minecraft:spider_eye"
+    },
+    "s": {
+      "item": "gunsrpg:grenade_launcher_shell"
+    },
+    "a": {
+      "item": "minecraft:sand"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:tear_gas_grenade_launcher_shell"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:demolisher"
+      }
+    }
+  ]
+}

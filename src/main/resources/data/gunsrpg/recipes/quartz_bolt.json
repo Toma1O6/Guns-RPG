@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "q  ",
+    "s  ",
+    "f  "
+  ],
+  "key": {
+    "q": {
+      "item": "minecraft:quartz_block"
+    },
+    "s": {
+        "item": "minecraft:stick"
+    },
+    "f": {
+        "item": "gunsrpg:bolt_fletching"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:quartz_bolt"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:quartz_ammo_smith"
+      }
+    }
+  ]
+}

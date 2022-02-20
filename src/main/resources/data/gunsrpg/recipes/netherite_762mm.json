@@ -1,0 +1,30 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "n  ",
+    "ggg",
+    "b  "
+  ],
+  "key": {
+    "n": {
+      "item": "minecraft:netherite_scrap"
+    },
+    "g": {
+        "item": "minecraft:gunpowder"
+    },
+    "b": {
+        "item": "gunsrpg:large_bullet_casing"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:netherite_762mm"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:netherite_ammo_smith"
+      }
+    }
+  ]
+}
