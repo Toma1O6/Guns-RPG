@@ -1,10 +1,10 @@
 package dev.toma.gunsrpg.resource.adapter;
 
 import com.google.gson.*;
-import dev.toma.gunsrpg.resource.airdrop.AirdropLootConfiguration;
-import dev.toma.gunsrpg.resource.airdrop.LootConfigurationCategory;
-import dev.toma.gunsrpg.resource.airdrop.LootEntry;
-import dev.toma.gunsrpg.resource.airdrop.SlotConfiguration;
+import dev.toma.gunsrpg.resource.crate.LootConfig;
+import dev.toma.gunsrpg.resource.crate.LootConfigurationCategory;
+import dev.toma.gunsrpg.resource.crate.LootEntry;
+import dev.toma.gunsrpg.resource.crate.SlotConfiguration;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.util.JSONUtils;
 
@@ -12,10 +12,10 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class LootConfigurationAdapter implements JsonDeserializer<AirdropLootConfiguration> {
+public class LootConfigurationAdapter implements JsonDeserializer<LootConfig> {
 
     @Override
-    public AirdropLootConfiguration deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public LootConfig deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject object = JsonHelper.asJsonObject(json);
         // categories
         JsonArray categoryArray = JSONUtils.getAsJsonArray(object, "categories");
@@ -44,7 +44,7 @@ public class LootConfigurationAdapter implements JsonDeserializer<AirdropLootCon
             }
             poolsByCategory.put(category, list);
         }
-        return new AirdropLootConfiguration(slots, categories, poolsByCategory);
+        return new LootConfig(slots, categories, poolsByCategory);
     }
 
     private void checkAllKeysContained(Set<String> keySet, LootConfigurationCategory[] categories) {

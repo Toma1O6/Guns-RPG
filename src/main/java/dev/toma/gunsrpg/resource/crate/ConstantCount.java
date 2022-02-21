@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.resource.airdrop;
+package dev.toma.gunsrpg.resource.crate;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;

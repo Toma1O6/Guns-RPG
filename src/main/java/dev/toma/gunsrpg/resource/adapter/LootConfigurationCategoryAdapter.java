@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.resource.adapter;
 
 import com.google.gson.*;
-import dev.toma.gunsrpg.resource.airdrop.LootConfigurationCategory;
+import dev.toma.gunsrpg.resource.crate.LootConfigurationCategory;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.util.JSONUtils;

@@ -16,6 +16,7 @@ public class ModBlockEntities {
     private static final DeferredRegister<TileEntityType<?>> TYPES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, GunsRPG.MODID);
 
     public static final RegistryObject<TileEntityType<AirdropTileEntity>> AIRDROP = register("airdrop", AirdropTileEntity::new, () -> new Block[] {ModBlocks.AIRDROP});
+    public static final RegistryObject<TileEntityType<MilitaryCrateTileEntity>> MILITARY_CRATE = register("military_crate", MilitaryCrateTileEntity::new, () -> new Block[] {ModBlocks.ARTIC_MILITARY_CRATE, ModBlocks.DESERT_MILITARY_CRATE, ModBlocks.WOODLAND_MILITARY_CRATE});
     public static final RegistryObject<TileEntityType<BlastFurnaceTileEntity>> BLAST_FURNACE = register("blast_furnace", BlastFurnaceTileEntity::new, () -> new Block[] {ModBlocks.BLAST_FURNACE});
     public static final RegistryObject<TileEntityType<DeathCrateTileEntity>> DEATH_CRATE = register("death_crate", DeathCrateTileEntity::new, () -> new Block[] {ModBlocks.DEATH_CRATE});
     public static final RegistryObject<TileEntityType<SmithingTableTileEntity>> SMITHING_TABLE = register("smithing_table", SmithingTableTileEntity::new, () -> new Block[] {ModBlocks.SMITHING_TABLE});

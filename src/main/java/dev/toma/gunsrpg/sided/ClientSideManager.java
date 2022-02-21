@@ -124,7 +124,7 @@ public class ClientSideManager {
     }
 
     private void screenSetup() {
-        ScreenManager.register(ModContainers.AIRDROP.get(), AirdropScreen::new);
+        ScreenManager.register(ModContainers.CRATE.get(), CrateScreen::new);
         ScreenManager.register(ModContainers.BLAST_FURNACE.get(), BlastFurnaceScreen::new);
         ScreenManager.register(ModContainers.DEATH_CRATE.get(), DeathCrateScreen::new);
         ScreenManager.register(ModContainers.SMITHING_TABLE.get(), SmithingTableScreen::new);

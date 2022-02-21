@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.RocketAngelModel;
 import dev.toma.gunsrpg.common.entity.RocketAngelEntity;
 import net.minecraft.client.renderer.entity.BipedRenderer;
@@ -10,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class RocketAngelRenderer extends BipedRenderer<RocketAngelEntity, RocketAngelModel> {
 
-    private static final ResourceLocation VEX_TEXTURE = new ResourceLocation("textures/entity/illager/vex.png");
+    private static final ResourceLocation VEX_TEXTURE = GunsRPG.makeResource("textures/entity/rocket_angel.png");
 
     public RocketAngelRenderer(EntityRendererManager manager) {
         super(manager, new RocketAngelModel(), 0.6F);

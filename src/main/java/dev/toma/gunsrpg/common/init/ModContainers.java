@@ -14,7 +14,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ModContainers {
     private static final DeferredRegister<ContainerType<?>> TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, GunsRPG.MODID);
 
-    public static final RegistryObject<ContainerType<AirdropContainer>> AIRDROP = register("airdrop", AirdropContainer::new);
+    public static final RegistryObject<ContainerType<CrateContainer<?>>> CRATE = register("crate", CrateContainer::new);
     public static final RegistryObject<ContainerType<BlastFurnaceContainer>> BLAST_FURNACE = register("blast_furnace", BlastFurnaceContainer::new);
     public static final RegistryObject<ContainerType<DeathCrateContainer>> DEATH_CRATE = register("death_crate", DeathCrateContainer::new);
     public static final RegistryObject<ContainerType<SmithingTableContainer>> SMITHING_TABLE = register("smithing_table", SmithingTableContainer::new);

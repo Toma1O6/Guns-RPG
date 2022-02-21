@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.resource.airdrop;
+package dev.toma.gunsrpg.resource.crate;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
@@ -35,7 +35,7 @@ public class RandomCount implements ICountFunction {
             int lower = JSONUtils.getAsInt(data, "min");
             int upper = JSONUtils.getAsInt(data, "max");
             if (lower == upper) {
-                GunsRPG.log.warn(AirdropLootManager.MARKER, "Using 'rng' function with constant range, maybe you wanted to use 'const' function instead");
+                GunsRPG.log.warn(LootManager.MARKER, "Using 'rng' function with constant range, maybe you wanted to use 'const' function instead");
             }
             if (lower > upper) {
                 throw new JsonSyntaxException("Lower bound cannot be bigger than upper bound!");

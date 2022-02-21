@@ -1,9 +1,9 @@
 package dev.toma.gunsrpg.resource.adapter;
 
 import com.google.gson.*;
-import dev.toma.gunsrpg.resource.airdrop.CountFunctionRegistry;
-import dev.toma.gunsrpg.resource.airdrop.ICountFunction;
-import dev.toma.gunsrpg.resource.airdrop.ICountFunctionAdapter;
+import dev.toma.gunsrpg.resource.crate.CountFunctionRegistry;
+import dev.toma.gunsrpg.resource.crate.ICountFunction;
+import dev.toma.gunsrpg.resource.crate.ICountFunctionAdapter;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.util.JSONUtils;

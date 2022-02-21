@@ -1,0 +1,36 @@
+{
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "lhp",
+    "iii",
+    "o o"
+  ],
+  "key": {
+    "l": {
+      "item": "minecraft:lever"
+    },
+    "h": {
+      "item": "minecraft:tripwire_hook"
+    },
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "i": {
+      "item": "minecraft:iron_block"
+    },
+    "o": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:repair_station"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:repair_station"
+      }
+    }
+  ]
+}

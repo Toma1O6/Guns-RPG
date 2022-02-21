@@ -1,19 +1,19 @@
 package dev.toma.gunsrpg.common.block;
 
-import dev.toma.gunsrpg.common.tileentity.AirdropTileEntity;
 import dev.toma.gunsrpg.common.tileentity.ILootGenerator;
 import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
-import net.minecraft.block.SoundType;
+import dev.toma.gunsrpg.common.tileentity.MilitaryCrateTileEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.ToolType;
 
-public class AirdropBlock extends AbstractCrateBlock {
+public class MilitaryCrateBlock extends AbstractCrateBlock {
 
-    private static final ITextComponent TITLE = new TranslationTextComponent("container.airdrop");
+    private static final ITextComponent TITLE = new TranslationTextComponent("container.crate");
 
-    public AirdropBlock(String name) {
-        super(name, Properties.of(Material.METAL).sound(SoundType.METAL).strength(-1.0F, 3600000.0F).noDrops().randomTicks());
+    public MilitaryCrateBlock(String name) {
+        super(name, Properties.of(Material.WOOD).strength(2.5F).harvestTool(ToolType.AXE));
     }
 
     @Override
@@ -23,12 +23,12 @@ public class AirdropBlock extends AbstractCrateBlock {
 
     @Override
     public boolean shouldDestroyEmptyBlock() {
-        return true;
+        return false;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T extends InventoryTileEntity & ILootGenerator> T getNewBlockEntity() {
-        return (T) new AirdropTileEntity();
+        return (T) new MilitaryCrateTileEntity();
     }
 }

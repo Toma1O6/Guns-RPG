@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.resource.airdrop;
+package dev.toma.gunsrpg.resource.crate;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

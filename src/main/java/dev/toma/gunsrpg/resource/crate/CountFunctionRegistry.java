@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.resource.airdrop;
+package dev.toma.gunsrpg.resource.crate;
 
 import dev.toma.gunsrpg.GunsRPG;
 import net.minecraft.util.ResourceLocation;

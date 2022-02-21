@@ -195,6 +195,9 @@ public class CommonRegistry {
                 SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, Interval.minutes(15), 10, 0)).build().setRegistryName("second_chance_i"),
                 SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, Interval.minutes(12), 15, 1)).build().setRegistryName("second_chance_ii"),
                 SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, Interval.minutes( 9), 20, 2)).build().setRegistryName("second_chance_iii"),
+                SkillType.Builder.create(type -> new IronBuddySkill(type, Interval.minutes(25))).build().setRegistryName("iron_buddy_i"),
+                SkillType.Builder.create(type -> new IronBuddySkill(type, Interval.minutes(20), 50.0F)).build().setRegistryName("iron_buddy_ii"),
+                SkillType.Builder.create(type -> new IronBuddySkill(type, Interval.minutes(15), 100.0F)).build().setRegistryName("iron_buddy_iii"),
                 SkillType.Builder.create(GodHelpUsSkill::new).description(2).build().setRegistryName("god_help_us"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.INSTANT_KILL_I, Attribs.INSTANT_KILL))).description(0).build().setRegistryName("skull_crusher_i"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.INSTANT_KILL_II, Attribs.INSTANT_KILL))).description(0).build().setRegistryName("skull_crusher_ii"),
@@ -314,7 +317,10 @@ public class CommonRegistry {
                 new BaseBlock("crystal_fuse", AbstractBlock.Properties.of(Material.STONE).noOcclusion()),
                 new BaseBlock("crystal_purification", AbstractBlock.Properties.of(Material.STONE).noOcclusion()),
                 new CookerBlock("cooker"),
-                new BaseBlock("repair_station", AbstractBlock.Properties.of(Material.STONE).noOcclusion())
+                new BaseBlock("repair_station", AbstractBlock.Properties.of(Material.STONE).noOcclusion()),
+                new MilitaryCrateBlock("artic_military_crate"),
+                new MilitaryCrateBlock("desert_military_crate"),
+                new MilitaryCrateBlock("woodland_military_crate")
         );
     }
 

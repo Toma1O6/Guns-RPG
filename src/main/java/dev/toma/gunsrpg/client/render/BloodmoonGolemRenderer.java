@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.BloodmoonGolemModel;
 import dev.toma.gunsrpg.common.entity.BloodmoonGolemEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -10,7 +11,7 @@ import net.minecraft.util.math.vector.Vector3f;
 
 public class BloodmoonGolemRenderer extends MobRenderer<BloodmoonGolemEntity, BloodmoonGolemModel> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/iron_golem/iron_golem.png");
+    private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/entity/bloodmoon_golem.png");
 
     public BloodmoonGolemRenderer(EntityRendererManager manager) {
         super(manager, new BloodmoonGolemModel(), 0.7F);

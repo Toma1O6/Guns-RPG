@@ -11,15 +11,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class AirdropTileEntity extends InventoryTileEntity implements ILootGenerator {
+public class MilitaryCrateTileEntity extends InventoryTileEntity implements ILootGenerator {
 
-    public static final ResourceLocation AIRDROP_CONFIGURATION = GunsRPG.makeResource("airdrops");
+    public static final ResourceLocation CRATE_CONFIGURATION = GunsRPG.makeResource("military_crate");
 
-    public AirdropTileEntity() {
-        this(ModBlockEntities.AIRDROP.get());
+    public MilitaryCrateTileEntity() {
+        this(ModBlockEntities.MILITARY_CRATE.get());
     }
 
-    protected AirdropTileEntity(TileEntityType<? extends AirdropTileEntity> type) {
+    protected MilitaryCrateTileEntity(TileEntityType<? extends MilitaryCrateTileEntity> type) {
         super(type);
     }
 
@@ -37,7 +37,7 @@ public class AirdropTileEntity extends InventoryTileEntity implements ILootGener
     public void generateLoot() {
         Lifecycle lifecycle = GunsRPG.getModLifecycle();
         LootManager lootManager = lifecycle.getAirdropLootManager();
-        ILootContentProvider contentProvider = lootManager.getGeneratedContent(AIRDROP_CONFIGURATION);
+        ILootContentProvider contentProvider = lootManager.getGeneratedContent(CRATE_CONFIGURATION);
         ItemStack[] itemStacks = contentProvider.getItems();
         for (int i = 0; i < itemStacks.length; i++) {
             itemHandler.setStackInSlot(i, itemStacks[i]);

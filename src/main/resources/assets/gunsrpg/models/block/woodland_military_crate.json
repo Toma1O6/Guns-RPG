@@ -1,0 +1,12 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "particle": "gunsrpg:block/woodland_military_crate_bottom",
+        "down": "gunsrpg:block/woodland_military_crate_bottom",
+        "up": "gunsrpg:block/woodland_military_crate_top",
+        "east": "gunsrpg:block/woodland_military_crate_side",
+        "west": "gunsrpg:block/woodland_military_crate_side",
+        "north": "gunsrpg:block/woodland_military_crate_side",
+        "south": "gunsrpg:block/woodland_military_crate_side"
+    }
+}

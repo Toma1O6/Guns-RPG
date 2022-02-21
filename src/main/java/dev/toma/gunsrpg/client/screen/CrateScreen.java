@@ -2,17 +2,17 @@ package dev.toma.gunsrpg.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.container.AirdropContainer;
+import dev.toma.gunsrpg.common.container.CrateContainer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
-public class AirdropScreen extends ContainerScreen<AirdropContainer> {
+public class CrateScreen extends ContainerScreen<CrateContainer<?>> {
 
-    private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/screen/airdrop.png");
+    private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/screen/crate.png");
 
-    public AirdropScreen(AirdropContainer container, PlayerInventory inventory, ITextComponent title) {
+    public CrateScreen(CrateContainer<?> container, PlayerInventory inventory, ITextComponent title) {
         super(container, inventory, title);
     }
 
