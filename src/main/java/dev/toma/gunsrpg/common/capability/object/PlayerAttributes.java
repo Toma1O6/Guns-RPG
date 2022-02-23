@@ -1,9 +1,12 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
 import dev.toma.gunsrpg.common.attribute.*;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.HashMap;
@@ -75,15 +78,36 @@ public class PlayerAttributes implements IAttributeProvider, IPlayerCapEntry {
 
     @Override
     public void toNbt(CompoundNBT nbt) {
-        CompoundNBT cnbt = new CompoundNBT();
-        // TODO
-        nbt.put("attributes", cnbt);
+        ListNBT listNBT = new ListNBT();
+        for (Map.Entry<IAttributeId, IAttribute> entry : attributeMap.entrySet()) {
+            IAttributeId attributeId = entry.getKey();
+            IAttribute attribute = entry.getValue();
+            CompoundNBT entryNbt = new CompoundNBT();
+            entryNbt.putString("id", attributeId.getId().toString());
+            entryNbt.put("data", attribute.serializeNBT());
+            listNBT.add(entryNbt);
+        }
+        nbt.put("attributes", listNBT);
     }
 
     @Override
     public void fromNbt(CompoundNBT nbt) {
-        CompoundNBT cnbt = nbt.contains("attributes", Constants.NBT.TAG_COMPOUND) ? nbt.getCompound("attributes") : new CompoundNBT();
-        // TODO
+        attributeMap.clear();
+        ListNBT list = nbt.contains("attributes", Constants.NBT.TAG_LIST) ? nbt.getList("attributes", Constants.NBT.TAG_COMPOUND) : new ListNBT();
+        for (int i = 0; i < list.size(); i++) {
+            CompoundNBT attributeNbt = list.getCompound(i);
+            ResourceLocation idPath = new ResourceLocation(attributeNbt.getString("id"));
+            CompoundNBT data = attributeNbt.getCompound("data");
+            IAttributeId attributeId = Attribs.find(idPath);
+            if (attributeId == null) {
+                GunsRPG.log.warn("Unknown attribute with Id: {}, skipping...", idPath);
+                continue;
+            }
+            IAttribute attribute = attributeId.createNewInstance();
+            attribute.deserializeNBT(data);
+            attribute.addAttributeListener(listener);
+            attributeMap.put(attributeId, attribute);
+        }
     }
 
     @Override
