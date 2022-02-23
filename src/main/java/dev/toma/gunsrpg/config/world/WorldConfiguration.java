@@ -27,8 +27,8 @@ public class WorldConfiguration extends ObjectType {
         createCrateOnPlayerDeath = writer.writeBoolean("Player death crates", false, "Allow death crate spawning on player death", "Doesn't spawn if keepInventory gamerule is set to true!");
         disableMobSpawners = writer.writeBoolean("Disable mob spawners", true, "Disables mob spawning from spawners", "This prevents xp farming");
         bloodMoonMobAgroRange = writer.writeBoundedInt("Bloodmoon aggro range", 40, 1, 64, "Defines at which range will mobs aggro on you during bloodmoon").setDisplay(NumberDisplayType.SLIDER);
-        rocketAngelSpawnChance = writer.writeBoundedInt("Rocket angel spawn chance", 1, 0, 16).setDisplay(NumberDisplayType.SLIDER);
-        zombieGunnerSpawn = writer.writeBoundedInt("ZombieGunner chance", 5, 0, 60, "Spawn chance for zombie gunner entity");
+        rocketAngelSpawnChance = writer.writeBoundedInt("Rocket angel spawn chance", 2, 0, 16).setDisplay(NumberDisplayType.SLIDER);
+        zombieGunnerSpawn = writer.writeBoundedInt("ZombieGunner chance", 8, 0, 60, "Spawn chance for zombie gunner entity");
         explosiveSkeletonSpawn = writer.writeBoundedInt("ExplosiveSkeletion chance", 5, 0, 60, "Spawn chance for explosive skeleton entity");
         bloodmoonCycle = writer.writeBoundedInt("Bloodmoon cycle", 7, -1, 999, "Defines bloodmoon cycle", "Set to -1 to disable");
         airdropFrequency = writer.writeBoundedInt("Airdrop frequency", 3, -1, 999, "Defines airdrop spawn frequency [days]", "Set to -1 to disable");

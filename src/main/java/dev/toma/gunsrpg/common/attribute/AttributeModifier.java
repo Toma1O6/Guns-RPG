@@ -21,6 +21,14 @@ public class AttributeModifier implements IAttributeModifier {
         this.value = value;
     }
 
+    public NamedModifierWrapper named(String tag) {
+        return named(tag, IValueFormatter.IDENTITY);
+    }
+
+    public NamedModifierWrapper named(String tag, IValueFormatter formatter) {
+        return new NamedModifierWrapper(this, formatter, tag);
+    }
+
     @Override
     public UUID getUid() {
         return uid;

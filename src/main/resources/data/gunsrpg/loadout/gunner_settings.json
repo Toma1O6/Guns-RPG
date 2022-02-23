@@ -14,7 +14,7 @@
             "ammo": "gunsrpg:wood",
             "capColor": "7A5125",
             "shootTask": {
-                "inaccuracy": 2.5,
+                "inaccuracy": 2.1,
                 "damageMultiplier": 0.4
             }
         },
@@ -27,7 +27,7 @@
             "ammo": "gunsrpg:stone",
             "capColor": "727272",
             "shootTask": {
-                "inaccuracy": 2.5,
+                "inaccuracy": 2.1,
                 "damageMultiplier": 0.4
             }
         },
@@ -40,7 +40,7 @@
             "ammo": "gunsrpg:iron",
             "capColor": "D3D3D3",
             "shootTask": {
-                "inaccuracy": 2.5,
+                "inaccuracy": 2.1,
                 "damageMultiplier": 0.4
             }
         },
@@ -53,7 +53,7 @@
             "ammo": "gunsrpg:lapis",
             "capColor": "0020d8",
             "shootTask": {
-                "inaccuracy": 2.5,
+                "inaccuracy": 2.1,
                 "damageMultiplier": 0.4
             }
         },
@@ -66,7 +66,7 @@
             "ammo": "gunsrpg:gold",
             "capColor": "d3b000",
             "shootTask": {
-                "inaccuracy": 2.5,
+                "inaccuracy": 2.1,
                 "damageMultiplier": 0.4
             }
         },
@@ -79,7 +79,7 @@
             "ammo": "gunsrpg:redstone",
             "capColor": "e00000",
             "shootTask": {
-                "inaccuracy": 2.5,
+                "inaccuracy": 2.1,
                 "damageMultiplier": 0.4
             }
         },
@@ -92,7 +92,7 @@
             "ammo": "gunsrpg:diamond",
             "capColor": "00e0e0",
             "shootTask": {
-                "inaccuracy": 2.5,
+                "inaccuracy": 2.1,
                 "damageMultiplier": 0.4
             }
         },
@@ -105,7 +105,7 @@
             "ammo": "gunsrpg:quartz",
             "capColor": "fcffb2",
             "shootTask": {
-                "inaccuracy": 2.5,
+                "inaccuracy": 2.1,
                 "damageMultiplier": 0.4
             }
         },
@@ -118,7 +118,7 @@
             "ammo": "gunsrpg:emerald",
             "capColor": "00ff00",
             "shootTask": {
-                "inaccuracy": 2.5,
+                "inaccuracy": 2.1,
                 "damageMultiplier": 0.4
             }
         },
@@ -131,7 +131,7 @@
             "ammo": "gunsrpg:amethyst",
             "capColor": "dc00e0",
             "shootTask": {
-                "inaccuracy": 2.5,
+                "inaccuracy": 2.1,
                 "damageMultiplier": 0.4
             }
         },
@@ -144,7 +144,7 @@
             "ammo": "gunsrpg:netherite",
             "capColor": "212121",
             "shootTask": {
-                "inaccuracy": 2.5,
+                "inaccuracy": 2.1,
                 "damageMultiplier": 0.4
             }
         },
@@ -158,7 +158,7 @@
             "ammo": "gunsrpg:wood",
             "capColor": "7A5125",
             "shootTask": {
-                "inaccuracy": 3.25,
+                "inaccuracy": 3.0,
                 "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 40
@@ -173,7 +173,7 @@
             "ammo": "gunsrpg:stone",
             "capColor": "727272",
             "shootTask": {
-                "inaccuracy": 3.25,
+                "inaccuracy": 3.0,
                 "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 40
@@ -188,7 +188,7 @@
             "ammo": "gunsrpg:iron",
             "capColor": "D3D3D3",
             "shootTask": {
-                "inaccuracy": 3.25,
+                "inaccuracy": 3.0,
                 "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 40
@@ -203,7 +203,7 @@
             "ammo": "gunsrpg:lapis",
             "capColor": "0020d8",
             "shootTask": {
-                "inaccuracy": 3.25,
+                "inaccuracy": 3.0,
                 "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 40
@@ -218,7 +218,7 @@
             "ammo": "gunsrpg:gold",
             "capColor": "d3b000",
             "shootTask": {
-                "inaccuracy": 3.25,
+                "inaccuracy": 3.0,
                 "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 40
@@ -233,7 +233,7 @@
             "ammo": "gunsrpg:redstone",
             "capColor": "e00000",
             "shootTask": {
-                "inaccuracy": 3.25,
+                "inaccuracy": 3.0,
                 "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 40
@@ -248,7 +248,7 @@
             "ammo": "gunsrpg:diamond",
             "capColor": "00e0e0",
             "shootTask": {
-                "inaccuracy": 3.25,
+                "inaccuracy": 3.0,
                 "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 40
@@ -263,7 +263,7 @@
             "ammo": "gunsrpg:quartz",
             "capColor": "fcffb2",
             "shootTask": {
-                "inaccuracy": 3.25,
+                "inaccuracy": 3.0,
                 "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 40
@@ -278,7 +278,7 @@
             "ammo": "gunsrpg:emerald",
             "capColor": "00ff00",
             "shootTask": {
-                "inaccuracy": 3.25,
+                "inaccuracy": 3.0,
                 "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 40
@@ -293,7 +293,7 @@
             "ammo": "gunsrpg:amethyst",
             "capColor": "dc00e0",
             "shootTask": {
-                "inaccuracy": 3.25,
+                "inaccuracy": 3.0,
                 "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 40
@@ -308,7 +308,7 @@
             "ammo": "gunsrpg:netherite",
             "capColor": "212121",
             "shootTask": {
-                "inaccuracy": 3.25,
+                "inaccuracy": 3.0,
                 "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 40
@@ -324,7 +324,7 @@
             "ammo": "gunsrpg:wood",
             "capColor": "7A5125",
             "shootTask": {
-                "inaccuracy": 1.4,
+                "inaccuracy": 1.2,
                 "damageMultiplier": 0.4
             }
         },
@@ -337,7 +337,7 @@
             "ammo": "gunsrpg:stone",
             "capColor": "727272",
             "shootTask": {
-                "inaccuracy": 1.4,
+                "inaccuracy": 1.2,
                 "damageMultiplier": 0.4
             }
         },
@@ -350,7 +350,7 @@
             "ammo": "gunsrpg:iron",
             "capColor": "D3D3D3",
             "shootTask": {
-                "inaccuracy": 1.4,
+                "inaccuracy": 1.2,
                 "damageMultiplier": 0.4
             }
         },
@@ -363,7 +363,7 @@
             "ammo": "gunsrpg:lapis",
             "capColor": "0020d8",
             "shootTask": {
-                "inaccuracy": 1.4,
+                "inaccuracy": 1.2,
                 "damageMultiplier": 0.4
             }
         },
@@ -376,7 +376,7 @@
             "ammo": "gunsrpg:gold",
             "capColor": "d3b000",
             "shootTask": {
-                "inaccuracy": 1.4,
+                "inaccuracy": 1.2,
                 "damageMultiplier": 0.4
             }
         },
@@ -389,7 +389,7 @@
             "ammo": "gunsrpg:redstone",
             "capColor": "e00000",
             "shootTask": {
-                "inaccuracy": 1.4,
+                "inaccuracy": 1.2,
                 "damageMultiplier": 0.4
             }
         },
@@ -402,7 +402,7 @@
             "ammo": "gunsrpg:diamond",
             "capColor": "00e0e0",
             "shootTask": {
-                "inaccuracy": 1.4,
+                "inaccuracy": 1.2,
                 "damageMultiplier": 0.4
             }
         },
@@ -415,7 +415,7 @@
             "ammo": "gunsrpg:quartz",
             "capColor": "fcffb2",
             "shootTask": {
-                "inaccuracy": 1.4,
+                "inaccuracy": 1.2,
                 "damageMultiplier": 0.4
             }
         },
@@ -428,7 +428,7 @@
             "ammo": "gunsrpg:emerald",
             "capColor": "00ff00",
             "shootTask": {
-                "inaccuracy": 1.4,
+                "inaccuracy": 1.2,
                 "damageMultiplier": 0.4
             }
         },
@@ -441,7 +441,7 @@
             "ammo": "gunsrpg:amethyst",
             "capColor": "dc00e0",
             "shootTask": {
-                "inaccuracy": 1.4,
+                "inaccuracy": 1.2,
                 "damageMultiplier": 0.4
             }
         },
@@ -454,7 +454,7 @@
             "ammo": "gunsrpg:netherite",
             "capColor": "212121",
             "shootTask": {
-                "inaccuracy": 1.4,
+                "inaccuracy": 1.2,
                 "damageMultiplier": 0.4
             }
         },
@@ -468,8 +468,8 @@
             "ammo": "gunsrpg:wood",
             "capColor": "7A5125",
             "shootTask": {
-                "inaccuracy": 2.7,
-                "damageMultiplier": 0.3,
+                "inaccuracy": 2.5,
+                "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 50
             }
@@ -483,8 +483,8 @@
             "ammo": "gunsrpg:stone",
             "capColor": "727272",
             "shootTask": {
-                "inaccuracy": 2.7,
-                "damageMultiplier": 0.3,
+                "inaccuracy": 2.5,
+                "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 50
             }
@@ -498,8 +498,8 @@
             "ammo": "gunsrpg:iron",
             "capColor": "D3D3D3",
             "shootTask": {
-                "inaccuracy": 2.7,
-                "damageMultiplier": 0.3,
+                "inaccuracy": 2.5,
+                "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 50
             }
@@ -513,8 +513,8 @@
             "ammo": "gunsrpg:lapis",
             "capColor": "0020d8",
             "shootTask": {
-                "inaccuracy": 2.7,
-                "damageMultiplier": 0.3,
+                "inaccuracy": 2.5,
+                "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 50
             }
@@ -528,8 +528,8 @@
             "ammo": "gunsrpg:gold",
             "capColor": "d3b000",
             "shootTask": {
-                "inaccuracy": 2.7,
-                "damageMultiplier": 0.3,
+                "inaccuracy": 2.5,
+                "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 50
             }
@@ -543,8 +543,8 @@
             "ammo": "gunsrpg:redstone",
             "capColor": "e00000",
             "shootTask": {
-                "inaccuracy": 2.7,
-                "damageMultiplier": 0.3,
+                "inaccuracy": 2.5,
+                "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 50
             }
@@ -558,8 +558,8 @@
             "ammo": "gunsrpg:diamond",
             "capColor": "00e0e0",
             "shootTask": {
-                "inaccuracy": 2.7,
-                "damageMultiplier": 0.3,
+                "inaccuracy": 2.5,
+                "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 50
             }
@@ -573,8 +573,8 @@
             "ammo": "gunsrpg:quartz",
             "capColor": "fcffb2",
             "shootTask": {
-                "inaccuracy": 2.7,
-                "damageMultiplier": 0.3,
+                "inaccuracy": 2.5,
+                "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 50
             }
@@ -588,8 +588,8 @@
             "ammo": "gunsrpg:emerald",
             "capColor": "00ff00",
             "shootTask": {
-                "inaccuracy": 2.7,
-                "damageMultiplier": 0.3,
+                "inaccuracy": 2.5,
+                "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 50
             }
@@ -603,8 +603,8 @@
             "ammo": "gunsrpg:amethyst",
             "capColor": "dc00e0",
             "shootTask": {
-                "inaccuracy": 2.7,
-                "damageMultiplier": 0.3,
+                "inaccuracy": 2.5,
+                "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 50
             }
@@ -618,8 +618,8 @@
             "ammo": "gunsrpg:netherite",
             "capColor": "212121",
             "shootTask": {
-                "inaccuracy": 2.7,
-                "damageMultiplier": 0.3,
+                "inaccuracy": 2.5,
+                "damageMultiplier": 0.4,
                 "burstSize": 3,
                 "burstDelay": 50
             }

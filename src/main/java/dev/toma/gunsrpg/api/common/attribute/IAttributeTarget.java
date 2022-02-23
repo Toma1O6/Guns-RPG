@@ -7,5 +7,5 @@ public interface IAttributeTarget {
 
     IAttributeModifier getModifier();
 
-    IAttributeId[] getTargetAttributes();
+    IAttributeId getTargetAttribute();
 }

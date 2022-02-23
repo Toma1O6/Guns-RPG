@@ -40,53 +40,53 @@ function initializeCoreMod() {
     METHOD_INSN = AbstractInsnNode.METHOD_INSN;
 
     return {
-        'attackDelayPatch': {
-            'target': {
-                'type': 'METHOD',
-                'class': 'net.minecraft.entity.player.PlayerEntity',
-                'methodName': 'func_184818_cX',
-                'methodDesc': '()F'
+        attackDelayPatch: {
+            target: {
+                type: 'METHOD',
+                class: 'net.minecraft.entity.player.PlayerEntity',
+                methodName: 'func_184818_cX',
+                methodDesc: '()F'
             },
-            'transformer': function (methodNode) {
+            transformer: function (methodNode) {
                 patchAttackDelay(methodNode.instructions);
                 return methodNode;
             }
         },
 
-        'followDistancePatch': {
-            'target': {
-                'type': 'METHOD',
-                'class': 'net.minecraft.entity.ai.goal.TargetGoal',
-                'methodName': 'func_111175_f',
-                'methodDesc': '()D'
+        followDistancePatch: {
+            target: {
+                type: 'METHOD',
+                class: 'net.minecraft.entity.ai.goal.TargetGoal',
+                methodName: 'func_111175_f',
+                methodDesc: '()D'
             },
-            'transformer': function (methodNode) {
+            transformer: function (methodNode) {
                 patchFollowDistance(methodNode.instructions);
                 return methodNode;
             }
         },
 
-        'blockDropsPatch': {
-            'target': {
-                'type': 'METHOD',
-                'class': 'net.minecraft.block.AbstractBlock',
-                'methodName': 'func_220076_a',
-                'methodDesc': '(Lnet/minecraft/block/BlockState;Lnet/minecraft/loot/LootContext$Builder;)Ljava/util/List;'
+        blockDropsPatch: {
+            target: {
+                type: 'METHOD',
+                class: 'net.minecraft.block.AbstractBlock',
+                methodName: 'func_220076_a',
+                methodDesc: '(Lnet/minecraft/block/BlockState;Lnet/minecraft/loot/LootContext$Builder;)Ljava/util/List;'
             },
-            'transformer': function (methodNode) {
+            transformer: function (methodNode) {
                 patchBlockDrops(methodNode.instructions);
                 return methodNode;
             }
         },
 
-        'enderDragonConstructorPatch': {
-            'target': {
-                'type': 'METHOD',
-                'class': 'net.minecraft.entity.boss.dragon.EnderDragonEntity',
-                'methodName': '<init>',
-                'methodDesc': '(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V'
+        enderDragonConstructorPatch: {
+            target: {
+                type: 'METHOD',
+                class: 'net.minecraft.entity.boss.dragon.EnderDragonEntity',
+                methodName: '<init>',
+                methodDesc: '(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V'
             },
-            'transformer': function (methodNode) {
+            transformer: function (methodNode) {
                 patchEnderDragonConstructor(methodNode.instructions);
                 return methodNode;
             }

@@ -12,6 +12,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AttributeSkill extends BasicSkill implements IDescriptionProvider {
 
@@ -24,20 +26,18 @@ public class AttributeSkill extends BasicSkill implements IDescriptionProvider {
 
     @Override
     public ITextComponent[] supplyDescription(int desiredLineCount) {
-        int count = (int) Arrays.stream(targets).map(IAttributeTarget::getTargetAttributes).flatMap(Arrays::stream).filter(this::isDisplayable).count();
+        List<IAttributeTarget> displayableAttributes = Arrays.stream(targets).filter(this::isDisplayable).collect(Collectors.toList());
+        int count = displayableAttributes.size();
         ITextComponent[] components = new ITextComponent[desiredLineCount + count];
         SkillUtil.Localizations.prepareEmptyDescriptionLines(getType(), desiredLineCount, components);
         String rawString = String.format("skill.%s.description.", ModUtils.convertToLocalization(getType().getRegistryName()));
         int index = desiredLineCount;
-        for (IAttributeTarget target : targets) {
-            double value = target.getModifier().getModifierValue();
-            for (IAttributeId id : target.getTargetAttributes()) {
-                if (!id.hasDisplayTag()) continue;
-                IValueFormatter formatter = id.getFormatter();
-                int formattedValue = formatter.formatAttributeValue(value);
-                String tag = id.getDisplayTag();
-                components[index++] = new TranslationTextComponent(rawString + tag, formattedValue);
-            }
+        for (IAttributeTarget target : displayableAttributes) {
+            IDisplayableModifier displayableModifier = (IDisplayableModifier) target.getModifier();
+            double modifierValue = target.getModifier().getModifierValue();
+            int formatterValue = displayableModifier.getFormatter().formatAttributeValue(modifierValue);
+            String tag = displayableModifier.getTagId();
+            components[index++] = new TranslationTextComponent(rawString + tag, formatterValue);
         }
         return components;
     }
@@ -54,13 +54,12 @@ public class AttributeSkill extends BasicSkill implements IDescriptionProvider {
 
     private void applyTarget(IAttributeTarget target, IAttributeProvider provider) {
         IAttributeModifier modifier = target.getModifier();
-        for (IAttributeId id : target.getTargetAttributes()) {
-            IAttribute attribute = provider.getAttribute(id);
-            attribute.addModifier(modifier);
-        }
+        IAttributeId attributeId = target.getTargetAttribute();
+        IAttribute attribute = provider.getAttribute(attributeId);
+        attribute.addModifier(modifier);
     }
 
-    private boolean isDisplayable(IAttributeId id) {
-        return id.hasDisplayTag();
+    private boolean isDisplayable(IAttributeTarget target) {
+        return target.getModifier() instanceof IDisplayableModifier;
     }
 }

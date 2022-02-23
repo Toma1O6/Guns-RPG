@@ -68,6 +68,11 @@ public class BloodmoonGolemEntity extends CreatureEntity implements IMob {
     }
 
     @Override
+    public float getBrightness() {
+        return 1.0F;
+    }
+
+    @Override
     public void aiStep() {
         super.aiStep();
 

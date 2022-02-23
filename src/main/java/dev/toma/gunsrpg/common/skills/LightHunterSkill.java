@@ -6,8 +6,10 @@ import dev.toma.gunsrpg.common.attribute.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.util.helper.PlayerHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Items;
 import net.minecraft.util.text.ITextComponent;
 
@@ -15,8 +17,8 @@ import java.util.UUID;
 
 public class LightHunterSkill extends BasicSkill implements ITickableSkill, IDescriptionProvider {
 
-    public static final float ARROW_DAMAGE_MULTIPLIER = 1.2F;
-    private static final IAttributeModifier MOVEMENT_SPEED_MODIFIER = AttributeModifierFactory.modifier(UUID.fromString("9942EE39-CCD1-4F37-88E4-98711C2CF3EB"), AttributeOps.SUM, 0.015);
+    public static final float ARROW_DAMAGE_MULTIPLIER = 1.2F; // TODO move to attributes
+    private static final IAttributeModifier MOVEMENT_SPEED_MODIFIER = new AttributeModifier("9942EE39-CCD1-4F37-88E4-98711C2CF3EB", AttributeOps.SUM, 0.015);
     private static final IAttributeModifier FALLING_MODIFIER = new AttributeModifier("E354F3D8-F665-48C4-9F6D-B1C7714E2337", AttributeOps.MUL, 0.85);
     private final DescriptionContainer container;
     private boolean validityState;
@@ -45,16 +47,12 @@ public class LightHunterSkill extends BasicSkill implements ITickableSkill, IDes
         PlayerData.get(player).ifPresent(data -> {
             IAttributeProvider provider = data.getAttributes();
             boolean lastState = validityState;
-            validityState = hasArmor(player);
+            validityState = PlayerHelper.hasFullArmorSetOfMaterial(player, ArmorMaterial.LEATHER);
             if (lastState != validityState) {
                 toggleModifier(provider, Attribs.MOVEMENT_SPEED, MOVEMENT_SPEED_MODIFIER);
                 toggleModifier(provider, Attribs.FALL_RESISTANCE, FALLING_MODIFIER);
             }
         });
-    }
-
-    public boolean hasArmor(PlayerEntity player) {
-        return player.getItemBySlot(EquipmentSlotType.HEAD).getItem() == Items.LEATHER_HELMET && player.getItemBySlot(EquipmentSlotType.CHEST).getItem() == Items.LEATHER_CHESTPLATE && player.getItemBySlot(EquipmentSlotType.LEGS).getItem() == Items.LEATHER_LEGGINGS && player.getItemBySlot(EquipmentSlotType.FEET).getItem() == Items.LEATHER_BOOTS;
     }
 
     private void toggleModifier(IAttributeProvider provider, IAttributeId attributeId, IAttributeModifier modifier) {
