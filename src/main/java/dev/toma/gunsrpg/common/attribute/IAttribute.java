@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface IAttribute extends INBTSerializable<CompoundNBT> {
 
-    double getModifier();
+    double getModifiedValue(double value);
 
     double value();
 

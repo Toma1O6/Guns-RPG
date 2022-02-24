@@ -71,4 +71,13 @@ public class ExpiringModifier implements IAttributeModifier, ITickableModifier {
     public void setTimeLeft(int time) {
         this.time = time;
     }
+
+    @Override
+    public String toString() {
+        return "ExpiringModifier{" +
+                "id=" + uuid +
+                ", value=" + value +
+                ", timeLeft=" + time +
+                '}';
+    }
 }

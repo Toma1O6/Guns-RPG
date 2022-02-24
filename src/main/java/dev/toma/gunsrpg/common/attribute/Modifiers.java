@@ -78,11 +78,11 @@ public final class Modifiers {
     public static final IAttributeModifier KAR98K_DEAD_EYE              = new AttributeModifier("3EF88EFE-B623-4F78-A272-B2E981A9A3E1", AttributeOps.MUL, 2.5).named("hs_damage", IValueFormatter.PERCENT);
     /* Expiring */
     public static final IAttributeModifier POISON_BLOCKING              = new ExpiringModifier("06B101CE-2CC4-43E2-9C83-4D6756604E54", AttributeOps.SUM, 1.0, 1200);
-    public static final IAttributeModifier POISON_DELAYING              = new ExpiringModifier("3CE101E1-6379-43F5-9E03-DA91AF32226B", AttributeOps.MUL, 0.5, 1200);
+    public static final IAttributeModifier POISON_DELAYING              = new ExpiringModifier("3CE101E1-6379-43F5-9E03-DA91AF32226B", AttributeOps.MULB, 0.5, 1200);
     public static final IAttributeModifier INFECTION_BLOCKING           = new ExpiringModifier("202D83D3-D2FF-4E74-9820-24A82B2F17BF", AttributeOps.SUM, 1.0, 1200);
-    public static final IAttributeModifier INFECTION_DELAYING           = new ExpiringModifier("53C3A9D9-8C25-4DC4-8AB1-76C8ECA356AF", AttributeOps.MUL, 0.5, 1200);
+    public static final IAttributeModifier INFECTION_DELAYING           = new ExpiringModifier("53C3A9D9-8C25-4DC4-8AB1-76C8ECA356AF", AttributeOps.MULB, 0.5, 1200);
     public static final IAttributeModifier FRACTURE_BLOCKING            = new ExpiringModifier("8A80ABAE-DF7F-4BA0-A347-A24C2D6E10A4", AttributeOps.SUM, 1.0, 1200);
-    public static final IAttributeModifier FRACTURE_DELAYING            = new ExpiringModifier("167F69B3-A88C-4FE1-AF20-FC63CA63EBA2", AttributeOps.MUL, 0.5, 1200);
+    public static final IAttributeModifier FRACTURE_DELAYING            = new ExpiringModifier("167F69B3-A88C-4FE1-AF20-FC63CA63EBA2", AttributeOps.MULB, 0.5, 1200);
     public static final IAttributeModifier BLEED_BLOCKING               = new ExpiringModifier("0107DE53-B95F-473E-B887-5A82C800A695", AttributeOps.SUM, 1.0, 1200);
-    public static final IAttributeModifier BLEED_DELAYING               = new ExpiringModifier("5303EEE4-64A6-45FB-B88B-8F455663EA8B", AttributeOps.MUL, 0.5, 1200);
+    public static final IAttributeModifier BLEED_DELAYING               = new ExpiringModifier("5303EEE4-64A6-45FB-B88B-8F455663EA8B", AttributeOps.MULB, 0.5, 1200);
 }

@@ -3,8 +3,10 @@ package dev.toma.gunsrpg.common.attribute;
 import dev.toma.gunsrpg.GunsRPG;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public final class Attribs {
 
@@ -123,6 +125,10 @@ public final class Attribs {
 
     public static IAttributeId find(ResourceLocation id) {
         return KEY_MAP.get(id);
+    }
+
+    public static Set<ResourceLocation> listKeys() {
+        return Collections.unmodifiableSet(KEY_MAP.keySet());
     }
 
     public static <I extends IAttributeId> I registerId(I id) {

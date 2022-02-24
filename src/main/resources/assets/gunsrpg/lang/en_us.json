@@ -739,6 +739,7 @@
     "command.gunsrpg.exception.missing_skill": "You must first unlock %s skill",
     "command.gunsrpg.exception.active_skill": "You must first deactivate %s skill",
     "command.gunsrpg.exception.arg_json_invalid": "Invalid JSON syntax: %s",
+    "command.gunsrpg.exception.no_data": "Missing player data",
     "command.gunsrpg.toggle_debuff": "Toggled %s debuff",
     "command.gunsrpg.airdrop": "Airdrop has been called on your location",
     "command.gunsrpg.set_bloodmoon": "Bloodmoon has been activated",

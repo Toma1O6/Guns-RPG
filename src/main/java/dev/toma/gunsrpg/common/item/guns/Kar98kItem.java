@@ -112,7 +112,7 @@ public class Kar98kItem extends GunItem {
     @Override
     public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
         ItemStack stack = player.getMainHandItem();
-        int prepTime = (int) (46 * Attribs.KAR98K_RELOAD.getTotalModifier(attributeProvider));
+        int prepTime = (int) (Attribs.KAR98K_RELOAD.getModifiedValue(attributeProvider, 46));
         return ReloadManagers.either(
                 getAmmo(stack) > 0,
                 ReloadManagers.singleBulletLoading(prepTime, player, this, stack, LOAD_BULLET_ANIMATION),

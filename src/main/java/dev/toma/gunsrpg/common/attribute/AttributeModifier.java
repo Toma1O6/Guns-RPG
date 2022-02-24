@@ -66,4 +66,12 @@ public class AttributeModifier implements IAttributeModifier {
     public int hashCode() {
         return uid.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "AttributeModifier{" +
+                "id=" + uid +
+                ", value=" + value +
+                '}';
+    }
 }

@@ -10,10 +10,10 @@ public final class AttributeOps {
 
     private static final Map<ResourceLocation, IModifierOp> OPERATION_MAP = new HashMap<>();
 
-    public static final IModifierOp SUM = create("sum", Double::sum, 0);
-    public static final IModifierOp SUB = create("sub", (v1, v2) -> v1 - v2, 0);
-    public static final IModifierOp MUL = create("mul", (v1, v2) -> v1 * v2, 1);
-    public static final IModifierOp MULB = create("mulb", (v1, v2) -> v1 * (1.0F + v2), 1);
+    public static final IModifierOp SUM = create("sum", OperationTarget.DIRECT_VALUE, Double::sum, 0);
+    public static final IModifierOp SUB = create("sub", OperationTarget.DIRECT_VALUE, (v1, v2) -> v1 - v2, 0);
+    public static final IModifierOp MUL = create("mul", OperationTarget.MULTIPLIER, (v1, v2) -> v1 * v2, 1);
+    public static final IModifierOp MULB = create("mulb", OperationTarget.MULTIPLIER, (v1, v2) -> v1 * (1.0F + v2), 1);
 
     public static IModifierOp register(IModifierOp op) {
         OPERATION_MAP.put(op.getId(), op);
@@ -24,28 +24,10 @@ public final class AttributeOps {
         return OPERATION_MAP.get(id);
     }
 
-    private static IModifierOp create(String name, IOperator op, int priority) {
-        ResourceLocation id = GunsRPG.makeResource(name);
-        return register(new IModifierOp() {
-            @Override
-            public ResourceLocation getId() {
-                return id;
-            }
-
-            @Override
-            public double combine(double baseValue, double modifierValue) {
-                return op.combine(baseValue, modifierValue);
-            }
-
-            @Override
-            public int getPriority() {
-                return priority;
-            }
-        });
-    }
-
-    public interface IOperator {
-        double combine(double base, double modValue);
+    private static IModifierOp create(String id, OperationTarget target, IModifierOperator operator, int executionOrder) {
+        IModifierOp op = new ModifierOperation(GunsRPG.makeResource(id), target, operator, executionOrder);
+        register(op);
+        return op;
     }
 
     private AttributeOps() {}

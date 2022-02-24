@@ -50,4 +50,9 @@ public class NamedModifierWrapper implements IAttributeModifier, IDisplayableMod
     public IValueFormatter getFormatter() {
         return formatter;
     }
+
+    @Override
+    public String toString() {
+        return modifier.toString();
+    }
 }

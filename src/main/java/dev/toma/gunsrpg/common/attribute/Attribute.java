@@ -9,6 +9,8 @@ import net.minecraftforge.common.util.Constants;
 
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Attribute implements IAttribute {
 
@@ -19,7 +21,6 @@ public class Attribute implements IAttribute {
     private final double baseValue;
     private boolean requireUpdate;
     private double value;
-    private double modifier;
 
     public Attribute(IAttributeId id) {
         this.id = id;
@@ -29,16 +30,29 @@ public class Attribute implements IAttribute {
     }
 
     @Override
-    public double getModifier() {
-        return (modifier = calcModifier());
+    public double getModifiedValue(double value) {
+        Comparator<IAttributeModifier> executionOrderSorter = Comparator.comparing(IAttributeModifier::getOperation, Comparator.comparingInt(IModifierOp::getPriority));
+        List<IAttributeModifier> sumTargets = getModifiersByType(OperationTarget.DIRECT_VALUE, executionOrderSorter);
+        for (IAttributeModifier modifier : sumTargets) {
+            double modifierValue = modifier.getModifierValue();
+            IModifierOp operation = modifier.getOperation();
+            value = operation.combine(value, modifierValue);
+        }
+        List<IAttributeModifier> mulTargets = getModifiersByType(OperationTarget.MULTIPLIER, executionOrderSorter);
+        double multiplier = 1.0;
+        for (IAttributeModifier modifier : mulTargets) {
+            double modifierValue = modifier.getModifierValue();
+            IModifierOp operation = modifier.getOperation();
+            multiplier = operation.combine(multiplier, modifierValue);
+        }
+        return value * multiplier;
     }
 
     @Override
     public double value() {
         if (requireUpdate) {
             requireUpdate = false;
-            modifier = calcModifier();
-            value = baseValue * modifier;
+            this.value = getModifiedValue(baseValue);
             notifyListenerChange(value, IAttributeListener::onValueChanged);
         }
         return value;
@@ -75,8 +89,9 @@ public class Attribute implements IAttribute {
         while (iterator.hasNext()) {
             ITickableModifier modifier = iterator.next();
             if (modifier.shouldRemove()) {
-                notifyListenerChange(modifier, IAttributeListener::onModifierRemoved);
                 iterator.remove();
+                removeModifier(modifier);
+                notifyListenerChange(modifier, IAttributeListener::onModifierRemoved);
                 markChanged();
                 continue;
             }
@@ -190,5 +205,9 @@ public class Attribute implements IAttribute {
         ResourceLocation type = new ResourceLocation(data.getString("serializer"));
         IModifierSerializer<M> serializer = ModifierSerialization.getSerializer(type);
         return serializer.fromNbtStructure(data);
+    }
+
+    private List<IAttributeModifier> getModifiersByType(OperationTarget target, Comparator<IAttributeModifier> sorter) {
+        return modifierMap.values().stream().filter(modifier -> modifier.getOperation().getOperationTarget() == target).sorted(sorter).collect(Collectors.toList());
     }
 }

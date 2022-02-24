@@ -14,6 +14,7 @@ import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidatorFactory;
+import dev.toma.gunsrpg.common.attribute.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import dev.toma.gunsrpg.common.entity.AirdropEntity;
@@ -21,6 +22,7 @@ import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;
 import dev.toma.gunsrpg.config.ModConfig;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
@@ -29,12 +31,18 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.IServerWorldInfo;
 import net.minecraftforge.common.util.LazyOptional;
+import org.lwjgl.system.CallbackI;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -43,6 +51,8 @@ public class GunsrpgCommand {
     private static final SuggestionProvider<CommandSource> DEBUFF_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(ModRegistries.DEBUFFS.getKeys(), builder);
     private static final SuggestionProvider<CommandSource> TX_VALIDATOR_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(TransactionValidatorRegistry.getRegisteredValidatorTypes(), builder);
     private static final SuggestionProvider<CommandSource> SKILL_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(ModRegistries.SKILLS.getKeys(), builder);
+    private static final SuggestionProvider<CommandSource> ATTRIBUTE_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(Attribs.listKeys(), builder);
+    private static final SimpleCommandExceptionType NO_DATA = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.no_data"));
     private static final SimpleCommandExceptionType MISSING_KEY_EXCEPTION = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.missing_key"));
     private static final DynamicCommandExceptionType MISSING_ARGUMENTS = new DynamicCommandExceptionType(o -> new TranslationTextComponent("command.gunsrpg.exception.missing_args", o));
     private static final SimpleCommandExceptionType LOCATION_OBSTRUCTED = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.location_obstructed"));
@@ -146,8 +156,48 @@ public class GunsrpgCommand {
                                             throw MISSING_KEY_EXCEPTION.create();
                                         })
                         )
+                        .then(
+                                Commands.literal("attribute")
+                                        .executes(ctx -> noArgsProvided(ctx, "id"))
+                                        .then(
+                                                Commands.argument("id", ResourceLocationArgument.id())
+                                                        .suggests(ATTRIBUTE_SUGGESTION)
+                                                        .executes(GunsrpgCommand::listAttributeInfo)
+                                        )
+                        )
                         .executes(ctx -> noArgsProvided(ctx, "debuff", "event", "progression", "skill"))
         );
+    }
+
+    private static int listAttributeInfo(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        CommandSource source = context.getSource();
+        Entity executor = source.getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        IPlayerData data = PlayerData.get(player).orElseThrow(NO_DATA::create);
+        IAttributeProvider provider = data.getAttributes();
+        ResourceLocation id = ResourceLocationArgument.getId(context, "id");
+        IAttributeId attributeId = Attribs.find(id);
+        if (attributeId == null) {
+            throw UNKNOWN_KEY_EXCEPTION.create(id);
+        }
+        IAttribute attribute = provider.getAttribute(attributeId);
+        player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "=========[ Attribute Info ]=========="), Util.NIL_UUID);
+        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Attribute: " + TextFormatting.AQUA + id), Util.NIL_UUID);
+        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Base value: " + TextFormatting.AQUA + attribute.getBaseValue()), Util.NIL_UUID);
+        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Value: " + TextFormatting.AQUA + attribute.value()), Util.NIL_UUID);
+        Collection<IAttributeModifier> modifiers = attribute.listModifiers();
+        int modifierCount = modifiers.size();
+        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Modifier count: " + TextFormatting.AQUA + modifierCount), Util.NIL_UUID);
+        if (modifierCount > 0) {
+            player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Modifiers:"), Util.NIL_UUID);
+            for (IAttributeModifier modifier : modifiers) {
+                player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "-" + TextFormatting.AQUA + modifier.toString()), Util.NIL_UUID);
+            }
+        }
+        return 0;
     }
 
     private static int progressAdd(CommandContext<CommandSource> ctx, int amount, JsonElement data) throws CommandSyntaxException {

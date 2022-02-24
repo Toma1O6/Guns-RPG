@@ -6,6 +6,8 @@ public interface IModifierOp {
 
     ResourceLocation getId();
 
+    OperationTarget getOperationTarget();
+
     double combine(double baseValue, double modifierValue);
 
     int getPriority();

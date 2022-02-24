@@ -1,7 +1,9 @@
 package dev.toma.gunsrpg.common.skills;
 
 import dev.toma.gunsrpg.api.common.attribute.IAttributeTarget;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
+import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.common.attribute.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -42,11 +44,14 @@ public class AttributeSkill extends BasicSkill implements IDescriptionProvider {
         return components;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onPurchase(PlayerEntity player) {
         PlayerData.get(player).ifPresent(data -> {
+            ISkillProvider skillProvider = data.getSkillProvider();
+            AttributeSkill skill = SkillUtil.getTopHierarchySkill((SkillType<AttributeSkill>) this.getType(), skillProvider);
             IAttributeProvider provider = data.getAttributes();
-            for (IAttributeTarget target : targets) {
+            for (IAttributeTarget target : skill.targets) {
                 applyTarget(target, provider);
             }
         });
