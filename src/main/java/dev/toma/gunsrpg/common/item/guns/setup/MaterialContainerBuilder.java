@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.common.item.guns.setup;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 
 import java.util.IdentityHashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MaterialContainerBuilder {

@@ -8,12 +8,8 @@ import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.helper.PlayerHelper;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.Items;
 import net.minecraft.util.text.ITextComponent;
-
-import java.util.UUID;
 
 public class LightHunterSkill extends BasicSkill implements ITickableSkill, IDescriptionProvider {
 

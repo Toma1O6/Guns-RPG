@@ -7,7 +7,6 @@ import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.resource.adapter.*;
 import net.minecraft.client.resources.JsonReloadListener;
-import net.minecraft.item.ItemStack;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;

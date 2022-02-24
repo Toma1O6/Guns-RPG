@@ -2,16 +2,16 @@ package dev.toma.gunsrpg.config.client;
 
 import dev.toma.configuration.api.IConfigWriter;
 import dev.toma.configuration.api.IObjectSpec;
-import dev.toma.configuration.api.NumberDisplayType;
-import dev.toma.configuration.api.type.*;
+import dev.toma.configuration.api.type.BooleanType;
+import dev.toma.configuration.api.type.ColorType;
+import dev.toma.configuration.api.type.EnumType;
+import dev.toma.configuration.api.type.ObjectType;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.config.type.IconsType;
 import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.util.math.ConfigurableVec2i;
 import dev.toma.gunsrpg.util.math.IVec2i;
 import net.minecraft.util.ResourceLocation;
-
-import java.text.DecimalFormat;
 
 public class ClientConfiguration extends ObjectType {
 

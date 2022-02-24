@@ -10,7 +10,6 @@ import net.minecraftforge.common.util.Constants;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Attribute implements IAttribute {
 

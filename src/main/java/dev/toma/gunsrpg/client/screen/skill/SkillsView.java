@@ -1,8 +1,9 @@
 package dev.toma.gunsrpg.client.screen.skill;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.api.common.data.*;
-import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IPointProvider;
+import dev.toma.gunsrpg.api.common.data.IProgressData;
 import dev.toma.gunsrpg.client.screen.widgets.*;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;

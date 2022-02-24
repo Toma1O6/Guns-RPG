@@ -3,8 +3,6 @@ package dev.toma.gunsrpg.common.item.heal;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.InfiniteAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
-import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.S2C_AnimationPacket;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.IAnimation;
 import lib.toma.animations.api.IAnimationPipeline;
