@@ -1,2214 +1,2310 @@
 {
   "categories": [
-      {
-          "id": "common",
-          "weight": 45
-      },
-      {
-          "id": "uncommon",
-          "weight": 35
-      },
-      {
-          "id": "rare",
-          "weight": 22
-      },
-      {
-          "id": "veryrare",
-          "weight": 14
-      },
-      {
-          "id": "epic",
-          "weight": 8
-      },
-      {
-          "id": "legendary",
-          "weight": 5
-      },
-      {
-          "id": "godlike",
-          "weight": 3
-      }
+    {
+      "id": "common",
+      "weight": 45
+    },
+    {
+      "id": "uncommon",
+      "weight": 35
+    },
+    {
+      "id": "rare",
+      "weight": 22
+    },
+    {
+      "id": "veryrare",
+      "weight": 14
+    },
+    {
+      "id": "epic",
+      "weight": 8
+    },
+    {
+      "id": "legendary",
+      "weight": 5
+    },
+    {
+      "id": "godlike",
+      "weight": 3
+    }
   ],
   "slots": [
-      {
-          "count": 1,
-          "weight": 10
-      },
-      {
-          "count": 2,
-          "weight": 30
-      },
-      {
-          "count": 3,
-          "weight": 45
-      },
-      {
-          "count": 4,
-          "weight": 30
-      },
-      {
-          "count": 5,
-          "weight": 15
-      },
-      {
-          "count": 6,
-          "weight": 8
-      },
-      {
-          "count": 7,
-          "weight": 4
-      }
+    {
+      "count": 1,
+      "weight": 10
+    },
+    {
+      "count": 2,
+      "weight": 30
+    },
+    {
+      "count": 3,
+      "weight": 45
+    },
+    {
+      "count": 4,
+      "weight": 30
+    },
+    {
+      "count": 5,
+      "weight": 15
+    },
+    {
+      "count": 6,
+      "weight": 8
+    },
+    {
+      "count": 7,
+      "weight": 4
+    }
   ],
   "lootConfiguration": {
-      "common": [
-          {
-              "weight": 50,
-              "item": "gunsrpg:wooden_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:wooden_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:wooden_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:wooden_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:wooden_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:wooden_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:stone_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:stone_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:stone_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:stone_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:stone_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:stone_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:grenade",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:antidotum_pills",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:calcium_shot",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:vaccine",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:vitamins",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:plaster_cast",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:propital",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:bandage",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:hemostat",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:analgetics",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 12,
-              "item": "gunsrpg:weapon_repair_kit",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          }
-      ],
-      "uncommon": [
-          {
-              "weight": 50,
-              "item": "gunsrpg:wooden_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:wooden_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:wooden_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:wooden_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:wooden_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:wooden_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:stone_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:stone_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:stone_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:stone_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:stone_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:stone_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:iron_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:iron_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:iron_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:iron_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:iron_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:iron_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:lapis_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:lapis_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:lapis_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:lapis_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:lapis_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:lapis_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:explosive_grenade_launcher_shell",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 5
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:massive_grenade",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:antidotum_pills",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:calcium_shot",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:vaccine",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:vitamins",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:plaster_cast",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:propital",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:bandage",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:hemostat",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:analgetics",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:painkillers",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:stereoids",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:adrenaline",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 12,
-              "item": "gunsrpg:weapon_repair_kit",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          }
-      ],
-      "rare": [
-          {
-              "weight": 50,
-              "item": "gunsrpg:iron_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:iron_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:iron_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:iron_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:iron_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:iron_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:lapis_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:lapis_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:lapis_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:lapis_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:lapis_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:lapis_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:gold_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:gold_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:gold_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:gold_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:gold_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:gold_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:redstone_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:redstone_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:redstone_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:redstone_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:redstone_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:redstone_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:explosive_grenade_launcher_shell",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 10
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:tear_gas_grenade_launcher_shell",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 5
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:sticky_grenade_launcher_shell",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 5
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:rocket",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:grenade",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 5
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:impact_grenade",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:antidotum_pills",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:calcium_shot",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:vaccine",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:vitamins",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:plaster_cast",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:propital",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:bandage",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:hemostat",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:analgetics",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:painkillers",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:stereoids",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:adrenaline",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:morphine",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 12,
-              "item": "gunsrpg:weapon_repair_kit",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 10,
-              "item": "gunsrpg:perkpoint_book",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          }
-      ],
-      "veryrare": [
-          {
-              "weight": 50,
-              "item": "gunsrpg:gold_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:gold_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:gold_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:gold_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:gold_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:gold_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:redstone_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:redstone_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:redstone_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:redstone_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:redstone_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:redstone_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:emerald_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:emerald_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:emerald_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:emerald_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:emerald_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:emerald_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:quartz_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:quartz_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:quartz_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:quartz_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:quartz_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:quartz_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:tear_gas_grenade_launcher_shell",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 10
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:sticky_grenade_launcher_shell",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 10
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:toxin_rocket",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:napalm_rocket",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:demolition_rocket",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:massive_grenade",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 5
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:antidotum_pills",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:calcium_shot",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:vaccine",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:vitamins",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:plaster_cast",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:propital",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:bandage",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:hemostat",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:analgetics",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:painkillers",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:stereoids",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:adrenaline",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:morphine",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:ufak",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 12,
-              "item": "gunsrpg:weapon_repair_kit",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 7,
-              "item": "gunsrpg:skillpoint_book",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 10,
-              "item": "gunsrpg:perkpoint_book",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          }
-      ],
-      "epic": [
-          {
-              "weight": 50,
-              "item": "gunsrpg:emerald_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:emerald_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:emerald_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:emerald_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:emerald_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:emerald_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:quartz_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:quartz_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:quartz_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:quartz_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:quartz_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:quartz_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:diamond_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:diamond_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:diamond_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:diamond_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:diamond_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:diamond_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:impact_grenade_launcher_shell",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 5
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:rocket",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 8
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:toxin_rocket",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 8
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:high_explosive_rocket",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:impact_grenade",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 5
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:antidotum_pills",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:calcium_shot",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:vaccine",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:vitamins",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:plaster_cast",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:propital",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:bandage",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:hemostat",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:analgetics",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:painkillers",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:stereoids",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:adrenaline",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:morphine",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:ufak",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:kodiak",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 12,
-              "item": "gunsrpg:weapon_repair_kit",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 7,
-              "item": "gunsrpg:skillpoint_book",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 10,
-              "item": "gunsrpg:perkpoint_book",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          }
-      ],
-      "legendary": [
-          {
-              "weight": 50,
-              "item": "gunsrpg:diamond_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:diamond_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:diamond_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:diamond_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:diamond_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:diamond_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:amethyst_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:amethyst_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:amethyst_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:amethyst_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:amethyst_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:amethyst_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:impact_grenade_launcher_shell",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 10
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:high_explosive_grenade_launcher_shell",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 5
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:napalm_rocket",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 8
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:demolition_rocket",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 8
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:antidotum_pills",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:calcium_shot",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:vaccine",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:vitamins",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:plaster_cast",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:propital",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:bandage",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:hemostat",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:analgetics",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 5
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:painkillers",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:stereoids",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:adrenaline",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:morphine",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:ufak",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:kodiak",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 12,
-              "item": "gunsrpg:weapon_repair_kit",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 7,
-              "item": "gunsrpg:skillpoint_book",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 2
-              }
-          },
-          {
-              "weight": 10,
-              "item": "gunsrpg:perkpoint_book",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          }
-      ],
-      "godlike": [
-          {
-              "weight": 50,
-              "item": "gunsrpg:amethyst_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:amethyst_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:amethyst_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:amethyst_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:amethyst_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:amethyst_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:netherite_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:netherite_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:netherite_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:netherite_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:netherite_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:netherite_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 25
-              }
-          },
-          {
-              "weight": 20,
-              "item": "gunsrpg:netherite_9mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 20,
-              "item": "gunsrpg:netherite_45acp",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 20,
-              "item": "gunsrpg:netherite_556mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 20,
-              "item": "gunsrpg:netherite_762mm",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 20,
-              "item": "gunsrpg:netherite_12g",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 20,
-              "item": "gunsrpg:netherite_bolt",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 50
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:high_explosive_grenade_launcher_shell",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 10
-              }
-          },
-          {
-              "weight": 50,
-              "item": "gunsrpg:high_explosive_rocket",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 8
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:antidotum_pills",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:calcium_shot",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 5
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:vaccine",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:vitamins",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 5
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:plaster_cast",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:propital",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 5
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:bandage",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:hemostat",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 5
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:analgetics",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 6
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:painkillers",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:stereoids",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:adrenaline",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:morphine",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:ufak",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 35,
-              "item": "gunsrpg:kodiak",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 1
-              }
-          },
-          {
-              "weight": 12,
-              "item": "gunsrpg:weapon_repair_kit",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          },
-          {
-              "weight": 9,
-              "item": "gunsrpg:skillpoint_book",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 3
-              }
-          },
-          {
-              "weight": 12,
-              "item": "gunsrpg:perkpoint_book",
-              "count": {
-                  "function": "gunsrpg:const",
-                  "value": 4
-              }
-          }
-      ]
+    "common": [
+      {
+        "weight": 50,
+        "item": "gunsrpg:wooden_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:wooden_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:wooden_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:wooden_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:wooden_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:wooden_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:stone_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:stone_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:stone_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:stone_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:stone_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:stone_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:grenade",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:antidotum_pills",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:calcium_shot",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:vaccine",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:vitamins",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:plaster_cast",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:propital",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:bandage",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:hemostat",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:analgetics",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 12,
+        "item": "gunsrpg:weapon_repair_kit",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      }
+    ],
+    "uncommon": [
+      {
+        "weight": 50,
+        "item": "gunsrpg:wooden_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:wooden_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:wooden_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:wooden_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:wooden_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:wooden_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:stone_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:stone_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:stone_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:stone_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:stone_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:stone_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:iron_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:iron_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:iron_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:iron_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:iron_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:iron_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:lapis_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:lapis_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:lapis_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:lapis_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:lapis_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:lapis_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:explosive_grenade_launcher_shell",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 5
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:massive_grenade",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:antidotum_pills",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:calcium_shot",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:vaccine",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:vitamins",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:plaster_cast",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:propital",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:bandage",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:hemostat",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:analgetics",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:painkillers",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:stereoids",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:adrenaline",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 12,
+        "item": "gunsrpg:weapon_repair_kit",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      }
+    ],
+    "rare": [
+      {
+        "weight": 50,
+        "item": "gunsrpg:iron_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:iron_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:iron_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:iron_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:iron_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:iron_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:lapis_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:lapis_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:lapis_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:lapis_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:lapis_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:lapis_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:gold_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:gold_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:gold_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:gold_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:gold_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:gold_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:redstone_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:redstone_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:redstone_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:redstone_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:redstone_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:redstone_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:explosive_grenade_launcher_shell",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 10
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:tear_gas_grenade_launcher_shell",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 5
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:sticky_grenade_launcher_shell",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 5
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:rocket",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:grenade",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 5
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:impact_grenade",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:antidotum_pills",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:calcium_shot",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:vaccine",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:vitamins",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:plaster_cast",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:propital",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:bandage",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:hemostat",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:analgetics",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:painkillers",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:stereoids",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:adrenaline",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:morphine",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 12,
+        "item": "gunsrpg:weapon_repair_kit",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 10,
+        "item": "gunsrpg:perkpoint_book",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      }
+    ],
+    "veryrare": [
+      {
+        "weight": 50,
+        "item": "gunsrpg:gold_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:gold_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:gold_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:gold_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:gold_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:gold_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:redstone_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:redstone_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:redstone_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:redstone_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:redstone_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:redstone_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:emerald_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:emerald_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:emerald_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:emerald_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:emerald_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:emerald_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:quartz_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:quartz_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:quartz_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:quartz_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:quartz_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:quartz_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:tear_gas_grenade_launcher_shell",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 10
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:sticky_grenade_launcher_shell",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 10
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:toxin_rocket",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:napalm_rocket",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:demolition_rocket",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:massive_grenade",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 5
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:antidotum_pills",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:calcium_shot",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:vaccine",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:vitamins",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:plaster_cast",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:propital",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:bandage",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:hemostat",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:analgetics",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:painkillers",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:stereoids",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:adrenaline",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:morphine",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:ufak",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 12,
+        "item": "gunsrpg:weapon_repair_kit",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 5,
+        "item": "gunsrpg:lunch_box",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 7,
+        "item": "gunsrpg:skillpoint_book",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 10,
+        "item": "gunsrpg:perkpoint_book",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      }
+    ],
+    "epic": [
+      {
+        "weight": 50,
+        "item": "gunsrpg:emerald_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:emerald_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:emerald_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:emerald_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:emerald_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:emerald_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:quartz_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:quartz_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:quartz_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:quartz_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:quartz_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:quartz_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:diamond_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:diamond_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:diamond_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:diamond_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:diamond_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:diamond_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:impact_grenade_launcher_shell",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 5
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:rocket",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 8
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:toxin_rocket",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 8
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:high_explosive_rocket",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:impact_grenade",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 5
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:antidotum_pills",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:calcium_shot",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:vaccine",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:vitamins",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:plaster_cast",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:propital",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:bandage",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:hemostat",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:analgetics",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:painkillers",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:stereoids",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:adrenaline",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:morphine",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:ufak",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:kodiak",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 12,
+        "item": "gunsrpg:weapon_repair_kit",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 5,
+        "item": "gunsrpg:lunch_box",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 5,
+        "item": "gunsrpg:ammo_case",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 7,
+        "item": "gunsrpg:skillpoint_book",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 10,
+        "item": "gunsrpg:perkpoint_book",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      }
+    ],
+    "legendary": [
+      {
+        "weight": 50,
+        "item": "gunsrpg:diamond_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:diamond_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:diamond_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:diamond_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:diamond_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:diamond_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:amethyst_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:amethyst_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:amethyst_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:amethyst_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:amethyst_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:amethyst_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:impact_grenade_launcher_shell",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 10
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:high_explosive_grenade_launcher_shell",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 5
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:napalm_rocket",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 8
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:demolition_rocket",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 8
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:antidotum_pills",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:calcium_shot",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:vaccine",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:vitamins",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:plaster_cast",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:propital",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:bandage",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:hemostat",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:analgetics",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 5
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:painkillers",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:stereoids",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:adrenaline",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:morphine",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:ufak",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:kodiak",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 12,
+        "item": "gunsrpg:weapon_repair_kit",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 5,
+        "item": "gunsrpg:lunch_box",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 5,
+        "item": "gunsrpg:ammo_case",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 5,
+        "item": "gunsrpg:grenade_case",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 5,
+        "item": "gunsrpg:meds_case",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 7,
+        "item": "gunsrpg:skillpoint_book",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 2
+        }
+      },
+      {
+        "weight": 10,
+        "item": "gunsrpg:perkpoint_book",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      }
+    ],
+    "godlike": [
+      {
+        "weight": 50,
+        "item": "gunsrpg:amethyst_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:amethyst_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:amethyst_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:amethyst_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:amethyst_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:amethyst_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:netherite_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:netherite_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:netherite_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:netherite_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:netherite_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:netherite_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 25
+        }
+      },
+      {
+        "weight": 20,
+        "item": "gunsrpg:netherite_9mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 20,
+        "item": "gunsrpg:netherite_45acp",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 20,
+        "item": "gunsrpg:netherite_556mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 20,
+        "item": "gunsrpg:netherite_762mm",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 20,
+        "item": "gunsrpg:netherite_12g",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 20,
+        "item": "gunsrpg:netherite_bolt",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 50
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:high_explosive_grenade_launcher_shell",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 10
+        }
+      },
+      {
+        "weight": 50,
+        "item": "gunsrpg:high_explosive_rocket",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 8
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:antidotum_pills",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:calcium_shot",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 5
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:vaccine",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:vitamins",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 5
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:plaster_cast",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:propital",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 5
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:bandage",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:hemostat",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 5
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:analgetics",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 6
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:painkillers",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:stereoids",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:adrenaline",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:morphine",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:ufak",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 35,
+        "item": "gunsrpg:kodiak",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 12,
+        "item": "gunsrpg:weapon_repair_kit",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      },
+      {
+        "weight": 5,
+        "item": "gunsrpg:lunch_box",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 5,
+        "item": "gunsrpg:ammo_case",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 5,
+        "item": "gunsrpg:grenade_case",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 5,
+        "item": "gunsrpg:meds_case",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 5,
+        "item": "gunsrpg:item_case",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 9,
+        "item": "gunsrpg:skillpoint_book",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 3
+        }
+      },
+      {
+        "weight": 12,
+        "item": "gunsrpg:perkpoint_book",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 4
+        }
+      }
+    ]
   }
 }
