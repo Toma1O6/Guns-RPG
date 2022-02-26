@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.skill.*;
 import dev.toma.gunsrpg.client.screen.skill.SkillTreeScreen;
 import dev.toma.gunsrpg.common.init.ModRegistries;
@@ -31,7 +32,7 @@ public class S2C_SendSkillDataPacket extends AbstractNetworkPacket<S2C_SendSkill
     }
 
     public S2C_SendSkillDataPacket(Collection<SkillType<?>> data) {
-        this.data = data.stream().map(DataContext::new).collect(Collectors.toList());
+        this.data = data.stream().filter(this::filterAndLogInvalid).map(DataContext::new).collect(Collectors.toList());
     }
 
     private S2C_SendSkillDataPacket(List<DataContext> data) {
@@ -68,6 +69,14 @@ public class S2C_SendSkillDataPacket extends AbstractNetworkPacket<S2C_SendSkill
         SkillType<S> owner = (SkillType<S>) context.owner;
         SkillPropertyLoader.ILoadResult<S> result = (SkillPropertyLoader.ILoadResult<S>) context.result;
         owner.onDataAssign(result);
+    }
+
+    private boolean filterAndLogInvalid(SkillType<?> type) {
+        ISkillHierarchy<?> hierarchy = type.getHierarchy();
+        if (hierarchy == null) {
+            GunsRPG.log.fatal("Skipping sync of {} skill, no data were loaded!", type.getRegistryName());
+        }
+        return hierarchy != null;
     }
 
     private static class DataContext {
