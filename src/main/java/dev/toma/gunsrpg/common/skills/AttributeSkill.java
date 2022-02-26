@@ -48,10 +48,22 @@ public class AttributeSkill extends BasicSkill implements IDescriptionProvider {
     public void onPurchase(PlayerEntity player) {
         PlayerData.get(player).ifPresent(data -> {
             ISkillProvider skillProvider = data.getSkillProvider();
-            AttributeSkill skill = SkillUtil.getTopHierarchySkill((SkillType<AttributeSkill>) this.getType(), skillProvider);
+            AttributeSkill skill = ModUtils.either(SkillUtil.getTopHierarchySkill((SkillType<AttributeSkill>) this.getType(), skillProvider), this);
             IAttributeProvider provider = data.getAttributes();
             for (IAttributeTarget target : skill.targets) {
                 applyTarget(target, provider);
+            }
+        });
+    }
+
+    @Override
+    public void onDeactivate(PlayerEntity player) {
+        PlayerData.get(player).ifPresent(data -> {
+            IAttributeProvider provider = data.getAttributes();
+            for (IAttributeTarget target : targets) {
+                IAttributeId attributeId = target.getTargetAttribute();
+                IAttributeModifier modifier = target.getModifier();
+                provider.getAttribute(attributeId).removeModifier(modifier);
             }
         });
     }

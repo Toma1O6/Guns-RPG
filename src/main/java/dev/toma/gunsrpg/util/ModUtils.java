@@ -54,6 +54,15 @@ public class ModUtils {
 
     public static final ISplitter<SkillCategory, SkillType<?>> SKILLS_BY_CATEGORY = ModUtils::splitSkillsIntoCategories;
 
+    @SafeVarargs
+    public static <T> T either(T... values) {
+        for (T t : values) {
+            if (t != null)
+                return t;
+        }
+        return null;
+    }
+
     public static boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
     }
