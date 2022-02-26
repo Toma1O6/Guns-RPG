@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.debuffs;
 
 import dev.toma.gunsrpg.api.common.data.IDebuffs;
-import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 

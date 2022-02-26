@@ -4,6 +4,15 @@
         "parent": "gunsrpg:kar98k_assembly",
         "children": [
             "gunsrpg:awm_assembly"
+        ],
+        "extensions": [
+            "gunsrpg:winchester_bullet_loops",
+            "gunsrpg:winchester_hunter",
+            "gunsrpg:winchester_scope",
+            "gunsrpg:winchester_extended",
+            "gunsrpg:winchester_fast_hands",
+            "gunsrpg:winchester_penetrator",
+            "gunsrpg:winchester_cold_blooded"
         ]
     },
     "properties": {

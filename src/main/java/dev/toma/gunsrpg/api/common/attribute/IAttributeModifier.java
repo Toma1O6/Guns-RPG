@@ -1,6 +1,4 @@
-package dev.toma.gunsrpg.common.attribute;
-
-import dev.toma.gunsrpg.common.attribute.serialization.IModifierSerializer;
+package dev.toma.gunsrpg.api.common.attribute;
 
 import java.util.UUID;
 

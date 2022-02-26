@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.attribute;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IModifierOp;
+import dev.toma.gunsrpg.api.common.attribute.IModifierOperator;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.HashMap;

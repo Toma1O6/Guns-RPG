@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.attribute;
+package dev.toma.gunsrpg.api.common.attribute;
 
 @FunctionalInterface
 public interface IValueFormatter {

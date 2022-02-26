@@ -4,6 +4,13 @@
         "parent": "gunsrpg:gun_parts_smith",
         "children": [
             "gunsrpg:rocket_launcher_assembly"
+        ],
+        "extensions": [
+            "gunsrpg:grenade_launcher_fast_hands",
+            "gunsrpg:grenade_launcher_gear_grinder",
+            "gunsrpg:grenade_launcher_extended",
+            "gunsrpg:grenade_launcher_better_cartridge",
+            "gunsrpg:grenade_launcher_demolition_expert"
         ]
     },
     "properties": {

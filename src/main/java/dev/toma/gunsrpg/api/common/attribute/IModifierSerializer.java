@@ -1,6 +1,5 @@
-package dev.toma.gunsrpg.common.attribute.serialization;
+package dev.toma.gunsrpg.api.common.attribute;
 
-import dev.toma.gunsrpg.common.attribute.IAttributeModifier;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 

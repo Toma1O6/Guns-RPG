@@ -1,7 +1,17 @@
 {
     "hierarchy": {
         "category": "gun",
-        "parent": "gunsrpg:winchester_assembly"
+        "parent": "gunsrpg:winchester_assembly",
+        "extensions": [
+            "gunsrpg:awm_quickdraw",
+            "gunsrpg:awm_scope",
+            "gunsrpg:awm_extended",
+            "gunsrpg:awm_cheekpad",
+            "gunsrpg:awm_suppressor",
+            "gunsrpg:awm_fast_hands",
+            "gunsrpg:awm_penetrator",
+            "gunsrpg:awm_dead_eye"
+        ]
     },
     "properties": {
         "level": 75,

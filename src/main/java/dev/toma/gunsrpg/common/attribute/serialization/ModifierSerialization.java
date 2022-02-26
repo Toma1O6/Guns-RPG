@@ -1,8 +1,9 @@
 package dev.toma.gunsrpg.common.attribute.serialization;
 
+import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
+import dev.toma.gunsrpg.api.common.attribute.IModifierSerializer;
 import dev.toma.gunsrpg.common.attribute.AttributeModifier;
 import dev.toma.gunsrpg.common.attribute.ExpiringModifier;
-import dev.toma.gunsrpg.common.attribute.IAttributeModifier;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.util.ResourceLocation;
 

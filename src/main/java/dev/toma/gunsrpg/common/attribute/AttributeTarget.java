@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.common.attribute;
 
+import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeTarget;
 
 public final class AttributeTarget implements IAttributeTarget {

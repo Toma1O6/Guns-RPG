@@ -1,7 +1,17 @@
 {
     "hierarchy": {
         "category": "gun",
-        "parent": "gunsrpg:hk416_assembly"
+        "parent": "gunsrpg:hk416_assembly",
+        "extensions": [
+            "gunsrpg:aug_quickdraw",
+            "gunsrpg:aug_extended",
+            "gunsrpg:aug_vertical",
+            "gunsrpg:aug_compensator",
+            "gunsrpg:aug_red_dot",
+            "gunsrpg:aug_suppressor",
+            "gunsrpg:aug_tough_spring",
+            "gunsrpg:aug_soul_taker"
+        ]
     },
     "properties": {
         "level": 60,

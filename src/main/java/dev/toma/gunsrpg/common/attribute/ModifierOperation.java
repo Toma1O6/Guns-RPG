@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.common.attribute;
 
+import dev.toma.gunsrpg.api.common.attribute.IModifierOp;
+import dev.toma.gunsrpg.api.common.attribute.IModifierOperator;
 import net.minecraft.util.ResourceLocation;
 
 public class ModifierOperation implements IModifierOp {

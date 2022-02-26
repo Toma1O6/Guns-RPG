@@ -1,7 +1,17 @@
 {
     "hierarchy": {
         "category": "gun",
-        "parent": "gunsrpg:vss_assembly"
+        "parent": "gunsrpg:vss_assembly",
+        "extensions": [
+            "gunsrpg:mk14ebr_quickdraw",
+            "gunsrpg:mk14ebr_vertical",
+            "gunsrpg:mk14ebr_extended",
+            "gunsrpg:mk14ebr_tough_spring",
+            "gunsrpg:mk14ebr_cheekpad",
+            "gunsrpg:mk14ebr_scope",
+            "gunsrpg:mk14ebr_suppressor",
+            "gunsrpg:mk14ebr_dead_eye"
+        ]
     },
     "properties": {
         "level": 65,

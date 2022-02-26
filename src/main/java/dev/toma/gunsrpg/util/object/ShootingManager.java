@@ -7,7 +7,7 @@ import dev.toma.gunsrpg.api.common.data.IProgressData;
 import dev.toma.gunsrpg.api.common.data.IReloadInfo;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.animation.RecoilAnimation;
-import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;

@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.client.render.debuff;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.debuffs.IStagedDebuff;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.math.Mth;

@@ -4,6 +4,14 @@
         "parent": "gunsrpg:gun_parts_smith",
         "children": [
             "gunsrpg:hk416_assembly"
+        ],
+        "extensions": [
+            "gunsrpg:akm_quickdraw",
+            "gunsrpg:akm_extended",
+            "gunsrpg:akm_suppressor",
+            "gunsrpg:akm_red_dot",
+            "gunsrpg:akm_tough_spring",
+            "gunsrpg:akm_every_bullet_counts"
         ]
     },
     "properties": {

@@ -11,7 +11,7 @@ import dev.toma.gunsrpg.client.animation.BulletEjectAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.IShootProps;
 import dev.toma.gunsrpg.common.attribute.Attribs;
-import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.entity.projectile.Bullet;

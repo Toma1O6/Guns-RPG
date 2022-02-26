@@ -1,5 +1,8 @@
 package dev.toma.gunsrpg.common.attribute;
 
+import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
+import dev.toma.gunsrpg.api.common.attribute.IValueFormatter;
+
 import static dev.toma.gunsrpg.util.Constants.ModifierIds.*;
 
 public final class Modifiers {

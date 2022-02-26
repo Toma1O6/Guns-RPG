@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.attribute;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
+import dev.toma.gunsrpg.api.common.attribute.ICombinedAttribute;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Collections;

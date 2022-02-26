@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.skills;
 
+import dev.toma.gunsrpg.api.common.attribute.*;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
 import dev.toma.gunsrpg.api.common.skill.ITickableSkill;
 import dev.toma.gunsrpg.common.attribute.*;

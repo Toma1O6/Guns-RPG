@@ -4,6 +4,16 @@
         "parent": "gunsrpg:akm_assembly",
         "children": [
             "gunsrpg:aug_assembly"
+        ],
+        "extensions": [
+            "gunsrpg:hk416_quickdraw",
+            "gunsrpg:hk416_vertical",
+            "gunsrpg:hk416_extended",
+            "gunsrpg:hk416_red_dot",
+            "gunsrpg:hk416_suppressor",
+            "gunsrpg:hk416_tough_spring",
+            "gunsrpg:hk416_cheekpad",
+            "gunsrpg:hk416_overloaded"
         ]
     },
     "properties": {

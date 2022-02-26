@@ -1,6 +1,9 @@
 package dev.toma.gunsrpg.common.attribute;
 
-import dev.toma.gunsrpg.common.attribute.serialization.IModifierSerializer;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
+import dev.toma.gunsrpg.api.common.attribute.IModifierOp;
+import dev.toma.gunsrpg.api.common.attribute.IModifierSerializer;
+import dev.toma.gunsrpg.api.common.attribute.ITickableModifier;
 import dev.toma.gunsrpg.common.attribute.serialization.ModifierSerialization;
 
 import java.util.UUID;

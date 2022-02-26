@@ -4,6 +4,14 @@
         "parent": "gunsrpg:sks_assembly",
         "children": [
             "gunsrpg:mk14ebr_assembly"
+        ],
+        "extensions": [
+            "gunsrpg:vss_quickdraw",
+            "gunsrpg:vss_scope",
+            "gunsrpg:vss_cheekpad",
+            "gunsrpg:vss_extended",
+            "gunsrpg:vss_adaptive_chambering",
+            "gunsrpg:vss_every_bullet_counts"
         ]
     },
     "properties": {

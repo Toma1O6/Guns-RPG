@@ -3,7 +3,7 @@ package dev.toma.gunsrpg.client.screen.widgets;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.common.data.IKillData;
 import dev.toma.gunsrpg.api.common.data.IPointProvider;
-import dev.toma.gunsrpg.common.attribute.IValueFormatter;
+import dev.toma.gunsrpg.api.common.attribute.IValueFormatter;
 import dev.toma.gunsrpg.util.RenderUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.Widget;

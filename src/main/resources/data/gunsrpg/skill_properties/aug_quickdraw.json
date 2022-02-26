@@ -1,0 +1,14 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:aug_assembly"
+  },
+  "properties": {
+    "level": 0,
+    "price": 1,
+    "transactionValidator": {
+      "type": "gunsrpg:weapon",
+      "data": "gunsrpg:aug"
+    }
+  }
+}

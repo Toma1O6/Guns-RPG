@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.attribute;
 
-import dev.toma.gunsrpg.common.attribute.serialization.IModifierSerializer;
+import dev.toma.gunsrpg.api.common.attribute.*;
 import dev.toma.gunsrpg.common.attribute.serialization.ModifierSerialization;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;

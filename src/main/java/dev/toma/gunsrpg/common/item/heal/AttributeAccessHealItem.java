@@ -2,9 +2,9 @@ package dev.toma.gunsrpg.common.item.heal;
 
 import dev.toma.gunsrpg.api.common.attribute.IAttributeTarget;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.common.attribute.IAttributeId;
-import dev.toma.gunsrpg.common.attribute.IAttributeModifier;
-import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 

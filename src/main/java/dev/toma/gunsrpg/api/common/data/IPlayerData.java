@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.api.common.data;
 
-import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import net.minecraft.nbt.CompoundNBT;
 
 import java.util.List;

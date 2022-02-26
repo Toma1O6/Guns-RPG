@@ -8,7 +8,7 @@ import dev.toma.gunsrpg.api.common.data.IKillData;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IProgressData;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
-import dev.toma.gunsrpg.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
