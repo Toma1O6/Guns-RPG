@@ -20,6 +20,7 @@ public final class Attribs {
     public static final IAttributeId BLAZEPOWDER_OUTPUT         = createInternal("blazepowder_out", 0);
     public static final IAttributeId AMMO_OUTPUT                = createInternal("ammo_output");
     public static final IAttributeId BOLT_OUTPUT                = createInternal("bolt_output", 2);
+    public static final IAttributeId QUEST_AMMO                 = createInternal("quest_ammo");
     // debuffs, healing
     public static final IAttributeId HEAL_BOOST                 = createInternal("heal_boost");
     public static final IAttributeId ADRENALINE_EFFECT          = createInternal("adrenaline_effect");
@@ -30,6 +31,10 @@ public final class Attribs {
     public static final IAttributeId VACCINE_EFFECT             = createInternal("vaccine_effect");
     public static final IAttributeId SPLINT_EFFECT              = createInternal("splint_effect");
     public static final IAttributeId BANDAGE_EFFECT             = createInternal("bandage_effect");
+    public static final IAttributeId HEMOSTAT_EFFECT            = createInternal("hemostat_effect");
+    public static final IAttributeId CALCIUM_SHOT_EFFECT        = createInternal("calcium_shot_effect");
+    public static final IAttributeId VITAMINS_EFFECT            = createInternal("vitamins_effect");
+    public static final IAttributeId PROPITAL_EFFECT            = createInternal("propital_effect");
     public static final IAttributeId POISON_RESISTANCE          = createInternal("poison_resistance", 0.0);
     public static final IAttributeId POISON_DELAY               = createInternal("poison_delay", 140);
     public static final IAttributeId POISON_BLOCK               = createInternal("poison_block", 0);
@@ -52,6 +57,7 @@ public final class Attribs {
     public static final IAttributeId SMG_DAMAGE                 = createInternal("smg_damage");
     public static final IAttributeId SHOTGUN_DAMAGE             = createInternal("shotgun_damage");
     public static final IAttributeId AR_DAMAGE                  = createInternal("ar_damage");
+    public static final IAttributeId DMR_DAMAGE                 = createInternal("dmr_damage");
     public static final IAttributeId SR_DAMAGE                  = createInternal("sr_damage");
     public static final IAttributeId WEAPON_DAMAGE              = createInternal("weapon_damage");
     public static final IAttributeId SILENT_WEAPON_DAMAGE       = createInternal("silent_weapon_damage");
@@ -62,6 +68,7 @@ public final class Attribs {
     public static final IAttributeId WEAPON_DURABILITY          = createInternal("weapon_durability");
     public static final IAttributeId JAM_CHANCE                 = createInternal("weapon_jamming");
     public static final IAttributeId WEAPON_NOISE               = createInternal("weapon_noise");
+    public static final IAttributeId UNJAMMING_SPEED            = createInternal("unjamming_speed");
     // general gameplay attributes
     public static final IAttributeId DAMAGE_TAKEN               = createInternal("damage_taken");
     public static final IAttributeId FALL_DAMAGE                = createInternal("fall_damage");
