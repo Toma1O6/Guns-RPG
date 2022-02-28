@@ -52,7 +52,6 @@ public class PlayerAttributes implements IAttributeProvider, IPlayerCapEntry {
         removeAttribute(attribute.getId());
     }
 
-    // TODO call
     @Override
     public void tick() {
         attributeMap.values().forEach(IAttribute::tickAttributes);

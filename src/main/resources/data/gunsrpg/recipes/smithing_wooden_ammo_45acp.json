@@ -13,7 +13,7 @@
       "item": "gunsrpg:small_bullet_casing"
     },
     "o": {
-      "item": "minecraft:oak_planks"
+      "tag": "minecraft:planks"
     }
   },
   "result": {

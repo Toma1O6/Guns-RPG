@@ -28,6 +28,7 @@ public class ChuKoNuItem extends GunItem {
         super(name, new Properties().setISTER(() -> ChuKoNuRenderer::new).durability(450));
     }
 
+    // TODO HEAVY BOLTS - weakness I 90t, base dmg +3
     @Override
     public void initializeWeapon(WeaponBuilder builder) {
         builder
@@ -42,8 +43,8 @@ public class ChuKoNuItem extends GunItem {
                     .define(AmmoMaterials.EMERALD, 9)
                     .define(AmmoMaterials.QUARTZ, 7)
                     .define(AmmoMaterials.DIAMOND, 11)
-                    .define(AmmoMaterials.AMETHYST, 14)
-                    .define(AmmoMaterials.NETHERITE, 17)
+                    .define(AmmoMaterials.AMETHYST, 13)
+                    .define(AmmoMaterials.NETHERITE, 15)
                 .build();
     }
 
