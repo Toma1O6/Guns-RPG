@@ -55,6 +55,7 @@ public final class Attribs {
     public static final IAttributeId SR_DAMAGE                  = createInternal("sr_damage");
     public static final IAttributeId WEAPON_DAMAGE              = createInternal("weapon_damage");
     public static final IAttributeId SILENT_WEAPON_DAMAGE       = createInternal("silent_weapon_damage");
+    public static final IAttributeId LOUD_WEAPON_DAMAGE         = createInternal("loud_weapon_damage");
     public static final IAttributeId HEADSHOT_DAMAGE            = createInternal("headshot_damage");
     public static final IAttributeId RECOIL_CONTROL             = createInternal("recoil_control");
     public static final IAttributeId RELOAD_SPEED               = createInternal("reload_speed");
