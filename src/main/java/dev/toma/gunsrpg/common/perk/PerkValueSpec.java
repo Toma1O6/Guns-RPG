@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.resource.perks;
+package dev.toma.gunsrpg.common.perk;
 
 public final class PerkValueSpec {
 

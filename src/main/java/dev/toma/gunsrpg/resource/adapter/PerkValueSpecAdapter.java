@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.resource.adapter;
 
 import com.google.gson.*;
-import dev.toma.gunsrpg.resource.perks.PerkValueSpec;
+import dev.toma.gunsrpg.common.perk.PerkValueSpec;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.util.JSONUtils;
 

@@ -1,6 +1,5 @@
 package dev.toma.gunsrpg.common.perk;
 
-import dev.toma.gunsrpg.resource.perks.Perk;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.HashMap;
