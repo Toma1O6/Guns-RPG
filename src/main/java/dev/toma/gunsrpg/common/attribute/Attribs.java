@@ -77,6 +77,7 @@ public final class Attribs {
     public static final IAttributeId SECOND_CHANCE_COOLDOWN     = createInternal("second_chance_cooldown");
     public static final IAttributeId WELL_FED_DURATION          = createInternal("well_fed_duration");
     public static final IAttributeId MOTHERLODE_BONUS           = createInternal("motherlode_bonus");
+    public static final IAttributeId IRON_BUDDY_COOLDOWN        = createInternal("iron_buddy_cooldown");
     // weapon
     public static final IAttributeId M1911_RELOAD_SPEED         = createInternal("m1911_reload_speed", 35);
     public static final IAttributeId M1911_MAG_CAPACITY         = createInternal("m1911_mag_capacity", 7);
