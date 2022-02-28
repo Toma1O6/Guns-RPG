@@ -50,6 +50,7 @@ public class M1911Item extends GunItem implements IDualWieldGun {
     public void initializeWeapon(WeaponBuilder builder) {
         builder
                 .config(ModConfig.weaponConfig.m1911)
+                .firemodeSelector((player, firemode) -> firemode == Firemode.SINGLE ? Firemode.BURST : Firemode.SINGLE)
                 .ammo(WeaponCategory.PISTOL)
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 1)
@@ -116,13 +117,6 @@ public class M1911Item extends GunItem implements IDualWieldGun {
     @Override
     public float getHorizontalRecoil(IAttributeProvider provider) {
         return Attribs.M1911_HORIZONTAL.floatValue(provider);
-    }
-
-    @Override
-    public boolean switchFiremode(ItemStack stack, PlayerEntity player) {
-        Firemode firemode = this.getFiremode(stack);
-        stack.getTag().putInt("firemode", firemode == Firemode.SINGLE ? 1 : 0);
-        return true;
     }
 
     @Override

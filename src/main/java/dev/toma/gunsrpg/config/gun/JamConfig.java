@@ -27,7 +27,7 @@ public final class JamConfig extends ObjectType implements IJamConfig {
         format.setDecimalFormatSymbols(symbols);
         this.minChance = writer.writeBoundedDouble("Base chance", minChance, 0.0, 1.0).setFormatting(format);
         this.maxChance = writer.writeBoundedDouble("Max chance", maxChance, 0.0, 1.0).setFormatting(format);
-        this.easing = writer.writeEnum("Easing type", easing);
+        this.easing = writer.writeEnum("Curve type", easing);
     }
 
     @Override

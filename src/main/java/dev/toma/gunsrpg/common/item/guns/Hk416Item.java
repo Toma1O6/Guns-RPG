@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
@@ -33,6 +34,7 @@ public class Hk416Item extends GunItem {
         builder
                 .category(WeaponCategory.AR)
                 .config(ModConfig.weaponConfig.hk416)
+                .firemodeSelector(Firemode::singleAndFullAuto)
                 .ammo()
                     .define(AmmoMaterials.WOOD)
                     .define(AmmoMaterials.STONE, 2)

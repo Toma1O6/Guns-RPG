@@ -5,11 +5,13 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.VssRenderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
@@ -32,6 +34,7 @@ public class VssItem extends GunItem {
                 .category(WeaponCategory.DMR)
                 .caliber(AmmoType.AMMO_9MM)
                 .config(ModConfig.weaponConfig.vss)
+                .firemodeSelector(this::switchFiremode)
                 .ammo()
                     .define(AmmoMaterials.WOOD)
                     .define(AmmoMaterials.STONE, 2)
@@ -90,5 +93,10 @@ public class VssItem extends GunItem {
     @Override
     public IRenderConfig right() {
         return RenderConfigs.VSS_RIGHT;
+    }
+
+    private Firemode switchFiremode(PlayerEntity player, Firemode firemode) {
+        boolean canSwitch = firemode == Firemode.FULL_AUTO || PlayerData.hasActiveSkill(player, Skills.VSS_ADAPTIVE_CHAMBERING);
+        return canSwitch ? firemode == Firemode.FULL_AUTO ? Firemode.SINGLE : Firemode.FULL_AUTO : firemode;
     }
 }

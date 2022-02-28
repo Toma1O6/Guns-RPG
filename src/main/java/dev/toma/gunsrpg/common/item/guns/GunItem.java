@@ -25,6 +25,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.item.guns.setup.MaterialContainer;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.Easings;
@@ -45,6 +46,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
@@ -52,6 +54,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     private final IWeaponConfig config;
     private final MaterialContainer container;
     private final AmmoType ammoType;
+    private final BiFunction<PlayerEntity, Firemode, Firemode> firemodeSelector;
 
     public GunItem(String name, Properties properties) {
         super(name, properties.tab(ModTabs.ITEM_TAB));
@@ -62,6 +65,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         this.config = builder.getConfig();
         this.container = builder.getMaterialContainer();
         this.ammoType = builder.getAmmoType();
+        this.firemodeSelector = builder.getFiremodeSelector();
     }
 
     /* ABSTRACT METHODS ------------------------------------------------------ */
@@ -110,7 +114,13 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         return provider.getAttributeValue(Attribs.HEADSHOT_DAMAGE);
     }
 
-    public boolean switchFiremode(ItemStack stack, PlayerEntity player) {
+    public final boolean switchFiremode(ItemStack stack, PlayerEntity player) {
+        Firemode firemode = getFiremode(stack);
+        Firemode next = firemodeSelector.apply(player, firemode);
+        if (next != firemode) {
+            setFiremode(stack, next);
+            return true;
+        }
         return false;
     }
 

@@ -5,10 +5,12 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.S686Renderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
@@ -37,6 +39,7 @@ public class S686Item extends AbstractShotgun {
         builder
                 .category(WeaponCategory.SG)
                 .config(ModConfig.weaponConfig.s686)
+                .firemodeSelector(this::switchFiremode)
                 .ammo()
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 1)
@@ -97,5 +100,10 @@ public class S686Item extends AbstractShotgun {
     @Override
     public IRenderConfig right() {
         return RenderConfigs.S686_RIGHT;
+    }
+
+    private Firemode switchFiremode(PlayerEntity player, Firemode firemode) {
+        boolean canSwitch = firemode == Firemode.DOUBLE_ACTION || PlayerData.hasActiveSkill(player, Skills.S686_CANNON_BLAST);
+        return canSwitch ? firemode == Firemode.DOUBLE_ACTION ? Firemode.SINGLE : Firemode.DOUBLE_ACTION : firemode;
     }
 }

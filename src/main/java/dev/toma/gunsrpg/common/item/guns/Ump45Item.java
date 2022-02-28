@@ -47,6 +47,7 @@ public class Ump45Item extends GunItem {
         builder
                 .category(WeaponCategory.SMG)
                 .config(ModConfig.weaponConfig.ump)
+                .firemodeSelector(Firemode::singleAndFullAuto)
                 .ammo()
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 1)
@@ -113,13 +114,6 @@ public class Ump45Item extends GunItem {
             shooter.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 100, 1, false, false));
             shooter.addEffect(new EffectInstance(Effects.REGENERATION, 60, 2, false, false));
         }
-    }
-
-    @Override
-    public boolean switchFiremode(ItemStack stack, PlayerEntity player) {
-        Firemode mode = this.getFiremode(stack);
-        stack.getTag().putInt("firemode", mode == Firemode.SINGLE ? 2 : 0);
-        return true;
     }
 
     @Override

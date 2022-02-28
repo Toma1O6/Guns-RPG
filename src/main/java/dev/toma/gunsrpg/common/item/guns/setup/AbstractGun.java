@@ -44,6 +44,11 @@ public abstract class AbstractGun extends BaseItem {
         return 0;
     }
 
+    public final void setFiremode(ItemStack stack, Firemode firemode) {
+        ensureHasNBT(stack);
+        stack.getTag().putInt("firemode", firemode.ordinal());
+    }
+
     public final Firemode getFiremode(ItemStack stack) {
         ensureHasNBT(stack);
         return Firemode.get(stack.getTag().getInt("firemode"));

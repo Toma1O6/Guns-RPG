@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
@@ -36,6 +37,7 @@ public class VectorItem extends GunItem {
         builder
                 .config(ModConfig.weaponConfig.vector)
                 .caliber(AmmoType.AMMO_9MM)
+                .firemodeSelector(Firemode::singleAndFullAuto)
                 .ammo(WeaponCategory.SMG)
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 1)

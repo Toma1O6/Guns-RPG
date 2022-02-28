@@ -36,7 +36,7 @@ public enum Firemode {
 
     DOUBLE_ACTION(
             "Double Action",
-            new LazyLoader<>(IInputEventHandler.Barrage::new),
+            new LazyLoader<>(IInputEventHandler.Barrage::new), // TODO implement custom which shoots without delay
             InputEventListenerType.ON_INPUT
     ),
 
@@ -54,6 +54,10 @@ public enum Firemode {
         this.name = name;
         this.handler = handler;
         this.eventFlags = IFlags.combine(InputEventListenerType::getFlag, eventFlags);
+    }
+
+    public static Firemode singleAndFullAuto(PlayerEntity player, Firemode firemode) {
+        return firemode == SINGLE ? FULL_AUTO : SINGLE;
     }
 
     public void triggerEvent(InputEventListenerType event, PlayerEntity player, ItemStack stack, IPlayerData data) {

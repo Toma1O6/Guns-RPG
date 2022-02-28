@@ -43,6 +43,7 @@ public class SksItem extends GunItem {
         builder
                 .category(WeaponCategory.DMR)
                 .config(ModConfig.weaponConfig.sks)
+                .firemodeSelector(this::switchFiremode)
                 .ammo()
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 2)
@@ -104,17 +105,6 @@ public class SksItem extends GunItem {
     }
 
     @Override
-    public boolean switchFiremode(ItemStack stack, PlayerEntity player) {
-        Firemode firemode = this.getFiremode(stack);
-        int newMode = 0;
-        if (firemode == Firemode.SINGLE && PlayerData.hasActiveSkill(player, Skills.SKS_ADAPTIVE_CHAMBERING)) {
-            newMode = 2;
-        }
-        stack.getTag().putInt("firemode", newMode);
-        return firemode.ordinal() != newMode;
-    }
-
-    @Override
     public SkillType<?> getRequiredSkill() {
         return Skills.SKS_ASSEMBLY;
     }
@@ -151,5 +141,10 @@ public class SksItem extends GunItem {
     @Override
     public IRenderConfig right() {
         return RenderConfigs.SKS_RIGHT;
+    }
+
+    private Firemode switchFiremode(PlayerEntity player, Firemode firemode) {
+        boolean canSwitch = firemode == Firemode.FULL_AUTO || PlayerData.hasActiveSkill(player, Skills.SKS_ADAPTIVE_CHAMBERING);
+        return canSwitch ? firemode == Firemode.FULL_AUTO ? Firemode.SINGLE : Firemode.FULL_AUTO : firemode;
     }
 }

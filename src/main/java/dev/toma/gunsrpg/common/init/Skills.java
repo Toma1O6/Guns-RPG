@@ -123,6 +123,7 @@ public class Skills {
     public static final SkillType<BasicSkill> S1897_CHOKE = null;
     public static final SkillType<BasicSkill> S1897_NEVER_GIVE_UP = null;
     public static final SkillType<BasicSkill> S1897_EXTENDED_BARREL = null;
+    public static final SkillType<BasicSkill> S686_CANNON_BLAST = null;
     public static final SkillType<BasicSkill> SKS_TOUGH_SPRING = null;
     public static final SkillType<BasicSkill> SKS_VERTICAL_GRIP = null;
     public static final SkillType<BasicSkill> SKS_EXTENDED = null;
@@ -130,6 +131,7 @@ public class Skills {
     public static final SkillType<BasicSkill> SKS_SUPPRESSOR = null;
     public static final SkillType<BasicSkill> SKS_CHEEKPAD = null;
     public static final SkillType<BasicSkill> SKS_ADAPTIVE_CHAMBERING = null;
+    public static final SkillType<BasicSkill> VSS_ADAPTIVE_CHAMBERING = null;
     public static final SkillType<BasicSkill> KAR98K_SCOPE = null;
     public static final SkillType<BasicSkill> KAR98K_CHEEKPAD = null;
     public static final SkillType<BasicSkill> KAR98K_EXTENDED = null;
@@ -137,4 +139,5 @@ public class Skills {
     public static final SkillType<BasicSkill> KAR98K_FAST_HANDS = null;
     public static final SkillType<BasicSkill> KAR98K_PENETRATOR = null;
     public static final SkillType<BasicSkill> KAR98K_DEAD_EYE = null;
+    public static final SkillType<BasicSkill> ROCKET_LAUNCHER_ROCKET_BARRAGE = null;
 }

@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
@@ -37,6 +38,7 @@ public class ThompsonItem extends GunItem {
                 .category(WeaponCategory.SMG)
                 .config(ModConfig.weaponConfig.thompson)
                 .caliber(AmmoType.AMMO_556MM)
+                .firemodeSelector(Firemode::singleAndFullAuto)
                 .ammo()
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 2)
