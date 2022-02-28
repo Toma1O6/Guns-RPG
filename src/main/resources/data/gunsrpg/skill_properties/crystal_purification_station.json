@@ -1,11 +1,14 @@
 {
     "hierarchy": {
         "category": "mining",
-        "parent": "gunsrpg:crystal_purification_station"
+        "parent": "gunsrpg:crystal_forge",
+        "children": [
+            "gunsrpg:crystalized"
+        ]
     },
     "properties": {
-        "level": 60,
-        "price": 14,
+        "level": 35,
+        "price": 5,
         "transactionValidator": {
             "type": "gunsrpg:level"
         }
