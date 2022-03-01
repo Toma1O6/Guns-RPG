@@ -1,0 +1,11 @@
+{
+    "attribute": "gunsrpg:movement_speed",
+    "scaling": {
+        "buff": 0.01,
+        "debuff": 0.02
+    },
+    "bounds": {
+        "buff": 0.25,
+        "debuff": 0.5
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "attribute": "gunsrpg:unjamming_speed",
+    "scaling": {
+        "buff": 0.01,
+        "debuff": 0.02
+    },
+    "bounds": {
+        "buff": 0.2,
+        "debuff": 0.4
+    }
+}

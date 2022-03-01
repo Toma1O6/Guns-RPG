@@ -1,0 +1,11 @@
+{
+    "attribute": "gunsrpg:perk_book_chance",
+    "scaling": {
+        "buff": 0.01,
+        "debuff": 0.02
+    },
+    "bounds": {
+        "buff": 0.3,
+        "debuff": 0.5
+    }
+}

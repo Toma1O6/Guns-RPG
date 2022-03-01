@@ -1,0 +1,11 @@
+{
+    "attribute": "gunsrpg:weapon_noise",
+    "scaling": {
+        "buff": 0.02,
+        "debuff": 0.04
+    },
+    "bounds": {
+        "buff": 0.6,
+        "debuff": 0.8
+    }
+}

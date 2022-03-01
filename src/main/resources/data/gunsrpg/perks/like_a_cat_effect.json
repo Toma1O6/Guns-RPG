@@ -1,0 +1,11 @@
+{
+    "attribute": "gunsrpg:like_a_cat_effect",
+    "scaling": {
+        "buff": 0.04,
+        "debuff": 0.08
+    },
+    "bounds": {
+        "buff": 0.8,
+        "debuff": 0.8
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "attribute": "gunsrpg:bow_damage",
+    "scaling": {
+        "buff": 0.005,
+        "debuff": 0.01
+    },
+    "bounds": {
+        "buff": 0.15,
+        "debuff": 0.3
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "attribute": "gunsrpg:bleed_resistance",
+    "scaling": {
+        "buff": 0.02,
+        "debuff": 0.04
+    },
+    "bounds": {
+        "buff": 0.4,
+        "debuff": 0.75
+    }
+}

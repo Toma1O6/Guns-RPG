@@ -1,0 +1,11 @@
+{
+    "attribute": "gunsrpg:woodcutting_speed",
+    "scaling": {
+        "buff": 0.02,
+        "debuff": 0.04
+    },
+    "bounds": {
+        "buff": 0.4,
+        "debuff": 0.8
+    }
+}

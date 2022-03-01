@@ -80,6 +80,7 @@ public final class Attribs {
     public static final IAttributeId SKILL_BOOK_CHANCE          = createInternal("skill_book_chance");
     public static final IAttributeId INSTANT_KILL               = createInternal("instant_kill", 0.0);
     // skill attributes
+    public static final IAttributeId LIKE_A_CAT_EFFECT          = createInternal("like_a_cat_effect");
     public static final IAttributeId AIRDROP_CALL_COOLDOWN      = createInternal("airdrop_call_cooldown");
     public static final IAttributeId SECOND_CHANCE_COOLDOWN     = createInternal("second_chance_cooldown");
     public static final IAttributeId WELL_FED_DURATION          = createInternal("well_fed_duration");
