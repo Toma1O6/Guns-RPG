@@ -67,6 +67,11 @@ public class M1911Item extends GunItem implements IDualWieldGun {
     }
 
     @Override
+    protected boolean isSilenced(PlayerEntity player) {
+        return PlayerData.hasActiveSkill(player, Skills.M1911_SUPPRESSOR);
+    }
+
+    @Override
     public int getUnjamTime(ItemStack stack, IPlayerData data) {
         return 50;
     }

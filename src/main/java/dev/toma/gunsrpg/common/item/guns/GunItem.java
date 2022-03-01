@@ -6,6 +6,8 @@ import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IJamConfig;
 import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.api.common.IWeaponConfig;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.BulletEjectAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
@@ -80,9 +82,20 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         return 20;
     }
 
-    public float getWeaponDamage(ItemStack stack) {
+    public float getWeaponDamage(ItemStack stack, LivingEntity shooter) {
         IWeaponConfig config = getWeaponConfig();
         float base = config.getDamage();
+        if (shooter instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) shooter;
+            IPlayerData data = PlayerData.getUnsafe(player);
+            IAttributeProvider provider = data.getAttributes();
+            IAttributeId attributeId = isSilenced(player) ? Attribs.SILENT_WEAPON_DAMAGE : Attribs.LOUD_WEAPON_DAMAGE;
+            base = (float) provider.getAttribute(attributeId).getModifiedValue(base);
+            IAttributeId categoryBonus = getWeaponCategory().getBonusDamageAttribute();
+            if (categoryBonus != null) {
+                base = (float) provider.getAttribute(attributeId).getModifiedValue(base);
+            }
+        }
         return base + getDamageBonus(stack);
     }
 
@@ -145,7 +158,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     public void shootProjectile(World level, LivingEntity shooter, ItemStack stack, IShootProps props) {
         Bullet bullet = new Bullet(ModEntities.BULLET.get(), level, shooter);
         IWeaponConfig config = this.getWeaponConfig();
-        float damage = this.getWeaponDamage(stack) * props.getDamageMultiplier();
+        float damage = this.getWeaponDamage(stack, shooter) * props.getDamageMultiplier();
         float velocity = config.getVelocity();
         int delay = config.getGravityDelay();
         bullet.setup(damage, velocity, delay);
@@ -240,7 +253,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     }
 
     protected boolean isSilenced(PlayerEntity player) {
-        return PlayerData.getValueSafe(player, data -> getNoiseMultiplier(data.getAttributes()) <= 0.2F, false);
+        return false;
     }
 
     /* CLIENT-SIDE STUFF -------------------------------------------------------------------------- */
