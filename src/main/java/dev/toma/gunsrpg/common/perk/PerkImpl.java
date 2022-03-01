@@ -22,7 +22,7 @@ public final class PerkImpl implements IPerk {
 
         float scale = perk.getScaling(type);
         float bounds = perk.getBounds(type);
-        float rawValue = this.calculateModifierValue(level, scale, bounds);
+        float rawValue = this.calculateModifierValue(level, scale, bounds, perk.shouldInvertCalculation());
         float modifierValue = type == PerkType.BUFF ? 1.0F + rawValue : 1.0F - rawValue;
         long code = perk.hashCode();
         UUID uuid = new UUID(code * code * 31, code);
@@ -39,7 +39,10 @@ public final class PerkImpl implements IPerk {
         return modifier;
     }
 
-    private float calculateModifierValue(int level, float scale, float bounds) {
-        return Math.min(level * scale, bounds);
+    private float calculateModifierValue(int level, float scale, float bounds, boolean isInverted) {
+        float value = Math.min(level * scale, bounds);
+        if (isInverted)
+            value = -value;
+        return value;
     }
 }

@@ -23,6 +23,7 @@ public class PerkAdapter implements JsonDeserializer<Perk> {
         }
         PerkValueSpec scale = context.deserialize(JSONUtils.getAsJsonObject(object, "scaling"), PerkValueSpec.class);
         PerkValueSpec bounds = context.deserialize(JSONUtils.getAsJsonObject(object, "bounds"), PerkValueSpec.class);
-        return new Perk(attributeId, scale, bounds);
+        boolean invertCalculation = JSONUtils.getAsBoolean(object, "invertCalculation", false);
+        return new Perk(attributeId, scale, bounds, invertCalculation);
     }
 }

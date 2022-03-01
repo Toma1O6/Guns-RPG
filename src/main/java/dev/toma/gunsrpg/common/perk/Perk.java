@@ -11,11 +11,13 @@ public final class Perk {
     private final IAttributeId attributeId;
     private final PerkValueSpec scaleSpec;
     private final PerkValueSpec boundSpec;
+    private final boolean invertCalculation;
 
-    public Perk(IAttributeId attributeId, PerkValueSpec scaleSpec, PerkValueSpec boundSpec) {
+    public Perk(IAttributeId attributeId, PerkValueSpec scaleSpec, PerkValueSpec boundSpec, boolean invertCalculation) {
         this.attributeId = attributeId;
         this.scaleSpec = scaleSpec;
         this.boundSpec = boundSpec;
+        this.invertCalculation = invertCalculation;
     }
 
     public void setId(ResourceLocation id) {
@@ -40,6 +42,10 @@ public final class Perk {
 
     public float getBounds(PerkType type) {
         return type.getValue(boundSpec);
+    }
+
+    public boolean shouldInvertCalculation() {
+        return invertCalculation;
     }
 
     @Override
