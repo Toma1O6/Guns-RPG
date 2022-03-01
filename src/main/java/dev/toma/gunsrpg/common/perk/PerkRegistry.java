@@ -23,6 +23,7 @@ public final class PerkRegistry {
     }
 
     public void register(ResourceLocation id, Perk perk) {
+        perk.setId(id);
         perkMap.put(id, perk);
     }
 

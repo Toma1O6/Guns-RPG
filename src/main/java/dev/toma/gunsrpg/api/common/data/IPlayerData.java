@@ -21,6 +21,8 @@ public interface IPlayerData {
 
     ISkillProvider getSkillProvider();
 
+    IPerkProvider getPerkProvider();
+
     IProgressData getProgressData();
 
     IHandState getHandState();

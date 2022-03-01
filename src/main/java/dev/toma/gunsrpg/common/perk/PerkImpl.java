@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.perk;
 
 import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
+import dev.toma.gunsrpg.api.common.perk.IPerk;
 import dev.toma.gunsrpg.common.attribute.AttributeModifier;
 import dev.toma.gunsrpg.common.attribute.AttributeOps;
 
@@ -10,6 +11,11 @@ public final class PerkImpl implements IPerk {
 
     private final Perk perk;
     private final IAttributeModifier modifier;
+
+    public PerkImpl(Perk perk, IAttributeModifier modifier) {
+        this.perk = perk;
+        this.modifier = modifier;
+    }
 
     public PerkImpl(Perk perk, PerkType type, int level) {
         this.perk = perk;

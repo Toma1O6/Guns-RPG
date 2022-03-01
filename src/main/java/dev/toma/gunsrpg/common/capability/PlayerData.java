@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.capability;
 
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.api.common.skill.ISkill;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.object.*;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -33,6 +33,7 @@ public class PlayerData implements IPlayerData {
     private final PlayerQuests playerQuests;
     private final PlayerDebuffs debuffs;
     private final PlayerAttributes attributes;
+    private final PlayerPerkProvider perkProvider;
     private final PlayerProgressionData data;
     private ISynchCallback callback;
 
@@ -49,6 +50,7 @@ public class PlayerData implements IPlayerData {
         this.jamInfo = new JamInfo(handState, player);
         this.attributes = new PlayerAttributes();
         this.skillProvider = new PlayerSkillProvider(player);
+        this.perkProvider = new PlayerPerkProvider();
         this.playerQuests = new PlayerQuests();
         this.data = new PlayerProgressionData(player, skillProvider);
 
@@ -59,6 +61,7 @@ public class PlayerData implements IPlayerData {
         saveHandler.addListener(jamInfo);
         saveHandler.addListener(attributes);
         saveHandler.addListener(skillProvider);
+        saveHandler.addListener(perkProvider);
         saveHandler.addListener(playerQuests);
         saveHandler.addListener(data);
 
@@ -98,6 +101,11 @@ public class PlayerData implements IPlayerData {
     @Override
     public ISkillProvider getSkillProvider() {
         return skillProvider;
+    }
+
+    @Override
+    public IPerkProvider getPerkProvider() {
+        return perkProvider;
     }
 
     @Override

@@ -1,9 +1,13 @@
 package dev.toma.gunsrpg.common.perk;
 
 import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
+import dev.toma.gunsrpg.api.common.perk.IPerk;
+import dev.toma.gunsrpg.api.common.perk.IPerkOptions;
+import net.minecraft.util.ResourceLocation;
 
 public final class Perk {
 
+    private ResourceLocation id;
     private final IAttributeId attributeId;
     private final PerkValueSpec scaleSpec;
     private final PerkValueSpec boundSpec;
@@ -12,6 +16,18 @@ public final class Perk {
         this.attributeId = attributeId;
         this.scaleSpec = scaleSpec;
         this.boundSpec = boundSpec;
+    }
+
+    public void setId(ResourceLocation id) {
+        this.id = id;
+    }
+
+    public ResourceLocation getPerkId() {
+        return id;
+    }
+
+    public IPerk createInstance(IPerkOptions options) {
+        return new PerkImpl(this, options.getType(), options.getPerkLevel());
     }
 
     public IAttributeId getAttributeId() {

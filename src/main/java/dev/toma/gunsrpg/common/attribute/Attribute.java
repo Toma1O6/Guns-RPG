@@ -159,7 +159,7 @@ public class Attribute implements IAttribute {
         CompoundNBT nbt = new CompoundNBT();
         ListNBT modifiers = new ListNBT();
         for (IAttributeModifier modifier : modifierMap.values()) {
-            modifiers.add(this.serializeModifier(modifier));
+            modifiers.add(serializeModifier(modifier));
         }
         nbt.put("modifiers", modifiers);
         return nbt;
@@ -172,7 +172,7 @@ public class Attribute implements IAttribute {
         ListNBT modifiers = nbt.getList("modifiers", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < modifiers.size(); i++) {
             CompoundNBT data = modifiers.getCompound(i);
-            addModifier(this.deserializeModifier(data));
+            addModifier(deserializeModifier(data));
         }
     }
 
@@ -180,19 +180,8 @@ public class Attribute implements IAttribute {
         listeners.forEach(listener -> notifyEvent.accept(listener, parameter));
     }
 
-    private double calcModifier() {
-        Collection<IAttributeModifier> modifiers = listModifiers();
-        double value = 1.0;
-        for (IAttributeModifier modifier : modifiers) {
-            IModifierOp op = modifier.getOperation();
-            double modValue = modifier.getModifierValue();
-            value = op.combine(value, modValue);
-        }
-        return value;
-    }
-
     @SuppressWarnings("unchecked")
-    private <M extends IAttributeModifier> CompoundNBT serializeModifier(M modifier) {
+    public static <M extends IAttributeModifier> CompoundNBT serializeModifier(M modifier) {
         IModifierSerializer<M> serializer = (IModifierSerializer<M>) modifier.getSerializer();
         CompoundNBT data = new CompoundNBT();
         data.putString("serializer", serializer.getSerializerUid().toString());
@@ -200,7 +189,7 @@ public class Attribute implements IAttribute {
         return data;
     }
 
-    private <M extends IAttributeModifier> M deserializeModifier(CompoundNBT data) {
+    public static <M extends IAttributeModifier> M deserializeModifier(CompoundNBT data) {
         ResourceLocation type = new ResourceLocation(data.getString("serializer"));
         IModifierSerializer<M> serializer = ModifierSerialization.getSerializer(type);
         return serializer.fromNbtStructure(data);
