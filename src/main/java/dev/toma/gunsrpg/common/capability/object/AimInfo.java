@@ -30,7 +30,7 @@ public class AimInfo implements IAimInfo, IPlayerCapEntry {
             setAiming(false, player);
             request.makeSyncRequest();
         }
-        float aimingSpeed = 0.25F;
+        float aimingSpeed = 0.175F;
         progressOld = progress;
         if (aiming && progress < 1.0F) {
             progress = Math.min(1.0F, progress + aimingSpeed);

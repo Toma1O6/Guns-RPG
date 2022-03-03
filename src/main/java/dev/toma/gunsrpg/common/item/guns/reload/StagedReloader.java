@@ -72,6 +72,7 @@ public class StagedReloader implements IReloader {
     }
 
     private void loadBullet(PlayerEntity player) {
+        ItemStack stack = player.getMainHandItem();
         if (!(stack.getItem() instanceof GunItem)) return;
         int max = reloadingGun.getMaxAmmo(PlayerData.getUnsafe(player).getAttributes());
         AmmoType type = reloadingGun.getAmmoType();

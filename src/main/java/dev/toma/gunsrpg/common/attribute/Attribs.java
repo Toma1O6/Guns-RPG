@@ -50,7 +50,7 @@ public final class Attribs {
     public static final IAttributeId EXPLOSION_RESISTANCE       = createInternal("explosion_resistance", 0.0);
     public static final IAttributeId FALL_RESISTANCE            = createInternal("fall_resistance", 0.0);
     // global weapon attributes
-    public static final IAttributeId MELEE_DAMAGE               = createInternal("melee_damage"); // bonus damage
+    public static final IAttributeId MELEE_DAMAGE               = createInternal("melee_damage", 0); // bonus damage
     public static final IAttributeId MELEE_COOLDOWN             = createInternal("melee_cooldown");
     public static final IAttributeId BOW_DAMAGE                 = createInternal("bow_damage");
     public static final IAttributeId PISTOL_DAMAGE              = createInternal("pistol_damage");
@@ -59,7 +59,6 @@ public final class Attribs {
     public static final IAttributeId AR_DAMAGE                  = createInternal("ar_damage");
     public static final IAttributeId DMR_DAMAGE                 = createInternal("dmr_damage");
     public static final IAttributeId SR_DAMAGE                  = createInternal("sr_damage");
-    public static final IAttributeId WEAPON_DAMAGE              = createInternal("weapon_damage");
     public static final IAttributeId SILENT_WEAPON_DAMAGE       = createInternal("silent_weapon_damage");
     public static final IAttributeId LOUD_WEAPON_DAMAGE         = createInternal("loud_weapon_damage");
     public static final IAttributeId HEADSHOT_DAMAGE            = createInternal("headshot_damage");

@@ -21,6 +21,7 @@ import dev.toma.gunsrpg.common.item.heal.AttributeAccessHealItem;
 import dev.toma.gunsrpg.common.item.heal.ContinuousHealingItem;
 import dev.toma.gunsrpg.common.item.heal.DebuffHealItem;
 import dev.toma.gunsrpg.common.item.heal.PlayerHealItem;
+import dev.toma.gunsrpg.common.item.perk.PerkVariant;
 import dev.toma.gunsrpg.common.skills.*;
 import dev.toma.gunsrpg.common.skills.core.DisplayData;
 import dev.toma.gunsrpg.common.skills.core.DisplayType;
@@ -404,7 +405,7 @@ public class CommonRegistry {
                 new BaseBlock("crystal_fuse", AbstractBlock.Properties.of(Material.STONE).noOcclusion()),
                 new BaseBlock("crystal_purification", AbstractBlock.Properties.of(Material.STONE).noOcclusion()),
                 new CookerBlock("cooker"),
-                new BaseBlock("repair_station", AbstractBlock.Properties.of(Material.STONE).noOcclusion()),
+                new RepairStationBlock("repair_station"),
                 new MilitaryCrateBlock("artic_military_crate"),
                 new MilitaryCrateBlock("desert_military_crate"),
                 new MilitaryCrateBlock("woodland_military_crate")
@@ -668,6 +669,11 @@ public class CommonRegistry {
                 BaseItem.simpleItem("small_stone"),
                 new StarterGearItem("starter_gear")
         );
+        for (PerkVariant variant : PerkVariant.values()) {
+            registry.register(BaseItem.simpleItem(variant.getRegistryName("crystal")));
+            registry.register(BaseItem.simpleItem(variant.getRegistryName("orb_of_purity")));
+            registry.register(BaseItem.simpleItem(variant.getRegistryName("orb_of_transmutation")));
+        }
         queue.forEach(registry::register);
         queue = null;
     }

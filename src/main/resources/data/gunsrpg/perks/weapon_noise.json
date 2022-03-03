@@ -1,5 +1,6 @@
 {
     "attribute": "gunsrpg:weapon_noise",
+    "invertCalculation": true,
     "scaling": {
         "buff": 0.02,
         "debuff": 0.04

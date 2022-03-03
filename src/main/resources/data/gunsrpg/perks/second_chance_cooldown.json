@@ -1,5 +1,6 @@
 {
     "attribute": "gunsrpg:second_chance_cooldown",
+    "invertCalculation": true,
     "scaling": {
         "buff": 0.01,
         "debuff": 0.02

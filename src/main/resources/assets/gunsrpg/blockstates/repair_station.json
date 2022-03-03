@@ -1,7 +1,8 @@
 {
     "variants": {
-        "": {
-            "model": "gunsrpg:block/repair_station"
-        }
+        "facing=north": { "model": "gunsrpg:block/repair_station" },
+        "facing=east": { "model": "gunsrpg:block/repair_station", "y": 90 },
+        "facing=south": { "model": "gunsrpg:block/repair_station", "y": 180 },
+        "facing=west": { "model": "gunsrpg:block/repair_station", "y": 270 }
     }
 }

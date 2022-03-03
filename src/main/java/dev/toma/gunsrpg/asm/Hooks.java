@@ -1,12 +1,15 @@
 package dev.toma.gunsrpg.asm;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
 import dev.toma.gunsrpg.common.skills.MotherlodeSkill;
+import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.Pair;
@@ -50,6 +53,8 @@ public class Hooks {
             if (adrenaline != null && adrenaline.canApply(player)) {
                 value *= adrenaline.getAttackSpeedBoost();
             }
+            IAttributeProvider attributeProvider = data.getAttributes();
+            return value * attributeProvider.getAttributeValue(Attribs.MELEE_COOLDOWN);
         }
         return value;
     }
@@ -58,7 +63,7 @@ public class Hooks {
         double attributeValue = mob.getAttributeValue(Attributes.FOLLOW_RANGE);
         World world = mob.level;
         if (WorldData.isBloodMoon(world)) {
-            return Math.max(attributeValue, 90/*GRPGConfig.worldConfig.bloodMoonMobAgroRange.get()*/);
+            return Math.max(attributeValue, ModConfig.worldConfig.bloodMoonMobAgroRange.get());
         }
         return attributeValue;
     }
@@ -103,7 +108,7 @@ public class Hooks {
             MotherlodeSkill skill = SkillUtil.getTopHierarchySkill(Skills.MOTHER_LODE_I, provider);
             int dropMultiplier = 1;
             if (skill != null) {
-                dropMultiplier = skill.getDropMultiplier(player.getRandom());
+                dropMultiplier = skill.getDropMultiplier(player.getRandom(), data);
             }
             Iterator<ItemStack> iterator = drops.iterator();
             List<ItemStack> pendingDrops = new ArrayList<>();

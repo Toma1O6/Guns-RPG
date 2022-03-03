@@ -1,7 +1,10 @@
 package dev.toma.gunsrpg.common.skills;
 
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
 import dev.toma.gunsrpg.api.common.attribute.IValueFormatter;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.util.text.ITextComponent;
@@ -22,9 +25,10 @@ public class MotherlodeSkill extends BasicSkill implements IDescriptionProvider 
         DATA[level - 1].appendInfo(container);
     }
 
-    public int getDropMultiplier(Random random) {
+    public int getDropMultiplier(Random random, IPlayerData data) {
         ChancesContainer container = DATA[level - 1];
-        float f = random.nextFloat();
+        IAttributeProvider attributeProvider = data.getAttributes();
+        float f = random.nextFloat() * attributeProvider.getAttribute(Attribs.MOTHERLODE_BONUS).floatValue();
         return f < container.trippleDrop ? 3 : (f - container.trippleDrop) < container.doubleDrop ? 2 : 1;
     }
 

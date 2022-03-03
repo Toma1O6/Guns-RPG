@@ -14,26 +14,26 @@ public class GunDamageSource extends EntityDamageSource {
     @Nullable
     private final Entity src;
     @Nullable
-    private final Entity indirect;
+    private final Entity directSource;
     private final ItemStack stacc;
 
-    protected GunDamageSource(Entity src, Entity indirect, ItemStack stacc) {
+    protected GunDamageSource(Entity src, Entity directSource, ItemStack stacc) {
         super("mob", src);
         this.src = src;
-        this.indirect = indirect;
+        this.directSource = directSource;
         this.stacc = stacc;
     }
 
     @Nullable
     @Override
     public Entity getDirectEntity() {
-        return indirect;
+        return directSource;
     }
 
     @Nullable
     @Override
     public Entity getEntity() {
-        return src;
+        return null;
     }
 
     public Entity getSrc() {

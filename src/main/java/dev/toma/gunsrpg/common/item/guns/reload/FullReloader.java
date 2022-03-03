@@ -99,7 +99,7 @@ public class FullReloader implements IReloader {
         } else {
             toLoad = 0;
         }
-        gun.setAmmoCount(stack, weaponLimit - toLoad);
+        gun.setAmmoCount(player.getMainHandItem(), weaponLimit - toLoad);
         data.getHandState().freeHands();
     }
 

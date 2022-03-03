@@ -1,5 +1,6 @@
 {
     "attribute": "gunsrpg:recoil_control",
+    "invertCalculation": true,
     "scaling": {
         "buff": 0.005,
         "debuff": 0.01

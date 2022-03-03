@@ -8,6 +8,8 @@ import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -38,10 +40,20 @@ public class ExplosiveArrowEntity extends AbstractArrowEntity {
     }
 
     @Override
+    protected void onHitBlock(BlockRayTraceResult result) {
+        if (!level.isClientSide) {
+            BlockPos pos = result.getBlockPos();
+            level.destroyBlock(pos, false);
+            level.explode(this.getOwner(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, blastSize, Explosion.Mode.DESTROY);
+            remove();
+        }
+    }
+
+    @Override
     protected void onHitEntity(EntityRayTraceResult result) {
         if (!level.isClientSide) {
             Entity entity = result.getEntity();
-            level.explode(this, entity.getX(), entity.getY() + 1.5, entity.getZ(), blastSize, Explosion.Mode.DESTROY);
+            level.explode(this.getOwner(), entity.getX(), entity.getY() + 1.5, entity.getZ(), blastSize, Explosion.Mode.DESTROY);
             remove();
         }
     }

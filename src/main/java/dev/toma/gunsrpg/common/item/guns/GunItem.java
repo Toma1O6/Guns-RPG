@@ -301,12 +301,16 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     @Override
     public int getRGBDurabilityForDisplay(ItemStack stack) {
         float damage = this.getDurability(stack);
-        if (damage < 0.4) {
-            float f = damage / 0.4F;
+        return getDurabilityColor(damage);
+    }
+
+    public static int getDurabilityColor(float durability) {
+        if (durability < 0.4) {
+            float f = durability / 0.4F;
             int blue = (int) ((1.0F - f) * 255);
             return 0xFF << 8 | blue;
         } else {
-            float value = Easings.EASE_OUT_CUBIC.ease((damage - 0.4F) / 0.6F);
+            float value = Easings.EASE_OUT_CUBIC.ease((durability - 0.4F) / 0.6F);
             int red = (int) (255 * value);
             int green = (int) (255 * (1.0F - value));
             return red << 16 | green << 8;

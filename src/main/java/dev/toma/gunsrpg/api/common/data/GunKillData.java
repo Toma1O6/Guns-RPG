@@ -31,6 +31,7 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
         ITransactionValidatorFactory<?, ?> factory = TransactionValidatorRegistry.getValidatorFactory(WeaponTransactionValidator.ID);
         ITransactionValidator validator = TransactionValidatorRegistry.getTransactionValidator(factory, JsonHelper.toSimpleJson(gunItem.getRegistryName()));
         this.strategy = GunsRPG.getModLifecycle().getProgressionStrategyManager().getStrategy(validator);
+        requiredKillCount = this.updateKillRequirement();
     }
 
     @Override
@@ -63,7 +64,7 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
     @Override
     public void onEnemyKilled(Entity enemy, ItemStack weapon) {
         ++killCount;
-        if (level < getLevelLimit() && killCount >= requiredKillCount) {
+        if (level < getLevelLimit() && requiredKillCount <= killCount) {
             killCount = 0;
             advanceLevel(false);
             String msg = String.format("%s%s has leveled up!", TextFormatting.GREEN, weapon.getDisplayName().getString());

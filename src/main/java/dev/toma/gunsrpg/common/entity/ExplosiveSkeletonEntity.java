@@ -185,7 +185,7 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
 
     @Override
     public void performRangedAttack(LivingEntity target, float distanceFactor) {
-        AbstractArrowEntity entityarrow = new ExplosiveArrowEntity(level, this, 1);
+        AbstractArrowEntity entityarrow = new ExplosiveArrowEntity(level, this, 2);
         double x = target.getX() - this.getX();
         double y = target.getY(0.3333) - entityarrow.getY();
         double z = target.getZ() - this.getZ();

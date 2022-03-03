@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.api.common.skill.IDisplayableSkill;
 import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.api.common.skill.ITickableSkill;
 import dev.toma.gunsrpg.common.init.ModRegistries;
+import dev.toma.gunsrpg.common.skills.core.PlayerLevelTransactionValidator;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.S2C_NewSkillsPacket;
@@ -82,7 +83,7 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
     @Override
     public void onLevelUp(int level, PlayerEntity player) {
         List<SkillType<?>> newlyAvailableList = ModRegistries.SKILLS.getValues().stream()
-                .filter(type -> type.getProperties().getRequiredLevel() == level)
+                .filter(type -> type.getProperties().getTransactionValidator().getId() == PlayerLevelTransactionValidator.ID && type.getProperties().getRequiredLevel() == level)
                 .collect(Collectors.toList());
         int count = newlyAvailableList.size();
         if (count > 0) {

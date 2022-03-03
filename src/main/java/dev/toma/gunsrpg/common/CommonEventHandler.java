@@ -265,66 +265,6 @@ public class CommonEventHandler {
     }
 
     @SubscribeEvent
-    public static void onArrowImpact(ProjectileImpactEvent.Arrow event) {
-        AbstractArrowEntity arrow = event.getArrow();
-        World world = arrow.level;
-        if (!world.isClientSide) {
-            RayTraceResult rayTraceResult = event.getRayTraceResult();
-            if (rayTraceResult != null && rayTraceResult.getType() == RayTraceResult.Type.BLOCK && arrow instanceof ExplosiveArrowEntity) {
-                BlockRayTraceResult result = (BlockRayTraceResult) event.getRayTraceResult();
-                arrow.remove();
-                Direction facing = result.getDirection();
-                BlockPos pos = result.getBlockPos().relative(facing);
-                int pw = ((ExplosiveArrowEntity) arrow).blastSize;
-                switch (facing) {
-                    case NORTH:
-                    case SOUTH: {
-                        for (int y = -1; y < 2; y++) {
-                            for (int x = -1; x < 2; x++) {
-                                BlockPos p = new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ());
-                                if (world.getBlockState(p).getBlock() == Blocks.BEDROCK) continue;
-                                world.destroyBlock(p, false);
-                            }
-                        }
-                        break;
-                    }
-                    case WEST:
-                    case EAST: {
-                        for (int y = -1; y < 2; y++) {
-                            for (int z = -1; z < 2; z++) {
-                                BlockPos p = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ() + z);
-                                if (world.getBlockState(p).getBlock() == Blocks.BEDROCK) continue;
-                                world.destroyBlock(p, false);
-                            }
-                        }
-                        break;
-                    }
-                    case UP:
-                    case DOWN: {
-                        for (int x = -1; x < 2; x++) {
-                            for (int z = -1; z < 2; z++) {
-                                BlockPos p = new BlockPos(pos.getX() + x, pos.getY(), pos.getZ() + z);
-                                if (world.getBlockState(p).getBlock() == Blocks.BEDROCK) continue;
-                                world.destroyBlock(p, false);
-                            }
-                        }
-                        break;
-                    }
-                }
-                BlockPos newPos = pos.relative(facing.getOpposite());
-                for (Direction f : Direction.values()) {
-                    BlockPos p = newPos.relative(f);
-                    if (world.getBlockState(p).getBlock() == Blocks.BEDROCK) continue;
-                    world.destroyBlock(p, false);
-                }
-                if (world.getBlockState(newPos).getBlock() == Blocks.BEDROCK) return;
-                world.destroyBlock(newPos, false);
-                world.explode(arrow, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pw, Explosion.Mode.DESTROY);
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void onEntityDamaged(LivingHurtEvent event) {
         if (event.getAmount() >= 0.2F && event.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntity();
@@ -334,14 +274,14 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onEntityDeath(LivingDeathEvent event) {
-        boolean flag = event.getSource() instanceof GunDamageSource;
-        if (flag) {
+        boolean isWeapon = event.getSource() instanceof GunDamageSource;
+        if (isWeapon) {
             Entity source = ((GunDamageSource) event.getSource()).getSrc();
             if (source instanceof PlayerEntity) {
                 PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getProgressData().onEnemyKilled(event.getEntity(), ((GunDamageSource) event.getSource()).getStacc()));
             }
         } else {
-            Entity source = event.getSource().getDirectEntity();
+            Entity source = event.getSource().getEntity();
             if (source instanceof PlayerEntity) {
                 PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getProgressData().onEnemyKilled(event.getEntity(), ItemStack.EMPTY));
             }

@@ -125,7 +125,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
         if (!(enemy instanceof IMob) || enemy instanceof SlimeEntity)
             return;
         ++kills;
-        if (level < getLevelLimit() && kills > requiredKills) {
+        if (level < getLevelLimit() && requiredKills <= kills) {
             advanceLevel(true);
         }
         if (weapon.getItem() instanceof GunItem) {
