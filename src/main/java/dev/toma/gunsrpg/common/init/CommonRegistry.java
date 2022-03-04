@@ -1,7 +1,5 @@
 package dev.toma.gunsrpg.common.init;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
@@ -46,9 +44,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.*;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,9 +146,9 @@ public class CommonRegistry {
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.ACROBATICS_FALL_III, Attribs.FALL_RESISTANCE), AttributeTarget.create(Modifiers.ACROBATICS_EXPLOSION_III, Attribs.EXPLOSION_RESISTANCE))).build().setRegistryName("acrobatics_iii"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("pharmacist_i"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("pharmacist_ii"),
-                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("pharmacist_iii"),
+                SkillType.Builder.create(BasicSkill::new).description(2).build().setRegistryName("pharmacist_iii"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("pharmacist_iv"),
-                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("pharmacist_v"),
+                SkillType.Builder.create(BasicSkill::new).description(2).build().setRegistryName("pharmacist_v"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.CHOPPING_I, Attribs.WOODCUTTING_SPEED))).description(0).build().setRegistryName("sharp_axe_i"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.CHOPPING_II, Attribs.WOODCUTTING_SPEED))).description(0).build().setRegistryName("sharp_axe_ii"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.CHOPPING_III, Attribs.WOODCUTTING_SPEED))).description(0).build().setRegistryName("sharp_axe_iii"),
@@ -184,9 +179,9 @@ public class CommonRegistry {
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("hammer_iii"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("blacksmith"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("mineralogist"),
-                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("crystal_station"),
-                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("crystal_forge"),
-                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("crystal_purification_station"),
+                SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModBlocks.CRYSTAL_STATION))).build().setRegistryName("crystal_station"),
+                SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModBlocks.CRYSTAL_FUSE))).build().setRegistryName("crystal_forge"),
+                SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModBlocks.CRYSTAL_PURIFICATION))).build().setRegistryName("crystal_purification_station"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.DAMAGE_I, Attribs.MELEE_DAMAGE))).description(0).build().setRegistryName("strong_muscles_i"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.DAMAGE_II, Attribs.MELEE_DAMAGE))).description(0).build().setRegistryName("strong_muscles_ii"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.DAMAGE_III, Attribs.MELEE_DAMAGE))).description(0).build().setRegistryName("strong_muscles_iii"),
@@ -393,7 +388,8 @@ public class CommonRegistry {
 
     @SubscribeEvent
     public static void onBlockRegister(RegistryEvent.Register<Block> event) {
-        event.getRegistry().registerAll(
+        IForgeRegistry<Block> registry = event.getRegistry();
+        registry.registerAll(
                 new BaseOreBlock("amethyst_ore", AbstractBlock.Properties.of(Material.STONE).strength(2.5F, 10.0F).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops()),
                 new BlastFurnaceBlock("blast_furnace"),
                 new AirdropBlock("airdrop"),
@@ -413,8 +409,13 @@ public class CommonRegistry {
                 new RepairStationBlock("repair_station"),
                 new MilitaryCrateBlock("artic_military_crate"),
                 new MilitaryCrateBlock("desert_military_crate"),
-                new MilitaryCrateBlock("woodland_military_crate")
+                new MilitaryCrateBlock("woodland_military_crate"),
+                new CulinaryTableBlock("culinary_table")
         );
+        for (PerkVariant variant : PerkVariant.values()) {
+            registry.register(new CrystalOre(variant.getRegistryName("crystal_ore")));
+            registry.register(new BaseBlock(variant.getRegistryName("orb_ore"), AbstractBlock.Properties.of(Material.STONE).strength(3.3F).harvestTool(ToolType.PICKAXE).harvestLevel(2)));
+        }
     }
 
     @SubscribeEvent
@@ -679,35 +680,8 @@ public class CommonRegistry {
             registry.register(BaseItem.simpleItem(variant.getRegistryName("orb_of_purity")));
             registry.register(BaseItem.simpleItem(variant.getRegistryName("orb_of_transmutation")));
         }
-        createJsons();
         queue.forEach(registry::register);
         queue = null;
-    }
-
-    private static void createJsons() {
-        String[] types = { "crystal", "orb_of_purity", "orb_of_transmutation" };
-        File dir = new File("D:/mcmods/1.16.5/Guns-RPG/src/main/resources/assets/gunsrpg/textures/item");
-        Gson gson = new Gson();
-        try {
-            for (String type : types) {
-                for (PerkVariant variant : PerkVariant.values()) {
-                    String name = variant.getRegistryName(type);
-                    File file = new File(dir, name + ".json");
-                    ResourceLocation location = GunsRPG.makeResource("item/" + name);
-                    file.createNewFile();
-                    FileWriter writer = new FileWriter(file);
-                    JsonObject object = new JsonObject();
-                    object.addProperty("parent", "item/generated");
-                    JsonObject tex = new JsonObject();
-                    tex.addProperty("layer0", location.toString());
-                    object.add("textures", tex);
-                    writer.write(gson.toJson(object));
-                    writer.close();
-                }
-            }
-        } catch (IOException ignored) {
-
-        }
     }
 
     @SubscribeEvent

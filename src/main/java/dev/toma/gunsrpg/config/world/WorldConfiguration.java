@@ -20,6 +20,18 @@ public class WorldConfiguration extends ObjectType {
     public final IntType airdropFrequency;
     public final EnumType<SleepRestriction> sleepRestriction;
     public final SimpleOreGenConfig amethyst;
+    public final SimpleOreGenConfig blackCrystal;
+    public final SimpleOreGenConfig blueCrystal;
+    public final SimpleOreGenConfig greenCrystal;
+    public final SimpleOreGenConfig redCrystal;
+    public final SimpleOreGenConfig whiteCrystal;
+    public final SimpleOreGenConfig yellowCrystal;
+    public final SimpleOreGenConfig blackOrb;
+    public final SimpleOreGenConfig blueOrb;
+    public final SimpleOreGenConfig greenOrb;
+    public final SimpleOreGenConfig redOrb;
+    public final SimpleOreGenConfig whiteOrb;
+    public final SimpleOreGenConfig yellowOrb;
 
     public WorldConfiguration(IObjectSpec spec) {
         super(spec);
@@ -34,5 +46,17 @@ public class WorldConfiguration extends ObjectType {
         airdropFrequency = writer.writeBoundedInt("Airdrop frequency", 3, -1, 999, "Defines airdrop spawn frequency [days]", "Set to -1 to disable");
         sleepRestriction = writer.writeEnum("Restrict sleep", SleepRestriction.ALWAYS, "Defines when players will be able to sleep");
         amethyst = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 4, 1, 16), "Amethyst ore", "Configure amethyst spawning");
+        blackCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Black crystal", "Configure black crystal spawning");
+        blueCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Blue crystal", "Configure blue crystal spawning");
+        greenCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Green crystal", "Configure green crystal spawning");
+        redCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Red crystal", "Configure red crystal spawning");
+        whiteCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "White crystal", "Configure white crystal spawning");
+        yellowCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Yellow crystal", "Configure yellow crystal spawning");
+        blackOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Black orb", "Configure black orb spawning");
+        blueOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Blue orb", "Configure blue orb spawning");
+        greenOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Green orb", "Configure green orb spawning");
+        redOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Red orb", "Configure red orb spawning");
+        whiteOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "White orb", "Configure white orb spawning");
+        yellowOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Yellow orb", "Configure yellow orb spawning");
     }
 }

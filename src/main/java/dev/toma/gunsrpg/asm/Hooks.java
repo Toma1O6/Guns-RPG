@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.block.ICustomizableDrops;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
@@ -76,6 +77,9 @@ public class Hooks {
             return drops;
         }
         Block block = state.getBlock();
+        if (block instanceof ICustomizableDrops) {
+            return ((ICustomizableDrops) block).getCustomDrops(table, context);
+        }
         PlayerEntity player = (PlayerEntity) entity;
         IPlayerData data = PlayerData.get(player).orElse(null);
         if (data == null)

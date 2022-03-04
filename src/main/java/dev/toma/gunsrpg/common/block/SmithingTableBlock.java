@@ -23,12 +23,12 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class SmithingTableBlock extends BaseBlock {
+public class SmithingTableBlock extends BaseHorizontalBlock {
 
     private static final ITextComponent TITLE = new TranslationTextComponent("container.smithing_table");
 
     public SmithingTableBlock(String name) {
-        super(name, Properties.of(Material.METAL).strength(2.2F, 18.0F).harvestTool(ToolType.PICKAXE).harvestLevel(1).requiresCorrectToolForDrops());
+        super(name, Properties.of(Material.METAL).strength(2.2F, 18.0F).harvestTool(ToolType.PICKAXE).harvestLevel(1).requiresCorrectToolForDrops().noOcclusion());
     }
 
     @Override

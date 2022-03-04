@@ -24,6 +24,6 @@ public class BaseHorizontalBlock extends BaseBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext useContext) {
-        return defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, useContext.getHorizontalDirection());
+        return defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, useContext.getHorizontalDirection().getOpposite());
     }
 }

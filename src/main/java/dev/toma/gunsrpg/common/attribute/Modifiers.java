@@ -42,9 +42,9 @@ public final class Modifiers {
     public static final IAttributeModifier DAMAGE_I                     = new AttributeModifier(STRONG_MUSCLES, AttributeOps.SUM, 1).named("damage");
     public static final IAttributeModifier DAMAGE_II                    = new AttributeModifier(STRONG_MUSCLES, AttributeOps.SUM, 2).named("damage");
     public static final IAttributeModifier DAMAGE_III                   = new AttributeModifier(STRONG_MUSCLES, AttributeOps.SUM, 4).named("damage");
-    public static final IAttributeModifier AGILITY_I                    = new AttributeModifier(AGILITY, AttributeOps.MULB, 0.10).named("speed", IValueFormatter.BASE_PERCENT);
-    public static final IAttributeModifier AGILITY_II                   = new AttributeModifier(AGILITY, AttributeOps.MULB, 0.25).named("speed", IValueFormatter.BASE_PERCENT);
-    public static final IAttributeModifier AGILITY_III                  = new AttributeModifier(AGILITY, AttributeOps.MULB, 0.45).named("speed", IValueFormatter.BASE_PERCENT);
+    public static final IAttributeModifier AGILITY_I                    = new AttributeModifier(AGILITY, AttributeOps.MULB, 0.10).named("speed", IValueFormatter.PERCENT);
+    public static final IAttributeModifier AGILITY_II                   = new AttributeModifier(AGILITY, AttributeOps.MULB, 0.25).named("speed", IValueFormatter.PERCENT);
+    public static final IAttributeModifier AGILITY_III                  = new AttributeModifier(AGILITY, AttributeOps.MULB, 0.45).named("speed", IValueFormatter.PERCENT);
     public static final IAttributeModifier INSTANT_KILL_I               = new AttributeModifier(SKULL_CRUSHER, AttributeOps.SUM, 0.01).named("chance", IValueFormatter.PERCENT);
     public static final IAttributeModifier INSTANT_KILL_II              = new AttributeModifier(SKULL_CRUSHER, AttributeOps.SUM, 0.03).named("chance", IValueFormatter.PERCENT);
     public static final IAttributeModifier INSTANT_KILL_III             = new AttributeModifier(SKULL_CRUSHER, AttributeOps.SUM, 0.05).named("chance", IValueFormatter.PERCENT);

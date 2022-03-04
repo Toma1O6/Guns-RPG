@@ -250,6 +250,8 @@ public abstract class AbstractProjectile extends ProjectileEntity {
     }
 
     protected void aggroNearby(PlayerEntity player) {
+        if (player.isCreative() || player.isSpectator())
+            return;
         PlayerData.get(player).ifPresent(data -> {
             double mobScareRange = 25.0;
             GunItem gun = (GunItem) weapon.getItem();

@@ -1,7 +1,8 @@
 {
     "variants": {
-        "": {
-            "model": "gunsrpg:block/smithing_table"
-        }
+        "facing=north": { "model": "gunsrpg:block/smithing_table" },
+        "facing=east": { "model": "gunsrpg:block/smithing_table", "y": 90 },
+        "facing=south": { "model": "gunsrpg:block/smithing_table", "y": 180 },
+        "facing=west": { "model": "gunsrpg:block/smithing_table", "y": 270 }
     }
 }
