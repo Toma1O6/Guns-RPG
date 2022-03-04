@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.common.init;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
@@ -44,6 +46,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.*;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -674,8 +679,35 @@ public class CommonRegistry {
             registry.register(BaseItem.simpleItem(variant.getRegistryName("orb_of_purity")));
             registry.register(BaseItem.simpleItem(variant.getRegistryName("orb_of_transmutation")));
         }
+        createJsons();
         queue.forEach(registry::register);
         queue = null;
+    }
+
+    private static void createJsons() {
+        String[] types = { "crystal", "orb_of_purity", "orb_of_transmutation" };
+        File dir = new File("D:/mcmods/1.16.5/Guns-RPG/src/main/resources/assets/gunsrpg/textures/item");
+        Gson gson = new Gson();
+        try {
+            for (String type : types) {
+                for (PerkVariant variant : PerkVariant.values()) {
+                    String name = variant.getRegistryName(type);
+                    File file = new File(dir, name + ".json");
+                    ResourceLocation location = GunsRPG.makeResource("item/" + name);
+                    file.createNewFile();
+                    FileWriter writer = new FileWriter(file);
+                    JsonObject object = new JsonObject();
+                    object.addProperty("parent", "item/generated");
+                    JsonObject tex = new JsonObject();
+                    tex.addProperty("layer0", location.toString());
+                    object.add("textures", tex);
+                    writer.write(gson.toJson(object));
+                    writer.close();
+                }
+            }
+        } catch (IOException ignored) {
+
+        }
     }
 
     @SubscribeEvent

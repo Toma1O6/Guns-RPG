@@ -1,0 +1,11 @@
+{
+    "replace": false,
+    "values": [
+        "gunsrpg:black_crystal",
+        "gunsrpg:blue_crystal",
+        "gunsrpg:green_crystal",
+        "gunsrpg:red_crystal",
+        "gunsrpg:white_crystal",
+        "gunsrpg:yellow_crystal"
+    ]
+}

@@ -7,20 +7,22 @@ import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraft.world.gen.placement.SimplePlacement;
 
 import java.util.Random;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ConfigurablePlacement extends SimplePlacement<NoPlacementConfig> {
 
-    final IGeneratorConfig config;
+    final Supplier<IGeneratorConfig> cfgSupplier;
 
-    public ConfigurablePlacement(Codec<NoPlacementConfig> codec, IGeneratorConfig config) {
+    public ConfigurablePlacement(Codec<NoPlacementConfig> codec, Supplier<IGeneratorConfig> cfgSupplier) {
         super(codec);
-        this.config = config;
+        this.cfgSupplier = cfgSupplier;
     }
 
     @Override
     protected Stream<BlockPos> place(Random random, NoPlacementConfig noPlacementConfig, BlockPos pos) {
+        IGeneratorConfig config = cfgSupplier.get();
         int attempts = config.getSpawnAttempts();
         return IntStream.range(0, attempts).mapToObj(value -> {
             int configMin = config.getMinHeight();

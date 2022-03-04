@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.block;
 
+import dev.toma.gunsrpg.common.tileentity.RepairStationTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -45,6 +46,6 @@ public class RepairStationBlock extends BaseHorizontalBlock {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return super.createTileEntity(state, world);
+        return new RepairStationTileEntity();
     }
 }

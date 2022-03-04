@@ -13,5 +13,5 @@ import net.minecraft.world.gen.placement.NoPlacementConfig;
  */
 public class ModConfiguredFeatures {
 
-    public static final ConfiguredFeature<?, ?> ORE_AMETHYST = ModFeatures.AMETHYST_ORE.get().configured(new ReplaceBlockConfig(Blocks.STONE.defaultBlockState(), ModBlocks.AMETHYST_ORE.defaultBlockState())).decorated(ModFeaturePlacements.CONFIGURABLE.get().configured(NoPlacementConfig.NONE));
+    public static final ConfiguredFeature<?, ?> ORE_AMETHYST = ModFeatures.AMETHYST_ORE.get().configured(new ReplaceBlockConfig(Blocks.STONE.defaultBlockState(), ModBlocks.AMETHYST_ORE.defaultBlockState())).decorated(ModFeaturePlacements.AMETHYST.get().configured(NoPlacementConfig.NONE));
 }
