@@ -19,7 +19,6 @@ public final class Attribs {
     public static final IAttributeId BONEMEAL_OUTPUT            = createInternal("bonemeal_out", 0);
     public static final IAttributeId BLAZEPOWDER_OUTPUT         = createInternal("blazepowder_out", 0);
     public static final IAttributeId AMMO_OUTPUT                = createInternal("ammo_output", 0);
-    public static final IAttributeId BOLT_OUTPUT                = createInternal("bolt_output", 0);
     public static final IAttributeId QUEST_AMMO                 = createInternal("quest_ammo");
     // debuffs, healing
     public static final IAttributeId HEAL_BOOST                 = createInternal("heal_boost");
