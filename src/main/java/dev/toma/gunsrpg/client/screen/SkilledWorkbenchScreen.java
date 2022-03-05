@@ -2,11 +2,12 @@ package dev.toma.gunsrpg.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.container.SmithingTableContainer;
-import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
+import dev.toma.gunsrpg.common.container.SkilledWorkbenchContainer;
+import dev.toma.gunsrpg.common.tileentity.ISkilledCrafting;
+import dev.toma.gunsrpg.common.tileentity.VanillaInventoryTileEntity;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.C2S_RequestSmithingCraftPacket;
-import dev.toma.gunsrpg.resource.smithing.SmithingRecipe;
+import dev.toma.gunsrpg.network.packet.C2S_RequestSkilledCraftPacket;
+import dev.toma.gunsrpg.resource.crafting.SkilledRecipe;
 import dev.toma.gunsrpg.resource.util.conditions.IRecipeCondition;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -21,36 +22,34 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SmithingTableScreen extends ContainerScreen<SmithingTableContainer> {
+public class SkilledWorkbenchScreen<T extends VanillaInventoryTileEntity & ISkilledCrafting, C extends SkilledWorkbenchContainer<T>> extends ContainerScreen<C> {
 
-    public static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/screen/smithing_table.png");
-    private static final ITextComponent INFO_LABEL = new TranslationTextComponent("screen.smithing_table.condition").withStyle(TextFormatting.BOLD);
-    private final SmithingTableTileEntity smithingTable;
-    private List<IRecipeCondition> failedCheckList = Collections.emptyList();
+    public static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/screen/skilled_workbench.png");
+    private static final ITextComponent INFO_LABEL = new TranslationTextComponent("screen.skilled_workbench.condition").withStyle(TextFormatting.BOLD);
+    private final T tile;
+    private List<IRecipeCondition> failedChecks = Collections.emptyList();
+    private Button craftButton;
 
-    // widgets
-    private Button buttonCraft;
-
-    public SmithingTableScreen(SmithingTableContainer container, PlayerInventory inventory, ITextComponent component) {
-        super(container, inventory, component);
-        this.smithingTable = container.getTileEntity();
-        imageHeight = 172;
+    public SkilledWorkbenchScreen(C container, PlayerInventory inventory, ITextComponent title) {
+        super(container, inventory, title);
+        this.tile = container.getTileEntity();
+        this.imageHeight = 172;
     }
 
     @Override
     public void removed() {
         super.removed();
-        smithingTable.detachCallback();
+        tile.detachCallback();
     }
 
     @Override
     public void init() {
         super.init();
-        buttonCraft = addButton(new Button(leftPos + 7, topPos + 65, 54, 20, new StringTextComponent("Craft"), this::buttonCraft_Clicked));
-        buttonCraft.active = false;
+        craftButton = addButton(new Button(leftPos + 7, topPos + 65, 54, 20, new StringTextComponent("Craft"), this::buttonCraft_Clicked));
+        craftButton.active = false;
 
-        smithingTable.detachCallback();
-        smithingTable.attachCallback(this::onRecipeChanged);
+        tile.detachCallback();
+        tile.attachCallback(this::onRecipeChanged);
     }
 
     @Override
@@ -61,12 +60,12 @@ public class SmithingTableScreen extends ContainerScreen<SmithingTableContainer>
 
     @Override
     protected void renderLabels(MatrixStack stack, int mouseX, int mouseY) {
-        if (failedCheckList.isEmpty())
+        if (failedChecks.isEmpty())
             return;
         CharacterManager splitter = font.getSplitter();
         LanguageMap map = LanguageMap.getInstance();
         List<IReorderingProcessor> list = new ArrayList<>();
-        for (IRecipeCondition condition : failedCheckList) {
+        for (IRecipeCondition condition : failedChecks) {
             ITextComponent info = new StringTextComponent("- " + condition.getDisplayInfo().getString());
             splitter.splitLines(info, imageWidth - 71, info.getStyle()).stream().map(map::getVisualOrder).forEach(list::add);
         }
@@ -88,10 +87,10 @@ public class SmithingTableScreen extends ContainerScreen<SmithingTableContainer>
 
     private void buttonCraft_Clicked(Button button) {
         boolean shiftKey = Screen.hasShiftDown();
-        NetworkManager.sendServerPacket(new C2S_RequestSmithingCraftPacket(smithingTable.getBlockPos(), shiftKey));
+        NetworkManager.sendServerPacket(new C2S_RequestSkilledCraftPacket(tile.getBlockPos(), shiftKey));
     }
 
-    private void onRecipeChanged(SmithingRecipe recipe) {
+    private void onRecipeChanged(SkilledRecipe<?> recipe) {
         boolean crafting = false;
         clearFailedCheckMap();
         if (recipe != null) {
@@ -102,14 +101,14 @@ public class SmithingTableScreen extends ContainerScreen<SmithingTableContainer>
                 populateFailedCheckMap(recipe.getFailedChecks(player));
             }
         }
-        buttonCraft.active = crafting;
+        craftButton.active = crafting;
     }
 
     private void clearFailedCheckMap() {
-        failedCheckList.clear();
+        failedChecks.clear();
     }
 
     private void populateFailedCheckMap(List<IRecipeCondition> conditions) {
-        failedCheckList = conditions;
+        failedChecks = conditions;
     }
 }

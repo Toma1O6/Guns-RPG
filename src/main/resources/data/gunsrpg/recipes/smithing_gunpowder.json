@@ -18,7 +18,10 @@
   "result": {
     "item": "minecraft:gunpowder"
   },
-  "outputModifier": "gunsrpg:gunpowder_out",
+  "outputModifier": {
+    "attribute": "gunsrpg:gunpowder_out",
+    "operation": "gunsrpg:mul"
+  },
   "requirements": [
     {
       "type": "gunsrpg:skill",

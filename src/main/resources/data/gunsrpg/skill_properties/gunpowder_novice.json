@@ -3,7 +3,8 @@
         "category": "gun",
         "children": [
             "gunsrpg:gunpowder_expert"
-        ]
+        ],
+        "override": "gunsrpg:gunpowder_expert"
     },
     "properties": {
         "level": 0,

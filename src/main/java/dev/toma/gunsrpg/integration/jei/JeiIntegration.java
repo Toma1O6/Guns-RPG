@@ -6,7 +6,7 @@ import dev.toma.gunsrpg.common.container.SmithingTableContainer;
 import dev.toma.gunsrpg.common.init.ModBlocks;
 import dev.toma.gunsrpg.common.init.ModRecipeTypes;
 import dev.toma.gunsrpg.resource.cooking.CookingRecipe;
-import dev.toma.gunsrpg.resource.smithing.SmithingRecipe;
+import dev.toma.gunsrpg.resource.crafting.SmithingRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;

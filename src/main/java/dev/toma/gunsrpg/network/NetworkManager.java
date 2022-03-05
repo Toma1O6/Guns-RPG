@@ -65,7 +65,7 @@ public class NetworkManager {
         registerNetworkPacket(C2S_SetReloadingPacket.class);
         registerNetworkPacket(C2S_ChangeFiremodePacket.class);
         registerNetworkPacket(C2S_UnlockSkillPacket.class);
-        registerNetworkPacket(C2S_RequestSmithingCraftPacket.class);
+        registerNetworkPacket(C2S_RequestSkilledCraftPacket.class);
         registerNetworkPacket(C2S_SkillClickedPacket.class);
         registerNetworkPacket(C2S_PacketSetJamming.class);
     }

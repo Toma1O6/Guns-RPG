@@ -1,12 +1,16 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.common.init.ModRecipeTypes;
-import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
+import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.tileentity.ISkilledCrafting;
+import dev.toma.gunsrpg.common.tileentity.VanillaInventoryTileEntity;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
-import dev.toma.gunsrpg.resource.smithing.SmithingRecipe;
+import dev.toma.gunsrpg.resource.crafting.OutputModifier;
+import dev.toma.gunsrpg.resource.crafting.SkilledRecipe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -16,16 +20,16 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.Optional;
 
-public class C2S_RequestSmithingCraftPacket extends AbstractNetworkPacket<C2S_RequestSmithingCraftPacket> {
+public class C2S_RequestSkilledCraftPacket extends AbstractNetworkPacket<C2S_RequestSkilledCraftPacket> {
 
     private final BlockPos pos;
     private final boolean shiftKey;
 
-    public C2S_RequestSmithingCraftPacket() {
+    public C2S_RequestSkilledCraftPacket() {
         this(null, false);
     }
 
-    public C2S_RequestSmithingCraftPacket(BlockPos pos, boolean shiftKey) {
+    public C2S_RequestSkilledCraftPacket(BlockPos pos, boolean shiftKey) {
         this.pos = pos;
         this.shiftKey = shiftKey;
     }
@@ -37,8 +41,8 @@ public class C2S_RequestSmithingCraftPacket extends AbstractNetworkPacket<C2S_Re
     }
 
     @Override
-    public C2S_RequestSmithingCraftPacket decode(PacketBuffer buffer) {
-        return new C2S_RequestSmithingCraftPacket(buffer.readBlockPos(), buffer.readBoolean());
+    public C2S_RequestSkilledCraftPacket decode(PacketBuffer buffer) {
+        return new C2S_RequestSkilledCraftPacket(buffer.readBlockPos(), buffer.readBoolean());
     }
 
     @Override
@@ -47,27 +51,30 @@ public class C2S_RequestSmithingCraftPacket extends AbstractNetworkPacket<C2S_Re
         World world = player.level;
         if (pos != null && world.isLoaded(pos)) {
             TileEntity tileEntity = world.getBlockEntity(pos);
-            if (tileEntity instanceof SmithingTableTileEntity) {
-                SmithingTableTileEntity smithingTable = (SmithingTableTileEntity) tileEntity;
+            if (tileEntity instanceof ISkilledCrafting) {
+                VanillaInventoryTileEntity inventoryTileEntity = (VanillaInventoryTileEntity) tileEntity;
+                ISkilledCrafting skilledCrafting = (ISkilledCrafting) tileEntity;
                 if (shiftKey) {
                     while (true) {
-                        if (!tryCraft(world, smithingTable, player))
+                        if (!tryCraft(world, skilledCrafting, inventoryTileEntity, player))
                             break;
                     }
                 } else {
-                    tryCraft(world, smithingTable, player);
+                    tryCraft(world, skilledCrafting, inventoryTileEntity, player);
                 }
             }
         }
     }
 
-    private SmithingRecipe lastRecipe;
+    private SkilledRecipe<?> lastRecipe;
 
-    private boolean tryCraft(World world, SmithingTableTileEntity inventory, PlayerEntity player) {
+    @SuppressWarnings("unchecked")
+    private <T extends VanillaInventoryTileEntity> boolean tryCraft(World world, ISkilledCrafting crafting, T inventory, PlayerEntity player) {
         RecipeManager manager = world.getRecipeManager();
-        Optional<SmithingRecipe> optional = manager.getRecipeFor(ModRecipeTypes.SMITHING_RECIPE_TYPE, inventory, world);
+        IRecipeType<SkilledRecipe<T>> type = (IRecipeType<SkilledRecipe<T>>) crafting.getRecipeType();
+        Optional<SkilledRecipe<T>> optional = manager.getRecipeFor(type, inventory, world);
         if (optional.isPresent()) {
-            SmithingRecipe recipe = optional.orElseThrow(IllegalStateException::new);
+            SkilledRecipe<T> recipe = optional.orElseThrow(IllegalStateException::new);
             if (recipe.canCraft(player)) {
                 if (lastRecipe != null && lastRecipe != recipe) {
                     return false;
@@ -75,6 +82,10 @@ public class C2S_RequestSmithingCraftPacket extends AbstractNetworkPacket<C2S_Re
                 lastRecipe = recipe;
                 consumeIngredients(inventory);
                 ItemStack result = recipe.assemble(inventory);
+                OutputModifier modifier = recipe.getOutputModifier();
+                if (modifier != null) {
+                    modifier.apply(result, PlayerData.getUnsafe(player).getAttributes());
+                }
                 player.addItem(result);
                 return true;
             }
@@ -82,7 +93,7 @@ public class C2S_RequestSmithingCraftPacket extends AbstractNetworkPacket<C2S_Re
         return false;
     }
 
-    private void consumeIngredients(SmithingTableTileEntity inventory) {
+    private void consumeIngredients(IInventory inventory) {
         for (int i = 0; i < inventory.getContainerSize(); i++) {
             ItemStack stack = inventory.getItem(i);
             if (!stack.isEmpty()) {

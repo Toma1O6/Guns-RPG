@@ -14,7 +14,7 @@ public final class Attribs {
 
     private static final Map<ResourceLocation, IAttributeId> KEY_MAP = new HashMap<>();
 
-    // crafting
+    // crafting, rewards
     public static final IAttributeId GUNPOWDER_OUTPUT           = createInternal("gunpowder_out", 0);
     public static final IAttributeId BONEMEAL_OUTPUT            = createInternal("bonemeal_out", 0);
     public static final IAttributeId BLAZEPOWDER_OUTPUT         = createInternal("blazepowder_out", 0);

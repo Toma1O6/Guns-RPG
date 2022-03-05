@@ -4,7 +4,8 @@
         "parent": "gunsrpg:gunpowder_novice",
         "children": [
             "gunsrpg:gunpowder_master"
-        ]
+        ],
+        "override": "gunsrpg:gunpowder_master"
     },
     "properties": {
         "level": 15,
