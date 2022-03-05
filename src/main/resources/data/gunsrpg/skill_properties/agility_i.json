@@ -3,7 +3,8 @@
         "category": "survival",
         "children": [
             "gunsrpg:agility_ii"
-        ]
+        ],
+        "override": "gunsrpg:agility_ii"
     },
     "properties": {
         "level": 10,

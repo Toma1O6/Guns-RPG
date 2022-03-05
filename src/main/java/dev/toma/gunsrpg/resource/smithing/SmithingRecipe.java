@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.init.ModRecipeSerializers;
 import dev.toma.gunsrpg.common.init.ModRecipeTypes;
 import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
@@ -36,16 +38,18 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
     private final List<IRecipeCondition> conditions;
     private final ItemStack output;
     private final ResourceLocation id;
+    private final IAttributeId outputModifier;
     private final int width;
     private final int height;
 
-    public SmithingRecipe(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredientList, ItemStack output, List<IRecipeCondition> conditions) {
+    public SmithingRecipe(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredientList, ItemStack output, IAttributeId outputModifier, List<IRecipeCondition> conditions) {
         this.id = id;
         this.width = width;
         this.height = height;
         this.ingredientList = ingredientList;
         this.output = output;
         this.conditions = conditions;
+        this.outputModifier = outputModifier;
     }
 
     @Override
@@ -155,7 +159,15 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
             NonNullList<Ingredient> ingredientList = processPatternAndMatch(optimizedPattern, ingredientKeys, width, height);
             ItemStack output = CraftingHelper.getItemStack(JSONUtils.getAsJsonObject(data, "result"), true);
             List<IRecipeCondition> required = data.has("requirements") ? ResourceUtils.getConditionsFromJson(JSONUtils.getAsJsonArray(data, "requirements")) : Collections.emptyList();
-            return new SmithingRecipe(id, width, height, ingredientList, output, required);
+            IAttributeId outputModifier = null;
+            if (data.has("outputModifier")) {
+                ResourceLocation key = new ResourceLocation(JSONUtils.getAsString(data, "outputModifier"));
+                outputModifier = Attribs.find(key);
+                if (outputModifier == null) {
+                    throw new JsonSyntaxException("Unknown attribute: " + key);
+                }
+            }
+            return new SmithingRecipe(id, width, height, ingredientList, output, outputModifier, required);
         }
 
         @Nullable
@@ -168,6 +180,10 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
                 ingredients.set(i, Ingredient.fromNetwork(buffer));
             }
             ItemStack out = buffer.readItem();
+            boolean outputModifier = buffer.readBoolean();
+            IAttributeId attributeId = null;
+            if (outputModifier)
+                attributeId = Attribs.find(buffer.readResourceLocation());
             int conditionCount = buffer.readVarInt();
             List<IRecipeCondition> conditions;
             if (conditionCount == 0) {
@@ -178,7 +194,7 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
                     conditions.add(ConditionType.fromNetwork(buffer));
                 }
             }
-            return new SmithingRecipe(id, width, height, ingredients, out, conditions);
+            return new SmithingRecipe(id, width, height, ingredients, out, attributeId, conditions);
         }
 
         @Override
@@ -189,6 +205,10 @@ public class SmithingRecipe implements IRecipe<SmithingTableTileEntity> {
                 ingredient.toNetwork(buffer);
             }
             buffer.writeItem(recipe.output);
+            boolean outputModifier = recipe.outputModifier != null;
+            buffer.writeBoolean(outputModifier);
+            if (outputModifier)
+                buffer.writeResourceLocation(recipe.outputModifier.getId());
             buffer.writeVarInt(recipe.conditions.size());
             for (IRecipeCondition craftingCondition : recipe.conditions) {
                 ConditionType.toNetwork(buffer, craftingCondition);

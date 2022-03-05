@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.client;
 
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
-import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.api.common.IReloadManager;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IJamInfo;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IReloadInfo;
@@ -17,6 +17,8 @@ import dev.toma.gunsrpg.network.packet.C2S_ChangeFiremodePacket;
 import dev.toma.gunsrpg.network.packet.C2S_PacketSetJamming;
 import dev.toma.gunsrpg.network.packet.C2S_RequestDataUpdatePacket;
 import dev.toma.gunsrpg.network.packet.C2S_SetReloadingPacket;
+import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
+import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.Animation;
@@ -24,6 +26,7 @@ import lib.toma.animations.api.IAnimationPipeline;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.InputEvent;
@@ -66,6 +69,7 @@ public class ModKeybinds {
             }
             AnimationEngine engine = AnimationEngine.get();
             IAnimationPipeline pipeline = engine.pipeline();
+            IAttributeProvider attributeProvider = data.getAttributes();
             if (stack.getItem() instanceof GunItem && !player.isSprinting() && pipeline.get(ModAnimations.CHAMBER) == null) {
                 GunItem gun = (GunItem) stack.getItem();
                 if (info.isReloading()) {
@@ -77,16 +81,15 @@ public class ModKeybinds {
                     }
                 } else if (gun.isJammed(stack)) {
                     int slot = player.inventory.selected;
-                    int time = gun.getUnjamTime(stack, data);
+                    int time = gun.getUnjamTime(stack, attributeProvider);
                     ResourceLocation animationPath = gun.getUnjamAnimationPath();
-                    jamInfo.startUnjamming(player.inventory.selected, gun.getUnjamTime(stack, data));
+                    jamInfo.startUnjamming(player.inventory.selected, time);
                     NetworkManager.sendServerPacket(new C2S_PacketSetJamming(true, time, slot));
                     pipeline.insert(ModAnimations.UNJAM, AnimationUtils.createAnimation(animationPath, provider -> new Animation(provider, time)));
                     return;
                 }
                 AmmoType ammoType = gun.getAmmoType();
                 IAmmoMaterial material = gun.getMaterialFromNBT(stack);
-                // TODO move to ItemLocator API
                 if (material != null) {
                     int ammo = gun.getAmmo(stack);
                     int max = gun.getMaxAmmo(data.getAttributes());
@@ -98,17 +101,12 @@ public class ModKeybinds {
                             NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(true, gun.getReloadTime(data.getAttributes())));
                             return;
                         }
-                        for (int i = 0; i < player.inventory.getContainerSize(); i++) {
-                            ItemStack itemStack = player.inventory.getItem(i);
-                            if (itemStack.getItem() instanceof IAmmoProvider) {
-                                IAmmoProvider itemAmmo = (IAmmoProvider) itemStack.getItem();
-                                if (itemAmmo.getAmmoType() == ammoType && itemAmmo.getMaterial().equals(material)) {
-                                    int time = gun.getReloadTime(data.getAttributes());
-                                    info.startReloading(player, gun, stack, player.inventory.selected);
-                                    NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(true, time));
-                                    break;
-                                }
-                            }
+                        PlayerInventory inventory = player.inventory;
+                        ILocatorPredicate<ItemStack> typeCheck = ItemLocator.typeAndMaterial(ammoType, material);
+                        if (ItemLocator.hasItem(inventory, typeCheck)) {
+                            int reloadTime = gun.getReloadTime(attributeProvider);
+                            info.startReloading(player, gun, stack, inventory.selected);
+                            NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(true, reloadTime));
                         }
                     }
                 } else {

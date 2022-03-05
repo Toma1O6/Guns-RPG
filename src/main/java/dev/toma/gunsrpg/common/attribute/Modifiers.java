@@ -17,6 +17,8 @@ public final class Modifiers {
     public static final IAttributeModifier BLAZEPOWDER_I                = new AttributeModifier(BLAZEPOWEDER_CRAFTING, AttributeOps.SUM, 2).named("count");
     public static final IAttributeModifier BLAZEPOWDER_II               = new AttributeModifier(BLAZEPOWEDER_CRAFTING, AttributeOps.SUM, 3).named("count");
     public static final IAttributeModifier BLAZEPOWDER_III              = new AttributeModifier(BLAZEPOWEDER_CRAFTING, AttributeOps.SUM, 4).named("count");
+    public static final IAttributeModifier MASTER_AMMO                  = new AttributeModifier("F932A216-605A-4C07-9017-EA3E8A22B46F", AttributeOps.SUM, 1).named("ammo");
+    public static final IAttributeModifier MASTER_BOLT                  = new AttributeModifier("A10BC07F-641B-4CB9-A753-D4506667C4CA", AttributeOps.SUM, 2).named("bolt");
     /* General modifiers */
     public static final IAttributeModifier ACROBATICS_FALL_I            = new AttributeModifier(FALL_RESIST, AttributeOps.SUM, 0.2).named("fall", IValueFormatter.PERCENT);
     public static final IAttributeModifier ACROBATICS_FALL_II           = new AttributeModifier(FALL_RESIST, AttributeOps.SUM, 0.45).named("fall", IValueFormatter.PERCENT);
@@ -42,9 +44,9 @@ public final class Modifiers {
     public static final IAttributeModifier DAMAGE_I                     = new AttributeModifier(STRONG_MUSCLES, AttributeOps.SUM, 1).named("damage");
     public static final IAttributeModifier DAMAGE_II                    = new AttributeModifier(STRONG_MUSCLES, AttributeOps.SUM, 2).named("damage");
     public static final IAttributeModifier DAMAGE_III                   = new AttributeModifier(STRONG_MUSCLES, AttributeOps.SUM, 4).named("damage");
-    public static final IAttributeModifier AGILITY_I                    = new AttributeModifier(AGILITY, AttributeOps.MULB, 0.10).named("speed", IValueFormatter.PERCENT);
-    public static final IAttributeModifier AGILITY_II                   = new AttributeModifier(AGILITY, AttributeOps.MULB, 0.25).named("speed", IValueFormatter.PERCENT);
-    public static final IAttributeModifier AGILITY_III                  = new AttributeModifier(AGILITY, AttributeOps.MULB, 0.45).named("speed", IValueFormatter.PERCENT);
+    public static final IAttributeModifier AGILITY_I                    = new AttributeModifier(AGILITY, AttributeOps.MUL, 0.95).named("speed", IValueFormatter.INV_PERCENT);
+    public static final IAttributeModifier AGILITY_II                   = new AttributeModifier(AGILITY, AttributeOps.MUL, 0.90).named("speed", IValueFormatter.INV_PERCENT);
+    public static final IAttributeModifier AGILITY_III                  = new AttributeModifier(AGILITY, AttributeOps.MUL, 0.80).named("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier INSTANT_KILL_I               = new AttributeModifier(SKULL_CRUSHER, AttributeOps.SUM, 0.01).named("chance", IValueFormatter.PERCENT);
     public static final IAttributeModifier INSTANT_KILL_II              = new AttributeModifier(SKULL_CRUSHER, AttributeOps.SUM, 0.03).named("chance", IValueFormatter.PERCENT);
     public static final IAttributeModifier INSTANT_KILL_III             = new AttributeModifier(SKULL_CRUSHER, AttributeOps.SUM, 0.05).named("chance", IValueFormatter.PERCENT);

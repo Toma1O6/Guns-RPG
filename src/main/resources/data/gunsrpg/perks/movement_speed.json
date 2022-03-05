@@ -1,5 +1,6 @@
 {
     "attribute": "gunsrpg:movement_speed",
+    "invertCalculation": true,
     "scaling": {
         "buff": 0.01,
         "debuff": 0.02

@@ -35,8 +35,8 @@ public final class ItemLocator extends AbstractLocator<ItemStack, IInventory> {
         };
     }
 
-    public static boolean hasItem(IInventory inventory, Predicate<ItemStack> condition) {
-        return !findFirst(inventory, condition::test).isEmpty();
+    public static boolean hasItem(IInventory inventory, ILocatorPredicate<ItemStack> condition) {
+        return !findFirst(inventory, condition).isEmpty();
     }
 
     public static boolean hasItem(IInventory inventory, Item item) {

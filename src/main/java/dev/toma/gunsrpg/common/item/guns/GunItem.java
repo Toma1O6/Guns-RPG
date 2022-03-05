@@ -7,13 +7,12 @@ import dev.toma.gunsrpg.api.common.IJamConfig;
 import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.BulletEjectAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.IShootProps;
 import dev.toma.gunsrpg.common.attribute.Attribs;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.entity.projectile.Bullet;
@@ -78,7 +77,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
     /* PROPERTIES FOR OVERRIDES ---------------------------------------------- */
 
-    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+    protected int getUnjamTime(ItemStack stack) {
         return 20;
     }
 
@@ -177,6 +176,10 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
     /* FINAL METHODS ---------------------------------------------------------------- */
 
+    public final int getUnjamTime(ItemStack stack, IAttributeProvider provider) {
+        return (int) (this.getUnjamTime(stack) * provider.getAttributeValue(Attribs.UNJAMMING_SPEED));
+    }
+
     public final IWeaponConfig getWeaponConfig() {
         return config;
     }
@@ -200,12 +203,14 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         shootProjectile(world, entity, stack, props);
         if (entity instanceof ServerPlayerEntity) {
             ServerPlayerEntity player = (ServerPlayerEntity) entity;
+            IPlayerData data = PlayerData.getUnsafe(player);
+            IAttributeProvider attributeProvider = data.getAttributes();
             Random random = world.getRandom();
             AmmoType type = getAmmoType();
             IAmmoMaterial material = getMaterialFromNBT(stack);
             IMaterialDataContainer container = type.getContainer();
-            float addedJamChance = 0.0F;
-            float addedDurability = 0.0F;
+            float addedJamChance = 1.0F - attributeProvider.getAttribute(Attribs.JAM_CHANCE).floatValue();
+            float addedDurability = 1.0F - attributeProvider.getAttribute(Attribs.WEAPON_DURABILITY).floatValue();
             if (container != null) {
                 IMaterialData materialData = container.getMaterialData(material);
                 addedDurability = materialData.getAddedDurability();

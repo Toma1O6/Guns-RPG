@@ -18,8 +18,8 @@ public final class Attribs {
     public static final IAttributeId GUNPOWDER_OUTPUT           = createInternal("gunpowder_out", 0);
     public static final IAttributeId BONEMEAL_OUTPUT            = createInternal("bonemeal_out", 0);
     public static final IAttributeId BLAZEPOWDER_OUTPUT         = createInternal("blazepowder_out", 0);
-    public static final IAttributeId AMMO_OUTPUT                = createInternal("ammo_output");
-    public static final IAttributeId BOLT_OUTPUT                = createInternal("bolt_output", 2);
+    public static final IAttributeId AMMO_OUTPUT                = createInternal("ammo_output", 0);
+    public static final IAttributeId BOLT_OUTPUT                = createInternal("bolt_output", 0);
     public static final IAttributeId QUEST_AMMO                 = createInternal("quest_ammo");
     // debuffs, healing
     public static final IAttributeId HEAL_BOOST                 = createInternal("heal_boost");
@@ -74,7 +74,7 @@ public final class Attribs {
     public static final IAttributeId DIGGING_SPEED              = createInternal("digging_speed"); // shovel
     public static final IAttributeId MINING_SPEED               = createInternal("mining_speed"); // pickaxe
     public static final IAttributeId WOODCUTTING_SPEED          = createInternal("woodcutting_speed"); // axe
-    public static final IAttributeId MOVEMENT_SPEED             = createInternal("movement_speed", 0.1);
+    public static final IAttributeId MOVEMENT_SPEED             = createInternal("movement_speed");
     public static final IAttributeId PERK_BOOK_CHANCE           = createInternal("perk_book_chance");
     public static final IAttributeId SKILL_BOOK_CHANCE          = createInternal("skill_book_chance");
     public static final IAttributeId INSTANT_KILL               = createInternal("instant_kill", 0.0);

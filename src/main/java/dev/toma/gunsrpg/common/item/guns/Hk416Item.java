@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Hk416Renderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
@@ -61,7 +60,7 @@ public class Hk416Item extends GunItem {
     }
 
     @Override
-    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+    public int getUnjamTime(ItemStack stack) {
         return 70;
     }
 

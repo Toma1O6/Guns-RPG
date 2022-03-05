@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.attribute;
 
 import dev.toma.gunsrpg.api.common.attribute.*;
 import dev.toma.gunsrpg.common.attribute.serialization.ModifierSerialization;
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
@@ -9,7 +10,6 @@ import net.minecraftforge.common.util.Constants;
 
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 public class Attribute implements IAttribute {
 
@@ -31,20 +31,19 @@ public class Attribute implements IAttribute {
     @Override
     public double getModifiedValue(double value) {
         Comparator<IAttributeModifier> executionOrderSorter = Comparator.comparing(IAttributeModifier::getOperation, Comparator.comparingInt(IModifierOp::getPriority));
-        List<IAttributeModifier> sumTargets = getModifiersByType(OperationTarget.DIRECT_VALUE, executionOrderSorter);
-        for (IAttributeModifier modifier : sumTargets) {
-            double modifierValue = modifier.getModifierValue();
-            IModifierOp operation = modifier.getOperation();
-            value = operation.combine(value, modifierValue);
+        Map<OperationTarget, List<IAttributeModifier>> modifiersByTarget = new HashMap<>();
+        for (IAttributeModifier modifier : modifierMap.values()) {
+            modifiersByTarget.computeIfAbsent(modifier.getOperation().getOperationTarget(), k -> new ArrayList<>()).add(modifier);
         }
-        List<IAttributeModifier> mulTargets = getModifiersByType(OperationTarget.MULTIPLIER, executionOrderSorter);
-        double multiplier = 1.0;
-        for (IAttributeModifier modifier : mulTargets) {
-            double modifierValue = modifier.getModifierValue();
-            IModifierOp operation = modifier.getOperation();
-            multiplier = operation.combine(multiplier, modifierValue);
+        for (List<IAttributeModifier> list : modifiersByTarget.values()) {
+            list.sort(executionOrderSorter);
         }
-        return value * multiplier;
+        Collection<IAttributeModifier> op1 = ModUtils.getNonnullFromMap(modifiersByTarget, OperationTarget.BEFORE_MULTIPLY, Collections.emptyList());
+        Collection<IAttributeModifier> op2 = ModUtils.getNonnullFromMap(modifiersByTarget, OperationTarget.MULTIPLIER, Collections.emptyList());
+        Collection<IAttributeModifier> op3 = ModUtils.getNonnullFromMap(modifiersByTarget, OperationTarget.AFTER_MULTIPLY, Collections.emptyList());
+        double initial = calculate(value, op1);
+        double multiplier = calculate(1.0, op2);
+        return calculate(initial * multiplier, op3);
     }
 
     @Override
@@ -195,7 +194,12 @@ public class Attribute implements IAttribute {
         return serializer.fromNbtStructure(data);
     }
 
-    private List<IAttributeModifier> getModifiersByType(OperationTarget target, Comparator<IAttributeModifier> sorter) {
-        return modifierMap.values().stream().filter(modifier -> modifier.getOperation().getOperationTarget() == target).sorted(sorter).collect(Collectors.toList());
+    private double calculate(double value, Collection<IAttributeModifier> set) {
+        double calculated = value;
+        for (IAttributeModifier modifier : set) {
+            IModifierOp op = modifier.getOperation();
+            calculated = op.combine(calculated, modifier.getModifierValue());
+        }
+        return calculated;
     }
 }

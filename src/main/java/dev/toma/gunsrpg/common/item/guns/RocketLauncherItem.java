@@ -66,7 +66,7 @@ public class RocketLauncherItem extends GunItem {
     }
 
     @Override
-    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+    public int getUnjamTime(ItemStack stack) {
         return 65;
     }
 

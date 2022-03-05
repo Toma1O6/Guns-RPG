@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IReloadManager;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.R45Renderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
@@ -55,7 +54,7 @@ public class R45Item extends GunItem implements IDualWieldGun {
     }
 
     @Override
-    public int getUnjamTime(ItemStack stack, IPlayerData data) {
+    public int getUnjamTime(ItemStack stack) {
         return 60;
     }
 

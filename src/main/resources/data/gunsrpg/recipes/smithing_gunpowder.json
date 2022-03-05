@@ -18,6 +18,7 @@
   "result": {
     "item": "minecraft:gunpowder"
   },
+  "outputModifier": "gunsrpg:gunpowder_out",
   "requirements": [
     {
       "type": "gunsrpg:skill",

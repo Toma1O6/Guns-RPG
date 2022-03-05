@@ -4,7 +4,8 @@
         "parent": "gunsrpg:grave_digger_i",
         "children": [
             "gunsrpg:grave_digger_iii"
-        ]
+        ],
+        "override": "gunsrpg:grave_digger_iii"
     },
     "properties": {
         "level": 10,

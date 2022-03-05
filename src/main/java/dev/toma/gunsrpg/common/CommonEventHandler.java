@@ -35,6 +35,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.IAngerable;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -89,11 +92,13 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
 public class CommonEventHandler {
 
     public static final Random random = new Random();
+    private static final UUID MOVEMENT_SPEED = UUID.fromString("785168CE-6979-421A-ADE7-98461F04D1A0");
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void loadBiomes(BiomeLoadingEvent event) {
@@ -373,7 +378,7 @@ public class CommonEventHandler {
             PlayerEntity player = event.player;
             PlayerData.get(player).ifPresent(data -> {
                 data.tick();
-                player.abilities.walkingSpeed = data.getAttributes().getAttribute(Attribs.MOVEMENT_SPEED).floatValue();
+                updateMovementSpeedAttribute(player, data.getAttributes());
             });
         }
     }
@@ -443,5 +448,17 @@ public class CommonEventHandler {
 
     private static String getMessageLogo() {
         return TextFormatting.BLUE + "[" + TextFormatting.YELLOW + "GunsRPG" + TextFormatting.BLUE + "]" + TextFormatting.RESET;
+    }
+
+    private static void updateMovementSpeedAttribute(PlayerEntity player, IAttributeProvider provider) {
+        ModifiableAttributeInstance instance = player.getAttribute(Attributes.MOVEMENT_SPEED);
+        AttributeModifier modifier = instance.getModifier(MOVEMENT_SPEED);
+        double modifierValue = modifier == null ? 0.0 : modifier.getAmount();
+        double requiredValue = 1.0F - provider.getAttributeValue(Attribs.MOVEMENT_SPEED);
+        if (modifierValue != requiredValue) {
+            AttributeModifier newModifier = new AttributeModifier(MOVEMENT_SPEED, "attribute", requiredValue, AttributeModifier.Operation.MULTIPLY_TOTAL);
+            instance.removeModifier(MOVEMENT_SPEED);
+            instance.addTransientModifier(newModifier);
+        }
     }
 }

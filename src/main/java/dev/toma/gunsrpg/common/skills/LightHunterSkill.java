@@ -15,7 +15,7 @@ import net.minecraft.util.text.ITextComponent;
 public class LightHunterSkill extends BasicSkill implements ITickableSkill, IDescriptionProvider {
 
     public static final float ARROW_DAMAGE_MULTIPLIER = 1.2F; // TODO move to attributes
-    private static final IAttributeModifier MOVEMENT_SPEED_MODIFIER = new AttributeModifier("9942EE39-CCD1-4F37-88E4-98711C2CF3EB", AttributeOps.SUM, 0.015);
+    private static final IAttributeModifier MOVEMENT_SPEED_MODIFIER = new AttributeModifier("9942EE39-CCD1-4F37-88E4-98711C2CF3EB", AttributeOps.MUL, 0.85);
     private static final IAttributeModifier FALLING_MODIFIER = new AttributeModifier("E354F3D8-F665-48C4-9F6D-B1C7714E2337", AttributeOps.MUL, 0.85);
     private final DescriptionContainer container;
     private boolean validityState;

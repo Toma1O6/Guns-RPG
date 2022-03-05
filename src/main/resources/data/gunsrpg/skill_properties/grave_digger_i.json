@@ -3,7 +3,8 @@
         "category": "mining",
         "children": [
             "gunsrpg:grave_digger_ii"
-        ]
+        ],
+        "override": "gunsrpg:grave_digger_ii"
     },
     "properties": {
         "level": 0,
