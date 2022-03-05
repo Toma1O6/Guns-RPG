@@ -223,6 +223,9 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
                 float doubleDmgChance = noDamageChance - 1.0F;
                 if (doubleDmgChance >= chance) {
                     stack.hurt(2, random, player);
+                    if (stack.getDamageValue() > stack.getMaxDamage()) {
+                        stack.setDamageValue(stack.getMaxDamage());
+                    }
                     damaged = true;
                 }
             }
