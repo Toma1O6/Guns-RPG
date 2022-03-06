@@ -1,18 +1,10 @@
 package dev.toma.gunsrpg.api.common.data;
 
-import dev.toma.gunsrpg.api.common.perk.IPerk;
-import dev.toma.gunsrpg.api.common.perk.IPerkOptions;
-import dev.toma.gunsrpg.common.perk.Perk;
-
-import java.util.Collection;
+import dev.toma.gunsrpg.common.item.perk.Crystal;
 
 public interface IPerkProvider extends IPointProvider {
 
-    IPerk getPerk(Perk perk);
+    Crystal getCrystal(int slot);
 
-    void addPerk(Perk perk, IPerkOptions options);
-
-    void removePerk(Perk perk);
-
-    Collection<IPerk> listPerks();
+    void setCrystal(int slot, Crystal crystal);
 }

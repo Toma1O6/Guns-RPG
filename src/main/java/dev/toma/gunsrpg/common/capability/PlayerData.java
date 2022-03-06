@@ -50,7 +50,7 @@ public class PlayerData implements IPlayerData {
         this.jamInfo = new JamInfo(handState, player);
         this.attributes = new PlayerAttributes();
         this.skillProvider = new PlayerSkillProvider(player);
-        this.perkProvider = new PlayerPerkProvider();
+        this.perkProvider = new PlayerPerkProvider(attributes);
         this.playerQuests = new PlayerQuests();
         this.data = new PlayerProgressionData(player, skillProvider);
 

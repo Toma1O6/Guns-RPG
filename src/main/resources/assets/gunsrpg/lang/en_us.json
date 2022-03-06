@@ -774,6 +774,7 @@
     "view.skill.price": "Price: %s",
     "view.skill.unknown": "Unknown skill, you have to level up",
     "view.extension.header": "%s Extensions",
+    "view.perk.header": "%s's perk overview",
     "nav.entry.resistance": "Resistance",
     "nav.entry.mining": "Mining",
     "nav.entry.survival": "Survival",

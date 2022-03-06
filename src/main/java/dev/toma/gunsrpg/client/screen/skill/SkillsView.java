@@ -32,6 +32,10 @@ public class SkillsView extends View {
     @Override
     protected void init() {
         clear();
+        // add perk/skill switch
+        viewSwitchWidget = addWidget(new ViewSwitchWidget(x + width - 42, height - 62, 32, 32, new ItemStack(ModItems.PERKPOINT_BOOK)));
+        viewSwitchWidget.setClickEvent(this::openPerkView);
+        viewSwitchWidget.setColorSchema(0xFFA60C, 0xFFD21E);
         // add skill view
         skillViewWidget = addWidget(new PannableWidget(x, y + 40, width, height - 60));
         skillViewWidget.setEmptyClickResponder(this::skillClicked);
@@ -52,11 +56,6 @@ public class SkillsView extends View {
         footerWidget.setColorSchema(0xFFFF, 0xCCCC);
         // add skill info panel
         skillInfoWidget = addWidget(new SkillInfoWidget(x, y + height - 80, width, 80, manager));
-        // add perk/skill switch
-        viewSwitchWidget = addWidget(new ViewSwitchWidget(x + width - 42, height - 62, 32, 32, new ItemStack(ModItems.PERKPOINT_BOOK)));
-        viewSwitchWidget.setClickEvent(this::openPerkView);
-        // viewSwitchWidget.setColorSchema(0x49A1FF, 0x49D8FF); perk color schema
-        viewSwitchWidget.setColorSchema(0xFFA60C, 0xFFD21E);
 
         this.loadTree();
         this.updateSkillInformationVisibility(false);
@@ -72,7 +71,7 @@ public class SkillsView extends View {
     }
 
     private void openPerkView() {
-        // TODO
+        manager.setView(new PerkView(width, height, manager));
     }
 
     private void updateCanvasSource(SkillCategory category) {

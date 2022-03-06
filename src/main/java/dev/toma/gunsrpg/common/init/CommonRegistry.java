@@ -21,6 +21,8 @@ import dev.toma.gunsrpg.common.item.heal.AttributeAccessHealItem;
 import dev.toma.gunsrpg.common.item.heal.ContinuousHealingItem;
 import dev.toma.gunsrpg.common.item.heal.DebuffHealItem;
 import dev.toma.gunsrpg.common.item.heal.PlayerHealItem;
+import dev.toma.gunsrpg.common.item.perk.CrystalItem;
+import dev.toma.gunsrpg.common.item.perk.PerkItem;
 import dev.toma.gunsrpg.common.item.perk.PerkVariant;
 import dev.toma.gunsrpg.common.skills.*;
 import dev.toma.gunsrpg.common.skills.core.DisplayData;
@@ -676,9 +678,9 @@ public class CommonRegistry {
                 new StarterGearItem("starter_gear")
         );
         for (PerkVariant variant : PerkVariant.values()) {
-            registry.register(BaseItem.simpleItem(variant.getRegistryName("crystal")));
-            registry.register(BaseItem.simpleItem(variant.getRegistryName("orb_of_purity")));
-            registry.register(BaseItem.simpleItem(variant.getRegistryName("orb_of_transmutation")));
+            registry.register(new CrystalItem(variant.getRegistryName("crystal"), variant));
+            registry.register(new PerkItem(variant.getRegistryName("orb_of_purity"), variant));
+            registry.register(new PerkItem(variant.getRegistryName("orb_of_transmutation"), variant));
         }
         queue.forEach(registry::register);
         queue = null;
