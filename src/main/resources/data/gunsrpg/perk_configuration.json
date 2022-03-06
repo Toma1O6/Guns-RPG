@@ -17,10 +17,12 @@
             ],
             "types": {
                 "buff": {
+                    "function": "gunsrpg:rng",
                     "min": 1,
                     "max": 3
                 },
                 "debuff": {
+                    "function": "gunsrpg:rng",
                     "min": 0,
                     "max": 4
                 }

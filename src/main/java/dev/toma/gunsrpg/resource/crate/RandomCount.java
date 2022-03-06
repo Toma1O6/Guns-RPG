@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.resource.crate;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.resource.util.functions.IFunction;
 import net.minecraft.util.JSONUtils;
 
 import java.util.Random;
@@ -31,7 +32,7 @@ public class RandomCount implements ICountFunction {
     public static class Adapter implements ICountFunctionAdapter {
 
         @Override
-        public ICountFunction deserialize(JsonObject data) {
+        public ICountFunction deserialize(JsonObject data, IFunction range) {
             int lower = JSONUtils.getAsInt(data, "min");
             int upper = JSONUtils.getAsInt(data, "max");
             if (lower == upper) {
@@ -40,14 +41,14 @@ public class RandomCount implements ICountFunction {
             if (lower > upper) {
                 throw new JsonSyntaxException("Lower bound cannot be bigger than upper bound!");
             }
-            validateInRange(lower);
-            validateInRange(upper);
+            validateInRange(lower, range);
+            validateInRange(upper, range);
             return fromInterval(lower, upper);
         }
 
-        private void validateInRange(int value) {
-            if (value <= 0 || value > 64) {
-                throw new JsonSyntaxException("Value is out of bounds. Make sure it's defined in <1; 64> interval");
+        private void validateInRange(int value, IFunction range) {
+            if (!range.canApplyFor(value)) {
+                throw new JsonSyntaxException("Value is out of bounds");
             }
         }
     }

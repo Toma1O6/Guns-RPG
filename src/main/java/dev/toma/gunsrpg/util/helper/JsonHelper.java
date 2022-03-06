@@ -25,8 +25,8 @@ public final class JsonHelper {
         return as(element, JsonElement::isJsonObject, JsonElement::getAsJsonObject, "JsonObject");
     }
 
-    public static JsonObject asJsonArray(JsonElement element) throws JsonParseException {
-        return as(element, JsonElement::isJsonArray, JsonHelper::asJsonArray, "JsonArray");
+    public static JsonArray asJsonArray(JsonElement element) throws JsonParseException {
+        return as(element, JsonElement::isJsonArray, JsonElement::getAsJsonArray, "JsonArray");
     }
 
     private static <J> J as(JsonElement element, Predicate<JsonElement> condition, Function<JsonElement, J> converter, String type) {

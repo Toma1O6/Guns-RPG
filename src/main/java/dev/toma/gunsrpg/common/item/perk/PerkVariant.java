@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item.perk;
 import java.util.Locale;
 
 public enum PerkVariant {
+
     BLACK,
     BLUE,
     GREEN,

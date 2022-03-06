@@ -26,6 +26,7 @@ public class PerkManager extends JsonReloadListener {
             .registerTypeAdapter(Perk.class, new PerkAdapter())
             .registerTypeAdapter(PerkValueSpec.class, new PerkValueSpecAdapter())
             .create();
+    public final PerkConfigurationLoader configLoader = new PerkConfigurationLoader();
 
     public PerkManager() {
         super(GSON, "perks");

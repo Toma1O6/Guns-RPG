@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.resource.adapter.*;
+import dev.toma.gunsrpg.resource.util.functions.RangedFunction;
 import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
@@ -24,7 +25,7 @@ public class LootManager extends JsonReloadListener {
             .registerTypeAdapter(LootConfigurationCategory.class, new LootConfigurationCategoryAdapter())
             .registerTypeAdapter(LootEntry.class, new LootEntryAdapter())
             .registerTypeAdapter(SlotConfiguration.class, new SlotConfigurationAdapter())
-            .registerTypeHierarchyAdapter(ICountFunction.class, new CountFunctionAdapter())
+            .registerTypeHierarchyAdapter(ICountFunction.class, new CountFunctionAdapter(new RangedFunction(RangedFunction.BETWEEN_INCLUSIVE, 1, 64)))
             .create();
 
     private final Map<ResourceLocation, LootConfig> configurationMap = new HashMap<>();

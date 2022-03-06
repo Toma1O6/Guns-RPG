@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.resource.crate;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import dev.toma.gunsrpg.resource.util.functions.IFunction;
 import net.minecraft.util.JSONUtils;
 
 public class ConstantCount implements ICountFunction {
@@ -24,10 +25,10 @@ public class ConstantCount implements ICountFunction {
     public static class Adapter implements ICountFunctionAdapter {
 
         @Override
-        public ICountFunction deserialize(JsonObject data) {
+        public ICountFunction deserialize(JsonObject data, IFunction range) {
             int value = JSONUtils.getAsInt(data, "value", 1);
-            if (value <= 0 || value > 64) {
-                throw new JsonSyntaxException("Value is out of bounds. Make sure it's defined in <1; 64> interval");
+            if (!range.canApplyFor(value)) {
+                throw new JsonSyntaxException("Value is out of bounds.");
             }
             return constant(value);
         }

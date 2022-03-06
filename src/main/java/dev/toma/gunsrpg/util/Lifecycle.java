@@ -132,5 +132,6 @@ public final class Lifecycle {
         event.addListener(lootManager);
         event.addListener(progressionStrategyManager);
         event.addListener(perkManager);
+        event.addListener(perkManager.configLoader);
     }
 }

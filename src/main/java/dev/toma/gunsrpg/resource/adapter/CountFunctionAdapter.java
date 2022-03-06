@@ -4,6 +4,7 @@ import com.google.gson.*;
 import dev.toma.gunsrpg.resource.crate.CountFunctionRegistry;
 import dev.toma.gunsrpg.resource.crate.ICountFunction;
 import dev.toma.gunsrpg.resource.crate.ICountFunctionAdapter;
+import dev.toma.gunsrpg.resource.util.functions.IFunction;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.util.JSONUtils;
@@ -12,6 +13,12 @@ import net.minecraft.util.ResourceLocation;
 import java.lang.reflect.Type;
 
 public class CountFunctionAdapter implements JsonDeserializer<ICountFunction> {
+
+    private final IFunction range;
+
+    public CountFunctionAdapter(IFunction range) {
+        this.range = range;
+    }
 
     @Override
     public ICountFunction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -25,6 +32,6 @@ public class CountFunctionAdapter implements JsonDeserializer<ICountFunction> {
         if (adapter == null) {
             throw new JsonParseException(String.format("Invalid property value 'function': '%s' is not valid function", identifierString));
         }
-        return adapter.deserialize(object);
+        return adapter.deserialize(object, range);
     }
 }
