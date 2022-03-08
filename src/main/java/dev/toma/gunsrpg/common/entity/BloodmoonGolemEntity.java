@@ -61,9 +61,9 @@ public class BloodmoonGolemEntity extends CreatureEntity implements IMob {
 
     @Override
     protected void doPush(Entity entityIn) {
-        if (entityIn instanceof IMob && !(entityIn instanceof CreeperEntity) && this.getRandom().nextInt(20) == 0) {
+        /*if (entityIn instanceof IMob && !(entityIn instanceof CreeperEntity) && this.getRandom().nextInt(20) == 0) {
             this.setTarget((LivingEntity) entityIn);
-        }
+        }*/
         super.doPush(entityIn);
     }
 

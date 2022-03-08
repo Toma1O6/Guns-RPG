@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathType;
@@ -28,6 +29,7 @@ import java.util.Set;
 public class TrapBlock extends BaseBlock {
 
     public static final VoxelShape SHAPE = VoxelShapes.box(0.0, 0.0, 0.0, 1.0, 0.25, 1.0);
+    public static final VoxelShape COLLISION = VoxelShapes.box(0.1, 0.0, 0.1, 0.9, 0.1, 0.9);
     private final ITrapReaction reaction;
 
     public TrapBlock(String name, Properties properties, ITrapReaction reaction) {
@@ -47,7 +49,7 @@ public class TrapBlock extends BaseBlock {
 
     @Override
     public VoxelShape getCollisionShape(BlockState p_220071_1_, IBlockReader p_220071_2_, BlockPos p_220071_3_, ISelectionContext p_220071_4_) {
-        return VoxelShapes.empty();
+        return COLLISION;
     }
 
     @Override
@@ -96,6 +98,11 @@ public class TrapBlock extends BaseBlock {
         return stateBelow.getMaterial().isSolid() && shape.max(Direction.Axis.Y) == 1.0;
     }
 
+    @Override
+    public void onProjectileHit(World world, BlockState state, BlockRayTraceResult result, ProjectileEntity entity) {
+        reaction.onHitByProjectile(world, result.getBlockPos(), entity);
+    }
+
     protected void onEntityCaught(World world, BlockPos pos, Entity victim) {
 
     }
@@ -121,6 +128,8 @@ public class TrapBlock extends BaseBlock {
          * @return Whether this tool can be used for defusal
          */
         boolean isValidDefuseTool(World level, BlockPos pos, PlayerEntity player, Hand hand);
+
+        default void onHitByProjectile(World level, BlockPos pos, ProjectileEntity projectile) {}
     }
 
     public static class MineReaction implements ITrapReaction {
@@ -156,6 +165,11 @@ public class TrapBlock extends BaseBlock {
             ItemStack stack = player.getItemInHand(hand);
             Set<ToolType> toolTypes = stack.getToolTypes();
             return toolTypes.contains(ToolType.SHOVEL);
+        }
+
+        @Override
+        public void onHitByProjectile(World level, BlockPos pos, ProjectileEntity projectile) {
+            applyTrapEffects(level, pos, projectile);
         }
     }
 }

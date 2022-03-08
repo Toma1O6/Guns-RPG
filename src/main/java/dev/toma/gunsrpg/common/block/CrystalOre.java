@@ -4,15 +4,16 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.item.perk.Crystal;
 import dev.toma.gunsrpg.common.skills.MotherlodeSkill;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.loot.LootTable;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.ToolType;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class CrystalOre extends BaseBlock implements ICustomizableDrops {
         MotherlodeSkill skill = SkillUtil.getTopHierarchySkill(Skills.MOTHER_LODE_I, provider);
         List<ItemStack> drops = table.getRandomItems(context);
         if (skill != null) {
-            int multiplier = skill.getDropMultiplier(player.getRandom(), data);
+            int multiplier = skill.getDropMultiplier(player.getRandom(), data) - 1;
             Collection<ItemStack> addedDrops = new ArrayList<>();
             for (ItemStack stack : drops) {
                 for (int i = 0; i < multiplier; i++) {
@@ -46,7 +47,13 @@ public class CrystalOre extends BaseBlock implements ICustomizableDrops {
             }
             drops.addAll(addedDrops);
         }
-        // TODO generate initial NBT data
-        return Collections.emptyList();
+        drops.forEach(stack -> {
+            Crystal crystal = Crystal.generate();
+            CompoundNBT nbt = new CompoundNBT();
+            CompoundNBT crystalNbt = crystal.toNbt();
+            nbt.put("crystal", crystalNbt);
+            stack.setTag(nbt);
+        });
+        return drops;
     }
 }

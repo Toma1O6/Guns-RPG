@@ -184,6 +184,10 @@
     "item.gunsrpg.red_orb_of_transmutation": "Red Orb Of Transmutation",
     "item.gunsrpg.white_orb_of_transmutation": "White Orb Of Transmutation",
     "item.gunsrpg.yellow_orb_of_transmutation": "Yellow Orb Of Transmutation",
+    "item.gunsrpg.bloodmoon_golem_spawn_egg": "Spawn Bloodmoon Golem",
+    "item.gunsrpg.rocket_angel_spawn_egg": "Spawn Rocket Angel",
+    "item.gunsrpg.explosive_skeleton_spawn_egg": "Spawn Explosive Skeleton",
+    "item.gunsrpg.zombie_gunner_spawn_egg": "Spawn Zombie Gunner",
 
     "block.gunsrpg.amethyst_ore": "Amethyst Ore",
     "block.gunsrpg.blast_furnace": "Blast Furnace",

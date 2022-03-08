@@ -40,6 +40,7 @@ public class PerkManager extends JsonReloadListener {
         for (Map.Entry<ResourceLocation, JsonElement> entry : resources.entrySet()) {
             loadPerk(entry.getKey(), entry.getValue(), registry);
         }
+        registry.finishRegistering();
         GunsRPG.log.info(MARKER, "Perks loaded, total {}", registry.size());
     }
 

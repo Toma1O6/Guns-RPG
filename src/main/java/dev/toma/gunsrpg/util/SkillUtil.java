@@ -10,7 +10,10 @@ import dev.toma.gunsrpg.common.skills.core.DisplayType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+
+import java.util.Arrays;
 
 public class SkillUtil {
 
@@ -42,6 +45,13 @@ public class SkillUtil {
     }
 
     public static class Localizations {
+
+        public static ITextComponent makeReadable(ResourceLocation location) {
+            String[] str = location.toString().split("[.:]");
+            String in = str[str.length - 1];
+            String[] words = Arrays.stream(in.split("_")).map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase()).toArray(String[]::new);
+            return new StringTextComponent(String.join(" ", words));
+        }
 
         public static ITextComponent getDefaultTitle(SkillType<?> type) {
             return new TranslationTextComponent("skill." + ModUtils.convertToLocalization(type.getRegistryName()) + ".title");

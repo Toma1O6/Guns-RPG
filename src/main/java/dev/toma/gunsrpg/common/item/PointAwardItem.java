@@ -32,7 +32,7 @@ public class PointAwardItem extends BaseItem {
             PlayerData.get(player).ifPresent(data -> {
                 IPointProvider provider = this.pointSource.getProvider(data);
                 provider.awardPoints(1);
-                data.sync(DataFlags.DATA); // TODO add perk sync
+                data.sync(DataFlags.DATA | DataFlags.PERK);
                 if (!player.isCreative())
                     stack.shrink(1);
                 player.playSound(SoundEvents.PLAYER_LEVELUP, 0.75F, 1.0F);
