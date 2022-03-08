@@ -5,7 +5,7 @@ import dev.toma.gunsrpg.util.ModUtils;
 public final class MaterialDataList {
 
     public static final IMaterialDataContainer CONTAINER_9MM = ModUtils.init(new MaterialDataContainer(), container -> {
-        container.register(AmmoMaterials.WOOD,      new MaterialData(-0.1F, 0.2F, 0.0F));
+        container.register(AmmoMaterials.WOOD,      new MaterialData(-0.11F, 0.2F, 0.0F));
         container.register(AmmoMaterials.STONE,     new MaterialData(0.05F, 0.0F, 0.1F));
         container.register(AmmoMaterials.IRON,      new MaterialData(0.0F, 0.0F, -0.05F));
         container.register(AmmoMaterials.LAPIS,     new MaterialData(-0.05F, -0.15F, 0.0F));
