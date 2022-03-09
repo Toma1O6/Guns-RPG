@@ -17,7 +17,8 @@
     }
   },
   "result": {
-    "item": "gunsrpg:diamond_bolt"
+    "item": "gunsrpg:diamond_bolt",
+    "count": 2
   },
   "outputModifier": {
     "attribute": "gunsrpg:ammo_output",
