@@ -17,7 +17,8 @@
     }
   },
   "result": {
-    "item": "gunsrpg:wooden_bolt"
+    "item": "gunsrpg:wooden_bolt",
+    "count": 2
   },
   "outputModifier": {
     "attribute": "gunsrpg:ammo_output",
