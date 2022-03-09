@@ -12,7 +12,7 @@ public class ModBlocks {
     public static final AirdropBlock AIRDROP = null;
     public static final SmithingTableBlock SMITHING_TABLE = null;
     public static final CulinaryTableBlock CULINARY_TABLE = null;
-    public static final MedstationBlock MEDSTATION = null;
+    public static final MedstationBlock MEDICAL_STATION = null;
     public static final GoldDragonEggBlock GOLD_DRAGON_EGG = null;
     public static final DeathCrateBlock DEATH_CRATE = null;
     public static final CookerBlock COOKER = null;
