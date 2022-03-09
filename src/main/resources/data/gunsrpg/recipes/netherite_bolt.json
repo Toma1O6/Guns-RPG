@@ -17,7 +17,8 @@
     }
   },
   "result": {
-    "item": "gunsrpg:netherite_bolt"
+    "item": "gunsrpg:netherite_bolt",
+    "count": 2
   },
   "outputModifier": {
     "attribute": "gunsrpg:ammo_output",
