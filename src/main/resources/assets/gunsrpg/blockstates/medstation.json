@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "gunsrpg:block/medstation" },
-        "facing=east": { "model": "gunsrpg:block/medstation", "y": 90 },
-        "facing=south": { "model": "gunsrpg:block/medstation", "y": 180 },
-        "facing=west": { "model": "gunsrpg:block/medstation", "y": 270 }
-    }
-}

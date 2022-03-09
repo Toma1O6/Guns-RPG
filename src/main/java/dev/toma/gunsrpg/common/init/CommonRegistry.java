@@ -417,7 +417,7 @@ public class CommonRegistry {
                 new MilitaryCrateBlock("desert_military_crate"),
                 new MilitaryCrateBlock("woodland_military_crate"),
                 new CulinaryTableBlock("culinary_table"),
-                new MedstationBlock("medstation")
+                new MedstationBlock("medical_station")
         );
         for (PerkVariant variant : PerkVariant.values()) {
             registry.register(new CrystalOre(variant.getRegistryName("crystal_ore")));
