@@ -17,7 +17,8 @@
     }
   },
   "result": {
-    "item": "gunsrpg:redstone_bolt"
+    "item": "gunsrpg:redstone_bolt",
+    "count": 2
   },
   "outputModifier": {
     "attribute": "gunsrpg:ammo_output",
