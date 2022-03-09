@@ -134,4 +134,5 @@ public class ModItems {
     public static final CookingOilItem COOKING_OIL = null;
     public static final BaseItem SMALL_STONE = null;
     public static final StarterGearItem STARTER_GEAR = null;
+    public static final BaseItem WEAPON_REPAIR_KIT = null;
 }

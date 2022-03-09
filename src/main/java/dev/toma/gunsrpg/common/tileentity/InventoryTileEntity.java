@@ -92,6 +92,10 @@ public abstract class InventoryTileEntity extends TileEntity {
         return true;
     }
 
+    public IItemHandlerModifiable getItemHandler() {
+        return itemHandler;
+    }
+
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {

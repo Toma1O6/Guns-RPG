@@ -102,6 +102,16 @@ public abstract class AbstractGun extends BaseItem {
         return stack.getTag().getBoolean("jammed");
     }
 
+    public final void setDurabilityLimit(ItemStack stack, float durability) {
+        this.ensureHasNBT(stack);
+        stack.getTag().putFloat("repairDurability", durability);
+    }
+
+    public final float getDurabilityLimit(ItemStack stack) {
+        this.ensureHasNBT(stack);
+        return stack.getTag().getFloat("repairDurability");
+    }
+
     @Override
     public boolean isEnchantable(ItemStack p_77616_1_) {
         return false;
