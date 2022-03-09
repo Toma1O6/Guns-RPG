@@ -17,7 +17,8 @@
     }
   },
   "result": {
-    "item": "gunsrpg:amethyst_bolt"
+    "item": "gunsrpg:amethyst_bolt",
+    "count": 2
   },
   "outputModifier": {
     "attribute": "gunsrpg:ammo_output",
