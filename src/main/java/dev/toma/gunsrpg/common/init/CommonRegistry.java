@@ -421,7 +421,7 @@ public class CommonRegistry {
         );
         for (PerkVariant variant : PerkVariant.values()) {
             registry.register(new CrystalOre(variant.getRegistryName("crystal_ore")));
-            registry.register(new BaseBlock(variant.getRegistryName("orb_ore"), AbstractBlock.Properties.of(Material.STONE).strength(3.3F).harvestTool(ToolType.PICKAXE).harvestLevel(2)));
+            registry.register(new BaseBlock(variant.getRegistryName("orb_ore"), AbstractBlock.Properties.of(Material.STONE).strength(3.3F).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops()));
         }
     }
 

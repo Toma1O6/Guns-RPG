@@ -11,9 +11,13 @@ public class PerkItem extends BaseItem {
 
     protected final PerkVariant variant;
 
-    public PerkItem(String name, PerkVariant variant) {
-        super(name, new Properties().stacksTo(1).tab(ModTabs.ITEM_TAB));
+    protected PerkItem(String name, PerkVariant variant, Properties properties) {
+        super(name, properties);
         this.variant = variant;
+    }
+
+    public PerkItem(String name, PerkVariant variant) {
+        this(name, variant, new Properties().tab(ModTabs.ITEM_TAB));
     }
 
     public PerkVariant getVariant() {

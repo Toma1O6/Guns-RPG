@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.item.perk;
 
+import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.common.perk.PerkType;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -23,7 +24,7 @@ public class CrystalItem extends PerkItem implements IPerkHolder {
     public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
 
     public CrystalItem(String name, PerkVariant variant) {
-        super(name, variant);
+        super(name, variant, new Properties().tab(ModTabs.ITEM_TAB).stacksTo(1));
     }
 
     @Override

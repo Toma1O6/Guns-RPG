@@ -24,7 +24,7 @@ import java.util.List;
 public class CrystalOre extends BaseBlock implements ICustomizableDrops {
 
     public CrystalOre(String name) {
-        super(name, Properties.of(Material.STONE).strength(3.3F).harvestTool(ToolType.PICKAXE).harvestLevel(2));
+        super(name, Properties.of(Material.STONE).strength(3.3F).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops());
     }
 
     @Override
