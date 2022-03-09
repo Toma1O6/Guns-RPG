@@ -22,11 +22,15 @@
   "result": {
     "item": "gunsrpg:blaze_lump"
   },
+  "outputModifier": {
+    "attribute": "gunsrpg:blazepowder_out",
+    "operation": "gunsrpg:mul"
+  },
   "requirements": [
     {
       "type": "gunsrpg:skill",
       "predicate": {
-        "skill": "gunsrpg:blacksmith"
+        "skill": "gunsrpg:blaze_powder_i"
       }
     }
   ]
