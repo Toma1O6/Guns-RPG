@@ -1,18 +1,14 @@
 package dev.toma.gunsrpg.common.block;
 
-import dev.toma.gunsrpg.common.container.MedstationContainer;
-import dev.toma.gunsrpg.common.container.SmithingTableContainer;
-import dev.toma.gunsrpg.common.tileentity.MedstationTileEntity;
 import dev.toma.gunsrpg.common.tileentity.SkilledWorkbenchTileEntity;
-import dev.toma.gunsrpg.common.tileentity.SmithingTableTileEntity;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -32,6 +28,8 @@ public abstract class SkilledWorkbenchBlock extends BaseHorizontalBlock {
     }
 
     public abstract ITextComponent getTitleComponent();
+
+    public abstract IContainerProvider getContainerProvider(World world, BlockPos pos);
 
     @Nullable
     @Override
@@ -57,7 +55,7 @@ public abstract class SkilledWorkbenchBlock extends BaseHorizontalBlock {
 
     @Override
     public INamedContainerProvider getMenuProvider(BlockState state, World world, BlockPos pos) {
-        return new SimpleNamedContainerProvider((id, inventory, player) -> new MedstationContainer(id, inventory, (MedstationTileEntity) world.getBlockEntity(pos)), this.getTitleComponent());
+        return new SimpleNamedContainerProvider(this.getContainerProvider(world, pos), this.getTitleComponent());
     }
 
     @Override
