@@ -1,0 +1,29 @@
+{
+    "type": "gunsrpg:culinary",
+    "pattern": [
+      "cb",
+      "bo"
+    ],
+    "key": {
+      "b": {
+        "item": "minecraft:bread"
+      },
+      "c": {
+        "item": "minecraft:cooked_beef"
+      },
+      "o": {
+        "item": "minecraft:cooked_porkchop"
+      }
+    },
+    "result": {
+      "item": "gunsrpg:bacon_burger"
+    },
+    "requirements": [
+      {
+        "type": "gunsrpg:skill",
+        "predicate": {
+          "skill": "gunsrpg:local_chef"
+        }
+      }
+    ]
+  }

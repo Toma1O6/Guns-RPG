@@ -1,0 +1,30 @@
+{
+    "type": "gunsrpg:culinary",
+    "pattern": [
+      " e ",
+      "bwb",
+      " e "
+    ],
+    "key": {
+      "b": {
+        "item": "minecraft:baked_potato"
+      },
+      "w": {
+        "item": "minecraft:wheat_seeds"
+      },
+      "e": {
+        "item": "minecraft:egg"
+      }
+    },
+    "result": {
+      "item": "gunsrpg:egg_salad"
+    },
+    "requirements": [
+      {
+        "type": "gunsrpg:skill",
+        "predicate": {
+          "skill": "gunsrpg:local_chef"
+        }
+      }
+    ]
+  }

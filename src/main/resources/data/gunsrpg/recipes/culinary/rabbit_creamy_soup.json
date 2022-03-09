@@ -1,0 +1,39 @@
+{
+    "type": "gunsrpg:culinary",
+    "pattern": [
+      "pmp",
+      "cbc",
+      "ror"
+    ],
+    "key": {
+      "b": {
+        "item": "minecraft:brown_mushroom"
+      },
+      "r": {
+        "item": "minecraft:bread"
+      },
+      "p": {
+        "item": "minecraft:potato"
+      },
+      "m": {
+        "item": "minecraft:milk_bucket"
+      },
+      "c": {
+        "item": "minecraft:carrot"
+      },
+      "o": {
+        "item": "minecraft:cooked_rabbit"
+      }
+    },
+    "result": {
+      "item": "gunsrpg:rabbit_creamy_soup"
+    },
+    "requirements": [
+      {
+        "type": "gunsrpg:skill",
+        "predicate": {
+          "skill": "gunsrpg:master_chef"
+        }
+      }
+    ]
+  }

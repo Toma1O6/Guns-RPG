@@ -1,0 +1,30 @@
+{
+    "type": "gunsrpg:culinary",
+    "pattern": [
+      "cwc",
+      "wsw",
+      "cwc"
+    ],
+    "key": {
+      "c": {
+        "item": "minecraft:cocoa_beans"
+      },
+      "w": {
+          "item": "minecraft:wheat"
+      },
+      "s": {
+          "item": "minecraft:sugar"
+      }
+    },
+    "result": {
+      "item": "gunsrpg:raw_doughnut"
+    },
+    "requirements": [
+      {
+        "type": "gunsrpg:skill",
+        "predicate": {
+          "skill": "gunsrpg:master_chef"
+        }
+      }
+    ]
+  }
