@@ -17,7 +17,12 @@
     }
   },
   "result": {
-    "item": "gunsrpg:gold_bolt"
+    "item": "gunsrpg:gold_bolt",
+    "count": 2
+  },
+  "outputModifier": {
+    "attribute": "gunsrpg:ammo_output",
+    "operation": "gunsrpg:sum"
   },
   "requirements": [
     {

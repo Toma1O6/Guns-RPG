@@ -11,6 +11,10 @@
   "result": {
     "item": "minecraft:bone_meal"
   },
+  "outputModifier": {
+    "attribute": "gunsrpg:bonemeal_out",
+    "operation": "gunsrpg:mul"
+  },
   "requirements": [
     {
       "type": "gunsrpg:skill",
