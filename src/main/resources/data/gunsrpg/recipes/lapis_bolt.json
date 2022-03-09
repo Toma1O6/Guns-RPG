@@ -17,7 +17,8 @@
     }
   },
   "result": {
-    "item": "gunsrpg:lapis_bolt"
+    "item": "gunsrpg:lapis_bolt",
+    "count": 2
   },
   "outputModifier": {
     "attribute": "gunsrpg:ammo_output",
