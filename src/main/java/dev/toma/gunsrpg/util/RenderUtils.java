@@ -72,6 +72,13 @@ public class RenderUtils {
         return combine4i(red, green, blue, MAX_COLOR_INT_VALUE);
     }
 
+    public static int darken(int rgb, float factor) {
+        int red = (int) (red_i(rgb) * factor);
+        int green = (int) (green_i(rgb) * factor);
+        int blue = (int) (blue_i(rgb) * factor);
+        return (red << 16) | (green << 8) | blue;
+    }
+
     public static int combine3f(float red, float green, float blue) {
         return combine4f(red, green, blue, 1.0F);
     }

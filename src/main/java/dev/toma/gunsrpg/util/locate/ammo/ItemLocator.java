@@ -13,12 +13,16 @@ import net.minecraft.item.ItemStack;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public final class ItemLocator extends AbstractLocator<ItemStack, IInventory> {
+public final class ItemLocator<I> extends AbstractLocator<ItemStack, I> {
 
-    private static final ItemLocator LOCATOR_INSTANCE = new ItemLocator();
+    private static final ItemLocator<IInventory> LOCATOR_INSTANCE = new ItemLocator<>();
 
-    private ItemLocator() {
+    public ItemLocator() {
         super(ItemStack.EMPTY);
+    }
+
+    public static ILocatorPredicate<ItemStack> notEmptyNorDestroyed() {
+        return stack -> !stack.isEmpty() && stack.getDamageValue() < stack.getMaxDamage();
     }
 
     public static ILocatorPredicate<ItemStack> compatible(IAmmoProvider provider) {

@@ -36,9 +36,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -128,6 +130,7 @@ public class CommonRegistry {
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("lucky_shooter_i"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("lucky_shooter_ii"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("lucky_shooter_iii"),
+                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("medical_station"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("medic"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("doctor"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("efficient_meds"),
@@ -673,9 +676,14 @@ public class CommonRegistry {
                 new StorageItem("grenade_case", new Item.Properties(), 4, 3, StorageUtil::isExplosive, GrenadeCaseContainer::new),
                 new StorageItem("meds_case", new Item.Properties(), 4, 4, StorageUtil::isMed, MedsCaseContainer::new),
                 new StorageItem("item_case", new Item.Properties(), 6, 4, StorageUtil::notAnInventory, ItemCaseContainer::new),
-                new WeaponRepairKitItem("weapon_repair_kit"),
+                BaseItem.simpleItem("weapon_repair_kit", props -> props.durability(5)),
                 BaseItem.simpleItem("small_stone"),
-                new StarterGearItem("starter_gear")
+                new StarterGearItem("starter_gear"),
+
+                new ForgeSpawnEggItem(ModEntities.BLOODMOON_GOLEM, 0x5b5b5b, 0xa30000, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("bloodmoon_golem_spawn_egg"),
+                new ForgeSpawnEggItem(ModEntities.EXPLOSIVE_SKELETON, 0xe1084e, 0xcd0800, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("explosive_skeleton_spawn_egg"),
+                new ForgeSpawnEggItem(ModEntities.ROCKET_ANGEL, 0x6669cc, 0x16a3e8, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("rocket_angel_spawn_egg"),
+                new ForgeSpawnEggItem(ModEntities.ZOMBIE_GUNNER, 0x00a797, 0xff3f19, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("zombie_gunner_spawn_egg")
         );
         for (PerkVariant variant : PerkVariant.values()) {
             registry.register(new CrystalItem(variant.getRegistryName("crystal"), variant));

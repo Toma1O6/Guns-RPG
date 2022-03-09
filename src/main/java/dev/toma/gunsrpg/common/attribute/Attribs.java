@@ -67,6 +67,7 @@ public final class Attribs {
     public static final IAttributeId JAM_CHANCE                 = createInternal("weapon_jamming");
     public static final IAttributeId WEAPON_NOISE               = createInternal("weapon_noise");
     public static final IAttributeId UNJAMMING_SPEED            = createInternal("unjamming_speed");
+    public static final IAttributeId REPAIR_PENALTY             = createInternal("repair_penalty", 0.7);
     // general gameplay attributes
     public static final IAttributeId DAMAGE_TAKEN               = createInternal("damage_taken");
     public static final IAttributeId FALL_DAMAGE                = createInternal("fall_damage");

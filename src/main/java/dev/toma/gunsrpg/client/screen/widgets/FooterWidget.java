@@ -19,6 +19,7 @@ public class FooterWidget extends Widget {
 
     int progressColor1;
     int progressColor2;
+    int pointColor = 0xFFFF00;
 
     public FooterWidget(int x, int y, int width, int height, FontRenderer renderer, IPointProvider data) {
         super(x, y, width, height, StringTextComponent.EMPTY);
@@ -32,6 +33,10 @@ public class FooterWidget extends Widget {
         this.progressColor2 = secondaryColor;
     }
 
+    public void setPointColor(int pointColor) {
+        this.pointColor = pointColor;
+    }
+
     @Override
     public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         Matrix4f pose = matrix.last().pose();
@@ -40,7 +45,7 @@ public class FooterWidget extends Widget {
         // points
         ITextComponent component = new StringTextComponent(data.getPoints() + " pts");
         float yCenter = y + (height - renderer.lineHeight) / 2.0F;
-        renderer.drawShadow(matrix, component, x + width - renderer.width(component) - 10, yCenter, 0xFFFF00);
+        renderer.drawShadow(matrix, component, x + width - renderer.width(component) - 10, yCenter, pointColor);
         // level
         if (killData == null) return;
         int left = 15;
