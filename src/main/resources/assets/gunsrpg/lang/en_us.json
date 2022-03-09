@@ -252,6 +252,7 @@
     "container.crate": "Military Crate",
     "container.smithing_table": "Smithing Table",
     "container.culinary_table": "Culinary Table",
+    "container.repair_station": "Repair Station",
 
     "skill.gunsrpg.bone_grinder_i.title": "Bone Grinder I",
     "skill.gunsrpg.bone_grinder_i.description.count": "Allows to craft bone meal with yield of %s",

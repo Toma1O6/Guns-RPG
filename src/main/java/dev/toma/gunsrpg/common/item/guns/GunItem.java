@@ -307,9 +307,14 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     }
 
     @Override
+    public double getDurabilityForDisplay(ItemStack stack) {
+        return 1.0F - getDurability(stack);
+    }
+
+    @Override
     public int getRGBDurabilityForDisplay(ItemStack stack) {
         float damage = this.getDurability(stack);
-        return getDurabilityColor(damage);
+        return getDurabilityColor(1.0F - damage);
     }
 
     public static int getDurabilityColor(float durability) {
@@ -327,10 +332,14 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        return super.showDurabilityBar(stack);
+        return getDurability(stack) < 1.0F;
     }
 
     private float getDurability(ItemStack stack) {
-        return stack.getDamageValue() / (float) stack.getMaxDamage();
+        float durabilityMultiplier = getDurabilityLimit(stack);
+        int stackLimit = stack.getMaxDamage();
+        int limit = (int) (stackLimit * durabilityMultiplier);
+        int damage = stack.getDamageValue();
+        return (stackLimit - damage) / (float) limit;
     }
 }

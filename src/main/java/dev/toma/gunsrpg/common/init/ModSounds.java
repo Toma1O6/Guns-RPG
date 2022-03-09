@@ -46,8 +46,6 @@ public class ModSounds {
     public static final SoundEvent USE_AVENGE_ME_FRIENDS = null;
     public static final SoundEvent USE_WELL_FED = null;
     public static final SoundEvent BULLET_WHIZZ = null;
-
-    /* generated */
     public static final SoundEvent P1911_MAG1 = null;
     public static final SoundEvent P1911_MAG2 = null;
     public static final SoundEvent P1911_SLIDE1 = null;
@@ -227,4 +225,5 @@ public class ModSounds {
     public static final SoundEvent PILLS1 = null;
     public static final SoundEvent PILLS2 = null;
     public static final SoundEvent PILLS3 = null;
+    public static final SoundEvent REPAIR = null;
 }

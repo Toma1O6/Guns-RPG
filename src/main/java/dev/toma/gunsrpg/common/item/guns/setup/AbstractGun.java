@@ -55,12 +55,13 @@ public abstract class AbstractGun extends BaseItem {
     }
 
     public void ensureHasNBT(ItemStack stack) {
-        if (stack.hasTag()) {
+        if (stack.hasTag() && stack.getTag().contains("firemode")) {
             return;
         }
         CompoundNBT nbt = new CompoundNBT();
         nbt.putInt("ammo", 0);
         nbt.putInt("firemode", 0);
+        nbt.putFloat("repairDurability", 1.0F);
         stack.setTag(nbt);
     }
 

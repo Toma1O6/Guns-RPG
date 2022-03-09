@@ -1969,5 +1969,14 @@
                 "stream": true
             }
         ]
+    },
+    "repair": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:repair",
+                "stream": true
+            }
+        ]
     }
 }

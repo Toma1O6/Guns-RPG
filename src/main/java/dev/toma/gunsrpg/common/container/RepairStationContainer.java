@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.container;
 
 import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.init.ModItems;
+import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.tileentity.RepairStationTileEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -15,9 +16,9 @@ public class RepairStationContainer extends AbstractModContainer<RepairStationTi
 
     public RepairStationContainer(int windowId, PlayerInventory inventory, RepairStationTileEntity tile) {
         super(ModContainers.REPAIR_STATION.get(), windowId, inventory, tile);
-        addSlot(new InputSlot(tile.getItemHandler(), 0, 44, 26));
+        addSlot(this.new InputSlot(tile.getItemHandler(), 0, 44, 26));
         for (int y = 0; y < 3; y++) {
-            addSlot(new RepairKitSlot(tile.getItemHandler(), 1 + y, 152, 8 + y * 18));
+            addSlot(this.new RepairKitSlot(tile.getItemHandler(), 1 + y, 152, 8 + y * 18));
         }
         addPlayerInventory(inventory, 82);
     }
@@ -26,7 +27,7 @@ public class RepairStationContainer extends AbstractModContainer<RepairStationTi
         this(windowId, inventory, readTileEntity(buffer, inventory));
     }
 
-    private static class InputSlot extends SlotItemHandler {
+    private class InputSlot extends SlotItemHandler {
 
         public InputSlot(IItemHandler inventory, int index, int xPos, int yPos) {
             super(inventory, index, xPos, yPos);
@@ -34,11 +35,17 @@ public class RepairStationContainer extends AbstractModContainer<RepairStationTi
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return super.mayPlace(stack);
+            return stack.getItem() instanceof GunItem;
+        }
+
+        @Override
+        public void setChanged() {
+            super.setChanged();
+            RepairStationContainer.this.broadcastChanges();
         }
     }
 
-    private static class RepairKitSlot extends SlotItemHandler {
+    private class RepairKitSlot extends SlotItemHandler {
 
         public RepairKitSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
             super(itemHandler, index, xPosition, yPosition);
@@ -47,6 +54,12 @@ public class RepairStationContainer extends AbstractModContainer<RepairStationTi
         @Override
         public boolean mayPlace(@Nonnull ItemStack stack) {
             return stack.getItem() == ModItems.WEAPON_REPAIR_KIT;
+        }
+
+        @Override
+        public void setChanged() {
+            super.setChanged();
+            RepairStationContainer.this.broadcastChanges();
         }
     }
 }

@@ -916,7 +916,8 @@ public class CommonRegistry {
                 sound("pen3"),
                 sound("pills1"),
                 sound("pills2"),
-                sound("pills3")
+                sound("pills3"),
+                sound("repair")
         );
     }
 
