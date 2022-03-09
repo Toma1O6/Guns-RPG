@@ -19,10 +19,6 @@
   "result": {
     "item": "gunsrpg:lapis_556mm"
   },
-    "outputModifier": {
-    "attribute": "gunsrpg:ammo_output",
-    "operation": "gunsrpg:sum"
-  },
   "outputModifier": {
     "attribute": "gunsrpg:ammo_output",
     "operation": "gunsrpg:sum"
