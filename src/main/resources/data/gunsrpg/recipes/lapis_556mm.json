@@ -23,6 +23,10 @@
     "attribute": "gunsrpg:ammo_output",
     "operation": "gunsrpg:sum"
   },
+  "outputModifier": {
+    "attribute": "gunsrpg:ammo_output",
+    "operation": "gunsrpg:sum"
+  },
   "requirements": [
     {
       "type": "gunsrpg:skill",
