@@ -19,7 +19,7 @@
   "result": {
     "item": "gunsrpg:lapis_45acp"
   },
-    "outputModifier": {
+  "outputModifier": {
     "attribute": "gunsrpg:ammo_output",
     "operation": "gunsrpg:sum"
   },
