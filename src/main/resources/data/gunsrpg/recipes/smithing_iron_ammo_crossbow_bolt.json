@@ -17,7 +17,8 @@
     }
   },
   "result": {
-    "item": "gunsrpg:iron_bolt"
+    "item": "gunsrpg:iron_bolt",
+    "count": 2
   },
   "outputModifier": {
     "attribute": "gunsrpg:ammo_output",
