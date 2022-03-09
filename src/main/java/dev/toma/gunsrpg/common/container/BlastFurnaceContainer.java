@@ -1,12 +1,13 @@
 package dev.toma.gunsrpg.common.container;
 
 import dev.toma.gunsrpg.common.init.ModContainers;
+import dev.toma.gunsrpg.common.init.ModRecipeTypes;
 import dev.toma.gunsrpg.common.tileentity.BlastFurnaceTileEntity;
+import dev.toma.gunsrpg.resource.blasting.BlastingRecipe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.RecipeBookContainer;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,7 @@ public class BlastFurnaceContainer extends RecipeBookContainer<IInventory> {
     private final BlastFurnaceTileEntity tileEntity;
 
     private final World level;
-    private final IRecipeType<FurnaceRecipe> recipeType = IRecipeType.SMELTING;
+    private final IRecipeType<BlastingRecipe> recipeType = ModRecipeTypes.BLASTING_RECIPE_TYPE;
     private final IIntArray data;
 
     public BlastFurnaceContainer(int windowID, PlayerInventory inventory, BlastFurnaceTileEntity tileEntity) {
@@ -118,7 +119,7 @@ public class BlastFurnaceContainer extends RecipeBookContainer<IInventory> {
                 }
                 slot.onQuickCraft(itemstack1, itemstack);
             } else if (index != 1 && index != 0) {
-                if (isValidInput(itemstack1)) {
+                if (isValidInput()) {
                     if (!moveItemStackTo(itemstack1, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
@@ -172,8 +173,8 @@ public class BlastFurnaceContainer extends RecipeBookContainer<IInventory> {
         return ForgeHooks.getBurnTime(stack, recipeType) > 0;
     }
 
-    boolean isValidInput(ItemStack stack) {
-        return level.getRecipeManager().getRecipeFor(recipeType, new Inventory(stack), level).isPresent();
+    boolean isValidInput() {
+        return level.getRecipeManager().getRecipeFor(recipeType, tileEntity, level).isPresent();
     }
 
     private static class OutputSlot extends Slot {

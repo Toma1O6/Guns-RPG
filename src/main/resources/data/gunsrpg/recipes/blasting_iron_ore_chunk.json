@@ -1,0 +1,11 @@
+{
+    "type": "gunsrpg:blasting",
+    "ingredient": {
+        "item": "gunsrpg:iron_ore_chunk"
+    },
+    "result": {
+        "item": "minecraft:iron_ingot",
+        "count": 2
+    },
+    "experience": 0.7
+}

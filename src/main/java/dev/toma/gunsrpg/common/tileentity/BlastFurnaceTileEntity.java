@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.tileentity;
 
 import dev.toma.gunsrpg.common.init.ModBlockEntities;
+import dev.toma.gunsrpg.common.init.ModRecipeTypes;
+import dev.toma.gunsrpg.resource.blasting.BlastingRecipe;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -11,7 +13,9 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.*;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -23,7 +27,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
@@ -38,7 +41,7 @@ public class BlastFurnaceTileEntity extends VanillaInventoryTileEntity implement
     private static final byte SLOT_FUEL = 1;
     private static final byte SLOT_OUTPUT = 2;
     private final Object2IntOpenHashMap<ResourceLocation> usedRecipes = new Object2IntOpenHashMap<>();
-    private final IRecipeType<FurnaceRecipe> recipeType;
+    private final IRecipeType<BlastingRecipe> recipeType;
     private int litTime;
     private int litDuration;
     private int cookingProgress;
@@ -90,7 +93,7 @@ public class BlastFurnaceTileEntity extends VanillaInventoryTileEntity implement
 
     protected BlastFurnaceTileEntity(TileEntityType<? extends BlastFurnaceTileEntity> type) {
         super(type);
-        this.recipeType = IRecipeType.SMELTING;
+        this.recipeType = ModRecipeTypes.BLASTING_RECIPE_TYPE;
     }
 
     public IIntArray getData() {
@@ -260,7 +263,7 @@ public class BlastFurnaceTileEntity extends VanillaInventoryTileEntity implement
         for (Object2IntMap.Entry<ResourceLocation> entry : usedRecipes.object2IntEntrySet()) {
             level.getRecipeManager().byKey(entry.getKey()).ifPresent(recipe -> {
                 list.add(recipe);
-                createExperience(level, position, entry.getIntValue(), ((FurnaceRecipe) recipe).getExperience());
+                createExperience(level, position, entry.getIntValue(), ((BlastingRecipe) recipe).getExperience());
             });
         }
         return list;
@@ -284,15 +287,14 @@ public class BlastFurnaceTileEntity extends VanillaInventoryTileEntity implement
     }
 
     private int getTotalCookTime() {
-        int multiplier = canDoubleResult(itemHandler.getStackInSlot(SLOT_INPUT)) ? 2 : 1;
-        return level.getRecipeManager().getRecipeFor(recipeType, this, level).map(AbstractCookingRecipe::getCookingTime).orElse(200) * multiplier;
+        return level.getRecipeManager().getRecipeFor(recipeType, this, level).map(BlastingRecipe::getCookingTime).orElse(800);
     }
 
     @SuppressWarnings("unchecked")
     private boolean canBurn(IRecipe<?> recipe) {
         if (!itemHandler.getStackInSlot(SLOT_INPUT).isEmpty() && recipe != null) {
             ItemStack stack = ((IRecipe<ISidedInventory>) recipe).assemble(this);
-            int recipeResultCount = stack.getCount() * 2;
+            int recipeResultCount = stack.getCount();
             if (stack.isEmpty()) {
                 return false;
             } else {
@@ -320,16 +322,8 @@ public class BlastFurnaceTileEntity extends VanillaInventoryTileEntity implement
             ItemStack outputStack = itemHandler.getStackInSlot(SLOT_OUTPUT);
             if (outputStack.isEmpty()) {
                 ItemStack resultCopy = resultStack.copy();
-                if (canDoubleResult(inputStack)) {
-                    resultCopy.setCount(Math.min(Math.min(getMaxStackSize(), resultCopy.getMaxStackSize()), resultCopy.getCount() * 2));
-                }
                 itemHandler.setStackInSlot(SLOT_OUTPUT, resultCopy);
-            } else if (outputStack.getItem() == resultStack.getItem()) {
-                int oldCount = resultStack.getCount();
-                int count = canDoubleResult(inputStack) ? oldCount * 2 : oldCount;
-                outputStack.grow(count);
             }
-
             if (!level.isClientSide) {
                 setRecipeUsed(recipe);
             }
@@ -340,10 +334,5 @@ public class BlastFurnaceTileEntity extends VanillaInventoryTileEntity implement
 
     public boolean isLit() {
         return litTime > 0;
-    }
-
-    private boolean canDoubleResult(ItemStack input) {
-        Item item = input.getItem();
-        return item.is(Tags.Items.ORES);
     }
 }
