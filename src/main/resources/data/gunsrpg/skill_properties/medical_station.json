@@ -1,0 +1,12 @@
+{
+    "hierarchy": {
+        "category": "resistance"
+    },
+    "properties": {
+        "level": 5,
+        "price": 1,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}
