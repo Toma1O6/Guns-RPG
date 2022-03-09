@@ -17,7 +17,8 @@
     }
   },
   "result": {
-    "item": "gunsrpg:emerald_bolt"
+    "item": "gunsrpg:emerald_bolt",
+    "count": 2
   },
   "outputModifier": {
     "attribute": "gunsrpg:ammo_output",
