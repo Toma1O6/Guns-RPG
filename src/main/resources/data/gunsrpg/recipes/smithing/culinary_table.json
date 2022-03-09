@@ -1,0 +1,39 @@
+{
+    "type": "gunsrpg:smithing_table",
+    "pattern": [
+        "#BS",
+        "P_P",
+        "PKP"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:iron_sword"
+        },
+        "B": {
+            "item": "minecraft:bowl"
+        },
+        "S": {
+            "item": "minecraft:shears"
+        },
+        "P": {
+            "item": "minecraft:polished_granite"
+        },
+        "_": {
+            "item": "minecraft:stone_slab"
+        },
+        "K": {
+            "item": "minecraft:bucket"
+        }
+    },
+    "result": {
+      "item": "gunsrpg:culinary_table"
+    },
+    "requirements": [
+      {
+        "type": "gunsrpg:skill",
+        "predicate": {
+          "skill": "gunsrpg:local_chef"
+        }
+      }
+    ]
+  }

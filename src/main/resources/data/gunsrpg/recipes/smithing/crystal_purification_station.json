@@ -1,0 +1,30 @@
+{
+    "type": "gunsrpg:smithing_table",
+    "pattern": [
+        "###",
+        "SGS",
+        " S "
+    ],
+    "key": {
+        "#": {
+            "tag": "gunsrpg:crystal/orb_of_purity"
+        },
+        "G": {
+            "item": "minecraft:diamond_block"
+        },
+        "S": {
+            "item": "minecraft:stone_bricks"
+        }
+    },
+    "result": {
+      "item": "gunsrpg:crystal_purification"
+    },
+    "requirements": [
+      {
+        "type": "gunsrpg:skill",
+        "predicate": {
+          "skill": "gunsrpg:crystal_purification_station"
+        }
+      }
+    ]
+  }

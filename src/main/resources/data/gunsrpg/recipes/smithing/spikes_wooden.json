@@ -13,7 +13,7 @@
         "item": "minecraft:stick"
     },
     "l": {
-        "item": "minecraft:oak_slab"
+        "tag": "minecraft:wooden_slabs"
     }
   },
   "result": {

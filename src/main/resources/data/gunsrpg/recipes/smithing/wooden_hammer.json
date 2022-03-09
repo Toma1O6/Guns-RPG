@@ -10,7 +10,7 @@
       "item": "minecraft:stick"
     },
     "o": {
-      "item": "minecraft:oak_log"
+      "tag": "minecraft:logs_that_burn"
     }
   },
   "result": {
