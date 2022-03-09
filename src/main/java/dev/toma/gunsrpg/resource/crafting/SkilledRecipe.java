@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.resource.crafting;
 
+import dev.toma.gunsrpg.common.tileentity.SkilledWorkbenchTileEntity;
 import dev.toma.gunsrpg.resource.util.conditions.IRecipeCondition;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class SkilledRecipe<I extends IInventory> implements IRecipe<I> {
+public abstract class SkilledRecipe<I extends SkilledWorkbenchTileEntity> implements IRecipe<I> {
 
     public static final int GRID_SIZE = 3;
 

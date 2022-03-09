@@ -8,14 +8,14 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class SmithingTableTileEntity extends SkilledWorkbenchTileEntity {
+public class MedstationTileEntity extends SkilledWorkbenchTileEntity {
 
-    public SmithingTableTileEntity() {
-        this(ModBlockEntities.SMITHING_TABLE.get());
+    protected MedstationTileEntity(TileEntityType<? extends SkilledWorkbenchTileEntity> type) {
+        super(type);
     }
 
-    protected SmithingTableTileEntity(TileEntityType<? extends SmithingTableTileEntity> type) {
-        super(type);
+    public MedstationTileEntity() {
+        this(ModBlockEntities.MEDSTATION.get());
     }
 
     @Override
@@ -26,6 +26,6 @@ public class SmithingTableTileEntity extends SkilledWorkbenchTileEntity {
     @SuppressWarnings("unchecked")
     @Override
     public <I extends SkilledRecipe<?>> IRecipeType<I> getRecipeType() {
-        return (IRecipeType<I>) ModRecipeTypes.SMITHING_RECIPE_TYPE;
+        return (IRecipeType<I>) ModRecipeTypes.MED_RECIPE_TYPE;
     }
 }

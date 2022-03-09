@@ -22,6 +22,7 @@ public class ModBlockEntities {
     public static final RegistryObject<TileEntityType<SmithingTableTileEntity>> SMITHING_TABLE = register("smithing_table", SmithingTableTileEntity::new, () -> new Block[] {ModBlocks.SMITHING_TABLE});
     public static final RegistryObject<TileEntityType<CookerTileEntity>> COOKER = register("cooker", CookerTileEntity::new, () -> new Block[] { ModBlocks.COOKER });
     public static final RegistryObject<TileEntityType<CulinaryTableTileEntity>> CULINARY_TABLE = register("culinary_table", CulinaryTableTileEntity::new, () -> new Block[] { ModBlocks.CULINARY_TABLE });
+    public static final RegistryObject<TileEntityType<MedstationTileEntity>> MEDSTATION = register("medstation", MedstationTileEntity::new, () -> new Block[] { ModBlocks.MEDSTATION });
     public static final RegistryObject<TileEntityType<RepairStationTileEntity>> REPAIR_STATION = register("repair_station", RepairStationTileEntity::new, () -> new Block[] { ModBlocks.REPAIR_STATION });
 
     private static <T extends TileEntity> RegistryObject<TileEntityType<T>> register(String name, Supplier<T> supplier, Supplier<Block[]> blockSupplier) {

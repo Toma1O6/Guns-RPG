@@ -11,6 +11,7 @@ import dev.toma.gunsrpg.client.render.skill.SkillRendererRegistry;
 import dev.toma.gunsrpg.client.screen.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.container.CulinaryTableContainer;
+import dev.toma.gunsrpg.common.container.MedstationContainer;
 import dev.toma.gunsrpg.common.container.SmithingTableContainer;
 import dev.toma.gunsrpg.common.init.Debuffs;
 import dev.toma.gunsrpg.common.init.ModContainers;
@@ -134,6 +135,7 @@ public class ClientSideManager {
         // has to be written like this for some reason
         ScreenManager.register(ModContainers.SMITHING_TABLE.get(), (SmithingTableContainer container, PlayerInventory inventory, ITextComponent title) -> new SkilledWorkbenchScreen<>(container, inventory, title));
         ScreenManager.register(ModContainers.CULINARY_TABLE.get(), (CulinaryTableContainer container, PlayerInventory inventory, ITextComponent title) -> new SkilledWorkbenchScreen<>(container, inventory, title));
+        ScreenManager.register(ModContainers.MEDSTATION.get(), (MedstationContainer container, PlayerInventory inventory, ITextComponent title) -> new SkilledWorkbenchScreen<>(container, inventory, title));
         ScreenManager.register(ModContainers.LUNCH_BOX.get(), LunchBoxScreen::new);
         ScreenManager.register(ModContainers.AMMO_CASE.get(), AmmoCaseScreen::new);
         ScreenManager.register(ModContainers.GRENADE_CASE.get(), GrenadeCaseScreen::new);

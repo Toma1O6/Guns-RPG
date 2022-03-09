@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.block.*;
+import dev.toma.gunsrpg.common.tileentity.MedstationBlock;
 import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder(GunsRPG.MODID)
@@ -11,6 +12,7 @@ public class ModBlocks {
     public static final AirdropBlock AIRDROP = null;
     public static final SmithingTableBlock SMITHING_TABLE = null;
     public static final CulinaryTableBlock CULINARY_TABLE = null;
+    public static final MedstationBlock MEDSTATION = null;
     public static final GoldDragonEggBlock GOLD_DRAGON_EGG = null;
     public static final DeathCrateBlock DEATH_CRATE = null;
     public static final CookerBlock COOKER = null;

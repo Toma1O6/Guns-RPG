@@ -1,8 +1,7 @@
 package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.tileentity.ISkilledCrafting;
-import dev.toma.gunsrpg.common.tileentity.VanillaInventoryTileEntity;
+import dev.toma.gunsrpg.common.tileentity.SkilledWorkbenchTileEntity;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import dev.toma.gunsrpg.resource.crafting.OutputModifier;
 import dev.toma.gunsrpg.resource.crafting.SkilledRecipe;
@@ -51,16 +50,15 @@ public class C2S_RequestSkilledCraftPacket extends AbstractNetworkPacket<C2S_Req
         World world = player.level;
         if (pos != null && world.isLoaded(pos)) {
             TileEntity tileEntity = world.getBlockEntity(pos);
-            if (tileEntity instanceof ISkilledCrafting) {
-                VanillaInventoryTileEntity inventoryTileEntity = (VanillaInventoryTileEntity) tileEntity;
-                ISkilledCrafting skilledCrafting = (ISkilledCrafting) tileEntity;
+            if (tileEntity instanceof SkilledWorkbenchTileEntity) {
+                SkilledWorkbenchTileEntity inventoryTileEntity = (SkilledWorkbenchTileEntity) tileEntity;
                 if (shiftKey) {
                     while (true) {
-                        if (!tryCraft(world, skilledCrafting, inventoryTileEntity, player))
+                        if (!tryCraft(world, inventoryTileEntity, player))
                             break;
                     }
                 } else {
-                    tryCraft(world, skilledCrafting, inventoryTileEntity, player);
+                    tryCraft(world, inventoryTileEntity, player);
                 }
             }
         }
@@ -68,10 +66,9 @@ public class C2S_RequestSkilledCraftPacket extends AbstractNetworkPacket<C2S_Req
 
     private SkilledRecipe<?> lastRecipe;
 
-    @SuppressWarnings("unchecked")
-    private <T extends VanillaInventoryTileEntity> boolean tryCraft(World world, ISkilledCrafting crafting, T inventory, PlayerEntity player) {
+    private <T extends SkilledWorkbenchTileEntity> boolean tryCraft(World world, T inventory, PlayerEntity player) {
         RecipeManager manager = world.getRecipeManager();
-        IRecipeType<SkilledRecipe<T>> type = (IRecipeType<SkilledRecipe<T>>) crafting.getRecipeType();
+        IRecipeType<SkilledRecipe<T>> type = inventory.getRecipeType();
         Optional<SkilledRecipe<T>> optional = manager.getRecipeFor(type, inventory, world);
         if (optional.isPresent()) {
             SkilledRecipe<T> recipe = optional.orElseThrow(IllegalStateException::new);

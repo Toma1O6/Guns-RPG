@@ -28,6 +28,7 @@ import dev.toma.gunsrpg.common.skills.*;
 import dev.toma.gunsrpg.common.skills.core.DisplayData;
 import dev.toma.gunsrpg.common.skills.core.DisplayType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.common.tileentity.MedstationBlock;
 import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.helper.StorageUtil;
@@ -415,7 +416,8 @@ public class CommonRegistry {
                 new MilitaryCrateBlock("artic_military_crate"),
                 new MilitaryCrateBlock("desert_military_crate"),
                 new MilitaryCrateBlock("woodland_military_crate"),
-                new CulinaryTableBlock("culinary_table")
+                new CulinaryTableBlock("culinary_table"),
+                new MedstationBlock("medstation")
         );
         for (PerkVariant variant : PerkVariant.values()) {
             registry.register(new CrystalOre(variant.getRegistryName("crystal_ore")));
