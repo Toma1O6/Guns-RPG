@@ -1,12 +1,11 @@
 package dev.toma.gunsrpg.integration.jei;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.container.CookerContainer;
-import dev.toma.gunsrpg.common.container.CulinaryTableContainer;
-import dev.toma.gunsrpg.common.container.MedstationContainer;
-import dev.toma.gunsrpg.common.container.SmithingTableContainer;
+import dev.toma.gunsrpg.common.container.*;
 import dev.toma.gunsrpg.common.init.ModBlocks;
 import dev.toma.gunsrpg.common.init.ModRecipeTypes;
+import dev.toma.gunsrpg.resource.blasting.BlastingRecipe;
+import dev.toma.gunsrpg.resource.cooking.CookingRecipe;
 import dev.toma.gunsrpg.resource.crafting.CulinaryRecipe;
 import dev.toma.gunsrpg.resource.crafting.MedRecipe;
 import dev.toma.gunsrpg.resource.crafting.SmithingRecipe;
@@ -35,12 +34,15 @@ public class JeiIntegration implements IModPlugin {
     public static final ResourceLocation SMITHING = GunsRPG.makeResource("smithing");
     public static final ResourceLocation CULINARY = GunsRPG.makeResource("culinary");
     public static final ResourceLocation MEDSTATION = GunsRPG.makeResource("medstation");
+    public static final ResourceLocation BLASTING = GunsRPG.makeResource("blasting");
+    public static final ResourceLocation COOKING = GunsRPG.makeResource("cooking");
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         IGuiHelper helper = registration.getJeiHelpers().getGuiHelper();
         registration.addRecipeCategories(
-                new CookingRecipeCategory(helper),
+                new BurningRecipeCategory<>(helper, BLASTING.getPath(), ModBlocks.BLAST_FURNACE, 800, BlastingRecipe.class),
+                new BurningRecipeCategory<>(helper, COOKING.getPath(), ModBlocks.COOKER, 200, CookingRecipe.class),
                 new SkilledRecipeCategory(helper, SMITHING.getPath(), ModBlocks.SMITHING_TABLE, SmithingRecipe.class),
                 new SkilledRecipeCategory(helper, CULINARY.getPath(), ModBlocks.CULINARY_TABLE, CulinaryRecipe.class),
                 new SkilledRecipeCategory(helper, MEDSTATION.getPath(), ModBlocks.MEDICAL_STATION, MedRecipe.class)
@@ -50,7 +52,8 @@ public class JeiIntegration implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeFetcher fetcher = new RecipeFetcher();
-        registration.addRecipes(fetcher.getRecipes(ModRecipeTypes.COOKING_RECIPE_TYPE), CookingRecipeCategory.CATEGORY_UID);
+        registration.addRecipes(fetcher.getRecipes(ModRecipeTypes.COOKING_RECIPE_TYPE), COOKING);
+        registration.addRecipes(fetcher.getRecipes(ModRecipeTypes.BLASTING_RECIPE_TYPE), BLASTING);
         registration.addRecipes(fetcher.getRecipes(ModRecipeTypes.SMITHING_RECIPE_TYPE), SMITHING);
         registration.addRecipes(fetcher.getRecipes(ModRecipeTypes.CULINARY_RECIPE_TYPE), CULINARY);
         registration.addRecipes(fetcher.getRecipes(ModRecipeTypes.MED_RECIPE_TYPE), MEDSTATION);
@@ -58,7 +61,8 @@ public class JeiIntegration implements IModPlugin {
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        registration.addRecipeTransferHandler(CookerContainer.class, CookingRecipeCategory.CATEGORY_UID, 0, 1, 3, 36);
+        registration.addRecipeTransferHandler(CookerContainer.class, COOKING, 0, 1, 3, 36);
+        registration.addRecipeTransferHandler(BlastFurnaceContainer.class, BLASTING, 0, 1, 3, 36);
         registration.addRecipeTransferHandler(SmithingTableContainer.class, SMITHING, 0, 9, 9, 36);
         registration.addRecipeTransferHandler(CulinaryTableContainer.class, CULINARY, 0, 9, 9, 36);
         registration.addRecipeTransferHandler(MedstationContainer.class, MEDSTATION, 0, 9, 9, 36);
@@ -66,7 +70,8 @@ public class JeiIntegration implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.COOKER), CookingRecipeCategory.CATEGORY_UID);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.COOKER), COOKING);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.BLAST_FURNACE), BLASTING);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.SMITHING_TABLE), SMITHING);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.CULINARY_TABLE), CULINARY);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.MEDICAL_STATION), MEDSTATION);

@@ -6,6 +6,7 @@ import com.google.gson.JsonSyntaxException;
 import dev.toma.gunsrpg.common.init.ModRecipeSerializers;
 import dev.toma.gunsrpg.common.init.ModRecipeTypes;
 import dev.toma.gunsrpg.common.tileentity.BlastFurnaceTileEntity;
+import dev.toma.gunsrpg.resource.cooking.IBurningRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.*;
 import net.minecraft.network.PacketBuffer;
@@ -17,7 +18,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class BlastingRecipe implements IRecipe<BlastFurnaceTileEntity> {
+public class BlastingRecipe implements IRecipe<BlastFurnaceTileEntity>, IBurningRecipe {
 
     private final ResourceLocation id;
     private final Ingredient ingredient;
@@ -58,11 +59,18 @@ public class BlastingRecipe implements IRecipe<BlastFurnaceTileEntity> {
         return id;
     }
 
+    @Override
+    public ItemStack[] getInputStacks() {
+        return ingredient.getItems();
+    }
+
+    @Override
     public float getExperience() {
         return experience;
     }
 
-    public int getCookingTime() {
+    @Override
+    public int getCookTime() {
         return cookingTime;
     }
 

@@ -287,7 +287,7 @@ public class BlastFurnaceTileEntity extends VanillaInventoryTileEntity implement
     }
 
     private int getTotalCookTime() {
-        return level.getRecipeManager().getRecipeFor(recipeType, this, level).map(BlastingRecipe::getCookingTime).orElse(800);
+        return level.getRecipeManager().getRecipeFor(recipeType, this, level).map(BlastingRecipe::getCookTime).orElse(800);
     }
 
     @SuppressWarnings("unchecked")

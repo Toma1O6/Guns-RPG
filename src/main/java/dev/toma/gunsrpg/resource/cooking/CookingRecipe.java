@@ -20,7 +20,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class CookingRecipe implements IRecipe<CookerTileEntity> {
+public class CookingRecipe implements IRecipe<CookerTileEntity>, IBurningRecipe {
 
     private final ResourceLocation id;
     private final ItemStack input;
@@ -36,14 +36,17 @@ public class CookingRecipe implements IRecipe<CookerTileEntity> {
         this.cookTime = cookTime;
     }
 
-    public ItemStack getInputItem() {
-        return input;
+    @Override
+    public ItemStack[] getInputStacks() {
+        return new ItemStack[] {input};
     }
 
+    @Override
     public int getCookTime() {
         return cookTime;
     }
 
+    @Override
     public float getExperience() {
         return experience;
     }
