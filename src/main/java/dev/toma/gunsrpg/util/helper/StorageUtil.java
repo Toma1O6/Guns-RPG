@@ -60,6 +60,10 @@ public final class StorageUtil {
         return !optional.isPresent();
     }
 
+    public static boolean isCrystal(ItemStack stack) {
+        return stack.getItem().is(ModTags.Items.CRYSTAL);
+    }
+
     /**
      * Private constructor because this is just utility class
      */

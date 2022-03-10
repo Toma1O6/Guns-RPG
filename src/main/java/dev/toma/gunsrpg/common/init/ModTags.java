@@ -37,6 +37,7 @@ public class ModTags {
         public static final Tags.IOptionalNamedTag<Item> HEALING_ITEM = modded("cases/meds");
         public static final Tags.IOptionalNamedTag<Item> EXPLOSIVE_ITEM = modded("cases/explosives");
         public static final Tags.IOptionalNamedTag<Item> INVENTORY_ITEM = modded("cases/item_case_blacklist");
+        public static final Tags.IOptionalNamedTag<Item> CRYSTAL = modded("crystal/crystals");
         public static final Tags.IOptionalNamedTag<Item> ORB_OF_PURITY = modded("crystal/orb_of_purity");
         public static final Tags.IOptionalNamedTag<Item> ORB_OF_TRANSMUTATION = modded("crystal/orb_of_purity");
 
