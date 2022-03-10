@@ -16,7 +16,7 @@ public class PlayerHealItem extends AbstractHealItem<PlayerEntity> {
         return new Builder(name);
     }
 
-    public static void onStereoidsUsed(PlayerEntity player) {
+    public static void onSteroidsUsed(PlayerEntity player) {
         player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 1200, 0, false, false));
         player.addEffect(new EffectInstance(Effects.JUMP, 1200, 1, false, false));
     }

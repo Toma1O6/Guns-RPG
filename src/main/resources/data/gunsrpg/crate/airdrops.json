@@ -605,7 +605,7 @@
             },
             {
                 "weight": 35,
-                "item": "gunsrpg:stereoids",
+                "item": "gunsrpg:steroids",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 1
@@ -1079,7 +1079,7 @@
             },
             {
                 "weight": 35,
-                "item": "gunsrpg:stereoids",
+                "item": "gunsrpg:steroids",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 1
@@ -1569,7 +1569,7 @@
             },
             {
                 "weight": 35,
-                "item": "gunsrpg:stereoids",
+                "item": "gunsrpg:steroids",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 2
@@ -2019,7 +2019,7 @@
             },
             {
                 "weight": 35,
-                "item": "gunsrpg:stereoids",
+                "item": "gunsrpg:steroids",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 2
@@ -2421,7 +2421,7 @@
             },
             {
                 "weight": 35,
-                "item": "gunsrpg:stereoids",
+                "item": "gunsrpg:steroids",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 2
@@ -2855,7 +2855,7 @@
             },
             {
                 "weight": 35,
-                "item": "gunsrpg:stereoids",
+                "item": "gunsrpg:steroids",
                 "count": {
                     "function": "gunsrpg:const",
                     "value": 3

@@ -509,7 +509,7 @@ public class CommonRegistry {
                         .animate(60, AnimationPaths.PILLS)
                         .build(),
                 PlayerHealItem.define("steroids")
-                        .onUse(PlayerHealItem::onStereoidsUsed)
+                        .onUse(PlayerHealItem::onSteroidsUsed)
                         .describe("Effects:", "Strength I for 60 seconds", "Jump Boost II for 60 seconds")
                         .animate(75, AnimationPaths.INJECTION)
                         .build(),

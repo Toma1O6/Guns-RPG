@@ -37,13 +37,6 @@ public class ModItems {
     public static final BaseItem AMETHYST = null;
     public static final DebuffHealItem ANTIDOTUM_PILLS = null;
     public static final DebuffHealItem VACCINE = null;
-    public static final DebuffHealItem PLASTER_CAST = null;
-    public static final DebuffHealItem BANDAGE = null;
-    public static final PlayerHealItem ANALGETICS = null;
-    public static final PlayerHealItem STEREOIDS = null;
-    public static final PlayerHealItem ADRENALINE = null;
-    public static final PlayerHealItem PAINKILLERS = null;
-    public static final PlayerHealItem MORPHINE = null;
     public static final AttributeAccessHealItem HEMOSTAT = null;
     public static final AttributeAccessHealItem VITAMINS = null;
     public static final AttributeAccessHealItem PROPITAL = null;
