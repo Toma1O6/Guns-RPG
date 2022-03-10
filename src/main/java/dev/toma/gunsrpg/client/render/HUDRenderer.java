@@ -81,7 +81,7 @@ public final class HUDRenderer {
         boolean isBloodmoonDay = actualDay > 0 && actualDay % cycle == 0;
         int leftToBloodmoon = isBloodmoonDay ? 0 : (int) (cycle - actualDay % cycle);
         boolean isNight = world.getDayTime() % 24000L >= 12500L;
-        String dayString = isNight ? leftToBloodmoon + "!" : String.valueOf(leftToBloodmoon);
+        String dayString = isNight && isBloodmoonDay ? leftToBloodmoon + "!" : String.valueOf(leftToBloodmoon);
         int dayStringWidth = font.width(dayString);
         int xPos = window.getGuiScaledWidth() - 9;
         boolean shouldRenderBackground = hasActiveVisibleEffect(player);
