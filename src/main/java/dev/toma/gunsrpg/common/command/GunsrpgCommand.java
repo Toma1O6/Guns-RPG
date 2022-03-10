@@ -18,11 +18,17 @@ import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidatorFactory;
-import dev.toma.gunsrpg.common.attribute.*;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import dev.toma.gunsrpg.common.entity.AirdropEntity;
 import dev.toma.gunsrpg.common.init.ModRegistries;
+import dev.toma.gunsrpg.common.item.perk.Crystal;
+import dev.toma.gunsrpg.common.item.perk.CrystalAttribute;
+import dev.toma.gunsrpg.common.item.perk.CrystalItem;
+import dev.toma.gunsrpg.common.perk.Perk;
+import dev.toma.gunsrpg.common.perk.PerkRegistry;
+import dev.toma.gunsrpg.common.perk.PerkType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;
 import dev.toma.gunsrpg.config.ModConfig;
@@ -32,6 +38,8 @@ import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.command.arguments.ResourceLocationArgument;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
@@ -44,6 +52,7 @@ import net.minecraft.world.storage.IServerWorldInfo;
 import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -53,6 +62,7 @@ public class GunsrpgCommand {
     private static final SuggestionProvider<CommandSource> TX_VALIDATOR_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(TransactionValidatorRegistry.getRegisteredValidatorTypes(), builder);
     private static final SuggestionProvider<CommandSource> SKILL_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(ModRegistries.SKILLS.getKeys(), builder);
     private static final SuggestionProvider<CommandSource> ATTRIBUTE_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(Attribs.listKeys(), builder);
+    private static final SuggestionProvider<CommandSource> PERK_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(PerkRegistry.getRegistry().getPerkIds(), builder);
     private static final SimpleCommandExceptionType NO_DATA = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.no_data"));
     private static final SimpleCommandExceptionType MISSING_KEY_EXCEPTION = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.missing_key"));
     private static final DynamicCommandExceptionType MISSING_ARGUMENTS = new DynamicCommandExceptionType(o -> new TranslationTextComponent("command.gunsrpg.exception.missing_args", o));
@@ -61,6 +71,7 @@ public class GunsrpgCommand {
     private static final SimpleCommandExceptionType INVALID_TX_DATA = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.invalid_tx_data"));
     private static final DynamicCommandExceptionType REQUIRED_SKILL = new DynamicCommandExceptionType(id -> new TranslationTextComponent("command.gunsrpg.exception.missing_skill", id));
     private static final DynamicCommandExceptionType DEPENDENT_SKILL_ACTIVE = new DynamicCommandExceptionType(id -> new TranslationTextComponent("command.gunsrpg.exception.active_skill", id));
+    private static final SimpleCommandExceptionType NOT_HOLDING_CRYSTAL = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.not_holding_crystal"));
 
     public static void registerCommandTree(CommandDispatcher<CommandSource> dispatcher) {
         dispatcher.register(
@@ -134,9 +145,9 @@ public class GunsrpgCommand {
                                                                                         )
                                                                         )
                                                         )
-                                                        .executes(ctx -> noArgsProvided(ctx, "level", "point", "progress"))
+                                                        .executes(ctx -> noArgsProvided("level", "point", "progress"))
                                         )
-                                        .executes(ctx -> noArgsProvided(ctx, "reset", "unlockAll"))
+                                        .executes(ctx -> noArgsProvided("reset", "unlockAll"))
                         )
                         .then(
                                 Commands.literal("skill")
@@ -151,7 +162,7 @@ public class GunsrpgCommand {
                                                                 Commands.literal("lock")
                                                                         .executes(GunsrpgCommand::lockSkill)
                                                         )
-                                                        .executes(ctx -> noArgsProvided(ctx, "unlock", "lock"))
+                                                        .executes(ctx -> noArgsProvided("unlock", "lock"))
                                         )
                                         .executes(ctx -> {
                                             throw MISSING_KEY_EXCEPTION.create();
@@ -159,15 +170,116 @@ public class GunsrpgCommand {
                         )
                         .then(
                                 Commands.literal("attribute")
-                                        .executes(ctx -> noArgsProvided(ctx, "id"))
+                                        .executes(ctx -> noArgsProvided("id"))
                                         .then(
                                                 Commands.argument("id", ResourceLocationArgument.id())
                                                         .suggests(ATTRIBUTE_SUGGESTION)
                                                         .executes(GunsrpgCommand::listAttributeInfo)
                                         )
                         )
-                        .executes(ctx -> noArgsProvided(ctx, "debuff", "event", "progression", "skill"))
+                        .then(
+                                Commands.literal("crystal")
+                                        .executes(ctx -> noArgsProvided("id", "level"))
+                                        .then(
+                                                Commands.argument("perk", ResourceLocationArgument.id())
+                                                        .suggests(PERK_SUGGESTION)
+                                                        .executes(ctx -> noArgsProvided("add", "remove"))
+                                                        .then(
+                                                                Commands.literal("add")
+                                                                        .executes(ctx -> editCrystal(ctx, ModifyAction.UNLOCK, 1))
+                                                                        .then(
+                                                                                Commands.argument("level", IntegerArgumentType.integer())
+                                                                                        .executes(ctx -> editCrystal(ctx, ModifyAction.UNLOCK, IntegerArgumentType.getInteger(ctx, "level")))
+                                                                        )
+                                                        )
+                                                        .then(
+                                                                Commands.literal("remove")
+                                                                        .executes(ctx -> editCrystal(ctx, ModifyAction.LOCK, 0))
+                                                        )
+                                        )
+                                        .then(
+                                                Commands.argument("level", IntegerArgumentType.integer(1))
+                                                        .executes(GunsrpgCommand::editCrystalLevel)
+                                        )
+                        )
+                        .executes(ctx -> noArgsProvided("debuff", "event", "progression", "skill"))
         );
+    }
+
+    private static int editCrystalLevel(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        ItemStack crystalStack = player.getMainHandItem();
+        if (!(crystalStack.getItem() instanceof CrystalItem)) {
+            throw NOT_HOLDING_CRYSTAL.create();
+        }
+        int level = IntegerArgumentType.getInteger(context, "level");
+        CompoundNBT stackNbt = crystalStack.getTag();
+        if (stackNbt == null) {
+            Crystal crystal = new Crystal(level, Collections.emptyList());
+            CompoundNBT data = crystal.toNbt();
+            CompoundNBT stackData = new CompoundNBT();
+            stackData.put("crystal", data);
+            crystalStack.setTag(stackData);
+        } else {
+            Crystal crystal = Crystal.fromNbt(stackNbt.getCompound("crystal"));
+            Crystal newCrystal = new Crystal(level, crystal.listAttributes());
+            stackNbt.put("crystal", newCrystal.toNbt());
+        }
+        return 0;
+    }
+
+    private static int editCrystal(CommandContext<CommandSource> context, ModifyAction action, int level) throws CommandSyntaxException {
+        ResourceLocation location = ResourceLocationArgument.getId(context, "perk");
+        Perk perk = PerkRegistry.getRegistry().getPerkById(location);
+        if (perk == null) {
+            throw UNKNOWN_KEY_EXCEPTION.create(location);
+        }
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        ItemStack crystal = player.getMainHandItem();
+        if (!(crystal.getItem() instanceof CrystalItem)) {
+            throw NOT_HOLDING_CRYSTAL.create();
+        }
+        switch (action) {
+            case UNLOCK:
+                return addCrystalAttribute(perk, level, crystal);
+            case LOCK:
+                return removeCrystalAttribute(perk, crystal);
+        }
+        return -1;
+    }
+
+    private static int addCrystalAttribute(Perk perk, int level, ItemStack stack) {
+        CompoundNBT stackNbt = stack.getTag();
+        if (stackNbt == null) {
+            stackNbt = new CompoundNBT();
+        }
+        Crystal crystal = Crystal.fromNbt(stackNbt.getCompound("crystal"));
+        PerkType type = level < 0 ? PerkType.DEBUFF : PerkType.BUFF;
+        CrystalAttribute attribute = new CrystalAttribute(perk, type, Math.max(1, Math.abs(level)));
+        Crystal modified = crystal.append(attribute);
+        stackNbt.put("crystal", modified.toNbt());
+        stack.setTag(stackNbt);
+        return 0;
+    }
+
+    private static int removeCrystalAttribute(Perk perk, ItemStack stack) {
+        CompoundNBT stackNbt = stack.getTag();
+        if (stackNbt == null) {
+            return 0;
+        }
+        Crystal crystal = Crystal.fromNbt(stackNbt.getCompound("crystal"));
+        CrystalAttribute attribute = new CrystalAttribute(perk, PerkType.BUFF, 1);
+        Crystal modified = crystal.remove(attribute);
+        stackNbt.put("crystal", modified.toNbt());
+        return 0;
     }
 
     private static int listAttributeInfo(CommandContext<CommandSource> context) throws CommandSyntaxException {
@@ -260,7 +372,6 @@ public class GunsrpgCommand {
         PlayerEntity player = getPlayer(ctx);
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         optional.ifPresent(data -> {
-            ISkillProvider provider = data.getSkillProvider();
             data.getSaveEntries().stream()
                     .filter(entry -> entry instanceof ILockStateChangeable)
                     .map(entry -> (ILockStateChangeable) entry)
@@ -385,7 +496,7 @@ public class GunsrpgCommand {
         return validator;
     }
 
-    private static int noArgsProvided(CommandContext<CommandSource> ctx, String... args) throws CommandSyntaxException {
+    private static int noArgsProvided(String... args) throws CommandSyntaxException {
         TranslationTextComponent argList = new TranslationTextComponent("command.gunsrpg.exception.arg_list", args.length > 0 ? String.join(",", args) : "");
         throw MISSING_ARGUMENTS.create(argList.getString());
     }

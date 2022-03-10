@@ -16,9 +16,9 @@ import java.util.*;
 public final class Crystal {
 
     private final int level;
-    private final Collection<CrystalAttribute> attributes;
+    private final List<CrystalAttribute> attributes;
 
-    public Crystal(int level, Collection<CrystalAttribute> attributes) {
+    public Crystal(int level, List<CrystalAttribute> attributes) {
         this.level = level;
         this.attributes = attributes;
     }
@@ -40,15 +40,28 @@ public final class Crystal {
             Perk perk = registry.getRandomPerk();
             attributeCollection.add(new CrystalAttribute(perk, PerkType.DEBUFF, crystalLevel));
         }
-        return new Crystal(crystalLevel, attributeCollection);
+        return new Crystal(crystalLevel, new ArrayList<>(attributeCollection));
     }
 
     public int getLevel() {
         return level;
     }
 
-    public Collection<CrystalAttribute> listAttributes() {
+    public List<CrystalAttribute> listAttributes() {
         return attributes;
+    }
+
+    public Crystal append(CrystalAttribute attribute) {
+        Set<CrystalAttribute> set = new HashSet<>(attributes);
+        set.remove(attribute);
+        set.add(attribute);
+        return new Crystal(level, new ArrayList<>(set));
+    }
+
+    public Crystal remove(CrystalAttribute attribute) {
+        List<CrystalAttribute> copy = new ArrayList<>(attributes);
+        copy.remove(attribute);
+        return new Crystal(level, copy);
     }
 
     public CompoundNBT toNbt() {
@@ -61,7 +74,7 @@ public final class Crystal {
     }
 
     public static Crystal fromNbt(CompoundNBT nbt) {
-        int level = nbt.getInt("level");
+        int level = Math.max(1, nbt.getInt("level"));
         ListNBT list = nbt.getList("attributes", Constants.NBT.TAG_COMPOUND);
         List<CrystalAttribute> collection = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {

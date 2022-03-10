@@ -41,6 +41,10 @@ public final class PerkRegistry {
         return perkMap.size();
     }
 
+    public Set<ResourceLocation> getPerkIds() {
+        return perkMap.keySet();
+    }
+
     public Set<Perk> getPerks() {
         return new HashSet<>(perkMap.values());
     }
