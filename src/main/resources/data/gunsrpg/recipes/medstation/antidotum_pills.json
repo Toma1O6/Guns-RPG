@@ -1,46 +1,46 @@
 {
-  "type": "gunsrpg:smithing_table",
-  "pattern": [
-    "psp",
-    "aeg",
-    "dbo"
-  ],
-  "key": {
-    "p": {
-      "item": "minecraft:paper"
-    },
-    "g": {
-      "item": "minecraft:green_dye"
-    },
-    "s": {
-      "item": "minecraft:sugar"
-    },
-    "d": {
-      "item": "minecraft:dandelion"
-    },
-    "e": {
-      "item": "minecraft:emerald"
-    },
-    "o": {
-      "item": "minecraft:poppy"
-    },
-    "b": {
-      "item": "minecraft:blue_orchid"
-    },
-    "a": {
-      "item": "minecraft:allium"
-    }
-  },
-  "result": {
-    "item": "gunsrpg:antidotum_pills",
-    "count": 2
-  },
-  "requirements": [
-    {
-      "type": "gunsrpg:skill",
-      "predicate": {
-        "skill": "gunsrpg:doctor"
+    "type": "gunsrpg:medical_station",
+    "pattern": [
+      "psp",
+      "aeg",
+      "dbo"
+    ],
+    "key": {
+      "p": {
+        "item": "minecraft:paper"
+      },
+      "g": {
+        "item": "minecraft:green_dye"
+      },
+      "s": {
+        "item": "minecraft:sugar"
+      },
+      "d": {
+        "item": "minecraft:dandelion"
+      },
+      "e": {
+        "item": "minecraft:emerald"
+      },
+      "o": {
+        "item": "minecraft:poppy"
+      },
+      "b": {
+        "item": "minecraft:blue_orchid"
+      },
+      "a": {
+        "item": "minecraft:allium"
       }
-    }
-  ]
-}
+    },
+    "result": {
+      "item": "gunsrpg:antidotum_pills",
+      "count": 2
+    },
+    "requirements": [
+      {
+        "type": "gunsrpg:skill",
+        "predicate": {
+          "skill": "gunsrpg:doctor"
+        }
+      }
+    ]
+  }

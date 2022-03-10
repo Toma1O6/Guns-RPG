@@ -1,34 +1,34 @@
 {
-  "type": "gunsrpg:smithing_table",
-  "pattern": [
-    "bgb",
-    "gmg",
-    "igb"
-  ],
-  "key": {
-    "b": {
-      "item": "minecraft:bone_meal"
-    },
-    "g": {
-        "item": "minecraft:glass_pane"
-    },
-    "m": {
-        "item": "minecraft:milk_bucket"
-    },
-    "i": {
-        "item": "minecraft:iron_nugget"
-    }
-  },
-  "result": {
-    "item": "gunsrpg:calcium_shot",
-    "count": 2
-  },
-  "requirements": [
-    {
-      "type": "gunsrpg:skill",
-      "predicate": {
-        "skill": "gunsrpg:doctor"
+    "type": "gunsrpg:medical_station",
+    "pattern": [
+      "bgb",
+      "gmg",
+      "igb"
+    ],
+    "key": {
+      "b": {
+        "item": "minecraft:bone_meal"
+      },
+      "g": {
+          "item": "minecraft:glass_pane"
+      },
+      "m": {
+          "item": "minecraft:milk_bucket"
+      },
+      "i": {
+          "item": "minecraft:iron_nugget"
       }
-    }
-  ]
-}
+    },
+    "result": {
+      "item": "gunsrpg:calcium_shot",
+      "count": 2
+    },
+    "requirements": [
+      {
+        "type": "gunsrpg:skill",
+        "predicate": {
+          "skill": "gunsrpg:doctor"
+        }
+      }
+    ]
+  }

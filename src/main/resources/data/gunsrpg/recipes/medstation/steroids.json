@@ -1,38 +1,35 @@
 {
     "type": "gunsrpg:medical_station",
     "pattern": [
-      "igs",
-      "gpg",
-      "age"
+      "igo",
+      "grg",
+      "ogs"
     ],
     "key": {
-      "a": {
-        "item": "gunsrpg:adrenaline"
-      },
-      "p": {
-        "item": "gunsrpg:painkillers"
+      "r": {
+        "item": "minecraft:redstone_block"
       },
       "g": {
         "item": "minecraft:glass_pane"
       },
       "s": {
-        "item": "gunsrpg:stereoids"
+        "item": "minecraft:sugar"
       },
       "i": {
         "item": "minecraft:iron_ingot"
       },
-      "e": {
-        "item": "minecraft:ender_eye"
+      "o": {
+        "item": "minecraft:golden_carrot"
       }
     },
     "result": {
-      "item": "gunsrpg:morphine"
+      "item": "gunsrpg:stereoids"
     },
     "requirements": [
       {
         "type": "gunsrpg:skill",
         "predicate": {
-          "skill": "gunsrpg:pharmacist_v"
+          "skill": "gunsrpg:pharmacist_ii"
         }
       }
     ]
