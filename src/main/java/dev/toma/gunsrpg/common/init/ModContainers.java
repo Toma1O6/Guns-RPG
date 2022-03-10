@@ -23,6 +23,7 @@ public class ModContainers {
     public static final RegistryObject<ContainerType<GrenadeCaseContainer>> GRENADE_CASE = register("grenade_case", GrenadeCaseContainer::new);
     public static final RegistryObject<ContainerType<MedsCaseContainer>> MEDS_CASE = register("meds_case", MedsCaseContainer::new);
     public static final RegistryObject<ContainerType<ItemCaseContainer>> ITEM_CASE = register("item_case", ItemCaseContainer::new);
+    public static final RegistryObject<ContainerType<CrystalCaseContainer>> CRYSTAL_CASE = register("crystal_case", CrystalCaseContainer::new);
     public static final RegistryObject<ContainerType<CookerContainer>> COOKER = register("cooker", CookerContainer::new);
     public static final RegistryObject<ContainerType<CulinaryTableContainer>> CULINARY_TABLE = register("culinary_table", CulinaryTableContainer::new);
     public static final RegistryObject<ContainerType<MedstationContainer>> MEDSTATION = register("medstation", MedstationContainer::new);
