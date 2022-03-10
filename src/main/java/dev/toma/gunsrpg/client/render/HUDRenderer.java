@@ -153,8 +153,7 @@ public final class HUDRenderer {
 
     private String getAmmoString(GunItem item, ItemStack stack, IInventory inventory, IAmmoProvider provider, boolean jammed, boolean broken) {
         int loaded = item.getAmmo(stack);
-        int available = ItemLocator.countItems(inventory, ItemLocator.compatible(provider));
-        return jammed ? "JAMMED" : broken ? "DESTROYED" : loaded + " / " + available;
+        return jammed ? "JAMMED" : broken ? "DESTROYED" : loaded + " / " + ItemLocator.countItems(inventory, ItemLocator.compatible(provider));
     }
 
     private void renderProgressionBar(IKillData data, Matrix4f pose, int left, int top, int width, int bottom, int colorPrimary, int colorSecondary) {
