@@ -81,7 +81,7 @@ public final class HUDRenderer {
         boolean isBloodmoonDay = actualDay > 0 && actualDay % cycle == 0;
         int leftToBloodmoon = isBloodmoonDay ? 0 : (int) (cycle - actualDay % cycle);
         boolean isNight = world.getDayTime() % 24000L >= 12500L;
-        String dayString = isNight ? leftToBloodmoon + "!" : String.valueOf(leftToBloodmoon);
+        String dayString = isNight && isBloodmoonDay ? leftToBloodmoon + "!" : String.valueOf(leftToBloodmoon);
         int dayStringWidth = font.width(dayString);
         int xPos = window.getGuiScaledWidth() - 9;
         boolean shouldRenderBackground = hasActiveVisibleEffect(player);
@@ -153,8 +153,7 @@ public final class HUDRenderer {
 
     private String getAmmoString(GunItem item, ItemStack stack, IInventory inventory, IAmmoProvider provider, boolean jammed, boolean broken) {
         int loaded = item.getAmmo(stack);
-        int available = ItemLocator.countItems(inventory, ItemLocator.compatible(provider));
-        return jammed ? "JAMMED" : broken ? "DESTROYED" : loaded + " / " + available;
+        return jammed ? "JAMMED" : broken ? "DESTROYED" : loaded + " / " + ItemLocator.countItems(inventory, ItemLocator.compatible(provider));
     }
 
     private void renderProgressionBar(IKillData data, Matrix4f pose, int left, int top, int width, int bottom, int colorPrimary, int colorSecondary) {

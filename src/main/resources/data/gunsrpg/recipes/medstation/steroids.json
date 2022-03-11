@@ -1,38 +1,35 @@
 {
     "type": "gunsrpg:medical_station",
     "pattern": [
-      "iso",
-      "sas",
-      "lsg"
+      "igo",
+      "grg",
+      "ogs"
     ],
     "key": {
-      "a": {
-        "item": "gunsrpg:amethyst"
+      "r": {
+        "item": "minecraft:redstone_block"
       },
       "g": {
-        "item": "minecraft:golden_apple"
+        "item": "minecraft:glass_pane"
       },
       "s": {
-        "item": "minecraft:glass_pane"
+        "item": "minecraft:sugar"
       },
       "i": {
         "item": "minecraft:iron_ingot"
-      },
-      "l": {
-        "item": "minecraft:glistering_melon_slice"
       },
       "o": {
         "item": "minecraft:golden_carrot"
       }
     },
     "result": {
-      "item": "gunsrpg:vaccine"
+      "item": "gunsrpg:steroids"
     },
     "requirements": [
       {
         "type": "gunsrpg:skill",
         "predicate": {
-          "skill": "gunsrpg:doctor"
+          "skill": "gunsrpg:pharmacist_ii"
         }
       }
     ]

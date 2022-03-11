@@ -1,37 +1,37 @@
 {
-  "type": "gunsrpg:smithing_table",
-  "pattern": [
-    "abc",
-    "psp",
-    " p "
-  ],
-  "key": {
-    "a": {
-      "item": "minecraft:apple"
-    },
-    "b": {
-        "item": "minecraft:beetroot"
-    },
-    "c": {
-        "item": "minecraft:carrot"
-    },
-    "p": {
-        "item": "minecraft:paper"
-    },
-    "s": {
-        "item": "minecraft:sugar"
-    }
-  },
-  "result": {
-    "item": "gunsrpg:vitamins",
-    "count": 2
-  },
-  "requirements": [
-    {
-      "type": "gunsrpg:skill",
-      "predicate": {
-        "skill": "gunsrpg:doctor"
+    "type": "gunsrpg:medical_station",
+    "pattern": [
+      "abc",
+      "psp",
+      " p "
+    ],
+    "key": {
+      "a": {
+        "item": "minecraft:apple"
+      },
+      "b": {
+          "item": "minecraft:beetroot"
+      },
+      "c": {
+          "item": "minecraft:carrot"
+      },
+      "p": {
+          "item": "minecraft:paper"
+      },
+      "s": {
+          "item": "minecraft:sugar"
       }
-    }
-  ]
-}
+    },
+    "result": {
+      "item": "gunsrpg:vitamins",
+      "count": 2
+    },
+    "requirements": [
+      {
+        "type": "gunsrpg:skill",
+        "predicate": {
+          "skill": "gunsrpg:doctor"
+        }
+      }
+    ]
+  }

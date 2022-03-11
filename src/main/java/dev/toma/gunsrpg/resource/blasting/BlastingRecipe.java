@@ -65,6 +65,11 @@ public class BlastingRecipe implements IRecipe<BlastFurnaceTileEntity>, IBurning
     }
 
     @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
+    @Override
     public float getExperience() {
         return experience;
     }

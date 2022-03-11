@@ -508,8 +508,8 @@ public class CommonRegistry {
                         .describe("Recovers 2.5 hearts")
                         .animate(60, AnimationPaths.PILLS)
                         .build(),
-                PlayerHealItem.define("stereoids")
-                        .onUse(PlayerHealItem::onStereoidsUsed)
+                PlayerHealItem.define("steroids")
+                        .onUse(PlayerHealItem::onSteroidsUsed)
                         .describe("Effects:", "Strength I for 60 seconds", "Jump Boost II for 60 seconds")
                         .animate(75, AnimationPaths.INJECTION)
                         .build(),
@@ -678,6 +678,7 @@ public class CommonRegistry {
                 new StorageItem("grenade_case", new Item.Properties(), 4, 3, StorageUtil::isExplosive, GrenadeCaseContainer::new),
                 new StorageItem("meds_case", new Item.Properties(), 4, 4, StorageUtil::isMed, MedsCaseContainer::new),
                 new StorageItem("item_case", new Item.Properties(), 6, 4, StorageUtil::notAnInventory, ItemCaseContainer::new),
+                new StorageItem("crystal_case", new Item.Properties(), 6, 5, StorageUtil::isCrystal, CrystalCaseContainer::new),
                 BaseItem.simpleItem("weapon_repair_kit", props -> props.durability(5)),
                 BaseItem.simpleItem("small_stone"),
                 new StarterGearItem("starter_gear"),

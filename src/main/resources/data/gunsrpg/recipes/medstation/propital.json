@@ -1,37 +1,37 @@
 {
-  "type": "gunsrpg:smithing_table",
-  "pattern": [
-    "sgb",
-    "ghg",
-    "igs"
-  ],
-  "key": {
-    "s": {
-      "item": "minecraft:sugar_cane"
-    },
-    "g": {
-        "item": "minecraft:glass_pane"
-    },
-    "b": {
-        "item": "minecraft:bone_meal"
-    },
-    "h": {
-        "item": "minecraft:honeycomb"
-    },
-    "i": {
-        "item": "minecraft:iron_nugget"
-    }
-  },
-  "result": {
-    "item": "gunsrpg:propital",
-    "count": 2
-  },
-  "requirements": [
-    {
-      "type": "gunsrpg:skill",
-      "predicate": {
-        "skill": "gunsrpg:medic"
+    "type": "gunsrpg:medical_station",
+    "pattern": [
+      "sgb",
+      "ghg",
+      "igs"
+    ],
+    "key": {
+      "s": {
+        "item": "minecraft:sugar_cane"
+      },
+      "g": {
+          "item": "minecraft:glass_pane"
+      },
+      "b": {
+          "item": "minecraft:bone_meal"
+      },
+      "h": {
+          "item": "minecraft:honeycomb"
+      },
+      "i": {
+          "item": "minecraft:iron_nugget"
       }
-    }
-  ]
-}
+    },
+    "result": {
+      "item": "gunsrpg:propital",
+      "count": 2
+    },
+    "requirements": [
+      {
+        "type": "gunsrpg:skill",
+        "predicate": {
+          "skill": "gunsrpg:medic"
+        }
+      }
+    ]
+  }

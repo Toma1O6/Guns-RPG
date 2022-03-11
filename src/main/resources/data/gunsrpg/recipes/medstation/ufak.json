@@ -1,33 +1,33 @@
 {
-  "type": "gunsrpg:smithing_table",
-  "pattern": [
-    "ldl",
-    "aaa",
-    "lsl"
-  ],
-  "key": {
-    "a": {
-      "item": "gunsrpg:analgetics"
-    },
-    "l": {
-        "item": "minecraft:leather"
-    },
-    "s": {
-        "item": "gunsrpg:stereoids"
-    },
-    "d": {
-        "item": "gunsrpg:adrenaline"
-    }
-  },
-  "result": {
-    "item": "gunsrpg:ufak"
-  },
-  "requirements": [
-    {
-      "type": "gunsrpg:skill",
-      "predicate": {
-        "skill": "gunsrpg:pharmacist_iii"
+    "type": "gunsrpg:medical_station",
+    "pattern": [
+      "ldl",
+      "aaa",
+      "lsl"
+    ],
+    "key": {
+      "a": {
+        "item": "gunsrpg:analgetics"
+      },
+      "l": {
+          "item": "minecraft:leather"
+      },
+      "s": {
+          "item": "gunsrpg:steroids"
+      },
+      "d": {
+          "item": "gunsrpg:adrenaline"
       }
-    }
-  ]
-}
+    },
+    "result": {
+      "item": "gunsrpg:ufak"
+    },
+    "requirements": [
+      {
+        "type": "gunsrpg:skill",
+        "predicate": {
+          "skill": "gunsrpg:pharmacist_iii"
+        }
+      }
+    ]
+  }
