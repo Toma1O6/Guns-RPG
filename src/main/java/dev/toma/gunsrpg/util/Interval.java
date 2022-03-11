@@ -45,10 +45,10 @@ public final class Interval implements IIntervalProvider {
         StringBuilder builder = new StringBuilder();
         Unit[] sorted = Arrays.stream(values).sorted((o1, o2) -> o2.tickValue - o1.tickValue).toArray(Unit[]::new);
         int value = this.value * this.unit.tickValue;
-        boolean blockSkipping = false;
+        boolean blockSkipping = !compact;
         for (Unit unit : sorted) {
             int unitValue = value / unit.tickValue;
-            if (unitValue > 0 || !blockSkipping) {
+            if (unitValue > 0 || blockSkipping) {
                 value = value % unit.tickValue;
                 builder.append(unitValue).append(compact ? "" : " ").append(unit.getName(compact)).append(!compact && unitValue > 1 ? "s" : "").append(compact ? "" : " ");
                 blockSkipping = true;
