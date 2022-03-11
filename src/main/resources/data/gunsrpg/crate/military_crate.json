@@ -1937,7 +1937,7 @@
       },
       {
         "weight": 7,
-        "item": "gunsrpg:crystsl_case",
+        "item": "gunsrpg:crystal_case",
         "count": {
           "function": "gunsrpg:const",
           "value": 1
