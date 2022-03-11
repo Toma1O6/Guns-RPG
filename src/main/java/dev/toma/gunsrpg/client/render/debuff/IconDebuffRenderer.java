@@ -63,7 +63,7 @@ public class IconDebuffRenderer<D extends IStagedDebuff> implements IDebuffRende
         boolean isHealing = healProgress < damageProgress && healProgress < 15;
         float effect;
         if (debuff.isFrozen(attributes)) {
-            return 0xffff;
+            return 0xff << 8;
         }
         if (isHealing) {
             effect = Mth.asLinearFunction(healProgress, 0, controls.effectLength);
