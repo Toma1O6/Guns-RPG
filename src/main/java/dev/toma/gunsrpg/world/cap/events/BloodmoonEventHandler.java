@@ -25,7 +25,7 @@ public class BloodmoonEventHandler implements IWorldEventHandler {
 
     @Override
     public boolean canTriggerEvent(World world) {
-        return world.getDayTime() >= 12500;
+        return (world.getDayTime() % 24000L) >= 12500;
     }
 
     private void notifyBloodmoonStart(ServerPlayerEntity player) {
