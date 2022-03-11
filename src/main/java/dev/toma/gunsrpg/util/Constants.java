@@ -19,6 +19,7 @@ public final class Constants {
         public static final UUID STRONG_MUSCLES                             = UUID.fromString("63A449AE-F2B0-4A23-8775-4768F31AAC85");
         public static final UUID AGILITY                                    = UUID.fromString("78FA0A5E-8710-4B1A-B045-4DBDE8F00C40");
         public static final UUID SKULL_CRUSHER                              = UUID.fromString("64D17643-9A3C-4468-8944-16319D0C24E6");
+        public static final UUID REPAIR_MAN                                 = UUID.fromString("F8E460EC-1FDD-4F01-9EBA-6D1522AEB5A2");
         public static final UUID POISON_BLOCKING                            = UUID.fromString("06B101CE-2CC4-43E2-9C83-4D6756604E54");
         public static final UUID POISON_DELAYING                            = UUID.fromString("3CE101E1-6379-43F5-9E03-DA91AF32226B");
         public static final UUID INFECTION_BLOCKING                         = UUID.fromString("202D83D3-D2FF-4E74-9820-24A82B2F17BF");

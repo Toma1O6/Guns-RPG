@@ -4,7 +4,8 @@
         "parent": "gunsrpg:repair_man_i",
         "children": [
             "gunsrpg:repair_man_iii"
-        ]
+        ],
+        "override": "gunsrpg:repair_man_iii"
     },
     "properties": {
         "level": 40,
