@@ -1284,7 +1284,7 @@
         }
       },
       {
-        "weight": 5,
+        "weight": 7,
         "item": "gunsrpg:lunch_box",
         "count": {
           "function": "gunsrpg:const",
@@ -1622,7 +1622,7 @@
         }
       },
       {
-        "weight": 5,
+        "weight": 7,
         "item": "gunsrpg:lunch_box",
         "count": {
           "function": "gunsrpg:const",
@@ -1630,7 +1630,7 @@
         }
       },
       {
-        "weight": 5,
+        "weight": 7,
         "item": "gunsrpg:ammo_case",
         "count": {
           "function": "gunsrpg:const",
@@ -1639,6 +1639,14 @@
       },
       {
         "weight": 7,
+        "item": "gunsrpg:crystal_case",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 9,
         "item": "gunsrpg:skillpoint_book",
         "count": {
           "function": "gunsrpg:const",
@@ -1646,7 +1654,7 @@
         }
       },
       {
-        "weight": 10,
+        "weight": 12,
         "item": "gunsrpg:perkpoint_book",
         "count": {
           "function": "gunsrpg:const",
@@ -1928,16 +1936,8 @@
         }
       },
       {
-        "weight": 5,
-        "item": "gunsrpg:grenade_case",
-        "count": {
-          "function": "gunsrpg:const",
-          "value": 1
-        }
-      },
-      {
-        "weight": 5,
-        "item": "gunsrpg:meds_case",
+        "weight": 7,
+        "item": "gunsrpg:crystal_case",
         "count": {
           "function": "gunsrpg:const",
           "value": 1
@@ -1945,6 +1945,22 @@
       },
       {
         "weight": 7,
+        "item": "gunsrpg:grenade_case",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 7,
+        "item": "gunsrpg:meds_case",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 9,
         "item": "gunsrpg:skillpoint_book",
         "count": {
           "function": "gunsrpg:const",
@@ -1952,7 +1968,7 @@
         }
       },
       {
-        "weight": 10,
+        "weight": 12,
         "item": "gunsrpg:perkpoint_book",
         "count": {
           "function": "gunsrpg:const",
@@ -2267,6 +2283,14 @@
       },
       {
         "weight": 5,
+        "item": "gunsrpg:crystal_case",
+        "count": {
+          "function": "gunsrpg:const",
+          "value": 1
+        }
+      },
+      {
+        "weight": 7,
         "item": "gunsrpg:grenade_case",
         "count": {
           "function": "gunsrpg:const",
@@ -2274,7 +2298,7 @@
         }
       },
       {
-        "weight": 5,
+        "weight": 7,
         "item": "gunsrpg:meds_case",
         "count": {
           "function": "gunsrpg:const",
@@ -2282,7 +2306,7 @@
         }
       },
       {
-        "weight": 5,
+        "weight": 7,
         "item": "gunsrpg:item_case",
         "count": {
           "function": "gunsrpg:const",
