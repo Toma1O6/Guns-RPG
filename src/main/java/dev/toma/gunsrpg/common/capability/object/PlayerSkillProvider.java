@@ -159,8 +159,10 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
     private void skillFromNbt(CompoundNBT nbt) {
         ResourceLocation key = new ResourceLocation(nbt.getString("type"));
         SkillType<?> type = ModRegistries.SKILLS.getValue(key);
-        if (type == null)
+        if (type == null) {
             GunsRPG.log.error(SKILLS, "Unknown skill type: " + key);
+            return;
+        }
         ISkill skill = type.instantiate();
         if (nbt.contains("data", Constants.NBT.TAG_COMPOUND)) {
             CompoundNBT data = nbt.getCompound("data");

@@ -519,8 +519,8 @@
     "skill.gunsrpg.kar98k_scope.description.0": "Install 4x scope on the weapon",
     "skill.gunsrpg.kar98k_cheekpad.title": "Cheekpad",
     "skill.gunsrpg.kar98k_cheekpad.description.0": "Decreases weapon recoil",
-    "skill.gunsrpg.kar98k_extended.title": "Extended",
-    "skill.gunsrpg.kar98k_extended.description.capacity": "+%s to weapon magazine capacity",
+    "skill.gunsrpg.kar98k_reliable.title": "Reliable",
+
     "skill.gunsrpg.kar98k_suppressor.title": "Suppressor",
     "skill.gunsrpg.kar98k_suppressor.description.0": "Greatly reduces weapon loudness",
     "skill.gunsrpg.kar98k_fast_hands.title": "Fast Hands",
