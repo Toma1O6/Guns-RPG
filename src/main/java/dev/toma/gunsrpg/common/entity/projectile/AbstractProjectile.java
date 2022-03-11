@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.common.init.ModDamageSources;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import net.minecraft.entity.*;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -258,9 +259,9 @@ public abstract class AbstractProjectile extends ProjectileEntity {
             double noiseMultiplier = gun.getNoiseMultiplier(data.getAttributes());
             double actualScareRange = mobScareRange * noiseMultiplier;
             Entity owner = getOwner();
-            List<MobEntity> list = level.getEntitiesOfClass(MobEntity.class, getBoundingBox().inflate(actualScareRange), ent -> ent != owner);
-            for (MobEntity mobEntity : list) {
-                mobEntity.setTarget((PlayerEntity) owner);
+            List<MonsterEntity> list = level.getEntitiesOfClass(MonsterEntity.class, getBoundingBox().inflate(actualScareRange), ent -> ent != owner);
+            for (MonsterEntity entity : list) {
+                entity.setTarget((PlayerEntity) owner);
             }
         });
     }
