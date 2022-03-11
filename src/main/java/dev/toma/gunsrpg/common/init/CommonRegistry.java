@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.AnimationPaths;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.attribute.AttributeTarget;
+import dev.toma.gunsrpg.common.attribute.ModifierFactory;
 import dev.toma.gunsrpg.common.attribute.Modifiers;
 import dev.toma.gunsrpg.common.block.*;
 import dev.toma.gunsrpg.common.container.*;
@@ -431,58 +432,46 @@ public class CommonRegistry {
         registry.registerAll(
                 BaseItem.simpleItem("amethyst"),
                 DebuffHealItem.define("antidotum_pills")
-                        .canUse(data -> data.hasDebuff(Debuffs.POISON))
-                        .onUse(data -> data.heal(Debuffs.POISON, 40))
+                        .canUse(data -> data.getDebuffControl().hasDebuff(Debuffs.POISON))
+                        .onUse(DebuffHealItem::healPoison)
                         .describe("Heals 40% of poison progress")
                         .animate(60, AnimationPaths.PILLS)
                         .build(),
                 DebuffHealItem.define("vaccine")
-                        .canUse(data -> data.hasDebuff(Debuffs.INFECTION))
-                        .onUse(data -> data.heal(Debuffs.INFECTION, 50))
+                        .canUse(data -> data.getDebuffControl().hasDebuff(Debuffs.INFECTION))
+                        .onUse(DebuffHealItem::healInfection)
                         .describe("Heals 50% of infection progress")
                         .animate(75, AnimationPaths.INJECTION)
                         .build(),
                 DebuffHealItem.define("plaster_cast")
-                        .canUse(data -> data.hasDebuff(Debuffs.FRACTURE))
-                        .onUse(data -> data.heal(Debuffs.FRACTURE, 35))
+                        .canUse(data -> data.getDebuffControl().hasDebuff(Debuffs.FRACTURE))
+                        .onUse(DebuffHealItem::healFracture)
                         .describe("Heals 35% of fracture progress")
                         .animate(65, AnimationPaths.SPLINT)
                         .build(),
                 DebuffHealItem.define("bandage")
-                        .canUse(data -> data.hasDebuff(Debuffs.BLEED))
-                        .onUse(data -> data.heal(Debuffs.BLEED, 25))
+                        .canUse(data -> data.getDebuffControl().hasDebuff(Debuffs.BLEED))
+                        .onUse(DebuffHealItem::healBleed)
                         .describe("Heals 25% of bleeding progress")
                         .animate(70, AnimationPaths.BANDAGE)
                         .build(),
                 AttributeAccessHealItem.define("hemostat")
-                        .defineModifiers(
-                                AttributeTarget.create(Modifiers.BLEED_BLOCKING, Attribs.BLEED_BLOCK),
-                                AttributeTarget.create(Modifiers.BLEED_DELAYING, Attribs.BLEED_DELAY)
-                        )
+                        .defineModifiers(ModifierFactory::createHemostatModifiers)
                         .describe("Bleeding:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(50, AnimationPaths.HEMOSTAT)
                         .build(),
                 AttributeAccessHealItem.define("vitamins")
-                        .defineModifiers(
-                                AttributeTarget.create(Modifiers.INFECTION_BLOCKING, Attribs.INFECTION_BLOCK),
-                                AttributeTarget.create(Modifiers.INFECTION_DELAYING, Attribs.INFECTION_DELAY)
-                        )
+                        .defineModifiers(ModifierFactory::createVitaminModifiers)
                         .describe("Infection:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(40, AnimationPaths.VITAMINS)
                         .build(),
                 AttributeAccessHealItem.define("propital")
-                        .defineModifiers(
-                                AttributeTarget.create(Modifiers.FRACTURE_BLOCKING, Attribs.FRACTURE_BLOCK),
-                                AttributeTarget.create(Modifiers.FRACTURE_DELAYING, Attribs.FRACTURE_DELAY)
-                        )
+                        .defineModifiers(ModifierFactory::createPropitalModifiers)
                         .describe("Fracture:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(30, AnimationPaths.STIM)
                         .build(),
                 AttributeAccessHealItem.define("calcium_shot")
-                        .defineModifiers(
-                                AttributeTarget.create(Modifiers.POISON_BLOCKING, Attribs.POISON_BLOCK),
-                                AttributeTarget.create(Modifiers.POISON_DELAYING, Attribs.POISON_DELAY)
-                        )
+                        .defineModifiers(ModifierFactory::createCalciumShotModifiers)
                         .describe("Poison:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(30, AnimationPaths.STIM)
                         .build(),

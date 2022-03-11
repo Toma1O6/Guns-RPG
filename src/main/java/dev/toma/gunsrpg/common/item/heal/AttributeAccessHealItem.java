@@ -8,6 +8,8 @@ import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
+import java.util.function.Function;
+
 public class AttributeAccessHealItem extends AbstractHealItem<IAttributeProvider> {
 
     protected AttributeAccessHealItem(Builder builder) {
@@ -29,8 +31,9 @@ public class AttributeAccessHealItem extends AbstractHealItem<IAttributeProvider
             super(name);
         }
 
-        public Builder defineModifiers(IAttributeTarget... targets) {
+        public Builder defineModifiers(Function<IAttributeProvider, IAttributeTarget[]> function) {
             return (Builder) onUse(provider -> {
+                IAttributeTarget[] targets = function.apply(provider);
                 for (IAttributeTarget target : targets) {
                     IAttributeModifier modifier = target.getModifier();
                     IAttributeId id = target.getTargetAttribute();
