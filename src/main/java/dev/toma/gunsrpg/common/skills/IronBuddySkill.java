@@ -1,8 +1,10 @@
 package dev.toma.gunsrpg.common.skills;
 
+import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.skill.IClickableSkill;
 import dev.toma.gunsrpg.api.common.skill.ICooldown;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.IIntervalProvider;
@@ -82,6 +84,7 @@ public class IronBuddySkill extends BasicSkill implements ICooldown, IClickableS
             ironGolem.setHealth(newValue);
         }
         player.level.addFreshEntity(ironGolem);
+        PlayerData.get(player).ifPresent(data -> data.sync(DataFlags.SKILLS));
     }
 
     @Override
