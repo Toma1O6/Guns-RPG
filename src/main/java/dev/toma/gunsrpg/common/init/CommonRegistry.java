@@ -417,9 +417,9 @@ public class CommonRegistry {
                 new BaseBlock("crystal_purification", AbstractBlock.Properties.of(Material.STONE).noOcclusion()),
                 new CookerBlock("cooker"),
                 new RepairStationBlock("repair_station"),
-                new MilitaryCrateBlock("artic_military_crate"),
-                new MilitaryCrateBlock("desert_military_crate"),
-                new MilitaryCrateBlock("woodland_military_crate"),
+                new MilitaryCrateBlock("artic_military_crate", MilitaryCrateBlock.BiomeVariant.ARTIC),
+                new MilitaryCrateBlock("desert_military_crate", MilitaryCrateBlock.BiomeVariant.DESERT),
+                new MilitaryCrateBlock("woodland_military_crate", MilitaryCrateBlock.BiomeVariant.WOODLAND),
                 new CulinaryTableBlock("culinary_table"),
                 new MedstationBlock("medical_station")
         );

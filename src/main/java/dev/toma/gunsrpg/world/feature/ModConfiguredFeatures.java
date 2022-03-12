@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.common.init.ModFeaturePlacements;
 import dev.toma.gunsrpg.common.init.ModFeatures;
 import net.minecraft.block.Blocks;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.ReplaceBlockConfig;
 import net.minecraft.world.gen.placement.NoPlacementConfig;
 
@@ -32,6 +33,7 @@ public class ModConfiguredFeatures {
     public static final ConfiguredFeature<?, ?> RED_ORB = register(ModFeatures.RED_ORB.get().configured(new ReplaceBlockConfig(Blocks.STONE.defaultBlockState(), ModBlocks.RED_ORB_ORE.defaultBlockState())).decorated(ModFeaturePlacements.RED_ORB.get().configured(NoPlacementConfig.NONE)));
     public static final ConfiguredFeature<?, ?> WHITE_ORB = register(ModFeatures.WHITE_ORB.get().configured(new ReplaceBlockConfig(Blocks.STONE.defaultBlockState(), ModBlocks.WHITE_ORB_ORE.defaultBlockState())).decorated(ModFeaturePlacements.WHITE_ORB.get().configured(NoPlacementConfig.NONE)));
     public static final ConfiguredFeature<?, ?> YELLOW_ORB = register(ModFeatures.YELLOW_ORB.get().configured(new ReplaceBlockConfig(Blocks.STONE.defaultBlockState(), ModBlocks.YELLOW_ORB_ORE.defaultBlockState())).decorated(ModFeaturePlacements.YELLOW_ORB.get().configured(NoPlacementConfig.NONE)));
+    public static final ConfiguredFeature<?, ?> LOOT_STASH = register(ModFeatures.LOOT_STASH.get().configured(NoFeatureConfig.INSTANCE).decorated(ModFeaturePlacements.LOOT_STASH.get().configured(NoPlacementConfig.NONE)));
 
     public static Collection<ConfiguredFeature<?, ?>> getOres() {
         return ORES;

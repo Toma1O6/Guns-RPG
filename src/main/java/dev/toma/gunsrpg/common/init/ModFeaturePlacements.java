@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IGeneratorConfig;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.world.feature.ConfigurablePlacement;
+import dev.toma.gunsrpg.world.feature.UnderTopLayerPlacement;
 import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -31,6 +32,11 @@ public final class ModFeaturePlacements {
     public static final RegistryObject<Placement<NoPlacementConfig>> RED_ORB = register("red_orb", () -> ModConfig.worldConfig.redOrb);
     public static final RegistryObject<Placement<NoPlacementConfig>> WHITE_ORB = register("white_orb", () -> ModConfig.worldConfig.whiteOrb);
     public static final RegistryObject<Placement<NoPlacementConfig>> YELLOW_ORB = register("yellow_orb", () -> ModConfig.worldConfig.yellowOrb);
+    public static final RegistryObject<Placement<NoPlacementConfig>> LOOT_STASH = registerPlacement("loot_stash", () -> new UnderTopLayerPlacement(ModConfig.worldConfig.lootStashChance.get()));
+
+    private static RegistryObject<Placement<NoPlacementConfig>> registerPlacement(String name, Supplier<Placement<NoPlacementConfig>> supplier) {
+        return TYPES.register(name, supplier);
+    }
 
     private static RegistryObject<Placement<NoPlacementConfig>> register(String name, Supplier<IGeneratorConfig> configSupplier) {
         return TYPES.register(name, () -> new ConfigurablePlacement(NoPlacementConfig.CODEC, configSupplier));

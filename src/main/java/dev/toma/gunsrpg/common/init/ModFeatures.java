@@ -1,10 +1,8 @@
 package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.ReplaceBlockConfig;
-import net.minecraft.world.gen.feature.ReplaceBlockFeature;
+import dev.toma.gunsrpg.world.feature.LootStashFeature;
+import net.minecraft.world.gen.feature.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -30,6 +28,7 @@ public final class ModFeatures {
     public static final RegistryObject<Feature<ReplaceBlockConfig>> RED_ORB = register("red_orb", () -> new ReplaceBlockFeature(ReplaceBlockConfig.CODEC));
     public static final RegistryObject<Feature<ReplaceBlockConfig>> WHITE_ORB = register("white_orb", () -> new ReplaceBlockFeature(ReplaceBlockConfig.CODEC));
     public static final RegistryObject<Feature<ReplaceBlockConfig>> YELLOW_ORB = register("yellow_orb", () -> new ReplaceBlockFeature(ReplaceBlockConfig.CODEC));
+    public static final RegistryObject<Feature<NoFeatureConfig>> LOOT_STASH = register("loot_stash", LootStashFeature::new);
 
     private static <FC extends IFeatureConfig> RegistryObject<Feature<FC>> register(String name, Supplier<Feature<FC>> supplier) {
         return TYPES.register(name, supplier);

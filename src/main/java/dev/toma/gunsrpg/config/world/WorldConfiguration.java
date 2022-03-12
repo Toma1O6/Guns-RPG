@@ -3,10 +3,9 @@ package dev.toma.gunsrpg.config.world;
 import dev.toma.configuration.api.IConfigWriter;
 import dev.toma.configuration.api.IObjectSpec;
 import dev.toma.configuration.api.NumberDisplayType;
-import dev.toma.configuration.api.type.BooleanType;
-import dev.toma.configuration.api.type.EnumType;
-import dev.toma.configuration.api.type.IntType;
-import dev.toma.configuration.api.type.ObjectType;
+import dev.toma.configuration.api.type.*;
+
+import java.text.DecimalFormat;
 
 public class WorldConfiguration extends ObjectType {
 
@@ -19,6 +18,7 @@ public class WorldConfiguration extends ObjectType {
     public final IntType bloodmoonCycle;
     public final IntType airdropFrequency;
     public final EnumType<SleepRestriction> sleepRestriction;
+    public final DoubleType lootStashChance;
     public final SimpleOreGenConfig amethyst;
     public final SimpleOreGenConfig blackCrystal;
     public final SimpleOreGenConfig blueCrystal;
@@ -45,6 +45,7 @@ public class WorldConfiguration extends ObjectType {
         bloodmoonCycle = writer.writeBoundedInt("Bloodmoon cycle", 7, -1, 999, "Defines bloodmoon cycle", "Set to -1 to disable");
         airdropFrequency = writer.writeBoundedInt("Airdrop frequency", 3, -1, 999, "Defines airdrop spawn frequency [days]", "Set to -1 to disable");
         sleepRestriction = writer.writeEnum("Restrict sleep", SleepRestriction.ALWAYS, "Defines when players will be able to sleep");
+        lootStashChance = writer.writeBoundedDouble("Loot stash chance", 0.001, 0.0, 0.1, "Chance of loot stash spawn per chunk").setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER).setFormatting(new DecimalFormat("0.0###"));
         amethyst = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 4, 1, 16), "Amethyst ore", "Configure amethyst spawning");
         blackCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Black crystal", "Configure black crystal spawning");
         blueCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Blue crystal", "Configure blue crystal spawning");
