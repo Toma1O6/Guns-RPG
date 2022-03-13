@@ -108,7 +108,9 @@ public class CommonEventHandler {
             mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.EXPLOSIVE_SKELETON.get(), ModConfig.worldConfig.explosiveSkeletonSpawn.get(), 1, 2));
         }
         if (category != Biome.Category.NETHER && category != Biome.Category.THEEND) {
-            builder.addFeature(GenerationStage.Decoration.RAW_GENERATION, ModConfiguredFeatures.LOOT_STASH);
+            if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
+                builder.addFeature(GenerationStage.Decoration.UNDERGROUND_STRUCTURES, ModConfiguredFeatures.LOOT_STASH);
+            }
             for (ConfiguredFeature<?, ?> feature : ModConfiguredFeatures.getOres()) {
                 builder.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, feature);
             }

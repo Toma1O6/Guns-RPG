@@ -34,14 +34,18 @@ public class LootStashFeature extends Feature<NoFeatureConfig> {
 
     @Override
     public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+        if (!seedReader.getFluidState(pos).isEmpty()) {
+            return false;
+        }
         Biome biome = seedReader.getBiome(pos);
         float temperature = biome.getTemperature(pos);
         MilitaryCrateBlock.BiomeVariant variant = MilitaryCrateBlock.BiomeVariant.ARTIC;
         for (MilitaryCrateBlock.BiomeVariant biomeVariant : MilitaryCrateBlock.BiomeVariant.BY_TEMPERATURE) {
-            if (biomeVariant.getTemperatureLimit() <= temperature) {
+            if (temperature > biomeVariant.getMinTemperature()) {
                 variant = biomeVariant;
             }
         }
+        System.out.printf("Biome: %s, Temperature: %s, Variant: %s\n", biome.getRegistryName().toString(), temperature, variant);
         MilitaryCrateBlock block = MAP.get().get(variant);
         seedReader.setBlock(pos, block.defaultBlockState(), 2);
         TileEntity tile = seedReader.getBlockEntity(pos);

@@ -20,12 +20,12 @@ public class UnderTopLayerPlacement extends Placement<NoPlacementConfig> {
 
     @Override
     public Stream<BlockPos> getPositions(WorldDecoratingHelper helper, Random random, NoPlacementConfig config, BlockPos chunkStartPos) {
-        if (random.nextFloat() >= 0.005F) {
+        if (random.nextFloat() >= spawnChance) {
             return Stream.empty();
         }
         int x = chunkStartPos.getX() + random.nextInt(16);
         int z = chunkStartPos.getZ() + random.nextInt(16);
-        int y = helper.getHeight(Heightmap.Type.WORLD_SURFACE, x, z) - 5;
+        int y = helper.getHeight(Heightmap.Type.WORLD_SURFACE, x, z) - 3;
         return Stream.of(new BlockPos(x, y, z));
     }
 }

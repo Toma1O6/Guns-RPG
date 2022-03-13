@@ -42,21 +42,21 @@ public class MilitaryCrateBlock extends AbstractCrateBlock {
     }
 
     public enum BiomeVariant {
-        ARTIC(0.0F),
-        WOODLAND(1.8F),
-        DESERT(1000.0F);
+        ARTIC(Integer.MIN_VALUE),
+        WOODLAND(0.1F),
+        DESERT(1.15F);
 
         public static final BiomeVariant[] BY_TEMPERATURE = Arrays.stream(values())
-                .sorted(Comparator.comparingDouble(BiomeVariant::getTemperatureLimit))
+                .sorted(Comparator.comparingDouble(BiomeVariant::getMinTemperature))
                 .toArray(BiomeVariant[]::new);
-        private final float temperatureLimit;
+        private final float minTemperature;
 
-        BiomeVariant(float temperatureLimit) {
-            this.temperatureLimit = temperatureLimit;
+        BiomeVariant(float minTemperature) {
+            this.minTemperature = minTemperature;
         }
 
-        public float getTemperatureLimit() {
-            return temperatureLimit;
+        public float getMinTemperature() {
+            return minTemperature;
         }
     }
 }
