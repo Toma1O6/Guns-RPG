@@ -10,9 +10,9 @@ import net.minecraft.util.text.ITextComponent;
 public class TreasureHunterSkill extends BasicSkill implements IDescriptionProvider {
 
     private static final DetectionRadius[] RADII = {
-            new DetectionRadius(50.0F, 6.0F),
-            new DetectionRadius(75.0F, 4.0F),
-            new DetectionRadius(100.0F, 2.0F)
+            new DetectionRadius(40.0F, 6.0F),
+            new DetectionRadius(55.0F, 5.0F),
+            new DetectionRadius(75.0F, 3.0F)
     };
     private final DescriptionContainer container;
     private final int level;
