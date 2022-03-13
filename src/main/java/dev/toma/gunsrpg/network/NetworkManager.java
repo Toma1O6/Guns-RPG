@@ -57,6 +57,7 @@ public class NetworkManager {
         registerNetworkPacket(S2C_NewSkillsPacket.class);
         registerNetworkPacket(S2C_SynchBlockEntityPacket.class);
         registerNetworkPacket(S2C_SendSkillDataPacket.class);
+        registerNetworkPacket(S2C_SetTrackedStashPacket.class);
         // server packets
         registerNetworkPacket(C2S_ShootPacket.class);
         registerNetworkPacket(C2S_RequestDataUpdatePacket.class);

@@ -2,6 +2,8 @@ package dev.toma.gunsrpg.world;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.init.ModBlockEntities;
+import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.S2C_SetTrackedStashPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -81,9 +83,8 @@ public class LootStashes {
             return closest;
         }, ASYNC_POOL).thenAccept(pos -> {
             if (pos != null) {
-
+                NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_SetTrackedStashPacket(pos));
             }
-            // TODO send packet
         });
     }
 

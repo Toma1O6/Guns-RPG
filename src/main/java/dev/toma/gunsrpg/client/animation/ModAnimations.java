@@ -31,6 +31,7 @@ public final class ModAnimations {
     public static final AnimationType<RecoilAnimation> RECOIL = AnimationType.create(GunsRPG.makeResource("recoil"));
     public static final AnimationType<Animation> GRENADE = AnimationType.create(GunsRPG.makeResource("grenade"));
     public static final AnimationType<Animation> UNJAM = AnimationType.create(GunsRPG.makeResource("unjam"));
+    public static final AnimationType<Animation> STASH_DETECTOR = AnimationType.create(GunsRPG.makeResource("stash_detector"));
 
     public static Animation createFiremodeAnimation(PlayerEntity client) {
         AnimationEngine engine = AnimationEngine.get();

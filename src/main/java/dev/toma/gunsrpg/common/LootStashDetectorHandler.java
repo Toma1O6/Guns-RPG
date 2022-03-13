@@ -1,7 +1,13 @@
 package dev.toma.gunsrpg.common;
 
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModItems;
+import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.skills.TreasureHunterSkill;
 import dev.toma.gunsrpg.util.Interval;
+import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.world.LootStashes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -19,6 +25,26 @@ public class LootStashDetectorHandler {
 
     private static final Map<UUID, DetectionData> DATA = new HashMap<>();
     private static int cacheClearScheduler;
+
+    public static void initiateUsing(PlayerEntity player) {
+        DATA.put(player.getUUID(), new DetectionData());
+        if (!player.level.isClientSide) {
+            LootStashes.addTracker((ServerPlayerEntity) player);
+        }
+    }
+
+    public static boolean isUsing(UUID uuid) {
+        return DATA.containsKey(uuid);
+    }
+
+    public static void stopUsing(UUID uuid) {
+        DATA.remove(uuid);
+        LootStashes.clearTracker(uuid);
+    }
+
+    public static DetectionData getData(UUID uuid) {
+        return DATA.computeIfAbsent(uuid, k -> new DetectionData());
+    }
 
     @SubscribeEvent
     public void tickPlayers(TickEvent.PlayerTickEvent event) {
@@ -62,7 +88,7 @@ public class LootStashDetectorHandler {
     }
 
     private void tickPlayerClient(PlayerEntity player, DetectionData data) {
-        // TODO update status and distance
+        data.tickClient(player);
     }
 
     private void tickPlayerServer(PlayerEntity player, DetectionData data, ItemStack stack) {
@@ -99,8 +125,9 @@ public class LootStashDetectorHandler {
     public static class DetectionData {
 
         private int updateTimer;
-        private Status status;
+        private Status status = Status.UNDETECTED;
         private BlockPos trackedLocation;
+        private int soundTimer;
 
         public void setTrackedLocation(BlockPos trackedLocation) {
             this.trackedLocation = trackedLocation;
@@ -121,12 +148,42 @@ public class LootStashDetectorHandler {
         public boolean increaseTimer() {
             return ++updateTimer > 20;
         }
+
+        public void tickClient(PlayerEntity player) {
+            if (trackedLocation == null) {
+                status = Status.UNDETECTED;
+            } else {
+                double distance = getDistance(player);
+                IPlayerData data = PlayerData.getUnsafe(player);
+                ISkillProvider provider = data.getSkillProvider();
+                TreasureHunterSkill skill = SkillUtil.getTopHierarchySkill(Skills.TREASURE_HUNTER_I, provider);
+                if (skill == null) {
+                    status = Status.UNDETECTED;
+                    return;
+                }
+                TreasureHunterSkill.DetectionRadius radius = skill.getRadius();
+                status = radius.getStatusByDistance(distance);
+                float soundDelay = 1.0F - radius.getSoundIntensity(distance);
+                int soundScheduler = soundDelay == 1.0F ? -1 : 1 + (int) (soundDelay * 29);
+                if (soundScheduler > 0) {
+                    if (--soundTimer <= 0) {
+                        soundTimer = soundScheduler;
+                        // TODO play sound
+                    }
+                }
+            }
+        }
+
+        private double getDistance(PlayerEntity player) {
+            double x = player.getX() - trackedLocation.getX();
+            double z = player.getZ() - trackedLocation.getZ();
+            return Math.sqrt(x * x + z * z);
+        }
     }
 
     public enum Status {
         LOCATED,
         NEARBY,
-        UNDETECTED,
-        OFF
+        UNDETECTED
     }
 }

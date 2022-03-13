@@ -45,6 +45,18 @@ public class TreasureHunterSkill extends BasicSkill implements IDescriptionProvi
             this.foundRange = foundRange;
         }
 
+        public float getSoundIntensity(double distance) {
+            if (distance <= foundRange) {
+                return 1.0F;
+            }
+            if (distance > maxRange) {
+                return 0.0F;
+            }
+            double diff = distance - foundRange;
+            double limit = maxRange - foundRange;
+            return (float) (diff / limit);
+        }
+
         public LootStashDetectorHandler.Status getStatusByDistance(double distance) {
             if (distance <= foundRange) {
                 return LootStashDetectorHandler.Status.LOCATED;
