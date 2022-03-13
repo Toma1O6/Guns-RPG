@@ -15,7 +15,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class C2S_ChangeFiremodePacket extends AbstractHandlePacket<C2S_ChangeFiremodePacket> {
 
     @Override
-    public C2S_ChangeFiremodePacket thisPacket() {
+    public C2S_ChangeFiremodePacket recreate() {
         return new C2S_ChangeFiremodePacket();
     }
 

@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import dev.toma.configuration.Configuration;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IWorldData;
+import dev.toma.gunsrpg.common.LootStashDetectorHandler;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
 import dev.toma.gunsrpg.common.command.GunsrpgCommand;
@@ -52,6 +53,7 @@ public class GunsRPG {
         eventBus.addListener(this::commonSetup);
         // other events
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
+        MinecraftForge.EVENT_BUS.register(new LootStashDetectorHandler());
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> ClientSideManager.instance().clientInit());
 

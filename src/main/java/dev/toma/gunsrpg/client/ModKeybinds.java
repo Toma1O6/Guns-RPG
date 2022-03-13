@@ -10,13 +10,12 @@ import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.screen.ChooseAmmoScreen;
 import dev.toma.gunsrpg.client.screen.skill.SkillTreeScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.ModItems;
+import dev.toma.gunsrpg.common.item.StashDetectorItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.C2S_ChangeFiremodePacket;
-import dev.toma.gunsrpg.network.packet.C2S_PacketSetJamming;
-import dev.toma.gunsrpg.network.packet.C2S_RequestDataUpdatePacket;
-import dev.toma.gunsrpg.network.packet.C2S_SetReloadingPacket;
+import dev.toma.gunsrpg.network.packet.*;
 import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
 import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import lib.toma.animations.AnimationEngine;
@@ -111,6 +110,12 @@ public class ModKeybinds {
                     }
                 } else {
                     mc.setScreen(new ChooseAmmoScreen(gun));
+                }
+            } else if (stack.getItem() == ModItems.STASH_DETECTOR) {
+                ItemStack batteryItem = ItemLocator.findFirst(player.inventory, StashDetectorItem::isValidBatterySource);
+                if (stack.getDamageValue() > 0 && !batteryItem.isEmpty()) {
+                    pipeline.insert(ModAnimations.CHAMBER, AnimationUtils.createAnimation(StashDetectorItem.CHARGE_BATTERY_ANIMATION, provider -> new Animation(provider, 30)));
+                    NetworkManager.sendServerPacket(new C2S_RequestBatteryChange());
                 }
             }
         }

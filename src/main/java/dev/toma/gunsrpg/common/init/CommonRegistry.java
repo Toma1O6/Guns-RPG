@@ -182,6 +182,9 @@ public class CommonRegistry {
                 SkillType.Builder.<MotherlodeSkill>create(type -> new MotherlodeSkill(type, 3)).build().setRegistryName("mother_lode_iii"),
                 SkillType.Builder.<MotherlodeSkill>create(type -> new MotherlodeSkill(type, 4)).build().setRegistryName("mother_lode_iv"),
                 SkillType.Builder.<MotherlodeSkill>create(type -> new MotherlodeSkill(type, 5)).build().setRegistryName("mother_lode_v"),
+                SkillType.Builder.<TreasureHunterSkill>create(type -> new TreasureHunterSkill(type, 1)).build().setRegistryName("treasure_hunter_i"),
+                SkillType.Builder.<TreasureHunterSkill>create(type -> new TreasureHunterSkill(type, 2)).build().setRegistryName("treasure_hunter_ii"),
+                SkillType.Builder.<TreasureHunterSkill>create(type -> new TreasureHunterSkill(type, 3)).build().setRegistryName("treasure_hunter_iii"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("hammer_i"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("hammer_ii"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("hammer_iii"),
@@ -674,6 +677,8 @@ public class CommonRegistry {
                 BaseItem.simpleItem("weapon_repair_kit", props -> props.durability(5)),
                 BaseItem.simpleItem("small_stone"),
                 new StarterGearItem("starter_gear"),
+                new StashDetectorItem("stash_detector"),
+                BaseItem.simpleItem("battery"),
 
                 new ForgeSpawnEggItem(ModEntities.BLOODMOON_GOLEM, 0x5b5b5b, 0xa30000, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("bloodmoon_golem_spawn_egg"),
                 new ForgeSpawnEggItem(ModEntities.EXPLOSIVE_SKELETON, 0xe1084e, 0xcd0800, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("explosive_skeleton_spawn_egg"),

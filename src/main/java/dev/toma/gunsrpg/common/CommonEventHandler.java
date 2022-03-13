@@ -439,6 +439,7 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void tickServer(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) return;
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         ServerWorld world = server.getLevel(World.OVERWORLD);
         LootStashes.tick(world);

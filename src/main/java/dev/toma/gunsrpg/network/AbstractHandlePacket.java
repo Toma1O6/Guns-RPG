@@ -10,8 +10,8 @@ public abstract class AbstractHandlePacket<P> extends AbstractNetworkPacket<P> {
 
     @Override
     public P decode(PacketBuffer buffer) {
-        return thisPacket();
+        return recreate();
     }
 
-    public abstract P thisPacket();
+    public abstract P recreate();
 }
