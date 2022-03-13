@@ -1,10 +1,10 @@
 {
     "hierarchy": {
-        "category": "mining",
+        "category": "survival",
         "parent": "gunsrpg:treasure_hunter_ii"
     },
     "properties": {
-        "level": 50,
+        "level": 60,
         "price": 7,
         "transactionValidator": {
             "type": "gunsrpg:level"
