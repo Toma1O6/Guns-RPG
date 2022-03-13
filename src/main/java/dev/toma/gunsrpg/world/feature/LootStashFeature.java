@@ -45,7 +45,6 @@ public class LootStashFeature extends Feature<NoFeatureConfig> {
                 variant = biomeVariant;
             }
         }
-        System.out.printf("Biome: %s, Temperature: %s, Variant: %s\n", biome.getRegistryName().toString(), temperature, variant);
         MilitaryCrateBlock block = MAP.get().get(variant);
         seedReader.setBlock(pos, block.defaultBlockState(), 2);
         TileEntity tile = seedReader.getBlockEntity(pos);
