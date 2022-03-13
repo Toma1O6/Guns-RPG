@@ -181,7 +181,7 @@ public class ClientSideManager {
 
     private AnimationStage[] gatherAnimationStages() {
         return new AnimationStage[] {
-                DUAL_WIELD_ITEM, MAGAZINE, SLIDE, CHARGING_HANDLE, BULLET, BOLT, BOLT_CARRIER, BARRELS, BULLET_2
+                DUAL_WIELD_ITEM, MAGAZINE, SLIDE, CHARGING_HANDLE, BULLET, BOLT, BOLT_CARRIER, BARRELS, BULLET_2, BATTERY, BATTERY_COVER
         };
     }
 }

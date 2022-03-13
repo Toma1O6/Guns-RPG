@@ -5,6 +5,8 @@ import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
+import dev.toma.gunsrpg.client.render.StashDetectorRenderer;
 import dev.toma.gunsrpg.common.LootStashDetectorHandler;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModItems;
@@ -12,7 +14,10 @@ import dev.toma.gunsrpg.common.init.Skills;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.Animation;
+import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IAnimationPipeline;
+import lib.toma.animations.api.IRenderConfig;
+import lib.toma.animations.engine.RenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -28,13 +33,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.UUID;
 
-public class StashDetectorItem extends BaseItem {
+public class StashDetectorItem extends BaseItem implements IAnimationEntry {
 
     public static final ResourceLocation CHARGE_BATTERY_ANIMATION = GunsRPG.makeResource("stash_detector/change_batteries");
     public static final ResourceLocation USE_ANIMATION = GunsRPG.makeResource("stash_detector/use");
 
     public StashDetectorItem(String name) {
-        super(name, new Properties().tab(ModTabs.ITEM_TAB).durability(200));
+        super(name, new Properties().tab(ModTabs.ITEM_TAB).durability(200).setISTER(() -> StashDetectorRenderer::new));
     }
 
     public static boolean isValidBatterySource(ItemStack stack) {
@@ -66,6 +71,21 @@ public class StashDetectorItem extends BaseItem {
             playUseAnimation();
         }
         return ActionResult.pass(stack);
+    }
+
+    @Override
+    public boolean disableVanillaAnimations() {
+        return false;
+    }
+
+    @Override
+    public IRenderConfig right() {
+        return RenderConfigs.HEAL_CONFIG;
+    }
+
+    @Override
+    public IRenderConfig left() {
+        return RenderConfigs.HEAL_CONFIG;
     }
 
     @OnlyIn(Dist.CLIENT)

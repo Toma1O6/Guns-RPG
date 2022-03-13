@@ -19,6 +19,8 @@ public final class ModAnimations {
     public static final AnimationStage BOLT_CARRIER = AnimationStage.create(GunsRPG.makeResource("weapon.bolt_carrier"));
     public static final AnimationStage BARRELS = AnimationStage.create(GunsRPG.makeResource("weapon.barrels"));
     public static final AnimationStage BULLET_2 = AnimationStage.create(GunsRPG.makeResource("weapon.bullet2"));
+    public static final AnimationStage BATTERY_COVER = AnimationStage.create(GunsRPG.makeResource("stash.detector.battery_cover"));
+    public static final AnimationStage BATTERY = AnimationStage.create(GunsRPG.makeResource("stash.detector.battery"));
 
     public static final AnimationType<AimAnimation> AIM_ANIMATION = AnimationType.create(GunsRPG.makeResource("aim_animation"));
     public static final AnimationType<SprintAnimation> SPRINT = AnimationType.create(GunsRPG.makeResource("sprinting"), SprintAnimation::new);

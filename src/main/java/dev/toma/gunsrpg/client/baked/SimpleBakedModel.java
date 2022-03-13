@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class GunBakedModel implements IBakedModel {
+public class SimpleBakedModel implements IBakedModel {
 
     @Override
     public List<BakedQuad> getQuads(BlockState state, Direction direction, Random random) {
