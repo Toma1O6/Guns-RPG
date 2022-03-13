@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns.reload;
 
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
-import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.api.common.IReloader;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
@@ -9,6 +8,7 @@ import dev.toma.gunsrpg.client.animation.ReloadAnimation;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.IAnimationPipeline;
@@ -19,6 +19,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class FullReloader implements IReloader {
 
@@ -79,21 +82,15 @@ public class FullReloader implements IReloader {
         AmmoType ammoType = gun.getAmmoType();
         IAmmoMaterial material = gun.getMaterialFromNBT(stack);
         PlayerInventory inventory = player.inventory;
-        // TODO move to ItemLocator API
         if (!player.isCreative()) {
-            for (int i = 0; i < inventory.getContainerSize(); i++) {
-                ItemStack stack = inventory.getItem(i);
-                if (stack.getItem() instanceof IAmmoProvider) {
-                    IAmmoProvider provider = (IAmmoProvider) stack.getItem();
-                    if (provider.getAmmoType() == ammoType && provider.getMaterial() == material) {
-                        int count = stack.getCount();
-                        int load = Math.min(toLoad, count);
-                        toLoad -= load;
-                        stack.shrink(load);
-                    }
-                    if (toLoad <= 0) {
-                        break;
-                    }
+            List<ItemStack> stacks = ItemLocator.findAll(inventory, ItemLocator.typeAndMaterial(ammoType, material)).collect(Collectors.toList());
+            for (ItemStack stack : stacks) {
+                int count = stack.getCount();
+                int load = Math.min(toLoad, count);
+                toLoad -= load;
+                stack.shrink(load);
+                if (toLoad <= 0) {
+                    break;
                 }
             }
         } else {

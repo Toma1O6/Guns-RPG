@@ -2,21 +2,24 @@ package dev.toma.gunsrpg.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.client.IHudSkillRenderer;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
-import dev.toma.gunsrpg.api.common.data.IDebuffs;
-import dev.toma.gunsrpg.api.common.data.IKillData;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.IProgressData;
-import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.data.*;
+import dev.toma.gunsrpg.api.common.skill.ICooldown;
+import dev.toma.gunsrpg.api.common.skill.ISkill;
+import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
+import dev.toma.gunsrpg.client.render.skill.SkillRendererRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.resource.util.functions.RangedFunction;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.RenderUtils;
+import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
@@ -32,6 +35,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class HUDRenderer {
 
@@ -68,7 +75,26 @@ public final class HUDRenderer {
             int height = window.getGuiScaledHeight();
             renderDebuffs(matrixStack, attributeProvider, debuffs, 0, height - 50, partialTicks);
             renderProgressionOnScreen(matrixStack, font, window, data, player);
+            renderSkillsOnHUD(matrixStack, window, data);
         });
+    }
+
+    // SKILLS --------------------------------------------
+
+    @SuppressWarnings("unchecked")
+    private <S extends ISkill & ICooldown> void renderSkillsOnHUD(MatrixStack stack, MainWindow window, IPlayerData data) {
+        ISkillProvider provider = data.getSkillProvider();
+        Set<S> displayables = SkillRendererRegistry.getDisplayableSkills().stream()
+                .map(type -> (S) SkillUtil.getTopHierarchySkill(type, provider))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        int renderIndex = 0;
+        for (S skill : displayables) {
+            if (skill.getCooldown() > 0) continue;
+            SkillType<S> type = (SkillType<S>) skill.getType();
+            IHudSkillRenderer<S> renderer = SkillRendererRegistry.getHudRenderer(type);
+            renderer.renderOnHUD(stack, skill, 5, window.getGuiScaledHeight() - 20, renderIndex++);
+        }
     }
 
     // BLOODMOON -----------------------------------------

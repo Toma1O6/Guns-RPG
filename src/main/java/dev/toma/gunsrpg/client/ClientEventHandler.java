@@ -1,10 +1,10 @@
 package dev.toma.gunsrpg.client;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.IAmmoProvider;
-import dev.toma.gunsrpg.api.common.data.*;
-import dev.toma.gunsrpg.api.common.skill.IDisplayableSkill;
+import dev.toma.gunsrpg.api.common.data.IAimInfo;
+import dev.toma.gunsrpg.api.common.data.IHandState;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.animation.AimAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -18,18 +18,14 @@ import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_SetAimingPacket;
-import dev.toma.gunsrpg.util.Lifecycle;
-import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.object.PropertyChangeListener;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.IAnimationPipeline;
 import net.minecraft.client.GameSettings;
-import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -37,17 +33,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.List;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = GunsRPG.MODID)
 public class ClientEventHandler {
@@ -57,100 +49,6 @@ public class ClientEventHandler {
             ClientEventHandler::dispatchSprintAnimation
     );
     public static float partialTicks;
-
-    //@SubscribeEvent
-    public static void cancelOverlays(RenderGameOverlayEvent.Pre event) {
-        if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
-            Minecraft mc = Minecraft.getInstance();
-            PlayerEntity player = mc.player;
-            ItemStack stack = player.getMainHandItem();
-            if (stack.getItem() instanceof GunItem) {
-                if (!ModConfig.clientConfig.developerMode.get()) {
-                    event.setCanceled(true);
-                }
-            }
-        }
-    }
-
-    // TODO clean up
-    //@SubscribeEvent
-    public static void renderOverlay(RenderGameOverlayEvent.Post event) {
-        if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-            Minecraft mc = Minecraft.getInstance();
-            PlayerEntity player = mc.player;
-            MatrixStack matrixStack = event.getMatrixStack();
-            LazyOptional<IPlayerData> optional = PlayerData.get(player);
-            optional.ifPresent(data -> {
-                FontRenderer renderer = mc.font;
-                MainWindow window = event.getWindow();
-                ItemStack stack = player.getMainHandItem();
-                int width = 26;
-                int x = window.getGuiScaledWidth() - width - 34;
-                int y = window.getGuiScaledHeight() - 22;
-                IProgressData genericData = data.getProgressData();
-                if (stack.getItem() instanceof GunItem) {
-                    GunItem gun = (GunItem) stack.getItem();
-                    IKillData gunData = genericData.getWeaponStats((GunItem) stack.getItem());
-                    int gunKills = gunData.getKills();
-                    int gunRequiredKills = gunData.getRequiredKillCount();
-                    int ammo = gun.getAmmo(stack);
-                    int max = gun.getMaxAmmo(data.getAttributes());
-                    float f = gunData.getLevel() == gunData.getLevelLimit() ? 1.0F : gunKills / (float) gunRequiredKills;
-                    Lifecycle lifecycle = GunsRPG.getModLifecycle();
-                    IAmmoProvider itemAmmo = lifecycle.getAmmoForWeapon(gun, stack);
-                    if (itemAmmo != null) {
-                        int c = 0;
-                        for (int i = 0; i < player.inventory.getContainerSize(); i++) {
-                            ItemStack itemStack = player.inventory.getItem(i);
-                            if (itemStack.getItem() instanceof IAmmoProvider) {
-                                IAmmoProvider ammoProvider = (IAmmoProvider) itemStack.getItem();
-                                if (ammoProvider.getMaterial() == itemAmmo.getMaterial() && ammoProvider.getAmmoType() == itemAmmo.getAmmoType()) {
-                                    c += itemStack.getCount();
-                                }
-                            }
-                        }
-                        String text = ammo + " / " + c;
-                        width = renderer.width(text);
-                        x = window.getGuiScaledWidth() - width - 34;
-                        Matrix4f pose = matrixStack.last().pose();
-                        RenderUtils.drawGradient(pose, x, y, x + width + 22, y + 7, 0xFF << 24, 0xFF << 24);
-                        RenderUtils.drawGradient(pose, x + 2, y + 2, x + (int) (f * (width + 20)), y + 5, 0xFFFFFF << 8, 0xFF8888 << 8);
-                        mc.getItemRenderer().renderGuiItem(new ItemStack((Item) itemAmmo), x, y - 18);
-                        mc.font.draw(matrixStack, text, x + 19, y - 14, 0xffffff);
-                    }
-                }
-                int kills = genericData.getKills();
-                int required = genericData.getRequiredKillCount();
-                float levelProgress = genericData.getLevel() == genericData.getLevelLimit() ? 1.0F : kills / (float) required;
-                Matrix4f pose = matrixStack.last().pose();
-                RenderUtils.drawGradient(pose, x, y + 10, x + width + 22, y + 17, 0xFF << 24, 0xFF << 24);
-                RenderUtils.drawGradient(pose, x + 2, y + 12, x + (int) (levelProgress * (width + 20)), y + 15, 0xFF00FFFF, 0xFF008888);
-
-                int renderIndex = 0;
-                ISkillProvider provider = data.getSkillProvider();
-                List<IDisplayableSkill> list = provider.getDisplayableSkills(); // TODO rework
-                if (list == null) return;
-                int left = 5;
-                int top = window.getGuiScaledHeight() - 25;
-                /*
-                List<ISkill> renderSkills = new ArrayList<>();
-                for (ISkill skill : list) {
-                    if (skill instanceof IOverlayRender) {
-                        skill = SkillUtil.getBestSkillFromOverrides(skill, player);
-                        if (!renderSkills.contains(skill)) renderSkills.add(skill);
-                    }
-                }
-                for (ISkill skill : renderSkills) {
-                    IOverlayRender overlayRenderer = (IOverlayRender) skill;
-                    if (skill.canApply(player) && overlayRenderer.shouldRenderOnHUD()) {
-                        overlayRenderer.renderInHUD(matrixStack, skill, renderIndex, left, top);
-                        ++renderIndex;
-                    }
-                }
-                */
-            });
-        }
-    }
 
     @SubscribeEvent
     public static void mouseInputEvent(InputEvent.MouseInputEvent event) {

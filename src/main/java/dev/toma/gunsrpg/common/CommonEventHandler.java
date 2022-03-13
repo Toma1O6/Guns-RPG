@@ -24,6 +24,7 @@ import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.S2C_SendSkillDataPacket;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
+import dev.toma.gunsrpg.world.LootStashes;
 import dev.toma.gunsrpg.world.MobSpawnManager;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataProvider;
@@ -49,6 +50,7 @@ import net.minecraft.loot.ItemLootEntry;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.RandomValueRange;
 import net.minecraft.loot.functions.SetCount;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -62,6 +64,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.common.world.MobSpawnInfoBuilder;
@@ -83,6 +86,7 @@ import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import java.util.Optional;
 import java.util.Random;
@@ -104,6 +108,9 @@ public class CommonEventHandler {
             mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.EXPLOSIVE_SKELETON.get(), ModConfig.worldConfig.explosiveSkeletonSpawn.get(), 1, 2));
         }
         if (category != Biome.Category.NETHER && category != Biome.Category.THEEND) {
+            if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
+                builder.addFeature(GenerationStage.Decoration.UNDERGROUND_STRUCTURES, ModConfiguredFeatures.LOOT_STASH);
+            }
             for (ConfiguredFeature<?, ?> feature : ModConfiguredFeatures.getOres()) {
                 builder.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, feature);
             }
@@ -118,7 +125,7 @@ public class CommonEventHandler {
     }
 
     @SubscribeEvent
-    public static void onCapAttachP(AttachCapabilitiesEvent<Entity> event) {
+    public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
         Entity entity = event.getObject();
         if (entity instanceof PlayerEntity) {
             event.addCapability(GunsRPG.makeResource("playerdata"), new PlayerDataProvider((PlayerEntity) entity));
@@ -126,7 +133,7 @@ public class CommonEventHandler {
     }
 
     @SubscribeEvent
-    public static void onCapAttachW(AttachCapabilitiesEvent<World> event) {
+    public static void attachLevelCapabilities(AttachCapabilitiesEvent<World> event) {
         event.addCapability(GunsRPG.makeResource("worldcap"), new WorldDataProvider(event.getObject()));
     }
 
@@ -428,6 +435,14 @@ public class CommonEventHandler {
                     .build()
             );
         }
+    }
+
+    @SubscribeEvent
+    public static void tickServer(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) return;
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        ServerWorld world = server.getLevel(World.OVERWORLD);
+        LootStashes.tick(world);
     }
 
     private static void editMiningSpeed(PlayerEvent.BreakSpeed event, IAttributeProvider provider, IAttributeId attributeId) {

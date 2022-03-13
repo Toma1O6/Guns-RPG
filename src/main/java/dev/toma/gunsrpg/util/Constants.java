@@ -19,5 +19,14 @@ public final class Constants {
         public static final UUID STRONG_MUSCLES                             = UUID.fromString("63A449AE-F2B0-4A23-8775-4768F31AAC85");
         public static final UUID AGILITY                                    = UUID.fromString("78FA0A5E-8710-4B1A-B045-4DBDE8F00C40");
         public static final UUID SKULL_CRUSHER                              = UUID.fromString("64D17643-9A3C-4468-8944-16319D0C24E6");
+        public static final UUID REPAIR_MAN                                 = UUID.fromString("F8E460EC-1FDD-4F01-9EBA-6D1522AEB5A2");
+        public static final UUID POISON_BLOCKING                            = UUID.fromString("06B101CE-2CC4-43E2-9C83-4D6756604E54");
+        public static final UUID POISON_DELAYING                            = UUID.fromString("3CE101E1-6379-43F5-9E03-DA91AF32226B");
+        public static final UUID INFECTION_BLOCKING                         = UUID.fromString("202D83D3-D2FF-4E74-9820-24A82B2F17BF");
+        public static final UUID INFECTION_DELAYING                         = UUID.fromString("53C3A9D9-8C25-4DC4-8AB1-76C8ECA356AF");
+        public static final UUID FRACTURE_BLOCKING                          = UUID.fromString("8A80ABAE-DF7F-4BA0-A347-A24C2D6E10A4");
+        public static final UUID FRACTURE_DELAYING                          = UUID.fromString("167F69B3-A88C-4FE1-AF20-FC63CA63EBA2");
+        public static final UUID BLEED_BLOCKING                             = UUID.fromString("0107DE53-B95F-473E-B887-5A82C800A695");
+        public static final UUID BLEED_DELAYING                             = UUID.fromString("5303EEE4-64A6-45FB-B88B-8F455663EA8B");
     }
 }

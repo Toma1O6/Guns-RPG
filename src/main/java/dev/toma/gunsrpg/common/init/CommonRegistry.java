@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.AnimationPaths;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.attribute.AttributeTarget;
+import dev.toma.gunsrpg.common.attribute.ModifierFactory;
 import dev.toma.gunsrpg.common.attribute.Modifiers;
 import dev.toma.gunsrpg.common.block.*;
 import dev.toma.gunsrpg.common.container.*;
@@ -118,13 +119,14 @@ public class CommonRegistry {
                 SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModItems.GRENADE_LAUNCHER))).build().setRegistryName("grenade_launcher_assembly"),
                 SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModItems.ROCKET_LAUNCHER))).build().setRegistryName("rocket_launcher_assembly"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("grenades"),
+                SkillType.Builder.create(BasicSkill::new).description(2).build().setRegistryName("grenadier"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("massive_grenades"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("impact_grenades"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("demolisher"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("heavy_demolisher"),
-                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("repair_man_i"),
-                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("repair_man_ii"),
-                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("repair_man_iii"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.REPAIR_MAN_I, Attribs.REPAIR_PENALTY))).description(0).build().setRegistryName("repair_man_i"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.REPAIR_MAN_II, Attribs.REPAIR_PENALTY))).description(0).build().setRegistryName("repair_man_ii"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.REPAIR_MAN_III, Attribs.REPAIR_PENALTY))).description(0).build().setRegistryName("repair_man_iii"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("careful_gunner_i"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("careful_gunner_ii"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("careful_gunner_iii"),
@@ -180,6 +182,9 @@ public class CommonRegistry {
                 SkillType.Builder.<MotherlodeSkill>create(type -> new MotherlodeSkill(type, 3)).build().setRegistryName("mother_lode_iii"),
                 SkillType.Builder.<MotherlodeSkill>create(type -> new MotherlodeSkill(type, 4)).build().setRegistryName("mother_lode_iv"),
                 SkillType.Builder.<MotherlodeSkill>create(type -> new MotherlodeSkill(type, 5)).build().setRegistryName("mother_lode_v"),
+                SkillType.Builder.<TreasureHunterSkill>create(type -> new TreasureHunterSkill(type, 1)).build().setRegistryName("treasure_hunter_i"),
+                SkillType.Builder.<TreasureHunterSkill>create(type -> new TreasureHunterSkill(type, 2)).build().setRegistryName("treasure_hunter_ii"),
+                SkillType.Builder.<TreasureHunterSkill>create(type -> new TreasureHunterSkill(type, 3)).build().setRegistryName("treasure_hunter_iii"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("hammer_i"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("hammer_ii"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("hammer_iii"),
@@ -294,6 +299,7 @@ public class CommonRegistry {
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("choke").build().setRegistryName("s686_choke"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("s686_blazing_pellets"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("s686_cannon_blast"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("reliable").build().setRegistryName("s686_reliable"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("extended_barrel").build().setRegistryName("s686_extended_barrel"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("quickdraw").build().setRegistryName("s12k_quickdraw"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("cheekpad").build().setRegistryName("s12k_cheekpad"),
@@ -308,6 +314,7 @@ public class CommonRegistry {
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("suppressor").build().setRegistryName("akm_suppressor"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("red_dot").build().setRegistryName("akm_red_dot"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("tough_spring").description(0).build().setRegistryName("akm_tough_spring"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("reliable").build().setRegistryName("akm_reliable"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("every_bullet_counts").build().setRegistryName("akm_every_bullet_counts"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("quickdraw").description(0).build().setRegistryName("hk416_quickdraw"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("vertical_grip").build().setRegistryName("hk416_vertical"),
@@ -348,10 +355,10 @@ public class CommonRegistry {
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("dead_eye").build().setRegistryName("mk14ebr_dead_eye"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("scope").build().setRegistryName("kar98k_scope"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.createMany(Modifiers.CHEEKPAD, Attribs.KAR98K_HORIZONTAL_RECOIL, Attribs.KAR98K_VERTICAL_RECOIL))).renderModIcon("cheekpad").build().setRegistryName("kar98k_cheekpad"),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.KAR98K_EXTENDED, Attribs.KAR98K_MAG_CAPACITY))).description(0).renderModIcon("extended").build().setRegistryName("kar98k_extended"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.NOISE, Attribs.KAR98K_NOISE))).renderModIcon("suppressor").build().setRegistryName("kar98k_suppressor"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.KAR98K_FAST_HANDS_RELOAD, Attribs.KAR98K_RELOAD_SPEED), AttributeTarget.create(Modifiers.KAR98K_FAST_HANDS_ROF, Attribs.KAR98K_FIRERATE))).description(0).renderModIcon("fast_hands").build().setRegistryName("kar98k_fast_hands"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("penetrator").build().setRegistryName("kar98k_penetrator"),
+                SkillType.Builder.create(BasicSkill::new).renderModIcon("reliable").build().setRegistryName("kar98k_reliable"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.KAR98K_DEAD_EYE, Attribs.KAR98K_HS_DAMAGE))).renderModIcon("dead_eye").description(0).build().setRegistryName("kar98k_dead_eye"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("bullet_loops").description(0).build().setRegistryName("winchester_bullet_loops"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("hunter").build().setRegistryName("winchester_hunter"),
@@ -413,9 +420,9 @@ public class CommonRegistry {
                 new BaseBlock("crystal_purification", AbstractBlock.Properties.of(Material.STONE).noOcclusion()),
                 new CookerBlock("cooker"),
                 new RepairStationBlock("repair_station"),
-                new MilitaryCrateBlock("artic_military_crate"),
-                new MilitaryCrateBlock("desert_military_crate"),
-                new MilitaryCrateBlock("woodland_military_crate"),
+                new MilitaryCrateBlock("artic_military_crate", MilitaryCrateBlock.BiomeVariant.ARTIC),
+                new MilitaryCrateBlock("desert_military_crate", MilitaryCrateBlock.BiomeVariant.DESERT),
+                new MilitaryCrateBlock("woodland_military_crate", MilitaryCrateBlock.BiomeVariant.WOODLAND),
                 new CulinaryTableBlock("culinary_table"),
                 new MedstationBlock("medical_station")
         );
@@ -431,58 +438,46 @@ public class CommonRegistry {
         registry.registerAll(
                 BaseItem.simpleItem("amethyst"),
                 DebuffHealItem.define("antidotum_pills")
-                        .canUse(data -> data.hasDebuff(Debuffs.POISON))
-                        .onUse(data -> data.heal(Debuffs.POISON, 40))
+                        .canUse(data -> data.getDebuffControl().hasDebuff(Debuffs.POISON))
+                        .onUse(DebuffHealItem::healPoison)
                         .describe("Heals 40% of poison progress")
                         .animate(60, AnimationPaths.PILLS)
                         .build(),
                 DebuffHealItem.define("vaccine")
-                        .canUse(data -> data.hasDebuff(Debuffs.INFECTION))
-                        .onUse(data -> data.heal(Debuffs.INFECTION, 50))
+                        .canUse(data -> data.getDebuffControl().hasDebuff(Debuffs.INFECTION))
+                        .onUse(DebuffHealItem::healInfection)
                         .describe("Heals 50% of infection progress")
                         .animate(75, AnimationPaths.INJECTION)
                         .build(),
                 DebuffHealItem.define("plaster_cast")
-                        .canUse(data -> data.hasDebuff(Debuffs.FRACTURE))
-                        .onUse(data -> data.heal(Debuffs.FRACTURE, 35))
+                        .canUse(data -> data.getDebuffControl().hasDebuff(Debuffs.FRACTURE))
+                        .onUse(DebuffHealItem::healFracture)
                         .describe("Heals 35% of fracture progress")
                         .animate(65, AnimationPaths.SPLINT)
                         .build(),
                 DebuffHealItem.define("bandage")
-                        .canUse(data -> data.hasDebuff(Debuffs.BLEED))
-                        .onUse(data -> data.heal(Debuffs.BLEED, 25))
+                        .canUse(data -> data.getDebuffControl().hasDebuff(Debuffs.BLEED))
+                        .onUse(DebuffHealItem::healBleed)
                         .describe("Heals 25% of bleeding progress")
                         .animate(70, AnimationPaths.BANDAGE)
                         .build(),
                 AttributeAccessHealItem.define("hemostat")
-                        .defineModifiers(
-                                AttributeTarget.create(Modifiers.BLEED_BLOCKING, Attribs.BLEED_BLOCK),
-                                AttributeTarget.create(Modifiers.BLEED_DELAYING, Attribs.BLEED_DELAY)
-                        )
+                        .defineModifiers(ModifierFactory::createHemostatModifiers)
                         .describe("Bleeding:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(50, AnimationPaths.HEMOSTAT)
                         .build(),
                 AttributeAccessHealItem.define("vitamins")
-                        .defineModifiers(
-                                AttributeTarget.create(Modifiers.INFECTION_BLOCKING, Attribs.INFECTION_BLOCK),
-                                AttributeTarget.create(Modifiers.INFECTION_DELAYING, Attribs.INFECTION_DELAY)
-                        )
+                        .defineModifiers(ModifierFactory::createVitaminModifiers)
                         .describe("Infection:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(40, AnimationPaths.VITAMINS)
                         .build(),
                 AttributeAccessHealItem.define("propital")
-                        .defineModifiers(
-                                AttributeTarget.create(Modifiers.FRACTURE_BLOCKING, Attribs.FRACTURE_BLOCK),
-                                AttributeTarget.create(Modifiers.FRACTURE_DELAYING, Attribs.FRACTURE_DELAY)
-                        )
+                        .defineModifiers(ModifierFactory::createPropitalModifiers)
                         .describe("Fracture:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(30, AnimationPaths.STIM)
                         .build(),
                 AttributeAccessHealItem.define("calcium_shot")
-                        .defineModifiers(
-                                AttributeTarget.create(Modifiers.POISON_BLOCKING, Attribs.POISON_BLOCK),
-                                AttributeTarget.create(Modifiers.POISON_DELAYING, Attribs.POISON_DELAY)
-                        )
+                        .defineModifiers(ModifierFactory::createCalciumShotModifiers)
                         .describe("Poison:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(30, AnimationPaths.STIM)
                         .build(),
@@ -682,6 +677,8 @@ public class CommonRegistry {
                 BaseItem.simpleItem("weapon_repair_kit", props -> props.durability(5)),
                 BaseItem.simpleItem("small_stone"),
                 new StarterGearItem("starter_gear"),
+                new StashDetectorItem("stash_detector"),
+                BaseItem.simpleItem("battery"),
 
                 new ForgeSpawnEggItem(ModEntities.BLOODMOON_GOLEM, 0x5b5b5b, 0xa30000, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("bloodmoon_golem_spawn_egg"),
                 new ForgeSpawnEggItem(ModEntities.EXPLOSIVE_SKELETON, 0xe1084e, 0xcd0800, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("explosive_skeleton_spawn_egg"),

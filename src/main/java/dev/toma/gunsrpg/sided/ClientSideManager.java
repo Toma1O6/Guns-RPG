@@ -6,7 +6,7 @@ import dev.toma.gunsrpg.client.ModKeybinds;
 import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
 import dev.toma.gunsrpg.client.render.debuff.IconDebuffRenderer;
-import dev.toma.gunsrpg.client.render.skill.LikeACatRenderer;
+import dev.toma.gunsrpg.client.render.skill.SkillCooldownRenderer;
 import dev.toma.gunsrpg.client.render.skill.SkillRendererRegistry;
 import dev.toma.gunsrpg.client.screen.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -107,7 +107,10 @@ public class ClientSideManager {
         setupRenderPipeline();
 
         // skill renderers
-        SkillRendererRegistry.registerRenderers(new LikeACatRenderer(), Skills.LIKE_A_CAT_I, Skills.LIKE_A_CAT_II, Skills.LIKE_A_CAT_III);
+        SkillRendererRegistry.registerRenderers(new SkillCooldownRenderer<>(), Skills.LIKE_A_CAT_I, Skills.LIKE_A_CAT_II, Skills.LIKE_A_CAT_III);
+        SkillRendererRegistry.registerRenderers(new SkillCooldownRenderer<>(), Skills.SECOND_CHANCE_I, Skills.SECOND_CHANCE_II, Skills.SECOND_CHANCE_III);
+        SkillRendererRegistry.registerRenderers(new SkillCooldownRenderer<>(), Skills.IRON_BUDDY_I, Skills.IRON_BUDDY_II, Skills.IRON_BUDDY_III);
+        SkillRendererRegistry.registerRenderer(new SkillCooldownRenderer<>(), Skills.GOD_HELP_US);
 
         // event handlers
         MinecraftForge.EVENT_BUS.register(new HUDRenderer());
@@ -141,6 +144,7 @@ public class ClientSideManager {
         ScreenManager.register(ModContainers.GRENADE_CASE.get(), GrenadeCaseScreen::new);
         ScreenManager.register(ModContainers.MEDS_CASE.get(), MedsCaseScreen::new);
         ScreenManager.register(ModContainers.ITEM_CASE.get(), ItemCaseScreen::new);
+        ScreenManager.register(ModContainers.CRYSTAL_CASE.get(), CrystalCaseScreen::new);
         ScreenManager.register(ModContainers.COOKER.get(), CookerScreen::new);
         ScreenManager.register(ModContainers.REPAIR_STATION.get(), RepairStationScreen::new);
     }
@@ -171,7 +175,7 @@ public class ClientSideManager {
 
     private AnimationType<?>[] gatherAnimationTypes() {
         return new AnimationType[] {
-                AIM_ANIMATION, SPRINT, CHAMBER, HEAL, RELOAD, RELOAD_BULLET, FIREMODE, BULLET_EJECTION, RECOIL, GRENADE, UNJAM
+                AIM_ANIMATION, SPRINT, CHAMBER, HEAL, RELOAD, RELOAD_BULLET, FIREMODE, BULLET_EJECTION, RECOIL, GRENADE, UNJAM, STASH_DETECTOR
         };
     }
 

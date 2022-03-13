@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.common.init.ModDamageSources;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import net.minecraft.entity.*;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -13,6 +14,7 @@ import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
@@ -188,6 +190,10 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         xRotO = xRot;
     }
 
+    protected DamageSource getDamageSource(Entity owner) {
+        return ModDamageSources.dealWeaponDamage(owner, this, weapon);
+    }
+
     /**
      * Marks projectile as ready for removal
      */
@@ -217,12 +223,12 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         return ratio > 1.0F;
     }
 
-    void applyWeaponEffects(Entity entity, Entity owner, boolean living, boolean headshot) {
+    protected void hurtTarget(Entity entity, Entity owner, boolean headshot) {
         float damage = headshot ? projectileDamage * getHeadshotMultiplier() : projectileDamage;
-        if (living) {
+        if (entity instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) entity;
             boolean willDie = livingEntity.getHealth() - projectileDamage <= 0.0F;
-            livingEntity.hurt(ModDamageSources.dealWeaponDamage(owner, this, weapon), damage);
+            livingEntity.hurt(this.getDamageSource(owner), damage);
             if (weapon.getItem() instanceof GunItem) {
                 GunItem gun = (GunItem) weapon.getItem();
                 if (willDie)
@@ -231,7 +237,7 @@ public abstract class AbstractProjectile extends ProjectileEntity {
                     gun.onHitEntity(this, livingEntity, weapon, (LivingEntity) owner);
             }
         } else if (entity instanceof PartEntity<?>) {
-            entity.hurt(ModDamageSources.dealWeaponDamage(owner, this, weapon), damage);
+            entity.hurt(this.getDamageSource(owner), damage);
         }
     }
 
@@ -258,9 +264,9 @@ public abstract class AbstractProjectile extends ProjectileEntity {
             double noiseMultiplier = gun.getNoiseMultiplier(data.getAttributes());
             double actualScareRange = mobScareRange * noiseMultiplier;
             Entity owner = getOwner();
-            List<MobEntity> list = level.getEntitiesOfClass(MobEntity.class, getBoundingBox().inflate(actualScareRange), ent -> ent != owner);
-            for (MobEntity mobEntity : list) {
-                mobEntity.setTarget((PlayerEntity) owner);
+            List<MonsterEntity> list = level.getEntitiesOfClass(MonsterEntity.class, getBoundingBox().inflate(actualScareRange), ent -> ent != owner);
+            for (MonsterEntity entity : list) {
+                entity.setTarget((PlayerEntity) owner);
             }
         });
     }

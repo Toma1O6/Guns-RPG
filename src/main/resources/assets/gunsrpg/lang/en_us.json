@@ -243,7 +243,7 @@
 
     "gunsrpg.category.keys": "GunsRPG Binds",
     "gunsrpg.key.class_list": "View Skill Tree",
-    "gunsrpg.key.reload": "Reload/Unjam",
+    "gunsrpg.key.reload": "Reload/Unjam/Change batteries",
     "gunsrpg.key.sight_color": "Change Sight Color",
     "gunsrpg.key.sight_type": "Change Sight Shape",
     "gunsrpg.key.firemode": "Change Firemode",
@@ -519,8 +519,8 @@
     "skill.gunsrpg.kar98k_scope.description.0": "Install 4x scope on the weapon",
     "skill.gunsrpg.kar98k_cheekpad.title": "Cheekpad",
     "skill.gunsrpg.kar98k_cheekpad.description.0": "Decreases weapon recoil",
-    "skill.gunsrpg.kar98k_extended.title": "Extended",
-    "skill.gunsrpg.kar98k_extended.description.capacity": "+%s to weapon magazine capacity",
+    "skill.gunsrpg.kar98k_reliable.title": "Reliable",
+
     "skill.gunsrpg.kar98k_suppressor.title": "Suppressor",
     "skill.gunsrpg.kar98k_suppressor.description.0": "Greatly reduces weapon loudness",
     "skill.gunsrpg.kar98k_fast_hands.title": "Fast Hands",
@@ -813,6 +813,7 @@
     "screen.gunsrpg.grenade_case": "Grenade Case",
     "screen.gunsrpg.meds_case": "Medicine Case",
     "screen.gunsrpg.item_case": "Item Case",
+    "screen.gunsrpg.crystal_case": "Crystal Case",
     "screen.skilled_workbench.condition": "Requirements:",
     "condition.crafting.skill": "%1$s skill",
     "screen.animator.new_project": "New Project",

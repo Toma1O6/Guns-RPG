@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.AbstractSolidEntityModel;
 import dev.toma.gunsrpg.config.ModConfig;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -13,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
 public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
 
     public static final ResourceLocation GLASS_TEXTURE = GunsRPG.makeResource("textures/scope/glass.png");
+    private static final int LIGHT = LightTexture.pack(15, 15);
 
     public abstract void renderAttachment(MatrixStack stack, IRenderTypeBuffer buffer, int light, int overlay, float aimingProgress);
 
@@ -26,7 +28,7 @@ public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
         float r = ((reticleColor >> 16) & 255) / 255.0F;
         float g = ((reticleColor >>  8) & 255) / 255.0F;
         float b = ( reticleColor        & 255) / 255.0F;
-        provider.getGlassModel().render(matrix, reticleVertexBuilder, light, overlay, r, g, b, a);
+        provider.getGlassModel().render(matrix, reticleVertexBuilder, LIGHT, overlay, r, g, b, a);
     }
 
     public static void renderScopeWithGlass(MatrixStack matrix, IRenderTypeBuffer buffer, IOpticsProvider provider, float progress, int light, int overlay) {

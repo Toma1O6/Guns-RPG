@@ -1,0 +1,16 @@
+{
+    "hierarchy": {
+        "category": "mining",
+        "children": [
+            "gunsrpg:treasure_hunter_ii"
+        ],
+        "override": "gunsrpg:treasure_hunter_ii"
+    },
+    "properties": {
+        "level": 15,
+        "price": 2,
+        "transactionValidator": {
+            "type": "gunsrpg:level"
+        }
+    }
+}

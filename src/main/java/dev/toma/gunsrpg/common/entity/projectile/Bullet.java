@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.entity.projectile;
 
-import dev.toma.gunsrpg.common.init.ModDamageSources;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -9,6 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.play.server.SSpawnParticlePacket;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -54,6 +55,8 @@ public class Bullet extends AbstractPenetratingProjectile {
             float dirX = normal.getX() / 5.0f;
             float dirY = normal.getX() / 5.0f;
             float dirZ = normal.getX() / 5.0f;
+            SoundType type = state.getSoundType();
+            level.playSound(null, vec.x, vec.y, vec.z, type.getBreakSound(), SoundCategory.MASTER, type.getVolume(), type.getPitch());
             SSpawnParticlePacket packet = new SSpawnParticlePacket(new BlockParticleData(ParticleTypes.BLOCK, state), true, vec.x, vec.y, vec.z, dirX, dirY, dirZ, 0.01F, 3);
             ((ServerWorld) level).players().forEach(player -> player.connection.send(packet));
             state.onProjectileHit(level, state, result, this);
@@ -65,14 +68,9 @@ public class Bullet extends AbstractPenetratingProjectile {
     protected void handleEntityCollision(EntityRayTraceResult result) {
         if (!level.isClientSide) {
             Entity entity = result.getEntity();
-            float amount = this.getProjectileDamage();
-            this.dealDamageToTarget(entity, amount);
+            this.hurtTarget(entity, this.getOwner(), false); // TODO headshots
             entity.invulnerableTime = 0;
-            remove();
+            remove(); // TODO pass if penetration data allow it
         }
-    }
-
-    protected void dealDamageToTarget(Entity target, float damage) {
-        target.hurt(ModDamageSources.dealWeaponDamage(this.getOwner(), this, this.getWeapon()), damage);
     }
 }

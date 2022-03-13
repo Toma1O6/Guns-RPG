@@ -2,6 +2,7 @@
     "hierarchy": {
         "category": "gun",
         "children": [
+            "gunsrpg:grenadier",
             "gunsrpg:massive_grenades",
             "gunsrpg:impact_grenades",
             "gunsrpg:demolisher"

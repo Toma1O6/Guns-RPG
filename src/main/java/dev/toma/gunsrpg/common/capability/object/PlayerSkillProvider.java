@@ -5,7 +5,6 @@ import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.ILockStateChangeable;
 import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
-import dev.toma.gunsrpg.api.common.skill.IDisplayableSkill;
 import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.api.common.skill.ITickableSkill;
 import dev.toma.gunsrpg.common.init.ModRegistries;
@@ -76,11 +75,6 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
     }
 
     @Override
-    public Collection<ISkill> getUnlockedSkills() {
-        return unlockedSkills.values();
-    }
-
-    @Override
     public void onLevelUp(int level, PlayerEntity player) {
         List<SkillType<?>> newlyAvailableList = ModRegistries.SKILLS.getValues().stream()
                 .filter(type -> type.getProperties().getTransactionValidator().getId() == PlayerLevelTransactionValidator.ID && type.getProperties().getRequiredLevel() == level)
@@ -122,13 +116,10 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
         ISkill skill = skillType.instantiate();
         skill.onPurchase(player);
         unlockedSkills.put(skillType, skill);
-        if (sync)
+        if (sync) {
             request.makeSyncRequest();
-    }
-
-    @Override
-    public List<IDisplayableSkill> getDisplayableSkills() {
-        return cache.getDisplayables();
+            cache.compute();
+        }
     }
 
     @Override
@@ -151,6 +142,7 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
             CompoundNBT cnbt = list.getCompound(i);
             skillFromNbt(cnbt);
         }
+        cache.compute();
     }
 
     private void skillToNbt(ISkill skill, ListNBT listNBT) {
@@ -167,8 +159,10 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
     private void skillFromNbt(CompoundNBT nbt) {
         ResourceLocation key = new ResourceLocation(nbt.getString("type"));
         SkillType<?> type = ModRegistries.SKILLS.getValue(key);
-        if (type == null)
+        if (type == null) {
             GunsRPG.log.error(SKILLS, "Unknown skill type: " + key);
+            return;
+        }
         ISkill skill = type.instantiate();
         if (nbt.contains("data", Constants.NBT.TAG_COMPOUND)) {
             CompoundNBT data = nbt.getCompound("data");
@@ -181,7 +175,6 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
     private class SkillCache {
 
         private final List<ITickableSkill> tickables = new ArrayList<>();
-        private final List<IDisplayableSkill> displayables = new ArrayList<>();
         private boolean requiresComputation = true;
 
         public void compute() {
@@ -190,24 +183,17 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
             for (ISkill skill : collection) {
                 if (skill instanceof ITickableSkill)
                     tickables.add((ITickableSkill) skill);
-                if (skill instanceof IDisplayableSkill)
-                    displayables.add((IDisplayableSkill) skill);
             }
             requiresComputation = false;
         }
 
         public void clear() {
             tickables.clear();
-            displayables.clear();
             requiresComputation = true;
         }
 
         public List<ITickableSkill> getTickables() {
             return get(() -> tickables);
-        }
-
-        public List<IDisplayableSkill> getDisplayables() {
-            return get(() -> displayables);
         }
 
         private <T> T get(Supplier<T> supplier) {

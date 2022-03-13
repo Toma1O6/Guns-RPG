@@ -11,7 +11,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class C2S_ShootPacket extends AbstractHandlePacket<C2S_ShootPacket> {
 
     @Override
-    public C2S_ShootPacket thisPacket() {
+    public C2S_ShootPacket recreate() {
         return new C2S_ShootPacket();
     }
 

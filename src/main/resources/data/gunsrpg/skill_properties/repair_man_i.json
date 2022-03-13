@@ -3,7 +3,8 @@
         "category": "gun",
         "children": [
             "gunsrpg:repair_man_ii"
-        ]
+        ],
+        "override": "gunsrpg:repair_man_ii"
     },
     "properties": {
         "level": 20,

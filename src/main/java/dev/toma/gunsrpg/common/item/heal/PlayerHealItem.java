@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.item.heal;
 
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -17,20 +19,24 @@ public class PlayerHealItem extends AbstractHealItem<PlayerEntity> {
     }
 
     public static void onSteroidsUsed(PlayerEntity player) {
-        player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 1200, 0, false, false));
-        player.addEffect(new EffectInstance(Effects.JUMP, 1200, 1, false, false));
+        float value = PlayerData.getUnsafe(player).getAttributes().getAttribute(Attribs.STEROIDS_EFFECT).floatValue();
+        int length = (int) (1200 * value);
+        player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, length, 0, false, false));
+        player.addEffect(new EffectInstance(Effects.JUMP, length, 1, false, false));
     }
 
     public static void onAdrenalineUsed(PlayerEntity player) {
-        player.addEffect(new EffectInstance(Effects.REGENERATION, 700, 0, false, false));
-        player.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 1200, 0, false, false));
+        float value = PlayerData.getUnsafe(player).getAttributes().getAttribute(Attribs.ADRENALINE_EFFECT).floatValue();
+        player.addEffect(new EffectInstance(Effects.REGENERATION, (int) (700 * value), 0, false, false));
+        player.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, (int) (1200 * value), 0, false, false));
     }
 
     public static void onMorphineUsed(PlayerEntity player) {
         player.heal(14);
-        player.addEffect(new EffectInstance(Effects.REGENERATION, 300, 1, false, false));
-        player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 900, 1, false, false));
-        player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 1200, 0, false, false));
+        float value = PlayerData.getUnsafe(player).getAttributes().getAttribute(Attribs.MORPHINE_EFFECT).floatValue();
+        player.addEffect(new EffectInstance(Effects.REGENERATION, (int) (300 * value), 1, false, false));
+        player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, (int) (900 * value), 1, false, false));
+        player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, (int) (1200 * value), 0, false, false));
     }
 
     @Override
