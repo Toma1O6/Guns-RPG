@@ -73,14 +73,7 @@ public class StashDetectorModel extends Model {
                 if (entry.getKey() == status) {
                     int lightValue = DIODE_LIGHT;
                     if (status == LootStashDetectorHandler.Status.NEARBY) {
-                        float intensity = Math.min(data.getIntensity(), 0.05F);
-                        long div = (long) (1000L * intensity);
-                        long half = div / 2;
-                        long milis = System.currentTimeMillis();
-                        long progress = milis % div;
-                        float lightIntensity = progress < half ? (float) (progress / half) : 1.0F - (float) ((progress - half) / half);
-                        int packedLight = (int) (lightIntensity * 15);
-                        lightValue = LightTexture.pack(packedLight, packedLight);
+                        lightValue = data.isActive() ? DIODE_LIGHT : light;
                     }
                     entry.getValue().render(stack, builder, lightValue, overlay);
                 } else {
