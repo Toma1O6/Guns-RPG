@@ -128,9 +128,8 @@ public class LootStashDetectorHandler {
         private Status status = Status.UNDETECTED;
         private BlockPos trackedLocation;
         private int soundTimer;
-        private int lightSwitchTimer;
         private int lightSwitchTimerHalf;
-        private boolean isActive;
+        private float diodeIntesity;
 
         public void setTrackedLocation(BlockPos trackedLocation) {
             this.trackedLocation = trackedLocation;
@@ -140,8 +139,8 @@ public class LootStashDetectorHandler {
             return status;
         }
 
-        public boolean isActive() {
-            return isActive;
+        public float getDiodeIntesity() {
+            return diodeIntesity;
         }
 
         public void resetTimer() {
@@ -171,9 +170,9 @@ public class LootStashDetectorHandler {
                 if (soundScheduler > 0) {
                     if (--soundTimer <= 0) {
                         soundTimer = soundScheduler;
-                        lightSwitchTimerHalf = soundScheduler / 2;
+                        lightSwitchTimerHalf = soundScheduler;
                     }
-                    isActive = soundTimer > lightSwitchTimerHalf;
+                    diodeIntesity = soundTimer / (float) lightSwitchTimerHalf;
                 }
             }
         }
