@@ -20,7 +20,7 @@ public class AirdropEventHandler implements IWorldEventHandler {
     final Random random;
 
     public AirdropEventHandler(World world) {
-        isValidDimension = world != null && world.dimensionType().effectsLocation().equals(DimensionType.OVERWORLD_EFFECTS);
+        isValidDimension = world != null && world.dimensionType() == DimensionType.DEFAULT_OVERWORLD;
         random = new Random();
     }
 

@@ -2,8 +2,14 @@ package dev.toma.gunsrpg.client.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.LootStashDetectorHandler;
+import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.skills.TreasureHunterSkill;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.IAnimationPipeline;
 import net.minecraft.client.Minecraft;
@@ -22,7 +28,7 @@ import java.util.UUID;
 public class StashDetectorModel extends Model {
 
     private static final int DIODE_LIGHT = LightTexture.pack(15, 15);
-    private static final int DISPLAY_LIGHT = LightTexture.pack(10, 10);
+    private static final int DISPLAY_LIGHT = LightTexture.pack(13, 13);
 
     private final ModelRenderer red_light;
     private final ModelRenderer bone;
@@ -59,17 +65,32 @@ public class StashDetectorModel extends Model {
         PlayerEntity player = mc.player;
         UUID uuid = player.getUUID();
         if (LootStashDetectorHandler.isUsing(uuid)) {
+            keypad.render(stack, builder, DISPLAY_LIGHT, overlay);
+            display.render(stack, builder, DISPLAY_LIGHT, overlay);
             LootStashDetectorHandler.DetectionData data = LootStashDetectorHandler.getData(uuid);
             LootStashDetectorHandler.Status status = data.getStatus();
             for (Map.Entry<LootStashDetectorHandler.Status, ModelRenderer> entry : statusMap.entrySet()) {
                 if (entry.getKey() == status) {
-                    entry.getValue().render(stack, builder, DIODE_LIGHT, overlay);
+                    int lightValue = DIODE_LIGHT;
+                    if (status == LootStashDetectorHandler.Status.NEARBY) {
+                        float intensity = Math.min(data.getIntensity(), 0.05F);
+                        long div = (long) (1000L * intensity);
+                        long half = div / 2;
+                        long milis = System.currentTimeMillis();
+                        long progress = milis % div;
+                        float lightIntensity = progress < half ? (float) (progress / half) : 1.0F - (float) ((progress - half) / half);
+                        int packedLight = (int) (lightIntensity * 15);
+                        lightValue = LightTexture.pack(packedLight, packedLight);
+                    }
+                    entry.getValue().render(stack, builder, lightValue, overlay);
                 } else {
                     entry.getValue().render(stack, builder, light, overlay);
                 }
             }
         } else {
             statusMap.values().forEach(renderer -> renderer.render(stack, builder, light, overlay));
+            keypad.render(stack, builder, light, overlay);
+            display.render(stack, builder, light, overlay);
         }
     }
 
@@ -78,9 +99,6 @@ public class StashDetectorModel extends Model {
         light_support2.render(stack, builder, light, overlay);
         light_support3.render(stack, builder, light, overlay);
         base.render(stack, builder, light, overlay);
-
-        keypad.render(stack, builder, DISPLAY_LIGHT, overlay);
-        display.render(stack, builder, DISPLAY_LIGHT, overlay);
 
         renderLights(stack, builder, light, overlay);
         renderAnimatable(stack, typeBuffer, builder, light, overlay, type.firstPerson());

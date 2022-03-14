@@ -128,13 +128,14 @@ public class LootStashDetectorHandler {
         private Status status = Status.UNDETECTED;
         private BlockPos trackedLocation;
         private int soundTimer;
+        private float intensity;
 
         public void setTrackedLocation(BlockPos trackedLocation) {
             this.trackedLocation = trackedLocation;
         }
 
-        public void setStatus(Status status) {
-            this.status = status;
+        public float getIntensity() {
+            return intensity;
         }
 
         public Status getStatus() {
@@ -164,6 +165,7 @@ public class LootStashDetectorHandler {
                 TreasureHunterSkill.DetectionRadius radius = skill.getRadius();
                 status = radius.getStatusByDistance(distance);
                 float soundDelay = 1.0F - radius.getSoundIntensity(distance);
+                intensity = soundDelay;
                 int soundScheduler = soundDelay == 1.0F ? -1 : 1 + (int) (soundDelay * 29);
                 if (soundScheduler > 0) {
                     if (--soundTimer <= 0) {

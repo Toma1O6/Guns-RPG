@@ -11,6 +11,8 @@ import dev.toma.gunsrpg.common.LootStashDetectorHandler;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.S2C_UseStashDetectorPacket;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.Animation;
@@ -60,17 +62,25 @@ public class StashDetectorItem extends BaseItem implements IAnimationEntry {
             }
             return ActionResult.fail(stack);
         }
-        UUID uuid = player.getUUID();
-        boolean using = LootStashDetectorHandler.isUsing(uuid);
-        if (using) {
-            LootStashDetectorHandler.stopUsing(uuid);
-        } else {
-            LootStashDetectorHandler.initiateUsing(player);
+        if (!level.isClientSide) {
+            UUID uuid = player.getUUID();
+            boolean using = LootStashDetectorHandler.isUsing(uuid);
+            if (using) {
+                LootStashDetectorHandler.stopUsing(uuid);
+            } else {
+                LootStashDetectorHandler.initiateUsing(player);
+            }
+            NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_UseStashDetectorPacket(!using));
         }
         if (level.isClientSide) {
             playUseAnimation();
         }
         return ActionResult.pass(stack);
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return false;
     }
 
     @Override
