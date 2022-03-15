@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.client.IModifiableProgress;
 import dev.toma.gunsrpg.common.AnimationPaths;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;
+import lib.toma.animations.api.event.AnimationEventType;
 import net.minecraft.entity.player.PlayerEntity;
 
 public final class ModAnimations {
@@ -34,6 +35,8 @@ public final class ModAnimations {
     public static final AnimationType<Animation> GRENADE = AnimationType.create(GunsRPG.makeResource("grenade"));
     public static final AnimationType<Animation> UNJAM = AnimationType.create(GunsRPG.makeResource("unjam"));
     public static final AnimationType<Animation> STASH_DETECTOR = AnimationType.create(GunsRPG.makeResource("stash_detector"));
+
+    public static final AnimationEventType<StashDetectorEvent> STASH_DETECTOR_EVENT = new AnimationEventType<>(GunsRPG.makeResource("stash_detector"), new StashDetectorEvent.Serializer(), StashDetectorEvent.StashDetectorEventDialog::new);
 
     public static Animation createFiremodeAnimation(PlayerEntity client) {
         AnimationEngine engine = AnimationEngine.get();

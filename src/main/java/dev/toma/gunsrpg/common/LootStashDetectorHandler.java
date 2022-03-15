@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModItems;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.TreasureHunterSkill;
 import dev.toma.gunsrpg.util.Interval;
@@ -165,12 +166,14 @@ public class LootStashDetectorHandler {
                 }
                 TreasureHunterSkill.DetectionRadius radius = skill.getRadius();
                 status = radius.getStatusByDistance(distance);
+                if (status != Status.NEARBY) return;
                 float soundDelay = radius.getSoundIntensity(distance);
                 int soundScheduler = soundDelay == 1.0F ? -1 : 2 + (int) (soundDelay * 28);
                 if (soundScheduler > 0) {
                     if (--soundTimer <= 0) {
                         soundTimer = soundScheduler;
                         lightSwitchTimerHalf = soundScheduler;
+                        player.playSound(ModSounds.DETECTOR_BEEP, 1.0F, 1.0F);
                     }
                     diodeIntesity = soundTimer / (float) lightSwitchTimerHalf;
                 }

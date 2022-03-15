@@ -226,4 +226,5 @@ public class ModSounds {
     public static final SoundEvent PILLS2 = null;
     public static final SoundEvent PILLS3 = null;
     public static final SoundEvent REPAIR = null;
+    public static final SoundEvent DETECTOR_BEEP = null;
 }

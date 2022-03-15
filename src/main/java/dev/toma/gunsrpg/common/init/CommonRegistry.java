@@ -133,7 +133,7 @@ public class CommonRegistry {
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("lucky_shooter_i"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("lucky_shooter_ii"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("lucky_shooter_iii"),
-                SkillType.Builder.create(BasicSkill::new).build().setRegistryName("medical_station"),
+                SkillType.Builder.create(BasicSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModBlocks.MEDICAL_STATION))).build().setRegistryName("medical_station"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("medic"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("doctor"),
                 SkillType.Builder.create(BasicSkill::new).build().setRegistryName("efficient_meds"),
@@ -917,7 +917,14 @@ public class CommonRegistry {
                 sound("pills1"),
                 sound("pills2"),
                 sound("pills3"),
-                sound("repair")
+                sound("repair"),
+                sound("battery_in"),
+                sound("battery_out"),
+                sound("cover_close"),
+                sound("cover_open"),
+                sound("detector_beep"),
+                sound("detector_on"),
+                sound("detector_switch")
         );
     }
 

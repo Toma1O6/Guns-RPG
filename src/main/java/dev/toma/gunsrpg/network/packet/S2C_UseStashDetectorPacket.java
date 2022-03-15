@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.common.LootStashDetectorHandler;
+import dev.toma.gunsrpg.common.item.StashDetectorItem;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,24 +12,24 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class S2C_UseStashDetectorPacket extends AbstractNetworkPacket<S2C_UseStashDetectorPacket> {
 
-    private final boolean using;
+    private final StashDetectorItem.StatusEvent event;
 
     public S2C_UseStashDetectorPacket() {
-        this(false);
+        this(null);
     }
 
-    public S2C_UseStashDetectorPacket(boolean using) {
-        this.using = using;
+    public S2C_UseStashDetectorPacket(StashDetectorItem.StatusEvent event) {
+        this.event = event;
     }
 
     @Override
     public void encode(PacketBuffer buffer) {
-        buffer.writeBoolean(using);
+        buffer.writeEnum(event);
     }
 
     @Override
     public S2C_UseStashDetectorPacket decode(PacketBuffer buffer) {
-        return new S2C_UseStashDetectorPacket(buffer.readBoolean());
+        return new S2C_UseStashDetectorPacket(buffer.readEnum(StashDetectorItem.StatusEvent.class));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -36,10 +37,13 @@ public class S2C_UseStashDetectorPacket extends AbstractNetworkPacket<S2C_UseSta
     protected void handlePacket(NetworkEvent.Context context) {
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
-        if (using) {
-            LootStashDetectorHandler.initiateUsing(player);
-        } else {
-            LootStashDetectorHandler.stopUsing(player.getUUID());
+        switch (event) {
+            case ON:
+                LootStashDetectorHandler.initiateUsing(player);
+                break;
+            case OFF:
+                LootStashDetectorHandler.stopUsing(player.getUUID());
+                break;
         }
     }
 }

@@ -19,7 +19,6 @@ import lib.toma.animations.api.Animation;
 import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IAnimationPipeline;
 import lib.toma.animations.api.IRenderConfig;
-import lib.toma.animations.engine.RenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -62,16 +61,6 @@ public class StashDetectorItem extends BaseItem implements IAnimationEntry {
             }
             return ActionResult.fail(stack);
         }
-        if (!level.isClientSide) {
-            UUID uuid = player.getUUID();
-            boolean using = LootStashDetectorHandler.isUsing(uuid);
-            if (using) {
-                LootStashDetectorHandler.stopUsing(uuid);
-            } else {
-                LootStashDetectorHandler.initiateUsing(player);
-            }
-            NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_UseStashDetectorPacket(!using));
-        }
         if (level.isClientSide) {
             playUseAnimation();
         }
@@ -102,5 +91,16 @@ public class StashDetectorItem extends BaseItem implements IAnimationEntry {
     private void playUseAnimation() {
         IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
         pipeline.insert(ModAnimations.STASH_DETECTOR, AnimationUtils.createAnimation(USE_ANIMATION, provider -> new Animation(provider, 30)));
+    }
+
+    @Override
+    public int getRGBDurabilityForDisplay(ItemStack stack) {
+        return 0xffff00;
+    }
+
+    public enum StatusEvent {
+        ON,
+        OFF,
+        TOGGLE
     }
 }
