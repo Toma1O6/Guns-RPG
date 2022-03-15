@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.0.5.52'
+version = '1.0.5.53'
 group = 'dev.toma.gunsrpg'
 archivesBaseName = "gunsrpg-${mc_version}"
 
