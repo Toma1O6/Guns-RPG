@@ -44,7 +44,12 @@
                             "name": "gunsrpg:black_orb_of_purity"
                         }
                     ]
-                },
+                }
+            ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
                 {
                     "type": "minecraft:alternatives",
                     "children": [
@@ -65,7 +70,7 @@
                                     }
                                 }
                             ],
-                            "name": "gunsrpg:black_orb_ore"
+                            "name": "minecraft:air"
                         },
                         {
                             "type": "minecraft:item",

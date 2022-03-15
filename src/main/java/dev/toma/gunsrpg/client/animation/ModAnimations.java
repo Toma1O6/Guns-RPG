@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.client.IModifiableProgress;
 import dev.toma.gunsrpg.common.AnimationPaths;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;
+import lib.toma.animations.api.event.AnimationEventType;
 import net.minecraft.entity.player.PlayerEntity;
 
 public final class ModAnimations {
@@ -19,6 +20,8 @@ public final class ModAnimations {
     public static final AnimationStage BOLT_CARRIER = AnimationStage.create(GunsRPG.makeResource("weapon.bolt_carrier"));
     public static final AnimationStage BARRELS = AnimationStage.create(GunsRPG.makeResource("weapon.barrels"));
     public static final AnimationStage BULLET_2 = AnimationStage.create(GunsRPG.makeResource("weapon.bullet2"));
+    public static final AnimationStage BATTERY_COVER = AnimationStage.create(GunsRPG.makeResource("stash.detector.battery_cover"));
+    public static final AnimationStage BATTERY = AnimationStage.create(GunsRPG.makeResource("stash.detector.battery"));
 
     public static final AnimationType<AimAnimation> AIM_ANIMATION = AnimationType.create(GunsRPG.makeResource("aim_animation"));
     public static final AnimationType<SprintAnimation> SPRINT = AnimationType.create(GunsRPG.makeResource("sprinting"), SprintAnimation::new);
@@ -32,6 +35,8 @@ public final class ModAnimations {
     public static final AnimationType<Animation> GRENADE = AnimationType.create(GunsRPG.makeResource("grenade"));
     public static final AnimationType<Animation> UNJAM = AnimationType.create(GunsRPG.makeResource("unjam"));
     public static final AnimationType<Animation> STASH_DETECTOR = AnimationType.create(GunsRPG.makeResource("stash_detector"));
+
+    public static final AnimationEventType<StashDetectorEvent> STASH_DETECTOR_EVENT = new AnimationEventType<>(GunsRPG.makeResource("stash_detector"), new StashDetectorEvent.Serializer(), StashDetectorEvent.StashDetectorEventDialog::new);
 
     public static Animation createFiremodeAnimation(PlayerEntity client) {
         AnimationEngine engine = AnimationEngine.get();

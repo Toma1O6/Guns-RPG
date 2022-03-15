@@ -863,5 +863,6 @@
 
     "event.type.minecraft:sound": "Add sound",
     "event.type.minecraft:animation_play": "Play animation",
-    "event.type.minecraft:animation_stop": "Stop animation"
+    "event.type.minecraft:animation_stop": "Stop animation",
+    "event.type.gunsrpg:stash_detector": "Stash detector status"
 }

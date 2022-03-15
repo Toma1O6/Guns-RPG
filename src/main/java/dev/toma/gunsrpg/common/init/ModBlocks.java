@@ -35,4 +35,5 @@ public class ModBlocks {
     public static final BaseBlock RED_ORB_ORE = null;
     public static final BaseBlock WHITE_ORB_ORE = null;
     public static final BaseBlock YELLOW_ORB_ORE = null;
+    public static final TrapBlock HIDDEN_LANDMINE = null;
 }

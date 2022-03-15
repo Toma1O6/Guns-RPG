@@ -11,6 +11,8 @@ import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
 import dev.toma.gunsrpg.client.render.skill.SkillRendererRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.ModItems;
+import dev.toma.gunsrpg.common.item.StashDetectorItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -173,6 +175,14 @@ public final class HUDRenderer {
                 else
                     font.draw(matrix, text, x + 19, y - 14, 0xFFFFFF);
             }
+        } else if (stack.getItem() == ModItems.STASH_DETECTOR) {
+            Minecraft mc = Minecraft.getInstance();
+            int batteryCount = ItemLocator.countItems(player.inventory, StashDetectorItem::isValidBatterySource);
+            String text = String.valueOf(batteryCount);
+            barWidth = font.width(text);
+            x = windowWidth - barWidth - 34;
+            mc.getItemRenderer().renderGuiItem(new ItemStack(ModItems.BATTERY), x, y - 8);
+            font.draw(matrix, text, x + 19, y - 2, 0xFFFFFF);
         }
         renderProgressionBar(progression, pose, x, y + 10, barWidth + 22, y + 17, 0xFF00FFFF, 0xFF008888);
     }

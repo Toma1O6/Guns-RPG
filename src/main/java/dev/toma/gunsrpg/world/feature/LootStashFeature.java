@@ -1,17 +1,21 @@
 package dev.toma.gunsrpg.world.feature;
 
 import dev.toma.gunsrpg.common.block.MilitaryCrateBlock;
+import dev.toma.gunsrpg.common.init.ModBlocks;
 import dev.toma.gunsrpg.common.tileentity.ILootGenerator;
 import dev.toma.gunsrpg.util.locate.IterableLocator;
 import dev.toma.gunsrpg.util.object.LazyLoader;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Map;
@@ -34,7 +38,8 @@ public class LootStashFeature extends Feature<NoFeatureConfig> {
 
     @Override
     public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
-        if (!seedReader.getFluidState(pos).isEmpty()) {
+        Block block = seedReader.getBlockState(pos).getBlock();
+        if (!block.is(Tags.Blocks.STONE) && !block.is(Tags.Blocks.DIRT)) {
             return false;
         }
         Biome biome = seedReader.getBiome(pos);
@@ -45,12 +50,23 @@ public class LootStashFeature extends Feature<NoFeatureConfig> {
                 variant = biomeVariant;
             }
         }
-        MilitaryCrateBlock block = MAP.get().get(variant);
-        seedReader.setBlock(pos, block.defaultBlockState(), 2);
+        MilitaryCrateBlock militaryCrateBlock = MAP.get().get(variant);
+        seedReader.setBlock(pos, militaryCrateBlock.defaultBlockState(), 2);
         TileEntity tile = seedReader.getBlockEntity(pos);
         if (tile instanceof ILootGenerator) {
             ILootGenerator lootGenerator = (ILootGenerator) tile;
             lootGenerator.generateLoot();
+        }
+        int mineRadius = 10;
+        for (int i = 0; i < 1 + random.nextInt(3); i++) {
+            int x = pos.getX() + random.nextInt(mineRadius) - random.nextInt(mineRadius);
+            int z = pos.getZ() + random.nextInt(mineRadius) - random.nextInt(mineRadius);
+            BlockPos.Mutable minePos = new BlockPos.Mutable(x, pos.getY(), z);
+            if (seedReader.isAreaLoaded(minePos, 1)) {
+                minePos.setY(seedReader.getHeight(Heightmap.Type.WORLD_SURFACE_WG, x, z));
+                seedReader.setBlock(minePos, ModBlocks.HIDDEN_LANDMINE.defaultBlockState(), 2);
+            }
+
         }
         return true;
     }

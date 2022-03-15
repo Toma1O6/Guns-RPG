@@ -1978,5 +1978,68 @@
                 "stream": true
             }
         ]
+    },
+    "battery_in": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:stash_detector/battery_in",
+                "stream": true
+            }
+        ]
+    },
+    "battery_out": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:stash_detector/battery_out",
+                "stream": true
+            }
+        ]
+    },
+    "cover_close": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:stash_detector/cover_close",
+                "stream": true
+            }
+        ]
+    },
+    "cover_open": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:stash_detector/cover_open",
+                "stream": true
+            }
+        ]
+    },
+    "detector_beep": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:stash_detector/detector_beep",
+                "stream": true
+            }
+        ]
+    },
+    "detector_on": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:stash_detector/detector_on",
+                "stream": true
+            }
+        ]
+    },
+    "detector_switch": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:stash_detector/detector_switch",
+                "stream": true
+            }
+        ]
     }
 }

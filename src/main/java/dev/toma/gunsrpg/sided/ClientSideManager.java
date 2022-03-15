@@ -22,6 +22,7 @@ import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;
+import lib.toma.animations.api.event.AnimationEventType;
 import lib.toma.animations.api.lifecycle.Registries;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
@@ -71,6 +72,7 @@ public class ClientSideManager {
     public void animationSetup() {
         Registries.ANIMATION_TYPES.addCallback(dev -> gatherAnimationTypes());
         Registries.ANIMATION_STAGES.addCallback(dev -> gatherAnimationStages());
+        Registries.EVENTS.addCallback(dev -> gatherEvents());
     }
 
     public void clientSetup(FMLClientSetupEvent event) {
@@ -181,7 +183,13 @@ public class ClientSideManager {
 
     private AnimationStage[] gatherAnimationStages() {
         return new AnimationStage[] {
-                DUAL_WIELD_ITEM, MAGAZINE, SLIDE, CHARGING_HANDLE, BULLET, BOLT, BOLT_CARRIER, BARRELS, BULLET_2
+                DUAL_WIELD_ITEM, MAGAZINE, SLIDE, CHARGING_HANDLE, BULLET, BOLT, BOLT_CARRIER, BARRELS, BULLET_2, BATTERY, BATTERY_COVER
+        };
+    }
+
+    private AnimationEventType<?>[] gatherEvents() {
+        return new AnimationEventType[] {
+                STASH_DETECTOR_EVENT
         };
     }
 }

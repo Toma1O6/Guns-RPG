@@ -42,6 +42,7 @@ public class GrenadeItem extends BaseItem implements IAnimationEntry {
                 if (!player.isCreative()) {
                     itemStack.shrink(1);
                 }
+                player.getCooldowns().addCooldown(this, 5);
             }
         }
         return itemStack;
@@ -91,6 +92,6 @@ public class GrenadeItem extends BaseItem implements IAnimationEntry {
         IAnimationPipeline pipeline = engine.pipeline();
         IAnimationLoader loader = engine.loader();
         IKeyframeProvider provider = loader.getProvider(AnimationPaths.GRENADE);
-        pipeline.insert(ModAnimations.GRENADE, new Animation(provider, this.getUseDuration(ItemStack.EMPTY)));
+        pipeline.insert(ModAnimations.GRENADE, new Animation(provider, this.getUseDuration(ItemStack.EMPTY) - 2));
     }
 }

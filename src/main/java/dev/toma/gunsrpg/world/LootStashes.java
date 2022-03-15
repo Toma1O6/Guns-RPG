@@ -84,6 +84,8 @@ public class LootStashes {
         }, ASYNC_POOL).thenAccept(pos -> {
             if (pos != null) {
                 NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_SetTrackedStashPacket(pos));
+            } else {
+                NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_SetTrackedStashPacket());
             }
         });
     }

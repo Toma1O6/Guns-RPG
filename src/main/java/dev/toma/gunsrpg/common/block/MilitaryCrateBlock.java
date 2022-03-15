@@ -32,7 +32,7 @@ public class MilitaryCrateBlock extends AbstractCrateBlock {
 
     @Override
     public boolean shouldDestroyEmptyBlock() {
-        return false;
+        return true;
     }
 
     @SuppressWarnings("unchecked")

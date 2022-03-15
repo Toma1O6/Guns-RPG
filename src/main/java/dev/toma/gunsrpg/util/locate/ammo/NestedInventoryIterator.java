@@ -1,14 +1,21 @@
 package dev.toma.gunsrpg.util.locate.ammo;
 
+import dev.toma.gunsrpg.common.item.StorageItem;
 import dev.toma.gunsrpg.util.locate.IContextIterator;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class NestedInventoryIterator<C> implements IContextIterator<ItemStack> {
 
@@ -49,6 +56,18 @@ public class NestedInventoryIterator<C> implements IContextIterator<ItemStack> {
             if (!first.isEmpty())
                 return first;
         }
+        if (result.getItem() instanceof StorageItem) {
+            CompoundNBT data = result.getTag();
+            if (data != null && data.contains("Items", Constants.NBT.TAG_LIST)) {
+                ListNBT list = data.getList("Items", Constants.NBT.TAG_COMPOUND);
+                IInventory inventory = inventoryFromNbt(list);
+                nestedActiveIterator = of(inventory);
+                ItemStack first = walkThroughNested();
+                if (!first.isEmpty()) {
+                    return first;
+                }
+            }
+        }
         return result;
     }
 
@@ -64,5 +83,14 @@ public class NestedInventoryIterator<C> implements IContextIterator<ItemStack> {
         }
         nestedActiveIterator = null;
         return ItemStack.EMPTY;
+    }
+
+    private IInventory inventoryFromNbt(ListNBT nbt) {
+        Inventory inventory = new Inventory(nbt.size());
+        List<ItemStack> list = nbt.stream().map(inbt -> (CompoundNBT) inbt).map(tag -> tag.getCompound("item")).map(ItemStack::of).collect(Collectors.toList());
+        for (int i = 0; i < list.size(); i++) {
+            inventory.setItem(i, list.get(i));
+        }
+        return inventory;
     }
 }
