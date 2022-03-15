@@ -73,7 +73,7 @@ public class TrapBlock extends BaseBlock {
         } else {
             if (reaction.requiresSpecialTool()) {
                 if (reaction.isValidDefuseTool(level, pos, player, hand)) {
-                    level.destroyBlock(pos, true);
+                    level.destroyBlock(pos, false);
                     player.getItemInHand(hand).hurt(1, level.getRandom(), (ServerPlayerEntity) player);
                 } else {
                     applyTrapEffects(level, pos, player);
@@ -162,9 +162,7 @@ public class TrapBlock extends BaseBlock {
 
         @Override
         public boolean isValidDefuseTool(World level, BlockPos pos, PlayerEntity player, Hand hand) {
-            ItemStack stack = player.getItemInHand(hand);
-            Set<ToolType> toolTypes = stack.getToolTypes();
-            return toolTypes.contains(ToolType.SHOVEL);
+            return false;
         }
 
         @Override

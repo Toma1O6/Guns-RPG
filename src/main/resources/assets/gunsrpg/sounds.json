@@ -2033,11 +2033,11 @@
             }
         ]
     },
-    "switch": {
+    "detector_switch": {
         "category": "master",
         "sounds": [
             {
-                "name": "gunsrpg:stash_detector/switch",
+                "name": "gunsrpg:stash_detector/detector_switch",
                 "stream": true
             }
         ]
