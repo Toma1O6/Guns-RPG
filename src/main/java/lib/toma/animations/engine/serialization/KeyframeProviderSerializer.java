@@ -1,6 +1,7 @@
 package lib.toma.animations.engine.serialization;
 
 import com.google.gson.*;
+import dev.toma.gunsrpg.util.helper.JsonHelper;
 import lib.toma.animations.QuickSort;
 import lib.toma.animations.api.IKeyframeProvider;
 import lib.toma.animations.api.IKeyframeTypeSerializer;
@@ -67,7 +68,7 @@ public class KeyframeProviderSerializer implements JsonSerializer<IKeyframeProvi
                 throw new JsonSyntaxException("Unknown event type: " + typeKey);
             IAnimationEventSerializer<E> serializer = type.serializer();
             float target = JSONUtils.getAsFloat(object, "target");
-            E event = serializer.deserialize(target, JSONUtils.getAsJsonObject(object, "data"), context);
+            E event = serializer.deserialize(target, JsonHelper.get(object, "data"), context);
             events[i] = event;
         }
         QuickSort.sort(events, Comparator.comparingDouble(IAnimationEvent::invokeAt));
