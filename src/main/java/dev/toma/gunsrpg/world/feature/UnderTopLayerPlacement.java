@@ -25,7 +25,7 @@ public class UnderTopLayerPlacement extends Placement<NoPlacementConfig> {
         }
         int x = chunkStartPos.getX() + random.nextInt(16);
         int z = chunkStartPos.getZ() + random.nextInt(16);
-        int y = helper.getHeight(Heightmap.Type.WORLD_SURFACE, x, z) - 3;
+        int y = helper.getHeight(Heightmap.Type.WORLD_SURFACE, x, z) - 2 - random.nextInt(3);
         return Stream.of(new BlockPos(x, y, z));
     }
 }

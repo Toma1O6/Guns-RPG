@@ -40,7 +40,7 @@ public class StashDetectorItem extends BaseItem implements IAnimationEntry {
     public static final ResourceLocation USE_ANIMATION = GunsRPG.makeResource("stash_detector/use");
 
     public StashDetectorItem(String name) {
-        super(name, new Properties().tab(ModTabs.ITEM_TAB).durability(200).setISTER(() -> StashDetectorRenderer::new));
+        super(name, new Properties().tab(ModTabs.ITEM_TAB).durability(210).setISTER(() -> StashDetectorRenderer::new));
     }
 
     public static boolean isValidBatterySource(ItemStack stack) {
