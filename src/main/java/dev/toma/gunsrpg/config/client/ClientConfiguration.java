@@ -25,6 +25,7 @@ public class ClientConfiguration extends ObjectType {
     public final IVec2i debuffOverlay;
     public final ColorType reticleColor;
     public final IconsType reticleVariants;
+    public final IHeldLayerConfig gunnerHeldItemRenderConfig;
 
     public ClientConfiguration(IObjectSpec spec) {
         super(spec);
@@ -35,5 +36,6 @@ public class ClientConfiguration extends ObjectType {
         debuffOverlay = writer.writeObject(sp -> new ConfigurableVec2i(sp, 0, -60), "Debuff overlay", "Manage position of debuff overlay in HUD");
         reticleColor = writer.writeColorARGB("Reticle color", "#FFFF0000", "Configure color reticle color");
         reticleVariants = IconsType.write(writer, "Reticle variant", 0, VARIANTS, "Configure reticle variant");
+        gunnerHeldItemRenderConfig = writer.writeObject(sp -> new HeldLayerConfig(sp, IHeldLayerConfig.Mode.DEFAULT, "minecraft:crossbow"), "Gunner item render");
     }
 }
