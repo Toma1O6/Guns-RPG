@@ -21,9 +21,11 @@ public abstract class InventoryTileEntity extends TileEntity {
 
     protected IItemHandlerModifiable itemHandler;
     private final LazyOptional<IItemHandlerModifiable> inventory;
+    protected boolean saveInventory;
 
     public InventoryTileEntity(TileEntityType<? extends InventoryTileEntity> tileEntityType) {
         super(tileEntityType);
+        this.saveInventory = true;
         this.itemHandler = createInventory();
         this.inventory = LazyOptional.of(() -> itemHandler);
     }
@@ -33,12 +35,14 @@ public abstract class InventoryTileEntity extends TileEntity {
     @Override
     public CompoundNBT save(CompoundNBT nbt) {
         super.save(nbt);
-        inventory.ifPresent(handler -> {
-            if (handler instanceof INBTSerializable) {
-                CompoundNBT inv = ((INBTSerializable<CompoundNBT>) handler).serializeNBT();
-                nbt.put("inventory", inv);
-            }
-        });
+        if (saveInventory) {
+            inventory.ifPresent(handler -> {
+                if (handler instanceof INBTSerializable) {
+                    CompoundNBT inv = ((INBTSerializable<CompoundNBT>) handler).serializeNBT();
+                    nbt.put("inventory", inv);
+                }
+            });
+        }
         write(nbt);
         return nbt;
     }
@@ -46,12 +50,14 @@ public abstract class InventoryTileEntity extends TileEntity {
     @Override
     public void load(BlockState state, CompoundNBT nbt) {
         super.load(state, nbt);
-        inventory.ifPresent(handler -> {
-            if (handler instanceof INBTSerializable) {
-                CompoundNBT inv = nbt.contains("inventory", Constants.NBT.TAG_COMPOUND) ? nbt.getCompound("inventory") : new CompoundNBT();
-                ((INBTSerializable<CompoundNBT>) handler).deserializeNBT(inv);
-            }
-        });
+        if (saveInventory) {
+            inventory.ifPresent(handler -> {
+                if (handler instanceof INBTSerializable) {
+                    CompoundNBT inv = nbt.contains("inventory", Constants.NBT.TAG_COMPOUND) ? nbt.getCompound("inventory") : new CompoundNBT();
+                    ((INBTSerializable<CompoundNBT>) handler).deserializeNBT(inv);
+                }
+            });
+        }
         read(nbt);
     }
 
