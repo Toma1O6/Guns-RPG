@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.DesertEagleRenderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
@@ -15,6 +16,7 @@ import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -49,13 +51,18 @@ public class DesertEagleItem extends GunItem {
     }
 
     @Override
+    protected SoundEvent getShootSound(PlayerEntity entity) {
+        return ModSounds.GUN_DEAGLE;
+    }
+
+    @Override
     public int getReloadTime(IAttributeProvider provider) {
         return 60;
     }
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 5;
+        return 9;
     }
 
     @Override

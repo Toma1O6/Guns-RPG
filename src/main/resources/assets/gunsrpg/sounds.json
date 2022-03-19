@@ -2024,6 +2024,15 @@
             }
         ]
     },
+    "detector_beep_long": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:stash_detector/detector_beep_long",
+                "stream": true
+            }
+        ]
+    },
     "detector_on": {
         "category": "master",
         "sounds": [

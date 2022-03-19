@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.WinchesterRenderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
@@ -17,6 +18,7 @@ import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 
 public class WinchesterItem extends GunItem {
 
@@ -49,13 +51,18 @@ public class WinchesterItem extends GunItem {
     }
 
     @Override
+    protected SoundEvent getShootSound(PlayerEntity entity) {
+        return ModSounds.GUN_WIN94;
+    }
+
+    @Override
     public int getReloadTime(IAttributeProvider provider) {
         return 25;
     }
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 15;
+        return 20;
     }
 
     @Override

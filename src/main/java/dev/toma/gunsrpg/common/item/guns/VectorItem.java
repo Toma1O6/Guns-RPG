@@ -4,6 +4,8 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.VectorRenderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
@@ -16,6 +18,7 @@ import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 
 public class VectorItem extends GunItem {
 
@@ -53,13 +56,23 @@ public class VectorItem extends GunItem {
     }
 
     @Override
+    protected boolean isSilenced(PlayerEntity player) {
+        return PlayerData.hasActiveSkill(player, Skills.VECTOR_SUPPRESSOR);
+    }
+
+    @Override
+    protected SoundEvent getShootSound(PlayerEntity entity) {
+        return isSilenced(entity) ? ModSounds.GUN_VECTOR_SILENCED : ModSounds.GUN_VECTOR;
+    }
+
+    @Override
     public int getReloadTime(IAttributeProvider provider) {
         return 70;
     }
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 0;
+        return 1;
     }
 
     @Override

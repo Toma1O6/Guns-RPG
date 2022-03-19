@@ -1,9 +1,11 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.AwmRenderer;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
@@ -14,6 +16,7 @@ import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 
 public class AwmItem extends GunItem {
 
@@ -45,13 +48,23 @@ public class AwmItem extends GunItem {
     }
 
     @Override
+    protected boolean isSilenced(PlayerEntity player) {
+        return PlayerData.hasActiveSkill(player, Skills.AWM_SUPPRESSOR);
+    }
+
+    @Override
+    protected SoundEvent getShootSound(PlayerEntity entity) {
+        return isSilenced(entity) ? ModSounds.GUN_AWM_SILENCED : ModSounds.GUN_AWM;
+    }
+
+    @Override
     public int getReloadTime(IAttributeProvider provider) {
         return 100;
     }
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 30;
+        return 36;
     }
 
     @Override

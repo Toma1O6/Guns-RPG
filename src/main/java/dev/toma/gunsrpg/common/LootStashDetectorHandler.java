@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common;
 
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
+import dev.toma.gunsrpg.client.sound.ContinuousSound;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.ModSounds;
@@ -10,12 +11,17 @@ import dev.toma.gunsrpg.common.skills.TreasureHunterSkill;
 import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.world.LootStashes;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
@@ -126,11 +132,14 @@ public class LootStashDetectorHandler {
     public static class DetectionData {
 
         private int updateTimer;
+        private Status lastStatus;
         private Status status = Status.UNDETECTED;
         private BlockPos trackedLocation;
         private int soundTimer;
         private int lightSwitchTimerHalf;
         private float diodeIntesity;
+        @OnlyIn(Dist.CLIENT)
+        private ContinuousSound sound;
 
         public void setTrackedLocation(BlockPos trackedLocation) {
             this.trackedLocation = trackedLocation;
@@ -153,6 +162,7 @@ public class LootStashDetectorHandler {
         }
 
         public void tickClient(PlayerEntity player) {
+            lastStatus = status;
             if (trackedLocation == null) {
                 status = Status.UNDETECTED;
             } else {
@@ -166,7 +176,6 @@ public class LootStashDetectorHandler {
                 }
                 TreasureHunterSkill.DetectionRadius radius = skill.getRadius();
                 status = radius.getStatusByDistance(distance);
-                if (status != Status.NEARBY) return;
                 float soundDelay = radius.getSoundIntensity(distance);
                 int soundScheduler = soundDelay == 1.0F ? -1 : 2 + (int) (soundDelay * 28);
                 if (soundScheduler > 0) {
@@ -177,6 +186,23 @@ public class LootStashDetectorHandler {
                     }
                     diodeIntesity = soundTimer / (float) lightSwitchTimerHalf;
                 }
+            }
+            if (lastStatus != status) {
+                onStatusChanged();
+            }
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        private void onStatusChanged() {
+            boolean startSound = status == Status.LOCATED;
+            Minecraft mc = Minecraft.getInstance();
+            SoundHandler handler = mc.getSoundManager();
+            if (sound != null) {
+                handler.stop(sound);
+            }
+            if (startSound) {
+                sound = new ContinuousSound(ModSounds.DETECTOR_BEEP_LONG, SoundCategory.MASTER, player -> isUsing(player.getUUID()));
+                handler.play(sound);
             }
         }
 

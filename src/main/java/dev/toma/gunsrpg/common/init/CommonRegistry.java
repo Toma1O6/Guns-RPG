@@ -924,7 +924,8 @@ public class CommonRegistry {
                 sound("cover_open"),
                 sound("detector_beep"),
                 sound("detector_on"),
-                sound("detector_switch")
+                sound("detector_switch"),
+                sound("detector_beep_long")
         );
     }
 

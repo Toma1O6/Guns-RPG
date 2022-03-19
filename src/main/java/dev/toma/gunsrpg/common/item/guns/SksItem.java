@@ -64,6 +64,11 @@ public class SksItem extends GunItem {
     }
 
     @Override
+    protected boolean isSilenced(PlayerEntity player) {
+        return PlayerData.hasActiveSkill(player, Skills.SKS_SUPPRESSOR);
+    }
+
+    @Override
     protected SoundEvent getShootSound(PlayerEntity entity) {
         return this.isSilenced(entity) ? ModSounds.SKS_SILENT : ModSounds.SKS;
     }
