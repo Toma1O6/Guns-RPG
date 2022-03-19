@@ -66,7 +66,7 @@ public class AugItem extends GunItem {
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 3;
+        return 2;
     }
 
     @Override

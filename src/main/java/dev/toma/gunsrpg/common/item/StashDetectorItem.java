@@ -90,7 +90,7 @@ public class StashDetectorItem extends BaseItem implements IAnimationEntry {
     private void playUseAnimation(UUID uuid) {
         IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
         ResourceLocation location = LootStashDetectorHandler.isUsing(uuid) ? TURN_OFF_ANIMATION : TURN_ON_ANIMATION;
-        pipeline.insert(ModAnimations.STASH_DETECTOR, AnimationUtils.createAnimation(location, provider -> new Animation(provider, 30)));
+        pipeline.insert(ModAnimations.STASH_DETECTOR, AnimationUtils.createAnimation(location, provider -> new Animation(provider, 35)));
     }
 
     @Override
