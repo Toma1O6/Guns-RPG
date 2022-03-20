@@ -100,6 +100,7 @@ public class Skills {
     public static final SkillType<IronBuddySkill> IRON_BUDDY_III = null;
     public static final SkillType<WarMachineSkill> WAR_MACHINE = null;
     public static final SkillType<TreasureHunterSkill> TREASURE_HUNTER_I = null;
+    public static final SkillType<BasicSkill> CRYSTALIZED = null;
     public static final SkillType<ISkill> M1911_QUICKDRAW = null;
     public static final SkillType<ISkill> M1911_EXTENDED = null;
     public static final SkillType<ISkill> M1911_TOUGH_SPRING = null;

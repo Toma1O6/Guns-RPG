@@ -814,6 +814,7 @@
     "screen.gunsrpg.meds_case": "Medicine Case",
     "screen.gunsrpg.item_case": "Item Case",
     "screen.gunsrpg.crystal_case": "Crystal Case",
+    "screen.crystal_station": "Crystal Station",
     "screen.skilled_workbench.condition": "Requirements:",
     "condition.crafting.skill": "%1$s skill",
     "screen.animator.new_project": "New Project",

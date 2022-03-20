@@ -104,6 +104,7 @@ public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
         clearAttributes();
         Map<Perk, Collection<CrystalAttribute>> collectionMap = new HashMap<>();
         for (Crystal crystal : slot2CrystalMap.values()) {
+            if (crystal == null) continue;
             Collection<CrystalAttribute> attributes = crystal.listAttributes();
             for (CrystalAttribute attribute : attributes) {
                 Perk perk = attribute.getPerk();

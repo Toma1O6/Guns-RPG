@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.common.perk.PerkType;
 import dev.toma.gunsrpg.resource.perks.CrystalConfiguration;
 import dev.toma.gunsrpg.resource.perks.PerkConfiguration;
 import dev.toma.gunsrpg.util.Lifecycle;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.Constants;
@@ -62,6 +63,15 @@ public final class Crystal {
         List<CrystalAttribute> copy = new ArrayList<>(attributes);
         copy.remove(attribute);
         return new Crystal(level, copy);
+    }
+
+    public ItemStack asItem(CrystalItem item) {
+        ItemStack stack = new ItemStack(item);
+        CompoundNBT nbt = new CompoundNBT();
+        CompoundNBT crystalNbt = toNbt();
+        nbt.put("crystal", crystalNbt);
+        stack.setTag(nbt);
+        return stack;
     }
 
     public CompoundNBT toNbt() {
