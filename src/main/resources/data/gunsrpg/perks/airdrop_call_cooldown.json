@@ -1,5 +1,5 @@
 {
-    "attribute": "gunsrpg:iron_buddy_cooldown",
+    "attribute": "gunsrpg:airdrop_call_cooldown",
     "invertCalculation": true,
     "scaling": {
         "buff": 0.01,

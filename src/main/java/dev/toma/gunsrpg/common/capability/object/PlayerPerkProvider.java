@@ -10,6 +10,8 @@ import dev.toma.gunsrpg.api.common.perk.IPerkStat;
 import dev.toma.gunsrpg.common.item.perk.Crystal;
 import dev.toma.gunsrpg.common.item.perk.CrystalAttribute;
 import dev.toma.gunsrpg.common.perk.Perk;
+import dev.toma.gunsrpg.util.IIntervalProvider;
+import dev.toma.gunsrpg.util.Interval;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.nbt.CompoundNBT;
@@ -19,14 +21,23 @@ import java.util.*;
 
 public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
 
+    public static final Interval USE_COOLDOWN = Interval.minutes(10);
     private final IAttributeProvider attributeProvider;
     private final Int2ObjectMap<Crystal> slot2CrystalMap = new Int2ObjectOpenHashMap<>();
     private final Map<Perk, PerkStat> perkData = new HashMap<>();
     private IClientSynchReq syncRequestFactory;
     private int perkPoints;
+    private int cooldown;
 
     public PlayerPerkProvider(IAttributeProvider provider) {
         this.attributeProvider = provider;
+    }
+
+    @Override
+    public void tick() {
+        if (cooldown > 0) {
+            --cooldown;
+        }
     }
 
     @Override
@@ -36,7 +47,7 @@ public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
 
     @Override
     public void setCrystal(int slot, Crystal crystal) {
-        if (crystal == null) {
+        if (crystal != null) {
             slot2CrystalMap.put(slot, crystal);
         } else {
             slot2CrystalMap.remove(slot);
@@ -53,6 +64,28 @@ public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
     @Override
     public void awardPoints(int amount) {
         perkPoints += amount;
+        syncRequestFactory.makeSyncRequest();
+    }
+
+    @Override
+    public void setCooldown(int cooldown) {
+        this.cooldown = cooldown;
+        this.syncRequestFactory.makeSyncRequest();
+    }
+
+    @Override
+    public void setCooldown(IIntervalProvider provider) {
+        this.setCooldown(provider.getTicks());
+    }
+
+    @Override
+    public int getCooldown() {
+        return cooldown;
+    }
+
+    @Override
+    public boolean isOnCooldown() {
+        return cooldown > 0;
     }
 
     @Override
@@ -67,6 +100,7 @@ public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
         CompoundNBT map = new CompoundNBT();
         slot2CrystalMap.forEach((i, crystal) -> map.put(i.toString(), crystal.toNbt()));
         data.put("crystals", map);
+        data.putInt("cooldown", cooldown);
         nbt.put("perks", data);
     }
 
@@ -82,6 +116,7 @@ public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
             Crystal crystal = Crystal.fromNbt(crystalNbt);
             slot2CrystalMap.put(index, crystal);
         });
+        cooldown = nbt.getInt("cooldown");
         computePerkData();
     }
 
@@ -102,18 +137,20 @@ public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
 
     private void computePerkData() {
         clearAttributes();
-        Map<Perk, Collection<CrystalAttribute>> collectionMap = new HashMap<>();
+        Map<Perk, List<CrystalAttribute>> collectionMap = new HashMap<>();
         for (Crystal crystal : slot2CrystalMap.values()) {
             if (crystal == null) continue;
-            Collection<CrystalAttribute> attributes = crystal.listAttributes();
+            List<CrystalAttribute> attributes = crystal.listAttributes();
             for (CrystalAttribute attribute : attributes) {
                 Perk perk = attribute.getPerk();
                 collectionMap.computeIfAbsent(perk, key -> new ArrayList<>()).add(attribute);
             }
         }
-        for (Map.Entry<Perk, Collection<CrystalAttribute>> entry : collectionMap.entrySet()) {
+        for (Map.Entry<Perk, List<CrystalAttribute>> entry : collectionMap.entrySet()) {
             Perk perk = entry.getKey();
-            CrystalAttribute attribute = CrystalAttribute.merge(entry.getValue());
+            List<CrystalAttribute> list = entry.getValue();
+            if (list.isEmpty()) continue;
+            CrystalAttribute attribute = CrystalAttribute.flatten(perk, list);
             IAttributeModifier modifier = attribute.getModifier();
             IAttributeId attributeId = perk.getAttributeId();
             attributeProvider.getAttribute(attributeId).addModifier(modifier);

@@ -54,6 +54,11 @@ public class AttributeId implements IAttributeId {
         return id.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return "AttributeId{id=" + id + '}';
+    }
+
     public interface IAttribFactory {
         IAttribute constructAttribute(IAttributeId id);
     }

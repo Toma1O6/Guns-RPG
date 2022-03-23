@@ -76,6 +76,7 @@ public class PlayerData implements IPlayerData {
         this.jamInfo.tick();
         this.skillProvider.tick(player);
         this.attributes.tick();
+        this.perkProvider.tick();
     }
 
     @Override

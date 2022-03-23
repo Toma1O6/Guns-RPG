@@ -1,34 +1,58 @@
 package dev.toma.gunsrpg.common.item.perk;
 
-import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
+import dev.toma.gunsrpg.api.common.attribute.IModifierOp;
+import dev.toma.gunsrpg.common.attribute.AttributeModifier;
+import dev.toma.gunsrpg.common.attribute.AttributeOps;
 import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.common.perk.PerkRegistry;
 import dev.toma.gunsrpg.common.perk.PerkType;
-import dev.toma.gunsrpg.resource.perks.CrystalConfiguration;
-import dev.toma.gunsrpg.resource.perks.PerkConfiguration;
-import dev.toma.gunsrpg.util.Lifecycle;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.List;
+import java.util.UUID;
 
 public final class CrystalAttribute {
 
     private final Perk perk;
     private final PerkType type;
     private final int level;
+    private final IAttributeModifier modifier;
 
     public CrystalAttribute(Perk perk, PerkType type, int level) {
         this.perk = perk;
         this.type = type;
         this.level = level;
+        this.modifier = this.createUniqueModifier();
     }
 
-    public static CrystalAttribute merge(Iterable<CrystalAttribute> iterable) {
-        return null; // TODO
+    public IAttributeModifier createUniqueModifier() {
+        long mostSigBits = perk.hashCode();
+        long leastSigBits = Boolean.hashCode(perk.shouldInvertCalculation());
+        UUID uniqueId = new UUID(mostSigBits, leastSigBits);
+        IModifierOp operation = AttributeOps.MUL;
+        double modifier = perk.getModifier(level, type);
+        if (perk.shouldInvertCalculation()) {
+            modifier = -modifier;
+        }
+        return new AttributeModifier(uniqueId, operation, 1.0F + modifier);
+    }
+
+    public static CrystalAttribute flatten(Perk perk, List<CrystalAttribute> list) {
+        int totalLevel = 0;
+        for (CrystalAttribute attribute : list) {
+            int attributeLevel = attribute.getLevel();
+            PerkType type = attribute.getType();
+            int level = type.getLevel(attributeLevel);
+            totalLevel += level;
+        }
+        PerkType type = totalLevel < 0 ? PerkType.DEBUFF : PerkType.BUFF;
+        return new CrystalAttribute(perk, type, totalLevel);
     }
 
     public IAttributeModifier getModifier() {
-        return null; // TODO
+        return modifier;
     }
 
     public Perk getPerk() {

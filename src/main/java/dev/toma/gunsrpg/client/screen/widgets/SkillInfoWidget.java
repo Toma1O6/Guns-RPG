@@ -29,7 +29,6 @@ import java.util.List;
 
 public class SkillInfoWidget extends ContainerWidget {
 
-    private static final ITextComponent QUESTIONMARK = new StringTextComponent("?");
     private static final ITextComponent EXTENSIONS = new TranslationTextComponent("view.skill.extensions");
     private static final ITextComponent PURCHASE = new TranslationTextComponent("view.skill.purchase");
     private static final ITextComponent USE = new TranslationTextComponent("view.skill.use");
@@ -41,7 +40,6 @@ public class SkillInfoWidget extends ContainerWidget {
     private ITextComponent[] description;
     private boolean extensions;
     private boolean clickable;
-    private boolean invisible;
 
     private Button buyWidget;
     private Button useWidget;
@@ -81,7 +79,7 @@ public class SkillInfoWidget extends ContainerWidget {
             return;
         }
         ISkillProperties properties = src.getProperties();
-        this.invisible = properties.getRequiredLevel() > manager.getContext().getData().getProgressData().getLevel();
+        boolean invisible = properties.getRequiredLevel() > manager.getContext().getData().getProgressData().getLevel();
         int unlockState = this.getUnlockState();
         addWidget(new Icon(x + 5, y + 5, 16, 16, invisible ? SkillWidget.UNKNOWN : src.getDisplayData()));
         addWidget(new Label(x + 26, y + 5, width - 100, 15, invisible ? StringTextComponent.EMPTY : title));
@@ -164,6 +162,7 @@ public class SkillInfoWidget extends ContainerWidget {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private <S extends ISkill & IClickableSkill, T extends SkillType<S>> T validateSourceClickable() {
         ISkill skill = src.getDataInstance();
         if (skill instanceof IClickableSkill) {

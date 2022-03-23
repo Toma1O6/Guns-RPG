@@ -211,10 +211,11 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
             IMaterialDataContainer container = type.getContainer();
             float addedJamChance = 1.0F - attributeProvider.getAttribute(Attribs.JAM_CHANCE).floatValue();
             float addedDurability = 1.0F - attributeProvider.getAttribute(Attribs.WEAPON_DURABILITY).floatValue();
+            // TODO verify
             if (container != null) {
                 IMaterialData materialData = container.getMaterialData(material);
-                addedDurability = materialData.getAddedDurability();
-                addedJamChance = materialData.getAddedJamChance();
+                addedDurability += materialData.getAddedDurability();
+                addedJamChance += materialData.getAddedJamChance();
             }
             float noDamageChance = 1.0F - addedDurability;
             float chance = random.nextFloat();
