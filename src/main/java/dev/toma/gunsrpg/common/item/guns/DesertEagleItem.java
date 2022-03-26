@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.DesertEagleRenderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -22,8 +23,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class DesertEagleItem extends GunItem {
 
+    private static final ResourceLocation AIM = GunsRPG.makeResource("deagle/aim");
+    private static final ResourceLocation AIM_RED_DOT = GunsRPG.makeResource("deagle/aim_red_dot");
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("deagle/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("deagle/unjam");
+    private static final ResourceLocation EJECT = GunsRPG.makeResource("deagle/eject");
 
     public DesertEagleItem(String name) {
         super(name, new Properties().setISTER(() -> DesertEagleRenderer::new).durability(520));
@@ -90,6 +94,18 @@ public class DesertEagleItem extends GunItem {
     @Override
     public ResourceLocation getUnjamAnimationPath() {
         return UNJAM;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return EJECT;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return PlayerData.hasActiveSkill(player, Skills.DEAGLE_RED_DOT) ? AIM_RED_DOT : AIM;
     }
 
     @Override

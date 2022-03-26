@@ -1,8 +1,12 @@
 package dev.toma.gunsrpg.client.render.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.model.WeaponModels;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
+import dev.toma.gunsrpg.common.init.Skills;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 
 public class DesertEagleRenderer extends AbstractWeaponRenderer {
@@ -33,5 +37,17 @@ public class DesertEagleRenderer extends AbstractWeaponRenderer {
     protected void transformUI(MatrixStack matrix) {
         matrix.scale(1.3F, 1.3F, 1.3F);
         matrix.translate(0.4, 0.4, 0.0);
+    }
+
+    @Override
+    protected boolean hasCustomAttachments() {
+        return true;
+    }
+
+    @Override
+    protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
+        if (data.getSkillProvider().hasSkill(Skills.DEAGLE_RED_DOT)) {
+            renderReflex(RenderConfigs.DEAGLE_RED_DOT, matrix, typeBuffer, light, overlay, progress);
+        }
     }
 }

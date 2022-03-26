@@ -18,7 +18,11 @@ public class BulletEjectAnimation extends Animation {
     private final AbstractWeaponModel.IRenderCallback bulletRenderer;
 
     public BulletEjectAnimation(IKeyframeProvider provider) {
-        super(provider, 3);
+        this(provider, 4);
+    }
+
+    public BulletEjectAnimation(IKeyframeProvider provider, int length) {
+        super(provider, length);
         PlayerEntity player = Minecraft.getInstance().player;
         ItemStack stack = player.getMainHandItem();
         if (stack.getItem() instanceof GunItem) {

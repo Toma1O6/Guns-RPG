@@ -65,7 +65,7 @@ public class Kar98kItem extends GunItem {
                     .define(AmmoMaterials.NETHERITE, 29)
                 .build();
 
-        ScopeDataRegistry.getRegistry().register(this, 15.0F, 0.3F);
+        ScopeDataRegistry.getRegistry().register(this, 15.0F, 0.3F, provider -> provider.hasSkill(Skills.KAR98K_SCOPE));
     }
 
     @Override

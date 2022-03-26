@@ -22,6 +22,9 @@ import net.minecraft.util.SoundEvent;
 
 public class ThompsonItem extends GunItem {
 
+    private static final ResourceLocation AIM = GunsRPG.makeResource("thompson/aim");
+    private static final ResourceLocation AIM_RED_DOT = GunsRPG.makeResource("thompson/aim_red_dot");
+    private static final ResourceLocation EJECT = GunsRPG.makeResource("thompson/eject");
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("thompson/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("thompson/unjam");
 
@@ -89,6 +92,16 @@ public class ThompsonItem extends GunItem {
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD;
+    }
+
+    @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return PlayerData.hasActiveSkill(player, Skills.THOMPSON_RED_DOT) ? AIM_RED_DOT : AIM;
+    }
+
+    @Override
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return EJECT;
     }
 
     @Override

@@ -148,8 +148,8 @@ public class CrystalStationContainer extends AbstractContainer {
                         crystal = Crystal.fromNbt(crystalNbt);
                     }
                     provider.setCrystal(slot, crystal);
-                    provider.setCooldown(PlayerPerkProvider.USE_COOLDOWN);
-                    provider.awardPoints(-2);
+                    //provider.setCooldown(PlayerPerkProvider.USE_COOLDOWN);
+                    provider.awardPoints(-1);
                 }
             }
         }

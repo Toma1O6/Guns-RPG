@@ -22,6 +22,9 @@ import net.minecraft.util.SoundEvent;
 
 public class VectorItem extends GunItem {
 
+    private static final ResourceLocation AIM = GunsRPG.makeResource("vector/aim");
+    private static final ResourceLocation AIM_RED_DOT = GunsRPG.makeResource("vector/aim_red_dot");
+    private static final ResourceLocation EJECT = GunsRPG.makeResource("vector/eject");
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("vector/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("vector/unjam");
 
@@ -93,6 +96,16 @@ public class VectorItem extends GunItem {
     @Override
     public ResourceLocation getUnjamAnimationPath() {
         return UNJAM;
+    }
+
+    @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return PlayerData.hasActiveSkill(player, Skills.VECTOR_RED_DOT) ? AIM_RED_DOT : AIM;
+    }
+
+    @Override
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return EJECT;
     }
 
     @Override

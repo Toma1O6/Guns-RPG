@@ -27,6 +27,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class R45Item extends GunItem implements IDualWieldGun {
 
+    private static final ResourceLocation AIM = GunsRPG.makeResource("r45/aim");
+    private static final ResourceLocation AIM_DUAL = GunsRPG.makeResource("r45/aim_dual");
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("r45/reload");
     private static final ResourceLocation RELOAD_BULLET = GunsRPG.makeResource("r45/load_bullet");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("r45/unjam");
@@ -111,6 +113,12 @@ public class R45Item extends GunItem implements IDualWieldGun {
         return UNJAM;
     }
 
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return isDualWieldActive() ? AIM_DUAL : AIM;
+    }
+
     @Override
     public IRenderConfig left() {
         return isDualWieldActive() ? RenderConfigs.R45_LEFT_DUAL : RenderConfigs.R45_LEFT;
@@ -119,6 +127,11 @@ public class R45Item extends GunItem implements IDualWieldGun {
     @Override
     public IRenderConfig right() {
         return isDualWieldActive() ? RenderConfigs.R45_RIGHT_DUAL : RenderConfigs.R45_RIGHT;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void onShoot(PlayerEntity player, ItemStack stack) {
     }
 
     @OnlyIn(Dist.CLIENT)

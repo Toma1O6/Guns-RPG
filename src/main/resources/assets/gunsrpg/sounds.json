@@ -1705,7 +1705,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:vector/gun_vector",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -1714,7 +1714,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:vector/gun_vector_silenced",
-                "stream": true
+                "stream": false
             }
         ]
     },

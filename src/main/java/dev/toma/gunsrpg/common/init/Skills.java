@@ -110,6 +110,7 @@ public class Skills {
     public static final SkillType<ISkill> M1911_DUAL_WIELD = null;
     public static final SkillType<ISkill> R45_SUPPRESSOR = null;
     public static final SkillType<ISkill> R45_DUAL_WIELD = null;
+    public static final SkillType<ISkill> DEAGLE_RED_DOT = null;
     public static final SkillType<ISkill> UMP45_QUICKDRAW = null;
     public static final SkillType<ISkill> UMP45_EXTENDED = null;
     public static final SkillType<ISkill> UMP45_VERTICAL_GRIP = null;
@@ -118,7 +119,10 @@ public class Skills {
     public static final SkillType<ISkill> UMP45_SUPPRESSOR = null;
     public static final SkillType<ISkill> UMP45_COMMANDO = null;
     public static final SkillType<ISkill> THOMPSON_SUPPRESSOR = null;
+    public static final SkillType<ISkill> THOMPSON_EXTENDED = null;
+    public static final SkillType<ISkill> THOMPSON_RED_DOT = null;
     public static final SkillType<ISkill> VECTOR_SUPPRESSOR = null;
+    public static final SkillType<ISkill> VECTOR_RED_DOT = null;
     public static final SkillType<ISkill> CROSSBOW_QUIVER = null;
     public static final SkillType<ISkill> CROSSBOW_POISONED_BOLTS = null;
     public static final SkillType<ISkill> CROSSBOW_HUNTER = null;

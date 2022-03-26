@@ -158,6 +158,13 @@ public class M1911Item extends GunItem implements IDualWieldGun {
     }
 
     @OnlyIn(Dist.CLIENT)
+    @Override
+    public void onShoot(PlayerEntity player, ItemStack stack) {
+        if (isDualWieldActive()) return;
+        super.onShoot(player, stack);
+    }
+
+    @OnlyIn(Dist.CLIENT)
     private boolean isDualWieldActive() {
         return PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.M1911_DUAL_WIELD);
     }

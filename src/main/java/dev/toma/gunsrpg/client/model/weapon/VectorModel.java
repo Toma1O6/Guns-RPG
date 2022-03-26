@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
+import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
 
@@ -44,7 +45,9 @@ public class VectorModel extends AbstractWeaponModel {
     @Override
     protected void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay) {
         vector.render(matrix, builder, light, overlay);
-        ironsights.render(matrix, builder, light, overlay);
+        if (!data.getSkillProvider().hasSkill(Skills.VECTOR_RED_DOT)) {
+            ironsights.render(matrix, builder, light, overlay);
+        }
         bolt.render(matrix, builder, light, overlay);
     }
 

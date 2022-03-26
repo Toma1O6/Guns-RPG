@@ -43,6 +43,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Array;
+import java.text.DecimalFormatSymbols;
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -53,6 +54,12 @@ import java.util.stream.Stream;
 public class ModUtils {
 
     public static final ISplitter<SkillCategory, SkillType<?>> SKILLS_BY_CATEGORY = ModUtils::splitSkillsIntoCategories;
+    public static final DecimalFormatSymbols DOT_DECIMAL_SEPARATOR = new DecimalFormatSymbols();
+
+    public static boolean equals(double value1, double value2, double precision) {
+        double diff = Math.abs(value1 - value2);
+        return diff <= precision;
+    }
 
     @SafeVarargs
     public static <T> T either(T... values) {
@@ -424,5 +431,9 @@ public class ModUtils {
 
     public interface INBTDeserializer<NBT extends INBT> {
         NBT deserialize(CompoundNBT nbt, String key);
+    }
+
+    static {
+        DOT_DECIMAL_SEPARATOR.setDecimalSeparator('.');
     }
 }
