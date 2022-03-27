@@ -24,9 +24,9 @@ public class LightHunterSkill extends BasicSkill implements ITickableSkill, IDes
         super(type);
         this.container = new DescriptionContainer(type);
         this.container.addProperty("info");
-        this.container.addProperty("speed", Math.round(MOVEMENT_SPEED_MODIFIER.getModifierValue() * 1000f));
+        this.container.addProperty("speed", IValueFormatter.INV_PERCENT.formatAttributeValue(MOVEMENT_SPEED_MODIFIER.getModifierValue()));
         this.container.addProperty("damage", (int) ((ARROW_DAMAGE_MULTIPLIER - 1.0F) * 100));
-        this.container.addProperty("fall", IValueFormatter.PERCENT.formatAttributeValue(FALLING_MODIFIER.getModifierValue()));
+        this.container.addProperty("fall", IValueFormatter.INV_PERCENT.formatAttributeValue(FALLING_MODIFIER.getModifierValue()));
     }
 
     @Override
