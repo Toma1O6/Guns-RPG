@@ -209,33 +209,29 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
             AmmoType type = getAmmoType();
             IAmmoMaterial material = getMaterialFromNBT(stack);
             IMaterialDataContainer container = type.getContainer();
-            float addedJamChance = 1.0F - attributeProvider.getAttribute(Attribs.JAM_CHANCE).floatValue();
-            float addedDurability = 1.0F - attributeProvider.getAttribute(Attribs.WEAPON_DURABILITY).floatValue();
-            // TODO verify
-            if (container != null) {
-                IMaterialData materialData = container.getMaterialData(material);
-                addedDurability += materialData.getAddedDurability();
-                addedJamChance += materialData.getAddedJamChance();
-            }
-            float noDamageChance = 1.0F - addedDurability;
-            float chance = random.nextFloat();
-            boolean damaged = false;
-            if (noDamageChance > 1.0F) {
-                float doubleDmgChance = noDamageChance - 1.0F;
-                if (doubleDmgChance >= chance) {
-                    stack.hurt(2, random, player);
-                    if (stack.getDamageValue() > stack.getMaxDamage()) {
-                        stack.setDamageValue(stack.getMaxDamage());
-                    }
-                    damaged = true;
-                }
-            }
-            if (!damaged && noDamageChance >= chance) {
-                stack.hurt(1, random, player);
-            }
             IWeaponConfig config = this.getWeaponConfig();
             IJamConfig jamConfig = config.getJamConfig();
-            float jamChance = jamConfig.getJamChance(stack) * (1.0F + addedJamChance);
+            float baseJamChance = jamConfig.getJamChance(stack);
+            float playerJamChanceMultiplier = attributeProvider.getAttribute(Attribs.JAM_CHANCE).floatValue();
+            float damageChance = attributeProvider.getAttribute(Attribs.WEAPON_DURABILITY).floatValue();
+            if (container != null) {
+                IMaterialData materialData = container.getMaterialData(material);
+                float ammoJamChanceMultiplier = materialData.getAddedJamChance();
+                playerJamChanceMultiplier += ammoJamChanceMultiplier;
+                damageChance *= 1.0F - materialData.getAddedDurability();
+            }
+            if (damageChance < 1.0F) {
+                if (random.nextFloat() < damageChance) {
+                    stack.hurt(1, random, player);
+                }
+            } else {
+                int amount = 1;
+                if (random.nextFloat() < damageChance - 1.0F) {
+                    amount = Math.min(stack.getMaxDamage() - stack.getDamageValue(), 2);
+                }
+                stack.hurt(amount, random, player);
+            }
+            float jamChance = baseJamChance * playerJamChanceMultiplier;
             if (random.nextFloat() <= jamChance) {
                 setJammedState(stack, true);
             }
