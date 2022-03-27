@@ -25,7 +25,7 @@ public final class Attribs {
     public static final IAttributeId QUEST_MEDS                 = createInternal("quests_meds");
     public static final IAttributeId QUEST_ORBS                 = createInternal("quests_orbs");
     public static final IAttributeId QUEST_PERKBOOK             = createInternal("quests_perkbook");
-    public static final IAttributeId QUEST_FLARE                = createInternal("quest_flare");
+    public static final IAttributeId QUEST_FLARE                = createInternal("quests_flare");
     // debuffs, healing
     public static final IAttributeId HEAL_BOOST                 = createInternal("heal_boost");
     public static final IAttributeId ADRENALINE_EFFECT          = createInternal("adrenaline_effect");
