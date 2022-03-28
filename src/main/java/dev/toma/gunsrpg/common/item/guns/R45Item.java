@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.R45Renderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -59,7 +60,7 @@ public class R45Item extends GunItem implements IDualWieldGun {
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 15;
+        return provider.getAttribute(Attribs.R45_FIRERATE).intValue();
     }
 
     @Override
@@ -84,12 +85,27 @@ public class R45Item extends GunItem implements IDualWieldGun {
 
     @Override
     public int getMaxAmmo(IAttributeProvider provider) {
-        return 6;
+        return provider.getAttribute(Attribs.R45_MAG_CAPACITY).intValue();
     }
 
     @Override
     public int getReloadTime(IAttributeProvider provider) {
-        return 17;
+        return Attribs.R45_RELOAD.intValue(provider);
+    }
+
+    @Override
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return Attribs.R45_VERTICAL.floatValue(provider);
+    }
+
+    @Override
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return Attribs.R45_HORIZONTAL.floatValue(provider);
+    }
+
+    @Override
+    public double getNoiseMultiplier(IAttributeProvider provider) {
+        return Attribs.R45_LOUDNESS.value(provider);
     }
 
     @Override

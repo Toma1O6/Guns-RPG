@@ -98,6 +98,12 @@ public final class Attribs {
     public static final IAttributeId M1911_HORIZONTAL_RECOIL    = createInternal("m1911_horizontal_recoil", 1.4);
     public static final IAttributeId M1911_VERTICAL_RECOIL      = createInternal("m1911_vertical_recoil", 3.1);
     public static final IAttributeId M1911_NOISE                = createInternal("m1911_noise");
+    public static final IAttributeId R45_FAST_HANDS             = createInternal("r45_fast_hands", 17);
+    public static final IAttributeId R45_VERTICAL_RECOIL        = createInternal("r45_vertical_recoil", 4.0);
+    public static final IAttributeId R45_HORIZONTAL_RECOIL      = createInternal("r45_horizontal_recoil", 1.8);
+    public static final IAttributeId R45_MAG_CAPACITY           = createInternal("r45_mag_capacity", 6);
+    public static final IAttributeId R45_FIRERATE               = createInternal("r45_firerate", 15);
+    public static final IAttributeId R45_NOISE                  = createInternal("r45_noise");
     public static final IAttributeId UMP45_RELOAD_SPEED         = createInternal("ump45_reload_speed", 52);
     public static final IAttributeId UMP45_MAG_CAPACITY         = createInternal("ump45_mag_capacity", 25);
     public static final IAttributeId UMP45_VERTICAL_RECOIL      = createInternal("ump45_vertical_recoil", 1.8);
@@ -127,6 +133,10 @@ public final class Attribs {
     public static final ICombinedAttribute M1911_VERTICAL       = ICombinedAttribute.of(RECOIL_CONTROL, M1911_VERTICAL_RECOIL);
     public static final ICombinedAttribute M1911_HORIZONTAL     = ICombinedAttribute.of(RECOIL_CONTROL, M1911_HORIZONTAL_RECOIL);
     public static final ICombinedAttribute M1911_LOUDNESS       = ICombinedAttribute.of(WEAPON_NOISE, M1911_NOISE);
+    public static final ICombinedAttribute R45_RELOAD           = ICombinedAttribute.of(RELOAD_SPEED, R45_FAST_HANDS);
+    public static final ICombinedAttribute R45_VERTICAL         = ICombinedAttribute.of(RECOIL_CONTROL, R45_VERTICAL_RECOIL);
+    public static final ICombinedAttribute R45_HORIZONTAL       = ICombinedAttribute.of(RECOIL_CONTROL, R45_HORIZONTAL_RECOIL);
+    public static final ICombinedAttribute R45_LOUDNESS         = ICombinedAttribute.of(WEAPON_NOISE, R45_NOISE);
     public static final ICombinedAttribute UMP45_VERTICAL       = ICombinedAttribute.of(RECOIL_CONTROL, UMP45_VERTICAL_RECOIL);
     public static final ICombinedAttribute UMP45_LOUDNESS       = ICombinedAttribute.of(WEAPON_NOISE, UMP45_NOISE);
     public static final ICombinedAttribute CROSSBOW_RELOAD      = ICombinedAttribute.of(RELOAD_SPEED, CROSSBOW_RELOAD_SPEED);

@@ -110,6 +110,7 @@ public class Skills {
     public static final SkillType<ISkill> M1911_DUAL_WIELD = null;
     public static final SkillType<ISkill> R45_SUPPRESSOR = null;
     public static final SkillType<ISkill> R45_DUAL_WIELD = null;
+    public static final SkillType<ISkill> R45_ACE_OF_HEARTS = null;
     public static final SkillType<ISkill> DEAGLE_RED_DOT = null;
     public static final SkillType<ISkill> UMP45_QUICKDRAW = null;
     public static final SkillType<ISkill> UMP45_EXTENDED = null;
