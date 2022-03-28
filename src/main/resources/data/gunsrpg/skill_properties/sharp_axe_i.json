@@ -3,7 +3,8 @@
         "category": "mining",
         "children": [
             "gunsrpg:sharp_axe_ii"
-        ]
+        ],
+        "override": "gunsrpg:sharp_axe_ii"
     },
     "properties": {
         "level": 0,

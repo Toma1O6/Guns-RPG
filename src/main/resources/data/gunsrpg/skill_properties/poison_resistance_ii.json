@@ -4,7 +4,8 @@
         "parent": "gunsrpg:poison_resistance_i",
         "children": [
             "gunsrpg:poison_resistance_iii"
-        ]
+        ],
+        "override": "gunsrpg:poison_resistance_iii"
     },
     "properties": {
         "level": 20,

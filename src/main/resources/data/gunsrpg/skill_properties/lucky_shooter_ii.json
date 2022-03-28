@@ -4,7 +4,8 @@
         "parent": "gunsrpg:lucky_shooter_i",
         "children": [
             "gunsrpg:lucky_shooter_iii"
-        ]
+        ],
+        "override": "gunsrpg:lucky_shooter_iii"
     },
     "properties": {
         "level": 45,

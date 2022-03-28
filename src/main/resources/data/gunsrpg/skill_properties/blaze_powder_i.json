@@ -4,7 +4,8 @@
         "parent": "gunsrpg:blacksmith",
         "children": [
             "gunsrpg:blaze_powder_ii"
-        ]
+        ],
+        "override": "gunsrpg:blaze_powder_ii"
     },
     "properties": {
         "level": 45,

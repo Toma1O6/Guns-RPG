@@ -3,7 +3,8 @@
         "category": "mining",
         "children": [
             "gunsrpg:heavy_pickaxe_ii"
-        ]
+        ],
+        "override": "gunsrpg:heavy_pickaxe_ii"
     },
     "properties": {
         "level": 0,

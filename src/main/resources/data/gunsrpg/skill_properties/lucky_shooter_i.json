@@ -3,7 +3,8 @@
         "category": "gun",
         "children": [
             "gunsrpg:lucky_shooter_ii"
-        ]
+        ],
+        "override": "gunsrpg:lucky_shooter_ii"
     },
     "properties": {
         "level": 25,

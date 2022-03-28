@@ -3,7 +3,8 @@
         "category": "survival",
         "children": [
             "gunsrpg:skull_crusher_ii"
-        ]
+        ],
+        "override": "gunsrpg:skull_crusher_ii"
     },
     "properties": {
         "level": 20,

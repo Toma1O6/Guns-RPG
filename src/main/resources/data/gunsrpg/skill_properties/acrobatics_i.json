@@ -3,7 +3,8 @@
         "category": "resistance",
         "children": [
             "gunsrpg:acrobatics_ii"
-        ]
+        ],
+        "override": "gunsrpg:acrobatics_ii"
     },
     "properties": {
         "level": 5,

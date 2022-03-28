@@ -3,7 +3,8 @@
         "category": "resistance",
         "children": [
             "gunsrpg:poison_resistance_ii"
-        ]
+        ],
+        "override": "gunsrpg:poison_resistance_ii"
     },
     "properties": {
         "level": 5,
