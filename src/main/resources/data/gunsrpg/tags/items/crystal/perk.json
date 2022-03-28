@@ -1,0 +1,8 @@
+{
+    "replace": false,
+    "values": [
+        "#gunsrpg:crystal/crystals",
+        "#gunsrpg:crystal/orb_of_purity",
+        "#gunsrpg:crystal/orb_of_transmutation"
+    ]
+}

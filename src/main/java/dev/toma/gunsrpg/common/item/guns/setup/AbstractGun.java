@@ -60,7 +60,7 @@ public abstract class AbstractGun extends BaseItem {
         }
         CompoundNBT nbt = new CompoundNBT();
         nbt.putInt("ammo", 0);
-        nbt.putInt("firemode", 0);
+        nbt.putInt("firemode", this.getDefaultFiremode().ordinal());
         nbt.putFloat("repairDurability", 1.0F);
         stack.setTag(nbt);
     }
@@ -111,6 +111,10 @@ public abstract class AbstractGun extends BaseItem {
     public final float getDurabilityLimit(ItemStack stack) {
         this.ensureHasNBT(stack);
         return stack.getTag().getFloat("repairDurability");
+    }
+
+    protected Firemode getDefaultFiremode() {
+        return Firemode.SINGLE;
     }
 
     @Override

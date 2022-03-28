@@ -28,5 +28,7 @@ public final class Constants {
         public static final UUID FRACTURE_DELAYING                          = UUID.fromString("167F69B3-A88C-4FE1-AF20-FC63CA63EBA2");
         public static final UUID BLEED_BLOCKING                             = UUID.fromString("0107DE53-B95F-473E-B887-5A82C800A695");
         public static final UUID BLEED_DELAYING                             = UUID.fromString("5303EEE4-64A6-45FB-B88B-8F455663EA8B");
+        public static final UUID WEAPON_DURABILITY                          = UUID.fromString("1DBC8CE5-142C-421E-B049-14966DC80224");
+        public static final UUID WEAPON_JAMMING                             = UUID.fromString("1DBF3917-B851-4631-88D3-CDC5B75FE4BB");
     }
 }

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
+import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
 
@@ -427,8 +428,7 @@ public class ThompsonModel extends AbstractWeaponModel {
         bullet.texOffs(6, 505).addBox(-0.2F, -23.218F, -15.7305F, 1.0F, 1.0F, 1.0F, 0.0F, true);
         bullet.texOffs(6, 505).addBox(-0.2F, -22.618F, -15.7305F, 1.0F, 1.0F, 1.0F, 0.0F, true);
 
-        // TODO extended mag
-        setSpecialRenderer(ModAnimations.MAGAZINE, magazine1);
+        setSpecialRenderer(ModAnimations.MAGAZINE, data -> data.getSkillProvider().hasSkill(Skills.THOMPSON_EXTENDED) ? magazine2 : magazine1);
         setSpecialRenderer(ModAnimations.CHARGING_HANDLE, charging_handle);
         setBulletRenderer(setSpecialRenderer(ModAnimations.BULLET, bullet));
     }

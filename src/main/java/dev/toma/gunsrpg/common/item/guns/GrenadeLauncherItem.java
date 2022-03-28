@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.GrenadeLauncherRenderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
@@ -16,6 +17,7 @@ import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 
 public class GrenadeLauncherItem extends GunItem {
 
@@ -41,6 +43,11 @@ public class GrenadeLauncherItem extends GunItem {
     }
 
     @Override
+    protected SoundEvent getShootSound(PlayerEntity entity) {
+        return ModSounds.GL_SHOT1;
+    }
+
+    @Override
     public int getMaxAmmo(IAttributeProvider provider) {
         return 4;
     }
@@ -57,7 +64,7 @@ public class GrenadeLauncherItem extends GunItem {
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 5;
+        return 8;
     }
 
     @Override

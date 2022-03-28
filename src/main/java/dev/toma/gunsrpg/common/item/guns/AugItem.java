@@ -4,6 +4,8 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.AugRenderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
@@ -15,6 +17,7 @@ import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 
 public class AugItem extends GunItem {
 
@@ -44,6 +47,16 @@ public class AugItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 13)
                     .define(AmmoMaterials.NETHERITE, 17)
                 .build();
+    }
+
+    @Override
+    protected boolean isSilenced(PlayerEntity player) {
+        return PlayerData.hasActiveSkill(player, Skills.AUG_SUPPRESSOR);
+    }
+
+    @Override
+    protected SoundEvent getShootSound(PlayerEntity entity) {
+        return isSilenced(entity) ? ModSounds.GUN_AUG_SILENCED : ModSounds.GUN_AUG;
     }
 
     @Override

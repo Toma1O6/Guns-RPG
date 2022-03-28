@@ -61,7 +61,7 @@ public final class StorageUtil {
     }
 
     public static boolean isCrystal(ItemStack stack) {
-        return stack.getItem().is(ModTags.Items.CRYSTAL);
+        return stack.getItem().is(ModTags.Items.PERK);
     }
 
     /**

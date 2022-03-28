@@ -68,8 +68,13 @@ public class Ump45Item extends GunItem {
     }
 
     @Override
+    protected boolean isSilenced(PlayerEntity player) {
+        return PlayerData.hasActiveSkill(player, Skills.UMP45_SUPPRESSOR);
+    }
+
+    @Override
     public SoundEvent getShootSound(PlayerEntity entity) {
-        return this.isSilenced(entity) ? ModSounds.UMP45_SILENT : ModSounds.UMP45;
+        return this.isSilenced(entity) ? ModSounds.GUN_UMP9_SILENCED : ModSounds.GUN_UMP9;
     }
 
     @Override
@@ -89,7 +94,7 @@ public class Ump45Item extends GunItem {
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 2;
+        return 3;
     }
 
     @Override

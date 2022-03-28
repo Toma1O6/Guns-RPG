@@ -105,6 +105,10 @@ public class RenderConfig extends PositionConfig {
             return withPosition(new Vector3d(x, y, z));
         }
 
+        public RenderConfigBuilder withScale(float scale) {
+            return withScale(scale, scale, scale);
+        }
+
         public RenderConfigBuilder withScale(Vector3f scale) {
             this.scale = scale;
             return this;

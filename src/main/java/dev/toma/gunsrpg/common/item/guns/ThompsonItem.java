@@ -4,6 +4,8 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.ThompsonRenderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
@@ -16,9 +18,13 @@ import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 
 public class ThompsonItem extends GunItem {
 
+    private static final ResourceLocation AIM = GunsRPG.makeResource("thompson/aim");
+    private static final ResourceLocation AIM_RED_DOT = GunsRPG.makeResource("thompson/aim_red_dot");
+    private static final ResourceLocation EJECT = GunsRPG.makeResource("thompson/eject");
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("thompson/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("thompson/unjam");
 
@@ -54,13 +60,23 @@ public class ThompsonItem extends GunItem {
     }
 
     @Override
+    protected boolean isSilenced(PlayerEntity player) {
+        return PlayerData.hasActiveSkill(player, Skills.THOMPSON_SUPPRESSOR);
+    }
+
+    @Override
+    protected SoundEvent getShootSound(PlayerEntity entity) {
+        return isSilenced(entity) ? ModSounds.GUN_TOMMY_GUN_SILENCED : ModSounds.GUN_TOMMY_GUN;
+    }
+
+    @Override
     public int getReloadTime(IAttributeProvider provider) {
         return 75;
     }
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -76,6 +92,16 @@ public class ThompsonItem extends GunItem {
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD;
+    }
+
+    @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return PlayerData.hasActiveSkill(player, Skills.THOMPSON_RED_DOT) ? AIM_RED_DOT : AIM;
+    }
+
+    @Override
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return EJECT;
     }
 
     @Override

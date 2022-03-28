@@ -149,6 +149,7 @@ public class ClientSideManager {
         ScreenManager.register(ModContainers.CRYSTAL_CASE.get(), CrystalCaseScreen::new);
         ScreenManager.register(ModContainers.COOKER.get(), CookerScreen::new);
         ScreenManager.register(ModContainers.REPAIR_STATION.get(), RepairStationScreen::new);
+        ScreenManager.register(ModContainers.CRYSTAL_STATION.get(), CrystalStationScreen::new);
     }
 
     private void setupRenderPipeline() {

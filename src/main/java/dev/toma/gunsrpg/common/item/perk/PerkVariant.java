@@ -4,14 +4,19 @@ import java.util.Locale;
 
 public enum PerkVariant {
 
-    BLACK,
     BLUE,
     GREEN,
     RED,
+    YELLOW,
     WHITE,
-    YELLOW;
+    BLACK;
 
     public String getRegistryName(String type) {
         return name().toLowerCase(Locale.ROOT) + "_" + type;
+    }
+
+    public static PerkVariant byId(int id) {
+        PerkVariant[] variants = values();
+        return variants[id % variants.length];
     }
 }

@@ -11,8 +11,6 @@ import dev.toma.gunsrpg.common.LootStashDetectorHandler;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
-import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.S2C_UseStashDetectorPacket;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.Animation;
@@ -37,10 +35,11 @@ import java.util.UUID;
 public class StashDetectorItem extends BaseItem implements IAnimationEntry {
 
     public static final ResourceLocation CHARGE_BATTERY_ANIMATION = GunsRPG.makeResource("stash_detector/change_batteries");
-    public static final ResourceLocation USE_ANIMATION = GunsRPG.makeResource("stash_detector/use");
+    public static final ResourceLocation TURN_ON_ANIMATION = GunsRPG.makeResource("stash_detector/turn_on");
+    public static final ResourceLocation TURN_OFF_ANIMATION = GunsRPG.makeResource("stash_detector/turn_off");
 
     public StashDetectorItem(String name) {
-        super(name, new Properties().tab(ModTabs.ITEM_TAB).durability(200).setISTER(() -> StashDetectorRenderer::new));
+        super(name, new Properties().tab(ModTabs.ITEM_TAB).durability(210).setISTER(() -> StashDetectorRenderer::new));
     }
 
     public static boolean isValidBatterySource(ItemStack stack) {
@@ -62,7 +61,7 @@ public class StashDetectorItem extends BaseItem implements IAnimationEntry {
             return ActionResult.fail(stack);
         }
         if (level.isClientSide) {
-            playUseAnimation();
+            playUseAnimation(player.getUUID());
         }
         return ActionResult.pass(stack);
     }
@@ -88,9 +87,10 @@ public class StashDetectorItem extends BaseItem implements IAnimationEntry {
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void playUseAnimation() {
+    private void playUseAnimation(UUID uuid) {
         IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
-        pipeline.insert(ModAnimations.STASH_DETECTOR, AnimationUtils.createAnimation(USE_ANIMATION, provider -> new Animation(provider, 30)));
+        ResourceLocation location = LootStashDetectorHandler.isUsing(uuid) ? TURN_OFF_ANIMATION : TURN_ON_ANIMATION;
+        pipeline.insert(ModAnimations.STASH_DETECTOR, AnimationUtils.createAnimation(location, provider -> new Animation(provider, 35)));
     }
 
     @Override

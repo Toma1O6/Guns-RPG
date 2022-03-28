@@ -8,6 +8,13 @@ import java.util.function.Predicate;
 
 public final class JsonHelper {
 
+    public static JsonElement get(JsonObject source, String key) {
+        if (!source.has(key)) {
+            throw new JsonSyntaxException("Missing " + key + " attribute");
+        }
+        return source.get(key);
+    }
+
     public static <R> R[] deserializeInto(JsonArray array, Function<Integer, R[]> arrayFactory, Function<JsonElement, R> adapter) {
         int index = 0;
         R[] output = arrayFactory.apply(array.size());

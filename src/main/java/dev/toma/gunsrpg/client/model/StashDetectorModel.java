@@ -78,13 +78,13 @@ public class StashDetectorModel extends Model {
                     }
                     entry.getValue().render(stack, builder, lightValue, overlay);
                 } else {
-                    entry.getValue().render(stack, builder, light, overlay);
+                    entry.getValue().render(stack, builder, 0, overlay);
                 }
             }
         } else {
-            statusMap.values().forEach(renderer -> renderer.render(stack, builder, light, overlay));
-            keypad.render(stack, builder, light, overlay);
-            display.render(stack, builder, light, overlay);
+            statusMap.values().forEach(renderer -> renderer.render(stack, builder, 0, overlay));
+            keypad.render(stack, builder, 0, overlay);
+            display.render(stack, builder, 0, overlay);
         }
     }
 

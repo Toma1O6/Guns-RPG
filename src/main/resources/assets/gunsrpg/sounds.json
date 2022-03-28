@@ -1705,7 +1705,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:vector/gun_vector",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -1714,7 +1714,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:vector/gun_vector_silenced",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -2020,6 +2020,15 @@
         "sounds": [
             {
                 "name": "gunsrpg:stash_detector/detector_beep",
+                "stream": true
+            }
+        ]
+    },
+    "detector_beep_long": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "gunsrpg:stash_detector/detector_beep_long",
                 "stream": true
             }
         ]

@@ -114,7 +114,7 @@ public class ModKeybinds {
             } else if (stack.getItem() == ModItems.STASH_DETECTOR) {
                 ItemStack batteryItem = ItemLocator.findFirst(player.inventory, StashDetectorItem::isValidBatterySource);
                 if (stack.getDamageValue() > 0 && !batteryItem.isEmpty()) {
-                    pipeline.insert(ModAnimations.STASH_DETECTOR, AnimationUtils.createAnimation(StashDetectorItem.CHARGE_BATTERY_ANIMATION, provider -> new Animation(provider, 30)));
+                    pipeline.insert(ModAnimations.STASH_DETECTOR, AnimationUtils.createAnimation(StashDetectorItem.CHARGE_BATTERY_ANIMATION, provider -> new Animation(provider, 120)));
                     NetworkManager.sendServerPacket(new C2S_RequestBatteryChange());
                 }
             }

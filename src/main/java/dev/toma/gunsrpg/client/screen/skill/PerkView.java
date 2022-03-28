@@ -9,11 +9,13 @@ import dev.toma.gunsrpg.common.item.perk.CrystalAttribute;
 import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.common.perk.PerkRegistry;
 import dev.toma.gunsrpg.common.perk.PerkType;
-import lib.toma.animations.engine.screen.animator.widget.LabelWidget;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 public class PerkView extends View {
@@ -38,10 +40,13 @@ public class PerkView extends View {
         pannableWidget.fill((handler, px, py) -> {
             Set<Perk> allPerks = PerkRegistry.getRegistry().getPerks();
             IPerkProvider provider = manager.getContext().getData().getPerkProvider();
-            Set<Perk> ownedPerks = provider.getActivePerks();
+            List<Perk> ownedPerks = new ArrayList<>(provider.getActivePerks());
+            Comparator<Perk> valueComparator = Comparator.comparing(perk -> provider.getPerkStat(perk).getAttribute(), Comparator.comparing(attribute -> -Math.abs(attribute.getValue())));
+            Comparator<Perk> typeComparator = Comparator.comparing(perk -> provider.getPerkStat(perk).getAttribute(), Comparator.comparing(attr -> attr.getType().ordinal()));
+            ownedPerks.sort(typeComparator.thenComparing(valueComparator));
             int index = 0;
             int yOffset = 0;
-            int maxWidth = (width - 55) / 55;
+            int maxWidth = (width - 85) / 85;
             for (Perk perk : ownedPerks) {
                 allPerks.remove(perk);
                 IPerkStat stat = provider.getPerkStat(perk);
@@ -49,16 +54,18 @@ public class PerkView extends View {
                 PerkType type = crystalAttribute.getType();
                 float value = crystalAttribute.getValue();
                 PerkWidget.State state = value == 0 ? PerkWidget.State.NULLIFIED : type == PerkType.BUFF ? PerkWidget.State.BUFF : PerkWidget.State.DEBUFF;
-                int x = index % 7;
-                int y = index / 7;
-                yOffset = y;
-                handler.add(new PerkWidget(x, y, 40, 20, font, perk, value, state));
+                int x = 30 + px + (index % maxWidth) * 85;
+                int y = 5 + py + (yOffset + index / maxWidth) * 35;
+                handler.add(new PerkWidget(x, y, 80, 20, font, perk, value, state));
+                ++index;
             }
+            yOffset = 1 + ((index - 1) / maxWidth);
+            if (ownedPerks.isEmpty()) yOffset -= 1;
             index = 0;
             for (Perk perk : allPerks) {
-                int x = 30 + px + (index % maxWidth) * 55;
-                int y = 5 + py + (1 + yOffset + index / maxWidth) * 45;
-                handler.add(new PerkWidget(x, y, 50, 20, font, perk, 0.0F, PerkWidget.State.NONE));
+                int x = 30 + px + (index % maxWidth) * 85;
+                int y = 5 + py + (yOffset + index / maxWidth) * 35;
+                handler.add(new PerkWidget(x, y, 80, 20, font, perk, 0.0F, PerkWidget.State.NONE));
                 ++index;
             }
         });

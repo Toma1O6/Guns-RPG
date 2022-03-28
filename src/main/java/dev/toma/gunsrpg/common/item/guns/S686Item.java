@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.S686Renderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
@@ -17,6 +18,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 
 public class S686Item extends AbstractShotgun {
 
@@ -52,6 +54,11 @@ public class S686Item extends AbstractShotgun {
                     .define(AmmoMaterials.AMETHYST, 8)
                     .define(AmmoMaterials.NETHERITE, 10)
                 .build();
+    }
+
+    @Override
+    protected SoundEvent getShootSound(PlayerEntity entity) {
+        return ModSounds.GUN_S686;
     }
 
     @Override

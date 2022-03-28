@@ -2,10 +2,10 @@ package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IReloadManager;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Kar98kRenderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -65,7 +65,7 @@ public class Kar98kItem extends GunItem {
                     .define(AmmoMaterials.NETHERITE, 29)
                 .build();
 
-        ScopeDataRegistry.getRegistry().register(this, 15.0F, 0.3F);
+        ScopeDataRegistry.getRegistry().register(this, 15.0F, 0.3F, provider -> provider.hasSkill(Skills.KAR98K_SCOPE));
     }
 
     @Override
@@ -80,7 +80,7 @@ public class Kar98kItem extends GunItem {
 
     @Override
     public int getReloadTime(IAttributeProvider provider) {
-        return Attribs.KAR98K_RELOAD.intValue(provider);
+        return (int) Attribs.KAR98K_RELOAD.getModifiedValue(provider, 100);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class Kar98kItem extends GunItem {
     @Override
     public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
         ItemStack stack = player.getMainHandItem();
-        int prepTime = (int) (Attribs.KAR98K_RELOAD.getModifiedValue(attributeProvider, 46));
+        int prepTime = Attribs.KAR98K_RELOAD.intValue(attributeProvider);
         return ReloadManagers.either(
                 getAmmo(stack) > 0,
                 ReloadManagers.singleBulletLoading(prepTime, player, this, stack, LOAD_BULLET_ANIMATION),
@@ -120,8 +120,13 @@ public class Kar98kItem extends GunItem {
     }
 
     @Override
+    protected boolean isSilenced(PlayerEntity player) {
+        return PlayerData.hasActiveSkill(player, Skills.KAR98K_SUPPRESSOR);
+    }
+
+    @Override
     public SoundEvent getShootSound(PlayerEntity entity) {
-        return this.isSilenced(entity) ? ModSounds.KAR98K_SILENT : ModSounds.KAR98K;
+        return this.isSilenced(entity) ? ModSounds.GUN_KAR98K_SILENCED : ModSounds.GUN_KAR98K;
     }
 
     @Override

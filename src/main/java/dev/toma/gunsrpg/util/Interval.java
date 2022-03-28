@@ -113,7 +113,7 @@ public final class Interval implements IIntervalProvider {
         }
 
         public String getName(boolean compact) {
-            return compact ? String.valueOf(id) : formattedName;
+            return compact ? String.valueOf(id) : formattedName.toLowerCase();
         }
     }
 

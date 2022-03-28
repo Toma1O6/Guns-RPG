@@ -100,7 +100,7 @@ public class S1897Item extends AbstractShotgun {
 
     @Override
     public SoundEvent getShootSound(PlayerEntity entity) {
-        return ModSounds.S1897;
+        return ModSounds.GUN_S1897;
     }
 
     @Override

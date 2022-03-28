@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Hk416Renderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -50,6 +51,16 @@ public class Hk416Item extends GunItem {
     }
 
     @Override
+    protected boolean isSilenced(PlayerEntity player) {
+        return PlayerData.hasActiveSkill(player, Skills.HK416_SUPPRESSOR);
+    }
+
+    @Override
+    protected SoundEvent getShootSound(PlayerEntity entity) {
+        return isSilenced(entity) ? ModSounds.GUN_M416_SILENCED : ModSounds.GUN_M416;
+    }
+
+    @Override
     public int getReloadTime(IAttributeProvider provider) {
         return 70;
     }
@@ -92,11 +103,6 @@ public class Hk416Item extends GunItem {
     @Override
     public IRenderConfig right() {
         return RenderConfigs.HK416_RIGHT;
-    }
-
-    @Override
-    protected SoundEvent getShootSound(PlayerEntity entity) {
-        return super.getShootSound(entity);
     }
 
     @Override

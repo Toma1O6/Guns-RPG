@@ -36,6 +36,13 @@ public final class Perk {
         return attributeId;
     }
 
+    public double getModifier(int level, PerkType type) {
+        float scale = this.getScaling(type);
+        float bound = this.getBounds(type);
+        double value = level * scale;
+        return Math.min(value, bound);
+    }
+
     public float getScaling(PerkType type) {
         return type.getValue(scaleSpec);
     }
@@ -59,5 +66,10 @@ public final class Perk {
     @Override
     public int hashCode() {
         return attributeId.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Perk{" + "id=" + id + '}';
     }
 }
