@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.common.skills.core.DisplayData;
 import dev.toma.gunsrpg.common.skills.core.DisplayType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -42,6 +43,10 @@ public class SkillUtil {
 
     public static ResourceLocation moddedIcon(String iconPath) {
         return GunsRPG.makeResource("textures/icons/" + iconPath + ".png");
+    }
+
+    public static void heal(PlayerEntity player, float amount) {
+        player.heal(amount); // TODO implement attribute
     }
 
     public static class Localizations {

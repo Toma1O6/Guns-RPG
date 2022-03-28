@@ -2,11 +2,12 @@ package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IReloadManager;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.R45Renderer;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -17,8 +18,10 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.IDualWieldGun;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -109,6 +112,16 @@ public class R45Item extends GunItem implements IDualWieldGun {
     }
 
     @Override
+    public void onHitEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+        handleHeadshotHealing(bullet, shooter);
+    }
+
+    @Override
+    public void onKillEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+        handleHeadshotHealing(bullet, shooter);
+    }
+
+    @Override
     public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
         return ReloadManagers.singleBulletLoading(26, player, this, player.getMainHandItem(), RELOAD_BULLET);
     }
@@ -153,5 +166,16 @@ public class R45Item extends GunItem implements IDualWieldGun {
     @OnlyIn(Dist.CLIENT)
     private boolean isDualWieldActive() {
         return PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.R45_DUAL_WIELD);
+    }
+
+    private void handleHeadshotHealing(AbstractProjectile projectile, LivingEntity shooter) {
+        if (!(shooter instanceof PlayerEntity)) return;
+        PlayerEntity player = (PlayerEntity) shooter;
+        if (PlayerData.hasActiveSkill(player, Skills.R45_ACE_OF_HEARTS)) {
+            boolean headshot = projectile.getProperty(dev.toma.gunsrpg.util.properties.Properties.IS_HEADSHOT);
+            if (headshot) {
+                SkillUtil.heal(player, 1.0F);
+            }
+        }
     }
 }

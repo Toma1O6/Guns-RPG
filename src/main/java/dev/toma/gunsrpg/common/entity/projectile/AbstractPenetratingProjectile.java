@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.entity.projectile;
 
+import dev.toma.gunsrpg.util.properties.Properties;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -9,8 +10,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public abstract class AbstractPenetratingProjectile extends AbstractProjectile {
-
-    private PenetrationData penetrationData;
 
     public AbstractPenetratingProjectile(EntityType<? extends AbstractPenetratingProjectile> type, World level) {
         super(type, level);
@@ -23,12 +22,13 @@ public abstract class AbstractPenetratingProjectile extends AbstractProjectile {
     protected abstract void handleEntityCollision(EntityRayTraceResult result);
 
     public void setPenetrationData(@Nullable PenetrationData data) {
-        this.penetrationData = data;
+        propertyContext.setProperty(Properties.PENETRATION, data);
     }
 
     @Override
     protected final void onHitEntity(EntityRayTraceResult result) {
         handleEntityCollision(result);
+        PenetrationData penetrationData = this.getProperty(Properties.PENETRATION);
         if (penetrationData != null) {
             boolean noEnergy = penetrationData.collide(result.getEntity());
             mulDamage(penetrationData.getMultiplier());
@@ -40,6 +40,7 @@ public abstract class AbstractPenetratingProjectile extends AbstractProjectile {
 
     @Override
     protected boolean canHitEntity(Entity entity) {
+        PenetrationData penetrationData = this.getProperty(Properties.PENETRATION);
         return super.canHitEntity(entity) && (penetrationData == null || penetrationData.getLastHit() != entity);
     }
 }
