@@ -339,7 +339,6 @@ public class CommonRegistry {
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.NOISE, Attribs.SKS_NOISE))).renderModIcon("suppressor").build().setRegistryName("sks_suppressor"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.createMany(Modifiers.CHEEKPAD, Attribs.SKS_VERTICAL_RECOIL, Attribs.SKS_HORIZONTAL_RECOIL))).renderModIcon("cheekpad").build().setRegistryName("sks_cheekpad"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.SKS_ADAPTIVE, Attribs.SKS_FIRERATE))).renderModIcon("adaptive_chambering").build().setRegistryName("sks_adaptive_chambering"),
-                SkillType.Builder.create(BasicSkill::new).renderModIcon("extended_mk2").build().setRegistryName("sks_extended_mk2"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("quickdraw").description(0).build().setRegistryName("vss_quickdraw"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("scope").build().setRegistryName("vss_scope"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("cheekpad").build().setRegistryName("vss_cheekpad"),

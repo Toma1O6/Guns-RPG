@@ -90,7 +90,7 @@ public class SksItem extends GunItem {
 
     @Override
     public int getReloadTime(IAttributeProvider provider) {
-        return (int) (32 * provider.getAttributeValue(Attribs.RELOAD_SPEED));
+        return (int) (70 * provider.getAttributeValue(Attribs.RELOAD_SPEED));
     }
 
     @Override
