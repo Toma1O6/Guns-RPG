@@ -29,7 +29,7 @@ public class VectorItem extends GunItem {
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("vector/unjam");
 
     public VectorItem(String name) {
-        super(name, new Properties().setISTER(() -> VectorRenderer::new).durability(1350));
+        super(name, new Properties().setISTER(() -> VectorRenderer::new).durability(1100));
     }
 
     @Override

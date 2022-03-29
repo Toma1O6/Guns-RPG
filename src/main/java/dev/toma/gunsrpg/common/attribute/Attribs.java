@@ -92,7 +92,7 @@ public final class Attribs {
     public static final IAttributeId MOTHERLODE_BONUS           = createInternal("motherlode_bonus");
     public static final IAttributeId IRON_BUDDY_COOLDOWN        = createInternal("iron_buddy_cooldown");
     // weapon
-    public static final IAttributeId M1911_RELOAD_SPEED         = createInternal("m1911_reload_speed", 35);
+    public static final IAttributeId M1911_RELOAD_SPEED         = createInternal("m1911_reload_speed", 45);
     public static final IAttributeId M1911_MAG_CAPACITY         = createInternal("m1911_mag_capacity", 7);
     public static final IAttributeId M1911_FIRERATE             = createInternal("m1911_firerate", 4);
     public static final IAttributeId M1911_HORIZONTAL_RECOIL    = createInternal("m1911_horizontal_recoil", 1.4);
@@ -104,7 +104,12 @@ public final class Attribs {
     public static final IAttributeId R45_MAG_CAPACITY           = createInternal("r45_mag_capacity", 6);
     public static final IAttributeId R45_FIRERATE               = createInternal("r45_firerate", 15);
     public static final IAttributeId R45_NOISE                  = createInternal("r45_noise");
-    public static final IAttributeId UMP45_RELOAD_SPEED         = createInternal("ump45_reload_speed", 52);
+    public static final IAttributeId DEAGLE_RELOADING           = createInternal("deagle_reloading", 60);
+    public static final IAttributeId DEAGLE_FIRERATE            = createInternal("deagle_firerate", 9);
+    public static final IAttributeId DEAGLE_HORIZONTAL_RECOIL   = createInternal("deagle_horizontal_recoil", 2.0);
+    public static final IAttributeId DEAGLE_VERTICAL_RECOIL     = createInternal("deagle_vertical_recoil", 4.4);
+    public static final IAttributeId DEAGLE_MAG_CAPACITY        = createInternal("deagle_mag_capacity", 7);
+    public static final IAttributeId UMP45_RELOAD_SPEED         = createInternal("ump45_reload_speed", 60);
     public static final IAttributeId UMP45_MAG_CAPACITY         = createInternal("ump45_mag_capacity", 25);
     public static final IAttributeId UMP45_VERTICAL_RECOIL      = createInternal("ump45_vertical_recoil", 1.8);
     public static final IAttributeId UMP45_FIRERATE             = createInternal("ump45_firerate", 3);
@@ -137,6 +142,9 @@ public final class Attribs {
     public static final ICombinedAttribute R45_VERTICAL         = ICombinedAttribute.of(RECOIL_CONTROL, R45_VERTICAL_RECOIL);
     public static final ICombinedAttribute R45_HORIZONTAL       = ICombinedAttribute.of(RECOIL_CONTROL, R45_HORIZONTAL_RECOIL);
     public static final ICombinedAttribute R45_LOUDNESS         = ICombinedAttribute.of(WEAPON_NOISE, R45_NOISE);
+    public static final ICombinedAttribute DEAGLE_RELOAD        = ICombinedAttribute.of(RELOAD_SPEED, DEAGLE_RELOADING);
+    public static final ICombinedAttribute DEAGLE_HORIZONTAL    = ICombinedAttribute.of(RECOIL_CONTROL, DEAGLE_HORIZONTAL_RECOIL);
+    public static final ICombinedAttribute DEAGLE_VERTICAL      = ICombinedAttribute.of(RECOIL_CONTROL, DEAGLE_VERTICAL_RECOIL);
     public static final ICombinedAttribute UMP45_VERTICAL       = ICombinedAttribute.of(RECOIL_CONTROL, UMP45_VERTICAL_RECOIL);
     public static final ICombinedAttribute UMP45_LOUDNESS       = ICombinedAttribute.of(WEAPON_NOISE, UMP45_NOISE);
     public static final ICombinedAttribute CROSSBOW_RELOAD      = ICombinedAttribute.of(RELOAD_SPEED, CROSSBOW_RELOAD_SPEED);

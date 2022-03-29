@@ -1,10 +1,14 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.DesertEagleRenderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
+import dev.toma.gunsrpg.common.entity.projectile.PenetrationData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -14,6 +18,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -28,9 +33,10 @@ public class DesertEagleItem extends GunItem {
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("deagle/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("deagle/unjam");
     private static final ResourceLocation EJECT = GunsRPG.makeResource("deagle/eject");
+    private static final PenetrationData.Factory PEN_DATA = new PenetrationData.Factory(0.3F);
 
     public DesertEagleItem(String name) {
-        super(name, new Properties().setISTER(() -> DesertEagleRenderer::new).durability(520));
+        super(name, new Properties().setISTER(() -> DesertEagleRenderer::new).durability(450));
     }
 
     @Override
@@ -61,12 +67,12 @@ public class DesertEagleItem extends GunItem {
 
     @Override
     public int getReloadTime(IAttributeProvider provider) {
-        return 60;
+        return Attribs.DEAGLE_RELOAD.intValue(provider);
     }
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 9;
+        return provider.getAttribute(Attribs.DEAGLE_FIRERATE).intValue();
     }
 
     @Override
@@ -76,7 +82,36 @@ public class DesertEagleItem extends GunItem {
 
     @Override
     public int getMaxAmmo(IAttributeProvider provider) {
-        return 7;
+        return provider.getAttribute(Attribs.DEAGLE_MAG_CAPACITY).intValue();
+    }
+
+    @Override
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return Attribs.DEAGLE_VERTICAL.floatValue(provider);
+    }
+
+    @Override
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return Attribs.DEAGLE_HORIZONTAL.floatValue(provider);
+    }
+
+    @Override
+    public float modifyProjectileDamage(AbstractProjectile projectile, LivingEntity entity, PlayerEntity shooter, float damage) {
+        float healthPct = entity.getHealth() / entity.getMaxHealth();
+        if (healthPct <= 0.5) {
+            if (PlayerData.hasActiveSkill(shooter, Skills.DEAGLE_FINISHER)) {
+                return damage * 1.25F;
+            }
+        }
+        return damage;
+    }
+
+    @Override
+    public PenetrationData getPenetrationData(IPlayerData data) {
+        if (data.getSkillProvider().hasSkill(Skills.DEAGLE_FINISHER)) {
+            return PEN_DATA.make();
+        }
+        return null;
     }
 
     @Override

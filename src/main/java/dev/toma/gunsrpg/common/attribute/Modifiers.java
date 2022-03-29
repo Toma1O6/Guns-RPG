@@ -80,6 +80,7 @@ public final class Modifiers {
     /* Specific attachments */
     public static final IAttributeModifier M1911_EXTENDED_MAG           = new AttributeModifier("205CBB5C-0D78-4ABB-A623-F7AB91AF256C", AttributeOps.SUM, 6).named("capacity");
     public static final IAttributeModifier R45_EXTENDED_DRUM            = new AttributeModifier("ED6581E6-8C4E-45AD-9B8C-E014717B16EB", AttributeOps.SUM, 3).named("capacity");
+    public static final IAttributeModifier DEAGLE_EXTENDED_MAG          = new AttributeModifier("A52A4D8E-1DA5-40A8-8215-6384CD721C42", AttributeOps.SUM, 5).named("capacity");
     public static final IAttributeModifier UMP45_EXTENDED               = new AttributeModifier("26C18B3B-29AC-4A76-95C8-F1251EA78537", AttributeOps.SUM, 15).named("capacity");
     public static final IAttributeModifier CROSSBOW_EXTENDED            = new AttributeModifier("C997FD4C-9156-40CD-A226-6F4B02F5B298", AttributeOps.SUM, 2).named("capacity");
     public static final IAttributeModifier CROSSBOW_REPEATER            = new AttributeModifier("6899C770-39CA-465E-8715-4D5D47512ED4", AttributeOps.MUL, 1.25);

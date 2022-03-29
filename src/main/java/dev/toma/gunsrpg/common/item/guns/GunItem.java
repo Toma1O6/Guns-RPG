@@ -136,7 +136,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         return false;
     }
 
-    public float modifyProjectileDamage(AbstractProjectile projectile, PlayerEntity shooter, float damage) {
+    public float modifyProjectileDamage(AbstractProjectile projectile, LivingEntity entity, PlayerEntity shooter, float damage) {
         return damage;
     }
 

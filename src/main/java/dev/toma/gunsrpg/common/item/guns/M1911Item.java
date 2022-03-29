@@ -42,7 +42,7 @@ public class M1911Item extends GunItem implements IDualWieldGun {
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("m1911/unjam");
 
     public M1911Item(String name) {
-        super(name, new Properties().setISTER(() -> M1911Renderer::new).durability(650));
+        super(name, new Properties().setISTER(() -> M1911Renderer::new).durability(550));
     }
 
     @Override

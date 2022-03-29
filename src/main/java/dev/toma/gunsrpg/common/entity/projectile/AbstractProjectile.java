@@ -226,11 +226,11 @@ public abstract class AbstractProjectile extends ProjectileEntity {
     protected void hurtTarget(Entity entity, Entity owner) {
         propertyContext.handleConditionally(Properties.IS_HEADSHOT, value -> value, headshot -> mulDamage(this.getHeadshotMultiplier()));
         if (entity instanceof LivingEntity && weapon.getItem() instanceof GunItem) {
+            LivingEntity livingEntity = (LivingEntity) entity;
             GunItem gun = (GunItem) weapon.getItem();
             if (owner instanceof PlayerEntity) {
-                projectileDamage = gun.modifyProjectileDamage(this, (PlayerEntity) owner, projectileDamage);
+                projectileDamage = gun.modifyProjectileDamage(this, livingEntity, (PlayerEntity) owner, projectileDamage);
             }
-            LivingEntity livingEntity = (LivingEntity) entity;
             boolean willDie = livingEntity.getHealth() - projectileDamage <= 0.0F;
             livingEntity.hurt(this.getDamageSource(owner), projectileDamage);
             if (willDie)

@@ -38,7 +38,7 @@ public class R45Item extends GunItem implements IDualWieldGun {
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("r45/unjam");
 
     public R45Item(String name) {
-        super(name, new Properties().setISTER(() -> R45Renderer::new).durability(500));
+        super(name, new Properties().setISTER(() -> R45Renderer::new).durability(350));
     }
 
     @Override
@@ -173,6 +173,7 @@ public class R45Item extends GunItem implements IDualWieldGun {
         PlayerEntity player = (PlayerEntity) shooter;
         if (PlayerData.hasActiveSkill(player, Skills.R45_ACE_OF_HEARTS)) {
             boolean headshot = projectile.getProperty(dev.toma.gunsrpg.util.properties.Properties.IS_HEADSHOT);
+            System.out.println(headshot);
             if (headshot) {
                 SkillUtil.heal(player, 1.0F);
             }
