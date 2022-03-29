@@ -463,7 +463,7 @@ public class GunsrpgCommand {
                 provider.unlock(type);
             } else {
                 SkillType<?>[] children = hierarchy.getChildren();
-                if (children.length > 0) {
+                if (children != null && children.length > 0) {
                     for (SkillType<?> child : children) {
                         if (provider.hasSkill(child)) {
                             throw DEPENDENT_SKILL_ACTIVE.create(child);
