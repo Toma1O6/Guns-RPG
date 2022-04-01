@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -34,6 +35,10 @@ public abstract class AbstractPenetratingProjectile extends AbstractProjectile {
             mulDamage(penetrationData.getMultiplier());
             if (noEnergy) {
                 remove();
+            } else {
+                Vector3d pos = this.position();
+                Vector3d mov = pos.add(this.getDeltaMovement());
+                checkForCollisions(pos, mov);
             }
         }
     }

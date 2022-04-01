@@ -31,10 +31,10 @@ public class AirdropTileEntity extends InventoryTileEntity implements ILootGener
         if (!level.isClientSide)
             return;
         Vector3d pos = Vector3d.atCenterOf(worldPosition);
-        for (int i = 0; i < 3; i++) {
-            float x = (level.random.nextFloat() - level.random.nextFloat()) / 8.0F;
-            float z = (level.random.nextFloat() - level.random.nextFloat()) / 8.0F;
-            level.addParticle(ParticleTypes.CLOUD, true, pos.x, pos.y + 0.6, pos.z, x, 0.8, z);
+        for (int i = 0; i < 1; i++) {
+            float x = (level.random.nextFloat() - level.random.nextFloat()) / 32.0F;
+            float z = (level.random.nextFloat() - level.random.nextFloat()) / 32.0F;
+            level.addParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, true, pos.x, pos.y + 0.6, pos.z, x, 0.2, z);
         }
     }
 
