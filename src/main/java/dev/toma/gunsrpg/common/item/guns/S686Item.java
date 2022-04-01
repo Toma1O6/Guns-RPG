@@ -62,7 +62,7 @@ public class S686Item extends AbstractShotgun {
     }
 
     @Override
-    public int getReloadTime(IAttributeProvider provider) {
+    public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
         return 60;
     }
 

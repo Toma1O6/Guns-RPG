@@ -66,7 +66,7 @@ public class DesertEagleItem extends GunItem {
     }
 
     @Override
-    public int getReloadTime(IAttributeProvider provider) {
+    public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
         return Attribs.DEAGLE_RELOAD.intValue(provider);
     }
 

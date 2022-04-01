@@ -102,7 +102,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         return 1;
     }
 
-    public int getReloadTime(IAttributeProvider provider) {
+    public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
         return provider.getAttribute(Attribs.RELOAD_SPEED).intValue();
     }
 

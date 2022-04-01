@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
@@ -43,6 +44,7 @@ public class SksItem extends GunItem {
                 .category(WeaponCategory.DMR)
                 .config(ModConfig.weaponConfig.sks)
                 .firemodeSelector(this::switchFiremode)
+                .caliber(AmmoType.AMMO_556MM)
                 .ammo()
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 2)
@@ -89,7 +91,7 @@ public class SksItem extends GunItem {
     }
 
     @Override
-    public int getReloadTime(IAttributeProvider provider) {
+    public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
         return (int) (70 * provider.getAttributeValue(Attribs.RELOAD_SPEED));
     }
 

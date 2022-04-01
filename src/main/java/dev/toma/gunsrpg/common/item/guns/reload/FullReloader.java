@@ -42,7 +42,7 @@ public class FullReloader implements IReloader {
     @Override
     public void initiateReload(PlayerEntity player, GunItem item, ItemStack _stack) {
         reloading = true;
-        ticksLeft = item.getReloadTime(PlayerData.getUnsafe(player).getAttributes());
+        ticksLeft = item.getReloadTime(PlayerData.getUnsafe(player).getAttributes(), _stack);
         gun = item;
         stack = _stack;
         if (player.level.isClientSide) {

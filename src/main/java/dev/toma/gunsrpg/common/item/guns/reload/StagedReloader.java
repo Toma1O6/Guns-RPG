@@ -45,7 +45,7 @@ public class StagedReloader implements IReloader {
     public void initiateReload(PlayerEntity player, GunItem item, ItemStack stack) {
         this.reloadingGun = item;
         this.stack = stack;
-        this.container.init(item.getReloadTime(PlayerData.getUnsafe(player).getAttributes()));
+        this.container.init(item.getReloadTime(PlayerData.getUnsafe(player).getAttributes(), stack));
         if (player.level.isClientSide) {
             container.clientInit(item.getReloadAnimation(player));
         }

@@ -74,7 +74,7 @@ public class S1897Item extends AbstractShotgun {
     }
 
     @Override
-    public int getReloadTime(IAttributeProvider provider) {
+    public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
         return Attribs.S1897_RELOAD.intValue(provider);
     }
 

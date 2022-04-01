@@ -104,7 +104,7 @@ public class M1911Item extends GunItem implements IDualWieldGun {
     }
 
     @Override
-    public int getReloadTime(IAttributeProvider provider) {
+    public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
         return Attribs.M1911_RELOAD.intValue(provider);
     }
 

@@ -92,7 +92,7 @@ public class R45Item extends GunItem implements IDualWieldGun {
     }
 
     @Override
-    public int getReloadTime(IAttributeProvider provider) {
+    public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
         return Attribs.R45_RELOAD.intValue(provider);
     }
 
