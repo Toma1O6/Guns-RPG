@@ -1,10 +1,16 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeModifierFactory;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.M1911Renderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.attribute.AttributeOps;
+import dev.toma.gunsrpg.common.attribute.ExpiringModifier;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.ModSounds;
@@ -13,11 +19,10 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
-import dev.toma.gunsrpg.common.item.guns.util.IDualWieldGun;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.util.Constants;
 import lib.toma.animations.api.IRenderConfig;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -28,18 +33,13 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class M1911Item extends GunItem implements IDualWieldGun {
+public class M1911Item extends GunItem {
 
     private static final ResourceLocation EJECT = GunsRPG.makeResource("m1911/eject");
-    private static final ResourceLocation[] AIM_ANIMATIONS = {
-            GunsRPG.makeResource("m1911/aim"),
-            GunsRPG.makeResource("m1911/aim_dual")
-    };
-    private static final ResourceLocation[] RELOAD_ANIMATIONS = {
-            GunsRPG.makeResource("m1911/reload"),
-            GunsRPG.makeResource("m1911/reload_dual")
-    };
+    private static final ResourceLocation AIM_ANIMATION = GunsRPG.makeResource("m1911/aim");
+    private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("m1911/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("m1911/unjam");
+    private static final IAttributeModifierFactory KILLING_SPREE_MODIFIER = IAttributeModifierFactory.of(() -> new ExpiringModifier(Constants.ModifierIds.M1911_KILLING_SPREE, AttributeOps.MULB, 0.2F, 50));
 
     public M1911Item(String name) {
         super(name, new Properties().setISTER(() -> M1911Renderer::new).durability(550));
@@ -81,6 +81,21 @@ public class M1911Item extends GunItem implements IDualWieldGun {
             victim.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 100, 1, false, false));
             victim.addEffect(new EffectInstance(Effects.WEAKNESS, 100, 0, false, false));
         }
+    }
+
+    @Override
+    public void onKillEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+        if (!(shooter instanceof PlayerEntity)) return;
+        PlayerEntity player = (PlayerEntity) shooter;
+        PlayerData.get(player).ifPresent(data -> {
+            ISkillProvider skillProvider = data.getSkillProvider();
+            IAttributeProvider attributeProvider = data.getAttributes();
+            if (skillProvider.hasSkill(Skills.M1911_KILLING_SPREE)) {
+                IAttributeId id = isSilenced(player) ? Attribs.SILENT_WEAPON_DAMAGE : Attribs.LOUD_WEAPON_DAMAGE;
+                IAttributeModifier modifier = KILLING_SPREE_MODIFIER.make();
+                attributeProvider.getAttribute(id).addModifier(modifier);
+            }
+        });
     }
 
     @Override
@@ -128,15 +143,10 @@ public class M1911Item extends GunItem implements IDualWieldGun {
         return Skills.M1911_ASSEMBLY;
     }
 
-    @Override
-    public SkillType<?> getSkillForDualWield() {
-        return Skills.M1911_DUAL_WIELD;
-    }
-
     @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
-        return isDualWieldActive() ? AIM_ANIMATIONS[1] : AIM_ANIMATIONS[0];
+        return AIM_ANIMATION;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -154,28 +164,16 @@ public class M1911Item extends GunItem implements IDualWieldGun {
     @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
-        return this.isDualWieldActive() ? RELOAD_ANIMATIONS[1] : RELOAD_ANIMATIONS[0];
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void onShoot(PlayerEntity player, ItemStack stack) {
-        if (isDualWieldActive()) return;
-        super.onShoot(player, stack);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    private boolean isDualWieldActive() {
-        return PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.M1911_DUAL_WIELD);
+        return RELOAD_ANIMATION;
     }
 
     @Override
     public IRenderConfig left() {
-        return isDualWieldActive() ? RenderConfigs.M1911_LEFT_DUAL : RenderConfigs.M1911_LEFT;
+        return RenderConfigs.M1911_LEFT;
     }
 
     @Override
     public IRenderConfig right() {
-        return isDualWieldActive() ? RenderConfigs.M1911_RIGHT_DUAL : RenderConfigs.M1911_RIGHT;
+        return RenderConfigs.M1911_RIGHT;
     }
 }

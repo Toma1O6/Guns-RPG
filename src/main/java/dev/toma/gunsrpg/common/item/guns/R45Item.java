@@ -15,12 +15,10 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
-import dev.toma.gunsrpg.common.item.guns.util.IDualWieldGun;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -29,10 +27,9 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class R45Item extends GunItem implements IDualWieldGun {
+public class R45Item extends GunItem {
 
     private static final ResourceLocation AIM = GunsRPG.makeResource("r45/aim");
-    private static final ResourceLocation AIM_DUAL = GunsRPG.makeResource("r45/aim_dual");
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("r45/reload");
     private static final ResourceLocation RELOAD_BULLET = GunsRPG.makeResource("r45/load_bullet");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("r45/unjam");
@@ -82,11 +79,6 @@ public class R45Item extends GunItem implements IDualWieldGun {
     }
 
     @Override
-    public SkillType<?> getSkillForDualWield() {
-        return Skills.R45_DUAL_WIELD;
-    }
-
-    @Override
     public int getMaxAmmo(IAttributeProvider provider) {
         return provider.getAttribute(Attribs.R45_MAG_CAPACITY).intValue();
     }
@@ -122,6 +114,18 @@ public class R45Item extends GunItem implements IDualWieldGun {
     }
 
     @Override
+    public float modifyProjectileDamage(AbstractProjectile projectile, LivingEntity entity, PlayerEntity shooter, float damage) {
+        ItemStack weapon = projectile.getWeaponSource();
+        if (weapon.getItem() instanceof GunItem && PlayerData.hasActiveSkill(shooter, Skills.R45_EVERY_BULLET_COUNTS)) {
+            int ammo = this.getAmmo(weapon);
+            if (ammo == 0) {
+                return damage * 3.0F;
+            }
+        }
+        return damage;
+    }
+
+    @Override
     public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
         return ReloadManagers.singleBulletLoading(26, player, this, player.getMainHandItem(), RELOAD_BULLET);
     }
@@ -145,17 +149,17 @@ public class R45Item extends GunItem implements IDualWieldGun {
     @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
-        return isDualWieldActive() ? AIM_DUAL : AIM;
+        return AIM;
     }
 
     @Override
     public IRenderConfig left() {
-        return isDualWieldActive() ? RenderConfigs.R45_LEFT_DUAL : RenderConfigs.R45_LEFT;
+        return RenderConfigs.R45_LEFT;
     }
 
     @Override
     public IRenderConfig right() {
-        return isDualWieldActive() ? RenderConfigs.R45_RIGHT_DUAL : RenderConfigs.R45_RIGHT;
+        return RenderConfigs.R45_RIGHT;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -163,17 +167,11 @@ public class R45Item extends GunItem implements IDualWieldGun {
     public void onShoot(PlayerEntity player, ItemStack stack) {
     }
 
-    @OnlyIn(Dist.CLIENT)
-    private boolean isDualWieldActive() {
-        return PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.R45_DUAL_WIELD);
-    }
-
     private void handleHeadshotHealing(AbstractProjectile projectile, LivingEntity shooter) {
         if (!(shooter instanceof PlayerEntity)) return;
         PlayerEntity player = (PlayerEntity) shooter;
         if (PlayerData.hasActiveSkill(player, Skills.R45_ACE_OF_HEARTS)) {
             boolean headshot = projectile.getProperty(dev.toma.gunsrpg.util.properties.Properties.IS_HEADSHOT);
-            System.out.println(headshot);
             if (headshot) {
                 SkillUtil.heal(player, 1.0F);
             }

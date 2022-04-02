@@ -8,8 +8,7 @@
             "gunsrpg:r45_extended",
             "gunsrpg:r45_suppressor",
             "gunsrpg:r45_light_trigger",
-            "gunsrpg:r45_ace_of_hearts",
-            "gunsrpg:r45_dual_wield"
+            "gunsrpg:r45_ace_of_hearts"
         ],
         "children": [
             "gunsrpg:desert_eagle_assembly"

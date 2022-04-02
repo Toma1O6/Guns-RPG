@@ -16,16 +16,16 @@ public class ExpiringModifier implements IAttributeModifier, ITickableModifier {
     private final int initialTime;
     private int time;
 
-    public ExpiringModifier(String uuid, IModifierOp op, double value, int expiryTime) {
-        this(UUID.fromString(uuid), op, value, expiryTime);
+    public ExpiringModifier(String uuid, IModifierOp op, double value, int expiresIn) {
+        this(UUID.fromString(uuid), op, value, expiresIn);
     }
 
-    public ExpiringModifier(UUID uuid, IModifierOp op, double value, int expiryTime) {
+    public ExpiringModifier(UUID uuid, IModifierOp op, double value, int expiresIn) {
         this.uuid = uuid;
         this.op = op;
         this.value = value;
-        this.initialTime = expiryTime;
-        this.time = expiryTime;
+        this.initialTime = expiresIn;
+        this.time = expiresIn;
     }
 
     @Override

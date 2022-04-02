@@ -131,11 +131,6 @@ public class PlayerAttributes implements IAttributeProvider, IPlayerCapEntry {
         private final UUID uuid = UUID.randomUUID();
 
         @Override
-        public UUID getListenerUid() {
-            return uuid;
-        }
-
-        @Override
         public void onModifierAdded(IAttributeModifier modifier) {
             sendSyncRequest();
         }

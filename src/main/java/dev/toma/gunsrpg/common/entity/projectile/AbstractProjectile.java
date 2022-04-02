@@ -148,7 +148,7 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         move(MoverType.SELF, getDeltaMovement());
     }
 
-    public ItemStack getWeapon() {
+    public ItemStack getWeaponSource() {
         return weapon;
     }
 

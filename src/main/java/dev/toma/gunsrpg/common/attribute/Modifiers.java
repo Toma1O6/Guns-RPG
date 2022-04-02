@@ -68,7 +68,6 @@ public final class Modifiers {
     public static final IAttributeModifier DEBUFF_RESIST_III            = new AttributeModifier(DEBUFF_RESISTANCE, AttributeOps.SUM, 0.45).named("resist", IValueFormatter.PERCENT);
     public static final IAttributeModifier DEBUFF_DELAY_III             = new AttributeModifier(DEBUFF_DELAY, AttributeOps.SUM, 60).named("delay", IValueFormatter.SECONDS);
     /* Common attachments */
-    public static final IAttributeModifier DUAL_WIELD                   = new AttributeModifier("0B46D76F-2357-4346-80D8-CB68302B0346", AttributeOps.MUL, 2.0);
     public static final IAttributeModifier TOUGH_SPRING                 = new AttributeModifier("131CDD15-9B12-43BD-9242-F086C915473A", AttributeOps.SUB, 1).named("rate");
     public static final IAttributeModifier QUICKDRAW_MAG                = new AttributeModifier("640F448C-136C-470B-A9DD-95B9D51BF502", AttributeOps.MUL, 0.8).named("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier QUIVER                       = new AttributeModifier("A1696B44-D082-498C-9E96-3CB584DA0DA7", AttributeOps.MUL, 0.75).named("speed", IValueFormatter.INV_PERCENT);
