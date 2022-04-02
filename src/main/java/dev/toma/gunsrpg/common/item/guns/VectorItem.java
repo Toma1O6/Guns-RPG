@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.VectorRenderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -14,11 +15,16 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import org.w3c.dom.Attr;
+
+import java.util.Random;
 
 public class VectorItem extends GunItem {
 
@@ -70,7 +76,7 @@ public class VectorItem extends GunItem {
 
     @Override
     public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
-        return 70;
+        return Attribs.VECTOR_RELOAD.intValue(provider);
     }
 
     @Override
@@ -85,7 +91,32 @@ public class VectorItem extends GunItem {
 
     @Override
     public int getMaxAmmo(IAttributeProvider provider) {
-        return 13;
+        return provider.getAttribute(Attribs.VECTOR_MAG_CAPACITY).intValue();
+    }
+
+    @Override
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return Attribs.VECTOR_VERTICAL.floatValue(provider);
+    }
+
+    @Override
+    public double getNoiseMultiplier(IAttributeProvider provider) {
+        return Attribs.VECTOR_NOISE.value(provider);
+    }
+
+    @Override
+    protected void consumeAmmo(ItemStack stack, LivingEntity consumer) {
+        if (consumer instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) consumer;
+            if (PlayerData.hasActiveSkill(player, Skills.VECTOR_OVERLOADED)) {
+                Random random = player.getRandom();
+                float chance = random.nextFloat();
+                if (chance < SkillUtil.NO_AMMO_CONSUME_CHANCE) {
+                    return;
+                }
+            }
+        }
+        super.consumeAmmo(stack, consumer);
     }
 
     @Override

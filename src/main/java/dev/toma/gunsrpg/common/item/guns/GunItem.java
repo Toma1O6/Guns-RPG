@@ -240,7 +240,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
                 setJammedState(stack, true);
             }
         }
-        this.setAmmoCount(stack, this.getAmmo(stack) - 1);
+        this.consumeAmmo(stack, entity);
         world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);
     }
 
@@ -263,6 +263,11 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
     protected boolean isSilenced(PlayerEntity player) {
         return false;
+    }
+
+    protected void consumeAmmo(ItemStack stack, LivingEntity consumer) {
+        int ammo = this.getAmmo(stack);
+        setAmmoCount(stack, ammo - 1);
     }
 
     /* CLIENT-SIDE STUFF -------------------------------------------------------------------------- */

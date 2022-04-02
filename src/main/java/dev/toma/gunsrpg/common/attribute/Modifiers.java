@@ -80,6 +80,8 @@ public final class Modifiers {
     public static final IAttributeModifier DEAGLE_EXTENDED_MAG          = new AttributeModifier("A52A4D8E-1DA5-40A8-8215-6384CD721C42", AttributeOps.SUM, 5).named("capacity");
     public static final IAttributeModifier UMP45_EXTENDED               = new AttributeModifier("26C18B3B-29AC-4A76-95C8-F1251EA78537", AttributeOps.SUM, 15).named("capacity");
     public static final IAttributeModifier THOMPSON_EXTENDED            = new AttributeModifier("97F9C1A6-F2C7-4E63-8479-D1A75D6C0F5A", AttributeOps.SUM, 20).named("capacity");
+    public static final IAttributeModifier VECTOR_EXTENDED              = new AttributeModifier("856037EC-5EF3-45E6-9635-BCD2009DB4AC", AttributeOps.SUM, 19).named("capacity");
+    public static final IAttributeModifier VECTOR_EXTENDED_MK2          = new AttributeModifier("0282F2EF-13A2-49A5-A2DB-9BB00B9055CB", AttributeOps.SUM, 18).named("capacity");
     public static final IAttributeModifier CROSSBOW_EXTENDED            = new AttributeModifier("C997FD4C-9156-40CD-A226-6F4B02F5B298", AttributeOps.SUM, 2).named("capacity");
     public static final IAttributeModifier CROSSBOW_REPEATER            = new AttributeModifier("6899C770-39CA-465E-8715-4D5D47512ED4", AttributeOps.MUL, 1.25);
     public static final IAttributeModifier SKS_EXTENDED                 = new AttributeModifier("6BC9638B-0A31-4522-BDE7-DA68F0AEA194", AttributeOps.SUM, 10).named("capacity");

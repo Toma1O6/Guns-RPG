@@ -49,7 +49,6 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.*;
-import org.w3c.dom.Attr;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -268,13 +267,13 @@ public class CommonRegistry {
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.TOUGH_SPRING, Attribs.THOMPSON_FIRERATE))).renderModIcon("tough_spring").description(0).build().setRegistryName("thompson_tough_spring"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.NOISE, Attribs.THOMPSON_NOISE))).renderModIcon("suppressor").build().setRegistryName("thompson_suppressor"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("soul_taker").build().setRegistryName("thompson_soul_taker"),
-                SkillType.Builder.create(BasicSkill::new).renderModIcon("quickdraw").description(0).build().setRegistryName("vector_quickdraw"),
-                SkillType.Builder.create(BasicSkill::new).renderModIcon("vertical_grip").build().setRegistryName("vector_vertical"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.QUICKDRAW_MAG, Attribs.VECTOR_RELOAD_SPEED))).renderModIcon("quickdraw").description(0).build().setRegistryName("vector_quickdraw"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.VERTICAL_GRIP, Attribs.VECTOR_VERTICAL_RECOIL))).renderModIcon("vertical_grip").build().setRegistryName("vector_vertical"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("red_dot").build().setRegistryName("vector_red_dot"),
-                SkillType.Builder.create(BasicSkill::new).renderModIcon("extended_mk2").description(0).build().setRegistryName("vector_extended_mk2"),
-                SkillType.Builder.create(BasicSkill::new).renderModIcon("extended").description(0).build().setRegistryName("vector_extended"),
-                SkillType.Builder.create(BasicSkill::new).renderModIcon("suppressor").build().setRegistryName("vector_suppressor"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.VECTOR_EXTENDED, Attribs.VECTOR_MAG_CAPACITY))).renderModIcon("extended").description(0).build().setRegistryName("vector_extended"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.NOISE, Attribs.VECTOR_LOUDNESS))).renderModIcon("suppressor").build().setRegistryName("vector_suppressor"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("overloaded").build().setRegistryName("vector_overloaded"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.VECTOR_EXTENDED_MK2, Attribs.VECTOR_MAG_CAPACITY))).renderModIcon("extended_mk2").description(0).build().setRegistryName("vector_extended_mk2"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.QUIVER, Attribs.CROSSBOW_RELOAD_SPEED))).description(0).renderModIcon("quiver").build().setRegistryName("crossbow_quiver"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("poisoned_bolts").build().setRegistryName("crossbow_poisoned_bolts"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("hunter").description(2).build().setRegistryName("crossbow_hunter"),

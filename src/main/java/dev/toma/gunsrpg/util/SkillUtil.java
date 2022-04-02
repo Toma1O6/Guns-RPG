@@ -18,6 +18,8 @@ import java.util.Arrays;
 
 public class SkillUtil {
 
+    public static final float NO_AMMO_CONSUME_CHANCE = 0.1F;
+
     public static <S extends ISkill> S getTopHierarchySkill(SkillType<S> head, ISkillProvider provider) {
         S value = provider.getSkill(head);
         if (value == null)
