@@ -84,6 +84,7 @@ public final class Modifiers {
     public static final IAttributeModifier VECTOR_EXTENDED_MK2          = new AttributeModifier("0282F2EF-13A2-49A5-A2DB-9BB00B9055CB", AttributeOps.SUM, 18).named("capacity");
     public static final IAttributeModifier CROSSBOW_EXTENDED            = new AttributeModifier("C997FD4C-9156-40CD-A226-6F4B02F5B298", AttributeOps.SUM, 2).named("capacity");
     public static final IAttributeModifier CROSSBOW_REPEATER            = new AttributeModifier("6899C770-39CA-465E-8715-4D5D47512ED4", AttributeOps.MUL, 1.25);
+    public static final IAttributeModifier CHUKONU_EXTENDED             = new AttributeModifier("84158AAA-3361-483A-A2F2-06B98238A819", AttributeOps.SUM, 4).named("capacity");
     public static final IAttributeModifier SKS_EXTENDED                 = new AttributeModifier("6BC9638B-0A31-4522-BDE7-DA68F0AEA194", AttributeOps.SUM, 10).named("capacity");
     public static final IAttributeModifier SKS_ADAPTIVE                 = new AttributeModifier("6FA1DA42-2CF1-41A2-B548-A056DB214927", AttributeOps.SUB, 2);
     public static final IAttributeModifier S1897_EXTENDED               = new AttributeModifier("29BBE0CB-B953-4EF1-AB49-036A39058A0D", AttributeOps.SUM, 3).named("capacity");

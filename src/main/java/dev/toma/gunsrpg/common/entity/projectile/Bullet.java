@@ -46,7 +46,7 @@ public class Bullet extends AbstractPenetratingProjectile {
         if (!level.isClientSide) {
             BlockPos pos = result.getBlockPos();
             BlockState state = level.getBlockState(pos);
-            if (state.getMaterial() == Material.GLASS) {
+            if (this.canPenetrateGlass() && state.getMaterial() == Material.GLASS) {
                 level.destroyBlock(pos, false);
                 Vector3d projectilePos = position();
                 checkForCollisions(projectilePos, projectilePos.add(this.getDeltaMovement()));
@@ -78,6 +78,10 @@ public class Bullet extends AbstractPenetratingProjectile {
                 remove();
             }
         }
+    }
+
+    protected boolean canPenetrateGlass() {
+        return true;
     }
 
     protected boolean isHeadshot(Entity entity) {

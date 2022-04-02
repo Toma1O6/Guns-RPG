@@ -42,7 +42,7 @@ public class WeaponConfig extends ObjectType {
         thompson = writer.writeObject(specification -> new WeaponConfiguration(specification, 5.0F, 320, 5, 0.005F, 0.15F), "Thompson");
         vector = writer.writeObject(specification -> new WeaponConfiguration(specification, 3.0F, 280, 3, 0.005F, 0.15F), "Vector");
         crossbow = writer.writeObject(specification -> new WeaponConfiguration(specification, 10.0F, 64, 3, 0.02F, 0.30F), "Crossbow");
-        chukonu = writer.writeObject(specification -> new WeaponConfiguration(specification, 6.0F, 98, 2, 0.02F, 0.30F), "Chu-Ko-Nu");
+        chukonu = writer.writeObject(specification -> new WeaponConfiguration(specification, 6.0F, 64, 2, 0.02F, 0.30F), "Chu-Ko-Nu");
         s1897 = writer.writeObject(specification -> new WeaponConfiguration(specification, 2.0F, 220, 1, 0.01F, 0.30F), "S1897");
         s686 = writer.writeObject(specification -> new WeaponConfiguration(specification, 2.0F, 220, 1, 0.02F, 0.33F), "S686");
         s12k = writer.writeObject(specification -> new WeaponConfiguration(specification, 2.0F, 220, 1, 0.01F, 0.30F), "S12k");

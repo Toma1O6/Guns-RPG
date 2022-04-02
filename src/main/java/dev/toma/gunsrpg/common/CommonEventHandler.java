@@ -12,6 +12,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataProvider;
 import dev.toma.gunsrpg.common.debuffs.IDebuffContext;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
+import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.common.item.HammerItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
@@ -24,6 +25,7 @@ import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.S2C_SendSkillDataPacket;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
+import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.world.LootStashes;
 import dev.toma.gunsrpg.world.MobSpawnManager;
 import dev.toma.gunsrpg.world.cap.WorldData;
@@ -355,12 +357,14 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void getLootingLevel(LootingLevelEvent event) {
-        if (event.getDamageSource() instanceof GunDamageSource) {
-            GunDamageSource src = (GunDamageSource) event.getDamageSource();
-            ItemStack stack = src.getStacc();
-            Entity shooter = src.getSrc();
-            if (stack.getItem() == ModItems.WOODEN_CROSSBOW && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_HUNTER)) {
-                event.setLootingLevel(3);
+        DamageSource damageSource = event.getDamageSource();
+        if (damageSource instanceof GunDamageSource) {
+            GunDamageSource source = (GunDamageSource) damageSource;
+            Entity projectile = source.getDirectEntity();
+            if (projectile instanceof AbstractProjectile) {
+                AbstractProjectile abstractProjectile = (AbstractProjectile) projectile;
+                int lootLevel = abstractProjectile.getProperty(Properties.LOOT_LEVEL);
+                event.setLootingLevel(lootLevel);
             }
         }
     }

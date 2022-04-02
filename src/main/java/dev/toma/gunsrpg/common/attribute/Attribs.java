@@ -125,6 +125,9 @@ public final class Attribs {
     public static final IAttributeId VECTOR_LOUDNESS            = createInternal("vector_loudness");
     public static final IAttributeId CROSSBOW_RELOAD_SPEED      = createInternal("crossbow_reload_speed", 60);
     public static final IAttributeId CROSSBOW_MAG_CAPACITY      = createInternal("crossbow_mag_capacity");
+    public static final IAttributeId CHUKONU_RELOAD_SPEED       = createInternal("chukonu_reload_speed", 35);
+    public static final IAttributeId CHUKONU_MAG_CAPACITY       = createInternal("chukonu_mag_capacity", 6);
+    public static final IAttributeId CHUKONU_FIRERATE           = createInternal("chukonu_firerate", 4);
     public static final IAttributeId S1897_RELOAD_SPEED         = createInternal("s1897_reload_speed", 17);
     public static final IAttributeId S1897_MAG_CAPACITY         = createInternal("s1897_mag_capacity", 5);
     public static final IAttributeId S1897_FIRERATE             = createInternal("s1897_firerate", 25);
@@ -164,6 +167,7 @@ public final class Attribs {
     public static final ICombinedAttribute VECTOR_VERTICAL      = ICombinedAttribute.of(RECOIL_CONTROL, VECTOR_VERTICAL_RECOIL);
     public static final ICombinedAttribute VECTOR_NOISE         = ICombinedAttribute.of(WEAPON_NOISE, VECTOR_LOUDNESS);
     public static final ICombinedAttribute CROSSBOW_RELOAD      = ICombinedAttribute.of(RELOAD_SPEED, CROSSBOW_RELOAD_SPEED);
+    public static final ICombinedAttribute CHUKONU_RELOAD       = ICombinedAttribute.of(RELOAD_SPEED, CHUKONU_RELOAD_SPEED);
     public static final ICombinedAttribute S1897_RELOAD         = ICombinedAttribute.of(RELOAD_SPEED, S1897_RELOAD_SPEED);
     public static final ICombinedAttribute SKS_VERTICAL         = ICombinedAttribute.of(RECOIL_CONTROL, SKS_VERTICAL_RECOIL);
     public static final ICombinedAttribute SKS_HORIZONTAL       = ICombinedAttribute.of(RECOIL_CONTROL, SKS_HORIZONTAL_RECOIL);

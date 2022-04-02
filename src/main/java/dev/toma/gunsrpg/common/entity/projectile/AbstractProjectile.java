@@ -156,6 +156,10 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         return propertyContext.getProperty(key);
     }
 
+    public <V> void setProperty(PropertyKey<V> key, V value) {
+        propertyContext.setProperty(key, value);
+    }
+
     /* Protected methods */
 
     @Override

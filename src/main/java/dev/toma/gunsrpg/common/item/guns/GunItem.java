@@ -15,6 +15,7 @@ import dev.toma.gunsrpg.common.IShootProps;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
+import dev.toma.gunsrpg.common.entity.projectile.Bolt;
 import dev.toma.gunsrpg.common.entity.projectile.Bullet;
 import dev.toma.gunsrpg.common.entity.projectile.PenetrationData;
 import dev.toma.gunsrpg.common.init.ModEntities;
@@ -166,6 +167,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         int delay = config.getGravityDelay();
         bullet.setup(damage, velocity, delay);
         bullet.fire(shooter.xRot, shooter.yRot, props.getInaccuracy());
+        this.prepareForShooting(bullet, shooter);
         if (shooter instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) shooter;
             PlayerData.get(player).ifPresent(data -> {
@@ -176,6 +178,10 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
             });
         }
         level.addFreshEntity(bullet);
+    }
+
+    protected void prepareForShooting(AbstractProjectile projectile, LivingEntity shooter) {
+
     }
 
     /* FINAL METHODS ---------------------------------------------------------------- */
