@@ -260,7 +260,7 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         if (player.isCreative() || player.isSpectator())
             return;
         PlayerData.get(player).ifPresent(data -> {
-            double mobScareRange = 25.0;
+            double mobScareRange = 64.0;
             GunItem gun = (GunItem) weapon.getItem();
             double noiseMultiplier = gun.getNoiseMultiplier(data.getAttributes());
             double actualScareRange = mobScareRange * noiseMultiplier;

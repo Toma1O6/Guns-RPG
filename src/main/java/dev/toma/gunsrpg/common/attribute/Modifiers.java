@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.common.attribute;
 
 import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
 import dev.toma.gunsrpg.api.common.attribute.IValueFormatter;
-import dev.toma.gunsrpg.util.Constants;
 
 import static dev.toma.gunsrpg.util.Constants.ModifierIds.*;
 
@@ -19,7 +18,6 @@ public final class Modifiers {
     public static final IAttributeModifier BLAZEPOWDER_II               = new AttributeModifier(BLAZEPOWEDER_CRAFTING, AttributeOps.SUM, 3).named("count");
     public static final IAttributeModifier BLAZEPOWDER_III              = new AttributeModifier(BLAZEPOWEDER_CRAFTING, AttributeOps.SUM, 4).named("count");
     public static final IAttributeModifier MASTER_AMMO                  = new AttributeModifier("F932A216-605A-4C07-9017-EA3E8A22B46F", AttributeOps.SUM, 1).named("ammo");
-    public static final IAttributeModifier MASTER_BOLT                  = new AttributeModifier("A10BC07F-641B-4CB9-A753-D4506667C4CA", AttributeOps.SUM, 2).named("bolt");
     /* General modifiers */
     public static final IAttributeModifier ACROBATICS_FALL_I            = new AttributeModifier(FALL_RESIST, AttributeOps.SUM, 0.2).named("fall", IValueFormatter.PERCENT);
     public static final IAttributeModifier ACROBATICS_FALL_II           = new AttributeModifier(FALL_RESIST, AttributeOps.SUM, 0.45).named("fall", IValueFormatter.PERCENT);
@@ -81,6 +79,7 @@ public final class Modifiers {
     public static final IAttributeModifier R45_EXTENDED_DRUM            = new AttributeModifier("ED6581E6-8C4E-45AD-9B8C-E014717B16EB", AttributeOps.SUM, 3).named("capacity");
     public static final IAttributeModifier DEAGLE_EXTENDED_MAG          = new AttributeModifier("A52A4D8E-1DA5-40A8-8215-6384CD721C42", AttributeOps.SUM, 5).named("capacity");
     public static final IAttributeModifier UMP45_EXTENDED               = new AttributeModifier("26C18B3B-29AC-4A76-95C8-F1251EA78537", AttributeOps.SUM, 15).named("capacity");
+    public static final IAttributeModifier THOMPSON_EXTENDED            = new AttributeModifier("97F9C1A6-F2C7-4E63-8479-D1A75D6C0F5A", AttributeOps.SUM, 20).named("capacity");
     public static final IAttributeModifier CROSSBOW_EXTENDED            = new AttributeModifier("C997FD4C-9156-40CD-A226-6F4B02F5B298", AttributeOps.SUM, 2).named("capacity");
     public static final IAttributeModifier CROSSBOW_REPEATER            = new AttributeModifier("6899C770-39CA-465E-8715-4D5D47512ED4", AttributeOps.MUL, 1.25);
     public static final IAttributeModifier SKS_EXTENDED                 = new AttributeModifier("6BC9638B-0A31-4522-BDE7-DA68F0AEA194", AttributeOps.SUM, 10).named("capacity");

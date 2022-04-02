@@ -4,7 +4,9 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.ThompsonRenderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -15,8 +17,11 @@ import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
@@ -71,12 +76,12 @@ public class ThompsonItem extends GunItem {
 
     @Override
     public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
-        return 75;
+        return Attribs.THOMPSON_RELOAD.intValue(provider);
     }
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 3;
+        return provider.getAttribute(Attribs.THOMPSON_FIRERATE).intValue();
     }
 
     @Override
@@ -86,7 +91,32 @@ public class ThompsonItem extends GunItem {
 
     @Override
     public int getMaxAmmo(IAttributeProvider provider) {
-        return 30;
+        return provider.getAttribute(Attribs.THOMPSON_MAG_CAPACITY).intValue();
+    }
+
+    @Override
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return Attribs.THOMPSON_VERTICAL.floatValue(provider);
+    }
+
+    @Override
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return 0.65F * super.getHorizontalRecoil(provider);
+    }
+
+    @Override
+    public double getNoiseMultiplier(IAttributeProvider provider) {
+        return Attribs.THOMPSON_LOUDNESS.value(provider);
+    }
+
+    @Override
+    public void onKillEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+        if (shooter instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) shooter;
+            if (PlayerData.hasActiveSkill(player, Skills.THOMPSON_SOUL_TAKER)) {
+                player.addEffect(new EffectInstance(Effects.ABSORPTION, 120, 0, false, false));
+            }
+        }
     }
 
     @Override

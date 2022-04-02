@@ -114,6 +114,11 @@ public final class Attribs {
     public static final IAttributeId UMP45_VERTICAL_RECOIL      = createInternal("ump45_vertical_recoil", 1.8);
     public static final IAttributeId UMP45_FIRERATE             = createInternal("ump45_firerate", 3);
     public static final IAttributeId UMP45_NOISE                = createInternal("ump45_noise");
+    public static final IAttributeId THOMPSON_RELOAD_SPEED      = createInternal("thompson_reload_speed", 75);
+    public static final IAttributeId THOMPSON_MAG_CAPACITY      = createInternal("thompson_mag_capacity", 30);
+    public static final IAttributeId THOMPSON_VERTICAL_RECOIL   = createInternal("thompson_vertical_recoil", 1.4);
+    public static final IAttributeId THOMPSON_FIRERATE          = createInternal("thompson_firerate", 3);
+    public static final IAttributeId THOMPSON_NOISE             = createInternal("thompson_noise");
     public static final IAttributeId CROSSBOW_RELOAD_SPEED      = createInternal("crossbow_reload_speed", 60);
     public static final IAttributeId CROSSBOW_MAG_CAPACITY      = createInternal("crossbow_mag_capacity");
     public static final IAttributeId S1897_RELOAD_SPEED         = createInternal("s1897_reload_speed", 17);
@@ -145,8 +150,12 @@ public final class Attribs {
     public static final ICombinedAttribute DEAGLE_RELOAD        = ICombinedAttribute.of(RELOAD_SPEED, DEAGLE_RELOADING);
     public static final ICombinedAttribute DEAGLE_HORIZONTAL    = ICombinedAttribute.of(RECOIL_CONTROL, DEAGLE_HORIZONTAL_RECOIL);
     public static final ICombinedAttribute DEAGLE_VERTICAL      = ICombinedAttribute.of(RECOIL_CONTROL, DEAGLE_VERTICAL_RECOIL);
+    public static final ICombinedAttribute UMP45_RELOAD         = ICombinedAttribute.of(RELOAD_SPEED, UMP45_RELOAD_SPEED);
     public static final ICombinedAttribute UMP45_VERTICAL       = ICombinedAttribute.of(RECOIL_CONTROL, UMP45_VERTICAL_RECOIL);
     public static final ICombinedAttribute UMP45_LOUDNESS       = ICombinedAttribute.of(WEAPON_NOISE, UMP45_NOISE);
+    public static final ICombinedAttribute THOMPSON_RELOAD      = ICombinedAttribute.of(RELOAD_SPEED, THOMPSON_RELOAD_SPEED);
+    public static final ICombinedAttribute THOMPSON_VERTICAL    = ICombinedAttribute.of(RECOIL_CONTROL, THOMPSON_VERTICAL_RECOIL);
+    public static final ICombinedAttribute THOMPSON_LOUDNESS    = ICombinedAttribute.of(WEAPON_NOISE, THOMPSON_NOISE);
     public static final ICombinedAttribute CROSSBOW_RELOAD      = ICombinedAttribute.of(RELOAD_SPEED, CROSSBOW_RELOAD_SPEED);
     public static final ICombinedAttribute S1897_RELOAD         = ICombinedAttribute.of(RELOAD_SPEED, S1897_RELOAD_SPEED);
     public static final ICombinedAttribute SKS_VERTICAL         = ICombinedAttribute.of(RECOIL_CONTROL, SKS_VERTICAL_RECOIL);

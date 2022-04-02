@@ -49,6 +49,7 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.*;
+import org.w3c.dom.Attr;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -260,12 +261,12 @@ public class CommonRegistry {
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("red_dot").build().setRegistryName("ump45_red_dot"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.NOISE, Attribs.UMP45_NOISE))).renderModIcon("suppressor").build().setRegistryName("ump45_suppressor"),
                 SkillType.Builder.create(BasicSkill::new).description(3).build().setRegistryName("ump45_commando"),
-                SkillType.Builder.create(BasicSkill::new).renderModIcon("quickdraw").description(0).build().setRegistryName("thompson_quickdraw"),
-                SkillType.Builder.create(BasicSkill::new).renderModIcon("vertical_grip").build().setRegistryName("thompson_vertical"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.QUICKDRAW_MAG, Attribs.THOMPSON_RELOAD_SPEED))).renderModIcon("quickdraw").description(0).build().setRegistryName("thompson_quickdraw"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.VERTICAL_GRIP, Attribs.THOMPSON_VERTICAL_RECOIL))).renderModIcon("vertical_grip").build().setRegistryName("thompson_vertical"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("red_dot").build().setRegistryName("thompson_red_dot"),
-                SkillType.Builder.create(BasicSkill::new).renderModIcon("extended").description(0).build().setRegistryName("thompson_extended"),
-                SkillType.Builder.create(BasicSkill::new).renderModIcon("tough_spring").description(0).build().setRegistryName("thompson_tough_spring"),
-                SkillType.Builder.create(BasicSkill::new).renderModIcon("suppressor").build().setRegistryName("thompson_suppressor"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.THOMPSON_EXTENDED, Attribs.THOMPSON_MAG_CAPACITY))).renderModIcon("extended").description(0).build().setRegistryName("thompson_extended"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.TOUGH_SPRING, Attribs.THOMPSON_FIRERATE))).renderModIcon("tough_spring").description(0).build().setRegistryName("thompson_tough_spring"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.NOISE, Attribs.THOMPSON_NOISE))).renderModIcon("suppressor").build().setRegistryName("thompson_suppressor"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("soul_taker").build().setRegistryName("thompson_soul_taker"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("quickdraw").description(0).build().setRegistryName("vector_quickdraw"),
                 SkillType.Builder.create(BasicSkill::new).renderModIcon("vertical_grip").build().setRegistryName("vector_vertical"),

@@ -108,7 +108,7 @@ public class DesertEagleItem extends GunItem {
 
     @Override
     public PenetrationData getPenetrationData(IPlayerData data) {
-        if (data.getSkillProvider().hasSkill(Skills.DEAGLE_FINISHER)) {
+        if (data.getSkillProvider().hasSkill(Skills.DEAGLE_PENETRATOR)) {
             return PEN_DATA.make();
         }
         return null;
