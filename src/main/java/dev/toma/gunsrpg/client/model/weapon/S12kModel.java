@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
+import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
 
@@ -69,7 +70,9 @@ public class S12kModel extends AbstractWeaponModel {
     protected void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay) {
         gun.render(matrix, builder, light, overlay);
         handguard.render(matrix, builder, light, overlay);
-        // TODO render rail with sights
+        if (data.getSkillProvider().hasSkill(Skills.S12K_RED_DOT)) {
+            rail.render(matrix, builder, light, overlay);
+        }
     }
 
     public S12kModel() {

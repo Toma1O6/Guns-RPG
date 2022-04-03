@@ -69,6 +69,8 @@ public class RenderConfigs {
     public static final IRenderConfig VECTOR_REFLEX = RenderConfig.newDef().withPosition(0.0, -0.75, 0.6).finish();
     public static final IRenderConfig WOODEN_CROSSBOW_SCOPE = RenderConfig.newDef().withPosition(0.0, 0.15, 0.6).withScale(0.6F, 0.6F, 0.35F).finish();
     public static final IRenderConfig CHUKONU_SCOPE = RenderConfig.newDef().withPosition(0.0, -0.08, 0.45).withScale(0.6F, 0.6F, 0.4F).finish();
+    public static final IRenderConfig S12K_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -4.7, -2.5).withScale(2.0F, 2.0F, 3.0F).finish();
+    public static final IRenderConfig S12K_REFLEX = RenderConfig.newDef().withPosition(0.0, -4.8, 0.0).withScale(1.6F).finish();
     public static final IRenderConfig SKS_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -1.33, -5.0).withScale(1.4F, 1.4F, 2.0F).finish();
     public static final IRenderConfig SKS_REFLEX = RenderConfig.newDef().withPosition(0.0, -1.9, -1.1).withScale(1.3F).finish();
     public static final IRenderConfig KAR98K_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -0.6, -5.7).withScale(1.5F, 1.5F, 2.0F).finish();

@@ -88,6 +88,7 @@ public class Skills {
     public static final SkillType<ISkill> S1897_EXTENDED_BARREL = null;
     public static final SkillType<ISkill> S686_CANNON_BLAST = null;
     public static final SkillType<ISkill> S12K_SUPPRESSOR = null;
+    public static final SkillType<ISkill> S12K_RED_DOT = null;
     public static final SkillType<ISkill> AKM_SUPPRESSOR = null;
     public static final SkillType<ISkill> HK416_SUPPRESSOR = null;
     public static final SkillType<ISkill> AUG_SUPPRESSOR = null;
