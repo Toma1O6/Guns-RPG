@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns.util;
 
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -66,6 +67,19 @@ public interface IInputEventHandler {
         @Override
         public void invokeEvent(InputEventListenerType event, PlayerEntity player, ItemStack stack, IPlayerData data) {
             Utils.shootWithValidation(player, stack, data);
+        }
+    }
+
+    class Double implements IInputEventHandler {
+
+        @Override
+        public void invokeEvent(InputEventListenerType event, PlayerEntity player, ItemStack stack, IPlayerData data) {
+            int ammo = AbstractGun.getAmmoCount(stack);
+            boolean canShootSecond = ammo > 1;
+            Utils.shootWithValidation(player, stack, data);
+            if (canShootSecond) {
+                ShootingManager.Client.shoot(player, stack, data);
+            }
         }
     }
 
