@@ -16,7 +16,7 @@ import net.minecraft.util.text.ITextComponent;
 
 import java.util.function.Supplier;
 
-public class SecondChanceSkill extends BasicSkill implements ICooldown, IDescriptionProvider {
+public class SecondChanceSkill extends SimpleSkill implements ICooldown, IDescriptionProvider {
 
     private final DescriptionContainer container;
     private final int maxCooldown;

@@ -7,7 +7,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.util.text.ITextComponent;
 
-public class TreasureHunterSkill extends BasicSkill implements IDescriptionProvider {
+public class TreasureHunterSkill extends SimpleSkill implements IDescriptionProvider {
 
     private static final DetectionRadius[] RADII = {
             new DetectionRadius(40.0F, 6.0F),

@@ -10,13 +10,12 @@ import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AttributeSkill extends BasicSkill implements IDescriptionProvider {
+public class AttributeSkill extends SimpleSkill implements IDescriptionProvider {
 
     private final IAttributeTarget[] targets;
 

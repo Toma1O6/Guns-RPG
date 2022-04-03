@@ -16,7 +16,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.text.ITextComponent;
 
-public class LikeACatSkill extends BasicSkill implements ICooldown, IClickableSkill, IDescriptionProvider {
+public class LikeACatSkill extends SimpleSkill implements ICooldown, IClickableSkill, IDescriptionProvider {
 
     private final DescriptionContainer container;
     private final int effectLength;

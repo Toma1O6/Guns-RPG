@@ -18,7 +18,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 
-public class IronBuddySkill extends BasicSkill implements ICooldown, IClickableSkill, IDescriptionProvider {
+public class IronBuddySkill extends SimpleSkill implements ICooldown, IClickableSkill, IDescriptionProvider {
 
     private final DescriptionContainer container;
     private final float addedHealth;

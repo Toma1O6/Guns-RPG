@@ -4,7 +4,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 
-public class WarMachineSkill extends BasicSkill {
+public class WarMachineSkill extends SimpleSkill {
 
     public WarMachineSkill(SkillType<?> type) {
         super(type);

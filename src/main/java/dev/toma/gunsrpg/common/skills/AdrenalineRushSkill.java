@@ -7,7 +7,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 
-public class AdrenalineRushSkill extends BasicSkill implements IDescriptionProvider {
+public class AdrenalineRushSkill extends SimpleSkill implements IDescriptionProvider {
 
     private static final float[] MODIFIERS = new float[]{0.15F, 0.3F, 0.5F};
     private static final int HEALTH_LIMIT = 8;
