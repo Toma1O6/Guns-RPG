@@ -8,7 +8,10 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.util.properties.PropertyContext;
 import dev.toma.gunsrpg.util.properties.PropertyKey;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySize;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -29,7 +32,6 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public abstract class AbstractProjectile extends ProjectileEntity {
 
@@ -145,7 +147,11 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         if (supersonic)
             passAround();
         postTick();
-        move(MoverType.SELF, getDeltaMovement());
+        Vector3d delta = this.getDeltaMovement();
+        double x = this.getX() + delta.x;
+        double y = this.getY() + delta.y;
+        double z = this.getZ() + delta.z;
+        this.setPos(x, y, z);
     }
 
     public ItemStack getWeaponSource() {
@@ -174,7 +180,9 @@ public abstract class AbstractProjectile extends ProjectileEntity {
     }
 
     protected void applyGravity() {
-        applyGravity(0.05F);
+        if (this.canApplyGravity()) {
+            applyGravity(0.05F);
+        }
     }
 
     protected void reduceDamage(float amount) {

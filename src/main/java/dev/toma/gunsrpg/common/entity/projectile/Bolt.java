@@ -19,7 +19,7 @@ public class Bolt extends Bullet {
 
     @Override
     public void postTick() {
-        applyGravity(0.1F);
+        applyGravity(0.03F);
     }
 
     // TODO possibly spawn dummy unpickable arrow at hit location

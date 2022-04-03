@@ -27,7 +27,7 @@ public abstract class AbstractCrossbow extends GunItem {
         Bolt bolt = new Bolt(ModEntities.BOLT.get(), level, shooter);
         IWeaponConfig config = this.getWeaponConfig();
         float damage = this.getWeaponDamage(stack, shooter) * props.getDamageMultiplier();
-        float velocity = this.getInitialVelocity(config, shooter) * 0.7F;
+        float velocity = this.getInitialVelocity(config, shooter);
         int delay = config.getGravityDelay();
         bolt.setup(damage, velocity, delay);
         bolt.fire(shooter.xRot, shooter.yRot, props.getInaccuracy());
