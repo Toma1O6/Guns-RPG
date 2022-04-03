@@ -22,6 +22,7 @@ import net.minecraft.util.SoundEvent;
 
 public class S686Item extends AbstractShotgun {
 
+    private static final ResourceLocation AIM = GunsRPG.makeResource("s686/aim");
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("s686/reload_both");
     private static final ResourceLocation RELOAD_SINGLE = GunsRPG.makeResource("s686/reload_single");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("s686/unjam");
@@ -96,6 +97,11 @@ public class S686Item extends AbstractShotgun {
     @Override
     public ResourceLocation getUnjamAnimationPath() {
         return UNJAM;
+    }
+
+    @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return AIM;
     }
 
     @Override

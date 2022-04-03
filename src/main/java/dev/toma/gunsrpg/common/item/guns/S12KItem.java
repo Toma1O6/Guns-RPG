@@ -23,6 +23,10 @@ public class S12KItem extends AbstractShotgun {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("s12k/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("s12k/unjam");
+    private static final ResourceLocation[] AIM = {
+            GunsRPG.makeResource("s12k/aim"),
+            GunsRPG.makeResource("s12k/aim_red_dot")
+    };
 
     public S12KItem(String name) {
         super(name, new Properties().setISTER(() -> S12KRenderer::new).durability(370));
@@ -96,6 +100,11 @@ public class S12KItem extends AbstractShotgun {
     @Override
     public ResourceLocation getUnjamAnimationPath() {
         return UNJAM;
+    }
+
+    @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return AIM[PlayerData.hasActiveSkill(player, Skills.S12K_RED_DOT) ? 1 : 0];
     }
 
     @Override
