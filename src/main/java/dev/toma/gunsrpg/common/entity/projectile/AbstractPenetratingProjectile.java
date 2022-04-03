@@ -8,8 +8,6 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
 public abstract class AbstractPenetratingProjectile extends AbstractProjectile {
 
     public AbstractPenetratingProjectile(EntityType<? extends AbstractPenetratingProjectile> type, World level) {
@@ -21,10 +19,6 @@ public abstract class AbstractPenetratingProjectile extends AbstractProjectile {
     }
 
     protected abstract void handleEntityCollision(EntityRayTraceResult result);
-
-    public void setPenetrationData(@Nullable PenetrationData data) {
-        propertyContext.setProperty(Properties.PENETRATION, data);
-    }
 
     @Override
     protected final void onHitEntity(EntityRayTraceResult result) {

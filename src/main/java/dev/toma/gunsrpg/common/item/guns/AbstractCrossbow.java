@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.IShootProps;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.entity.projectile.Bolt;
 import dev.toma.gunsrpg.common.entity.projectile.PenetrationData;
 import dev.toma.gunsrpg.common.init.ModEntities;
@@ -23,25 +24,8 @@ public abstract class AbstractCrossbow extends GunItem {
     }
 
     @Override
-    public void shootProjectile(World level, LivingEntity shooter, ItemStack stack, IShootProps props) {
-        Bolt bolt = new Bolt(ModEntities.BOLT.get(), level, shooter);
-        IWeaponConfig config = this.getWeaponConfig();
-        float damage = this.getWeaponDamage(stack, shooter) * props.getDamageMultiplier();
-        float velocity = this.getInitialVelocity(config, shooter);
-        int delay = config.getGravityDelay();
-        bolt.setup(damage, velocity, delay);
-        bolt.fire(shooter.xRot, shooter.yRot, props.getInaccuracy());
-        this.prepareForShooting(bolt, shooter);
-        if (shooter instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) shooter;
-            PlayerData.get(player).ifPresent(data -> {
-                PenetrationData penetrationData = getPenetrationData(data);
-                if (penetrationData != null) {
-                    bolt.setPenetrationData(penetrationData);
-                }
-            });
-        }
-        level.addFreshEntity(bolt);
+    protected AbstractProjectile makeProjectile(World level, LivingEntity shooter) {
+        return new Bolt(ModEntities.BOLT.get(), level, shooter);
     }
 
     @Override
@@ -72,9 +56,5 @@ public abstract class AbstractCrossbow extends GunItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void onShoot(PlayerEntity player, ItemStack stack) {
-    }
-
-    protected float getInitialVelocity(IWeaponConfig config, LivingEntity livingEntity) {
-        return config.getVelocity();
     }
 }

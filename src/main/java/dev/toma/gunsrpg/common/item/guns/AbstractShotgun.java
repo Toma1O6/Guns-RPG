@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
-import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.common.IShootProps;
+import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.entity.projectile.Pellet;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import net.minecraft.entity.LivingEntity;
@@ -17,26 +17,20 @@ public abstract class AbstractShotgun extends GunItem {
     public abstract int getPelletCount(LivingEntity shooter, ItemStack stack);
 
     @Override
-    public final void shootProjectile(World level, LivingEntity shooter, ItemStack stack, IShootProps props) {
-        int numPellets = this.getPelletCount(shooter, stack);
-        float spread = this.getPelletSpreadBase(shooter);
-        for (int i = 0; i < numPellets; i++) {
-            shootPellet(level, shooter, stack, props, spread);
+    protected AbstractProjectile makeProjectile(World level, LivingEntity shooter) {
+        return new Pellet(ModEntities.PELLET.get(), level, shooter);
+    }
+
+    @Override
+    protected void handleShootProjectileAction(World world, LivingEntity entity, ItemStack stack, IShootProps props) {
+        int pellets = this.getPelletCount(entity, stack);
+        for (int i = 0; i < pellets; i++) {
+            shootProjectile(world, entity, stack, props);
         }
     }
 
-    protected void shootPellet(World level, LivingEntity shooter, ItemStack stack, IShootProps props, float baseSpread) {
-        Pellet pellet = new Pellet(ModEntities.PELLET.get(), level, shooter);
-        IWeaponConfig config = this.getWeaponConfig();
-        float damage = this.getWeaponDamage(stack, shooter) * props.getDamageMultiplier();
-        float velocity = config.getVelocity();
-        int delay = config.getGravityDelay();
-        pellet.setup(damage, velocity, delay);
-        pellet.fire(shooter.xRot, shooter.yRot, baseSpread + props.getInaccuracy());
-        level.addFreshEntity(pellet);
-    }
-
-    protected float getPelletSpreadBase(LivingEntity shooter) {
+    @Override
+    protected float getInaccuracy(IShootProps props, LivingEntity entity) {
         return 2.4F;
     }
 }

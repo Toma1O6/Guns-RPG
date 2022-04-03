@@ -15,7 +15,6 @@ import dev.toma.gunsrpg.common.IShootProps;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
-import dev.toma.gunsrpg.common.entity.projectile.Bolt;
 import dev.toma.gunsrpg.common.entity.projectile.Bullet;
 import dev.toma.gunsrpg.common.entity.projectile.PenetrationData;
 import dev.toma.gunsrpg.common.init.ModEntities;
@@ -34,6 +33,7 @@ import lib.toma.animations.Easings;
 import lib.toma.animations.api.AnimationList;
 import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IRenderConfig;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -49,6 +49,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.BiFunction;
+
+import static dev.toma.gunsrpg.util.properties.Properties.PENETRATION;
 
 public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
@@ -160,24 +162,36 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     }
 
     public void shootProjectile(World level, LivingEntity shooter, ItemStack stack, IShootProps props) {
-        Bullet bullet = new Bullet(ModEntities.BULLET.get(), level, shooter);
+        AbstractProjectile projectile = this.makeProjectile(level, shooter);
         IWeaponConfig config = this.getWeaponConfig();
         float damage = this.getWeaponDamage(stack, shooter) * props.getDamageMultiplier();
-        float velocity = config.getVelocity();
+        float velocity = this.getInitialVelocity(config, shooter);
         int delay = config.getGravityDelay();
-        bullet.setup(damage, velocity, delay);
-        bullet.fire(shooter.xRot, shooter.yRot, props.getInaccuracy());
-        this.prepareForShooting(bullet, shooter);
+        projectile.setup(damage, velocity, delay);
+        projectile.fire(shooter.xRot, shooter.yRot, this.getInaccuracy(props, shooter));
+        this.prepareForShooting(projectile, shooter);
         if (shooter instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) shooter;
             PlayerData.get(player).ifPresent(data -> {
                 PenetrationData penetrationData = getPenetrationData(data);
                 if (penetrationData != null) {
-                    bullet.setPenetrationData(penetrationData);
+                    projectile.setProperty(PENETRATION, penetrationData);
                 }
             });
         }
-        level.addFreshEntity(bullet);
+        level.addFreshEntity(projectile);
+    }
+
+    protected float getInaccuracy(IShootProps props, LivingEntity entity) {
+        return props.getInaccuracy();
+    }
+
+    protected float getInitialVelocity(IWeaponConfig config, LivingEntity shooter) {
+        return config.getVelocity();
+    }
+
+    protected AbstractProjectile makeProjectile(World level, LivingEntity shooter) {
+        return new Bullet(ModEntities.BULLET.get(), level, shooter);
     }
 
     protected void prepareForShooting(AbstractProjectile projectile, LivingEntity shooter) {
@@ -210,7 +224,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
             GunsRPG.log.warn("{} has tried to shoot with weapon which has no durability", entity.getName().getString());
             return;
         }
-        shootProjectile(world, entity, stack, props);
+        handleShootProjectileAction(world, entity, stack, props);
         if (entity instanceof ServerPlayerEntity) {
             ServerPlayerEntity player = (ServerPlayerEntity) entity;
             IPlayerData data = PlayerData.getUnsafe(player);
@@ -265,6 +279,10 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     @Override
     public final MaterialContainer getContainer() {
         return container;
+    }
+
+    protected void handleShootProjectileAction(World world, LivingEntity entity, ItemStack stack, IShootProps props) {
+        shootProjectile(world, entity, stack, props);
     }
 
     protected boolean isSilenced(PlayerEntity player) {
