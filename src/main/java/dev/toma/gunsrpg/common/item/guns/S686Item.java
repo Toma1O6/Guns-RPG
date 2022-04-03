@@ -1,10 +1,14 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.IWeaponConfig;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.S686Renderer;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.IShootProps;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -13,6 +17,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,6 +25,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
+import static dev.toma.gunsrpg.util.properties.Properties.LOOT_LEVEL;
+
+// TODO implement reliable skill
 public class S686Item extends AbstractShotgun {
 
     private static final ResourceLocation AIM = GunsRPG.makeResource("s686/aim");
@@ -64,7 +72,7 @@ public class S686Item extends AbstractShotgun {
 
     @Override
     public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
-        return 60;
+        return Attribs.S686_RELOAD.intValue(provider);
     }
 
     @Override
@@ -80,6 +88,56 @@ public class S686Item extends AbstractShotgun {
     @Override
     public int getUnjamTime(ItemStack stack) {
         return 70;
+    }
+
+    @Override
+    protected void prepareForShooting(AbstractProjectile projectile, LivingEntity shooter) {
+        if (shooter instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) shooter;
+            if (PlayerData.hasActiveSkill(player, Skills.S686_HUNTER)) {
+                projectile.setProperty(LOOT_LEVEL, SkillUtil.HUNTER_LOOTING_LEVEL);
+            }
+        }
+    }
+
+    @Override
+    protected float getInaccuracy(IShootProps props, LivingEntity entity) {
+        float spread = super.getInaccuracy(props, entity);
+        if (entity instanceof PlayerEntity) {
+            if (PlayerData.hasActiveSkill((PlayerEntity) entity, Skills.S686_CHOKE)) {
+                spread *= SkillUtil.CHOKE_SPREAD;
+            }
+        }
+        return spread;
+    }
+
+    @Override
+    protected float getInitialVelocity(IWeaponConfig config, LivingEntity shooter) {
+        float velocity = config.getVelocity();
+        if (shooter instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) shooter;
+            if (PlayerData.hasActiveSkill(player, Skills.S686_EXTENDED_BARREL)) {
+                return velocity * SkillUtil.EXTENDED_BARREL_VELOCITY;
+            }
+        }
+        return velocity;
+    }
+
+    @Override
+    public void onHitEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.S686_BLAZING_PELLETS)) {
+            victim.setRemainingFireTicks(50);
+        }
+    }
+
+    @Override
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return 3.4F * super.getVerticalRecoil(provider);
+    }
+
+    @Override
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return 2.0F * super.getHorizontalRecoil(provider);
     }
 
     @Override
@@ -115,7 +173,7 @@ public class S686Item extends AbstractShotgun {
     }
 
     private Firemode switchFiremode(PlayerEntity player, Firemode firemode) {
-        boolean canSwitch = firemode == Firemode.DOUBLE_ACTION || PlayerData.hasActiveSkill(player, Skills.S686_CANNON_BLAST);
-        return canSwitch ? firemode == Firemode.DOUBLE_ACTION ? Firemode.SINGLE : Firemode.DOUBLE_ACTION : firemode;
+        boolean canSwitch = firemode == Firemode.DOUBLE || PlayerData.hasActiveSkill(player, Skills.S686_CANNON_BLAST);
+        return canSwitch ? firemode == Firemode.DOUBLE ? Firemode.SINGLE : Firemode.DOUBLE : firemode;
     }
 }

@@ -2,10 +2,12 @@ package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IReloadManager;
+import dev.toma.gunsrpg.api.common.IWeaponConfig;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.S1897Renderer;
+import dev.toma.gunsrpg.common.IShootProps;
 import dev.toma.gunsrpg.common.attribute.Attribs;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.ModSounds;
@@ -16,6 +18,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -110,9 +113,32 @@ public class S1897Item extends AbstractShotgun {
 
     @Override
     public void onKillEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if (!shooter.level.isClientSide && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.S1897_NEVER_GIVE_UP)) {
+        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.S1897_NEVER_GIVE_UP)) {
             shooter.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 100, 0, false, false));
         }
+    }
+
+    @Override
+    protected float getInitialVelocity(IWeaponConfig config, LivingEntity shooter) {
+        float velocity = config.getVelocity();
+        if (shooter instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) shooter;
+            if (PlayerData.hasActiveSkill(player, Skills.S1897_EXTENDED_BARREL)) {
+                return velocity * SkillUtil.EXTENDED_BARREL_VELOCITY;
+            }
+        }
+        return velocity;
+    }
+
+    @Override
+    protected float getInaccuracy(IShootProps props, LivingEntity entity) {
+        float spread = super.getInaccuracy(props, entity);
+        if (entity instanceof PlayerEntity) {
+            if (PlayerData.hasActiveSkill((PlayerEntity) entity, Skills.S1897_CHOKE)) {
+                spread *= SkillUtil.CHOKE_SPREAD;
+            }
+        }
+        return spread;
     }
 
     @Override

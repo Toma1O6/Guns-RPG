@@ -4,7 +4,10 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.S12KRenderer;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.IShootProps;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -12,10 +15,13 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
@@ -69,17 +75,50 @@ public class S12KItem extends AbstractShotgun {
 
     @Override
     public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
-        return 80;
+        return Attribs.S12K_RELOAD.intValue(provider);
     }
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 6;
+        return provider.getAttribute(Attribs.S12K_FIRERATE).intValue();
     }
 
     @Override
     public int getMaxAmmo(IAttributeProvider provider) {
-        return 5;
+        return provider.getAttribute(Attribs.S12K_MAG_CAPACITY).intValue();
+    }
+
+    @Override
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return Attribs.S12K_VERTICAL.floatValue(provider);
+    }
+
+    @Override
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return Attribs.S12K_HORIZONTAL.floatValue(provider);
+    }
+
+    @Override
+    public double getNoiseMultiplier(IAttributeProvider provider) {
+        return Attribs.S12K_NOISE.value(provider);
+    }
+
+    @Override
+    protected float getInaccuracy(IShootProps props, LivingEntity entity) {
+        float spread = super.getInaccuracy(props, entity);
+        if (entity instanceof PlayerEntity) {
+            if (PlayerData.hasActiveSkill((PlayerEntity) entity, Skills.S12K_CHOKE)) {
+                spread *= SkillUtil.CHOKE_SPREAD;
+            }
+        }
+        return spread;
+    }
+
+    @Override
+    public void onKillEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.S12K_NEVER_GIVE_UP)) {
+            shooter.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 100, 0, false, false));
+        }
     }
 
     @Override

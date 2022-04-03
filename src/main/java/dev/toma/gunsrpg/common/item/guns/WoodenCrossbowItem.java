@@ -119,7 +119,7 @@ public class WoodenCrossbowItem extends AbstractCrossbow {
             PlayerData.get((PlayerEntity) shooter).ifPresent(data -> {
                 ISkillProvider provider = data.getSkillProvider();
                 if (provider.hasSkill(Skills.CROSSBOW_HUNTER)) {
-                    projectile.setProperty(LOOT_LEVEL, 4);
+                    projectile.setProperty(LOOT_LEVEL, SkillUtil.HUNTER_LOOTING_LEVEL);
                 }
             });
         }

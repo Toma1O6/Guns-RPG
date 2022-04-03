@@ -34,8 +34,8 @@ public enum Firemode {
             InputEventListenerType.ON_INPUT
     ),
 
-    DOUBLE_ACTION(
-            "Double Action",
+    DOUBLE(
+            "Double",
             new LazyLoader<>(IInputEventHandler.Barrage::new), // TODO implement custom which shoots without delay
             InputEventListenerType.ON_INPUT
     ),

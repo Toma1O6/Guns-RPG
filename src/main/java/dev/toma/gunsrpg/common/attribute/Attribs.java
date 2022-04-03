@@ -131,7 +131,13 @@ public final class Attribs {
     public static final IAttributeId S1897_RELOAD_SPEED         = createInternal("s1897_reload_speed", 17);
     public static final IAttributeId S1897_MAG_CAPACITY         = createInternal("s1897_mag_capacity", 5);
     public static final IAttributeId S1897_FIRERATE             = createInternal("s1897_firerate", 25);
-    public static final IAttributeId S1897_PELLET_SPREAD        = createInternal("s1897_pellet_spread");
+    public static final IAttributeId S686_RELOAD_SPEED          = createInternal("s686_reload_speed", 60);
+    public static final IAttributeId S12K_RELOAD_SPEED          = createInternal("s12k_reload_speed", 80);
+    public static final IAttributeId S12K_MAG_CAPACITY          = createInternal("s12k_mag_capacity", 5);
+    public static final IAttributeId S12K_VERTICAL_RECOIL       = createInternal("s12k_vertical_recoil", 4.2);
+    public static final IAttributeId S12K_HORIZONTAL_RECOIL     = createInternal("s12k_horizontal_recoil", 2.2);
+    public static final IAttributeId S12K_FIRERATE              = createInternal("s12k_firerate", 6);
+    public static final IAttributeId S12K_LOUDNESS              = createInternal("s12k_loudness");
     public static final IAttributeId SKS_FIRERATE               = createInternal("sks_firerate", 7);
     public static final IAttributeId SKS_VERTICAL_RECOIL        = createInternal("sks_vertical_recoil", 4.7);
     public static final IAttributeId SKS_HORIZONTAL_RECOIL      = createInternal("sks_horizontal_recoil", 1.3);
@@ -169,6 +175,11 @@ public final class Attribs {
     public static final ICombinedAttribute CROSSBOW_RELOAD      = ICombinedAttribute.of(RELOAD_SPEED, CROSSBOW_RELOAD_SPEED);
     public static final ICombinedAttribute CHUKONU_RELOAD       = ICombinedAttribute.of(RELOAD_SPEED, CHUKONU_RELOAD_SPEED);
     public static final ICombinedAttribute S1897_RELOAD         = ICombinedAttribute.of(RELOAD_SPEED, S1897_RELOAD_SPEED);
+    public static final ICombinedAttribute S686_RELOAD          = ICombinedAttribute.of(RELOAD_SPEED, S686_RELOAD_SPEED);
+    public static final ICombinedAttribute S12K_RELOAD          = ICombinedAttribute.of(RELOAD_SPEED, S12K_RELOAD_SPEED);
+    public static final ICombinedAttribute S12K_VERTICAL        = ICombinedAttribute.of(RECOIL_CONTROL, S12K_VERTICAL_RECOIL);
+    public static final ICombinedAttribute S12K_HORIZONTAL      = ICombinedAttribute.of(RECOIL_CONTROL, S12K_HORIZONTAL_RECOIL);
+    public static final ICombinedAttribute S12K_NOISE           = ICombinedAttribute.of(WEAPON_NOISE, S12K_LOUDNESS);
     public static final ICombinedAttribute SKS_VERTICAL         = ICombinedAttribute.of(RECOIL_CONTROL, SKS_VERTICAL_RECOIL);
     public static final ICombinedAttribute SKS_HORIZONTAL       = ICombinedAttribute.of(RECOIL_CONTROL, SKS_HORIZONTAL_RECOIL);
     public static final ICombinedAttribute SKS_LOUDNESS         = ICombinedAttribute.of(WEAPON_NOISE, SKS_NOISE);
