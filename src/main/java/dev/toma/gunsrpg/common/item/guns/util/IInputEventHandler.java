@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns.util;
 
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -77,7 +78,7 @@ public interface IInputEventHandler {
             int ammo = AbstractGun.getAmmoCount(stack);
             boolean canShootSecond = ammo > 1;
             Utils.shootWithValidation(player, stack, data);
-            if (canShootSecond) {
+            if (canShootSecond && Utils.isWeaponInShootableState(stack)) {
                 ShootingManager.Client.shoot(player, stack, data);
             }
         }
@@ -93,6 +94,11 @@ public interface IInputEventHandler {
     }
 
     class Utils {
+
+        static boolean isWeaponInShootableState(ItemStack stack) {
+            return stack.getDamageValue() < stack.getMaxDamage() && !((GunItem) stack.getItem()).isJammed(stack);
+        }
+
         static void shootWithValidation(PlayerEntity player, ItemStack stack, IPlayerData data) {
             if (ShootingManager.canShoot(player, stack)) {
                 ShootingManager.Client.shoot(player, stack, data);

@@ -49,7 +49,7 @@ public class M1911Item extends GunItem {
     public void initializeWeapon(WeaponBuilder builder) {
         builder
                 .config(ModConfig.weaponConfig.m1911)
-                .firemodeSelector((player, firemode) -> firemode == Firemode.SINGLE ? Firemode.BURST : Firemode.SINGLE)
+                .firemodeSelector((player, firemode) -> Firemode.switchBetween(player, firemode, Firemode.SINGLE, Firemode.BURST))
                 .ammo(WeaponCategory.PISTOL)
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 1)
