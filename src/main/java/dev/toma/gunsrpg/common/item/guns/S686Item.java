@@ -25,6 +25,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import static dev.toma.gunsrpg.util.properties.Properties.LOOT_LEVEL;
 
@@ -176,6 +178,11 @@ public class S686Item extends AbstractShotgun {
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         return AIM;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void onShoot(PlayerEntity player, ItemStack stack) {
     }
 
     @Override

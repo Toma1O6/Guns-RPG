@@ -29,6 +29,7 @@ public class S12KItem extends AbstractShotgun {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("s12k/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("s12k/unjam");
+    private static final ResourceLocation EJECT = GunsRPG.makeResource("s12k/eject");
     private static final ResourceLocation[] AIM = {
             GunsRPG.makeResource("s12k/aim"),
             GunsRPG.makeResource("s12k/aim_red_dot")
@@ -119,6 +120,11 @@ public class S12KItem extends AbstractShotgun {
         if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.S12K_NEVER_GIVE_UP)) {
             shooter.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 100, 0, false, false));
         }
+    }
+
+    @Override
+    protected int getShootAnimationLength(PlayerEntity player) {
+        return 4;
     }
 
     @Override

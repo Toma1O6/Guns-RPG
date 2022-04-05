@@ -1,11 +1,20 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.client.animation.BulletEjectAnimation;
+import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.IShootProps;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.entity.projectile.Pellet;
 import dev.toma.gunsrpg.common.init.ModEntities;
+import lib.toma.animations.AnimationUtils;
+import lib.toma.animations.api.AnimationList;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public abstract class AbstractShotgun extends GunItem {
@@ -32,5 +41,19 @@ public abstract class AbstractShotgun extends GunItem {
     @Override
     protected float getInaccuracy(IShootProps props, LivingEntity entity) {
         return 2.4F;
+    }
+
+    @Override
+    public void onShoot(PlayerEntity player, ItemStack stack) {
+        ResourceLocation animationPath = this.getBulletEjectAnimationPath();
+        int animationLength = this.getShootAnimationLength(player);
+        BulletEjectAnimation animation = AnimationUtils.createAnimation(animationPath, provider -> new BulletEjectAnimation(provider, animationLength));
+        AnimationList.enqueue(ModAnimations.BULLET_EJECTION, animation);
+    }
+
+    protected int getShootAnimationLength(PlayerEntity player) {
+        IPlayerData data = PlayerData.getUnsafe(player);
+        IAttributeProvider provider = data.getAttributes();
+        return this.getFirerate(provider);
     }
 }

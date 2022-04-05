@@ -36,6 +36,7 @@ public class S1897Item extends AbstractShotgun {
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("s1897/reload");
     private static final ResourceLocation LOAD_BULLET_ANIMATION = GunsRPG.makeResource("s1897/load_bullet");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("s1897/unjam");
+    private static final ResourceLocation PUMP = GunsRPG.makeResource("s1897/pump");
 
     public S1897Item(String name) {
         super(name, new Properties().setISTER(() -> S1897Renderer::new).durability(320));
@@ -163,11 +164,9 @@ public class S1897Item extends AbstractShotgun {
         return UNJAM;
     }
 
-    // TODO
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public void onShoot(PlayerEntity player, ItemStack stack) {
-        // ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltS1897(this.getFirerate(player)));
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return PUMP;
     }
 
     @Override
