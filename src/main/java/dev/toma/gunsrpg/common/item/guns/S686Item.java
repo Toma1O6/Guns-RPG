@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item.guns;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.S686Renderer;
 import dev.toma.gunsrpg.common.IShootProps;
@@ -27,7 +28,6 @@ import net.minecraft.util.SoundEvent;
 
 import static dev.toma.gunsrpg.util.properties.Properties.LOOT_LEVEL;
 
-// TODO implement reliable skill
 public class S686Item extends AbstractShotgun {
 
     private static final ResourceLocation AIM = GunsRPG.makeResource("s686/aim");
@@ -128,6 +128,22 @@ public class S686Item extends AbstractShotgun {
         if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.S686_BLAZING_PELLETS)) {
             victim.setRemainingFireTicks(50);
         }
+    }
+
+    @Override
+    protected float getModifiedDamageChance(float damageChance, IPlayerData data) {
+        if (data.getSkillProvider().hasSkill(Skills.S686_RELIABLE)) {
+            return 0.85F * damageChance;
+        }
+        return damageChance;
+    }
+
+    @Override
+    protected float getModifiedJamChance(float jamChance, IPlayerData data) {
+        if (data.getSkillProvider().hasSkill(Skills.S686_RELIABLE)) {
+            return 0.8F * jamChance;
+        }
+        return jamChance;
     }
 
     @Override

@@ -236,8 +236,8 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
             IWeaponConfig config = this.getWeaponConfig();
             IJamConfig jamConfig = config.getJamConfig();
             float baseJamChance = jamConfig.getJamChance(stack);
-            float playerJamChanceMultiplier = attributeProvider.getAttribute(Attribs.JAM_CHANCE).floatValue();
-            float damageChance = attributeProvider.getAttribute(Attribs.WEAPON_DURABILITY).floatValue();
+            float playerJamChanceMultiplier = this.getModifiedJamChance(attributeProvider.getAttribute(Attribs.JAM_CHANCE).floatValue(), data);
+            float damageChance = this.getModifiedDamageChance(attributeProvider.getAttribute(Attribs.WEAPON_DURABILITY).floatValue(), data);
             if (container != null) {
                 IMaterialData materialData = container.getMaterialData(material);
                 float ammoJamChanceMultiplier = materialData.getAddedJamChance();
@@ -292,6 +292,14 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     protected void consumeAmmo(ItemStack stack, LivingEntity consumer) {
         int ammo = this.getAmmo(stack);
         setAmmoCount(stack, ammo - 1);
+    }
+
+    protected float getModifiedDamageChance(float damageChance, IPlayerData data) {
+        return damageChance;
+    }
+
+    protected float getModifiedJamChance(float jamChance, IPlayerData data) {
+        return jamChance;
     }
 
     /* CLIENT-SIDE STUFF -------------------------------------------------------------------------- */
