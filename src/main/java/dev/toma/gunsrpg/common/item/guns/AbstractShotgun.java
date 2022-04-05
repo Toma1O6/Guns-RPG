@@ -11,11 +11,16 @@ import dev.toma.gunsrpg.common.entity.projectile.Pellet;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.AnimationList;
+import lib.toma.animations.api.AnimationType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.function.BiConsumer;
 
 public abstract class AbstractShotgun extends GunItem {
 
@@ -43,17 +48,23 @@ public abstract class AbstractShotgun extends GunItem {
         return 2.4F;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void onShoot(PlayerEntity player, ItemStack stack) {
         ResourceLocation animationPath = this.getBulletEjectAnimationPath();
         int animationLength = this.getShootAnimationLength(player);
         BulletEjectAnimation animation = AnimationUtils.createAnimation(animationPath, provider -> new BulletEjectAnimation(provider, animationLength));
-        AnimationList.enqueue(ModAnimations.BULLET_EJECTION, animation);
+        handleShootAnimationInPipeline(ModAnimations.BULLET_EJECTION, animation);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    protected void handleShootAnimationInPipeline(AnimationType<AnimationList<BulletEjectAnimation>> type, BulletEjectAnimation animation) {
+        AnimationList.schedule(type, animation, 4);
     }
 
     protected int getShootAnimationLength(PlayerEntity player) {
         IPlayerData data = PlayerData.getUnsafe(player);
         IAttributeProvider provider = data.getAttributes();
-        return this.getFirerate(provider);
+        return this.getFirerate(provider) - 5;
     }
 }

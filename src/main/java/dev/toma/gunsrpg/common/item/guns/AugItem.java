@@ -1,9 +1,9 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.AugRenderer;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -23,6 +23,7 @@ public class AugItem extends GunItem {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("aug/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("aug/unjam");
+    private static final ResourceLocation EJECT = GunsRPG.makeResource("akm/eject");
     private static final ResourceLocation[] AIM = {
             GunsRPG.makeResource("aug/aim"),
             GunsRPG.makeResource("aug/aim_red_dot"),
@@ -96,6 +97,11 @@ public class AugItem extends GunItem {
     @Override
     public ResourceLocation getUnjamAnimationPath() {
         return UNJAM;
+    }
+
+    @Override
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return EJECT;
     }
 
     @Override

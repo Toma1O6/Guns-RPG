@@ -24,6 +24,7 @@ public class Hk416Item extends GunItem {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("hk416/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("hk416/unjam");
+    private static final ResourceLocation EJECT = GunsRPG.makeResource("hk416/eject");
     private static final ResourceLocation[] AIM = {
             GunsRPG.makeResource("hk416/aim"),
             GunsRPG.makeResource("hk416/aim_red_dot"),
@@ -97,6 +98,11 @@ public class Hk416Item extends GunItem {
     @Override
     public ResourceLocation getUnjamAnimationPath() {
         return UNJAM;
+    }
+
+    @Override
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return EJECT;
     }
 
     @Override

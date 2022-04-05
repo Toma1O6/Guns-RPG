@@ -1,9 +1,10 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.client.animation.BulletEjectAnimation;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.S12KRenderer;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.IShootProps;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -16,6 +17,8 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
+import lib.toma.animations.api.AnimationList;
+import lib.toma.animations.api.AnimationType;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,6 +27,8 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class S12KItem extends AbstractShotgun {
 
@@ -148,6 +153,11 @@ public class S12KItem extends AbstractShotgun {
     }
 
     @Override
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return EJECT;
+    }
+
+    @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         return AIM[PlayerData.hasActiveSkill(player, Skills.S12K_RED_DOT) ? 1 : 0];
     }
@@ -160,5 +170,11 @@ public class S12KItem extends AbstractShotgun {
     @Override
     public IRenderConfig right() {
         return RenderConfigs.S12K_RIGHT;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    protected void handleShootAnimationInPipeline(AnimationType<AnimationList<BulletEjectAnimation>> type, BulletEjectAnimation animation) {
+        AnimationList.enqueue(type, animation);
     }
 }
