@@ -26,7 +26,7 @@ public final class AnimationEngine {
 
     public static final Marker MARKER = MarkerManager.getMarker("Engine");
     public static final Logger logger = LogManager.getLogger("AnimationLib");
-    private static final String ENGINE_VERSION = "1.3.1";
+    private static final String ENGINE_VERSION = "1.4.0";
 
     public int handConfigKey = GLFW.GLFW_KEY_KP_9;
     public int animatorKey = GLFW.GLFW_KEY_KP_8;

@@ -2,10 +2,7 @@ package lib.toma.animations.engine;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lib.toma.animations.AnimationEngine;
-import lib.toma.animations.api.AnimationStage;
-import lib.toma.animations.api.AnimationType;
-import lib.toma.animations.api.IAnimation;
-import lib.toma.animations.api.IAnimationPipeline;
+import lib.toma.animations.api.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.profiler.IProfiler;
@@ -13,13 +10,12 @@ import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
 import java.util.*;
-import java.util.function.Supplier;
 
 public final class AnimationPipeline implements IAnimationPipeline {
 
     private final Marker MARKER = MarkerManager.getMarker("Pipeline");
     private final Map<AnimationType<?>, IAnimation> playingAnimations = new TreeMap<>();
-    private final List<ScheduledElement<?>> scheduledAnimations = new ArrayList<>();
+    private final List<Schedule<ScheduledAnimation<?>>> scheduledAnimations = new ArrayList<>();
 
     public AnimationPipeline() {}
 
@@ -44,21 +40,21 @@ public final class AnimationPipeline implements IAnimationPipeline {
     public <A extends IAnimation> void scheduleInsert(AnimationType<A> type, int gameTickDelay) {
         if (!type.hasCreator())
             AnimationEngine.logger.fatal(MARKER, "Cannot create default animation from animation type ({}) with undefined AnimationCreator", type);
-        scheduleInsert(type, () -> type.create(Minecraft.getInstance().player), gameTickDelay);
+        scheduleInsert(type, type.create(Minecraft.getInstance().player), gameTickDelay);
     }
 
     @Override
-    public <A extends IAnimation> void scheduleInsert(AnimationType<A> type, Supplier<A> supplier, int gameTickDelay) {
+    public <A extends IAnimation> void scheduleInsert(AnimationType<A> type, A animation, int gameTickDelay) {
         if (gameTickDelay < 0)
             throw new IllegalArgumentException("Delay must be bigger than 0!");
-        if (supplier == null) {
+        if (animation == null) {
             AnimationEngine.logger.fatal(MARKER, "Attempted to schedule null animation for {} type", type);
             return;
         }
         if (gameTickDelay == 0) {
-            insert(type, supplier.get());
+            insert(type, animation);
         } else {
-            scheduledAnimations.add(new ScheduledElement<>(Objects.requireNonNull(type), supplier, gameTickDelay));
+            scheduledAnimations.add(new Schedule<>(gameTickDelay, () -> new ScheduledAnimation<>(Objects.requireNonNull(type), animation)));
         }
     }
 
@@ -69,7 +65,7 @@ public final class AnimationPipeline implements IAnimationPipeline {
 
     @Override
     public void removeScheduled(AnimationType<?> type) {
-        scheduledAnimations.removeIf(element -> element.type.getKey().equals(type.getKey()));
+        scheduledAnimations.removeIf(schedule -> schedule.get().getType().getKey().equals(type.getKey()));
     }
 
     @SuppressWarnings("unchecked")
@@ -116,36 +112,18 @@ public final class AnimationPipeline implements IAnimationPipeline {
 
     @SuppressWarnings("unchecked")
     private <A extends IAnimation> void tickScheduled() {
-        Iterator<ScheduledElement<?>> iterator = scheduledAnimations.iterator();
+        Iterator<Schedule<ScheduledAnimation<?>>> iterator = scheduledAnimations.iterator();
         while (iterator.hasNext()) {
-            ScheduledElement<A> element = (ScheduledElement<A>) iterator.next();
-            if (element.isDone()) {
+            Schedule<ScheduledAnimation<?>> schedule = iterator.next();
+            if (schedule.done()) {
                 iterator.remove();
-                insert(element.type, element.supplier.get());
+                ScheduledAnimation<A> scheduledAnimation = (ScheduledAnimation<A>) schedule.get();
+                AnimationType<A> type = scheduledAnimation.getType();
+                A animation = scheduledAnimation.getAnimation();
+                insert(type, animation);
             } else {
-                element.tick();
+                schedule.update();
             }
-        }
-    }
-
-    private static class ScheduledElement<A extends IAnimation> {
-
-        private final AnimationType<A> type;
-        private final Supplier<A> supplier;
-        private int gameTicksRemaining;
-
-        private ScheduledElement(AnimationType<A> type, Supplier<A> supplier, int delay) {
-            this.type = type;
-            this.supplier = supplier;
-            this.gameTicksRemaining = delay;
-        }
-
-        private void tick() {
-            --gameTicksRemaining;
-        }
-
-        private boolean isDone() {
-            return gameTicksRemaining == 0;
         }
     }
 }
