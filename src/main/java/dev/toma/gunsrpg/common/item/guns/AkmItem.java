@@ -24,6 +24,10 @@ public class AkmItem extends GunItem {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("akm/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("akm/unjam");
+    private static final ResourceLocation[] AIM = {
+            GunsRPG.makeResource("akm/aim"),
+            GunsRPG.makeResource("akm/aim_red_dot"),
+    };
 
     public AkmItem(String name) {
         super(name, new Properties().setISTER(() -> AkmRenderer::new).durability(1100));
@@ -94,6 +98,11 @@ public class AkmItem extends GunItem {
     @Override
     public ResourceLocation getUnjamAnimationPath() {
         return UNJAM;
+    }
+
+    @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return AIM[PlayerData.hasActiveSkill(player, Skills.AKM_RED_DOT) ? 1 : 0];
     }
 
     @Override

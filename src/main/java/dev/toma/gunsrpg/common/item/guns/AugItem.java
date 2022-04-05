@@ -23,6 +23,10 @@ public class AugItem extends GunItem {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("aug/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("aug/unjam");
+    private static final ResourceLocation[] AIM = {
+            GunsRPG.makeResource("aug/aim"),
+            GunsRPG.makeResource("aug/aim_red_dot"),
+    };
 
     public AugItem(String name) {
         super(name, new Properties().setISTER(() -> AugRenderer::new).durability(1350));
@@ -92,6 +96,11 @@ public class AugItem extends GunItem {
     @Override
     public ResourceLocation getUnjamAnimationPath() {
         return UNJAM;
+    }
+
+    @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return AIM[PlayerData.hasActiveSkill(player, Skills.AUG_RED_DOT) ? 1 : 0];
     }
 
     @Override
