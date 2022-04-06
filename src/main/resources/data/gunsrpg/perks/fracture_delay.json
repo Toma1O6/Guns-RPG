@@ -1,9 +1,6 @@
 {
     "attribute": "gunsrpg:fracture_delay",
-    "scaling": {
-        "buff": 0.01,
-        "debuff": 0.02
-    },
+    "scaling": 0.01,
     "bounds": {
         "buff": 0.5,
         "debuff": 0.5
