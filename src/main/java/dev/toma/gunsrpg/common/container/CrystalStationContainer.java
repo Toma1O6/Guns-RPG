@@ -44,7 +44,7 @@ public class CrystalStationContainer extends AbstractContainer {
         loadInventory(data);
         IntReferenceHolder referenceHolder = IntReferenceHolder.standalone();
         addDataSlot(referenceHolder);
-        BooleanSupplier supplier = () -> data.getPerkProvider().getPoints() > 1;
+        BooleanSupplier supplier = () -> data.getPerkProvider().getPoints() > 0;
         for (int y = 0; y < rows; y++) {
             for (PerkVariant variant : PerkVariant.values()) {
                 int x = variant.ordinal();
@@ -148,7 +148,7 @@ public class CrystalStationContainer extends AbstractContainer {
                         crystal = Crystal.fromNbt(crystalNbt);
                     }
                     provider.setCrystal(slot, crystal);
-                    //provider.setCooldown(PlayerPerkProvider.USE_COOLDOWN);
+                    provider.setCooldown(PlayerPerkProvider.USE_COOLDOWN);
                     provider.awardPoints(-1);
                 }
             }
