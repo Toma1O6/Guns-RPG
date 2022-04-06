@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.client.render.IOrderedRender;
 import dev.toma.gunsrpg.client.screen.widgets.*;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.RenderUtils;
+import lib.toma.animations.QuickSort;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.button.Button;
@@ -17,6 +18,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
+import java.util.Comparator;
 
 public class ExtensionsView extends View {
 
@@ -79,7 +81,9 @@ public class ExtensionsView extends View {
         int index = 0;
         int level = 0;
         int posY = y;
-        for (SkillType<?> type : head.getHierarchy().getExtensions()) {
+        SkillType<?>[] ext = head.getHierarchy().getExtensions();
+        QuickSort.sort(ext, Comparator.comparing(SkillType::getProperties, Comparator.comparingInt(ISkillProperties::getRequiredLevel)));
+        for (SkillType<?> type : ext) {
             ISkillProperties properties = type.getProperties();
             int lvl = properties.getRequiredLevel();
             if (lvl > level) {
