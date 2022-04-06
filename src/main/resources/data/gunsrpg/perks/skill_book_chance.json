@@ -1,9 +1,6 @@
 {
     "attribute": "gunsrpg:skill_book_chance",
-    "scaling": {
-        "buff": 0.005,
-        "debuff": 0.01
-    },
+    "scaling": 0.005,
     "bounds": {
         "buff": 0.2,
         "debuff": 0.35

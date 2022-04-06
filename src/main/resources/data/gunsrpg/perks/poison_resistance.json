@@ -1,10 +1,7 @@
 {
     "attribute": "gunsrpg:poison_resistance",
     "invertCalculation": true,
-    "scaling": {
-        "buff": 0.02,
-        "debuff": 0.04
-    },
+    "scaling": 0.02,
     "bounds": {
         "buff": 0.4,
         "debuff": 0.75

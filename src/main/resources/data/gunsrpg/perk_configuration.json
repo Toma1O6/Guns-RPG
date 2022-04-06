@@ -24,7 +24,7 @@
                 "debuff": {
                     "function": "gunsrpg:rng",
                     "min": 0,
-                    "max": 4
+                    "max": 6
                 }
             }
         },
