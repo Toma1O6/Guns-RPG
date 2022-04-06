@@ -298,10 +298,17 @@ public class CommonEventHandler {
             }
         }
         if (event.getEntity() instanceof IMob && !(event.getEntity() instanceof SlimeEntity)) {
-            if (!event.getEntity().level.isClientSide && random.nextFloat() <= 0.016) {
+            if (!event.getEntity().level.isClientSide) {
                 Entity entity = event.getEntity();
-                Item item = random.nextBoolean() ? ModItems.PERKPOINT_BOOK : ModItems.SKILLPOINT_BOOK;
-                entity.level.addFreshEntity(new ItemEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(item)));
+                Item item = null;
+                if (random.nextFloat() < 0.016F) {
+                    item = ModItems.SKILLPOINT_BOOK;
+                } else if (random.nextFloat() < 0.05F) {
+                    item = ModItems.PERKPOINT_BOOK;
+                }
+                if (item != null) {
+                    entity.level.addFreshEntity(new ItemEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(item)));
+                }
             }
         }
         if (event.getEntity() instanceof PlayerEntity) {
