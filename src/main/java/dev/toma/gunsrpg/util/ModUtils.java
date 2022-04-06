@@ -56,6 +56,21 @@ public class ModUtils {
     public static final ISplitter<SkillCategory, SkillType<?>> SKILLS_BY_CATEGORY = ModUtils::splitSkillsIntoCategories;
     public static final DecimalFormatSymbols DOT_DECIMAL_SEPARATOR = new DecimalFormatSymbols();
 
+    public static void inverse(Object[] array) {
+        int length = array.length;
+        int half = length / 2;
+        for (int i = 0; i < half; i++) {
+            int opposite = length - 1 - i;
+            Object temp = array[i];
+            array[i] = array[opposite];
+            array[opposite] = temp;
+        }
+    }
+
+    public static boolean isWithinPoints(int x, int y, int ax, int ay, int bx, int by) {
+        return x >= ax && x <= bx && y >= ay && y <= by;
+    }
+
     public static boolean equals(double value1, double value2, double precision) {
         double diff = Math.abs(value1 - value2);
         return diff <= precision;
