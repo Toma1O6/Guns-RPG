@@ -1,9 +1,6 @@
 {
     "attribute": "gunsrpg:silent_weapon_damage",
-    "scaling": {
-        "buff": 0.005,
-        "debuff": 0.01
-    },
+    "scaling": 0.005,
     "bounds": {
         "buff": 0.15,
         "debuff": 0.3
