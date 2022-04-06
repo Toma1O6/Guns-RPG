@@ -21,7 +21,7 @@ public class PerkAdapter implements JsonDeserializer<Perk> {
         if (attributeId == null) {
             throw new JsonSyntaxException("Unknown attribute: " + id);
         }
-        PerkValueSpec scale = context.deserialize(JSONUtils.getAsJsonObject(object, "scaling"), PerkValueSpec.class);
+        float scale = JSONUtils.getAsFloat(object, "scaling");
         PerkValueSpec bounds = context.deserialize(JSONUtils.getAsJsonObject(object, "bounds"), PerkValueSpec.class);
         boolean invertCalculation = JSONUtils.getAsBoolean(object, "invertCalculation", false);
         return new Perk(attributeId, scale, bounds, invertCalculation);

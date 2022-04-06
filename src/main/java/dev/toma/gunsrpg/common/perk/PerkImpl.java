@@ -20,7 +20,7 @@ public final class PerkImpl implements IPerk {
     public PerkImpl(Perk perk, PerkType type, int level) {
         this.perk = perk;
 
-        float scale = perk.getScaling(type);
+        float scale = perk.getScaling();
         float bounds = perk.getBounds(type);
         float rawValue = this.calculateModifierValue(level, scale, bounds, perk.shouldInvertCalculation());
         float modifierValue = type == PerkType.BUFF ? 1.0F + rawValue : 1.0F - rawValue;

@@ -670,7 +670,7 @@ public class AKMModel extends AbstractWeaponModel {
         bone8.texOffs(86, 38).addBox(39.0F, -30.4137F, -42.1992F, 4.0F, 2.0F, 12.0F, 0.0F, false);
 
         bullet = new ModelRenderer(this);
-        bullet.setPos(-41.0F, 26.0F, -0.4336F);
+        bullet.setPos(-41.0F, 26.0F, -45.8F);
         setRotationAngle(bullet, -0.0698F, 0.0F, 0.0F);
 
         bullet2 = new ModelRenderer(this);

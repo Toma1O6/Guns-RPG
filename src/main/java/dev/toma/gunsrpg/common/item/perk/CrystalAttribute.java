@@ -69,7 +69,7 @@ public final class CrystalAttribute {
 
     public float getValue() {
         float range = perk.getBounds(type);
-        float value = perk.getScaling(type) * level;
+        float value = perk.getScaling() * level;
         return Math.min(value, range);
     }
 
