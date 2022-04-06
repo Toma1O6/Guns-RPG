@@ -91,15 +91,18 @@ public class ShootingManager {
             }
             float xRot = gun.getVerticalRecoil(attributeProvider) * recoilModifier;
             float yRot = gun.getHorizontalRecoil(attributeProvider) * recoilModifier;
-            if (player.getRandom().nextBoolean())
-                yRot = -yRot;
-            player.xRot -= xRot;
-            player.yRot -= yRot;
+            boolean hasRecoil = xRot != 0.0F || yRot != 0.0F;
+            if (hasRecoil) {
+                if (player.getRandom().nextBoolean())
+                    yRot = -yRot;
+                player.xRot -= xRot;
+                player.yRot -= yRot;
+                IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
+                pipeline.insert(ModAnimations.RECOIL, new RecoilAnimation(xRot, yRot, gun, stack, dataProvider));
+            }
             NetworkManager.sendServerPacket(new C2S_ShootPacket());
             gun.onShoot(player, stack);
             shootingDelay = gun.getFirerate(attributeProvider);
-            IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
-            pipeline.insert(ModAnimations.RECOIL, new RecoilAnimation(xRot, yRot, gun, stack, dataProvider));
         }
 
         public static void saveSettings(GameSettings settings) {

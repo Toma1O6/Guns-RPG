@@ -3,9 +3,9 @@ package dev.toma.gunsrpg.common.skills;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.entity.player.PlayerEntity;
 
-public class BasicSkill extends AbstractSkill {
+public class SimpleSkill extends AbstractSkill {
 
-    public BasicSkill(SkillType<?> type) {
+    public SimpleSkill(SkillType<?> type) {
         super(type);
     }
 

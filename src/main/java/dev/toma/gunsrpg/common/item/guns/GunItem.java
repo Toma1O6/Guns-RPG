@@ -33,6 +33,7 @@ import lib.toma.animations.Easings;
 import lib.toma.animations.api.AnimationList;
 import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IRenderConfig;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -48,6 +49,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.BiFunction;
+
+import static dev.toma.gunsrpg.util.properties.Properties.PENETRATION;
 
 public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
@@ -102,7 +105,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         return 1;
     }
 
-    public int getReloadTime(IAttributeProvider provider) {
+    public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
         return provider.getAttribute(Attribs.RELOAD_SPEED).intValue();
     }
 
@@ -136,6 +139,10 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         return false;
     }
 
+    public float modifyProjectileDamage(AbstractProjectile projectile, LivingEntity entity, PlayerEntity shooter, float damage) {
+        return damage;
+    }
+
     public void onHitEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
     }
 
@@ -155,23 +162,40 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     }
 
     public void shootProjectile(World level, LivingEntity shooter, ItemStack stack, IShootProps props) {
-        Bullet bullet = new Bullet(ModEntities.BULLET.get(), level, shooter);
+        AbstractProjectile projectile = this.makeProjectile(level, shooter);
         IWeaponConfig config = this.getWeaponConfig();
         float damage = this.getWeaponDamage(stack, shooter) * props.getDamageMultiplier();
-        float velocity = config.getVelocity();
+        float velocity = this.getInitialVelocity(config, shooter);
         int delay = config.getGravityDelay();
-        bullet.setup(damage, velocity, delay);
-        bullet.fire(shooter.xRot, shooter.yRot, props.getInaccuracy());
+        projectile.setup(damage, velocity, delay);
+        projectile.fire(shooter.xRot, shooter.yRot, this.getInaccuracy(props, shooter));
+        this.prepareForShooting(projectile, shooter);
         if (shooter instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) shooter;
             PlayerData.get(player).ifPresent(data -> {
                 PenetrationData penetrationData = getPenetrationData(data);
                 if (penetrationData != null) {
-                    bullet.setPenetrationData(penetrationData);
+                    projectile.setProperty(PENETRATION, penetrationData);
                 }
             });
         }
-        level.addFreshEntity(bullet);
+        level.addFreshEntity(projectile);
+    }
+
+    protected float getInaccuracy(IShootProps props, LivingEntity entity) {
+        return props.getInaccuracy();
+    }
+
+    protected float getInitialVelocity(IWeaponConfig config, LivingEntity shooter) {
+        return config.getVelocity();
+    }
+
+    protected AbstractProjectile makeProjectile(World level, LivingEntity shooter) {
+        return new Bullet(ModEntities.BULLET.get(), level, shooter);
+    }
+
+    protected void prepareForShooting(AbstractProjectile projectile, LivingEntity shooter) {
+
     }
 
     /* FINAL METHODS ---------------------------------------------------------------- */
@@ -200,7 +224,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
             GunsRPG.log.warn("{} has tried to shoot with weapon which has no durability", entity.getName().getString());
             return;
         }
-        shootProjectile(world, entity, stack, props);
+        handleShootProjectileAction(world, entity, stack, props);
         if (entity instanceof ServerPlayerEntity) {
             ServerPlayerEntity player = (ServerPlayerEntity) entity;
             IPlayerData data = PlayerData.getUnsafe(player);
@@ -212,8 +236,8 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
             IWeaponConfig config = this.getWeaponConfig();
             IJamConfig jamConfig = config.getJamConfig();
             float baseJamChance = jamConfig.getJamChance(stack);
-            float playerJamChanceMultiplier = attributeProvider.getAttribute(Attribs.JAM_CHANCE).floatValue();
-            float damageChance = attributeProvider.getAttribute(Attribs.WEAPON_DURABILITY).floatValue();
+            float playerJamChanceMultiplier = this.getModifiedJamChance(attributeProvider.getAttribute(Attribs.JAM_CHANCE).floatValue(), data);
+            float damageChance = this.getModifiedDamageChance(attributeProvider.getAttribute(Attribs.WEAPON_DURABILITY).floatValue(), data);
             if (container != null) {
                 IMaterialData materialData = container.getMaterialData(material);
                 float ammoJamChanceMultiplier = materialData.getAddedJamChance();
@@ -236,7 +260,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
                 setJammedState(stack, true);
             }
         }
-        this.setAmmoCount(stack, this.getAmmo(stack) - 1);
+        this.consumeAmmo(stack, entity);
         world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);
     }
 
@@ -257,8 +281,25 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         return container;
     }
 
+    protected void handleShootProjectileAction(World world, LivingEntity entity, ItemStack stack, IShootProps props) {
+        shootProjectile(world, entity, stack, props);
+    }
+
     protected boolean isSilenced(PlayerEntity player) {
         return false;
+    }
+
+    protected void consumeAmmo(ItemStack stack, LivingEntity consumer) {
+        int ammo = this.getAmmo(stack);
+        setAmmoCount(stack, ammo - 1);
+    }
+
+    protected float getModifiedDamageChance(float damageChance, IPlayerData data) {
+        return damageChance;
+    }
+
+    protected float getModifiedJamChance(float jamChance, IPlayerData data) {
+        return jamChance;
     }
 
     /* CLIENT-SIDE STUFF -------------------------------------------------------------------------- */

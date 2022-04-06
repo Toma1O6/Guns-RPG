@@ -1,6 +1,5 @@
 package dev.toma.gunsrpg.sided;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.ModKeybinds;
 import dev.toma.gunsrpg.client.render.*;
@@ -17,25 +16,19 @@ import dev.toma.gunsrpg.common.init.Debuffs;
 import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.Skills;
-import dev.toma.gunsrpg.common.item.guns.util.IDualWieldGun;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
-import lib.toma.animations.api.*;
+import lib.toma.animations.api.AnimationStage;
+import lib.toma.animations.api.AnimationType;
+import lib.toma.animations.api.IRenderPipeline;
 import lib.toma.animations.api.event.AnimationEventType;
 import lib.toma.animations.api.lifecycle.Registries;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.renderer.FirstPersonRenderer;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.HandSide;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -43,8 +36,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-
-import java.util.function.Function;
 
 import static dev.toma.gunsrpg.client.animation.ModAnimations.*;
 
@@ -105,9 +96,6 @@ public class ClientSideManager {
         debuffRenderManager.registerRenderer(Debuffs.FRACTURE,  new IconDebuffRenderer<>(IconDebuffRenderer.FRACTURE_ICON));
         debuffRenderManager.registerRenderer(Debuffs.BLEED,     new IconDebuffRenderer<>(IconDebuffRenderer.BLEED_ICON));
 
-        // animation setup
-        setupRenderPipeline();
-
         // skill renderers
         SkillRendererRegistry.registerRenderers(new SkillCooldownRenderer<>(), Skills.LIKE_A_CAT_I, Skills.LIKE_A_CAT_II, Skills.LIKE_A_CAT_III);
         SkillRendererRegistry.registerRenderers(new SkillCooldownRenderer<>(), Skills.SECOND_CHANCE_I, Skills.SECOND_CHANCE_II, Skills.SECOND_CHANCE_III);
@@ -152,30 +140,6 @@ public class ClientSideManager {
         ScreenManager.register(ModContainers.CRYSTAL_STATION.get(), CrystalStationScreen::new);
     }
 
-    private void setupRenderPipeline() {
-        IRenderPipeline pipeline = AnimationEngine.get().renderPipeline();
-        pipeline.setPostAnimateCallback(this::animateDualWield);
-    }
-
-    private void animateDualWield(MatrixStack poseStack, IRenderTypeBuffer buffer, int light, float swing, float equip, Function<HandSide, IRenderConfig> selector,
-                                  IAnimationPipeline pipeline, FirstPersonRenderer fpRenderer, PlayerEntity player, ItemStack stack, ItemCameraTransforms.TransformType type,
-                                  boolean mainHand) {
-
-        IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
-        IItemRenderer itemRenderer = renderPipeline.getItemRenderer();
-        if (stack.getItem() instanceof IDualWieldGun) {
-            IDualWieldGun dualWieldGun = (IDualWieldGun) stack.getItem();
-            if (PlayerData.hasActiveSkill(player, dualWieldGun.getSkillForDualWield())) {
-                poseStack.pushPose();
-                {
-                    pipeline.animateStage(DUAL_WIELD_ITEM, poseStack, buffer, light, OverlayTexture.NO_OVERLAY);
-                    itemRenderer.renderItem(fpRenderer, player, stack, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, true, poseStack, buffer, light, swing, equip);
-                }
-                poseStack.popPose();
-            }
-        }
-    }
-
     private AnimationType<?>[] gatherAnimationTypes() {
         return new AnimationType[] {
                 AIM_ANIMATION, SPRINT, CHAMBER, HEAL, RELOAD, RELOAD_BULLET, FIREMODE, BULLET_EJECTION, RECOIL, GRENADE, UNJAM, STASH_DETECTOR
@@ -184,7 +148,7 @@ public class ClientSideManager {
 
     private AnimationStage[] gatherAnimationStages() {
         return new AnimationStage[] {
-                DUAL_WIELD_ITEM, MAGAZINE, SLIDE, CHARGING_HANDLE, BULLET, BOLT, BOLT_CARRIER, BARRELS, BULLET_2, BATTERY, BATTERY_COVER
+                MAGAZINE, SLIDE, CHARGING_HANDLE, BULLET, BOLT, BOLT_CARRIER, BARRELS, BULLET_2, BATTERY, BATTERY_COVER
         };
     }
 

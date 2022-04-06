@@ -7,7 +7,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.object.Pair;
 import net.minecraft.util.text.ITextComponent;
 
-public class LumberjackSkill extends BasicSkill implements IDescriptionProvider {
+public class LumberjackSkill extends SimpleSkill implements IDescriptionProvider {
 
     private static final ChancesContainer[] data;
 

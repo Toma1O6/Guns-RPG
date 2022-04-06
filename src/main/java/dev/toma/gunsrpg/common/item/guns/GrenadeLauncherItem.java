@@ -53,7 +53,7 @@ public class GrenadeLauncherItem extends GunItem {
     }
 
     @Override
-    public int getReloadTime(IAttributeProvider provider) {
+    public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
         return 30;
     }
 

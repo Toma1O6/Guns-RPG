@@ -11,7 +11,7 @@ import net.minecraft.util.text.ITextComponent;
 
 import java.util.Random;
 
-public class MotherlodeSkill extends BasicSkill implements IDescriptionProvider {
+public class MotherlodeSkill extends SimpleSkill implements IDescriptionProvider {
 
     private static final ChancesContainer[] DATA;
 

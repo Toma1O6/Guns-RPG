@@ -24,6 +24,11 @@ public class Hk416Item extends GunItem {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("hk416/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("hk416/unjam");
+    private static final ResourceLocation EJECT = GunsRPG.makeResource("hk416/eject");
+    private static final ResourceLocation[] AIM = {
+            GunsRPG.makeResource("hk416/aim"),
+            GunsRPG.makeResource("hk416/aim_red_dot"),
+    };
 
     public Hk416Item(String name) {
         super(name, new Properties().setISTER(() -> Hk416Renderer::new).durability(1050));
@@ -61,7 +66,7 @@ public class Hk416Item extends GunItem {
     }
 
     @Override
-    public int getReloadTime(IAttributeProvider provider) {
+    public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
         return 70;
     }
 
@@ -93,6 +98,16 @@ public class Hk416Item extends GunItem {
     @Override
     public ResourceLocation getUnjamAnimationPath() {
         return UNJAM;
+    }
+
+    @Override
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return EJECT;
+    }
+
+    @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return AIM[PlayerData.hasActiveSkill(player, Skills.HK416_RED_DOT) ? 1 : 0];
     }
 
     @Override

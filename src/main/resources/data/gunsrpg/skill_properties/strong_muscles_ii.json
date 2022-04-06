@@ -4,7 +4,8 @@
         "parent": "gunsrpg:strong_muscles_i",
         "children": [
             "gunsrpg:strong_muscles_iii"
-        ]
+        ],
+        "override": "gunsrpg:strong_muscles_iii"
     },
     "properties": {
         "level": 25,

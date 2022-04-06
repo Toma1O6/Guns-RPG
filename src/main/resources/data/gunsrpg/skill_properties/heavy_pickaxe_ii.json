@@ -4,7 +4,8 @@
         "parent": "gunsrpg:heavy_pickaxe_i",
         "children": [
             "gunsrpg:heavy_pickaxe_iii"
-        ]
+        ],
+        "override": "gunsrpg:heavy_pickaxe_iii"
     },
     "properties": {
         "level": 10,

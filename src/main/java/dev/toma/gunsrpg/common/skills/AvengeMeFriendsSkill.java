@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class AvengeMeFriendsSkill extends BasicSkill implements IDescriptionProvider {
+public class AvengeMeFriendsSkill extends SimpleSkill implements IDescriptionProvider {
 
     private static final int RANGE = 30;
 

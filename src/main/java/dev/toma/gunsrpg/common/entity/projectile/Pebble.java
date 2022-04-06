@@ -29,7 +29,7 @@ public class Pebble extends Bullet implements IEntityAdditionalSpawnData {
 
     @Override
     public void postTick() {
-        setDeltaMovement(this.getDeltaMovement().subtract(0.0, 0.05, 0.0));
+        applyGravity();
     }
 
     @OnlyIn(Dist.CLIENT)

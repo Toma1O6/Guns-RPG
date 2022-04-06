@@ -18,7 +18,7 @@ import net.minecraft.util.text.ITextComponent;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class BartenderSkill extends BasicSkill implements IDescriptionProvider {
+public class BartenderSkill extends SimpleSkill implements IDescriptionProvider {
 
     private final DescriptionContainer container;
     private final IAttributeTarget[] targets;

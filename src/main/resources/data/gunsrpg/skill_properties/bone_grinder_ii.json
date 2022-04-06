@@ -4,7 +4,8 @@
         "parent": "gunsrpg:bone_grinder_i",
         "children": [
             "gunsrpg:bone_grinder_iii"
-        ]
+        ],
+        "override": "gunsrpg:bone_grinder_iii"
     },
     "properties": {
         "level": 15,

@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.common.skills.core.DisplayData;
 import dev.toma.gunsrpg.common.skills.core.DisplayType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -16,6 +17,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 import java.util.Arrays;
 
 public class SkillUtil {
+
+    public static final float NO_AMMO_CONSUME_CHANCE = 0.1F;
+    public static final float EXTENDED_BARREL_VELOCITY = 1.75F;
+    public static final float CHOKE_SPREAD = 0.7F;
+    public static final int HUNTER_LOOTING_LEVEL = 4;
 
     public static <S extends ISkill> S getTopHierarchySkill(SkillType<S> head, ISkillProvider provider) {
         S value = provider.getSkill(head);
@@ -42,6 +48,10 @@ public class SkillUtil {
 
     public static ResourceLocation moddedIcon(String iconPath) {
         return GunsRPG.makeResource("textures/icons/" + iconPath + ".png");
+    }
+
+    public static void heal(PlayerEntity player, float amount) {
+        player.heal(amount); // TODO implement attribute
     }
 
     public static class Localizations {

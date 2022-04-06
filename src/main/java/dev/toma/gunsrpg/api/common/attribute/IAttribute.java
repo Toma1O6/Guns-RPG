@@ -28,8 +28,6 @@ public interface IAttribute extends INBTSerializable<CompoundNBT> {
 
     void removeModifierById(UUID modifierId);
 
-    void removeAllModifiers();
-
     Collection<IAttributeModifier> listModifiers();
 
     void markChanged();

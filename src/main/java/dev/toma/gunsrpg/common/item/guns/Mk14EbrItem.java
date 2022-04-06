@@ -59,7 +59,7 @@ public class Mk14EbrItem extends GunItem {
     }
 
     @Override
-    public int getReloadTime(IAttributeProvider provider) {
+    public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
         return 75;
     }
 

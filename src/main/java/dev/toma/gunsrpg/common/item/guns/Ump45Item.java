@@ -88,13 +88,13 @@ public class Ump45Item extends GunItem {
     }
 
     @Override
-    public int getReloadTime(IAttributeProvider provider) {
-        return provider.getAttribute(Attribs.UMP45_RELOAD_SPEED).intValue();
+    public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
+        return Attribs.UMP45_RELOAD.intValue(provider);
     }
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 3;
+        return provider.getAttribute(Attribs.UMP45_FIRERATE).intValue();
     }
 
     @Override

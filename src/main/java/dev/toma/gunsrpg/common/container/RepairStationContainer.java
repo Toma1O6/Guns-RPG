@@ -17,8 +17,8 @@ public class RepairStationContainer extends AbstractModContainer<RepairStationTi
     public RepairStationContainer(int windowId, PlayerInventory inventory, RepairStationTileEntity tile) {
         super(ModContainers.REPAIR_STATION.get(), windowId, inventory, tile);
         addSlot(this.new InputSlot(tile.getItemHandler(), 0, 44, 26));
-        for (int y = 0; y < 3; y++) {
-            addSlot(this.new RepairKitSlot(tile.getItemHandler(), 1 + y, 152, 8 + y * 18));
+        for (int x = 0; x < 3; x++) {
+            addSlot(this.new RepairKitSlot(tile.getItemHandler(), 1 + x, 116 + x * 18, 8));
         }
         addPlayerInventory(inventory, 82);
     }

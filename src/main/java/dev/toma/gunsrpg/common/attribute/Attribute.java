@@ -126,12 +126,6 @@ public class Attribute implements IAttribute {
     }
 
     @Override
-    public void removeAllModifiers() {
-        modifierMap.clear();
-        markChanged();
-    }
-
-    @Override
     public Collection<IAttributeModifier> listModifiers() {
         List<IAttributeModifier> list = new ArrayList<>(modifierMap.values());
         list.sort(Comparator.comparingInt(mod -> mod.getOperation().getPriority()));

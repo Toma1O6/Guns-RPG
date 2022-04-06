@@ -3,7 +3,8 @@
         "category": "gun",
         "children": [
             "gunsrpg:careful_gunner_ii"
-        ]
+        ],
+        "override": "gunsrpg:careful_gunner_ii"
     },
     "properties": {
         "level": 20,

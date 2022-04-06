@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.common.attribute;
 
 import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
 import dev.toma.gunsrpg.api.common.attribute.IValueFormatter;
-import dev.toma.gunsrpg.util.Constants;
 
 import static dev.toma.gunsrpg.util.Constants.ModifierIds.*;
 
@@ -19,7 +18,6 @@ public final class Modifiers {
     public static final IAttributeModifier BLAZEPOWDER_II               = new AttributeModifier(BLAZEPOWEDER_CRAFTING, AttributeOps.SUM, 3).named("count");
     public static final IAttributeModifier BLAZEPOWDER_III              = new AttributeModifier(BLAZEPOWEDER_CRAFTING, AttributeOps.SUM, 4).named("count");
     public static final IAttributeModifier MASTER_AMMO                  = new AttributeModifier("F932A216-605A-4C07-9017-EA3E8A22B46F", AttributeOps.SUM, 1).named("ammo");
-    public static final IAttributeModifier MASTER_BOLT                  = new AttributeModifier("A10BC07F-641B-4CB9-A753-D4506667C4CA", AttributeOps.SUM, 2).named("bolt");
     /* General modifiers */
     public static final IAttributeModifier ACROBATICS_FALL_I            = new AttributeModifier(FALL_RESIST, AttributeOps.SUM, 0.2).named("fall", IValueFormatter.PERCENT);
     public static final IAttributeModifier ACROBATICS_FALL_II           = new AttributeModifier(FALL_RESIST, AttributeOps.SUM, 0.45).named("fall", IValueFormatter.PERCENT);
@@ -68,26 +66,31 @@ public final class Modifiers {
     public static final IAttributeModifier DEBUFF_RESIST_III            = new AttributeModifier(DEBUFF_RESISTANCE, AttributeOps.SUM, 0.45).named("resist", IValueFormatter.PERCENT);
     public static final IAttributeModifier DEBUFF_DELAY_III             = new AttributeModifier(DEBUFF_DELAY, AttributeOps.SUM, 60).named("delay", IValueFormatter.SECONDS);
     /* Common attachments */
-    public static final IAttributeModifier DUAL_WIELD                   = new AttributeModifier("0B46D76F-2357-4346-80D8-CB68302B0346", AttributeOps.MUL, 2.0);
     public static final IAttributeModifier TOUGH_SPRING                 = new AttributeModifier("131CDD15-9B12-43BD-9242-F086C915473A", AttributeOps.SUB, 1).named("rate");
-    public static final IAttributeModifier QUICKDRAW_MAG                = new AttributeModifier("640F448C-136C-470B-A9DD-95B9D51BF502", AttributeOps.MUL, 0.7).named("speed", IValueFormatter.INV_PERCENT);
+    public static final IAttributeModifier QUICKDRAW_MAG                = new AttributeModifier("640F448C-136C-470B-A9DD-95B9D51BF502", AttributeOps.MUL, 0.8).named("speed", IValueFormatter.INV_PERCENT);
+    public static final IAttributeModifier QUIVER                       = new AttributeModifier("A1696B44-D082-498C-9E96-3CB584DA0DA7", AttributeOps.MUL, 0.75).named("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier VERTICAL_GRIP                = new AttributeModifier("1CD5BFD7-6FB6-41A8-83F9-D5FD554269C8", AttributeOps.MUL, 0.7);
-    public static final IAttributeModifier BULLET_LOOPS                 = new AttributeModifier("DF644018-1CF2-4DB4-83E8-0F2A65FDD984", AttributeOps.MUL, 0.8).named("speed", IValueFormatter.INV_PERCENT);
+    public static final IAttributeModifier BULLET_LOOPS                 = new AttributeModifier("DF644018-1CF2-4DB4-83E8-0F2A65FDD984", AttributeOps.MUL, 0.75).named("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier CHEEKPAD                     = new AttributeModifier("531F8EF1-15FA-4BF0-883D-F6B445644CC4", AttributeOps.MUL, 0.75);
     public static final IAttributeModifier NOISE                        = new AttributeModifier("2485AB60-AF4F-4074-A689-DFE4A083CC19", AttributeOps.MUL, 0.2);
+    public static final IAttributeModifier CARBON_BARREL                = new AttributeModifier("C0C19080-45A4-48C4-AB4E-D383D1FA8A70", AttributeOps.MUL, 0.7);
     /* Specific attachments */
     public static final IAttributeModifier M1911_EXTENDED_MAG           = new AttributeModifier("205CBB5C-0D78-4ABB-A623-F7AB91AF256C", AttributeOps.SUM, 6).named("capacity");
-    public static final IAttributeModifier M1911_CARBON_BARREL          = new AttributeModifier("C0C19080-45A4-48C4-AB4E-D383D1FA8A70", AttributeOps.MUL, 0.65);
+    public static final IAttributeModifier R45_EXTENDED_DRUM            = new AttributeModifier("ED6581E6-8C4E-45AD-9B8C-E014717B16EB", AttributeOps.SUM, 3).named("capacity");
+    public static final IAttributeModifier DEAGLE_EXTENDED_MAG          = new AttributeModifier("A52A4D8E-1DA5-40A8-8215-6384CD721C42", AttributeOps.SUM, 5).named("capacity");
     public static final IAttributeModifier UMP45_EXTENDED               = new AttributeModifier("26C18B3B-29AC-4A76-95C8-F1251EA78537", AttributeOps.SUM, 15).named("capacity");
+    public static final IAttributeModifier THOMPSON_EXTENDED            = new AttributeModifier("97F9C1A6-F2C7-4E63-8479-D1A75D6C0F5A", AttributeOps.SUM, 20).named("capacity");
+    public static final IAttributeModifier VECTOR_EXTENDED              = new AttributeModifier("856037EC-5EF3-45E6-9635-BCD2009DB4AC", AttributeOps.SUM, 19).named("capacity");
+    public static final IAttributeModifier VECTOR_EXTENDED_MK2          = new AttributeModifier("0282F2EF-13A2-49A5-A2DB-9BB00B9055CB", AttributeOps.SUM, 18).named("capacity");
     public static final IAttributeModifier CROSSBOW_EXTENDED            = new AttributeModifier("C997FD4C-9156-40CD-A226-6F4B02F5B298", AttributeOps.SUM, 2).named("capacity");
-    public static final IAttributeModifier CROSSBOW_QUIVER              = new AttributeModifier("A1696B44-D082-498C-9E96-3CB584DA0DA7", AttributeOps.MUL, 0.65).named("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier CROSSBOW_REPEATER            = new AttributeModifier("6899C770-39CA-465E-8715-4D5D47512ED4", AttributeOps.MUL, 1.25);
+    public static final IAttributeModifier CHUKONU_EXTENDED             = new AttributeModifier("84158AAA-3361-483A-A2F2-06B98238A819", AttributeOps.SUM, 4).named("capacity");
     public static final IAttributeModifier SKS_EXTENDED                 = new AttributeModifier("6BC9638B-0A31-4522-BDE7-DA68F0AEA194", AttributeOps.SUM, 10).named("capacity");
     public static final IAttributeModifier SKS_ADAPTIVE                 = new AttributeModifier("6FA1DA42-2CF1-41A2-B548-A056DB214927", AttributeOps.SUB, 2);
     public static final IAttributeModifier S1897_EXTENDED               = new AttributeModifier("29BBE0CB-B953-4EF1-AB49-036A39058A0D", AttributeOps.SUM, 3).named("capacity");
     public static final IAttributeModifier S1897_FAST_PUMP              = new AttributeModifier("68F45BF3-85BF-4F5D-AF80-85771DECF85F", AttributeOps.SUB, 10);
-    public static final IAttributeModifier S1897_CHOKE                  = new AttributeModifier("4A2A2F96-8EF1-4E6B-882D-1B88910D0D11", AttributeOps.MUL, 0.7).named("capacity");
-    public static final IAttributeModifier KAR98K_EXTENDED              = new AttributeModifier("195ED54A-A61C-4A25-A603-9BC15889033F", AttributeOps.SUM, 5).named("capacity");
+    public static final IAttributeModifier S12K_DRUM                    = new AttributeModifier("623192D9-CE52-44E6-A0E0-C99AB29CF01D", AttributeOps.SUM, 7).named("capacity");
+    public static final IAttributeModifier S12K_SPRING                  = new AttributeModifier("E24EEFD0-4BBD-4346-8938-03FB75227537", AttributeOps.SUB, 3).named("rate");
     public static final IAttributeModifier KAR98K_FAST_HANDS_ROF        = new AttributeModifier("7F330435-D62F-4921-B2A3-3B06F37C2FEC", AttributeOps.MUL, 0.6).named("rate", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier KAR98K_FAST_HANDS_RELOAD     = new AttributeModifier("CAE9F279-C696-46A3-8E09-8BC21460F12D", AttributeOps.MUL, 0.5).named("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier KAR98K_DEAD_EYE              = new AttributeModifier("3EF88EFE-B623-4F78-A272-B2E981A9A3E1", AttributeOps.MUL, 2.5).named("hs_damage", IValueFormatter.PERCENT);

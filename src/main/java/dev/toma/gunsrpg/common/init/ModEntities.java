@@ -54,7 +54,7 @@ public class ModEntities {
             builder -> builder.sized(0.001F, 0.001F).noSummon().noSave()
     );
     public static final RegistryObject<EntityType<Bolt>> BOLT = register("bolt", Bolt::new, EntityClassification.MISC,
-            builder -> builder.sized(0.01F, 0.01F).noSummon().noSave()
+            builder -> builder.sized(0.01F, 0.01F).noSummon().noSave().clientTrackingRange(4).updateInterval(10)
     );
     public static final RegistryObject<EntityType<Pebble>> PEBBLE = register("pebble", Pebble::new, EntityClassification.MISC,
             builder -> builder.sized(0.1F, 0.1F).noSummon().noSave().clientTrackingRange(4).updateInterval(20)

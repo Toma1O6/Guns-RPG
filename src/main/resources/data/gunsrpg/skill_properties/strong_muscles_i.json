@@ -3,7 +3,8 @@
         "category": "survival",
         "children": [
             "gunsrpg:strong_muscles_ii"
-        ]
+        ],
+        "override": "gunsrpg:strong_muscles_ii"
     },
     "properties": {
         "level": 10,

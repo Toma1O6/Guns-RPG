@@ -13,4 +13,12 @@ public class Pellet extends Bullet {
     public Pellet(EntityType<? extends Pellet> type, World world, LivingEntity owner) {
         super(type, world, owner);
     }
+
+    @Override
+    public void postTick() {
+        applyGravity(0.15F);
+        if (tickCount > 2) {
+            mulDamage(0.8F);
+        }
+    }
 }

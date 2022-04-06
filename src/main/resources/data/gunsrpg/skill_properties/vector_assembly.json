@@ -6,9 +6,9 @@
             "gunsrpg:vector_quickdraw",
             "gunsrpg:vector_vertical",
             "gunsrpg:vector_red_dot",
-            "gunsrpg:vector_extended_mk2",
             "gunsrpg:vector_extended",
             "gunsrpg:vector_suppressor",
+            "gunsrpg:vector_extended_mk2",
             "gunsrpg:vector_overloaded"
         ]
     },

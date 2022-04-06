@@ -4,7 +4,8 @@
         "parent": "gunsrpg:fracture_resistance_i",
         "children": [
             "gunsrpg:fracture_resistance_iii"
-        ]
+        ],
+        "override": "gunsrpg:fracture_resistance_iii"
     },
     "properties": {
         "level": 20,

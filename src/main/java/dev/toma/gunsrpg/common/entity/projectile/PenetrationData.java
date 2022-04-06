@@ -24,4 +24,19 @@ public final class PenetrationData {
         this.lastHit = entity;
         return flag;
     }
+
+    public static final class Factory {
+
+        private final float multiplier;
+
+        public Factory(float multiplier) {
+            this.multiplier = multiplier;
+        }
+
+        public PenetrationData make() {
+            PenetrationData data = new PenetrationData();
+            data.setMultiplier(multiplier);
+            return data;
+        }
+    }
 }

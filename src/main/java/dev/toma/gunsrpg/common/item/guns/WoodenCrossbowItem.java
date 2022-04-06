@@ -1,13 +1,16 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.IWeaponConfig;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.WoodenCrossbowRenderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
-import dev.toma.gunsrpg.common.init.ModSounds;
+import dev.toma.gunsrpg.common.entity.projectile.PenetrationData;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
@@ -15,6 +18,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,11 +26,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class WoodenCrossbowItem extends GunItem {
+import static dev.toma.gunsrpg.util.properties.Properties.LOOT_LEVEL;
+
+public class WoodenCrossbowItem extends AbstractCrossbow {
 
     private static final ResourceLocation[] AIM_ANIMATIONS = {
             GunsRPG.makeResource("wooden_crossbow/aim"),
@@ -34,6 +39,7 @@ public class WoodenCrossbowItem extends GunItem {
     };
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("wooden_crossbow/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("wooden_crossbow/unjam");
+    private static final PenetrationData.Factory PEN_DATA = new PenetrationData.Factory(0.3F);
 
     public WoodenCrossbowItem(String name) {
         super(name, new Properties().setISTER(() -> WoodenCrossbowRenderer::new).durability(350));
@@ -58,7 +64,7 @@ public class WoodenCrossbowItem extends GunItem {
                     .define(AmmoMaterials.NETHERITE, 25)
                 .build();
 
-        ScopeDataRegistry.getRegistry().register(this, 25.0F, 0.4F);
+        ScopeDataRegistry.getRegistry().register(this, 25.0F, 0.4F, provider -> provider.hasSkill(Skills.CROSSBOW_SCOPE));
     }
 
     @Override
@@ -77,42 +83,54 @@ public class WoodenCrossbowItem extends GunItem {
     }
 
     @Override
-    public int getReloadTime(IAttributeProvider provider) {
+    public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
         return Attribs.CROSSBOW_RELOAD.intValue(provider);
     }
 
     @Override
-    public float getVerticalRecoil(IAttributeProvider provider) {
-        return 0.1F * super.getVerticalRecoil(provider);
-    }
-
-    @Override
-    public float getHorizontalRecoil(IAttributeProvider provider) {
-        return 0.1F * super.getHorizontalRecoil(provider);
-    }
-
-    @Override
     public void onHitEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if (!bullet.level.isClientSide && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_POISONED_BOLTS)) {
+        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_POISONED_BOLTS)) {
             victim.addEffect(new EffectInstance(Effects.WITHER, 140, 1, false, false));
         }
     }
 
     @Override
     public void onKillEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if (!bullet.level.isClientSide && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_HUNTER)) {
-            shooter.heal(4.0F);
+        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_HUNTER)) {
+            SkillUtil.heal((PlayerEntity) shooter, 4.0F);
         }
     }
 
     @Override
-    protected SoundEvent getShootSound(PlayerEntity entity) {
-        return ModSounds.CROSSBOW_SHOOT;
+    protected float getInitialVelocity(IWeaponConfig config, LivingEntity livingEntity) {
+        float velocity = config.getVelocity();
+        if (livingEntity instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) livingEntity;
+            if (PlayerData.hasActiveSkill(player, Skills.CROSSBOW_TOUGH_BOWSTRING)) {
+                velocity *= 2;
+            }
+        }
+        return velocity;
     }
 
     @Override
-    protected SoundEvent getEntityShootSound(LivingEntity entity) {
-        return ModSounds.CROSSBOW_SHOOT;
+    protected void prepareForShooting(AbstractProjectile projectile, LivingEntity shooter) {
+        if (shooter instanceof PlayerEntity) {
+            PlayerData.get((PlayerEntity) shooter).ifPresent(data -> {
+                ISkillProvider provider = data.getSkillProvider();
+                if (provider.hasSkill(Skills.CROSSBOW_HUNTER)) {
+                    projectile.setProperty(LOOT_LEVEL, SkillUtil.HUNTER_LOOTING_LEVEL);
+                }
+            });
+        }
+    }
+
+    @Override
+    public PenetrationData getPenetrationData(IPlayerData data) {
+        if (data.getSkillProvider().hasSkill(Skills.CROSSBOW_PENETRATOR)) {
+            return PEN_DATA.make();
+        }
+        return null;
     }
 
     @Override
@@ -145,10 +163,5 @@ public class WoodenCrossbowItem extends GunItem {
     @Override
     public ResourceLocation getUnjamAnimationPath() {
         return UNJAM;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void onShoot(PlayerEntity player, ItemStack stack) {
     }
 }

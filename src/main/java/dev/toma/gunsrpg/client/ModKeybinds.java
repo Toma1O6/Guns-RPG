@@ -97,13 +97,13 @@ public class ModKeybinds {
                     if (!reloading && ammo < max) {
                         if (skip) {
                             info.startReloading(player, gun, stack, player.inventory.selected);
-                            NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(true, gun.getReloadTime(data.getAttributes())));
+                            NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(true, gun.getReloadTime(data.getAttributes(), stack)));
                             return;
                         }
                         PlayerInventory inventory = player.inventory;
                         ILocatorPredicate<ItemStack> typeCheck = ItemLocator.typeAndMaterial(ammoType, material);
                         if (ItemLocator.hasItem(inventory, typeCheck)) {
-                            int reloadTime = gun.getReloadTime(attributeProvider);
+                            int reloadTime = gun.getReloadTime(attributeProvider, stack);
                             info.startReloading(player, gun, stack, inventory.selected);
                             NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(true, reloadTime));
                         }

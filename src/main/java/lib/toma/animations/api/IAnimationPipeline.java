@@ -51,11 +51,11 @@ public interface IAnimationPipeline {
      * pipeline.
      *
      * @param type Animation type
-     * @param supplier Animation supplier
+     * @param animation Animation instance
      * @param gameTickDelay Delay in ticks
      * @param <A> Type of animation
      */
-    <A extends IAnimation> void scheduleInsert(AnimationType<A> type, Supplier<A> supplier, int gameTickDelay);
+    <A extends IAnimation> void scheduleInsert(AnimationType<A> type, A animation, int gameTickDelay);
 
     /**
      * Stops and removes animation with specified animation type.

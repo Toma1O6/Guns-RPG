@@ -9,8 +9,7 @@
             "gunsrpg:sks_red_dot",
             "gunsrpg:sks_suppressor",
             "gunsrpg:sks_cheekpad",
-            "gunsrpg:sks_adaptive_chambering",
-            "gunsrpg:sks_extended_mk2"
+            "gunsrpg:sks_adaptive_chambering"
         ],
         "children": [
             "gunsrpg:vss_assembly"

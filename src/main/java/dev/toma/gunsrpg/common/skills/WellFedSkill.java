@@ -15,7 +15,7 @@ import net.minecraft.util.text.ITextComponent;
 
 import java.util.Random;
 
-public class WellFedSkill extends BasicSkill implements IDescriptionProvider {
+public class WellFedSkill extends SimpleSkill implements IDescriptionProvider {
 
     private final DescriptionContainer container;
     private final int level;

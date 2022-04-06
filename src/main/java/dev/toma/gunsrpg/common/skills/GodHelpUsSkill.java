@@ -16,7 +16,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
 
-public class GodHelpUsSkill extends BasicSkill implements ICooldown, IClickableSkill, IDescriptionProvider {
+public class GodHelpUsSkill extends SimpleSkill implements ICooldown, IClickableSkill, IDescriptionProvider {
 
     private final DescriptionContainer container;
     private final int maxCooldown;

@@ -1,8 +1,15 @@
 package dev.toma.gunsrpg.client.render.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.model.WeaponModels;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
+import dev.toma.gunsrpg.client.render.RenderConfigs;
+import dev.toma.gunsrpg.common.init.Skills;
+import lib.toma.animations.api.IRenderConfig;
+import lib.toma.animations.engine.RenderConfig;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 
 public class Hk416Renderer extends AbstractWeaponRenderer {
@@ -41,5 +48,21 @@ public class Hk416Renderer extends AbstractWeaponRenderer {
     @Override
     protected void transformUI(MatrixStack matrix) {
         matrix.translate(0.9, -0.8, 0.0);
+    }
+
+    @Override
+    protected boolean hasCustomAttachments() {
+        return true;
+    }
+
+    @Override
+    protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
+        ISkillProvider provider = data.getSkillProvider();
+        if (provider.hasSkill(Skills.HK416_SUPPRESSOR)) {
+            renderSuppressor(RenderConfigs.HK416_SUPPRESSOR, matrix, typeBuffer, light, overlay, progress);
+        }
+        if (provider.hasSkill(Skills.HK416_RED_DOT)) {
+            renderReflex(RenderConfigs.HK416_REFLEX, matrix, typeBuffer, light, overlay, progress);
+        }
     }
 }

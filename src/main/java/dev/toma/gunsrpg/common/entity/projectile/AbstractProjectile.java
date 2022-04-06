@@ -5,7 +5,13 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModDamageSources;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import net.minecraft.entity.*;
+import dev.toma.gunsrpg.util.properties.Properties;
+import dev.toma.gunsrpg.util.properties.PropertyContext;
+import dev.toma.gunsrpg.util.properties.PropertyKey;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySize;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -29,14 +35,13 @@ import java.util.function.Consumer;
 
 public abstract class AbstractProjectile extends ProjectileEntity {
 
+    protected final PropertyContext propertyContext = PropertyContext.create();
     private final Set<UUID> passedPlayers;
-
     private final ItemStack weapon;
     private float projectileDamage;
     private float velocity;
     private int delay;
     private boolean supersonic;
-    boolean invalid;
 
     public AbstractProjectile(EntityType<? extends AbstractProjectile> type, World level) {
         super(type, level);
@@ -142,11 +147,23 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         if (supersonic)
             passAround();
         postTick();
-        move(MoverType.SELF, getDeltaMovement());
+        Vector3d delta = this.getDeltaMovement();
+        double x = this.getX() + delta.x;
+        double y = this.getY() + delta.y;
+        double z = this.getZ() + delta.z;
+        this.setPos(x, y, z);
     }
 
-    public ItemStack getWeapon() {
+    public ItemStack getWeaponSource() {
         return weapon;
+    }
+
+    public <V> V getProperty(PropertyKey<V> key) {
+        return propertyContext.getProperty(key);
+    }
+
+    public <V> void setProperty(PropertyKey<V> key, V value) {
+        propertyContext.setProperty(key, value);
     }
 
     /* Protected methods */
@@ -163,7 +180,9 @@ public abstract class AbstractProjectile extends ProjectileEntity {
     }
 
     protected void applyGravity() {
-        applyGravity(0.05F);
+        if (this.canApplyGravity()) {
+            applyGravity(0.05F);
+        }
     }
 
     protected void reduceDamage(float amount) {
@@ -195,13 +214,6 @@ public abstract class AbstractProjectile extends ProjectileEntity {
     }
 
     /**
-     * Marks projectile as ready for removal
-     */
-    void markInvalid() {
-        invalid = true;
-    }
-
-    /**
      * Executes specific action when projectile owner is player
      * @param event Event with player parameter
      */
@@ -213,31 +225,32 @@ public abstract class AbstractProjectile extends ProjectileEntity {
     }
 
     /**
-     * Checks whether entity is high enough for headshot damage
+     * Checks whether entity is tall enough for headshot damage
      * @param victim Entity being tested
      * @return If entity is valid for headshots
      */
     boolean canHeadshotEntity(Entity victim) {
         EntitySize size = victim.getDimensions(victim.getPose());
         double ratio = size.height / size.width;
-        return ratio > 1.0F;
+        return ratio > 1.0;
     }
 
-    protected void hurtTarget(Entity entity, Entity owner, boolean headshot) {
-        float damage = headshot ? projectileDamage * getHeadshotMultiplier() : projectileDamage;
-        if (entity instanceof LivingEntity) {
+    protected void hurtTarget(Entity entity, Entity owner) {
+        propertyContext.handleConditionally(Properties.IS_HEADSHOT, value -> value, headshot -> mulDamage(this.getHeadshotMultiplier()));
+        if (entity instanceof LivingEntity && weapon.getItem() instanceof GunItem) {
             LivingEntity livingEntity = (LivingEntity) entity;
-            boolean willDie = livingEntity.getHealth() - projectileDamage <= 0.0F;
-            livingEntity.hurt(this.getDamageSource(owner), damage);
-            if (weapon.getItem() instanceof GunItem) {
-                GunItem gun = (GunItem) weapon.getItem();
-                if (willDie)
-                    gun.onKillEntity(this, livingEntity, weapon, (LivingEntity) owner);
-                else
-                    gun.onHitEntity(this, livingEntity, weapon, (LivingEntity) owner);
+            GunItem gun = (GunItem) weapon.getItem();
+            if (owner instanceof PlayerEntity) {
+                projectileDamage = gun.modifyProjectileDamage(this, livingEntity, (PlayerEntity) owner, projectileDamage);
             }
+            boolean willDie = livingEntity.getHealth() - projectileDamage <= 0.0F;
+            livingEntity.hurt(this.getDamageSource(owner), projectileDamage);
+            if (willDie)
+                gun.onKillEntity(this, livingEntity, weapon, (LivingEntity) owner);
+            else
+                gun.onHitEntity(this, livingEntity, weapon, (LivingEntity) owner);
         } else if (entity instanceof PartEntity<?>) {
-            entity.hurt(this.getDamageSource(owner), damage);
+            entity.hurt(this.getDamageSource(owner), projectileDamage);
         }
     }
 
@@ -259,7 +272,7 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         if (player.isCreative() || player.isSpectator())
             return;
         PlayerData.get(player).ifPresent(data -> {
-            double mobScareRange = 25.0;
+            double mobScareRange = 64.0;
             GunItem gun = (GunItem) weapon.getItem();
             double noiseMultiplier = gun.getNoiseMultiplier(data.getAttributes());
             double actualScareRange = mobScareRange * noiseMultiplier;

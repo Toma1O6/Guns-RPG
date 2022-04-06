@@ -4,7 +4,8 @@
         "parent": "gunsrpg:sharp_axe_ii",
         "children": [
             "gunsrpg:sharp_axe_iv"
-        ]
+        ],
+        "override": "gunsrpg:sharp_axe_iv"
     },
     "properties": {
         "level": 20,

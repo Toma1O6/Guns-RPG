@@ -289,7 +289,7 @@ public final class DebuffRegistration {
 
     private static boolean isEntity(EntityType<?> type, IDebuffContext context) {
         DamageSource source = context.getSource();
-        return source instanceof EntityDamageSource && source.getDirectEntity() != null && source.getEntity().getType() == type;
+        return source instanceof EntityDamageSource && source.getDirectEntity() != null && source.getDirectEntity().getType() == type;
     }
 
     private static float forEntity(EntityType<?> type, IDebuffContext context, float value) {

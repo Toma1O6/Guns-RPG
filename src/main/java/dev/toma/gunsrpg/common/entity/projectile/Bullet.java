@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.entity.projectile;
 
+import dev.toma.gunsrpg.util.properties.Properties;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -10,6 +11,7 @@ import net.minecraft.network.play.server.SSpawnParticlePacket;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -44,7 +46,7 @@ public class Bullet extends AbstractPenetratingProjectile {
         if (!level.isClientSide) {
             BlockPos pos = result.getBlockPos();
             BlockState state = level.getBlockState(pos);
-            if (state.getMaterial() == Material.GLASS) {
+            if (this.canPenetrateGlass() && state.getMaterial() == Material.GLASS) {
                 level.destroyBlock(pos, false);
                 Vector3d projectilePos = position();
                 checkForCollisions(projectilePos, projectilePos.add(this.getDeltaMovement()));
@@ -68,9 +70,28 @@ public class Bullet extends AbstractPenetratingProjectile {
     protected void handleEntityCollision(EntityRayTraceResult result) {
         if (!level.isClientSide) {
             Entity entity = result.getEntity();
-            this.hurtTarget(entity, this.getOwner(), false); // TODO headshots
+            this.propertyContext.setProperty(Properties.IS_HEADSHOT, this.isHeadshot(entity));
+            this.hurtTarget(entity, this.getOwner());
             entity.invulnerableTime = 0;
-            remove(); // TODO pass if penetration data allow it
+            PenetrationData penetrationData = this.getProperty(Properties.PENETRATION);
+            if (penetrationData != null && penetrationData.getLastHit() != null) {
+                remove();
+            }
         }
+    }
+
+    protected boolean canPenetrateGlass() {
+        return true;
+    }
+
+    protected boolean isHeadshot(Entity entity) {
+        if (!canHeadshotEntity(entity)) return false;
+        Vector3d vec1 = this.position();
+        Vector3d vec2 = vec1.add(this.getDeltaMovement());
+        AxisAlignedBB hitbox = entity.getBoundingBox();
+        Vector3d impactVec = hitbox.clip(vec1, vec2).orElse(null);
+        if (impactVec == null) return false;
+        double headMinY = entity.getEyeY() - 0.25;
+        return impactVec.y >= headMinY;
     }
 }
