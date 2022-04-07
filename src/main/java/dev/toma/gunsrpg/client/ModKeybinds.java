@@ -18,6 +18,7 @@ import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.*;
 import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
 import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
+import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.Animation;
@@ -69,7 +70,7 @@ public class ModKeybinds {
             AnimationEngine engine = AnimationEngine.get();
             IAnimationPipeline pipeline = engine.pipeline();
             IAttributeProvider attributeProvider = data.getAttributes();
-            if (stack.getItem() instanceof GunItem && !player.isSprinting() && pipeline.get(ModAnimations.CHAMBER) == null) {
+            if (stack.getItem() instanceof GunItem && !player.isSprinting() && ShootingManager.isShootingReady()) {
                 GunItem gun = (GunItem) stack.getItem();
                 if (info.isReloading()) {
                     IReloadManager manager = gun.getReloadManager(player, data.getAttributes());
