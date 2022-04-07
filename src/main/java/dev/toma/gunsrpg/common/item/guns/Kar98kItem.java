@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IReloadManager;
-import dev.toma.gunsrpg.api.common.attribute.IAttribute;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Kar98kRenderer;
@@ -81,7 +80,7 @@ public class Kar98kItem extends GunItem {
 
     @Override
     public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
-        return (int) (this.getAmmo(stack) > 0 ? Attribs.KAR98K_RELOAD.getModifiedValue(provider, 30) : Attribs.KAR98K_RELOAD.getModifiedValue(provider, 100));
+        return (int) (this.getAmmo(stack) > 0 ? Attribs.KAR98K_RELOAD.value(provider) : Attribs.KAR98K_RELOAD.getModifiedValue(provider, 100));
     }
 
     @Override
