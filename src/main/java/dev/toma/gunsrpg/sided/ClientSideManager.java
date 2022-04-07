@@ -78,8 +78,8 @@ public class ClientSideManager {
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.GRENADE.get(),             GrenadeRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.ROCKET_ANGEL.get(),        RocketAngelRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.GOLD_DRAGON.get(),         GoldenDragonRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.PELLET.get(),              NoOpRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.BULLET.get(),              NoOpRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.PELLET.get(),              TracerRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.BULLET.get(),              TracerRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.FLARE.get(),               NoOpRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.PEBBLE.get(),              PebbleRenderer::new);
 

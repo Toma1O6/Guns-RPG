@@ -48,10 +48,10 @@ public class ModEntities {
             builder -> builder.setTrackingRange(64).setUpdateInterval(20).setShouldReceiveVelocityUpdates(true).sized(0.5F, 0.5F).clientTrackingRange(4)
     );
     public static final RegistryObject<EntityType<Bullet>> BULLET = register("bullet", Bullet::new, EntityClassification.MISC,
-            builder -> builder.sized(0.001F, 0.001F).noSummon().noSave()
+            builder -> builder.sized(0.001F, 0.001F).noSummon().noSave().setShouldReceiveVelocityUpdates(false)
     );
     public static final RegistryObject<EntityType<Pellet>> PELLET = register("pellet", Pellet::new, EntityClassification.MISC,
-            builder -> builder.sized(0.001F, 0.001F).noSummon().noSave()
+            builder -> builder.sized(0.001F, 0.001F).noSummon().noSave().setShouldReceiveVelocityUpdates(false)
     );
     public static final RegistryObject<EntityType<Bolt>> BOLT = register("bolt", Bolt::new, EntityClassification.MISC,
             builder -> builder.sized(0.01F, 0.01F).noSummon().noSave().clientTrackingRange(4).updateInterval(10)

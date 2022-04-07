@@ -38,7 +38,7 @@ public class Bullet extends AbstractPenetratingProjectile {
 
     @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
-        return false;
+        return true;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class Bullet extends AbstractPenetratingProjectile {
             this.hurtTarget(entity, this.getOwner());
             entity.invulnerableTime = 0;
             PenetrationData penetrationData = this.getProperty(Properties.PENETRATION);
-            if (penetrationData != null && penetrationData.getLastHit() != null) {
+            if (penetrationData == null || penetrationData.getLastHit() != null) {
                 remove();
             }
         }

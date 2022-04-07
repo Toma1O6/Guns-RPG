@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns.ammo;
 
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
+import dev.toma.gunsrpg.common.entity.projectile.TracerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -15,12 +16,14 @@ public class SimpleMaterial implements IAmmoMaterial {
 
     private final ResourceLocation materialID;
     private final ITextComponent displayName;
+    private final TracerInfo tracerInfo;
     private final int textColor;
     private final int defaultLevelRequirement;
 
-    SimpleMaterial(ResourceLocation materialID, int textColor, int defaultLevelRequirement) {
+    SimpleMaterial(ResourceLocation materialID, int textColor, int defaultLevelRequirement, TracerInfo tracerInfo) {
         this.materialID = materialID;
         this.textColor = textColor;
+        this.tracerInfo = tracerInfo;
         this.defaultLevelRequirement = defaultLevelRequirement;
         this.displayName = new TranslationTextComponent(convertID(materialID));
     }
@@ -33,6 +36,11 @@ public class SimpleMaterial implements IAmmoMaterial {
     @Override
     public ITextComponent getDisplayName() {
         return displayName;
+    }
+
+    @Override
+    public TracerInfo getTracer() {
+        return tracerInfo != null ? tracerInfo.copy() : null;
     }
 
     @Override

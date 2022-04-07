@@ -17,6 +17,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.entity.projectile.Bullet;
 import dev.toma.gunsrpg.common.entity.projectile.PenetrationData;
+import dev.toma.gunsrpg.common.entity.projectile.TracerInfo;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialData;
@@ -33,7 +34,6 @@ import lib.toma.animations.Easings;
 import lib.toma.animations.api.AnimationList;
 import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IRenderConfig;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -51,6 +51,7 @@ import java.util.Set;
 import java.util.function.BiFunction;
 
 import static dev.toma.gunsrpg.util.properties.Properties.PENETRATION;
+import static dev.toma.gunsrpg.util.properties.Properties.TRACER;
 
 public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
@@ -170,6 +171,13 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         projectile.setup(damage, velocity, delay);
         projectile.fire(shooter.xRot, shooter.yRot, this.getInaccuracy(props, shooter));
         this.prepareForShooting(projectile, shooter);
+        IAmmoMaterial material = this.getMaterialFromNBT(stack);
+        if (material != null) {
+            TracerInfo tracerInfo = material.getTracer();
+            if (tracerInfo != null) {
+                projectile.setProperty(TRACER, tracerInfo);
+            }
+        }
         if (shooter instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) shooter;
             PlayerData.get(player).ifPresent(data -> {

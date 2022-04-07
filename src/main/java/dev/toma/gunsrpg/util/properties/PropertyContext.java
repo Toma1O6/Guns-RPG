@@ -1,11 +1,14 @@
 package dev.toma.gunsrpg.util.properties;
 
+import net.minecraft.network.PacketBuffer;
+
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
 public final class PropertyContext {
@@ -39,5 +42,28 @@ public final class PropertyContext {
                 action.accept(value);
             }
         });
+    }
+
+    public <V> void encode(PacketBuffer buffer) {
+        List<Map.Entry<PropertyKey<?>, Object>> synchronizables = map.entrySet().stream().filter(entry -> entry.getKey().isSerializable()).collect(Collectors.toList());
+        buffer.writeVarInt(synchronizables.size());
+        for (Map.Entry<PropertyKey<?>, Object> entry : synchronizables) {
+            PropertyKey<V> key = (PropertyKey<V>) entry.getKey();
+            V value = (V) entry.getValue();
+            buffer.writeUtf(key.getId());
+            IPropertySerializer<V> serializer = key.getSerializer();
+            serializer.encode(buffer, value);
+        }
+    }
+
+    public <V> void decode(PacketBuffer buffer) {
+        int properties = buffer.readVarInt();
+        for (int i = 0; i < properties; i++) {
+            String key = buffer.readUtf();
+            PropertyKey<V> propertyKey = PropertyRegistry.getById(key);
+            IPropertySerializer<V> serializer = propertyKey.getSerializer();
+            V value = serializer.decode(buffer);
+            setProperty(propertyKey, value);
+        }
     }
 }

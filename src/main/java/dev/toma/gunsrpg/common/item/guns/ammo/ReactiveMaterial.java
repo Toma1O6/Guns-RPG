@@ -13,7 +13,7 @@ public class ReactiveMaterial extends SimpleMaterial {
     private final IImpactCallback callback;
 
     ReactiveMaterial(ResourceLocation materialID, int textColor, int defaultLevelRequirement, IImpactCallback callback) {
-        super(materialID, textColor, defaultLevelRequirement);
+        super(materialID, textColor, defaultLevelRequirement, null);
         this.callback = callback;
     }
 

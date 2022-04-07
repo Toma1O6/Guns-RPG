@@ -52,11 +52,13 @@ public class Pebble extends Bullet implements IEntityAdditionalSpawnData {
 
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
+        super.writeSpawnData(buffer);
         buffer.writeItemStack(ammoSource.isEmpty() ? ItemStack.EMPTY : ammoSource, true);
     }
 
     @Override
-    public void readSpawnData(PacketBuffer additionalData) {
-        ammoSource = additionalData.readItem();
+    public void readSpawnData(PacketBuffer buffer) {
+        super.readSpawnData(buffer);
+        ammoSource = buffer.readItem();
     }
 }

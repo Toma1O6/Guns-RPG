@@ -56,6 +56,14 @@ public class ModUtils {
     public static final ISplitter<SkillCategory, SkillType<?>> SKILLS_BY_CATEGORY = ModUtils::splitSkillsIntoCategories;
     public static final DecimalFormatSymbols DOT_DECIMAL_SEPARATOR = new DecimalFormatSymbols();
 
+    public static <T> void shift(T element, T[] array) {
+        int length = array.length;
+        if (length > 1) {
+            System.arraycopy(array, 0, array, 1, length - 2 + 1);
+        }
+        array[0] = element;
+    }
+
     public static void inverse(Object[] array) {
         int length = array.length;
         int half = length / 2;
