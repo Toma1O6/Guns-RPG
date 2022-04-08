@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.client.render.debuff;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.common.debuffs.IDebuff;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import dev.toma.gunsrpg.config.ModConfig;

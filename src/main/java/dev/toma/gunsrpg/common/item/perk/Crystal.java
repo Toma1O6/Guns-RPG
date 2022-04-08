@@ -6,7 +6,6 @@ import dev.toma.gunsrpg.common.perk.PerkRegistry;
 import dev.toma.gunsrpg.common.perk.PerkType;
 import dev.toma.gunsrpg.resource.perks.CrystalConfiguration;
 import dev.toma.gunsrpg.resource.perks.PerkConfiguration;
-import dev.toma.gunsrpg.util.Lifecycle;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;

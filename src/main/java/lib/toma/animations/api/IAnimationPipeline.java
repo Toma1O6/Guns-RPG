@@ -3,8 +3,6 @@ package lib.toma.animations.api;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 
-import java.util.function.Supplier;
-
 /**
  * Handles animation playing, scheduling and removing.
  *

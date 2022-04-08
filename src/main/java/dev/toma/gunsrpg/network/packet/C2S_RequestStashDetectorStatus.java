@@ -1,11 +1,9 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.client.animation.StashDetectorEvent;
 import dev.toma.gunsrpg.common.LootStashDetectorHandler;
 import dev.toma.gunsrpg.common.item.StashDetectorItem;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.world.LootStashes;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;

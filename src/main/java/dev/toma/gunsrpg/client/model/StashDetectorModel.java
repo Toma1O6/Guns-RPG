@@ -2,14 +2,8 @@ package dev.toma.gunsrpg.client.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.LootStashDetectorHandler;
-import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.init.Skills;
-import dev.toma.gunsrpg.common.skills.TreasureHunterSkill;
-import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.IAnimationPipeline;
 import net.minecraft.client.Minecraft;

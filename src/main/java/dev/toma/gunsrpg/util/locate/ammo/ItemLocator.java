@@ -10,7 +10,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public final class ItemLocator<I> extends AbstractLocator<ItemStack, I> {
