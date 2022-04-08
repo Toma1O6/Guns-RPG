@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.util.locate.AbstractLocator;
 import dev.toma.gunsrpg.util.locate.IContextIterator;
 import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
+import dev.toma.gunsrpg.util.locate.InventoryIterator;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -55,11 +56,11 @@ public final class ItemLocator<I> extends AbstractLocator<ItemStack, I> {
     }
 
     public static ItemStack findFirst(IInventory inventory, ILocatorPredicate<ItemStack> predicate) {
-        return findFirst(inventory, NestedInventoryIterator.of(inventory), predicate);
+        return findFirst(inventory, InventoryIterator.vanilla(inventory), predicate);
     }
 
     public static Stream<ItemStack> findAll(IInventory inventory, ILocatorPredicate<ItemStack> predicate) {
-        return findAll(inventory, NestedInventoryIterator.of(inventory), predicate);
+        return findAll(inventory, InventoryIterator.vanilla(inventory), predicate);
     }
 
     public static int countItems(IInventory inventory, ILocatorPredicate<ItemStack> predicate) {
