@@ -146,12 +146,6 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
         Vector3d v1 = position();
         Vector3d v2 = v1.add(getDeltaMovement());
         checkForCollisions(v1, v2);
-        if (level.isClientSide && tickCount > 1) {
-            TracerInfo info = this.getProperty(Properties.TRACER);
-            if (info != null) {
-                info.tick(this.position());
-            }
-        }
         if (supersonic)
             passAround();
         postTick();

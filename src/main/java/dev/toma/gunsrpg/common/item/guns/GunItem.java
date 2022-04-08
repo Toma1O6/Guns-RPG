@@ -175,7 +175,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         if (material != null) {
             TracerInfo tracerInfo = material.getTracer();
             if (tracerInfo != null) {
-                projectile.setProperty(TRACER, tracerInfo);
+                projectile.setProperty(TRACER, tracerInfo.getRgb());
             }
         }
         if (shooter instanceof PlayerEntity) {

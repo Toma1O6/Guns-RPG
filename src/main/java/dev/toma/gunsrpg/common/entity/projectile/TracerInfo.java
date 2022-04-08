@@ -5,13 +5,10 @@ import dev.toma.gunsrpg.util.properties.IPropertySerializer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.vector.Vector3d;
 
-import java.util.Arrays;
-
 public final class TracerInfo {
 
     private final Vector3d[] positions;
     private final int rgb;
-    private int lifeTime;
 
     private TracerInfo(int length, int rgb) {
         this.positions = new Vector3d[length];
@@ -32,7 +29,6 @@ public final class TracerInfo {
 
     public void tick(Vector3d pos) {
         ModUtils.shift(pos, positions);
-        ++lifeTime;
     }
 
     public Vector3d[] getPositions() {
