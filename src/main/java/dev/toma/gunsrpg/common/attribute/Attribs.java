@@ -121,7 +121,7 @@ public final class Attribs {
     public static final IAttributeId THOMPSON_NOISE             = createInternal("thompson_noise");
     public static final IAttributeId VECTOR_RELOAD_SPEED        = createInternal("vector_reload_speed", 70);
     public static final IAttributeId VECTOR_VERTICAL_RECOIL     = createInternal("vector_vertical_recoil", 1.5);
-    public static final IAttributeId VECTOR_MAG_CAPACITY        = createInternal("vector_mag_capacity", 13);
+    public static final IAttributeId VECTOR_MAG_CAPACITY        = createInternal("vector_mag_capacity", 17);
     public static final IAttributeId VECTOR_LOUDNESS            = createInternal("vector_loudness");
     public static final IAttributeId CROSSBOW_RELOAD_SPEED      = createInternal("crossbow_reload_speed", 60);
     public static final IAttributeId CROSSBOW_MAG_CAPACITY      = createInternal("crossbow_mag_capacity");
@@ -138,6 +138,10 @@ public final class Attribs {
     public static final IAttributeId S12K_HORIZONTAL_RECOIL     = createInternal("s12k_horizontal_recoil", 2.2);
     public static final IAttributeId S12K_FIRERATE              = createInternal("s12k_firerate", 6);
     public static final IAttributeId S12K_LOUDNESS              = createInternal("s12k_loudness");
+    public static final IAttributeId AKM_RELOAD_SPEED           = createInternal("akm_reload_speed", 75);
+    public static final IAttributeId AKM_MAG_CAPACITY           = createInternal("akm_mag_capacity", 30);
+    public static final IAttributeId AKM_LOUDNESS               = createInternal("akm_loudness");
+    public static final IAttributeId AKM_FIRERATE               = createInternal("akm_firerate", 3);
     public static final IAttributeId SKS_FIRERATE               = createInternal("sks_firerate", 7);
     public static final IAttributeId SKS_VERTICAL_RECOIL        = createInternal("sks_vertical_recoil", 4.7);
     public static final IAttributeId SKS_HORIZONTAL_RECOIL      = createInternal("sks_horizontal_recoil", 1.3);
@@ -180,6 +184,8 @@ public final class Attribs {
     public static final ICombinedAttribute S12K_VERTICAL        = ICombinedAttribute.of(RECOIL_CONTROL, S12K_VERTICAL_RECOIL);
     public static final ICombinedAttribute S12K_HORIZONTAL      = ICombinedAttribute.of(RECOIL_CONTROL, S12K_HORIZONTAL_RECOIL);
     public static final ICombinedAttribute S12K_NOISE           = ICombinedAttribute.of(WEAPON_NOISE, S12K_LOUDNESS);
+    public static final ICombinedAttribute AKM_RELOAD           = ICombinedAttribute.of(RELOAD_SPEED, AKM_RELOAD_SPEED);
+    public static final ICombinedAttribute AKM_NOISE            = ICombinedAttribute.of(WEAPON_NOISE, AKM_LOUDNESS);
     public static final ICombinedAttribute SKS_VERTICAL         = ICombinedAttribute.of(RECOIL_CONTROL, SKS_VERTICAL_RECOIL);
     public static final ICombinedAttribute SKS_HORIZONTAL       = ICombinedAttribute.of(RECOIL_CONTROL, SKS_HORIZONTAL_RECOIL);
     public static final ICombinedAttribute SKS_LOUDNESS         = ICombinedAttribute.of(WEAPON_NOISE, SKS_NOISE);

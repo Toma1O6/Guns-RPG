@@ -80,8 +80,8 @@ public final class Modifiers {
     public static final IAttributeModifier DEAGLE_EXTENDED_MAG          = new AttributeModifier("A52A4D8E-1DA5-40A8-8215-6384CD721C42", AttributeOps.SUM, 5).named("capacity");
     public static final IAttributeModifier UMP45_EXTENDED               = new AttributeModifier("26C18B3B-29AC-4A76-95C8-F1251EA78537", AttributeOps.SUM, 15).named("capacity");
     public static final IAttributeModifier THOMPSON_EXTENDED            = new AttributeModifier("97F9C1A6-F2C7-4E63-8479-D1A75D6C0F5A", AttributeOps.SUM, 20).named("capacity");
-    public static final IAttributeModifier VECTOR_EXTENDED              = new AttributeModifier("856037EC-5EF3-45E6-9635-BCD2009DB4AC", AttributeOps.SUM, 19).named("capacity");
-    public static final IAttributeModifier VECTOR_EXTENDED_MK2          = new AttributeModifier("0282F2EF-13A2-49A5-A2DB-9BB00B9055CB", AttributeOps.SUM, 18).named("capacity");
+    public static final IAttributeModifier VECTOR_EXTENDED              = new AttributeModifier("856037EC-5EF3-45E6-9635-BCD2009DB4AC", AttributeOps.SUM, 16).named("capacity");
+    public static final IAttributeModifier VECTOR_EXTENDED_MK2          = new AttributeModifier("0282F2EF-13A2-49A5-A2DB-9BB00B9055CB", AttributeOps.SUM, 17).named("capacity");
     public static final IAttributeModifier CROSSBOW_EXTENDED            = new AttributeModifier("C997FD4C-9156-40CD-A226-6F4B02F5B298", AttributeOps.SUM, 2).named("capacity");
     public static final IAttributeModifier CROSSBOW_REPEATER            = new AttributeModifier("6899C770-39CA-465E-8715-4D5D47512ED4", AttributeOps.MUL, 1.25);
     public static final IAttributeModifier CHUKONU_EXTENDED             = new AttributeModifier("84158AAA-3361-483A-A2F2-06B98238A819", AttributeOps.SUM, 4).named("capacity");
@@ -91,6 +91,7 @@ public final class Modifiers {
     public static final IAttributeModifier S1897_FAST_PUMP              = new AttributeModifier("68F45BF3-85BF-4F5D-AF80-85771DECF85F", AttributeOps.SUB, 10);
     public static final IAttributeModifier S12K_DRUM                    = new AttributeModifier("623192D9-CE52-44E6-A0E0-C99AB29CF01D", AttributeOps.SUM, 7).named("capacity");
     public static final IAttributeModifier S12K_SPRING                  = new AttributeModifier("E24EEFD0-4BBD-4346-8938-03FB75227537", AttributeOps.SUB, 3).named("rate");
+    public static final IAttributeModifier AKM_EXTENDED                 = new AttributeModifier("3125E4EA-1EC1-42A3-8ADB-34D9AFBD81FB", AttributeOps.SUM, 15).named("capacity");
     public static final IAttributeModifier KAR98K_FAST_HANDS_ROF        = new AttributeModifier("7F330435-D62F-4921-B2A3-3B06F37C2FEC", AttributeOps.MUL, 0.6).named("rate", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier KAR98K_FAST_HANDS_RELOAD     = new AttributeModifier("CAE9F279-C696-46A3-8E09-8BC21460F12D", AttributeOps.MUL, 0.5).named("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier KAR98K_DEAD_EYE              = new AttributeModifier("3EF88EFE-B623-4F78-A272-B2E981A9A3E1", AttributeOps.MUL, 2.5).named("hs_damage", IValueFormatter.PERCENT);

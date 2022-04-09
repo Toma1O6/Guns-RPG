@@ -43,8 +43,6 @@ public final class AmmoMaterials {
     public static final IAmmoMaterial HE_ROCKET = AmmoMaterialManager.get().createReactiveMaterial("he_rocket", 0x298FAD, 6,
             (projectile, world, impactPos, impactedOn) -> explode(world, impactPos, 8.0F));
 
-
-
     private AmmoMaterials() {}
 
     private static void explode(World world, Vector3d impact, float power, Explosion.Mode mode) {
