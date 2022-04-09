@@ -176,6 +176,9 @@ public final class Attribs {
     public static final IAttributeId KAR98K_NOISE               = createInternal("kar98k_noise");
     public static final IAttributeId KAR98K_FIRERATE            = createInternal("kar98k_firerate", 40);
     public static final IAttributeId KAR98K_HS_DAMAGE           = createInternal("kar98k_hs_damage");
+    public static final IAttributeId WINCHESTER_RELOAD_SPEED    = createInternal("winchester_reload_speed", 25);
+    public static final IAttributeId WINCHESTER_MAG_CAPACITY    = createInternal("winchester_mag_capacity", 8);
+    public static final IAttributeId WINCHESTER_FIRERATE        = createInternal("winchester_firerate", 25);
 
     // combined
     public static final ICombinedAttribute M1911_RELOAD         = ICombinedAttribute.of(RELOAD_SPEED, M1911_RELOAD_SPEED);
@@ -232,6 +235,7 @@ public final class Attribs {
     public static final ICombinedAttribute KAR98K_HORIZONTAL    = ICombinedAttribute.of(RECOIL_CONTROL, KAR98K_HORIZONTAL_RECOIL);
     public static final ICombinedAttribute KAR98K_LOUDNESS      = ICombinedAttribute.of(WEAPON_NOISE, KAR98K_NOISE);
     public static final ICombinedAttribute KAR98K_HEADSHOT      = ICombinedAttribute.of(HEADSHOT_DAMAGE, KAR98K_HS_DAMAGE);
+    public static final ICombinedAttribute WINCHESTER_RELOAD    = ICombinedAttribute.of(RELOAD_SPEED, WINCHESTER_RELOAD_SPEED);
 
     public static IAttributeId find(ResourceLocation id) {
         return KEY_MAP.get(id);

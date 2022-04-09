@@ -104,4 +104,6 @@ public final class Modifiers {
     public static final IAttributeModifier KAR98K_FAST_HANDS_ROF        = new AttributeModifier("7F330435-D62F-4921-B2A3-3B06F37C2FEC", AttributeOps.MUL, 0.6).named("rate", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier KAR98K_FAST_HANDS_RELOAD     = new AttributeModifier("CAE9F279-C696-46A3-8E09-8BC21460F12D", AttributeOps.MUL, 0.5).named("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier KAR98K_DEAD_EYE              = new AttributeModifier("3EF88EFE-B623-4F78-A272-B2E981A9A3E1", AttributeOps.MULB, 0.25).named("hs_damage", IValueFormatter.PERCENT);
+    public static final IAttributeModifier WINCHESTER_EXTENDED          = new AttributeModifier("", AttributeOps.SUM, 6).named("capacity");
+    public static final IAttributeModifier WINCHESTER_FAST_HANDS        = new AttributeModifier("", AttributeOps.MUL, 0.8).named("rate", IValueFormatter.INV_PERCENT);
 }

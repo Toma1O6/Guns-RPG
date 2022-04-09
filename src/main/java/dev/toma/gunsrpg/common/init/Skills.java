@@ -116,6 +116,9 @@ public class Skills {
     public static final SkillType<ISkill> KAR98K_PENETRATOR = null;
     public static final SkillType<ISkill> KAR98K_RELIABLE = null;
     public static final SkillType<ISkill> WINCHESTER_SCOPE = null;
+    public static final SkillType<ISkill> WINCHESTER_HUNTER = null;
+    public static final SkillType<ISkill> WINCHESTER_PENETRATOR = null;
+    public static final SkillType<ISkill> WINCHESTER_COLD_BLOODED = null;
     public static final SkillType<ISkill> AWM_SUPPRESSOR = null;
     public static final SkillType<ISkill> AWM_SCOPE = null;
     public static final SkillType<ISkill> ROCKET_LAUNCHER_ROCKET_BARRAGE = null;

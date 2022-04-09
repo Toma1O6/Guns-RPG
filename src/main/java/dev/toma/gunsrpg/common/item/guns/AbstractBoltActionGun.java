@@ -25,7 +25,7 @@ public abstract class AbstractBoltActionGun extends GunItem {
     public final void onShoot(PlayerEntity player, ItemStack stack) {
         NetworkManager.sendServerPacket(new C2S_SetAimingPacket(false));
         ResourceLocation eject = this.getBulletEjectAnimationPath();
-        int delay = 10;
+        int delay = 6;
         int length = this.getFirerate(PlayerData.getUnsafe(player).getAttributes()) - delay;
         IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
         Animation animation = AnimationUtils.createAnimation(eject, provider -> new Animation(provider, length));

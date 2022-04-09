@@ -22,6 +22,7 @@ public class SkillUtil {
     public static final float EXTENDED_BARREL_VELOCITY = 1.75F;
     public static final float CHOKE_SPREAD = 0.7F;
     public static final float EVERY_BULLET_COUNTS_DAMAGE = 3.0F;
+    public static final float COLD_BLOODED_DAMAGE = 1.3F;
     public static final int HUNTER_LOOTING_LEVEL = 4;
 
     public static <S extends ISkill> S getTopHierarchySkill(SkillType<S> head, ISkillProvider provider) {
