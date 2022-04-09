@@ -17,6 +17,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
+import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
@@ -59,6 +60,7 @@ public class WinchesterItem extends AbstractBoltActionGun {
                     .define(AmmoMaterials.AMETHYST, 19)
                     .define(AmmoMaterials.NETHERITE, 23)
                 .build();
+        ScopeDataRegistry.getRegistry().register(this, 20.0F, 0.85F, provider -> provider.hasSkill(Skills.WINCHESTER_SCOPE));
     }
 
     @Override
