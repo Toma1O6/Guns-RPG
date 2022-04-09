@@ -113,8 +113,8 @@ public class Skills {
     public static final SkillType<ISkill> MK14EBR_SCOPE = null;
     public static final SkillType<ISkill> KAR98K_SCOPE = null;
     public static final SkillType<ISkill> KAR98K_SUPPRESSOR = null;
-    public static final SkillType<ISkill> KAR98K_FAST_HANDS = null;
     public static final SkillType<ISkill> KAR98K_PENETRATOR = null;
+    public static final SkillType<ISkill> KAR98K_RELIABLE = null;
     public static final SkillType<ISkill> WINCHESTER_SCOPE = null;
     public static final SkillType<ISkill> AWM_SUPPRESSOR = null;
     public static final SkillType<ISkill> AWM_SCOPE = null;

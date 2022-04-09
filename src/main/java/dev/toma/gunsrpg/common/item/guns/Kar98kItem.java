@@ -3,10 +3,12 @@ package dev.toma.gunsrpg.common.item.guns;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Kar98kRenderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.entity.projectile.PenetrationData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -34,6 +36,7 @@ public class Kar98kItem extends AbstractBoltActionGun {
     private static final ResourceLocation LOAD_BULLET_ANIMATION = GunsRPG.makeResource("kar98k/load_bullet");
     private static final ResourceLocation RELOAD_CLIP_ANIMATION = GunsRPG.makeResource("kar98k/reload_clip");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("kar98k/unjam");
+    private static final PenetrationData.Factory PENETRATION_DATA_FACTORY = new PenetrationData.Factory(0.5f);
 
     public Kar98kItem(String name) {
         super(name, new Properties().setISTER(() -> Kar98kRenderer::new).durability(450));
@@ -99,6 +102,27 @@ public class Kar98kItem extends AbstractBoltActionGun {
     @Override
     public double getHeadshotMultiplier(IAttributeProvider provider) {
         return Attribs.KAR98K_HEADSHOT.value(provider);
+    }
+
+    @Override
+    public PenetrationData getPenetrationData(IPlayerData data) {
+        return data.getSkillProvider().hasSkill(Skills.KAR98K_PENETRATOR) ? PENETRATION_DATA_FACTORY.make() : null;
+    }
+
+    @Override
+    protected float getModifiedDamageChance(float damageChance, IPlayerData data) {
+        if (data.getSkillProvider().hasSkill(Skills.KAR98K_RELIABLE)) {
+            return 0.85F * damageChance;
+        }
+        return damageChance;
+    }
+
+    @Override
+    protected float getModifiedJamChance(float jamChance, IPlayerData data) {
+        if (data.getSkillProvider().hasSkill(Skills.KAR98K_RELIABLE)) {
+            return 0.8F * jamChance;
+        }
+        return jamChance;
     }
 
     @Override
