@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class ScopeModel extends AbstractAttachmentModel implements IOpticsProvider {
 
-    private static ResourceLocation reticlePath = GunsRPG.makeResource("textures/scope/sniper_reticle.png");
+    static ResourceLocation reticlePath = GunsRPG.makeResource("textures/scope/sniper_reticle.png");
 
     private final ModelRenderer scope;
     private final ModelRenderer main;

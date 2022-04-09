@@ -157,6 +157,11 @@ public final class Attribs {
     public static final IAttributeId SKS_HORIZONTAL_RECOIL      = createInternal("sks_horizontal_recoil", 1.3);
     public static final IAttributeId SKS_MAG_CAPACITY           = createInternal("sks_mag_capacity", 10);
     public static final IAttributeId SKS_NOISE                  = createInternal("sks_noise");
+    public static final IAttributeId VSS_RELOAD_SPEED           = createInternal("vss_reload_speed", 75);
+    public static final IAttributeId VSS_MAG_CAPACITY           = createInternal("vss_mag_capacity", 10);
+    public static final IAttributeId VSS_VERTICAL_RECOIL        = createInternal("vss_vertical_recoil", 3.6);
+    public static final IAttributeId VSS_HORIZONTAL_RECOIL      = createInternal("vss_horizontal_recoil", 2.0);
+    public static final IAttributeId VSS_FIRERATE               = createInternal("vss_firerate", 2);
     public static final IAttributeId KAR98K_VERTICAL_RECOIL     = createInternal("kar98k_vertical_recoil", 8.0);
     public static final IAttributeId KAR98K_HORIZONTAL_RECOIL   = createInternal("kar98k_horizontal_recoil", 0.9);
     public static final IAttributeId KAR98K_MAG_CAPACITY        = createInternal("kar98k_mag_capacity", 5);
@@ -207,6 +212,9 @@ public final class Attribs {
     public static final ICombinedAttribute SKS_VERTICAL         = ICombinedAttribute.of(RECOIL_CONTROL, SKS_VERTICAL_RECOIL);
     public static final ICombinedAttribute SKS_HORIZONTAL       = ICombinedAttribute.of(RECOIL_CONTROL, SKS_HORIZONTAL_RECOIL);
     public static final ICombinedAttribute SKS_LOUDNESS         = ICombinedAttribute.of(WEAPON_NOISE, SKS_NOISE);
+    public static final ICombinedAttribute VSS_RELOAD           = ICombinedAttribute.of(RELOAD_SPEED, VSS_RELOAD_SPEED);
+    public static final ICombinedAttribute VSS_VERTICAL         = ICombinedAttribute.of(RECOIL_CONTROL, VSS_VERTICAL_RECOIL);
+    public static final ICombinedAttribute VSS_HORIZONTAL       = ICombinedAttribute.of(RECOIL_CONTROL, VSS_HORIZONTAL_RECOIL);
     public static final ICombinedAttribute KAR98K_RELOAD        = ICombinedAttribute.of(RELOAD_SPEED, KAR98K_RELOAD_SPEED);
     public static final ICombinedAttribute KAR98K_VERTICAL      = ICombinedAttribute.of(RECOIL_CONTROL, KAR98K_VERTICAL_RECOIL);
     public static final ICombinedAttribute KAR98K_HORIZONTAL    = ICombinedAttribute.of(RECOIL_CONTROL, KAR98K_HORIZONTAL_RECOIL);

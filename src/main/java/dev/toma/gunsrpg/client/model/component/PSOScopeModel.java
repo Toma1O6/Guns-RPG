@@ -10,8 +10,6 @@ import net.minecraft.util.ResourceLocation;
 
 public class PSOScopeModel extends AbstractAttachmentModel implements IOpticsProvider {
 
-    private static final ResourceLocation VSS_RETICLE = GunsRPG.makeResource("textures/scope/vss_reticle.png");
-
     private final ModelRenderer scope;
     private final ModelRenderer bone29;
     private final ModelRenderer bone30;
@@ -39,7 +37,7 @@ public class PSOScopeModel extends AbstractAttachmentModel implements IOpticsPro
 
     @Override
     public ResourceLocation getReticleTextureMap() {
-        return VSS_RETICLE;
+        return ScopeModel.reticlePath;
     }
 
     @Override
