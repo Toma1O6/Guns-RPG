@@ -142,6 +142,11 @@ public final class Attribs {
     public static final IAttributeId AKM_MAG_CAPACITY           = createInternal("akm_mag_capacity", 30);
     public static final IAttributeId AKM_LOUDNESS               = createInternal("akm_loudness");
     public static final IAttributeId AKM_FIRERATE               = createInternal("akm_firerate", 3);
+    public static final IAttributeId HK416_RELOAD_SPEED         = createInternal("hk416_reload_speed", 70);
+    public static final IAttributeId HK416_VERTICAL_RECOIL      = createInternal("hk416_vertical_recoil", 2.6);
+    public static final IAttributeId HK416_HORIZONTAL_RECOIL    = createInternal("hk416_horizontal_recoil", 1.4);
+    public static final IAttributeId HK416_MAG_CAPACITY         = createInternal("hk416_mag_capacity", 30);
+    public static final IAttributeId HK416_LOUDNESS             = createInternal("hk416_loudness");
     public static final IAttributeId SKS_FIRERATE               = createInternal("sks_firerate", 7);
     public static final IAttributeId SKS_VERTICAL_RECOIL        = createInternal("sks_vertical_recoil", 4.7);
     public static final IAttributeId SKS_HORIZONTAL_RECOIL      = createInternal("sks_horizontal_recoil", 1.3);
@@ -186,6 +191,10 @@ public final class Attribs {
     public static final ICombinedAttribute S12K_NOISE           = ICombinedAttribute.of(WEAPON_NOISE, S12K_LOUDNESS);
     public static final ICombinedAttribute AKM_RELOAD           = ICombinedAttribute.of(RELOAD_SPEED, AKM_RELOAD_SPEED);
     public static final ICombinedAttribute AKM_NOISE            = ICombinedAttribute.of(WEAPON_NOISE, AKM_LOUDNESS);
+    public static final ICombinedAttribute HK416_RELOAD         = ICombinedAttribute.of(RELOAD_SPEED, HK416_RELOAD_SPEED);
+    public static final ICombinedAttribute HK416_VERTICAL       = ICombinedAttribute.of(RECOIL_CONTROL, HK416_VERTICAL_RECOIL);
+    public static final ICombinedAttribute HK416_HORIZONTAL     = ICombinedAttribute.of(RECOIL_CONTROL, HK416_HORIZONTAL_RECOIL);
+    public static final ICombinedAttribute HK416_NOISE          = ICombinedAttribute.of(WEAPON_NOISE, HK416_LOUDNESS);
     public static final ICombinedAttribute SKS_VERTICAL         = ICombinedAttribute.of(RECOIL_CONTROL, SKS_VERTICAL_RECOIL);
     public static final ICombinedAttribute SKS_HORIZONTAL       = ICombinedAttribute.of(RECOIL_CONTROL, SKS_HORIZONTAL_RECOIL);
     public static final ICombinedAttribute SKS_LOUDNESS         = ICombinedAttribute.of(WEAPON_NOISE, SKS_NOISE);

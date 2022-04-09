@@ -99,6 +99,7 @@ public class Skills {
     public static final SkillType<ISkill> AKM_EVERY_BULLET_COUNTS = null;
     public static final SkillType<ISkill> HK416_SUPPRESSOR = null;
     public static final SkillType<ISkill> HK416_RED_DOT = null;
+    public static final SkillType<ISkill> HK416_OVERLOADED = null;
     public static final SkillType<ISkill> AUG_SUPPRESSOR = null;
     public static final SkillType<ISkill> AUG_RED_DOT = null;
     public static final SkillType<ISkill> SKS_TOUGH_SPRING = null;

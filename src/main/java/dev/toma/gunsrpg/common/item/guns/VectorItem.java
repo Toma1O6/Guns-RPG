@@ -104,18 +104,16 @@ public class VectorItem extends GunItem {
     }
 
     @Override
-    protected void consumeAmmo(ItemStack stack, LivingEntity consumer) {
+    protected boolean consumeAmmo(ItemStack stack, LivingEntity consumer) {
         if (consumer instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) consumer;
             if (PlayerData.hasActiveSkill(player, Skills.VECTOR_OVERLOADED)) {
                 Random random = player.getRandom();
                 float chance = random.nextFloat();
-                if (chance < SkillUtil.NO_AMMO_CONSUME_CHANCE) {
-                    return;
-                }
+                return !(chance < SkillUtil.NO_AMMO_CONSUME_CHANCE);
             }
         }
-        super.consumeAmmo(stack, consumer);
+        return true;
     }
 
     @Override

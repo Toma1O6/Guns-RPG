@@ -267,7 +267,10 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
                 setJammedState(stack, true);
             }
         }
-        this.consumeAmmo(stack, entity);
+        if (consumeAmmo(stack, entity)) {
+            int ammo = this.getAmmo(stack);
+            setAmmoCount(stack, ammo - 1);
+        }
         world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);
     }
 
@@ -296,9 +299,8 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         return false;
     }
 
-    protected void consumeAmmo(ItemStack stack, LivingEntity consumer) {
-        int ammo = this.getAmmo(stack);
-        setAmmoCount(stack, ammo - 1);
+    protected boolean consumeAmmo(ItemStack stack, LivingEntity consumer) {
+        return true;
     }
 
     protected float getModifiedDamageChance(float damageChance, IPlayerData data) {
