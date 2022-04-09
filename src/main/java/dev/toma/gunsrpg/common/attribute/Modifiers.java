@@ -74,6 +74,7 @@ public final class Modifiers {
     public static final IAttributeModifier CHEEKPAD                     = new AttributeModifier("531F8EF1-15FA-4BF0-883D-F6B445644CC4", AttributeOps.MUL, 0.75);
     public static final IAttributeModifier NOISE                        = new AttributeModifier("2485AB60-AF4F-4074-A689-DFE4A083CC19", AttributeOps.MUL, 0.2);
     public static final IAttributeModifier CARBON_BARREL                = new AttributeModifier("C0C19080-45A4-48C4-AB4E-D383D1FA8A70", AttributeOps.MUL, 0.7);
+    public static final IAttributeModifier COMPENSATOR                  = new AttributeModifier("D792939F-AE5E-47A2-906E-BBA7430594A9", AttributeOps.MUL, 0.8);
     /* Specific attachments */
     public static final IAttributeModifier M1911_EXTENDED_MAG           = new AttributeModifier("205CBB5C-0D78-4ABB-A623-F7AB91AF256C", AttributeOps.SUM, 6).named("capacity");
     public static final IAttributeModifier R45_EXTENDED_DRUM            = new AttributeModifier("ED6581E6-8C4E-45AD-9B8C-E014717B16EB", AttributeOps.SUM, 3).named("capacity");
@@ -92,8 +93,10 @@ public final class Modifiers {
     public static final IAttributeModifier S12K_DRUM                    = new AttributeModifier("623192D9-CE52-44E6-A0E0-C99AB29CF01D", AttributeOps.SUM, 7).named("capacity");
     public static final IAttributeModifier S12K_SPRING                  = new AttributeModifier("E24EEFD0-4BBD-4346-8938-03FB75227537", AttributeOps.SUB, 3).named("rate");
     public static final IAttributeModifier AKM_EXTENDED                 = new AttributeModifier("3125E4EA-1EC1-42A3-8ADB-34D9AFBD81FB", AttributeOps.SUM, 15).named("capacity");
-    public static final IAttributeModifier HK416_EXTENDED               = new AttributeModifier("", AttributeOps.SUM, 10).named("capacity");
-    public static final IAttributeModifier HK416_EXTENDED_MK2           = new AttributeModifier("", AttributeOps.SUM, 10).named("capacity");
+    public static final IAttributeModifier HK416_EXTENDED               = new AttributeModifier("F781C227-0B56-4E3D-A0FB-B5A8A50C2DC9", AttributeOps.SUM, 10).named("capacity");
+    public static final IAttributeModifier HK416_EXTENDED_MK2           = new AttributeModifier("866ECD71-95AC-4604-87F5-B6438168CD3C", AttributeOps.SUM, 10).named("capacity");
+    public static final IAttributeModifier AUG_EXTENDED                 = new AttributeModifier("0A8A51D8-F311-4F56-B17B-F0DFCFAFB50E", AttributeOps.SUM, 10).named("capacity");
+    public static final IAttributeModifier AUG_EXTENDED_MK2             = new AttributeModifier("2C8B724B-C21A-48A7-AE30-86616407060A", AttributeOps.SUM, 10).named("capacity");
     public static final IAttributeModifier KAR98K_FAST_HANDS_ROF        = new AttributeModifier("7F330435-D62F-4921-B2A3-3B06F37C2FEC", AttributeOps.MUL, 0.6).named("rate", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier KAR98K_FAST_HANDS_RELOAD     = new AttributeModifier("CAE9F279-C696-46A3-8E09-8BC21460F12D", AttributeOps.MUL, 0.5).named("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier KAR98K_DEAD_EYE              = new AttributeModifier("3EF88EFE-B623-4F78-A272-B2E981A9A3E1", AttributeOps.MUL, 2.5).named("hs_damage", IValueFormatter.PERCENT);
