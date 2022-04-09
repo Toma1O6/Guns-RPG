@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
-public class AwmItem extends GunItem {
+public class AwmItem extends AbstractBoltActionGun {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("awm/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("awm/unjam");

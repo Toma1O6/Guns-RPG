@@ -20,7 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
-public class WinchesterItem extends GunItem {
+public class WinchesterItem extends AbstractBoltActionGun {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("winchester/reload");
     private static final ResourceLocation BULLET = GunsRPG.makeResource("winchester/load_bullet");
