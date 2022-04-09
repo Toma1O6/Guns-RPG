@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Mk14EbrRenderer;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -11,6 +12,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
+import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
@@ -23,6 +25,11 @@ public class Mk14EbrItem extends GunItem {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("mk14/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("mk14/unjam");
+    private static final ResourceLocation EJECT = GunsRPG.makeResource("mk14/eject");
+    private static final ResourceLocation[] AIM = {
+            GunsRPG.makeResource("mk14/aim"),
+            GunsRPG.makeResource("mk14/aim_scoped")
+    };
 
     public Mk14EbrItem(String name) {
         super(name, new Properties().setISTER(() -> Mk14EbrRenderer::new).durability(750));
@@ -46,6 +53,7 @@ public class Mk14EbrItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 18)
                     .define(AmmoMaterials.NETHERITE, 22)
                 .build();
+        ScopeDataRegistry.getRegistry().register(this, 15.0F, 0.65F, provider -> provider.hasSkill(Skills.MK14EBR_SCOPE));
     }
 
     @Override
@@ -60,17 +68,37 @@ public class Mk14EbrItem extends GunItem {
 
     @Override
     public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
-        return 75;
+        return Attribs.MK14_RELOAD.intValue(provider);
     }
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 3;
+        return provider.getAttribute(Attribs.MK14_FIRERATE).intValue();
     }
 
     @Override
     public int getMaxAmmo(IAttributeProvider provider) {
-        return 20;
+        return provider.getAttribute(Attribs.MK14_MAG_CAPACITY).intValue();
+    }
+
+    @Override
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return Attribs.MK14_VERTICAL.floatValue(provider);
+    }
+
+    @Override
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return Attribs.MK14_HORIZONTAL.floatValue(provider);
+    }
+
+    @Override
+    public double getNoiseMultiplier(IAttributeProvider provider) {
+        return Attribs.MK14_NOISE.value(provider);
+    }
+
+    @Override
+    public double getHeadshotMultiplier(IAttributeProvider provider) {
+        return Attribs.MK14_HEADSHOT.value(provider);
     }
 
     @Override
@@ -91,6 +119,16 @@ public class Mk14EbrItem extends GunItem {
     @Override
     public ResourceLocation getUnjamAnimationPath() {
         return UNJAM;
+    }
+
+    @Override
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return EJECT;
+    }
+
+    @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return AIM[PlayerData.hasActiveSkill(player, Skills.MK14EBR_SCOPE) ? 1 : 0];
     }
 
     @Override
