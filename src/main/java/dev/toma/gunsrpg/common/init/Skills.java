@@ -121,5 +121,6 @@ public class Skills {
     public static final SkillType<ISkill> WINCHESTER_COLD_BLOODED = null;
     public static final SkillType<ISkill> AWM_SUPPRESSOR = null;
     public static final SkillType<ISkill> AWM_SCOPE = null;
+    public static final SkillType<ISkill> AWM_PENETRATOR = null;
     public static final SkillType<ISkill> ROCKET_LAUNCHER_ROCKET_BARRAGE = null;
 }

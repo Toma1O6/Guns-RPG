@@ -104,6 +104,9 @@ public final class Modifiers {
     public static final IAttributeModifier KAR98K_FAST_HANDS_ROF        = new AttributeModifier("7F330435-D62F-4921-B2A3-3B06F37C2FEC", AttributeOps.MUL, 0.6).named("rate", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier KAR98K_FAST_HANDS_RELOAD     = new AttributeModifier("CAE9F279-C696-46A3-8E09-8BC21460F12D", AttributeOps.MUL, 0.5).named("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier KAR98K_DEAD_EYE              = new AttributeModifier("3EF88EFE-B623-4F78-A272-B2E981A9A3E1", AttributeOps.MULB, 0.25).named("hs_damage", IValueFormatter.PERCENT);
-    public static final IAttributeModifier WINCHESTER_EXTENDED          = new AttributeModifier("", AttributeOps.SUM, 6).named("capacity");
-    public static final IAttributeModifier WINCHESTER_FAST_HANDS        = new AttributeModifier("", AttributeOps.MUL, 0.8).named("rate", IValueFormatter.INV_PERCENT);
+    public static final IAttributeModifier WINCHESTER_EXTENDED          = new AttributeModifier("59D27486-9F92-4300-AEBC-AA61907F02BC", AttributeOps.SUM, 6).named("capacity");
+    public static final IAttributeModifier WINCHESTER_FAST_HANDS        = new AttributeModifier("9A3816A9-AABF-4DCD-A6B4-B960962B271C", AttributeOps.MUL, 0.8).named("rate", IValueFormatter.INV_PERCENT);
+    public static final IAttributeModifier AWM_EXTENDED                 = new AttributeModifier("C7D72E09-C3C3-4C07-AD21-C89E551187CD", AttributeOps.SUM, 3).named("capacity");
+    public static final IAttributeModifier AWM_FAST_HANDS               = new AttributeModifier("E114D178-708A-4387-BC98-ABC9792E4B49", AttributeOps.MUL, 0.8).named("rate", IValueFormatter.INV_PERCENT);
+    public static final IAttributeModifier AWM_HEADSHOT                 = new AttributeModifier("F84D36CB-49CF-4E0E-AABF-0524CA690C1D", AttributeOps.MULB, 0.3).named("hs_damage", IValueFormatter.PERCENT);
 }
