@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
+import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Vector3f;
@@ -76,7 +77,9 @@ public class AwmModel extends AbstractWeaponModel {
     protected void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay) {
         matrix.mulPose(Vector3f.YN.rotationDegrees(90f));
         awm.render(matrix, builder, light, overlay);
-        ironsights.render(matrix, builder, light, overlay);
+        if (!data.getSkillProvider().hasSkill(Skills.AWM_SCOPE)) {
+            ironsights.render(matrix, builder, light, overlay);
+        }
         stock.render(matrix, builder, light, overlay);
     }
 

@@ -82,4 +82,7 @@ public class RenderConfigs {
     public static final IRenderConfig MK14EBR_SCOPE = RenderConfig.newDef().withPosition(0.0, -1.65, 0.4).finish();
     public static final IRenderConfig KAR98K_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -0.6, -5.7).withScale(1.5F, 1.5F, 2.0F).finish();
     public static final IRenderConfig KAR98K_SCOPE = IRenderConfig.pos(0.0, -0.2, 0.1);
+    public static final IRenderConfig WINCHESTER_SCOPE = RenderConfig.newDef().withPosition(0.0, -0.85, -0.1).withScale(0.8F).finish();
+    public static final IRenderConfig AWM_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -2.2, -5.0).withScale(1.5F, 1.5F, 3.0F).finish();
+    public static final IRenderConfig AWM_SCOPE = RenderConfig.newDef().withPosition(0.0, -1.9, -0.6).finish();
 }

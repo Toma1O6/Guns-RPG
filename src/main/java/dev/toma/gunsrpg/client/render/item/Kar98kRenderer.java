@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class Kar98kRenderer extends AbstractWeaponRenderer {
 
-    private static final ResourceLocation KAR98K_SCOPE_RETICLE = GunsRPG.makeResource("textures/scope/kar98k_reticle.png");
+    public static final ResourceLocation KAR98K_SCOPE_RETICLE = GunsRPG.makeResource("textures/scope/kar98k_reticle.png");
 
     @Override
     public AbstractWeaponModel getWeaponModel() {
