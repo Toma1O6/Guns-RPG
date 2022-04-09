@@ -17,6 +17,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -134,7 +135,7 @@ public class AkmItem extends GunItem {
         if (weapon.getItem() instanceof GunItem && PlayerData.hasActiveSkill(shooter, Skills.AKM_EVERY_BULLET_COUNTS)) {
             int ammo = this.getAmmo(weapon);
             if (ammo == 0) {
-                return damage * 3.0F;
+                return damage * SkillUtil.EVERY_BULLET_COUNTS_DAMAGE;
             }
         }
         return damage;

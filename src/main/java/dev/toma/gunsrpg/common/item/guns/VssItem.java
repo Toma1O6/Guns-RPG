@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.VssRenderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -13,9 +14,12 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
+import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -55,6 +59,7 @@ public class VssItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 12)
                     .define(AmmoMaterials.NETHERITE, 14)
                 .build();
+        ScopeDataRegistry.getRegistry().register(this, 25.0F, 0.7F, provider -> provider.hasSkill(Skills.VSS_SCOPE));
     }
 
     @Override
@@ -95,6 +100,18 @@ public class VssItem extends GunItem {
     @Override
     public float getHorizontalRecoil(IAttributeProvider provider) {
         return Attribs.VSS_HORIZONTAL.floatValue(provider);
+    }
+
+    @Override
+    public float modifyProjectileDamage(AbstractProjectile projectile, LivingEntity entity, PlayerEntity shooter, float damage) {
+        ItemStack weapon = projectile.getWeaponSource();
+        if (weapon.getItem() instanceof GunItem && PlayerData.hasActiveSkill(shooter, Skills.VSS_EVERY_BULLET_COUNTS)) {
+            int ammo = this.getAmmo(weapon);
+            if (ammo == 0) {
+                return damage * SkillUtil.EVERY_BULLET_COUNTS_DAMAGE;
+            }
+        }
+        return damage;
     }
 
     @Override
