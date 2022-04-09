@@ -78,6 +78,8 @@ public class RenderConfigs {
     public static final IRenderConfig AUG_REFLEX = RenderConfig.newDef().withPosition(0.0, -1.6, -1.3).finish();
     public static final IRenderConfig SKS_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -1.33, -5.0).withScale(1.4F, 1.4F, 2.0F).finish();
     public static final IRenderConfig SKS_REFLEX = RenderConfig.newDef().withPosition(0.0, -1.9, -1.1).withScale(1.3F).finish();
+    public static final IRenderConfig MK14EBR_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -2.65, -2.6).withScale(2.0f, 2.0f, 3.0f).finish();
+    public static final IRenderConfig MK14EBR_SCOPE = RenderConfig.newDef().withPosition(0.0, -1.65, 0.4).finish();
     public static final IRenderConfig KAR98K_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -0.6, -5.7).withScale(1.5F, 1.5F, 2.0F).finish();
     public static final IRenderConfig KAR98K_SCOPE = IRenderConfig.pos(0.0, -0.2, 0.1);
 }

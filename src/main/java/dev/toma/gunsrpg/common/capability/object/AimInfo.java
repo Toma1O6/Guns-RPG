@@ -26,7 +26,7 @@ public class AimInfo implements IAimInfo, IPlayerCapEntry {
     public void tick(PlayerEntity player) {
         boolean server = !player.level.isClientSide;
         int slotIn = player.inventory.selected;
-        if (server && aiming && (slotIn != slot || player.isSprinting() || handState.areHandsBusy())) {
+        if (server && aiming && (slotIn != slot || player.getMainHandItem().isEmpty() || player.isSprinting() || handState.areHandsBusy())) {
             setAiming(false, player);
             request.makeSyncRequest();
         }

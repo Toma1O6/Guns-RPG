@@ -46,7 +46,7 @@ public class ChuKoNuRenderer extends AbstractWeaponRenderer {
     @Override
     protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
         if (data.getSkillProvider().hasSkill(Skills.CHUKONU_SCOPE)) {
-            renderScope(RenderConfigs.CHUKONU_SCOPE, matrix, typeBuffer, light, overlay, progress);
+            renderScope(RenderConfigs.CHUKONU_SCOPE, matrix, typeBuffer, light, overlay, progress, WoodenCrossbowRenderer.RETICLE);
         }
     }
 }

@@ -103,15 +103,13 @@ public class Skills {
     public static final SkillType<ISkill> AUG_SUPPRESSOR = null;
     public static final SkillType<ISkill> AUG_RED_DOT = null;
     public static final SkillType<ISkill> AUG_SOUL_TAKER = null;
-    public static final SkillType<ISkill> SKS_TOUGH_SPRING = null;
-    public static final SkillType<ISkill> SKS_VERTICAL_GRIP = null;
-    public static final SkillType<ISkill> SKS_EXTENDED = null;
     public static final SkillType<ISkill> SKS_RED_DOT = null;
     public static final SkillType<ISkill> SKS_SUPPRESSOR = null;
-    public static final SkillType<ISkill> SKS_CHEEKPAD = null;
     public static final SkillType<ISkill> SKS_ADAPTIVE_CHAMBERING = null;
     public static final SkillType<ISkill> VSS_ADAPTIVE_CHAMBERING = null;
+    public static final SkillType<ISkill> VSS_SCOPE = null;
     public static final SkillType<ISkill> MK14EBR_SUPPRESSOR = null;
+    public static final SkillType<ISkill> MK14EBR_SCOPE = null;
     public static final SkillType<ISkill> KAR98K_SCOPE = null;
     public static final SkillType<ISkill> KAR98K_CHEEKPAD = null;
     public static final SkillType<ISkill> KAR98K_EXTENDED = null;

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
+import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Vector3f;
@@ -91,7 +92,9 @@ public class Mk14Model extends AbstractWeaponModel {
     protected void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay) {
         matrix.mulPose(Vector3f.YP.rotation((float) Math.PI));
         mk14.render(matrix, builder, light, overlay);
-        ironsights.render(matrix, builder, light, overlay);
+        if (!data.getSkillProvider().hasSkill(Skills.MK14EBR_SCOPE)) {
+            ironsights.render(matrix, builder, light, overlay);
+        }
     }
 
     public Mk14Model() {
