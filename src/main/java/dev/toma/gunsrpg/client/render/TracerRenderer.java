@@ -46,7 +46,7 @@ public class TracerRenderer<P extends AbstractProjectile> extends EntityRenderer
             float x = AnimationUtils.linearInterpolate((float) projectile.getX(), (float) projectile.xo, partialTicks);
             float y = AnimationUtils.linearInterpolate((float) projectile.getY(), (float) projectile.yo, partialTicks);
             float z = AnimationUtils.linearInterpolate((float) projectile.getZ(), (float) projectile.zo, partialTicks);
-            float sizeScale = 15.0f;
+            float sizeScale = 0.2f;
             Vector3d vec1 = projectile.position();
             Vector3d vec2 = vec1.add(projectile.getDeltaMovement());
             float x1 = (float) vec1.x - x;

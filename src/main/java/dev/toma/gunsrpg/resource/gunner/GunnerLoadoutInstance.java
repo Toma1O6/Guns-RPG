@@ -49,6 +49,7 @@ public final class GunnerLoadoutInstance {
         CompoundNBT nbt = new CompoundNBT();
         nbt.putInt("ammo", Integer.MAX_VALUE);
         nbt.putString("material", material.getMaterialID().toString());
+        nbt.putInt("firemode", 0);
         stack.setTag(nbt);
         entity.setItemSlot(EquipmentSlotType.MAINHAND, stack);
         entity.setDamageMultiplier(damageMultiplier.getProperty(difficulty));

@@ -35,7 +35,7 @@ public abstract class AbstractShotgun extends GunItem {
     }
 
     @Override
-    protected void handleShootProjectileAction(World world, LivingEntity entity, ItemStack stack, IShootProps props) {
+    public void handleShootProjectileAction(World world, LivingEntity entity, ItemStack stack, IShootProps props) {
         int pellets = this.getPelletCount(entity, stack);
         for (int i = 0; i < pellets; i++) {
             shootProjectile(world, entity, stack, props);

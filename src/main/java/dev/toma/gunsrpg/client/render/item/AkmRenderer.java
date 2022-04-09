@@ -60,9 +60,5 @@ public class AkmRenderer extends AbstractWeaponRenderer {
         if (provider.hasSkill(Skills.AKM_SUPPRESSOR)) {
             renderSuppressor(RenderConfigs.AKM_SUPPRESSOR, matrix, typeBuffer, light, overlay, progress);
         }
-        if (provider.hasSkill(Skills.AKM_RED_DOT)) {
-            renderReflex(RenderConfigs.AKM_REFLEX, matrix, typeBuffer, light, overlay, progress);
-        }
-
     }
 }
