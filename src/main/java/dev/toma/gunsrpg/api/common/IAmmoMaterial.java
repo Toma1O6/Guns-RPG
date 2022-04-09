@@ -1,6 +1,5 @@
 package dev.toma.gunsrpg.api.common;
 
-import dev.toma.gunsrpg.common.entity.projectile.TracerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -20,7 +19,7 @@ public interface IAmmoMaterial {
 
     int defaultLevelRequirement();
 
-    TracerInfo getTracer();
+    Integer getTracerColor();
 
     void onImpact(ProjectileEntity projectile, World world, Vector3d impactPos, @Nullable Entity impactedOn);
 }

@@ -17,7 +17,6 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.entity.projectile.Bullet;
 import dev.toma.gunsrpg.common.entity.projectile.PenetrationData;
-import dev.toma.gunsrpg.common.entity.projectile.TracerInfo;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialData;
@@ -173,9 +172,9 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         this.prepareForShooting(projectile, shooter);
         IAmmoMaterial material = this.getMaterialFromNBT(stack);
         if (material != null) {
-            TracerInfo tracerInfo = material.getTracer();
-            if (tracerInfo != null) {
-                projectile.setProperty(TRACER, tracerInfo.getRgb());
+            Integer tracer = material.getTracerColor();
+            if (tracer != null) {
+                projectile.setProperty(TRACER, tracer);
             }
         }
         if (shooter instanceof PlayerEntity) {

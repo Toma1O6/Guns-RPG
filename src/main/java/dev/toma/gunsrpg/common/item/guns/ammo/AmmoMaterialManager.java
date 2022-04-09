@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.common.item.guns.ammo;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
-import dev.toma.gunsrpg.common.entity.projectile.TracerInfo;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 
@@ -30,12 +29,12 @@ public final class AmmoMaterialManager {
         return materialMap.get(location);
     }
 
-    public IAmmoMaterial createMaterial(ResourceLocation materialID, int textColor, int levelReq, TracerInfo tracerInfo) {
-        return createMaterial(new SimpleMaterial(materialID, textColor, levelReq, tracerInfo));
+    public IAmmoMaterial createMaterial(ResourceLocation materialID, int textColor, int levelReq, Integer tracer) {
+        return createMaterial(new SimpleMaterial(materialID, textColor, levelReq, tracer));
     }
 
-    public IAmmoMaterial createMaterial(String name, int textColor, int levelReq, TracerInfo tracerInfo) {
-        return createMaterial(GunsRPG.makeResource(name), textColor, levelReq, tracerInfo);
+    public IAmmoMaterial createMaterial(String name, int textColor, int levelReq, Integer tracer) {
+        return createMaterial(GunsRPG.makeResource(name), textColor, levelReq, tracer);
     }
 
     public IAmmoMaterial createMaterial(ResourceLocation materialID, int textColor, int levelReq) {
