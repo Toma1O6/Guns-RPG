@@ -60,29 +60,29 @@ public class RenderConfigs {
     // ATTACHMENTS ===============================
     public static final IRenderConfig M1911_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -0.17, 0.0).withScale(1.1F, 1.1F, 1.5F).finish();
     public static final IRenderConfig R45_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -0.22, -0.92).finish();
-    public static final IRenderConfig DEAGLE_RED_DOT = RenderConfig.newDef().withPosition(0.0, -1.8, -0.5).withScale(1.2F).finish();
+    public static final IRenderConfig DEAGLE_RED_DOT = RenderConfig.newDef().withPosition(0.0, -2.0, -0.8).withScale(1.2F).finish();
     public static final IRenderConfig UMP45_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -0.5, -1.0).withScale(1.0F, 1.0F, 1.5F).finish();
     public static final IRenderConfig UMP45_REFLEX = RenderConfig.newDef().withPosition(0.0, -0.815, 0.7).finish();
     public static final IRenderConfig THOMPSON_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -1.45, -2.58).withScale(1.0F, 1.0F, 1.5F).finish();
     public static final IRenderConfig THOMPSON_REFLEX = RenderConfig.newDef().withPosition(0.0, -1.8, 0.8).withScale(1.1F).finish();
     public static final IRenderConfig VECTOR_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -0.5, -0.47).withScale(1.1F, 1.1F, 1.3F).finish();
     public static final IRenderConfig VECTOR_REFLEX = RenderConfig.newDef().withPosition(0.0, -0.75, 0.6).finish();
-    public static final IRenderConfig WOODEN_CROSSBOW_SCOPE = RenderConfig.newDef().withPosition(0.0, 0.15, 0.6).withScale(0.6F, 0.6F, 0.35F).finish();
-    public static final IRenderConfig CHUKONU_SCOPE = RenderConfig.newDef().withPosition(0.0, -0.08, 0.45).withScale(0.6F, 0.6F, 0.4F).finish();
+    public static final IRenderConfig WOODEN_CROSSBOW_SCOPE = RenderConfig.newDef().withPosition(0.0, 0.15, -0.6).flipY().withScale(0.6F, 0.6F, 0.35F).finish();
+    public static final IRenderConfig CHUKONU_SCOPE = RenderConfig.newDef().withPosition(0.0, -0.08, -0.45).withScale(0.6F, 0.6F, 0.4F).flipY().finish();
     public static final IRenderConfig S12K_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -4.7, -2.5).withScale(2.0F, 2.0F, 3.0F).finish();
     public static final IRenderConfig S12K_REFLEX = RenderConfig.newDef().withPosition(0.0, -4.8, 0.0).withScale(1.6F).finish();
     public static final IRenderConfig AKM_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -4.3, -4.9).withScale(1.75F, 1.75F, 2.25F).finish();
     public static final IRenderConfig HK416_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -0.85, -0.6).withScale(1.4F, 1.4F, 1.9F).finish();
     public static final IRenderConfig HK416_REFLEX = RenderConfig.newDef().withPosition(0.0, -1.1, 1.0).withScale(1.3F).finish();
-    public static final IRenderConfig AUG_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -1.38, -2.4).withScale(1.2F, 1.2F, 1.6F).finish();
-    public static final IRenderConfig AUG_REFLEX = RenderConfig.newDef().withPosition(0.0, -1.6, -1.3).finish();
+    public static final IRenderConfig AUG_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -1.38, 2.4).withScale(1.2F, 1.2F, 1.6F).flipY().finish();
+    public static final IRenderConfig AUG_REFLEX = RenderConfig.newDef().withPosition(0.0, -1.6, 1.3).flipY().finish();
     public static final IRenderConfig SKS_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -1.33, -5.0).withScale(1.4F, 1.4F, 2.0F).finish();
     public static final IRenderConfig SKS_REFLEX = RenderConfig.newDef().withPosition(0.0, -1.9, -1.1).withScale(1.3F).finish();
-    public static final IRenderConfig MK14EBR_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -2.65, -2.6).withScale(2.0f, 2.0f, 3.0f).finish();
-    public static final IRenderConfig MK14EBR_SCOPE = RenderConfig.newDef().withPosition(0.0, -1.65, 0.4).finish();
+    public static final IRenderConfig MK14EBR_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -2.65, 2.6).withScale(2.0f, 2.0f, 3.0f).flipY().finish();
+    public static final IRenderConfig MK14EBR_SCOPE = RenderConfig.newDef().withPosition(0.0, -1.65, -0.4).flipY().finish();
     public static final IRenderConfig KAR98K_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -0.6, -5.7).withScale(1.5F, 1.5F, 2.0F).finish();
     public static final IRenderConfig KAR98K_SCOPE = IRenderConfig.pos(0.0, -0.2, 0.1);
     public static final IRenderConfig WINCHESTER_SCOPE = RenderConfig.newDef().withPosition(0.0, -0.85, -0.1).withScale(0.8F).finish();
     public static final IRenderConfig AWM_SUPPRESSOR = RenderConfig.newDef().withPosition(0.0, -2.2, -5.0).withScale(1.5F, 1.5F, 3.0F).finish();
-    public static final IRenderConfig AWM_SCOPE = RenderConfig.newDef().withPosition(0.0, -1.9, -0.6).finish();
+    public static final IRenderConfig AWM_SCOPE = RenderConfig.newDef().withPosition(0.0, -1.9, -0.7).finish();
 }

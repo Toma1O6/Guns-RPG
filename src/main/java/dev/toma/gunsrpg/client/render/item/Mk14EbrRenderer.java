@@ -11,6 +11,7 @@ import lib.toma.animations.api.IRenderConfig;
 import lib.toma.animations.engine.RenderConfig;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class Mk14EbrRenderer extends AbstractWeaponRenderer {
 
