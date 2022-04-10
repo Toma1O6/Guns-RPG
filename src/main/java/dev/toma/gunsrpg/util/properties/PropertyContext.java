@@ -11,12 +11,22 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
-public final class PropertyContext {
+public class PropertyContext {
 
+    private static final PropertyContext EMPTY = new PropertyContext() {
+        @Override
+        public <V> void setProperty(PropertyKey<V> key, V value) {
+            throw new UnsupportedOperationException();
+        }
+    };
     private final Map<PropertyKey<?>, Object> map;
 
     private PropertyContext() {
         map = new IdentityHashMap<>();
+    }
+
+    public static PropertyContext empty() {
+        return EMPTY;
     }
 
     public static PropertyContext create() {
@@ -42,6 +52,14 @@ public final class PropertyContext {
                 action.accept(value);
             }
         });
+    }
+
+    public <V> void moveContents(PropertyContext target) {
+        for (Map.Entry<PropertyKey<?>, ?> entry : map.entrySet()) {
+            PropertyKey<V> key = (PropertyKey<V>) entry.getKey();
+            V value = (V) entry.getValue();
+            target.setProperty(key, value);
+        }
     }
 
     public <V> void encode(PacketBuffer buffer) {

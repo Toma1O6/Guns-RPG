@@ -194,6 +194,10 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
         propertyContext.setProperty(key, value);
     }
 
+    public void addProperties(PropertyContext context) {
+        context.moveContents(propertyContext);
+    }
+
     /* Protected methods */
 
     @Override

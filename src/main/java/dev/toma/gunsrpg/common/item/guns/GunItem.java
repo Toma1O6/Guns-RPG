@@ -28,6 +28,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.util.properties.PropertyContext;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.Easings;
 import lib.toma.animations.api.AnimationList;
@@ -163,6 +164,8 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
     public void shootProjectile(World level, LivingEntity shooter, ItemStack stack, IShootProps props) {
         AbstractProjectile projectile = this.makeProjectile(level, shooter);
+        PropertyContext context = props.getExtraData();
+        projectile.addProperties(context);
         IWeaponConfig config = this.getWeaponConfig();
         float damage = this.getWeaponDamage(stack, shooter) * props.getDamageMultiplier();
         float velocity = this.getInitialVelocity(config, shooter);
