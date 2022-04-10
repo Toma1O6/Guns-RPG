@@ -8,4 +8,5 @@ public final class Properties {
     public static final PropertyKey<Boolean> IS_HEADSHOT                = PropertyKey.newKey("is_headshot", false);
     public static final PropertyKey<PenetrationData> PENETRATION        = PropertyKey.newKey("penetration");
     public static final PropertyKey<Integer> TRACER                     = PropertyKey.newSynchronizedKey("tracer", null, PrimitiveSerializers.INT);
+    public static final PropertyKey<Integer> ENTITY_ID                  = PropertyKey.newSynchronizedKey("entity_id", null, PrimitiveSerializers.INT);
 }
