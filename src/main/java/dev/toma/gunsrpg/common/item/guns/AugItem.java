@@ -19,7 +19,6 @@ import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
@@ -29,7 +28,6 @@ public class AugItem extends GunItem {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("aug/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("aug/unjam");
-    private static final ResourceLocation EJECT = GunsRPG.makeResource("akm/eject");
     private static final ResourceLocation[] AIM = {
             GunsRPG.makeResource("aug/aim"),
             GunsRPG.makeResource("aug/aim_red_dot"),
@@ -125,11 +123,6 @@ public class AugItem extends GunItem {
     @Override
     public ResourceLocation getUnjamAnimationPath() {
         return UNJAM;
-    }
-
-    @Override
-    public ResourceLocation getBulletEjectAnimationPath() {
-        return EJECT;
     }
 
     @Override

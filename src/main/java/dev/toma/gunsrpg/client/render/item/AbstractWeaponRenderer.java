@@ -39,6 +39,7 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
                     renderAttachments(data, matrix, renderBuffer, light, overlay, aimProgress);
                     matrix.popPose();
                 }
+                matrix.popPose();
             }
             matrix.popPose();
         });
@@ -115,6 +116,5 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
         AbstractWeaponModel weaponModel = getWeaponModel();
         matrix.pushPose();
         weaponModel.render(stack, data, matrix, renderBuffer, renderBuffer.getBuffer(weaponModel.renderType(WEAPON)), light, overlay, animate && transformType.firstPerson());
-        matrix.popPose();
     }
 }

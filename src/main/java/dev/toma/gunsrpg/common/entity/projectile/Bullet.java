@@ -34,7 +34,9 @@ public class Bullet extends AbstractPenetratingProjectile {
     public void preTick() {}
 
     @Override
-    public void postTick() {}
+    public void postTick() {
+        applyGravity(0.05F);
+    }
 
     @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
