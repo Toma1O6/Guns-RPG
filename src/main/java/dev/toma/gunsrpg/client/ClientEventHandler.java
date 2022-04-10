@@ -11,6 +11,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.InputEventListenerType;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
@@ -49,6 +50,16 @@ public class ClientEventHandler {
             ClientEventHandler::dispatchSprintAnimation
     );
     public static float partialTicks;
+
+    @SubscribeEvent
+    public static void cancelHandSwinging(InputEvent.ClickInputEvent event) {
+        Minecraft mc = Minecraft.getInstance();
+        PlayerEntity player = mc.player;
+        if (player != null && player.getMainHandItem().getItem() instanceof AbstractGun) {
+            event.setCanceled(true);
+            event.setSwingHand(false);
+        }
+    }
 
     @SubscribeEvent
     public static void mouseInputEvent(InputEvent.MouseInputEvent event) {

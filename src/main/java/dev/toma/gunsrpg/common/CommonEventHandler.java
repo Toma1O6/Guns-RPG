@@ -16,6 +16,7 @@ import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.common.item.HammerItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.skills.AvengeMeFriendsSkill;
 import dev.toma.gunsrpg.common.skills.LightHunterSkill;
 import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
@@ -428,13 +429,6 @@ public class CommonEventHandler {
     }
 
     @SubscribeEvent
-    public static void leftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
-        if (event.getEntityLiving().getMainHandItem().getItem() instanceof GunItem) {
-            event.setCanceled(true);
-        }
-    }
-
-    @SubscribeEvent
     public static void loadLootTables(LootTableLoadEvent event) {
         String loottable = event.getName().toString();
         if (loottable.equals("minecraft:chests/abandoned_mineshaft") || loottable.equals("minecraft:chests/desert_pyramid") || loottable.equals("minecraft:chests/simple_dungeon") || loottable.equals("minecraft:chests/village_blacksmith")) {
@@ -454,6 +448,32 @@ public class CommonEventHandler {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         ServerWorld world = server.getLevel(World.OVERWORLD);
         LootStashes.tick(world);
+    }
+
+    @SubscribeEvent
+    public static void rightClickInteract(PlayerInteractEvent.RightClickBlock event) {
+        cancelIfPlayerHoldsGun(event);
+    }
+
+    @SubscribeEvent
+    public static void rightClickEntityInteract(PlayerInteractEvent.EntityInteract event) {
+        cancelIfPlayerHoldsGun(event);
+    }
+
+    @SubscribeEvent
+    public static void rightClickEntitySpecificInteract(PlayerInteractEvent.EntityInteractSpecific event) {
+        cancelIfPlayerHoldsGun(event);
+    }
+
+    @SubscribeEvent
+    public static void leftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+        cancelIfPlayerHoldsGun(event);
+    }
+
+    private static void cancelIfPlayerHoldsGun(PlayerInteractEvent event) {
+        if (event.getPlayer().getMainHandItem().getItem() instanceof AbstractGun) {
+            event.setCanceled(true);
+        }
     }
 
     private static void editMiningSpeed(PlayerEvent.BreakSpeed event, IAttributeProvider provider, IAttributeId attributeId) {
