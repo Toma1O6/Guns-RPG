@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
+import dev.toma.gunsrpg.client.GuidedProjectileTargetHandler;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.RocketLauncherRenderer;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -15,15 +16,21 @@ import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
+import dev.toma.gunsrpg.common.item.guns.util.IEntityTrackingGun;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.util.properties.PropertyContext;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class RocketLauncherItem extends GunItem {
+import static dev.toma.gunsrpg.util.properties.Properties.ENTITY_ID;
+
+public class RocketLauncherItem extends GunItem implements IEntityTrackingGun {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("rl/reload");
     private static final ResourceLocation LOAD_SINGLE = GunsRPG.makeResource("rl/load_bullet");
@@ -45,6 +52,32 @@ public class RocketLauncherItem extends GunItem {
                     .define(AmmoMaterials.NAPALM)
                     .define(AmmoMaterials.HE_ROCKET)
                 .build();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void preShootEvent(PropertyContext context) {
+        context.setProperty(ENTITY_ID, GuidedProjectileTargetHandler.getSelectedEntity());
+    }
+
+    @Override
+    public boolean canBeGuided(PlayerEntity player) {
+        return false;
+    }
+
+    @Override
+    public int getMaxRange() {
+        return 96;
+    }
+
+    @Override
+    public int getLockTime() {
+        return 40;
+    }
+
+    @Override
+    public int getRgb(boolean locked) {
+        return locked ? 0xFF0000 : 0xFFFF00;
     }
 
     @Override

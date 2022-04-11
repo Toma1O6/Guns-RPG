@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.util.object;
 
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
+import dev.toma.gunsrpg.api.common.INetworkPacket;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IHandState;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
@@ -14,6 +15,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialData;
 import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialDataContainer;
 import dev.toma.gunsrpg.common.item.guns.setup.MaterialContainer;
+import dev.toma.gunsrpg.common.item.guns.util.IEntityTrackingGun;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_SetReloadingPacket;
@@ -100,7 +102,11 @@ public class ShootingManager {
                 IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
                 pipeline.insert(ModAnimations.RECOIL, new RecoilAnimation(xRot, yRot, gun, stack, dataProvider));
             }
-            NetworkManager.sendServerPacket(new C2S_ShootPacket());
+            NetworkManager.sendServerPacket(new C2S_ShootPacket(context -> {
+                if (gun instanceof IEntityTrackingGun) {
+                    ((IEntityTrackingGun) gun).preShootEvent(context);
+                }
+            }));
             gun.onShoot(player, stack);
             shootingDelay = gun.getFirerate(attributeProvider);
         }
