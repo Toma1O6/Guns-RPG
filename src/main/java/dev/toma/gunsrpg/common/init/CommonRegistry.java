@@ -244,7 +244,7 @@ public class CommonRegistry {
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.R45_EXTENDED_DRUM, Attribs.R45_MAG_CAPACITY))).renderModIcon("extended").description(0).build().setRegistryName("r45_extended"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.NOISE, Attribs.R45_NOISE))).renderModIcon("suppressor").build().setRegistryName("r45_suppressor"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.TOUGH_SPRING, Attribs.R45_FIRERATE))).description(0).build().setRegistryName("r45_light_trigger"),
-                SkillType.Builder.create(SimpleSkill::new).description(0).build().setRegistryName("r45_ace_of_hearts"),
+                SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("r45_ace_of_hearts"),
                 SkillType.Builder.create(SimpleSkill::new).renderModIcon("every_bullet_counts").build().setRegistryName("r45_every_bullet_counts"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.QUICKDRAW_MAG, Attribs.DEAGLE_RELOADING))).renderModIcon("quickdraw").description(0).build().setRegistryName("deagle_quickdraw"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.TOUGH_SPRING, Attribs.DEAGLE_FIRERATE))).renderModIcon("tough_spring").description(0).build().setRegistryName("deagle_tough_spring"),
