@@ -186,6 +186,10 @@ public final class Attribs {
     public static final IAttributeId AWM_LOUDNESS               = createInternal("awm_loudness");
     public static final IAttributeId AWM_FIRERATE               = createInternal("awm_firerate", 36);
     public static final IAttributeId AWM_HS_DAMAGE              = createInternal("awm_hs_damage");
+    public static final IAttributeId GL_RELOAD_SPEED            = createInternal("gl_reload_speed", 30);
+    public static final IAttributeId GL_FIRERATE                = createInternal("gl_firerate", 8);
+    public static final IAttributeId GL_MAG_CAPACITY            = createInternal("gl_mag_capacity", 4);
+    public static final IAttributeId RL_RELOAD_SPEED            = createInternal("rl_reload_speed", 40);
 
     // combined
     public static final ICombinedAttribute M1911_RELOAD         = ICombinedAttribute.of(RELOAD_SPEED, M1911_RELOAD_SPEED);
@@ -248,6 +252,8 @@ public final class Attribs {
     public static final ICombinedAttribute AWM_HORIZONTAL       = ICombinedAttribute.of(RECOIL_CONTROL, AWM_HORIZONTAL_RECOIL);
     public static final ICombinedAttribute AWM_NOISE            = ICombinedAttribute.of(WEAPON_NOISE, AWM_LOUDNESS);
     public static final ICombinedAttribute AWM_HEADSHOT         = ICombinedAttribute.of(HEADSHOT_DAMAGE, AWM_HS_DAMAGE);
+    public static final ICombinedAttribute GL_RELOAD            = ICombinedAttribute.of(RELOAD_SPEED, GL_RELOAD_SPEED);
+    public static final ICombinedAttribute RL_RELOAD            = ICombinedAttribute.of(RELOAD_SPEED, RL_RELOAD_SPEED);
 
     public static IAttributeId find(ResourceLocation id) {
         return KEY_MAP.get(id);

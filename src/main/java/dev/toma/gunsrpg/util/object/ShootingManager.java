@@ -133,5 +133,9 @@ public class ShootingManager {
         public static boolean isBurstModeActive() {
             return burstActive;
         }
+
+        public static void forceShootDelay(int delay) {
+            shootingDelay = delay;
+        }
     }
 }

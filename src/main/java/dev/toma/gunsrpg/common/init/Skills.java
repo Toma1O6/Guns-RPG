@@ -122,5 +122,10 @@ public class Skills {
     public static final SkillType<ISkill> AWM_SUPPRESSOR = null;
     public static final SkillType<ISkill> AWM_SCOPE = null;
     public static final SkillType<ISkill> AWM_PENETRATOR = null;
+    public static final SkillType<ISkill> GRENADE_LAUNCHER_BETTER_CARTRIDGE = null;
+    public static final SkillType<ISkill> GRENADE_LAUNCHER_DEMOLITION_EXPERT = null;
+    public static final SkillType<ISkill> ROCKET_LAUNCHER_HOMING_MISSILE = null;
+    public static final SkillType<ISkill> ROCKET_LAUNCHER_ROCKET_FUEL = null;
+    public static final SkillType<ISkill> ROCKET_LAUNCHER_DEMOLITION_EXPERT = null;
     public static final SkillType<ISkill> ROCKET_LAUNCHER_ROCKET_BARRAGE = null;
 }

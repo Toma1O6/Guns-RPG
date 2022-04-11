@@ -27,6 +27,7 @@ public class GuidedProjectileTargetHandler {
     private static int selectedEntity = -1;
     private static int lockTimer;
     private static int updateTimer;
+    private static boolean locked;
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
@@ -39,6 +40,7 @@ public class GuidedProjectileTargetHandler {
             if (!gun.canBeGuided(player)) return;
             ++updateTimer;
             lockTimer = selectedEntity > -1 ? ++lockTimer : 0;
+            locked = lockTimer >= gun.getLockTime();
             if (updateTimer >= 10) {
                 updateTimer = 0;
                 updateTargetedEntity(player, gun);
@@ -47,7 +49,7 @@ public class GuidedProjectileTargetHandler {
     }
 
     public static int getSelectedEntity() {
-        return selectedEntity;
+        return locked ? selectedEntity : -1;
     }
 
     private static void updateTargetedEntity(PlayerEntity player, IEntityTrackingGun trackingGun) {
