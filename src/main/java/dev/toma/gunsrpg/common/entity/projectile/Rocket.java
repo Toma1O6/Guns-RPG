@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -15,6 +16,7 @@ public class Rocket extends AbstractExplosive {
 
     private final GuidedController controller = new GuidedController();
     private final LazyLoader<TrackedTarget> target = new LazyLoader<>(this::getTarget);
+    private float velocity;
 
     public Rocket(EntityType<? extends Rocket> type, World world) {
         super(type, world);
@@ -25,8 +27,26 @@ public class Rocket extends AbstractExplosive {
     }
 
     @Override
+    public void setup(float damage, float velocity, int delay) {
+        super.setup(damage, velocity, delay);
+        this.velocity = velocity;
+    }
+
+    @Override
+    public void writeSpawnData(PacketBuffer buffer) {
+        super.writeSpawnData(buffer);
+        buffer.writeFloat(velocity);
+    }
+
+    @Override
+    public void readSpawnData(PacketBuffer buffer) {
+        super.readSpawnData(buffer);
+        velocity = buffer.readFloat();
+    }
+
+    @Override
     protected void updateDirection() {
-        if (this.isGuided()) {
+        if (this.isGuided() && tickCount > 2) {
             TrackedTarget trackedTarget = target.get();
             trackedTarget.update();
             controller.update(trackedTarget);
@@ -91,8 +111,11 @@ public class Rocket extends AbstractExplosive {
             Vector3d position = target.getTrackedPosition();
             float x = rocket.xRot;
             float y = rocket.yRot;
-            rocket.xRot = this.rotateTowards(x, this.getVerticalDifference(position), 1.0F);
-            rocket.yRot = this.rotateTowards(y, this.getHorizontalDifference(position), 1.5F);
+            rocket.xRot = this.rotateTowards(x, this.getVerticalDifference(position), 2.0F);
+            rocket.yRot = this.rotateTowards(y, this.getHorizontalDifference(position), 2.5F);
+            Vector3d vector3d = Vector3d.directionFromRotation(rocket.xRot, rocket.yRot);
+            float f = rocket.velocity;
+            setDeltaMovement(vector3d.multiply(f, f, f));
         }
 
         float getVerticalDifference(Vector3d target) {

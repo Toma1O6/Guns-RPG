@@ -39,13 +39,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import static dev.toma.gunsrpg.util.properties.Properties.*;
 
-/*
-Rocket - power 4
-Toxin - power 4, wither II 10s
-Demoliton - power 4, destroy blocks
-Napalm - power 4 - 40% area burn
-HE - power +1
- */
 public class RocketLauncherItem extends AbstractExplosiveLauncher implements IEntityTrackingGun {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("rl/reload");
@@ -96,7 +89,7 @@ public class RocketLauncherItem extends AbstractExplosiveLauncher implements IEn
 
     @Override
     public int getMaxRange() {
-        return 96;
+        return 256;
     }
 
     @Override

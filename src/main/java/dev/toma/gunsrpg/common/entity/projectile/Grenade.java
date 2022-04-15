@@ -1,10 +1,10 @@
 package dev.toma.gunsrpg.common.entity.projectile;
 
 import dev.toma.gunsrpg.util.properties.Properties;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MoverType;
+import dev.toma.gunsrpg.util.properties.PropertyKey;
+import net.minecraft.entity.*;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 
 public class Grenade extends AbstractExplosive {
 
+    private static final PropertyKey<IStickContext> STICK_CONTEXT = PropertyKey.newKey("stick_ctx");
     private static final float BOUNCE_MODIFIER = 0.2f;
     private static final Vector3d AIR_DRAG_MULTIPLIER = new Vector3d(0.97f, 0.97f, 0.97f);
     private static final Vector3d GROUND_DRAG_MULTIPLIER = new Vector3d(0.7, 0.7, 0.7);
@@ -45,6 +46,8 @@ public class Grenade extends AbstractExplosive {
             }
         }
         updateDirection();
+        Vector3d pos = this.position();
+        checkForCollisions(pos, pos.add(deltaMovement));
         this.move(MoverType.SELF, deltaMovement);
         deltaMovement = this.getDeltaMovement();
         boolean bouncedThisTick = false;
@@ -68,7 +71,10 @@ public class Grenade extends AbstractExplosive {
             onCollided(this.position());
         }
         if (bounced && this.getProperty(Properties.STICKY)) {
-            setDeltaMovement(0, 0, 0);
+            IStickContext context = this.getProperty(STICK_CONTEXT);
+            if (context != null) {
+                context.update();
+            }
         } else {
             setDeltaMovement(bounceX, bounceY, bounceZ);
             if (!this.isNoGravity()) {
@@ -85,6 +91,22 @@ public class Grenade extends AbstractExplosive {
     }
 
     @Override
+    protected void onHitBlock(BlockRayTraceResult result) {
+        super.onHitBlock(result);
+        if (this.getProperty(Properties.STICKY)) {
+            this.setProperty(STICK_CONTEXT, new BlockStickContext(result.getLocation()));
+        }
+    }
+
+    @Override
+    protected void handleEntityCollision(EntityRayTraceResult result) {
+        super.handleEntityCollision(result);
+        if (this.getProperty(Properties.STICKY)) {
+            this.setProperty(STICK_CONTEXT, new EntityStickContext(result.getEntity()));
+        }
+    }
+
+    @Override
     public void onCollided(Vector3d impact) {
         boolean isImpact = this.getProperty(Properties.IMPACT);
         if (isImpact || tickCount >= FUSE_DELAY) {
@@ -93,6 +115,49 @@ public class Grenade extends AbstractExplosive {
                 reaction.react(this, impact, level);
             }
             remove();
+        }
+    }
+
+    interface IStickContext {
+        void update();
+    }
+
+    class BlockStickContext implements IStickContext {
+
+        final Vector3d pos;
+
+        public BlockStickContext(Vector3d pos) {
+            this.pos = pos;
+        }
+
+        @Override
+        public void update() {
+            Grenade grenade = Grenade.this;
+            grenade.setPos(pos.x, pos.y, pos.z);
+            grenade.setDeltaMovement(0, 0, 0);
+        }
+    }
+
+    class EntityStickContext implements IStickContext {
+
+        final Entity entity;
+
+        public EntityStickContext(Entity entity) {
+            this.entity = entity;
+        }
+
+        @Override
+        public void update() {
+            if (entity.isAlive()) {
+                Grenade grenade = Grenade.this;
+                EntitySize size = entity.getDimensions(entity.getPose());
+                double xz = size.width / 2.0;
+                double yy = size.height / 2.0;
+                grenade.setPos(entity.getX() + xz, entity.getY() + yy, entity.getZ() + xz);
+                grenade.setDeltaMovement(0, 0, 0);
+            } else {
+                Grenade.this.setDeltaMovement(0, -0.039, 0);
+            }
         }
     }
 }

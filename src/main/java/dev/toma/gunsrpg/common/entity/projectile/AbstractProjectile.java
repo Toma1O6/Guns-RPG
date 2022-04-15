@@ -101,6 +101,7 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
         }
         Vector3d vector3d = Vector3d.directionFromRotation(xRot + inX, yRot + inY);
         setDeltaMovement(vector3d.multiply(velocity, velocity, velocity));
+        this.yRot = yRot + inY;
         updateDirection();
         ifShotByPlayer(this::aggroNearby);
     }
@@ -170,6 +171,7 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
         buffer.writeDouble(delta.x);
         buffer.writeDouble(delta.y);
         buffer.writeDouble(delta.z);
+        buffer.writeFloat(yRot);
         propertyContext.encode(buffer);
     }
 
@@ -181,6 +183,7 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
         double dx = buffer.readDouble();
         double dy = buffer.readDouble();
         double dz = buffer.readDouble();
+        yRot = buffer.readFloat();
         propertyContext.decode(buffer);
         setPos(px, py, pz);
         setDeltaMovement(dx, dy, dz);
@@ -234,10 +237,11 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
      */
     protected void updateDirection() {
         Vector3d delta = getDeltaMovement();
-        float motionSqrt = MathHelper.sqrt(delta.x * delta.x + delta.z * delta.z);
-        yRot = (float) (MathHelper.atan2(delta.x, delta.z) * (180.0F / Math.PI));
-        xRot = (float) (MathHelper.atan2(delta.y, motionSqrt) * (180.0F / Math.PI));
-        yRotO = yRot;
+        double dx = delta.x;
+        double dy = delta.y;
+        double dz = delta.z;
+        float motionSqrt = MathHelper.sqrt(dx * dx + dz * dz);
+        xRot = -(float) (MathHelper.atan2(dy, motionSqrt) * (180.0F / Math.PI));
         xRotO = xRot;
     }
 

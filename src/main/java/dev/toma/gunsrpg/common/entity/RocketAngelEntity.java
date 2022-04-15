@@ -16,6 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -168,11 +169,12 @@ public class RocketAngelEntity extends MonsterEntity {
                     cooldown = 6;
                     Difficulty difficulty = entity.level.getDifficulty();
                     Rocket rocket = new Rocket(ModEntities.ROCKET.get(), entity.level, entity);
-                    rocket.setup(0.0F, 4.0F, 0);
+                    rocket.setup(0.0F, 2.0F, 0);
                     rocket.fire(entity.xRot, entity.yRot, 4.4F - difficulty.getId() * 0.6F);
                     rocket.setProperty(Properties.FUELED, true);
                     rocket.setProperty(Properties.REACTION, entity.type.getReaction());
                     entity.level.addFreshEntity(rocket);
+                    entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FIREWORK_ROCKET_LAUNCH, SoundCategory.MASTER, 10.0F, 1.0F);
                     --toFire;
                     if (toFire < 0) {
                         toFire = 4;

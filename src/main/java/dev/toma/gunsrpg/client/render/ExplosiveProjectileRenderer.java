@@ -36,11 +36,11 @@ public class ExplosiveProjectileRenderer<T extends Entity> extends EntityRendere
         if (entity.tickCount < 1) return;
         matrixStack.pushPose();
         IVertexBuilder builder = typeBuffer.getBuffer(RenderType.entityCutout(this.getTextureLocation(entity)));
-        matrixStack.translate(0.0, -1.0, 0.0);
         matrixStack.mulPose(Vector3f.YP.rotation((float) Math.PI));
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(entityYaw));
-        matrixStack.mulPose(Vector3f.XP.rotationDegrees(entity.xRot));
-        matrixStack.scale(0.8F, 0.8F, 0.8F);
+        matrixStack.mulPose(Vector3f.YN.rotationDegrees(entity.yRot));
+        matrixStack.mulPose(Vector3f.XN.rotationDegrees(entity.xRot));
+        matrixStack.scale(0.6F, 0.6F, 0.6F);
+        matrixStack.translate(0.0, -1.4, 0.0);
         model.renderToBuffer(matrixStack, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         matrixStack.popPose();
     }
