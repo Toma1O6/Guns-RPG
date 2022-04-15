@@ -88,8 +88,10 @@ public interface IInputEventHandler {
 
         @Override
         public void invokeEvent(InputEventListenerType event, PlayerEntity player, ItemStack stack, IPlayerData data) {
-            Utils.shootWithValidation(player, stack, data);
-            ShootingManager.Client.forceShootDelay(1);
+            if (ShootingManager.canShoot(player, stack)) {
+                ShootingManager.Client.shoot(player, stack, data);
+                ShootingManager.Client.forceShootDelay(3);
+            }
         }
     }
 

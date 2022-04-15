@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IAimInfo;
@@ -13,6 +14,8 @@ import dev.toma.gunsrpg.common.IShootProps;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
+import dev.toma.gunsrpg.common.entity.projectile.Rocket;
+import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -30,19 +33,28 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import static dev.toma.gunsrpg.util.properties.Properties.*;
 
-public class RocketLauncherItem extends GunItem implements IEntityTrackingGun {
+/*
+Rocket - power 4
+Toxin - power 4, wither II 10s
+Demoliton - power 4, destroy blocks
+Napalm - power 4 - 40% area burn
+HE - power +1
+ */
+public class RocketLauncherItem extends AbstractExplosiveLauncher implements IEntityTrackingGun {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("rl/reload");
     private static final ResourceLocation LOAD_SINGLE = GunsRPG.makeResource("rl/load_bullet");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("rl/unjam");
+    private static final ResourceLocation AIM = GunsRPG.makeResource("rl/aim");
     private static final Firemode.ConditionalSelector SELECTOR = Firemode.ConditionalSelector.builder()
-            .addTransition(Firemode.SINGLE, RocketLauncherItem::canUseBarrageMode, Firemode.BARRAGE)
             .addTransition(Firemode.SINGLE, RocketLauncherItem::canUseHomingMode, Firemode.HOMING)
+            .addTransition(Firemode.SINGLE, RocketLauncherItem::canUseBarrageMode, Firemode.BARRAGE)
             .addTransition(Firemode.HOMING, RocketLauncherItem::canUseBarrageMode, Firemode.BARRAGE)
             .addTransition(Firemode.HOMING, (player, data) -> true, Firemode.SINGLE)
             .addTransition(Firemode.BARRAGE, (player, data) -> true, Firemode.SINGLE)
@@ -68,8 +80,10 @@ public class RocketLauncherItem extends GunItem implements IEntityTrackingGun {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void preShootEvent(PropertyContext context) {
-        context.setProperty(ENTITY_ID, GuidedProjectileTargetHandler.getSelectedEntity());
+    public void addExtraData(PropertyContext context, PlayerEntity player, ItemStack stack, IAmmoMaterial material) {
+        super.addExtraData(context, player, stack, material);
+        int entityId = GuidedProjectileTargetHandler.getSelectedEntity();
+        context.setProperty(ENTITY_ID, entityId);
     }
 
     @Override
@@ -139,6 +153,7 @@ public class RocketLauncherItem extends GunItem implements IEntityTrackingGun {
 
     @Override
     protected void prepareForShooting(AbstractProjectile projectile, LivingEntity shooter) {
+        super.prepareForShooting(projectile, shooter);
         if (shooter instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) shooter;
             PlayerData.get(player).ifPresent(data -> {
@@ -151,6 +166,11 @@ public class RocketLauncherItem extends GunItem implements IEntityTrackingGun {
                 }
             });
         }
+    }
+
+    @Override
+    protected AbstractProjectile makeProjectile(World level, LivingEntity shooter) {
+        return new Rocket(ModEntities.ROCKET.get(), level, shooter);
     }
 
     @Override
@@ -169,6 +189,15 @@ public class RocketLauncherItem extends GunItem implements IEntityTrackingGun {
     }
 
     @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return AIM;
+    }
+
+    @Override
+    public void onShoot(PlayerEntity player, ItemStack stack) {
+    }
+
+    @Override
     public IRenderConfig left() {
         return RenderConfigs.ROCKET_LAUNCHER_LEFT;
     }
@@ -179,28 +208,10 @@ public class RocketLauncherItem extends GunItem implements IEntityTrackingGun {
     }
 
     private static boolean canUseBarrageMode(PlayerEntity player, IPlayerData data) {
-        ItemStack stack = player.getMainHandItem();
-        GunItem gunItem = (GunItem) stack.getItem();
-        boolean fullMag = gunItem.getAmmo(stack) == gunItem.getMaxAmmo(data.getAttributes());
-        return fullMag && data.getSkillProvider().hasSkill(Skills.ROCKET_LAUNCHER_ROCKET_BARRAGE);
+        return data.getSkillProvider().hasSkill(Skills.ROCKET_LAUNCHER_ROCKET_BARRAGE);
     }
 
     private static boolean canUseHomingMode(PlayerEntity player, IPlayerData data) {
         return data.getSkillProvider().hasSkill(Skills.ROCKET_LAUNCHER_HOMING_MISSILE);
-    }
-
-    private Firemode switchFiremode(PlayerEntity player, Firemode firemode) {
-        IPlayerData data = PlayerData.getUnsafe(player);
-        ISkillProvider skillProvider = data.getSkillProvider();
-        ItemStack stack = player.getMainHandItem();
-        boolean fullMagazine = isFullMag(data.getAttributes(), stack);
-        boolean canSwitch = firemode == Firemode.BARRAGE || (fullMagazine && skillProvider.hasSkill(Skills.ROCKET_LAUNCHER_ROCKET_BARRAGE));
-        boolean homing = skillProvider.hasSkill(Skills.ROCKET_LAUNCHER_HOMING_MISSILE);
-        return canSwitch ? firemode == Firemode.BARRAGE ? Firemode.SINGLE : Firemode.BARRAGE : firemode;
-    }
-
-    private boolean isFullMag(IAttributeProvider provider, ItemStack stack) {
-        int capacity = this.getMaxAmmo(provider);
-        return getAmmo(stack) < capacity;
     }
 }

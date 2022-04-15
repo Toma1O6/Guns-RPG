@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.item.guns.ammo;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
+import dev.toma.gunsrpg.common.entity.projectile.IReaction;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 
@@ -45,12 +46,12 @@ public final class AmmoMaterialManager {
         return createMaterial(name, textColor, levelReq, null);
     }
 
-    public IAmmoMaterial createReactiveMaterial(ResourceLocation materialID, int textColor, int levelReq, ReactiveMaterial.IImpactCallback callback) {
-        return createMaterial(new ReactiveMaterial(materialID, textColor, levelReq, callback));
+    public IAmmoMaterial createReactiveMaterial(ResourceLocation materialID, int textColor, int levelReq, IReaction reaction) {
+        return createMaterial(new ReactiveMaterial(materialID, textColor, levelReq, reaction));
     }
 
-    public IAmmoMaterial createReactiveMaterial(String name, int textColor, int levelReq, ReactiveMaterial.IImpactCallback callback) {
-        return createReactiveMaterial(GunsRPG.makeResource(name), textColor, levelReq, callback);
+    public IAmmoMaterial createReactiveMaterial(String name, int textColor, int levelReq, IReaction reaction) {
+        return createReactiveMaterial(GunsRPG.makeResource(name), textColor, levelReq, reaction);
     }
 
     public IAmmoMaterial createMaterial(IAmmoMaterial material) {

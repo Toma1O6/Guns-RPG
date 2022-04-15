@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.entity;
+package dev.toma.gunsrpg.common.tileentity;
 
 public interface ISynchronizable {
 

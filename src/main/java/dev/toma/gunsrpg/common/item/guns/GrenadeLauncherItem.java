@@ -9,6 +9,8 @@ import dev.toma.gunsrpg.client.render.item.GrenadeLauncherRenderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
+import dev.toma.gunsrpg.common.entity.projectile.Grenade;
+import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -23,14 +25,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.World;
 
 import static dev.toma.gunsrpg.util.properties.Properties.EXPLOSION_POWER;
 
-public class GrenadeLauncherItem extends GunItem {
+public class GrenadeLauncherItem extends AbstractExplosiveLauncher {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("gl/reload");
     private static final ResourceLocation LOAD_BULLET = GunsRPG.makeResource("gl/load_bullet");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("gl/unjam");
+    private static final ResourceLocation AIM = GunsRPG.makeResource("gl/aim");
 
     public GrenadeLauncherItem(String name) {
         super(name, new Properties().setISTER(() -> GrenadeLauncherRenderer::new).durability(200));
@@ -90,9 +94,15 @@ public class GrenadeLauncherItem extends GunItem {
 
     @Override
     protected void prepareForShooting(AbstractProjectile projectile, LivingEntity shooter) {
+        super.prepareForShooting(projectile, shooter);
         if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.GRENADE_LAUNCHER_DEMOLITION_EXPERT)) {
             projectile.setProperty(EXPLOSION_POWER, 1);
         }
+    }
+
+    @Override
+    protected AbstractProjectile makeProjectile(World level, LivingEntity shooter) {
+        return new Grenade(ModEntities.GRENADE_SHELL.get(), level, shooter);
     }
 
     @Override
@@ -108,6 +118,15 @@ public class GrenadeLauncherItem extends GunItem {
     @Override
     public ResourceLocation getUnjamAnimationPath() {
         return UNJAM;
+    }
+
+    @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return AIM;
+    }
+
+    @Override
+    public void onShoot(PlayerEntity player, ItemStack stack) {
     }
 
     @Override

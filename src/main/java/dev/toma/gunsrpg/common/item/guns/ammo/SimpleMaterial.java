@@ -1,15 +1,9 @@
 package dev.toma.gunsrpg.common.item.guns.ammo;
 
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
 
 public class SimpleMaterial implements IAmmoMaterial {
 
@@ -50,11 +44,6 @@ public class SimpleMaterial implements IAmmoMaterial {
     @Override
     public int defaultLevelRequirement() {
         return defaultLevelRequirement;
-    }
-
-    @Override
-    public void onImpact(ProjectileEntity projectile, World world, Vector3d impactPos, @Nullable Entity impactedOn) {
-        // does nothing
     }
 
     @Override

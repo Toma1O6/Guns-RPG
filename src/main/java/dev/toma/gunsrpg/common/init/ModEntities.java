@@ -2,10 +2,7 @@ package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.entity.*;
-import dev.toma.gunsrpg.common.entity.projectile.Bolt;
-import dev.toma.gunsrpg.common.entity.projectile.Bullet;
-import dev.toma.gunsrpg.common.entity.projectile.Pebble;
-import dev.toma.gunsrpg.common.entity.projectile.Pellet;
+import dev.toma.gunsrpg.common.entity.projectile.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -58,6 +55,12 @@ public class ModEntities {
     );
     public static final RegistryObject<EntityType<Pebble>> PEBBLE = register("pebble", Pebble::new, EntityClassification.MISC,
             builder -> builder.sized(0.1F, 0.1F).noSummon().noSave().clientTrackingRange(4).updateInterval(20)
+    );
+    public static final RegistryObject<EntityType<Grenade>> GRENADE_SHELL = register("grenade_shell", Grenade::new, EntityClassification.MISC,
+            builder -> builder.sized(0.3F, 0.3F).noSummon().noSave().setShouldReceiveVelocityUpdates(false)
+    );
+    public static final RegistryObject<EntityType<Rocket>> ROCKET = register("rocket", Rocket::new, EntityClassification.MISC,
+            builder -> builder.sized(0.4F, 0.4F).noSummon().noSave().setTrackingRange(256).setShouldReceiveVelocityUpdates(false)
     );
 
     private static <E extends Entity> RegistryObject<EntityType<E>> register(

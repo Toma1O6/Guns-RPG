@@ -154,7 +154,7 @@
     "item.gunsrpg.ammo_case": "Ammo Case",
     "item.gunsrpg.grenade_case": "Grenade Case",
     "item.gunsrpg.meds_case": "Med Case",
-    "item.gunsrpg.items_case": "Item Case",
+    "item.gunsrpg.item_case": "Item Case",
     "item.gunsrpg.crystal_case": "Crystal Case",
     "item.gunsrpg.cooking_oil": "Cooking Oil",
     "item.gunsrpg.fried_egg": "Fried Egg",
@@ -189,6 +189,8 @@
     "item.gunsrpg.rocket_angel_spawn_egg": "Spawn Rocket Angel",
     "item.gunsrpg.explosive_skeleton_spawn_egg": "Spawn Explosive Skeleton",
     "item.gunsrpg.zombie_gunner_spawn_egg": "Spawn Zombie Gunner",
+    "item.gunsrpg.battery": "Battery",
+    "item.gunsrpg.stash_detector": "Stash Detector",
 
     "block.gunsrpg.amethyst_ore": "Amethyst Ore",
     "block.gunsrpg.blast_furnace": "Blast Furnace",

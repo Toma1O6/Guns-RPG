@@ -1,29 +1,19 @@
 package dev.toma.gunsrpg.common.item.guns.ammo;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.ProjectileEntity;
+import dev.toma.gunsrpg.common.entity.projectile.IReaction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
+public class ReactiveMaterial extends SimpleMaterial implements IReactiveMaterial {
 
-public class ReactiveMaterial extends SimpleMaterial {
+    private final IReaction reaction;
 
-    private final IImpactCallback callback;
-
-    ReactiveMaterial(ResourceLocation materialID, int textColor, int defaultLevelRequirement, IImpactCallback callback) {
+    ReactiveMaterial(ResourceLocation materialID, int textColor, int defaultLevelRequirement, IReaction reaction) {
         super(materialID, textColor, defaultLevelRequirement, null);
-        this.callback = callback;
+        this.reaction = reaction;
     }
 
     @Override
-    public void onImpact(ProjectileEntity projectile, World world, Vector3d impactPos, @Nullable Entity impactedOn) {
-        callback.call(projectile, world, impactPos, impactedOn);
-    }
-
-    @FunctionalInterface
-    public interface IImpactCallback {
-        void call(ProjectileEntity projectile, World world, Vector3d impactPos, @Nullable Entity impactedOn);
+    public IReaction getReaction() {
+        return reaction;
     }
 }

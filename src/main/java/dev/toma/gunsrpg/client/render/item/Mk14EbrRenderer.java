@@ -63,7 +63,7 @@ public class Mk14EbrRenderer extends AbstractWeaponRenderer {
             renderSuppressor(RenderConfigs.MK14EBR_SUPPRESSOR, matrix, typeBuffer, light, overlay, progress);
         }
         if (provider.hasSkill(Skills.MK14EBR_SCOPE)) {
-            renderScope(RenderConfigs.MK14EBR_SCOPE, matrix, typeBuffer, light, overlay, progress, SNIPER_RETICLE);
+            renderScope(RenderConfigs.MK14EBR_SCOPE, matrix, typeBuffer, light, overlay, progress, WoodenCrossbowRenderer.RETICLE);
         }
     }
 }

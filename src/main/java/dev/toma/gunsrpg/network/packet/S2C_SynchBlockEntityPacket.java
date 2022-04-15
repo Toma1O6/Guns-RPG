@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.common.entity.ISynchronizable;
+import dev.toma.gunsrpg.common.tileentity.ISynchronizable;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;

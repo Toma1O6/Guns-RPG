@@ -1,11 +1,7 @@
 package dev.toma.gunsrpg.common.item.guns.ammo;
 
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
+import dev.toma.gunsrpg.common.entity.projectile.*;
 
 public final class AmmoMaterials {
 
@@ -23,43 +19,18 @@ public final class AmmoMaterials {
     public static final IAmmoMaterial NETHERITE = AmmoMaterialManager.get().createMaterial("netherite", 0x8F6365, 7);
 
     // grenade launcher
-    public static final IAmmoMaterial GRENADE = AmmoMaterialManager.get().createMaterial("grenade", 0xFFFF00, 0);
-    public static final IAmmoMaterial TEAR_GAS = AmmoMaterialManager.get().createReactiveMaterial("tear_gas", 0x74E074, 1,
-            (projectile, world, impactPos, impactedOn) -> effect(world, impactPos));
-    public static final IAmmoMaterial STICKY = AmmoMaterialManager.get().createReactiveMaterial("sticky", 0xFFFFFF, 3, AmmoMaterials::stick);
-    public static final IAmmoMaterial HE_GRENADE = AmmoMaterialManager.get().createMaterial("he_grenade", 0xAFAFAF, 5);
-    public static final IAmmoMaterial IMPACT = AmmoMaterialManager.get().createReactiveMaterial("impact_grenade", 0xFF0000, 6,
-            (projectile, world, impactPos, impactedOn) -> explode(world, impactPos, 4.0F));
+    public static final IAmmoMaterial GRENADE = AmmoMaterialManager.get().createReactiveMaterial("grenade", 0xFFFF00, 0, ExplosiveReaction.EXPLOSION);
+    public static final IAmmoMaterial TEAR_GAS = AmmoMaterialManager.get().createReactiveMaterial("tear_gas", 0x74E074, 1, EffectSpreadReaction.TEAR_GAS);
+    public static final IAmmoMaterial STICKY = AmmoMaterialManager.get().createReactiveMaterial("sticky", 0xFFFFFF, 3, MultipartReaction.multi(ExplosiveReaction.EXPLOSION, PropertyTriggerReaction.STICKY));
+    public static final IAmmoMaterial HE_GRENADE = AmmoMaterialManager.get().createReactiveMaterial("he_grenade", 0xAFAFAF, 5, ExplosiveReaction.HE_EXPLOSION);
+    public static final IAmmoMaterial IMPACT = AmmoMaterialManager.get().createReactiveMaterial("impact_grenade", 0xFF0000, 6, MultipartReaction.multi(ExplosiveReaction.EXPLOSION, PropertyTriggerReaction.IMPACT));
 
     // rocket launcher
-    public static final IAmmoMaterial ROCKET = AmmoMaterialManager.get().createReactiveMaterial("rocket", 0xFF0000, 0,
-            (projectile, world, impactPos, impactedOn) -> explode(world, impactPos, 6.0F));
-    public static final IAmmoMaterial TOXIN = AmmoMaterialManager.get().createReactiveMaterial("toxin", 0x8400C1, 1,
-            (projectile, world, impactPos, impactedOn) -> effect(world, impactPos));
-    public static final IAmmoMaterial DEMOLITION = AmmoMaterialManager.get().createReactiveMaterial("demolition", 0x565656, 3,
-            (projectile, world, impactPos, impactedOn) -> explode(world, impactPos, 8.0F, Explosion.Mode.DESTROY));
-    public static final IAmmoMaterial NAPALM = AmmoMaterialManager.get().createReactiveMaterial("napalm", 0xFF6A00, 5,
-            (projectile, world, impactPos, impactedOn) -> effect(world, impactPos));
-    public static final IAmmoMaterial HE_ROCKET = AmmoMaterialManager.get().createReactiveMaterial("he_rocket", 0x298FAD, 6,
-            (projectile, world, impactPos, impactedOn) -> explode(world, impactPos, 8.0F));
+    public static final IAmmoMaterial ROCKET = AmmoMaterialManager.get().createReactiveMaterial("rocket", 0xFF0000, 0, ExplosiveReaction.EXPLOSION);
+    public static final IAmmoMaterial TOXIN = AmmoMaterialManager.get().createReactiveMaterial("toxin", 0x8400C1, 1, MultipartReaction.multi(ExplosiveReaction.EXPLOSION, EffectSpreadReaction.TOXIN));
+    public static final IAmmoMaterial DEMOLITION = AmmoMaterialManager.get().createReactiveMaterial("demolition", 0x565656, 3, ExplosiveReaction.DESTRUCTIVE_EXPLOSION);
+    public static final IAmmoMaterial NAPALM = AmmoMaterialManager.get().createReactiveMaterial("napalm", 0xFF6A00, 5, MultipartReaction.multi(ExplosiveReaction.EXPLOSION, NapalmReaction.NAPALM));
+    public static final IAmmoMaterial HE_ROCKET = AmmoMaterialManager.get().createReactiveMaterial("he_rocket", 0x298FAD, 6, ExplosiveReaction.HE_EXPLOSION);
 
     private AmmoMaterials() {}
-
-    private static void explode(World world, Vector3d impact, float power, Explosion.Mode mode) {
-        if (!world.isClientSide) {
-            world.explode(null, impact.x, impact.y + 1, impact.z, power, mode);
-        }
-    }
-
-    private static void explode(World world, Vector3d impact, float power) {
-        explode(world, impact, power, Explosion.Mode.NONE);
-    }
-
-    private static void stick(ProjectileEntity projectile, World world, Vector3d impact, Entity victim) {
-        // TODO projectile.stick(impact);
-    }
-
-    private static void effect(World world, Vector3d impact) {
-        // TODO spawn effect
-    }
 }

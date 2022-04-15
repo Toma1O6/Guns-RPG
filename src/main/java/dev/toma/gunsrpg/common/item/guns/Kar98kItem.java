@@ -128,7 +128,7 @@ public class Kar98kItem extends AbstractBoltActionGun {
     @Override
     public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
         ItemStack stack = player.getMainHandItem();
-        int prepTime = Attribs.KAR98K_RELOAD.intValue(attributeProvider);
+        int prepTime = (int) Attribs.KAR98K_RELOAD.getModifiedValue(attributeProvider, 50);
         return ReloadManagers.either(
                 getAmmo(stack) > 0,
                 ReloadManagers.singleBulletLoading(prepTime, player, this, stack, LOAD_BULLET_ANIMATION),

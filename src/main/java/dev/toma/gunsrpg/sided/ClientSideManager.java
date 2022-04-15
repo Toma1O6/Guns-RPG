@@ -2,6 +2,8 @@ package dev.toma.gunsrpg.sided;
 
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.ModKeybinds;
+import dev.toma.gunsrpg.client.model.GrenadeShellModel;
+import dev.toma.gunsrpg.client.model.RocketModel;
 import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
 import dev.toma.gunsrpg.client.render.debuff.IconDebuffRenderer;
@@ -82,6 +84,8 @@ public class ClientSideManager {
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.BULLET.get(),              TracerRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.FLARE.get(),               NoOpRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.PEBBLE.get(),              PebbleRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.GRENADE_SHELL.get(),       manager -> new ExplosiveProjectileRenderer<>(manager, new GrenadeShellModel()));
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.ROCKET.get(),              manager -> new ExplosiveProjectileRenderer<>(manager, new RocketModel()));
 
         // keybinds
         ModKeybinds.registerKeybinds();

@@ -329,7 +329,7 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
         return 1.0f;
     }
 
-    private void onDamageChanged() {
+    protected void onDamageChanged() {
         if (projectileDamage <= 0.0F && !level.isClientSide) {
             remove();
         }

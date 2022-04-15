@@ -1,22 +1,28 @@
 package dev.toma.gunsrpg.client;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.item.guns.util.IEntityTrackingGun;
+import lib.toma.animations.AnimationUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.lwjgl.opengl.GL11;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -37,7 +43,10 @@ public class GuidedProjectileTargetHandler {
         ItemStack stack = player.getMainHandItem();
         if (stack.getItem() instanceof IEntityTrackingGun) {
             IEntityTrackingGun gun = (IEntityTrackingGun) stack.getItem();
-            if (!gun.canBeGuided(player)) return;
+            if (!gun.canBeGuided(player)) {
+                selectedEntity = -1;
+                return;
+            }
             ++updateTimer;
             lockTimer = selectedEntity > -1 ? ++lockTimer : 0;
             locked = lockTimer >= gun.getLockTime();
@@ -48,15 +57,51 @@ public class GuidedProjectileTargetHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void renderSelection(RenderWorldLastEvent event) {
+        /*//if (selectedEntity == -1) return;
+        Minecraft minecraft = Minecraft.getInstance();
+        World world = minecraft.level;
+        Entity entity = world.getEntity(selectedEntity);
+        //if (entity == null) return;
+        PlayerEntity player = minecraft.player;
+        int range = 96;
+        Vector3d pos = player.position();
+        Vector3d look = rotateVectorYaw(player.yRot, new Vector3d(range, 0, 0));
+        Vector3d target = pos.add(look);
+
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder builder = tessellator.getBuilder();
+        RenderSystem.disableTexture();
+        RenderSystem.disableCull();
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        builder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+        float partial = event.getPartialTicks();
+        double x = MathHelper.lerp(partial, player.xo, pos.x);
+        double y = MathHelper.lerp(partial, player.yo, pos.y);
+        double z = MathHelper.lerp(partial, player.zo, pos.z);
+        MatrixStack stack = event.getMatrixStack();
+        stack.pushPose();
+        stack.translate(-x, -y, -z);
+        Matrix4f pose = stack.last().pose();
+        builder.vertex(pose, (float) pos.x, (float) pos.y, (float) pos.z).color(1.0F, 0.0F, 0.0F, 1.0F).endVertex();
+        builder.vertex(pose, (float) target.x, (float) target.y, (float) target.z).color(1.0F, 0.0F, 0.0F, 1.0F).endVertex();
+        tessellator.end();
+        stack.popPose();
+        RenderSystem.enableTexture();
+        RenderSystem.enableCull();
+        RenderSystem.disableBlend();*/
+    }
+
     public static int getSelectedEntity() {
         return locked ? selectedEntity : -1;
     }
 
     private static void updateTargetedEntity(PlayerEntity player, IEntityTrackingGun trackingGun) {
         Vector3d position = player.position();
-        Vector3d look = player.getLookAngle();
-        int range = trackingGun.getMaxRange();
-        Vector3d targetedLocation = position.add(look).multiply(range, range, range);
+        Vector3d rotationVector = rotateVectorYaw(player.yRot, new Vector3d(trackingGun.getMaxRange(), 0, 0));
+        Vector3d targetedLocation = position.add(rotationVector);
         World world = player.level;
         BlockRayTraceResult result = world.clip(new RayTraceContext(position, targetedLocation, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, player));
         if (result.getType() != RayTraceResult.Type.MISS) {
@@ -69,6 +114,7 @@ public class GuidedProjectileTargetHandler {
         double z = targetedLocation.z;
         Optional<LivingEntity> potentialTarget = world.getEntitiesOfClass(LivingEntity.class, searchArea, canTarget).stream().min((e1, e2) -> sortTargets(e1, e2, position, x, y, z));
         selectedEntity = potentialTarget.map(Entity::getId).orElse(-1);
+        System.out.println(selectedEntity);
     }
 
     private static int sortTargets(LivingEntity e1, LivingEntity e2, Vector3d v1, double x, double y, double z) {
@@ -94,5 +140,10 @@ public class GuidedProjectileTargetHandler {
         double y = y1 - y2;
         double z = z1 - z2;
         return x * x + y * y + z * z;
+    }
+
+    private static Vector3d rotateVectorYaw(double rotation, Vector3d vec) {
+        float pi = (float) (Math.PI / 180.0F);
+        return vec.yRot(-(float) rotation * pi - ((float) Math.PI / 2.0F));
     }
 }
