@@ -69,6 +69,9 @@ public class Grenade extends AbstractExplosive {
         if (bouncedThisTick) {
             bounced = true;
             onCollided(this.position());
+            if (this.getProperty(Properties.STICKY)) {
+                this.setProperty(STICK_CONTEXT, new BlockStickContext(this.position()));
+            }
         }
         if (bounced && this.getProperty(Properties.STICKY)) {
             IStickContext context = this.getProperty(STICK_CONTEXT);

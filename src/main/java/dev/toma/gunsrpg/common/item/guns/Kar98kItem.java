@@ -39,7 +39,7 @@ public class Kar98kItem extends AbstractBoltActionGun {
     private static final PenetrationData.Factory PENETRATION_DATA_FACTORY = new PenetrationData.Factory(0.5f);
 
     public Kar98kItem(String name) {
-        super(name, new Properties().setISTER(() -> Kar98kRenderer::new).durability(450));
+        super(name, new Properties().setISTER(() -> Kar98kRenderer::new).durability(300));
     }
 
     @Override

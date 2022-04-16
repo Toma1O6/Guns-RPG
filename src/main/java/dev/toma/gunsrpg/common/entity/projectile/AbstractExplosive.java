@@ -24,11 +24,13 @@ public abstract class AbstractExplosive extends Bullet {
     @Override
     protected void onHitBlock(BlockRayTraceResult result) {
         onCollided(result.getLocation());
+        setDeltaMovement(0, 0, 0);
     }
 
     @Override
     protected void handleEntityCollision(EntityRayTraceResult result) {
         onCollided(result.getLocation());
+        setDeltaMovement(0, 0, 0);
     }
 
     @Override

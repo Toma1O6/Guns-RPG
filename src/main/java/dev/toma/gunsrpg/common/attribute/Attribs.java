@@ -187,7 +187,7 @@ public final class Attribs {
     public static final IAttributeId AWM_FIRERATE               = createInternal("awm_firerate", 36);
     public static final IAttributeId AWM_HS_DAMAGE              = createInternal("awm_hs_damage");
     public static final IAttributeId GL_RELOAD_SPEED            = createInternal("gl_reload_speed", 30);
-    public static final IAttributeId GL_FIRERATE                = createInternal("gl_firerate", 8);
+    public static final IAttributeId GL_FIRERATE                = createInternal("gl_firerate", 15);
     public static final IAttributeId GL_MAG_CAPACITY            = createInternal("gl_mag_capacity", 4);
     public static final IAttributeId RL_RELOAD_SPEED            = createInternal("rl_reload_speed", 40);
 

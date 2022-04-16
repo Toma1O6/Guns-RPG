@@ -1,12 +1,15 @@
 package dev.toma.gunsrpg.common.entity;
 
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModEntities;
+import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -214,12 +217,11 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
         if (thrower == null) {
             return;
         }
-        float sprintModifier = 1.2F;
-        float modifier = 1.3F;
-        if (thrower.isSprinting()) modifier *= sprintModifier;
+        float modifier = 1.6F;
+        if (thrower instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) thrower, Skills.GRENADIER)) modifier *= 1.4F;
         Vector3d viewVec = thrower.getLookAngle();
         Vector3d thrVec = viewVec.multiply(0.75, 0.75, 0.75);
-        setDeltaMovement(thrVec.x * modifier, thrVec.y * modifier / sprintModifier, thrVec.z * modifier);
+        setDeltaMovement(thrVec.x * modifier, thrVec.y * modifier / 1.2F, thrVec.z * modifier);
     }
 
     private void onGrenadeBounce(Vector3d movement) {

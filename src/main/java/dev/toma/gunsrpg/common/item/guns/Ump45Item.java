@@ -116,7 +116,7 @@ public class Ump45Item extends GunItem {
     public void onKillEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
         if (!shooter.level.isClientSide && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.UMP45_COMMANDO)) {
             shooter.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 100, 1, false, false));
-            shooter.addEffect(new EffectInstance(Effects.REGENERATION, 60, 2, false, false));
+            shooter.addEffect(new EffectInstance(Effects.REGENERATION, 75, 1, false, false));
         }
     }
 

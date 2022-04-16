@@ -34,7 +34,7 @@ public class AwmItem extends AbstractBoltActionGun {
     private static final PenetrationData.Factory FACTORY = new PenetrationData.Factory(0.3f);
 
     public AwmItem(String name) {
-        super(name, new Properties().setISTER(() -> AwmRenderer::new).durability(550));
+        super(name, new Properties().setISTER(() -> AwmRenderer::new).durability(350));
     }
 
     @Override

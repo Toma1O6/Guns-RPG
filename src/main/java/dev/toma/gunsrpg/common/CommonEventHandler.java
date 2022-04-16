@@ -15,6 +15,7 @@ import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.common.item.HammerItem;
+import dev.toma.gunsrpg.common.item.ICustomUseDuration;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.skills.AvengeMeFriendsSkill;
@@ -468,6 +469,18 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void leftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
         cancelIfPlayerHoldsGun(event);
+    }
+
+    @SubscribeEvent
+    public static void onStartUsingItem(LivingEntityUseItemEvent.Start event) {
+        ItemStack stack = event.getItem();
+        LivingEntity entity = event.getEntityLiving();
+        if (stack.getItem() instanceof ICustomUseDuration && entity instanceof PlayerEntity) {
+            ICustomUseDuration useDuration = (ICustomUseDuration) stack.getItem();
+            PlayerEntity player = (PlayerEntity) entity;
+            int defaultDuration = event.getDuration();
+            event.setDuration(useDuration.getUseDuration(defaultDuration, stack, player));
+        }
     }
 
     private static void cancelIfPlayerHoldsGun(PlayerInteractEvent event) {

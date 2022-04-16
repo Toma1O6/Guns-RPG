@@ -36,6 +36,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.LazyOptional;
 
 import static dev.toma.gunsrpg.util.properties.Properties.*;
 
@@ -54,7 +55,7 @@ public class RocketLauncherItem extends AbstractExplosiveLauncher implements IEn
             .build();
 
     public RocketLauncherItem(String name) {
-        super(name, new Properties().setISTER(() -> RocketLauncherRenderer::new).durability(150));
+        super(name, new Properties().setISTER(() -> RocketLauncherRenderer::new).durability(180));
     }
 
     @Override
@@ -81,7 +82,9 @@ public class RocketLauncherItem extends AbstractExplosiveLauncher implements IEn
 
     @Override
     public boolean canBeGuided(PlayerEntity player) {
-        IPlayerData data = PlayerData.getUnsafe(player);
+        LazyOptional<IPlayerData> optional = PlayerData.get(player);
+        if (!optional.isPresent()) return false;
+        IPlayerData data = optional.orElse(null);
         IAimInfo aimInfo = data.getAimInfo();
         Firemode firemode = this.getFiremode(player.getMainHandItem());
         return firemode == Firemode.HOMING && aimInfo.isAiming();
@@ -138,7 +141,7 @@ public class RocketLauncherItem extends AbstractExplosiveLauncher implements IEn
             ItemStack stack = entity.getMainHandItem();
             Firemode firemode = getFiremode(stack);
             if (firemode == Firemode.BARRAGE) {
-                return 0.8F;
+                return 1.2F;
             }
         }
         return props.getInaccuracy();

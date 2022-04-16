@@ -70,7 +70,7 @@ public final class CrystalAttribute {
     public float getValue() {
         float range = perk.getBounds(type);
         float value = perk.getScaling() * level;
-        return Math.min(value, range);
+        return value < 0 ? Math.max(value, -range) : Math.min(value, range);
     }
 
     @Override

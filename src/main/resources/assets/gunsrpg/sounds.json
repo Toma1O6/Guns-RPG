@@ -733,7 +733,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:hk416/gun_m416",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -742,7 +742,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:hk416/gun_m416_silenced",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -751,7 +751,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:hk416/hk416_ch1",
-                "stream": true
+                "stream": false
             }
         ]
     },

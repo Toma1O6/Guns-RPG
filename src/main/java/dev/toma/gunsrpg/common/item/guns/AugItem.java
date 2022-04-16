@@ -34,7 +34,7 @@ public class AugItem extends GunItem {
     };
 
     public AugItem(String name) {
-        super(name, new Properties().setISTER(() -> AugRenderer::new).durability(1350));
+        super(name, new Properties().setISTER(() -> AugRenderer::new).durability(1200));
     }
 
     @Override

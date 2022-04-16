@@ -37,7 +37,7 @@ public class GrenadeLauncherItem extends AbstractExplosiveLauncher {
     private static final ResourceLocation AIM = GunsRPG.makeResource("gl/aim");
 
     public GrenadeLauncherItem(String name) {
-        super(name, new Properties().setISTER(() -> GrenadeLauncherRenderer::new).durability(200));
+        super(name, new Properties().setISTER(() -> GrenadeLauncherRenderer::new).durability(220));
     }
 
     @Override
@@ -87,7 +87,7 @@ public class GrenadeLauncherItem extends AbstractExplosiveLauncher {
     protected float getInitialVelocity(IWeaponConfig config, LivingEntity shooter) {
         float velocity = super.getInitialVelocity(config, shooter);
         if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.GRENADE_LAUNCHER_BETTER_CARTRIDGE)) {
-            velocity *= 2.0f;
+            velocity *= 3.0f;
         }
         return velocity;
     }

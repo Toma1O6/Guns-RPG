@@ -119,7 +119,7 @@ public class CommonRegistry {
                 SkillType.Builder.create(SimpleSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModItems.GRENADE_LAUNCHER))).build().setRegistryName("grenade_launcher_assembly"),
                 SkillType.Builder.create(SimpleSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModItems.ROCKET_LAUNCHER))).build().setRegistryName("rocket_launcher_assembly"),
                 SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("grenades"),
-                SkillType.Builder.create(SimpleSkill::new).description(2).build().setRegistryName("grenadier"),
+                SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("grenadier"),
                 SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("massive_grenades"),
                 SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("impact_grenades"),
                 SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("demolisher"),

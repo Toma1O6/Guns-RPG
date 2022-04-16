@@ -34,7 +34,7 @@ public final class Perk {
         float scale = this.getScaling();
         float bound = this.getBounds(type);
         double value = level * scale;
-        return Math.min(value, bound);
+        return value < 0 ? Math.max(value, -bound) : Math.min(value, bound);
     }
 
     public float getScaling() {

@@ -111,6 +111,6 @@ public final class Modifiers {
     public static final IAttributeModifier AWM_HEADSHOT                 = new AttributeModifier("F84D36CB-49CF-4E0E-AABF-0524CA690C1D", AttributeOps.MULB, 0.3).named("hs_damage", IValueFormatter.PERCENT);
     public static final IAttributeModifier GL_RELOAD                    = new AttributeModifier("227EE37D-E8A1-4A62-8FCD-E64D260B27E0", AttributeOps.MUL, 0.75).named("speed", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier GL_EXTENDED                  = new AttributeModifier("C5E2EF87-53E6-4FFD-9121-55DF3AA5DDA7", AttributeOps.SUM, 2).named("capacity");
-    public static final IAttributeModifier GL_FIRERATE                  = new AttributeModifier("C665BF36-89B8-4AAF-8CE4-803555AFA061", AttributeOps.SUB, 3).named("rate");
+    public static final IAttributeModifier GL_FIRERATE                  = new AttributeModifier("C665BF36-89B8-4AAF-8CE4-803555AFA061", AttributeOps.SUB, 7).named("rate");
     public static final IAttributeModifier RL_RELOAD                    = new AttributeModifier("08C7700F-7E86-4E85-BE9B-6236C7F08F0E", AttributeOps.MUL, 0.75).named("speed", IValueFormatter.INV_PERCENT);
 }

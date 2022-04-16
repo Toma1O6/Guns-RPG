@@ -35,7 +35,7 @@ public class SksItem extends GunItem {
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("sks/unjam");
 
     public SksItem(String name) {
-        super(name, new Properties().setISTER(() -> SksRenderer::new).durability(700));
+        super(name, new Properties().setISTER(() -> SksRenderer::new).durability(600));
     }
 
     @Override

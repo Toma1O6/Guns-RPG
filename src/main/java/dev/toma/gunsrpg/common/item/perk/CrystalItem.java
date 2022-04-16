@@ -38,7 +38,7 @@ public class CrystalItem extends PerkItem implements IPerkHolder {
             ITextComponent name = SkillUtil.Localizations.makeReadable(perk.getPerkId());
             TextFormatting formatting = attribute.getType() == PerkType.BUFF ? TextFormatting.GREEN : TextFormatting.RED;
             String pct = DECIMAL_FORMAT.format(attribute.getValue() * 100F);
-            list.add(new StringTextComponent(formatting + name.getString() + ": " + pct + "%"));
+            list.add(new StringTextComponent(formatting + name.getString() + ": " + pct + "% [" + Math.abs(attribute.getLevel()) + "]"));
         }
     }
 

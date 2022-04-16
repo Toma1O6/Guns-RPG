@@ -40,7 +40,7 @@ public class PerkWidget extends Widget implements ITickable {
         this.state = state;
         ResourceLocation perkId = perk.getPerkId();
         this.icon = new ResourceLocation(perkId.getNamespace(), "textures/icons/perk/" + perkId.getPath() + ".png");
-        this.maxLevel = ModUtils.equals(perk.getBounds(state == State.DEBUFF ? PerkType.DEBUFF : PerkType.BUFF), value, 0.001);
+        this.maxLevel = ModUtils.equals(perk.getBounds(state == State.DEBUFF ? PerkType.DEBUFF : PerkType.BUFF), Math.abs(value), 0.001);
     }
 
     @Override

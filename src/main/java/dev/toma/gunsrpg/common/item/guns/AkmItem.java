@@ -35,7 +35,7 @@ public class AkmItem extends GunItem {
     private static final ResourceLocation AIM = GunsRPG.makeResource("akm/aim");
 
     public AkmItem(String name) {
-        super(name, new Properties().setISTER(() -> AkmRenderer::new).durability(1100));
+        super(name, new Properties().setISTER(() -> AkmRenderer::new).durability(1000));
     }
 
     @Override

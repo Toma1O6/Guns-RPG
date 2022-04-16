@@ -31,6 +31,7 @@ public class Skills {
     public static final SkillType<SimpleSkill> AWM_ASSEMBLY = null;
     public static final SkillType<SimpleSkill> GRENADE_LAUNCHER_ASSEMBLY = null;
     public static final SkillType<SimpleSkill> ROCKET_LAUNCHER_ASSEMBLY = null;
+    public static final SkillType<SimpleSkill> GRENADIER = null;
     public static final SkillType<SimpleSkill> EFFICIENT_MEDS = null;
     public static final SkillType<LumberjackSkill> LUMBERJACK_I = null;
     public static final SkillType<MotherlodeSkill> MOTHER_LODE_I = null;

@@ -63,7 +63,9 @@ public class Rocket extends AbstractExplosive {
         if (reaction != null) {
             reaction.react(this, impact, level);
         }
-        remove();
+        if (!level.isClientSide) {
+            remove();
+        }
     }
 
     @Override
@@ -71,7 +73,7 @@ public class Rocket extends AbstractExplosive {
         boolean propelled = this.getProperty(Properties.FUELED);
         if (propelled) {
             if (level.isClientSide && canApplyGravity())  {
-                Vector3d movement = this.getDeltaMovement().multiply(-1, -1, -1);
+                Vector3d movement = this.getDeltaMovement().multiply(-0.3, -0.3, -0.3);
                 for (int i = 0; i < 5; i++) {
                     double rx = (random.nextDouble() - random.nextDouble()) * 0.05F;
                     double ry = (random.nextDouble() - random.nextDouble()) * 0.05F;
@@ -111,8 +113,8 @@ public class Rocket extends AbstractExplosive {
             Vector3d position = target.getTrackedPosition();
             float x = rocket.xRot;
             float y = rocket.yRot;
-            rocket.xRot = this.rotateTowards(x, this.getVerticalDifference(position), 2.0F);
-            rocket.yRot = this.rotateTowards(y, this.getHorizontalDifference(position), 2.5F);
+            rocket.xRot = this.rotateTowards(x, this.getVerticalDifference(position), 4.5F);
+            rocket.yRot = this.rotateTowards(y, this.getHorizontalDifference(position), 6.0F);
             Vector3d vector3d = Vector3d.directionFromRotation(rocket.xRot, rocket.yRot);
             float f = rocket.velocity;
             setDeltaMovement(vector3d.multiply(f, f, f));
@@ -155,7 +157,10 @@ public class Rocket extends AbstractExplosive {
         }
 
         void update() {
-            if (entity == null) return;
+            if (entity == null && pos.y > 0) {
+                pos = new Vector3d(pos.x, 0, pos.z);
+                return;
+            }
             pos = atCenterOfEntity(entity);
         }
 

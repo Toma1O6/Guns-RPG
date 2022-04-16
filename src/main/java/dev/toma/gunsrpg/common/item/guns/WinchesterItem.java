@@ -39,7 +39,7 @@ public class WinchesterItem extends AbstractBoltActionGun {
     private static final PenetrationData.Factory FACTORY = new PenetrationData.Factory(0.3f);
 
     public WinchesterItem(String name) {
-        super(name, new Properties().setISTER(() -> WinchesterRenderer::new).durability(450));
+        super(name, new Properties().setISTER(() -> WinchesterRenderer::new).durability(400));
     }
 
     @Override
