@@ -25,12 +25,26 @@ public class CrystalItem extends PerkItem implements IPerkHolder {
         super(name, variant, new Properties().tab(ModTabs.ITEM_TAB).stacksTo(1));
     }
 
+    public static Crystal getCrystal(ItemStack stack) {
+        CompoundNBT nbt = stack.getTag();
+        if (nbt == null) return null;
+        CompoundNBT crystalNbt = nbt.getCompound("crystal");
+        return Crystal.fromNbt(crystalNbt);
+    }
+
+    public static void addCrystal(ItemStack stack, Crystal crystal) {
+        CompoundNBT nbt = stack.getTag();
+        if (nbt == null) {
+            nbt = new CompoundNBT();
+        }
+        nbt.put("crystal", crystal.toNbt());
+        stack.setTag(nbt);
+    }
+
     @Override
     public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        CompoundNBT nbt = stack.getTag();
-        if (nbt == null) return;
-        CompoundNBT crystalNbt = nbt.getCompound("crystal");
-        Crystal crystal = Crystal.fromNbt(crystalNbt);
+        Crystal crystal = getCrystal(stack);
+        if (crystal == null) return;
         list.add(new StringTextComponent("Level: " + TextFormatting.AQUA + crystal.getLevel()));
         list.add(new StringTextComponent("Attributes"));
         for (CrystalAttribute attribute : crystal.listAttributes()) {

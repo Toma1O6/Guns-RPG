@@ -417,7 +417,7 @@ public class CommonRegistry {
                 new TrapBlock("large_landmine", AbstractBlock.Properties.of(Material.METAL).noOcclusion(), new TrapBlock.MineReaction(5.0F)),
                 new TrapBlock("hidden_landmine", AbstractBlock.Properties.of(Material.METAL).noOcclusion(), new TrapBlock.MineReaction(3.0F)),
                 new CrystalStationBlock("crystal_station"),
-                new BaseBlock("crystal_fuse", AbstractBlock.Properties.of(Material.STONE).noOcclusion()),
+                new CrystalFusionStationBlock("crystal_fuse"),
                 new BaseBlock("crystal_purification", AbstractBlock.Properties.of(Material.STONE).noOcclusion()),
                 new CookerBlock("cooker"),
                 new RepairStationBlock("repair_station"),

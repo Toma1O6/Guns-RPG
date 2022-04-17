@@ -27,6 +27,10 @@ public final class CrystalAttribute {
         this.modifier = this.createUniqueModifier();
     }
 
+    public CrystalAttribute increaseLevel() {
+        return new CrystalAttribute(perk, type, level < 0 ? level - 1 : level + 1);
+    }
+
     public IAttributeModifier createUniqueModifier() {
         long mostSigBits = perk.hashCode();
         long leastSigBits = Boolean.hashCode(perk.shouldInvertCalculation());

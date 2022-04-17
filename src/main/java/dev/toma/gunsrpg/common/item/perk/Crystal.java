@@ -23,6 +23,28 @@ public final class Crystal {
         this.attributes = attributes;
     }
 
+    public static Map<Perk, List<CrystalAttribute>> groupAttributes(List<CrystalAttribute> attributes) {
+        Map<Perk, List<CrystalAttribute>> map = new HashMap<>();
+        for (CrystalAttribute attribute : attributes) {
+            Perk perk = attribute.getPerk();
+            map.computeIfAbsent(perk, key -> new ArrayList<>()).add(attribute);
+        }
+        return map;
+    }
+
+    public static Crystal mergeAndLevelUp(Crystal crystal1, Crystal crystal2, int level) {
+        List<CrystalAttribute> list = new ArrayList<>();
+        list.addAll(crystal1.attributes);
+        list.addAll(crystal2.attributes);
+        Map<Perk, List<CrystalAttribute>> map = groupAttributes(list);
+        List<CrystalAttribute> result = new ArrayList<>();
+        for (Map.Entry<Perk, List<CrystalAttribute>> entry : map.entrySet()) {
+            CrystalAttribute attribute = CrystalAttribute.flatten(entry.getKey(), entry.getValue());
+            result.add(attribute);
+        }
+        return new Crystal(level, result);
+    }
+
     public static Crystal generate() {
         PerkConfiguration perkConfig = GunsRPG.getModLifecycle().getPerkManager().configLoader.getConfiguration();
         CrystalConfiguration crystalConfig = perkConfig.getCrystalConfig();

@@ -142,6 +142,7 @@ public class ClientSideManager {
         ScreenManager.register(ModContainers.COOKER.get(), CookerScreen::new);
         ScreenManager.register(ModContainers.REPAIR_STATION.get(), RepairStationScreen::new);
         ScreenManager.register(ModContainers.CRYSTAL_STATION.get(), CrystalStationScreen::new);
+        ScreenManager.register(ModContainers.CRYSTAL_FUSE.get(), CrystalFuseStationScreen::new);
     }
 
     private AnimationType<?>[] gatherAnimationTypes() {

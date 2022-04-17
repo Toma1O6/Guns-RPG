@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.item.guns.util.IEntityTrackingGun;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -46,7 +47,11 @@ public class GuidedProjectileTargetHandler {
             }
             ++updateTimer;
             lockTimer = selectedEntity > -1 ? ++lockTimer : 0;
+            boolean wasLocked = locked;
             locked = lockTimer >= gun.getLockTime();
+            if (!wasLocked && locked) {
+                player.playSound(ModSounds.RL_LOCKED1, 1.0F, 1.0F);
+            }
             if (updateTimer >= 5) {
                 updateTimer = 0;
                 updateTargetedEntity(player, gun);
@@ -69,7 +74,12 @@ public class GuidedProjectileTargetHandler {
         boolean valid = result != null && result.getEntity() != null;
         if (valid) {
             Entity entity = result.getEntity();
+            int lastId = selectedEntity;
             selectedEntity = entity.getId();
+            if (lastId != -1 && lastId != selectedEntity) {
+                locked = false;
+                lockTimer = 0;
+            }
             ITextComponent component = new StringTextComponent(locked ? TextFormatting.RED + ("Locked on: " + entity.getName().getString()) : TextFormatting.YELLOW + ("Locking on: " + entity.getName().getString()));
             Minecraft.getInstance().gui.handleChat(ChatType.GAME_INFO, component, Util.NIL_UUID);
         } else {
