@@ -50,7 +50,7 @@ public class GuidedProjectileTargetHandler {
             boolean wasLocked = locked;
             locked = lockTimer >= gun.getLockTime();
             if (!wasLocked && locked) {
-                player.playSound(ModSounds.RL_LOCKED1, 1.0F, 1.0F);
+                player.playSound(ModSounds.RL_LOCKED1, 0.6F, 1.0F);
             }
             if (updateTimer >= 5) {
                 updateTimer = 0;
