@@ -1,10 +1,12 @@
 package dev.toma.gunsrpg.common.container;
 
+import com.mojang.datafixers.util.Pair;
 import dev.toma.gunsrpg.api.common.data.IPerkProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerPerkProvider;
+import dev.toma.gunsrpg.common.init.ClientRegistry;
 import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.perk.Crystal;
@@ -17,14 +19,19 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.IContainerListener;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
@@ -115,6 +122,13 @@ public class CrystalStationContainer extends AbstractContainer {
         public void setChanged() {
             CrystalStationContainer.this.broadcastChanges();
             super.setChanged();
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Nullable
+        @Override
+        public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+            return Pair.of(PlayerContainer.BLOCK_ATLAS, ClientRegistry.EMPTY_CRYSTAL_SLOT);
         }
     }
 

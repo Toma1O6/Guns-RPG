@@ -1,17 +1,24 @@
 package dev.toma.gunsrpg.common.container;
 
+import com.mojang.datafixers.util.Pair;
+import dev.toma.gunsrpg.common.init.ClientRegistry;
 import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.common.item.perk.PerkVariant;
 import dev.toma.gunsrpg.common.tileentity.CrystalFusionStationTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class CrystalFusionStationContainer extends AbstractModContainer<CrystalFusionStationTileEntity> {
 
@@ -64,6 +71,13 @@ public class CrystalFusionStationContainer extends AbstractModContainer<CrystalF
             PerkVariant variant = tile.getItemVariant(stack);
             return tile.canAddItem(variant);
         }
+
+        @OnlyIn(Dist.CLIENT)
+        @Nullable
+        @Override
+        public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+            return Pair.of(PlayerContainer.BLOCK_ATLAS, ClientRegistry.EMPTY_CRYSTAL_SLOT);
+        }
     }
 
     private class Orb extends SlotItemHandler {
@@ -84,6 +98,13 @@ public class CrystalFusionStationContainer extends AbstractModContainer<CrystalF
             PerkVariant variant = tile.getItemVariant(stack);
             PerkVariant target = tile.getTargetedOrbType();
             return tile.canAddItem(variant) && (target == null || target == variant);
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Nullable
+        @Override
+        public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+            return Pair.of(PlayerContainer.BLOCK_ATLAS, ClientRegistry.EMPTY_TRANSMUTATION_SLOT);
         }
     }
 }
