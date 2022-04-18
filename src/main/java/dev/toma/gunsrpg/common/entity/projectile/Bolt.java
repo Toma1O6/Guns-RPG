@@ -24,8 +24,6 @@ public class Bolt extends Bullet {
         applyGravity(0.03F);
     }
 
-    // TODO possibly spawn dummy unpickable arrow at hit location
-
     @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
         return true;
