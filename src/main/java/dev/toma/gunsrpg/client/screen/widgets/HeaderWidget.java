@@ -23,4 +23,9 @@ public class HeaderWidget extends Widget {
         RenderUtils.drawSolid(poseStack.last().pose(), x, y, x + width, y + height, 0x44 << 24);
         renderer.drawShadow(poseStack, TextFormatting.UNDERLINE + text.getString(), x + (width - titleWidth) / 2.0F, y + (height - renderer.lineHeight) / 2.0F, 0xFFFFFF);
     }
+
+    @Override
+    public boolean mouseClicked(double p_231044_1_, double p_231044_3_, int p_231044_5_) {
+        return false;
+    }
 }
