@@ -1,16 +1,15 @@
 package dev.toma.gunsrpg.ai;
 
+import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.item.BowItem;
-import net.minecraft.util.Hand;
 
 import java.util.EnumSet;
 
-public class BowAttackWithoutSightGoal<T extends MobEntity & IRangedAttackMob> extends Goal {
+public class RangedAttackNoSightGoal<T extends MobEntity & IRangedAttackMob> extends Goal {
 
     protected final T entity;
     protected final double moveSpeedAmp;
@@ -22,7 +21,7 @@ public class BowAttackWithoutSightGoal<T extends MobEntity & IRangedAttackMob> e
     private boolean strafingBackwards;
     private int strafingTime = -1;
 
-    public BowAttackWithoutSightGoal(T entity, double speedAmp, int attackCooldown, float maxAttackDistance) {
+    public RangedAttackNoSightGoal(T entity, double speedAmp, int attackCooldown, float maxAttackDistance) {
         this.entity = entity;
         this.moveSpeedAmp = speedAmp;
         this.attackCooldown = attackCooldown;
@@ -58,7 +57,7 @@ public class BowAttackWithoutSightGoal<T extends MobEntity & IRangedAttackMob> e
     }
 
     protected boolean isBowMainHand() {
-        return this.entity.isHolding(item -> item instanceof BowItem);
+        return this.entity.isHolding(item -> item == ModItems.GRENADE_LAUNCHER);
     }
 
     @Override
@@ -110,20 +109,12 @@ public class BowAttackWithoutSightGoal<T extends MobEntity & IRangedAttackMob> e
                 this.entity.getLookControl().setLookAt(livingEntity, 30.0F, 30.0F);
             }
 
-            if (this.entity.isUsingItem()) {
-                if (!canSee && this.seeTime < -60) {
-                    this.entity.stopUsingItem();
-                } else if (canSee) {
-                    int i = this.entity.getTicksUsingItem();
-
-                    if (i >= 20) {
-                        this.entity.stopUsingItem();
-                        this.entity.performRangedAttack(livingEntity, BowItem.getPowerForTime(i));
-                        this.attackTime = this.attackCooldown;
-                    }
+            if (canSee) {
+                --attackTime;
+                if (attackTime <= 0) {
+                    this.entity.performRangedAttack(livingEntity, 0);
+                    this.attackTime = this.attackCooldown;
                 }
-            } else if (--this.attackTime <= 0 && this.seeTime >= -60) {
-                this.entity.startUsingItem(Hand.MAIN_HAND);
             }
         }
     }

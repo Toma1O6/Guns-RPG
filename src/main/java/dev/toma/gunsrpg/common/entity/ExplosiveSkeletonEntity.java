@@ -1,7 +1,10 @@
 package dev.toma.gunsrpg.common.entity;
 
-import dev.toma.gunsrpg.ai.BowAttackWithoutSightGoal;
+import dev.toma.gunsrpg.ai.RangedAttackNoSightGoal;
+import dev.toma.gunsrpg.common.entity.projectile.Grenade;
 import dev.toma.gunsrpg.common.init.ModEntities;
+import dev.toma.gunsrpg.common.init.ModItems;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -13,10 +16,8 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
@@ -30,7 +31,7 @@ import java.time.temporal.ChronoField;
 
 public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAttackMob {
 
-    private final BowAttackWithoutSightGoal<ExplosiveSkeletonEntity> aiArrowAttack = new BowAttackWithoutSightGoal<>(this, 1.0D, 25, 18.0F);
+    private final RangedAttackNoSightGoal<ExplosiveSkeletonEntity> aiArrowAttack = new RangedAttackNoSightGoal<>(this, 1.0D, 25, 18.0F);
     private final MeleeAttackGoal aiAttackOnCollide = new MeleeAttackGoal(this, 1.2D, false) {
         @Override
         public void stop() {
@@ -44,10 +45,6 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
             ExplosiveSkeletonEntity.this.setAggressive(true);
         }
     };
-
-    public ExplosiveSkeletonEntity(World world) {
-        this(ModEntities.EXPLOSIVE_SKELETON.get(), world);
-    }
 
     public ExplosiveSkeletonEntity(EntityType<? extends MonsterEntity> type, World world) {
         super(type, world);
@@ -155,7 +152,7 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
             this.goalSelector.removeGoal(this.aiAttackOnCollide);
             this.goalSelector.removeGoal(this.aiArrowAttack);
             ItemStack itemstack = this.getMainHandItem();
-            if (itemstack.getItem() == Items.BOW) {
+            if (itemstack.getItem() == ModItems.GRENADE_LAUNCHER) {
                 int i = 60;
                 if (this.level.getDifficulty() != Difficulty.HARD) {
                     i = 120;
@@ -180,19 +177,20 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
     @Override
     protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
         super.populateDefaultEquipmentSlots(difficulty);
-        this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.BOW));
+        this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(ModItems.GRENADE_LAUNCHER));
     }
 
     @Override
     public void performRangedAttack(LivingEntity target, float distanceFactor) {
-        AbstractArrowEntity entityarrow = new ExplosiveArrowEntity(level, this, 2);
+        Grenade grenade = new Grenade(ModEntities.GRENADE_SHELL.get(), level, this);
         double x = target.getX() - this.getX();
-        double y = target.getY(0.3333) - entityarrow.getY();
+        double y = target.getY(0.3333) - grenade.getY();
         double z = target.getZ() - this.getZ();
-        double dist = MathHelper.sqrt(x * x + z * z);
-        entityarrow.shoot(x, y + dist * 0.2D, z, 1.6F, (float) (23 - this.level.getDifficulty().getId() * 4));
-        this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-        this.level.addFreshEntity(entityarrow);
+        float dist = MathHelper.sqrt(x * x + z * z);
+        grenade.setup(1.0f, 1.5f, 0);
+        grenade.fire(xRot - dist * 0.1f, yRot, 2.5F);
+        this.playSound(ModSounds.GL_SHOT1, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+        this.level.addFreshEntity(grenade);
     }
 
     @Override
