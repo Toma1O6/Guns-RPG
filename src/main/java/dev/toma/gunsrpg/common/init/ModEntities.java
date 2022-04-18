@@ -41,9 +41,6 @@ public class ModEntities {
     public static final RegistryObject<EntityType<FlareEntity>> FLARE = register("flare", FlareEntity::new, EntityClassification.MISC,
             builder -> builder.setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).sized(0.2F, 0.2F)
     );
-    public static final RegistryObject<EntityType<ExplosiveArrowEntity>> EXPLOSIVE_ARROW = register("explosive_arrow", ExplosiveArrowEntity::new, EntityClassification.MISC,
-            builder -> builder.setTrackingRange(64).setUpdateInterval(20).setShouldReceiveVelocityUpdates(true).sized(0.5F, 0.5F).clientTrackingRange(4)
-    );
     public static final RegistryObject<EntityType<Bullet>> BULLET = register("bullet", Bullet::new, EntityClassification.MISC,
             builder -> builder.sized(0.001F, 0.001F).noSummon().noSave().setShouldReceiveVelocityUpdates(false)
     );
