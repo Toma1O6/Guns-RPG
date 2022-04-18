@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
@@ -25,12 +26,13 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import java.util.EnumSet;
 
-public class RocketAngelEntity extends MonsterEntity {
+public class RocketAngelEntity extends MonsterEntity implements IEntityAdditionalSpawnData {
 
-    private final Type type = Type.SELECTOR.getRandom();
+    private Type type = Type.SELECTOR.getRandom();
 
     public RocketAngelEntity(World world) {
         this(ModEntities.ROCKET_ANGEL.get(), world);
@@ -97,23 +99,41 @@ public class RocketAngelEntity extends MonsterEntity {
         return flag;
     }
 
+    @Override
+    public void writeSpawnData(PacketBuffer buffer) {
+        buffer.writeEnum(type);
+    }
+
+    @Override
+    public void readSpawnData(PacketBuffer additionalData) {
+        type = additionalData.readEnum(Type.class);
+    }
+
     enum Type {
 
-        NORMAL(80, new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY)),
-        NAPALM(10, MultipartReaction.multi(new ExplosiveReaction(2.0F, Explosion.Mode.DESTROY), new NapalmReaction(6.0, 0.2F))),
-        POISON_GAS(10, MultipartReaction.multi(new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY), new EffectSpreadReaction(0xFF00, () -> new EffectInstance(Effects.POISON, 60))));
+        STANDARD(35, 0xFFFF9B, new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY)),
+        HE(10, 0x63C0FF, new ExplosiveReaction(3.0f, Explosion.Mode.DESTROY)),
+        INCENDIARY(8, 0xFF8968, MultipartReaction.multi(new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY), new NapalmReaction(3.0, 0.3f))),
+        TOXIN(16, 0xB993FF, MultipartReaction.multi(new ExplosiveReaction(2.0f, Explosion.Mode.NONE), new EffectSpreadReaction(0xB993FF, () -> new EffectInstance(Effects.WITHER, 120, 1)))),
+        STUN(12, 0xD3D3D3, MultipartReaction.multi(new ExplosiveReaction(2.0f, Explosion.Mode.NONE), new EffectSpreadReaction(0xD3D3D3, () -> new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 80, 9))));
 
         private static final WeightedRandom<Type> SELECTOR = new WeightedRandom<>(Type::getWeight, Type.values());
         private final int weight;
+        private final int color;
         private final IReaction reaction;
 
-        Type(int weight, IReaction reaction) {
+        Type(int weight, int color, IReaction reaction) {
             this.weight = weight;
+            this.color = color;
             this.reaction = reaction;
         }
 
         public int getWeight() {
             return weight;
+        }
+
+        public int getColor() {
+            return color;
         }
 
         public IReaction getReaction() {
