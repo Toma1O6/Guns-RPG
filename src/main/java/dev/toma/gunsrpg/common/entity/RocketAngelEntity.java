@@ -67,6 +67,10 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
     }
 
+    public int getTextureIndex() {
+        return type.ordinal();
+    }
+
     @Override
     protected SoundEvent getAmbientSound() {
         return SoundEvents.VEX_AMBIENT;
