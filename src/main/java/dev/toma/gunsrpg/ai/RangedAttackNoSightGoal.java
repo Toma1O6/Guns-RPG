@@ -36,6 +36,7 @@ public class RangedAttackNoSightGoal<T extends MobEntity & IRangedAttackMob> ext
     @Override
     public void start() {
         entity.setAggressive(true);
+        attackTime = attackCooldown;
     }
 
     @Override
@@ -112,6 +113,7 @@ public class RangedAttackNoSightGoal<T extends MobEntity & IRangedAttackMob> ext
             if (canSee) {
                 --attackTime;
                 if (attackTime <= 0) {
+                    System.out.println("attacking");
                     this.entity.performRangedAttack(livingEntity, 0);
                     this.attackTime = this.attackCooldown;
                 }
