@@ -72,13 +72,24 @@ public class CrystalFuseStationScreen extends ContainerScreen<CrystalFusionStati
         FusionConfiguration fusionConfig = perkConfig.getFusionConfig();
         FusionConfiguration.Swap swapConfig = fusionConfig.getSwaps().getSwapStat(orbCount);
         if (price > 0) {
-            font.draw(matrix, "Cost: " + price, leftPos + 8, topPos + 68, 0x404040);
+            font.draw(matrix, "Cost: " + price, leftPos + 6, topPos + 68, 0x404040);
         }
         ItemStack item1 = itemHandler.getStackInSlot(1);
         ItemStack item2 = itemHandler.getStackInSlot(2);
         if (item1.isEmpty() || item2.isEmpty()) {
             return;
         }
+
+        Crystal crystal1 = CrystalItem.getCrystal(item1);
+        Crystal crystal2 = CrystalItem.getCrystal(item2);
+        if (crystal1 != null && crystal2 != null) {
+            int targetLevel = crystal1.getLevel() + crystal2.getLevel();
+            FusionConfiguration.Upgrade upgrade = fusionConfig.getUpgrades().getUpgradeStat(targetLevel);
+            float breakChance = upgrade.getBreakChance();
+            String breakChanceText = "Break: " + Math.round(breakChance * 100) + "%";
+            font.draw(matrix, breakChanceText, leftPos + 6, topPos + 58, 0x404040);
+        }
+
         PerkVariant variant1 = tileEntity.getItemVariant(item1);
         PerkVariant variant2 = tileEntity.getItemVariant(item2);
         PerkVariant targetVariant = tileEntity.getTargetedOrbType();

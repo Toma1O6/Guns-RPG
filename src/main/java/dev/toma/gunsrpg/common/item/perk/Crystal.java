@@ -65,12 +65,36 @@ public final class Crystal {
         return new Crystal(crystalLevel, new ArrayList<>(attributeCollection));
     }
 
+    public static Crystal mergeAttributes(int level, Map<PerkType, List<CrystalAttribute>> map) {
+        List<CrystalAttribute> list = new ArrayList<>();
+        for (List<CrystalAttribute> attributes : map.values()) {
+            list.addAll(attributes);
+        }
+        return new Crystal(level, list);
+    }
+
     public int getLevel() {
         return level;
     }
 
     public List<CrystalAttribute> listAttributes() {
         return attributes;
+    }
+
+    public boolean hasAnyAttributes() {
+        return attributes.size() > 0;
+    }
+
+    public EnumMap<PerkType, List<CrystalAttribute>> groupByType() {
+        EnumMap<PerkType, List<CrystalAttribute>> map = new EnumMap<>(PerkType.class);
+        for (PerkType type : PerkType.values()) {
+            map.put(type, new ArrayList<>());
+        }
+        for (CrystalAttribute attribute : attributes) {
+            PerkType type = attribute.getType();
+            map.get(type).add(attribute);
+        }
+        return map;
     }
 
     public Crystal append(CrystalAttribute attribute) {

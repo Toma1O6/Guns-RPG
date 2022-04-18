@@ -191,6 +191,7 @@
     "item.gunsrpg.zombie_gunner_spawn_egg": "Spawn Zombie Gunner",
     "item.gunsrpg.battery": "Battery",
     "item.gunsrpg.stash_detector": "Stash Detector",
+    "item.gunsrpg.flare": "Flare",
 
     "block.gunsrpg.amethyst_ore": "Amethyst Ore",
     "block.gunsrpg.blast_furnace": "Blast Furnace",
@@ -241,8 +242,9 @@
     "entity.gunsrpg:rocket_angel": "Rocket Angel",
     "entity.gunsrpg:golden_dragon": "Golden Dragon",
 
-    "itemGroup.grpg.items": "GunsRPG: Items",
-    "itemGroup.grpg.blocks": "GunsRPG: Blocks",
+    "itemGroup.gunsrpg.items": "GunsRPG: Items",
+    "itemGroup.gunsrpg.weapons": "GunsRPG: Weapons",
+    "itemGroup.gunsrpg.blocks": "GunsRPG: Blocks",
 
     "gunsrpg.category.keys": "GunsRPG Binds",
     "gunsrpg.key.class_list": "View Skill Tree",

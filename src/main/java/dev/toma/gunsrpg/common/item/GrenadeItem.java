@@ -26,7 +26,7 @@ public class GrenadeItem extends BaseItem implements IAnimationEntry, ICustomUse
     private final boolean explodeOnImpact;
 
     public GrenadeItem(String name, int blastRadius, boolean explodeOnImpact) {
-        super(name, new Properties().tab(ModTabs.ITEM_TAB).stacksTo(10));
+        super(name, new Properties().tab(ModTabs.WEAPON_TAB).stacksTo(10));
         this.blastSize = blastRadius;
         this.explodeOnImpact = explodeOnImpact;
     }
@@ -39,7 +39,7 @@ public class GrenadeItem extends BaseItem implements IAnimationEntry, ICustomUse
     @Override
     public int getUseDuration(int defaultDuration, ItemStack stack, PlayerEntity player) {
         if (PlayerData.hasActiveSkill(player, Skills.GRENADIER)) {
-            return (int) (defaultDuration * 0.5);
+            return (int) (defaultDuration * 0.7);
         }
         return defaultDuration;
     }

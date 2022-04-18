@@ -37,7 +37,7 @@ public class PSOScopeModel extends AbstractAttachmentModel implements IOpticsPro
 
     @Override
     public ResourceLocation getReticleTextureMap() {
-        return ScopeModel.reticlePath;
+        return AbstractWeaponRenderer.SNIPER_RETICLE;
     }
 
     @Override

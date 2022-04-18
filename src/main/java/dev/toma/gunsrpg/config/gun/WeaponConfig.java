@@ -55,7 +55,7 @@ public class WeaponConfig extends ObjectType {
         kar98k = writer.writeObject(specification -> new WeaponConfiguration(specification, 14.0F, 440, 7, 0.035F, 0.16F), "Kar98k");
         winchester = writer.writeObject(specification -> new WeaponConfiguration(specification, 10.0F, 340, 5, 0.02F, 0.15F), "Winchester");
         awm = writer.writeObject(specification -> new WeaponConfiguration(specification, 18.0F, 480, 8, 0.025F, 0.14F), "AWM");
-        grenadeLauncher = writer.writeObject(specification -> new SimpleWeaponConfiguration(specification, 1.6f, 0.05F, 0.17F), "Grenade Launcher");
-        rocketLauncher = writer.writeObject(specification -> new SimpleWeaponConfiguration(specification, 2.0f, 0.04F, 0.18F), "Rocket Launcher");
+        grenadeLauncher = writer.writeObject(specification -> new SimpleWeaponConfiguration(specification, 1.6f, 0.04F, 0.15F), "Grenade Launcher");
+        rocketLauncher = writer.writeObject(specification -> new SimpleWeaponConfiguration(specification, 2.0f, 0.03F, 0.16F), "Rocket Launcher");
     }
 }

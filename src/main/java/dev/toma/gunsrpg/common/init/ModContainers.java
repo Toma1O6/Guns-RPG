@@ -30,6 +30,7 @@ public class ModContainers {
     public static final RegistryObject<ContainerType<RepairStationContainer>> REPAIR_STATION = register("repair_station", RepairStationContainer::new);
     public static final RegistryObject<ContainerType<CrystalStationContainer>> CRYSTAL_STATION = register("crystal_station", CrystalStationContainer::new);
     public static final RegistryObject<ContainerType<CrystalFusionStationContainer>> CRYSTAL_FUSE = register("crystal_fuse", CrystalFusionStationContainer::new);
+    public static final RegistryObject<ContainerType<CrystalPurificationStationContainer>> CRYSTAL_PURIFICATION = register("crystal_purification", CrystalPurificationStationContainer::new);
 
     private static <C extends Container> RegistryObject<ContainerType<C>> register(String name, IContainerFactory<C> factory) {
         return TYPES.register(name, () -> IForgeContainerType.create(factory));

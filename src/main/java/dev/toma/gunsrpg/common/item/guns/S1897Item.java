@@ -103,7 +103,8 @@ public class S1897Item extends AbstractShotgun {
 
     @Override
     public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
-        return ReloadManagers.singleBulletLoading(30, player, this, player.getMainHandItem(), LOAD_BULLET_ANIMATION);
+        int prep = (int) Attribs.S1897_RELOAD.getModifiedValue(attributeProvider, 30);
+        return ReloadManagers.singleBulletLoading(prep, player, this, player.getMainHandItem(), LOAD_BULLET_ANIMATION);
     }
 
     @Override

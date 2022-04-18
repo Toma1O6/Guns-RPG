@@ -62,7 +62,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     private final BiFunction<PlayerEntity, Firemode, Firemode> firemodeSelector;
 
     public GunItem(String name, Properties properties) {
-        super(name, properties.tab(ModTabs.ITEM_TAB));
+        super(name, properties.tab(ModTabs.WEAPON_TAB));
         WeaponBuilder builder = new WeaponBuilder();
         initializeWeapon(builder);
         builder.validate();

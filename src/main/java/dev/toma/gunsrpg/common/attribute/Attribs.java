@@ -161,7 +161,7 @@ public final class Attribs {
     public static final IAttributeId VSS_MAG_CAPACITY           = createInternal("vss_mag_capacity", 10);
     public static final IAttributeId VSS_VERTICAL_RECOIL        = createInternal("vss_vertical_recoil", 3.6);
     public static final IAttributeId VSS_HORIZONTAL_RECOIL      = createInternal("vss_horizontal_recoil", 2.0);
-    public static final IAttributeId VSS_FIRERATE               = createInternal("vss_firerate", 2);
+    public static final IAttributeId VSS_FIRERATE               = createInternal("vss_firerate", 3);
     public static final IAttributeId MK14_RELOAD_SPEED          = createInternal("mk14_reload_speed", 75);
     public static final IAttributeId MK14_VERTICAL_RECOIL       = createInternal("mk14_vertical_recoil", 4.4);
     public static final IAttributeId MK14_HORIZONTAL_RECOIL     = createInternal("mk14_horizontal_recoil", 2.4);
@@ -186,10 +186,10 @@ public final class Attribs {
     public static final IAttributeId AWM_LOUDNESS               = createInternal("awm_loudness");
     public static final IAttributeId AWM_FIRERATE               = createInternal("awm_firerate", 36);
     public static final IAttributeId AWM_HS_DAMAGE              = createInternal("awm_hs_damage");
-    public static final IAttributeId GL_RELOAD_SPEED            = createInternal("gl_reload_speed", 30);
+    public static final IAttributeId GL_RELOAD_SPEED            = createInternal("gl_reload_speed", 25);
     public static final IAttributeId GL_FIRERATE                = createInternal("gl_firerate", 15);
     public static final IAttributeId GL_MAG_CAPACITY            = createInternal("gl_mag_capacity", 4);
-    public static final IAttributeId RL_RELOAD_SPEED            = createInternal("rl_reload_speed", 40);
+    public static final IAttributeId RL_RELOAD_SPEED            = createInternal("rl_reload_speed", 35);
 
     // combined
     public static final ICombinedAttribute M1911_RELOAD         = ICombinedAttribute.of(RELOAD_SPEED, M1911_RELOAD_SPEED);

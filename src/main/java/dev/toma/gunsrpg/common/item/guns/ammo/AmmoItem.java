@@ -21,7 +21,11 @@ public class AmmoItem extends BaseItem implements IAmmoProvider {
     private final IMaterialData data;
 
     public AmmoItem(String name, AmmoType ammoType, IAmmoMaterial material) {
-        super(name, new Properties().tab(ModTabs.ITEM_TAB));
+        this(name, ammoType, material, 64);
+    }
+
+    public AmmoItem(String name, AmmoType ammoType, IAmmoMaterial material, int ammo) {
+        super(name, new Properties().tab(ModTabs.WEAPON_TAB).stacksTo(ammo));
         this.material = material;
         this.ammoType = ammoType;
         this.data = ammoType.container != null ? ammoType.container.getMaterialData(material) : MaterialData.EMPTY;

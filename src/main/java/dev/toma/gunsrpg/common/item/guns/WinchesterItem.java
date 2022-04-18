@@ -36,6 +36,10 @@ public class WinchesterItem extends AbstractBoltActionGun {
     private static final ResourceLocation BULLET = GunsRPG.makeResource("winchester/load_bullet");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("winchester/unjam");
     private static final ResourceLocation BOLT = GunsRPG.makeResource("winchester/bolt");
+    private static final ResourceLocation[] AIM = {
+            GunsRPG.makeResource("winchester/aim"),
+            GunsRPG.makeResource("winchester/aim_scoped")
+    };
     private static final PenetrationData.Factory FACTORY = new PenetrationData.Factory(0.3f);
 
     public WinchesterItem(String name) {
@@ -134,6 +138,11 @@ public class WinchesterItem extends AbstractBoltActionGun {
     @Override
     public ResourceLocation getBulletEjectAnimationPath() {
         return BOLT;
+    }
+
+    @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return AIM[PlayerData.hasActiveSkill(player, Skills.WINCHESTER_SCOPE) ? 1 : 0];
     }
 
     @Override

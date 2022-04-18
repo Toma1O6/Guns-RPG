@@ -127,7 +127,7 @@ public class RocketLauncherItem extends AbstractExplosiveLauncher implements IEn
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 12;
+        return 20;
     }
 
     @Override

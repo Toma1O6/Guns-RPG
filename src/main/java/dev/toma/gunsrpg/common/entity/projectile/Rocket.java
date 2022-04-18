@@ -82,6 +82,9 @@ public class Rocket extends AbstractExplosive {
                 }
                 level.addParticle(ParticleTypes.CLOUD, true, this.getX(), this.getY(), this.getZ(), movement.x, movement.y, movement.z);
             }
+            if (tickCount > 100) {
+                this.onCollided(this.position());
+            }
         } else  {
             applyGravity(0.02F);
             if (level.isClientSide) {

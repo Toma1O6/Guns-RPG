@@ -60,9 +60,9 @@ public class TracerRenderer<P extends AbstractProjectile> extends EntityRenderer
             float scale = 0.1F;
             IVertexBuilder builder = typeBuffer.getBuffer(RenderType.entityCutout(TRACER));
             matrix.pushPose();
-            matrix.mulPose(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, projectile.yRotO, projectile.yRot) - 90.0F));
-            matrix.mulPose(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, projectile.xRotO, projectile.xRot)));
-            matrix.mulPose(Vector3f.XP.rotationDegrees(45.0F));
+            matrix.mulPose(Vector3f.YP.rotation((float) Math.PI));
+            matrix.mulPose(Vector3f.YN.rotationDegrees(projectile.yRot));
+            matrix.mulPose(Vector3f.XN.rotationDegrees(projectile.xRot));
             int nx = 1;
             int ny = 1;
             int nz = 1;
