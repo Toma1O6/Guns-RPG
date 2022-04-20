@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
-public class PropertyContext {
+public class PropertyContext implements IPropertyHolder {
 
     private static final PropertyContext EMPTY = new PropertyContext() {
         @Override
@@ -33,19 +33,23 @@ public class PropertyContext {
         return new PropertyContext();
     }
 
+    @Override
     public <V> void setProperty(PropertyKey<V> key, V value) {
         map.put(key, value);
     }
 
+    @Override
     public <V> V getProperty(PropertyKey<V> key) {
         V value = (V) map.get(key);
         return value != null ? value : key.getDefaultValue();
     }
 
+    @Override
     public <V> Optional<V> getOptionally(PropertyKey<V> key) {
         return Optional.ofNullable(this.getProperty(key));
     }
 
+    @Override
     public <V> void handleConditionally(PropertyKey<V> key, Predicate<V> condition, Consumer<V> action) {
         this.getOptionally(key).ifPresent(value -> {
             if (condition.test(value)) {
@@ -54,14 +58,16 @@ public class PropertyContext {
         });
     }
 
-    public <V> void moveContents(PropertyContext target) {
+    @Override
+    public <V> void moveContents(IPropertyHolder holder) {
         for (Map.Entry<PropertyKey<?>, ?> entry : map.entrySet()) {
             PropertyKey<V> key = (PropertyKey<V>) entry.getKey();
             V value = (V) entry.getValue();
-            target.setProperty(key, value);
+            holder.setProperty(key, value);
         }
     }
 
+    @Override
     public <V> void encode(PacketBuffer buffer) {
         List<Map.Entry<PropertyKey<?>, Object>> synchronizables = map.entrySet().stream().filter(entry -> entry.getKey().isSerializable()).collect(Collectors.toList());
         buffer.writeVarInt(synchronizables.size());
@@ -74,6 +80,7 @@ public class PropertyContext {
         }
     }
 
+    @Override
     public <V> void decode(PacketBuffer buffer) {
         int properties = buffer.readVarInt();
         for (int i = 0; i < properties; i++) {

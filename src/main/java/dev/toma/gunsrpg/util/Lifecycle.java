@@ -36,12 +36,12 @@ public final class Lifecycle {
 
     private final Map<GunItem, IAmmoProvider[]> weaponProviderMap = new IdentityHashMap<>();
     private final Map<Item, Item> ore2ChunkMap = new IdentityHashMap<>(2);
-    private final QuestSystem questSystem = new QuestSystem();
     private final StartGearManager startingGearManager = new StartGearManager();
     private final ZombieGunnerWeaponManager zombieGunnerWeaponManager = new ZombieGunnerWeaponManager();
     private final LootManager lootManager = new LootManager();
     private final ProgressionStrategyManager progressionStrategyManager = new ProgressionStrategyManager();
     private final PerkManager perkManager = new PerkManager();
+    private final QuestSystem questSystem = new QuestSystem();
 
     public void modInit() {
         ModTags.init();
@@ -133,5 +133,6 @@ public final class Lifecycle {
         event.addListener(progressionStrategyManager);
         event.addListener(perkManager);
         event.addListener(perkManager.configLoader);
+        this.questSystem.initialize(event);
     }
 }

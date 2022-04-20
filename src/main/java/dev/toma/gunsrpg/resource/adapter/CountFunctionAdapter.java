@@ -20,6 +20,10 @@ public class CountFunctionAdapter implements JsonDeserializer<ICountFunction> {
         this.range = range;
     }
 
+    public static CountFunctionAdapter positive() {
+        return new CountFunctionAdapter(input -> input >= 0);
+    }
+
     @Override
     public ICountFunction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject object = JsonHelper.asJsonObject(json);

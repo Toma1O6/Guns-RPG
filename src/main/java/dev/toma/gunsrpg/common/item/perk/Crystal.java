@@ -51,18 +51,21 @@ public final class Crystal {
         CrystalConfiguration.Spawns spawns = crystalConfig.getSpawns();
         CrystalConfiguration.Spawn spawn = spawns.getRandomSpawn();
         CrystalConfiguration.Types types = spawns.getTypeRanges();
-        int crystalLevel = spawn.getLevel();
+        return generate(spawn.getLevel(), types.getBuffCount(), types.getDebuffCount());
+    }
+
+    public static Crystal generate(int level, int buffs, int debuffs) {
         PerkRegistry registry = PerkRegistry.getRegistry();
-        Set<CrystalAttribute> attributeCollection = new HashSet<>();
-        for (int i = 0; i < types.getBuffCount(); i++) {
+        Set<CrystalAttribute> set = new HashSet<>();
+        for (int i = 0; i < buffs; i++) {
             Perk perk = registry.getRandomPerk();
-            attributeCollection.add(new CrystalAttribute(perk, PerkType.BUFF, crystalLevel));
+            set.add(new CrystalAttribute(perk, PerkType.BUFF, level));
         }
-        for (int i = 0; i < types.getDebuffCount(); i++) {
+        for (int i = 0; i < debuffs; i++) {
             Perk perk = registry.getRandomPerk();
-            attributeCollection.add(new CrystalAttribute(perk, PerkType.DEBUFF, crystalLevel));
+            set.add(new CrystalAttribute(perk, PerkType.DEBUFF, level));
         }
-        return new Crystal(crystalLevel, new ArrayList<>(attributeCollection));
+        return new Crystal(level, new ArrayList<>(set));
     }
 
     public static Crystal mergeAttributes(int level, Map<PerkType, List<CrystalAttribute>> map) {

@@ -1,0 +1,39 @@
+{
+    "tier": 1,
+    "title": "Arachnophobia I",
+    "info": "Kill 7 spiders",
+    "task": {
+        "type": "gunsrpg:kill_entities",
+        "entities": [
+            "minecraft:spider",
+            "minecraft:cave_spider"
+        ],
+        "conditions": [
+            {
+                "type": "gunsrpg:no_aggro"
+            },
+            {
+                "type": "gunsrpg:headshot"
+            },
+            {
+                "type": "gunsrpg:distance",
+                "data": {
+                    "type": "gunsrpg:greater_than",
+                    "value": 50
+                }
+            }
+        ]
+    },
+    "conditions": {
+        "list": [
+            "gunsrpg:item_condition_list",
+            "gunsrpg:state_condition_list"
+        ],
+        "specific": [
+            "gunsrpg:have_bleed"
+        ],
+        "exclusions": [
+            "gunsrpg:use_melee"
+        ]
+    }
+}

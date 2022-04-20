@@ -1,0 +1,53 @@
+[
+    {
+        "tier": 1,
+        "items": [
+            {
+                "type": "gunsrpg:item_list",
+                "list": [
+                    "gunsrpg:wood_9mm",
+                    "gunsrpg:wood_45acp"
+                ],
+                "count": {
+                    "value": 30,
+                    "modifier": {
+                        "attribute": "gunsrpg:quest_ammo",
+                        "operation": "gunsrpg:mul"
+                    }
+                }
+            },
+            {
+                "type": "gunsrpg:item_list",
+                "list": [
+                    "gunsrpg:green_crystal",
+                    "gunsrpg:white_crystal",
+                    "gunsrpg:black_crystal"
+                ],
+                "count": 1,
+                "function": {
+                    "type": "gunsrpg:crystal",
+                    "crystal": {
+                        "level": {
+                            "type": "gunsrpg:const",
+                            "value": 2
+                        },
+                        "buffs": {
+                            "type": "gunsrpg:rng",
+                            "min": 1,
+                            "max": 5
+                        },
+                        "debuffs": {
+                            "type": "gunsrpg:rng",
+                            "min": 0,
+                            "max": 3
+                        }
+                    }
+                }
+            },
+            {
+                "type": "gunsrpg:item",
+                "item": "gunsrpg:ump45"
+            }
+        ]
+    }
+]

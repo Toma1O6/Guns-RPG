@@ -1,0 +1,10 @@
+{
+    "type": "gunsrpg:used_item",
+    "selector": "any",
+    "items": [
+        "minecraft:bow",
+        "minecraft:crossbow",
+        "gunsrpg:wooden_crossbow",
+        "gunsrpg:chukonu"
+    ]
+}
