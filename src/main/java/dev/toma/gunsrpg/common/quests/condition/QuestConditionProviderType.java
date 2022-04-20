@@ -13,4 +13,8 @@ public class QuestConditionProviderType<Q extends IQuestConditionProvider> {
         this.serializer = serializer;
         this.isFatal = isFatal;
     }
+
+    public IQuestConditionProviderSerializer<Q> getSerializer() {
+        return serializer;
+    }
 }

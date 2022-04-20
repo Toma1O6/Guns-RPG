@@ -1,15 +1,15 @@
 package dev.toma.gunsrpg.common.quests.condition;
 
-import dev.toma.gunsrpg.common.init.GunDamageSource;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.helper.JsonHelper;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
+import net.minecraft.util.JSONUtils;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -51,8 +51,20 @@ public class SpecificWeaponConditionProvider extends AbstractQuestConditionProvi
         }
     }
 
-    public static class Serializer {
+    public static class Serializer implements IQuestConditionProviderSerializer<SpecificWeaponConditionProvider> {
 
+        @Override
+        public SpecificWeaponConditionProvider deserialize(QuestConditionProviderType<SpecificWeaponConditionProvider> conditionType, JsonElement data) {
+            JsonObject object = JsonHelper.asJsonObject(data);
+            String selectorId = JSONUtils.getAsString(object, "selector", "any").toUpperCase();
+            Selector selector = Selector.ANY;
+            try {
+                selector = Selector.valueOf(selectorId);
+            } catch (Exception ignored) {
+            }
+            Item[] items = JsonHelper.deserializeInto(JSONUtils.getAsJsonArray(object, "items"), Item[]::new, JsonHelper::resolveItem);
+            return new SpecificWeaponConditionProvider(conditionType, selector, items);
+        }
     }
 
     public static class Condition implements IQuestCondition {
@@ -65,9 +77,7 @@ public class SpecificWeaponConditionProvider extends AbstractQuestConditionProvi
 
         @Override
         public boolean isValid(PlayerEntity player, IPropertyReader reader) {
-            DamageSource source = reader.getProperty(QuestProperties.DAMAGE_SOURCE);
-            Entity entity = source.getEntity();
-            ItemStack stack = source instanceof GunDamageSource ? ((GunDamageSource) source).getStacc() : entity instanceof LivingEntity ? ((LivingEntity) entity).getMainHandItem() : ItemStack.EMPTY;
+            ItemStack stack = reader.getProperty(QuestProperties.USED_ITEM);
             return ModUtils.contains(stack.getItem(), validItems);
         }
     }

@@ -24,13 +24,16 @@
             }
         ]
     },
-    "conditions": {
-        "list": [
-            "gunsrpg:item_condition_list",
-            "gunsrpg:state_condition_list"
-        ],
-        "specific": [
-            "gunsrpg:have_bleed"
+    "optionalConditions": {
+        "entries": [
+            {
+                "condition": "@gunsrpg:item_condition_list",
+                "tiers": 2
+            },
+            {
+                "condition": "gunsrpg:explode",
+                "tiers": 3
+            }
         ],
         "exclusions": [
             "gunsrpg:use_melee"
