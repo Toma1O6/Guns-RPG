@@ -2,8 +2,6 @@
     "function": "gunsrpg:used_item",
     "selector": "one",
     "items": [
-        "minecraft:wooden_sword",
-        "minecraft:wooden_axe",
         "minecraft:stone_sword",
         "minecraft:stone_axe",
         "minecraft:iron_sword",
@@ -35,6 +33,8 @@
         "gunsrpg:mk14ebr",
         "gunsrpg:kar98k",
         "gunsrpg:winchester",
-        "gunsrpg:awm"
+        "gunsrpg:awm",
+        "gunsrpg:grenade_launcher",
+        "gunsrpg:rocket_launcher"
     ]
 }

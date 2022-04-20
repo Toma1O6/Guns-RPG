@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.common.item.perk.Crystal;
 import dev.toma.gunsrpg.common.item.perk.CrystalItem;
 import dev.toma.gunsrpg.resource.crate.ICountFunction;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 
@@ -24,7 +25,7 @@ public class CrystalAssemblyFunction implements IAssemblyFunction {
     }
 
     @Override
-    public void onAssembly(ItemStack stack) {
+    public void onAssembly(ItemStack stack, PlayerEntity player) {
         int crystalLevel = levelFunction.getCount();
         int buffCount = buffFunction.getCount();
         int debuffCount = debuffFunction.getCount();

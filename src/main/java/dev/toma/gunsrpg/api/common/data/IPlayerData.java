@@ -13,8 +13,6 @@ public interface IPlayerData {
 
     IJamInfo getJamInfo();
 
-    IQuests getPlayerQuests();
-
     IDebuffs getDebuffControl();
 
     IAttributeProvider getAttributes();

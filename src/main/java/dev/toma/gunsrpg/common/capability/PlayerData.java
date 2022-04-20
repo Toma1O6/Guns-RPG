@@ -30,7 +30,6 @@ public class PlayerData implements IPlayerData {
     private final ReloadInfo reloadInfo;
     private final JamInfo jamInfo;
     private final PlayerSkillProvider skillProvider;
-    private final PlayerQuests playerQuests;
     private final PlayerDebuffs debuffs;
     private final PlayerAttributes attributes;
     private final PlayerPerkProvider perkProvider;
@@ -51,7 +50,6 @@ public class PlayerData implements IPlayerData {
         this.attributes = new PlayerAttributes();
         this.skillProvider = new PlayerSkillProvider(player);
         this.perkProvider = new PlayerPerkProvider(attributes);
-        this.playerQuests = new PlayerQuests();
         this.data = new PlayerProgressionData(player, skillProvider);
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setSyncCallback);
@@ -62,7 +60,6 @@ public class PlayerData implements IPlayerData {
         saveHandler.addListener(attributes);
         saveHandler.addListener(skillProvider);
         saveHandler.addListener(perkProvider);
-        saveHandler.addListener(playerQuests);
         saveHandler.addListener(data);
 
         saveHandler.invoke(entry -> entry.setClientSynch(() -> requestSync(entry.getFlag())));
@@ -107,11 +104,6 @@ public class PlayerData implements IPlayerData {
     @Override
     public IPerkProvider getPerkProvider() {
         return perkProvider;
-    }
-
-    @Override
-    public IQuests getPlayerQuests() {
-        return playerQuests;
     }
 
     @Override

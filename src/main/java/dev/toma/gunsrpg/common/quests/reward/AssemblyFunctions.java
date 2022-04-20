@@ -20,5 +20,6 @@ public final class AssemblyFunctions {
 
     static {
         register(GunsRPG.makeResource("crystal"), new CrystalAssemblyFunction.Serializer());
+        register(GunsRPG.makeResource("output_modifier"), new OutputAssemblyFunction.Serializer());
     }
 }

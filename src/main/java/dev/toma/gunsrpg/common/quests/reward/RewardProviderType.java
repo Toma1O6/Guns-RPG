@@ -8,6 +8,8 @@ import java.util.Map;
 
 public final class RewardProviderType {
 
+    private static final Map<ResourceLocation, RewardProviderType> MAP = new HashMap<>();
+
     private final ResourceLocation id;
     private final IQuestRewardResolver resolver;
 
@@ -15,7 +17,7 @@ public final class RewardProviderType {
         this.id = id;
         this.resolver = resolver;
 
-        Registry.MAP.put(id, this);
+        MAP.put(id, this);
     }
 
     RewardProviderType(String id, IQuestRewardResolver resolver) {
@@ -26,17 +28,13 @@ public final class RewardProviderType {
         return resolver;
     }
 
-    public static class Registry {
-
-        private static final Map<ResourceLocation, RewardProviderType> MAP = new HashMap<>();
-
-        public static RewardProviderType getById(ResourceLocation id) {
-            return MAP.get(id);
-        }
+    public static RewardProviderType getById(ResourceLocation id) {
+        return MAP.get(id);
     }
 
     static {
         new RewardProviderType("item", new IQuestRewardResolver.SingleItem());
         new RewardProviderType("item_list", new IQuestRewardResolver.ItemList());
+        new RewardProviderType("item_group", new IQuestRewardResolver.ItemGroup());
     }
 }

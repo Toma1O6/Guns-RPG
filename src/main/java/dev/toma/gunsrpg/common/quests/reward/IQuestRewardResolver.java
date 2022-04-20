@@ -1,45 +1,55 @@
 package dev.toma.gunsrpg.common.quests.reward;
 
-import com.google.gson.*;
-import dev.toma.gunsrpg.util.ModUtils;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Map;
 import java.util.Random;
 
 public interface IQuestRewardResolver {
 
-    IQuestItemProvider resolve(JsonObject object, RewardProviderType type, int count, IAssemblyFunction function);
+    IQuestItemProvider resolve(JsonObject object, RewardProviderType type, int count, IAssemblyFunction[] functions, Map<String, QuestRewardManager.ItemGroup> itemGroups);
 
     class SingleItem implements IQuestRewardResolver {
 
         @Override
-        public IQuestItemProvider resolve(JsonObject object, RewardProviderType type, int count, IAssemblyFunction function) {
+        public IQuestItemProvider resolve(JsonObject object, RewardProviderType type, int count, IAssemblyFunction[] functions, Map<String, QuestRewardManager.ItemGroup> itemGroups) {
             if (!object.has("item")) throw new JsonSyntaxException("Missing 'item' property");
-            Item item = resolveItem(object.get("item"));
-            return new IQuestItemProvider.Impl(() -> item, count, function);
-        }
-
-        public static Item resolveItem(JsonElement element) throws JsonParseException {
-            ResourceLocation itemId = new ResourceLocation(element.getAsString());
-            Item item = ForgeRegistries.ITEMS.getValue(itemId);
-            if (item == null || item == Items.AIR) throw new JsonSyntaxException("Unknown item: " + itemId);
-            return item;
+            Item item = JsonHelper.resolveItem(object.get("item"));
+            return new IQuestItemProvider.Impl(() -> item, count, functions);
         }
     }
 
     class ItemList implements IQuestRewardResolver {
 
         @Override
-        public IQuestItemProvider resolve(JsonObject object, RewardProviderType type, int count, IAssemblyFunction function) {
+        public IQuestItemProvider resolve(JsonObject object, RewardProviderType type, int count, IAssemblyFunction[] functions, Map<String, QuestRewardManager.ItemGroup> itemGroups) {
             JsonArray array = JSONUtils.getAsJsonArray(object, "list");
-            Item[] items = JsonHelper.deserializeInto(array, Item[]::new, SingleItem::resolveItem);
+            Item[] items = JsonHelper.deserializeInto(array, Item[]::new, JsonHelper::resolveItem);
             Random random = new Random();
-            return new IQuestItemProvider.Impl(() -> items[random.nextInt(items.length)], count, function);
+            return new IQuestItemProvider.Impl(() -> items[random.nextInt(items.length)], count, functions);
+        }
+    }
+
+    class ItemGroup implements IQuestRewardResolver {
+
+        @Override
+        public IQuestItemProvider resolve(JsonObject object, RewardProviderType type, int count, IAssemblyFunction[] functions, Map<String, QuestRewardManager.ItemGroup> itemGroups) {
+            IAssemblyFunction[] loadedFunctions = functions;
+            String id = JSONUtils.getAsString(object, "group");
+            QuestRewardManager.ItemGroup group = itemGroups.get(id);
+            if (group == null) throw new JsonSyntaxException("Unknown item group: " + id);
+            Item[] items = group.getItems();
+            IAssemblyFunction[] groupFunctions = group.getFunctions();
+            if (groupFunctions != null && groupFunctions.length > 0 && loadedFunctions == null) {
+                loadedFunctions = groupFunctions;
+            }
+            Random random = new Random();
+            return new IQuestItemProvider.Impl(() -> items[random.nextInt(items.length)], count, loadedFunctions);
         }
     }
 }

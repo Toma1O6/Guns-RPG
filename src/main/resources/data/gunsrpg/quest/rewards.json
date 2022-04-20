@@ -3,13 +3,13 @@
         {
             "id": "wood_ammo",
             "items": [
-                "gunsrpg:wood_9mm",
-                "gunsrpg:wood_45acp"
+                "gunsrpg:wooden_9mm",
+                "gunsrpg:wooden_45acp"
             ],
             "assemblyFunctions": [
                 {
                     "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quest_ammo",
+                    "attribute": "gunsrpg:quests_ammo",
                     "operation": "gunsrpg:mul"
                 }
             ]
@@ -40,16 +40,16 @@
                             "type": "gunsrpg:crystal",
                             "crystal": {
                                 "level": {
-                                    "type": "gunsrpg:const",
+                                    "function": "gunsrpg:const",
                                     "value": 2
                                 },
                                 "buffs": {
-                                    "type": "gunsrpg:rng",
+                                    "function": "gunsrpg:rng",
                                     "min": 1,
                                     "max": 5
                                 },
                                 "debuffs": {
-                                    "type": "gunsrpg:rng",
+                                    "function": "gunsrpg:rng",
                                     "min": 0,
                                     "max": 3
                                 }
