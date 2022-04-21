@@ -8,4 +8,8 @@ public final class QuestRewardList {
     public QuestRewardList(IQuestItemProvider[] itemProviders) {
         this.itemProviders = itemProviders;
     }
+
+    public IQuestItemProvider[] getItemProviders() {
+        return itemProviders;
+    }
 }
