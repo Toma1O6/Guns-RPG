@@ -1,0 +1,25 @@
+{
+    "type": "gunsrpg:kill_entities",
+    "tier": 3,
+    "display": {
+        "name": "Creepy III",
+        "info": "Kill 20 creepers"
+    },
+    "data": {
+        "entities": [
+            "minecraft:creeper"
+        ],
+        "count": 20
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

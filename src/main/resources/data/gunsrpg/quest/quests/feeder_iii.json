@@ -1,0 +1,24 @@
+{
+    "type": "gunsrpg:handover",
+    "tier": 4,
+    "display": {
+        "name": "Feeder III",
+        "info": "Deliver food items"
+    },
+    "data": {
+        "items": [
+            {
+                "item": "gunsrpg:deluxe_meal",
+                "count": 15
+            },
+            {
+                "item": "gunsrpg:shepherds_pie",
+                "count": 15
+            },
+            {
+                "item": "gunsrpg:meaty_stew_xxl",
+                "count": 15
+            }
+        ]
+    }
+}

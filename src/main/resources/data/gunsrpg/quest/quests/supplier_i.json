@@ -1,0 +1,16 @@
+{
+    "type": "gunsrpg:handover",
+    "tier": 2,
+    "display": {
+        "name": "Supplier I",
+        "info": "Deliver 50 Iron ingots"
+    },
+    "data": {
+        "items": [
+            {
+                "item": "minecraft:iron_ingot",
+                "count": 50
+            }
+        ]
+    }
+}

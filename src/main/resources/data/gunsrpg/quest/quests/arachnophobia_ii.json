@@ -1,0 +1,26 @@
+{
+    "type": "gunsrpg:kill_entities",
+    "tier": 2,
+    "display": {
+        "name": "Arachnophobia II",
+        "info": "Kill 13 spiders"
+    },
+    "data": {
+        "entities": [
+            "minecraft:spider",
+            "minecraft:cave_spider"
+        ],
+        "count": 13
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

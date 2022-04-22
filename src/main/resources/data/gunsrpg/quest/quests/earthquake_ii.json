@@ -1,0 +1,36 @@
+{
+    "type": "gunsrpg:kill_in_area",
+    "tier": 4,
+    "display": {
+        "name": "Earthquake II",
+        "info": "Kill 5 bloodmoon golems"
+    },
+    "data": {
+        "entities": [
+            "gunsrpg:bloodmoon_golem"
+        ],
+        "count": 5,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "gunsrpg:bloodmoon_golem",
+                    "propability": 0.05,
+                    "limit": 3
+                }
+            ]
+        }
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

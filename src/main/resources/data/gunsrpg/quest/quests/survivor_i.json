@@ -1,0 +1,26 @@
+{
+    "type": "gunsrpg:survival",
+    "tier": 1,
+    "display": {
+        "name": "Survivor I",
+        "info": "Survive for 10 minutes"
+    },
+    "data": {
+        "duration": "10m",
+        "area": null
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ],
+        "exclusions": [
+            "gunsrpg:have_bleed",
+            "gunsrpg:have_poison",
+            "gunsrpg:have_fracture",
+            "gunsrpg:have_infection"
+        ]
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "type": "gunsrpg:handover",
+    "tier": 3,
+    "display": {
+        "name": "Feeder II",
+        "info": "Deliver food items"
+    },
+    "data": {
+        "items": [
+            {
+                "item": "gunsrpg:garden_soup",
+                "count": 10
+            },
+            {
+                "item": "gunsrpg:chicken_dinner",
+                "count": 10
+            },
+            {
+                "item": "gunsrpg:chocolate_glazed_apple_pie",
+                "count": 10
+            }
+        ]
+    }
+}

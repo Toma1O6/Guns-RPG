@@ -1,0 +1,16 @@
+{
+    "type": "gunsrpg:handover",
+    "tier": 4,
+    "display": {
+        "name": "Supplier III",
+        "info": "Deliver 50 Diamonds"
+    },
+    "data": {
+        "items": [
+            {
+                "item": "minecraft:diamond",
+                "count": 50
+            }
+        ]
+    }
+}
