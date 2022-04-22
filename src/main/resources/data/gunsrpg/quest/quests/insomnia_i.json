@@ -1,0 +1,36 @@
+{
+    "type": "gunsrpg:kill_in_area",
+    "tier": 2,
+    "display": {
+        "name": "Insomnia I",
+        "info": "Kill 5 phantoms"
+    },
+    "data": {
+        "entities": [
+            "minecraft:phantom"
+        ],
+        "count": 5,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "minecraft:phantom",
+                    "propability": 0.1,
+                    "limit": 4
+                }
+            ]
+        }
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

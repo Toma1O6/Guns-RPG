@@ -1,0 +1,36 @@
+{
+    "type": "gunsrpg:kill_in_area",
+    "tier": 5,
+    "display": {
+        "name": "Unforgiving Beasts III",
+        "info": "Kill 8 ravagers"
+    },
+    "data": {
+        "entities": [
+            "minecraft:ravager"
+        ],
+        "count": 8,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "minecraft:ravager",
+                    "propability": 0.05,
+                    "limit": 2
+                }
+            ]
+        }
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}
