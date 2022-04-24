@@ -110,6 +110,7 @@ public class CommonEventHandler {
         if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
             mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_GUNNER.get(), ModConfig.worldConfig.zombieGunnerSpawn.get(), 1, 2));
             mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.EXPLOSIVE_SKELETON.get(), ModConfig.worldConfig.explosiveSkeletonSpawn.get(), 1, 2));
+            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_KNIGHT.get(), ModConfig.worldConfig.zombieKnightSpawn.get(), 1, 2));
         }
         if (category != Biome.Category.NETHER && category != Biome.Category.THEEND) {
             if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
@@ -228,7 +229,7 @@ public class CommonEventHandler {
             Direction facing = ModUtils.getFacing(player);
             for (BlockPos pos : hammer.gatherBlocks(event.getPos(), facing)) {
                 BlockState state = world.getBlockState(pos);
-                if (hammer.canHarvestBlock(stack, state)) {
+                if (hammer.canHarvestBlock(stack, state) && state.getDestroySpeed(world, pos) >= 0.0F) {
                     world.destroyBlock(pos, true, player);
                     stack.mineBlock(world, state, pos, player);
                     if (stack.getDamageValue() == stack.getMaxDamage()) break;
@@ -296,7 +297,8 @@ public class CommonEventHandler {
         } else {
             Entity source = event.getSource().getEntity();
             if (source instanceof PlayerEntity) {
-                PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getProgressData().onEnemyKilled(event.getEntity(), ItemStack.EMPTY));
+                PlayerEntity player = (PlayerEntity) source;
+                PlayerData.get(player).ifPresent(data -> data.getProgressData().onEnemyKilled(event.getEntity(), player.getMainHandItem()));
             }
         }
         if (event.getEntity() instanceof IMob && !(event.getEntity() instanceof SlimeEntity)) {

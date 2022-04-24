@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.common.capability.object;
 
 import dev.toma.gunsrpg.api.common.data.ITraderStandings;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
-import dev.toma.gunsrpg.common.quests.trader.TraderStatus;
+import dev.toma.gunsrpg.common.quests.mayor.TraderStatus;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.INBTSerializable;

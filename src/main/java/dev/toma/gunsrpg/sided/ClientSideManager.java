@@ -30,6 +30,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -85,6 +86,8 @@ public class ClientSideManager {
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.PEBBLE.get(),              PebbleRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.GRENADE_SHELL.get(),       manager -> new ExplosiveProjectileRenderer<>(manager, new GrenadeShellModel()));
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.ROCKET.get(),              manager -> new ExplosiveProjectileRenderer<>(manager, new RocketModel()));
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.MAYOR.get(),               MayorRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.ZOMBIE_KNIGHT.get(),       ZombieRenderer::new);
 
         // keybinds
         ModKeybinds.registerKeybinds();
@@ -107,12 +110,6 @@ public class ClientSideManager {
 
         // event handlers
         MinecraftForge.EVENT_BUS.register(new HUDRenderer());
-    }
-
-    public void playDelayedSound(BlockPos pos, float volume, float pitch, SoundEvent event, SoundCategory category, int tickDelay) {
-        Minecraft mc = Minecraft.getInstance();
-        SoundHandler handler = mc.getSoundManager();
-        handler.playDelayed(new SimpleSound(event, category, volume, pitch, pos), tickDelay);
     }
 
     public IPlayerData.ISynchCallback onDataSync() {

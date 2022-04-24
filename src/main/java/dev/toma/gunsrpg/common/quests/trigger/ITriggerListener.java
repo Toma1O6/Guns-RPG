@@ -4,5 +4,5 @@ import dev.toma.gunsrpg.util.properties.IPropertyReader;
 
 public interface ITriggerListener {
 
-    void onTrigger(IPropertyReader reader);
+    TriggerResponseStatus handleTriggerEvent(Trigger trigger, IPropertyReader reader);
 }

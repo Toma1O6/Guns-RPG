@@ -42,7 +42,7 @@ public class Grenade extends AbstractExplosive {
             RayTraceContext context = new RayTraceContext(from, to, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this);
             BlockRayTraceResult rayTraceResult = level.clip(context);
             if (rayTraceResult != null && rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
-                onCollided(rayTraceResult.getLocation());
+                onCollided(rayTraceResult.getLocation().add(0, 0.5, 0));
             }
         }
         updateDirection();
@@ -89,7 +89,7 @@ public class Grenade extends AbstractExplosive {
             }
         }
         if (bounced && tickCount >= FUSE_DELAY) {
-            onCollided(this.position());
+            onCollided(this.position().add(0, 1, 0));
         }
     }
 

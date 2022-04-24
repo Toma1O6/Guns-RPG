@@ -36,6 +36,7 @@ import dev.toma.gunsrpg.util.helper.StorageUtil;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -685,7 +686,9 @@ public class CommonRegistry {
                 new ForgeSpawnEggItem(ModEntities.BLOODMOON_GOLEM, 0x5b5b5b, 0xa30000, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("bloodmoon_golem_spawn_egg"),
                 new ForgeSpawnEggItem(ModEntities.EXPLOSIVE_SKELETON, 0xe1084e, 0xcd0800, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("explosive_skeleton_spawn_egg"),
                 new ForgeSpawnEggItem(ModEntities.ROCKET_ANGEL, 0x6669cc, 0x16a3e8, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("rocket_angel_spawn_egg"),
-                new ForgeSpawnEggItem(ModEntities.ZOMBIE_GUNNER, 0x00a797, 0xff3f19, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("zombie_gunner_spawn_egg")
+                new ForgeSpawnEggItem(ModEntities.ZOMBIE_GUNNER, 0x00a797, 0xff3f19, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("zombie_gunner_spawn_egg"),
+                new ForgeSpawnEggItem(ModEntities.MAYOR, 0x6B2900, 0x6B29AA, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("mayor_spawn_egg"),
+                new ForgeSpawnEggItem(ModEntities.ZOMBIE_KNIGHT, 0xA7004A, 0xDD004A, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("zombie_knight_spawn_egg")
         );
         for (PerkVariant variant : PerkVariant.values()) {
             registry.register(new CrystalItem(variant.getRegistryName("crystal"), variant));
@@ -938,6 +941,8 @@ public class CommonRegistry {
         event.put(ModEntities.ROCKET_ANGEL.get(), RocketAngelEntity.createAttributes().build());
         event.put(ModEntities.BLOODMOON_GOLEM.get(), BloodmoonGolemEntity.createAttributes().build());
         event.put(ModEntities.GOLD_DRAGON.get(), GoldDragonEntity.createAttributes().build());
+        event.put(ModEntities.MAYOR.get(), CreatureEntity.createMobAttributes().build());
+        event.put(ModEntities.ZOMBIE_KNIGHT.get(), ZombieKnightEntity.createAttributes().build());
     }
 
     protected static SoundEvent sound(String key) {

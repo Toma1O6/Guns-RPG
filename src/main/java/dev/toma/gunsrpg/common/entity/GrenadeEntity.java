@@ -5,11 +5,11 @@ import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -31,7 +31,7 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData {
+public class GrenadeEntity extends ProjectileEntity implements IEntityAdditionalSpawnData {
 
     public static final Vector3d AIR_DRAG_MULTIPLIER = new Vector3d(0.98, 0.98, 0.98);
     public static final Vector3d GROUND_DRAG_MULTIPLIER = new Vector3d(0.7, 0.7, 0.7);
@@ -57,9 +57,10 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
         this(ModEntities.GRENADE.get(), world, thrower, 100, 3, false, Items.AIR);
     }
 
-    public GrenadeEntity(EntityType<?> type, World world, LivingEntity thrower, int time, int blastRadius, boolean explodesOnImpact, Item item) {
+    public GrenadeEntity(EntityType<? extends GrenadeEntity> type, World world, LivingEntity thrower, int time, int blastRadius, boolean explodesOnImpact, Item item) {
         super(type, world);
         if (thrower != null) this.setPos(thrower.getX(), thrower.getY() + thrower.getEyeHeight(), thrower.getZ());
+        setOwner(thrower);
         this.fuse = time;
         this.blastRadius = blastRadius;
         this.explodesOnImpact = explodesOnImpact;
@@ -78,7 +79,7 @@ public class GrenadeEntity extends Entity implements IEntityAdditionalSpawnData 
 
     public void doExplosion() {
         if (!level.isClientSide) {
-            level.explode(null, getX(), getY() + 0.5, getZ(), blastRadius, Explosion.Mode.NONE);
+            level.explode(this, getX(), getY() + 0.5, getZ(), blastRadius, Explosion.Mode.NONE);
             remove();
         }
     }

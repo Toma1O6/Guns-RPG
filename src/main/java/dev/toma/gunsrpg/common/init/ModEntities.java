@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.common.entity.projectile.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -58,6 +59,12 @@ public class ModEntities {
     );
     public static final RegistryObject<EntityType<Rocket>> ROCKET = register("rocket", Rocket::new, EntityClassification.MISC,
             builder -> builder.sized(0.4F, 0.4F).noSummon().noSave().setTrackingRange(256).setShouldReceiveVelocityUpdates(false)
+    );
+    public static final RegistryObject<EntityType<MayorEntity>> MAYOR = register("mayor", MayorEntity::new, EntityClassification.MISC,
+            builder -> builder.sized(0.6F, 1.95F).clientTrackingRange(10)
+    );
+    public static final RegistryObject<EntityType<ZombieKnightEntity>> ZOMBIE_KNIGHT = register("zombie_knight", ZombieKnightEntity::new, EntityClassification.MONSTER,
+            builder -> builder.sized(0.6F, 1.95F).clientTrackingRange(8)
     );
 
     private static <E extends Entity> RegistryObject<EntityType<E>> register(

@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class NapalmReaction implements IReaction {
 
-    public static final IReaction NAPALM = new NapalmReaction(8.0, 0.4F);
+    public static final IReaction NAPALM = new NapalmReaction(8.0, 0.25F);
 
     private final double range;
     private final float factor;

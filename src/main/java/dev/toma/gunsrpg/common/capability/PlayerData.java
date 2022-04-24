@@ -19,7 +19,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
 
 import java.util.List;
-import java.util.function.Function;
 
 public class PlayerData implements IPlayerData {
 
@@ -34,6 +33,7 @@ public class PlayerData implements IPlayerData {
     private final PlayerAttributes attributes;
     private final PlayerPerkProvider perkProvider;
     private final PlayerProgressionData data;
+    private final PlayerQuests quests;
     private ISynchCallback callback;
 
     public PlayerData() {
@@ -51,6 +51,7 @@ public class PlayerData implements IPlayerData {
         this.skillProvider = new PlayerSkillProvider(player);
         this.perkProvider = new PlayerPerkProvider(attributes);
         this.data = new PlayerProgressionData(player, skillProvider);
+        this.quests = new PlayerQuests();
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setSyncCallback);
 
@@ -61,6 +62,7 @@ public class PlayerData implements IPlayerData {
         saveHandler.addListener(skillProvider);
         saveHandler.addListener(perkProvider);
         saveHandler.addListener(data);
+        saveHandler.addListener(quests);
 
         saveHandler.invoke(entry -> entry.setClientSynch(() -> requestSync(entry.getFlag())));
     }
@@ -119,6 +121,11 @@ public class PlayerData implements IPlayerData {
     @Override
     public IProgressData getProgressData() {
         return data;
+    }
+
+    @Override
+    public IQuests getQuests() {
+        return quests;
     }
 
     @Override
@@ -195,14 +202,5 @@ public class PlayerData implements IPlayerData {
 
     public static IPlayerData getUnsafe(PlayerEntity player) {
         return get(player).orElseThrow(NullPointerException::new);
-    }
-
-    public static <T> T getValueSafe(PlayerEntity player, Function<IPlayerData, T> func, T fallback) {
-        LazyOptional<IPlayerData> optional = get(player);
-        if (optional.isPresent()) {
-            IPlayerData data = optional.orElse(null);
-            return func.apply(data);
-        }
-        return fallback;
     }
 }

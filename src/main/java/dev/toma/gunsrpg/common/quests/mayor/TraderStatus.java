@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.quests.trader;
+package dev.toma.gunsrpg.common.quests.mayor;
 
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
 import net.minecraft.nbt.CompoundNBT;
@@ -15,7 +15,7 @@ public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT
 
     @Override
     public void onTraderAttacked() {
-        // TODO
+        reputation = Math.max(0.0F, reputation - 0.5F);
     }
 
     @Override
