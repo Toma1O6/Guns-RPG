@@ -4,12 +4,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonParseException;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.attribute.IAttribute;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
@@ -29,6 +31,11 @@ import dev.toma.gunsrpg.common.item.perk.CrystalItem;
 import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.common.perk.PerkRegistry;
 import dev.toma.gunsrpg.common.perk.PerkType;
+import dev.toma.gunsrpg.common.quests.QuestSystem;
+import dev.toma.gunsrpg.common.quests.reward.IQuestItemProvider;
+import dev.toma.gunsrpg.common.quests.reward.QuestReward;
+import dev.toma.gunsrpg.common.quests.reward.QuestRewardList;
+import dev.toma.gunsrpg.common.quests.reward.QuestRewardManager;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;
 import dev.toma.gunsrpg.config.ModConfig;
@@ -202,8 +209,48 @@ public class GunsrpgCommand {
                                                         .executes(GunsrpgCommand::editCrystalLevel)
                                         )
                         )
+                        .then(
+                                Commands.literal("quest")
+                                        .executes(ctx -> noArgsProvided("reward"))
+                                        .then(
+                                                Commands.literal("reward")
+                                                        .executes(ctx -> addRandomReward(ctx, 1, 1, true))
+                                                        .then(
+                                                                Commands.argument("tier", IntegerArgumentType.integer(1, 8))
+                                                                        .executes(ctx -> addRandomReward(ctx, IntegerArgumentType.getInteger(ctx, "tier"), 1, true))
+                                                                        .then(
+                                                                                Commands.argument("itemCount", IntegerArgumentType.integer(1, 64))
+                                                                                        .executes(ctx -> addRandomReward(ctx, IntegerArgumentType.getInteger(ctx, "tier"), IntegerArgumentType.getInteger(ctx, "itemCount"), true))
+                                                                                        .then(
+                                                                                                Commands.argument("unique", BoolArgumentType.bool())
+                                                                                                        .executes(ctx -> addRandomReward(ctx, IntegerArgumentType.getInteger(ctx, "tier"), IntegerArgumentType.getInteger(ctx, "itemCount"), BoolArgumentType.getBool(ctx, "unique")))
+                                                                                        )
+                                                                        )
+                                                        )
+                                        )
+                        )
                         .executes(ctx -> noArgsProvided("debuff", "event", "progression", "skill"))
         );
+    }
+
+    private static int addRandomReward(CommandContext<CommandSource> context, int tier, int itemCount, boolean unique) {
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        QuestSystem questSystem = GunsRPG.getModLifecycle().quests();
+        QuestRewardManager manager = questSystem.getRewardManager();
+        QuestRewardList list = manager.getTieredRewards(tier);
+        QuestReward.Options options = new QuestReward.Options().items(itemCount);
+        if (unique) {
+            options.unique();
+        }
+        QuestReward reward = QuestReward.generate(list, options);
+        for (QuestReward.Choice choice : reward.getChoices()) {
+            choice.distributeToInventory(player);
+        }
+        return 0;
     }
 
     private static int editCrystalLevel(CommandContext<CommandSource> context) throws CommandSyntaxException {
