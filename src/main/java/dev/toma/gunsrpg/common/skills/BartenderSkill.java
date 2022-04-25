@@ -109,33 +109,33 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
         }
 
         public static void bartender1(Builder builder) {
-            builder.ammoMultiplier(0.1F);
+            builder.ammoMultiplier(0.15F);
         }
 
         public static void bartender2(Builder builder) {
-            builder.defaults(0.1F, 0.0F, 0, 0, 0, 0, 0)
-                    .ammoMultiplier(0.2F)
-                    .showCount(4);
+            builder.defaults(0.15F, 0.0F, 0, 0, 0, 0, 0)
+                    .ammoMultiplier(0.30F)
+                    .showCount(1);
         }
 
         public static void bartender3(Builder builder) {
-            builder.defaults(0.2F, 0.0F, 4, 0, 0, 0, 0)
-                    .ammoMultiplier(0.3F)
+            builder.defaults(0.30F, 0.0F, 1, 0, 0, 0, 0)
+                    .ammoMultiplier(0.45F)
                     .meds(1)
                     .orbs(1);
         }
 
         public static void bartender4(Builder builder) {
-            builder.defaults(0.3F, 0.0F, 4, 1, 1, 0, 0)
-                    .ammoMultiplier(0.4F)
-                    .showCount(5)
+            builder.defaults(0.45F, 0.0F, 1, 1, 1, 0, 0)
+                    .ammoMultiplier(0.60F)
+                    .showCount(2)
                     .perkBook(1)
                     .explosives(0.5F);
         }
 
         public static void bartender5(Builder builder) {
-            builder.defaults(0.4F, 0.5F, 5, 1, 1, 1, 0)
-                    .ammoMultiplier(0.5F)
+            builder.defaults(0.60F, 0.5F, 2, 1, 1, 1, 0)
+                    .ammoMultiplier(0.75F)
                     .flare(1)
                     .orbs(2);
         }
