@@ -49,15 +49,15 @@ public final class Modifiers {
     public static final IAttributeModifier INSTANT_KILL_I               = new AttributeModifier(SKULL_CRUSHER, AttributeOps.SUM, 0.03).named("chance", IValueFormatter.PERCENT);
     public static final IAttributeModifier INSTANT_KILL_II              = new AttributeModifier(SKULL_CRUSHER, AttributeOps.SUM, 0.05).named("chance", IValueFormatter.PERCENT);
     public static final IAttributeModifier INSTANT_KILL_III             = new AttributeModifier(SKULL_CRUSHER, AttributeOps.SUM, 0.07).named("chance", IValueFormatter.PERCENT);
-    public static final IAttributeModifier REPAIR_MAN_I                 = new AttributeModifier(REPAIR_MAN, AttributeOps.SUM, 0.10).named("repair");
-    public static final IAttributeModifier REPAIR_MAN_II                = new AttributeModifier(REPAIR_MAN, AttributeOps.SUM, 0.15).named("repair");
-    public static final IAttributeModifier REPAIR_MAN_III               = new AttributeModifier(REPAIR_MAN, AttributeOps.SUM, 0.20).named("repair");
-    public static final IAttributeModifier WEAPON_DURABILITY_I          = new AttributeModifier(WEAPON_DURABILITY, AttributeOps.MUL, 0.95).named("durability");
-    public static final IAttributeModifier WEAPON_DURABILITY_II         = new AttributeModifier(WEAPON_DURABILITY, AttributeOps.MUL, 0.95).named("durability");
-    public static final IAttributeModifier WEAPON_DURABILITY_III        = new AttributeModifier(WEAPON_DURABILITY, AttributeOps.MUL, 0.95).named("durability");
-    public static final IAttributeModifier JAMMING_I                    = new AttributeModifier(WEAPON_JAMMING, AttributeOps.MUL, 0.90).named("jamming");
-    public static final IAttributeModifier JAMMING_II                   = new AttributeModifier(WEAPON_JAMMING, AttributeOps.MUL, 0.80).named("jamming");
-    public static final IAttributeModifier JAMMING_III                  = new AttributeModifier(WEAPON_JAMMING, AttributeOps.MUL, 0.65).named("jamming");
+    public static final IAttributeModifier REPAIR_MAN_I                 = new AttributeModifier(REPAIR_MAN, AttributeOps.SUM, 0.10).named("repair", IValueFormatter.PERCENT);
+    public static final IAttributeModifier REPAIR_MAN_II                = new AttributeModifier(REPAIR_MAN, AttributeOps.SUM, 0.15).named("repair", IValueFormatter.PERCENT);
+    public static final IAttributeModifier REPAIR_MAN_III               = new AttributeModifier(REPAIR_MAN, AttributeOps.SUM, 0.20).named("repair", IValueFormatter.PERCENT);
+    public static final IAttributeModifier WEAPON_DURABILITY_I          = new AttributeModifier(WEAPON_DURABILITY, AttributeOps.MUL, 0.95).named("durability", IValueFormatter.PERCENT);
+    public static final IAttributeModifier WEAPON_DURABILITY_II         = new AttributeModifier(WEAPON_DURABILITY, AttributeOps.MUL, 0.90).named("durability", IValueFormatter.PERCENT);
+    public static final IAttributeModifier WEAPON_DURABILITY_III        = new AttributeModifier(WEAPON_DURABILITY, AttributeOps.MUL, 0.80).named("durability", IValueFormatter.PERCENT);
+    public static final IAttributeModifier JAMMING_I                    = new AttributeModifier(WEAPON_JAMMING, AttributeOps.MUL, 0.90).named("jamming", IValueFormatter.PERCENT);
+    public static final IAttributeModifier JAMMING_II                   = new AttributeModifier(WEAPON_JAMMING, AttributeOps.MUL, 0.80).named("jamming", IValueFormatter.PERCENT);
+    public static final IAttributeModifier JAMMING_III                  = new AttributeModifier(WEAPON_JAMMING, AttributeOps.MUL, 0.65).named("jamming", IValueFormatter.PERCENT);
     /* Debuff modifiers */
     public static final IAttributeModifier DEBUFF_RESIST_I              = new AttributeModifier(DEBUFF_RESISTANCE, AttributeOps.SUM, 0.15).named("resist", IValueFormatter.PERCENT);
     public static final IAttributeModifier DEBUFF_DELAY_I               = new AttributeModifier(DEBUFF_DELAY, AttributeOps.SUM, 20).named("delay", IValueFormatter.SECONDS);
