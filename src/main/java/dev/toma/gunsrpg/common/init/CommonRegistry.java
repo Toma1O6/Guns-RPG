@@ -206,7 +206,7 @@ public class CommonRegistry {
                 SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 1, 0.40F)).build().setRegistryName("well_fed_i"),
                 SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 2, 0.55F)).build().setRegistryName("well_fed_ii"),
                 SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 3, 0.70F)).build().setRegistryName("well_fed_iii"),
-                SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("local_chef"),
+                SkillType.Builder.create(SimpleSkill::new).description(3).build().setRegistryName("local_chef"),
                 SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("master_chef"),
                 SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, Interval.minutes(15), 10, 0)).build().setRegistryName("second_chance_i"),
                 SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, Interval.minutes(12), 15, 1)).build().setRegistryName("second_chance_ii"),

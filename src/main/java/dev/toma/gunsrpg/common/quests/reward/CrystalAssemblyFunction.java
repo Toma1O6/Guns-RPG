@@ -25,12 +25,13 @@ public class CrystalAssemblyFunction implements IAssemblyFunction {
     }
 
     @Override
-    public void onAssembly(ItemStack stack, PlayerEntity player) {
+    public ItemStack[] onAssembly(ItemStack stack, PlayerEntity player) {
         int crystalLevel = levelFunction.getCount();
         int buffCount = buffFunction.getCount();
         int debuffCount = debuffFunction.getCount();
         Crystal crystal = Crystal.generate(crystalLevel, buffCount, debuffCount);
         CrystalItem.addCrystal(stack, crystal);
+        return new ItemStack[] { stack };
     }
 
     public static class Serializer implements IAssemblyFunctionSerializer {

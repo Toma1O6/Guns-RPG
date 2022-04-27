@@ -47,10 +47,10 @@ public final class Quest {
         rewardTier = tier;
     }
 
-    public QuestReward generateReward(QuestReward.Options options) {
+    public QuestReward generateReward(PlayerEntity player, QuestReward.Options options) {
         QuestRewardManager manager = GunsRPG.getModLifecycle().quests().getRewardManager();
         QuestRewardList list = manager.getTieredRewards(rewardTier);
-        return QuestReward.generate(list, options);
+        return QuestReward.generate(list, options, player);
     }
 
     public void onAssigned(PlayerEntity player, IPlayerData data, UUID assignedById) {

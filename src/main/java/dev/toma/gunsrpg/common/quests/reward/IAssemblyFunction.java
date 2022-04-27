@@ -5,5 +5,5 @@ import net.minecraft.item.ItemStack;
 
 public interface IAssemblyFunction {
 
-    void onAssembly(ItemStack stack, PlayerEntity player);
+    ItemStack[] onAssembly(ItemStack stack, PlayerEntity player);
 }

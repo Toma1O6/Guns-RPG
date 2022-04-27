@@ -1,17 +1,13 @@
 package dev.toma.gunsrpg.common.quests.reward;
 
+import com.google.common.collect.Queues;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.function.Supplier;
+import java.util.*;
 
 public final class QuestReward {
 
-    private static final Random RANDOM = new Random();
     private final Choice[] choices;
 
     private QuestReward(Choice[] choices) {
@@ -38,67 +34,57 @@ public final class QuestReward {
         return list;
     }
 
-    public static QuestReward generate(QuestRewardList list, Options options) {
-        return options.unique ? generateUnique(list, options) : generateRandomly(list, options);
-    }
-
-    private static QuestReward generateUnique(QuestRewardList list, Options options) {
-        Supplier<List<IQuestItemProvider>> providerListSupplier = () -> {
-            IQuestItemProvider[] providers = list.getItemProviders();
-            List<IQuestItemProvider> providerList = new ArrayList<>(providers.length);
-            providerList.addAll(Arrays.asList(providers));
-            return providerList;
-        };
-        List<IQuestItemProvider> providers = providerListSupplier.get();
-        Choice[] choiceArray = new Choice[options.choiceCount];
-        for (int i = 0; i < options.choiceCount; i++) {
-            IQuestItemProvider[] choiceProviders = new IQuestItemProvider[options.itemCount];
-            for (int j = 0; j < options.itemCount; j++) {
-                choiceProviders[j] = selectRandomUnique(providers, providerListSupplier);
-            }
-            choiceArray[i] = new Choice(choiceProviders);
+    public static QuestReward generate(QuestRewardList list, Options options, PlayerEntity player) {
+        int totalProviderCount = list.size();
+        Collection<IQuestItemProvider> generatedCollection = options.unique ? new HashSet<>() : new ArrayList<>();
+        int requiredCount = Math.min(totalProviderCount, options.choiceCount * options.itemCount);
+        int attemptIndex = 0;
+        while (generatedCollection.size() < requiredCount && attemptIndex < totalProviderCount * 2) {
+            IQuestItemProvider provider = list.getRandomProvider();
+            generatedCollection.add(provider);
+            ++attemptIndex;
         }
-        return new QuestReward(choiceArray);
-    }
-
-    private static QuestReward generateRandomly(QuestRewardList list, Options options) {
-        IQuestItemProvider[] listProviders = list.getItemProviders();
-        Choice[] choices = new Choice[options.choiceCount];
-        for (int i = 0; i < choices.length; i++) {
-            IQuestItemProvider[] providers = new IQuestItemProvider[options.itemCount];
-            for (int j = 0; j < options.itemCount; j++) {
-                providers[j] = listProviders[RANDOM.nextInt(listProviders.length)];
+        int providerCount = generatedCollection.size();
+        int countPerChoice = options.itemCount;
+        int remainder = providerCount % countPerChoice;
+        int actualPossibleChoiceCount = providerCount / countPerChoice;
+        if (remainder > 0) {
+            ++actualPossibleChoiceCount;
+        }
+        Deque<IQuestItemProvider> providerPool = Queues.newArrayDeque(generatedCollection);
+        Choice[] choices = new Choice[actualPossibleChoiceCount];
+        for (int i = 0; i < actualPossibleChoiceCount; i++) {
+            IQuestItemProvider[] providers = new IQuestItemProvider[Math.min(countPerChoice, providerPool.size())];
+            for (int j = 0; j < providers.length; j++) {
+                providers[j] = providerPool.poll();
             }
-            choices[i] = new Choice(providers);
+            Choice choice = Choice.generateItems(providers, player);
+            choices[i] = choice;
         }
         return new QuestReward(choices);
     }
 
-    private static <T> T selectRandomUnique(List<T> list, Supplier<List<T>> supplier) {
-        int index = RANDOM.nextInt(list.size());
-        T t = list.get(index);
-        list.remove(index);
-        if (list.isEmpty()) {
-            list.addAll(supplier.get());
-        }
-        return t;
-    }
-
     public static class Choice {
 
-        private final IQuestItemProvider[] providers;
+        private final ItemStack[] items;
 
-        private Choice(IQuestItemProvider[] providers) {
-            this.providers = providers;
+        private Choice(ItemStack[] items) {
+            this.items = items;
+        }
+
+        public static Choice generateItems(IQuestItemProvider[] providers, PlayerEntity player) {
+            List<ItemStack> list = new ArrayList<>();
+            for (IQuestItemProvider provider : providers) {
+                ItemStack[] processedItems = provider.assembleItem(player);
+                list.addAll(Arrays.asList(processedItems));
+            }
+            return new Choice(list.toArray(new ItemStack[0]));
         }
 
         public void distributeToInventory(PlayerEntity player) {
-            List<ItemStack> stacks = new ArrayList<>();
-            for (IQuestItemProvider provider : providers) {
-                ItemStack raw = provider.assembleItem(player);
-                stacks.addAll(splitItemStack(raw, 64));
+            for (ItemStack stack : items) {
+                player.addItem(stack);
             }
-            stacks.forEach(player::addItem);
         }
     }
 
@@ -108,7 +94,7 @@ public final class QuestReward {
         private int itemCount = 1;
         private int choiceCount = 1;
 
-        public Options unique() {
+        public Options setUnique() {
             this.unique = true;
             return this;
         }

@@ -39,6 +39,11 @@ public class PropertyContext implements IPropertyHolder {
     }
 
     @Override
+    public boolean hasProperty(PropertyKey<?> key) {
+        return map.containsKey(key);
+    }
+
+    @Override
     public <V> V getProperty(PropertyKey<V> key) {
         V value = (V) map.get(key);
         return value != null ? value : key.getDefaultValue();

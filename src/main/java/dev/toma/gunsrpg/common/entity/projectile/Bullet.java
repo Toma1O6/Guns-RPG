@@ -40,7 +40,7 @@ public class Bullet extends AbstractPenetratingProjectile {
 
     @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
-        return this.getProperty(Properties.TRACER) != null;
+        return propertyContext.hasProperty(Properties.TRACER);
     }
 
     @Override

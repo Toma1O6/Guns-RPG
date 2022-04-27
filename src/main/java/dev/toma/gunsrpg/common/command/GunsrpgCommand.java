@@ -32,7 +32,6 @@ import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.common.perk.PerkRegistry;
 import dev.toma.gunsrpg.common.perk.PerkType;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
-import dev.toma.gunsrpg.common.quests.reward.IQuestItemProvider;
 import dev.toma.gunsrpg.common.quests.reward.QuestReward;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardList;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardManager;
@@ -222,8 +221,8 @@ public class GunsrpgCommand {
                                                                                 Commands.argument("itemCount", IntegerArgumentType.integer(1, 64))
                                                                                         .executes(ctx -> addRandomReward(ctx, IntegerArgumentType.getInteger(ctx, "tier"), IntegerArgumentType.getInteger(ctx, "itemCount"), true))
                                                                                         .then(
-                                                                                                Commands.argument("unique", BoolArgumentType.bool())
-                                                                                                        .executes(ctx -> addRandomReward(ctx, IntegerArgumentType.getInteger(ctx, "tier"), IntegerArgumentType.getInteger(ctx, "itemCount"), BoolArgumentType.getBool(ctx, "unique")))
+                                                                                                Commands.argument("setUnique", BoolArgumentType.bool())
+                                                                                                        .executes(ctx -> addRandomReward(ctx, IntegerArgumentType.getInteger(ctx, "tier"), IntegerArgumentType.getInteger(ctx, "itemCount"), BoolArgumentType.getBool(ctx, "setUnique")))
                                                                                         )
                                                                         )
                                                         )
@@ -244,9 +243,9 @@ public class GunsrpgCommand {
         QuestRewardList list = manager.getTieredRewards(tier);
         QuestReward.Options options = new QuestReward.Options().items(itemCount);
         if (unique) {
-            options.unique();
+            options = options.setUnique();
         }
-        QuestReward reward = QuestReward.generate(list, options);
+        QuestReward reward = QuestReward.generate(list, options, player);
         for (QuestReward.Choice choice : reward.getChoices()) {
             choice.distributeToInventory(player);
         }

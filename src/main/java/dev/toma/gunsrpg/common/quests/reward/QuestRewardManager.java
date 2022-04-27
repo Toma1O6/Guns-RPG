@@ -74,8 +74,9 @@ public class QuestRewardManager extends SingleJsonFileReloadListener {
             }
             IQuestRewardResolver resolver = providerType.getResolver();
             int count = JSONUtils.getAsInt(object, "count", 1);
+            int weight = JSONUtils.getAsInt(object, "weight", 1);
             IAssemblyFunction[] functions = provider.has("assemblyFunctions") ? loadFunctions(JSONUtils.getAsJsonArray(provider, "assemblyFunctions")) : null;
-            return resolver.resolve(provider, providerType, count, functions, map);
+            return resolver.resolve(provider, providerType, count, weight, functions, map);
         });
         QuestRewardList list = new QuestRewardList(itemProviders);
         rewardTierMap.put(tier, list);
@@ -100,13 +101,19 @@ public class QuestRewardManager extends SingleJsonFileReloadListener {
     public static final class ItemGroup {
 
         private final String id;
+        private final int weight;
         private final Item[] items;
         private final IAssemblyFunction[] functions;
 
-        ItemGroup(String id, Item[] items, IAssemblyFunction[] functions) {
+        ItemGroup(String id, int weight, Item[] items, IAssemblyFunction[] functions) {
             this.id = id;
+            this.weight = weight;
             this.items = items;
             this.functions = functions;
+        }
+
+        public int getWeight() {
+            return weight;
         }
 
         public Item[] getItems() {
@@ -120,9 +127,10 @@ public class QuestRewardManager extends SingleJsonFileReloadListener {
         static ItemGroup resolve(JsonElement element) {
             JsonObject object = JsonHelper.asJsonObject(element);
             String id = JSONUtils.getAsString(object, "id");
+            int weight = JSONUtils.getAsInt(object, "weight", 1);
             Item[] items = JsonHelper.deserializeInto(JSONUtils.getAsJsonArray(object, "items"), Item[]::new, JsonHelper::resolveItem);
             IAssemblyFunction[] functions = object.has("assemblyFunctions") ? loadFunctions(JSONUtils.getAsJsonArray(object, "assemblyFunctions")) : null;
-            return new ItemGroup(id, items, functions);
+            return new ItemGroup(id, weight, items, functions);
         }
     }
 }
