@@ -52,6 +52,9 @@ public class Skills {
     public static final SkillType<IronBuddySkill> IRON_BUDDY_III = null;
     public static final SkillType<WarMachineSkill> WAR_MACHINE = null;
     public static final SkillType<TreasureHunterSkill> TREASURE_HUNTER_I = null;
+    public static final SkillType<SimpleSkill> CRYSTAL_STATION = null;
+    public static final SkillType<SimpleSkill> CRYSTAL_FORGE = null;
+    public static final SkillType<SimpleSkill> CRYSTAL_PURIFICATION_STATION = null;
     public static final SkillType<SimpleSkill> CRYSTALIZED = null;
     public static final SkillType<ISkill> M1911_SUPPRESSOR = null;
     public static final SkillType<ISkill> M1911_HEAVY_BULLETS = null;

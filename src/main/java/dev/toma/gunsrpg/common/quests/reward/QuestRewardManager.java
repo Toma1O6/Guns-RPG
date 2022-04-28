@@ -73,8 +73,8 @@ public class QuestRewardManager extends SingleJsonFileReloadListener {
                 throw new JsonSyntaxException("Unknown reward type: " + type);
             }
             IQuestRewardResolver resolver = providerType.getResolver();
-            int count = JSONUtils.getAsInt(object, "count", 1);
-            int weight = JSONUtils.getAsInt(object, "weight", 1);
+            int count = JSONUtils.getAsInt(provider, "count", 1);
+            int weight = JSONUtils.getAsInt(provider, "weight", 1);
             IAssemblyFunction[] functions = provider.has("assemblyFunctions") ? loadFunctions(JSONUtils.getAsJsonArray(provider, "assemblyFunctions")) : null;
             return resolver.resolve(provider, providerType, count, weight, functions, map);
         });

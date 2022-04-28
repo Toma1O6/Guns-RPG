@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.TippedArrowRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -42,6 +43,38 @@ public class TracerRenderer<P extends AbstractProjectile> extends EntityRenderer
             float g = RenderUtils.green(rgb);
             float b = RenderUtils.blue(rgb);
             float a = 1.0F;
+            matrix.pushPose();
+            matrix.mulPose(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, projectile.yRotO, projectile.yRot) - 90.0F));
+            matrix.mulPose(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, projectile.xRotO, projectile.xRot)));
+            matrix.mulPose(Vector3f.XP.rotationDegrees(45.0F));
+            matrix.scale(0.05625F, 0.05625F, 0.05625F);
+            matrix.translate(-4.0D, 0.0D, 0.0D);
+            IVertexBuilder ivertexbuilder = typeBuffer.getBuffer(RenderType.entityCutout(TippedArrowRenderer.NORMAL_ARROW_LOCATION));
+            MatrixStack.Entry matrixstack$entry = matrix.last();
+            Matrix4f matrix4f = matrixstack$entry.pose();
+            Matrix3f matrix3f = matrixstack$entry.normal();
+            vertex(ivertexbuilder, matrix4f, matrix3f, -7, -2, -2, r, g, b, a, 0.0F, 0.15625F);
+            vertex(ivertexbuilder, matrix4f, matrix3f, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0.15625F, 0.15625F);
+            vertex(ivertexbuilder, matrix4f, matrix3f, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0.15625F, 0.3125F);
+            vertex(ivertexbuilder, matrix4f, matrix3f, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0.0F, 0.3125F);
+            vertex(ivertexbuilder, matrix4f, matrix3f, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0.0F, 0.15625F);
+            vertex(ivertexbuilder, matrix4f, matrix3f, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0.15625F, 0.15625F);
+            vertex(ivertexbuilder, matrix4f, matrix3f, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0.15625F, 0.3125F);
+            vertex(ivertexbuilder, matrix4f, matrix3f, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0.0F, 0.3125F);
+
+            for (int j = 0; j < 4; ++j) {
+                matrix.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+                vertex(ivertexbuilder, matrix4f, matrix3f, -8, -2, 0, r, g, b, a, 0.0F, 0.0F);
+                vertex(ivertexbuilder, matrix4f, matrix3f, 8, -2, 0, r, g, b, a, 0.5F, 0.0F);
+                vertex(ivertexbuilder, matrix4f, matrix3f, 8, 2, 0, r, g, b, a, 0.5F, 0.15625F);
+                vertex(ivertexbuilder, matrix4f, matrix3f, -8, 2, 0, r, g, b, a, 0.0F, 0.15625F);
+            }
+
+            matrix.popPose();
+            /*float r = RenderUtils.red(rgb);
+            float g = RenderUtils.green(rgb);
+            float b = RenderUtils.blue(rgb);
+            float a = 1.0F;
             float x = AnimationUtils.linearInterpolate((float) projectile.getX(), (float) projectile.xo, partialTicks);
             float y = AnimationUtils.linearInterpolate((float) projectile.getY(), (float) projectile.yo, partialTicks);
             float z = AnimationUtils.linearInterpolate((float) projectile.getZ(), (float) projectile.zo, partialTicks);
@@ -58,23 +91,36 @@ public class TracerRenderer<P extends AbstractProjectile> extends EntityRenderer
             Matrix4f pose = entry.pose();
             Matrix3f normal = entry.normal();
             float scale = 0.1F;
-            IVertexBuilder builder = typeBuffer.getBuffer(RenderType.entityCutout(TRACER));
+            IVertexBuilder builder = typeBuffer.getBuffer(RenderType.entityCutout(TippedArrowRenderer.NORMAL_ARROW_LOCATION));
             matrix.pushPose();
-            matrix.mulPose(Vector3f.YP.rotation((float) Math.PI));
-            matrix.mulPose(Vector3f.YN.rotationDegrees(projectile.yRot));
-            matrix.mulPose(Vector3f.XN.rotationDegrees(projectile.xRot));
-            int nx = 1;
+            matrix.mulPose(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, projectile.yRotO, projectile.yRot) - 90.0F));
+            matrix.mulPose(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, projectile.xRotO, projectile.xRot)));
+            matrix.mulPose(Vector3f.XP.rotationDegrees(45.0F));
+            matrix.translate(-4.0D, 0.0D, 0.0D);
+            int nx = 0;
             int ny = 1;
-            int nz = 1;
-            builder.vertex(pose, x1 - scale, y1 - scale, z1).color(r, g, b, a).uv(0.0f, 0.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
-            builder.vertex(pose, x1 + scale, y1 + scale, z1).color(r, g, b, a).uv(0.0f, 1.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
-            builder.vertex(pose, x2 + scale, y2 + scale, z2).color(r, g, b, a).uv(1.0f, 1.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
-            builder.vertex(pose, x2 - scale, y2 - scale, z2).color(r, g, b, a).uv(1.0f, 0.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
-            builder.vertex(pose, x1 - scale, y1 + scale, z1).color(r, g, b, a).uv(0.0f, 0.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
-            builder.vertex(pose, x1 + scale, y1 - scale, z1).color(r, g, b, a).uv(0.0f, 1.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
-            builder.vertex(pose, x2 + scale, y2 - scale, z2).color(r, g, b, a).uv(1.0f, 1.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
-            builder.vertex(pose, x2 - scale, y2 + scale, z2).color(r, g, b, a).uv(1.0f, 0.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
-            matrix.popPose();
+            int nz = 0;
+
+            for (int j = 0; j < 4; ++j) {
+                matrix.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+                vertex(builder, pose, normal, -8, -2, 0, r, g, b, a, 0.0F, 0.0F);
+                vertex(builder, pose, normal, 8, -2, 0, r, g, b, a, 1.0F, 0.0F);
+                vertex(builder, pose, normal, 8, 2, 0, r, g, b, a, 1.0F, 1.0F);
+                vertex(builder, pose, normal, -8, 2, 0, r, g, b, a, 0.0F, 1.0F);
+            }
+            //builder.vertex(pose, x1 - scale, y1 - scale, z1).color(r, g, b, a).uv(0.0f, 0.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
+            //builder.vertex(pose, x1 + scale, y1 + scale, z1).color(r, g, b, a).uv(0.0f, 1.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
+            //builder.vertex(pose, x2 + scale, y2 + scale, z2).color(r, g, b, a).uv(1.0f, 1.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
+            //builder.vertex(pose, x2 - scale, y2 - scale, z2).color(r, g, b, a).uv(1.0f, 0.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
+            //builder.vertex(pose, x1 - scale, y1 + scale, z1).color(r, g, b, a).uv(0.0f, 0.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
+            //builder.vertex(pose, x1 + scale, y1 - scale, z1).color(r, g, b, a).uv(0.0f, 1.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
+            //builder.vertex(pose, x2 + scale, y2 - scale, z2).color(r, g, b, a).uv(1.0f, 1.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
+            //builder.vertex(pose, x2 - scale, y2 + scale, z2).color(r, g, b, a).uv(1.0f, 0.0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, nx, ny, nz).endVertex();
+            matrix.popPose();*/
         }
+    }
+
+    private static void vertex(IVertexBuilder builder, Matrix4f pose, Matrix3f normal, float x, float y, float z, float r, float g, float b, float a, float u, float v) {
+        builder.vertex(pose, x, y, z).color(r, g, b, a).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(MAX_BRIGHTNESS).normal(normal, 0, 1, 0);
     }
 }

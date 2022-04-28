@@ -3,10 +3,7 @@ package dev.toma.gunsrpg.common.entity.projectile;
 import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.util.properties.PropertyKey;
 import net.minecraft.entity.*;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
@@ -91,6 +88,17 @@ public class Grenade extends AbstractExplosive {
         if (bounced && tickCount >= FUSE_DELAY) {
             onCollided(this.position().add(0, 1, 0));
         }
+    }
+
+    @Override
+    protected void updateDirection() {
+        Vector3d delta = getDeltaMovement();
+        double dx = delta.x;
+        double dy = delta.y;
+        double dz = delta.z;
+        float motionSqrt = MathHelper.sqrt(dx * dx + dz * dz);
+        xRot = -(float) (MathHelper.atan2(dy, motionSqrt) * (180.0F / Math.PI));
+        xRotO = xRot;
     }
 
     @Override

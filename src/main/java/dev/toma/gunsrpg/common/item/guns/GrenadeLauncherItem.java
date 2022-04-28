@@ -87,7 +87,7 @@ public class GrenadeLauncherItem extends AbstractExplosiveLauncher {
     protected float getInitialVelocity(IWeaponConfig config, LivingEntity shooter) {
         float velocity = super.getInitialVelocity(config, shooter);
         if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.GRENADE_LAUNCHER_BETTER_CARTRIDGE)) {
-            velocity *= 3.0f;
+            velocity *= 1.6f;
         }
         return velocity;
     }

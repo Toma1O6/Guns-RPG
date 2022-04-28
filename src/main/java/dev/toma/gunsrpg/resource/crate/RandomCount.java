@@ -26,7 +26,7 @@ public class RandomCount implements ICountFunction {
 
     @Override
     public int getCount() {
-        return lowerBound + RANDOM.nextInt(upperBound);
+        return lowerBound + RANDOM.nextInt(upperBound - lowerBound + 1);
     }
 
     public static class Adapter implements ICountFunctionAdapter {

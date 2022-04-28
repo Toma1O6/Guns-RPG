@@ -6,12 +6,14 @@ import dev.toma.gunsrpg.common.perk.PerkRegistry;
 import dev.toma.gunsrpg.common.perk.PerkType;
 import dev.toma.gunsrpg.resource.perks.CrystalConfiguration;
 import dev.toma.gunsrpg.resource.perks.PerkConfiguration;
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class Crystal {
 
@@ -42,6 +44,22 @@ public final class Crystal {
             CrystalAttribute attribute = CrystalAttribute.flatten(entry.getKey(), entry.getValue());
             result.add(attribute);
         }
+        List<CrystalAttribute> buffs = result.stream().filter(type -> type.getType() == PerkType.BUFF).collect(Collectors.toList());
+        List<CrystalAttribute> debuffs = result.stream().filter(type -> type.getType() == PerkType.DEBUFF).collect(Collectors.toList());
+        CrystalConfiguration.Storage storage = GunsRPG.getModLifecycle().getPerkManager().configLoader.getConfiguration().getCrystalConfig().getStorage();
+        int buffLimit = storage.getBuffCapacity() == -1 ? Integer.MAX_VALUE : storage.getBuffCapacity();
+        int debuffLimit = storage.getDebuffCapacity() == -1 ? Integer.MAX_VALUE : storage.getDebuffCapacity();
+        Random random = new Random();
+        if (buffs.size() > buffLimit) {
+            ModUtils.clearRandomItems(buffs, random, buffs.size() - buffLimit);
+        }
+        if (debuffs.size() > debuffLimit) {
+            ModUtils.clearRandomItems(debuffs, random, debuffs.size() - debuffLimit);
+        }
+        result.clear();
+        result.addAll(buffs);
+        result.addAll(debuffs);
+        result.sort(compareAttributes());
         return new Crystal(level, result);
     }
 
@@ -139,8 +157,11 @@ public final class Crystal {
             CompoundNBT attrNbt = list.getCompound(i);
             collection.add(CrystalAttribute.fromNbt(attrNbt));
         }
-        Comparator<CrystalAttribute> comp = Comparator.comparing(CrystalAttribute::getType, (o1, o2) -> o2.ordinal() - o1.ordinal()).thenComparing(CrystalAttribute::getValue).reversed();
-        collection.sort(comp);
+        collection.sort(compareAttributes());
         return new Crystal(level, collection);
+    }
+
+    public static Comparator<CrystalAttribute> compareAttributes() {
+        return Comparator.comparing(CrystalAttribute::getType, (o1, o2) -> o2.ordinal() - o1.ordinal()).thenComparing(CrystalAttribute::getValue).reversed();
     }
 }

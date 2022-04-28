@@ -2,7 +2,7 @@
     "itemGroups": [
         {
             "id": "wood_ammo",
-            "weight": 5,
+            "weight": 12,
             "items": [
                 "gunsrpg:wooden_9mm",
                 "gunsrpg:wooden_45acp",
@@ -21,7 +21,7 @@
         },
         {
             "id": "stone_ammo",
-            "weight": 5,
+            "weight": 12,
             "items": [
                 "gunsrpg:stone_9mm",
                 "gunsrpg:stone_45acp",
@@ -40,7 +40,7 @@
         },
         {
             "id": "iron_ammo",
-            "weight": 5,
+            "weight": 12,
             "items": [
                 "gunsrpg:iron_9mm",
                 "gunsrpg:iron_45acp",
@@ -59,7 +59,7 @@
         },
         {
             "id": "lapis_ammo",
-            "weight": 5,
+            "weight": 12,
             "items": [
                 "gunsrpg:lapis_9mm",
                 "gunsrpg:lapis_45acp",
@@ -78,7 +78,7 @@
         },
         {
             "id": "gold_ammo",
-            "weight": 5,
+            "weight": 12,
             "items": [
                 "gunsrpg:gold_9mm",
                 "gunsrpg:gold_45acp",
@@ -97,7 +97,7 @@
         },
         {
             "id": "redstone_ammo",
-            "weight": 5,
+            "weight": 12,
             "items": [
                 "gunsrpg:redstone_9mm",
                 "gunsrpg:redstone_45acp",
@@ -116,7 +116,7 @@
         },
         {
             "id": "diamond_ammo",
-            "weight": 5,
+            "weight": 12,
             "items": [
                 "gunsrpg:diamond_9mm",
                 "gunsrpg:diamond_45acp",
@@ -135,7 +135,7 @@
         },
         {
             "id": "quartz_ammo",
-            "weight": 5,
+            "weight": 12,
             "items": [
                 "gunsrpg:quartz_9mm",
                 "gunsrpg:quartz_45acp",
@@ -154,7 +154,7 @@
         },
         {
             "id": "emerald_ammo",
-            "weight": 5,
+            "weight": 12,
             "items": [
                 "gunsrpg:emerald_9mm",
                 "gunsrpg:emerald_45acp",
@@ -173,7 +173,7 @@
         },
         {
             "id": "amethyst_ammo",
-            "weight": 5,
+            "weight": 12,
             "items": [
                 "gunsrpg:amethyst_9mm",
                 "gunsrpg:amethyst_45acp",
@@ -192,7 +192,7 @@
         },
         {
             "id": "netherite_ammo",
-            "weight": 5,
+            "weight": 12,
             "items": [
                 "gunsrpg:netherite_9mm",
                 "gunsrpg:netherite_45acp",
@@ -211,7 +211,7 @@
         },
         {
             "id": "meds",
-            "weight": 4,
+            "weight": 16,
             "items": [
                 "gunsrpg:antidotum_pills",
                 "gunsrpg:vaccine",
@@ -233,7 +233,7 @@
         },
         {
             "id": "stims",
-            "weight": 4,
+            "weight": 16,
             "items": [
                 "gunsrpg:hemostat",
                 "gunsrpg:vitamins",
@@ -250,7 +250,7 @@
         },
         {
             "id": "grenades",
-            "weight": 4,
+            "weight": 12,
             "items": [
                 "gunsrpg:grenade",
                 "gunsrpg:massive_grenade",
@@ -266,7 +266,7 @@
         },
         {
             "id": "mines",
-            "weight": 3,
+            "weight": 10,
             "items": [
                 "gunsrpg:landmine",
                 "gunsrpg:large_landmine",
@@ -282,7 +282,7 @@
         },
         {
             "id": "gl",
-            "weight": 4,
+            "weight": 12,
             "items": [
                 "gunsrpg:explosive_grenade_launcher_shell",
                 "gunsrpg:tear_gas_grenade_launcher_shell",
@@ -300,7 +300,7 @@
         },
         {
             "id": "rl",
-            "weight": 4,
+            "weight": 12,
             "items": [
                 "gunsrpg:rocket",
                 "gunsrpg:toxin_rocket",
@@ -318,7 +318,7 @@
         },
         {
             "id": "crystals",
-            "weight": 3,
+            "weight": 12,
             "items": [
                 "gunsrpg:white_crystal",
                 "gunsrpg:yellow_crystal",
@@ -330,7 +330,7 @@
         },
         {
             "id": "orbsp",
-            "weight": 3,
+            "weight": 12,
             "items": [
                 "gunsrpg:white_orb_of_purity",
                 "gunsrpg:black_orb_of_purity",
@@ -349,7 +349,7 @@
         },
         {
             "id": "orbst",
-            "weight": 3,
+            "weight": 12,
             "items": [
                 "gunsrpg:white_orb_of_transmutation",
                 "gunsrpg:black_orb_of_transmutation",
@@ -494,7 +494,7 @@
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:perkpoint_book",
-                    "weight": 3,
+                    "weight": 12,
                     "count": 1,
                     "assemblyFunctions": [
                         {
@@ -632,12 +632,12 @@
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:ufak",
-                    "weight": 3
+                    "weight": 9
                 },
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:flare",
-                    "weight": 2,
+                    "weight": 8,
                     "count": 1,
                     "assemblyFunctions": [
                         {
@@ -650,12 +650,12 @@
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:skillpoint_book",
-                    "weight": 2
+                    "weight": 8
                 },
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:perkpoint_book",
-                    "weight": 3,
+                    "weight": 12,
                     "count": 2,
                     "assemblyFunctions": [
                         {
@@ -809,12 +809,12 @@
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:ufak",
-                    "weight": 3
+                    "weight": 11
                 },
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:flare",
-                    "weight": 2,
+                    "weight": 8,
                     "count": 1,
                     "assemblyFunctions": [
                         {
@@ -827,13 +827,13 @@
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:skillpoint_book",
-                    "weight": 2,
+                    "weight": 8,
                     "count": 1
                 },
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:perkpoint_book",
-                    "weight": 3,
+                    "weight": 12,
                     "count": 2,
                     "assemblyFunctions": [
                         {
@@ -987,19 +987,19 @@
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:ufak",
-                    "weight": 3,
+                    "weight": 11,
                     "count": 2
                 },
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:kodiak",
-                    "weight": 2,
+                    "weight": 9,
                     "count": 1
                 },
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:flare",
-                    "weight": 2,
+                    "weight": 8,
                     "count": 1,
                     "assemblyFunctions": [
                         {
@@ -1012,13 +1012,13 @@
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:skillpoint_book",
-                    "weight": 2,
-                    "count": 1
+                    "weight": 8,
+                    "count": 2
                 },
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:perkpoint_book",
-                    "weight": 3,
+                    "weight": 12,
                     "count": 3,
                     "assemblyFunctions": [
                         {
@@ -1172,19 +1172,19 @@
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:ufak",
-                    "weight": 3,
+                    "weight": 11,
                     "count": 2
                 },
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:kodiak",
-                    "weight": 2,
+                    "weight": 9,
                     "count": 1
                 },
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:flare",
-                    "weight": 2,
+                    "weight": 8,
                     "count": 1,
                     "assemblyFunctions": [
                         {
@@ -1197,13 +1197,13 @@
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:skillpoint_book",
-                    "weight": 2,
+                    "weight": 8,
                     "count": 2
                 },
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:perkpoint_book",
-                    "weight": 3,
+                    "weight": 12,
                     "count": 4,
                     "assemblyFunctions": [
                         {
@@ -1253,7 +1253,7 @@
                             "crystal": {
                                 "level": {
                                     "function": "gunsrpg:const",
-                                    "value": 5
+                                    "value": 6
                                 },
                                 "buffs": {
                                     "function": "gunsrpg:rng",
@@ -1342,13 +1342,13 @@
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:kodiak",
-                    "weight": 3,
+                    "weight": 12,
                     "count": 1
                 },
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:flare",
-                    "weight": 2,
+                    "weight": 8,
                     "count": 2,
                     "assemblyFunctions": [
                         {
@@ -1361,13 +1361,13 @@
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:skillpoint_book",
-                    "weight": 2,
-                    "count": 2
+                    "weight": 8,
+                    "count": 3
                 },
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:perkpoint_book",
-                    "weight": 3,
+                    "weight": 12,
                     "count": 5,
                     "assemblyFunctions": [
                         {
@@ -1491,13 +1491,13 @@
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:kodiak",
-                    "weight": 3,
+                    "weight": 12,
                     "count": 2
                 },
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:flare",
-                    "weight": 2,
+                    "weight": 8,
                     "count": 2,
                     "assemblyFunctions": [
                         {
@@ -1510,13 +1510,13 @@
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:skillpoint_book",
-                    "weight": 2,
-                    "count": 3
+                    "weight": 8,
+                    "count": 4
                 },
                 {
                     "type": "gunsrpg:item",
                     "item": "gunsrpg:perkpoint_book",
-                    "weight": 3,
+                    "weight": 12,
                     "count": 6,
                     "assemblyFunctions": [
                         {

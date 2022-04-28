@@ -109,33 +109,33 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
         }
 
         public static void bartender1(Builder builder) {
-            builder.ammoMultiplier(0.15F);
+            builder.ammoMultiplier(0.10F);
         }
 
         public static void bartender2(Builder builder) {
-            builder.defaults(0.15F, 0.0F, 0, 0, 0, 0, 0)
-                    .ammoMultiplier(0.30F)
+            builder.defaults(0.10F, 0.0F, 0, 0, 0, 0, 0)
+                    .ammoMultiplier(0.20F)
                     .showCount(1);
         }
 
         public static void bartender3(Builder builder) {
-            builder.defaults(0.30F, 0.0F, 1, 0, 0, 0, 0)
-                    .ammoMultiplier(0.45F)
+            builder.defaults(0.20F, 0.0F, 1, 0, 0, 0, 0)
+                    .ammoMultiplier(0.30F)
                     .meds(1)
                     .orbs(1);
         }
 
         public static void bartender4(Builder builder) {
-            builder.defaults(0.45F, 0.0F, 1, 1, 1, 0, 0)
-                    .ammoMultiplier(0.60F)
+            builder.defaults(0.30F, 0.0F, 1, 1, 1, 0, 0)
+                    .ammoMultiplier(0.40F)
                     .showCount(2)
                     .perkBook(1)
                     .explosives(0.5F);
         }
 
         public static void bartender5(Builder builder) {
-            builder.defaults(0.60F, 0.5F, 2, 1, 1, 1, 0)
-                    .ammoMultiplier(0.75F)
+            builder.defaults(0.40F, 0.5F, 2, 1, 1, 1, 0)
+                    .ammoMultiplier(0.50F)
                     .flare(1)
                     .orbs(2);
         }
@@ -156,43 +156,43 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
             }
 
             public Builder ammoMultiplier(float ammoMultiplier) {
-                this.ref.addProperty("ammo", IValueFormatter.PERCENT.formatAttributeValue(ammoMultiplier));
+                this.ref.addProperty("ammo", IValueFormatter.PERCENT.formatAttributeValue(ammoMultiplier - this.ammoMultiplier));
                 this.ammoMultiplier = ammoMultiplier;
                 return this;
             }
 
             public Builder explosives(float explosives) {
-                this.ref.addProperty("explosives", IValueFormatter.PERCENT.formatAttributeValue(explosives));
+                this.ref.addProperty("explosives", IValueFormatter.PERCENT.formatAttributeValue(explosives - this.explosiveAmmo));
                 this.explosiveAmmo = explosives;
                 return this;
             }
 
             public Builder showCount(int shownRewards) {
-                this.ref.addProperty("rewards", shownRewards);
+                this.ref.addProperty("rewards", shownRewards + (int) Attribs.QUEST_VISIBLE_REWARD.getBaseValue());
                 this.shownRewards = shownRewards;
                 return this;
             }
 
             public Builder meds(int meds) {
-                this.ref.addProperty("meds", meds);
+                this.ref.addProperty("meds", meds - this.medReward);
                 this.medReward = meds;
                 return this;
             }
 
             public Builder orbs(int orbs) {
-                this.ref.addProperty("orbs", orbs);
+                this.ref.addProperty("orbs", orbs - this.orbReward);
                 this.orbReward = orbs;
                 return this;
             }
 
             public Builder perkBook(int books) {
-                this.ref.addProperty("perkBook", books);
+                this.ref.addProperty("perkBook", books - this.perkBookReward);
                 this.perkBookReward = books;
                 return this;
             }
 
             public Builder flare(int flares) {
-                this.ref.addProperty("flares", flares);
+                this.ref.addProperty("flares", flares - this.airdropFlare);
                 this.airdropFlare = flares;
                 return this;
             }

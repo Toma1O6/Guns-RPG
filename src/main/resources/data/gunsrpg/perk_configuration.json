@@ -29,7 +29,7 @@
             }
         },
         "storage": {
-            "buff": 10,
+            "buff": 5,
             "debuff": -1
         }
     },

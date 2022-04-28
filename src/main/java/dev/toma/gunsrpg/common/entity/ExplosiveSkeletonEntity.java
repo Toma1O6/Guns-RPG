@@ -248,10 +248,10 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
 
     private enum LoadoutType {
 
-        TEAR_GAS(12, 0x92CE97, new EffectSpreadReaction(0x92CE97, () -> new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 100, 1), () -> new EffectInstance(Effects.BLINDNESS, 100, 0))),
+        TEAR_GAS(12, 0x51CC72, new EffectSpreadReaction(0x51CC72, () -> new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 100, 1), () -> new EffectInstance(Effects.BLINDNESS, 100, 0))),
         STANDARD(35, 0xBDCC92, MultipartReaction.multi(BreakBlockReaction.INSTANCE, new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY))),
-        IMPACT(8, 0xCC7955, MultipartReaction.multi(BreakBlockReaction.INSTANCE, new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY), new PropertyTriggerReaction<>(Properties.IMPACT, true))),
-        SHOCK(10, 0x96CACC, MultipartReaction.multi(BreakBlockReaction.INSTANCE, new ShockReaction(3, 3), new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY)));
+        IMPACT(8, 0xCC4C1E, MultipartReaction.multi(BreakBlockReaction.INSTANCE, new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY), new PropertyTriggerReaction<>(Properties.IMPACT, true))),
+        SHOCK(10, 0x3DC2CC, MultipartReaction.multi(BreakBlockReaction.INSTANCE, new ShockReaction(3, 3), new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY)));
 
         private static final WeightedRandom<LoadoutType> SELECTOR = new WeightedRandom<>(LoadoutType::getWeight, LoadoutType.values());
         private final int weight;
@@ -296,7 +296,7 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
             if (speed < 0) {
                 return;
             }
-            world.destroyBlock(pos, true);
+            world.destroyBlock(pos, false);
         }
     }
 

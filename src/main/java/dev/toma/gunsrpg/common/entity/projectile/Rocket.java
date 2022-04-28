@@ -53,7 +53,13 @@ public class Rocket extends AbstractExplosive {
             xRotO = xRot;
             yRotO = yRot;
         } else {
-            super.updateDirection();
+            Vector3d delta = getDeltaMovement();
+            double dx = delta.x;
+            double dy = delta.y;
+            double dz = delta.z;
+            float motionSqrt = MathHelper.sqrt(dx * dx + dz * dz);
+            xRot = -(float) (MathHelper.atan2(dy, motionSqrt) * (180.0F / Math.PI));
+            xRotO = xRot;
         }
     }
 

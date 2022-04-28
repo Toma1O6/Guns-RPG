@@ -30,6 +30,7 @@ public final class Constants {
         public static final UUID BLEED_DELAYING                             = UUID.fromString("5303EEE4-64A6-45FB-B88B-8F455663EA8B");
         public static final UUID WEAPON_DURABILITY                          = UUID.fromString("1DBC8CE5-142C-421E-B049-14966DC80224");
         public static final UUID WEAPON_JAMMING                             = UUID.fromString("1DBF3917-B851-4631-88D3-CDC5B75FE4BB");
+        public static final UUID UNJAM_SPEED                                = UUID.fromString("0DA91595-6895-412F-A667-4C313D57DB91");
         public static final UUID M1911_KILLING_SPREE                        = UUID.fromString("9DCE8DD9-6035-4164-9312-510510F51F46");
     }
 }
