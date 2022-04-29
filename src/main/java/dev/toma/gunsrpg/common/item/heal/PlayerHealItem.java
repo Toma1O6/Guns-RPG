@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item.heal;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -32,7 +33,7 @@ public class PlayerHealItem extends AbstractHealItem<PlayerEntity> {
     }
 
     public static void onMorphineUsed(PlayerEntity player) {
-        player.heal(14);
+        SkillUtil.heal(player, 14);
         float value = PlayerData.getUnsafe(player).getAttributes().getAttribute(Attribs.MORPHINE_EFFECT).floatValue();
         player.addEffect(new EffectInstance(Effects.REGENERATION, (int) (300 * value), 1, false, false));
         player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, (int) (900 * value), 1, false, false));

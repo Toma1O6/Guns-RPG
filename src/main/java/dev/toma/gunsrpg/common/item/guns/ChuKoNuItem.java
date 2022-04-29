@@ -125,7 +125,6 @@ public class ChuKoNuItem extends AbstractCrossbow {
                     victim.addEffect(new EffectInstance(Effects.WITHER, 100, 1));
                 }
             });
-
         }
     }
 

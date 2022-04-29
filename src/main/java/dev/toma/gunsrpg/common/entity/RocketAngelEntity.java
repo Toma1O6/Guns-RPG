@@ -88,7 +88,7 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
 
     @Override
     public float getBrightness() {
-        return 1.0F;
+        return type == Type.STUN ? 0.7F : 1.0F;
     }
 
     @Override

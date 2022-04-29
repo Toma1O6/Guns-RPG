@@ -137,7 +137,7 @@ public class CommonRegistry {
                 SkillType.Builder.create(SimpleSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModBlocks.MEDICAL_STATION))).build().setRegistryName("medical_station"),
                 SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("medic"),
                 SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("doctor"),
-                SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("efficient_meds"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.HEAL_BOOST, Attribs.HEAL_BOOST))).description(0).build().setRegistryName("efficient_meds"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.DEBUFF_DELAY_I, Attribs.POISON_DELAY), AttributeTarget.create(Modifiers.DEBUFF_RESIST_I, Attribs.POISON_RESISTANCE))).description(0).build().setRegistryName("poison_resistance_i"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.DEBUFF_DELAY_II, Attribs.POISON_DELAY), AttributeTarget.create(Modifiers.DEBUFF_RESIST_II, Attribs.POISON_RESISTANCE))).description(0).build().setRegistryName("poison_resistance_ii"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.DEBUFF_DELAY_III, Attribs.POISON_DELAY), AttributeTarget.create(Modifiers.DEBUFF_RESIST_III, Attribs.POISON_RESISTANCE))).description(0).build().setRegistryName("poison_resistance_iii"),
@@ -200,9 +200,9 @@ public class CommonRegistry {
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.AGILITY_I, Attribs.MOVEMENT_SPEED))).description(0).build().setRegistryName("agility_i"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.AGILITY_II, Attribs.MOVEMENT_SPEED))).description(0).build().setRegistryName("agility_ii"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.AGILITY_III, Attribs.MOVEMENT_SPEED))).description(0).build().setRegistryName("agility_iii"),
-                SkillType.Builder.<AdrenalineRushSkill>create(type -> new AdrenalineRushSkill(type, 0, 0.05f)).build().setRegistryName("adrenaline_rush_i"),
-                SkillType.Builder.<AdrenalineRushSkill>create(type -> new AdrenalineRushSkill(type, 1, 0.1f)).build().setRegistryName("adrenaline_rush_ii"),
-                SkillType.Builder.<AdrenalineRushSkill>create(type -> new AdrenalineRushSkill(type, 2, 0.2f)).build().setRegistryName("adrenaline_rush_iii"),
+                SkillType.Builder.<AdrenalineRushSkill>create(type -> new AdrenalineRushSkill(type, 0, 0.95f)).build().setRegistryName("adrenaline_rush_i"),
+                SkillType.Builder.<AdrenalineRushSkill>create(type -> new AdrenalineRushSkill(type, 1, 0.9f)).build().setRegistryName("adrenaline_rush_ii"),
+                SkillType.Builder.<AdrenalineRushSkill>create(type -> new AdrenalineRushSkill(type, 2, 0.8f)).build().setRegistryName("adrenaline_rush_iii"),
                 SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 1, 0.40F)).build().setRegistryName("well_fed_i"),
                 SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 2, 0.55F)).build().setRegistryName("well_fed_ii"),
                 SkillType.Builder.<WellFedSkill>create(type -> new WellFedSkill(type, 3, 0.70F)).build().setRegistryName("well_fed_iii"),
@@ -288,7 +288,7 @@ public class CommonRegistry {
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.CHUKONU_EXTENDED, Attribs.CHUKONU_MAG_CAPACITY))).renderModIcon("extended").description(0).build().setRegistryName("chukonu_extended"),
                 SkillType.Builder.create(SimpleSkill::new).renderModIcon("tough_bowstring").build().setRegistryName("chukonu_tough_bowstring"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.TOUGH_SPRING, Attribs.CHUKONU_FIRERATE))).renderModIcon("gear_grinder").description(0).build().setRegistryName("chukonu_gear_grinder"),
-                SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("chukonu_heavy_bolts"),
+                SkillType.Builder.create(SimpleSkill::new).description(2).build().setRegistryName("chukonu_heavy_bolts"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.BULLET_LOOPS, Attribs.S1897_RELOAD_SPEED))).description(0).renderModIcon("bullet_loops").build().setRegistryName("s1897_bullet_loops"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.S1897_EXTENDED, Attribs.S1897_MAG_CAPACITY))).description(0).renderModIcon("extended").build().setRegistryName("s1897_extended"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.S1897_FAST_PUMP, Attribs.S1897_FIRERATE))).description(0).build().setRegistryName("s1897_pump_in_action"),
@@ -501,7 +501,7 @@ public class CommonRegistry {
                         .build(),
                 PlayerHealItem.define("analgetics")
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
-                        .onUse(player -> player.heal(5))
+                        .onUse(player -> SkillUtil.heal(player, 5))
                         .describe("Recovers 2.5 hearts")
                         .animate(60, AnimationPaths.PILLS)
                         .build(),
@@ -517,7 +517,7 @@ public class CommonRegistry {
                         .build(),
                 PlayerHealItem.define("painkillers")
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
-                        .onUse(player -> player.heal(12.0F))
+                        .onUse(player -> SkillUtil.heal(player, 12.0F))
                         .describe("Recovers 6 hearts")
                         .animate(60, AnimationPaths.PILLS)
                         .build(),
@@ -656,20 +656,20 @@ public class CommonRegistry {
                 new ModFoodItem("fish_and_chips", ModFoods.FISH_AND_CHIPS),
                 new ModFoodItem("garden_soup", ModFoods.GARDEN_SOUP),
                 new ModFoodItem("chicken_dinner", ModFoods.CHICKED_DINNER),
-                new ModFoodItem("deluxe_meal", ModFoods.DELUXE_MEAL).buff(player -> player.heal(3)),
-                new ModFoodItem("meaty_stew_xxl", ModFoods.MEATY_STEW_XXL).buff(player -> player.heal(5)),
-                new ModFoodItem("rabbit_creamy_soup", ModFoods.RABBIT_CREAMY_SOUP).buff(player -> player.heal(3)),
+                new ModFoodItem("deluxe_meal", ModFoods.DELUXE_MEAL).buff(player -> SkillUtil.heal(player, 3)),
+                new ModFoodItem("meaty_stew_xxl", ModFoods.MEATY_STEW_XXL).buff(player -> SkillUtil.heal(player, 5)),
+                new ModFoodItem("rabbit_creamy_soup", ModFoods.RABBIT_CREAMY_SOUP).buff(player -> SkillUtil.heal(player, 3)),
                 new ModFoodItem("shepherds_pie", ModFoods.SHEPHERDS_PIE),
-                new ModFoodItem("fruit_salad", ModFoods.FRUIT_SALAD).buff(player -> player.heal(2.0F)),
+                new ModFoodItem("fruit_salad", ModFoods.FRUIT_SALAD).buff(player -> SkillUtil.heal(player, 2.0F)),
                 new ModFoodItem("egg_salad", ModFoods.EGG_SALAD),
-                new ModFoodItem("chocolate_glazed_apple_pie", ModFoods.CHOCOLATE_GLAZED_APPLE_PIE).buff(player -> player.heal(3.0F)),
+                new ModFoodItem("chocolate_glazed_apple_pie", ModFoods.CHOCOLATE_GLAZED_APPLE_PIE).buff(player -> SkillUtil.heal(player, 3.0F)),
                 new ModFoodItem("fried_egg", ModFoods.FRIED_EGG),
                 new ModFoodItem("fries", ModFoods.FRIES),
-                new ModFoodItem("chicken_nuggets", ModFoods.CHICKEN_NUGGETS).buff(player -> player.heal(1f)),
+                new ModFoodItem("chicken_nuggets", ModFoods.CHICKEN_NUGGETS).buff(player -> SkillUtil.heal(player, 1f)),
                 new ModFoodItem("schnitzel", ModFoods.SCHNITZEL),
                 new ModFoodItem("raw_doughnut", ModFoods.RAW_DOUGHNUT),
                 new ModFoodItem("doughnut", ModFoods.DOUGHNUT),
-                new ModFoodItem("sushi_maki", ModFoods.SUSHI_MAKI).buff(player -> player.heal(1.0F)),
+                new ModFoodItem("sushi_maki", ModFoods.SUSHI_MAKI).buff(player -> SkillUtil.heal(player, 1.0F)),
                 new CookingOilItem("cooking_oil"),
                 new StorageItem("lunch_box", new Item.Properties(), 3, 2, StorageUtil::isFood, LunchBoxContainer::new),
                 new StorageItem("ammo_case", new Item.Properties(), 4, 4, StorageUtil::isAmmo, AmmoCaseContainer::new),

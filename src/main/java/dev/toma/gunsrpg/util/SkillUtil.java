@@ -1,10 +1,13 @@
 package dev.toma.gunsrpg.util;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
 import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
+import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.skills.core.DisplayData;
 import dev.toma.gunsrpg.common.skills.core.DisplayType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -53,7 +56,11 @@ public class SkillUtil {
     }
 
     public static void heal(PlayerEntity player, float amount) {
-        player.heal(amount); // TODO implement attribute
+        PlayerData.get(player).ifPresent(data -> {
+            IAttributeProvider provider = data.getAttributes();
+            float value = provider.getAttribute(Attribs.HEAL_BOOST).floatValue();
+            player.heal(amount + value);
+        });
     }
 
     public static class Localizations {

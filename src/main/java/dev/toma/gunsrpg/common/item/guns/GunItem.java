@@ -93,11 +93,13 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
             IPlayerData data = PlayerData.getUnsafe(player);
             IAttributeProvider provider = data.getAttributes();
             IAttributeId attributeId = isSilenced(player) ? Attribs.SILENT_WEAPON_DAMAGE : Attribs.LOUD_WEAPON_DAMAGE;
-            base = (float) provider.getAttribute(attributeId).getModifiedValue(base);
-            IAttributeId categoryBonus = getWeaponCategory().getBonusDamageAttribute();
-            if (categoryBonus != null) {
-                base = (float) provider.getAttribute(attributeId).getModifiedValue(base);
+            float damageMultiplier = (float) provider.getAttribute(attributeId).getModifiedValue(base);
+            WeaponCategory category = this.getWeaponCategory();
+            if (category.hasBonusDamage()) {
+                IAttributeId categoryId = category.getBonusDamageAttribute();
+                damageMultiplier *= (float) provider.getAttribute(categoryId).getModifiedValue(base);
             }
+            base *= damageMultiplier;
         }
         return base + getDamageBonus(stack);
     }

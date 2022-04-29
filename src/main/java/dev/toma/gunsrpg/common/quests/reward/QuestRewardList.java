@@ -11,6 +11,10 @@ public final class QuestRewardList {
         this.itemProviders = new WeightedRandom<>(IQuestItemProvider::getWeight, itemProviders);
     }
 
+    public IQuestItemProvider[] listProviders() {
+        return itemProviders.getValues();
+    }
+
     public IQuestItemProvider getRandomProvider() {
         return itemProviders.getRandom();
     }

@@ -433,7 +433,7 @@
     "skill.gunsrpg.ump45_commando.title": "Commando",
     "skill.gunsrpg.ump45_commando.description.0": "You will receive following effects when you kill any mob:",
     "skill.gunsrpg.ump45_commando.description.1": "Speed II for 5 seconds",
-    "skill.gunsrpg.ump45_commando.description.2": "Regeneration III for 3 seconds",
+    "skill.gunsrpg.ump45_commando.description.2": "Regeneration II for 4 seconds",
     "skill.gunsrpg.thompson_quickdraw.title": "Quickdraw",
     "skill.gunsrpg.thompson_quickdraw.description.speed": "%s%% faster reload",
     "skill.gunsrpg.thompson_vertical.title": "Vertical Grip",
@@ -843,7 +843,7 @@
     "item.gunsrpg.starter_gear.use": "RIGHT-CLICK to receive items",
 
     "command.gunsrpg.exception.missing_key": "Undefined ID",
-    "command.gunsrpg.exception.missing_args": "Missing argument, use one from [%s] list",
+    "command.gunsrpg.exception.missing_args": "Missing argument, use one of [%s] values",
     "command.gunsrpg.exception.location_obstructed": "Location is obstructed, find clear place",
     "command.gunsrpg.exception.unknown_key": "Unknown key %s!",
     "command.gunsrpg.exception.invalid_tx_data": "Invalid JSON data",

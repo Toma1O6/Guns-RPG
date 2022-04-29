@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.BaseItem;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;
 import net.minecraft.client.util.ITooltipFlag;
@@ -107,8 +108,7 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
                 PlayerData.get(player).ifPresent(data -> {
                     T target = getTargetObject(world, player, data);
                     applyAction(target);
-                    if (data.getSkillProvider().hasSkill(Skills.EFFICIENT_MEDS))
-                        player.heal(2.0F);
+                    SkillUtil.heal(player, 0); // will apply raw heal bonus obtained from efficient med skill
                     if (!player.isCreative())
                         stack.shrink(1);
                 });

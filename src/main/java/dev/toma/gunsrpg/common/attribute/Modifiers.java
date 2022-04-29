@@ -49,8 +49,8 @@ public final class Modifiers {
     public static final IAttributeModifier INSTANT_KILL_I               = new AttributeModifier(SKULL_CRUSHER, AttributeOps.SUM, 0.03).named("chance", IValueFormatter.PERCENT);
     public static final IAttributeModifier INSTANT_KILL_II              = new AttributeModifier(SKULL_CRUSHER, AttributeOps.SUM, 0.05).named("chance", IValueFormatter.PERCENT);
     public static final IAttributeModifier INSTANT_KILL_III             = new AttributeModifier(SKULL_CRUSHER, AttributeOps.SUM, 0.07).named("chance", IValueFormatter.PERCENT);
-    public static final IAttributeModifier REPAIR_MAN_I                 = new AttributeModifier(REPAIR_MAN, AttributeOps.SUM, 0.10).named("repair", IValueFormatter.PERCENT);
-    public static final IAttributeModifier REPAIR_MAN_II                = new AttributeModifier(REPAIR_MAN, AttributeOps.SUM, 0.15).named("repair", IValueFormatter.PERCENT);
+    public static final IAttributeModifier REPAIR_MAN_I                 = new AttributeModifier(REPAIR_MAN, AttributeOps.SUM, 0.05).named("repair", IValueFormatter.PERCENT);
+    public static final IAttributeModifier REPAIR_MAN_II                = new AttributeModifier(REPAIR_MAN, AttributeOps.SUM, 0.10).named("repair", IValueFormatter.PERCENT);
     public static final IAttributeModifier REPAIR_MAN_III               = new AttributeModifier(REPAIR_MAN, AttributeOps.SUM, 0.20).named("repair", IValueFormatter.PERCENT);
     public static final IAttributeModifier WEAPON_DURABILITY_I          = new AttributeModifier(WEAPON_DURABILITY, AttributeOps.MUL, 0.95).named("durability", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier WEAPON_DURABILITY_II         = new AttributeModifier(WEAPON_DURABILITY, AttributeOps.MUL, 0.90).named("durability", IValueFormatter.INV_PERCENT);
@@ -61,6 +61,7 @@ public final class Modifiers {
     public static final IAttributeModifier UNJAMMING_I                  = new AttributeModifier(UNJAM_SPEED, AttributeOps.MUL, 0.95).named("unjamming", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier UNJAMMING_II                 = new AttributeModifier(UNJAM_SPEED, AttributeOps.MUL, 0.90).named("unjamming", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier UNJAMMING_III                = new AttributeModifier(UNJAM_SPEED, AttributeOps.MUL, 0.80).named("unjamming", IValueFormatter.INV_PERCENT);
+    public static final IAttributeModifier HEAL_BOOST                   = new AttributeModifier("D558652A-7958-44F8-8203-06DAC32D6E10", AttributeOps.SUM, 3.0).named("heal");
     /* Debuff modifiers */
     public static final IAttributeModifier DEBUFF_RESIST_I              = new AttributeModifier(DEBUFF_RESISTANCE, AttributeOps.SUM, 0.15).named("resist", IValueFormatter.PERCENT);
     public static final IAttributeModifier DEBUFF_DELAY_I               = new AttributeModifier(DEBUFF_DELAY, AttributeOps.SUM, 20).named("delay", IValueFormatter.SECONDS);

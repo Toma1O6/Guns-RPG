@@ -48,5 +48,17 @@ public interface IQuestItemProvider {
             }
             return items.toArray(new ItemStack[0]);
         }
+
+        public int getCount() {
+            return count;
+        }
+
+        public Item getItem() {
+            return itemSupplier.get();
+        }
+
+        public int getFunctionCount() {
+            return functions != null ? functions.length : 0;
+        }
     }
 }
