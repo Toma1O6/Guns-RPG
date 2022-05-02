@@ -17,6 +17,7 @@ import dev.toma.gunsrpg.resource.progression.ProgressionStrategyManager;
 import dev.toma.gunsrpg.resource.skill.SkillPropertyLoader;
 import dev.toma.gunsrpg.resource.startgear.StartGearManager;
 import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
+import dev.toma.gunsrpg.world.mayor.VillageFeatureMutator;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -53,6 +54,7 @@ public final class Lifecycle {
         initOreToChunkMap();
         ModRecipeTypes.register();
         SlingItem.initAmmoRegistry();
+        VillageFeatureMutator.mutateVanillaVillages();
     }
 
     public StartGearManager getStartingGearManager() {

@@ -66,6 +66,8 @@ public class MayorEntity extends CreatureEntity {
                 }
                 status.onTraderAttacked();
             });
+        } else {
+            super.hurt(source, amount);
         }
         return false;
     }

@@ -20,7 +20,9 @@ public abstract class SkilledWorkbenchTileEntity extends VanillaInventoryTileEnt
     @Override
     public void setChanged() {
         super.setChanged();
-        onSynch();
+        if (level != null) {
+            onSynch();
+        }
     }
 
     @Override
