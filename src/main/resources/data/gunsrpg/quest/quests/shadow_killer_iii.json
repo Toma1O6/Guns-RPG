@@ -1,6 +1,6 @@
 {
     "type": "gunsrpg:kill_entities",
-    "tier": 4,
+    "tier": 3,
     "display": {
         "name": "Shadow Killer III",
         "info": "Kill 20 hostile mobs without aggro"
