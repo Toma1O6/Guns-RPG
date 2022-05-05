@@ -7,7 +7,18 @@
     },
     "data": {
         "entities": [
-            "gunsrpg:explosive_skeleton"
+            "gunsrpg:explosive_skeleton",
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "gunsrpg:explosive_skeleton",
+                    "propability": 0.05,
+                    "limit": 3
+                }
+            ]
+        }
         ],
         "count": 5
     },
