@@ -35,9 +35,18 @@ public class BulletEjectAnimation extends Animation {
     }
 
     @Override
+    public void preAnimate(AnimationStage stage, MatrixStack stack) {
+        if (stage == ModAnimations.BULLET) {
+            stack.pushPose();
+        }
+    }
+
+    @Override
     public void onAnimated(AnimationStage stage, MatrixStack stack, IRenderTypeBuffer typeBuffer, int light, int overlay) {
+        if (stage != ModAnimations.BULLET) return;
         if (bulletRenderer != null) {
             bulletRenderer.renderSpecial(null, stack, typeBuffer.getBuffer(RenderType.entitySolid(AbstractWeaponRenderer.WEAPON)), light, overlay);
         }
+        stack.popPose();
     }
 }

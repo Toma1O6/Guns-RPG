@@ -1,0 +1,39 @@
+{
+    "type": "gunsrpg:kill_in_area",
+    "tier": 4,
+    "display": {
+        "name": "Inferno III",
+        "info": "Kill 20 blazes"
+    },
+    "data": {
+        "entities": [
+            "minecraft:blaze"
+        ],
+        "count": 20,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "minecraft:blaze",
+                    "propability": 0.05,
+                    "limit": 3
+                }
+            ]
+        }
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ],
+        "exclusions": [
+            "gunsrpg:use_melee"
+        ]
+    }
+}

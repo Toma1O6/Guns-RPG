@@ -1,0 +1,36 @@
+{
+    "type": "gunsrpg:kill_in_area",
+    "tier": 2,
+    "display": {
+        "name": "Venomous Kiss I",
+        "info": "Kill 7 cave spiders"
+    },
+    "data": {
+        "entities": [
+            "minecraft:cave_spider"
+        ],
+        "count": 7,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "minecraft:cave_spider",
+                    "propability": 0.05,
+                    "limit": 5
+                }
+            ]
+        }
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

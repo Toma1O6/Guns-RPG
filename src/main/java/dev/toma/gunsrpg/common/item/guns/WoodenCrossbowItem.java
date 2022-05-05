@@ -42,7 +42,7 @@ public class WoodenCrossbowItem extends AbstractCrossbow {
     private static final PenetrationData.Factory PEN_DATA = new PenetrationData.Factory(0.3F);
 
     public WoodenCrossbowItem(String name) {
-        super(name, new Properties().setISTER(() -> WoodenCrossbowRenderer::new).durability(350));
+        super(name, new Properties().setISTER(() -> WoodenCrossbowRenderer::new).durability(300));
     }
 
     @Override

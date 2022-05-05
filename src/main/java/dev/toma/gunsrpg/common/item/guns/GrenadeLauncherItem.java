@@ -2,9 +2,15 @@ package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IReloadManager;
+import dev.toma.gunsrpg.api.common.IWeaponConfig;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.GrenadeLauncherRenderer;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
+import dev.toma.gunsrpg.common.entity.projectile.Grenade;
+import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -14,19 +20,24 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.World;
 
-public class GrenadeLauncherItem extends GunItem {
+import static dev.toma.gunsrpg.util.properties.Properties.EXPLOSION_POWER;
+
+public class GrenadeLauncherItem extends AbstractExplosiveLauncher {
 
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("gl/reload");
     private static final ResourceLocation LOAD_BULLET = GunsRPG.makeResource("gl/load_bullet");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("gl/unjam");
+    private static final ResourceLocation AIM = GunsRPG.makeResource("gl/aim");
 
     public GrenadeLauncherItem(String name) {
-        super(name, new Properties().setISTER(() -> GrenadeLauncherRenderer::new).durability(200));
+        super(name, new Properties().setISTER(() -> GrenadeLauncherRenderer::new).durability(220));
     }
 
     @Override
@@ -49,12 +60,12 @@ public class GrenadeLauncherItem extends GunItem {
 
     @Override
     public int getMaxAmmo(IAttributeProvider provider) {
-        return 4;
+        return provider.getAttribute(Attribs.GL_MAG_CAPACITY).intValue();
     }
 
     @Override
     public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
-        return 30;
+        return Attribs.GL_RELOAD.intValue(provider);
     }
 
     @Override
@@ -64,12 +75,34 @@ public class GrenadeLauncherItem extends GunItem {
 
     @Override
     public int getFirerate(IAttributeProvider provider) {
-        return 8;
+        return provider.getAttribute(Attribs.GL_FIRERATE).intValue();
     }
 
     @Override
     public int getUnjamTime(ItemStack stack) {
         return 75;
+    }
+
+    @Override
+    protected float getInitialVelocity(IWeaponConfig config, LivingEntity shooter) {
+        float velocity = super.getInitialVelocity(config, shooter);
+        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.GRENADE_LAUNCHER_BETTER_CARTRIDGE)) {
+            velocity *= 1.6f;
+        }
+        return velocity;
+    }
+
+    @Override
+    protected void prepareForShooting(AbstractProjectile projectile, LivingEntity shooter) {
+        super.prepareForShooting(projectile, shooter);
+        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.GRENADE_LAUNCHER_DEMOLITION_EXPERT)) {
+            projectile.setProperty(EXPLOSION_POWER, 1);
+        }
+    }
+
+    @Override
+    protected AbstractProjectile makeProjectile(World level, LivingEntity shooter) {
+        return new Grenade(ModEntities.GRENADE_SHELL.get(), level, shooter);
     }
 
     @Override
@@ -85,6 +118,15 @@ public class GrenadeLauncherItem extends GunItem {
     @Override
     public ResourceLocation getUnjamAnimationPath() {
         return UNJAM;
+    }
+
+    @Override
+    public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
+        return AIM;
+    }
+
+    @Override
+    public void onShoot(PlayerEntity player, ItemStack stack) {
     }
 
     @Override

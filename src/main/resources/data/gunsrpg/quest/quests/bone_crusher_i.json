@@ -1,0 +1,25 @@
+{
+    "type": "gunsrpg:kill_entities",
+    "tier": 1,
+    "display": {
+        "name": "Bone Crusher I",
+        "info": "Kill 7 skeletons"
+    },
+    "data": {
+        "entities": [
+            "minecraft:skeleton"
+        ],
+        "count": 7
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

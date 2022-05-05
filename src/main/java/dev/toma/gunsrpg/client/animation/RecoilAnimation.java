@@ -24,7 +24,7 @@ public class RecoilAnimation extends TickableAnimation {
         float modifier = aimInfo.isAiming() ? 0.2F + 0.8F * config.getRecoilAnimationScale() : 1.0F;
         this.x = x * modifier;
         this.y = y * modifier;
-        this.z = 0.09F * modifier;
+        this.z = 0.09F * modifier * 0.5F;
     }
 
     @Override

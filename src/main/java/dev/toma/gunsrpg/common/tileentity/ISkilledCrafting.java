@@ -1,6 +1,5 @@
 package dev.toma.gunsrpg.common.tileentity;
 
-import dev.toma.gunsrpg.common.entity.ISynchronizable;
 import dev.toma.gunsrpg.resource.crafting.SkilledRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 

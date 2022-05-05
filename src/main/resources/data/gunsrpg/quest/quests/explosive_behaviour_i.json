@@ -1,0 +1,25 @@
+{
+    "type": "gunsrpg:kill_entities",
+    "tier": 3,
+    "display": {
+        "name": "Explosive Behaviour I",
+        "info": "Kill 5 explosive skeletons"
+    },
+    "data": {
+        "entities": [
+            "gunsrpg:explosive_skeleton"
+        ],
+        "count": 5
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

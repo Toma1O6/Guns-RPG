@@ -1,10 +1,10 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.SksRenderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -35,7 +35,7 @@ public class SksItem extends GunItem {
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("sks/unjam");
 
     public SksItem(String name) {
-        super(name, new Properties().setISTER(() -> SksRenderer::new).durability(700));
+        super(name, new Properties().setISTER(() -> SksRenderer::new).durability(600));
     }
 
     @Override

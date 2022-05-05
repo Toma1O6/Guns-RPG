@@ -17,6 +17,7 @@ import dev.toma.gunsrpg.resource.progression.ProgressionStrategyManager;
 import dev.toma.gunsrpg.resource.skill.SkillPropertyLoader;
 import dev.toma.gunsrpg.resource.startgear.StartGearManager;
 import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
+import dev.toma.gunsrpg.world.mayor.VillageFeatureMutator;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,12 +37,12 @@ public final class Lifecycle {
 
     private final Map<GunItem, IAmmoProvider[]> weaponProviderMap = new IdentityHashMap<>();
     private final Map<Item, Item> ore2ChunkMap = new IdentityHashMap<>(2);
-    private final QuestSystem questSystem = new QuestSystem();
     private final StartGearManager startingGearManager = new StartGearManager();
     private final ZombieGunnerWeaponManager zombieGunnerWeaponManager = new ZombieGunnerWeaponManager();
     private final LootManager lootManager = new LootManager();
     private final ProgressionStrategyManager progressionStrategyManager = new ProgressionStrategyManager();
     private final PerkManager perkManager = new PerkManager();
+    private final QuestSystem questSystem = new QuestSystem();
 
     public void modInit() {
         ModTags.init();
@@ -53,6 +54,7 @@ public final class Lifecycle {
         initOreToChunkMap();
         ModRecipeTypes.register();
         SlingItem.initAmmoRegistry();
+        VillageFeatureMutator.mutateVanillaVillages();
     }
 
     public StartGearManager getStartingGearManager() {
@@ -133,5 +135,6 @@ public final class Lifecycle {
         event.addListener(progressionStrategyManager);
         event.addListener(perkManager);
         event.addListener(perkManager.configLoader);
+        this.questSystem.initialize(event);
     }
 }

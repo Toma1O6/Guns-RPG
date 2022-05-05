@@ -123,6 +123,10 @@ public class RenderConfig extends PositionConfig {
             return this;
         }
 
+        public RenderConfigBuilder flipY() {
+            return this.withRotation(Vector3f.YP.rotation((float) Math.PI));
+        }
+
         public RenderConfig finish() {
             return new RenderConfig(this);
         }

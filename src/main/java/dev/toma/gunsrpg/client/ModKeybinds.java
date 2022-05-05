@@ -18,6 +18,7 @@ import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.*;
 import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
 import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
+import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.Animation;
@@ -41,6 +42,7 @@ public class ModKeybinds {
     private static final List<ModKeyBind> keyBinds = new ArrayList<>(2);
 
     public static void registerKeybinds() {
+        register("unjam", GLFW.GLFW_KEY_X, ModKeybinds::unjamPressed);
         register("reload", GLFW.GLFW_KEY_R, ModKeybinds::reloadPressed);
         register("class_list", GLFW.GLFW_KEY_O, ModKeybinds::showClassesPressed);
         register("firemode", GLFW.GLFW_KEY_B, () -> {
@@ -49,6 +51,25 @@ public class ModKeybinds {
                 NetworkManager.sendServerPacket(new C2S_ChangeFiremodePacket());
             }
         });
+    }
+
+    private static void unjamPressed() {
+        Minecraft mc = Minecraft.getInstance();
+        PlayerEntity player = mc.player;
+        IPlayerData data = PlayerData.getUnsafe(player);
+        ItemStack stack = player.getMainHandItem();
+        if (stack.getItem() instanceof GunItem) {
+            IJamInfo info = data.getJamInfo();
+            GunItem gunItem = (GunItem) stack.getItem();
+            if (gunItem.isJammed(stack) && !info.isUnjamming()) {
+                int slot = player.inventory.selected;
+                int time = gunItem.getUnjamTime(stack, data.getAttributes());
+                ResourceLocation animationPath = gunItem.getUnjamAnimationPath();
+                info.startUnjamming(player.inventory.selected, time);
+                NetworkManager.sendServerPacket(new C2S_PacketSetJamming(true, time, slot));
+                AnimationEngine.get().pipeline().insert(ModAnimations.UNJAM, AnimationUtils.createAnimation(animationPath, provider -> new Animation(provider, time)));
+            }
+        }
     }
 
     private static void reloadPressed() {
@@ -69,8 +90,9 @@ public class ModKeybinds {
             AnimationEngine engine = AnimationEngine.get();
             IAnimationPipeline pipeline = engine.pipeline();
             IAttributeProvider attributeProvider = data.getAttributes();
-            if (stack.getItem() instanceof GunItem && !player.isSprinting() && pipeline.get(ModAnimations.CHAMBER) == null) {
+            if (stack.getItem() instanceof GunItem && !player.isSprinting() && ShootingManager.isShootingReady()) {
                 GunItem gun = (GunItem) stack.getItem();
+                if (gun.isJammed(stack)) return;
                 if (info.isReloading()) {
                     IReloadManager manager = gun.getReloadManager(player, data.getAttributes());
                     if (manager.isCancelable()) {
@@ -78,14 +100,6 @@ public class ModKeybinds {
                         NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(false, 0));
                         return;
                     }
-                } else if (gun.isJammed(stack)) {
-                    int slot = player.inventory.selected;
-                    int time = gun.getUnjamTime(stack, attributeProvider);
-                    ResourceLocation animationPath = gun.getUnjamAnimationPath();
-                    jamInfo.startUnjamming(player.inventory.selected, time);
-                    NetworkManager.sendServerPacket(new C2S_PacketSetJamming(true, time, slot));
-                    pipeline.insert(ModAnimations.UNJAM, AnimationUtils.createAnimation(animationPath, provider -> new Animation(provider, time)));
-                    return;
                 }
                 AmmoType ammoType = gun.getAmmoType();
                 IAmmoMaterial material = gun.getMaterialFromNBT(stack);

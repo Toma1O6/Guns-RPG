@@ -35,6 +35,10 @@ public class WeightedRandom<T> {
         return values;
     }
 
+    public int getValueCount() {
+        return values.length;
+    }
+
     private int gatherAll() {
         int i = 0;
         for (T t : values)

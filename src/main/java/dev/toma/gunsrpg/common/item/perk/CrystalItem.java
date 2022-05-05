@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.common.item.perk;
 import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.common.perk.PerkType;
-import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -11,7 +10,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -27,12 +25,26 @@ public class CrystalItem extends PerkItem implements IPerkHolder {
         super(name, variant, new Properties().tab(ModTabs.ITEM_TAB).stacksTo(1));
     }
 
+    public static Crystal getCrystal(ItemStack stack) {
+        CompoundNBT nbt = stack.getTag();
+        if (nbt == null) return null;
+        CompoundNBT crystalNbt = nbt.getCompound("crystal");
+        return Crystal.fromNbt(crystalNbt);
+    }
+
+    public static void addCrystal(ItemStack stack, Crystal crystal) {
+        CompoundNBT nbt = stack.getTag();
+        if (nbt == null) {
+            nbt = new CompoundNBT();
+        }
+        nbt.put("crystal", crystal.toNbt());
+        stack.setTag(nbt);
+    }
+
     @Override
     public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        CompoundNBT nbt = stack.getTag();
-        if (nbt == null) return;
-        CompoundNBT crystalNbt = nbt.getCompound("crystal");
-        Crystal crystal = Crystal.fromNbt(crystalNbt);
+        Crystal crystal = getCrystal(stack);
+        if (crystal == null) return;
         list.add(new StringTextComponent("Level: " + TextFormatting.AQUA + crystal.getLevel()));
         list.add(new StringTextComponent("Attributes"));
         for (CrystalAttribute attribute : crystal.listAttributes()) {
@@ -40,7 +52,7 @@ public class CrystalItem extends PerkItem implements IPerkHolder {
             ITextComponent name = SkillUtil.Localizations.makeReadable(perk.getPerkId());
             TextFormatting formatting = attribute.getType() == PerkType.BUFF ? TextFormatting.GREEN : TextFormatting.RED;
             String pct = DECIMAL_FORMAT.format(attribute.getValue() * 100F);
-            list.add(new StringTextComponent(formatting + name.getString() + ": " + pct + "%"));
+            list.add(new StringTextComponent(formatting + name.getString() + ": " + pct + "% [" + Math.abs(attribute.getLevel()) + "]"));
         }
     }
 

@@ -34,11 +34,13 @@ public class Bullet extends AbstractPenetratingProjectile {
     public void preTick() {}
 
     @Override
-    public void postTick() {}
+    public void postTick() {
+        applyGravity(0.05F);
+    }
 
     @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
-        return false;
+        return propertyContext.hasProperty(Properties.TRACER);
     }
 
     @Override
@@ -74,7 +76,7 @@ public class Bullet extends AbstractPenetratingProjectile {
             this.hurtTarget(entity, this.getOwner());
             entity.invulnerableTime = 0;
             PenetrationData penetrationData = this.getProperty(Properties.PENETRATION);
-            if (penetrationData != null && penetrationData.getLastHit() != null) {
+            if (penetrationData == null || penetrationData.getLastHit() != null) {
                 remove();
             }
         }

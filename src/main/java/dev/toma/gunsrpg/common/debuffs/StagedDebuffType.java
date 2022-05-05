@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.debuffs;
 
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.util.function.ToFloatFunction;
 import net.minecraft.entity.player.PlayerEntity;
 

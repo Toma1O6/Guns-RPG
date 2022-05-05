@@ -31,6 +31,7 @@ public class CrossbowBoltRenderer extends EntityRenderer<Bolt> {
 
     @Override
     public void render(Bolt bolt, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+        if (bolt.tickCount < 2) return;
         stack.pushPose();
         stack.mulPose(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, bolt.yRotO, bolt.yRot) - 90.0F));
         stack.mulPose(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, bolt.xRotO, bolt.xRot)));

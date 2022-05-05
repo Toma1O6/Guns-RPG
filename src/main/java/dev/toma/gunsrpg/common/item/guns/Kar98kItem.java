@@ -2,12 +2,13 @@ package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IReloadManager;
-import dev.toma.gunsrpg.api.common.attribute.IAttribute;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Kar98kRenderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.entity.projectile.PenetrationData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
@@ -17,23 +18,16 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.C2S_SetAimingPacket;
-import dev.toma.gunsrpg.sided.ClientSideManager;
 import lib.toma.animations.api.IRenderConfig;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class Kar98kItem extends GunItem {
+public class Kar98kItem extends AbstractBoltActionGun {
 
-    private static final ResourceLocation EJECT = GunsRPG.makeResource("kar98k/eject");
+    private static final ResourceLocation BOLT = GunsRPG.makeResource("kar98k/bolt");
     private static final ResourceLocation[] AIM_ANIMATIONS = {
             GunsRPG.makeResource("kar98k/aim"),
             GunsRPG.makeResource("kar98k/aim_scoped")
@@ -42,9 +36,10 @@ public class Kar98kItem extends GunItem {
     private static final ResourceLocation LOAD_BULLET_ANIMATION = GunsRPG.makeResource("kar98k/load_bullet");
     private static final ResourceLocation RELOAD_CLIP_ANIMATION = GunsRPG.makeResource("kar98k/reload_clip");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("kar98k/unjam");
+    private static final PenetrationData.Factory PENETRATION_DATA_FACTORY = new PenetrationData.Factory(0.5f);
 
     public Kar98kItem(String name) {
-        super(name, new Properties().setISTER(() -> Kar98kRenderer::new).durability(450));
+        super(name, new Properties().setISTER(() -> Kar98kRenderer::new).durability(300));
     }
 
     @Override
@@ -81,7 +76,7 @@ public class Kar98kItem extends GunItem {
 
     @Override
     public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
-        return (int) (this.getAmmo(stack) > 0 ? Attribs.KAR98K_RELOAD.getModifiedValue(provider, 30) : Attribs.KAR98K_RELOAD.getModifiedValue(provider, 100));
+        return (int) (this.getAmmo(stack) > 0 ? Attribs.KAR98K_RELOAD.value(provider) : Attribs.KAR98K_RELOAD.getModifiedValue(provider, 100));
     }
 
     @Override
@@ -110,9 +105,30 @@ public class Kar98kItem extends GunItem {
     }
 
     @Override
+    public PenetrationData getPenetrationData(IPlayerData data) {
+        return data.getSkillProvider().hasSkill(Skills.KAR98K_PENETRATOR) ? PENETRATION_DATA_FACTORY.make() : null;
+    }
+
+    @Override
+    protected float getModifiedDamageChance(float damageChance, IPlayerData data) {
+        if (data.getSkillProvider().hasSkill(Skills.KAR98K_RELIABLE)) {
+            return 0.85F * damageChance;
+        }
+        return damageChance;
+    }
+
+    @Override
+    protected float getModifiedJamChance(float jamChance, IPlayerData data) {
+        if (data.getSkillProvider().hasSkill(Skills.KAR98K_RELIABLE)) {
+            return 0.8F * jamChance;
+        }
+        return jamChance;
+    }
+
+    @Override
     public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
         ItemStack stack = player.getMainHandItem();
-        int prepTime = Attribs.KAR98K_RELOAD.intValue(attributeProvider);
+        int prepTime = (int) Attribs.KAR98K_RELOAD.getModifiedValue(attributeProvider, 50);
         return ReloadManagers.either(
                 getAmmo(stack) > 0,
                 ReloadManagers.singleBulletLoading(prepTime, player, this, stack, LOAD_BULLET_ANIMATION),
@@ -140,14 +156,11 @@ public class Kar98kItem extends GunItem {
         return Skills.KAR98K_ASSEMBLY;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
-        boolean scope = PlayerData.hasActiveSkill(Minecraft.getInstance().player, Skills.KAR98K_SCOPE);
-        return scope ? AIM_ANIMATIONS[1] : AIM_ANIMATIONS[0];
+        return AIM_ANIMATIONS[PlayerData.hasActiveSkill(player, Skills.KAR98K_SCOPE) ? 1 : 0];
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD_ANIMATION;
@@ -158,13 +171,9 @@ public class Kar98kItem extends GunItem {
         return UNJAM;
     }
 
-    // TODO
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public void onShoot(PlayerEntity player, ItemStack stack) {
-        //ClientSideManager.instance().processor().play(Animations.REBOLT, new Animations.ReboltKar98k(this.getFirerate(player)));
-        NetworkManager.sendServerPacket(new C2S_SetAimingPacket(false));
-        ClientSideManager.instance().playDelayedSound(player.blockPosition(), 1.0F, 1.0F, ModSounds.KAR98K_BOLT, SoundCategory.MASTER, 15);
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return BOLT;
     }
 
     @Override

@@ -72,9 +72,6 @@ public class AttributeModifier implements IAttributeModifier {
 
     @Override
     public String toString() {
-        return "AttributeModifier{" +
-                "id=" + uid +
-                ", value=" + value +
-                '}';
+        return "Type: static_modifier, UUID: " + uid + ", value: " + value + ", op: " + op;
     }
 }

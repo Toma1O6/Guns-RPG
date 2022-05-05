@@ -4,9 +4,6 @@ import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.entity.player.PlayerEntity;
 
-import java.util.Collection;
-import java.util.List;
-
 public interface ISkillProvider extends ILockStateChangeable {
 
     void tick(PlayerEntity player);

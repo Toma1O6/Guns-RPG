@@ -28,12 +28,12 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.util.properties.PropertyContext;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.Easings;
 import lib.toma.animations.api.AnimationList;
 import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IRenderConfig;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -51,6 +51,7 @@ import java.util.Set;
 import java.util.function.BiFunction;
 
 import static dev.toma.gunsrpg.util.properties.Properties.PENETRATION;
+import static dev.toma.gunsrpg.util.properties.Properties.TRACER;
 
 public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
@@ -61,7 +62,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     private final BiFunction<PlayerEntity, Firemode, Firemode> firemodeSelector;
 
     public GunItem(String name, Properties properties) {
-        super(name, properties.tab(ModTabs.ITEM_TAB));
+        super(name, properties.tab(ModTabs.WEAPON_TAB));
         WeaponBuilder builder = new WeaponBuilder();
         initializeWeapon(builder);
         builder.validate();
@@ -92,11 +93,13 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
             IPlayerData data = PlayerData.getUnsafe(player);
             IAttributeProvider provider = data.getAttributes();
             IAttributeId attributeId = isSilenced(player) ? Attribs.SILENT_WEAPON_DAMAGE : Attribs.LOUD_WEAPON_DAMAGE;
-            base = (float) provider.getAttribute(attributeId).getModifiedValue(base);
-            IAttributeId categoryBonus = getWeaponCategory().getBonusDamageAttribute();
-            if (categoryBonus != null) {
-                base = (float) provider.getAttribute(attributeId).getModifiedValue(base);
+            float damageMultiplier = (float) provider.getAttribute(attributeId).getModifiedValue(base);
+            WeaponCategory category = this.getWeaponCategory();
+            if (category.hasBonusDamage()) {
+                IAttributeId categoryId = category.getBonusDamageAttribute();
+                damageMultiplier *= (float) provider.getAttribute(categoryId).getModifiedValue(base);
             }
+            base *= damageMultiplier;
         }
         return base + getDamageBonus(stack);
     }
@@ -163,6 +166,8 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
     public void shootProjectile(World level, LivingEntity shooter, ItemStack stack, IShootProps props) {
         AbstractProjectile projectile = this.makeProjectile(level, shooter);
+        PropertyContext context = props.getExtraData();
+        projectile.addProperties(context);
         IWeaponConfig config = this.getWeaponConfig();
         float damage = this.getWeaponDamage(stack, shooter) * props.getDamageMultiplier();
         float velocity = this.getInitialVelocity(config, shooter);
@@ -170,6 +175,13 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         projectile.setup(damage, velocity, delay);
         projectile.fire(shooter.xRot, shooter.yRot, this.getInaccuracy(props, shooter));
         this.prepareForShooting(projectile, shooter);
+        IAmmoMaterial material = this.getMaterialFromNBT(stack);
+        if (material != null) {
+            Integer tracer = material.getTracerColor();
+            if (tracer != null) {
+                projectile.setProperty(TRACER, tracer);
+            }
+        }
         if (shooter instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) shooter;
             PlayerData.get(player).ifPresent(data -> {
@@ -260,7 +272,10 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
                 setJammedState(stack, true);
             }
         }
-        this.consumeAmmo(stack, entity);
+        if (consumeAmmo(stack, entity)) {
+            int ammo = this.getAmmo(stack);
+            setAmmoCount(stack, ammo - 1);
+        }
         world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);
     }
 
@@ -289,9 +304,8 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         return false;
     }
 
-    protected void consumeAmmo(ItemStack stack, LivingEntity consumer) {
-        int ammo = this.getAmmo(stack);
-        setAmmoCount(stack, ammo - 1);
+    protected boolean consumeAmmo(ItemStack stack, LivingEntity consumer) {
+        return true;
     }
 
     protected float getModifiedDamageChance(float damageChance, IPlayerData data) {

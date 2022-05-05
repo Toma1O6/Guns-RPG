@@ -1,0 +1,31 @@
+{
+    "type": "gunsrpg:kill_entities",
+    "tier": 2,
+    "display": {
+        "name": "Bad \"Bee\"haviour I",
+        "info": "Kill 10 angry bees"
+    },
+    "data": {
+        "entities": [
+            "minecraft:bee"
+        ],
+        "count": 10
+    },
+    "conditions": [
+        {
+            "condition": "gunsrpg:aggro",
+            "aggro": true
+        }
+    ],
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

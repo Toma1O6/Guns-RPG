@@ -128,7 +128,7 @@ public class S686Item extends AbstractShotgun {
     @Override
     public void onHitEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
         if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.S686_BLAZING_PELLETS)) {
-            victim.setRemainingFireTicks(50);
+            victim.setRemainingFireTicks(120);
         }
     }
 

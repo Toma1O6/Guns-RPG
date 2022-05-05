@@ -1,0 +1,26 @@
+{
+    "type": "gunsrpg:survival",
+    "tier": 2,
+    "display": {
+        "name": "Clean Run II",
+        "info": "Do not take any damage for 13 minutes"
+    },
+    "data": {
+        "duration": "13m",
+        "area": null
+    },
+    "conditions": [
+        {
+            "condition": "gunsrpg:no_damage_taken"
+        }
+    ],
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "gunsrpg:no_food",
+                "tier": 2,
+                "propability": 0.3
+            }
+        ]
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "type": "gunsrpg:survival",
+    "tier": 3,
+    "display": {
+        "name": "Horde I",
+        "info": "Survive in area for 4 minutes"
+    },
+    "data": {
+        "duration": "4m",
+        "area": {
+            "size": 32,
+            "distance": 256,
+            "spawners": [
+                {}
+            ]
+        }
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

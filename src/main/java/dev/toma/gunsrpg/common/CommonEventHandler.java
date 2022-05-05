@@ -15,7 +15,9 @@ import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.common.item.HammerItem;
+import dev.toma.gunsrpg.common.item.ICustomUseDuration;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.skills.AvengeMeFriendsSkill;
 import dev.toma.gunsrpg.common.skills.LightHunterSkill;
 import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
@@ -108,6 +110,7 @@ public class CommonEventHandler {
         if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
             mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_GUNNER.get(), ModConfig.worldConfig.zombieGunnerSpawn.get(), 1, 2));
             mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.EXPLOSIVE_SKELETON.get(), ModConfig.worldConfig.explosiveSkeletonSpawn.get(), 1, 2));
+            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_KNIGHT.get(), ModConfig.worldConfig.zombieKnightSpawn.get(), 1, 2));
         }
         if (category != Biome.Category.NETHER && category != Biome.Category.THEEND) {
             if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
@@ -226,7 +229,7 @@ public class CommonEventHandler {
             Direction facing = ModUtils.getFacing(player);
             for (BlockPos pos : hammer.gatherBlocks(event.getPos(), facing)) {
                 BlockState state = world.getBlockState(pos);
-                if (hammer.canHarvestBlock(stack, state)) {
+                if (hammer.canHarvestBlock(stack, state) && state.getDestroySpeed(world, pos) >= 0.0F) {
                     world.destroyBlock(pos, true, player);
                     stack.mineBlock(world, state, pos, player);
                     if (stack.getDamageValue() == stack.getMaxDamage()) break;
@@ -294,14 +297,22 @@ public class CommonEventHandler {
         } else {
             Entity source = event.getSource().getEntity();
             if (source instanceof PlayerEntity) {
-                PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getProgressData().onEnemyKilled(event.getEntity(), ItemStack.EMPTY));
+                PlayerEntity player = (PlayerEntity) source;
+                PlayerData.get(player).ifPresent(data -> data.getProgressData().onEnemyKilled(event.getEntity(), player.getMainHandItem()));
             }
         }
         if (event.getEntity() instanceof IMob && !(event.getEntity() instanceof SlimeEntity)) {
-            if (!event.getEntity().level.isClientSide && random.nextFloat() <= 0.016) {
+            if (!event.getEntity().level.isClientSide) {
                 Entity entity = event.getEntity();
-                Item item = random.nextBoolean() ? ModItems.PERKPOINT_BOOK : ModItems.SKILLPOINT_BOOK;
-                entity.level.addFreshEntity(new ItemEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(item)));
+                Item item = null;
+                if (random.nextFloat() < 0.016F) {
+                    item = ModItems.SKILLPOINT_BOOK;
+                } else if (random.nextFloat() < 0.05F) {
+                    item = ModItems.PERKPOINT_BOOK;
+                }
+                if (item != null) {
+                    entity.level.addFreshEntity(new ItemEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(item)));
+                }
             }
         }
         if (event.getEntity() instanceof PlayerEntity) {
@@ -421,13 +432,6 @@ public class CommonEventHandler {
     }
 
     @SubscribeEvent
-    public static void leftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
-        if (event.getEntityLiving().getMainHandItem().getItem() instanceof GunItem) {
-            event.setCanceled(true);
-        }
-    }
-
-    @SubscribeEvent
     public static void loadLootTables(LootTableLoadEvent event) {
         String loottable = event.getName().toString();
         if (loottable.equals("minecraft:chests/abandoned_mineshaft") || loottable.equals("minecraft:chests/desert_pyramid") || loottable.equals("minecraft:chests/simple_dungeon") || loottable.equals("minecraft:chests/village_blacksmith")) {
@@ -447,6 +451,44 @@ public class CommonEventHandler {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         ServerWorld world = server.getLevel(World.OVERWORLD);
         LootStashes.tick(world);
+    }
+
+    @SubscribeEvent
+    public static void rightClickInteract(PlayerInteractEvent.RightClickBlock event) {
+        cancelIfPlayerHoldsGun(event);
+    }
+
+    @SubscribeEvent
+    public static void rightClickEntityInteract(PlayerInteractEvent.EntityInteract event) {
+        cancelIfPlayerHoldsGun(event);
+    }
+
+    @SubscribeEvent
+    public static void rightClickEntitySpecificInteract(PlayerInteractEvent.EntityInteractSpecific event) {
+        cancelIfPlayerHoldsGun(event);
+    }
+
+    @SubscribeEvent
+    public static void leftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+        cancelIfPlayerHoldsGun(event);
+    }
+
+    @SubscribeEvent
+    public static void onStartUsingItem(LivingEntityUseItemEvent.Start event) {
+        ItemStack stack = event.getItem();
+        LivingEntity entity = event.getEntityLiving();
+        if (stack.getItem() instanceof ICustomUseDuration && entity instanceof PlayerEntity) {
+            ICustomUseDuration useDuration = (ICustomUseDuration) stack.getItem();
+            PlayerEntity player = (PlayerEntity) entity;
+            int defaultDuration = event.getDuration();
+            event.setDuration(useDuration.getUseDuration(defaultDuration, stack, player));
+        }
+    }
+
+    private static void cancelIfPlayerHoldsGun(PlayerInteractEvent event) {
+        if (event.getPlayer().getMainHandItem().getItem() instanceof AbstractGun) {
+            event.setCanceled(true);
+        }
     }
 
     private static void editMiningSpeed(PlayerEvent.BreakSpeed event, IAttributeProvider provider, IAttributeId attributeId) {

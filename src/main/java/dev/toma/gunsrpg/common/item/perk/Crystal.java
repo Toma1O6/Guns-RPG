@@ -6,13 +6,14 @@ import dev.toma.gunsrpg.common.perk.PerkRegistry;
 import dev.toma.gunsrpg.common.perk.PerkType;
 import dev.toma.gunsrpg.resource.perks.CrystalConfiguration;
 import dev.toma.gunsrpg.resource.perks.PerkConfiguration;
-import dev.toma.gunsrpg.util.Lifecycle;
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class Crystal {
 
@@ -24,24 +25,73 @@ public final class Crystal {
         this.attributes = attributes;
     }
 
+    public static Map<Perk, List<CrystalAttribute>> groupAttributes(List<CrystalAttribute> attributes) {
+        Map<Perk, List<CrystalAttribute>> map = new HashMap<>();
+        for (CrystalAttribute attribute : attributes) {
+            Perk perk = attribute.getPerk();
+            map.computeIfAbsent(perk, key -> new ArrayList<>()).add(attribute);
+        }
+        return map;
+    }
+
+    public static Crystal mergeAndLevelUp(Crystal crystal1, Crystal crystal2, int level) {
+        List<CrystalAttribute> list = new ArrayList<>();
+        list.addAll(crystal1.attributes);
+        list.addAll(crystal2.attributes);
+        Map<Perk, List<CrystalAttribute>> map = groupAttributes(list);
+        List<CrystalAttribute> result = new ArrayList<>();
+        for (Map.Entry<Perk, List<CrystalAttribute>> entry : map.entrySet()) {
+            CrystalAttribute attribute = CrystalAttribute.flatten(entry.getKey(), entry.getValue());
+            result.add(attribute);
+        }
+        List<CrystalAttribute> buffs = result.stream().filter(type -> type.getType() == PerkType.BUFF).collect(Collectors.toList());
+        List<CrystalAttribute> debuffs = result.stream().filter(type -> type.getType() == PerkType.DEBUFF).collect(Collectors.toList());
+        CrystalConfiguration.Storage storage = GunsRPG.getModLifecycle().getPerkManager().configLoader.getConfiguration().getCrystalConfig().getStorage();
+        int buffLimit = storage.getBuffCapacity() == -1 ? Integer.MAX_VALUE : storage.getBuffCapacity();
+        int debuffLimit = storage.getDebuffCapacity() == -1 ? Integer.MAX_VALUE : storage.getDebuffCapacity();
+        Random random = new Random();
+        if (buffs.size() > buffLimit) {
+            ModUtils.clearRandomItems(buffs, random, buffs.size() - buffLimit);
+        }
+        if (debuffs.size() > debuffLimit) {
+            ModUtils.clearRandomItems(debuffs, random, debuffs.size() - debuffLimit);
+        }
+        result.clear();
+        result.addAll(buffs);
+        result.addAll(debuffs);
+        result.sort(compareAttributes());
+        return new Crystal(level, result);
+    }
+
     public static Crystal generate() {
         PerkConfiguration perkConfig = GunsRPG.getModLifecycle().getPerkManager().configLoader.getConfiguration();
         CrystalConfiguration crystalConfig = perkConfig.getCrystalConfig();
         CrystalConfiguration.Spawns spawns = crystalConfig.getSpawns();
         CrystalConfiguration.Spawn spawn = spawns.getRandomSpawn();
         CrystalConfiguration.Types types = spawns.getTypeRanges();
-        int crystalLevel = spawn.getLevel();
+        return generate(spawn.getLevel(), types.getBuffCount(), types.getDebuffCount());
+    }
+
+    public static Crystal generate(int level, int buffs, int debuffs) {
         PerkRegistry registry = PerkRegistry.getRegistry();
-        Set<CrystalAttribute> attributeCollection = new HashSet<>();
-        for (int i = 0; i < types.getBuffCount(); i++) {
+        Set<CrystalAttribute> set = new HashSet<>();
+        for (int i = 0; i < buffs; i++) {
             Perk perk = registry.getRandomPerk();
-            attributeCollection.add(new CrystalAttribute(perk, PerkType.BUFF, crystalLevel));
+            set.add(new CrystalAttribute(perk, PerkType.BUFF, level));
         }
-        for (int i = 0; i < types.getDebuffCount(); i++) {
+        for (int i = 0; i < debuffs; i++) {
             Perk perk = registry.getRandomPerk();
-            attributeCollection.add(new CrystalAttribute(perk, PerkType.DEBUFF, crystalLevel));
+            set.add(new CrystalAttribute(perk, PerkType.DEBUFF, level));
         }
-        return new Crystal(crystalLevel, new ArrayList<>(attributeCollection));
+        return new Crystal(level, new ArrayList<>(set));
+    }
+
+    public static Crystal mergeAttributes(int level, Map<PerkType, List<CrystalAttribute>> map) {
+        List<CrystalAttribute> list = new ArrayList<>();
+        for (List<CrystalAttribute> attributes : map.values()) {
+            list.addAll(attributes);
+        }
+        return new Crystal(level, list);
     }
 
     public int getLevel() {
@@ -50,6 +100,22 @@ public final class Crystal {
 
     public List<CrystalAttribute> listAttributes() {
         return attributes;
+    }
+
+    public boolean hasAnyAttributes() {
+        return attributes.size() > 0;
+    }
+
+    public EnumMap<PerkType, List<CrystalAttribute>> groupByType() {
+        EnumMap<PerkType, List<CrystalAttribute>> map = new EnumMap<>(PerkType.class);
+        for (PerkType type : PerkType.values()) {
+            map.put(type, new ArrayList<>());
+        }
+        for (CrystalAttribute attribute : attributes) {
+            PerkType type = attribute.getType();
+            map.get(type).add(attribute);
+        }
+        return map;
     }
 
     public Crystal append(CrystalAttribute attribute) {
@@ -91,8 +157,11 @@ public final class Crystal {
             CompoundNBT attrNbt = list.getCompound(i);
             collection.add(CrystalAttribute.fromNbt(attrNbt));
         }
-        Comparator<CrystalAttribute> comp = Comparator.comparing(CrystalAttribute::getType, (o1, o2) -> o2.ordinal() - o1.ordinal()).thenComparing(CrystalAttribute::getValue).reversed();
-        collection.sort(comp);
+        collection.sort(compareAttributes());
         return new Crystal(level, collection);
+    }
+
+    public static Comparator<CrystalAttribute> compareAttributes() {
+        return Comparator.comparing(CrystalAttribute::getType, (o1, o2) -> o2.ordinal() - o1.ordinal()).thenComparing(CrystalAttribute::getValue).reversed();
     }
 }

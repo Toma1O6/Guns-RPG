@@ -6,7 +6,10 @@ import dev.toma.gunsrpg.api.common.skill.ICooldown;
 import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 public final class SkillRendererRegistry {
 

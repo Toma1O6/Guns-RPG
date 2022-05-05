@@ -1,21 +1,19 @@
 package dev.toma.gunsrpg.common.perk;
 
 import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
-import dev.toma.gunsrpg.api.common.perk.IPerk;
-import dev.toma.gunsrpg.api.common.perk.IPerkOptions;
 import net.minecraft.util.ResourceLocation;
 
 public final class Perk {
 
     private ResourceLocation id;
     private final IAttributeId attributeId;
-    private final PerkValueSpec scaleSpec;
+    private final float scaling;
     private final PerkValueSpec boundSpec;
     private final boolean invertCalculation;
 
-    public Perk(IAttributeId attributeId, PerkValueSpec scaleSpec, PerkValueSpec boundSpec, boolean invertCalculation) {
+    public Perk(IAttributeId attributeId, float scaling, PerkValueSpec boundSpec, boolean invertCalculation) {
         this.attributeId = attributeId;
-        this.scaleSpec = scaleSpec;
+        this.scaling = scaling;
         this.boundSpec = boundSpec;
         this.invertCalculation = invertCalculation;
     }
@@ -28,23 +26,19 @@ public final class Perk {
         return id;
     }
 
-    public IPerk createInstance(IPerkOptions options) {
-        return new PerkImpl(this, options.getType(), options.getPerkLevel());
-    }
-
     public IAttributeId getAttributeId() {
         return attributeId;
     }
 
     public double getModifier(int level, PerkType type) {
-        float scale = this.getScaling(type);
+        float scale = this.getScaling();
         float bound = this.getBounds(type);
         double value = level * scale;
-        return Math.min(value, bound);
+        return value < 0 ? Math.max(value, -bound) : Math.min(value, bound);
     }
 
-    public float getScaling(PerkType type) {
-        return type.getValue(scaleSpec);
+    public float getScaling() {
+        return scaling;
     }
 
     public float getBounds(PerkType type) {

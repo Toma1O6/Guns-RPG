@@ -84,12 +84,14 @@ public interface IInputEventHandler {
         }
     }
 
-    // TODO implement
     class Barrage implements IInputEventHandler {
 
         @Override
         public void invokeEvent(InputEventListenerType event, PlayerEntity player, ItemStack stack, IPlayerData data) {
-
+            if (ShootingManager.canShoot(player, stack)) {
+                ShootingManager.Client.shoot(player, stack, data);
+                ShootingManager.Client.forceShootDelay(3);
+            }
         }
     }
 

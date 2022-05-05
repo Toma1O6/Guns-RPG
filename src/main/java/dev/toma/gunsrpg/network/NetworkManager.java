@@ -73,6 +73,9 @@ public class NetworkManager {
         registerNetworkPacket(C2S_RequestRepairPacket.class);
         registerNetworkPacket(C2S_RequestBatteryChange.class);
         registerNetworkPacket(C2S_RequestStashDetectorStatus.class);
+        registerNetworkPacket(C2S_FusePacket.class);
+        registerNetworkPacket(C2S_PurifyPacket.class);
+        registerNetworkPacket(C2S_RequestExtensionSkillLockPacket.class);
     }
 
     private static <P extends INetworkPacket<P>> void registerNetworkPacket(Class<P> packetType) {

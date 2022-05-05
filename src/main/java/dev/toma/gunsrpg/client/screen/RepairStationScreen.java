@@ -11,6 +11,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.tileentity.RepairStationTileEntity;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_RequestRepairPacket;
+import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.RenderUtils;
 import lib.toma.animations.QuickSort;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -57,7 +58,7 @@ public class RepairStationScreen extends ContainerScreen<RepairStationContainer>
         ITextComponent inventoryText = inventory.getDisplayName();
         int labelWidth = font.width(inventoryText);
         inventoryLabelX = imageWidth - 8 - labelWidth;
-        repairButton = addButton(new Button(leftPos + 92, topPos + 43, 52, 18, new StringTextComponent("Repair"), this::repair));
+        repairButton = addButton(new Button(leftPos + 116, topPos + 45, 52, 20, new StringTextComponent("Repair"), this::repair));
         slotChanged(0, ItemStack.EMPTY);
         data = PlayerData.getUnsafe(minecraft.player);
     }
@@ -68,7 +69,7 @@ public class RepairStationScreen extends ContainerScreen<RepairStationContainer>
         blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
         ItemStack itemStack = menu.getTileEntity().getItemHandler().getStackInSlot(RepairStationTileEntity.SLOT_INPUT);
         if (!itemStack.isEmpty()) {
-            renderDamageModel(stack, itemStack);
+            renderDamageModel(stack, itemStack, mouseX, mouseY);
         }
     }
 
@@ -96,13 +97,31 @@ public class RepairStationScreen extends ContainerScreen<RepairStationContainer>
         }
     }
 
-    private void renderDamageModel(MatrixStack matrixStack, ItemStack stack) {
+    private void renderDamageModel(MatrixStack matrixStack, ItemStack stack, int mouseX, int mouseY) {
         float currentLimit = ((GunItem) stack.getItem()).getDurabilityLimit(stack);
         float currentDurability = 1.0F - (stack.getDamageValue() / (float) stack.getMaxDamage());
         DamageHolder[] holders = this.getSortedHolders(currentLimit, currentDurability);
         Matrix4f pose = matrixStack.last().pose();
         for (DamageHolder holder : holders) {
             renderDamageHolder(pose, holder);
+        }
+        renderHovered(matrixStack, holders, mouseX, mouseY);
+    }
+
+    private void renderHovered(MatrixStack stack, DamageHolder[] holders, int mouseX, int mouseY) {
+        ModUtils.inverse(holders);
+        for (DamageHolder holder : holders) {
+            int xDiff = (int) (161 * holder.getValue());
+            int left = leftPos + 7;
+            int top = topPos + 68;
+            int right = left + xDiff;
+            int bottom = topPos + 77;
+            boolean hovered = ModUtils.isWithinPoints(mouseX, mouseY, left, top, right, bottom);
+            if (hovered) {
+                ITextComponent desc = new StringTextComponent(holder.type.description);
+                renderTooltip(stack, desc, mouseX, mouseY);
+                break;
+            }
         }
     }
 
@@ -127,9 +146,9 @@ public class RepairStationScreen extends ContainerScreen<RepairStationContainer>
 
     private enum DamageType {
 
-        TOTAL_LIMIT(0, 0, "Total weapon durability"),
-        CURRENT_LIMIT(0x8B8B8B, "Current max durability"),
         CURRENT(0x0094FF, "Current durability"),
+        CURRENT_LIMIT(0x8B8B8B, "Current max durability"),
+        TOTAL_LIMIT(0xAA0000, 0, "Total weapon durability"),
         AFTER_REPAIR(0xFFA300, "Durability after repair");
 
         final int colorPrimary;

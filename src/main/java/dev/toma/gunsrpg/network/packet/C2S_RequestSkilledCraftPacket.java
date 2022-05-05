@@ -81,7 +81,7 @@ public class C2S_RequestSkilledCraftPacket extends AbstractNetworkPacket<C2S_Req
                 ItemStack result = recipe.assemble(inventory);
                 OutputModifier modifier = recipe.getOutputModifier();
                 if (modifier != null) {
-                    modifier.apply(result, PlayerData.getUnsafe(player).getAttributes());
+                    modifier.applyRaw(result, PlayerData.getUnsafe(player).getAttributes());
                 }
                 player.addItem(result);
                 return true;

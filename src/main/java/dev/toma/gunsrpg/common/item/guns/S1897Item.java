@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IReloadManager;
 import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.S1897Renderer;
 import dev.toma.gunsrpg.common.IShootProps;
@@ -19,6 +20,9 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
+import lib.toma.animations.AnimationUtils;
+import lib.toma.animations.api.Animation;
+import lib.toma.animations.api.IAnimationPipeline;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -99,7 +103,8 @@ public class S1897Item extends AbstractShotgun {
 
     @Override
     public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
-        return ReloadManagers.singleBulletLoading(30, player, this, player.getMainHandItem(), LOAD_BULLET_ANIMATION);
+        int prep = (int) Attribs.S1897_RELOAD.getModifiedValue(attributeProvider, 30);
+        return ReloadManagers.singleBulletLoading(prep, player, this, player.getMainHandItem(), LOAD_BULLET_ANIMATION);
     }
 
     @Override
@@ -177,5 +182,11 @@ public class S1897Item extends AbstractShotgun {
     @Override
     public IRenderConfig right() {
         return RenderConfigs.S1897_RIGHT;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    protected void handleAnimation(ResourceLocation animationPath, int length, IAnimationPipeline pipeline) {
+        pipeline.scheduleInsert(ModAnimations.CHAMBER, AnimationUtils.createAnimation(animationPath, provider -> new Animation(provider, length)), 4);
     }
 }

@@ -49,11 +49,6 @@ public class Hooks {
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         if (optional.isPresent()) {
             IPlayerData data = optional.orElse(null);
-            ISkillProvider provider = data.getSkillProvider();
-            AdrenalineRushSkill adrenaline = SkillUtil.getTopHierarchySkill(Skills.ADRENALINE_RUSH_I, provider);
-            if (adrenaline != null && adrenaline.canApply(player)) {
-                value *= adrenaline.getAttackSpeedBoost();
-            }
             IAttributeProvider attributeProvider = data.getAttributes();
             return value * attributeProvider.getAttributeValue(Attribs.MELEE_COOLDOWN);
         }

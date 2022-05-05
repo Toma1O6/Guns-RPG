@@ -37,4 +37,9 @@ public class ModifierOperation implements IModifierOp {
     public int getPriority() {
         return executionOrder;
     }
+
+    @Override
+    public String toString() {
+        return id.toString();
+    }
 }

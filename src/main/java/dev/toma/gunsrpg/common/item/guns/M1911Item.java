@@ -49,7 +49,6 @@ public class M1911Item extends GunItem {
     public void initializeWeapon(WeaponBuilder builder) {
         builder
                 .config(ModConfig.weaponConfig.m1911)
-                .firemodeSelector((player, firemode) -> Firemode.switchBetween(player, firemode, Firemode.SINGLE, Firemode.BURST))
                 .ammo(WeaponCategory.PISTOL)
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 1)
@@ -77,7 +76,7 @@ public class M1911Item extends GunItem {
 
     @Override
     public void onHitEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.M1911_HEAVY_BULLETS) && random.nextDouble() <= 0.35) {
+        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.M1911_HEAVY_BULLETS)) {
             victim.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 100, 1, false, false));
             victim.addEffect(new EffectInstance(Effects.WEAKNESS, 100, 0, false, false));
         }

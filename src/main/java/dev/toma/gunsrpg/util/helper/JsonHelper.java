@@ -1,7 +1,10 @@
 package dev.toma.gunsrpg.util.helper;
 
 import com.google.gson.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -22,6 +25,13 @@ public final class JsonHelper {
             output[index++] = adapter.apply(element);
         }
         return output;
+    }
+
+    public static Item resolveItem(JsonElement element) throws JsonParseException {
+        ResourceLocation itemId = new ResourceLocation(element.getAsString());
+        Item item = ForgeRegistries.ITEMS.getValue(itemId);
+        if (item == null || item == Items.AIR) throw new JsonSyntaxException("Unknown item: " + itemId);
+        return item;
     }
 
     public static JsonElement toSimpleJson(ResourceLocation location) {

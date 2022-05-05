@@ -1,0 +1,42 @@
+{
+    "type": "gunsrpg:kill_in_area",
+    "tier": 2,
+    "display": {
+        "name": "Undead Knights I",
+        "info": "Kill 5 skeleton horses"
+    },
+    "data": {
+        "entities": [
+            "minecraft:skeleton_horse"
+        ],
+        "count": 5,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "minecraft:skeleton_horse",
+                    "propability": 0.05,
+                    "limit": 2,
+                    "extras": [
+                        {
+                            "type": "gunsrpg:controller",
+                            "controller": "minecraft:skeleton"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

@@ -76,11 +76,20 @@ public class ExpiringModifier implements IAttributeModifier, ITickableModifier {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ExpiringModifier modifier = (ExpiringModifier) o;
+        return uuid.equals(modifier.uuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
+
+    @Override
     public String toString() {
-        return "ExpiringModifier{" +
-                "id=" + uuid +
-                ", value=" + value +
-                ", timeLeft=" + time +
-                '}';
+        return "Type: expiring_modifier, UUID: " + uuid + ", value: " + value + ", op: " + op + ", ticksRemaining: " + time;
     }
 }

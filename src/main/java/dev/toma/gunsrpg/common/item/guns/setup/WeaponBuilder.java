@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.item.guns.setup;
 
 import dev.toma.gunsrpg.api.common.IWeaponConfig;
-import dev.toma.gunsrpg.common.PlayerShootProperties;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import net.minecraft.entity.player.PlayerEntity;

@@ -1,0 +1,36 @@
+{
+    "type": "gunsrpg:kill_in_area",
+    "tier": 2,
+    "display": {
+        "name": "Marksmen I",
+        "info": "Kill 7 pillagers"
+    },
+    "data": {
+        "entities": [
+            "minecraft:pillager"
+        ],
+        "count": 7,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "minecraft:pillager",
+                    "propability": 0.05,
+                    "limit": 3
+                }
+            ]
+        }
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

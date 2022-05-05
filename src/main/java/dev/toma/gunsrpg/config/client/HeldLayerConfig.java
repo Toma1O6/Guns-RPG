@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 public class HeldLayerConfig extends ObjectType implements IHeldLayerConfig {

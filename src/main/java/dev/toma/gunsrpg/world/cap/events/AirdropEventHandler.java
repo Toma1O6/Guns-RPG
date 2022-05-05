@@ -47,7 +47,7 @@ public class AirdropEventHandler implements IWorldEventHandler {
         int x = randomInRange(maxDist);
         int z = randomInRange(maxDist);
         int y = world.getHeight(Heightmap.Type.WORLD_SURFACE, x, z) + 100;
-        BlockPos pos = new BlockPos(x, y, z);
+        BlockPos pos = new BlockPos(player.getX() + x, y, player.getZ() + z);
         if (world.isEmptyBlock(pos)) {
             AirdropEntity entity = new AirdropEntity(world);
             entity.setPos(pos.getX(), pos.getY(), pos.getZ());

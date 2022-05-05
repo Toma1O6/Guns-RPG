@@ -23,6 +23,7 @@ public class FlareEntity extends Entity implements IEntityAdditionalSpawnData {
 
     private int startHeight;
     private int timeWaiting;
+    private boolean playerThrown;
 
     public FlareEntity(EntityType<? extends FlareEntity> type, World world) {
         super(type, world);
@@ -35,6 +36,14 @@ public class FlareEntity extends Entity implements IEntityAdditionalSpawnData {
         startHeight = (int) getY();
     }
 
+    public void setThrownByPlayer(PlayerEntity player) {
+        this.playerThrown = true;
+        float power = 1.5f;
+        setPos(getX(), getY() + player.getEyeHeight(), getZ());
+        Vector3d look = Vector3d.directionFromRotation(player.xRot, player.yRot).scale(power);
+        this.setDeltaMovement(look.x, look.y, look.z);
+    }
+
     @Override
     public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
@@ -44,12 +53,14 @@ public class FlareEntity extends Entity implements IEntityAdditionalSpawnData {
     public void writeSpawnData(PacketBuffer buffer) {
         buffer.writeInt(startHeight);
         buffer.writeInt(timeWaiting);
+        buffer.writeBoolean(playerThrown);
     }
 
     @Override
     public void readSpawnData(PacketBuffer buffer) {
         startHeight = buffer.readInt();
         timeWaiting = buffer.readInt();
+        playerThrown = buffer.readBoolean();
     }
 
     @Override
@@ -60,46 +71,61 @@ public class FlareEntity extends Entity implements IEntityAdditionalSpawnData {
     protected void addAdditionalSaveData(CompoundNBT nbt) {
         nbt.putInt("startHeight", startHeight);
         nbt.putInt("timeWaiting", timeWaiting);
+        nbt.putBoolean("byPlayer", playerThrown);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundNBT nbt) {
         startHeight = nbt.getInt("startHeight");
         timeWaiting = nbt.getInt("timeWaiting");
+        playerThrown = nbt.getBoolean("byPlayer");
     }
 
     @Override
     public void tick() {
         super.tick();
-        Vector3d start = position();
-        Vector3d end = start.add(getDeltaMovement());
-        BlockRayTraceResult traceResult = level.clip(new RayTraceContext(start, end, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, null));
-        if (traceResult != null && traceResult.getType() != RayTraceResult.Type.MISS) {
-            remove();
-        }
         if (level.isClientSide) {
             level.addParticle(ParticleTypes.CLOUD, true, getX(), getY(), getZ(), 0, -0.25, 0);
             level.addParticle(ParticleTypes.CLOUD, true, getX(), getY(), getZ(), 0, -0.15, 0);
             level.addParticle(ParticleTypes.CLOUD, true, getX(), getY(), getZ(), 0, -0.05, 0);
         }
-        Vector3d motion = getDeltaMovement();
-        boolean reachedHeight = getY() >= startHeight + 125;
-        //if (motion.y > 0) setDeltaMovement(motion.x, motion.y + 0.025, motion.z);
-        if (!reachedHeight) {
-            setDeltaMovement(motion.x, 0.55, motion.z);
+        if (playerThrown) {
+            if (++timeWaiting >= 400) {
+                summonAirdrop(100, 0);
+            }
+            Vector3d delta = this.getDeltaMovement();
+            double drag = onGround ? 0.8 : 0.99;
+            Vector3d nextTickPhysics = delta.multiply(drag, 1.0, drag).add(0, -0.05, 0);
+            this.setDeltaMovement(nextTickPhysics);
         } else {
-            setDeltaMovement(0, 0, 0);
-            if (++timeWaiting >= 100) {
-                if (!level.isClientSide) {
-                    remove();
-                    AirdropEntity airdrop = new AirdropEntity(level);
-                    airdrop.setPos(getX(), getY() - 10, getZ());
-                    level.addFreshEntity(airdrop);
-                    level.playSound(null, getX(), getY() - 130, getZ(), ModSounds.PLANE_FLY_BY, SoundCategory.MASTER, 7.0F, 1.0F);
+            Vector3d start = position();
+            Vector3d end = start.add(getDeltaMovement());
+            BlockRayTraceResult traceResult = level.clip(new RayTraceContext(start, end, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, null));
+            if (traceResult != null && traceResult.getType() != RayTraceResult.Type.MISS) {
+                remove();
+            }
+            Vector3d motion = getDeltaMovement();
+            boolean reachedHeight = getY() >= startHeight + 125;
+            if (!reachedHeight) {
+                setDeltaMovement(motion.x, 0.55, motion.z);
+            } else {
+                setDeltaMovement(0, 0, 0);
+                if (++timeWaiting >= 100) {
+                    summonAirdrop(-10, 130);
                 }
             }
         }
         move(MoverType.SELF, getDeltaMovement());
+    }
+
+    public void summonAirdrop(int heightDiff, int soundDiff) {
+        if (!level.isClientSide) {
+            AirdropEntity entity = new AirdropEntity(level);
+            entity.setPos(this.getX(), this.getY() + heightDiff, this.getZ());
+            level.addFreshEntity(entity);
+            level.playSound(null, getX(), getY() - soundDiff, getZ(), ModSounds.PLANE_FLY_BY, SoundCategory.MASTER, 7.0F, 1.0F);
+            remove();
+        }
     }
 
     @Override

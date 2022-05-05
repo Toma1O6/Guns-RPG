@@ -4,7 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.attribute.*;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
-import dev.toma.gunsrpg.common.attribute.*;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;

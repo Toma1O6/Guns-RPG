@@ -1,10 +1,10 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Ump45Renderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.ModSounds;
@@ -18,6 +18,7 @@ import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
@@ -114,9 +115,9 @@ public class Ump45Item extends GunItem {
 
     @Override
     public void onKillEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if (!shooter.level.isClientSide && shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.UMP45_COMMANDO)) {
+        if (shooter instanceof PlayerEntity && victim instanceof MonsterEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.UMP45_COMMANDO)) {
             shooter.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 100, 1, false, false));
-            shooter.addEffect(new EffectInstance(Effects.REGENERATION, 60, 2, false, false));
+            shooter.addEffect(new EffectInstance(Effects.REGENERATION, 75, 1, false, false));
         }
     }
 

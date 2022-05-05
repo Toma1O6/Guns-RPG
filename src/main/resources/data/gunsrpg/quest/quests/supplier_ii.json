@@ -1,0 +1,16 @@
+{
+    "type": "gunsrpg:handover",
+    "tier": 3,
+    "display": {
+        "name": "Supplier II",
+        "info": "Deliver 50 Gold ingots"
+    },
+    "data": {
+        "items": [
+            {
+                "item": "minecraft:gold_ingot",
+                "count": 50
+            }
+        ]
+    }
+}

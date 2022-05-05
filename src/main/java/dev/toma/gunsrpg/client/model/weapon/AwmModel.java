@@ -4,12 +4,13 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
+import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.vector.Vector3f;
 
 public class AwmModel extends AbstractWeaponModel {
 
+    private final ModelRenderer awm1;
     private final ModelRenderer awm;
     private final ModelRenderer bone10;
     private final ModelRenderer bone33;
@@ -34,27 +35,9 @@ public class AwmModel extends AbstractWeaponModel {
     private final ModelRenderer bone24;
     private final ModelRenderer bone25;
     private final ModelRenderer bone26;
+    private final ModelRenderer mag1;
     private final ModelRenderer magazine;
-    private final ModelRenderer bullet;
-    private final ModelRenderer bullet2;
-    private final ModelRenderer ironsights;
-    private final ModelRenderer bone38;
-    private final ModelRenderer bone39;
-    private final ModelRenderer bone36;
-    private final ModelRenderer bone37;
-    private final ModelRenderer bolt_case;
-    private final ModelRenderer bone;
-    private final ModelRenderer bone12;
-    private final ModelRenderer bone4;
-    private final ModelRenderer bone2;
-    private final ModelRenderer bone3;
-    private final ModelRenderer bolt;
-    private final ModelRenderer catch_;
-    private final ModelRenderer bone7;
-    private final ModelRenderer bone8;
-    private final ModelRenderer bone6;
-    private final ModelRenderer rotatingPart3;
-    private final ModelRenderer bone5;
+    private final ModelRenderer stock1;
     private final ModelRenderer stock;
     private final ModelRenderer bone9;
     private final ModelRenderer bone29;
@@ -71,21 +54,51 @@ public class AwmModel extends AbstractWeaponModel {
     private final ModelRenderer bone46;
     private final ModelRenderer bone40;
     private final ModelRenderer bone43;
+    private final ModelRenderer bolt1;
+    private final ModelRenderer bolt;
+    private final ModelRenderer catch_;
+    private final ModelRenderer bone7;
+    private final ModelRenderer bone8;
+    private final ModelRenderer bone6;
+    private final ModelRenderer rotatingPart3;
+    private final ModelRenderer bone5;
+    private final ModelRenderer bolt_case1;
+    private final ModelRenderer bolt_case;
+    private final ModelRenderer bone;
+    private final ModelRenderer bone12;
+    private final ModelRenderer bone4;
+    private final ModelRenderer bone2;
+    private final ModelRenderer bone3;
+    private final ModelRenderer ironsights1;
+    private final ModelRenderer ironsights;
+    private final ModelRenderer bone38;
+    private final ModelRenderer bone39;
+    private final ModelRenderer bone36;
+    private final ModelRenderer bone37;
+    private final ModelRenderer bullet1;
+    private final ModelRenderer bullet;
+    private final ModelRenderer bullet2;
 
     @Override
     protected void renderWeapon(ItemStack stack, IPlayerData data, MatrixStack matrix, IVertexBuilder builder, int light, int overlay) {
-        matrix.mulPose(Vector3f.YN.rotationDegrees(90f));
-        awm.render(matrix, builder, light, overlay);
-        ironsights.render(matrix, builder, light, overlay);
-        stock.render(matrix, builder, light, overlay);
+        awm1.render(matrix, builder, light, overlay);
+        if (!data.getSkillProvider().hasSkill(Skills.AWM_SCOPE)) {
+            ironsights1.render(matrix, builder, light, overlay);
+        }
+        stock1.render(matrix, builder, light, overlay);
     }
 
     public AwmModel() {
         texWidth = 512;
         texHeight = 512;
 
+        awm1 = new ModelRenderer(this);
+        awm1.setPos(0.0F, 24.0F, 0.0F);
+        setRotationAngle(awm1, 0.0F, -1.5708F, 0.0F);
+
         awm = new ModelRenderer(this);
-        awm.setPos(0.0F, 24.0F, 0.0F);
+        awm.setPos(0.0F, 0.0F, 0.0F);
+        awm1.addChild(awm);
         awm.texOffs(196, 86).addBox(-6.0F, -29.5F, -3.5F, 8.0F, 5.0F, 7.0F, 0.0F, true);
         awm.texOffs(196, 86).addBox(4.0F, -24.5F, -3.5F, 8.0F, 4.0F, 7.0F, 0.0F, true);
         awm.texOffs(196, 86).addBox(-4.0F, -24.5F, -3.5F, 8.0F, 4.0F, 7.0F, 0.0F, true);
@@ -190,7 +203,6 @@ public class AwmModel extends AbstractWeaponModel {
         bone33.setPos(0.3F, -13.0F, 0.0F);
         awm.addChild(bone33);
         setRotationAngle(bone33, 0.0F, 0.0F, -0.7854F);
-
 
         bone28 = new ModelRenderer(this);
         bone28.setPos(-15.5F, -19.0F, 0.0F);
@@ -413,8 +425,14 @@ public class AwmModel extends AbstractWeaponModel {
         bone26.texOffs(196, 86).addBox(-3.5223F, 4.5377F, -1.588F, 8.0F, 1.0F, 1.0F, 0.0F, false);
         bone26.texOffs(196, 86).addBox(-3.5223F, 0.588F, -5.5377F, 8.0F, 1.0F, 1.0F, 0.0F, false);
 
+        mag1 = new ModelRenderer(this);
+        mag1.setPos(0.0F, 24.0F, 0.0F);
+        setRotationAngle(mag1, 0.0F, -1.5708F, 0.0F);
+
+
         magazine = new ModelRenderer(this);
-        magazine.setPos(-6.6929F, 8.6071F, 0.0F);
+        magazine.setPos(-6.6929F, -15.3929F, 0.0F);
+        mag1.addChild(magazine);
         setRotationAngle(magazine, 0.0F, 0.0F, 0.0873F);
         magazine.texOffs(103, 36).addBox(0.0929F, 4.6929F, -2.5F, 5.0F, 1.0F, 5.0F, 0.0F, true);
         magazine.texOffs(81, 12).addBox(-2.9071F, 3.6929F, -2.5F, 8.0F, 1.0F, 5.0F, 0.0F, true);
@@ -425,167 +443,14 @@ public class AwmModel extends AbstractWeaponModel {
         magazine.texOffs(79, 26).addBox(-8.9071F, -10.3071F, 1.5F, 14.0F, 4.0F, 1.0F, 0.0F, true);
         magazine.texOffs(82, 28).addBox(-8.9071F, -8.3071F, -1.5F, 1.0F, 2.0F, 3.0F, 0.0F, true);
 
-        bullet = new ModelRenderer(this);
-        bullet.setPos(-6.6929F, 8.6071F, 0.0F);
-        setRotationAngle(bullet, 0.0F, 0.0F, 0.0873F);
+        stock1 = new ModelRenderer(this);
+        stock1.setPos(0.0F, 24.0F, 0.0F);
+        setRotationAngle(stock1, 0.0F, -1.5708F, 0.0F);
 
-
-        bullet2 = new ModelRenderer(this);
-        bullet2.setPos(6.6929F, 10.3929F, 0.0F);
-        bullet.addChild(bullet2);
-        bullet2.texOffs(0, 491).addBox(-13.6F, -21.9F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, true);
-        bullet2.texOffs(0, 491).addBox(-14.2F, -21.3F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        bullet2.texOffs(0, 491).addBox(-11.6F, -22.4F, -1.5F, 7.0F, 3.0F, 3.0F, 0.0F, true);
-        bullet2.texOffs(0, 491).addBox(-3.6F, -22.4F, -1.5F, 1.0F, 3.0F, 3.0F, 0.0F, true);
-
-        ironsights = new ModelRenderer(this);
-        ironsights.setPos(0.0F, 24.0F, 1.2929F);
-        ironsights.texOffs(2, 79).addBox(-2.6F, -32.0071F, -3.2929F, 2.0F, 1.0F, 4.0F, 0.0F, true);
-        ironsights.texOffs(2, 79).addBox(-22.6F, -32.0071F, -3.2929F, 2.0F, 1.0F, 4.0F, 0.0F, true);
-        ironsights.texOffs(2, 79).addBox(-2.6F, -33.0071F, -0.2929F, 2.0F, 1.0F, 1.0F, 0.0F, true);
-        ironsights.texOffs(2, 79).addBox(-22.6F, -33.0071F, -0.2929F, 2.0F, 1.0F, 1.0F, 0.0F, true);
-        ironsights.texOffs(2, 79).addBox(-2.6F, -33.0071F, -3.2929F, 2.0F, 1.0F, 1.0F, 0.0F, true);
-        ironsights.texOffs(2, 79).addBox(-22.6F, -33.0071F, -3.2929F, 2.0F, 1.0F, 1.0F, 0.0F, true);
-        ironsights.texOffs(2, 79).addBox(-2.1F, -32.9071F, -2.7929F, 1.0F, 1.0F, 3.0F, 0.0F, true);
-        ironsights.texOffs(2, 79).addBox(-22.1F, -32.9071F, -2.7929F, 1.0F, 1.0F, 3.0F, 0.0F, true);
-        ironsights.texOffs(2, 79).addBox(-2.1F, -33.9071F, -1.7929F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        ironsights.texOffs(2, 79).addBox(-22.1F, -33.9071F, -1.7929F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        ironsights.texOffs(2, 79).addBox(-2.1F, -36.6392F, -1.7929F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        ironsights.texOffs(2, 79).addBox(-2.1F, -35.2731F, -3.1589F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        ironsights.texOffs(2, 79).addBox(-2.1F, -35.2731F, -0.4269F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-
-        bone38 = new ModelRenderer(this);
-        bone38.setPos(-21.6F, -33.5071F, -2.7929F);
-        ironsights.addChild(bone38);
-        setRotationAngle(bone38, -0.2618F, 0.0F, 0.0F);
-        bone38.texOffs(2, 79).addBox(-1.0F, -2.1641F, 2.5442F, 2.0F, 2.0F, 1.0F, 0.0F, true);
-
-        bone39 = new ModelRenderer(this);
-        bone39.setPos(-21.6F, -33.5071F, 0.2071F);
-        ironsights.addChild(bone39);
-        setRotationAngle(bone39, 0.2618F, 0.0F, 0.0F);
-        bone39.texOffs(2, 79).addBox(-1.0F, -2.1641F, -3.5442F, 2.0F, 2.0F, 1.0F, 0.0F, true);
-
-        bone36 = new ModelRenderer(this);
-        bone36.setPos(-1.6F, -33.4071F, -1.2929F);
-        ironsights.addChild(bone36);
-        setRotationAngle(bone36, -0.5236F, 0.0F, 0.0F);
-        bone36.texOffs(2, 79).addBox(-0.5F, -0.317F, -1.183F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        bone36.texOffs(2, 79).addBox(-0.5F, -3.049F, -1.183F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        bone36.texOffs(2, 79).addBox(-0.5F, -1.683F, 0.183F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        bone36.texOffs(2, 79).addBox(-0.5F, -1.683F, -2.549F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-
-        bone37 = new ModelRenderer(this);
-        bone37.setPos(-1.6F, -33.4071F, -1.2929F);
-        ironsights.addChild(bone37);
-        setRotationAngle(bone37, 0.5236F, 0.0F, 0.0F);
-        bone37.texOffs(2, 79).addBox(-0.5F, -0.317F, 0.183F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        bone37.texOffs(2, 79).addBox(-0.5F, -3.049F, 0.183F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        bone37.texOffs(2, 79).addBox(-0.5F, -1.683F, -1.183F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        bone37.texOffs(2, 79).addBox(-0.5F, -1.683F, 1.549F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-
-        bolt_case = new ModelRenderer(this);
-        bolt_case.setPos(3.0F, 24.0F, 0.0F);
-
-
-        bone = new ModelRenderer(this);
-        bone.setPos(0.0F, 0.0F, 0.0F);
-        bolt_case.addChild(bone);
-        bone.texOffs(36, 11).addBox(-1.0F, -29.0F, -3.0F, 6.0F, 4.0F, 6.0F, 0.0F, false);
-        bone.texOffs(0, 0).addBox(-15.0F, -28.8F, -1.499F, 14.0F, 3.0F, 3.0F, 0.0F, false);
-        bone.texOffs(100, 157).addBox(-18.001F, -28.5F, 2.0F, 9.0F, 3.0F, 1.0F, 0.0F, false);
-        bone.texOffs(38, 10).addBox(6.0F, -28.0F, 2.0F, 2.0F, 3.0F, 1.0F, 0.0F, false);
-        bone.texOffs(38, 10).addBox(5.0F, -28.0F, -3.0F, 3.0F, 3.0F, 1.0F, 0.0F, false);
-        bone.texOffs(46, 5).addBox(5.0F, -29.0F, -3.0F, 3.0F, 1.0F, 6.0F, 0.0F, false);
-        bone.texOffs(46, 12).addBox(8.0F, -29.0F, -2.0F, 1.0F, 4.0F, 4.0F, 0.0F, false);
-        bone.texOffs(75, 58).addBox(8.1914F, -28.0F, -1.0F, 1.0F, 2.0F, 2.0F, 0.0F, false);
-        bone.texOffs(34, 12).addBox(-1.0F, -30.0F, -2.0F, 9.0F, 1.0F, 4.0F, 0.0F, false);
-
-        bone12 = new ModelRenderer(this);
-        bone12.setPos(-12.5F, -4.5F, 3.5F);
-        bone.addChild(bone12);
-        setRotationAngle(bone12, 0.0F, 0.2618F, 0.0F);
-        bone12.texOffs(45, 111).addBox(-4.0394F, -23.5F, -2.2279F, 3.0F, 2.0F, 1.0F, 0.0F, false);
-
-        bone4 = new ModelRenderer(this);
-        bone4.setPos(11.5F, -6.5F, 0.0F);
-        bone.addChild(bone4);
-        setRotationAngle(bone4, 0.0F, 0.0F, -0.7854F);
-        bone4.texOffs(42, 15).addBox(13.1422F, -19.0919F, -2.0F, 1.0F, 1.0F, 4.0F, 0.0F, false);
-        bone4.texOffs(42, 15).addBox(13.1422F, -18.6776F, -2.0F, 1.0F, 1.0F, 4.0F, 0.0F, false);
-
-        bone2 = new ModelRenderer(this);
-        bone2.setPos(11.5F, -4.0F, -2.5F);
-        bone.addChild(bone2);
-        setRotationAngle(bone2, 0.0F, 0.7854F, 0.0F);
-        bone2.texOffs(42, 15).addBox(-3.1213F, -25.0F, -2.4142F, 1.0F, 4.0F, 1.0F, 0.0F, false);
-        bone2.texOffs(42, 15).addBox(-5.9497F, -25.0F, 0.4142F, 1.0F, 4.0F, 1.0F, 0.0F, false);
-        bone2.texOffs(42, 15).addBox(-3.1213F, -25.0F, -2.8284F, 1.0F, 4.0F, 1.0F, 0.0F, false);
-        bone2.texOffs(42, 15).addBox(-6.3639F, -25.0F, 0.4142F, 1.0F, 4.0F, 1.0F, 0.0F, false);
-
-        bone3 = new ModelRenderer(this);
-        bone3.setPos(6.5F, -6.5F, -2.5F);
-        bone.addChild(bone3);
-        setRotationAngle(bone3, -0.7854F, 0.0F, 0.0F);
-        bone3.texOffs(42, 15).addBox(-7.5F, -16.9706F, -16.2635F, 9.0F, 1.0F, 1.0F, 0.0F, false);
-        bone3.texOffs(42, 15).addBox(-7.5F, -16.5563F, -16.2635F, 9.0F, 1.0F, 1.0F, 0.0F, false);
-        bone3.texOffs(42, 15).addBox(-7.5F, -19.799F, -13.0208F, 9.0F, 1.0F, 1.0F, 0.0F, false);
-        bone3.texOffs(42, 15).addBox(-7.5F, -19.799F, -13.435F, 9.0F, 1.0F, 1.0F, 0.0F, false);
-
-        bolt = new ModelRenderer(this);
-        bolt.setPos(11.5F, -2.8F, 0.0F);
-        setRotationAngle(bolt, -0.2793F, 0.0F, 0.0F);
-        bolt.texOffs(15, 76).addBox(-3.5F, -0.5344F, 0.0F, 1.0F, 1.0F, 4.0F, 0.0F, false);
-
-        catch_ = new ModelRenderer(this);
-        catch_.setPos(0.0F, 21.8743F, 7.1074F);
-        bolt.addChild(catch_);
-        catch_.texOffs(15, 76).addBox(-3.5F, -22.4087F, -3.5074F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-        catch_.texOffs(15, 76).addBox(-3.5F, -22.4087F, -2.0932F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-        catch_.texOffs(15, 76).addBox(-2.7929F, -22.4087F, -2.8003F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-        catch_.texOffs(15, 76).addBox(-4.2071F, -22.4087F, -2.8003F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        catch_.texOffs(15, 76).addBox(-3.5F, -23.1158F, -2.8003F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-        catch_.texOffs(15, 76).addBox(-3.5F, -21.7016F, -2.8003F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-
-        bone7 = new ModelRenderer(this);
-        bone7.setPos(1.5F, 3.6F, 3.6F);
-        catch_.addChild(bone7);
-
-
-        bone8 = new ModelRenderer(this);
-        bone8.setPos(0.0F, 0.0F, 0.0F);
-        bone7.addChild(bone8);
-        setRotationAngle(bone8, 0.0F, -0.7854F, 0.0F);
-        bone8.texOffs(15, 76).addBox(-7.8541F, -26.0087F, -0.7831F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-        bone8.texOffs(15, 76).addBox(-7.147F, -26.0087F, -1.4902F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-        bone8.texOffs(15, 76).addBox(-8.5612F, -26.0087F, -1.4902F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-        bone8.texOffs(15, 76).addBox(-7.8541F, -26.0087F, -2.1973F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-
-        bone6 = new ModelRenderer(this);
-        bone6.setPos(0.0F, -0.7415F, 4.8071F);
-        catch_.addChild(bone6);
-        setRotationAngle(bone6, 0.0F, 0.0F, -0.7854F);
-        bone6.texOffs(15, 76).addBox(13.0533F, -17.5888F, -7.6074F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-        bone6.texOffs(15, 76).addBox(12.3462F, -16.8817F, -7.6074F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-        bone6.texOffs(15, 76).addBox(12.3462F, -18.2959F, -7.6074F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-        bone6.texOffs(15, 76).addBox(11.6391F, -17.5888F, -7.6074F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-
-        rotatingPart3 = new ModelRenderer(this);
-        rotatingPart3.setPos(0.0F, 21.8743F, 11.7074F);
-        bolt.addChild(rotatingPart3);
-
-
-        bone5 = new ModelRenderer(this);
-        bone5.setPos(0.0F, 0.0F, 0.0F);
-        rotatingPart3.addChild(bone5);
-        setRotationAngle(bone5, -0.7854F, 0.0F, 0.0F);
-        bone5.texOffs(15, 76).addBox(-3.5F, -11.1125F, -21.5781F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-        bone5.texOffs(15, 76).addBox(-3.5F, -11.8196F, -20.871F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-        bone5.texOffs(15, 76).addBox(-3.5F, -10.4054F, -20.871F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-        bone5.texOffs(15, 76).addBox(-3.5F, -11.1125F, -20.1639F, 1.0F, 1.0F, 1.0F, 0.0F, false);
 
         stock = new ModelRenderer(this);
-        stock.setPos(0.0F, 24.0F, 0.0F);
+        stock.setPos(0.0F, 0.0F, 0.0F);
+        stock1.addChild(stock);
 
 
         bone9 = new ModelRenderer(this);
@@ -679,9 +544,190 @@ public class AwmModel extends AbstractWeaponModel {
         setRotationAngle(bone43, -0.0436F, 0.5236F, -0.0436F);
         bone43.texOffs(89, 149).addBox(-13.5241F, -1.9374F, 3.1927F, 1.0F, 2.0F, 2.0F, 0.0F, false);
 
-        setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
-        setSpecialRenderer(ModAnimations.BOLT, bolt);
-        setSpecialRenderer(ModAnimations.BOLT_CARRIER, bolt_case);
-        setSpecialRenderer(ModAnimations.BULLET, bullet);
+        bolt1 = new ModelRenderer(this);
+        bolt1.setPos(0.0F, 24.0F, 0.0F);
+        setRotationAngle(bolt1, 0.0F, -1.5708F, 0.0F);
+
+
+        bolt = new ModelRenderer(this);
+        bolt.setPos(11.5F, -26.8F, 0.0F);
+        bolt1.addChild(bolt);
+        setRotationAngle(bolt, -0.2793F, 0.0F, 0.0F);
+        bolt.texOffs(15, 76).addBox(-3.5F, -0.5344F, 0.0F, 1.0F, 1.0F, 4.0F, 0.0F, false);
+
+        catch_ = new ModelRenderer(this);
+        catch_.setPos(0.0F, 21.8743F, 7.1074F);
+        bolt.addChild(catch_);
+        catch_.texOffs(15, 76).addBox(-3.5F, -22.4087F, -3.5074F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        catch_.texOffs(15, 76).addBox(-3.5F, -22.4087F, -2.0932F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        catch_.texOffs(15, 76).addBox(-2.7929F, -22.4087F, -2.8003F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        catch_.texOffs(15, 76).addBox(-4.2071F, -22.4087F, -2.8003F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        catch_.texOffs(15, 76).addBox(-3.5F, -23.1158F, -2.8003F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        catch_.texOffs(15, 76).addBox(-3.5F, -21.7016F, -2.8003F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+
+        bone7 = new ModelRenderer(this);
+        bone7.setPos(1.5F, 3.6F, 3.6F);
+        catch_.addChild(bone7);
+
+
+        bone8 = new ModelRenderer(this);
+        bone8.setPos(0.0F, 0.0F, 0.0F);
+        bone7.addChild(bone8);
+        setRotationAngle(bone8, 0.0F, -0.7854F, 0.0F);
+        bone8.texOffs(15, 76).addBox(-7.8541F, -26.0087F, -0.7831F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone8.texOffs(15, 76).addBox(-7.147F, -26.0087F, -1.4902F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone8.texOffs(15, 76).addBox(-8.5612F, -26.0087F, -1.4902F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone8.texOffs(15, 76).addBox(-7.8541F, -26.0087F, -2.1973F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+
+        bone6 = new ModelRenderer(this);
+        bone6.setPos(0.0F, -0.7415F, 4.8071F);
+        catch_.addChild(bone6);
+        setRotationAngle(bone6, 0.0F, 0.0F, -0.7854F);
+        bone6.texOffs(15, 76).addBox(13.0533F, -17.5888F, -7.6074F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone6.texOffs(15, 76).addBox(12.3462F, -16.8817F, -7.6074F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone6.texOffs(15, 76).addBox(12.3462F, -18.2959F, -7.6074F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone6.texOffs(15, 76).addBox(11.6391F, -17.5888F, -7.6074F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+
+        rotatingPart3 = new ModelRenderer(this);
+        rotatingPart3.setPos(0.0F, 21.8743F, 11.7074F);
+        bolt.addChild(rotatingPart3);
+
+
+        bone5 = new ModelRenderer(this);
+        bone5.setPos(0.0F, 0.0F, 0.0F);
+        rotatingPart3.addChild(bone5);
+        setRotationAngle(bone5, -0.7854F, 0.0F, 0.0F);
+        bone5.texOffs(15, 76).addBox(-3.5F, -11.1125F, -21.5781F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone5.texOffs(15, 76).addBox(-3.5F, -11.8196F, -20.871F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone5.texOffs(15, 76).addBox(-3.5F, -10.4054F, -20.871F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+        bone5.texOffs(15, 76).addBox(-3.5F, -11.1125F, -20.1639F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+
+        bolt_case1 = new ModelRenderer(this);
+        bolt_case1.setPos(0.0F, 24.0F, 0.0F);
+        setRotationAngle(bolt_case1, 0.0F, -1.5708F, 0.0F);
+
+
+        bolt_case = new ModelRenderer(this);
+        bolt_case.setPos(3.0F, 0.0F, 0.0F);
+        bolt_case1.addChild(bolt_case);
+
+
+        bone = new ModelRenderer(this);
+        bone.setPos(0.0F, 0.0F, 0.0F);
+        bolt_case.addChild(bone);
+        bone.texOffs(36, 11).addBox(-1.0F, -29.0F, -3.0F, 6.0F, 4.0F, 6.0F, 0.0F, false);
+        bone.texOffs(0, 0).addBox(-15.0F, -28.8F, -1.499F, 14.0F, 3.0F, 3.0F, 0.0F, false);
+        bone.texOffs(100, 157).addBox(-18.001F, -28.5F, 2.0F, 9.0F, 3.0F, 1.0F, 0.0F, false);
+        bone.texOffs(38, 10).addBox(6.0F, -28.0F, 2.0F, 2.0F, 3.0F, 1.0F, 0.0F, false);
+        bone.texOffs(38, 10).addBox(5.0F, -28.0F, -3.0F, 3.0F, 3.0F, 1.0F, 0.0F, false);
+        bone.texOffs(46, 5).addBox(5.0F, -29.0F, -3.0F, 3.0F, 1.0F, 6.0F, 0.0F, false);
+        bone.texOffs(46, 12).addBox(8.0F, -29.0F, -2.0F, 1.0F, 4.0F, 4.0F, 0.0F, false);
+        bone.texOffs(75, 58).addBox(8.1914F, -28.0F, -1.0F, 1.0F, 2.0F, 2.0F, 0.0F, false);
+        bone.texOffs(34, 12).addBox(-1.0F, -30.0F, -2.0F, 9.0F, 1.0F, 4.0F, 0.0F, false);
+
+        bone12 = new ModelRenderer(this);
+        bone12.setPos(-12.5F, -4.5F, 3.5F);
+        bone.addChild(bone12);
+        setRotationAngle(bone12, 0.0F, 0.2618F, 0.0F);
+        bone12.texOffs(45, 111).addBox(-4.0394F, -23.5F, -2.2279F, 3.0F, 2.0F, 1.0F, 0.0F, false);
+
+        bone4 = new ModelRenderer(this);
+        bone4.setPos(11.5F, -6.5F, 0.0F);
+        bone.addChild(bone4);
+        setRotationAngle(bone4, 0.0F, 0.0F, -0.7854F);
+        bone4.texOffs(42, 15).addBox(13.1422F, -19.0919F, -2.0F, 1.0F, 1.0F, 4.0F, 0.0F, false);
+        bone4.texOffs(42, 15).addBox(13.1422F, -18.6776F, -2.0F, 1.0F, 1.0F, 4.0F, 0.0F, false);
+
+        bone2 = new ModelRenderer(this);
+        bone2.setPos(11.5F, -4.0F, -2.5F);
+        bone.addChild(bone2);
+        setRotationAngle(bone2, 0.0F, 0.7854F, 0.0F);
+        bone2.texOffs(42, 15).addBox(-3.1213F, -25.0F, -2.4142F, 1.0F, 4.0F, 1.0F, 0.0F, false);
+        bone2.texOffs(42, 15).addBox(-5.9497F, -25.0F, 0.4142F, 1.0F, 4.0F, 1.0F, 0.0F, false);
+        bone2.texOffs(42, 15).addBox(-3.1213F, -25.0F, -2.8284F, 1.0F, 4.0F, 1.0F, 0.0F, false);
+        bone2.texOffs(42, 15).addBox(-6.3639F, -25.0F, 0.4142F, 1.0F, 4.0F, 1.0F, 0.0F, false);
+
+        bone3 = new ModelRenderer(this);
+        bone3.setPos(6.5F, -6.5F, -2.5F);
+        bone.addChild(bone3);
+        setRotationAngle(bone3, -0.7854F, 0.0F, 0.0F);
+        bone3.texOffs(42, 15).addBox(-7.5F, -16.9706F, -16.2635F, 9.0F, 1.0F, 1.0F, 0.0F, false);
+        bone3.texOffs(42, 15).addBox(-7.5F, -16.5563F, -16.2635F, 9.0F, 1.0F, 1.0F, 0.0F, false);
+        bone3.texOffs(42, 15).addBox(-7.5F, -19.799F, -13.0208F, 9.0F, 1.0F, 1.0F, 0.0F, false);
+        bone3.texOffs(42, 15).addBox(-7.5F, -19.799F, -13.435F, 9.0F, 1.0F, 1.0F, 0.0F, false);
+
+        ironsights1 = new ModelRenderer(this);
+        ironsights1.setPos(0.0F, 24.0F, 0.0F);
+        setRotationAngle(ironsights1, 0.0F, -1.5708F, 0.0F);
+
+
+        ironsights = new ModelRenderer(this);
+        ironsights.setPos(0.0F, 0.0F, 1.2929F);
+        ironsights1.addChild(ironsights);
+        ironsights.texOffs(2, 79).addBox(-2.6F, -32.0071F, -3.2929F, 2.0F, 1.0F, 4.0F, 0.0F, true);
+        ironsights.texOffs(2, 79).addBox(-22.6F, -32.0071F, -3.2929F, 2.0F, 1.0F, 4.0F, 0.0F, true);
+        ironsights.texOffs(2, 79).addBox(-2.6F, -33.0071F, -0.2929F, 2.0F, 1.0F, 1.0F, 0.0F, true);
+        ironsights.texOffs(2, 79).addBox(-22.6F, -33.0071F, -0.2929F, 2.0F, 1.0F, 1.0F, 0.0F, true);
+        ironsights.texOffs(2, 79).addBox(-2.6F, -33.0071F, -3.2929F, 2.0F, 1.0F, 1.0F, 0.0F, true);
+        ironsights.texOffs(2, 79).addBox(-22.6F, -33.0071F, -3.2929F, 2.0F, 1.0F, 1.0F, 0.0F, true);
+        ironsights.texOffs(2, 79).addBox(-2.1F, -32.9071F, -2.7929F, 1.0F, 1.0F, 3.0F, 0.0F, true);
+        ironsights.texOffs(2, 79).addBox(-22.1F, -32.9071F, -2.7929F, 1.0F, 1.0F, 3.0F, 0.0F, true);
+        ironsights.texOffs(2, 79).addBox(-2.1F, -33.9071F, -1.7929F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        ironsights.texOffs(2, 79).addBox(-22.1F, -33.9071F, -1.7929F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        ironsights.texOffs(2, 79).addBox(-2.1F, -36.6392F, -1.7929F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        ironsights.texOffs(2, 79).addBox(-2.1F, -35.2731F, -3.1589F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        ironsights.texOffs(2, 79).addBox(-2.1F, -35.2731F, -0.4269F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+
+        bone38 = new ModelRenderer(this);
+        bone38.setPos(-21.6F, -33.5071F, -2.7929F);
+        ironsights.addChild(bone38);
+        setRotationAngle(bone38, -0.2618F, 0.0F, 0.0F);
+        bone38.texOffs(2, 79).addBox(-1.0F, -2.1641F, 2.5442F, 2.0F, 2.0F, 1.0F, 0.0F, true);
+
+        bone39 = new ModelRenderer(this);
+        bone39.setPos(-21.6F, -33.5071F, 0.2071F);
+        ironsights.addChild(bone39);
+        setRotationAngle(bone39, 0.2618F, 0.0F, 0.0F);
+        bone39.texOffs(2, 79).addBox(-1.0F, -2.1641F, -3.5442F, 2.0F, 2.0F, 1.0F, 0.0F, true);
+
+        bone36 = new ModelRenderer(this);
+        bone36.setPos(-1.6F, -33.4071F, -1.2929F);
+        ironsights.addChild(bone36);
+        setRotationAngle(bone36, -0.5236F, 0.0F, 0.0F);
+        bone36.texOffs(2, 79).addBox(-0.5F, -0.317F, -1.183F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone36.texOffs(2, 79).addBox(-0.5F, -3.049F, -1.183F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone36.texOffs(2, 79).addBox(-0.5F, -1.683F, 0.183F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone36.texOffs(2, 79).addBox(-0.5F, -1.683F, -2.549F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+
+        bone37 = new ModelRenderer(this);
+        bone37.setPos(-1.6F, -33.4071F, -1.2929F);
+        ironsights.addChild(bone37);
+        setRotationAngle(bone37, 0.5236F, 0.0F, 0.0F);
+        bone37.texOffs(2, 79).addBox(-0.5F, -0.317F, 0.183F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone37.texOffs(2, 79).addBox(-0.5F, -3.049F, 0.183F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone37.texOffs(2, 79).addBox(-0.5F, -1.683F, -1.183F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bone37.texOffs(2, 79).addBox(-0.5F, -1.683F, 1.549F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+
+        bullet1 = new ModelRenderer(this);
+        bullet1.setPos(0.0F, 24.0F, 0.0F);
+        setRotationAngle(bullet1, 0.0F, -1.5708F, 0.0F);
+
+        bullet = new ModelRenderer(this);
+        bullet.setPos(-6.6929F, -15.3929F, 0.0F);
+        bullet1.addChild(bullet);
+        setRotationAngle(bullet, 0.0F, 0.0F, 0.0873F);
+
+        bullet2 = new ModelRenderer(this);
+        bullet2.setPos(6.6929F, 10.3929F, 0.0F);
+        bullet.addChild(bullet2);
+        bullet2.texOffs(0, 491).addBox(-13.6F, -21.9F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, true);
+        bullet2.texOffs(0, 491).addBox(-14.2F, -21.3F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+        bullet2.texOffs(0, 491).addBox(-11.6F, -22.4F, -1.5F, 7.0F, 3.0F, 3.0F, 0.0F, true);
+        bullet2.texOffs(0, 491).addBox(-3.6F, -22.4F, -1.5F, 1.0F, 3.0F, 3.0F, 0.0F, true);
+
+        setSpecialRenderer(ModAnimations.MAGAZINE, mag1);
+        setSpecialRenderer(ModAnimations.BOLT, bolt1);
+        setSpecialRenderer(ModAnimations.BOLT_CARRIER, bolt_case1);
+        setSpecialRenderer(ModAnimations.BULLET, bullet1);
     }
 }

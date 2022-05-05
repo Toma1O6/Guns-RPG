@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.client.screen.widgets;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.configuration.api.client.widget.ITickable;
-import dev.toma.gunsrpg.common.item.perk.CrystalItem;
 import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.common.perk.PerkType;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -41,7 +40,7 @@ public class PerkWidget extends Widget implements ITickable {
         this.state = state;
         ResourceLocation perkId = perk.getPerkId();
         this.icon = new ResourceLocation(perkId.getNamespace(), "textures/icons/perk/" + perkId.getPath() + ".png");
-        this.maxLevel = ModUtils.equals(perk.getBounds(state == State.DEBUFF ? PerkType.DEBUFF : PerkType.BUFF), value, 0.001);
+        this.maxLevel = ModUtils.equals(perk.getBounds(state == State.DEBUFF ? PerkType.DEBUFF : PerkType.BUFF), Math.abs(value), 0.001);
     }
 
     @Override

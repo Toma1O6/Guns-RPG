@@ -1,0 +1,1 @@
+{"type":"default","data":{"gunsrpg:weapon.slide":[{"e":0.5,"ease":13,"pos":{"x":0.0,"y":0.0,"z":-0.7}},{"e":1.0,"ease":13}],"gunsrpg:weapon.bullet":[{"e":0.4,"ease":13},{"e":1.0,"ease":13,"pos":{"x":3.5,"y":-0.6,"z":0.0},"rot":{"x":0.0,"y":45.0,"z":0.0}}]}}

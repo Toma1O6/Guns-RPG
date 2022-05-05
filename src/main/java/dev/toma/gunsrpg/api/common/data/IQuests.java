@@ -1,11 +1,12 @@
 package dev.toma.gunsrpg.api.common.data;
 
-import dev.toma.gunsrpg.common.quests.IQuest;
-import dev.toma.gunsrpg.common.quests.IQuestInstance;
+import dev.toma.gunsrpg.common.quests.quest.Quest;
+
+import java.util.Optional;
 
 public interface IQuests {
 
-    boolean hasQuest(IQuest quest);
+    ITraderStandings getTraderStandings();
 
-    IQuestInstance getByType(IQuest quest);
+    Optional<Quest> getActiveQuest();
 }

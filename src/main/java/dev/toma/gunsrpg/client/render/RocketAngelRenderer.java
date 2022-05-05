@@ -1,9 +1,12 @@
 package dev.toma.gunsrpg.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.RocketAngelModel;
 import dev.toma.gunsrpg.common.entity.RocketAngelEntity;
+import dev.toma.gunsrpg.util.RenderUtils;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.BipedRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
@@ -11,20 +14,26 @@ import net.minecraft.util.math.BlockPos;
 
 public class RocketAngelRenderer extends BipedRenderer<RocketAngelEntity, RocketAngelModel> {
 
-    private static final ResourceLocation VEX_TEXTURE = GunsRPG.makeResource("textures/entity/rocket_angel.png");
+    private static final ResourceLocation[] VEX_TEXTURE = {
+            GunsRPG.makeResource("textures/entity/rocket_angel_0.png"),
+            GunsRPG.makeResource("textures/entity/rocket_angel_1.png"),
+            GunsRPG.makeResource("textures/entity/rocket_angel_2.png"),
+            GunsRPG.makeResource("textures/entity/rocket_angel_3.png"),
+            GunsRPG.makeResource("textures/entity/rocket_angel_4.png")
+    };
 
     public RocketAngelRenderer(EntityRendererManager manager) {
         super(manager, new RocketAngelModel(), 0.6F);
     }
 
     @Override
-    protected int getBlockLightLevel(RocketAngelEntity p_225624_1_, BlockPos p_225624_2_) {
+    protected int getBlockLightLevel(RocketAngelEntity entity, BlockPos pos) {
         return 15;
     }
 
     @Override
-    public ResourceLocation getTextureLocation(RocketAngelEntity p_110775_1_) {
-        return VEX_TEXTURE;
+    public ResourceLocation getTextureLocation(RocketAngelEntity entity) {
+        return VEX_TEXTURE[entity.getTextureIndex()];
     }
 
     @Override

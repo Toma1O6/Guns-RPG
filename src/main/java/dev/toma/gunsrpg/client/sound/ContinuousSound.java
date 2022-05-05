@@ -6,7 +6,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class ContinuousSound extends TickableSound {

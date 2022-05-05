@@ -1,0 +1,39 @@
+{
+    "type": "gunsrpg:kill_in_area",
+    "tier": 3,
+    "display": {
+        "name": "Bombardment I",
+        "info": "Kill 3 rocket angels"
+    },
+    "data": {
+        "entities": [
+            "gunsrpg:rocket_angel"
+        ],
+        "count": 3,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "gunsrpg:rocket_angel",
+                    "propability": 0.05,
+                    "limit": 2
+                }
+            ]
+        }
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ],
+        "exclusions": [
+            "gunsrpg:use_melee"
+        ]
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "type": "gunsrpg:kill_entities",
+    "tier": 4,
+    "display": {
+        "name": "Eye Contact III",
+        "info": "Kill 15 endermen"
+    },
+    "data": {
+        "entities": [
+            "minecraft:enderman"
+        ],
+        "count": 15
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "type": "gunsrpg:survival",
+    "tier": 2,
+    "display": {
+        "name": "Pacifist II",
+        "info": "Do not take deal damage for 20 minutes"
+    },
+    "data": {
+        "duration": "20m",
+        "area": null
+    },
+    "conditions": [
+        {
+            "condition": "gunsrpg:no_damage_given"
+        }
+    ],
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ],
+        "exclusions": [
+            "gunsrpg:have_bleed",
+            "gunsrpg:have_poison",
+            "gunsrpg:have_fracture",
+            "gunsrpg:have_infection"
+        ]
+    }
+}

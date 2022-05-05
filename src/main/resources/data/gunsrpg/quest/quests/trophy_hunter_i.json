@@ -1,0 +1,24 @@
+{
+    "type": "gunsrpg:kill_entities",
+    "tier": 1,
+    "display": {
+        "name": "Trophy Hunter I",
+        "info": "Kill 5 unique hostile mobs"
+    },
+    "data": {
+        "entities": null,
+        "count": 5
+    },
+    "conditions": [
+        {
+            "condition": "gunsrpg:unique"
+        }
+    ],
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            }
+        ]
+    }
+}

@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.IIntervalProvider;
+import dev.toma.gunsrpg.util.Interval;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
@@ -34,11 +35,8 @@ public class IronBuddySkill extends SimpleSkill implements ICooldown, IClickable
         this.totalCooldown = provider.getTicks();
         this.addedHealth = extraHealth;
         this.container = new DescriptionContainer(type);
-        if (extraHealth > 0) {
-            container.addProperty("info", Math.round(100.0F + extraHealth));
-        } else {
-            container.addProperty("info");
-        }
+        container.addProperty("info", Math.round(100.0F + extraHealth));
+        container.addProperty("cooldown", Interval.format(totalCooldown, initial -> initial.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE)));
     }
 
     @Override

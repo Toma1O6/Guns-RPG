@@ -1,11 +1,21 @@
 package dev.toma.gunsrpg.common.item.guns.util;
 
+import com.google.common.collect.ImmutableMap;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.util.IFlags;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.LazyLoader;
+import dev.toma.gunsrpg.util.object.Pair;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 
 public enum Firemode {
 
@@ -40,10 +50,16 @@ public enum Firemode {
             InputEventListenerType.ON_INPUT
     ),
 
+    HOMING(
+            "Homing",
+            new LazyLoader<>(IInputEventHandler.Single::new),
+            InputEventListenerType.ON_INPUT
+    ),
+
     BARRAGE(
             "Barrage",
             new LazyLoader<>(IInputEventHandler.Barrage::new),
-            InputEventListenerType.ON_INPUT
+            InputEventListenerType.ON_TICK
     );
 
     private final String name;
@@ -88,5 +104,47 @@ public enum Firemode {
 
     public String getName() {
         return name;
+    }
+
+    public static class ConditionalSelector implements BiFunction<PlayerEntity, Firemode, Firemode> {
+
+        private final Map<Firemode, List<Pair<BiPredicate<PlayerEntity, IPlayerData>, Firemode>>> transitionMap;
+
+        private ConditionalSelector(Map<Firemode, List<Pair<BiPredicate<PlayerEntity, IPlayerData>, Firemode>>> map) {
+            this.transitionMap = ImmutableMap.copyOf(map);
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        @Override
+        public Firemode apply(PlayerEntity player, Firemode firemode) {
+            IPlayerData provider = PlayerData.getUnsafe(player);
+            List<Pair<BiPredicate<PlayerEntity, IPlayerData>, Firemode>> links = transitionMap.get(firemode);
+            for (Pair<BiPredicate<PlayerEntity, IPlayerData>, Firemode> pair : links) {
+                BiPredicate<PlayerEntity, IPlayerData> predicate = pair.getLeft();
+                if (predicate.test(player, provider)) {
+                    return pair.getRight();
+                }
+            }
+            return firemode;
+        }
+
+        public static class Builder {
+
+            private final Map<Firemode, List<Pair<BiPredicate<PlayerEntity, IPlayerData>, Firemode>>> transitionMap = new IdentityHashMap<>();
+
+            private Builder() {}
+
+            public Builder addTransition(Firemode actual, BiPredicate<PlayerEntity, IPlayerData> predicate, Firemode next) {
+                this.transitionMap.computeIfAbsent(actual, k -> new ArrayList<>()).add(Pair.of(predicate, next));
+                return this;
+            }
+
+            public ConditionalSelector build() {
+                return new ConditionalSelector(transitionMap);
+            }
+        }
     }
 }

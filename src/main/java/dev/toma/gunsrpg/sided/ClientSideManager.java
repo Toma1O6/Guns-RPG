@@ -2,6 +2,8 @@ package dev.toma.gunsrpg.sided;
 
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.ModKeybinds;
+import dev.toma.gunsrpg.client.model.GrenadeShellModel;
+import dev.toma.gunsrpg.client.model.RocketModel;
 import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
 import dev.toma.gunsrpg.client.render.debuff.IconDebuffRenderer;
@@ -28,6 +30,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -71,17 +74,20 @@ public class ClientSideManager {
         // entity renderers
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.AIRDROP.get(),             AirdropRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.EXPLOSIVE_SKELETON.get(),  ExplosiveSkeletonRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.EXPLOSIVE_ARROW.get(),     ExplosiveArrowRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.ZOMBIE_GUNNER.get(),       ZombieGunnerRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.BLOODMOON_GOLEM.get(),     BloodmoonGolemRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.BOLT.get(),                CrossbowBoltRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.GRENADE.get(),             GrenadeRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.ROCKET_ANGEL.get(),        RocketAngelRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.GOLD_DRAGON.get(),         GoldenDragonRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.PELLET.get(),              NoOpRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.BULLET.get(),              NoOpRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.PELLET.get(),              TracerRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.BULLET.get(),              TracerRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.FLARE.get(),               NoOpRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.PEBBLE.get(),              PebbleRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.GRENADE_SHELL.get(),       manager -> new ExplosiveProjectileRenderer<>(manager, new GrenadeShellModel()));
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.ROCKET.get(),              manager -> new ExplosiveProjectileRenderer<>(manager, new RocketModel()));
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.MAYOR.get(),               MayorRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.ZOMBIE_KNIGHT.get(),       ZombieRenderer::new);
 
         // keybinds
         ModKeybinds.registerKeybinds();
@@ -104,12 +110,6 @@ public class ClientSideManager {
 
         // event handlers
         MinecraftForge.EVENT_BUS.register(new HUDRenderer());
-    }
-
-    public void playDelayedSound(BlockPos pos, float volume, float pitch, SoundEvent event, SoundCategory category, int tickDelay) {
-        Minecraft mc = Minecraft.getInstance();
-        SoundHandler handler = mc.getSoundManager();
-        handler.playDelayed(new SimpleSound(event, category, volume, pitch, pos), tickDelay);
     }
 
     public IPlayerData.ISynchCallback onDataSync() {
@@ -138,6 +138,8 @@ public class ClientSideManager {
         ScreenManager.register(ModContainers.COOKER.get(), CookerScreen::new);
         ScreenManager.register(ModContainers.REPAIR_STATION.get(), RepairStationScreen::new);
         ScreenManager.register(ModContainers.CRYSTAL_STATION.get(), CrystalStationScreen::new);
+        ScreenManager.register(ModContainers.CRYSTAL_FUSE.get(), CrystalFuseStationScreen::new);
+        ScreenManager.register(ModContainers.CRYSTAL_PURIFICATION.get(), CrystalPurificationStationScreen::new);
     }
 
     private AnimationType<?>[] gatherAnimationTypes() {

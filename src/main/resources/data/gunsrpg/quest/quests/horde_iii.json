@@ -1,0 +1,29 @@
+{
+    "type": "gunsrpg:survival",
+    "tier": 5,
+    "display": {
+        "name": "Horde III",
+        "info": "Survive in area for 9 minutes"
+    },
+    "data": {
+        "duration": "9m",
+        "area": {
+            "size": 32,
+            "distance": 256,
+            "spawners": [
+                {}
+            ]
+        }
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

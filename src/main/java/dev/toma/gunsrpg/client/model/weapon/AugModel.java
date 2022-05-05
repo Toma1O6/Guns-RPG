@@ -552,6 +552,5 @@ public class AugModel extends AbstractWeaponModel {
 
         setSpecialRenderer(ModAnimations.MAGAZINE, magazine);
         setSpecialRenderer(ModAnimations.SLIDE, slide);
-        setBulletRenderer(setSpecialRenderer(ModAnimations.BULLET, bullet));
     }
 }

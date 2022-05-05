@@ -119,7 +119,7 @@ public class R45Item extends GunItem {
         if (weapon.getItem() instanceof GunItem && PlayerData.hasActiveSkill(shooter, Skills.R45_EVERY_BULLET_COUNTS)) {
             int ammo = this.getAmmo(weapon);
             if (ammo == 0) {
-                return damage * 3.0F;
+                return damage * SkillUtil.EVERY_BULLET_COUNTS_DAMAGE;
             }
         }
         return damage;

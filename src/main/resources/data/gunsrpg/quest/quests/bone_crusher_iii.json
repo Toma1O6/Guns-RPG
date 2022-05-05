@@ -1,0 +1,25 @@
+{
+    "type": "gunsrpg:kill_entities",
+    "tier": 3,
+    "display": {
+        "name": "Bone Crusher III",
+        "info": "Kill 20 skeletons"
+    },
+    "data": {
+        "entities": [
+            "minecraft:skeleton"
+        ],
+        "count": 20
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

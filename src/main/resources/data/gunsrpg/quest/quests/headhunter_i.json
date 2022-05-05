@@ -1,0 +1,28 @@
+{
+    "type": "gunsrpg:kill_entities",
+    "tier": 1,
+    "display": {
+        "name": "Head Hunter I",
+        "info": "Kill 10 mobs with headshot"
+    },
+    "data": {
+        "entities": null,
+        "count": 10
+    },
+    "conditions": [
+        {
+            "condition": "gunsrpg:is_headshot"
+        }
+    ],
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            }
+        ],
+        "exclusions": [
+            "gunsrpg:use_melee",
+            "gunsrpg:explode"
+        ]
+    }
+}

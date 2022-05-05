@@ -13,8 +13,6 @@ public interface IPlayerData {
 
     IJamInfo getJamInfo();
 
-    IQuests getPlayerQuests();
-
     IDebuffs getDebuffControl();
 
     IAttributeProvider getAttributes();
@@ -26,6 +24,8 @@ public interface IPlayerData {
     IProgressData getProgressData();
 
     IHandState getHandState();
+
+    IQuests getQuests();
 
     List<IPlayerCapEntry> getSaveEntries();
 

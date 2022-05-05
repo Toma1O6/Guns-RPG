@@ -1,0 +1,9 @@
+{
+    "type": "gunsrpg:used_item",
+    "selector": "any",
+    "items": [
+        "gunsrpg:sks",
+        "gunsrpg:vss",
+        "gunsrpg:mk14ebr"
+    ]
+}

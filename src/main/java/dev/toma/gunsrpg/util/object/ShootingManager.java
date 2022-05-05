@@ -1,19 +1,17 @@
 package dev.toma.gunsrpg.util.object;
 
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
-import dev.toma.gunsrpg.api.common.data.IHandState;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.IProgressData;
-import dev.toma.gunsrpg.api.common.data.IReloadInfo;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.animation.RecoilAnimation;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialData;
 import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialDataContainer;
 import dev.toma.gunsrpg.common.item.guns.setup.MaterialContainer;
+import dev.toma.gunsrpg.common.item.guns.util.IAdditionalShootData;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_SetReloadingPacket;
@@ -38,6 +36,10 @@ public class ShootingManager {
         IProgressData levelData = data.getProgressData();
         GunItem item = (GunItem) stack.getItem();
         if (!player.isSprinting() && isShootingReady()) {
+            ISkillProvider provider = data.getSkillProvider();
+            if (!provider.hasSkill(item.getRequiredSkill())) {
+                return false;
+            }
             IAmmoMaterial material = item.getMaterialFromNBT(stack);
             if (material == null) return false;
             if (reloadInfo.isReloading()) {
@@ -100,7 +102,11 @@ public class ShootingManager {
                 IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
                 pipeline.insert(ModAnimations.RECOIL, new RecoilAnimation(xRot, yRot, gun, stack, dataProvider));
             }
-            NetworkManager.sendServerPacket(new C2S_ShootPacket());
+            NetworkManager.sendServerPacket(new C2S_ShootPacket(context -> {
+                if (gun instanceof IAdditionalShootData) {
+                    ((IAdditionalShootData) gun).addExtraData(context, player, stack, material);
+                }
+            }));
             gun.onShoot(player, stack);
             shootingDelay = gun.getFirerate(attributeProvider);
         }
@@ -126,6 +132,10 @@ public class ShootingManager {
 
         public static boolean isBurstModeActive() {
             return burstActive;
+        }
+
+        public static void forceShootDelay(int delay) {
+            shootingDelay = delay;
         }
     }
 }

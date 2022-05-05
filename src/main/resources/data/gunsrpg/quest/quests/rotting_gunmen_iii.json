@@ -1,0 +1,25 @@
+{
+    "type": "gunsrpg:kill_entities",
+    "tier": 5,
+    "display": {
+        "name": "Rotting Gunmen I",
+        "info": "Kill 20 zombie gunners"
+    },
+    "data": {
+        "entities": [
+            "gunsrpg:zombie_gunner"
+        ],
+        "count": 20
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

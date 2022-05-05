@@ -55,6 +55,7 @@ public class KeyframeProviderSerializer implements JsonSerializer<IKeyframeProvi
         return object;
     }
 
+    @SuppressWarnings("unchecked")
     private <E extends IAnimationEvent> IAnimationEvent[] deserializeEvents(JsonArray src, JsonDeserializationContext context) throws JsonParseException {
         IAnimationEvent[] events = new IAnimationEvent[src.size()];
         for (int i = 0; i < src.size(); i++) {

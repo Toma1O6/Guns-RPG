@@ -1,0 +1,36 @@
+{
+    "type": "gunsrpg:kill_in_area",
+    "tier": 3,
+    "display": {
+        "name": "Blackboned II",
+        "info": "Kill 13 wither skeletons"
+    },
+    "data": {
+        "entities": [
+            "minecraft:wither_skeleton"
+        ],
+        "count": 13,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "minecraft:wither_skeleton",
+                    "propability": 0.07,
+                    "limit": 5
+                }
+            ]
+        }
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}

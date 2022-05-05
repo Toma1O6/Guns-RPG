@@ -24,6 +24,7 @@ public class Animation extends TickableAnimation {
     @Override
     public void animate(AnimationStage stage, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay) {
         if (provider.blocksStageAnimation(stage)) return;
+        preAnimate(stage, matrix);
         float progressInterpolated = getInterpolatedProgress();
         IKeyframe currentFrame = provider.getCurrentFrame(stage, progressInterpolated);
         IKeyframe lastFrame = provider.getPreviousFrame(stage);
@@ -41,6 +42,10 @@ public class Animation extends TickableAnimation {
     }
 
     public void onAnimated(AnimationStage stage, MatrixStack stack, IRenderTypeBuffer typeBuffer, int light, int overlay) {
+
+    }
+
+    public void preAnimate(AnimationStage stage, MatrixStack stack) {
 
     }
 }

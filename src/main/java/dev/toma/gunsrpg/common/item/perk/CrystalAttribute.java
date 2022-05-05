@@ -27,6 +27,10 @@ public final class CrystalAttribute {
         this.modifier = this.createUniqueModifier();
     }
 
+    public CrystalAttribute increaseLevel() {
+        return new CrystalAttribute(perk, type, level < 0 ? level - 1 : level + 1);
+    }
+
     public IAttributeModifier createUniqueModifier() {
         long mostSigBits = perk.hashCode();
         long leastSigBits = Boolean.hashCode(perk.shouldInvertCalculation());
@@ -69,8 +73,8 @@ public final class CrystalAttribute {
 
     public float getValue() {
         float range = perk.getBounds(type);
-        float value = perk.getScaling(type) * level;
-        return Math.min(value, range);
+        float value = perk.getScaling() * level;
+        return value < 0 ? Math.max(value, -range) : Math.min(value, range);
     }
 
     @Override

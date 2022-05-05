@@ -1,14 +1,9 @@
 package dev.toma.gunsrpg.common.quests.condition;
 
+import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.player.PlayerEntity;
 
-import java.util.function.Predicate;
+public interface IQuestCondition {
 
-public interface IQuestCondition extends Predicate<PlayerEntity> {
-
-    int getRewardTierModifier();
-
-    default boolean isEmpty() {
-        return false;
-    }
+    boolean isValid(PlayerEntity player, IPropertyReader reader);
 }

@@ -15,6 +15,7 @@ public class WorldConfiguration extends ObjectType {
     public final IntType rocketAngelSpawnChance;
     public final IntType zombieGunnerSpawn;
     public final IntType explosiveSkeletonSpawn;
+    public final IntType zombieKnightSpawn;
     public final IntType bloodmoonCycle;
     public final IntType airdropFrequency;
     public final EnumType<SleepRestriction> sleepRestriction;
@@ -40,24 +41,25 @@ public class WorldConfiguration extends ObjectType {
         disableMobSpawners = writer.writeBoolean("Disable mob spawners", true, "Disables mob spawning from spawners", "This prevents xp farming");
         bloodMoonMobAgroRange = writer.writeBoundedInt("Bloodmoon aggro range", 40, 1, 64, "Defines at which range will mobs aggro on you during bloodmoon").setDisplay(NumberDisplayType.SLIDER);
         rocketAngelSpawnChance = writer.writeBoundedInt("Rocket angel spawn chance", 2, 0, 16).setDisplay(NumberDisplayType.SLIDER);
-        zombieGunnerSpawn = writer.writeBoundedInt("ZombieGunner chance", 8, 0, 60, "Spawn chance for zombie gunner entity");
-        explosiveSkeletonSpawn = writer.writeBoundedInt("ExplosiveSkeletion chance", 5, 0, 60, "Spawn chance for explosive skeleton entity");
+        zombieGunnerSpawn = writer.writeBoundedInt("Zombie Gunner chance", 8, 0, 60, "Spawn chance for zombie gunner entity");
+        explosiveSkeletonSpawn = writer.writeBoundedInt("Explosive Skeleton chance", 5, 0, 60, "Spawn chance for explosive skeleton entity");
+        zombieKnightSpawn = writer.writeBoundedInt("Zombie Knight chance", 1, 0, 60, "Spawn chance for zombie knight entity");
         bloodmoonCycle = writer.writeBoundedInt("Bloodmoon cycle", 7, -1, 999, "Defines bloodmoon cycle", "Set to -1 to disable");
         airdropFrequency = writer.writeBoundedInt("Airdrop frequency", 3, -1, 999, "Defines airdrop spawn frequency [days]", "Set to -1 to disable");
         sleepRestriction = writer.writeEnum("Restrict sleep", SleepRestriction.ALWAYS, "Defines when players will be able to sleep");
         lootStashChance = writer.writeBoundedDouble("Loot stash chance", 0.005, 0.0, 0.1, "Chance of loot stash spawn per chunk").setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER).setFormatting(new DecimalFormat("0.0###"));
         amethyst = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 4, 1, 16), "Amethyst ore", "Configure amethyst spawning");
-        blackCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Black crystal", "Configure black crystal spawning");
-        blueCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Blue crystal", "Configure blue crystal spawning");
-        greenCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Green crystal", "Configure green crystal spawning");
-        redCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Red crystal", "Configure red crystal spawning");
-        whiteCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "White crystal", "Configure white crystal spawning");
-        yellowCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Yellow crystal", "Configure yellow crystal spawning");
-        blackOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Black orb", "Configure black orb spawning");
-        blueOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Blue orb", "Configure blue orb spawning");
-        greenOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Green orb", "Configure green orb spawning");
-        redOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Red orb", "Configure red orb spawning");
-        whiteOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "White orb", "Configure white orb spawning");
-        yellowOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 32), "Yellow orb", "Configure yellow orb spawning");
+        blackCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 48), "Black crystal", "Configure black crystal spawning");
+        blueCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 48), "Blue crystal", "Configure blue crystal spawning");
+        greenCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 48), "Green crystal", "Configure green crystal spawning");
+        redCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 48), "Red crystal", "Configure red crystal spawning");
+        whiteCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 48), "White crystal", "Configure white crystal spawning");
+        yellowCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 48), "Yellow crystal", "Configure yellow crystal spawning");
+        blackOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 48), "Black orb", "Configure black orb spawning");
+        blueOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 48), "Blue orb", "Configure blue orb spawning");
+        greenOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 48), "Green orb", "Configure green orb spawning");
+        redOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 48), "Red orb", "Configure red orb spawning");
+        whiteOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 48), "White orb", "Configure white orb spawning");
+        yellowOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 2, 1, 48), "Yellow orb", "Configure yellow orb spawning");
     }
 }

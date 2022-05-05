@@ -22,6 +22,7 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
 
     public static final ResourceLocation ATTACHMENTS = GunsRPG.makeResource("textures/item/attachments.png");
     public static final ResourceLocation WEAPON = GunsRPG.makeResource("textures/item/weapon_texture_map.png");
+    public static final ResourceLocation SNIPER_RETICLE = GunsRPG.makeResource("textures/scope/sniper_reticle.png");
 
     @Override
     public final void renderByItem(ItemStack stack, ItemCameraTransforms.TransformType transformType, MatrixStack matrix, IRenderTypeBuffer renderBuffer, int light, int overlay) {
@@ -38,6 +39,7 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
                     renderAttachments(data, matrix, renderBuffer, light, overlay, aimProgress);
                     matrix.popPose();
                 }
+                matrix.popPose();
             }
             matrix.popPose();
         });
@@ -70,8 +72,8 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
         renderConfigured(WeaponModels.SUPPRESSOR, config, stack, buffer, light, overlay, progress);
     }
 
-    protected static void renderScope(IRenderConfig config, MatrixStack poseStack, IRenderTypeBuffer buffer, int light, int overlay, float progress) {
-        renderConfigured(WeaponModels.SCOPE, config, poseStack, buffer, light, overlay, progress);
+    protected static void renderPsoScope(IRenderConfig config, MatrixStack poseStack, IRenderTypeBuffer buffer, int light, int overlay, float progress) {
+        renderConfigured(WeaponModels.PSO_SCOPE, config, poseStack, buffer, light, overlay, progress);
     }
 
     protected static void renderScope(IRenderConfig config, MatrixStack poseStack, IRenderTypeBuffer buffer, int light, int overlay, float progress, ResourceLocation reticleTexture) {
@@ -114,6 +116,5 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
         AbstractWeaponModel weaponModel = getWeaponModel();
         matrix.pushPose();
         weaponModel.render(stack, data, matrix, renderBuffer, renderBuffer.getBuffer(weaponModel.renderType(WEAPON)), light, overlay, animate && transformType.firstPerson());
-        matrix.popPose();
     }
 }

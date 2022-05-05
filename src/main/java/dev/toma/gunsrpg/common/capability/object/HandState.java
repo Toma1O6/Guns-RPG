@@ -21,8 +21,11 @@ public class HandState implements IHandState, INBTSerializable<CompoundNBT> {
 
     @Override
     public void freeHands() {
+        boolean busy = busyHands;
         busyHands = false;
-        requestFactory.makeSynchronizationRequest();
+        if (busy != busyHands) {
+            requestFactory.makeSynchronizationRequest();
+        }
     }
 
     @Override

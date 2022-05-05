@@ -19,6 +19,7 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
@@ -28,12 +29,13 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.entity.PartEntity;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.*;
 import java.util.function.Consumer;
 
-public abstract class AbstractProjectile extends ProjectileEntity {
+public abstract class AbstractProjectile extends ProjectileEntity implements IEntityAdditionalSpawnData {
 
     protected final PropertyContext propertyContext = PropertyContext.create();
     private final Set<UUID> passedPlayers;
@@ -99,6 +101,7 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         }
         Vector3d vector3d = Vector3d.directionFromRotation(xRot + inX, yRot + inY);
         setDeltaMovement(vector3d.multiply(velocity, velocity, velocity));
+        this.yRot = yRot + inY;
         updateDirection();
         ifShotByPlayer(this::aggroNearby);
     }
@@ -158,12 +161,44 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         return weapon;
     }
 
+    @Override
+    public void writeSpawnData(PacketBuffer buffer) {
+        Vector3d position = this.position();
+        Vector3d delta = this.getDeltaMovement();
+        buffer.writeDouble(position.x);
+        buffer.writeDouble(position.y);
+        buffer.writeDouble(position.z);
+        buffer.writeDouble(delta.x);
+        buffer.writeDouble(delta.y);
+        buffer.writeDouble(delta.z);
+        buffer.writeFloat(yRot);
+        propertyContext.encode(buffer);
+    }
+
+    @Override
+    public void readSpawnData(PacketBuffer buffer) {
+        double px = buffer.readDouble();
+        double py = buffer.readDouble();
+        double pz = buffer.readDouble();
+        double dx = buffer.readDouble();
+        double dy = buffer.readDouble();
+        double dz = buffer.readDouble();
+        yRot = buffer.readFloat();
+        propertyContext.decode(buffer);
+        setPos(px, py, pz);
+        setDeltaMovement(dx, dy, dz);
+    }
+
     public <V> V getProperty(PropertyKey<V> key) {
         return propertyContext.getProperty(key);
     }
 
     public <V> void setProperty(PropertyKey<V> key, V value) {
         propertyContext.setProperty(key, value);
+    }
+
+    public void addProperties(PropertyContext context) {
+        context.moveContents(propertyContext);
     }
 
     /* Protected methods */
@@ -202,10 +237,11 @@ public abstract class AbstractProjectile extends ProjectileEntity {
      */
     protected void updateDirection() {
         Vector3d delta = getDeltaMovement();
-        float motionSqrt = MathHelper.sqrt(delta.x * delta.x + delta.z * delta.z);
-        yRot = (float) (MathHelper.atan2(delta.x, delta.z) * (180.0F / Math.PI));
-        xRot = (float) (MathHelper.atan2(delta.y, motionSqrt) * (180.0F / Math.PI));
-        yRotO = yRot;
+        double dx = delta.x;
+        double dy = delta.y;
+        double dz = delta.z;
+        float motionSqrt = MathHelper.sqrt(dx * dx + dz * dz);
+        xRot = -(float) (MathHelper.atan2(dy, motionSqrt) * (180.0F / Math.PI));
         xRotO = xRot;
     }
 
@@ -297,8 +333,8 @@ public abstract class AbstractProjectile extends ProjectileEntity {
         return 1.0f;
     }
 
-    private void onDamageChanged() {
-        if (projectileDamage <= 0.0F) {
+    protected void onDamageChanged() {
+        if (projectileDamage <= 0.0F && !level.isClientSide) {
             remove();
         }
     }

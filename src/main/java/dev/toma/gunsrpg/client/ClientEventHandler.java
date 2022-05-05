@@ -1,21 +1,17 @@
 package dev.toma.gunsrpg.client;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.data.IAimInfo;
 import dev.toma.gunsrpg.api.common.data.IHandState;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.animation.AimAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.init.ModItems;
-import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.InputEventListenerType;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
-import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.config.util.ScopeRenderer;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_SetAimingPacket;
 import dev.toma.gunsrpg.util.object.PropertyChangeListener;
@@ -28,7 +24,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
@@ -49,6 +44,16 @@ public class ClientEventHandler {
             ClientEventHandler::dispatchSprintAnimation
     );
     public static float partialTicks;
+
+    @SubscribeEvent
+    public static void cancelHandSwinging(InputEvent.ClickInputEvent event) {
+        Minecraft mc = Minecraft.getInstance();
+        PlayerEntity player = mc.player;
+        if (player != null && player.getMainHandItem().getItem() instanceof AbstractGun) {
+            event.setCanceled(true);
+            event.setSwingHand(false);
+        }
+    }
 
     @SubscribeEvent
     public static void mouseInputEvent(InputEvent.MouseInputEvent event) {
@@ -76,22 +81,8 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void renderHandEvent(RenderHandEvent event) {
         ClientPlayerEntity player = Minecraft.getInstance().player;
-        ItemStack stack = event.getItemStack();
         if (event.getHand() == Hand.OFF_HAND) {
             if (event.getItemStack().getItem() == Items.SHIELD && player.getMainHandItem().getItem() instanceof GunItem) {
-                event.setCanceled(true);
-            }
-        }
-        LazyOptional<IPlayerData> optional = PlayerData.get(player);
-        if (!optional.isPresent()) {
-            event.setCanceled(true);
-        } else {
-            IPlayerData data = optional.orElse(null);
-            IAimInfo info = data.getAimInfo();
-            ScopeRenderer renderer = ModConfig.clientConfig.scopeRenderer.get();
-            Item item = stack.getItem();
-            // TODO improve
-            if (info.isAiming() && renderer == ScopeRenderer.TEXTURE && (PlayerData.hasActiveSkill(player, Skills.KAR98K_SCOPE) && item == ModItems.KAR98K || PlayerData.hasActiveSkill(player, Skills.CROSSBOW_SCOPE) && item == ModItems.WOODEN_CROSSBOW)) {
                 event.setCanceled(true);
             }
         }

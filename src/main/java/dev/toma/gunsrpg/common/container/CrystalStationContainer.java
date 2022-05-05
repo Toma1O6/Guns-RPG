@@ -1,10 +1,12 @@
 package dev.toma.gunsrpg.common.container;
 
+import com.mojang.datafixers.util.Pair;
 import dev.toma.gunsrpg.api.common.data.IPerkProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerPerkProvider;
+import dev.toma.gunsrpg.common.init.ClientRegistry;
 import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.perk.Crystal;
@@ -17,14 +19,19 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.IContainerListener;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
@@ -44,7 +51,7 @@ public class CrystalStationContainer extends AbstractContainer {
         loadInventory(data);
         IntReferenceHolder referenceHolder = IntReferenceHolder.standalone();
         addDataSlot(referenceHolder);
-        BooleanSupplier supplier = () -> data.getPerkProvider().getPoints() > 1;
+        BooleanSupplier supplier = () -> data.getPerkProvider().getPoints() > 0;
         for (int y = 0; y < rows; y++) {
             for (PerkVariant variant : PerkVariant.values()) {
                 int x = variant.ordinal();
@@ -116,6 +123,13 @@ public class CrystalStationContainer extends AbstractContainer {
             CrystalStationContainer.this.broadcastChanges();
             super.setChanged();
         }
+
+        @OnlyIn(Dist.CLIENT)
+        @Nullable
+        @Override
+        public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+            return Pair.of(PlayerContainer.BLOCK_ATLAS, ClientRegistry.EMPTY_CRYSTAL_SLOT);
+        }
     }
 
     private static class ContainerListener implements IContainerListener {
@@ -148,7 +162,7 @@ public class CrystalStationContainer extends AbstractContainer {
                         crystal = Crystal.fromNbt(crystalNbt);
                     }
                     provider.setCrystal(slot, crystal);
-                    //provider.setCooldown(PlayerPerkProvider.USE_COOLDOWN);
+                    provider.setCooldown(PlayerPerkProvider.USE_COOLDOWN);
                     provider.awardPoints(-1);
                 }
             }

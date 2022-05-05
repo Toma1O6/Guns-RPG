@@ -1,0 +1,9 @@
+{
+    "type": "gunsrpg:used_item",
+    "selector": "any",
+    "items": [
+        "gunsrpg:kar98k",
+        "gunsrpg:winchester",
+        "gunsrpg:awm"
+    ]
+}

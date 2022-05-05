@@ -4,10 +4,13 @@ import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.common.AnimationPaths;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.GrenadeEntity;
 import dev.toma.gunsrpg.common.init.ModEntities;
+import dev.toma.gunsrpg.common.init.Skills;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -17,13 +20,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class GrenadeItem extends BaseItem implements IAnimationEntry {
+public class GrenadeItem extends BaseItem implements IAnimationEntry, ICustomUseDuration {
 
     private final int blastSize;
     private final boolean explodeOnImpact;
 
     public GrenadeItem(String name, int blastRadius, boolean explodeOnImpact) {
-        super(name, new Properties().tab(ModTabs.ITEM_TAB).stacksTo(10));
+        super(name, new Properties().tab(ModTabs.WEAPON_TAB).stacksTo(10));
         this.blastSize = blastRadius;
         this.explodeOnImpact = explodeOnImpact;
     }
@@ -31,6 +34,14 @@ public class GrenadeItem extends BaseItem implements IAnimationEntry {
     @Override
     public int getUseDuration(ItemStack stack) {
         return 45;
+    }
+
+    @Override
+    public int getUseDuration(int defaultDuration, ItemStack stack, PlayerEntity player) {
+        if (PlayerData.hasActiveSkill(player, Skills.GRENADIER)) {
+            return (int) (defaultDuration * 0.7);
+        }
+        return defaultDuration;
     }
 
     @Override
@@ -92,6 +103,8 @@ public class GrenadeItem extends BaseItem implements IAnimationEntry {
         IAnimationPipeline pipeline = engine.pipeline();
         IAnimationLoader loader = engine.loader();
         IKeyframeProvider provider = loader.getProvider(AnimationPaths.GRENADE);
-        pipeline.insert(ModAnimations.GRENADE, new Animation(provider, this.getUseDuration(ItemStack.EMPTY) - 2));
+        int originalDuration = this.getUseDuration(ItemStack.EMPTY);
+        PlayerEntity player = Minecraft.getInstance().player;
+        pipeline.insert(ModAnimations.GRENADE, new Animation(provider, this.getUseDuration(originalDuration, ItemStack.EMPTY, player) - 2));
     }
 }

@@ -1,6 +1,9 @@
 package dev.toma.gunsrpg.common.entity;
 
+import dev.toma.gunsrpg.common.entity.projectile.*;
 import dev.toma.gunsrpg.common.init.ModEntities;
+import dev.toma.gunsrpg.util.math.WeightedRandom;
+import dev.toma.gunsrpg.util.properties.Properties;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -10,17 +13,26 @@ import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import java.util.EnumSet;
 
-public class RocketAngelEntity extends MonsterEntity {
+public class RocketAngelEntity extends MonsterEntity implements IEntityAdditionalSpawnData {
+
+    private Type type = Type.SELECTOR.getRandom();
 
     public RocketAngelEntity(World world) {
         this(ModEntities.ROCKET_ANGEL.get(), world);
@@ -47,12 +59,16 @@ public class RocketAngelEntity extends MonsterEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(4, new ArrowAttack(this));
+        this.goalSelector.addGoal(4, new RocketAttack(this));
         this.goalSelector.addGoal(8, new MoveRandom());
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtGoal(this, LivingEntity.class, 8.0F));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
+    }
+
+    public int getTextureIndex() {
+        return type.ordinal();
     }
 
     @Override
@@ -72,7 +88,7 @@ public class RocketAngelEntity extends MonsterEntity {
 
     @Override
     public float getBrightness() {
-        return 1.0F;
+        return type == Type.STUN ? 0.7F : 1.0F;
     }
 
     @Override
@@ -87,13 +103,55 @@ public class RocketAngelEntity extends MonsterEntity {
         return flag;
     }
 
-    static class ArrowAttack extends Goal {
+    @Override
+    public void writeSpawnData(PacketBuffer buffer) {
+        buffer.writeEnum(type);
+    }
+
+    @Override
+    public void readSpawnData(PacketBuffer additionalData) {
+        type = additionalData.readEnum(Type.class);
+    }
+
+    enum Type {
+
+        STANDARD(35, 0xFFFF9B, new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY)),
+        HE(10, 0x63C0FF, new ExplosiveReaction(3.0f, Explosion.Mode.DESTROY)),
+        INCENDIARY(8, 0xFF8968, MultipartReaction.multi(new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY), new NapalmReaction(3.0, 0.3f))),
+        TOXIN(16, 0xB993FF, MultipartReaction.multi(new ExplosiveReaction(2.0f, Explosion.Mode.NONE), new EffectSpreadReaction(0xB993FF, () -> new EffectInstance(Effects.WITHER, 120, 1)))),
+        STUN(12, 0xD3D3D3, MultipartReaction.multi(new ExplosiveReaction(2.0f, Explosion.Mode.NONE), new EffectSpreadReaction(0xD3D3D3, () -> new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 80, 9))));
+
+        private static final WeightedRandom<Type> SELECTOR = new WeightedRandom<>(Type::getWeight, Type.values());
+        private final int weight;
+        private final int color;
+        private final IReaction reaction;
+
+        Type(int weight, int color, IReaction reaction) {
+            this.weight = weight;
+            this.color = color;
+            this.reaction = reaction;
+        }
+
+        public int getWeight() {
+            return weight;
+        }
+
+        public int getColor() {
+            return color;
+        }
+
+        public IReaction getReaction() {
+            return reaction;
+        }
+    }
+
+    static class RocketAttack extends Goal {
 
         private final RocketAngelEntity entity;
         private int toFire;
         private int cooldown;
 
-        public ArrowAttack(RocketAngelEntity entity) {
+        public RocketAttack(RocketAngelEntity entity) {
             this.entity = entity;
         }
 
@@ -124,7 +182,7 @@ public class RocketAngelEntity extends MonsterEntity {
                     cooldown = 10;
                     entity.doHurtTarget(target);
                 }
-            } else if (distance < (getFollowDistance() * getFollowDistance()) / 1.5F) {
+            } else if (distance < (getFollowDistance() * getFollowDistance()) / 1.1F) {
                 this.entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
                 int heightDiff = (int) (entity.getY() - target.getY());
                 if (heightDiff < 10) {
@@ -133,13 +191,14 @@ public class RocketAngelEntity extends MonsterEntity {
                 }
                 if (cooldown <= 0) {
                     cooldown = 6;
-                    ExplosiveArrowEntity arrow = new ExplosiveArrowEntity(entity.level, entity, 1);
-                    double x = target.getX() - entity.getX();
-                    double y = target.getY() - arrow.getY();
-                    double z = target.getZ() - entity.getZ();
-                    double dist = MathHelper.sqrt(x * x + z * z);
-                    arrow.shoot(x, y + dist * 0.2D, z, 1.6F, (float) (23 - entity.level.getDifficulty().getId() * 4));
-                    entity.level.addFreshEntity(arrow);
+                    Difficulty difficulty = entity.level.getDifficulty();
+                    Rocket rocket = new Rocket(ModEntities.ROCKET.get(), entity.level, entity);
+                    rocket.setup(0.0F, 2.0F, 0);
+                    rocket.fire(entity.xRot, entity.yRot, 4.4F - difficulty.getId() * 0.6F);
+                    rocket.setProperty(Properties.FUELED, true);
+                    rocket.setProperty(Properties.REACTION, entity.type.getReaction());
+                    entity.level.addFreshEntity(rocket);
+                    entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FIREWORK_ROCKET_LAUNCH, SoundCategory.MASTER, 10.0F, 1.0F);
                     --toFire;
                     if (toFire < 0) {
                         toFire = 4;

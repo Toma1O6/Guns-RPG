@@ -24,6 +24,8 @@ public class ModBlockEntities {
     public static final RegistryObject<TileEntityType<CulinaryTableTileEntity>> CULINARY_TABLE = register("culinary_table", CulinaryTableTileEntity::new, () -> new Block[] { ModBlocks.CULINARY_TABLE });
     public static final RegistryObject<TileEntityType<MedstationTileEntity>> MEDSTATION = register("medstation", MedstationTileEntity::new, () -> new Block[] { ModBlocks.MEDICAL_STATION});
     public static final RegistryObject<TileEntityType<RepairStationTileEntity>> REPAIR_STATION = register("repair_station", RepairStationTileEntity::new, () -> new Block[] { ModBlocks.REPAIR_STATION });
+    public static final RegistryObject<TileEntityType<CrystalFusionStationTileEntity>> CRYSTAL_FUSION = register("crystal_fusion", CrystalFusionStationTileEntity::new, () -> new Block[] { ModBlocks.CRYSTAL_FUSE });
+    public static final RegistryObject<TileEntityType<CrystalPurificationStationTileEntity>> CRYSTAL_PURIFICATION = register("crystal_purification", CrystalPurificationStationTileEntity::new, () -> new Block[] { ModBlocks.CRYSTAL_PURIFICATION });
 
     private static <T extends TileEntity> RegistryObject<TileEntityType<T>> register(String name, Supplier<T> supplier, Supplier<Block[]> blockSupplier) {
         return TYPES.register(name, () -> TileEntityType.Builder.of(supplier, blockSupplier.get()).build(null));

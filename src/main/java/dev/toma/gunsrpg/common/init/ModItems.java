@@ -7,7 +7,6 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
 import dev.toma.gunsrpg.common.item.heal.AttributeAccessHealItem;
 import dev.toma.gunsrpg.common.item.heal.ContinuousHealingItem;
 import dev.toma.gunsrpg.common.item.heal.DebuffHealItem;
-import dev.toma.gunsrpg.common.item.heal.PlayerHealItem;
 import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder(GunsRPG.MODID)

@@ -1,8 +1,11 @@
 package dev.toma.gunsrpg.common.block;
 
 import dev.toma.gunsrpg.api.common.data.IPerkProvider;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.container.CrystalStationContainer;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.util.Interval;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -42,11 +45,16 @@ public class CrystalStationBlock extends BaseBlock {
     @Override
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
         if (!world.isClientSide) {
-            IPerkProvider provider = PlayerData.getUnsafe(player).getPerkProvider();
-            if (provider.isOnCooldown()) {
-                int cooldown = provider.getCooldown();
+            IPlayerData data = PlayerData.getUnsafe(player);
+            IPerkProvider perkProvider = data.getPerkProvider();
+            ISkillProvider provider = data.getSkillProvider();
+            if (perkProvider.isOnCooldown()) {
+                int cooldown = perkProvider.getCooldown();
                 String formattedCooldown = Interval.format(cooldown, format -> format.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND));
                 ((ServerPlayerEntity) player).sendMessage(new StringTextComponent("You are on cooldown. Wait " + formattedCooldown + " before trying again"), ChatType.GAME_INFO, Util.NIL_UUID);
+                return ActionResultType.CONSUME;
+            } else if (!provider.hasSkill(Skills.CRYSTAL_STATION)) {
+                ((ServerPlayerEntity) player).sendMessage(new StringTextComponent("You must have 'crystal station' skill in order to interact with this block"), ChatType.GAME_INFO, Util.NIL_UUID);
                 return ActionResultType.CONSUME;
             }
             NetworkHooks.openGui((ServerPlayerEntity) player, this.getMenuProvider(state, world, pos));

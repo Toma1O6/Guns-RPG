@@ -1,9 +1,10 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.Hk416Renderer;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -13,12 +14,15 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+
+import java.util.Random;
 
 public class Hk416Item extends GunItem {
 
@@ -67,7 +71,7 @@ public class Hk416Item extends GunItem {
 
     @Override
     public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
-        return 70;
+        return Attribs.HK416_RELOAD.intValue(provider);
     }
 
     @Override
@@ -82,7 +86,35 @@ public class Hk416Item extends GunItem {
 
     @Override
     public int getMaxAmmo(IAttributeProvider provider) {
-        return 30;
+        return provider.getAttribute(Attribs.HK416_MAG_CAPACITY).intValue();
+    }
+
+    @Override
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return Attribs.HK416_VERTICAL.floatValue(provider);
+    }
+
+    @Override
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return Attribs.HK416_HORIZONTAL.floatValue(provider);
+    }
+
+    @Override
+    public double getNoiseMultiplier(IAttributeProvider provider) {
+        return Attribs.HK416_NOISE.value(provider);
+    }
+
+    @Override
+    protected boolean consumeAmmo(ItemStack stack, LivingEntity consumer) {
+        if (consumer instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) consumer;
+            if (PlayerData.hasActiveSkill(player, Skills.HK416_OVERLOADED)) {
+                Random random = player.getRandom();
+                float chance = random.nextFloat();
+                return !(chance < SkillUtil.NO_AMMO_CONSUME_CHANCE);
+            }
+        }
+        return true;
     }
 
     @Override

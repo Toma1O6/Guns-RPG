@@ -1,9 +1,9 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.ThompsonRenderer;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
@@ -18,6 +18,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
@@ -111,7 +112,7 @@ public class ThompsonItem extends GunItem {
 
     @Override
     public void onKillEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if (shooter instanceof PlayerEntity) {
+        if (shooter instanceof PlayerEntity && victim instanceof MonsterEntity) {
             PlayerEntity player = (PlayerEntity) shooter;
             if (PlayerData.hasActiveSkill(player, Skills.THOMPSON_SOUL_TAKER)) {
                 player.addEffect(new EffectInstance(Effects.ABSORPTION, 120, 0, false, false));

@@ -1,9 +1,9 @@
 package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.VectorRenderer;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
@@ -22,7 +22,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import org.w3c.dom.Attr;
 
 import java.util.Random;
 
@@ -105,18 +104,16 @@ public class VectorItem extends GunItem {
     }
 
     @Override
-    protected void consumeAmmo(ItemStack stack, LivingEntity consumer) {
+    protected boolean consumeAmmo(ItemStack stack, LivingEntity consumer) {
         if (consumer instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) consumer;
             if (PlayerData.hasActiveSkill(player, Skills.VECTOR_OVERLOADED)) {
                 Random random = player.getRandom();
                 float chance = random.nextFloat();
-                if (chance < SkillUtil.NO_AMMO_CONSUME_CHANCE) {
-                    return;
-                }
+                return !(chance < SkillUtil.NO_AMMO_CONSUME_CHANCE);
             }
         }
-        super.consumeAmmo(stack, consumer);
+        return true;
     }
 
     @Override

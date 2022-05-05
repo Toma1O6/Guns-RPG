@@ -1,0 +1,36 @@
+{
+    "type": "gunsrpg:kill_in_area",
+    "tier": 3,
+    "display": {
+        "name": "Sand Eaters III",
+        "info": "Kill 20 husks"
+    },
+    "data": {
+        "entities": [
+            "minecraft:husk"
+        ],
+        "count": 20,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "minecraft:husk",
+                    "propability": 0.1,
+                    "limit": 9
+                }
+            ]
+        }
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}
