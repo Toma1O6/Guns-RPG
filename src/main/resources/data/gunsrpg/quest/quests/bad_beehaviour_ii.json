@@ -9,7 +9,18 @@
         "entities": [
             "minecraft:bee"
         ],
-        "count": 20
+        "count": 20,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "minecraft:bee",
+                    "propability": 0.05,
+                    "limit": 3
+                }
+            ]
+        }
     },
     "conditions": [
         {
