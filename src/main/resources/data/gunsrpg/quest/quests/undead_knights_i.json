@@ -1,0 +1,36 @@
+{
+    "type": "gunsrpg:kill_entities",
+    "tier": 3,
+    "display": {
+        "name": "Undead Knights I",
+        "info": "Kill 5 zombies knights"
+    },
+    "data": {
+        "entities": [
+            "gunsrpg:zombie_knight"
+        ],
+        "count": 5,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "gunsrpg:zombie_knight",
+                    "propability": 0.05,
+                    "limit": 3
+                }
+            ]
+        }
+    },
+    "tieredConditions": {
+        "conditions": [
+            {
+                "condition": "@gunsrpg:list_a"
+            },
+            {
+                "condition": "@gunsrpg:list_b",
+                "tier": 2
+            }
+        ]
+    }
+}
