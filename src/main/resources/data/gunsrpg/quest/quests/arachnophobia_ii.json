@@ -1,5 +1,5 @@
 {
-    "type": "gunsrpg:kill_entities",
+    "type": "gunsrpg:kill_in_area",
     "tier": 2,
     "display": {
         "name": "Arachnophobia II",
@@ -7,10 +7,20 @@
     },
     "data": {
         "entities": [
-            "minecraft:spider",
-            "minecraft:cave_spider"
+            "minecraft:spider"
         ],
-        "count": 13
+        "count": 13,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "minecraft:spider",
+                    "propability": 0.05,
+                    "limit": 3
+                }
+            ]
+        }
     },
     "tieredConditions": {
         "conditions": [

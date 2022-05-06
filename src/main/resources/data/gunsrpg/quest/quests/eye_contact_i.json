@@ -1,5 +1,5 @@
 {
-    "type": "gunsrpg:kill_entities",
+    "type": "gunsrpg:kill_in_area",
     "tier": 2,
     "display": {
         "name": "Eye Contact I",
@@ -9,7 +9,18 @@
         "entities": [
             "minecraft:enderman"
         ],
-        "count": 5
+        "count": 5,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "minecraft:enderman",
+                    "propability": 0.05,
+                    "limit": 3
+                }
+            ]
+        }
     },
     "tieredConditions": {
         "conditions": [

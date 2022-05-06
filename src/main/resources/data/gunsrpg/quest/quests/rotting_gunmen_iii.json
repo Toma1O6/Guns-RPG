@@ -1,15 +1,26 @@
 {
-    "type": "gunsrpg:kill_entities",
+    "type": "gunsrpg:kill_in_area",
     "tier": 5,
     "display": {
-        "name": "Rotting Gunmen I",
+        "name": "Rotting Gunmen III",
         "info": "Kill 20 zombie gunners"
     },
     "data": {
         "entities": [
             "gunsrpg:zombie_gunner"
         ],
-        "count": 20
+        "count": 20,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "gunsrpg:zombie_gunner",
+                    "propability": 0.05,
+                    "limit": 3
+                }
+            ]
+        }
     },
     "tieredConditions": {
         "conditions": [

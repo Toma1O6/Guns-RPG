@@ -1,15 +1,15 @@
 {
     "type": "gunsrpg:kill_in_area",
-    "tier": 4,
+    "tier": 3,
     "display": {
-        "name": "Undead Knights III",
-        "info": "Kill 15 skeleton horses"
+        "name": "Cavalry II",
+        "info": "Kill 10 skeleton horses"
     },
     "data": {
         "entities": [
             "minecraft:skeleton_horse"
         ],
-        "count": 15,
+        "count": 10,
         "area": {
             "size": 32,
             "distance": 512,

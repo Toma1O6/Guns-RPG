@@ -1,5 +1,5 @@
 {
-    "type": "gunsrpg:kill_entities",
+    "type": "gunsrpg:kill_in_area",
     "tier": 3,
     "display": {
         "name": "Bone Crusher III",
@@ -9,7 +9,18 @@
         "entities": [
             "minecraft:skeleton"
         ],
-        "count": 20
+        "count": 20,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "minecraft:skeleton",
+                    "propability": 0.05,
+                    "limit": 3
+                }
+            ]
+        }
     },
     "tieredConditions": {
         "conditions": [
