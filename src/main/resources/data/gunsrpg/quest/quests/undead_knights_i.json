@@ -2,7 +2,7 @@
     "type": "gunsrpg:kill_in_area",
     "tier": 2,
     "display": {
-        "name": "Undead Knights I",
+        "name": "Cavalry I",
         "info": "Kill 5 skeleton horses"
     },
     "data": {
