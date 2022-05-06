@@ -2,7 +2,7 @@
     "type": "gunsrpg:kill_entities",
     "tier": 3,
     "display": {
-        "name": "Walking Dead II",
+        "name": "Walking Dead III",
         "info": "Kill 20 zombies"
     },
     "data": {
