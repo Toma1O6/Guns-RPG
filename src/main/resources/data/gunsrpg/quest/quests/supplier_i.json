@@ -3,13 +3,25 @@
     "tier": 2,
     "display": {
         "name": "Supplier I",
-        "info": "Deliver 50 Iron ingots"
+        "info": "Deliver 35 Iron ingots, 25 Bricks, 15 Strings and 10 papers"
     },
     "data": {
         "items": [
             {
                 "item": "minecraft:iron_ingot",
-                "count": 50
+                "count": 35
+            },
+            {
+                "item": "minecraft:iron_ingot",
+                "count": 25
+            },
+            {
+                "item": "minecraft:iron_ingot",
+                "count": 15
+            },
+            {
+                "item": "minecraft:iron_ingot",
+                "count": 10
             }
         ]
     }
