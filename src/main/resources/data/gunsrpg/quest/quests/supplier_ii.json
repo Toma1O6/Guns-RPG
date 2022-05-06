@@ -3,13 +3,25 @@
     "tier": 3,
     "display": {
         "name": "Supplier II",
-        "info": "Deliver 50 Gold ingots"
+        "info": "Deliver 30 Gold ingots, 15 Flints, 10 Nether bricks and 5 books"
     },
     "data": {
         "items": [
             {
                 "item": "minecraft:gold_ingot",
-                "count": 50
+                "count": 30
+            },
+            {
+                "item": "minecraft:flint",
+                "count": 15
+            },
+            {
+                "item": "minecraft:nether_brick",
+                "count": 10
+            },
+            {
+                "item": "minecraft:book",
+                "count": 5
             }
         ]
     }
