@@ -9,7 +9,18 @@
         "entities": [
             "minecraft:zombie"
         ],
-        "count": 7
+        "count": 7,
+        "area": {
+            "size": 32,
+            "distance": 512,
+            "spawners": [
+                {
+                    "entity": "minecraft:zombie",
+                    "propability": 0.05,
+                    "limit": 3
+                }
+            ]
+        }
     },
     "tieredConditions": {
         "conditions": [
