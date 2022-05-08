@@ -258,7 +258,7 @@ public class CommonEventHandler {
                         instantKill = true;
                     }
                 }
-                if (!instantKill) {
+                if (!instantKill && player.getMainHandItem().getItem() instanceof TieredItem) {
                     float amount = event.getAmount() + provider.getAttribute(Attribs.MELEE_DAMAGE).floatValue();
                     event.setAmount(amount);
                 }
