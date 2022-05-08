@@ -4,14 +4,12 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.model.WeaponModels;
+import dev.toma.gunsrpg.client.model.component.ScopeModel;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.common.init.Skills;
-import lib.toma.animations.api.IRenderConfig;
-import lib.toma.animations.engine.RenderConfig;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.util.math.vector.Vector3f;
 
 public class Mk14EbrRenderer extends AbstractWeaponRenderer {
 
@@ -63,7 +61,7 @@ public class Mk14EbrRenderer extends AbstractWeaponRenderer {
             renderSuppressor(RenderConfigs.MK14EBR_SUPPRESSOR, matrix, typeBuffer, light, overlay, progress);
         }
         if (provider.hasSkill(Skills.MK14EBR_SCOPE)) {
-            renderScope(RenderConfigs.MK14EBR_SCOPE, matrix, typeBuffer, light, overlay, progress, WoodenCrossbowRenderer.RETICLE);
+            renderScope(RenderConfigs.MK14EBR_SCOPE, matrix, typeBuffer, light, overlay, progress, ScopeModel.CROSSBOW_RETICLE);
         }
     }
 }

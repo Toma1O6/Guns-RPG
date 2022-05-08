@@ -19,6 +19,8 @@ public class ClientConfiguration extends ObjectType {
             GunsRPG.makeResource("textures/icons/reticle_cross.png")
     };
     public final BooleanType developerMode;
+    public final BooleanType alwaysRenderReticles;
+    public final BooleanType shaderCompatibilityMode;
     public final IVec2i debuffOverlay;
     public final ColorType reticleColor;
     public final IconsType reticleVariants;
@@ -30,6 +32,8 @@ public class ClientConfiguration extends ObjectType {
 
         IConfigWriter writer = spec.getWriter();
         developerMode = writer.writeBoolean("Developer mode", false, "Enables some special developer tools");
+        alwaysRenderReticles = writer.writeBoolean("Always show reticles", false, "Will always render reticle even if you're not aiming");
+        shaderCompatibilityMode = writer.writeBoolean("Shader compatibility mode", false, "Attempts to render some things differently", "to ensure compatibility with shaders");
         debuffOverlay = writer.writeObject(sp -> new ConfigurableVec2i(sp, 0, -60), "Debuff overlay", "Manage position of debuff overlay in HUD");
         reticleColor = writer.writeColorARGB("Reticle color", "#FFFF0000", "Configure color reticle color");
         reticleVariants = IconsType.write(writer, "Reticle variant", 0, VARIANTS, "Configure reticle variant");

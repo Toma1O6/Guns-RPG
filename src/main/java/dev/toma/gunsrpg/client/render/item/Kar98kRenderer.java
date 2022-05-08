@@ -1,20 +1,17 @@
 package dev.toma.gunsrpg.client.render.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.model.WeaponModels;
+import dev.toma.gunsrpg.client.model.component.ScopeModel;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.util.ResourceLocation;
 
 public class Kar98kRenderer extends AbstractWeaponRenderer {
-
-    public static final ResourceLocation KAR98K_SCOPE_RETICLE = GunsRPG.makeResource("textures/scope/kar98k_reticle.png");
 
     @Override
     public AbstractWeaponModel getWeaponModel() {
@@ -51,7 +48,7 @@ public class Kar98kRenderer extends AbstractWeaponRenderer {
             renderSuppressor(RenderConfigs.KAR98K_SUPPRESSOR, matrix, typeBuffer, light, overlay, progress);
         }
         if (provider.hasSkill(Skills.KAR98K_SCOPE)) {
-            renderScope(RenderConfigs.KAR98K_SCOPE, matrix, typeBuffer, light, overlay, progress, KAR98K_SCOPE_RETICLE);
+            renderScope(RenderConfigs.KAR98K_SCOPE, matrix, typeBuffer, light, overlay, progress, ScopeModel.PSO_RETICLE);
         }
     }
 }

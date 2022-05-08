@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -21,12 +22,19 @@ public class ZombieKnightEntity extends ZombieEntity {
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MonsterEntity.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, 30.0D)
                 .add(Attributes.FOLLOW_RANGE, 48.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.345F)
+                .add(Attributes.MOVEMENT_SPEED, 0.345D)
                 .add(Attributes.ATTACK_DAMAGE, 4.0D)
                 .add(Attributes.ARMOR, 10.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
                 .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(0, new SwimGoal(this));
     }
 
     @Override
@@ -38,5 +46,10 @@ public class ZombieKnightEntity extends ZombieEntity {
         setItemSlot(isLeftHanded() ? EquipmentSlotType.OFFHAND : EquipmentSlotType.MAINHAND, new ItemStack(Items.NETHERITE_SWORD));
         Arrays.fill(armorDropChances, 0.0F);
         Arrays.fill(handDropChances, 0.0F);
+    }
+
+    @Override
+    protected boolean convertsInWater() {
+        return false;
     }
 }

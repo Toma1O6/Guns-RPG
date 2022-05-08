@@ -39,7 +39,8 @@ public class BloodmoonGolemEntity extends CreatureEntity implements IMob {
                 .add(Attributes.MAX_HEALTH, 250.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
-                .add(Attributes.ATTACK_DAMAGE, 15.0D);
+                .add(Attributes.ATTACK_DAMAGE, 15.0D)
+                .add(Attributes.ARMOR, 10.0D);
     }
 
     @Override

@@ -4,13 +4,20 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.AbstractWeaponRenderer;
+import dev.toma.gunsrpg.config.ModConfig;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.function.Supplier;
+
 public class ScopeModel extends AbstractAttachmentModel implements IOpticsProvider {
 
-    static ResourceLocation reticlePath = GunsRPG.makeResource("textures/scope/sniper_reticle.png");
+    public static final ShaderCompatibleReticleProvider SNIPER_RETICLE = new ShaderCompatibleReticleProvider("sniper_reticle");
+    public static final ShaderCompatibleReticleProvider PSO_RETICLE = new ShaderCompatibleReticleProvider("kar98k_reticle");
+    public static final ShaderCompatibleReticleProvider CROSSBOW_RETICLE = new ShaderCompatibleReticleProvider("crossbow_reticle");
+
+    static Supplier<ResourceLocation> reticlePath = SNIPER_RETICLE;
 
     private final ModelRenderer scope;
     private final ModelRenderer main;
@@ -19,7 +26,7 @@ public class ScopeModel extends AbstractAttachmentModel implements IOpticsProvid
     private final ModelRenderer overlay;
     private final ModelRenderer reticle;
 
-    public static void prepare(ResourceLocation reticle) {
+    public static void prepare(Supplier<ResourceLocation> reticle) {
         reticlePath = reticle;
     }
 
@@ -34,7 +41,7 @@ public class ScopeModel extends AbstractAttachmentModel implements IOpticsProvid
     }
 
     @Override
-    public ResourceLocation getReticleTextureMap() {
+    public Supplier<ResourceLocation> getReticleTextureProvider() {
         return reticlePath;
     }
 
@@ -56,6 +63,10 @@ public class ScopeModel extends AbstractAttachmentModel implements IOpticsProvid
     @Override
     public void renderOptic(MatrixStack stack, IVertexBuilder builder, int light, int overlay) {
         scope.render(stack, builder, light, overlay);
+    }
+
+    public static boolean isShaderCompatibilityMode() {
+        return ModConfig.clientConfig.shaderCompatibilityMode.get();
     }
 
     public ScopeModel() {
@@ -134,5 +145,23 @@ public class ScopeModel extends AbstractAttachmentModel implements IOpticsProvid
 
         setBuiltInRender(overlay);
         setBuiltInRender(reticle);
+    }
+
+    public static final class ShaderCompatibleReticleProvider implements Supplier<ResourceLocation> {
+
+        private final ResourceLocation[] textures;
+
+        public ShaderCompatibleReticleProvider(String path) {
+            String dirs = "textures/scope/";
+            this.textures = new ResourceLocation[] {
+                    GunsRPG.makeResource(dirs + path + ".png"),
+                    GunsRPG.makeResource(dirs + path + "_compat.png")
+            };
+        }
+
+        @Override
+        public ResourceLocation get() {
+            return textures[isShaderCompatibilityMode() ? 1 : 0];
+        }
     }
 }

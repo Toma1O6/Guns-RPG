@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.model.WeaponModels;
+import dev.toma.gunsrpg.client.model.component.ScopeModel;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -59,7 +60,7 @@ public class AwmRenderer extends AbstractWeaponRenderer {
             renderSuppressor(RenderConfigs.AWM_SUPPRESSOR, matrix, typeBuffer, light, overlay, progress);
         }
         if (provider.hasSkill(Skills.AWM_SCOPE)) {
-            renderScope(RenderConfigs.AWM_SCOPE, matrix, typeBuffer, light, overlay, progress, SNIPER_RETICLE);
+            renderScope(RenderConfigs.AWM_SCOPE, matrix, typeBuffer, light, overlay, progress, ScopeModel.SNIPER_RETICLE);
         }
     }
 }

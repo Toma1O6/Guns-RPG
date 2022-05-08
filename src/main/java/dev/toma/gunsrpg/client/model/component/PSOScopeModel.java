@@ -8,6 +8,8 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.function.Supplier;
+
 public class PSOScopeModel extends AbstractAttachmentModel implements IOpticsProvider {
 
     private final ModelRenderer scope;
@@ -36,8 +38,8 @@ public class PSOScopeModel extends AbstractAttachmentModel implements IOpticsPro
     }
 
     @Override
-    public ResourceLocation getReticleTextureMap() {
-        return AbstractWeaponRenderer.SNIPER_RETICLE;
+    public Supplier<ResourceLocation> getReticleTextureProvider() {
+        return ScopeModel.SNIPER_RETICLE;
     }
 
     @Override

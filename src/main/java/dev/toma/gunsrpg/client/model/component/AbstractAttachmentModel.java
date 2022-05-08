@@ -23,10 +23,12 @@ public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
     protected static void renderReflexSight(MatrixStack matrix, IRenderTypeBuffer buffer, IOpticsProvider provider, float progress, int light, int overlay) {
         IVertexBuilder modelVertexBuilder = buffer.getBuffer(RenderType.entitySolid(provider.getComponentTextureMap()));
         provider.renderOptic(matrix, modelVertexBuilder, light, overlay);
-        IVertexBuilder reticleVertexBuilder = buffer.getBuffer(RenderType.entityShadow(provider.getReticleTextureMap()));
+        ResourceLocation path = provider.getReticleTextureProvider().get();
+        Function<ResourceLocation, RenderType> renderTypeFunction = ScopeModel.isShaderCompatibilityMode() ? RenderType::entityCutout : RenderType::entityShadow;
+        IVertexBuilder reticleVertexBuilder = buffer.getBuffer(renderTypeFunction.apply(path));
         int reticleColor = provider.getReticleTintARGB();
         float cfgA = ((reticleColor >> 24) & 255) / 255.0F;
-        float a = ModConfig.clientConfig.developerMode.get() ? 1.0F : Math.min(cfgA, progress);
+        float a = ModConfig.clientConfig.alwaysRenderReticles.get() ? 1.0F : Math.min(cfgA, progress);
         float r = ((reticleColor >> 16) & 255) / 255.0F;
         float g = ((reticleColor >>  8) & 255) / 255.0F;
         float b = ( reticleColor        & 255) / 255.0F;
@@ -42,8 +44,9 @@ public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
         matrix.scale(1.0F, 1.0F, 0.07F + 0.93F * sizeProgressInv);
         IVertexBuilder modelVertexBuilder = buffer.getBuffer(RenderType.entitySolid(provider.getComponentTextureMap()));
         provider.renderOptic(matrix, modelVertexBuilder, light, overlay);
-        Function<ResourceLocation, RenderType> renderTypeFunction = RenderType::entityShadow;
-        IVertexBuilder reticleVertexBuilder = buffer.getBuffer(renderTypeFunction.apply(provider.getReticleTextureMap()));
+        Function<ResourceLocation, RenderType> renderTypeFunction = ScopeModel.isShaderCompatibilityMode() ? RenderType::entityCutout : RenderType::entityShadow;
+        ResourceLocation opticsTextureMap = provider.getReticleTextureProvider().get();
+        IVertexBuilder reticleVertexBuilder = buffer.getBuffer(renderTypeFunction.apply(opticsTextureMap));
         provider.getGlassModel().render(matrix, reticleVertexBuilder, light, overlay, 1.0F, 1.0F, 1.0F, progress);
         IVertexBuilder overlayVertexBuilder = buffer.getBuffer(renderTypeFunction.apply(GLASS_TEXTURE));
         provider.getOverlayModel().render(matrix, overlayVertexBuilder, light, overlay, 0.0F, 0.0F, 0.0F, inv);

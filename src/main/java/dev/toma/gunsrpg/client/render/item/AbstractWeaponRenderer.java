@@ -18,11 +18,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 
+import java.util.function.Supplier;
+
 public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer {
 
     public static final ResourceLocation ATTACHMENTS = GunsRPG.makeResource("textures/item/attachments.png");
     public static final ResourceLocation WEAPON = GunsRPG.makeResource("textures/item/weapon_texture_map.png");
-    public static final ResourceLocation SNIPER_RETICLE = GunsRPG.makeResource("textures/scope/sniper_reticle.png");
 
     @Override
     public final void renderByItem(ItemStack stack, ItemCameraTransforms.TransformType transformType, MatrixStack matrix, IRenderTypeBuffer renderBuffer, int light, int overlay) {
@@ -76,7 +77,7 @@ public abstract class AbstractWeaponRenderer extends ItemStackTileEntityRenderer
         renderConfigured(WeaponModels.PSO_SCOPE, config, poseStack, buffer, light, overlay, progress);
     }
 
-    protected static void renderScope(IRenderConfig config, MatrixStack poseStack, IRenderTypeBuffer buffer, int light, int overlay, float progress, ResourceLocation reticleTexture) {
+    protected static void renderScope(IRenderConfig config, MatrixStack poseStack, IRenderTypeBuffer buffer, int light, int overlay, float progress, Supplier<ResourceLocation> reticleTexture) {
         ScopeModel.prepare(reticleTexture);
         renderConfigured(WeaponModels.SCOPE, config, poseStack, buffer, light, overlay, progress);
     }

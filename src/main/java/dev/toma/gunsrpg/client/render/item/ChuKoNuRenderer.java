@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.client.render.item;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.model.WeaponModels;
+import dev.toma.gunsrpg.client.model.component.ScopeModel;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -46,7 +47,7 @@ public class ChuKoNuRenderer extends AbstractWeaponRenderer {
     @Override
     protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
         if (data.getSkillProvider().hasSkill(Skills.CHUKONU_SCOPE)) {
-            renderScope(RenderConfigs.CHUKONU_SCOPE, matrix, typeBuffer, light, overlay, progress, WoodenCrossbowRenderer.RETICLE);
+            renderScope(RenderConfigs.CHUKONU_SCOPE, matrix, typeBuffer, light, overlay, progress, ScopeModel.CROSSBOW_RETICLE);
         }
     }
 }

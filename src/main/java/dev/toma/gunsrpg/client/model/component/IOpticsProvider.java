@@ -5,11 +5,13 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.function.Supplier;
+
 public interface IOpticsProvider {
 
     ResourceLocation getComponentTextureMap();
 
-    ResourceLocation getReticleTextureMap();
+    Supplier<ResourceLocation> getReticleTextureProvider();
 
     ModelRenderer getGlassModel();
 

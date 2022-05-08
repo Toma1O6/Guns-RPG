@@ -1,19 +1,16 @@
 package dev.toma.gunsrpg.client.render.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.model.WeaponModels;
+import dev.toma.gunsrpg.client.model.component.ScopeModel;
 import dev.toma.gunsrpg.client.model.weapon.AbstractWeaponModel;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.common.init.Skills;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.util.ResourceLocation;
 
 public class WoodenCrossbowRenderer extends AbstractWeaponRenderer {
-
-    public static final ResourceLocation RETICLE = GunsRPG.makeResource("textures/scope/crossbow_reticle.png");
 
     @Override
     public AbstractWeaponModel getWeaponModel() {
@@ -37,7 +34,7 @@ public class WoodenCrossbowRenderer extends AbstractWeaponRenderer {
     @Override
     protected void renderAttachments(IPlayerData data, MatrixStack matrix, IRenderTypeBuffer typeBuffer, int light, int overlay, float progress) {
         if (data.getSkillProvider().hasSkill(Skills.CROSSBOW_SCOPE)) {
-            renderScope(RenderConfigs.WOODEN_CROSSBOW_SCOPE, matrix, typeBuffer, light, overlay, progress, RETICLE);
+            renderScope(RenderConfigs.WOODEN_CROSSBOW_SCOPE, matrix, typeBuffer, light, overlay, progress, ScopeModel.CROSSBOW_RETICLE);
         }
     }
 

@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 
+import java.util.function.Supplier;
+
 public class ReflexSightModel extends AbstractAttachmentModel implements IOpticsProvider {
 
     private final ModelRenderer sight;
@@ -35,8 +37,8 @@ public class ReflexSightModel extends AbstractAttachmentModel implements IOptics
     }
 
     @Override
-    public ResourceLocation getReticleTextureMap() {
-        return ModConfig.clientConfig.reticleVariants.getAsResource();
+    public Supplier<ResourceLocation> getReticleTextureProvider() {
+        return () -> ModConfig.clientConfig.reticleVariants.getAsResource();
     }
 
     @Override
