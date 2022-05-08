@@ -39,42 +39,14 @@ public class PlayerAttributes implements IAttributeProvider, IPlayerCapEntry {
     }
 
     @Override
-    public void removeAttribute(IAttributeId id) {
-        IAttribute attribute = attributeMap.remove(id);
-        if (attribute != null) {
-            attribute.removeListener(listener);
-        }
-        safeSync();
-    }
-
-    @Override
-    public void removeAttribute(IAttribute attribute) {
-        removeAttribute(attribute.getId());
-    }
-
-    @Override
     public void tick() {
         attributeMap.values().forEach(IAttribute::tickAttributes);
-    }
-
-    @Override
-    public void setAttributeValue(IAttributeId id, double value) {
-        IAttribute attribute = getAttribute(id);
-        if (attribute != null) {
-            attribute.setValue(value);
-        }
-        safeSync();
     }
 
     @Override
     public double getAttributeValue(IAttributeId id) {
         IAttribute attribute = getAttribute(id);
         return attribute != null ? attribute.value() : id.getBaseValue();
-    }
-
-    @Override
-    public boolean hasAttribute(IAttributeId id) {
-        return getAttribute(id) != null;
     }
 
     @Override

@@ -30,6 +30,7 @@ import dev.toma.gunsrpg.common.skills.core.DisplayData;
 import dev.toma.gunsrpg.common.skills.core.DisplayType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.tileentity.MedstationBlock;
+import dev.toma.gunsrpg.util.Constants;
 import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.helper.StorageUtil;
@@ -239,7 +240,7 @@ public class CommonRegistry {
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.CARBON_BARREL, Attribs.M1911_HORIZONTAL_RECOIL), AttributeTarget.create(Modifiers.CARBON_BARREL, Attribs.M1911_VERTICAL_RECOIL))).renderModIcon("carbon_barrel").build().setRegistryName("m1911_carbon_barrel"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.NOISE, Attribs.M1911_NOISE))).renderModIcon("suppressor").build().setRegistryName("m1911_suppressor"),
                 SkillType.Builder.create(SimpleSkill::new).renderModIcon("heavy_bullets").description(3).build().setRegistryName("m1911_heavy_bullets"),
-                SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("m1911_killing_spree"),
+                SkillType.Builder.<KillingSpreeSkill>create(type -> new KillingSpreeSkill(type, Constants.ModifierIds.M1911_KILLING_SPREE)).build().setRegistryName("m1911_killing_spree"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.QUICKDRAW_MAG, Attribs.R45_FAST_HANDS))).renderModIcon("fast_hands").description(0).build().setRegistryName("r45_fast_hands"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.createMany(Modifiers.CARBON_BARREL, Attribs.R45_VERTICAL_RECOIL, Attribs.R45_HORIZONTAL_RECOIL))).renderModIcon("carbon_barrel").build().setRegistryName("r45_carbon_barrel"),
                 SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.R45_EXTENDED_DRUM, Attribs.R45_MAG_CAPACITY))).renderModIcon("extended").description(0).build().setRegistryName("r45_extended"),

@@ -11,6 +11,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.function.Function;
+
 public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
 
     public static final ResourceLocation GLASS_TEXTURE = GunsRPG.makeResource("textures/scope/glass.png");
@@ -40,9 +42,10 @@ public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
         matrix.scale(1.0F, 1.0F, 0.07F + 0.93F * sizeProgressInv);
         IVertexBuilder modelVertexBuilder = buffer.getBuffer(RenderType.entitySolid(provider.getComponentTextureMap()));
         provider.renderOptic(matrix, modelVertexBuilder, light, overlay);
-        IVertexBuilder reticleVertexBuilder = buffer.getBuffer(RenderType.entityShadow(provider.getReticleTextureMap()));
+        Function<ResourceLocation, RenderType> renderTypeFunction = RenderType::entityShadow;
+        IVertexBuilder reticleVertexBuilder = buffer.getBuffer(renderTypeFunction.apply(provider.getReticleTextureMap()));
         provider.getGlassModel().render(matrix, reticleVertexBuilder, light, overlay, 1.0F, 1.0F, 1.0F, progress);
-        IVertexBuilder overlayVertexBuilder = buffer.getBuffer(RenderType.entityShadow(GLASS_TEXTURE)); // shadow works best for this use case
+        IVertexBuilder overlayVertexBuilder = buffer.getBuffer(renderTypeFunction.apply(GLASS_TEXTURE));
         provider.getOverlayModel().render(matrix, overlayVertexBuilder, light, overlay, 0.0F, 0.0F, 0.0F, inv);
         matrix.popPose();
     }

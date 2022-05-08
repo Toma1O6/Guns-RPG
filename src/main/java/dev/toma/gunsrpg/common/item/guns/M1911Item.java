@@ -2,15 +2,11 @@ package dev.toma.gunsrpg.common.item.guns;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
-import dev.toma.gunsrpg.api.common.attribute.IAttributeModifierFactory;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.render.RenderConfigs;
 import dev.toma.gunsrpg.client.render.item.M1911Renderer;
 import dev.toma.gunsrpg.common.attribute.Attribs;
-import dev.toma.gunsrpg.common.attribute.AttributeOps;
-import dev.toma.gunsrpg.common.attribute.ExpiringModifier;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.ModSounds;
@@ -18,10 +14,9 @@ import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
-import dev.toma.gunsrpg.common.item.guns.util.Firemode;
+import dev.toma.gunsrpg.common.skills.KillingSpreeSkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
-import dev.toma.gunsrpg.util.Constants;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,7 +34,6 @@ public class M1911Item extends GunItem {
     private static final ResourceLocation AIM_ANIMATION = GunsRPG.makeResource("m1911/aim");
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("m1911/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("m1911/unjam");
-    private static final IAttributeModifierFactory KILLING_SPREE_MODIFIER = IAttributeModifierFactory.of(() -> new ExpiringModifier(Constants.ModifierIds.M1911_KILLING_SPREE, AttributeOps.MULB, 0.2F, 50));
 
     public M1911Item(String name) {
         super(name, new Properties().setISTER(() -> M1911Renderer::new).durability(550));
@@ -65,7 +59,7 @@ public class M1911Item extends GunItem {
     }
 
     @Override
-    protected boolean isSilenced(PlayerEntity player) {
+    public boolean isSilenced(PlayerEntity player) {
         return PlayerData.hasActiveSkill(player, Skills.M1911_SUPPRESSOR);
     }
 
@@ -89,10 +83,10 @@ public class M1911Item extends GunItem {
         PlayerData.get(player).ifPresent(data -> {
             ISkillProvider skillProvider = data.getSkillProvider();
             IAttributeProvider attributeProvider = data.getAttributes();
-            if (skillProvider.hasSkill(Skills.M1911_KILLING_SPREE)) {
+            KillingSpreeSkill killingSpreeSkill = skillProvider.getSkill(Skills.M1911_KILLING_SPREE);
+            if (killingSpreeSkill != null) {
                 IAttributeId id = isSilenced(player) ? Attribs.SILENT_WEAPON_DAMAGE : Attribs.LOUD_WEAPON_DAMAGE;
-                IAttributeModifier modifier = KILLING_SPREE_MODIFIER.make();
-                attributeProvider.getAttribute(id).addModifier(modifier);
+                killingSpreeSkill.applyBonus(attributeProvider, id);
             }
         });
     }

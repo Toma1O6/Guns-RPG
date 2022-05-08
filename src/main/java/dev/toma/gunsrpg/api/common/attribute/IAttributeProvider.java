@@ -8,13 +8,5 @@ public interface IAttributeProvider {
 
     void addAttribute(IAttributeId id);
 
-    void removeAttribute(IAttributeId id);
-
-    void removeAttribute(IAttribute attribute);
-
-    void setAttributeValue(IAttributeId id, double value);
-
     double getAttributeValue(IAttributeId id);
-
-    boolean hasAttribute(IAttributeId id);
 }

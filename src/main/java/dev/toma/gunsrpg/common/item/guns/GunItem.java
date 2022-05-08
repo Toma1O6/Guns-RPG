@@ -88,20 +88,20 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     public float getWeaponDamage(ItemStack stack, LivingEntity shooter) {
         IWeaponConfig config = getWeaponConfig();
         float base = config.getDamage();
+        float damageMultiplier = 1.0F;
         if (shooter instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) shooter;
             IPlayerData data = PlayerData.getUnsafe(player);
             IAttributeProvider provider = data.getAttributes();
             IAttributeId attributeId = isSilenced(player) ? Attribs.SILENT_WEAPON_DAMAGE : Attribs.LOUD_WEAPON_DAMAGE;
-            float damageMultiplier = (float) provider.getAttribute(attributeId).getModifiedValue(base);
+            damageMultiplier = provider.getAttribute(attributeId).floatValue();
             WeaponCategory category = this.getWeaponCategory();
             if (category.hasBonusDamage()) {
                 IAttributeId categoryId = category.getBonusDamageAttribute();
-                damageMultiplier *= (float) provider.getAttribute(categoryId).getModifiedValue(base);
+                damageMultiplier *= provider.getAttribute(categoryId).floatValue();
             }
-            base *= damageMultiplier;
         }
-        return base + getDamageBonus(stack);
+        return damageMultiplier * (base + getDamageBonus(stack));
     }
 
     public int getMaxAmmo(IAttributeProvider provider) {

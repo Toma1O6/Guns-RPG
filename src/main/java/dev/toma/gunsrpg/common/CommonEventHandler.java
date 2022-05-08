@@ -111,6 +111,9 @@ public class CommonEventHandler {
             mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_GUNNER.get(), ModConfig.worldConfig.zombieGunnerSpawn.get(), 1, 2));
             mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.EXPLOSIVE_SKELETON.get(), ModConfig.worldConfig.explosiveSkeletonSpawn.get(), 1, 2));
             mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_KNIGHT.get(), ModConfig.worldConfig.zombieKnightSpawn.get(), 1, 2));
+            mobSpawnBuilder.addMobCharge(ModEntities.ZOMBIE_GUNNER.get(), 0.7, 0.15);
+            mobSpawnBuilder.addMobCharge(ModEntities.EXPLOSIVE_SKELETON.get(), 0.7, 0.15);
+            mobSpawnBuilder.addMobCharge(ModEntities.ZOMBIE_KNIGHT.get(), 1.0, 0.12);
         }
         if (category != Biome.Category.NETHER && category != Biome.Category.THEEND) {
             if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {

@@ -126,6 +126,11 @@ public class Attribute implements IAttribute {
     }
 
     @Override
+    public boolean hasModifier(UUID modifierId) {
+        return modifierMap.containsKey(modifierId);
+    }
+
+    @Override
     public Collection<IAttributeModifier> listModifiers() {
         List<IAttributeModifier> list = new ArrayList<>(modifierMap.values());
         list.sort(Comparator.comparingInt(mod -> mod.getOperation().getPriority()));
@@ -135,11 +140,6 @@ public class Attribute implements IAttribute {
     @Override
     public void addAttributeListener(IAttributeListener listener) {
         listeners.add(listener);
-    }
-
-    @Override
-    public void removeListener(IAttributeListener listener) {
-        listeners.remove(listener);
     }
 
     @Override

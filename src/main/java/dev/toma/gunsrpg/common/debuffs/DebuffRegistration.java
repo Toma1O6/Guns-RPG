@@ -198,10 +198,12 @@ public final class DebuffRegistration {
     }
 
     private static void applyFractureStage1(PlayerEntity player) {
+        applyFractureSprintDebuff(player);
         applySingle(player, () -> new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 60, 0, false, false));
     }
 
     private static void applyFractureStage2(PlayerEntity player) {
+        applyFractureSprintDebuff(player);
         applyMultiple(player, () -> new EffectInstance[]{
                 new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 60, 1, false, false),
                 new EffectInstance(Effects.DIG_SLOWDOWN, 60, 0, false, false)
@@ -209,6 +211,7 @@ public final class DebuffRegistration {
     }
 
     private static void applyFractureStage3(PlayerEntity player) {
+        applyFractureSprintDebuff(player);
         applyMultiple(player, () -> new EffectInstance[]{
                 new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 60, 2, false, false),
                 new EffectInstance(Effects.WEAKNESS, 60, 0, false, false),
@@ -217,6 +220,7 @@ public final class DebuffRegistration {
     }
 
     private static void applyFractureStage4(PlayerEntity player) {
+        applyFractureSprintDebuff(player);
         applyMultiple(player, () -> new EffectInstance[]{
                 new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 60, 3, false, false),
                 new EffectInstance(Effects.WEAKNESS, 60, 0, false, false),
@@ -225,11 +229,20 @@ public final class DebuffRegistration {
     }
 
     private static void applyFractureStage5(PlayerEntity player) {
+        applyFractureSprintDebuff(player);
         applyMultiple(player, () -> new EffectInstance[]{
                 new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 60, 3, false, false),
                 new EffectInstance(Effects.WEAKNESS, 60, 1, false, false),
                 new EffectInstance(Effects.WITHER, 60, 0, false, false),
                 new EffectInstance(Effects.DIG_SLOWDOWN, 60, 2, false, false)
+        });
+    }
+
+    private static void applyFractureSprintDebuff(PlayerEntity player) {
+        runServerSideDelayed(player, 20L, () -> {
+            if (player.isSprinting()) {
+                player.hurt(DamageSource.GENERIC, 1);
+            }
         });
     }
 

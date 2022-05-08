@@ -28,13 +28,13 @@ public interface IAttribute extends INBTSerializable<CompoundNBT> {
 
     void removeModifierById(UUID modifierId);
 
+    boolean hasModifier(UUID modifierId);
+
     Collection<IAttributeModifier> listModifiers();
 
     void markChanged();
 
     void addAttributeListener(IAttributeListener listener);
-
-    void removeListener(IAttributeListener listener);
 
     IAttributeId getId();
 }
