@@ -1,6 +1,5 @@
 package dev.toma.gunsrpg.common.quests.condition;
 
-import com.google.gson.JsonElement;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,13 +21,5 @@ public class NoFoodConditionProvider extends AbstractQuestConditionProvider impl
     @Override
     public IQuestCondition getCondition() {
         return this;
-    }
-
-    public static final class Serializer implements IQuestConditionProviderSerializer<NoFoodConditionProvider> {
-
-        @Override
-        public NoFoodConditionProvider deserialize(QuestConditionProviderType<NoFoodConditionProvider> conditionType, JsonElement data) {
-            return new NoFoodConditionProvider(conditionType);
-        }
     }
 }

@@ -11,7 +11,7 @@
     },
     "conditions": [
         {
-            "condition": "gunsrpg:distance",
+            "type": "gunsrpg:distance",
             "max": 5
         }
     ],

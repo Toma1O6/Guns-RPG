@@ -1,9 +1,0 @@
-{
-    "type": "gunsrpg:equipment",
-    "slots": {
-        "feet": "minecraft:air",
-        "legs": "minecraft:air",
-        "chest": "minecraft:air",
-        "head": "minecraft:air"
-    }
-}

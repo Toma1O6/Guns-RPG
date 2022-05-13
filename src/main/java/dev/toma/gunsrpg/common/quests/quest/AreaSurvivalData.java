@@ -1,8 +1,14 @@
 package dev.toma.gunsrpg.common.quests.quest;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import dev.toma.gunsrpg.common.quests.quest.area.IQuestAreaProvider;
+import dev.toma.gunsrpg.common.quests.quest.area.QuestAreaScheme;
 import dev.toma.gunsrpg.util.IIntervalProvider;
+import dev.toma.gunsrpg.util.Interval;
+import dev.toma.gunsrpg.util.helper.JsonHelper;
+import net.minecraft.util.JSONUtils;
 
 public class AreaSurvivalData extends SurvivalData implements IQuestAreaProvider {
 
@@ -28,7 +34,11 @@ public class AreaSurvivalData extends SurvivalData implements IQuestAreaProvider
 
         @Override
         public AreaSurvivalData resolve(JsonElement element) throws JsonParseException {
-            return null;
+            JsonObject object = JsonHelper.asJsonObject(element);
+            String duration = JSONUtils.getAsString(object, "duration");
+            IIntervalProvider provider = Interval.parse(duration);
+            QuestAreaScheme areaScheme = QuestAreaScheme.fromJson(JSONUtils.getAsJsonObject(object, "area"));
+            return new AreaSurvivalData(provider, areaScheme);
         }
     }
 }

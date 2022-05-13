@@ -18,7 +18,7 @@
                     "entity": "minecraft:skeleton_horse",
                     "propability": 0.05,
                     "limit": 2,
-                    "extras": [
+                    "processors": [
                         {
                             "type": "gunsrpg:controller",
                             "controller": "minecraft:skeleton"

@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.quests.quest;
+package dev.toma.gunsrpg.common.quests.quest.area;
 
 public interface IQuestAreaProvider {
 

@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import dev.toma.gunsrpg.common.quests.condition.IQuestConditionProvider;
 import dev.toma.gunsrpg.common.quests.condition.NoConditionProvider;
-import dev.toma.gunsrpg.common.quests.condition.QuestConditionManager;
+import dev.toma.gunsrpg.common.quests.condition.QuestConditionLoader;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import dev.toma.gunsrpg.util.math.WeightedRandom;
 
@@ -21,7 +21,7 @@ public class WeightedConditionList {
         return randomProviderSelector.getRandom().getProvider();
     }
 
-    public static WeightedConditionList resolve(JsonElement element, QuestConditionManager manager) {
+    public static WeightedConditionList resolve(JsonElement element, QuestConditionLoader manager) {
         JsonArray array = JsonHelper.asJsonArray(element);
         WeightedProvider[] providers = JsonHelper.deserializeInto(array, WeightedProvider[]::new, json -> WeightedProvider.resolve(json, manager));
         return new WeightedConditionList(providers);

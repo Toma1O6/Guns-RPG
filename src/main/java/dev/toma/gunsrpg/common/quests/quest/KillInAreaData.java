@@ -1,8 +1,13 @@
 package dev.toma.gunsrpg.common.quests.quest;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import dev.toma.gunsrpg.common.quests.quest.area.IQuestAreaProvider;
+import dev.toma.gunsrpg.common.quests.quest.area.QuestAreaScheme;
+import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.JSONUtils;
 
 import java.util.function.Predicate;
 
@@ -30,7 +35,12 @@ public class KillInAreaData extends KillEntityData implements IQuestAreaProvider
 
         @Override
         public KillInAreaData resolve(JsonElement element) throws JsonParseException {
-            return null;
+            JsonObject object = JsonHelper.asJsonObject(element);
+            JsonElement filterElement = object.get("entities");
+            Predicate<Entity> filter = parseEntityFilter(filterElement);
+            int count = JSONUtils.getAsInt(object, "count", 1);
+            QuestAreaScheme areaScheme = QuestAreaScheme.fromJson(JSONUtils.getAsJsonObject(object, "area"));
+            return new KillInAreaData(filter, count, areaScheme);
         }
     }
 }

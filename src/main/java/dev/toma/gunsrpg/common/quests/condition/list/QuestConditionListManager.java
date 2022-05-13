@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.common.quests.condition.IConditionProvider;
 import dev.toma.gunsrpg.common.quests.condition.IQuestConditionProvider;
-import dev.toma.gunsrpg.common.quests.condition.QuestConditionManager;
+import dev.toma.gunsrpg.common.quests.condition.QuestConditionLoader;
 import dev.toma.gunsrpg.util.ILogHandler;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.client.resources.JsonReloadListener;
@@ -21,10 +21,10 @@ public class QuestConditionListManager extends JsonReloadListener implements ICo
     private static final Gson GSON = new Gson();
     private final Map<ResourceLocation, WeightedConditionList> map = new HashMap<>();
     private final ILogHandler logger;
-    private final QuestConditionManager conditionManager;
+    private final QuestConditionLoader conditionManager;
 
-    public QuestConditionListManager(ILogHandler logger, QuestConditionManager conditionManager) {
-        super(GSON, "quest/condition_list");
+    public QuestConditionListManager(ILogHandler logger, QuestConditionLoader conditionManager) {
+        super(GSON, "quest/conditions");
         this.logger = logger;
         this.conditionManager = conditionManager;
     }

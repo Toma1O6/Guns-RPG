@@ -2,6 +2,8 @@ package dev.toma.gunsrpg.common.quests.quest;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import dev.toma.gunsrpg.common.quests.condition.IQuestCondition;
+import dev.toma.gunsrpg.common.quests.condition.IQuestConditionProvider;
 import net.minecraft.util.ResourceLocation;
 
 public final class QuestType<D extends IQuestData> {

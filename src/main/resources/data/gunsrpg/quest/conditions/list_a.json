@@ -1,0 +1,163 @@
+[
+    {
+        "weight": 30,
+        "condition": {
+            "type": "gunsrpg:empty"
+        }
+    },
+    {
+        "weight": 13,
+        "condition": {
+            "type": "gunsrpg:used_item",
+            "selector": "one",
+            "items": [
+                "minecraft:stone_sword",
+                "minecraft:stone_axe",
+                "minecraft:iron_sword",
+                "minecraft:iron_axe",
+                "minecraft:golden_sword",
+                "minecraft:golden_axe",
+                "minecraft:diamond_sword",
+                "minecraft:diamond_axe",
+                "minecraft:netherite_sword",
+                "minecraft:netherite_axe",
+                "minecraft:bow",
+                "minecraft:crossbow",
+                "gunsrpg:m1911",
+                "gunsrpg:r45",
+                "gunsrpg:desert_eagle",
+                "gunsrpg:ump45",
+                "gunsrpg:thompson",
+                "gunsrpg:vector",
+                "gunsrpg:s1897",
+                "gunsrpg:s686",
+                "gunsrpg:s12k",
+                "gunsrpg:wooden_crossbow",
+                "gunsrpg:chukonu",
+                "gunsrpg:akm",
+                "gunsrpg:hk416",
+                "gunsrpg:aug",
+                "gunsrpg:sks",
+                "gunsrpg:vss",
+                "gunsrpg:mk14ebr",
+                "gunsrpg:kar98k",
+                "gunsrpg:winchester",
+                "gunsrpg:awm",
+                "gunsrpg:grenade_launcher",
+                "gunsrpg:rocket_launcher"
+            ]
+        }
+    },
+    {
+        "weight": 7,
+        "condition": {
+            "type": "gunsrpg:used_item",
+            "selector": "any",
+            "items": [
+                "gunsrpg:m1911",
+                "gunsrpg:r45",
+                "gunsrpg:desert_eagle"
+            ]
+        }
+    },
+    {
+        "weight": 7,
+        "condition": {
+            "type": "gunsrpg:used_item",
+            "selector": "any",
+            "items": [
+                "gunsrpg:ump45",
+                "gunsrpg:thompson",
+                "gunsrpg:vector"
+            ]
+        }
+    },
+    {
+        "weight": 7,
+        "condition": {
+            "type": "gunsrpg:used_item",
+            "selector": "any",
+            "items": [
+                "gunsrpg:akm",
+                "gunsrpg:hk416",
+                "gunsrpg:aug"
+            ]
+        }
+    },
+    {
+        "weight": 7,
+        "condition": {
+            "type": "gunsrpg:used_item",
+            "selector": "any",
+            "items": [
+                "gunsrpg:s1897",
+                "gunsrpg:s686",
+                "gunsrpg:s12k"
+            ]
+        }
+    },
+    {
+        "weight": 7,
+        "condition": {
+            "type": "gunsrpg:used_item",
+            "selector": "any",
+            "items": [
+                "gunsrpg:sks",
+                "gunsrpg:vss",
+                "gunsrpg:mk14ebr"
+            ]
+        }
+    },
+    {
+        "weight": 7,
+        "condition": {
+            "type": "gunsrpg:used_item",
+            "selector": "any",
+            "items": [
+                "gunsrpg:kar98k",
+                "gunsrpg:winchester",
+                "gunsrpg:awm"
+            ]
+        }
+    },
+    {
+        "weight": 7,
+        "condition": {
+            "type": "gunsrpg:used_item",
+            "selector": "any",
+            "items": [
+                "minecraft:bow",
+                "minecraft:crossbow",
+                "gunsrpg:wooden_crossbow",
+                "gunsrpg:chukonu"
+            ]
+        }
+    },
+    {
+        "weight": 10,
+        "condition": {
+            "type": "gunsrpg:used_item",
+            "selector": "any",
+            "items": [
+                "minecraft:wooden_sword",
+                "minecraft:wooden_axe",
+                "minecraft:stone_sword",
+                "minecraft:stone_axe",
+                "minecraft:iron_sword",
+                "minecraft:iron_axe",
+                "minecraft:golden_sword",
+                "minecraft:golden_axe",
+                "minecraft:diamond_sword",
+                "minecraft:diamond_axe",
+                "minecraft:netherite_sword",
+                "minecraft:netherite_axe"
+            ]
+        }
+    },
+    {
+        "weight": 5,
+        "condition": {
+            "type": "gunsrpg:explode"
+        }
+    }
+]

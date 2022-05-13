@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -27,6 +28,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.EnumSet;
 
@@ -46,6 +48,11 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return createMonsterAttributes().add(Attributes.MAX_HEALTH, 45.0).add(Attributes.ATTACK_DAMAGE, 4.0).add(Attributes.FOLLOW_RANGE, 48.0);
+    }
+
+    @Override
+    public IPacket<?> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
@@ -163,7 +170,7 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
 
         @Override
         public void start() {
-            toFire = 4;
+            toFire = 3;
             cooldown = 15;
         }
 
@@ -201,7 +208,7 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
                     entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FIREWORK_ROCKET_LAUNCH, SoundCategory.MASTER, 10.0F, 1.0F);
                     --toFire;
                     if (toFire < 0) {
-                        toFire = 4;
+                        toFire = 3;
                         cooldown = 100;
                     }
                 }

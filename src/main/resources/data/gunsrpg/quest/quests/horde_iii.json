@@ -1,5 +1,5 @@
 {
-    "type": "gunsrpg:survival",
+    "type": "gunsrpg:area_survival",
     "tier": 5,
     "display": {
         "name": "Horde III",
@@ -11,7 +11,6 @@
             "size": 32,
             "distance": 256,
             "spawners": [
-                {}
             ]
         }
     },

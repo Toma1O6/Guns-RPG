@@ -1,9 +1,0 @@
-{
-    "type": "gunsrpg:used_item",
-    "selector": "any",
-    "items": [
-        "gunsrpg:ump45",
-        "gunsrpg:thompson",
-        "gunsrpg:vector"
-    ]
-}

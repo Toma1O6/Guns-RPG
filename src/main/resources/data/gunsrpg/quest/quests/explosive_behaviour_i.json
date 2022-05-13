@@ -7,7 +7,9 @@
     },
     "data": {
         "entities": [
-            "gunsrpg:explosive_skeleton",
+            "gunsrpg:explosive_skeleton"
+        ],
+        "count": 5,
         "area": {
             "size": 32,
             "distance": 512,
@@ -19,8 +21,6 @@
                 }
             ]
         }
-        ],
-        "count": 5
     },
     "tieredConditions": {
         "conditions": [

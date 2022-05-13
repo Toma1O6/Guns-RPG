@@ -1,8 +1,13 @@
 package dev.toma.gunsrpg.common.quests.quest;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import dev.toma.gunsrpg.util.helper.JsonHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.JSONUtils;
 
 public class ItemHandoverData implements IQuestData {
 
@@ -22,7 +27,18 @@ public class ItemHandoverData implements IQuestData {
 
         @Override
         public ItemHandoverData resolve(JsonElement element) throws JsonParseException {
-            return null;
+            JsonObject object = JsonHelper.asJsonObject(element);
+            JsonArray array = JSONUtils.getAsJsonArray(object, "items");
+            ItemStack[] items = JsonHelper.deserializeInto(array, ItemStack[]::new, this::resolveItemStack);
+            return new ItemHandoverData(items);
+        }
+
+        private ItemStack resolveItemStack(JsonElement element) throws JsonParseException {
+            JsonObject object = JsonHelper.asJsonObject(element);
+            JsonElement itemId = object.get("item");
+            Item item = JsonHelper.resolveItem(itemId);
+            int count = JSONUtils.getAsInt(object, "count", 1);
+            return new ItemStack(item, count);
         }
     }
 }

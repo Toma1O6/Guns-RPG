@@ -3,9 +3,14 @@ package dev.toma.gunsrpg.util.helper;
 import com.google.gson.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -25,6 +30,19 @@ public final class JsonHelper {
             output[index++] = adapter.apply(element);
         }
         return output;
+    }
+
+    public static <C, R> C deserialize(JsonArray array, Function<JsonArray, C> constructor, Function<JsonElement, R> parser, BiConsumer<C, R> accumulator) {
+        C storage = constructor.apply(array);
+        for (JsonElement element : array) {
+            R result = parser.apply(element);
+            accumulator.accept(storage, result);
+        }
+        return storage;
+    }
+
+    public static <R> List<R> deserializeAsList(String arrayKey, JsonObject object, Function<JsonElement, R> parser) {
+        return object.has(arrayKey) ? deserialize(JSONUtils.getAsJsonArray(object, arrayKey), arr -> new ArrayList<>(), parser, List::add) : Collections.emptyList();
     }
 
     public static Item resolveItem(JsonElement element) throws JsonParseException {

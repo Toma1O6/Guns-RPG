@@ -286,7 +286,8 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
             else
                 gun.onHitEntity(this, livingEntity, weapon, (LivingEntity) owner);
         } else if (entity instanceof PartEntity<?>) {
-            entity.hurt(this.getDamageSource(owner), projectileDamage);
+            DamageSource source = ModDamageSources.dealSpecialWeaponDamage(owner, this, weapon);
+            entity.hurt(source, projectileDamage);
         }
     }
 

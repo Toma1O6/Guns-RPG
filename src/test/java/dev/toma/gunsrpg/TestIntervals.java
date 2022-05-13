@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.annotation.Testable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Testable
 public class TestIntervals {
@@ -45,5 +46,23 @@ public class TestIntervals {
         assertEquals("2m15s", Interval.format(complex.valueIn(Interval.Unit.SECOND), f -> f.src(Interval.Unit.SECOND).out(Interval.Unit.MINUTE, Interval.Unit.SECOND).compact()));
         complex = Interval.hours(4).append(Interval.seconds(37));
         assertEquals("4h0m37s", Interval.format(complex.valueIn(Interval.Unit.SECOND), f -> f.src(Interval.Unit.SECOND).out(Interval.Unit.HOUR, Interval.Unit.MINUTE, Interval.Unit.SECOND).compact()));
+    }
+
+    @Test
+    public void testParsing() {
+        String in1 = "16m";
+        Interval int1 = Interval.parse(in1);
+        assertEquals(16, int1.valueIn(Interval.Unit.MINUTE));
+
+        String in2 = "1h30m";
+        Interval int2 = Interval.parse(in2);
+        assertEquals(90, int2.valueIn(Interval.Unit.MINUTE));
+
+        String in3 = "1h44s";
+        Interval int3 = Interval.parse(in3);
+        assertEquals(3644, int3.valueIn(Interval.Unit.SECOND));
+
+        String in4 = "15x";
+        assertThrows(IllegalArgumentException.class, () -> Interval.parse(in4));
     }
 }

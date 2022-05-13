@@ -1,9 +1,0 @@
-{
-    "type": "gunsrpg:used_item",
-    "selector": "any",
-    "items": [
-        "gunsrpg:akm",
-        "gunsrpg:hk416",
-        "gunsrpg:aug"
-    ]
-}

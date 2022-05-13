@@ -1,0 +1,60 @@
+[
+    {
+        "weight": 50,
+        "condition": {
+            "type": "gunsrpg:empty"
+        }
+    },
+    {
+        "weight": 5,
+        "condition": {
+            "type": "gunsrpg:debuff",
+            "debuff": "gunsrpg:bleed"
+        }
+    },
+    {
+        "weight": 5,
+        "condition": {
+            "type": "gunsrpg:debuff",
+            "debuff": "gunsrpg:fracture"
+        }
+    },
+    {
+        "weight": 5,
+        "condition": {
+            "type": "gunsrpg:debuff",
+            "debuff": "gunsrpg:poison"
+        }
+    },
+    {
+        "weight": 5,
+        "condition": {
+            "type": "gunsrpg:debuff",
+            "debuff": "gunsrpg:infection"
+        }
+    },
+    {
+        "weight": 10,
+        "condition": {
+            "type": "gunsrpg:equipment",
+            "slots": {
+                "feet": "minecraft:air",
+                "legs": "minecraft:air",
+                "chest": "minecraft:air",
+                "head": "minecraft:air"
+            }
+        }
+    },
+    {
+        "weight": 10,
+        "condition": {
+            "type": "gunsrpg:no_heal"
+        }
+    },
+    {
+        "weight": 10,
+        "condition": {
+            "type": "gunsrpg:no_food"
+        }
+    }
+]

@@ -3,15 +3,14 @@
     "tier": 1,
     "display": {
         "name": "Pacifist I",
-        "info": "Do not take deal damage for 10 minutes"
+        "info": "Do not deal damage for 10 minutes"
     },
     "data": {
-        "duration": "10m",
-        "area": null
+        "duration": "10m"
     },
     "conditions": [
         {
-            "condition": "gunsrpg:no_damage_given"
+            "type": "gunsrpg:no_damage_given"
         }
     ],
     "tieredConditions": {

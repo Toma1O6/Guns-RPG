@@ -11,7 +11,7 @@
     },
     "conditions": [
         {
-            "condition": "gunsrpg:aggro",
+            "type": "gunsrpg:aggro",
             "aggro": false
         }
     ],

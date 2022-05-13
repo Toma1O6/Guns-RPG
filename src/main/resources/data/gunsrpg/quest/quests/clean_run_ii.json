@@ -6,12 +6,11 @@
         "info": "Do not take any damage for 13 minutes"
     },
     "data": {
-        "duration": "13m",
-        "area": null
+        "duration": "13m"
     },
     "conditions": [
         {
-            "condition": "gunsrpg:no_damage_taken"
+            "type": "gunsrpg:no_damage_taken"
         }
     ],
     "tieredConditions": {

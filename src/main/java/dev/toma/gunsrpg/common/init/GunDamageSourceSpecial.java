@@ -14,6 +14,6 @@ public class GunDamageSourceSpecial extends GunDamageSource {
     @Nullable
     @Override
     public Entity getEntity() {
-        return null;
+        return getSrc();
     }
 }

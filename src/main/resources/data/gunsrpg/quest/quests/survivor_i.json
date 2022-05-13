@@ -6,8 +6,7 @@
         "info": "Survive for 10 minutes"
     },
     "data": {
-        "duration": "10m",
-        "area": null
+        "duration": "10m"
     },
     "tieredConditions": {
         "conditions": [

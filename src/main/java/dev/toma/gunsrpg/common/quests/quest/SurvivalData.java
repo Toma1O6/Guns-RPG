@@ -1,8 +1,12 @@
 package dev.toma.gunsrpg.common.quests.quest;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.util.IIntervalProvider;
+import dev.toma.gunsrpg.util.Interval;
+import dev.toma.gunsrpg.util.helper.JsonHelper;
+import net.minecraft.util.JSONUtils;
 
 public class SurvivalData implements IQuestData {
 
@@ -26,7 +30,10 @@ public class SurvivalData implements IQuestData {
 
         @Override
         public SurvivalData resolve(JsonElement element) throws JsonParseException {
-            return null;
+            JsonObject object = JsonHelper.asJsonObject(element);
+            String timeString = JSONUtils.getAsString(object, "duration");
+            Interval interval = Interval.parse(timeString);
+            return new SurvivalData(interval);
         }
     }
 }

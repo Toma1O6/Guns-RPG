@@ -11,7 +11,7 @@
     },
     "conditions": [
         {
-            "condition": "gunsrpg:is_headshot"
+            "type": "gunsrpg:is_headshot"
         }
     ],
     "tieredConditions": {

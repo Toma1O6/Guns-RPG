@@ -1,6 +1,10 @@
 package dev.toma.gunsrpg.util;
 
+import dev.toma.gunsrpg.util.helper.NumberHelper;
+
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Helper class which converts various time units to mc time
@@ -9,6 +13,7 @@ import java.util.Arrays;
  */
 public final class Interval implements IIntervalProvider {
 
+    public static final Pattern PATTERN = Pattern.compile("(\\d+[a-z])");
     private final Unit unit;
     private final int value;
 
@@ -94,6 +99,27 @@ public final class Interval implements IIntervalProvider {
         return interval.format(format.compact, format.output);
     }
 
+    public static Interval parse(String input) {
+        Matcher matcher = PATTERN.matcher(input);
+        Interval interval = null;
+        while (matcher.find()) {
+            String component = matcher.group();
+            Interval result = parseSimpleString(component);
+            interval = interval == null ? result : interval.append(result);
+        }
+        return interval;
+    }
+
+    public static Interval parseSimpleString(String input) {
+        String unitString = input.substring(input.length() - 1);
+        String valueString = input.substring(0, input.length() - 1);
+        Unit unit = Unit.getById(unitString);
+        if (unit == null)
+            throw new IllegalArgumentException("Invalid unit: " + unitString);
+        int value = NumberHelper.parseInt(valueString, 0);
+        return new Interval(unit, value);
+    }
+
     public enum Unit {
 
         TICK(1, 't', "Tick"),
@@ -114,6 +140,17 @@ public final class Interval implements IIntervalProvider {
 
         public String getName(boolean compact) {
             return compact ? String.valueOf(id) : formattedName.toLowerCase();
+        }
+
+        public static Unit getById(String id) {
+            Unit[] units = Unit.values();
+            for (Unit unit : units) {
+                char character = unit.id;
+                if (character == id.charAt(0)) {
+                    return unit;
+                }
+            }
+            return null;
         }
     }
 
