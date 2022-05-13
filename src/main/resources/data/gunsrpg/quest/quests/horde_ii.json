@@ -12,19 +12,6 @@
             "distance": 256,
             "spawners": [
                 {
-    "type": "gunsrpg:area_survival",
-    "tier": 3,
-    "display": {
-        "name": "Horde I",
-        "info": "Survive in area for 4 minutes"
-    },
-    "data": {
-        "duration": "4m",
-        "area": {
-            "size": 32,
-            "distance": 256,
-            "spawners": [
-                {
                     "entity": "minecraft:spider",
                     "propability": 0.05,
                     "limit": 3
@@ -69,21 +56,6 @@
                     "propability": 0.05,
                     "limit": 3
                 }
-            ]
-        }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
-    }
-}
             ]
         }
     },
