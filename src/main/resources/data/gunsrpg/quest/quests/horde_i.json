@@ -11,6 +11,51 @@
             "size": 32,
             "distance": 256,
             "spawners": [
+                {
+                    "entity": "minecraft:spider",
+                    "propability": 0.05,
+                    "limit": 3
+                },
+                {
+                    "entity": "minecraft:zombie",
+                    "propability": 0.05,
+                    "limit": 3
+                },
+                {
+                    "entity": "minecraft:minecraft creeper",
+                    "propability": 0.05,
+                    "limit": 3
+                },
+                {
+                    "entity": "minecraft:skeleton",
+                    "propability": 0.05,
+                    "limit": 3
+                },
+                {
+                    "entity": "minecraft:witch",
+                    "propability": 0.05,
+                    "limit": 3
+                },
+                {
+                    "entity": "minecraft:wither_skeleton",
+                    "propability": 0.05,
+                    "limit": 3
+                },
+                {
+                    "entity": "gunsrpg:zombie_gunner",
+                    "propability": 0.05,
+                    "limit": 3
+                },
+                {
+                    "entity": "gunsrpg:explosive_skeleton",
+                    "propability": 0.05,
+                    "limit": 3
+                },
+                {
+                    "entity": "gunsrpg:bloodmoon_golem",
+                    "propability": 0.05,
+                    "limit": 3
+                }
             ]
         }
     },
