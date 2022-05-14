@@ -16,7 +16,7 @@ import java.util.function.Function;
 public final class VillageFeatureMutator {
 
     private static final Map<String, List<VillageVariantEntry>> VARIANTS = Util.make(new HashMap<>(), map -> {
-        registerSingleVariant(map, "desert", 50);
+        registerSingleVariant(map, "desert", 45);
         registerSingleVariant(map, "savanna", 100);
         registerSingleVariant(map, "snowy", 100);
         registerSingleVariant(map, "plains", 100);
