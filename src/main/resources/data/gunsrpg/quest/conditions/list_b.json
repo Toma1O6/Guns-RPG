@@ -1,12 +1,14 @@
 [
     {
         "weight": 50,
+        "id": "gunsrpg:empty",
         "condition": {
             "type": "gunsrpg:empty"
         }
     },
     {
         "weight": 5,
+        "id": "gunsrpg:have_bleeding",
         "condition": {
             "type": "gunsrpg:debuff",
             "debuff": "gunsrpg:bleed"
@@ -14,6 +16,7 @@
     },
     {
         "weight": 5,
+        "id": "gunsrpg:have_fracture",
         "condition": {
             "type": "gunsrpg:debuff",
             "debuff": "gunsrpg:fracture"
@@ -21,6 +24,7 @@
     },
     {
         "weight": 5,
+        "id": "gunsrpg:have_poison",
         "condition": {
             "type": "gunsrpg:debuff",
             "debuff": "gunsrpg:poison"
@@ -28,6 +32,7 @@
     },
     {
         "weight": 5,
+        "id": "gunsrpg:have_infection",
         "condition": {
             "type": "gunsrpg:debuff",
             "debuff": "gunsrpg:infection"
@@ -35,6 +40,7 @@
     },
     {
         "weight": 10,
+        "id": "gunsrpg:no_armor",
         "condition": {
             "type": "gunsrpg:equipment",
             "slots": {
@@ -47,12 +53,14 @@
     },
     {
         "weight": 10,
+        "id": "gunsrpg:no_heal",
         "condition": {
             "type": "gunsrpg:no_heal"
         }
     },
     {
         "weight": 10,
+        "id": "gunsrpg:no_food",
         "condition": {
             "type": "gunsrpg:no_food"
         }

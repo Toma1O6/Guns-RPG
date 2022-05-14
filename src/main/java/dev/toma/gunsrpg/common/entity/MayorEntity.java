@@ -6,7 +6,10 @@ import dev.toma.gunsrpg.api.common.data.ITraderStandings;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
+import dev.toma.gunsrpg.util.IIntervalProvider;
+import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.properties.IPropertyHolder;
 import dev.toma.gunsrpg.util.properties.PropertyContext;
 import net.minecraft.client.Minecraft;
@@ -24,13 +27,29 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 
 public class MayorEntity extends CreatureEntity {
 
+    public static final IIntervalProvider REFRESH_LIMIT = Interval.hours(1);
+    private final Map<UUID, ListedQuests> playerQuests = Collections.emptyMap();
+    private long refreshAtWorldTime;
+
     public MayorEntity(EntityType<? extends MayorEntity> type, World world) {
         super(type, world);
         setPersistenceRequired();
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        long time = level.getDayTime();
+        if (time >= refreshAtWorldTime) {
+            refreshAtWorldTime = time + REFRESH_LIMIT.getTicks();
+            playerQuests.clear();
+        }
     }
 
     @Override
@@ -84,8 +103,18 @@ public class MayorEntity extends CreatureEntity {
                 holder.setProperty(QuestProperties.USED_ITEM, stack);
                 quest.trigger(Trigger.ITEM_HANDOVER, holder);
             });
-        } else if (level.isClientSide) {
-            openQuestScreen();
+        } else {
+            if (level.isClientSide) {
+                openQuestScreen();
+            } else {
+                UUID uuid = player.getUUID();
+                ListedQuests quests = playerQuests.get(uuid);
+                if (!playerQuests.containsKey(uuid)) {
+                    quests = ListedQuests.generate();
+                    playerQuests.put(uuid, quests);
+                }
+                // TODO send data payload with quest information
+            }
         }
         return ActionResultType.sidedSuccess(level.isClientSide);
     }
@@ -94,5 +123,23 @@ public class MayorEntity extends CreatureEntity {
     private void openQuestScreen() {
         Minecraft minecraft = Minecraft.getInstance();
         // TODO
+    }
+
+    private static final class ListedQuests {
+
+        public static final int QUEST_COUNT = 5;
+        private final Quest[] quests;
+
+        public ListedQuests(Quest[] quests) {
+            this.quests = quests;
+        }
+
+        public static ListedQuests generate() {
+            return null;
+        }
+
+        public Quest[] getQuests() {
+            return quests;
+        }
     }
 }

@@ -16,7 +16,7 @@
             }
         ],
         "exclusions": [
-            "gunsrpg:have_bleed",
+            "gunsrpg:have_bleeding",
             "gunsrpg:have_poison",
             "gunsrpg:have_fracture",
             "gunsrpg:have_infection"

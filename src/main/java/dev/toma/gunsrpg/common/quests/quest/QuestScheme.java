@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.quests.quest;
 
 import dev.toma.gunsrpg.common.quests.condition.IQuestConditionProvider;
-import dev.toma.gunsrpg.common.quests.condition.TieredCondition;
 import net.minecraft.util.ResourceLocation;
 
 public final class QuestScheme<D extends IQuestData> {
@@ -12,16 +11,16 @@ public final class QuestScheme<D extends IQuestData> {
     private final int tier;
     private final DisplayInfo displayInfo;
     private final IQuestConditionProvider[] questConditions;
-    private final TieredCondition[] tieredConditions;
+    private final QuestConditionTierScheme conditionTierScheme;
 
-    public QuestScheme(ResourceLocation questId, QuestType<D> questType, D data, int tier, DisplayInfo displayInfo, IQuestConditionProvider[] questConditions, TieredCondition[] tieredConditions) {
+    public QuestScheme(ResourceLocation questId, QuestType<D> questType, D data, int tier, DisplayInfo displayInfo, IQuestConditionProvider[] questConditions, QuestConditionTierScheme conditionTierScheme) {
         this.questId = questId;
         this.questType = questType;
         this.data = data;
         this.tier = tier;
         this.displayInfo = displayInfo;
         this.questConditions = questConditions;
-        this.tieredConditions = tieredConditions;
+        this.conditionTierScheme = conditionTierScheme;
     }
 
     public ResourceLocation getQuestId() {
@@ -48,7 +47,7 @@ public final class QuestScheme<D extends IQuestData> {
         return questConditions;
     }
 
-    public TieredCondition[] getTieredConditions() {
-        return tieredConditions;
+    public QuestConditionTierScheme getConditionTierScheme() {
+        return conditionTierScheme;
     }
 }

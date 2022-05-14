@@ -21,7 +21,7 @@ public class KillEntityData implements IQuestData {
     private final int kills;
 
     public KillEntityData(@Nullable Predicate<Entity> entityFilter, int kills) {
-        this.entityFilter = ModUtils.either(entityFilter, ANY_HOSTILE);
+        this.entityFilter = ModUtils.firstNonnull(entityFilter, ANY_HOSTILE);
         this.kills = kills;
     }
 

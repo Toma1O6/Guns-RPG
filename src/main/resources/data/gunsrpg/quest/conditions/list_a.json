@@ -1,12 +1,14 @@
 [
     {
         "weight": 30,
+        "id": "gunsrpg:empty",
         "condition": {
             "type": "gunsrpg:empty"
         }
     },
     {
         "weight": 13,
+        "id": "gunsrpg:use_specific_weapon",
         "condition": {
             "type": "gunsrpg:used_item",
             "selector": "one",
@@ -50,6 +52,7 @@
     },
     {
         "weight": 7,
+        "id": "gunsrpg:use_pistol",
         "condition": {
             "type": "gunsrpg:used_item",
             "selector": "any",
@@ -62,6 +65,7 @@
     },
     {
         "weight": 7,
+        "id": "gunsrpg:use_smg",
         "condition": {
             "type": "gunsrpg:used_item",
             "selector": "any",
@@ -74,6 +78,7 @@
     },
     {
         "weight": 7,
+        "id": "gunsrpg:use_ar",
         "condition": {
             "type": "gunsrpg:used_item",
             "selector": "any",
@@ -86,6 +91,7 @@
     },
     {
         "weight": 7,
+        "id": "gunsrpg:use_shotgun",
         "condition": {
             "type": "gunsrpg:used_item",
             "selector": "any",
@@ -98,6 +104,7 @@
     },
     {
         "weight": 7,
+        "id": "gunsrpg:use_dmr",
         "condition": {
             "type": "gunsrpg:used_item",
             "selector": "any",
@@ -110,6 +117,7 @@
     },
     {
         "weight": 7,
+        "id": "gunsrpg:use_sr",
         "condition": {
             "type": "gunsrpg:used_item",
             "selector": "any",
@@ -122,6 +130,7 @@
     },
     {
         "weight": 7,
+        "id": "gunsrpg:use_bow",
         "condition": {
             "type": "gunsrpg:used_item",
             "selector": "any",
@@ -135,6 +144,7 @@
     },
     {
         "weight": 10,
+        "id": "gunsrpg:use_melee",
         "condition": {
             "type": "gunsrpg:used_item",
             "selector": "any",
@@ -156,6 +166,7 @@
     },
     {
         "weight": 5,
+        "id": "gunsrpg:explode",
         "condition": {
             "type": "gunsrpg:explode"
         }

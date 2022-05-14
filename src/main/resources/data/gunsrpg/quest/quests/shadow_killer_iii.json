@@ -22,7 +22,8 @@
             }
         ],
         "exclusions": [
-            "gunsrpg:use_melee"
+            "gunsrpg:use_melee",
+            "gunsrpg:use_specific_weapon"
         ]
     }
 }

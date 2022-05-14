@@ -94,7 +94,7 @@ public class ModUtils {
     }
 
     @SafeVarargs
-    public static <T> T either(T... values) {
+    public static <T> T firstNonnull(T... values) {
         for (T t : values) {
             if (t != null)
                 return t;

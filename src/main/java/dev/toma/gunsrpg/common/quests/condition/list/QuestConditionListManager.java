@@ -3,8 +3,6 @@ package dev.toma.gunsrpg.common.quests.condition.list;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import dev.toma.gunsrpg.common.quests.condition.IConditionProvider;
-import dev.toma.gunsrpg.common.quests.condition.IQuestConditionProvider;
 import dev.toma.gunsrpg.common.quests.condition.QuestConditionLoader;
 import dev.toma.gunsrpg.util.ILogHandler;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -16,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import java.util.HashMap;
 import java.util.Map;
 
-public class QuestConditionListManager extends JsonReloadListener implements IConditionProvider {
+public class QuestConditionListManager extends JsonReloadListener {
 
     private static final Gson GSON = new Gson();
     private final Map<ResourceLocation, WeightedConditionList> map = new HashMap<>();
@@ -29,10 +27,8 @@ public class QuestConditionListManager extends JsonReloadListener implements ICo
         this.conditionManager = conditionManager;
     }
 
-    @Override
-    public IQuestConditionProvider getProvider(ResourceLocation id) {
-        WeightedConditionList list = ModUtils.getNonnullFromMap(map, id, WeightedConditionList.EMPTY_LIST);
-        return list.getProvider();
+    public WeightedConditionList getList(ResourceLocation id) {
+        return ModUtils.firstNonnull(map.get(id), WeightedConditionList.EMPTY_LIST);
     }
 
     @Override

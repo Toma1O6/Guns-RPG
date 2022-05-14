@@ -41,7 +41,7 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
     public void onPurchase(PlayerEntity player) {
         PlayerData.get(player).ifPresent(data -> {
             ISkillProvider skillProvider = data.getSkillProvider();
-            BartenderSkill skill = ModUtils.either(SkillUtil.getTopHierarchySkill((SkillType<BartenderSkill>) this.getType(), skillProvider), this);
+            BartenderSkill skill = ModUtils.firstNonnull(SkillUtil.getTopHierarchySkill((SkillType<BartenderSkill>) this.getType(), skillProvider), this);
             IAttributeProvider provider = data.getAttributes();
             for (IAttributeTarget target : skill.targets) {
                 applyTarget(target, provider);

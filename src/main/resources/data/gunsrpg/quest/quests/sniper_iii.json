@@ -23,7 +23,8 @@
         ],
         "exclusions": [
             "gunsrpg:use_melee",
-            "gunsrpg:use_shotguns",
+            "gunsrpg:use_shotgun",
+            "gunsrpg:use_specific_weapon",
             "gunsrpg:explode"
         ]
     }

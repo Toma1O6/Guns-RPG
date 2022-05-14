@@ -16,7 +16,9 @@
     "tieredConditions": {
         "conditions": [
             {
-                "condition": "gunsrpg:no_food",
+                "condition": {
+                    "type": "gunsrpg:no_food"
+                },
                 "tier": 2,
                 "propability": 0.2
             }

@@ -47,7 +47,7 @@ public class AttributeSkill extends SimpleSkill implements IDescriptionProvider 
     public void onPurchase(PlayerEntity player) {
         PlayerData.get(player).ifPresent(data -> {
             ISkillProvider skillProvider = data.getSkillProvider();
-            AttributeSkill skill = ModUtils.either(SkillUtil.getTopHierarchySkill((SkillType<AttributeSkill>) this.getType(), skillProvider), this);
+            AttributeSkill skill = ModUtils.firstNonnull(SkillUtil.getTopHierarchySkill((SkillType<AttributeSkill>) this.getType(), skillProvider), this);
             IAttributeProvider provider = data.getAttributes();
             for (IAttributeTarget target : skill.targets) {
                 applyTarget(target, provider);

@@ -35,6 +35,11 @@ public class QuestSchemeAdapter {
         IQuestConditionProvider[] conditions = object.has("conditions") ?
                 JsonHelper.deserializeInto(JSONUtils.getAsJsonArray(object, "conditions"), IQuestConditionProvider[]::new, loader::loadCondition) :
                 new IQuestConditionProvider[0];
-        return new QuestScheme<>(filePath, questType, data, tier, displayInfo, conditions, null);
+        QuestConditionTierScheme tierScheme = QuestConditionTierScheme.EMPTY_SCHEME;
+        if (object.has("tieredConditions")) {
+            JsonObject tieredConditions = JSONUtils.getAsJsonObject(object, "tieredConditions");
+            tierScheme = QuestConditionTierScheme.fromJson(tieredConditions);
+        }
+        return new QuestScheme<>(filePath, questType, data, tier, displayInfo, conditions, tierScheme);
     }
 }

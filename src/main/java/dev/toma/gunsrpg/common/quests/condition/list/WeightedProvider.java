@@ -12,15 +12,21 @@ import net.minecraft.util.ResourceLocation;
 public final class WeightedProvider {
 
     private final int weight;
+    private final ResourceLocation id;
     private final IQuestConditionProvider provider;
 
-    public WeightedProvider(int weight, IQuestConditionProvider provider) {
+    public WeightedProvider(int weight, ResourceLocation id, IQuestConditionProvider provider) {
         this.weight = weight;
+        this.id = id;
         this.provider = provider;
     }
 
     public int getWeight() {
         return weight;
+    }
+
+    public ResourceLocation getId() {
+        return id;
     }
 
     public IQuestConditionProvider getProvider() {
@@ -30,8 +36,9 @@ public final class WeightedProvider {
     public static WeightedProvider resolve(JsonElement element, QuestConditionLoader manager) {
         JsonObject object = JsonHelper.asJsonObject(element);
         int weight = JSONUtils.getAsInt(object, "weight");
+        String id = JSONUtils.getAsString(object, "id", "no_name");
         JsonObject condition = JSONUtils.getAsJsonObject(object, "condition");
         IQuestConditionProvider provider = GunsRPG.getModLifecycle().quests().getConditionLoader().loadCondition(condition);
-        return new WeightedProvider(weight, provider);
+        return new WeightedProvider(weight, new ResourceLocation(id), provider);
     }
 }
