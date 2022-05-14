@@ -22,7 +22,7 @@
                     "limit": 3
                 },
                 {
-                    "entity": "minecraft:minecraft creeper",
+                    "entity": "minecraft:creeper",
                     "propability": 0.05,
                     "limit": 3
                 },
