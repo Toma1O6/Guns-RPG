@@ -1097,5 +1097,21 @@
     "event.type.minecraft:sound": "Add sound",
     "event.type.minecraft:animation_play": "Play animation",
     "event.type.minecraft:animation_stop": "Stop animation",
-    "event.type.gunsrpg:stash_detector": "Stash detector status"
+    "event.type.gunsrpg:stash_detector": "Stash detector status",
+
+    "quest.condition.debuff": "You must suffer from %s during this quest",
+    "quest.condition.used_item": "You must kill target with %s",
+    "quest.condition.no_food": "You must not to use any type of food during this quest",
+    "quest.condition.no_heal": "You must not to use anything that heals you",
+    "quest.condition.explode": "You must kill target with any kind of explosive",
+    "quest.condition.unique": "You must kill certain amount of unique creatures",
+    "quest.condition.aggro.true": "Target must be already angered at you",
+    "quest.condition.aggro.false": "Target must be killed without any aggro",
+    "quest.condition.distance.min": "Target must be killed at least %s blocks from you",
+    "quest.condition.distance.max": "Target must be killed within %s blocks from you",
+    "quest.condition.no_damage_taken": "You must not take any kind of damage during this quest",
+    "quest.condition.no_damage_given": "You must not deal any kind of damage during this quest",
+    "quest.condition.is_headshot.true": "You must kill target with headshot only",
+    "quest.condition.is_headshot.false": "You must not kill target with headshot",
+    "quest.condition.is_equipment": "You must wear specific equipment: %s"
 }
