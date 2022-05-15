@@ -29,6 +29,10 @@ public final class QuestConditionTierScheme {
         }
     }
 
+    public TieredList[] getListProviders() {
+        return listProviders;
+    }
+
     public Result getModifiedConditions() {
         int tierModifier = 0;
         IQuestCondition[] conditions = new IQuestCondition[listProviders.length];
@@ -73,7 +77,7 @@ public final class QuestConditionTierScheme {
         return new TieredList(list, tier, propability);
     }
 
-    private static class TieredList {
+    public static class TieredList {
 
         private static final Random RANDOM = new Random();
         private final WeightedConditionList list;
@@ -84,6 +88,18 @@ public final class QuestConditionTierScheme {
             this.list = list;
             this.tier = tier;
             this.propability = propability;
+        }
+
+        public WeightedConditionList getListRaw() {
+            return list;
+        }
+
+        public float getPropability() {
+            return propability;
+        }
+
+        public int getTier() {
+            return tier;
         }
 
         public WeightedConditionList getList() {

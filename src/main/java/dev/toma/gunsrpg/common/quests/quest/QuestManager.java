@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.common.quests.adapters.QuestSchemeAdapter;
 import dev.toma.gunsrpg.common.quests.condition.QuestConditionLoader;
-import dev.toma.gunsrpg.common.quests.condition.list.QuestConditionListManager;
 import dev.toma.gunsrpg.util.ILogHandler;
 import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.profiler.IProfiler;
@@ -15,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public final class QuestManager extends JsonReloadListener {
 
@@ -22,16 +22,21 @@ public final class QuestManager extends JsonReloadListener {
             .create();
     private final Map<ResourceLocation, QuestScheme<?>> quests = new HashMap<>();
     private final ILogHandler log;
-    private final QuestConditionListManager listManager;
-    private final QuestConditionLoader loader;
     private final QuestSchemeAdapter adapter;
 
-    public QuestManager(ILogHandler handler, QuestConditionListManager listManager, QuestConditionLoader loader) {
+    public QuestManager(ILogHandler handler, QuestConditionLoader loader) {
         super(GSON, "quest/quests");
         this.log = handler;
-        this.listManager = listManager;
-        this.loader = loader;
         this.adapter = new QuestSchemeAdapter(loader);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <D extends IQuestData> QuestScheme<D> getScheme(ResourceLocation id) {
+        return (QuestScheme<D>) quests.get(id);
+    }
+
+    public Set<ResourceLocation> getQuestIds() {
+        return quests.keySet();
     }
 
     @Override

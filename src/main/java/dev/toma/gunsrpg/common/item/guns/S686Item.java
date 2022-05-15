@@ -21,6 +21,7 @@ import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -129,6 +130,13 @@ public class S686Item extends AbstractShotgun {
     public void onHitEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
         if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.S686_BLAZING_PELLETS)) {
             victim.setRemainingFireTicks(120);
+        }
+    }
+
+    @Override
+    public void onKillEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.S686_HUNTER) && victim instanceof MonsterEntity) {
+            shooter.heal(2.0F);
         }
     }
 

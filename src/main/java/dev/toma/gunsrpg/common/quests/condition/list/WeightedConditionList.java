@@ -38,6 +38,10 @@ public class WeightedConditionList {
         return randomProviderSelector.getRandom().getProvider();
     }
 
+    public IQuestConditionProvider[] getProviders() {
+        return Arrays.stream(randomProviderSelector.getValues()).map(WeightedProvider::getProvider).filter(provider -> provider != NoConditionProvider.NO_CONDITION).toArray(IQuestConditionProvider[]::new);
+    }
+
     public static WeightedConditionList resolve(JsonElement element, QuestConditionLoader manager) {
         JsonArray array = JsonHelper.asJsonArray(element);
         WeightedProvider[] providers = JsonHelper.deserializeInto(array, WeightedProvider[]::new, json -> WeightedProvider.resolve(json, manager));

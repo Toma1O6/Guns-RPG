@@ -14,6 +14,10 @@ public class QuestConditionProviderType<Q extends IQuestConditionProvider> {
         this.isFatal = isFatal;
     }
 
+    public ResourceLocation getId() {
+        return id;
+    }
+
     public IQuestConditionProviderSerializer<Q> getSerializer() {
         return serializer;
     }

@@ -8,24 +8,34 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import dev.toma.gunsrpg.common.init.ModRegistries;
+import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class ActiveDebuffConditionProvider extends AbstractQuestConditionProvider implements IQuestCondition {
 
     private final IDebuffType<?> debuff;
+    private final ITextComponent descriptor;
 
     public ActiveDebuffConditionProvider(QuestConditionProviderType<?> type, IDebuffType<?> debuff) {
         super(type);
         this.debuff = debuff;
+        this.descriptor = new TranslationTextComponent(this.getLocalizationString(), new TranslationTextComponent("debuff." + ModUtils.convertToLocalization(debuff.getRegistryName())));
     }
 
     @Override
     public IQuestCondition getCondition() {
         return this;
+    }
+
+    @Override
+    public ITextComponent getDescriptor() {
+        return descriptor;
     }
 
     @Override

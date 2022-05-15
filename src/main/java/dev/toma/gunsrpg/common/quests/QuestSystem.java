@@ -24,7 +24,7 @@ public final class QuestSystem {
         this.rewardManager = new QuestRewardManager(logger);
         this.conditionLoader = new QuestConditionLoader();
         this.conditionListManager = new QuestConditionListManager(logger, this.conditionLoader);
-        this.questManager = new QuestManager(logger, conditionListManager, conditionLoader);
+        this.questManager = new QuestManager(logger, conditionLoader);
     }
 
     public QuestRewardManager getRewardManager() {

@@ -32,6 +32,10 @@ import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.common.perk.PerkRegistry;
 import dev.toma.gunsrpg.common.perk.PerkType;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
+import dev.toma.gunsrpg.common.quests.condition.IQuestCondition;
+import dev.toma.gunsrpg.common.quests.condition.IQuestConditionProvider;
+import dev.toma.gunsrpg.common.quests.condition.list.WeightedConditionList;
+import dev.toma.gunsrpg.common.quests.quest.*;
 import dev.toma.gunsrpg.common.quests.reward.IQuestItemProvider;
 import dev.toma.gunsrpg.common.quests.reward.QuestReward;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardList;
@@ -52,6 +56,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -71,6 +76,7 @@ public class GunsrpgCommand {
     private static final SuggestionProvider<CommandSource> SKILL_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(ModRegistries.SKILLS.getKeys(), builder);
     private static final SuggestionProvider<CommandSource> ATTRIBUTE_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(Attribs.listKeys(), builder);
     private static final SuggestionProvider<CommandSource> PERK_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(PerkRegistry.getRegistry().getPerkIds(), builder);
+    private static final SuggestionProvider<CommandSource> QUEST_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(GunsRPG.getModLifecycle().quests().getQuestManager().getQuestIds(), builder);
     private static final SimpleCommandExceptionType NO_DATA = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.no_data"));
     private static final SimpleCommandExceptionType MISSING_KEY_EXCEPTION = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.missing_key"));
     private static final DynamicCommandExceptionType MISSING_ARGUMENTS = new DynamicCommandExceptionType(o -> new TranslationTextComponent("command.gunsrpg.exception.missing_args", o));
@@ -249,12 +255,66 @@ public class GunsrpgCommand {
                                                                         )
                                                         )
                                         )
+                                        .then(
+                                                Commands.argument("questId", ResourceLocationArgument.id())
+                                                        .suggests(QUEST_SUGGESTION)
+                                                        .executes(GunsrpgCommand::listQuestInfo)
+                                        )
                         )
                         .executes(ctx -> noArgsProvided("debuff", "event", "progression", "skill"))
         );
     }
 
-    private static int listTierRewardPool(CommandContext<CommandSource> context) throws CommandSyntaxException {
+    private static int listQuestInfo(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        ResourceLocation questId = ResourceLocationArgument.getId(context, "questId");
+        QuestSystem system = GunsRPG.getModLifecycle().quests();
+        QuestScheme<?> scheme = system.getQuestManager().getScheme(questId);
+        if (scheme == null) {
+            throw UNKNOWN_KEY_EXCEPTION.create(questId);
+        }
+        QuestType<?> questType = scheme.getQuestType();
+        IQuestData data = scheme.getData();
+        DisplayInfo info = scheme.getDisplayInfo();
+        QuestConditionTierScheme tierScheme = scheme.getConditionTierScheme();
+
+        player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "Quest: " + TextFormatting.RESET + TextFormatting.YELLOW + scheme.getQuestId()), Util.NIL_UUID);
+        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Type of quest: " + TextFormatting.AQUA + questType.getId()), Util.NIL_UUID);
+        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Tier: " + TextFormatting.AQUA + scheme.getTier()), Util.NIL_UUID);
+        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Data: " + TextFormatting.AQUA + data.toString()), Util.NIL_UUID);
+        player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "Display info"), Util.NIL_UUID);
+        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Name: " + TextFormatting.AQUA + info.getName().getString()), Util.NIL_UUID);
+        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Info: " + TextFormatting.AQUA + info.getInfo().getString()), Util.NIL_UUID);
+        player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "Conditions"), Util.NIL_UUID);
+        for (IQuestConditionProvider provider : scheme.getQuestConditions()) {
+            IQuestCondition condition = provider.getCondition();
+            ITextComponent text = condition.getDescriptor();
+            text.getStyle().applyFormat(TextFormatting.AQUA);
+            player.sendMessage(text, Util.NIL_UUID);
+        }
+        player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "Tiered conditions"), Util.NIL_UUID);
+
+        QuestConditionTierScheme.TieredList[] tieredLists = tierScheme.getListProviders();
+        for (QuestConditionTierScheme.TieredList list : tieredLists) {
+            WeightedConditionList rawList = list.getListRaw();
+            IQuestConditionProvider[] providers = rawList.getProviders();
+            int tierModifier = list.getTier();
+            player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Added tier: " + TextFormatting.AQUA + tierModifier), Util.NIL_UUID);
+            for (IQuestConditionProvider provider : providers) {
+                IQuestCondition condition = provider.getCondition();
+                ITextComponent textComponent = condition.getDescriptor();
+                player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "- " + TextFormatting.AQUA + textComponent.getString()), Util.NIL_UUID);
+            }
+            player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "-------------------------"), Util.NIL_UUID);
+        }
+        return 0;
+    }
+
+    private static int listTierRewardPool(CommandContext<CommandSource> context) {
         Entity executor = context.getSource().getEntity();
         if (!(executor instanceof PlayerEntity)) {
             return -1;

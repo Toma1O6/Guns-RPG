@@ -107,7 +107,7 @@ public class AkmItem extends GunItem {
 
     @Override
     public void onHitEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
-        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.AKM_HEAVY_BULLETS)) {
+        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.AKM_HEAVY_BULLETS) && shooter.getRandom().nextFloat() < 0.35f) {
             victim.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 100, 1, false, false));
             victim.addEffect(new EffectInstance(Effects.WEAKNESS, 100, 0, false, false));
         }
