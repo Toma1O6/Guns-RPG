@@ -26,6 +26,11 @@ public class SurvivalData implements IQuestData {
         return ticks;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Survival - Timer: [%s, (%d ticks)]", Interval.format(ticks, f -> f.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND).compact()), ticks);
+    }
+
     public static final class Serializer implements QuestType.IQuestDataResolver<SurvivalData> {
 
         @Override

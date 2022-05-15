@@ -30,6 +30,12 @@ public class AreaSurvivalData extends SurvivalData implements IQuestAreaProvider
         return (Q) new AreaSurvivalData(this::getTicks, areaScheme);
     }
 
+    @Override
+    public String toString() {
+        int ticks = this.getTicks();
+        return String.format("Survival - Timer: [%s, (%d ticks)], Area: { %s }", Interval.format(ticks, f -> f.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND).compact()), ticks, areaScheme.toString());
+    }
+
     public static final class Serializer implements QuestType.IQuestDataResolver<AreaSurvivalData> {
 
         @Override

@@ -36,6 +36,11 @@ public final class QuestAreaScheme {
         return mobSpawnerList;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Size: %d, MinDistance: %d, SpawnerCount: %d", size, distance, mobSpawnerList.size());
+    }
+
     public static QuestAreaScheme fromJson(JsonObject object) throws JsonParseException {
         int size = JSONUtils.getAsInt(object, "size");
         int distance = JSONUtils.getAsInt(object, "distance");

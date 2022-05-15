@@ -10,14 +10,26 @@ import dev.toma.gunsrpg.util.properties.Properties;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.JSONUtils;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class HeadshotConditionProvider extends AbstractQuestConditionProvider implements IQuestCondition {
 
     private final boolean requireHeadshots;
+    private final ITextComponent[] descriptors;
 
     public HeadshotConditionProvider(QuestConditionProviderType<? extends HeadshotConditionProvider> type, boolean requireHeadshots) {
         super(type);
         this.requireHeadshots = requireHeadshots;
+        this.descriptors = new ITextComponent[] {
+                new TranslationTextComponent(this.getLocalizationString() + ".false"),
+                new TranslationTextComponent(this.getLocalizationString() + ".true")
+        };
+    }
+
+    @Override
+    public ITextComponent getDescriptor() {
+        return descriptors[requireHeadshots ? 1 : 0];
     }
 
     @Override

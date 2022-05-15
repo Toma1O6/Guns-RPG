@@ -81,7 +81,7 @@ public class SpecificWeaponConditionProvider extends AbstractQuestConditionProvi
             this.validItems = validItems;
             SpecificWeaponConditionProvider provider = SpecificWeaponConditionProvider.this;
             String text = provider.selector == Selector.ANY ? provider.group : validItems[0].getName(ItemStack.EMPTY).getString();
-            this.descriptor = new TranslationTextComponent("quest.condition." + provider.getLocalizationString(), text);
+            this.descriptor = new TranslationTextComponent(provider.getLocalizationString(), text);
         }
 
         @Override

@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 public class KillEntityData implements IQuestData {
@@ -39,13 +40,18 @@ public class KillEntityData implements IQuestData {
         return kills;
     }
 
+    @Override
+    public String toString() {
+        return String.format("KillEntities - Filter: %s, Count: %d", entityFilter.toString(), kills);
+    }
+
     @Nullable
     static Predicate<Entity> parseEntityFilter(JsonElement element) throws JsonParseException {
         Predicate<Entity> entityFilter = null;
         if (!element.isJsonNull()) {
             JsonArray array = element.getAsJsonArray();
             EntityType<?>[] validTypes = JsonHelper.deserializeInto(array, EntityType[]::new, KillEntityData::parseEntityType);
-            entityFilter = entity -> ModUtils.contains(entity.getType(), validTypes);
+            entityFilter = new EntityFilter(validTypes);
         }
         return entityFilter;
     }
@@ -69,6 +75,25 @@ public class KillEntityData implements IQuestData {
             Predicate<Entity> entityFilter = parseEntityFilter(filterElement);
             int count = JSONUtils.getAsInt(object, "count", 1);
             return new KillEntityData(entityFilter, count);
+        }
+    }
+
+    public static class EntityFilter implements Predicate<Entity> {
+
+        private final EntityType<?>[] validTypes;
+
+        public EntityFilter(EntityType<?>[] validTypes) {
+            this.validTypes = validTypes;
+        }
+
+        @Override
+        public boolean test(Entity entity) {
+            return ModUtils.contains(entity.getType(), validTypes);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("[%s]", String.join(",", Arrays.stream(validTypes).map(type -> type.getRegistryName().toString()).toArray(String[]::new)));
         }
     }
 }

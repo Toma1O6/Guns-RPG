@@ -9,14 +9,23 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.JSONUtils;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class HasAggroConditionProvider extends AbstractQuestConditionProvider implements IQuestCondition {
 
     private final boolean status;
+    private final ITextComponent[] descriptors;
 
     protected HasAggroConditionProvider(QuestConditionProviderType<HasAggroConditionProvider> type, boolean status) {
         super(type);
         this.status = status;
+        this.descriptors = new ITextComponent[] { new TranslationTextComponent(this.getLocalizationString() + ".false"), new TranslationTextComponent(this.getLocalizationString() + ".true") };
+    }
+
+    @Override
+    public ITextComponent getDescriptor() {
+        return descriptors[status ? 1 : 0];
     }
 
     @Override

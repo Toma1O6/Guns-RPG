@@ -9,9 +9,12 @@ import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.JSONUtils;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class DistanceConditionProvider extends AbstractQuestConditionProvider implements IQuestCondition {
 
+    private final ITextComponent descriptor;
     private final double minDistance;
     private final double maxDistance;
 
@@ -19,6 +22,8 @@ public class DistanceConditionProvider extends AbstractQuestConditionProvider im
         super(type);
         this.minDistance = minDistance;
         this.maxDistance = maxDistance;
+        boolean isMinDistanceDefined = minDistance > 0;
+        this.descriptor = new TranslationTextComponent(this.getLocalizationString() + (isMinDistanceDefined ? ".min" : ".max"), isMinDistanceDefined ? minDistance : maxDistance);
     }
 
     @Override
@@ -27,6 +32,11 @@ public class DistanceConditionProvider extends AbstractQuestConditionProvider im
         double sqrDist = player.distanceToSqr(entity);
         double distance = Math.sqrt(sqrDist);
         return distance >= minDistance && distance <= maxDistance;
+    }
+
+    @Override
+    public ITextComponent getDescriptor() {
+        return descriptor;
     }
 
     @Override

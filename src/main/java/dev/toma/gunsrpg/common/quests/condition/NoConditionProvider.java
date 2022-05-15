@@ -2,6 +2,8 @@ package dev.toma.gunsrpg.common.quests.condition;
 
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class NoConditionProvider extends AbstractQuestConditionProvider implements IQuestCondition {
 
@@ -9,6 +11,11 @@ public class NoConditionProvider extends AbstractQuestConditionProvider implemen
 
     private NoConditionProvider(QuestConditionProviderType<NoConditionProvider> type) {
         super(type);
+    }
+
+    @Override
+    public ITextComponent getDescriptor() {
+        return StringTextComponent.EMPTY;
     }
 
     @Override

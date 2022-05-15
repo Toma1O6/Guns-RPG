@@ -43,6 +43,7 @@
         "id": "gunsrpg:no_armor",
         "condition": {
             "type": "gunsrpg:equipment",
+            "equipmentName": "No Armor",
             "slots": {
                 "feet": "minecraft:air",
                 "legs": "minecraft:air",

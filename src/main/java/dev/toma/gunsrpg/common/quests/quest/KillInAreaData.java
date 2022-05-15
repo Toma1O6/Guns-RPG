@@ -31,6 +31,11 @@ public class KillInAreaData extends KillEntityData implements IQuestAreaProvider
         return (Q) new KillInAreaData(this.getEntityFilter(), this.getKillTarget(), areaScheme);
     }
 
+    @Override
+    public String toString() {
+        return String.format("KillEntitiesInArea - Filter: %s, Count: %d, Area: { %s }", this.getEntityFilter().toString(), this.getKillTarget(), areaScheme.toString());
+    }
+
     public static final class Serializer implements QuestType.IQuestDataResolver<KillInAreaData> {
 
         @Override

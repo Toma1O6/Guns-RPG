@@ -9,6 +9,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 
+import java.util.Arrays;
+
 public class ItemHandoverData implements IQuestData {
 
     private final ItemStack[] items;
@@ -21,6 +23,12 @@ public class ItemHandoverData implements IQuestData {
     @Override
     public <Q extends IQuestData> Q copy() {
         return (Q) new ItemHandoverData(items);
+    }
+
+    @Override
+    public String toString() {
+        String[] itemArray = Arrays.stream(items).map(item -> String.format("%sx%s", item.getCount(), item.getDisplayName().getString().replaceAll("[]\\[]", ""))).toArray(String[]::new);
+        return String.format("ItemHandover - Items [ %s ]", String.join(", ", itemArray));
     }
 
     public static final class Serializer implements QuestType.IQuestDataResolver<ItemHandoverData> {

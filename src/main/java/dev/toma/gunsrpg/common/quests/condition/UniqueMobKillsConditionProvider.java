@@ -6,6 +6,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,12 +20,22 @@ public class UniqueMobKillsConditionProvider extends AbstractQuestConditionProvi
 
     @Override
     public IQuestCondition getCondition() {
-        return new ConditionTracker();
+        return new ConditionTracker(this);
     }
 
     private static final class ConditionTracker implements IQuestCondition {
 
         private final Set<EntityType<?>> killedMobs = new HashSet<>();
+        private final ITextComponent descriptor;
+
+        public ConditionTracker(UniqueMobKillsConditionProvider provider) {
+            this.descriptor = new TranslationTextComponent(provider.getLocalizationString());
+        }
+
+        @Override
+        public ITextComponent getDescriptor() {
+            return descriptor;
+        }
 
         @Override
         public boolean isValid(PlayerEntity player, IPropertyReader reader) {
