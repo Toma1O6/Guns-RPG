@@ -38,11 +38,11 @@ public final class QuestConditionTierScheme {
         IQuestCondition[] conditions = new IQuestCondition[listProviders.length];
         for (int i = 0; i < listProviders.length; i++) {
             TieredList tieredList = listProviders[i];
-            IQuestConditionProvider provider = tieredList.getList().getProvider();
+            IQuestConditionProvider<?> provider = tieredList.getList().getProvider();
             if (provider != NoConditionProvider.NO_CONDITION) {
                 tierModifier += tieredList.tier;
             }
-            conditions[i] = provider.getCondition();
+            conditions[i] = provider.makeConditionInstance();
         }
         return new Result(conditions, tierModifier);
     }

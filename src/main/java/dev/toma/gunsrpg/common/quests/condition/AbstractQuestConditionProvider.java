@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.common.quests.condition;
 
 import dev.toma.gunsrpg.util.ModUtils;
 
-public abstract class AbstractQuestConditionProvider implements IQuestConditionProvider {
+public abstract class AbstractQuestConditionProvider<C extends IQuestCondition> implements IQuestConditionProvider<C> {
 
     private final QuestConditionProviderType<?> type;
 

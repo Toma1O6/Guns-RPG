@@ -288,11 +288,11 @@ public class GunsrpgCommand {
         player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "Display info"), Util.NIL_UUID);
         player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Name: " + TextFormatting.AQUA + info.getName().getString()), Util.NIL_UUID);
         player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Info: " + TextFormatting.AQUA + info.getInfo().getString()), Util.NIL_UUID);
-        IQuestConditionProvider[] questConditions = scheme.getQuestConditions();
+        IQuestConditionProvider<?>[] questConditions = scheme.getQuestConditions();
         if (questConditions.length > 0) {
             player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "Conditions"), Util.NIL_UUID);
-            for (IQuestConditionProvider provider : questConditions) {
-                IQuestCondition condition = provider.getCondition();
+            for (IQuestConditionProvider<?> provider : questConditions) {
+                IQuestCondition condition = provider.makeConditionInstance();
                 ITextComponent text = condition.getDescriptor();
                 player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "- " + TextFormatting.AQUA + text.getString()), Util.NIL_UUID);
             }
@@ -302,11 +302,11 @@ public class GunsrpgCommand {
             player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "Tiered conditions"), Util.NIL_UUID);
             for (QuestConditionTierScheme.TieredList list : tieredLists) {
                 WeightedConditionList rawList = list.getListRaw();
-                IQuestConditionProvider[] providers = rawList.getProviders();
+                IQuestConditionProvider<?>[] providers = rawList.getProviders();
                 int tierModifier = list.getTier();
                 player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Added tier: " + TextFormatting.AQUA + tierModifier), Util.NIL_UUID);
-                for (IQuestConditionProvider provider : providers) {
-                    IQuestCondition condition = provider.getCondition();
+                for (IQuestConditionProvider<?> provider : providers) {
+                    IQuestCondition condition = provider.makeConditionInstance();
                     ITextComponent textComponent = condition.getDescriptor();
                     player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "- " + TextFormatting.AQUA + textComponent.getString()), Util.NIL_UUID);
                 }

@@ -22,7 +22,7 @@ public class WeightedConditionList {
         this.randomProviderSelector = new WeightedRandom<>(WeightedProvider::getWeight, providers);
     }
 
-    public static WeightedConditionList singletonList(IQuestConditionProvider provider) {
+    public static WeightedConditionList singletonList(IQuestConditionProvider<?> provider) {
         return new WeightedConditionList(new WeightedProvider[]{ new WeightedProvider(1, GunsRPG.makeResource("no_name"), provider) });
     }
 
@@ -34,11 +34,11 @@ public class WeightedConditionList {
         );
     }
 
-    public IQuestConditionProvider getProvider() {
+    public IQuestConditionProvider<?> getProvider() {
         return randomProviderSelector.getRandom().getProvider();
     }
 
-    public IQuestConditionProvider[] getProviders() {
+    public IQuestConditionProvider<?>[] getProviders() {
         return Arrays.stream(randomProviderSelector.getValues()).map(WeightedProvider::getProvider).filter(provider -> provider != NoConditionProvider.NO_CONDITION).toArray(IQuestConditionProvider[]::new);
     }
 

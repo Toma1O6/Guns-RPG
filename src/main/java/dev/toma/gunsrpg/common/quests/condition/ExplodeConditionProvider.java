@@ -3,17 +3,22 @@ package dev.toma.gunsrpg.common.quests.condition;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class ExplodeConditionProvider extends AbstractQuestConditionProvider implements IQuestCondition {
+public class ExplodeConditionProvider extends AbstractQuestConditionProvider<ExplodeConditionProvider> implements IQuestCondition {
 
     private final ITextComponent descriptor;
 
     public ExplodeConditionProvider(QuestConditionProviderType<?> type) {
         super(type);
         this.descriptor = new TranslationTextComponent(this.getLocalizationString());
+    }
+
+    public static ExplodeConditionProvider fromNbt(QuestConditionProviderType<ExplodeConditionProvider> type, CompoundNBT nbt) {
+        return new ExplodeConditionProvider(type);
     }
 
     @Override
@@ -28,7 +33,12 @@ public class ExplodeConditionProvider extends AbstractQuestConditionProvider imp
     }
 
     @Override
-    public IQuestCondition getCondition() {
+    public ExplodeConditionProvider makeConditionInstance() {
+        return this;
+    }
+
+    @Override
+    public IQuestConditionProvider<?> getProviderType() {
         return this;
     }
 }

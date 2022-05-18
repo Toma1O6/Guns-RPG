@@ -1,45 +1,52 @@
 package dev.toma.gunsrpg.common.entity;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IQuests;
 import dev.toma.gunsrpg.api.common.data.ITraderStandings;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.QuestSystem;
+import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
+import dev.toma.gunsrpg.common.quests.quest.QuestManager;
+import dev.toma.gunsrpg.common.quests.quest.QuestScheme;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
+import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.S2C_OpenQuestScreen;
 import dev.toma.gunsrpg.util.IIntervalProvider;
 import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.properties.IPropertyHolder;
 import dev.toma.gunsrpg.util.properties.PropertyContext;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Constants;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class MayorEntity extends CreatureEntity {
 
     public static final IIntervalProvider REFRESH_LIMIT = Interval.hours(1);
-    private final Map<UUID, ListedQuests> playerQuests = Collections.emptyMap();
+    private final Map<UUID, ListedQuests> playerQuests;
     private long refreshAtWorldTime;
 
     public MayorEntity(EntityType<? extends MayorEntity> type, World world) {
         super(type, world);
         setPersistenceRequired();
+        this.playerQuests = new HashMap<>();
     }
 
     @Override
@@ -79,10 +86,6 @@ public class MayorEntity extends CreatureEntity {
                 ITraderStandings standings = data.getQuests().getTraderStandings();
                 UUID uuid = this.getUUID();
                 ITraderStatus status = standings.getStatusWithTrader(uuid);
-                if (status == null) {
-                    standings.registerNew(uuid);
-                    status = standings.getStatusWithTrader(uuid);
-                }
                 status.onTraderAttacked();
             });
         } else {
@@ -93,9 +96,9 @@ public class MayorEntity extends CreatureEntity {
 
     @Override
     protected ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+        IPlayerData data = PlayerData.getUnsafe(player);
+        IQuests quests = data.getQuests();
         if (player.isCrouching()) {
-            IPlayerData data = PlayerData.getUnsafe(player);
-            IQuests quests = data.getQuests();
             quests.getActiveQuest().ifPresent(quest -> {
                 ItemStack stack = player.getItemInHand(hand);
                 IPropertyHolder holder = PropertyContext.create();
@@ -104,42 +107,79 @@ public class MayorEntity extends CreatureEntity {
                 quest.trigger(Trigger.ITEM_HANDOVER, holder);
             });
         } else {
-            if (level.isClientSide) {
-                openQuestScreen();
-            } else {
+            if (!level.isClientSide) {
                 UUID uuid = player.getUUID();
-                ListedQuests quests = playerQuests.get(uuid);
+                ListedQuests traderQuests = playerQuests.get(uuid);
+                UUID traderId = this.getUUID();
+                ITraderStatus status = quests.getTraderStandings().getStatusWithTrader(traderId);
                 if (!playerQuests.containsKey(uuid)) {
-                    quests = ListedQuests.generate();
-                    playerQuests.put(uuid, quests);
+                    traderQuests = ListedQuests.generate(traderId, status.getReputation());
+                    playerQuests.put(uuid, traderQuests);
                 }
-                // TODO send data payload with quest information
+                ReputationStatus reputationStatus = ReputationStatus.getStatus(status.getReputation());
+                NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_OpenQuestScreen(reputationStatus, traderQuests, this.getId()));
             }
         }
         return ActionResultType.sidedSuccess(level.isClientSide);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    private void openQuestScreen() {
-        Minecraft minecraft = Minecraft.getInstance();
-        // TODO
+    @Override
+    public void addAdditionalSaveData(CompoundNBT nbt) {
+        super.addAdditionalSaveData(nbt);
+        ListNBT list = new ListNBT();
+        for (Map.Entry<UUID, ListedQuests> entry : playerQuests.entrySet()) {
+            UUID uuid = entry.getKey();
+            ListedQuests quests = entry.getValue();
+            CompoundNBT data = new CompoundNBT();
+            data.putUUID("player", uuid);
+            data.put("quests", quests.toNbt());
+            list.add(data);
+        }
+        nbt.put("questListings", list);
     }
 
-    private static final class ListedQuests {
+    @Override
+    public void readAdditionalSaveData(CompoundNBT nbt) {
+        super.readAdditionalSaveData(nbt);
+        playerQuests.clear();
+        ListNBT list = nbt.getList("questListings", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < list.size(); i++) {
+            CompoundNBT data = list.getCompound(i);
+            UUID player = data.getUUID("player");
+            ListNBT listedQuests = data.getList("quests", Constants.NBT.TAG_COMPOUND);
+            playerQuests.put(player, ListedQuests.loadNbt(listedQuests));
+        }
+    }
+
+    public static final class ListedQuests {
 
         public static final int QUEST_COUNT = 5;
-        private final Quest[] quests;
+        private final Quest<?>[] quests;
 
-        public ListedQuests(Quest[] quests) {
+        public ListedQuests(Quest<?>[] quests) {
             this.quests = quests;
         }
 
-        public static ListedQuests generate() {
-            return null;
+        public static ListedQuests loadNbt(ListNBT nbt) {
+            return new ListedQuests(nbt.stream().map(inbt -> Quest.fromNbt((CompoundNBT) inbt)).toArray(Quest[]::new));
         }
 
-        public Quest[] getQuests() {
+        public static ListedQuests generate(UUID traderId, float reputation) {
+            QuestSystem system = GunsRPG.getModLifecycle().quests();
+            QuestManager manager = system.getQuestManager();
+            Set<QuestScheme<?>> schemes = manager.getSchemes(QUEST_COUNT, reputation);
+            Quest<?>[] quests = schemes.stream().map(scheme -> new Quest<>(scheme, traderId)).toArray(Quest[]::new);
+            return new ListedQuests(quests);
+        }
+
+        public Quest<?>[] getQuests() {
             return quests;
+        }
+
+        public ListNBT toNbt() {
+            ListNBT nbt = new ListNBT();
+            Arrays.stream(quests).map(Quest::serialize).forEach(nbt::add);
+            return nbt;
         }
     }
 }

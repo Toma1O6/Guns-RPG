@@ -9,11 +9,12 @@ import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import dev.toma.gunsrpg.util.properties.Properties;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class HeadshotConditionProvider extends AbstractQuestConditionProvider implements IQuestCondition {
+public class HeadshotConditionProvider extends AbstractQuestConditionProvider<HeadshotConditionProvider> implements IQuestCondition {
 
     private final boolean requireHeadshots;
     private final ITextComponent[] descriptors;
@@ -25,6 +26,11 @@ public class HeadshotConditionProvider extends AbstractQuestConditionProvider im
                 new TranslationTextComponent(this.getLocalizationString() + ".false"),
                 new TranslationTextComponent(this.getLocalizationString() + ".true")
         };
+    }
+
+    public static HeadshotConditionProvider fromNbt(QuestConditionProviderType<HeadshotConditionProvider> type, CompoundNBT nbt) {
+        boolean requireHeadshots = nbt.getBoolean("headshots");
+        return new HeadshotConditionProvider(type, requireHeadshots);
     }
 
     @Override
@@ -44,8 +50,18 @@ public class HeadshotConditionProvider extends AbstractQuestConditionProvider im
     }
 
     @Override
-    public IQuestCondition getCondition() {
+    public HeadshotConditionProvider makeConditionInstance() {
         return this;
+    }
+
+    @Override
+    public IQuestConditionProvider<?> getProviderType() {
+        return this;
+    }
+
+    @Override
+    public void saveInternalData(CompoundNBT nbt) {
+        nbt.putBoolean("headshots", requireHeadshots);
     }
 
     public static final class Serializer implements IQuestConditionProviderSerializer<HeadshotConditionProvider> {

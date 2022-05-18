@@ -1,13 +1,12 @@
 package dev.toma.gunsrpg.common.quests.condition;
 
-import dev.toma.gunsrpg.util.properties.IPropertyWriter;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 
-public interface IQuestConditionProvider {
+public interface IQuestConditionProvider<C extends IQuestCondition> {
 
-    IQuestCondition getCondition();
+    C makeConditionInstance();
 
     QuestConditionProviderType<?> getType();
 
-    default void setInitialStates(PlayerEntity player, IPropertyWriter writer) {}
+    default void saveInternalData(CompoundNBT nbt) {}
 }

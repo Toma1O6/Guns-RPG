@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.capability.object;
 import dev.toma.gunsrpg.api.common.data.ITraderStandings;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
 import dev.toma.gunsrpg.common.quests.mayor.TraderStatus;
+import dev.toma.gunsrpg.common.quests.quest.Quest;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -16,13 +17,18 @@ public class PlayerTraderStandings implements ITraderStandings, INBTSerializable
     private final Map<UUID, TraderStatus> statusMap = new HashMap<>();
 
     @Override
-    public void registerNew(UUID traderId) {
-        statusMap.put(traderId, new TraderStatus());
+    public ITraderStatus getStatusWithTrader(UUID traderId) {
+        return statusMap.computeIfAbsent(traderId, id -> new TraderStatus());
     }
 
     @Override
-    public ITraderStatus getStatusWithTrader(UUID traderId) {
-        return statusMap.get(traderId);
+    public void questFinished(UUID traderId, Quest<?> quest) {
+        // TODO
+    }
+
+    @Override
+    public void questFailed(UUID traderId, Quest<?> quest) {
+        // TODO
     }
 
     @Override

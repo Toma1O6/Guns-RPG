@@ -13,9 +13,9 @@ public final class WeightedProvider {
 
     private final int weight;
     private final ResourceLocation id;
-    private final IQuestConditionProvider provider;
+    private final IQuestConditionProvider<?> provider;
 
-    public WeightedProvider(int weight, ResourceLocation id, IQuestConditionProvider provider) {
+    public WeightedProvider(int weight, ResourceLocation id, IQuestConditionProvider<?> provider) {
         this.weight = weight;
         this.id = id;
         this.provider = provider;
@@ -29,7 +29,7 @@ public final class WeightedProvider {
         return id;
     }
 
-    public IQuestConditionProvider getProvider() {
+    public IQuestConditionProvider<?> getProvider() {
         return provider;
     }
 
@@ -38,7 +38,7 @@ public final class WeightedProvider {
         int weight = JSONUtils.getAsInt(object, "weight");
         String id = JSONUtils.getAsString(object, "id", "no_name");
         JsonObject condition = JSONUtils.getAsJsonObject(object, "condition");
-        IQuestConditionProvider provider = GunsRPG.getModLifecycle().quests().getConditionLoader().loadCondition(condition);
+        IQuestConditionProvider<?> provider = GunsRPG.getModLifecycle().quests().getConditionLoader().loadCondition(condition);
         return new WeightedProvider(weight, new ResourceLocation(id), provider);
     }
 }

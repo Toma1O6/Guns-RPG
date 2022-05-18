@@ -3,6 +3,9 @@ package dev.toma.gunsrpg.common.quests.reward;
 import com.google.common.collect.Queues;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraftforge.common.util.Constants;
 
 import java.util.*;
 
@@ -14,24 +17,20 @@ public final class QuestReward {
         this.choices = choices;
     }
 
-    public Choice[] getChoices() {
-        return choices;
+    public QuestReward(CompoundNBT nbt) {
+        ListNBT choices = nbt.getList("choices", Constants.NBT.TAG_COMPOUND);
+        this.choices = choices.stream().map(inbt -> {
+            ListNBT listNBT = (ListNBT) inbt;
+            ItemStack[] items = listNBT.stream().map(itemStackNbt -> {
+                CompoundNBT compoundNBT = (CompoundNBT) itemStackNbt;
+                return ItemStack.of(compoundNBT);
+            }).toArray(ItemStack[]::new);
+            return new Choice(items);
+        }).toArray(Choice[]::new);
     }
 
-    public static List<ItemStack> splitItemStack(ItemStack stack, int size) {
-        List<ItemStack> list = new ArrayList<>();
-        int left = stack.getCount();
-        if (left <= size) {
-            list.add(stack);
-        } else {
-            while (size > 0) {
-                ItemStack copy = stack.copy();
-                copy.setCount(Math.min(size, stack.getCount()));
-                size -= copy.getCount();
-                list.add(copy);
-            }
-        }
-        return list;
+    public Choice[] getChoices() {
+        return choices;
     }
 
     public static QuestReward generate(QuestRewardList list, Options options, PlayerEntity player) {
@@ -64,6 +63,16 @@ public final class QuestReward {
         return new QuestReward(choices);
     }
 
+    public CompoundNBT toNbt() {
+        CompoundNBT nbt = new CompoundNBT();
+        ListNBT list = new ListNBT();
+        for (Choice choice : choices) {
+            list.add(choice.toNbt());
+        }
+        nbt.put("choices", list);
+        return nbt;
+    }
+
     public static class Choice {
 
         private final ItemStack[] items;
@@ -85,6 +94,14 @@ public final class QuestReward {
             for (ItemStack stack : items) {
                 player.addItem(stack);
             }
+        }
+
+        public ListNBT toNbt() {
+            ListNBT list = new ListNBT();
+            for (ItemStack stack : items) {
+                list.add(stack.serializeNBT());
+            }
+            return list;
         }
     }
 

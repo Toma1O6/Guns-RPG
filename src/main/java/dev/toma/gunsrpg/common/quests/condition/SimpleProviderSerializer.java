@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class SimpleProviderSerializer<P extends IQuestConditionProvider> implements IQuestConditionProviderSerializer<P> {
+public class SimpleProviderSerializer<P extends IQuestConditionProvider<?>> implements IQuestConditionProviderSerializer<P> {
 
     private final Function<QuestConditionProviderType<P>, P> function;
 
@@ -13,11 +13,11 @@ public class SimpleProviderSerializer<P extends IQuestConditionProvider> impleme
         this.function = function;
     }
 
-    public static <P extends IQuestConditionProvider> IQuestConditionProviderSerializer<P> withConstantResult(Supplier<P> constant) {
+    public static <P extends IQuestConditionProvider<?>> IQuestConditionProviderSerializer<P> withConstantResult(Supplier<P> constant) {
         return withResultOf(type -> constant.get());
     }
 
-    public static <P extends IQuestConditionProvider> IQuestConditionProviderSerializer<P> withResultOf(Function<QuestConditionProviderType<P>, P> function) {
+    public static <P extends IQuestConditionProvider<?>> IQuestConditionProviderSerializer<P> withResultOf(Function<QuestConditionProviderType<P>, P> function) {
         return new SimpleProviderSerializer<>(function);
     }
 

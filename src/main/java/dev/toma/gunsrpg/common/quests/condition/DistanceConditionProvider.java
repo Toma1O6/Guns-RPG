@@ -8,11 +8,12 @@ import dev.toma.gunsrpg.util.helper.JsonHelper;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class DistanceConditionProvider extends AbstractQuestConditionProvider implements IQuestCondition {
+public class DistanceConditionProvider extends AbstractQuestConditionProvider<DistanceConditionProvider> implements IQuestCondition {
 
     private final ITextComponent descriptor;
     private final double minDistance;
@@ -24,6 +25,12 @@ public class DistanceConditionProvider extends AbstractQuestConditionProvider im
         this.maxDistance = maxDistance;
         boolean isMinDistanceDefined = minDistance > 0;
         this.descriptor = new TranslationTextComponent(this.getLocalizationString() + (isMinDistanceDefined ? ".min" : ".max"), isMinDistanceDefined ? minDistance : maxDistance);
+    }
+
+    public static DistanceConditionProvider fromNbt(QuestConditionProviderType<DistanceConditionProvider> type, CompoundNBT nbt) {
+        double min = nbt.getDouble("min");
+        double max = nbt.getDouble("max");
+        return new DistanceConditionProvider(type, min, max);
     }
 
     @Override
@@ -40,8 +47,19 @@ public class DistanceConditionProvider extends AbstractQuestConditionProvider im
     }
 
     @Override
-    public IQuestCondition getCondition() {
+    public DistanceConditionProvider makeConditionInstance() {
         return this;
+    }
+
+    @Override
+    public IQuestConditionProvider<?> getProviderType() {
+        return this;
+    }
+
+    @Override
+    public void saveInternalData(CompoundNBT nbt) {
+        nbt.putDouble("min", minDistance);
+        nbt.putDouble("max", maxDistance);
     }
 
     public static final class Serializer implements IQuestConditionProviderSerializer<DistanceConditionProvider> {

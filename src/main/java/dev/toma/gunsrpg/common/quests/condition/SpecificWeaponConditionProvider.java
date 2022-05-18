@@ -9,14 +9,21 @@ import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.JSONUtils;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Random;
 import java.util.function.Function;
 
-public class SpecificWeaponConditionProvider extends AbstractQuestConditionProvider {
+public class SpecificWeaponConditionProvider extends AbstractQuestConditionProvider<SpecificWeaponConditionProvider.Condition> {
 
     private final Item[] validItems;
     private final Selector selector;
@@ -29,9 +36,34 @@ public class SpecificWeaponConditionProvider extends AbstractQuestConditionProvi
         this.group = group;
     }
 
+    public static SpecificWeaponConditionProvider fromNbt(QuestConditionProviderType<SpecificWeaponConditionProvider> type, CompoundNBT nbt) {
+        Selector selector = Selector.values()[nbt.getInt("selector")];
+        ListNBT validItemList = nbt.getList("validItems", Constants.NBT.TAG_STRING);
+        Item[] items = new Item[validItemList.size()];
+        int itemIndex = 0;
+        for (INBT inbt : validItemList) {
+            StringNBT stringNBT = (StringNBT) inbt;
+            ResourceLocation itemId = new ResourceLocation(stringNBT.getAsString());
+            items[itemIndex++] = ForgeRegistries.ITEMS.getValue(itemId);
+        }
+        String group = nbt.getString("group");
+        return new SpecificWeaponConditionProvider(type, selector, group, items);
+    }
+
     @Override
-    public IQuestCondition getCondition() {
+    public Condition makeConditionInstance() {
         return new Condition(this.selector.filterItems(this.validItems));
+    }
+
+    @Override
+    public void saveInternalData(CompoundNBT nbt) {
+        nbt.putInt("selector", selector.ordinal());
+        ListNBT list = new ListNBT();
+        for (Item item : validItems) {
+            list.add(StringNBT.valueOf(item.getRegistryName().toString()));
+        }
+        nbt.put("validItems", list);
+        nbt.putString("group", group);
     }
 
     private enum Selector {
@@ -74,7 +106,7 @@ public class SpecificWeaponConditionProvider extends AbstractQuestConditionProvi
 
     public class Condition implements IQuestCondition {
 
-        private final Item[] validItems;
+        private Item[] validItems;
         private final ITextComponent descriptor;
 
         public Condition(Item[] validItems) {
@@ -93,6 +125,29 @@ public class SpecificWeaponConditionProvider extends AbstractQuestConditionProvi
         @Override
         public ITextComponent getDescriptor() {
             return descriptor;
+        }
+
+        @Override
+        public IQuestConditionProvider<?> getProviderType() {
+            return SpecificWeaponConditionProvider.this;
+        }
+
+        @Override
+        public void saveData(CompoundNBT nbt) {
+            ListNBT conditionItemList = new ListNBT();
+            for (Item item : validItems) {
+                conditionItemList.add(StringNBT.valueOf(item.getRegistryName().toString()));
+            }
+            nbt.put("condition.items", conditionItemList);
+        }
+
+        @Override
+        public void loadData(CompoundNBT nbt) {
+            ListNBT conditionItemList = nbt.getList("condition.items", Constants.NBT.TAG_STRING);
+            this.validItems = conditionItemList.stream().map(inbt -> {
+                ResourceLocation location = new ResourceLocation(inbt.getAsString());
+                return ForgeRegistries.ITEMS.getValue(location);
+            }).toArray(Item[]::new);
         }
     }
 }

@@ -10,13 +10,13 @@ import net.minecraft.util.ResourceLocation;
 
 public final class QuestConditionLoader {
 
-    public IQuestConditionProvider loadCondition(JsonElement data) throws JsonParseException {
+    public IQuestConditionProvider<?> loadCondition(JsonElement data) throws JsonParseException {
         JsonObject object = JsonHelper.asJsonObject(data);
         ResourceLocation type = new ResourceLocation(JSONUtils.getAsString(object, "type"));
         return loadProvider(type, object);
     }
 
-    private <P extends IQuestConditionProvider> P loadProvider(ResourceLocation typeId, JsonObject data) {
+    private <P extends IQuestConditionProvider<?>> P loadProvider(ResourceLocation typeId, JsonObject data) {
         QuestConditionProviderType<P> type = QuestConditions.getByKey(typeId);
         if (type == null) {
             throw new JsonSyntaxException("Unknown condition type: " + typeId);

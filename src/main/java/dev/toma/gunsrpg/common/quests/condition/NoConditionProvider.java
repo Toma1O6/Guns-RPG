@@ -5,7 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
-public class NoConditionProvider extends AbstractQuestConditionProvider implements IQuestCondition {
+public class NoConditionProvider extends AbstractQuestConditionProvider<NoConditionProvider> implements IQuestCondition {
 
     public static final NoConditionProvider NO_CONDITION = new NoConditionProvider(QuestConditions.NO_CONDITION_TYPE);
 
@@ -24,7 +24,12 @@ public class NoConditionProvider extends AbstractQuestConditionProvider implemen
     }
 
     @Override
-    public IQuestCondition getCondition() {
+    public NoConditionProvider makeConditionInstance() {
+        return this;
+    }
+
+    @Override
+    public IQuestConditionProvider<?> getProviderType() {
         return this;
     }
 }

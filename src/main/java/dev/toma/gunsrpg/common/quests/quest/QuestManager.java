@@ -1,20 +1,20 @@
 package dev.toma.gunsrpg.common.quests.quest;
 
+import com.google.common.collect.Queues;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.common.quests.adapters.QuestSchemeAdapter;
 import dev.toma.gunsrpg.common.quests.condition.QuestConditionLoader;
+import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.util.ILogHandler;
 import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public final class QuestManager extends JsonReloadListener {
 
@@ -37,6 +37,21 @@ public final class QuestManager extends JsonReloadListener {
 
     public Set<ResourceLocation> getQuestIds() {
         return quests.keySet();
+    }
+
+    public Set<QuestScheme<?>> getSchemes(int count, float reputation) {
+        ReputationStatus status = ReputationStatus.getStatus(reputation);
+        int maxTier = status.getBaseTier();
+        List<QuestScheme<?>> schemePool = new LinkedList<>();
+        quests.values().stream().filter(scheme -> scheme.getTier() <= maxTier).forEach(schemePool::add);
+        Set<QuestScheme<?>> results = new HashSet<>();
+        Random random = new Random();
+        for (int i = 0; i < count; i++) {
+            int schemeIndex = random.nextInt(schemePool.size());
+            results.add(schemePool.get(schemeIndex));
+            schemePool.remove(schemeIndex);
+        }
+        return results;
     }
 
     @Override

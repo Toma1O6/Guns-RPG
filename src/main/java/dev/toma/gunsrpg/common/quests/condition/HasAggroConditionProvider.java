@@ -8,11 +8,12 @@ import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class HasAggroConditionProvider extends AbstractQuestConditionProvider implements IQuestCondition {
+public class HasAggroConditionProvider extends AbstractQuestConditionProvider<HasAggroConditionProvider> implements IQuestCondition {
 
     private final boolean status;
     private final ITextComponent[] descriptors;
@@ -21,6 +22,10 @@ public class HasAggroConditionProvider extends AbstractQuestConditionProvider im
         super(type);
         this.status = status;
         this.descriptors = new ITextComponent[] { new TranslationTextComponent(this.getLocalizationString() + ".false"), new TranslationTextComponent(this.getLocalizationString() + ".true") };
+    }
+
+    public static HasAggroConditionProvider fromNbt(QuestConditionProviderType<HasAggroConditionProvider> type, CompoundNBT data) {
+        return new HasAggroConditionProvider(type, data.getBoolean("status"));
     }
 
     @Override
@@ -40,8 +45,18 @@ public class HasAggroConditionProvider extends AbstractQuestConditionProvider im
     }
 
     @Override
-    public IQuestCondition getCondition() {
+    public HasAggroConditionProvider makeConditionInstance() {
         return this;
+    }
+
+    @Override
+    public IQuestConditionProvider<?> getProviderType() {
+        return this;
+    }
+
+    @Override
+    public void saveInternalData(CompoundNBT nbt) {
+        nbt.putBoolean("status", status);
     }
 
     public static final class Serializer implements IQuestConditionProviderSerializer<HasAggroConditionProvider> {
