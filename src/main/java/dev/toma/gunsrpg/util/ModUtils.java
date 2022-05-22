@@ -56,6 +56,17 @@ public class ModUtils {
     public static final ISplitter<SkillCategory, SkillType<?>> SKILLS_BY_CATEGORY = ModUtils::splitSkillsIntoCategories;
     public static final DecimalFormatSymbols DOT_DECIMAL_SEPARATOR = new DecimalFormatSymbols();
 
+    public static <T> int indexOf(T[] array, T value) {
+        int index = 0;
+        for (int i = 0; i < array.length; i++) {
+            T t = array[i];
+            if (t.equals(value)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public static void clearRandomItems(List<?> list, Random random, int amount) {
         int toRemove = Math.min(amount, list.size());
         int index = 0;

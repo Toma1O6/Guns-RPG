@@ -12,10 +12,7 @@ import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public final class QuestConditionTierScheme {
 
@@ -44,7 +41,7 @@ public final class QuestConditionTierScheme {
             }
             conditions[i] = provider.makeConditionInstance();
         }
-        return new Result(conditions, tierModifier);
+        return new Result(Arrays.stream(conditions).filter(condition -> condition.getProviderType() != NoConditionProvider.NO_CONDITION).toArray(IQuestCondition[]::new), tierModifier);
     }
 
     public static QuestConditionTierScheme fromJson(JsonElement element) throws JsonParseException {

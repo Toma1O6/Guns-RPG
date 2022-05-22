@@ -91,8 +91,15 @@ public class RenderUtils {
         return combine4i(red, green, blue, alpha);
     }
 
-    public static void fillSolid(IVertexBuilder builder, Matrix4f pose, int x1, int y1, int x2, int y2, int depth, int color) {
-        fillGradient(builder, pose, x1, y1, x2, y2, depth, color, color);
+    public static void fillSolid(IVertexBuilder builder, Matrix4f pose, float x1, float y1, float x2, float y2, int color) {
+        int a = alpha_i(color);
+        int r = red_i(color);
+        int g = green_i(color);
+        int b = blue_i(color);
+        builder.vertex(pose, x1, y1, 0).color(r, g, b, a).endVertex();
+        builder.vertex(pose, x1, y2, 0).color(r, g, b, a).endVertex();
+        builder.vertex(pose, x2, y2, 0).color(r, g, b, a).endVertex();
+        builder.vertex(pose, x2, y1, 0).color(r, g, b, a).endVertex();
     }
 
     public static void fillGradient(IVertexBuilder builder, Matrix4f pose, int x1, int y1, int x2, int y2, int depth, int color1, int color2) {
@@ -238,6 +245,21 @@ public class RenderUtils {
         builder.vertex(pose, x2, y2, 0).color(r, g, b, a).endVertex();
         builder.vertex(pose, x2, y1, 0).color(r, g, b, a).endVertex();
         builder.vertex(pose, x1, y1, 0).color(r, g, b, a).endVertex();
+        tessellator.end();
+        resetColorRenderState();
+    }
+
+    public static void drawBorder(Matrix4f pose, float x1, float y1, float width, float height, float thickness, int color) {
+        float x2 = x1 + width;
+        float y2 = y1 + height;
+        setupColorRenderState();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder builder = tessellator.getBuilder();
+        builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        fillSolid(builder, pose, x1, y1, x2, y1 + thickness, color);
+        fillSolid(builder, pose, x1, y2 - thickness, x2, y2, color);
+        fillSolid(builder, pose, x1, y1, x1 + thickness, y2, color);
+        fillSolid(builder, pose, x2 - thickness, y1, x2, y2, color);
         tessellator.end();
         resetColorRenderState();
     }

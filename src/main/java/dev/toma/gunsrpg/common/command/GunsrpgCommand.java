@@ -63,9 +63,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.IServerWorldInfo;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.server.command.EnumArgument;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -86,6 +88,7 @@ public class GunsrpgCommand {
     private static final DynamicCommandExceptionType REQUIRED_SKILL = new DynamicCommandExceptionType(id -> new TranslationTextComponent("command.gunsrpg.exception.missing_skill", id));
     private static final DynamicCommandExceptionType DEPENDENT_SKILL_ACTIVE = new DynamicCommandExceptionType(id -> new TranslationTextComponent("command.gunsrpg.exception.active_skill", id));
     private static final SimpleCommandExceptionType NOT_HOLDING_CRYSTAL = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.not_holding_crystal"));
+    private static final SimpleCommandExceptionType NO_ACTIVE_QUEST = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.no_quest"));
 
     public static void registerCommandTree(CommandDispatcher<CommandSource> dispatcher) {
         dispatcher.register(
@@ -259,10 +262,78 @@ public class GunsrpgCommand {
                                                 Commands.argument("questId", ResourceLocationArgument.id())
                                                         .suggests(QUEST_SUGGESTION)
                                                         .executes(GunsrpgCommand::listQuestInfo)
+                                                        .then(
+                                                                Commands.literal("start")
+                                                                        .executes(GunsrpgCommand::startNewQuest)
+                                                        )
+                                        )
+                                        .then(
+                                                Commands.literal("cancel")
+                                                        .executes(GunsrpgCommand::cancelCurrectQuest)
+                                        )
+                                        .then(
+                                                Commands.literal("changeStatus")
+                                                        .executes(ctx -> noArgsProvided("status"))
+                                                        .then(
+                                                                Commands.argument("status", EnumArgument.enumArgument(QuestStatus.class))
+                                                                        .executes(GunsrpgCommand::updateQuestStatus)
+                                                        )
                                         )
                         )
                         .executes(ctx -> noArgsProvided("debuff", "event", "progression", "skill"))
         );
+    }
+
+    private static int startNewQuest(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        IPlayerData data = PlayerData.getUnsafe(player);
+        ResourceLocation location = ResourceLocationArgument.getId(context, "questId");
+        QuestSystem system = GunsRPG.getModLifecycle().quests();
+        QuestManager manager = system.getQuestManager();
+        QuestScheme<?> scheme = manager.getScheme(location);
+        if (scheme == null) {
+            throw UNKNOWN_KEY_EXCEPTION.create(location);
+        }
+        IQuests provider = data.getQuests();
+        Quest<?> quest = new Quest<>(scheme, Util.NIL_UUID);
+        quest.setStatus(QuestStatus.ACTIVE);
+        provider.assignQuest(quest);
+        return 0;
+    }
+
+    private static int updateQuestStatus(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        IPlayerData data = PlayerData.getUnsafe(player);
+        Optional<Quest<?>> optional = data.getQuests().getActiveQuest();
+        if (!optional.isPresent()) {
+            throw NO_ACTIVE_QUEST.create();
+        }
+        QuestStatus status = context.getArgument("status", QuestStatus.class);
+        optional.get().setStatus(status);
+        return 0;
+    }
+
+    private static int cancelCurrectQuest(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        IPlayerData data = PlayerData.getUnsafe(player);
+        Optional<Quest<?>> optional = data.getQuests().getActiveQuest();
+        if (!optional.isPresent()) {
+            throw NO_ACTIVE_QUEST.create();
+        }
+        data.getQuests().clearActiveQuest();
+        return 0;
     }
 
     private static int listQuestInfo(CommandContext<CommandSource> context) throws CommandSyntaxException {
@@ -343,7 +414,7 @@ public class GunsrpgCommand {
                     TextFormatting.GREEN,
                     TextFormatting.AQUA,
                     implementation.getWeight()
-                    )), Util.NIL_UUID);
+            )), Util.NIL_UUID);
         }
         return 0;
     }

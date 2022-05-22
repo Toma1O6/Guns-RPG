@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.UUID;
 
-public class Quest<D extends IQuestData> implements IQuest<D> {
+public class Quest<D extends IQuestData> {
 
     private final Multimap<Trigger, ITriggerListener> triggerListeners = ArrayListMultimap.create();
     private final QuestScheme<D> scheme;
@@ -38,6 +38,7 @@ public class Quest<D extends IQuestData> implements IQuest<D> {
     private PlayerEntity player;
     private QuestReward reward;
     private boolean active;
+    private QuestStatus status = QuestStatus.CREATED;
 
     public Quest(QuestScheme<D> scheme, UUID traderId) {
         this.scheme = scheme;
@@ -56,7 +57,7 @@ public class Quest<D extends IQuestData> implements IQuest<D> {
         this.conditions = allConditions;
     }
 
-    private Quest(QuestScheme<D> scheme, UUID traderId, int rewardTier, IQuestCondition[] conditions) {
+    protected Quest(QuestScheme<D> scheme, UUID traderId, int rewardTier, IQuestCondition[] conditions) {
         this.scheme = scheme;
         this.uuid = traderId;
         this.conditions = conditions;
@@ -75,20 +76,18 @@ public class Quest<D extends IQuestData> implements IQuest<D> {
             CompoundNBT rewardNbt = nbt.getCompound("reward");
             quest.reward = new QuestReward(rewardNbt);
         }
+        quest.status = QuestStatus.values()[nbt.getInt("status")];
         return quest;
     }
 
-    @Override
     public UUID getQuestInitiator() {
         return uuid;
     }
 
-    @Override
     public D getActiveData() {
         return scheme.getData();
     }
 
-    @Override
     public void assign(PlayerEntity player) {
         this.active = true;
         this.player = player;
@@ -104,17 +103,14 @@ public class Quest<D extends IQuestData> implements IQuest<D> {
         }
     }
 
-    @Override
-    public void onCompleted() {
+    public void onCompleted(PlayerEntity player) {
         active = false;
     }
 
-    @Override
-    public void onFailed() {
+    public void onFailed(PlayerEntity player) {
         active = false;
     }
 
-    @Override
     public void trigger(Trigger trigger, IPropertyReader reader) {
         Collection<ITriggerListener> listeners = triggerListeners.get(trigger);
         if (listeners != null) {
@@ -133,7 +129,6 @@ public class Quest<D extends IQuestData> implements IQuest<D> {
         }
     }
 
-    @Override
     public CompoundNBT serialize() {
         CompoundNBT nbt = new CompoundNBT();
         nbt.put("scheme", scheme.serialize());
@@ -145,7 +140,45 @@ public class Quest<D extends IQuestData> implements IQuest<D> {
         if (reward != null) {
             nbt.put("reward", reward.toNbt());
         }
+        nbt.putInt("status", status.ordinal());
         return nbt;
+    }
+
+    public QuestScheme<D> getScheme() {
+        return scheme;
+    }
+
+    public IQuestCondition[] getConditions() {
+        return conditions;
+    }
+
+    public int getRewardTier() {
+        return rewardTier;
+    }
+
+    public void setStatus(QuestStatus status) {
+        this.status = status;
+    }
+
+    public QuestStatus getStatus() {
+        return status;
+    }
+
+    public QuestReward getReward() {
+        return reward;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Quest<?> quest = (Quest<?>) o;
+        return getScheme().equals(quest.getScheme());
+    }
+
+    @Override
+    public int hashCode() {
+        return getScheme().hashCode();
     }
 
     public interface ITriggerRegistration {

@@ -12,6 +12,7 @@ import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.quest.QuestManager;
 import dev.toma.gunsrpg.common.quests.quest.QuestScheme;
+import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.S2C_OpenQuestScreen;
@@ -52,9 +53,9 @@ public class MayorEntity extends CreatureEntity {
     @Override
     public void tick() {
         super.tick();
-        long time = level.getDayTime();
-        if (time >= refreshAtWorldTime) {
-            refreshAtWorldTime = time + REFRESH_LIMIT.getTicks();
+        long diff = this.getRemainingRestockTime();
+        if (diff <= 0) {
+            refreshAtWorldTime = level.getGameTime() + REFRESH_LIMIT.getTicks();
             playerQuests.clear();
         }
     }
@@ -136,6 +137,7 @@ public class MayorEntity extends CreatureEntity {
             list.add(data);
         }
         nbt.put("questListings", list);
+        nbt.putLong("plannedRefresh", refreshAtWorldTime);
     }
 
     @Override
@@ -149,12 +151,21 @@ public class MayorEntity extends CreatureEntity {
             ListNBT listedQuests = data.getList("quests", Constants.NBT.TAG_COMPOUND);
             playerQuests.put(player, ListedQuests.loadNbt(listedQuests));
         }
+        refreshAtWorldTime = nbt.getLong("plannedRefresh");
+    }
+
+    public long getRemainingRestockTime() {
+        return refreshAtWorldTime - level.getGameTime();
+    }
+
+    public ListedQuests getQuests(UUID playerId) {
+        return playerQuests.get(playerId);
     }
 
     public static final class ListedQuests {
 
         public static final int QUEST_COUNT = 5;
-        private final Quest<?>[] quests;
+        private Quest<?>[] quests;
 
         public ListedQuests(Quest<?>[] quests) {
             this.quests = quests;
@@ -174,6 +185,10 @@ public class MayorEntity extends CreatureEntity {
 
         public Quest<?>[] getQuests() {
             return quests;
+        }
+
+        public void filterActive() {
+            quests = Arrays.stream(quests).filter(quest -> quest.getStatus() == QuestStatus.CREATED).toArray(Quest[]::new);
         }
 
         public ListNBT toNbt() {

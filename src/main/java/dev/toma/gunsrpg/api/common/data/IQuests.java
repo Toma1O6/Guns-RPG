@@ -8,5 +8,9 @@ public interface IQuests {
 
     ITraderStandings getTraderStandings();
 
-    Optional<Quest> getActiveQuest();
+    Optional<Quest<?>> getActiveQuest();
+
+    void assignQuest(Quest<?> quest);
+
+    void clearActiveQuest();
 }

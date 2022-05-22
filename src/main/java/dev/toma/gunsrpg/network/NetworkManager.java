@@ -77,6 +77,7 @@ public class NetworkManager {
         registerNetworkPacket(C2S_FusePacket.class);
         registerNetworkPacket(C2S_PurifyPacket.class);
         registerNetworkPacket(C2S_RequestExtensionSkillLockPacket.class);
+        registerNetworkPacket(C2S_QuestActionPacket.class);
     }
 
     private static <P extends INetworkPacket<P>> void registerNetworkPacket(Class<P> packetType) {
