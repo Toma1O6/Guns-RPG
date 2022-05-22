@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
 import dev.toma.gunsrpg.api.common.data.IQuests;
 import dev.toma.gunsrpg.api.common.data.ITraderStandings;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants;
 
@@ -12,11 +13,13 @@ import java.util.Optional;
 
 public class PlayerQuests implements IQuests, IPlayerCapEntry {
 
+    private final PlayerEntity player;
     private final PlayerTraderStandings standings;
     private Quest<?> activeQuest;
     private IClientSynchReq syncRequestFactory;
 
-    public PlayerQuests() {
+    public PlayerQuests(PlayerEntity player) {
+        this.player = player;
         this.standings = new PlayerTraderStandings(() -> syncRequestFactory);
     }
 
@@ -62,6 +65,7 @@ public class PlayerQuests implements IQuests, IPlayerCapEntry {
     public void fromNbt(CompoundNBT nbt) {
         standings.deserializeNBT(nbt.getList("standings", Constants.NBT.TAG_COMPOUND));
         activeQuest = nbt.contains("quest") ? Quest.fromNbt(nbt.getCompound("quest")) : null;
+        this.getActiveQuest().ifPresent(quest -> quest.assign(player));
     }
 
     @Override

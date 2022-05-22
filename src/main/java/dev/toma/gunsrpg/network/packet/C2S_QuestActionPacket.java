@@ -74,7 +74,7 @@ public class C2S_QuestActionPacket extends AbstractNetworkPacket<C2S_QuestAction
                 packet.entityId = buffer.readInt();
                 packet.questIndex = buffer.readInt();
                 break;
-            case CANCEL:
+            case COLLECT:
                 packet.rewards = buffer.readVarIntArray();
                 break;
         }
@@ -133,6 +133,7 @@ public class C2S_QuestActionPacket extends AbstractNetworkPacket<C2S_QuestAction
             }
             quest.onFailed(player);
         });
+        provider.clearActiveQuest();
     }
 
     private void handleQuestRewardCollection(IQuests provider, ServerPlayerEntity player) {

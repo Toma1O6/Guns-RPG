@@ -51,7 +51,7 @@ public class PlayerData implements IPlayerData {
         this.skillProvider = new PlayerSkillProvider(player);
         this.perkProvider = new PlayerPerkProvider(attributes);
         this.data = new PlayerProgressionData(player, skillProvider);
-        this.quests = new PlayerQuests();
+        this.quests = new PlayerQuests(player);
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setSyncCallback);
 

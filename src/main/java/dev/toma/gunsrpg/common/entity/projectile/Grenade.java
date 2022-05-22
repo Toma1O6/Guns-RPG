@@ -120,7 +120,7 @@ public class Grenade extends AbstractExplosive {
     @Override
     public void onCollided(Vector3d impact) {
         boolean isImpact = this.getProperty(Properties.IMPACT);
-        if (isImpact || tickCount >= FUSE_DELAY && isAlive()) {
+        if ((isImpact || tickCount >= FUSE_DELAY) && isAlive()) {
             IReaction reaction = this.getProperty(Properties.REACTION);
             if (reaction != null) {
                 reaction.react(this, impact, level);

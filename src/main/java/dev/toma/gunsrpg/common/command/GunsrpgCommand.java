@@ -302,6 +302,7 @@ public class GunsrpgCommand {
         Quest<?> quest = new Quest<>(scheme, Util.NIL_UUID);
         quest.setStatus(QuestStatus.ACTIVE);
         provider.assignQuest(quest);
+        quest.assign(player);
         return 0;
     }
 
@@ -318,6 +319,7 @@ public class GunsrpgCommand {
         }
         QuestStatus status = context.getArgument("status", QuestStatus.class);
         optional.get().setStatus(status);
+        data.sync(DataFlags.QUESTS);
         return 0;
     }
 

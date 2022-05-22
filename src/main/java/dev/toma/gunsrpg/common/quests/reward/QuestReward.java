@@ -90,6 +90,10 @@ public final class QuestReward {
             return new Choice(list.toArray(new ItemStack[0]));
         }
 
+        public ItemStack[] getContents() {
+            return items;
+        }
+
         public void distributeToInventory(PlayerEntity player) {
             for (ItemStack stack : items) {
                 player.addItem(stack);

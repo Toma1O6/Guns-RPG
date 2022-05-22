@@ -70,7 +70,8 @@ public class GrenadeLauncherItem extends AbstractExplosiveLauncher {
 
     @Override
     public IReloadManager getReloadManager(PlayerEntity player, IAttributeProvider attributeProvider) {
-        return ReloadManagers.singleBulletLoading(30, player, this, player.getMainHandItem(), LOAD_BULLET);
+        int prepTime = (int) Attribs.GL_RELOAD.getModifiedValue(attributeProvider, 30);
+        return ReloadManagers.singleBulletLoading(prepTime, player, this, player.getMainHandItem(), LOAD_BULLET);
     }
 
     @Override

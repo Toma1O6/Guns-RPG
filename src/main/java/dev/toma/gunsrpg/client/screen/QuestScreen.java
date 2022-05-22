@@ -17,6 +17,8 @@ import dev.toma.gunsrpg.network.packet.C2S_QuestActionPacket;
 import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.RenderUtils;
 import lib.toma.animations.engine.screen.animator.widget.LabelWidget;
+import lib.toma.animations.engine.screen.animator.widget.WidgetContainer;
+import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
@@ -27,7 +29,9 @@ import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -82,7 +86,7 @@ public class QuestScreen extends Screen {
         this.questProvider.getActiveQuest().ifPresent(quest -> addButton(new QuestWidget(10, height - 30, width / 3, 25, quest, this::questWidgetClicked)));
         int panelLeft = 30 + width / 3;
         int panelWidth = width - panelLeft - 10;
-        infoPanelWidget = addButton(new QuestInfoPanelWidget(panelLeft, 0, panelWidth, height, questProvider, font, this::renderItemTooltip));
+        infoPanelWidget = addButton(new QuestInfoPanelWidget(panelLeft, 0, panelWidth, height, questProvider, font));
     }
 
     @Override
@@ -108,12 +112,22 @@ public class QuestScreen extends Screen {
         }
     }
 
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
+
     private void questWidgetClicked(QuestWidget widget) {
         infoPanelWidget.setSelectedQuest(widget.quest);
     }
 
     private void renderItemTooltip(MatrixStack matrix, ItemStack stack, int mouseX, int mouseY) {
         this.renderTooltip(matrix, stack, mouseX, mouseY);
+    }
+
+    private void refreshAllWidgets() {
+        MainWindow window = minecraft.getWindow();
+        this.init(minecraft, window.getGuiScaledWidth(), window.getGuiScaledHeight());
     }
 
     // use for rendering clickable quest widget
@@ -174,17 +188,15 @@ public class QuestScreen extends Screen {
 
         private final FontRenderer font;
         private final IQuests provider;
-        private final ItemStackWidget.ITooltipRenderer tooltipRenderer;
 
         private Quest<?> selectedQuest;
 
         private ActionButton actionButton;
 
-        public QuestInfoPanelWidget(int x, int y, int width, int height, IQuests provider, FontRenderer font, ItemStackWidget.ITooltipRenderer tooltipRenderer) {
+        public QuestInfoPanelWidget(int x, int y, int width, int height, IQuests provider, FontRenderer font) {
             super(x, y, width, height);
             this.provider = provider;
             this.font = font;
-            this.tooltipRenderer = tooltipRenderer;
         }
 
         @Override
@@ -208,6 +220,9 @@ public class QuestScreen extends Screen {
             addTitle(y, TEXT_QUEST_NAME);
             addDetail(y += offset, displayInfo.getName());
             if (status.shouldShowRewards()) {
+                addTitle(y += offset, TEXT_QUEST_REWARDS);
+                addWidget(new RewardsWidget(x + 5, y, width - 10, height - 5 - y, selectedQuest, 1)); // TODO dynamic amount
+            } else {
                 if (conditions.length > 0) {
                     addTitle(y += offset, TEXT_QUEST_CONDITIONS);
                     for (IQuestCondition condition : conditions) {
@@ -222,14 +237,14 @@ public class QuestScreen extends Screen {
                     y += offset;
                     addWidget(new ReorderedTextWidget(this.x + 15, this.y + 30 + y, this.width - 30, 10, processor, font));
                 }
-            } else {
-                addTitle(y += offset, TEXT_QUEST_REWARDS);
-                // add reward widget
             }
 
             ActionType actionType = this.getQuestActionType(status);
             if (actionType != null) {
                 actionButton = addWidget(new ActionButton(this.x + this.width - 145, this.height - 25, 140, 20, actionType, this::handleResponse));
+                if (actionType == ActionType.COLLECT) {
+                    actionButton.active = false;
+                }
             }
         }
 
@@ -251,6 +266,7 @@ public class QuestScreen extends Screen {
                     break;
             }
             NetworkManager.sendServerPacket(packet);
+            QuestScreen.this.refreshAllWidgets();
         }
 
         private void addTitle(int y, IFormattableTextComponent component) {
@@ -309,15 +325,91 @@ public class QuestScreen extends Screen {
 
         @Override
         public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-            RenderUtils.drawBorder(matrix.last().pose(), x, y, width, height, 1.25F, isHovered ? 0xFFFFFF00 : 0xFFFFFFFF);
+            RenderUtils.drawBorder(matrix.last().pose(), x, y, width, height, 1.25F, !active ? 0xFFAA0000 : isHovered ? 0xFF00FFAA : 0xFF00AA00);
             FontRenderer font = Minecraft.getInstance().font;
             ITextComponent text = this.getMessage();
-            font.drawShadow(matrix, text, x + (width - font.width(text)), y + (height - font.lineHeight) / 2.0f, 0xffffff);
+            font.drawShadow(matrix, text, x + (width - font.width(text)), y + (height - font.lineHeight) / 2.0f, active ? 0xffffff : 0xaa3333);
         }
 
         @Override
         public void onClick(double p_230982_1_, double p_230982_3_) {
             consumer.accept(actionType);
+        }
+    }
+
+    private final class RewardsWidget extends WidgetContainer {
+
+        private final Quest<?> quest;
+        private final int selectionSize;
+        private Set<ChoiceWidget> choices = new HashSet<>();
+
+        public RewardsWidget(int x, int y, int width, int height, Quest<?> quest, int selectionSize) {
+            super(x, y, width, height);
+            this.quest = quest;
+            this.selectionSize = selectionSize;
+
+            QuestReward reward = quest.getReward();
+            QuestReward.Choice[] choices = reward.getChoices();
+            int index = 0;
+            for (QuestReward.Choice choice : choices) {
+                addWidget(new ChoiceWidget(x, y + index * 25, width, 20, choice, index++, this::trySelectChoice));
+            }
+        }
+
+        private void trySelectChoice(ChoiceWidget widget) {
+            if (choices.contains(widget)) {
+                choices.remove(widget);
+                widget.setSelected(false);
+            } else if (choices.size() < selectionSize) {
+                choices.add(widget);
+                widget.setSelected(true);
+            }
+        }
+    }
+
+    private final class ChoiceWidget extends WidgetContainer {
+
+        private final QuestReward.Choice choice;
+        private final int choiceIndex;
+        private final Consumer<ChoiceWidget> clickResponder;
+        private boolean selected;
+
+        public ChoiceWidget(int x, int y, int width, int height, QuestReward.Choice choice, int choiceIndex, Consumer<ChoiceWidget> clickResponder) {
+            super(x, y, width, height);
+            this.choice = choice;
+            this.choiceIndex = choiceIndex;
+            this.clickResponder = clickResponder;
+
+            ItemStack[] items = choice.getContents();
+            Minecraft mc = Minecraft.getInstance();
+            FontRenderer font = mc.font;
+            ItemRenderer itemRenderer = mc.getItemRenderer();
+            for (int i = 0; i < items.length; i++) {
+                ItemStack stack = items[i];
+                addWidget(new ItemStackWidget(x + i * 25, y, width, height, stack, font, itemRenderer, QuestScreen.this::renderItemTooltip));
+            }
+        }
+
+        @Override
+        public void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+            if (selected) {
+                RenderUtils.drawBorder(stack.last().pose(), x, y, width, height, 2.0F, 0xFFFFFFFF);
+            }
+            renderChildren(stack, mouseX, mouseY, partialTicks);
+        }
+
+        @Override
+        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            return this.isMouseOver(mouseX, mouseY);
+        }
+
+        @Override
+        public void onClick(double mouseX, double mouseY) {
+            clickResponder.accept(this);
+        }
+
+        public void setSelected(boolean state) {
+            this.selected = state;
         }
     }
 
