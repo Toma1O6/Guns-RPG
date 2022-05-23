@@ -1,10 +1,13 @@
 package dev.toma.gunsrpg.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IQuests;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.screen.widgets.ContainerWidget;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.MayorEntity;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.quests.condition.IQuestCondition;
 import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.common.quests.quest.DisplayInfo;
@@ -12,10 +15,12 @@ import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.quest.QuestScheme;
 import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
 import dev.toma.gunsrpg.common.quests.reward.QuestReward;
+import dev.toma.gunsrpg.common.skills.BartenderSkill;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_QuestActionPacket;
 import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.RenderUtils;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.engine.screen.animator.widget.LabelWidget;
 import lib.toma.animations.engine.screen.animator.widget.WidgetContainer;
 import net.minecraft.client.MainWindow;
@@ -56,37 +61,39 @@ public class QuestScreen extends Screen {
     private static final String TEXT_QUEST_TIER_RAW = "screen.quests.quest_tier";
     private static final Function<IFormattableTextComponent, IFormattableTextComponent> TEXT_QUEST_TIER = (tier) -> new TranslationTextComponent(TEXT_QUEST_TIER_RAW, tier);
     // formatting
-    private static final Interval.IFormatFactory RESTOCK_TIMER_FORMAT = format -> format.src(Interval.Unit.TICK).out(Interval.Unit.HOUR, Interval.Unit.MINUTE, Interval.Unit.SECOND);
+    private static final Interval.IFormatFactory RESTOCK_TIMER_FORMAT = format -> format.src(Interval.Unit.TICK).out(Interval.Unit.HOUR, Interval.Unit.MINUTE, Interval.Unit.SECOND).compact();
     private static final Function<Integer, String> FORMATTER = (ticks) -> Interval.format(ticks, RESTOCK_TIMER_FORMAT);
 
     private final ReputationStatus status;
     private final Quest<?>[] quests;
     private final MayorEntity entity;
-    private IQuests questProvider;
     private boolean hasActiveQuest;
 
     private QuestInfoPanelWidget infoPanelWidget;
 
-    public QuestScreen(ReputationStatus status, Quest<?>[] quests, MayorEntity entity) {
+    public QuestScreen(ReputationStatus status, Quest<?>[] quests, MayorEntity entity, long timer) {
         super(new TranslationTextComponent("screen.gunsrpg.quests"));
         this.status = status;
         this.quests = quests;
         this.entity = entity;
+        this.entity.setClientTimer(timer);
     }
 
     @Override
     protected void init() {
-        this.questProvider = PlayerData.getUnsafe(minecraft.player).getQuests();
+        IPlayerData data = PlayerData.getUnsafe(minecraft.player);
+        IQuests questProvider = data.getQuests();
+        ISkillProvider skillProvider = data.getSkillProvider();
         this.hasActiveQuest = questProvider.getActiveQuest().isPresent();
 
         for (int i = 0; i < quests.length; i++) {
             Quest<?> quest = quests[i];
             addButton(new QuestWidget(10, 25 + i * 30, width / 3, 25, quest, this::questWidgetClicked));
         }
-        this.questProvider.getActiveQuest().ifPresent(quest -> addButton(new QuestWidget(10, height - 30, width / 3, 25, quest, this::questWidgetClicked)));
+        questProvider.getActiveQuest().ifPresent(quest -> addButton(new QuestWidget(10, height - 30, width / 3, 25, quest, this::questWidgetClicked)));
         int panelLeft = 30 + width / 3;
         int panelWidth = width - panelLeft - 10;
-        infoPanelWidget = addButton(new QuestInfoPanelWidget(panelLeft, 0, panelWidth, height, questProvider, font));
+        infoPanelWidget = addButton(new QuestInfoPanelWidget(panelLeft, 0, panelWidth, height, skillProvider, font));
     }
 
     @Override
@@ -174,8 +181,16 @@ public class QuestScreen extends Screen {
         @Override
         public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
             renderer.renderGuiItem(stack, x, y);
-            font.draw(matrix, String.valueOf(stack.getCount()), x + 16, y + 12, 0xffffff);
-            tooltipRenderer.renderItemTooltip(matrix, stack, mouseX, mouseY);
+            matrix.pushPose();
+            matrix.translate(0, 0, 101);
+            int count = stack.getCount();
+            if (count > 1) {
+                font.drawShadow(matrix, String.valueOf(count), x + 8, y + 8, 0xffffff);
+            }
+            if (isHovered) {
+                tooltipRenderer.renderItemTooltip(matrix, stack, mouseX, mouseY);
+            }
+            matrix.popPose();
         }
 
         @FunctionalInterface
@@ -187,13 +202,14 @@ public class QuestScreen extends Screen {
     private final class QuestInfoPanelWidget extends ContainerWidget {
 
         private final FontRenderer font;
-        private final IQuests provider;
+        private final ISkillProvider provider;
 
         private Quest<?> selectedQuest;
+        private Integer[] selectedIndexes = new Integer[0];
 
         private ActionButton actionButton;
 
-        public QuestInfoPanelWidget(int x, int y, int width, int height, IQuests provider, FontRenderer font) {
+        public QuestInfoPanelWidget(int x, int y, int width, int height, ISkillProvider provider, FontRenderer font) {
             super(x, y, width, height);
             this.provider = provider;
             this.font = font;
@@ -221,7 +237,9 @@ public class QuestScreen extends Screen {
             addDetail(y += offset, displayInfo.getName());
             if (status.shouldShowRewards()) {
                 addTitle(y += offset, TEXT_QUEST_REWARDS);
-                addWidget(new RewardsWidget(x + 5, y, width - 10, height - 5 - y, selectedQuest, 1)); // TODO dynamic amount
+                BartenderSkill bartenderSkill = SkillUtil.getTopHierarchySkill(Skills.BARTENDER_I, provider);
+                int selectionSize = bartenderSkill != null ? bartenderSkill.getRewardCount() : 1;
+                addWidget(new RewardsWidget(this.x + 5, y + 45, width - 10, height - 75 - y, selectedQuest, selectionSize, this::onRewardSelectionChanged));
             } else {
                 if (conditions.length > 0) {
                     addTitle(y += offset, TEXT_QUEST_CONDITIONS);
@@ -248,21 +266,23 @@ public class QuestScreen extends Screen {
             }
         }
 
-        private void onRewardSelectionChanged(QuestReward.Choice[] choices) {
+        private void onRewardSelectionChanged(Integer[] choices) {
             actionButton.active = choices.length > 0;
+            this.selectedIndexes = choices;
         }
 
         private void handleResponse(ActionType type) {
             C2S_QuestActionPacket packet = null;
+            MayorEntity entity = QuestScreen.this.entity;
             switch (type) {
                 case ASSIGN:
-                    packet = C2S_QuestActionPacket.makeAssignPacket(QuestScreen.this.entity, QuestScreen.this.quests, selectedQuest);
+                    packet = C2S_QuestActionPacket.makeAssignPacket(entity, QuestScreen.this.quests, selectedQuest);
                     break;
                 case CANCEL:
-                    packet = C2S_QuestActionPacket.makeCancelPacket();
+                    packet = C2S_QuestActionPacket.makeCancelPacket(entity);
                     break;
                 case COLLECT:
-                    packet = C2S_QuestActionPacket.makeCollectionPacket(new int[0]); // TODO actual data
+                    packet = C2S_QuestActionPacket.makeCollectionPacket(entity, selectedIndexes);
                     break;
             }
             NetworkManager.sendServerPacket(packet);
@@ -325,7 +345,7 @@ public class QuestScreen extends Screen {
 
         @Override
         public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-            RenderUtils.drawBorder(matrix.last().pose(), x, y, width, height, 1.25F, !active ? 0xFFAA0000 : isHovered ? 0xFF00FFAA : 0xFF00AA00);
+            RenderUtils.drawBorder(matrix.last().pose(), x, y, width, height, 1.25F, !active ? 0xFFAA0000 : isHovered ? 0xFF00FF22 : 0xFF00AA00);
             FontRenderer font = Minecraft.getInstance().font;
             ITextComponent text = this.getMessage();
             font.drawShadow(matrix, text, x + (width - font.width(text)), y + (height - font.lineHeight) / 2.0f, active ? 0xffffff : 0xaa3333);
@@ -339,21 +359,44 @@ public class QuestScreen extends Screen {
 
     private final class RewardsWidget extends WidgetContainer {
 
-        private final Quest<?> quest;
         private final int selectionSize;
-        private Set<ChoiceWidget> choices = new HashSet<>();
+        private final Consumer<Integer[]> selectionIndexConsumer;
+        private final Set<ChoiceWidget> choices = new HashSet<>();
 
-        public RewardsWidget(int x, int y, int width, int height, Quest<?> quest, int selectionSize) {
+        public RewardsWidget(int x, int y, int width, int height, Quest<?> quest, int selectionSize, Consumer<Integer[]> selectionIndexConsumer) {
             super(x, y, width, height);
-            this.quest = quest;
             this.selectionSize = selectionSize;
+            this.selectionIndexConsumer = selectionIndexConsumer;
 
+            int oneThird = width / 3;
             QuestReward reward = quest.getReward();
             QuestReward.Choice[] choices = reward.getChoices();
             int index = 0;
-            for (QuestReward.Choice choice : choices) {
-                addWidget(new ChoiceWidget(x, y + index * 25, width, 20, choice, index++, this::trySelectChoice));
+            Minecraft mc = Minecraft.getInstance();
+            FontRenderer font = mc.font;
+            ItemRenderer itemRenderer = mc.getItemRenderer();
+            for (int i = 0; i < choices.length; i++) {
+                addWidget(new ChoiceWidget(oneThird, index * 30, oneThird, 25, index, font, this::trySelectChoice));
+                ++index;
             }
+            index = 0;
+            // render order nonsense
+            for (QuestReward.Choice choice : choices) {
+                ItemStack[] itemStacks = choice.getContents();
+                for (int i = 0; i < itemStacks.length; i++) {
+                    ItemStack stack = itemStacks[i];
+                    addWidget(new ItemStackWidget(oneThird + 15 + i * 25, 4 + index * 30, 16, 16, stack, font, itemRenderer, QuestScreen.this::renderItemTooltip));
+                }
+                ++index;
+            }
+        }
+
+        @Override
+        public void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+            super.renderButton(stack, mouseX, mouseY, partialTicks);
+            FontRenderer font = Minecraft.getInstance().font;
+            String text = choices.size() + "/" + selectionSize;
+            font.drawShadow(stack, text, this.x + this.width - font.width(text), this.y + this.height - font.lineHeight, 0xFFFFFF);
         }
 
         private void trySelectChoice(ChoiceWidget widget) {
@@ -364,43 +407,32 @@ public class QuestScreen extends Screen {
                 choices.add(widget);
                 widget.setSelected(true);
             }
+            Integer[] selectedIndexes = choices.stream().map(choiceWidget -> choiceWidget.choiceIndex).toArray(Integer[]::new);
+            this.selectionIndexConsumer.accept(selectedIndexes);
         }
     }
 
-    private final class ChoiceWidget extends WidgetContainer {
+    private static final class ChoiceWidget extends Widget {
 
-        private final QuestReward.Choice choice;
         private final int choiceIndex;
+        private final FontRenderer font;
         private final Consumer<ChoiceWidget> clickResponder;
         private boolean selected;
 
-        public ChoiceWidget(int x, int y, int width, int height, QuestReward.Choice choice, int choiceIndex, Consumer<ChoiceWidget> clickResponder) {
-            super(x, y, width, height);
-            this.choice = choice;
+        public ChoiceWidget(int x, int y, int width, int height, int choiceIndex, FontRenderer font, Consumer<ChoiceWidget> clickResponder) {
+            super(x, y, width, height, StringTextComponent.EMPTY);
             this.choiceIndex = choiceIndex;
+            this.font = font;
             this.clickResponder = clickResponder;
-
-            ItemStack[] items = choice.getContents();
-            Minecraft mc = Minecraft.getInstance();
-            FontRenderer font = mc.font;
-            ItemRenderer itemRenderer = mc.getItemRenderer();
-            for (int i = 0; i < items.length; i++) {
-                ItemStack stack = items[i];
-                addWidget(new ItemStackWidget(x + i * 25, y, width, height, stack, font, itemRenderer, QuestScreen.this::renderItemTooltip));
-            }
         }
 
         @Override
         public void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
-            if (selected) {
-                RenderUtils.drawBorder(stack.last().pose(), x, y, width, height, 2.0F, 0xFFFFFFFF);
-            }
-            renderChildren(stack, mouseX, mouseY, partialTicks);
-        }
-
-        @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            return this.isMouseOver(mouseX, mouseY);
+            boolean selected = this.selected || isHovered;
+            float thickness = selected ? 2.0F : 1.0F;
+            int color = selected ? 0xFFFFFF00 : 0xFFFFFFFF;
+            RenderUtils.drawBorder(stack.last().pose(), x, y, width, height, thickness, color);
+            font.drawShadow(stack, (choiceIndex + 1) + ".", this.x + 5, this.y + (this.height - font.lineHeight) / 2.0F, 0xFFFFFF);
         }
 
         @Override

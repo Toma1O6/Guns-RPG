@@ -22,13 +22,20 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
 
     private final DescriptionContainer container;
     private final IAttributeTarget[] targets;
+    private final int rewardCount;
 
     public BartenderSkill(SkillType<? extends BartenderSkill> type, Consumer<TieredReward.Builder> consumer) {
         super(type);
         this.container = new DescriptionContainer(type);
         TieredReward.Builder builder = new TieredReward.Builder(container);
         consumer.accept(builder);
-        this.targets = builder.build().toAttributes();
+        TieredReward reward = builder.build();
+        this.targets = reward.toAttributes();
+        this.rewardCount = reward.rewardCount;
+    }
+
+    public int getRewardCount() {
+        return rewardCount;
     }
 
     @Override
@@ -85,6 +92,7 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
         private final int orbReward;
         private final int perkBookReward;
         private final int airdropFlare;
+        private final int rewardCount;
 
         private TieredReward(Builder builder) {
             ammoMultiplier = builder.ammoMultiplier;
@@ -94,6 +102,7 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
             orbReward = builder.orbReward;
             perkBookReward = builder.perkBookReward;
             airdropFlare = builder.airdropFlare;
+            rewardCount = builder.rewardCount;
         }
 
         public IAttributeTarget[] toAttributes() {
@@ -137,7 +146,8 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
             builder.defaults(0.40F, 0.5F, 2, 1, 1, 1, 0)
                     .ammoMultiplier(0.50F)
                     .flare(1)
-                    .orbs(2);
+                    .orbs(2)
+                    .rewardCount(2);
         }
 
         public static class Builder {
@@ -150,9 +160,11 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
             private int orbReward;
             private int perkBookReward;
             private int airdropFlare;
+            private int rewardCount;
 
             private Builder(DescriptionContainer container) {
                 this.ref = container;
+                this.rewardCount = 1;
             }
 
             public Builder ammoMultiplier(float ammoMultiplier) {
@@ -194,6 +206,11 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
             public Builder flare(int flares) {
                 this.ref.addProperty("flares", flares - this.airdropFlare);
                 this.airdropFlare = flares;
+                return this;
+            }
+
+            public Builder rewardCount(int rewardCount) {
+                this.rewardCount = rewardCount;
                 return this;
             }
 

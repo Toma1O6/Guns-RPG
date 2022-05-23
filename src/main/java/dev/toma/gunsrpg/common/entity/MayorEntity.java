@@ -118,7 +118,7 @@ public class MayorEntity extends CreatureEntity {
                     playerQuests.put(uuid, traderQuests);
                 }
                 ReputationStatus reputationStatus = ReputationStatus.getStatus(status.getReputation());
-                NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_OpenQuestScreen(reputationStatus, traderQuests, this.getId()));
+                NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_OpenQuestScreen(reputationStatus, traderQuests, this.getId(), refreshAtWorldTime));
             }
         }
         return ActionResultType.sidedSuccess(level.isClientSide);
@@ -160,6 +160,14 @@ public class MayorEntity extends CreatureEntity {
 
     public ListedQuests getQuests(UUID playerId) {
         return playerQuests.get(playerId);
+    }
+
+    public void setClientTimer(long refreshAtWorldTime) {
+        this.refreshAtWorldTime = refreshAtWorldTime;
+    }
+
+    public long getCurrentRefreshTarget() {
+        return refreshAtWorldTime;
     }
 
     public static final class ListedQuests {

@@ -18,7 +18,7 @@ public final class QuestReward {
     }
 
     public QuestReward(CompoundNBT nbt) {
-        ListNBT choices = nbt.getList("choices", Constants.NBT.TAG_COMPOUND);
+        ListNBT choices = nbt.getList("choices", Constants.NBT.TAG_LIST);
         this.choices = choices.stream().map(inbt -> {
             ListNBT listNBT = (ListNBT) inbt;
             ItemStack[] items = listNBT.stream().map(itemStackNbt -> {

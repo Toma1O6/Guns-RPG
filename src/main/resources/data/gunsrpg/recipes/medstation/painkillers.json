@@ -23,8 +23,7 @@
         }
     },
     "result": {
-        "item": "gunsrpg:painkillers",
-        "count": 2
+        "item": "gunsrpg:painkillers"
     },
     "requirements": [
         {

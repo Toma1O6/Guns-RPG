@@ -40,7 +40,7 @@ public class WeaponConfig extends ObjectType {
         desertEagle = writer.writeObject(specification -> new WeaponConfiguration(specification, 8.0F, 330, 5, 0.009F, 0.12F), "Desert Eagle");
         ump = writer.writeObject(specification -> new WeaponConfiguration(specification, 3.0F, 320, 5, 0.006F, 0.08F), "UMP-45");
         thompson = writer.writeObject(specification -> new WeaponConfiguration(specification, 5.0F, 320, 5, 0.007F, 0.08F), "Thompson");
-        vector = writer.writeObject(specification -> new WeaponConfiguration(specification, 3.0F, 280, 3, 0.009F, 0.05F), "Vector");
+        vector = writer.writeObject(specification -> new WeaponConfiguration(specification, 3.0F, 280, 3, 0.004F, 0.03F), "Vector");
         crossbow = writer.writeObject(specification -> new WeaponConfiguration(specification, 10.0F, 32, 8, 0.02F, 0.17F), "Crossbow");
         chukonu = writer.writeObject(specification -> new WeaponConfiguration(specification, 6.0F, 32, 5, 0.008F, 0.01F), "Chu-Ko-Nu");
         s1897 = writer.writeObject(specification -> new WeaponConfiguration(specification, 2.0F, 220, 1, 0.013F, 0.15F), "S1897");

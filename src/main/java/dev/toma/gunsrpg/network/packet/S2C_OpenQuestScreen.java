@@ -20,14 +20,16 @@ public class S2C_OpenQuestScreen extends AbstractNetworkPacket<S2C_OpenQuestScre
     private ReputationStatus status;
     private MayorEntity.ListedQuests quests;
     private int entityId;
+    private long timer;
 
     public S2C_OpenQuestScreen() {
     }
 
-    public S2C_OpenQuestScreen(ReputationStatus status, MayorEntity.ListedQuests quests, int entityId) {
+    public S2C_OpenQuestScreen(ReputationStatus status, MayorEntity.ListedQuests quests, int entityId, long timer) {
         this.status = status;
         this.quests = quests;
         this.entityId = entityId;
+        this.timer = timer;
     }
 
     @Override
@@ -37,6 +39,7 @@ public class S2C_OpenQuestScreen extends AbstractNetworkPacket<S2C_OpenQuestScre
         wrap.put("contents", quests.toNbt());
         buffer.writeNbt(wrap);
         buffer.writeInt(entityId);
+        buffer.writeLong(timer);
     }
 
     @Override
@@ -45,7 +48,7 @@ public class S2C_OpenQuestScreen extends AbstractNetworkPacket<S2C_OpenQuestScre
         CompoundNBT wrap = buffer.readNbt();
         ListNBT content = wrap.getList("contents", Constants.NBT.TAG_COMPOUND);
         MayorEntity.ListedQuests quests = MayorEntity.ListedQuests.loadNbt(content);
-        return new S2C_OpenQuestScreen(status, quests, buffer.readInt());
+        return new S2C_OpenQuestScreen(status, quests, buffer.readInt(), buffer.readLong());
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -55,6 +58,6 @@ public class S2C_OpenQuestScreen extends AbstractNetworkPacket<S2C_OpenQuestScre
         World world = mc.level;
         Entity entity = world.getEntity(entityId);
         if (!(entity instanceof MayorEntity)) return;
-        mc.setScreen(new QuestScreen(status, quests.getQuests(), (MayorEntity) entity));
+        mc.setScreen(new QuestScreen(status, quests.getQuests(), (MayorEntity) entity, timer));
     }
 }

@@ -135,7 +135,7 @@ public class MobSpawnManager {
 
     private AttributeModifier getRandomModifier(Random random) {
         float f = random.nextFloat();
-        return f <= 0.05F ? health4x : f <= 0.2F ? health3x : f <= 0.45F ? health2x : null;
+        return f <= 0.10F ? health4x : f <= 0.40F ? health3x : f <= 0.75F ? health2x : null;
     }
 
     private <E extends MobEntity & IAngerable> void addBloodmoonAggroGoal(E entity) {
