@@ -58,7 +58,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:ump45",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -67,7 +67,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:ump45_silent",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -445,7 +445,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:akm/gun_akm",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -454,7 +454,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:akm/gun_akm_silenced",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -499,7 +499,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:aug/gun_aug",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -508,7 +508,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:aug/gun_aug_silenced",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -616,7 +616,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:crossbow-chukonu/crossbow_shoot",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -904,7 +904,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:mk14/gun_mk14",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -913,7 +913,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:mk14/gun_mk14_silenced",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -1021,7 +1021,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:rl/rl_shot",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -1030,7 +1030,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:s12k/gun_s12k",
-                "stream": true
+                "stream":  false
             }
         ]
     },
@@ -1039,7 +1039,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:s12k/gun_s12k_silenced",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -1174,7 +1174,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:sks/gun_sks",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -1183,7 +1183,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:sks/gun_sks_silenced",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -1228,7 +1228,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:thompson/gun_tommy_gun",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -1237,7 +1237,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:thompson/gun_tommy_gun_silenced",
-                "stream": true
+                "stream": false
             }
         ]
     },
@@ -1750,7 +1750,7 @@
         "sounds": [
             {
                 "name": "gunsrpg:vss/gun_vss",
-                "stream": true
+                "stream": false
             }
         ]
     },
