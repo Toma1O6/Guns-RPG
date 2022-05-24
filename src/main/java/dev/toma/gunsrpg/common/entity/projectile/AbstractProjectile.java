@@ -273,21 +273,25 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
 
     protected void hurtTarget(Entity entity, Entity owner) {
         propertyContext.handleConditionally(Properties.IS_HEADSHOT, value -> value, headshot -> mulDamage(this.getHeadshotMultiplier()));
-        if (entity instanceof LivingEntity && weapon.getItem() instanceof GunItem) {
-            LivingEntity livingEntity = (LivingEntity) entity;
-            GunItem gun = (GunItem) weapon.getItem();
-            if (owner instanceof PlayerEntity) {
-                projectileDamage = gun.modifyProjectileDamage(this, livingEntity, (PlayerEntity) owner, projectileDamage);
+        if (weapon.getItem() instanceof GunItem) {
+            if (entity instanceof LivingEntity) {
+                LivingEntity livingEntity = (LivingEntity) entity;
+                GunItem gun = (GunItem) weapon.getItem();
+                if (owner instanceof PlayerEntity) {
+                    projectileDamage = gun.modifyProjectileDamage(this, livingEntity, (PlayerEntity) owner, projectileDamage);
+                }
+                boolean willDie = livingEntity.getHealth() - projectileDamage <= 0.0F;
+                livingEntity.hurt(this.getDamageSource(owner), projectileDamage);
+                if (willDie)
+                    gun.onKillEntity(this, livingEntity, weapon, (LivingEntity) owner);
+                else
+                    gun.onHitEntity(this, livingEntity, weapon, (LivingEntity) owner);
+            } else if (entity instanceof PartEntity<?>) {
+                DamageSource source = ModDamageSources.dealSpecialWeaponDamage(owner, this, weapon);
+                entity.hurt(source, projectileDamage);
             }
-            boolean willDie = livingEntity.getHealth() - projectileDamage <= 0.0F;
-            livingEntity.hurt(this.getDamageSource(owner), projectileDamage);
-            if (willDie)
-                gun.onKillEntity(this, livingEntity, weapon, (LivingEntity) owner);
-            else
-                gun.onHitEntity(this, livingEntity, weapon, (LivingEntity) owner);
-        } else if (entity instanceof PartEntity<?>) {
-            DamageSource source = ModDamageSources.dealSpecialWeaponDamage(owner, this, weapon);
-            entity.hurt(source, projectileDamage);
+        } else {
+            entity.hurt(ModDamageSources.dealSpecialWeaponDamage(owner, entity, weapon), projectileDamage);
         }
     }
 
@@ -323,7 +327,7 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
 
     private float getHeadshotMultiplier() {
         Entity src = getOwner();
-        if (src instanceof PlayerEntity) {
+        if (src instanceof PlayerEntity && weapon.getItem() instanceof GunItem) {
             LazyOptional<IPlayerData> optional = PlayerData.get((PlayerEntity) src);
             if (optional.isPresent()) {
                 IPlayerData data = optional.orElse(null);
