@@ -274,6 +274,12 @@ public class CommonEventHandler {
     }
 
     @SubscribeEvent
+    public static void changeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        PlayerEntity player = event.getPlayer();
+        PlayerData.get(player).ifPresent(data -> data.sync(DataFlags.WILDCARD));
+    }
+
+    @SubscribeEvent
     public static void clonePlayer(net.minecraftforge.event.entity.player.PlayerEvent.Clone event) {
         LazyOptional<IPlayerData> oldDataOptional = PlayerData.get(event.getOriginal());
         LazyOptional<IPlayerData> freshDataOptional = PlayerData.get(event.getPlayer());
