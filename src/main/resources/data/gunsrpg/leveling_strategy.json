@@ -47,56 +47,56 @@
                 {
                     "function": "biggerOrEqual",
                     "value": 95,
-                    "require": 150
+                    "require": 180
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 90,
-                    "require": 120
+                    "require": 150
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 80,
-                    "require": 105
+                    "require": 125
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 70,
-                    "require": 90
+                    "require": 105
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 60,
-                    "require": 75
+                    "require": 95
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 50,
-                    "require": 65
+                    "require": 80
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 40,
-                    "require": 50
+                    "require": 60
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 30,
-                    "require": 40
+                    "require": 45
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 20,
-                    "require": 30
+                    "require": 35
                 },
                 {
                     "function": "biggerOrEqual",
                     "value": 10,
-                    "require": 20
+                    "require": 25
                 },
                 {
                     "function": "true",
-                    "require": 12
+                    "require": 17
                 }
             ],
             "rewards": [
