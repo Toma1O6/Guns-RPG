@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.quests.mayor;
 
 import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -10,14 +9,14 @@ import java.util.Locale;
 public enum ReputationStatus {
 
     STRANGER(0.0F, TextFormatting.RED),
-    NEUTRAL(5.0F, TextFormatting.GRAY),
+    NEUTRAL(5.0F, TextFormatting.YELLOW),
     FRIENDLY(10.0F, TextFormatting.GREEN),
-    LOYAL(20.0F, TextFormatting.YELLOW),
+    LOYAL(20.0F, TextFormatting.BLUE),
     HERO(40.0F, TextFormatting.DARK_PURPLE);
 
     private final int tierLevel;
     private final float sinceReputation;
-    private final ITextComponent statusDescriptor;
+    private final IFormattableTextComponent statusDescriptor;
     private final TextFormatting color;
 
     ReputationStatus(float sinceReputation, TextFormatting color) {
@@ -45,15 +44,15 @@ public enum ReputationStatus {
         return tierLevel;
     }
 
-    public ITextComponent getStatusDescriptor() {
+    public IFormattableTextComponent getStatusDescriptor() {
         return statusDescriptor;
     }
 
-    private ITextComponent generateLocalizedDescriptor() {
+    private IFormattableTextComponent generateLocalizedDescriptor() {
         String key = name().toLowerCase(Locale.ROOT);
         String prefix = "quest.reputation.status.";
-        IFormattableTextComponent component = new TranslationTextComponent(prefix + key);
-        component.withStyle(color);
-        return component;
+        IFormattableTextComponent textComponent = new TranslationTextComponent(prefix + key);
+        textComponent.withStyle(color, TextFormatting.BOLD);
+        return textComponent;
     }
 }

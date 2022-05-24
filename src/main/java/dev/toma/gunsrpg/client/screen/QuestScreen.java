@@ -55,9 +55,9 @@ public class QuestScreen extends Screen {
     private static final IFormattableTextComponent BUTTON_CLAIM_REWARDS    = new TranslationTextComponent("screen.quests.claim_rewards");      // text for button which claims selected rewards
     // parametrized localizations
     private static final String TEXT_MAYOR_STATUS_RAW = "screen.quests.mayor_status";
-    private static final Function<ReputationStatus, IFormattableTextComponent> TEXT_MAYOR_STATUS = (status) -> new TranslationTextComponent(TEXT_MAYOR_STATUS_RAW, status.getStatusDescriptor().getString());
+    private static final Function<IFormattableTextComponent, IFormattableTextComponent> TEXT_MAYOR_STATUS = (text) -> new TranslationTextComponent(TEXT_MAYOR_STATUS_RAW, text);
     private static final String TEXT_RESTOCK_TIMER_RAW = "screen.quests.restock_timer";
-    private static final Function<String, IFormattableTextComponent> TEXT_RESTOCK_TIMER = (time) -> new TranslationTextComponent(TEXT_RESTOCK_TIMER_RAW, time);
+    private static final Function<IFormattableTextComponent, IFormattableTextComponent> TEXT_RESTOCK_TIMER = (time) -> new TranslationTextComponent(TEXT_RESTOCK_TIMER_RAW, time);
     private static final String TEXT_QUEST_TIER_RAW = "screen.quests.quest_tier";
     private static final Function<IFormattableTextComponent, IFormattableTextComponent> TEXT_QUEST_TIER = (tier) -> new TranslationTextComponent(TEXT_QUEST_TIER_RAW, tier);
     // formatting
@@ -106,9 +106,10 @@ public class QuestScreen extends Screen {
         // labels
         font.drawShadow(matrixStack, TEXT_AVAILABLE_QUESTS, 10, 10, 0xFFFFFF);
         font.drawShadow(matrixStack, TEXT_ACTIVE_QUESTS, 10, height - 45, 0xFFFFFF);
-        ITextComponent statusComponent = TEXT_MAYOR_STATUS.apply(status);
+        IFormattableTextComponent statusComponent = TEXT_MAYOR_STATUS.apply(status.getStatusDescriptor());
         int remainingTime = (int) entity.getRemainingRestockTime();
-        ITextComponent timerComponent = TEXT_RESTOCK_TIMER.apply(FORMATTER.apply(remainingTime));
+        IFormattableTextComponent timeComponent = new TranslationTextComponent(this.getTimerColor(remainingTime) + FORMATTER.apply(remainingTime));
+        IFormattableTextComponent timerComponent = TEXT_RESTOCK_TIMER.apply(timeComponent);
         font.drawShadow(matrixStack, statusComponent, infoPanelWidget.x + 5, 10, 0xFFFFFF);
         font.drawShadow(matrixStack, timerComponent, infoPanelWidget.x + infoPanelWidget.getWidth() - 5 - font.width(timerComponent), 10, 0xFFFFFF);
         if (!hasActiveQuest) {
@@ -135,6 +136,20 @@ public class QuestScreen extends Screen {
     private void refreshAllWidgets() {
         MainWindow window = minecraft.getWindow();
         this.init(minecraft, window.getGuiScaledWidth(), window.getGuiScaledHeight());
+    }
+
+    private TextFormatting getTimerColor(int timer) {
+        Interval interval = Interval.ticks(timer);
+        // 60m-30m green
+        // 30m-10m yellow
+        // 10m- red
+        if (Interval.minutes(30).compareTo(interval) > 0) {
+            return TextFormatting.GREEN;
+        } else if (Interval.minutes(10).compareTo(interval) > 0) {
+            return TextFormatting.YELLOW;
+        } else {
+            return TextFormatting.RED;
+        }
     }
 
     // use for rendering clickable quest widget
@@ -182,7 +197,7 @@ public class QuestScreen extends Screen {
         public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
             renderer.renderGuiItem(stack, x, y);
             matrix.pushPose();
-            matrix.translate(0, 0, 101);
+            matrix.translate(0, 0, 400);
             int count = stack.getCount();
             if (count > 1) {
                 font.drawShadow(matrix, String.valueOf(count), x + 8, y + 8, 0xffffff);
@@ -233,24 +248,24 @@ public class QuestScreen extends Screen {
 
             int y = 0;
             int offset = 15;
-            addTitle(y, TEXT_QUEST_NAME);
-            addDetail(y += offset, displayInfo.getName());
+            addTitle(y, TEXT_QUEST_NAME, TextFormatting.YELLOW, TextFormatting.BOLD);
+            addDetail(y += offset, displayInfo.getName(), TextFormatting.ITALIC);
             if (status.shouldShowRewards()) {
-                addTitle(y += offset, TEXT_QUEST_REWARDS);
+                addTitle(y += offset, TEXT_QUEST_REWARDS, TextFormatting.YELLOW, TextFormatting.BOLD);
                 BartenderSkill bartenderSkill = SkillUtil.getTopHierarchySkill(Skills.BARTENDER_I, provider);
                 int selectionSize = bartenderSkill != null ? bartenderSkill.getRewardCount() : 1;
                 addWidget(new RewardsWidget(this.x + 5, y + 45, width - 10, height - 75 - y, selectedQuest, selectionSize, this::onRewardSelectionChanged));
             } else {
                 if (conditions.length > 0) {
-                    addTitle(y += offset, TEXT_QUEST_CONDITIONS);
+                    addTitle(y += offset, TEXT_QUEST_CONDITIONS, TextFormatting.YELLOW, TextFormatting.BOLD);
                     for (IQuestCondition condition : conditions) {
                         addDetail(y += offset, condition.getDescriptor());
                     }
                 }
                 StringTextComponent tierComponent = new StringTextComponent(TextFormatting.AQUA.toString() + selectedQuest.getRewardTier());
                 addDetail(y += offset, TEXT_QUEST_TIER.apply(tierComponent), 5);
-                addTitle(y += offset, TEXT_QUEST_DETAIL);
-                List<IReorderingProcessor> list = font.split(displayInfo.getInfo(), width - 30);
+                addTitle(y += offset, TEXT_QUEST_DETAIL, TextFormatting.YELLOW, TextFormatting.BOLD);
+                List<IReorderingProcessor> list = font.split(displayInfo.getInfo().withStyle(TextFormatting.ITALIC), width - 30);
                 for (IReorderingProcessor processor : list) {
                     y += offset;
                     addWidget(new ReorderedTextWidget(this.x + 15, this.y + 30 + y, this.width - 30, 10, processor, font));
@@ -289,8 +304,8 @@ public class QuestScreen extends Screen {
             QuestScreen.this.refreshAllWidgets();
         }
 
-        private void addTitle(int y, IFormattableTextComponent component) {
-            addWidget(new LabelWidget(this.x + 5, this.y + 30 + y, this.width - 10, 10, component.withStyle(TextFormatting.BOLD), font));
+        private void addTitle(int y, IFormattableTextComponent component, TextFormatting... formattings) {
+            addWidget(new LabelWidget(this.x + 5, this.y + 30 + y, this.width - 10, 10, component.withStyle(formattings), font));
         }
 
         private void addDetail(int y, ITextComponent component) {
@@ -299,6 +314,14 @@ public class QuestScreen extends Screen {
 
         private void addDetail(int y, ITextComponent text, int xOffset) {
             addWidget(new LabelWidget(this.x + xOffset, this.y + 30 + y, this.width - xOffset, 10, text, font));
+        }
+
+        private void addDetail(int y, IFormattableTextComponent component, TextFormatting... formattings) {
+            addDetail(y, component, 15, formattings);
+        }
+
+        private void addDetail(int y, IFormattableTextComponent text, int xOffset, TextFormatting... formattings) {
+            addWidget(new LabelWidget(this.x + xOffset, this.y + 30 + y, this.width - xOffset, 10, text.withStyle(formattings), font));
         }
 
         private ActionType getQuestActionType(QuestStatus status) {
@@ -348,7 +371,7 @@ public class QuestScreen extends Screen {
             RenderUtils.drawBorder(matrix.last().pose(), x, y, width, height, 1.25F, !active ? 0xFFAA0000 : isHovered ? 0xFF00FF22 : 0xFF00AA00);
             FontRenderer font = Minecraft.getInstance().font;
             ITextComponent text = this.getMessage();
-            font.drawShadow(matrix, text, x + (width - font.width(text)), y + (height - font.lineHeight) / 2.0f, active ? 0xffffff : 0xaa3333);
+            font.drawShadow(matrix, text, x + (width - font.width(text)) / 2.0f, y + (height - font.lineHeight) / 2.0f, active ? 0xffffff : 0xaa3333);
         }
 
         @Override
@@ -376,7 +399,7 @@ public class QuestScreen extends Screen {
             FontRenderer font = mc.font;
             ItemRenderer itemRenderer = mc.getItemRenderer();
             for (int i = 0; i < choices.length; i++) {
-                addWidget(new ChoiceWidget(oneThird, index * 30, oneThird, 25, index, font, this::trySelectChoice));
+                addWidget(new ChoiceWidget(5, index * 30, oneThird, 25, index, font, this::trySelectChoice));
                 ++index;
             }
             index = 0;
@@ -385,7 +408,7 @@ public class QuestScreen extends Screen {
                 ItemStack[] itemStacks = choice.getContents();
                 for (int i = 0; i < itemStacks.length; i++) {
                     ItemStack stack = itemStacks[i];
-                    addWidget(new ItemStackWidget(oneThird + 15 + i * 25, 4 + index * 30, 16, 16, stack, font, itemRenderer, QuestScreen.this::renderItemTooltip));
+                    addWidget(new ItemStackWidget(10 + i * 25, 4 + index * 30, 16, 16, stack, font, itemRenderer, QuestScreen.this::renderItemTooltip));
                 }
                 ++index;
             }
@@ -432,7 +455,6 @@ public class QuestScreen extends Screen {
             float thickness = selected ? 2.0F : 1.0F;
             int color = selected ? 0xFFFFFF00 : 0xFFFFFFFF;
             RenderUtils.drawBorder(stack.last().pose(), x, y, width, height, thickness, color);
-            font.drawShadow(stack, (choiceIndex + 1) + ".", this.x + 5, this.y + (this.height - font.lineHeight) / 2.0F, 0xFFFFFF);
         }
 
         @Override
@@ -459,7 +481,7 @@ public class QuestScreen extends Screen {
     }
 
     static {
-        TEXT_AVAILABLE_QUESTS.withStyle(TextFormatting.BOLD);
-        TEXT_ACTIVE_QUESTS.withStyle(TextFormatting.BOLD);
+        TEXT_AVAILABLE_QUESTS.withStyle(TextFormatting.BOLD, TextFormatting.AQUA);
+        TEXT_ACTIVE_QUESTS.withStyle(TextFormatting.BOLD, TextFormatting.GREEN);
     }
 }

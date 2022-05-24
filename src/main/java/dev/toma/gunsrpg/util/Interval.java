@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  *
  * @author Toma
  */
-public final class Interval implements IIntervalProvider {
+public final class Interval implements IIntervalProvider, Comparable<Interval> {
 
     public static final Pattern PATTERN = Pattern.compile("(\\d+[a-z])");
     private final Unit unit;
@@ -60,6 +60,11 @@ public final class Interval implements IIntervalProvider {
             }
         }
         return builder.toString().trim();
+    }
+
+    @Override
+    public int compareTo(Interval o) {
+        return o.getTicks() - getTicks();
     }
 
     /**

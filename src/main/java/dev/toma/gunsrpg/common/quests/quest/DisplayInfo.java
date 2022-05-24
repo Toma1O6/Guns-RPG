@@ -3,24 +3,24 @@ package dev.toma.gunsrpg.common.quests.quest;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
 public class DisplayInfo {
 
-    private final ITextComponent name;
-    private final ITextComponent info;
+    private final IFormattableTextComponent name;
+    private final IFormattableTextComponent info;
 
     public DisplayInfo(String title, String description) {
         this.name = new StringTextComponent(title);
         this.info = new StringTextComponent(description);
     }
 
-    public ITextComponent getName() {
+    public IFormattableTextComponent getName() {
         return name;
     }
 
-    public ITextComponent getInfo() {
+    public IFormattableTextComponent getInfo() {
         return info;
     }
 
