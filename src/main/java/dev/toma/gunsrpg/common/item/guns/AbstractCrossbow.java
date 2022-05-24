@@ -30,16 +30,6 @@ public abstract class AbstractCrossbow extends GunItem {
     }
 
     @Override
-    public float getVerticalRecoil(IAttributeProvider provider) {
-        return 0.0F;
-    }
-
-    @Override
-    public float getHorizontalRecoil(IAttributeProvider provider) {
-        return 0.0F;
-    }
-
-    @Override
     protected SoundEvent getShootSound(PlayerEntity entity) {
         return ModSounds.CROSSBOW_SHOOT;
     }

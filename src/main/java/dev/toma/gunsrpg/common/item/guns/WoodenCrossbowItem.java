@@ -83,6 +83,16 @@ public class WoodenCrossbowItem extends AbstractCrossbow {
     }
 
     @Override
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return 1.1F * super.getVerticalRecoil(provider);
+    }
+
+    @Override
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return 0.3F * super.getHorizontalRecoil(provider);
+    }
+
+    @Override
     public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
         return Attribs.CROSSBOW_RELOAD.intValue(provider);
     }

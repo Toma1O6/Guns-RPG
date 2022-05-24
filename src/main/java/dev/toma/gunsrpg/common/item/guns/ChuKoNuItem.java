@@ -93,6 +93,16 @@ public class ChuKoNuItem extends AbstractCrossbow {
     }
 
     @Override
+    public float getVerticalRecoil(IAttributeProvider provider) {
+        return 0.8F * super.getVerticalRecoil(provider);
+    }
+
+    @Override
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return 0.4F * super.getHorizontalRecoil(provider);
+    }
+
+    @Override
     public int getFirerate(IAttributeProvider provider) {
         return provider.getAttribute(Attribs.CHUKONU_FIRERATE).intValue();
     }

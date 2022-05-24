@@ -92,7 +92,7 @@ public class AkmItem extends GunItem {
 
     @Override
     public float getHorizontalRecoil(IAttributeProvider provider) {
-        return 2.0F * super.getHorizontalRecoil(provider);
+        return 1.8F * super.getHorizontalRecoil(provider);
     }
 
     @Override
