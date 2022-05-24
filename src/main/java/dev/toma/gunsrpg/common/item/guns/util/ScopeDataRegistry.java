@@ -2,12 +2,20 @@ package dev.toma.gunsrpg.common.item.guns.util;
 
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
+import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.util.function.FloatSupplier;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
 public final class ScopeDataRegistry {
+
+    public static final FloatSupplier ZOOM_2_5 = () -> ModConfig.clientConfig.optics.scope25x.floatValue();
+    public static final FloatSupplier ZOOM_3_0 = () -> ModConfig.clientConfig.optics.scope30x.floatValue();
+    public static final FloatSupplier ZOOM_3_5 = () -> ModConfig.clientConfig.optics.scope35x.floatValue();
+    public static final FloatSupplier ZOOM_4_0 = () -> ModConfig.clientConfig.optics.scope40x.floatValue();
+    public static final FloatSupplier ZOOM_6_0 = () -> ModConfig.clientConfig.optics.scope60x.floatValue();
 
     private static final ScopeDataRegistry REGISTRY = new ScopeDataRegistry();
     private final Map<AbstractGun, Entry> data = new IdentityHashMap<>();
@@ -16,11 +24,11 @@ public final class ScopeDataRegistry {
         return REGISTRY;
     }
 
-    public void register(AbstractGun gun, float scopeFov, float sensitivityMultiplier) {
+    public void register(AbstractGun gun, float scopeFov, FloatSupplier sensitivityMultiplier) {
         register(gun, scopeFov, sensitivityMultiplier, skills -> true);
     }
 
-    public void register(AbstractGun gun, float scopeFov, float sensitivityMultiplier, Predicate<ISkillProvider> condition) {
+    public void register(AbstractGun gun, float scopeFov, FloatSupplier sensitivityMultiplier, Predicate<ISkillProvider> condition) {
         data.put(gun, new Entry(scopeFov, sensitivityMultiplier, condition));
     }
 
@@ -31,13 +39,14 @@ public final class ScopeDataRegistry {
 
     public static class Entry {
 
-        public static final Entry NO_DATA = new Entry(0.0F, 0.0F, skills -> false);
-        private final float fov, sensMultiplier;
+        public static final Entry NO_DATA = new Entry(0.0F, () -> 0.0F, skills -> false);
+        private final float fov;
+        private final FloatSupplier sensitivityProvider;
         private final Predicate<ISkillProvider> skillCondition;
 
-        private Entry(float fov, float sensMultiplier, Predicate<ISkillProvider> skillCondition) {
+        private Entry(float fov, FloatSupplier sensitivityProvider, Predicate<ISkillProvider> skillCondition) {
             this.fov = fov;
-            this.sensMultiplier = sensMultiplier;
+            this.sensitivityProvider = sensitivityProvider;
             this.skillCondition = skillCondition;
         }
 
@@ -46,7 +55,7 @@ public final class ScopeDataRegistry {
         }
 
         public float getSensitivityMultiplier() {
-            return sensMultiplier;
+            return sensitivityProvider.getFloat();
         }
 
         public boolean isApplicable(ISkillProvider provider) {

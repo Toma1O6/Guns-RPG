@@ -61,7 +61,7 @@ public class Kar98kItem extends AbstractBoltActionGun {
                     .define(AmmoMaterials.NETHERITE, 29)
                 .build();
 
-        ScopeDataRegistry.getRegistry().register(this, 15.0F, 0.3F, provider -> provider.hasSkill(Skills.KAR98K_SCOPE));
+        ScopeDataRegistry.getRegistry().register(this, 15.0F, ScopeDataRegistry.ZOOM_4_0, provider -> provider.hasSkill(Skills.KAR98K_SCOPE));
     }
 
     @Override

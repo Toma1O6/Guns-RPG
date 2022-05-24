@@ -64,7 +64,7 @@ public class WoodenCrossbowItem extends AbstractCrossbow {
                     .define(AmmoMaterials.NETHERITE, 25)
                 .build();
 
-        ScopeDataRegistry.getRegistry().register(this, 25.0F, 0.4F, provider -> provider.hasSkill(Skills.CROSSBOW_SCOPE));
+        ScopeDataRegistry.getRegistry().register(this, 25.0F, ScopeDataRegistry.ZOOM_2_5, provider -> provider.hasSkill(Skills.CROSSBOW_SCOPE));
     }
 
     @Override

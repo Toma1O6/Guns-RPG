@@ -59,7 +59,7 @@ public class ChuKoNuItem extends AbstractCrossbow {
                     .define(AmmoMaterials.NETHERITE, 15)
                 .build();
 
-        ScopeDataRegistry.getRegistry().register(this, 25.0F, 0.4F, provider -> provider.hasSkill(Skills.CHUKONU_SCOPE));
+        ScopeDataRegistry.getRegistry().register(this, 25.0F, ScopeDataRegistry.ZOOM_2_5, provider -> provider.hasSkill(Skills.CHUKONU_SCOPE));
     }
 
     @Override

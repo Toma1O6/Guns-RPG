@@ -55,7 +55,7 @@ public class AwmItem extends AbstractBoltActionGun {
                     .define(AmmoMaterials.AMETHYST, 35)
                     .define(AmmoMaterials.NETHERITE, 42)
                 .build();
-        ScopeDataRegistry.getRegistry().register(this, 8.0F, 0.3F, provider -> provider.hasSkill(Skills.AWM_SCOPE));
+        ScopeDataRegistry.getRegistry().register(this, 8.0F, ScopeDataRegistry.ZOOM_6_0, provider -> provider.hasSkill(Skills.AWM_SCOPE));
     }
 
     @Override

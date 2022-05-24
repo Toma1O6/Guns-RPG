@@ -64,7 +64,7 @@ public class WinchesterItem extends AbstractBoltActionGun {
                     .define(AmmoMaterials.AMETHYST, 19)
                     .define(AmmoMaterials.NETHERITE, 23)
                 .build();
-        ScopeDataRegistry.getRegistry().register(this, 20.0F, 0.85F, provider -> provider.hasSkill(Skills.WINCHESTER_SCOPE));
+        ScopeDataRegistry.getRegistry().register(this, 20.0F, ScopeDataRegistry.ZOOM_3_5, provider -> provider.hasSkill(Skills.WINCHESTER_SCOPE));
     }
 
     @Override

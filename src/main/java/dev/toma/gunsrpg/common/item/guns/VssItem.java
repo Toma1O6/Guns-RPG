@@ -59,7 +59,7 @@ public class VssItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 12)
                     .define(AmmoMaterials.NETHERITE, 14)
                 .build();
-        ScopeDataRegistry.getRegistry().register(this, 25.0F, 0.7F, provider -> provider.hasSkill(Skills.VSS_SCOPE));
+        ScopeDataRegistry.getRegistry().register(this, 25.0F, ScopeDataRegistry.ZOOM_3_0, provider -> provider.hasSkill(Skills.VSS_SCOPE));
     }
 
     @Override

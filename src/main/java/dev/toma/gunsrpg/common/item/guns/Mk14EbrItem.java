@@ -53,7 +53,7 @@ public class Mk14EbrItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 18)
                     .define(AmmoMaterials.NETHERITE, 22)
                 .build();
-        ScopeDataRegistry.getRegistry().register(this, 15.0F, 0.65F, provider -> provider.hasSkill(Skills.MK14EBR_SCOPE));
+        ScopeDataRegistry.getRegistry().register(this, 15.0F, ScopeDataRegistry.ZOOM_4_0, provider -> provider.hasSkill(Skills.MK14EBR_SCOPE));
     }
 
     @Override

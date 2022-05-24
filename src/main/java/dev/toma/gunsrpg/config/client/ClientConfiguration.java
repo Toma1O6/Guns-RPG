@@ -26,6 +26,7 @@ public class ClientConfiguration extends ObjectType {
     public final IconsType reticleVariants;
     public final IHeldLayerConfig gunnerHeldItemRenderConfig;
     public final IHeldLayerConfig explosiveSkeletonHeldItemRenderConfig;
+    public final OpticsSensitivity optics;
 
     public ClientConfiguration(IObjectSpec spec) {
         super(spec);
@@ -39,5 +40,6 @@ public class ClientConfiguration extends ObjectType {
         reticleVariants = IconsType.write(writer, "Reticle variant", 0, VARIANTS, "Configure reticle variant");
         gunnerHeldItemRenderConfig = writer.writeObject(sp -> new HeldLayerConfig(sp, IHeldLayerConfig.Mode.DEFAULT, "minecraft:crossbow"), "Gunner item render");
         explosiveSkeletonHeldItemRenderConfig = writer.writeObject(sp -> new HeldLayerConfig(sp, IHeldLayerConfig.Mode.DEFAULT, "minecraft:bow"), "Explosive skeleton item render");
+        optics = writer.writeObject(OpticsSensitivity::new, "Optics sensitivity");
     }
 }
