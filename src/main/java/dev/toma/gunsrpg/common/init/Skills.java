@@ -58,9 +58,10 @@ public class Skills {
     public static final SkillType<ISkill> M1911_SUPPRESSOR = null;
     public static final SkillType<ISkill> M1911_HEAVY_BULLETS = null;
     public static final SkillType<KillingSpreeSkill> M1911_KILLING_SPREE = null;
+    public static final SkillType<ISkill> M1911_EVERY_BULLET_COUNTS = null;
     public static final SkillType<ISkill> R45_SUPPRESSOR = null;
     public static final SkillType<ISkill> R45_ACE_OF_HEARTS = null;
-    public static final SkillType<ISkill> R45_EVERY_BULLET_COUNTS = null;
+    public static final SkillType<ISkill> R45_COLD_BLOODED = null;
     public static final SkillType<ISkill> DEAGLE_RED_DOT = null;
     public static final SkillType<ISkill> DEAGLE_PENETRATOR = null;
     public static final SkillType<ISkill> DEAGLE_FINISHER = null;

@@ -115,11 +115,10 @@ public class R45Item extends GunItem {
 
     @Override
     public float modifyProjectileDamage(AbstractProjectile projectile, LivingEntity entity, PlayerEntity shooter, float damage) {
-        ItemStack weapon = projectile.getWeaponSource();
-        if (weapon.getItem() instanceof GunItem && PlayerData.hasActiveSkill(shooter, Skills.R45_EVERY_BULLET_COUNTS)) {
-            int ammo = this.getAmmo(weapon);
-            if (ammo == 0) {
-                return damage * SkillUtil.EVERY_BULLET_COUNTS_DAMAGE;
+        if (PlayerData.hasActiveSkill(shooter, Skills.R45_COLD_BLOODED)) {
+            float healthStatus = entity.getHealth() / entity.getMaxHealth();
+            if (healthStatus == 1.0F) {
+                return damage * SkillUtil.COLD_BLOODED_DAMAGE;
             }
         }
         return damage;

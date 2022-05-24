@@ -17,6 +17,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.KillingSpreeSkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -94,6 +95,18 @@ public class M1911Item extends GunItem {
     @Override
     protected SoundEvent getShootSound(PlayerEntity entity) {
         return isSilenced(entity) ? ModSounds.M1911_SILENT : ModSounds.M1911;
+    }
+
+    @Override
+    public float modifyProjectileDamage(AbstractProjectile projectile, LivingEntity entity, PlayerEntity shooter, float damage) {
+        ItemStack weapon = projectile.getWeaponSource();
+        if (weapon.getItem() instanceof GunItem && PlayerData.hasActiveSkill(shooter, Skills.M1911_EVERY_BULLET_COUNTS)) {
+            int ammo = this.getAmmo(weapon);
+            if (ammo == 0) {
+                return damage * SkillUtil.EVERY_BULLET_COUNTS_DAMAGE;
+            }
+        }
+        return damage;
     }
 
     @Override
