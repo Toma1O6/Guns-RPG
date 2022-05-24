@@ -20,7 +20,7 @@ public class PlayerQuests implements IQuests, IPlayerCapEntry {
 
     public PlayerQuests(PlayerEntity player) {
         this.player = player;
-        this.standings = new PlayerTraderStandings(() -> syncRequestFactory);
+        this.standings = new PlayerTraderStandings(() -> syncRequestFactory, player);
     }
 
     @Override
