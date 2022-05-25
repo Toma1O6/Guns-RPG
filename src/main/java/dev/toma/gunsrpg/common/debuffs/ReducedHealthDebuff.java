@@ -31,13 +31,11 @@ public class ReducedHealthDebuff implements IDebuff {
                 player.setHealth(Math.min(player.getHealth(), 6.0F));
             }
         } else {
-            if (!player.level.isClientSide) {
-                PlayerData.get(player).ifPresent(data -> {
-                    ISkillProvider provider = data.getSkillProvider();
-                    double health = provider.hasSkill(Skills.WAR_MACHINE) ? 40.0 : 20.0;
-                    attribute.setBaseValue(health);
-                });
-            }
+            PlayerData.get(player).ifPresent(data -> {
+                ISkillProvider provider = data.getSkillProvider();
+                double health = provider.hasSkill(Skills.WAR_MACHINE) ? 40.0 : 20.0;
+                attribute.setBaseValue(health);
+            });
         }
     }
 
