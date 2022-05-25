@@ -2,6 +2,8 @@ package dev.toma.gunsrpg.common.skills;
 
 import dev.toma.gunsrpg.api.common.skill.ICooldown;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
+import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -69,6 +71,9 @@ public class SecondChanceSkill extends SimpleSkill implements ICooldown, IDescri
         player.setHealth(this.healAmount);
         player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.SECOND_CHANCE_USE, SoundCategory.MASTER, 1.0F, 1.0F);
         player.addEffect(effectSupplier.get());
+        PlayerData.get(player).ifPresent(data -> {
+            cooldown = (int) (cooldown * data.getAttributes().getAttributeValue(Attribs.SECOND_CHANCE_COOLDOWN));
+        });
     }
 
     @Override

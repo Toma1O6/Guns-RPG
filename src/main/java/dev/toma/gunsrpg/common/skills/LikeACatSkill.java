@@ -1,9 +1,12 @@
 package dev.toma.gunsrpg.common.skills;
 
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.skill.IClickableSkill;
 import dev.toma.gunsrpg.api.common.skill.ICooldown;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -82,16 +85,11 @@ public class LikeACatSkill extends SimpleSkill implements ICooldown, IClickableS
     public void onSkillUsed(ServerPlayerEntity player) {
         effectLeft = effectLength;
         setOnCooldown();
-        player.addEffect(new EffectInstance(Effects.NIGHT_VISION, effectLength, 0, false, false));
-        PlayerData.get(player).ifPresent(data -> data.sync(DataFlags.SKILLS));
-    }
-
-    public float getEffectPct() {
-        return effectLeft / (float) effectLength;
-    }
-
-    public float getCooldownPct() {
-        return cooldown / (float) totalCooldown;
+        IPlayerData data = PlayerData.getUnsafe(player);
+        IAttributeProvider provider = data.getAttributes();
+        int effectDuration = (int) (effectLength * provider.getAttributeValue(Attribs.LIKE_A_CAT_EFFECT));
+        player.addEffect(new EffectInstance(Effects.NIGHT_VISION, effectDuration, 0, false, false));
+        data.sync(DataFlags.SKILLS);
     }
 
     @Override

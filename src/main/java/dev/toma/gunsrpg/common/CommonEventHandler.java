@@ -1,12 +1,10 @@
 package dev.toma.gunsrpg.common;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IAttribute;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
-import dev.toma.gunsrpg.api.common.data.DataFlags;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.ISkillProvider;
-import dev.toma.gunsrpg.api.common.data.IWorldData;
+import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataProvider;
@@ -19,7 +17,6 @@ import dev.toma.gunsrpg.common.item.ICustomUseDuration;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.skills.AvengeMeFriendsSkill;
-import dev.toma.gunsrpg.common.skills.LightHunterSkill;
 import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
 import dev.toma.gunsrpg.config.ModConfig;
@@ -54,6 +51,7 @@ import net.minecraft.loot.ItemLootEntry;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.RandomValueRange;
 import net.minecraft.loot.functions.SetCount;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -101,6 +99,8 @@ public class CommonEventHandler {
 
     public static final Random random = new Random();
     private static final UUID MOVEMENT_SPEED = UUID.fromString("785168CE-6979-421A-ADE7-98461F04D1A0");
+    private static final float SKILLBOOK_DROP_CHANCE = 0.016F;
+    private static final float PERKBOOK_DROP_CHANCE = 0.05F;
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void loadBiomes(BiomeLoadingEvent event) {
@@ -214,7 +214,7 @@ public class CommonEventHandler {
                     PlayerData.get(player).ifPresent(data -> {
                         ISkillProvider provider = data.getSkillProvider();
                         if (provider.hasSkill(Skills.WELL_FED_I)) {
-                            SkillUtil.getTopHierarchySkill(Skills.WELL_FED_I, provider).applyEffects(player);
+                            SkillUtil.getTopHierarchySkill(Skills.WELL_FED_I, provider).applyEffects(player, data);
                         }
                     });
                 }
@@ -263,13 +263,28 @@ public class CommonEventHandler {
                     event.setAmount(amount);
                 }
             });
-            // TODO implement arrow damage boost
         } else if (source.getDirectEntity() instanceof AbstractArrowEntity && source.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) source.getEntity();
-            LightHunterSkill skill = PlayerData.getSkill(player, Skills.LIGHT_HUNTER);
-            if (skill != null && skill.canApply(player)) {
-                event.setAmount(event.getAmount() * LightHunterSkill.ARROW_DAMAGE_MULTIPLIER);
-            }
+            PlayerData.get(player).ifPresent(data -> {
+                IAttributeProvider attributeProvider = data.getAttributes();
+                double amount = event.getAmount();
+                amount *= attributeProvider.getAttributeValue(Attribs.BOW_DAMAGE);
+                event.setAmount((float) amount);
+            });
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPotionAdded(PotionEvent.PotionAddedEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        EffectInstance effectInstance = event.getPotionEffect();
+        if (entity instanceof PlayerEntity && effectInstance.getDuration() > 30) {
+            PlayerData.get((PlayerEntity) entity).ifPresent(iPlayerData -> {
+                IAttributeProvider provider = iPlayerData.getAttributes();
+                IAttribute attribute = provider.getAttribute(Attribs.POTION_EFFECT);
+                int value = effectInstance.duration;
+                effectInstance.duration = (int) (value * attribute.value());
+            });
         }
     }
 
@@ -289,9 +304,26 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onEntityDamaged(LivingHurtEvent event) {
-        if (event.getAmount() >= 0.2F && event.getEntity() instanceof PlayerEntity) {
+        if (event.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntity();
-            PlayerData.get(player).ifPresent(data -> data.getDebuffControl().trigger(IDebuffType.TriggerFlags.HURT, IDebuffContext.of(event.getSource(), player, data, event.getAmount())));
+            PlayerData.get(player).ifPresent(data -> {
+                float amount = event.getAmount();
+                DamageSource source = event.getSource();
+                IAttributeProvider provider = data.getAttributes();
+                // all damage
+                amount *= provider.getAttribute(Attribs.DAMAGE_TAKEN).floatValue();
+                // fall damage
+                if (source == DamageSource.FALL) {
+                    amount *= provider.getAttribute(Attribs.FALL_DAMAGE).floatValue();
+                }
+                // debuff triggers
+                if (amount > 1.0F) {
+                    IDebuffs debuffs = data.getDebuffControl();
+                    IDebuffContext context = IDebuffContext.of(source, player, data, amount);
+                    debuffs.trigger(IDebuffType.TriggerFlags.HURT, context);
+                }
+                event.setAmount(amount);
+            });
         }
     }
 
@@ -314,9 +346,20 @@ public class CommonEventHandler {
             if (!event.getEntity().level.isClientSide) {
                 Entity entity = event.getEntity();
                 Item item = null;
-                if (random.nextFloat() < 0.016F) {
+                float chance = random.nextFloat();
+                float skillChance = SKILLBOOK_DROP_CHANCE;
+                float perkChance = PERKBOOK_DROP_CHANCE;
+                if (event.getSource().getEntity() instanceof PlayerEntity) {
+                    PlayerEntity player = (PlayerEntity) event.getSource().getEntity();
+                    IPlayerData data = PlayerData.getUnsafe(player);
+                    IAttributeProvider provider = data.getAttributes();
+                    skillChance *= provider.getAttribute(Attribs.SKILL_BOOK_CHANCE).floatValue();
+                    perkChance *= provider.getAttribute(Attribs.PERK_BOOK_CHANCE).floatValue();
+                }
+                perkChance += skillChance;
+                if (chance < skillChance) {
                     item = ModItems.SKILLPOINT_BOOK;
-                } else if (random.nextFloat() < 0.05F) {
+                } else if (chance < perkChance) {
                     item = ModItems.PERKPOINT_BOOK;
                 }
                 if (item != null) {

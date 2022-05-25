@@ -1,7 +1,9 @@
 package dev.toma.gunsrpg.common.skills;
 
 import dev.toma.gunsrpg.api.common.attribute.IValueFormatter;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -34,11 +36,11 @@ public class WellFedSkill extends SimpleSkill implements IDescriptionProvider {
         return container.getLines();
     }
 
-    public void applyEffects(PlayerEntity player) {
+    public void applyEffects(PlayerEntity player, IPlayerData data) {
         Random random = new Random();
         if (player.level.isClientSide || random.nextFloat() >= chance) return;
         int amplifier = level - 1;
-        int duration = 1200 + amplifier * 600;
+        int duration = (int) ((1200 + amplifier * 600) * data.getAttributes().getAttributeValue(Attribs.WELL_FED_DURATION));
         player.addEffect(new EffectInstance(Effects.ABSORPTION, duration, amplifier));
         ((ServerPlayerEntity) player).connection.send(new SPlaySoundEffectPacket(ModSounds.USE_WELL_FED, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 1.0F, 1.0F));
     }

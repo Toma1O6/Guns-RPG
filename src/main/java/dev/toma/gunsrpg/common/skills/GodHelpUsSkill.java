@@ -1,9 +1,11 @@
 package dev.toma.gunsrpg.common.skills;
 
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.skill.IClickableSkill;
 import dev.toma.gunsrpg.api.common.skill.ICooldown;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.FlareEntity;
 import dev.toma.gunsrpg.common.init.ModSounds;
@@ -54,7 +56,11 @@ public class GodHelpUsSkill extends SimpleSkill implements ICooldown, IClickable
         currentCooldown = maxCooldown;
         player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.FLARE_SHOOT, SoundCategory.MASTER, 10.0F, 1.0F);
         player.level.addFreshEntity(new FlareEntity(player.level, player));
-        PlayerData.get(player).ifPresent(data -> data.sync(DataFlags.SKILLS));
+        PlayerData.get(player).ifPresent(data -> {
+            IAttributeProvider provider = data.getAttributes();
+            currentCooldown = (int) (currentCooldown * provider.getAttributeValue(Attribs.AIRDROP_CALL_COOLDOWN));
+            data.sync(DataFlags.SKILLS);
+        });
     }
 
     @Override

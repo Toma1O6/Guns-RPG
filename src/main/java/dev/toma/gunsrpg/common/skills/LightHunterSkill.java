@@ -16,9 +16,9 @@ import net.minecraft.util.text.ITextComponent;
 
 public class LightHunterSkill extends SimpleSkill implements ITickableSkill, IDescriptionProvider {
 
-    public static final float ARROW_DAMAGE_MULTIPLIER = 1.2F; // TODO move to attributes
     private static final IAttributeModifier MOVEMENT_SPEED_MODIFIER = new AttributeModifier("9942EE39-CCD1-4F37-88E4-98711C2CF3EB", AttributeOps.MUL, 0.85);
     private static final IAttributeModifier FALLING_MODIFIER = new AttributeModifier("E354F3D8-F665-48C4-9F6D-B1C7714E2337", AttributeOps.MUL, 0.85);
+    private static final IAttributeModifier ARROW_DAMAGE_MODIFIER = new AttributeModifier("E509F8AA-1E9C-42F7-9B20-660746968478", AttributeOps.MUL, 1.2);
     private final DescriptionContainer container;
     private boolean validityState;
 
@@ -27,7 +27,7 @@ public class LightHunterSkill extends SimpleSkill implements ITickableSkill, IDe
         this.container = new DescriptionContainer(type);
         this.container.addProperty("info");
         this.container.addProperty("speed", IValueFormatter.INV_PERCENT.formatAttributeValue(MOVEMENT_SPEED_MODIFIER.getModifierValue()));
-        this.container.addProperty("damage", (int) ((ARROW_DAMAGE_MULTIPLIER - 1.0F) * 100));
+        this.container.addProperty("damage", IValueFormatter.BASE_PERCENT.formatAttributeValue(ARROW_DAMAGE_MODIFIER.getModifierValue()));
         this.container.addProperty("fall", IValueFormatter.INV_PERCENT.formatAttributeValue(FALLING_MODIFIER.getModifierValue()));
     }
 
@@ -50,6 +50,7 @@ public class LightHunterSkill extends SimpleSkill implements ITickableSkill, IDe
             if (lastState != validityState) {
                 toggleModifier(provider, Attribs.MOVEMENT_SPEED, MOVEMENT_SPEED_MODIFIER);
                 toggleModifier(provider, Attribs.FALL_RESISTANCE, FALLING_MODIFIER);
+                toggleModifier(provider, Attribs.BOW_DAMAGE, ARROW_DAMAGE_MODIFIER);
             }
         });
     }
