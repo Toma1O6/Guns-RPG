@@ -53,6 +53,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
         ITransactionValidatorFactory<?, ?> factory = TransactionValidatorRegistry.getValidatorFactory(PlayerLevelTransactionValidator.ID);
         ITransactionValidator validator = TransactionValidatorRegistry.getTransactionValidator(factory, null);
         this.strategy = GunsRPG.getModLifecycle().getProgressionStrategyManager().getStrategy(validator);
+        this.requiredKills = this.strategy.getRequiredKillCount(this.level);
     }
 
     @Override
