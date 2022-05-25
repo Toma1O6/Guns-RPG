@@ -1,6 +1,9 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.api.common.data.*;
+import dev.toma.gunsrpg.api.common.data.DataFlags;
+import dev.toma.gunsrpg.api.common.data.IPerkProvider;
+import dev.toma.gunsrpg.api.common.data.IPointProvider;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;

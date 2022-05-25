@@ -8,7 +8,6 @@ import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.block.ICustomizableDrops;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.Skills;
-import dev.toma.gunsrpg.common.skills.AdrenalineRushSkill;
 import dev.toma.gunsrpg.common.skills.MotherlodeSkill;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.Lifecycle;

@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.common.block;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.container.CrystalFusionStationContainer;
-import dev.toma.gunsrpg.common.container.CrystalStationContainer;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.tileentity.CrystalFusionStationTileEntity;
 import net.minecraft.block.BlockState;

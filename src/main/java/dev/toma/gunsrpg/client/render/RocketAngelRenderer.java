@@ -1,12 +1,9 @@
 package dev.toma.gunsrpg.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.RocketAngelModel;
 import dev.toma.gunsrpg.common.entity.RocketAngelEntity;
-import dev.toma.gunsrpg.util.RenderUtils;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.BipedRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;

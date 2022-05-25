@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.quests.quest.area;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.common.quests.adapters.MobSpawnerAdapter;

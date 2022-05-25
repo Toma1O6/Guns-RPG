@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.client.model.component;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.item.AbstractWeaponRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ModelRenderer;

@@ -11,8 +11,6 @@ import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 
 public class ExplosiveProjectileRenderer<T extends Entity> extends EntityRenderer<T> {
