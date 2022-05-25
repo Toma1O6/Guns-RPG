@@ -68,8 +68,8 @@ public class ExtensionsView extends View {
         IPlayerData data = context.getData();
         ISkillProperties properties = head.getHierarchy().getExtensions()[0].getProperties();
         ITransactionValidator validator = properties.getTransactionValidator();
-        IPointProvider provider = validator.getData(data);
-        footer = addWidget(new FooterWidget(x, y + height - 20, width, 20, font, provider));
+        ReadOnlyPointProvider pointProvider = new ReadOnlyPointProvider(validator, data);
+        footer = addWidget(new FooterWidget(x, y + height - 20, width, 20, font, pointProvider));
         footer.setColorSchema(0xFFFF00, 0xCCCC00);
         // info
         skillInfo = addWidget(new SkillInfoWidget(x, y + height - 80, width, 80, manager));
@@ -222,6 +222,28 @@ public class ExtensionsView extends View {
         @Override
         public int getRenderIndex() {
             return 1;
+        }
+    }
+
+    private static class ReadOnlyPointProvider implements IPointProvider {
+
+        private final ITransactionValidator validator;
+        private final IPlayerData data;
+
+        public ReadOnlyPointProvider(ITransactionValidator validator, IPlayerData data) {
+            this.validator = validator;
+            this.data = data;
+        }
+
+        @Override
+        public int getPoints() {
+            IPointProvider provider = validator.getData(data);
+            return provider.getPoints();
+        }
+
+        @Override
+        public void awardPoints(int amount) {
+            throw new UnsupportedOperationException("Cannot issue points to read-only provider");
         }
     }
 }
