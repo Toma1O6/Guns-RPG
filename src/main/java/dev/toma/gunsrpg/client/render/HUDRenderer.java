@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.api.common.skill.ICooldown;
 import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
+import dev.toma.gunsrpg.client.render.infobar.IDataModel;
 import dev.toma.gunsrpg.client.render.skill.SkillRendererRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModItems;
@@ -17,6 +18,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.config.client.QuestOverlayConfig;
 import dev.toma.gunsrpg.resource.util.functions.RangedFunction;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.Lifecycle;
@@ -78,6 +80,22 @@ public final class HUDRenderer {
             renderDebuffs(matrixStack, attributeProvider, debuffs, 0, height - 50, partialTicks);
             renderProgressionOnScreen(matrixStack, font, window, data, player);
             renderSkillsOnHUD(matrixStack, window, data);
+            renderQuestOverlay(matrixStack, font, window, data);
+        });
+    }
+
+    // QUEST ---------------------------------------------
+
+    private void renderQuestOverlay(MatrixStack matrix, FontRenderer font, MainWindow window, IPlayerData data) {
+        IQuests quests = data.getQuests();
+        quests.getActiveQuest().ifPresent(quest -> {
+            LazyOptional<IDataModel> modelOptional = quest.getDisplayModel();
+            modelOptional.ifPresent(model -> {
+                QuestOverlayConfig config = ModConfig.clientConfig.questOverlayConfig;
+                boolean rightAlignment = config.isRightAligned();
+                int posX = rightAlignment ? window.getGuiScaledWidth() : 0;
+                model.renderModel(matrix, font, posX, config.getOffsetY(), rightAlignment);
+            });
         });
     }
 

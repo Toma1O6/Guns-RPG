@@ -5,6 +5,8 @@ import com.google.common.collect.Multimap;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.client.render.infobar.IDataModel;
+import dev.toma.gunsrpg.client.render.infobar.QuestDisplayDataModel;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
@@ -21,7 +23,10 @@ import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,6 +39,8 @@ public class Quest<D extends IQuestData> {
     private final IQuestCondition[] conditions;
     private final int rewardTier;
     private final UUID uuid;
+    @OnlyIn(Dist.CLIENT)
+    private final LazyOptional<IDataModel> displayModel = LazyOptional.of(this::buildDataModel);
 
     private PlayerEntity player;
     private QuestReward reward;
@@ -168,6 +175,10 @@ public class Quest<D extends IQuestData> {
         return reward;
     }
 
+    public LazyOptional<IDataModel> getDisplayModel() {
+        return displayModel;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -179,6 +190,16 @@ public class Quest<D extends IQuestData> {
     @Override
     public int hashCode() {
         return getScheme().hashCode();
+    }
+
+    protected void fillDataModel(QuestDisplayDataModel model) {
+        model.addQuestHeader(this, true);
+    }
+
+    private IDataModel buildDataModel() {
+        QuestDisplayDataModel dataModel = new QuestDisplayDataModel();
+        this.fillDataModel(dataModel);
+        return dataModel;
     }
 
     public interface ITriggerRegistration {
