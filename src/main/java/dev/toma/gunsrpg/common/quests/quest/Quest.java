@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.render.infobar.IDataModel;
 import dev.toma.gunsrpg.client.render.infobar.QuestDisplayDataModel;
@@ -16,25 +17,22 @@ import dev.toma.gunsrpg.common.quests.condition.QuestConditions;
 import dev.toma.gunsrpg.common.quests.reward.QuestReward;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardList;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardManager;
-import dev.toma.gunsrpg.common.quests.trigger.ITriggerListener;
-import dev.toma.gunsrpg.common.quests.trigger.Trigger;
-import dev.toma.gunsrpg.common.quests.trigger.TriggerResponseStatus;
+import dev.toma.gunsrpg.common.quests.trigger.*;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.UUID;
 
-public class Quest<D extends IQuestData> {
+public abstract class Quest<D extends IQuestData> {
 
-    private final Multimap<Trigger, ITriggerListener> triggerListeners = ArrayListMultimap.create();
+    private final Multimap<Trigger, TriggerContext> triggerListeners = ArrayListMultimap.create();
     private final QuestScheme<D> scheme;
     private final IQuestCondition[] conditions;
     private final int rewardTier;
@@ -42,10 +40,9 @@ public class Quest<D extends IQuestData> {
     @OnlyIn(Dist.CLIENT)
     private final LazyOptional<IDataModel> displayModel = LazyOptional.of(this::buildDataModel);
 
-    private PlayerEntity player;
-    private QuestReward reward;
-    private boolean active;
-    private QuestStatus status = QuestStatus.CREATED;
+    protected PlayerEntity player;
+    protected QuestReward reward;
+    protected QuestStatus status = QuestStatus.CREATED;
 
     public Quest(QuestScheme<D> scheme, UUID traderId) {
         this.scheme = scheme;
@@ -64,28 +61,20 @@ public class Quest<D extends IQuestData> {
         this.conditions = allConditions;
     }
 
-    protected Quest(QuestScheme<D> scheme, UUID traderId, int rewardTier, IQuestCondition[] conditions) {
-        this.scheme = scheme;
-        this.uuid = traderId;
-        this.conditions = conditions;
-        this.rewardTier = rewardTier;
+    protected Quest(QuestDeserializationContext<D> context) {
+        this.scheme = context.getScheme();
+        this.uuid = context.getTraderId();
+        this.conditions = context.getConditions();
+        this.rewardTier = context.getRewardTier();
+        QuestReward reward = context.getReward();
+        if (reward != null) {
+            this.reward = reward;
+        }
+        CompoundNBT nbt = context.getInternalData();
+        readQuestData(nbt);
     }
 
-    public static <D extends IQuestData> Quest<D> fromNbt(CompoundNBT nbt) {
-        QuestScheme<D> scheme = QuestScheme.read(nbt.getCompound("scheme"));
-        UUID createdBy = nbt.getUUID("createdBy");
-        int rewardTier = nbt.getInt("rewardTier");
-        IQuestCondition[] conditions = nbt.getList("conditions", Constants.NBT.TAG_COMPOUND).stream()
-                .<IQuestCondition>map(inbt -> QuestConditions.getConditionFromNbt((CompoundNBT) inbt))
-                .toArray(IQuestCondition[]::new);
-        Quest<D> quest = new Quest<>(scheme, createdBy, rewardTier, conditions);
-        if (nbt.contains("reward")) {
-            CompoundNBT rewardNbt = nbt.getCompound("reward");
-            quest.reward = new QuestReward(rewardNbt);
-        }
-        quest.status = QuestStatus.values()[nbt.getInt("status")];
-        return quest;
-    }
+    public abstract void registerTriggers(ITriggerRegistration registration);
 
     public UUID getQuestInitiator() {
         return uuid;
@@ -96,7 +85,6 @@ public class Quest<D extends IQuestData> {
     }
 
     public void assign(PlayerEntity player) {
-        this.active = true;
         this.player = player;
         if (reward == null) {
             IPlayerData data = PlayerData.getUnsafe(player);
@@ -111,27 +99,38 @@ public class Quest<D extends IQuestData> {
     }
 
     public void onCompleted(PlayerEntity player) {
-        active = false;
+
     }
 
     public void onFailed(PlayerEntity player) {
-        active = false;
+
     }
 
     public void trigger(Trigger trigger, IPropertyReader reader) {
-        Collection<ITriggerListener> listeners = triggerListeners.get(trigger);
-        if (listeners != null) {
-            boolean failedChecks = false;
-            for (ITriggerListener listener : listeners) {
-                TriggerResponseStatus status = listener.handleTriggerEvent(trigger, reader);
-                if (status == TriggerResponseStatus.FAIL) {
-                    failedChecks = true;
-                    break;
+        Collection<TriggerContext> contexts = triggerListeners.get(trigger);
+        if (contexts != null) {
+            TriggerResponseStatus response = TriggerResponseStatus.OK;
+            for (TriggerContext context : contexts) {
+                TriggerResponseStatus status = context.getResponse(trigger, reader);
+                if (status.ordinal() > response.ordinal()) {
+                    response = status;
                 }
             }
-            if (!failedChecks) {
-                // TODO should be handled by quest logic rather than in data structure
-                //questData.handleProgress(trigger, reader);
+            switch (response) {
+                case OK:
+                    for (TriggerContext context : contexts) {
+                        context.handleSuccess(trigger, reader);
+                    }
+                    break;
+                case FAIL:
+                    setStatus(QuestStatus.FAILED);
+                    break;
+            }
+            switch (status) {
+                case COMPLETED:
+                    break;
+                case FAILED:
+                    break;
             }
         }
     }
@@ -148,6 +147,9 @@ public class Quest<D extends IQuestData> {
             nbt.put("reward", reward.toNbt());
         }
         nbt.putInt("status", status.ordinal());
+        CompoundNBT internalData = new CompoundNBT();
+        this.writeQuestData(internalData);
+        nbt.put("internalData", internalData);
         return nbt;
     }
 
@@ -192,6 +194,19 @@ public class Quest<D extends IQuestData> {
         return getScheme().hashCode();
     }
 
+    protected void writeQuestData(CompoundNBT nbt) {
+
+    }
+
+    protected void readQuestData(CompoundNBT nbt) {
+
+    }
+
+    protected void trySyncClient() {
+        if (player == null) return;
+        PlayerData.get(player).ifPresent(data -> data.sync(DataFlags.QUESTS));
+    }
+
     protected void fillDataModel(QuestDisplayDataModel model) {
         model.addQuestHeader(this, true);
     }
@@ -203,6 +218,6 @@ public class Quest<D extends IQuestData> {
     }
 
     public interface ITriggerRegistration {
-        void addEntry(Trigger trigger, ITriggerListener listener);
+        void addEntry(Trigger trigger, ITriggerResponder listener, ITriggerHandler handler);
     }
 }

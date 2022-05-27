@@ -2,7 +2,8 @@ package dev.toma.gunsrpg.common.quests.trigger;
 
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 
-public interface ITriggerListener {
+@FunctionalInterface
+public interface ITriggerResponder {
 
     TriggerResponseStatus handleTriggerEvent(Trigger trigger, IPropertyReader reader);
 }
