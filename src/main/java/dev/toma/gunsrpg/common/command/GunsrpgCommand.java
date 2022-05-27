@@ -298,12 +298,18 @@ public class GunsrpgCommand {
         if (scheme == null) {
             throw UNKNOWN_KEY_EXCEPTION.create(location);
         }
+        Quest<?> quest = newQuest(scheme);
         IQuests provider = data.getQuests();
-        Quest<?> quest = new Quest<>(scheme, Util.NIL_UUID);
         quest.setStatus(QuestStatus.ACTIVE);
         provider.assignQuest(quest);
         quest.assign(player);
         return 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <D extends IQuestData, Q extends Quest<D>> Quest<D> newQuest(QuestScheme<D> scheme) {
+        QuestType<D, Q> type = (QuestType<D, Q>) scheme.getQuestType();
+        return type.newQuestInstance(scheme, Util.NIL_UUID);
     }
 
     private static int updateQuestStatus(CommandContext<CommandSource> context) throws CommandSyntaxException {
@@ -350,7 +356,7 @@ public class GunsrpgCommand {
         if (scheme == null) {
             throw UNKNOWN_KEY_EXCEPTION.create(questId);
         }
-        QuestType<?> questType = scheme.getQuestType();
+        QuestType<?, ?> questType = scheme.getQuestType();
         IQuestData data = scheme.getData();
         DisplayInfo info = scheme.getDisplayInfo();
         QuestConditionTierScheme tierScheme = scheme.getConditionTierScheme();

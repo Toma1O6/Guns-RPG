@@ -5,14 +5,18 @@ import com.google.gson.JsonParseException;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 
-public final class QuestType<D extends IQuestData> {
+import java.util.UUID;
+
+public final class QuestType<D extends IQuestData, Q extends Quest<D>> {
 
     private final ResourceLocation id;
     private final IQuestDataResolver<D> resolver;
+    private final IQuestFactory<D, Q> factory;
 
-    public QuestType(ResourceLocation id, IQuestDataResolver<D> resolver) {
+    public QuestType(ResourceLocation id, IQuestDataResolver<D> resolver, IQuestFactory<D, Q> factory) {
         this.id = id;
         this.resolver = resolver;
+        this.factory = factory;
     }
 
     public ResourceLocation getId() {
@@ -29,6 +33,14 @@ public final class QuestType<D extends IQuestData> {
 
     public D resolveJson(JsonElement element) throws JsonParseException {
         return resolver.resolve(element);
+    }
+
+    public Q newQuestInstance(QuestScheme<D> scheme, UUID traderId) {
+        return factory.makeQuestInstance(scheme, traderId);
+    }
+
+    public Q fromContext(QuestDeserializationContext<D> context) {
+        return factory.questFromContext(context);
     }
 
     // TODO

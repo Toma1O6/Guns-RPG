@@ -65,7 +65,7 @@ public abstract class Quest<D extends IQuestData> {
         registerAllTriggers();
     }
 
-    protected Quest(QuestDeserializationContext<D> context) {
+    public Quest(QuestDeserializationContext<D> context) {
         this.scheme = context.getScheme();
         this.uuid = context.getTraderId();
         this.conditions = context.getConditions();
@@ -214,7 +214,7 @@ public abstract class Quest<D extends IQuestData> {
     }
 
     protected void fillDataModel(QuestDisplayDataModel model) {
-        model.addQuestHeader(this, true);
+        model.addQuestHeader(this);
     }
 
     private IDataModel buildDataModel() {

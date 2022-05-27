@@ -9,10 +9,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
-import dev.toma.gunsrpg.common.quests.quest.Quest;
-import dev.toma.gunsrpg.common.quests.quest.QuestManager;
-import dev.toma.gunsrpg.common.quests.quest.QuestScheme;
-import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
+import dev.toma.gunsrpg.common.quests.quest.*;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.S2C_OpenQuestScreen;
@@ -180,14 +177,14 @@ public class MayorEntity extends CreatureEntity {
         }
 
         public static ListedQuests loadNbt(ListNBT nbt) {
-            return new ListedQuests(nbt.stream().map(inbt -> Quest.fromNbt((CompoundNBT) inbt)).toArray(Quest[]::new));
+            return new ListedQuests(nbt.stream().<Quest<?>>map(inbt -> QuestTypes.getFromNbt((CompoundNBT) inbt)).toArray(Quest[]::new));
         }
 
         public static ListedQuests generate(UUID traderId, float reputation) {
             QuestSystem system = GunsRPG.getModLifecycle().quests();
             QuestManager manager = system.getQuestManager();
             Set<QuestScheme<?>> schemes = manager.getSchemes(QUEST_COUNT, reputation);
-            Quest<?>[] quests = schemes.stream().map(scheme -> new Quest<>(scheme, traderId)).toArray(Quest[]::new);
+            Quest<?>[] quests = schemes.stream().<Quest<?>>map(scheme -> makeQuestFromScheme(scheme, traderId)).toArray(Quest[]::new);
             return new ListedQuests(quests);
         }
 
@@ -203,6 +200,12 @@ public class MayorEntity extends CreatureEntity {
             ListNBT nbt = new ListNBT();
             Arrays.stream(quests).map(Quest::serialize).forEach(nbt::add);
             return nbt;
+        }
+
+        @SuppressWarnings("unchecked")
+        private static <D extends IQuestData, Q extends Quest<D>> Q makeQuestFromScheme(QuestScheme<D> scheme, UUID traderId) {
+            QuestType<D, Q> type = (QuestType<D, Q>) scheme.getQuestType();
+            return type.newQuestInstance(scheme, traderId);
         }
     }
 }

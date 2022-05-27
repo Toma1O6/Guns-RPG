@@ -7,14 +7,14 @@ import net.minecraft.util.ResourceLocation;
 public final class QuestScheme<D extends IQuestData> {
 
     private final ResourceLocation questId;
-    private final QuestType<D> questType;
+    private final QuestType<D, ?> questType;
     private final D data;
     private final int tier;
     private final DisplayInfo displayInfo;
     private final IQuestConditionProvider<?>[] questConditions;
     private final QuestConditionTierScheme conditionTierScheme;
 
-    public QuestScheme(ResourceLocation questId, QuestType<D> questType, D data, int tier, DisplayInfo displayInfo, IQuestConditionProvider<?>[] questConditions, QuestConditionTierScheme conditionTierScheme) {
+    public QuestScheme(ResourceLocation questId, QuestType<D, ?> questType, D data, int tier, DisplayInfo displayInfo, IQuestConditionProvider<?>[] questConditions, QuestConditionTierScheme conditionTierScheme) {
         this.questId = questId;
         this.questType = questType;
         this.data = data;
@@ -27,7 +27,7 @@ public final class QuestScheme<D extends IQuestData> {
     public static <D extends IQuestData> QuestScheme<D> read(CompoundNBT nbt) {
         ResourceLocation questId = new ResourceLocation(nbt.getString("questId"));
         ResourceLocation questTypeId = new ResourceLocation(nbt.getString("questType"));
-        QuestType<D> questType = QuestTypes.getTypeById(questTypeId);
+        QuestType<D, ?> questType = QuestTypes.getTypeById(questTypeId);
         String name = nbt.getString("data.name");
         String info = nbt.getString("data.info");
         D data = questType.readData(nbt.getCompound("questData"));
@@ -40,7 +40,7 @@ public final class QuestScheme<D extends IQuestData> {
         return questId;
     }
 
-    public QuestType<D> getQuestType() {
+    public QuestType<D, ?> getQuestType() {
         return questType;
     }
 

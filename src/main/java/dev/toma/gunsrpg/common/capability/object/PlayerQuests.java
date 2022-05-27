@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
 import dev.toma.gunsrpg.api.common.data.IQuests;
 import dev.toma.gunsrpg.api.common.data.ITraderStandings;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
+import dev.toma.gunsrpg.common.quests.quest.QuestTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants;
@@ -64,7 +65,7 @@ public class PlayerQuests implements IQuests, IPlayerCapEntry {
     @Override
     public void fromNbt(CompoundNBT nbt) {
         standings.deserializeNBT(nbt.getList("standings", Constants.NBT.TAG_COMPOUND));
-        activeQuest = nbt.contains("quest") ? Quest.fromNbt(nbt.getCompound("quest")) : null;
+        activeQuest = nbt.contains("quest") ? QuestTypes.getFromNbt(nbt.getCompound("quest")) : null;
         this.getActiveQuest().ifPresent(quest -> quest.assign(player));
     }
 

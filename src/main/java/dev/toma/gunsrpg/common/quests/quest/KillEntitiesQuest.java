@@ -15,6 +15,7 @@ import java.util.UUID;
 
 public class KillEntitiesQuest extends Quest<KillEntityData> {
 
+    public static final IQuestFactory<KillEntityData, KillEntitiesQuest> FACTORY = IQuestFactory.of(KillEntitiesQuest::new, KillEntitiesQuest::new);
     public static final ITextComponent KILLED_ENTITIES = new TranslationTextComponent("quest.killed_entities");
     private int killCount;
 
@@ -22,7 +23,7 @@ public class KillEntitiesQuest extends Quest<KillEntityData> {
         super(scheme, traderId);
     }
 
-    protected KillEntitiesQuest(QuestDeserializationContext<KillEntityData> context) {
+    public KillEntitiesQuest(QuestDeserializationContext<KillEntityData> context) {
         super(context);
     }
 

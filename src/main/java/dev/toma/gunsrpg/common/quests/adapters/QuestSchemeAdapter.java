@@ -22,7 +22,7 @@ public class QuestSchemeAdapter {
     public <D extends IQuestData> QuestScheme<D> resolveQuestFile(ResourceLocation filePath, JsonElement element) throws JsonParseException {
         JsonObject object = JsonHelper.asJsonObject(element);
         ResourceLocation questTypeId = new ResourceLocation(JSONUtils.getAsString(object, "type"));
-        QuestType<D> questType = QuestTypes.getTypeById(questTypeId);
+        QuestType<D, ?> questType = QuestTypes.getTypeById(questTypeId);
         if (questType == null) {
             throw new JsonSyntaxException("Unknown quest type: " + questTypeId);
         }
