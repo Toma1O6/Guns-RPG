@@ -13,6 +13,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.common.quests.condition.IQuestCondition;
 import dev.toma.gunsrpg.common.quests.condition.IQuestConditionProvider;
+import dev.toma.gunsrpg.common.quests.condition.QuestConditionProviderType;
 import dev.toma.gunsrpg.common.quests.condition.QuestConditions;
 import dev.toma.gunsrpg.common.quests.reward.QuestReward;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardList;
@@ -28,6 +29,7 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
 
 public abstract class Quest<D extends IQuestData> {
@@ -59,6 +61,8 @@ public abstract class Quest<D extends IQuestData> {
             allConditions[tieredConditions.length + i] = condition;
         }
         this.conditions = allConditions;
+
+        registerAllTriggers();
     }
 
     protected Quest(QuestDeserializationContext<D> context) {
@@ -72,6 +76,8 @@ public abstract class Quest<D extends IQuestData> {
         }
         CompoundNBT nbt = context.getInternalData();
         readQuestData(nbt);
+
+        registerAllTriggers();
     }
 
     public abstract void registerTriggers(ITriggerRegistration registration);
@@ -215,6 +221,24 @@ public abstract class Quest<D extends IQuestData> {
         QuestDisplayDataModel dataModel = new QuestDisplayDataModel();
         this.fillDataModel(dataModel);
         return dataModel;
+    }
+
+    private void registerAllTriggers() {
+        for (IQuestCondition condition : conditions) {
+            QuestConditionProviderType<?> conditionType = condition.getProviderType().getType();
+            Set<Trigger> triggerSet = conditionType.getTriggerSet();
+            for (Trigger trigger : triggerSet) {
+                ITriggerResponder responder = (trig, reader) -> handleQuestCondition(conditionType, condition, reader);
+                TriggerContext context = TriggerContext.make(responder, ITriggerHandler.PASS);
+                triggerListeners.put(trigger, context);
+            }
+        }
+        this.registerTriggers((trigger, responder, handler) -> triggerListeners.put(trigger, TriggerContext.make(responder, handler)));
+    }
+
+    private TriggerResponseStatus handleQuestCondition(QuestConditionProviderType<?> type, IQuestCondition condition, IPropertyReader reader) {
+        boolean wasValid = condition.isValid(player, reader);
+        return wasValid ? TriggerResponseStatus.OK : type.shouldFailQuest() ? TriggerResponseStatus.FAIL : TriggerResponseStatus.PASS;
     }
 
     public interface ITriggerRegistration {
