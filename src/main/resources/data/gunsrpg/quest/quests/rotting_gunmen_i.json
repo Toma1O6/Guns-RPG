@@ -12,7 +12,8 @@
         "count": 7,
         "area": {
             "size": 32,
-            "distance": 512,
+            "distance": 200,
+            "spawnInterval": 7,
             "spawners": [
                 {
                     "entity": "gunsrpg:zombie_gunner",

@@ -12,7 +12,8 @@
         "count": 10,
         "area": {
             "size": 32,
-            "distance": 512,
+            "distance": 200,
+            "spawnLimit": 5,
             "spawners": [
                 {
                     "entity": "gunsrpg:explosive_skeleton",

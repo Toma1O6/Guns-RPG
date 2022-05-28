@@ -12,7 +12,8 @@
         "count": 15,
         "area": {
             "size": 32,
-            "distance": 512,
+            "distance": 200,
+            "spawnInterval": 6,
             "spawners": [
                 {
                     "entity": "minecraft:witch",

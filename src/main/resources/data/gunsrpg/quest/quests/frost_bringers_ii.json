@@ -12,7 +12,8 @@
         "count": 13,
         "area": {
             "size": 32,
-            "distance": 512,
+            "distance": 200,
+            "spawnLimit": 3,
             "spawners": [
                 {
                     "entity": "minecraft:stray",

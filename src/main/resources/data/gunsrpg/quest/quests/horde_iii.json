@@ -9,7 +9,8 @@
         "duration": "9m",
         "area": {
             "size": 32,
-            "distance": 256,
+            "distance": 200,
+            "spawnInterval": 50,
             "spawners": [
                 {
                     "entity": "minecraft:spider",

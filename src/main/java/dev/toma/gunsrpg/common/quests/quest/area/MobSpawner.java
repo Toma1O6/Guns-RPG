@@ -80,8 +80,8 @@ public class MobSpawner implements IMobSpawner {
             MobEntity mob = (MobEntity) entity;
             mob.finalizeSpawn((ServerWorld) world, world.getCurrentDifficultyAt(pos), SpawnReason.COMMAND, null, null);
             mob.setTarget(attackTarget);
-            mob.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(area.getScheme().getSize() * 3);
         }
+        entity.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(area.getScheme().getSize() * 3);
     }
 
     @SuppressWarnings("unchecked")

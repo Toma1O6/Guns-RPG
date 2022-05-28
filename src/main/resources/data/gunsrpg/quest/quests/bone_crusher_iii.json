@@ -12,7 +12,8 @@
         "count": 20,
         "area": {
             "size": 32,
-            "distance": 512,
+            "distance": 200,
+            "spawnLimit": 2,
             "spawners": [
                 {
                     "entity": "minecraft:skeleton",

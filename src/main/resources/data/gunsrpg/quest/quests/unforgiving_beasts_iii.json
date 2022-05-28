@@ -12,12 +12,13 @@
         "count": 8,
         "area": {
             "size": 32,
-            "distance": 512,
+            "distance": 200,
+            "spawnInterval": 10,
             "spawners": [
                 {
                     "entity": "minecraft:ravager",
                     "propability": 0.05,
-                    "limit": 2
+                    "limit": 1
                 }
             ]
         }

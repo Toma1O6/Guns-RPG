@@ -66,7 +66,9 @@ public class QuestArea {
             if (edgePositions == null) {
                 fillEdgePositions(world);
             }
-            edgePositions.forEach(particle -> particle.makeParticles(world));
+            if (world.getDayTime() % 10 == 0) {
+                edgePositions.forEach(particle -> particle.makeParticles(world));
+            }
         }
     }
 
@@ -143,11 +145,11 @@ public class QuestArea {
         edgePositions.add(ParticleEntry.corner(new Vector3d(maxX, height(world, maxX, minZ), minZ)));
         edgePositions.add(ParticleEntry.corner(new Vector3d(maxX, height(world, maxX, maxZ), maxZ)));
 
-        for (int i = minX + 1; i < maxX; i++) {
+        for (int i = minX + 1; i < maxX; i += 3) {
             edgePositions.add(ParticleEntry.edge(new Vector3d(i, height(world, i, minZ), minZ)));
             edgePositions.add(ParticleEntry.edge(new Vector3d(i, height(world, i, maxZ), maxZ)));
         }
-        for (int i = minZ + 1; i < maxZ; i++) {
+        for (int i = minZ + 1; i < maxZ; i += 3) {
             edgePositions.add(ParticleEntry.edge(new Vector3d(minX, height(world, minX, i), i)));
             edgePositions.add(ParticleEntry.edge(new Vector3d(maxX, height(world, maxX, i), i)));
         }
@@ -170,7 +172,7 @@ public class QuestArea {
         }
 
         public static ParticleEntry corner(Vector3d vec) {
-            return new ParticleEntry(ParticleTypes.CLOUD, vec, 0.5F);
+            return new ParticleEntry(ParticleTypes.CLOUD, vec, 0.3F);
         }
 
         public static ParticleEntry edge(Vector3d vec) {

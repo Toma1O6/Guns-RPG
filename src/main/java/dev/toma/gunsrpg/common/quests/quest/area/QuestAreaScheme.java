@@ -38,7 +38,7 @@ public final class QuestAreaScheme {
     public QuestArea getArea(World world, int positionX, int positionZ) {
         GunsRPG.log.debug(QuestSystem.MARKER, "Generating new quest area");
         int minDist = this.distance;
-        int maxDist = this.distance * 6;
+        int maxDist = this.distance * 3;
         Random random = world.random;
         int x = this.getRandomDistance(minDist, maxDist, random);
         int z = this.getRandomDistance(minDist, maxDist, random);

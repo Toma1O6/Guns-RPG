@@ -1,5 +1,5 @@
 {
-    "type": "gunsrpg:kill_entities",
+    "type": "gunsrpg:kill_in_area",
     "tier": 3,
     "display": {
         "name": "Undead Knights I",
@@ -12,12 +12,13 @@
         "count": 5,
         "area": {
             "size": 32,
-            "distance": 512,
+            "distance": 200,
+            "spawnInterval": 15,
             "spawners": [
                 {
                     "entity": "gunsrpg:zombie_knight",
                     "propability": 0.05,
-                    "limit": 3
+                    "limit": 1
                 }
             ]
         }
