@@ -5,13 +5,18 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -23,10 +28,14 @@ public class QuestArea {
     private final Vec2i cornerA;
     private final Vec2i cornerB;
     private final ITextComponent descriptor;
+    private int spawnDelay;
+
+    private Collection<ParticleEntry> edgePositions;
 
     public QuestArea(QuestAreaScheme scheme, BlockPos pos) {
         this.scheme = scheme;
         this.pos = pos;
+        this.spawnDelay = scheme.getSpawnInterval();
 
         int radius = scheme.getSize();
         this.cornerA = new Vec2i(pos.getX() - radius, pos.getZ() - radius);
@@ -36,17 +45,28 @@ public class QuestArea {
 
     public static QuestArea fromNbt(QuestAreaScheme scheme, CompoundNBT nbt) {
         BlockPos pos = NBTUtil.readBlockPos(nbt.getCompound("pos"));
-        return new QuestArea(scheme, pos);
+        int spawnDelay = nbt.getInt("spawnDelay");
+        QuestArea area = new QuestArea(scheme, pos);
+        area.spawnDelay = spawnDelay;
+        return area;
     }
 
     public void tickArea(World world, PlayerEntity player) {
-        List<IMobSpawner> spawners = scheme.getMobSpawnerList();
         if (!world.isClientSide) {
-            for (IMobSpawner spawner : spawners) {
-                if (spawner.canSpawnEntity(world)) {
-                    spawner.spawnMobRandomly(world, this, player);
+            if (--spawnDelay < 0) {
+                spawnDelay = scheme.getSpawnInterval();
+                List<IMobSpawner> spawners = scheme.getMobSpawnerList();
+                for (IMobSpawner spawner : spawners) {
+                    if (spawner.canSpawnEntity(world)) {
+                        spawner.spawnMobRandomly(world, this, player);
+                    }
                 }
             }
+        } else {
+            if (edgePositions == null) {
+                fillEdgePositions(world);
+            }
+            edgePositions.forEach(particle -> particle.makeParticles(world));
         }
     }
 
@@ -104,10 +124,61 @@ public class QuestArea {
     public CompoundNBT toNbt() {
         CompoundNBT nbt = new CompoundNBT();
         nbt.put("pos", NBTUtil.writeBlockPos(pos));
+        nbt.putInt("spawnDelay", spawnDelay);
         return nbt;
     }
 
     public ITextComponent getDescriptor() {
         return descriptor;
+    }
+
+    private void fillEdgePositions(World world) {
+        edgePositions = new ArrayList<>();
+        int minX = cornerA.x();
+        int minZ = cornerA.y();
+        int maxX = cornerB.x();
+        int maxZ = cornerB.y();
+        edgePositions.add(ParticleEntry.corner(new Vector3d(minX, height(world, minX, minZ), minZ)));
+        edgePositions.add(ParticleEntry.corner(new Vector3d(minX, height(world, minX, maxZ), maxZ)));
+        edgePositions.add(ParticleEntry.corner(new Vector3d(maxX, height(world, maxX, minZ), minZ)));
+        edgePositions.add(ParticleEntry.corner(new Vector3d(maxX, height(world, maxX, maxZ), maxZ)));
+
+        for (int i = minX + 1; i < maxX; i++) {
+            edgePositions.add(ParticleEntry.edge(new Vector3d(i, height(world, i, minZ), minZ)));
+            edgePositions.add(ParticleEntry.edge(new Vector3d(i, height(world, i, maxZ), maxZ)));
+        }
+        for (int i = minZ + 1; i < maxZ; i++) {
+            edgePositions.add(ParticleEntry.edge(new Vector3d(minX, height(world, minX, i), i)));
+            edgePositions.add(ParticleEntry.edge(new Vector3d(maxX, height(world, maxX, i), i)));
+        }
+    }
+
+    private int height(World world, int x, int z) {
+        return world.getHeight(Heightmap.Type.WORLD_SURFACE, x, z);
+    }
+
+    private static final class ParticleEntry {
+
+        private final IParticleData data;
+        private final Vector3d vec;
+        private final float power;
+
+        public ParticleEntry(IParticleData data, Vector3d vec, float power) {
+            this.data = data;
+            this.vec = vec;
+            this.power = power;
+        }
+
+        public static ParticleEntry corner(Vector3d vec) {
+            return new ParticleEntry(ParticleTypes.CLOUD, vec, 0.5F);
+        }
+
+        public static ParticleEntry edge(Vector3d vec) {
+            return new ParticleEntry(ParticleTypes.CLOUD, vec, 0.05F);
+        }
+
+        public void makeParticles(World world) {
+            world.addParticle(data, true, vec.x + 0.5, vec.y, vec.z + 0.5, 0.0, power, 0.0);
+        }
     }
 }

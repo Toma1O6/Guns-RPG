@@ -17,12 +17,6 @@ public class SurvivalData implements IQuestData {
         this.ticks = provider.getTicks();
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <Q extends IQuestData> Q copy() {
-        return (Q) new SurvivalData(() -> ticks);
-    }
-
     public int getTicks() {
         return ticks;
     }

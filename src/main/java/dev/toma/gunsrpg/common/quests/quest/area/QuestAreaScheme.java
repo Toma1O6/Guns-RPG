@@ -25,18 +25,20 @@ public final class QuestAreaScheme {
 
     private final int size;
     private final int distance;
+    private final int spawnInterval;
     private final List<IMobSpawner> mobSpawnerList;
 
-    public QuestAreaScheme(int size, int distance, List<IMobSpawner> mobSpawnerList) {
+    public QuestAreaScheme(int size, int distance, int spawnInterval, List<IMobSpawner> mobSpawnerList) {
         this.size = size;
         this.distance = distance;
+        this.spawnInterval = spawnInterval;
         this.mobSpawnerList = mobSpawnerList;
     }
 
     public QuestArea getArea(World world, int positionX, int positionZ) {
         GunsRPG.log.debug(QuestSystem.MARKER, "Generating new quest area");
         int minDist = this.distance;
-        int maxDist = this.distance * 4;
+        int maxDist = this.distance * 6;
         Random random = world.random;
         int x = this.getRandomDistance(minDist, maxDist, random);
         int z = this.getRandomDistance(minDist, maxDist, random);
@@ -66,6 +68,10 @@ public final class QuestAreaScheme {
         return distance;
     }
 
+    public int getSpawnInterval() {
+        return spawnInterval;
+    }
+
     public List<IMobSpawner> getMobSpawnerList() {
         return mobSpawnerList;
     }
@@ -79,6 +85,7 @@ public final class QuestAreaScheme {
         CompoundNBT nbt = new CompoundNBT();
         nbt.putInt("size", size);
         nbt.putInt("distance", distance);
+        nbt.putInt("spawnInterval", spawnInterval);
         ListNBT spawners = new ListNBT();
         mobSpawnerList.stream().map(IMobSpawner::toNbt).forEach(spawners::add);
         nbt.put("spawners", spawners);
@@ -92,14 +99,16 @@ public final class QuestAreaScheme {
     public static QuestAreaScheme fromNbt(CompoundNBT nbt) {
         int size = nbt.getInt("size");
         int distance = nbt.getInt("distance");
+        int spawnInterval = nbt.getInt("spawnInterval");
         ListNBT spawnersNbt = nbt.getList("spawners", Constants.NBT.TAG_COMPOUND);
         List<IMobSpawner> list = spawnersNbt.stream().map(inbt -> MobSpawner.fromNbt((CompoundNBT) inbt)).collect(Collectors.toList());
-        return new QuestAreaScheme(size, distance, list);
+        return new QuestAreaScheme(size, distance, spawnInterval, list);
     }
 
     public static QuestAreaScheme fromJson(JsonObject object) throws JsonParseException {
         int size = JSONUtils.getAsInt(object, "size");
         int distance = JSONUtils.getAsInt(object, "distance");
+        int spawnInterval = JSONUtils.getAsInt(object, "spawnInterval", 20);
         List<IMobSpawner> list;
         if (object.has("spawners")) {
             JsonArray array = JSONUtils.getAsJsonArray(object, "spawners");
@@ -108,6 +117,6 @@ public final class QuestAreaScheme {
         } else {
             list = Collections.emptyList();
         }
-        return new QuestAreaScheme(size, distance, list);
+        return new QuestAreaScheme(size, distance, spawnInterval, list);
     }
 }

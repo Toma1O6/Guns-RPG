@@ -26,12 +26,6 @@ public class KillInAreaData extends KillEntityData implements IQuestAreaProvider
         return areaScheme;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <Q extends IQuestData> Q copy() {
-        return (Q) new KillInAreaData(this.getEntityFilter(), this.getKillTarget(), areaScheme);
-    }
-
     @Override
     public String toString() {
         return String.format("KillEntitiesInArea - Filter: %s, Count: %d, Area: { %s }", this.getEntityFilter().toString(), this.getKillTarget(), areaScheme.toString());

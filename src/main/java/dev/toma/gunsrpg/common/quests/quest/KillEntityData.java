@@ -27,12 +27,6 @@ public class KillEntityData implements IQuestData {
         this.kills = kills;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <Q extends IQuestData> Q copy() {
-        return (Q) new KillEntityData(entityFilter, kills);
-    }
-
     protected Predicate<Entity> getEntityFilter() {
         return entityFilter;
     }

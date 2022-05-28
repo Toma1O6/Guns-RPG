@@ -22,12 +22,6 @@ public class ItemHandoverData implements IQuestData {
         this.items = items;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <Q extends IQuestData> Q copy() {
-        return (Q) new ItemHandoverData(items);
-    }
-
     public ItemStack[] getItems() {
         return items;
     }

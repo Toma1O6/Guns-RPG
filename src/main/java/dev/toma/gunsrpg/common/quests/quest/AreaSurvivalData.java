@@ -25,12 +25,6 @@ public class AreaSurvivalData extends SurvivalData implements IQuestAreaProvider
         return areaScheme;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <Q extends IQuestData> Q copy() {
-        return (Q) new AreaSurvivalData(this::getTicks, areaScheme);
-    }
-
     @Override
     public String toString() {
         int ticks = this.getTicks();
