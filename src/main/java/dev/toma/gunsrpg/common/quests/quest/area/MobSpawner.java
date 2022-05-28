@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.jline.utils.AttributedStringBuilder;
 
 import java.util.List;
 import java.util.Random;
