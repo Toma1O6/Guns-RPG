@@ -5,6 +5,8 @@ import dev.toma.gunsrpg.api.common.data.IQuests;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.GunDamageSource;
+import dev.toma.gunsrpg.common.quests.quest.area.IAreaQuest;
+import dev.toma.gunsrpg.common.quests.quest.area.QuestArea;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.util.properties.IPropertyHolder;
 import dev.toma.gunsrpg.util.properties.Properties;
@@ -17,6 +19,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -119,5 +122,31 @@ public final class QuestEventHandler {
                 });
             });
         }
+    }
+
+    @SubscribeEvent
+    public static void cancelBlockPlacement(PlayerInteractEvent.RightClickBlock event) {
+        cancelIfPlayerIsInQuestArea(event);
+    }
+
+    @SubscribeEvent
+    public static void cancelBlockDestruction(PlayerInteractEvent.LeftClickBlock event) {
+        cancelIfPlayerIsInQuestArea(event);
+    }
+
+    private static void cancelIfPlayerIsInQuestArea(PlayerInteractEvent event) {
+        PlayerEntity player = event.getPlayer();
+        PlayerData.get(player).ifPresent(data -> {
+            IQuests provider = data.getQuests();
+            provider.getActiveQuest().ifPresent(quest -> {
+                if (quest instanceof IAreaQuest) {
+                    IAreaQuest areaQuest = (IAreaQuest) quest;
+                    QuestArea area = areaQuest.getQuestArea();
+                    if (area != null && area.isInArea(player)) {
+                        event.setCanceled(true);
+                    }
+                }
+            });
+        });
     }
 }

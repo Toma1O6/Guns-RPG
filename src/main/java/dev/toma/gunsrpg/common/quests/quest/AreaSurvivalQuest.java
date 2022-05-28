@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.quests.quest;
 
 import dev.toma.gunsrpg.client.render.infobar.QuestDisplayDataModel;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.quest.area.IAreaQuest;
 import dev.toma.gunsrpg.common.quests.quest.area.QuestArea;
 import dev.toma.gunsrpg.common.quests.quest.area.QuestAreaScheme;
 import dev.toma.gunsrpg.common.quests.trigger.ITriggerHandler;
@@ -19,7 +20,7 @@ import net.minecraftforge.common.util.Constants;
 
 import java.util.UUID;
 
-public class AreaSurvivalQuest extends Quest<AreaSurvivalData> {
+public class AreaSurvivalQuest extends Quest<AreaSurvivalData> implements IAreaQuest {
 
     public static final IQuestFactory<AreaSurvivalData, AreaSurvivalQuest> FACTORY = IQuestFactory.of(AreaSurvivalQuest::new, AreaSurvivalQuest::new);
     private int timeLeft;
@@ -46,6 +47,11 @@ public class AreaSurvivalQuest extends Quest<AreaSurvivalData> {
         if (getStatus() == QuestStatus.ACTIVE && area != null && area.isInArea(player)) {
             area.tickArea(player.level, player);
         }
+    }
+
+    @Override
+    public QuestArea getQuestArea() {
+        return area;
     }
 
     @Override
