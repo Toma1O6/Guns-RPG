@@ -122,6 +122,9 @@ public class CommonEventHandler {
             for (ConfiguredFeature<?, ?> feature : ModConfiguredFeatures.getOres()) {
                 builder.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, feature);
             }
+        } else {
+            mobSpawnBuilder.addMobCharge(ModEntities.ROCKET_ANGEL.get(), 0.7, 0.15);
+            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ROCKET_ANGEL.get(), 2, 1, 1));
         }
     }
 

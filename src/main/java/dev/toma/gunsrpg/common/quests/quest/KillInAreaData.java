@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.common.quests.quest.area.IQuestAreaProvider;
 import dev.toma.gunsrpg.common.quests.quest.area.QuestAreaScheme;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 
 import java.util.function.Predicate;
@@ -46,6 +47,21 @@ public class KillInAreaData extends KillEntityData implements IQuestAreaProvider
             int count = JSONUtils.getAsInt(object, "count", 1);
             QuestAreaScheme areaScheme = QuestAreaScheme.fromJson(JSONUtils.getAsJsonObject(object, "area"));
             return new KillInAreaData(filter, count, areaScheme);
+        }
+
+        @Override
+        public CompoundNBT serialize(KillInAreaData data) {
+            CompoundNBT nbt = new CompoundNBT();
+            nbt.putInt("kills", data.getKillTarget());
+            nbt.put("area", data.areaScheme.toNbt());
+            return nbt;
+        }
+
+        @Override
+        public KillInAreaData deserialize(CompoundNBT nbt) {
+            int kills = nbt.getInt("kills");
+            QuestAreaScheme scheme = QuestAreaScheme.fromNbt(nbt.getCompound("area"));
+            return new KillInAreaData(ANY_HOSTILE, kills, scheme);
         }
     }
 }

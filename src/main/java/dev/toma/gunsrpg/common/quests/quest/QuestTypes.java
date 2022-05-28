@@ -26,7 +26,9 @@ public final class QuestTypes {
     public static <D extends IQuestData, Q extends Quest<D>> Q getFromNbt(CompoundNBT nbt) {
         QuestDeserializationContext<D> context = QuestDeserializationContext.fromNbt(nbt);
         QuestType<D, Q> type = (QuestType<D, Q>) context.getScheme().getQuestType();
-        return type.fromContext(context);
+        Q quest = type.fromContext(context);
+        quest.readQuestData(context.getInternalData());
+        return quest;
     }
 
     static {

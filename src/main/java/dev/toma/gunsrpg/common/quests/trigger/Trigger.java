@@ -6,5 +6,6 @@ public enum Trigger {
     DAMAGE_TAKEN,
     DAMAGE_GIVEN,
     ENTITY_KILLED,
+    PLAYER_DIED,
     ITEM_HANDOVER
 }

@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -75,6 +76,18 @@ public class KillEntityData implements IQuestData {
             Predicate<Entity> entityFilter = parseEntityFilter(filterElement);
             int count = JSONUtils.getAsInt(object, "count", 1);
             return new KillEntityData(entityFilter, count);
+        }
+
+        @Override
+        public CompoundNBT serialize(KillEntityData data) {
+            CompoundNBT nbt = new CompoundNBT();
+            nbt.putInt("kills", data.kills);
+            return nbt;
+        }
+
+        @Override
+        public KillEntityData deserialize(CompoundNBT nbt) {
+            return new KillEntityData(ANY_HOSTILE, nbt.getInt("kills"));
         }
     }
 

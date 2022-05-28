@@ -34,7 +34,7 @@ public final class MobSpawnerAdapter {
             throw new JsonSyntaxException("Unknown spawn processor: " + id);
         }
         IMobSpawnProcessorSerializer<P> serializer = type.getSerializer();
-        return serializer.deserialize(object);
+        return serializer.deserialize(type, object);
     }
 
     @SuppressWarnings("unchecked")

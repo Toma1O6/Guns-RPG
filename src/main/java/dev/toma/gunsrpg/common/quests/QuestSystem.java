@@ -12,7 +12,7 @@ import org.apache.logging.log4j.MarkerManager;
 
 public final class QuestSystem {
 
-    private static final Marker MARKER = MarkerManager.getMarker("Quests");
+    public static final Marker MARKER = MarkerManager.getMarker("Quests");
     private final ILogHandler logger;
     private final QuestRewardManager rewardManager;
     private final QuestConditionLoader conditionLoader;

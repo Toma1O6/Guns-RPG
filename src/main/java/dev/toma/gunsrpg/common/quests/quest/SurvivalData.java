@@ -6,6 +6,7 @@ import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.util.IIntervalProvider;
 import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 
 public class SurvivalData implements IQuestData {
@@ -39,6 +40,18 @@ public class SurvivalData implements IQuestData {
             String timeString = JSONUtils.getAsString(object, "duration");
             Interval interval = Interval.parse(timeString);
             return new SurvivalData(interval);
+        }
+
+        @Override
+        public CompoundNBT serialize(SurvivalData data) {
+            CompoundNBT nbt = new CompoundNBT();
+            nbt.putInt("ticks", data.ticks);
+            return nbt;
+        }
+
+        @Override
+        public SurvivalData deserialize(CompoundNBT nbt) {
+            return new SurvivalData(() -> nbt.getInt("ticks"));
         }
     }
 }

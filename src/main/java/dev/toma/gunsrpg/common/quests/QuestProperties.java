@@ -14,6 +14,6 @@ public final class QuestProperties {
     public static final PropertyKey<LivingEntity> ENTITY = PropertyKey.newKey("entity");
     public static final PropertyKey<Entity> DIRECT_ENTITY = PropertyKey.newKey("direct_entity");
     public static final PropertyKey<Float> HEALTH_STATUS = PropertyKey.newKey("health_status", 0.0F);
-    public static final PropertyKey<Float> FOOD_STATUS = PropertyKey.newKey("food_status", 0.0F);
+    public static final PropertyKey<Integer> FOOD_STATUS = PropertyKey.newKey("food_status", 0);
     public static final PropertyKey<DamageSource> DAMAGE_SOURCE = PropertyKey.newKey("damage_source", DamageSource.GENERIC);
 }

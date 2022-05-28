@@ -107,13 +107,11 @@ public class SpecificWeaponConditionProvider extends AbstractQuestConditionProvi
     public class Condition implements IQuestCondition {
 
         private Item[] validItems;
-        private final ITextComponent descriptor;
+        private ITextComponent descriptor;
 
         public Condition(Item[] validItems) {
             this.validItems = validItems;
-            SpecificWeaponConditionProvider provider = SpecificWeaponConditionProvider.this;
-            String text = provider.selector == Selector.ANY ? provider.group : validItems[0].getName(ItemStack.EMPTY).getString();
-            this.descriptor = new TranslationTextComponent(provider.getLocalizationString(), text);
+            this.updateDescriptor();
         }
 
         @Override
@@ -148,6 +146,13 @@ public class SpecificWeaponConditionProvider extends AbstractQuestConditionProvi
                 ResourceLocation location = new ResourceLocation(inbt.getAsString());
                 return ForgeRegistries.ITEMS.getValue(location);
             }).toArray(Item[]::new);
+            this.updateDescriptor();
+        }
+
+        private void updateDescriptor() {
+            SpecificWeaponConditionProvider provider = SpecificWeaponConditionProvider.this;
+            String text = provider.selector == Selector.ANY ? provider.group : validItems[0].getName(ItemStack.EMPTY).getString();
+            this.descriptor = new TranslationTextComponent(provider.getLocalizationString(), text);
         }
     }
 }

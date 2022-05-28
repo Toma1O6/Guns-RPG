@@ -6,10 +6,13 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IQuests;
 import dev.toma.gunsrpg.client.render.infobar.IDataModel;
 import dev.toma.gunsrpg.client.render.infobar.QuestDisplayDataModel;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.ModSounds;
+import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.common.quests.condition.IQuestCondition;
 import dev.toma.gunsrpg.common.quests.condition.IQuestConditionProvider;
@@ -19,10 +22,21 @@ import dev.toma.gunsrpg.common.quests.reward.QuestReward;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardList;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardManager;
 import dev.toma.gunsrpg.common.quests.trigger.*;
+import dev.toma.gunsrpg.util.properties.IPropertyHolder;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
+import dev.toma.gunsrpg.util.properties.PropertyContext;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.network.play.server.SPlaySoundEffectPacket;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.ChatType;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.LazyOptional;
@@ -34,6 +48,8 @@ import java.util.UUID;
 
 public abstract class Quest<D extends IQuestData> {
 
+    private static final ITextComponent QUEST_COMPLETED = new TranslationTextComponent("quest.completed").withStyle(TextFormatting.GREEN);
+    private static final ITextComponent QUEST_FAILED = new TranslationTextComponent("quest.failed").withStyle(TextFormatting.RED);
     private final Multimap<Trigger, TriggerContext> triggerListeners = ArrayListMultimap.create();
     private final QuestScheme<D> scheme;
     private final IQuestCondition[] conditions;
@@ -41,6 +57,7 @@ public abstract class Quest<D extends IQuestData> {
     private final UUID uuid;
     @OnlyIn(Dist.CLIENT)
     private final LazyOptional<IDataModel> displayModel = LazyOptional.of(this::buildDataModel);
+    private final IPropertyHolder initialProperties = PropertyContext.create();
 
     protected PlayerEntity player;
     protected QuestReward reward;
@@ -70,21 +87,16 @@ public abstract class Quest<D extends IQuestData> {
         this.uuid = context.getTraderId();
         this.conditions = context.getConditions();
         this.rewardTier = context.getRewardTier();
+        this.status = context.getStatus();
         QuestReward reward = context.getReward();
         if (reward != null) {
             this.reward = reward;
         }
-        CompoundNBT nbt = context.getInternalData();
-        readQuestData(nbt);
 
         registerAllTriggers();
     }
 
     public abstract void registerTriggers(ITriggerRegistration registration);
-
-    public UUID getQuestInitiator() {
-        return uuid;
-    }
 
     public D getActiveData() {
         return scheme.getData();
@@ -92,6 +104,8 @@ public abstract class Quest<D extends IQuestData> {
 
     public void assign(PlayerEntity player) {
         this.player = player;
+        this.initialProperties.setProperty(QuestProperties.FOOD_STATUS, player.getFoodData().getFoodLevel());
+        this.initialProperties.setProperty(QuestProperties.HEALTH_STATUS, player.getHealth());
         if (reward == null) {
             IPlayerData data = PlayerData.getUnsafe(player);
             IAttributeProvider provider = data.getAttributes();
@@ -104,15 +118,34 @@ public abstract class Quest<D extends IQuestData> {
         }
     }
 
-    public void onCompleted(PlayerEntity player) {
-
+    public void tickQuest(PlayerEntity player) {
     }
 
-    public void onFailed(PlayerEntity player) {
+    public final void onCompleted(PlayerEntity player) {
+        if (!player.level.isClientSide) {
+            ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+            serverPlayer.connection.send(new SPlaySoundEffectPacket(SoundEvents.PLAYER_LEVELUP, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 0.75F, 1.0F));
+            serverPlayer.sendMessage(QUEST_COMPLETED, ChatType.GAME_INFO, Util.NIL_UUID);
+            PlayerData.get(player).ifPresent(data -> data.getQuests().getTraderStandings().questFinished(uuid, this));
+        }
+    }
 
+    public final void onFailed(PlayerEntity player) {
+        if (!player.level.isClientSide) {
+            ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+            serverPlayer.connection.send(new SPlaySoundEffectPacket(ModSounds.USE_AVENGE_ME_FRIENDS, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 0.75F, 1.0F));
+            serverPlayer.sendMessage(QUEST_FAILED, ChatType.GAME_INFO, Util.NIL_UUID);
+            PlayerData.get(player).ifPresent(data -> {
+                IQuests quests = data.getQuests();
+                quests.getTraderStandings().questFailed(uuid, this);
+                quests.clearActiveQuest();
+            });
+        }
     }
 
     public void trigger(Trigger trigger, IPropertyReader reader) {
+        if (this.getStatus() != QuestStatus.ACTIVE) return;
+        this.initialProperties.moveContents((IPropertyHolder) reader);
         Collection<TriggerContext> contexts = triggerListeners.get(trigger);
         if (contexts != null) {
             TriggerResponseStatus response = TriggerResponseStatus.OK;
@@ -134,8 +167,10 @@ public abstract class Quest<D extends IQuestData> {
             }
             switch (status) {
                 case COMPLETED:
+                    onCompleted(player);
                     break;
                 case FAILED:
+                    onFailed(player);
                     break;
             }
         }
@@ -229,7 +264,8 @@ public abstract class Quest<D extends IQuestData> {
             Set<Trigger> triggerSet = conditionType.getTriggerSet();
             for (Trigger trigger : triggerSet) {
                 ITriggerResponder responder = (trig, reader) -> handleQuestCondition(conditionType, condition, reader);
-                TriggerContext context = TriggerContext.make(responder, ITriggerHandler.PASS);
+                ITriggerHandler handler = condition instanceof ITriggerHandler ? (ITriggerHandler) condition : ITriggerHandler.NONE;
+                TriggerContext context = TriggerContext.make(responder, handler);
                 triggerListeners.put(trigger, context);
             }
         }

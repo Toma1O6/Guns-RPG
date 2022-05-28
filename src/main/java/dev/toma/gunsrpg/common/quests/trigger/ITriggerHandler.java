@@ -5,7 +5,7 @@ import dev.toma.gunsrpg.util.properties.IPropertyReader;
 @FunctionalInterface
 public interface ITriggerHandler {
 
-    ITriggerHandler PASS = (trigger, reader) -> {};
+    ITriggerHandler NONE = (trigger, reader) -> {};
 
     void handleTriggerSuccess(Trigger trigger, IPropertyReader reader);
 }

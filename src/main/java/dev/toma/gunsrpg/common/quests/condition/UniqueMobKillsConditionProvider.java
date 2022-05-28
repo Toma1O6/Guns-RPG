@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.quests.condition;
 
 import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.trigger.ITriggerHandler;
+import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -33,7 +35,7 @@ public class UniqueMobKillsConditionProvider extends AbstractQuestConditionProvi
         return new ConditionTracker(this);
     }
 
-    final class ConditionTracker implements IQuestCondition {
+    final class ConditionTracker implements IQuestCondition, ITriggerHandler {
 
         private final Set<EntityType<?>> killedMobs = new HashSet<>();
         private final ITextComponent descriptor;
@@ -52,12 +54,16 @@ public class UniqueMobKillsConditionProvider extends AbstractQuestConditionProvi
             Entity entity = reader.getProperty(QuestProperties.ENTITY);
             if (entity instanceof MonsterEntity) {
                 EntityType<?> type = entity.getType();
-                if (!killedMobs.contains(type)) {
-                    killedMobs.add(type);
-                    return true;
-                }
+                return !killedMobs.contains(type);
             }
             return false;
+        }
+
+        @Override
+        public void handleTriggerSuccess(Trigger trigger, IPropertyReader reader) {
+            Entity entity = reader.getProperty(QuestProperties.ENTITY);
+            EntityType<?> type = entity.getType();
+            killedMobs.add(type);
         }
 
         @Override

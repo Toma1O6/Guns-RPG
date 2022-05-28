@@ -28,6 +28,9 @@ public final class QuestEventHandler {
         DamageSource source = event.getSource();
         LivingEntity victim = event.getEntityLiving();
         Entity entity = source.getEntity();
+        if (source instanceof GunDamageSource) {
+            entity = ((GunDamageSource) source).getSrc();
+        }
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
             Entity directEntity = source.getDirectEntity();
@@ -54,15 +57,16 @@ public final class QuestEventHandler {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.START) return;
-        PlayerData.get(event.player).ifPresent(data -> {
+        PlayerEntity player = event.player;
+        PlayerData.get(player).ifPresent(data -> {
             IQuests quests = data.getQuests();
             quests.getActiveQuest().ifPresent(quest -> {
                 IPropertyHolder holder = PropertyContext.create();
-                holder.setProperty(QuestProperties.PLAYER, event.player);
+                holder.setProperty(QuestProperties.PLAYER, player);
                 quest.trigger(Trigger.TICK, holder);
+                quest.tickQuest(player);
             });
         });
-
     }
 
     @SubscribeEvent
@@ -84,6 +88,9 @@ public final class QuestEventHandler {
         }
         DamageSource source = event.getSource();
         Entity aggressor = source.getEntity();
+        if (source instanceof GunDamageSource) {
+            aggressor = ((GunDamageSource) source).getSrc();
+        }
         if (aggressor instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) aggressor;
             PlayerData.get(player).ifPresent(data -> {
@@ -93,6 +100,22 @@ public final class QuestEventHandler {
                     holder.setProperty(QuestProperties.PLAYER, player);
                     holder.setProperty(QuestProperties.DAMAGE_SOURCE, source);
                     quest.trigger(Trigger.DAMAGE_GIVEN, holder);
+                });
+            });
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerDeath(LivingDeathEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        if (entity instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) entity;
+            PlayerData.get(player).ifPresent(data -> {
+                IQuests provider = data.getQuests();
+                provider.getActiveQuest().ifPresent(quest -> {
+                    IPropertyHolder holder = PropertyContext.create();
+                    holder.setProperty(QuestProperties.PLAYER, player);
+                    quest.trigger(Trigger.PLAYER_DIED, holder);
                 });
             });
         }

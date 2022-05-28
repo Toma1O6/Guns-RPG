@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.common.quests.quest.area.QuestAreaScheme;
 import dev.toma.gunsrpg.util.IIntervalProvider;
 import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 
 public class AreaSurvivalData extends SurvivalData implements IQuestAreaProvider {
@@ -45,6 +46,21 @@ public class AreaSurvivalData extends SurvivalData implements IQuestAreaProvider
             IIntervalProvider provider = Interval.parse(duration);
             QuestAreaScheme areaScheme = QuestAreaScheme.fromJson(JSONUtils.getAsJsonObject(object, "area"));
             return new AreaSurvivalData(provider, areaScheme);
+        }
+
+        @Override
+        public CompoundNBT serialize(AreaSurvivalData data) {
+            CompoundNBT nbt = new CompoundNBT();
+            nbt.putInt("ticks", data.getTicks());
+            nbt.put("area", data.areaScheme.toNbt());
+            return nbt;
+        }
+
+        @Override
+        public AreaSurvivalData deserialize(CompoundNBT nbt) {
+            int ticks = nbt.getInt("ticks");
+            QuestAreaScheme scheme = QuestAreaScheme.fromNbt(nbt.getCompound("area"));
+            return new AreaSurvivalData(() -> ticks, scheme);
         }
     }
 }

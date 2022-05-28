@@ -43,17 +43,12 @@ public final class QuestType<D extends IQuestData, Q extends Quest<D>> {
         return factory.questFromContext(context);
     }
 
-    // TODO
     public interface IQuestDataResolver<D> {
 
         D resolve(JsonElement element) throws JsonParseException;
 
-        default CompoundNBT serialize(D data) {
-            return new CompoundNBT();
-        }
+        CompoundNBT serialize(D data);
 
-        default D deserialize(CompoundNBT nbt) {
-            return null;
-        }
+        D deserialize(CompoundNBT nbt);
     }
 }

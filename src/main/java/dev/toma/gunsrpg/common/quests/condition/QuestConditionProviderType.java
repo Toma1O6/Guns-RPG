@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.BiFunction;
@@ -22,7 +23,7 @@ public class QuestConditionProviderType<Q extends IQuestConditionProvider<?>> {
         this.serializer = serializer;
         this.fromNbtReader = fromNbtReader;
         this.failsQuest = failsQuest;
-        this.triggerSet = EnumSet.copyOf(Arrays.asList(triggers));
+        this.triggerSet = triggers.length == 0 ? Collections.emptySet() : EnumSet.copyOf(Arrays.asList(triggers));
     }
 
     public ResourceLocation getId() {

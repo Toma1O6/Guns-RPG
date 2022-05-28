@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.quests.quest;
 
 import dev.toma.gunsrpg.client.render.infobar.QuestDisplayDataModel;
+import dev.toma.gunsrpg.common.quests.trigger.ITriggerHandler;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.common.quests.trigger.TriggerResponseStatus;
 import dev.toma.gunsrpg.util.Interval;
@@ -30,6 +31,7 @@ public class SurvivalQuest extends Quest<SurvivalData> {
     @Override
     public void registerTriggers(ITriggerRegistration registration) {
         registration.addEntry(Trigger.TICK, this::onTick, this::handleSuccessfulTick);
+        registration.addEntry(Trigger.PLAYER_DIED, this::onPlayerDied, ITriggerHandler.NONE);
     }
 
     @Override
@@ -51,7 +53,11 @@ public class SurvivalQuest extends Quest<SurvivalData> {
     }
 
     private TriggerResponseStatus onTick(Trigger trigger, IPropertyReader reader) {
-        return TriggerResponseStatus.PASS;
+        return TriggerResponseStatus.OK;
+    }
+
+    private TriggerResponseStatus onPlayerDied(Trigger trigger, IPropertyReader reader) {
+        return TriggerResponseStatus.FAIL;
     }
 
     private void handleSuccessfulTick(Trigger trigger, IPropertyReader reader) {

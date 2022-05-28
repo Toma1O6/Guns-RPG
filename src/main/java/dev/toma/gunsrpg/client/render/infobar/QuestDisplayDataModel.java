@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.client.render.infobar;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
+import dev.toma.gunsrpg.common.quests.quest.area.QuestArea;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.math.IDimensions;
 import net.minecraft.client.gui.FontRenderer;
@@ -28,6 +29,10 @@ public class QuestDisplayDataModel implements IDataModel {
 
     public <Q extends Quest<?>> void addInformationRow(ITextComponent title, Q quest, Function<Q, ITextComponent> provider) {
         addElement(new DataRowElement<>(quest, title, provider));
+    }
+
+    public void addAreaInfo(QuestArea area) {
+        addElement(new DataRowElement<>(area, QuestArea.STAY_IN_AREA, QuestArea::getDescriptor));
     }
 
     @Override

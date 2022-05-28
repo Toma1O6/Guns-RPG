@@ -23,7 +23,7 @@ public class NoFoodConditionProvider extends AbstractQuestConditionProvider<NoFo
 
     @Override
     public boolean isValid(PlayerEntity player, IPropertyReader reader) {
-        float foodStat = reader.getProperty(QuestProperties.FOOD_STATUS);
+        int foodStat = reader.getProperty(QuestProperties.FOOD_STATUS);
         FoodStats stats = player.getFoodData();
         return stats.getFoodLevel() <= foodStat;
     }

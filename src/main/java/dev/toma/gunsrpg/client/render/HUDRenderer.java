@@ -16,6 +16,7 @@ import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.item.StashDetectorItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
+import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.client.QuestOverlayConfig;
@@ -89,6 +90,7 @@ public final class HUDRenderer {
     private void renderQuestOverlay(MatrixStack matrix, FontRenderer font, MainWindow window, IPlayerData data) {
         IQuests quests = data.getQuests();
         quests.getActiveQuest().ifPresent(quest -> {
+            if (quest.getStatus() != QuestStatus.ACTIVE) return;
             LazyOptional<IDataModel> modelOptional = quest.getDisplayModel();
             modelOptional.ifPresent(model -> {
                 QuestOverlayConfig config = ModConfig.clientConfig.questOverlayConfig;
