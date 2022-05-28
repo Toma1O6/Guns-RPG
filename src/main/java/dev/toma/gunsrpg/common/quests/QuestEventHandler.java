@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.common.data.IQuests;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.GunDamageSource;
+import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
 import dev.toma.gunsrpg.common.quests.quest.area.IAreaQuest;
 import dev.toma.gunsrpg.common.quests.quest.area.QuestArea;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
@@ -139,7 +140,7 @@ public final class QuestEventHandler {
         PlayerData.get(player).ifPresent(data -> {
             IQuests provider = data.getQuests();
             provider.getActiveQuest().ifPresent(quest -> {
-                if (quest instanceof IAreaQuest) {
+                if (quest.getStatus() == QuestStatus.ACTIVE && quest instanceof IAreaQuest) {
                     IAreaQuest areaQuest = (IAreaQuest) quest;
                     QuestArea area = areaQuest.getQuestArea();
                     if (area != null && area.isInArea(player)) {
