@@ -18,7 +18,15 @@
                 {
                     "entity": "minecraft:zombie",
                     "propability": 0.05,
-                    "limit": 3
+                    "limit": 3,
+                    "processors": [
+                        {
+                            "type": "gunsrpg:set_equipment",
+                            "equipment": {
+                                "head": "minecraft:leather_helmet"
+                            }
+                        }
+                    ]
                 }
             ]
         }
