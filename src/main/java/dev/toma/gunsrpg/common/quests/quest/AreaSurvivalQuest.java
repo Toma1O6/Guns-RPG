@@ -24,6 +24,7 @@ public class AreaSurvivalQuest extends Quest<AreaSurvivalData> implements IAreaQ
 
     public static final IQuestFactory<AreaSurvivalData, AreaSurvivalQuest> FACTORY = IQuestFactory.of(AreaSurvivalQuest::new, AreaSurvivalQuest::new);
     private int timeLeft;
+    private int gracePeriod = 100;
     private boolean hasEnteredArea;
     private QuestArea area;
 
@@ -46,6 +47,9 @@ public class AreaSurvivalQuest extends Quest<AreaSurvivalData> implements IAreaQ
     public void tickQuest(PlayerEntity player) {
         if (getStatus() == QuestStatus.ACTIVE && area != null && area.isInArea(player)) {
             area.tickArea(player.level, player);
+            if (gracePeriod > 0) {
+                --gracePeriod;
+            }
         }
     }
 
@@ -66,6 +70,7 @@ public class AreaSurvivalQuest extends Quest<AreaSurvivalData> implements IAreaQ
     @Override
     protected void writeQuestData(CompoundNBT nbt) {
         nbt.putInt("timeLeft", timeLeft);
+        nbt.putInt("gracePeriod", gracePeriod);
         nbt.putBoolean("wasInArea", hasEnteredArea);
         if (area != null) nbt.put("area", area.toNbt());
     }
@@ -73,6 +78,7 @@ public class AreaSurvivalQuest extends Quest<AreaSurvivalData> implements IAreaQ
     @Override
     protected void readQuestData(CompoundNBT nbt) {
         timeLeft = nbt.getInt("timeLeft");
+        gracePeriod = nbt.getInt("gracePeriod");
         hasEnteredArea = nbt.getBoolean("wasInArea");
         if (nbt.contains("area", Constants.NBT.TAG_COMPOUND)) {
             QuestAreaScheme areaScheme = this.getActiveData().getAreaScheme();
@@ -86,7 +92,7 @@ public class AreaSurvivalQuest extends Quest<AreaSurvivalData> implements IAreaQ
             hasEnteredArea = true;
             return TriggerResponseStatus.OK;
         }
-        return hasEnteredArea ? TriggerResponseStatus.FAIL : TriggerResponseStatus.PASS;
+        return hasEnteredArea && !isGracePeriod() ? TriggerResponseStatus.FAIL : TriggerResponseStatus.PASS;
     }
 
     private TriggerResponseStatus onPlayerDied(Trigger trigger, IPropertyReader reader) {
@@ -116,5 +122,9 @@ public class AreaSurvivalQuest extends Quest<AreaSurvivalData> implements IAreaQ
         boolean tooClose = size - intDist < 8;
         TextFormatting color = area.isInArea(player) ? tooClose ? TextFormatting.YELLOW : TextFormatting.GREEN : TextFormatting.RED;
         return new TranslationTextComponent(text).withStyle(color);
+    }
+
+    private boolean isGracePeriod() {
+        return gracePeriod > 0;
     }
 }

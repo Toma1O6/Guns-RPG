@@ -24,6 +24,7 @@ public class KillInAreaQuest extends Quest<KillInAreaData> implements IAreaQuest
 
     public static final IQuestFactory<KillInAreaData, KillInAreaQuest> FACTORY = IQuestFactory.of(KillInAreaQuest::new, KillInAreaQuest::new);
     private int killCount;
+    private int gracePeriod = 100;
     private boolean hasEnteredArea;
     private QuestArea area;
 
@@ -46,6 +47,9 @@ public class KillInAreaQuest extends Quest<KillInAreaData> implements IAreaQuest
     public void tickQuest(PlayerEntity player) {
         if (getStatus() == QuestStatus.ACTIVE && area != null && area.isInArea(player)) {
             area.tickArea(player.level, player);
+            if (gracePeriod > 0) {
+                --gracePeriod;
+            }
         }
     }
 
@@ -65,6 +69,7 @@ public class KillInAreaQuest extends Quest<KillInAreaData> implements IAreaQuest
     protected void writeQuestData(CompoundNBT nbt) {
         nbt.putInt("killCount", killCount);
         nbt.putBoolean("wasInArea", hasEnteredArea);
+        nbt.putInt("gracePeriod", gracePeriod);
         if (area != null) {
             nbt.put("area", area.toNbt());
         }
@@ -73,6 +78,7 @@ public class KillInAreaQuest extends Quest<KillInAreaData> implements IAreaQuest
     @Override
     protected void readQuestData(CompoundNBT nbt) {
         killCount = nbt.getInt("killCount");
+        gracePeriod = nbt.getInt("gracePeriod");
         hasEnteredArea = nbt.getBoolean("wasInArea");
         if (nbt.contains("area", Constants.NBT.TAG_COMPOUND)) {
             QuestAreaScheme areaScheme = this.getActiveData().getAreaScheme();
@@ -98,7 +104,7 @@ public class KillInAreaQuest extends Quest<KillInAreaData> implements IAreaQuest
         if (isInArea) {
             hasEnteredArea = true;
         }
-        return isInArea ? TriggerResponseStatus.OK : hasEnteredArea ? TriggerResponseStatus.FAIL : TriggerResponseStatus.PASS;
+        return isInArea ? TriggerResponseStatus.OK : hasEnteredArea && !isGracePeriod() ? TriggerResponseStatus.FAIL : TriggerResponseStatus.PASS;
     }
 
     private TriggerResponseStatus onPlayerDied(Trigger trigger, IPropertyReader reader) {
@@ -129,5 +135,9 @@ public class KillInAreaQuest extends Quest<KillInAreaData> implements IAreaQuest
         boolean tooClose = size - intDist < 8;
         TextFormatting color = area.isInArea(player) ? tooClose ? TextFormatting.YELLOW : TextFormatting.GREEN : TextFormatting.RED;
         return new TranslationTextComponent(text).withStyle(color);
+    }
+
+    private boolean isGracePeriod() {
+        return gracePeriod > 0;
     }
 }
