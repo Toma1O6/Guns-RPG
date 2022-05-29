@@ -22,11 +22,11 @@ public final class MobSpawnerAdapter {
         EntityType<? extends LivingEntity> entityType = tryParseAsLivingEntity(entityId);
         float spawnPropability = JSONUtils.getAsFloat(object, "propability");
         int spawnLimit = JSONUtils.getAsInt(object, "limit", 1);
-        List<IMobSpawnProcessor> processors = JsonHelper.deserializeAsList("processors", object, this::resolveSpawnProcessor);
+        List<IMobSpawnProcessor> processors = JsonHelper.deserializeAsList("processors", object, MobSpawnerAdapter::resolveSpawnProcessor);
         return new MobSpawner(entityType, spawnPropability, spawnLimit, processors);
     }
 
-    private <P extends IMobSpawnProcessor> P resolveSpawnProcessor(JsonElement element) throws JsonParseException {
+    public static  <P extends IMobSpawnProcessor> P resolveSpawnProcessor(JsonElement element) throws JsonParseException {
         JsonObject object = JsonHelper.asJsonObject(element);
         ResourceLocation id = new ResourceLocation(JSONUtils.getAsString(object, "type"));
         MobSpawnProcessorType<P> type = MobSpawnProcessorType.findById(id);

@@ -22,7 +22,15 @@
                     "processors": [
                         {
                             "type": "gunsrpg:controller",
-                            "controller": "minecraft:skeleton"
+                            "controller": "minecraft:skeleton",
+                            "processors": [
+                                {
+                                    "type": "gunsrpg:set_equipment",
+                                    "equipment": {
+                                        "head": "minecraft:iron_helmet"
+                                    }
+                                }
+                            ]
                         }
                     ]
                 }
