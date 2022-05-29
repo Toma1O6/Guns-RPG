@@ -15,6 +15,7 @@ public final class MobSpawnProcessorType<P extends IMobSpawnProcessor> {
     // Default processors
     public static final MobSpawnProcessorType<SetEntityControllerProcessor> CONTROLLER = register(GunsRPG.makeResource("controller"), new SetEntityControllerProcessor.Serializer());
     public static final MobSpawnProcessorType<SetEquipmentProcessor> EQUIPMENT = register(GunsRPG.makeResource("set_equipment"), new SetEquipmentProcessor.Serializer());
+    public static final MobSpawnProcessorType<SetEffectProcessor> EFFECT = register(GunsRPG.makeResource("set_effect"), new SetEffectProcessor.Serializer());
 
     // Registry methods
     public static <P extends IMobSpawnProcessor> MobSpawnProcessorType<P> register(ResourceLocation id, IMobSpawnProcessorSerializer<P> serializer) {

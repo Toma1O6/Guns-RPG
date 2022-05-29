@@ -121,7 +121,7 @@ public abstract class Quest<D extends IQuestData> {
     public void tickQuest(PlayerEntity player) {
     }
 
-    public final void onCompleted(PlayerEntity player) {
+    public void onCompleted(PlayerEntity player) {
         if (!player.level.isClientSide) {
             ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
             serverPlayer.connection.send(new SPlaySoundEffectPacket(SoundEvents.PLAYER_LEVELUP, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 0.75F, 1.0F));
@@ -130,7 +130,7 @@ public abstract class Quest<D extends IQuestData> {
         }
     }
 
-    public final void onFailed(PlayerEntity player) {
+    public void onFailed(PlayerEntity player) {
         if (!player.level.isClientSide) {
             ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
             serverPlayer.connection.send(new SPlaySoundEffectPacket(ModSounds.USE_AVENGE_ME_FRIENDS, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 0.75F, 1.0F));

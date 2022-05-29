@@ -26,7 +26,7 @@ public final class MobSpawnerAdapter {
         return new MobSpawner(entityType, spawnPropability, spawnLimit, processors);
     }
 
-    public static  <P extends IMobSpawnProcessor> P resolveSpawnProcessor(JsonElement element) throws JsonParseException {
+    public static <P extends IMobSpawnProcessor> P resolveSpawnProcessor(JsonElement element) throws JsonParseException {
         JsonObject object = JsonHelper.asJsonObject(element);
         ResourceLocation id = new ResourceLocation(JSONUtils.getAsString(object, "type"));
         MobSpawnProcessorType<P> type = MobSpawnProcessorType.findById(id);
