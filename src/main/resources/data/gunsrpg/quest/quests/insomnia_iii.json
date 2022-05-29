@@ -18,7 +18,17 @@
                 {
                     "entity": "minecraft:phantom",
                     "propability": 0.1,
-                    "limit": 8
+                    "limit": 8,
+                    "processors": [
+                        {
+                            "type": "gunsrpg:set_effect",
+                            "effect": "fire_resistance",
+                            "duration": 3600,
+                            "amplifier": 0,
+                            "ambient": false,
+                            "visible": false
+                        }
+                    ]
                 }
             ]
         }
