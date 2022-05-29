@@ -31,6 +31,7 @@ import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataProvider;
 import dev.toma.gunsrpg.world.feature.ModConfiguredFeatures;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.IAngerable;
@@ -193,6 +194,29 @@ public class CommonEventHandler {
     }
 
     @SubscribeEvent
+    public static void finishEating(LivingEntityUseItemEvent.Finish event) {
+        LivingEntity living = event.getEntityLiving();
+        if (living.level.isClientSide) return;
+        if (living instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) living;
+            PlayerData.get(player).ifPresent(data -> {
+                IDebuffs debuffs = data.getDebuffControl();
+                ItemStack usedItem = event.getItem();
+                Random random = player.getRandom();
+                if (usedItem.getItem() == Items.ROTTEN_FLESH) {
+                    if (!debuffs.hasDebuff(Debuffs.INFECTION) && random.nextFloat() < 0.3F) {
+                        debuffs.toggle(Debuffs.INFECTION);
+                    }
+                } else if (usedItem.getItem() == Items.SPIDER_EYE) {
+                    if (!debuffs.hasDebuff(Debuffs.POISON) && random.nextFloat() < 0.4F) {
+                        debuffs.toggle(Debuffs.POISON);
+                    }
+                }
+            });
+        }
+    }
+
+    @SubscribeEvent
     public static void disableShield(PlayerInteractEvent.RightClickItem event) {
         if (event.getHand() == Hand.OFF_HAND) {
             PlayerEntity player = event.getPlayer();
@@ -230,6 +254,7 @@ public class CommonEventHandler {
         PlayerEntity player = event.getPlayer();
         ItemStack stack = player.getMainHandItem();
         World world = (World) event.getWorld();
+        BlockState blockState = event.getState();
         if (stack.getItem() instanceof HammerItem) {
             HammerItem hammer = (HammerItem) stack.getItem();
             Direction facing = ModUtils.getFacing(player);
@@ -241,6 +266,13 @@ public class CommonEventHandler {
                     if (stack.getDamageValue() == stack.getMaxDamage()) break;
                 }
             }
+        } else if (blockState.getMaterial() == Material.GLASS && stack.isEmpty() && !world.isClientSide) {
+            PlayerData.get(player).ifPresent(data -> {
+                IDebuffs debuffs = data.getDebuffControl();
+                if (!debuffs.hasDebuff(Debuffs.BLEED) && world.random.nextFloat() < 0.5F) {
+                    debuffs.toggle(Debuffs.BLEED);
+                }
+            });
         }
     }
 
