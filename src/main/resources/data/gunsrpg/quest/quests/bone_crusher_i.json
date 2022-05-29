@@ -23,7 +23,7 @@
                         {
                             "type": "gunsrpg:set_equipment",
                             "equipment": {
-                                "head": "minecraft:iron_helmet"
+                                "head": "minecraft:leather_helmet"
                             }
                         }
                     ]
