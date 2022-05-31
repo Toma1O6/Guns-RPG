@@ -45,9 +45,11 @@ public class KillInAreaQuest extends Quest<KillInAreaData> implements IAreaQuest
 
     @Override
     public void tickQuest(PlayerEntity player) {
-        if (getStatus() == QuestStatus.ACTIVE && area != null && area.isInArea(player)) {
-            area.tickArea(player.level, player);
-            if (gracePeriod > 0) {
+        if (getStatus() == QuestStatus.ACTIVE && area != null) {
+            if (area.isInArea(player)) {
+                area.tickArea(player.level, player);
+            }
+            if (hasEnteredArea && gracePeriod > 0) {
                 --gracePeriod;
             }
         }

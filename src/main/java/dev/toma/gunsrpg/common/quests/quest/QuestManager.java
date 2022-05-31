@@ -42,7 +42,7 @@ public final class QuestManager extends JsonReloadListener {
         ReputationStatus status = ReputationStatus.getStatus(reputation);
         int maxTier = status.getBaseTier();
         List<QuestScheme<?>> schemePool = new LinkedList<>();
-        quests.values().stream().filter(scheme -> scheme.getTier() <= maxTier).forEach(schemePool::add);
+        quests.values().stream().filter(scheme -> !scheme.isSpecialTaskQuest() && scheme.getTier() <= maxTier).forEach(schemePool::add);
         Set<QuestScheme<?>> results = new HashSet<>();
         Random random = new Random();
         for (int i = 0; i < count; i++) {

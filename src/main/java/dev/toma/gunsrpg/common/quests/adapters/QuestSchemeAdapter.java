@@ -30,6 +30,7 @@ public class QuestSchemeAdapter {
         if (tier < 1) {
             throw new JsonSyntaxException("Invalid quest tier: " + tier + ", must be bigger than 0");
         }
+        boolean isSpecialTask = JSONUtils.getAsBoolean(object, "isSpecial", false);
         DisplayInfo displayInfo = DisplayInfo.fromJson(JSONUtils.getAsJsonObject(object, "display"));
         D data = questType.resolveJson(object.get("data"));
         IQuestConditionProvider<?>[] conditions = object.has("conditions") ?
@@ -40,6 +41,6 @@ public class QuestSchemeAdapter {
             JsonObject tieredConditions = JSONUtils.getAsJsonObject(object, "tieredConditions");
             tierScheme = QuestConditionTierScheme.fromJson(tieredConditions);
         }
-        return new QuestScheme<>(filePath, questType, data, tier, displayInfo, conditions, tierScheme);
+        return new QuestScheme<>(filePath, questType, data, tier, isSpecialTask, displayInfo, conditions, tierScheme);
     }
 }

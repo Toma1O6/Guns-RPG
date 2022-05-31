@@ -126,6 +126,9 @@ public class QuestScreen extends Screen {
     }
 
     private void questWidgetClicked(QuestWidget widget) {
+        if (widget.quest.getScheme().isSpecialTaskQuest()) {
+            return;
+        }
         infoPanelWidget.setSelectedQuest(widget.quest);
     }
 
@@ -140,9 +143,6 @@ public class QuestScreen extends Screen {
 
     private TextFormatting getTimerColor(int timer) {
         Interval interval = Interval.ticks(timer);
-        // 60m-30m green
-        // 30m-10m yellow
-        // 10m- red
         if (Interval.minutes(30).compareTo(interval) > 0) {
             return TextFormatting.GREEN;
         } else if (Interval.minutes(10).compareTo(interval) > 0) {

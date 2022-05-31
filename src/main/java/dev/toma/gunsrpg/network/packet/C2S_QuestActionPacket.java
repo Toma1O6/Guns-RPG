@@ -1,18 +1,23 @@
 package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IQuests;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
 import dev.toma.gunsrpg.client.screen.QuestScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.MayorEntity;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
 import dev.toma.gunsrpg.common.quests.reward.QuestReward;
+import dev.toma.gunsrpg.common.skills.BartenderSkill;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -104,7 +109,7 @@ public class C2S_QuestActionPacket extends AbstractNetworkPacket<C2S_QuestAction
                         handleQuestCancellation(questProvider, player);
                         break;
                     case COLLECT:
-                        handleQuestRewardCollection(questProvider, player);
+                        handleQuestRewardCollection(playerData, player);
                         break;
                 }
                 ITraderStatus status = questProvider.getTraderStandings().getStatusWithTrader(mayor.getUUID());
@@ -145,10 +150,22 @@ public class C2S_QuestActionPacket extends AbstractNetworkPacket<C2S_QuestAction
         provider.clearActiveQuest();
     }
 
-    private void handleQuestRewardCollection(IQuests provider, ServerPlayerEntity player) {
+    private void handleQuestRewardCollection(IPlayerData data, ServerPlayerEntity player) {
+        IQuests provider = data.getQuests();
+        ISkillProvider skills = data.getSkillProvider();
         provider.getActiveQuest().ifPresent(quest -> {
+            if (quest.getScheme().isSpecialTaskQuest()) {
+                GunsRPG.log.error("Cannot claim rewards from special task quests!");
+                return;
+            }
             if (quest.getStatus() != QuestStatus.COMPLETED) {
                 GunsRPG.log.error("Cannot claim rewards for quest in {} state. Requires COMPLETED state.", quest.getStatus());
+                return;
+            }
+            BartenderSkill skill = SkillUtil.getTopHierarchySkill(Skills.BARTENDER_I, skills);
+            int rewardLimit = skill != null ? skill.getRewardCount() : 1;
+            if (rewards.length > rewardLimit) {
+                GunsRPG.log.error("Cannot claim more than {} rewards! {} Tried to pick {} rewards", rewardLimit, player.getName().getString(), rewards.length);
                 return;
             }
             QuestReward reward = quest.getReward();

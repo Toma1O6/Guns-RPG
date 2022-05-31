@@ -10,15 +10,17 @@ public final class QuestScheme<D extends IQuestData> {
     private final QuestType<D, ?> questType;
     private final D data;
     private final int tier;
+    private final boolean isSpecialTaskQuest;
     private final DisplayInfo displayInfo;
     private final IQuestConditionProvider<?>[] questConditions;
     private final QuestConditionTierScheme conditionTierScheme;
 
-    public QuestScheme(ResourceLocation questId, QuestType<D, ?> questType, D data, int tier, DisplayInfo displayInfo, IQuestConditionProvider<?>[] questConditions, QuestConditionTierScheme conditionTierScheme) {
+    public QuestScheme(ResourceLocation questId, QuestType<D, ?> questType, D data, int tier, boolean isSpecialTaskQuest, DisplayInfo displayInfo, IQuestConditionProvider<?>[] questConditions, QuestConditionTierScheme conditionTierScheme) {
         this.questId = questId;
         this.questType = questType;
         this.data = data;
         this.tier = tier;
+        this.isSpecialTaskQuest = isSpecialTaskQuest;
         this.displayInfo = displayInfo;
         this.questConditions = questConditions;
         this.conditionTierScheme = conditionTierScheme;
@@ -32,8 +34,9 @@ public final class QuestScheme<D extends IQuestData> {
         String info = nbt.getString("data.info");
         D data = questType.readData(nbt.getCompound("questData"));
         int tier = nbt.getInt("tier");
+        boolean isSpecialTask = nbt.getBoolean("special");
         DisplayInfo displayInfo = new DisplayInfo(name, info);
-        return new QuestScheme<>(questId, questType, data, tier, displayInfo, new IQuestConditionProvider[0], QuestConditionTierScheme.EMPTY_SCHEME);
+        return new QuestScheme<>(questId, questType, data, tier, isSpecialTask, displayInfo, new IQuestConditionProvider[0], QuestConditionTierScheme.EMPTY_SCHEME);
     }
 
     public ResourceLocation getQuestId() {
@@ -50,6 +53,10 @@ public final class QuestScheme<D extends IQuestData> {
 
     public int getTier() {
         return tier;
+    }
+
+    public boolean isSpecialTaskQuest() {
+        return isSpecialTaskQuest;
     }
 
     public DisplayInfo getDisplayInfo() {
@@ -72,6 +79,7 @@ public final class QuestScheme<D extends IQuestData> {
         nbt.putString("data.name", displayInfo.getName().getString());
         nbt.putString("data.info", displayInfo.getInfo().getString());
         nbt.putInt("tier", tier);
+        nbt.putBoolean("special", isSpecialTaskQuest);
         nbt.put("questData", questType.writeData(data));
         return nbt;
     }
