@@ -43,7 +43,7 @@ import java.util.Random;
 
 public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAttackMob, IEntityAdditionalSpawnData {
 
-    private final RangedAttackNoSightGoal<ExplosiveSkeletonEntity> aiArrowAttack = new RangedAttackNoSightGoal<>(this, 1.0D, 25, 18.0F);
+    private final RangedAttackNoSightGoal aiArrowAttack = new RangedAttackNoSightGoal(this, 1.0D, 25, 18.0F);
     private final MeleeAttackGoal aiAttackOnCollide = new MeleeAttackGoal(this, 1.2D, false) {
         @Override
         public void stop() {
@@ -58,6 +58,7 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
         }
     };
     private LoadoutType loadoutType = LoadoutType.SELECTOR.getRandom();
+    private boolean forcedAggro;
 
     public ExplosiveSkeletonEntity(EntityType<? extends MonsterEntity> type, World world) {
         super(type, world);
@@ -65,6 +66,14 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MonsterEntity.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.25D);
+    }
+
+    public void setForcedAggro(boolean forcedAggro) {
+        this.forcedAggro = forcedAggro;
+    }
+
+    public boolean hasForcedAggro() {
+        return forcedAggro;
     }
 
     @Override
@@ -83,11 +92,13 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
         buffer.writeEnum(loadoutType);
+        buffer.writeBoolean(forcedAggro);
     }
 
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
         loadoutType = additionalData.readEnum(LoadoutType.class);
+        forcedAggro = additionalData.readBoolean();
     }
 
     @Override
@@ -230,8 +241,17 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT p_70037_1_) {
-        super.readAdditionalSaveData(p_70037_1_);
+    public void addAdditionalSaveData(CompoundNBT nbt) {
+        super.addAdditionalSaveData(nbt);
+        nbt.putInt("loadoutType", this.loadoutType.ordinal());
+        nbt.putBoolean("forcedAggro", this.forcedAggro);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundNBT nbt) {
+        super.readAdditionalSaveData(nbt);
+        this.loadoutType = LoadoutType.values()[nbt.getInt("loadoutType")];
+        this.forcedAggro = nbt.getBoolean("forcedAggro");
         this.setCombatTask();
     }
 

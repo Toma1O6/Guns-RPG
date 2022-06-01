@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.ai;
 
+import dev.toma.gunsrpg.common.entity.ExplosiveSkeletonEntity;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.entity.IRangedAttackMob;
@@ -9,9 +10,9 @@ import net.minecraft.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
-public class RangedAttackNoSightGoal<T extends MobEntity & IRangedAttackMob> extends Goal {
+public class RangedAttackNoSightGoal extends Goal {
 
-    protected final T entity;
+    protected final ExplosiveSkeletonEntity entity;
     protected final double moveSpeedAmp;
     protected final float maxAttackDistance;
     protected int attackCooldown;
@@ -21,7 +22,7 @@ public class RangedAttackNoSightGoal<T extends MobEntity & IRangedAttackMob> ext
     private boolean strafingBackwards;
     private int strafingTime = -1;
 
-    public RangedAttackNoSightGoal(T entity, double speedAmp, int attackCooldown, float maxAttackDistance) {
+    public RangedAttackNoSightGoal(ExplosiveSkeletonEntity entity, double speedAmp, int attackCooldown, float maxAttackDistance) {
         this.entity = entity;
         this.moveSpeedAmp = speedAmp;
         this.attackCooldown = attackCooldown;
@@ -66,7 +67,7 @@ public class RangedAttackNoSightGoal<T extends MobEntity & IRangedAttackMob> ext
         LivingEntity livingEntity = this.entity.getTarget();
         if (livingEntity != null) {
             double distanceToTarget = this.entity.distanceToSqr(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
-            boolean canSee = this.entity.getSensing().canSee(livingEntity) || WorldData.isBloodMoon(entity.level);
+            boolean canSee = this.entity.getSensing().canSee(livingEntity) || WorldData.isBloodMoon(entity.level) || entity.hasForcedAggro();
             boolean hasSeen = this.seeTime > 0;
 
             if (canSee != hasSeen) {

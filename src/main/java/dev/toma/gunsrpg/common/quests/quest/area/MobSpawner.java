@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.quests.quest.area;
 
+import dev.toma.gunsrpg.ai.AlwaysAggroOnGoal;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -80,6 +81,10 @@ public class MobSpawner implements IMobSpawner {
             MobEntity mob = (MobEntity) entity;
             mob.finalizeSpawn((ServerWorld) world, world.getCurrentDifficultyAt(pos), SpawnReason.COMMAND, null, null);
             mob.setTarget(attackTarget);
+
+
+            AlwaysAggroOnGoal<?> alwaysAggroOnGoal = new AlwaysAggroOnGoal<>(mob, false, attackTarget);
+            mob.targetSelector.addGoal(0, alwaysAggroOnGoal);
         }
         entity.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(area.getScheme().getSize() * 3);
     }
