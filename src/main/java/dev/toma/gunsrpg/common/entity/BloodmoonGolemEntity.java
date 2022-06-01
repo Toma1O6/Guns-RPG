@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
@@ -22,7 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BloodmoonGolemEntity extends CreatureEntity implements IMob {
+public class BloodmoonGolemEntity extends MonsterEntity implements IMob {
 
     private int attackTimer;
 
@@ -30,7 +31,7 @@ public class BloodmoonGolemEntity extends CreatureEntity implements IMob {
         this(ModEntities.BLOODMOON_GOLEM.get(), world);
     }
 
-    public BloodmoonGolemEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
+    public BloodmoonGolemEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
         super(type, worldIn);
     }
 
@@ -57,14 +58,6 @@ public class BloodmoonGolemEntity extends CreatureEntity implements IMob {
     @Override
     protected int decreaseAirSupply(int air) {
         return air;
-    }
-
-    @Override
-    protected void doPush(Entity entityIn) {
-        /*if (entityIn instanceof IMob && !(entityIn instanceof CreeperEntity) && this.getRandom().nextInt(20) == 0) {
-            this.setTarget((LivingEntity) entityIn);
-        }*/
-        super.doPush(entityIn);
     }
 
     @Override
