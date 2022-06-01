@@ -1,12 +1,12 @@
 package dev.toma.gunsrpg.common.quests.condition;
 
+import com.google.common.collect.ImmutableSet;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.BiFunction;
 
@@ -23,7 +23,7 @@ public class QuestConditionProviderType<Q extends IQuestConditionProvider<?>> {
         this.serializer = serializer;
         this.fromNbtReader = fromNbtReader;
         this.failsQuest = failsQuest;
-        this.triggerSet = triggers.length == 0 ? Collections.emptySet() : EnumSet.copyOf(Arrays.asList(triggers));
+        this.triggerSet = triggers.length == 0 ? Collections.emptySet() : ImmutableSet.copyOf(Arrays.asList(triggers));
     }
 
     public ResourceLocation getId() {
