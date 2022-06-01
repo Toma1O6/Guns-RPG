@@ -86,8 +86,6 @@ public class MayorEntity extends CreatureEntity {
                 ITraderStatus status = standings.getStatusWithTrader(uuid);
                 status.onTraderAttacked();
             });
-        } else {
-            super.hurt(source, amount);
         }
         return false;
     }

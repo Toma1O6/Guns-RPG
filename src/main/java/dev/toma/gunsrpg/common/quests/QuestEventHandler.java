@@ -21,13 +21,14 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
 public final class QuestEventHandler {
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onEntityKilled(LivingDeathEvent event) {
         DamageSource source = event.getSource();
         LivingEntity victim = event.getEntityLiving();
@@ -53,6 +54,17 @@ public final class QuestEventHandler {
                         holder.setProperty(Properties.IS_HEADSHOT, projectile.getProperty(Properties.IS_HEADSHOT));
                     }
                     quest.trigger(Trigger.ENTITY_KILLED, holder);
+                });
+            });
+        }
+        if (!event.isCanceled() && victim instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) victim;
+            PlayerData.get(player).ifPresent(data -> {
+                IQuests provider = data.getQuests();
+                provider.getActiveQuest().ifPresent(quest -> {
+                    IPropertyHolder holder = PropertyContext.create();
+                    holder.setProperty(QuestProperties.PLAYER, player);
+                    quest.trigger(Trigger.PLAYER_DIED, holder);
                 });
             });
         }
@@ -104,22 +116,6 @@ public final class QuestEventHandler {
                     holder.setProperty(QuestProperties.PLAYER, player);
                     holder.setProperty(QuestProperties.DAMAGE_SOURCE, source);
                     quest.trigger(Trigger.DAMAGE_GIVEN, holder);
-                });
-            });
-        }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerDeath(LivingDeathEvent event) {
-        LivingEntity entity = event.getEntityLiving();
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
-            PlayerData.get(player).ifPresent(data -> {
-                IQuests provider = data.getQuests();
-                provider.getActiveQuest().ifPresent(quest -> {
-                    IPropertyHolder holder = PropertyContext.create();
-                    holder.setProperty(QuestProperties.PLAYER, player);
-                    quest.trigger(Trigger.PLAYER_DIED, holder);
                 });
             });
         }
