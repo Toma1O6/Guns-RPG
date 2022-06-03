@@ -76,7 +76,7 @@ public class CrystalFusionStationContainer extends AbstractModContainer<CrystalF
         @Nullable
         @Override
         public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-            return Pair.of(PlayerContainer.BLOCK_ATLAS, ClientRegistry.EMPTY_CRYSTAL_SLOT);
+            return Pair.of(PlayerContainer.BLOCK_ATLAS, CrystalStationContainer.EMPTY_CRYSTAL_SLOT);
         }
     }
 
@@ -104,7 +104,7 @@ public class CrystalFusionStationContainer extends AbstractModContainer<CrystalF
         @Nullable
         @Override
         public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-            return Pair.of(PlayerContainer.BLOCK_ATLAS, ClientRegistry.EMPTY_TRANSMUTATION_SLOT);
+            return Pair.of(PlayerContainer.BLOCK_ATLAS, CrystalStationContainer.EMPTY_TRANSMUTATION_SLOT);
         }
     }
 }

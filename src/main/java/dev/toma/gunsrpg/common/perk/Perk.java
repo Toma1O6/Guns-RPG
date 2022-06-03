@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.perk;
 
 import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
+import dev.toma.gunsrpg.common.attribute.Attribs;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 
 public final class Perk {
@@ -65,5 +67,25 @@ public final class Perk {
     @Override
     public String toString() {
         return "Perk{" + "id=" + id + '}';
+    }
+
+    public void encode(PacketBuffer buffer) {
+        buffer.writeResourceLocation(id);
+        buffer.writeResourceLocation(attributeId.getId());
+        buffer.writeFloat(scaling);
+        boundSpec.encode(buffer);
+        buffer.writeBoolean(invertCalculation);
+    }
+
+    public static Perk decode(PacketBuffer buffer) {
+        ResourceLocation id = buffer.readResourceLocation();
+        ResourceLocation attrId = buffer.readResourceLocation();
+        float scaling = buffer.readFloat();
+        PerkValueSpec spec = PerkValueSpec.decode(buffer);
+        boolean invertCalculation = buffer.readBoolean();
+        IAttributeId attribute = Attribs.find(attrId);
+        Perk perk = new Perk(attribute, scaling, spec, invertCalculation);
+        perk.setId(id);
+        return perk;
     }
 }

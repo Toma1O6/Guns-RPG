@@ -55,7 +55,6 @@ public abstract class Quest<D extends IQuestData> {
     private final IQuestCondition[] conditions;
     private final int rewardTier;
     private final UUID uuid;
-    @OnlyIn(Dist.CLIENT)
     private final LazyOptional<IDataModel> displayModel = LazyOptional.of(this::buildDataModel);
     private final IPropertyHolder initialProperties = PropertyContext.create();
 
@@ -218,6 +217,7 @@ public abstract class Quest<D extends IQuestData> {
         return reward;
     }
 
+    @OnlyIn(Dist.CLIENT)
     public LazyOptional<IDataModel> getDisplayModel() {
         return displayModel;
     }

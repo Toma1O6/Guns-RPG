@@ -25,14 +25,14 @@ import java.util.stream.Collectors;
 
 public class FullReloader implements IReloader {
 
-    private final IAnimationProvider animationProvider;
+    private IAnimationProvider animationProvider;
     private boolean reloading;
     private int ticksLeft;
     private GunItem gun;
     private ItemStack stack;
 
     public FullReloader() {
-        this(IAnimationProvider.DEFAULT_PROVIDER);
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> this.animationProvider = IAnimationProvider.DEFAULT_PROVIDER);
     }
 
     public FullReloader(IAnimationProvider provider) {

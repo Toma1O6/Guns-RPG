@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.resource.perks;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.minecraft.network.PacketBuffer;
 
 public final class PurificationConfiguration {
 
@@ -15,6 +16,19 @@ public final class PurificationConfiguration {
 
     public Entry getValueForAmount(int amount) {
         return int2ObjectMap.get(amount);
+    }
+
+    public void encode(PacketBuffer buffer) {
+        buffer.writeInt(int2ObjectMap.size());
+        int2ObjectMap.values().forEach(entry -> entry.encode(buffer));
+    }
+
+    public static PurificationConfiguration decode(PacketBuffer buffer) {
+        Entry[] entries = new Entry[buffer.readInt()];
+        for (int i = 0; i < entries.length; i++) {
+            entries[i] = Entry.decode(buffer);
+        }
+        return new PurificationConfiguration(entries);
     }
 
     public static final class Entry {
@@ -41,6 +55,22 @@ public final class PurificationConfiguration {
 
         public float getBreakChance() {
             return breakChance;
+        }
+
+        public void encode(PacketBuffer buffer) {
+            buffer.writeInt(count);
+            buffer.writeInt(price);
+            buffer.writeFloat(successChance);
+            buffer.writeFloat(breakChance);
+        }
+
+        public static Entry decode(PacketBuffer buffer) {
+            return new Entry(
+                    buffer.readInt(),
+                    buffer.readInt(),
+                    buffer.readFloat(),
+                    buffer.readFloat()
+            );
         }
     }
 }

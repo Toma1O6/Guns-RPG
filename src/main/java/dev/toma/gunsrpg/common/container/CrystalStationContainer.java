@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.container;
 
 import com.mojang.datafixers.util.Pair;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPerkProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
@@ -39,6 +40,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class CrystalStationContainer extends AbstractContainer {
+
+    public static final ResourceLocation EMPTY_CRYSTAL_SLOT = GunsRPG.makeResource("item/empty_crystal");
+    public static final ResourceLocation EMPTY_TRANSMUTATION_SLOT = GunsRPG.makeResource("item/empty_orb_of_transmutation");
+    public static final ResourceLocation EMPTY_PURITY_SLOT = GunsRPG.makeResource("item/empty_orb_of_purity");
 
     private final Inventory temporalInventory;
 
@@ -128,7 +133,7 @@ public class CrystalStationContainer extends AbstractContainer {
         @Nullable
         @Override
         public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-            return Pair.of(PlayerContainer.BLOCK_ATLAS, ClientRegistry.EMPTY_CRYSTAL_SLOT);
+            return Pair.of(PlayerContainer.BLOCK_ATLAS, EMPTY_CRYSTAL_SLOT);
         }
     }
 

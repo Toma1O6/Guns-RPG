@@ -13,7 +13,9 @@ import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;
 import dev.toma.gunsrpg.common.skills.transaction.TransactionManager;
 import dev.toma.gunsrpg.common.skills.transaction.TransactionTypes;
 import dev.toma.gunsrpg.common.skills.transaction.WeaponPointTransaction;
+import dev.toma.gunsrpg.resource.progression.FakeLevelingStrategy;
 import dev.toma.gunsrpg.resource.progression.IProgressionStrategy;
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.SlimeEntity;
@@ -52,7 +54,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
         this.transactionManager.registerHandler(TransactionTypes.WEAPON_POINT_TRANSACTION, this::hasEnoughWeaponPoints, this::handleWeaponPointTransaction);
         ITransactionValidatorFactory<?, ?> factory = TransactionValidatorRegistry.getValidatorFactory(PlayerLevelTransactionValidator.ID);
         ITransactionValidator validator = TransactionValidatorRegistry.getTransactionValidator(factory, null);
-        this.strategy = GunsRPG.getModLifecycle().getProgressionStrategyManager().getStrategy(validator);
+        this.strategy = ModUtils.firstNonnull(GunsRPG.getModLifecycle().getProgressionStrategyManager().getStrategy(validator), FakeLevelingStrategy.INSTANCE);
         this.requiredKills = this.strategy.getRequiredKillCount(this.level);
     }
 

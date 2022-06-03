@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.baked.SimpleBakedModel;
+import dev.toma.gunsrpg.common.container.CrystalStationContainer;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
@@ -21,10 +22,6 @@ import java.util.Map;
 @Mod.EventBusSubscriber(modid = GunsRPG.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientRegistry {
 
-    public static final ResourceLocation EMPTY_CRYSTAL_SLOT = GunsRPG.makeResource("item/empty_crystal");
-    public static final ResourceLocation EMPTY_TRANSMUTATION_SLOT = GunsRPG.makeResource("item/empty_orb_of_transmutation");
-    public static final ResourceLocation EMPTY_PURITY_SLOT = GunsRPG.makeResource("item/empty_orb_of_purity");
-
     @SubscribeEvent
     public static void onModelBake(ModelBakeEvent event) {
         Map<ResourceLocation, IBakedModel> registry = event.getModelRegistry();
@@ -41,9 +38,9 @@ public class ClientRegistry {
         AtlasTexture map = event.getMap();
         ResourceLocation mapPath = map.location();
         if (!mapPath.equals(PlayerContainer.BLOCK_ATLAS)) return;
-        event.addSprite(EMPTY_CRYSTAL_SLOT);
-        event.addSprite(EMPTY_TRANSMUTATION_SLOT);
-        event.addSprite(EMPTY_PURITY_SLOT);
+        event.addSprite(CrystalStationContainer.EMPTY_CRYSTAL_SLOT);
+        event.addSprite(CrystalStationContainer.EMPTY_TRANSMUTATION_SLOT);
+        event.addSprite(CrystalStationContainer.EMPTY_PURITY_SLOT);
     }
 
     protected static ModelResourceLocation getModelResourceLocation(Item item) {

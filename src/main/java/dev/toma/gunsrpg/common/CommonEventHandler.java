@@ -21,7 +21,7 @@ import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.S2C_SendSkillDataPacket;
+import dev.toma.gunsrpg.network.packet.S2C_SynchronizationPayloadPacket;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.properties.Properties;
@@ -153,7 +153,7 @@ public class CommonEventHandler {
     public static void onLogIn(PlayerEvent.PlayerLoggedInEvent event) {
         PlayerEntity player = event.getPlayer();
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-        NetworkManager.sendClientPacket(serverPlayer, new S2C_SendSkillDataPacket(ModRegistries.SKILLS.getValues()));
+        NetworkManager.sendClientPacket(serverPlayer, S2C_SynchronizationPayloadPacket.makePayloadPacket());
         PlayerData.get(player).ifPresent(data -> {
             data.sync(DataFlags.WILDCARD);
             data.getProgressData().onLogIn();

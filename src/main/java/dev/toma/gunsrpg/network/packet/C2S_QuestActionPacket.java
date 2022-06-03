@@ -5,7 +5,7 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IQuests;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
-import dev.toma.gunsrpg.client.screen.QuestScreen;
+import dev.toma.gunsrpg.common.quests.ActionType;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.MayorEntity;
 import dev.toma.gunsrpg.common.init.Skills;
@@ -26,7 +26,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class C2S_QuestActionPacket extends AbstractNetworkPacket<C2S_QuestActionPacket> {
 
-    private QuestScreen.ActionType actionType;
+    private ActionType actionType;
     private int entityId;
     // assign properties
     private int questIndex;
@@ -36,23 +36,23 @@ public class C2S_QuestActionPacket extends AbstractNetworkPacket<C2S_QuestAction
     public C2S_QuestActionPacket() {
     }
 
-    private C2S_QuestActionPacket(QuestScreen.ActionType actionType, int entityId) {
+    private C2S_QuestActionPacket(ActionType actionType, int entityId) {
         this.actionType = actionType;
         this.entityId = entityId;
     }
 
     public static C2S_QuestActionPacket makeAssignPacket(MayorEntity entity, Quest<?>[] quests, Quest<?> quest) {
-        C2S_QuestActionPacket packet = new C2S_QuestActionPacket(QuestScreen.ActionType.ASSIGN, entity.getId());
+        C2S_QuestActionPacket packet = new C2S_QuestActionPacket(ActionType.ASSIGN, entity.getId());
         packet.questIndex = ModUtils.indexOf(quests, quest);
         return packet;
     }
 
     public static C2S_QuestActionPacket makeCancelPacket(MayorEntity entity) {
-        return new C2S_QuestActionPacket(QuestScreen.ActionType.CANCEL, entity.getId());
+        return new C2S_QuestActionPacket(ActionType.CANCEL, entity.getId());
     }
 
     public static C2S_QuestActionPacket makeCollectionPacket(MayorEntity entity, Integer[] data) {
-        C2S_QuestActionPacket packet = new C2S_QuestActionPacket(QuestScreen.ActionType.COLLECT, entity.getId());
+        C2S_QuestActionPacket packet = new C2S_QuestActionPacket(ActionType.COLLECT, entity.getId());
         int[] selectedRewards = new int[data.length];
         int i = 0;
         for (Integer integer : data) {
@@ -78,7 +78,7 @@ public class C2S_QuestActionPacket extends AbstractNetworkPacket<C2S_QuestAction
 
     @Override
     public C2S_QuestActionPacket decode(PacketBuffer buffer) {
-        QuestScreen.ActionType actionType = buffer.readEnum(QuestScreen.ActionType.class);
+        ActionType actionType = buffer.readEnum(ActionType.class);
         int entityId = buffer.readInt();
         C2S_QuestActionPacket packet = new C2S_QuestActionPacket(actionType, entityId);
         switch (actionType) {

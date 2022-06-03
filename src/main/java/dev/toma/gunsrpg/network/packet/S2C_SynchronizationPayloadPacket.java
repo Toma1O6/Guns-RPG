@@ -8,8 +8,11 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.skill.*;
 import dev.toma.gunsrpg.client.screen.skill.SkillTreeScreen;
 import dev.toma.gunsrpg.common.init.ModRegistries;
+import dev.toma.gunsrpg.common.perk.Perk;
+import dev.toma.gunsrpg.common.perk.PerkRegistry;
 import dev.toma.gunsrpg.common.skills.core.*;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
+import dev.toma.gunsrpg.resource.perks.PerkConfiguration;
 import dev.toma.gunsrpg.resource.skill.SkillPropertyLoader;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
@@ -18,50 +21,82 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class S2C_SendSkillDataPacket extends AbstractNetworkPacket<S2C_SendSkillDataPacket> {
+public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket<S2C_SynchronizationPayloadPacket> {
 
     private static final Gson GSON = new GsonBuilder().create();
+    // skills
     private final List<DataContext> data;
+    // perks
+    private final List<Perk> perks;
+    // perk cfg
+    private final PerkConfiguration configuration;
 
-    public S2C_SendSkillDataPacket() {
-        this.data = new ArrayList<>();
+    public S2C_SynchronizationPayloadPacket() {
+        this(null, null, null);
     }
 
-    public S2C_SendSkillDataPacket(Collection<SkillType<?>> data) {
-        this.data = data.stream().filter(this::filterAndLogInvalid).map(DataContext::new).collect(Collectors.toList());
+    public static S2C_SynchronizationPayloadPacket makePayloadPacket() {
+        List<DataContext> data = ModRegistries.SKILLS.getValues().stream().filter(S2C_SynchronizationPayloadPacket::filterAndLogInvalid).map(DataContext::new).collect(Collectors.toList());
+        List<Perk> perks = new ArrayList<>(PerkRegistry.getRegistry().getPerks());
+        PerkConfiguration configuration = GunsRPG.getModLifecycle().getPerkManager().configLoader.getConfiguration();
+        return new S2C_SynchronizationPayloadPacket(data, perks, configuration);
     }
 
-    private S2C_SendSkillDataPacket(List<DataContext> data) {
+    private S2C_SynchronizationPayloadPacket(List<DataContext> data, List<Perk> perks, PerkConfiguration configuration) {
         this.data = data;
+        this.perks = perks;
+        this.configuration = configuration;
     }
 
     @Override
     public void encode(PacketBuffer buffer) {
+        // skill props
         buffer.writeInt(data.size());
         for (DataContext context : data) {
             context.encode(buffer);
         }
+        // perks
+        buffer.writeInt(perks.size());
+        perks.forEach(perk -> perk.encode(buffer));
+        // perk cfg
+        configuration.encode(buffer);
     }
 
     @Override
-    public S2C_SendSkillDataPacket decode(PacketBuffer buffer) {
+    public S2C_SynchronizationPayloadPacket decode(PacketBuffer buffer) {
+        // skill props
         int l = buffer.readInt();
         List<DataContext> list = new ArrayList<>();
         for (int i = 0; i < l; i++) {
             list.add(new DataContext(buffer));
         }
-        return new S2C_SendSkillDataPacket(list);
+        // perks
+        List<Perk> perks = new ArrayList<>();
+        int perkCount = buffer.readInt();
+        for (int i = 0; i < perkCount; i++) {
+            perks.add(Perk.decode(buffer));
+        }
+        PerkConfiguration configuration = PerkConfiguration.decode(buffer);
+        return new S2C_SynchronizationPayloadPacket(list, perks, configuration);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     protected void handlePacket(NetworkEvent.Context context) {
+        // Skills
         data.forEach(this::assign);
         SkillTreeScreen.Cache.invalidate();
+
+        // perks
+        PerkRegistry registry = PerkRegistry.getRegistry();
+        registry.dropRegistry();
+        perks.forEach(perk -> registry.register(perk.getPerkId(), perk));
+
+        // configuration
+        GunsRPG.getModLifecycle().getPerkManager().configLoader.setConfiguration(configuration);
     }
 
     @SuppressWarnings("unchecked")
@@ -71,7 +106,7 @@ public class S2C_SendSkillDataPacket extends AbstractNetworkPacket<S2C_SendSkill
         owner.onDataAssign(result);
     }
 
-    private boolean filterAndLogInvalid(SkillType<?> type) {
+    private static boolean filterAndLogInvalid(SkillType<?> type) {
         ISkillHierarchy<?> hierarchy = type.getHierarchy();
         if (hierarchy == null) {
             GunsRPG.log.fatal("Skipping sync of {} skill, no data were loaded!", type.getRegistryName());

@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.resource.perks;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.minecraft.network.PacketBuffer;
 
 public final class FusionConfiguration {
 
@@ -21,6 +22,18 @@ public final class FusionConfiguration {
         return swaps;
     }
 
+    public void encode(PacketBuffer buffer) {
+        upgrades.encode(buffer);
+        swaps.encode(buffer);
+    }
+
+    public static FusionConfiguration decode(PacketBuffer buffer) {
+        return new FusionConfiguration(
+                Upgrades.decode(buffer),
+                Swaps.decode(buffer)
+        );
+    }
+
     public static final class Upgrades {
 
         private final Int2ObjectMap<Upgrade> levelUpgradeMap = new Int2ObjectOpenHashMap<>();
@@ -33,6 +46,20 @@ public final class FusionConfiguration {
 
         public Upgrade getUpgradeStat(int targetLevel) {
             return levelUpgradeMap.get(targetLevel);
+        }
+
+        public void encode(PacketBuffer buffer) {
+            buffer.writeInt(levelUpgradeMap.size());
+            levelUpgradeMap.values().forEach(upgrade -> upgrade.encode(buffer));
+        }
+
+        public static Upgrades decode(PacketBuffer buffer) {
+            int l = buffer.readInt();
+            Upgrade[] upgrades = new Upgrade[l];
+            for (int i = 0; i < l; i++) {
+                upgrades[i] = Upgrade.decode(buffer);
+            }
+            return new Upgrades(upgrades);
         }
     }
 
@@ -48,6 +75,19 @@ public final class FusionConfiguration {
 
         public Swap getSwapStat(int orbCount) {
             return countToSwapMap.get(orbCount);
+        }
+
+        public void encode(PacketBuffer buffer) {
+            buffer.writeInt(countToSwapMap.size());
+            countToSwapMap.values().forEach(swap -> swap.encode(buffer));
+        }
+
+        public static Swaps decode(PacketBuffer buffer) {
+            Swap[] swaps = new Swap[buffer.readInt()];
+            for (int i = 0; i < swaps.length; i++) {
+                swaps[i] = Swap.decode(buffer);
+            }
+            return new Swaps(swaps);
         }
     }
 
@@ -70,6 +110,20 @@ public final class FusionConfiguration {
         public int getPrice() {
             return price;
         }
+
+        public void encode(PacketBuffer buffer) {
+            buffer.writeInt(level);
+            buffer.writeFloat(breakChance);
+            buffer.writeInt(price);
+        }
+
+        public static Upgrade decode(PacketBuffer buffer) {
+            return new Upgrade(
+                    buffer.readInt(),
+                    buffer.readFloat(),
+                    buffer.readInt()
+            );
+        }
     }
 
     public static final class Swap {
@@ -90,6 +144,20 @@ public final class FusionConfiguration {
 
         public float getChance() {
             return chance;
+        }
+
+        public void encode(PacketBuffer buffer) {
+            buffer.writeInt(count);
+            buffer.writeInt(price);
+            buffer.writeFloat(chance);
+        }
+
+        public static Swap decode(PacketBuffer buffer) {
+            return new Swap(
+                    buffer.readInt(),
+                    buffer.readInt(),
+                    buffer.readFloat()
+            );
         }
     }
 }

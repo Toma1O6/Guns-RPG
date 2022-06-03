@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.resource.SingleJsonFileReloadListener;
 import dev.toma.gunsrpg.resource.adapter.*;
 import dev.toma.gunsrpg.resource.crate.ICountFunction;
 import dev.toma.gunsrpg.resource.util.functions.ComparatorFunction;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
 import org.apache.logging.log4j.Marker;
@@ -41,6 +42,10 @@ public class PerkConfigurationLoader extends SingleJsonFileReloadListener {
 
     public PerkConfiguration getConfiguration() {
         return configuration;
+    }
+
+    public void setConfiguration(PerkConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     @Override

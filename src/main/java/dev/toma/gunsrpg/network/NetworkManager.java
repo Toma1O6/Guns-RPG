@@ -56,7 +56,7 @@ public class NetworkManager {
         registerNetworkPacket(S2C_AnimationPacket.class);
         registerNetworkPacket(S2C_NewSkillsPacket.class);
         registerNetworkPacket(S2C_SynchBlockEntityPacket.class);
-        registerNetworkPacket(S2C_SendSkillDataPacket.class);
+        registerNetworkPacket(S2C_SynchronizationPayloadPacket.class);
         registerNetworkPacket(S2C_SetTrackedStashPacket.class);
         registerNetworkPacket(S2C_UseStashDetectorPacket.class);
         registerNetworkPacket(S2C_OpenQuestScreen.class);

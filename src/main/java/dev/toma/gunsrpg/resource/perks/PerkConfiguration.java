@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.resource.perks;
 
+import net.minecraft.network.PacketBuffer;
+
 public final class PerkConfiguration {
 
     private final CrystalConfiguration crystals;
@@ -22,5 +24,14 @@ public final class PerkConfiguration {
 
     public PurificationConfiguration getPurificationConfig() {
         return purification;
+    }
+
+    public void encode(PacketBuffer buffer) {
+        fusion.encode(buffer);
+        purification.encode(buffer);
+    }
+
+    public static PerkConfiguration decode(PacketBuffer buffer) {
+        return new PerkConfiguration(null, FusionConfiguration.decode(buffer), PurificationConfiguration.decode(buffer));
     }
 }

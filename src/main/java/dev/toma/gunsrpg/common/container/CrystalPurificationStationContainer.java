@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.container;
 
 import com.mojang.datafixers.util.Pair;
-import dev.toma.gunsrpg.common.init.ClientRegistry;
 import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.common.item.perk.PerkVariant;
@@ -27,9 +26,9 @@ public class CrystalPurificationStationContainer extends AbstractModContainer<Cr
         super(ModContainers.CRYSTAL_PURIFICATION.get(), windowId, inventory, tile);
         IItemHandler handler = tile.getItemHandler();
         addSlot(new OutputSlot(handler, 0, 71, 52));
-        addSlot(new VariantRestrictedSlot(handler, 1, 71, 10, ModTags.Items.CRYSTAL, ClientRegistry.EMPTY_CRYSTAL_SLOT));
+        addSlot(new VariantRestrictedSlot(handler, 1, 71, 10, ModTags.Items.CRYSTAL, CrystalStationContainer.EMPTY_CRYSTAL_SLOT));
         for (int y = 0; y < 3; y++) {
-            addSlot(new VariantRestrictedSlot(handler, 2 + y, 102, 13 + y * 18, ModTags.Items.ORB_OF_PURITY, ClientRegistry.EMPTY_PURITY_SLOT));
+            addSlot(new VariantRestrictedSlot(handler, 2 + y, 102, 13 + y * 18, ModTags.Items.ORB_OF_PURITY, CrystalStationContainer.EMPTY_PURITY_SLOT));
         }
         addPlayerInventory(inventory, 82);
     }

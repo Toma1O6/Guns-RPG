@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.client.screen.widgets.ContainerWidget;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.MayorEntity;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.quests.ActionType;
 import dev.toma.gunsrpg.common.quests.condition.IQuestCondition;
 import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.common.quests.quest.DisplayInfo;
@@ -50,9 +51,6 @@ public class QuestScreen extends Screen {
     private static final IFormattableTextComponent TEXT_QUEST_DETAIL       = new TranslationTextComponent("screen.quests.quest_detail");       // description/detail of quest
     private static final IFormattableTextComponent TEXT_QUEST_CONDITIONS   = new TranslationTextComponent("screen.quests.conditions");         // title for condition overview
     private static final IFormattableTextComponent TEXT_QUEST_REWARDS      = new TranslationTextComponent("screen.quests.rewards");            // title for reward overview
-    private static final IFormattableTextComponent BUTTON_TAKE_QUEST       = new TranslationTextComponent("screen.quests.choose_quest");       // Text to be displayed on button
-    private static final IFormattableTextComponent BUTTON_CANCEL_QUEST     = new TranslationTextComponent("screen.quests.cancel_quest");       // text for button which fails active quest
-    private static final IFormattableTextComponent BUTTON_CLAIM_REWARDS    = new TranslationTextComponent("screen.quests.claim_rewards");      // text for button which claims selected rewards
     // parametrized localizations
     private static final String TEXT_MAYOR_STATUS_RAW = "screen.quests.mayor_status";
     private static final Function<IFormattableTextComponent, IFormattableTextComponent> TEXT_MAYOR_STATUS = (text) -> new TranslationTextComponent(TEXT_MAYOR_STATUS_RAW, text);
@@ -361,7 +359,7 @@ public class QuestScreen extends Screen {
         private final Consumer<ActionType> consumer;
 
         private ActionButton(int x, int y, int width, int height, ActionType type, Consumer<ActionType> consumer) {
-            super(x, y, width, height, type.text);
+            super(x, y, width, height, type.getText());
             this.actionType = type;
             this.consumer = consumer;
         }
@@ -464,19 +462,6 @@ public class QuestScreen extends Screen {
 
         public void setSelected(boolean state) {
             this.selected = state;
-        }
-    }
-
-    public enum ActionType {
-
-        ASSIGN(BUTTON_TAKE_QUEST),
-        CANCEL(BUTTON_CANCEL_QUEST),
-        COLLECT(BUTTON_CLAIM_REWARDS);
-
-        private final ITextComponent text;
-
-        ActionType(ITextComponent text) {
-            this.text = text;
         }
     }
 
