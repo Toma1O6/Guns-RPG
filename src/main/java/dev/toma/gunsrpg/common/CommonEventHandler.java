@@ -109,9 +109,9 @@ public class CommonEventHandler {
         BiomeGenerationSettingsBuilder builder = event.getGeneration();
         MobSpawnInfoBuilder mobSpawnBuilder = event.getSpawns();
         if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
-            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_GUNNER.get(), ModConfig.worldConfig.zombieGunnerSpawn.get(), 1, 2));
-            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.EXPLOSIVE_SKELETON.get(), ModConfig.worldConfig.explosiveSkeletonSpawn.get(), 1, 2));
-            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_KNIGHT.get(), ModConfig.worldConfig.zombieKnightSpawn.get(), 1, 2));
+            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_GUNNER.get(), ModConfig.worldConfig.zombieGunnerSpawn.get(), 1, 1));
+            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.EXPLOSIVE_SKELETON.get(), ModConfig.worldConfig.explosiveSkeletonSpawn.get(), 1, 1));
+            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_KNIGHT.get(), ModConfig.worldConfig.zombieKnightSpawn.get(), 1, 1));
             mobSpawnBuilder.addMobCharge(ModEntities.ZOMBIE_GUNNER.get(), 0.7, 0.15);
             mobSpawnBuilder.addMobCharge(ModEntities.EXPLOSIVE_SKELETON.get(), 0.7, 0.15);
             mobSpawnBuilder.addMobCharge(ModEntities.ZOMBIE_KNIGHT.get(), 1.0, 0.12);

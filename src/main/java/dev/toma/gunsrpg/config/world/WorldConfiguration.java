@@ -41,7 +41,7 @@ public class WorldConfiguration extends ObjectType {
         disableMobSpawners = writer.writeBoolean("Disable mob spawners", true, "Disables mob spawning from spawners", "This prevents xp farming");
         bloodMoonMobAgroRange = writer.writeBoundedInt("Bloodmoon aggro range", 40, 1, 64, "Defines at which range will mobs aggro on you during bloodmoon").setDisplay(NumberDisplayType.SLIDER);
         rocketAngelSpawnChance = writer.writeBoundedInt("Rocket angel spawn chance", 2, 0, 16).setDisplay(NumberDisplayType.SLIDER);
-        zombieGunnerSpawn = writer.writeBoundedInt("Zombie Gunner chance", 8, 0, 60, "Spawn chance for zombie gunner entity");
+        zombieGunnerSpawn = writer.writeBoundedInt("Zombie Gunner chance", 5, 0, 60, "Spawn chance for zombie gunner entity");
         explosiveSkeletonSpawn = writer.writeBoundedInt("Explosive Skeleton chance", 5, 0, 60, "Spawn chance for explosive skeleton entity");
         zombieKnightSpawn = writer.writeBoundedInt("Zombie Knight chance", 1, 0, 60, "Spawn chance for zombie knight entity");
         bloodmoonCycle = writer.writeBoundedInt("Bloodmoon cycle", 7, -1, 999, "Defines bloodmoon cycle", "Set to -1 to disable");
