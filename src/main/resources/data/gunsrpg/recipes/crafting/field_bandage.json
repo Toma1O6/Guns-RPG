@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "WSW",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:paper"
+    },
+    "W": {
+      "item": "minecraft:wheat_seeds"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:field_bandage",
+    "count": 1
+  }
+}

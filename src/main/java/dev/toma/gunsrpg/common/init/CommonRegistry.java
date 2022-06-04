@@ -211,7 +211,7 @@ public class CommonRegistry {
                 SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("master_chef"),
                 SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, Interval.minutes(15), 10, 0)).build().setRegistryName("second_chance_i"),
                 SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, Interval.minutes(12), 15, 1)).build().setRegistryName("second_chance_ii"),
-                SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, Interval.minutes( 9), 20, 2)).build().setRegistryName("second_chance_iii"),
+                SkillType.Builder.<SecondChanceSkill>create(type -> new SecondChanceSkill(type, Interval.minutes(9), 20, 2)).build().setRegistryName("second_chance_iii"),
                 SkillType.Builder.create(type -> new IronBuddySkill(type, Interval.minutes(25))).build().setRegistryName("iron_buddy_i"),
                 SkillType.Builder.create(type -> new IronBuddySkill(type, Interval.minutes(20), 50.0F)).build().setRegistryName("iron_buddy_ii"),
                 SkillType.Builder.create(type -> new IronBuddySkill(type, Interval.minutes(15), 100.0F)).build().setRegistryName("iron_buddy_iii"),
@@ -500,6 +500,12 @@ public class CommonRegistry {
                         .onUse(player -> player.heal(1))
                         .describe("Recovers 0.5 hearts")
                         .animate(30, AnimationPaths.KODIAK)
+                        .build(),
+                PlayerHealItem.define("field_bandage")
+                        .canUse(player -> player.getHealth() < player.getMaxHealth())
+                        .onUse(player -> player.heal(3.0F))
+                        .describe("Recovers 1.5 hearts")
+                        .animate(50, AnimationPaths.BANDAGE)
                         .build(),
                 PlayerHealItem.define("analgetics")
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
