@@ -278,7 +278,7 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
         TEAR_GAS(12, 0x51CC72, new EffectSpreadReaction(0x51CC72, () -> new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 100, 1), () -> new EffectInstance(Effects.BLINDNESS, 100, 0))),
         STANDARD(35, 0xBDCC92, MultipartReaction.multi(BreakBlockReaction.INSTANCE, new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY))),
         IMPACT(8, 0xCC4C1E, MultipartReaction.multi(BreakBlockReaction.INSTANCE, new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY), new PropertyTriggerReaction<>(Properties.IMPACT, true))),
-        SHOCK(10, 0x3DC2CC, MultipartReaction.multi(BreakBlockReaction.INSTANCE, new ShockReaction(3, 3), new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY)));
+        SHOCK(10, 0x3DC2CC, MultipartReaction.multi(BreakBlockReaction.INSTANCE, new ShockReaction(7, 3), new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY)));
 
         private static final WeightedRandom<LoadoutType> SELECTOR = new WeightedRandom<>(LoadoutType::getWeight, LoadoutType.values());
         private final int weight;
