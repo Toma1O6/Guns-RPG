@@ -101,19 +101,19 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, World world, LivingEntity entity) {
-        if (!world.isClientSide) {
-            if (entity instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) entity;
-                PlayerData.get(player).ifPresent(data -> {
+        if (entity instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) entity;
+            PlayerData.get(player).ifPresent(data -> {
+                if (!world.isClientSide) {
                     T target = getTargetObject(world, player, data);
                     applyAction(target);
                     SkillUtil.heal(player, 0); // will apply raw heal bonus obtained from efficient med skill
-                    if (!player.isCreative())
-                        stack.shrink(1);
-                });
-                CooldownTracker tracker = player.getCooldowns();
-                tracker.addCooldown(stack.getItem(), 30);
-            }
+                }
+                if (!player.isCreative())
+                    stack.shrink(1);
+            });
+            CooldownTracker tracker = player.getCooldowns();
+            tracker.addCooldown(stack.getItem(), 30);
         }
         return stack;
     }
