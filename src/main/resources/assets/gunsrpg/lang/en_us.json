@@ -233,6 +233,7 @@
     "death.attack.poison": "%1$s has died from poisoning",
     "death.attack.infection": "%1$s has died from infection",
     "death.attack.bleeding": "%1$s has bled out",
+    "death.attack.fracture": "%1$s has died from pain caused by fracture",
     "death.attack.spikes": "%1$s has fallen into spike trap",
 
     "entity.gunsrpg.bullet": "Bullet",

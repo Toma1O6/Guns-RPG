@@ -241,7 +241,7 @@ public final class DebuffRegistration {
     private static void applyFractureSprintDebuff(PlayerEntity player) {
         runServerSideDelayed(player, 20L, () -> {
             if (player.isSprinting()) {
-                player.hurt(DamageSource.GENERIC, 1);
+                player.hurt(ModDamageSources.FRACTURE_DAMAGE, 1);
             }
         });
     }
