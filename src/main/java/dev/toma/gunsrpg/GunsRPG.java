@@ -17,12 +17,16 @@ import dev.toma.gunsrpg.world.MobSpawnManager;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataStorage;
 import net.minecraft.command.CommandSource;
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -78,6 +82,15 @@ public class GunsRPG {
         CapabilityManager.INSTANCE.register(IWorldData.class, new WorldDataStorage(), WorldData::new);
         modLifecycle.commonInit();
         MobSpawnManager.instance().initialize();
+
+        DeferredWorkQueue.runLater(this::registerMobSpawnPlacements);
+    }
+
+    private void registerMobSpawnPlacements() {
+        EntitySpawnPlacementRegistry.register(ModEntities.ZOMBIE_GUNNER.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(ModEntities.EXPLOSIVE_SKELETON.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(ModEntities.ZOMBIE_KNIGHT.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(ModEntities.ROCKET_ANGEL.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
     }
 
     private void registerCommands(RegisterCommandsEvent event) {
