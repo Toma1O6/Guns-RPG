@@ -257,13 +257,15 @@ public class CommonEventHandler {
         BlockState blockState = event.getState();
         if (stack.getItem() instanceof HammerItem) {
             HammerItem hammer = (HammerItem) stack.getItem();
-            Direction facing = ModUtils.getFacing(player);
-            for (BlockPos pos : hammer.gatherBlocks(event.getPos(), facing)) {
-                BlockState state = world.getBlockState(pos);
-                if (hammer.canHarvestBlock(stack, state) && state.getDestroySpeed(world, pos) >= 0.0F) {
-                    world.destroyBlock(pos, true, player);
-                    stack.mineBlock(world, state, pos, player);
-                    if (stack.getDamageValue() == stack.getMaxDamage()) break;
+            if (hammer.getDestroySpeed(stack, blockState) > 1.0f) {
+                Direction facing = ModUtils.getFacing(player);
+                for (BlockPos pos : hammer.gatherBlocks(event.getPos(), facing)) {
+                    BlockState state = world.getBlockState(pos);
+                    if (hammer.canHarvestBlock(stack, state) && state.getDestroySpeed(world, pos) >= 0.0F) {
+                        world.destroyBlock(pos, true, player);
+                        stack.mineBlock(world, state, pos, player);
+                        if (stack.getDamageValue() == stack.getMaxDamage()) break;
+                    }
                 }
             }
         } else if (blockState.getMaterial() == Material.GLASS && stack.isEmpty() && !world.isClientSide) {
