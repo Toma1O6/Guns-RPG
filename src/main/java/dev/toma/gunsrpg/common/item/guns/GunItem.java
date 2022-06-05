@@ -276,7 +276,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
             int ammo = this.getAmmo(stack);
             setAmmoCount(stack, ammo - 1);
         }
-        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, 15.0F, 1.0F);
+        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), event, SoundCategory.MASTER, this.getWeaponSoundVolume(), 1.0F);
     }
 
     public final AmmoType getAmmoType() {
@@ -298,6 +298,10 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
 
     protected void handleShootProjectileAction(World world, LivingEntity entity, ItemStack stack, IShootProps props) {
         shootProjectile(world, entity, stack, props);
+    }
+
+    protected float getWeaponSoundVolume() {
+        return 15.0F;
     }
 
     protected boolean isSilenced(PlayerEntity player) {

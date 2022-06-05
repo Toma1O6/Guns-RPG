@@ -39,6 +39,11 @@ public abstract class AbstractCrossbow extends GunItem {
         return ModSounds.CROSSBOW_SHOOT;
     }
 
+    @Override
+    protected float getWeaponSoundVolume() {
+        return 4.0F;
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void onShoot(PlayerEntity player, ItemStack stack) {
