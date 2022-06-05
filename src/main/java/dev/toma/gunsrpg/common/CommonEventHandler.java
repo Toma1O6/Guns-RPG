@@ -125,7 +125,7 @@ public class CommonEventHandler {
             }
         } else {
             mobSpawnBuilder.addMobCharge(ModEntities.ROCKET_ANGEL.get(), 0.7, 0.15);
-            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ROCKET_ANGEL.get(), 2, 1, 1));
+            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ROCKET_ANGEL.get(), 8, 1, 1));
         }
     }
 

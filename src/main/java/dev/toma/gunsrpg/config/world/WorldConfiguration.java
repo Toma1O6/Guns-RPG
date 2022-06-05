@@ -41,9 +41,9 @@ public class WorldConfiguration extends ObjectType {
         disableMobSpawners = writer.writeBoolean("Disable mob spawners", true, "Disables mob spawning from spawners", "This prevents xp farming");
         bloodMoonMobAgroRange = writer.writeBoundedInt("Bloodmoon aggro range", 40, 1, 64, "Defines at which range will mobs aggro on you during bloodmoon").setDisplay(NumberDisplayType.SLIDER);
         rocketAngelSpawnChance = writer.writeBoundedInt("Rocket angel spawn chance", 2, 0, 16).setDisplay(NumberDisplayType.SLIDER);
-        zombieGunnerSpawn = writer.writeBoundedInt("Zombie Gunner chance", 13, 0, 60, "Spawn chance for zombie gunner entity");
-        explosiveSkeletonSpawn = writer.writeBoundedInt("Explosive Skeleton chance", 13, 0, 60, "Spawn chance for explosive skeleton entity");
-        zombieKnightSpawn = writer.writeBoundedInt("Zombie Knight chance", 3, 0, 60, "Spawn chance for zombie knight entity");
+        zombieGunnerSpawn = writer.writeBoundedInt("Zombie Gunner chance", 20, 0, 60, "Spawn chance for zombie gunner entity");
+        explosiveSkeletonSpawn = writer.writeBoundedInt("Grenadier chance", 16, 0, 60, "Spawn chance for grenadier entity");
+        zombieKnightSpawn = writer.writeBoundedInt("Zombie Knight chance", 8, 0, 60, "Spawn chance for zombie knight entity");
         bloodmoonCycle = writer.writeBoundedInt("Bloodmoon cycle", 7, -1, 999, "Defines bloodmoon cycle", "Set to -1 to disable");
         airdropFrequency = writer.writeBoundedInt("Airdrop frequency", 3, -1, 999, "Defines airdrop spawn frequency [days]", "Set to -1 to disable");
         sleepRestriction = writer.writeEnum("Restrict sleep", SleepRestriction.ALWAYS, "Defines when players will be able to sleep");
