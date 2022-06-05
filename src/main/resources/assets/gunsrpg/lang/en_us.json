@@ -254,10 +254,11 @@
 
     "gunsrpg.category.keys": "GunsRPG Binds",
     "gunsrpg.key.class_list": "View Skill Tree",
-    "gunsrpg.key.reload": "Reload/Unjam/Change batteries",
+    "gunsrpg.key.reload": "Reload/Change batteries",
     "gunsrpg.key.sight_color": "Change Sight Color",
     "gunsrpg.key.sight_type": "Change Sight Shape",
     "gunsrpg.key.firemode": "Change Firemode",
+    "gunsrpg.key.unjam": "Unjam Weapon",
 
     "container.airdrop": "Airdrop",
     "container.blast_furnace": "Blast Furnace",
