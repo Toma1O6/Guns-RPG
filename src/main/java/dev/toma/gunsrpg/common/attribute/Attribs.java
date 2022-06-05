@@ -128,9 +128,9 @@ public final class Attribs {
     public static final IAttributeId CHUKONU_RELOAD_SPEED       = createInternal("chukonu_reload_speed", 28);
     public static final IAttributeId CHUKONU_MAG_CAPACITY       = createInternal("chukonu_mag_capacity", 6);
     public static final IAttributeId CHUKONU_FIRERATE           = createInternal("chukonu_firerate", 4);
-    public static final IAttributeId S1897_RELOAD_SPEED         = createInternal("s1897_reload_speed", 22);
+    public static final IAttributeId S1897_RELOAD_SPEED         = createInternal("s1897_reload_speed", 17);
     public static final IAttributeId S1897_MAG_CAPACITY         = createInternal("s1897_mag_capacity", 5);
-    public static final IAttributeId S1897_FIRERATE             = createInternal("s1897_firerate", 25);
+    public static final IAttributeId S1897_FIRERATE             = createInternal("s1897_firerate", 18);
     public static final IAttributeId S686_RELOAD_SPEED          = createInternal("s686_reload_speed", 70);
     public static final IAttributeId S12K_RELOAD_SPEED          = createInternal("s12k_reload_speed", 80);
     public static final IAttributeId S12K_MAG_CAPACITY          = createInternal("s12k_mag_capacity", 5);
