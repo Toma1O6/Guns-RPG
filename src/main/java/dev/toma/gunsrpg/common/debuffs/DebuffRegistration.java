@@ -251,23 +251,23 @@ public final class DebuffRegistration {
     }
 
     private static void applyBleedingStage1(PlayerEntity player) {
-        applyBleedDamage(player, 80L);
+        applyBleedDamage(player, 120L);
     }
 
     private static void applyBleedingStage2(PlayerEntity player) {
-        applyBleedDamage(player, 60L);
+        applyBleedDamage(player, 80L);
     }
 
     private static void applyBleedingStage3(PlayerEntity player) {
-        applyBleedDamage(player, 40L);
+        applyBleedDamage(player, 60L);
     }
 
     private static void applyBleedingStage4(PlayerEntity player) {
-        applyBleedDamage(player, 20L);
+        applyBleedDamage(player, 30L);
     }
 
     private static void applyBleedingStage5(PlayerEntity player) {
-        applyBleedDamage(player, 10L);
+        applyBleedDamage(player, 15L);
     }
 
     // UTILITY METHODS
