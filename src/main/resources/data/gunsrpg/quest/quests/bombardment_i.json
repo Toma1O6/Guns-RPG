@@ -13,7 +13,7 @@
         "area": {
             "size": 32,
             "distance": 200,
-            "spawnLimit": 20,
+            "spawnInterval": 30,
             "spawners": [
                 {
                     "entity": "gunsrpg:rocket_angel",

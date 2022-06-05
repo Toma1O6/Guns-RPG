@@ -13,7 +13,7 @@
         "area": {
             "size": 32,
             "distance": 200,
-            "spawnInterval": 5,
+            "spawnInterval": 13,
             "spawners": [
                 {
                     "entity": "minecraft:pillager",

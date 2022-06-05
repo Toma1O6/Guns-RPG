@@ -3,7 +3,7 @@
     "tier": 4,
     "display": {
         "name": "Explosive Behaviour II",
-        "info": "Kill 10 explosive skeletons"
+        "info": "Kill 10 grenadiers"
     },
     "data": {
         "entities": [
@@ -13,12 +13,12 @@
         "area": {
             "size": 32,
             "distance": 200,
-            "spawnLimit": 5,
+            "spawnInterval": 13,
             "spawners": [
                 {
                     "entity": "gunsrpg:explosive_skeleton",
                     "propability": 0.05,
-                    "limit": 3
+                    "limit": 2
                 }
             ]
         }

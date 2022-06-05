@@ -13,7 +13,7 @@
         "area": {
             "size": 32,
             "distance": 200,
-            "spawnLimit": 7,
+            "spawnInterval": 11,
             "spawners": [
                 {
                     "entity": "minecraft:piglin_brute",

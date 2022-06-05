@@ -1,6 +1,6 @@
 {
     "type": "gunsrpg:kill_in_area",
-    "tier": 4,
+    "tier": 5,
     "display": {
         "name": "Eye Contact III",
         "info": "Kill 15 endermen"
@@ -13,7 +13,7 @@
         "area": {
             "size": 32,
             "distance": 200,
-            "spawnLimit": 4,
+            "spawnInterval": 12,
             "spawners": [
                 {
                     "entity": "minecraft:enderman",

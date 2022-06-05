@@ -13,12 +13,12 @@
         "area": {
             "size": 32,
             "distance": 200,
-            "spawnInterval": 7,
+            "spawnInterval": 12,
             "spawners": [
                 {
                     "entity": "minecraft:witch",
                     "propability": 0.05,
-                    "limit": 3
+                    "limit": 2
                 }
             ]
         }

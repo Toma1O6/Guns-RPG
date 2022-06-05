@@ -13,7 +13,7 @@
         "area": {
             "size": 32,
             "distance": 200,
-            "spawnLimit": 2,
+            "spawnInterval": 8,
             "spawners": [
                 {
                     "entity": "minecraft:bee",

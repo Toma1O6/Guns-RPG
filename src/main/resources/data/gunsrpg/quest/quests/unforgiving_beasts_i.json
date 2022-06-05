@@ -13,7 +13,7 @@
         "area": {
             "size": 32,
             "distance": 200,
-            "spawnInterval": 20,
+            "spawnInterval": 35,
             "spawners": [
                 {
                     "entity": "minecraft:ravager",

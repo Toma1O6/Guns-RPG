@@ -3,7 +3,7 @@
     "tier": 3,
     "display": {
         "name": "Undead Knights I",
-        "info": "Kill 5 zombies knights"
+        "info": "Kill 5 zombie knights"
     },
     "data": {
         "entities": [
@@ -13,7 +13,7 @@
         "area": {
             "size": 32,
             "distance": 200,
-            "spawnInterval": 15,
+            "spawnInterval": 18,
             "spawners": [
                 {
                     "entity": "gunsrpg:zombie_knight",

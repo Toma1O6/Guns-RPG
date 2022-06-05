@@ -13,7 +13,7 @@
         "area": {
             "size": 32,
             "distance": 200,
-            "spawnInterval": 3,
+            "spawnInterval": 10,
             "spawners": [
                 {
                     "entity": "minecraft:zombie",

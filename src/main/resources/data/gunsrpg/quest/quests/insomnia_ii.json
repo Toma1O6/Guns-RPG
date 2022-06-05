@@ -13,12 +13,12 @@
         "area": {
             "size": 32,
             "distance": 200,
-            "spawnInterval": 5,
+            "spawnInterval": 11,
             "spawners": [
                 {
                     "entity": "minecraft:phantom",
                     "propability": 0.1,
-                    "limit": 4,
+                    "limit": 2,
                     "processors": [
                         {
                             "type": "gunsrpg:set_effect",
