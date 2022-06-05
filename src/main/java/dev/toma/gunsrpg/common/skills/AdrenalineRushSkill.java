@@ -33,7 +33,7 @@ public class AdrenalineRushSkill extends SimpleSkill implements ITickableSkill, 
         this.reloadModifier = new AttributeModifier("808184F6-B4BC-4981-9A96-B28E3AF945B6", AttributeOps.MUL, reloadMultiplier);
         this.container = new DescriptionContainer(type);
         this.container.addProperty("predicate", HEALTH_LIMIT);
-        this.container.addProperty("attack", IValueFormatter.BASE_PERCENT.formatAttributeValue(cooldownModifier.getModifierValue()));
+        this.container.addProperty("attack", IValueFormatter.PERCENT.formatAttributeValue(cooldownModifier.getModifierValue()));
         this.container.addProperty("reload", IValueFormatter.INV_PERCENT.formatAttributeValue(reloadModifier.getModifierValue()));
     }
 
