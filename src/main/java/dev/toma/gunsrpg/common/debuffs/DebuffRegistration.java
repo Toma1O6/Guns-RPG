@@ -135,13 +135,17 @@ public final class DebuffRegistration {
     }
 
     private static float explosionConstraint(IDebuffContext context) {
-        return context.getSource().isExplosion() ? 0.2F * (1.0F - context.getData().getAttributes().getAttribute(Attribs.EXPLOSION_RESISTANCE).floatValue()) : 0.0F;
+        float amount = context.getReceivedDamage();
+        float multiplier = amount / 5.0F;
+        return context.getSource().isExplosion() ? multiplier * 0.2F * (1.0F - context.getData().getAttributes().getAttribute(Attribs.EXPLOSION_RESISTANCE).floatValue()) : 0.0F;
     }
 
     private static float fallConstraint(IDebuffContext context) {
         DamageSource source = context.getSource();
+        float amount = context.getReceivedDamage();
+        float multiplier = amount / 4.0F;
         if (source == DamageSource.FALL) {
-            return Math.max(0.0F, 0.3F - context.getData().getAttributes().getAttribute(Attribs.FALL_RESISTANCE).floatValue());
+            return Math.max(0.0F, multiplier * 0.3F * context.getData().getAttributes().getAttribute(Attribs.FALL_RESISTANCE).floatValue());
         }
         return 0.0F;
     }
