@@ -52,7 +52,7 @@ public final class Attribs {
     public static final IAttributeId BLEED_DELAY                = createInternal("bleed_delay", 120);
     public static final IAttributeId BLEED_BLOCK                = createInternal("bleed_block", 0);
     public static final IAttributeId EXPLOSION_RESISTANCE       = createInternal("explosion_resistance", 0.0);
-    public static final IAttributeId FALL_RESISTANCE            = createInternal("fall_resistance", 0.0);
+    public static final IAttributeId FALL_RESISTANCE            = createInternal("fall_resistance");
     // global weapon attributes
     public static final IAttributeId MELEE_DAMAGE               = createInternal("melee_damage", 0); // bonus damage
     public static final IAttributeId MELEE_COOLDOWN             = createInternal("melee_cooldown");

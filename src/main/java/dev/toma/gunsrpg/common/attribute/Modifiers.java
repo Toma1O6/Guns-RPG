@@ -19,9 +19,9 @@ public final class Modifiers {
     public static final IAttributeModifier BLAZEPOWDER_III              = new AttributeModifier(BLAZEPOWEDER_CRAFTING, AttributeOps.SUM, 4).named("count");
     public static final IAttributeModifier MASTER_AMMO                  = new AttributeModifier("F932A216-605A-4C07-9017-EA3E8A22B46F", AttributeOps.SUM, 1).named("ammo");
     /* General modifiers */
-    public static final IAttributeModifier ACROBATICS_FALL_I            = new AttributeModifier(FALL_RESIST, AttributeOps.SUM, 0.2).named("fall", IValueFormatter.PERCENT);
-    public static final IAttributeModifier ACROBATICS_FALL_II           = new AttributeModifier(FALL_RESIST, AttributeOps.SUM, 0.45).named("fall", IValueFormatter.PERCENT);
-    public static final IAttributeModifier ACROBATICS_FALL_III          = new AttributeModifier(FALL_RESIST, AttributeOps.SUM, 0.7).named("fall", IValueFormatter.PERCENT);
+    public static final IAttributeModifier ACROBATICS_FALL_I            = new AttributeModifier(FALL_RESIST, AttributeOps.MUL, 0.8).named("fall", IValueFormatter.INV_PERCENT);
+    public static final IAttributeModifier ACROBATICS_FALL_II           = new AttributeModifier(FALL_RESIST, AttributeOps.MUL, 0.55).named("fall", IValueFormatter.INV_PERCENT);
+    public static final IAttributeModifier ACROBATICS_FALL_III          = new AttributeModifier(FALL_RESIST, AttributeOps.MUL, 0.3).named("fall", IValueFormatter.INV_PERCENT);
     public static final IAttributeModifier ACROBATICS_EXPLOSION_I       = new AttributeModifier(EXPLOSION_RESIST, AttributeOps.SUM, 0.1).named("explosion", IValueFormatter.PERCENT);
     public static final IAttributeModifier ACROBATICS_EXPLOSION_II      = new AttributeModifier(EXPLOSION_RESIST, AttributeOps.SUM, 0.25).named("explosion", IValueFormatter.PERCENT);
     public static final IAttributeModifier ACROBATICS_EXPLOSION_III     = new AttributeModifier(EXPLOSION_RESIST, AttributeOps.SUM, 0.4).named("explosion", IValueFormatter.PERCENT);
