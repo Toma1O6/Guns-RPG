@@ -37,7 +37,7 @@ public class RangedAttackNoSightGoal extends Goal {
     @Override
     public void start() {
         entity.setAggressive(true);
-        attackTime = attackCooldown;
+        attackTime = 10;
     }
 
     @Override
@@ -111,7 +111,7 @@ public class RangedAttackNoSightGoal extends Goal {
                 this.entity.getLookControl().setLookAt(livingEntity, 30.0F, 30.0F);
             }
 
-            if (canSee) {
+            if (canSee && distanceToTarget < maxAttackDistance * 2.0f) {
                 --attackTime;
                 if (attackTime <= 0) {
                     this.entity.performRangedAttack(livingEntity, 0);
