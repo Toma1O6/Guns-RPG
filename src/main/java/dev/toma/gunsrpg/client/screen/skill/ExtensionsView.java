@@ -3,9 +3,9 @@ package dev.toma.gunsrpg.client.screen.skill;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IKillData;
 import dev.toma.gunsrpg.api.common.data.IPerkProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.IPointProvider;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
@@ -15,6 +15,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_RequestExtensionSkillLockPacket;
 import dev.toma.gunsrpg.util.RenderUtils;
+import dev.toma.gunsrpg.util.object.LazyLoader;
 import lib.toma.animations.QuickSort;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -23,6 +24,8 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
@@ -225,25 +228,57 @@ public class ExtensionsView extends View {
         }
     }
 
-    private static class ReadOnlyPointProvider implements IPointProvider {
+    private static class ReadOnlyPointProvider implements IKillData {
 
-        private final ITransactionValidator validator;
-        private final IPlayerData data;
+        private final LazyLoader<IKillData> loader;
 
         public ReadOnlyPointProvider(ITransactionValidator validator, IPlayerData data) {
-            this.validator = validator;
-            this.data = data;
+            this.loader = new LazyLoader<>(() -> validator.getData(data));
         }
 
         @Override
         public int getPoints() {
-            IPointProvider provider = validator.getData(data);
-            return provider.getPoints();
+            return loader.get().getPoints();
+        }
+
+        @Override
+        public int getLevel() {
+            return loader.get().getLevel();
+        }
+
+        @Override
+        public int getKills() {
+            return loader.get().getKills();
+        }
+
+        @Override
+        public int getRequiredKillCount() {
+            return loader.get().getRequiredKillCount();
+        }
+
+        @Override
+        public int getLevelLimit() {
+            return loader.get().getLevelLimit();
+        }
+
+        @Override
+        public void addLevels(int levels) {
+            throw new UnsupportedOperationException("Cannot perform this operation on read-only provider");
+        }
+
+        @Override
+        public void advanceLevel(boolean notify) {
+            throw new UnsupportedOperationException("Cannot perform this operation on read-only provider");
+        }
+
+        @Override
+        public void onEnemyKilled(Entity enemy, ItemStack weapon) {
+            throw new UnsupportedOperationException("Cannot perform this operation on read-only provider");
         }
 
         @Override
         public void awardPoints(int amount) {
-            throw new UnsupportedOperationException("Cannot issue points to read-only provider");
+            throw new UnsupportedOperationException("Cannot perform this operation on read-only provider");
         }
     }
 }
