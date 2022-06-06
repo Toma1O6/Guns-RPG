@@ -1,6 +1,6 @@
 {
     "type": "gunsrpg:kill_in_area",
-    "tier": 2,
+    "tier": 3,
     "display": {
         "name": "Arachnophobia III",
         "info": "Kill 20 spiders"
