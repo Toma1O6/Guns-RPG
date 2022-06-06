@@ -487,11 +487,12 @@ public class CommonEventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void entityJoinWorld(EntityJoinWorldEvent event) {
-        if (event.getEntity() instanceof MonsterEntity || event.getEntity() instanceof IAngerable) {
-            LivingEntity entity = (LivingEntity) event.getEntity();
+        Entity entity = event.getEntity();
+        if (entity instanceof MonsterEntity || entity instanceof IAngerable) {
+            LivingEntity livingEntity = (LivingEntity) event.getEntity();
             World world = event.getWorld();
             boolean bloodmoon = WorldData.isBloodMoon(world);
-            MobSpawnManager.instance().processSpawn(entity, world, bloodmoon, event);
+            MobSpawnManager.instance().processSpawn(livingEntity, world, bloodmoon, event);
         }
     }
 

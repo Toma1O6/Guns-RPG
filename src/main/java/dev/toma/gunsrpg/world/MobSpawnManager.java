@@ -16,11 +16,15 @@ import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.monster.BlazeEntity;
 import net.minecraft.entity.monster.CaveSpiderEntity;
 import net.minecraft.entity.monster.WitherSkeletonEntity;
+import net.minecraft.util.concurrent.ThreadTaskExecutor;
+import net.minecraft.util.concurrent.TickDelayedTask;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.LogicalSidedProvider;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -94,9 +98,11 @@ public class MobSpawnManager {
             Vector3d vec3d = entity.position();
             for (Pair<Integer, BiFunction<ServerWorld, Vector3d, LivingEntity>> pair : list) {
                 if (random.nextInt(20) < pair.getLeft()) {
+                    entity.remove();
                     event.setCanceled(true);
-                    entity = pair.getRight().apply((ServerWorld) world, vec3d);
-                    world.addFreshEntity(entity);
+                    LivingEntity replacement = pair.getRight().apply((ServerWorld) world, vec3d);
+                    ThreadTaskExecutor<Runnable> executor = LogicalSidedProvider.WORKQUEUE.get(LogicalSide.SERVER);
+                    executor.tell(new TickDelayedTask(0, () -> event.getWorld().addFreshEntity(replacement)));
                     break;
                 }
             }
@@ -104,20 +110,23 @@ public class MobSpawnManager {
         if (isExluded(entity)) {
             return;
         }
-        ModifiableAttributeInstance instance = manager.getInstance(Attributes.MAX_HEALTH);
-        instance.removeModifier(HEALTH_BOOST_UUID);
-        AttributeModifier modifier = getRandomModifier(world.getRandom());
-        if (modifier != null) {
-            instance.addTransientModifier(modifier);
-            entity.setHealth(entity.getMaxHealth());
-        }
-        BooleanConsumer<Entity> consumer = (BooleanConsumer<Entity>) postSpawn.get(entity.getType());
-        if (consumer != null) {
-            consumer.acceptBoolean(isBloodmoon, entity);
-        }
-        if (entity instanceof MobEntity && entity instanceof IAngerable) {
-            addBloodmoonAggroGoal((MobEntity & IAngerable) entity);
-        }
+        ThreadTaskExecutor<Runnable> executor = LogicalSidedProvider.WORKQUEUE.get(world.isClientSide ? LogicalSide.CLIENT : LogicalSide.SERVER);
+        executor.tell(new TickDelayedTask(0, () -> {
+            ModifiableAttributeInstance instance = manager.getInstance(Attributes.MAX_HEALTH);
+            instance.removeModifier(HEALTH_BOOST_UUID);
+            AttributeModifier modifier = getRandomModifier(world.getRandom());
+            if (modifier != null) {
+                instance.addTransientModifier(modifier);
+                entity.setHealth(entity.getMaxHealth());
+            }
+            BooleanConsumer<Entity> consumer = (BooleanConsumer<Entity>) postSpawn.get(entity.getType());
+            if (consumer != null) {
+                consumer.acceptBoolean(isBloodmoon, entity);
+            }
+            if (entity instanceof MobEntity && entity instanceof IAngerable) {
+                addBloodmoonAggroGoal((MobEntity & IAngerable) entity);
+            }
+        }));
     }
 
     private boolean isExluded(Entity entity) {
