@@ -22,18 +22,20 @@ public abstract class SkilledRecipe<I extends SkilledWorkbenchTileEntity> implem
     private final NonNullList<Ingredient> ingredientList;
     private final List<IRecipeCondition> conditions;
     private final ItemStack output;
+    private final ItemStack returningItem;
     private final ResourceLocation id;
     @Nullable
     private final OutputModifier outputModifier;
     private final int width;
     private final int height;
 
-    protected SkilledRecipe(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredients, ItemStack output, OutputModifier modifier, List<IRecipeCondition> conditions) {
+    protected SkilledRecipe(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredients, ItemStack output, ItemStack returningItem, OutputModifier modifier, List<IRecipeCondition> conditions) {
         this.id = id;
         this.width = width;
         this.height = height;
         this.ingredientList = ingredients;
         this.output = output;
+        this.returningItem = returningItem;
         this.outputModifier = modifier;
         this.conditions = conditions;
     }
@@ -86,6 +88,10 @@ public abstract class SkilledRecipe<I extends SkilledWorkbenchTileEntity> implem
     @Nullable
     public OutputModifier getOutputModifier() {
         return outputModifier;
+    }
+
+    public ItemStack getReturningItem() {
+        return returningItem;
     }
 
     public Collection<IRecipeCondition> listConditions() {

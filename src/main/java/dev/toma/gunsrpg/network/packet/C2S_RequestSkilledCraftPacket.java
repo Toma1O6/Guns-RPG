@@ -84,6 +84,10 @@ public class C2S_RequestSkilledCraftPacket extends AbstractNetworkPacket<C2S_Req
                     modifier.applyRaw(result, PlayerData.getUnsafe(player).getAttributes());
                 }
                 player.addItem(result);
+                ItemStack returningItem = recipe.getReturningItem();
+                if (!returningItem.isEmpty()) {
+                    player.addItem(returningItem.copy());
+                }
                 return true;
             }
         }

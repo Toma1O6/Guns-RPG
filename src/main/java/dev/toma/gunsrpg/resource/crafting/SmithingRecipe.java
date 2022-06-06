@@ -15,8 +15,8 @@ import java.util.List;
 
 public class SmithingRecipe extends SkilledRecipe<SmithingTableTileEntity> {
 
-    public SmithingRecipe(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredientList, ItemStack output, OutputModifier outputModifier, List<IRecipeCondition> conditions) {
-        super(id, width, height, ingredientList, output, outputModifier, conditions);
+    public SmithingRecipe(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredientList, ItemStack output, ItemStack returningItem, OutputModifier outputModifier, List<IRecipeCondition> conditions) {
+        super(id, width, height, ingredientList, output, returningItem, outputModifier, conditions);
     }
 
     @Override
@@ -32,8 +32,8 @@ public class SmithingRecipe extends SkilledRecipe<SmithingTableTileEntity> {
     public static final class Serializer extends SkilledRecipeSerializer<SmithingRecipe> {
 
         @Override
-        public SmithingRecipe createRecipeInstance(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredients, ItemStack output, OutputModifier modifier, List<IRecipeCondition> conditionList) {
-            return new SmithingRecipe(id, width, height, ingredients, output, modifier, conditionList);
+        public SmithingRecipe createRecipeInstance(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredients, ItemStack output, ItemStack returningItem, OutputModifier modifier, List<IRecipeCondition> conditionList) {
+            return new SmithingRecipe(id, width, height, ingredients, output, returningItem, modifier, conditionList);
         }
     }
 }

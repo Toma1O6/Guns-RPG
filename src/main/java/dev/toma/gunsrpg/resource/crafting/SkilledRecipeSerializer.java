@@ -22,7 +22,7 @@ import java.util.*;
 
 public abstract class SkilledRecipeSerializer<R extends SkilledRecipe<?>> extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<R> {
 
-    public abstract R createRecipeInstance(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredients, ItemStack output, OutputModifier modifier, List<IRecipeCondition> conditionList);
+    public abstract R createRecipeInstance(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredients, ItemStack output, ItemStack returningItem, OutputModifier modifier, List<IRecipeCondition> conditionList);
 
     @Override
     public final R fromJson(ResourceLocation id, JsonObject data) {
@@ -34,10 +34,14 @@ public abstract class SkilledRecipeSerializer<R extends SkilledRecipe<?>> extend
         ItemStack output = CraftingHelper.getItemStack(JSONUtils.getAsJsonObject(data, "result"), true);
         List<IRecipeCondition> required = data.has("requirements") ? ResourceUtils.getConditionsFromJson(JSONUtils.getAsJsonArray(data, "requirements")) : Collections.emptyList();
         OutputModifier modifier = null;
+        ItemStack returningItem = ItemStack.EMPTY;
         if (data.has("outputModifier")) {
             modifier = OutputModifier.fromJson(JSONUtils.getAsJsonObject(data, "outputModifier"));
         }
-        return createRecipeInstance(id, width, height, ingredientList, output, modifier, required);
+        if (data.has("returningItem")) {
+            returningItem = CraftingHelper.getItemStack(JSONUtils.getAsJsonObject(data, "returningItem"), true);
+        }
+        return createRecipeInstance(id, width, height, ingredientList, output, returningItem, modifier, required);
     }
 
     @Nullable
@@ -50,6 +54,7 @@ public abstract class SkilledRecipeSerializer<R extends SkilledRecipe<?>> extend
             ingredients.set(i, Ingredient.fromNetwork(buffer));
         }
         ItemStack out = buffer.readItem();
+        ItemStack returningItem = buffer.readItem();
         boolean outputModifier = buffer.readBoolean();
         OutputModifier modifier = null;
         if (outputModifier)
@@ -64,7 +69,7 @@ public abstract class SkilledRecipeSerializer<R extends SkilledRecipe<?>> extend
                 conditions.add(ConditionType.fromNetwork(buffer));
             }
         }
-        return createRecipeInstance(id, width, height, ingredients, out, modifier, conditions);
+        return createRecipeInstance(id, width, height, ingredients, out, returningItem, modifier, conditions);
     }
 
     @Override
@@ -75,6 +80,7 @@ public abstract class SkilledRecipeSerializer<R extends SkilledRecipe<?>> extend
             ingredient.toNetwork(buffer);
         }
         buffer.writeItem(recipe.getResultItem());
+        buffer.writeItem(recipe.getReturningItem());
         boolean outputModifier = recipe.getOutputModifier() != null;
         buffer.writeBoolean(outputModifier);
         if (outputModifier)

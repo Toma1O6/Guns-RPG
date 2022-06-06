@@ -15,8 +15,8 @@ import java.util.List;
 
 public class CulinaryRecipe extends SkilledRecipe<CulinaryTableTileEntity> {
 
-    public CulinaryRecipe(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredients, ItemStack output, OutputModifier modifier, List<IRecipeCondition> conditionList) {
-        super(id, width, height, ingredients, output, modifier, conditionList);
+    public CulinaryRecipe(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredients, ItemStack output, ItemStack returningItem, OutputModifier modifier, List<IRecipeCondition> conditionList) {
+        super(id, width, height, ingredients, output, returningItem, modifier, conditionList);
     }
 
     @Override
@@ -32,8 +32,8 @@ public class CulinaryRecipe extends SkilledRecipe<CulinaryTableTileEntity> {
     public static final class Serializer extends SkilledRecipeSerializer<CulinaryRecipe> {
 
         @Override
-        public CulinaryRecipe createRecipeInstance(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredients, ItemStack output, OutputModifier modifier, List<IRecipeCondition> conditionList) {
-            return new CulinaryRecipe(id, width, height, ingredients, output, modifier, conditionList);
+        public CulinaryRecipe createRecipeInstance(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredients, ItemStack output, ItemStack returningItem, OutputModifier modifier, List<IRecipeCondition> conditionList) {
+            return new CulinaryRecipe(id, width, height, ingredients, output, returningItem, modifier, conditionList);
         }
     }
 }

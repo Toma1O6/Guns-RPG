@@ -25,6 +25,9 @@
     "result": {
       "item": "gunsrpg:meaty_stew_xxl"
     },
+    "returningItem": {
+      "item": "minecraft:bucket"
+    },
     "requirements": [
       {
         "type": "gunsrpg:skill",

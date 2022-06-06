@@ -15,8 +15,8 @@ import java.util.List;
 
 public class MedRecipe extends SkilledRecipe<MedstationTileEntity> {
 
-    public MedRecipe(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredients, ItemStack output, OutputModifier modifier, List<IRecipeCondition> conditions) {
-        super(id, width, height, ingredients, output, modifier, conditions);
+    public MedRecipe(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredients, ItemStack output, ItemStack returningItem, OutputModifier modifier, List<IRecipeCondition> conditions) {
+        super(id, width, height, ingredients, output, returningItem, modifier, conditions);
     }
 
     @Override
@@ -32,8 +32,8 @@ public class MedRecipe extends SkilledRecipe<MedstationTileEntity> {
     public static final class Serializer extends SkilledRecipeSerializer<MedRecipe> {
 
         @Override
-        public MedRecipe createRecipeInstance(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredients, ItemStack output, OutputModifier modifier, List<IRecipeCondition> conditionList) {
-            return new MedRecipe(id, width, height, ingredients, output, modifier, conditionList);
+        public MedRecipe createRecipeInstance(ResourceLocation id, int width, int height, NonNullList<Ingredient> ingredients, ItemStack output, ItemStack returningItem, OutputModifier modifier, List<IRecipeCondition> conditionList) {
+            return new MedRecipe(id, width, height, ingredients, output, returningItem, modifier, conditionList);
         }
     }
 }
