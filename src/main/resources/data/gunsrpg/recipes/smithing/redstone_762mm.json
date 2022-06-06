@@ -1,13 +1,13 @@
 {
   "type": "gunsrpg:smithing_table",
   "pattern": [
-    "rrr",
+    "r  ",
     "ggg",
     "b  "
   ],
   "key": {
     "r": {
-      "item": "minecraft:redstone"
+      "item": "minecraft:redstone_block"
     },
     "g": {
         "item": "minecraft:gunpowder"
