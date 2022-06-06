@@ -186,14 +186,14 @@ public final class DebuffRegistration {
     private static void applyInfectionStage3(PlayerEntity player) {
         applyMultiple(player, () -> new EffectInstance[]{
                 new EffectInstance(Effects.WITHER, 60, 1, false, false),
-                new EffectInstance(Effects.HUNGER, 60, 10, false, false)
+                new EffectInstance(Effects.HUNGER, 60, 9, false, false)
         });
     }
 
     private static void applyInfectionStage4(PlayerEntity player) {
         applyMultiple(player, () -> new EffectInstance[]{
                 new EffectInstance(Effects.WITHER, 60, 2, false, false),
-                new EffectInstance(Effects.HUNGER, 60, 15, false, false)
+                new EffectInstance(Effects.HUNGER, 60, 14, false, false)
         });
     }
 
