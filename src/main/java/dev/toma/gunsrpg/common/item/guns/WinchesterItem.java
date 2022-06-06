@@ -23,6 +23,7 @@ import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -108,6 +109,13 @@ public class WinchesterItem extends AbstractBoltActionGun {
             }
         }
         return damage;
+    }
+
+    @Override
+    public void onKillEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
+        if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.WINCHESTER_HUNTER) && victim instanceof MonsterEntity) {
+            shooter.heal(2.0F);
+        }
     }
 
     @Override
