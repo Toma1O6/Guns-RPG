@@ -32,7 +32,7 @@ public class CountFunctionAdapter implements JsonDeserializer<ICountFunction> {
             throw new JsonParseException("Invalid property value: 'function' must be defined and it's value cannot be empty");
         }
         ResourceLocation identifier = new ResourceLocation(identifierString);
-        ICountFunctionAdapter adapter = CountFunctionRegistry.findByKey(identifier);
+        ICountFunctionAdapter<?> adapter = CountFunctionRegistry.findByKey(identifier);
         if (adapter == null) {
             throw new JsonParseException(String.format("Invalid property value 'function': '%s' is not valid function", identifierString));
         }

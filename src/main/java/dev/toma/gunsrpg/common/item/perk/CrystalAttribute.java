@@ -23,7 +23,7 @@ public final class CrystalAttribute {
     public CrystalAttribute(Perk perk, PerkType type, int level) {
         this.perk = perk;
         this.type = type;
-        this.level = level;
+        this.level = Math.abs(level);
         this.modifier = this.createUniqueModifier();
     }
 

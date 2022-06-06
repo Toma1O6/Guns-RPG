@@ -27,11 +27,12 @@ public final class PerkConfiguration {
     }
 
     public void encode(PacketBuffer buffer) {
+        crystals.encode(buffer);
         fusion.encode(buffer);
         purification.encode(buffer);
     }
 
     public static PerkConfiguration decode(PacketBuffer buffer) {
-        return new PerkConfiguration(null, FusionConfiguration.decode(buffer), PurificationConfiguration.decode(buffer));
+        return new PerkConfiguration(CrystalConfiguration.decode(buffer), FusionConfiguration.decode(buffer), PurificationConfiguration.decode(buffer));
     }
 }

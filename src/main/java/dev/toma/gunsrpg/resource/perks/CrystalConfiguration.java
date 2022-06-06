@@ -1,7 +1,9 @@
 package dev.toma.gunsrpg.resource.perks;
 
+import dev.toma.gunsrpg.resource.crate.CountFunctionRegistry;
 import dev.toma.gunsrpg.resource.crate.ICountFunction;
 import dev.toma.gunsrpg.util.math.WeightedRandom;
+import net.minecraft.network.PacketBuffer;
 
 public final class CrystalConfiguration {
 
@@ -21,6 +23,18 @@ public final class CrystalConfiguration {
         return storage;
     }
 
+    public void encode(PacketBuffer buffer) {
+        spawns.encode(buffer);
+        storage.encode(buffer);
+    }
+
+    public static CrystalConfiguration decode(PacketBuffer buffer) {
+        return new CrystalConfiguration(
+                Spawns.decode(buffer),
+                Storage.decode(buffer)
+        );
+    }
+
     public static final class Spawns {
 
         private final WeightedRandom<Spawn> spawns;
@@ -37,6 +51,25 @@ public final class CrystalConfiguration {
 
         public Spawn getRandomSpawn() {
             return spawns.getRandom();
+        }
+
+        public void encode(PacketBuffer buffer) {
+            Spawn[] spawns = this.spawns.getValues();
+            int l = spawns.length;
+            buffer.writeInt(l);
+            for (Spawn spawn : spawns) {
+                spawn.encode(buffer);
+            }
+            typeRanges.encode(buffer);
+        }
+
+        public static Spawns decode(PacketBuffer buffer) {
+            Spawn[] spawns = new Spawn[buffer.readInt()];
+            for (int i = 0; i < spawns.length; i++) {
+                spawns[i] = Spawn.decode(buffer);
+            }
+            Types types = Types.decode(buffer);
+            return new Spawns(spawns, types);
         }
     }
 
@@ -57,6 +90,18 @@ public final class CrystalConfiguration {
         public int getWeight() {
             return weight;
         }
+
+        public void encode(PacketBuffer buffer) {
+            buffer.writeInt(level);
+            buffer.writeInt(weight);
+        }
+
+        public static Spawn decode(PacketBuffer buffer) {
+            return new Spawn(
+                    buffer.readInt(),
+                    buffer.readInt()
+            );
+        }
     }
 
     public static final class Types {
@@ -75,6 +120,18 @@ public final class CrystalConfiguration {
 
         public int getDebuffCount() {
             return debuff.getCount();
+        }
+
+        public void encode(PacketBuffer buffer) {
+            CountFunctionRegistry.encode(buff, buffer);
+            CountFunctionRegistry.encode(debuff, buffer);
+        }
+
+        public static Types decode(PacketBuffer buffer) {
+            return new Types(
+                    CountFunctionRegistry.decode(buffer),
+                    CountFunctionRegistry.decode(buffer)
+            );
         }
     }
 
@@ -96,12 +153,16 @@ public final class CrystalConfiguration {
             return debuffCapacity;
         }
 
-        public boolean areBuffsLimited() {
-            return buffCapacity >= 0;
+        public void encode(PacketBuffer buffer) {
+            buffer.writeInt(buffCapacity);
+            buffer.writeInt(debuffCapacity);
         }
 
-        public boolean areDebuffsLimited() {
-            return debuffCapacity >= 0;
+        public static Storage decode(PacketBuffer buffer) {
+            return new Storage(
+                    buffer.readInt(),
+                    buffer.readInt()
+            );
         }
     }
 }
