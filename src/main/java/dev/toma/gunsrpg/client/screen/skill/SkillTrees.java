@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.util.helper.TreeHelper;
 import lib.toma.animations.QuickSort;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -29,7 +30,7 @@ public class SkillTrees {
         for (int i = 0; i < roots.size(); i++) {
             trees[i] = new Tree(category, roots.get(i));
         }
-        QuickSort.sort(trees, this::compareTrees);
+        QuickSort.sort(trees, this.compareTrees());
         int xCorrection = Tree.GRID_UNIT_SIZE + Tree.HALF_UNIT;
         for (Tree tree : trees) {
             tree.move(xCorrection, 0);
@@ -59,20 +60,10 @@ public class SkillTrees {
         return hierarchy.getExtensions() != null;
     }
 
-    private int compareTrees(Tree tree1, Tree tree2) {
-        SkillType<?> root1 = tree1.getRoot();
-        SkillType<?> root2 = tree2.getRoot();
-        int level1 = root1.getProperties().getRequiredLevel();
-        int level2 = root2.getProperties().getRequiredLevel();
-        int levelDiff = level1 - level2;
-        if (levelDiff == 0) {
-            return compareChildren(root1, root2);
-        }
-        return levelDiff;
-    }
-
-    private int compareChildren(SkillType<?> type1, SkillType<?> type2) {
-        Function<SkillType<?>, SkillType<?>[]> child = type -> type.getHierarchy().getChildren();
-        return TreeHelper.getChildCount(type1, child) - TreeHelper.getChildCount(type2, child);
+    private Comparator<Tree> compareTrees() {
+        Function<SkillType<?>, SkillType<?>[]> childFetcher = type -> type.getHierarchy().getChildren();
+        Comparator<Tree> levelComparator = Comparator.comparingInt(value -> value.getRoot().getProperties().getRequiredLevel());
+        Comparator<Tree> nodeCountComparator = Comparator.comparingInt(value -> TreeHelper.getChildCount(value.getRoot(), childFetcher));
+        return levelComparator.thenComparing(nodeCountComparator).thenComparing(tree -> tree.getRoot().getRegistryName());
     }
 }

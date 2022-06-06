@@ -31,6 +31,7 @@ import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
@@ -104,7 +105,7 @@ public class ExtensionsView extends View {
         int level = 0;
         int posY = y;
         SkillType<?>[] ext = head.getHierarchy().getExtensions();
-        QuickSort.sort(ext, Comparator.comparing(SkillType::getProperties, Comparator.comparingInt(ISkillProperties::getRequiredLevel)));
+        QuickSort.sort(ext, Comparator.<SkillType<?>, ISkillProperties>comparing(SkillType::getProperties, Comparator.comparingInt(ISkillProperties::getRequiredLevel)).thenComparing(ForgeRegistryEntry::getRegistryName));
         for (SkillType<?> type : ext) {
             ISkillProperties properties = type.getProperties();
             int lvl = properties.getRequiredLevel();
