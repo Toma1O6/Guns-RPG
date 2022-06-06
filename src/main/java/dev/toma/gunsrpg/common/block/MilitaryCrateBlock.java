@@ -17,7 +17,7 @@ public class MilitaryCrateBlock extends AbstractCrateBlock {
     private final BiomeVariant variant;
 
     public MilitaryCrateBlock(String name, BiomeVariant variant) {
-        super(name, Properties.of(Material.WOOD).strength(2.5F).harvestTool(ToolType.AXE));
+        super(name, Properties.of(Material.WOOD).strength(2.5F).harvestTool(ToolType.AXE).randomTicks());
         this.variant = variant;
     }
 
