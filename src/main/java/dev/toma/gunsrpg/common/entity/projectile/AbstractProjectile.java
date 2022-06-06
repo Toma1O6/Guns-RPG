@@ -246,7 +246,8 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
     }
 
     protected DamageSource getDamageSource(Entity owner) {
-        return ModDamageSources.dealWeaponDamage(owner, this, weapon);
+        int lootingLevel = this.getProperty(Properties.LOOT_LEVEL);
+        return lootingLevel > 0 ? ModDamageSources.dealSpecialWeaponDamage(owner, this, weapon) : ModDamageSources.dealWeaponDamage(owner, this, weapon);
     }
 
     /**
