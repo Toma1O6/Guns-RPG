@@ -109,9 +109,9 @@ public class CommonEventHandler {
         BiomeGenerationSettingsBuilder builder = event.getGeneration();
         MobSpawnInfoBuilder mobSpawnBuilder = event.getSpawns();
         if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
-            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_GUNNER.get(), ModConfig.worldConfig.zombieGunnerSpawn.get(), 1, 1));
-            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.EXPLOSIVE_SKELETON.get(), ModConfig.worldConfig.explosiveSkeletonSpawn.get(), 1, 1));
-            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_KNIGHT.get(), ModConfig.worldConfig.zombieKnightSpawn.get(), 1, 1));
+            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_GUNNER.get(), ModConfig.worldConfig.zombieGunnerSpawn.get(), 1, 2));
+            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.EXPLOSIVE_SKELETON.get(), ModConfig.worldConfig.explosiveSkeletonSpawn.get(), 1, 2));
+            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_KNIGHT.get(), ModConfig.worldConfig.zombieKnightSpawn.get(), 1, 2));
         }
         if (category != Biome.Category.NETHER && category != Biome.Category.THEEND) {
             if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
@@ -122,7 +122,7 @@ public class CommonEventHandler {
             }
         } else {
             mobSpawnBuilder.addMobCharge(ModEntities.ROCKET_ANGEL.get(), 0.7, 0.15);
-            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ROCKET_ANGEL.get(), 8, 1, 1));
+            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ROCKET_ANGEL.get(), 8, 1, 2));
         }
     }
 
