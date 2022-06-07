@@ -61,6 +61,11 @@ public class AreaSurvivalQuest extends Quest<AreaSurvivalData> implements IAreaQ
     }
 
     @Override
+    protected boolean overrideFailureFromCondition() {
+        return !hasEnteredArea;
+    }
+
+    @Override
     protected void fillDataModel(QuestDisplayDataModel model) {
         super.fillDataModel(model);
 

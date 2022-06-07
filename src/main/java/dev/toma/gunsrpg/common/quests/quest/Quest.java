@@ -239,6 +239,10 @@ public abstract class Quest<D extends IQuestData> {
         return getScheme().hashCode();
     }
 
+    protected boolean overrideFailureFromCondition() {
+        return false;
+    }
+
     protected void writeQuestData(CompoundNBT nbt) {
 
     }
@@ -278,7 +282,7 @@ public abstract class Quest<D extends IQuestData> {
 
     private TriggerResponseStatus handleQuestCondition(QuestConditionProviderType<?> type, IQuestCondition condition, IPropertyReader reader) {
         boolean wasValid = condition.isValid(player, reader);
-        return wasValid ? TriggerResponseStatus.OK : type.shouldFailQuest() ? TriggerResponseStatus.FAIL : TriggerResponseStatus.PASS;
+        return wasValid ? TriggerResponseStatus.OK : type.shouldFailQuest() && !overrideFailureFromCondition() ? TriggerResponseStatus.FAIL : TriggerResponseStatus.PASS;
     }
 
     public interface ITriggerRegistration {

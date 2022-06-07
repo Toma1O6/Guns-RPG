@@ -61,6 +61,11 @@ public class KillInAreaQuest extends Quest<KillInAreaData> implements IAreaQuest
     }
 
     @Override
+    protected boolean overrideFailureFromCondition() {
+        return !hasEnteredArea;
+    }
+
+    @Override
     protected void fillDataModel(QuestDisplayDataModel model) {
         model.addQuestHeader(this, false);
         model.addInformationRow(this.getScheme().getDisplayInfo().getInfo(), this, q -> new StringTextComponent(q.killCount + "/" + q.getActiveData().getKillTarget()));
