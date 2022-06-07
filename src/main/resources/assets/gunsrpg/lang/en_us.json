@@ -951,7 +951,7 @@
     "skill.gunsrpg.doctor.title": "Doctor",
     "skill.gunsrpg.doctor.description.0": "Allows crafting of vaccines and antidotes",
     "skill.gunsrpg.efficient_meds.title": "Efficient Meds",
-    "skill.gunsrpg.efficient_meds.description.0": "Heals extra HP after using any meds",
+    "skill.gunsrpg.efficient_meds.description.heal": "Heals extra %s HP after using any meds",
     "skill.gunsrpg.medical_station.title": "Medical Station",
     "skill.gunsrpg.medical_station.description.0": "Unlocks crafting of Medical station",
     "skill.gunsrpg.crystal_station.title": "Crystal Station",
