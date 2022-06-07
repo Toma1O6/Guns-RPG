@@ -41,7 +41,7 @@ public abstract class AbstractCrossbow extends GunItem {
 
     @Override
     protected float getWeaponSoundVolume() {
-        return 4.0F;
+        return 1.0F;
     }
 
     @OnlyIn(Dist.CLIENT)
