@@ -19,6 +19,7 @@ import dev.toma.gunsrpg.network.packet.C2S_QuestActionPacket;
 import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
+import dev.toma.gunsrpg.util.math.IDimensions;
 import lib.toma.animations.engine.screen.animator.widget.LabelWidget;
 import lib.toma.animations.engine.screen.animator.widget.WidgetContainer;
 import net.minecraft.client.MainWindow;
@@ -26,6 +27,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IReorderingProcessor;
@@ -36,6 +38,7 @@ import net.minecraft.util.text.*;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class QuestScreen extends Screen {
 
@@ -48,6 +51,11 @@ public class QuestScreen extends Screen {
     private static final IFormattableTextComponent TEXT_QUEST_CONDITIONS   = new TranslationTextComponent("screen.quests.conditions");         // title for condition overview
     private static final IFormattableTextComponent TEXT_QUEST_REWARDS      = new TranslationTextComponent("screen.quests.rewards");            // title for reward overview
     private static final ITextComponent TEXT_QUEST_OTHER_ACTIVE            = new TranslationTextComponent("screen.quests.has_other_active").withStyle(TextFormatting.RED);
+    private static final IFormattableTextComponent DIALOG_REWARD_HEADER    = new TranslationTextComponent("screen.dialog.quest.reward.header");
+    private static final IFormattableTextComponent DIALOG_CANCEL_HEADER    = new TranslationTextComponent("screen.dialog.quest.cancel.header");
+    private static final ITextComponent DIALOG_REWARD_INFO                 = new TranslationTextComponent("screen.dialog.quest.reward.info");
+    private static final ITextComponent DIALOG_CANCEL_INFO                 = new TranslationTextComponent("screen.dialog.quest.cancel.info");
+    private static final ITextComponent DIALOG_CANCEL_DANGER               = new TranslationTextComponent("screen.dialog.quest.cancel.danger").withStyle(TextFormatting.RED);
     // parametrized localizations
     private static final String TEXT_MAYOR_STATUS_RAW = "screen.quests.mayor_status";
     private static final Function<IFormattableTextComponent, IFormattableTextComponent> TEXT_MAYOR_STATUS = (text) -> new TranslationTextComponent(TEXT_MAYOR_STATUS_RAW, text);
@@ -313,21 +321,27 @@ public class QuestScreen extends Screen {
         }
 
         private void handleResponse(ActionType type) {
-            C2S_QuestActionPacket packet = null;
             MayorEntity entity = QuestScreen.this.entity;
             switch (type) {
                 case ASSIGN:
-                    packet = C2S_QuestActionPacket.makeAssignPacket(entity, QuestScreen.this.quests, selectedQuest);
+                    NetworkManager.sendServerPacket(C2S_QuestActionPacket.makeAssignPacket(entity, QuestScreen.this.quests, selectedQuest));
+                    QuestScreen.this.refreshAllWidgets();
                     break;
                 case CANCEL:
-                    packet = C2S_QuestActionPacket.makeCancelPacket(entity);
+                    ConfirmDialog cancelDialog = new ConfirmDialog(QuestScreen.this, DIALOG_CANCEL_HEADER, new ITextComponent[] { DIALOG_CANCEL_INFO, DIALOG_CANCEL_DANGER }, screen -> {
+                        NetworkManager.sendServerPacket(C2S_QuestActionPacket.makeCancelPacket(entity));
+                        minecraft.setScreen(screen);
+                    });
+                    minecraft.setScreen(cancelDialog);
                     break;
                 case COLLECT:
-                    packet = C2S_QuestActionPacket.makeCollectionPacket(entity, selectedIndexes);
+                    ConfirmDialog confirmDialog = new ConfirmDialog(QuestScreen.this, DIALOG_REWARD_HEADER, new ITextComponent[] { DIALOG_REWARD_INFO }, screen -> {
+                        NetworkManager.sendServerPacket(C2S_QuestActionPacket.makeCollectionPacket(entity, selectedIndexes));
+                        minecraft.setScreen(screen);
+                    });
+                    minecraft.setScreen(confirmDialog);
                     break;
             }
-            NetworkManager.sendServerPacket(packet);
-            QuestScreen.this.refreshAllWidgets();
         }
 
         private void addTitle(int y, IFormattableTextComponent component, TextFormatting... formattings) {
@@ -490,6 +504,73 @@ public class QuestScreen extends Screen {
 
         public void setSelected(boolean state) {
             this.selected = state;
+        }
+    }
+
+    private static final class ConfirmDialog extends Screen {
+
+        private final Screen parent;
+        private final ITextComponent header;
+        private final ITextComponent[] content;
+        private final Consumer<Screen> onConfirm;
+        private IDimensions dimensions;
+        private ITextComponent confirmText = new TranslationTextComponent("screen.dialog.confirm");
+        private ITextComponent denyText = new TranslationTextComponent("screen.dialog.deny");
+
+        private int left, top;
+
+        private ConfirmDialog(Screen parent, IFormattableTextComponent header, ITextComponent[] content, Consumer<Screen> onConfirm) {
+            super(parent.getTitle());
+            this.parent = parent;
+            this.header = header.withStyle(TextFormatting.UNDERLINE);
+            this.content = content;
+            this.onConfirm = onConfirm;
+        }
+
+        @Override
+        protected void init() {
+            parent.init(minecraft, width, height);
+            int panelWidth = Math.max(font.width(header) + 10, 150);
+            List<IReorderingProcessor> contentList = Arrays.stream(content).map(text -> font.split(text, panelWidth)).flatMap(Collection::stream).collect(Collectors.toList());
+            int panelHeight = 50 + contentList.size() * 10;
+            this.dimensions = IDimensions.of(panelWidth, panelHeight);
+            left = (width - dimensions.getWidth()) / 2;
+            top = (height - dimensions.getHeight()) / 2;
+
+            addButton(new LabelWidget(left + 5, top + 5, panelWidth - 10, 10, header, font));
+            int i = 0;
+            for (IReorderingProcessor processor : contentList) {
+                addButton(new ReorderedTextWidget(left + 5, top + 20 + i++ * 10, panelWidth - 10, 10, processor, font));
+            }
+            int btnWidth = (panelWidth - 15) / 2;
+            addButton(new Button(left + 5, top + panelHeight - 25, btnWidth, 20, denyText, this::refused));
+            addButton(new Button(left + panelWidth - 5 - btnWidth, top + panelHeight - 25, btnWidth, 20, confirmText, this::accepted));
+        }
+
+        private void refused(Button button) {
+            minecraft.setScreen(parent);
+        }
+
+        private void accepted(Button button) {
+            onConfirm.accept(parent);
+        }
+
+        @Override
+        public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+            parent.render(matrix, mouseX, mouseY, partialTicks);
+            matrix.pushPose();
+            matrix.translate(0, 0, 800);
+            RenderUtils.drawSolid(matrix.last().pose(), left, top, left + dimensions.getWidth(), top + dimensions.getHeight(), 0xFF << 24);
+            super.render(matrix, mouseX, mouseY, partialTicks);
+            matrix.popPose();
+        }
+
+        public void setConfirmText(ITextComponent confirmText) {
+            this.confirmText = confirmText;
+        }
+
+        public void setDenyText(ITextComponent denyText) {
+            this.denyText = denyText;
         }
     }
 
