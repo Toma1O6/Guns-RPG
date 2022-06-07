@@ -29,12 +29,11 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IReorderingProcessor;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -48,6 +47,7 @@ public class QuestScreen extends Screen {
     private static final IFormattableTextComponent TEXT_QUEST_DETAIL       = new TranslationTextComponent("screen.quests.quest_detail");       // description/detail of quest
     private static final IFormattableTextComponent TEXT_QUEST_CONDITIONS   = new TranslationTextComponent("screen.quests.conditions");         // title for condition overview
     private static final IFormattableTextComponent TEXT_QUEST_REWARDS      = new TranslationTextComponent("screen.quests.rewards");            // title for reward overview
+    private static final ITextComponent TEXT_QUEST_OTHER_ACTIVE            = new TranslationTextComponent("screen.quests.has_other_active").withStyle(TextFormatting.RED);
     // parametrized localizations
     private static final String TEXT_MAYOR_STATUS_RAW = "screen.quests.mayor_status";
     private static final Function<IFormattableTextComponent, IFormattableTextComponent> TEXT_MAYOR_STATUS = (text) -> new TranslationTextComponent(TEXT_MAYOR_STATUS_RAW, text);
@@ -62,6 +62,7 @@ public class QuestScreen extends Screen {
     private final ReputationStatus status;
     private final Quest<?>[] quests;
     private final MayorEntity entity;
+    private IQuests questProvider;
     private boolean hasActiveQuest;
 
     private QuestInfoPanelWidget infoPanelWidget;
@@ -78,7 +79,7 @@ public class QuestScreen extends Screen {
     @Override
     protected void init() {
         IPlayerData data = PlayerData.getUnsafe(minecraft.player);
-        IQuests questProvider = data.getQuests();
+        questProvider = data.getQuests();
         ISkillProvider skillProvider = data.getSkillProvider();
         this.hasActiveQuest = questProvider.getActiveQuest().isPresent();
 
@@ -281,11 +282,21 @@ public class QuestScreen extends Screen {
                 }
             }
 
+
             ActionType actionType = this.getQuestActionType(status);
             if (actionType != null) {
-                actionButton = addWidget(new ActionButton(this.x + this.width - 145, this.height - 25, 140, 20, actionType, this::handleResponse));
-                if (actionType == ActionType.COLLECT) {
-                    actionButton.active = false;
+                UUID traderId = QuestScreen.this.entity.getUUID();
+                UUID questId = this.selectedQuest.getOriginalAssignerId();
+                if (Objects.equals(traderId, questId) || questId.equals(Util.NIL_UUID) || actionType == ActionType.CANCEL) {
+                    actionButton = addWidget(new ActionButton(this.x + this.width - 145, this.height - 25, 140, 20, actionType, this::handleResponse));
+                    IQuests quests = QuestScreen.this.questProvider;
+                    Optional<Quest<?>> activeQuestOpt = quests.getActiveQuest();
+                    if (actionType == ActionType.COLLECT || (actionType == ActionType.ASSIGN && activeQuestOpt.isPresent() && activeQuestOpt.get() != selectedQuest)) {
+                        actionButton.active = false;
+                    }
+                } else {
+                    int textWidth = font.width(TEXT_QUEST_OTHER_ACTIVE);
+                    addWidget(new LabelWidget(this.x + this.width - 5 - textWidth, this.height - 15, textWidth, 10, TEXT_QUEST_OTHER_ACTIVE, font));
                 }
             }
         }

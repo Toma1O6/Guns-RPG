@@ -117,6 +117,10 @@ public abstract class Quest<D extends IQuestData> {
         }
     }
 
+    public UUID getOriginalAssignerId() {
+        return uuid;
+    }
+
     public void tickQuest(PlayerEntity player) {
     }
 
