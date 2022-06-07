@@ -25,6 +25,9 @@
       "item": "minecraft:cooked_rabbit"
     }
   },
+  "returningItem": {
+    "item": "minecraft:bucket"
+  },
   "result": {
     "item": "gunsrpg:rabbit_creamy_soup"
   },
