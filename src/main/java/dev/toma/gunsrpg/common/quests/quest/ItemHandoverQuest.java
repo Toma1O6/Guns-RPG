@@ -12,16 +12,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.UUID;
 
-public class ItemHandoverQuest extends Quest<ItemHandoverData> {
+public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAdditionalClientInfo {
 
     public static final String DELIVER = "quest.deliver";
+    private static final ITextComponent[] NOTES = { new TranslationTextComponent("quest.deliver.info").withStyle(TextFormatting.ITALIC) };
     public static final IQuestFactory<ItemHandoverData, ItemHandoverQuest> FACTORY = IQuestFactory.of(ItemHandoverQuest::new, ItemHandoverQuest::new);
     private final Object2IntMap<Item> dataMap = new Object2IntAVLTreeMap<>(this::compareItems);
 
@@ -37,6 +40,11 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> {
     @Override
     public void registerTriggers(ITriggerRegistration registration) {
         registration.addEntry(Trigger.ITEM_HANDOVER, this::tryItemHandover, this::handleSuccessfulHandover);
+    }
+
+    @Override
+    public ITextComponent[] getAdditionalNotes() {
+        return NOTES;
     }
 
     @Override

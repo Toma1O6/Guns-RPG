@@ -11,10 +11,7 @@ import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.quests.ActionType;
 import dev.toma.gunsrpg.common.quests.condition.IQuestCondition;
 import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
-import dev.toma.gunsrpg.common.quests.quest.DisplayInfo;
-import dev.toma.gunsrpg.common.quests.quest.Quest;
-import dev.toma.gunsrpg.common.quests.quest.QuestScheme;
-import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
+import dev.toma.gunsrpg.common.quests.quest.*;
 import dev.toma.gunsrpg.common.quests.reward.QuestReward;
 import dev.toma.gunsrpg.common.skills.BartenderSkill;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -68,6 +65,7 @@ public class QuestScreen extends Screen {
     private boolean hasActiveQuest;
 
     private QuestInfoPanelWidget infoPanelWidget;
+    private Quest<?> selectedQuest;
 
     public QuestScreen(ReputationStatus status, Quest<?>[] quests, MayorEntity entity, long timer) {
         super(new TranslationTextComponent("screen.gunsrpg.quests"));
@@ -92,6 +90,7 @@ public class QuestScreen extends Screen {
         int panelLeft = 30 + width / 3;
         int panelWidth = width - panelLeft - 10;
         infoPanelWidget = addButton(new QuestInfoPanelWidget(panelLeft, 0, panelWidth, height, skillProvider, font));
+        infoPanelWidget.setSelectedQuest(selectedQuest);
     }
 
     @Override
@@ -124,10 +123,13 @@ public class QuestScreen extends Screen {
     }
 
     private void questWidgetClicked(QuestWidget widget) {
-        if (widget.quest.getScheme().isSpecialTaskQuest()) {
+        Quest<?> quest = widget.quest;
+        if (quest.getScheme().isSpecialTaskQuest()) {
             return;
         }
-        infoPanelWidget.setSelectedQuest(widget.quest);
+
+        infoPanelWidget.setSelectedQuest(quest);
+        selectedQuest = quest;
     }
 
     private void renderItemTooltip(MatrixStack matrix, ItemStack stack, int mouseX, int mouseY) {
@@ -236,7 +238,7 @@ public class QuestScreen extends Screen {
 
         public void setSelectedQuest(Quest<?> quest) {
             clear();
-            this.selectedQuest = quest == selectedQuest ? null : quest;
+            this.selectedQuest = quest == selectedQuest || shouldHideQuest(quest) ? null : quest;
             if (selectedQuest == null) return;
 
             QuestScheme<?> scheme = selectedQuest.getScheme();
@@ -268,6 +270,15 @@ public class QuestScreen extends Screen {
                     y += offset;
                     addWidget(new ReorderedTextWidget(this.x + 15, this.y + 30 + y, this.width - 30, 10, processor, font));
                 }
+                if (selectedQuest instanceof IAdditionalClientInfo) {
+                    y += offset;
+                    IAdditionalClientInfo clientInfo = (IAdditionalClientInfo) selectedQuest;
+                    ITextComponent[] text = clientInfo.getAdditionalNotes();
+                    for (int i = 0; i < text.length; i++) {
+                        ITextComponent textComponent = text[i];
+                        addWidget(new LabelWidget(this.x + 5, this.y + 30 + y + i * offset, width - 10, 10, textComponent, font));
+                    }
+                }
             }
 
             ActionType actionType = this.getQuestActionType(status);
@@ -277,6 +288,12 @@ public class QuestScreen extends Screen {
                     actionButton.active = false;
                 }
             }
+        }
+
+        private boolean shouldHideQuest(Quest<?> quest) {
+            if (quest == null) return true;
+            QuestStatus status = quest.getStatus();
+            return status == QuestStatus.FAILED || status == QuestStatus.CLAIMED;
         }
 
         private void onRewardSelectionChanged(Integer[] choices) {
