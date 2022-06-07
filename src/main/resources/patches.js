@@ -90,6 +90,19 @@ function initializeCoreMod() {
                 patchEnderDragonConstructor(methodNode.instructions);
                 return methodNode;
             }
+        },
+
+        freshEntitySpawnHookPatch: {
+            target: {
+                type: 'METHOD',
+                class: 'net.minecraft.world.server.ServerWorld',
+                methodName: 'func_217376_c',
+                methodDesc: '(Lnet/minecraft/entity/Entity;)Z'
+            },
+            transformer: function (methodNode) {
+                addFreshEntitySpawnHook(methodNode.instructions);
+                return methodNode;
+            }
         }
     }
 }
@@ -238,6 +251,39 @@ function patchEnderDragonConstructor(instructions) {
                 instructions.set(instruction, new VarInsnNode(ALOAD, 1));
                 break;
             }
+        }
+    }
+}
+
+/*
+public addFreshEntity(Lnet/minecraft/entity/Entity;)Z
+   L0
+    LINENUMBER 754 L0
+    ALOAD 0
+    ALOAD 1
+    // INJECT START ---------------------
+    -- REMOVE -- INVOKESPECIAL net/minecraft/world/server/ServerWorld.addEntity (Lnet/minecraft/entity/Entity;)Z
+    -- ADD --    INVOKESTATIC dev/toma/gunsrpg/asm/Hooks.spawnEntity (Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/entity/Entity;)Z
+    // INJECT END -----------------------
+    IRETURN
+   L1
+    LOCALVARIABLE this Lnet/minecraft/world/server/ServerWorld; L0 L1 0
+    LOCALVARIABLE p_217376_1_ Lnet/minecraft/entity/Entity; L0 L1 1
+    MAXSTACK = 2
+    MAXLOCALS = 2
+*/
+function addFreshEntitySpawnHook(instructions) {
+    for (var i = 0; i < instructions.size(); i++) {
+        var ins = instructions.get(i);
+        if (ins.getOpcode() === INVOKEVIRTUAL) {
+            instructions.set(ins, new MethodInsnNode(
+                INVOKESTATIC,
+                'dev/toma/gunsrpg/asm/Hooks',
+                'spawnEntity',
+                '(Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/entity/Entity;)Z',
+                false
+            ));
+            break;
         }
     }
 }

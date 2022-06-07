@@ -27,7 +27,6 @@ import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.world.LootStashes;
-import dev.toma.gunsrpg.world.MobSpawnManager;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataProvider;
 import dev.toma.gunsrpg.world.feature.ModConfiguredFeatures;
@@ -35,14 +34,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.IAngerable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -75,7 +72,6 @@ import net.minecraftforge.common.world.MobSpawnInfoBuilder;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -485,17 +481,6 @@ public class CommonEventHandler {
                 data.tick();
                 updateMovementSpeedAttribute(player, data.getAttributes());
             });
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void entityJoinWorld(EntityJoinWorldEvent event) {
-        Entity entity = event.getEntity();
-        if (entity instanceof MonsterEntity || entity instanceof IAngerable) {
-            LivingEntity livingEntity = (LivingEntity) event.getEntity();
-            World world = event.getWorld();
-            boolean bloodmoon = WorldData.isBloodMoon(world);
-            MobSpawnManager.instance().processSpawn(livingEntity, world, bloodmoon, event);
         }
     }
 

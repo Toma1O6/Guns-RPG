@@ -13,12 +13,16 @@ import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.Pair;
+import dev.toma.gunsrpg.world.MobSpawnManager;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.IAngerable;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,6 +38,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -124,5 +129,16 @@ public class Hooks {
             drops.addAll(pendingDrops);
         }
         return drops;
+    }
+
+    public static boolean spawnEntity(ServerWorld world, Entity entity) {
+        if (entity instanceof MonsterEntity || entity instanceof IAngerable) {
+            LivingEntity livingEntity = (LivingEntity) entity;
+            boolean bloodmoon = WorldData.isBloodMoon(world);
+            if (!MobSpawnManager.instance().processSpawn(livingEntity, world, bloodmoon)) {
+                return false;
+            }
+        }
+        return world.addEntity(entity);
     }
 }
