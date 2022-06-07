@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModDamageSources;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.util.properties.PropertyContext;
 import dev.toma.gunsrpg.util.properties.PropertyKey;
@@ -314,7 +315,7 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
         if (player.isCreative() || player.isSpectator())
             return;
         PlayerData.get(player).ifPresent(data -> {
-            double mobScareRange = 28.0;
+            double mobScareRange = ModConfig.worldConfig.shootingMobAggroRange.get();
             GunItem gun = (GunItem) weapon.getItem();
             double noiseMultiplier = gun.getNoiseMultiplier(data.getAttributes());
             double actualScareRange = mobScareRange * noiseMultiplier;
