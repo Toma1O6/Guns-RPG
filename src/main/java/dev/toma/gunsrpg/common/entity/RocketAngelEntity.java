@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.common.entity.projectile.*;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.util.math.WeightedRandom;
 import dev.toma.gunsrpg.util.properties.Properties;
+import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -57,10 +58,13 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
 
     @Override
     public void tick() {
-        noPhysics = true;
         super.tick();
-        noPhysics = false;
         setNoGravity(true);
+    }
+
+    @Override
+    public boolean causeFallDamage(float p_225503_1_, float p_225503_2_) {
+        return false;
     }
 
     @Override
@@ -160,6 +164,7 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
 
         public RocketAttack(RocketAngelEntity entity) {
             this.entity = entity;
+            setFlags(EnumSet.of(Flag.TARGET, Flag.LOOK));
         }
 
         @Override
@@ -183,34 +188,44 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
         public void tick() {
             --cooldown;
             LivingEntity target = entity.getTarget();
+            if (target == null) {
+                return;
+            }
             double distance = entity.distanceToSqr(target);
-            if (distance < 4.0D) {
-                if (cooldown <= 0) {
-                    cooldown = 10;
-                    entity.doHurtTarget(target);
-                }
-            } else if (distance < (getFollowDistance() * getFollowDistance()) / 1.1F) {
-                this.entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
-                int heightDiff = (int) (entity.getY() - target.getY());
-                if (heightDiff < 10) {
-                    Vector3d currentMovement = entity.getDeltaMovement();
-                    entity.setDeltaMovement(currentMovement.x, 0.2, currentMovement.z);
-                }
-                if (cooldown <= 0) {
-                    cooldown = 6;
-                    Difficulty difficulty = entity.level.getDifficulty();
-                    Rocket rocket = new Rocket(ModEntities.ROCKET.get(), entity.level, entity);
-                    rocket.setup(0.0F, 2.0F, 0);
-                    rocket.fire(entity.xRot, entity.yRot, 4.4F - difficulty.getId() * 0.6F);
-                    rocket.setProperty(Properties.FUELED, true);
-                    rocket.setProperty(Properties.REACTION, entity.type.getReaction());
-                    entity.level.addFreshEntity(rocket);
-                    entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FIREWORK_ROCKET_LAUNCH, SoundCategory.MASTER, 10.0F, 1.0F);
-                    --toFire;
-                    if (toFire < 0) {
-                        toFire = 3;
-                        cooldown = 100;
+            boolean canSee = entity.getSensing().canSee(target) || WorldData.isBloodMoon(entity.level);
+            if (canSee) {
+                if (distance < 4.0D) {
+                    if (cooldown <= 0) {
+                        cooldown = 10;
+                        entity.doHurtTarget(target);
                     }
+                } else if (distance < (getFollowDistance() * getFollowDistance()) / 1.1F) {
+                    this.entity.lookAt(target, 30.0F, 30.0F);
+                    this.entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
+                    int heightDiff = (int) (entity.getY() - target.getY());
+                    if (heightDiff < 10) {
+                        Vector3d currentMovement = entity.getDeltaMovement();
+                        entity.setDeltaMovement(currentMovement.x, 0.2, currentMovement.z);
+                    }
+                    if (cooldown <= 0) {
+                        cooldown = 6;
+                        Difficulty difficulty = entity.level.getDifficulty();
+                        Rocket rocket = new Rocket(ModEntities.ROCKET.get(), entity.level, entity);
+                        rocket.setup(0.0F, 2.0F, 0);
+                        rocket.fire(entity.xRot, entity.yRot, 6.4F - difficulty.getId() * 0.3F);
+                        rocket.setProperty(Properties.FUELED, true);
+                        rocket.setProperty(Properties.REACTION, entity.type.getReaction());
+                        entity.level.addFreshEntity(rocket);
+                        entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FIREWORK_ROCKET_LAUNCH, SoundCategory.MASTER, 10.0F, 1.0F);
+                        --toFire;
+                        if (toFire < 0) {
+                            toFire = 3;
+                            cooldown = 100;
+                        }
+                    }
+                } else {
+                    entity.getNavigation().stop();
+                    this.entity.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 0.4D);
                 }
             } else {
                 entity.getNavigation().stop();
