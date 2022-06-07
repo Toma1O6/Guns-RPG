@@ -1,37 +1,37 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 5,
-    "display": {
-        "name": "Brutes III",
-        "info": "Kill 20 piglin brutes"
-    },
-    "data": {
-        "entities": [
-            "minecraft:piglin_brute"
-        ],
-        "count": 20,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 9,
-            "spawners": [
-                {
-                    "entity": "minecraft:piglin_brute",
-                    "propability": 0.05,
-                    "limit": 3
-                }
-            ]
+  "type": "gunsrpg:kill_in_area",
+  "tier": 5,
+  "display": {
+    "name": "Brutes III",
+    "info": "Kill 20 piglin brutes"
+  },
+  "data": {
+    "entities": [
+      "minecraft:piglin_brute"
+    ],
+    "count": 20,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 9,
+      "spawners": [
+        {
+          "entity": "minecraft:piglin_brute",
+          "propability": 0.05,
+          "limit": 3
         }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

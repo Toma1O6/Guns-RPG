@@ -1,9 +1,9 @@
 {
-    "attribute": "gunsrpg:recoil_control",
-    "invertCalculation": true,
-    "scaling": 0.005,
-    "bounds": {
-        "buff": 0.2,
-        "debuff": 0.4
-    }
+  "attribute": "gunsrpg:recoil_control",
+  "invertCalculation": true,
+  "scaling": 0.005,
+  "bounds": {
+    "buff": 0.2,
+    "debuff": 0.4
+  }
 }

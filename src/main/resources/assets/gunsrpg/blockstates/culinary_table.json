@@ -1,8 +1,19 @@
 {
-    "variants": {
-        "facing=north": { "model": "gunsrpg:block/culinary_table" },
-        "facing=east": { "model": "gunsrpg:block/culinary_table", "y": 90 },
-        "facing=south": { "model": "gunsrpg:block/culinary_table", "y": 180 },
-        "facing=west": { "model": "gunsrpg:block/culinary_table", "y": 270 }
+  "variants": {
+    "facing=north": {
+      "model": "gunsrpg:block/culinary_table"
+    },
+    "facing=east": {
+      "model": "gunsrpg:block/culinary_table",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "gunsrpg:block/culinary_table",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "gunsrpg:block/culinary_table",
+      "y": 270
     }
+  }
 }

@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:item/cooking_oil"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/cooking_oil"
+  }
 }

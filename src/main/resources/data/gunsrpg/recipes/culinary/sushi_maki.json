@@ -1,28 +1,28 @@
 {
-    "type": "gunsrpg:culinary",
-    "pattern": [
-      " k ",
-      "ksk",
-      " k "
-    ],
-    "key": {
-      "k": {
-        "item": "minecraft:dried_kelp"
-      },
-      "s": {
-          "item": "minecraft:salmon"
-      }
+  "type": "gunsrpg:culinary",
+  "pattern": [
+    " k ",
+    "ksk",
+    " k "
+  ],
+  "key": {
+    "k": {
+      "item": "minecraft:dried_kelp"
     },
-    "result": {
-      "item": "gunsrpg:sushi_maki",
-      "count": 3
-    },
-    "requirements": [
-      {
-        "type": "gunsrpg:skill",
-        "predicate": {
-          "skill": "gunsrpg:master_chef"
-        }
+    "s": {
+      "item": "minecraft:salmon"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:sushi_maki",
+    "count": 3
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:master_chef"
       }
-    ]
-  }
+    }
+  ]
+}

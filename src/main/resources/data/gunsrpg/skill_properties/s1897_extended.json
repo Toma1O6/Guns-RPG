@@ -1,14 +1,14 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:s1897_assembly"
-    },
-    "properties": {
-        "level": 0,
-        "price": 1,
-        "transactionValidator": {
-            "type": "gunsrpg:weapon",
-            "data": "gunsrpg:s1897"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:s1897_assembly"
+  },
+  "properties": {
+    "level": 0,
+    "price": 1,
+    "transactionValidator": {
+      "type": "gunsrpg:weapon",
+      "data": "gunsrpg:s1897"
     }
+  }
 }

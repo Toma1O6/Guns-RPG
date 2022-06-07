@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:gold_ammo_smith",
-        "children": [
-            "gunsrpg:diamond_ammo_smith",
-            "gunsrpg:quartz_ammo_smith"
-        ]
-    },
-    "properties": {
-        "level": 20,
-        "price": 3,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:gold_ammo_smith",
+    "children": [
+      "gunsrpg:diamond_ammo_smith",
+      "gunsrpg:quartz_ammo_smith"
+    ]
+  },
+  "properties": {
+    "level": 20,
+    "price": 3,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

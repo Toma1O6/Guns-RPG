@@ -1,7 +1,7 @@
 {
-    "variants": {
-        "": {
-            "model": "gunsrpg:block/crystal_fuse"
-        }
+  "variants": {
+    "": {
+      "model": "gunsrpg:block/crystal_fuse"
     }
+  }
 }

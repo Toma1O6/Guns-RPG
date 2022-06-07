@@ -1,97 +1,97 @@
 {
-    "type": "minecraft:block",
-    "pools": [
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
         {
-            "rolls": 1,
-            "entries": [
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
                 {
-                    "type": "minecraft:alternatives",
-                    "children": [
-                        {
-                            "type": "minecraft:item",
-                            "conditions": [
-                                {
-                                    "condition": "minecraft:match_tool",
-                                    "predicate": {
-                                        "enchantments": [
-                                            {
-                                                "enchantment": "minecraft:silk_touch",
-                                                "levels": {
-                                                    "min": 1
-                                                }
-                                            }
-                                        ]
-                                    }
-                                }
-                            ],
-                            "name": "gunsrpg:blue_orb_ore"
-                        },
-                        {
-                            "type": "minecraft:item",
-                            "functions": [
-                                {
-                                    "function": "minecraft:explosion_decay"
-                                },
-                                {
-                                    "function": "minecraft:set_count",
-                                    "count": {
-                                        "min": 1,
-                                        "max": 2,
-                                        "type": "minecraft:uniform"
-                                    }
-                                }
-                            ],
-                            "name": "gunsrpg:blue_orb_of_purity"
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "enchantments": [
+                      {
+                        "enchantment": "minecraft:silk_touch",
+                        "levels": {
+                          "min": 1
                         }
+                      }
                     ]
+                  }
                 }
-            ]
-        },
-        {
-            "rolls": 1,
-            "entries": [
+              ],
+              "name": "gunsrpg:blue_orb_ore"
+            },
+            {
+              "type": "minecraft:item",
+              "functions": [
                 {
-                    "type": "minecraft:alternatives",
-                    "children": [
-                        {
-                            "type": "minecraft:item",
-                            "conditions": [
-                                {
-                                    "condition": "minecraft:match_tool",
-                                    "predicate": {
-                                        "enchantments": [
-                                            {
-                                                "enchantment": "minecraft:silk_touch",
-                                                "levels": {
-                                                    "min": 1
-                                                }
-                                            }
-                                        ]
-                                    }
-                                }
-                            ],
-                            "name": "minecraft:air"
-                        },
-                        {
-                            "type": "minecraft:item",
-                            "functions": [
-                                {
-                                    "function": "minecraft:explosion_decay"
-                                },
-                                {
-                                    "function": "minecraft:set_count",
-                                    "count": {
-                                        "min": 1,
-                                        "max": 2,
-                                        "type": "minecraft:uniform"
-                                    }
-                                }
-                            ],
-                            "name": "gunsrpg:blue_orb_of_transmutation"
-                        }
-                    ]
+                  "function": "minecraft:explosion_decay"
+                },
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "min": 1,
+                    "max": 2,
+                    "type": "minecraft:uniform"
+                  }
                 }
-            ]
+              ],
+              "name": "gunsrpg:blue_orb_of_purity"
+            }
+          ]
         }
-    ]
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "enchantments": [
+                      {
+                        "enchantment": "minecraft:silk_touch",
+                        "levels": {
+                          "min": 1
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "name": "minecraft:air"
+            },
+            {
+              "type": "minecraft:item",
+              "functions": [
+                {
+                  "function": "minecraft:explosion_decay"
+                },
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "min": 1,
+                    "max": 2,
+                    "type": "minecraft:uniform"
+                  }
+                }
+              ],
+              "name": "gunsrpg:blue_orb_of_transmutation"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

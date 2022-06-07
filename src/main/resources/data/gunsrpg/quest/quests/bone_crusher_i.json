@@ -1,45 +1,45 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 1,
-    "display": {
-        "name": "Bone Crusher I",
-        "info": "Kill 7 skeletons"
-    },
-    "data": {
-        "entities": [
-            "minecraft:skeleton"
-        ],
-        "count": 7,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 13,
-            "spawners": [
-                {
-                    "entity": "minecraft:skeleton",
-                    "propability": 0.05,
-                    "limit": 3,
-                    "processors": [
-                        {
-                            "type": "gunsrpg:set_equipment",
-                            "equipment": {
-                                "head": "minecraft:leather_helmet"
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    },
-    "tieredConditions": {
-        "conditions": [
+  "type": "gunsrpg:kill_in_area",
+  "tier": 1,
+  "display": {
+    "name": "Bone Crusher I",
+    "info": "Kill 7 skeletons"
+  },
+  "data": {
+    "entities": [
+      "minecraft:skeleton"
+    ],
+    "count": 7,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 13,
+      "spawners": [
+        {
+          "entity": "minecraft:skeleton",
+          "propability": 0.05,
+          "limit": 3,
+          "processors": [
             {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
+              "type": "gunsrpg:set_equipment",
+              "equipment": {
+                "head": "minecraft:leather_helmet"
+              }
             }
-        ]
+          ]
+        }
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

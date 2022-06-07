@@ -10,10 +10,10 @@
       "item": "minecraft:diamond"
     },
     "b": {
-        "item": "minecraft:iron_bars"
+      "item": "minecraft:iron_bars"
     },
     "h": {
-        "item": "minecraft:heavy_weighted_pressure_plate"
+      "item": "minecraft:heavy_weighted_pressure_plate"
     }
   },
   "result": {

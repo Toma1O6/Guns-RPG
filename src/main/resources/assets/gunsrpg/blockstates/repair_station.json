@@ -1,8 +1,20 @@
 {
-    "variants": {
-        "facing=north": { "model": "gunsrpg:block/repair_station", "y": 180 },
-        "facing=east": { "model": "gunsrpg:block/repair_station", "y": 270 },
-        "facing=south": { "model": "gunsrpg:block/repair_station", "y": 0 },
-        "facing=west": { "model": "gunsrpg:block/repair_station", "y": 90 }
+  "variants": {
+    "facing=north": {
+      "model": "gunsrpg:block/repair_station",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "gunsrpg:block/repair_station",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "gunsrpg:block/repair_station",
+      "y": 0
+    },
+    "facing=west": {
+      "model": "gunsrpg:block/repair_station",
+      "y": 90
     }
+  }
 }

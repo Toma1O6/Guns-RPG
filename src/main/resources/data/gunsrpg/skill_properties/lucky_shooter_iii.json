@@ -1,13 +1,13 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:lucky_shooter_ii"
-    },
-    "properties": {
-        "level": 60,
-        "price": 5,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:lucky_shooter_ii"
+  },
+  "properties": {
+    "level": 60,
+    "price": 5,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

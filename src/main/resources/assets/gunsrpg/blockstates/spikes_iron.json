@@ -1,16 +1,16 @@
 {
-    "variants": {
-        "damage=0": {
-            "model": "gunsrpg:block/spikes_iron0"
-        },
-        "damage=1": {
-            "model": "gunsrpg:block/spikes_iron1"
-        },
-        "damage=2": {
-            "model": "gunsrpg:block/spikes_iron2"
-        },
-        "damage=3": {
-            "model": "gunsrpg:block/spikes_iron3"
-        }
+  "variants": {
+    "damage=0": {
+      "model": "gunsrpg:block/spikes_iron0"
+    },
+    "damage=1": {
+      "model": "gunsrpg:block/spikes_iron1"
+    },
+    "damage=2": {
+      "model": "gunsrpg:block/spikes_iron2"
+    },
+    "damage=3": {
+      "model": "gunsrpg:block/spikes_iron3"
     }
+  }
 }

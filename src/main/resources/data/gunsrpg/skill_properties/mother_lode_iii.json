@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "mining",
-        "parent": "gunsrpg:mother_lode_ii",
-        "children": [
-            "gunsrpg:mother_lode_iv"
-        ],
-        "override": "gunsrpg:mother_lode_iv"
-    },
-    "properties": {
-        "level": 30,
-        "price": 4,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "mining",
+    "parent": "gunsrpg:mother_lode_ii",
+    "children": [
+      "gunsrpg:mother_lode_iv"
+    ],
+    "override": "gunsrpg:mother_lode_iv"
+  },
+  "properties": {
+    "level": 30,
+    "price": 4,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

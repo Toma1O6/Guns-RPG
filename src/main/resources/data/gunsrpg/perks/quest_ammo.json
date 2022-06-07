@@ -1,8 +1,8 @@
 {
-    "attribute": "gunsrpg:quests_ammo",
-    "scaling": 0.01,
-    "bounds": {
-        "buff": 0.25,
-        "debuff": 0.5
-    }
+  "attribute": "gunsrpg:quests_ammo",
+  "scaling": 0.01,
+  "bounds": {
+    "buff": 0.25,
+    "debuff": 0.5
+  }
 }

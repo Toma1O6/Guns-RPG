@@ -1,8 +1,8 @@
 {
-    "attribute": "gunsrpg:infection_delay",
-    "scaling": 0.01,
-    "bounds": {
-        "buff": 0.5,
-        "debuff": 0.5
-    }
+  "attribute": "gunsrpg:infection_delay",
+  "scaling": 0.01,
+  "bounds": {
+    "buff": 0.5,
+    "debuff": 0.5
+  }
 }

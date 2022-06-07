@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "mining",
-        "parent": "gunsrpg:grave_digger_iii",
-        "children": [
-            "gunsrpg:grave_digger_v"
-        ],
-        "override": "gunsrpg:grave_digger_v"
-    },
-    "properties": {
-        "level": 25,
-        "price": 3,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "mining",
+    "parent": "gunsrpg:grave_digger_iii",
+    "children": [
+      "gunsrpg:grave_digger_v"
+    ],
+    "override": "gunsrpg:grave_digger_v"
+  },
+  "properties": {
+    "level": 25,
+    "price": 3,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

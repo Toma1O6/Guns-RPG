@@ -1,12 +1,12 @@
 {
-    "hierarchy": {
-        "category": "mining"
-    },
-    "properties": {
-        "level": 50,
-        "price": 6,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "mining"
+  },
+  "properties": {
+    "level": 50,
+    "price": 6,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

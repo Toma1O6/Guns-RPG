@@ -1,36 +1,36 @@
 {
-    "variants": {
-        "lit=false,facing=north": {
-            "model": "gunsrpg:block/blast_furnace",
-            "y": 0
-        },
-        "lit=false,facing=east": {
-            "model": "gunsrpg:block/blast_furnace",
-            "y": 90
-        },
-        "lit=false,facing=south": {
-            "model": "gunsrpg:block/blast_furnace",
-            "y": 180
-        },
-        "lit=false,facing=west": {
-            "model": "gunsrpg:block/blast_furnace",
-            "y": 270
-        },
-        "lit=true,facing=north": {
-            "model": "gunsrpg:block/blast_furnace_lit",
-            "y": 0
-        },
-        "lit=true,facing=east": {
-            "model": "gunsrpg:block/blast_furnace_lit",
-            "y": 90
-        },
-        "lit=true,facing=south": {
-            "model": "gunsrpg:block/blast_furnace_lit",
-            "y": 180
-        },
-        "lit=true,facing=west": {
-            "model": "gunsrpg:block/blast_furnace_lit",
-            "y": 270
-        }
+  "variants": {
+    "lit=false,facing=north": {
+      "model": "gunsrpg:block/blast_furnace",
+      "y": 0
+    },
+    "lit=false,facing=east": {
+      "model": "gunsrpg:block/blast_furnace",
+      "y": 90
+    },
+    "lit=false,facing=south": {
+      "model": "gunsrpg:block/blast_furnace",
+      "y": 180
+    },
+    "lit=false,facing=west": {
+      "model": "gunsrpg:block/blast_furnace",
+      "y": 270
+    },
+    "lit=true,facing=north": {
+      "model": "gunsrpg:block/blast_furnace_lit",
+      "y": 0
+    },
+    "lit=true,facing=east": {
+      "model": "gunsrpg:block/blast_furnace_lit",
+      "y": 90
+    },
+    "lit=true,facing=south": {
+      "model": "gunsrpg:block/blast_furnace_lit",
+      "y": 180
+    },
+    "lit=true,facing=west": {
+      "model": "gunsrpg:block/blast_furnace_lit",
+      "y": 270
     }
+  }
 }

@@ -10,13 +10,13 @@
       "item": "minecraft:obsidian"
     },
     "g": {
-        "item": "gunsrpg:grenade"
+      "item": "gunsrpg:grenade"
     },
     "r": {
-        "item": "gunsrpg:rocket_shell"
+      "item": "gunsrpg:rocket_shell"
     },
     "u": {
-        "item": "minecraft:gunpowder"
+      "item": "minecraft:gunpowder"
     }
   },
   "result": {

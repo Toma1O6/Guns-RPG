@@ -1,37 +1,37 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 1,
-    "display": {
-        "name": "Sand Eaters I",
-        "info": "Kill 7 husks"
-    },
-    "data": {
-        "entities": [
-            "minecraft:husk"
-        ],
-        "count": 7,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 11,
-            "spawners": [
-                {
-                    "entity": "minecraft:husk",
-                    "propability": 0.05,
-                    "limit": 3
-                }
-            ]
+  "type": "gunsrpg:kill_in_area",
+  "tier": 1,
+  "display": {
+    "name": "Sand Eaters I",
+    "info": "Kill 7 husks"
+  },
+  "data": {
+    "entities": [
+      "minecraft:husk"
+    ],
+    "count": 7,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 11,
+      "spawners": [
+        {
+          "entity": "minecraft:husk",
+          "propability": 0.05,
+          "limit": 3
         }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

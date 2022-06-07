@@ -1,24 +1,88 @@
 {
-	"credit": "Made with Blockbench",
-	"parent": "block/block",
-	"ambientocclusion": true,
-	"textures": {
-		"0": "gunsrpg:block/large_landmine",
-		"particle": "gunsrpg:block/large_landmine"
-	},
-	"elements": [
-		{
-			"from": [7.5, 0, 7.5],
-			"to": [8.5, 1, 8.5],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8.1, 8]},
-			"faces": {
-				"north": {"uv": [10, 13, 12, 15], "texture": "#0"},
-				"east": {"uv": [10, 12, 12, 14], "texture": "#0"},
-				"south": {"uv": [10, 13, 12, 15], "texture": "#0"},
-				"west": {"uv": [11, 13, 13, 15], "texture": "#0"},
-				"up": {"uv": [10, 12, 12, 14], "texture": "#0"},
-				"down": {"uv": [11, 13, 13, 15], "texture": "#0"}
-			}
-		}
-	]
+  "credit": "Made with Blockbench",
+  "parent": "block/block",
+  "ambientocclusion": true,
+  "textures": {
+    "0": "gunsrpg:block/large_landmine",
+    "particle": "gunsrpg:block/large_landmine"
+  },
+  "elements": [
+    {
+      "from": [
+        7.5,
+        0,
+        7.5
+      ],
+      "to": [
+        8.5,
+        1,
+        8.5
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          8.1,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            10,
+            13,
+            12,
+            15
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            10,
+            12,
+            12,
+            14
+          ],
+          "texture": "#0"
+        },
+        "south": {
+          "uv": [
+            10,
+            13,
+            12,
+            15
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            11,
+            13,
+            13,
+            15
+          ],
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            10,
+            12,
+            12,
+            14
+          ],
+          "texture": "#0"
+        },
+        "down": {
+          "uv": [
+            11,
+            13,
+            13,
+            15
+          ],
+          "texture": "#0"
+        }
+      }
+    }
+  ]
 }

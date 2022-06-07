@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:item/napalm_rocket"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/napalm_rocket"
+  }
 }

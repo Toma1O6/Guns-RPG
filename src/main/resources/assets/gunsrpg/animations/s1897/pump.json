@@ -1,1 +1,141 @@
-{"type":"default","events":[{"type":"minecraft:sound","target":0.2028,"data":{"sound":"gunsrpg:s1897_pump1","volume":1.0,"pitch":1.0,"direction":0}},{"type":"minecraft:sound","target":0.7,"data":{"sound":"gunsrpg:s1897_pump2","volume":1.0,"pitch":1.0,"direction":0}}],"data":{"minecraft:hands.right":[{"e":0.0,"ease":13},{"e":0.5,"ease":15,"pos":{"x":0.0,"y":0.0,"z":0.06},"rot":{"x":5.0,"y":0.0,"z":0.0}},{"e":1.0,"ease":14}],"minecraft:hands.left":[{"e":0.0,"ease":13},{"e":0.5,"ease":15,"pos":{"x":0.0,"y":-0.03,"z":0.2},"rot":{"x":5.0,"y":0.0,"z":0.0}},{"e":1.0,"ease":14}],"minecraft:item.heldfp":[{"e":0.0,"ease":13},{"e":0.5,"ease":15,"pos":{"x":0.0,"y":0.0,"z":0.06},"rot":{"x":5.0,"y":0.0,"z":0.0}},{"e":1.0,"ease":14}],"gunsrpg:weapon.charging_handle":[{"e":0.0,"ease":13},{"e":0.5,"ease":15,"pos":{"x":0.0,"y":0.0,"z":0.5}},{"e":1.0,"ease":14}],"gunsrpg:weapon.bullet":[{"e":0.0,"ease":13},{"e":0.25,"ease":13},{"e":0.6,"ease":13,"pos":{"x":-3.0,"y":-0.5,"z":0.0}},{"e":1.0,"ease":19}]}}
+{
+  "type": "default",
+  "events": [
+    {
+      "type": "minecraft:sound",
+      "target": 0.2028,
+      "data": {
+        "sound": "gunsrpg:s1897_pump1",
+        "volume": 1.0,
+        "pitch": 1.0,
+        "direction": 0
+      }
+    },
+    {
+      "type": "minecraft:sound",
+      "target": 0.7,
+      "data": {
+        "sound": "gunsrpg:s1897_pump2",
+        "volume": 1.0,
+        "pitch": 1.0,
+        "direction": 0
+      }
+    }
+  ],
+  "data": {
+    "minecraft:hands.right": [
+      {
+        "e": 0.0,
+        "ease": 13
+      },
+      {
+        "e": 0.5,
+        "ease": 15,
+        "pos": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.06
+        },
+        "rot": {
+          "x": 5.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "e": 1.0,
+        "ease": 14
+      }
+    ],
+    "minecraft:hands.left": [
+      {
+        "e": 0.0,
+        "ease": 13
+      },
+      {
+        "e": 0.5,
+        "ease": 15,
+        "pos": {
+          "x": 0.0,
+          "y": -0.03,
+          "z": 0.2
+        },
+        "rot": {
+          "x": 5.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "e": 1.0,
+        "ease": 14
+      }
+    ],
+    "minecraft:item.heldfp": [
+      {
+        "e": 0.0,
+        "ease": 13
+      },
+      {
+        "e": 0.5,
+        "ease": 15,
+        "pos": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.06
+        },
+        "rot": {
+          "x": 5.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "e": 1.0,
+        "ease": 14
+      }
+    ],
+    "gunsrpg:weapon.charging_handle": [
+      {
+        "e": 0.0,
+        "ease": 13
+      },
+      {
+        "e": 0.5,
+        "ease": 15,
+        "pos": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.5
+        }
+      },
+      {
+        "e": 1.0,
+        "ease": 14
+      }
+    ],
+    "gunsrpg:weapon.bullet": [
+      {
+        "e": 0.0,
+        "ease": 13
+      },
+      {
+        "e": 0.25,
+        "ease": 13
+      },
+      {
+        "e": 0.6,
+        "ease": 13,
+        "pos": {
+          "x": -3.0,
+          "y": -0.5,
+          "z": 0.0
+        }
+      },
+      {
+        "e": 1.0,
+        "ease": 19
+      }
+    ]
+  }
+}

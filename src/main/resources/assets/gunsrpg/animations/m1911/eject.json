@@ -1,1 +1,35 @@
-{"type":"default","data":{"gunsrpg:weapon.slide":[{"e":0.5,"ease":13,"pos":{"x":0.0,"y":0.0,"z":0.3}},{"e":1.0,"ease":13}],"gunsrpg:weapon.bullet":[{"e":0.4339,"ease":13},{"e":1.0,"ease":0,"pos":{"x":-1.4,"y":-1.0,"z":0.8}}]}}
+{
+  "type": "default",
+  "data": {
+    "gunsrpg:weapon.slide": [
+      {
+        "e": 0.5,
+        "ease": 13,
+        "pos": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.3
+        }
+      },
+      {
+        "e": 1.0,
+        "ease": 13
+      }
+    ],
+    "gunsrpg:weapon.bullet": [
+      {
+        "e": 0.4339,
+        "ease": 13
+      },
+      {
+        "e": 1.0,
+        "ease": 0,
+        "pos": {
+          "x": -1.4,
+          "y": -1.0,
+          "z": 0.8
+        }
+      }
+    ]
+  }
+}

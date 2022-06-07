@@ -1,29 +1,29 @@
 {
-    "type": "gunsrpg:kill_entities",
-    "tier": 2,
-    "display": {
-        "name": "Head Hunter II",
-        "info": "Kill 20 mobs with headshot"
-    },
-    "data": {
-        "entities": null,
-        "count": 20
-    },
-    "conditions": [
-        {
-            "type": "gunsrpg:is_headshot"
-        }
-    ],
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            }
-        ],
-        "exclusions": [
-            "gunsrpg:use_melee",
-            "gunsrpg:explode",
-            "gunsrpg:use_specific_weapon"
-        ]
+  "type": "gunsrpg:kill_entities",
+  "tier": 2,
+  "display": {
+    "name": "Head Hunter II",
+    "info": "Kill 20 mobs with headshot"
+  },
+  "data": {
+    "entities": null,
+    "count": 20
+  },
+  "conditions": [
+    {
+      "type": "gunsrpg:is_headshot"
     }
+  ],
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      }
+    ],
+    "exclusions": [
+      "gunsrpg:use_melee",
+      "gunsrpg:explode",
+      "gunsrpg:use_specific_weapon"
+    ]
+  }
 }

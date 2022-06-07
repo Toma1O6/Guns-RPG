@@ -1,16 +1,16 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:wooden_ammo_smith",
-        "children": [
-            "gunsrpg:iron_ammo_smith"
-        ]
-    },
-    "properties": {
-        "level": 5,
-        "price": 1,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:wooden_ammo_smith",
+    "children": [
+      "gunsrpg:iron_ammo_smith"
+    ]
+  },
+  "properties": {
+    "level": 5,
+    "price": 1,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

@@ -1,26 +1,26 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:gun_parts_smith",
-        "extensions": [
-            "gunsrpg:m1911_quickdraw",
-            "gunsrpg:m1911_extended",
-            "gunsrpg:m1911_tough_spring",
-            "gunsrpg:m1911_carbon_barrel",
-            "gunsrpg:m1911_suppressor",
-            "gunsrpg:m1911_heavy_bullets",
-            "gunsrpg:m1911_every_bullet_counts",
-            "gunsrpg:m1911_killing_spree"
-        ],
-        "children": [
-            "gunsrpg:r45_assembly"
-        ]
-    },
-    "properties": {
-        "level": 5,
-        "price": 2,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:gun_parts_smith",
+    "extensions": [
+      "gunsrpg:m1911_quickdraw",
+      "gunsrpg:m1911_extended",
+      "gunsrpg:m1911_tough_spring",
+      "gunsrpg:m1911_carbon_barrel",
+      "gunsrpg:m1911_suppressor",
+      "gunsrpg:m1911_heavy_bullets",
+      "gunsrpg:m1911_every_bullet_counts",
+      "gunsrpg:m1911_killing_spree"
+    ],
+    "children": [
+      "gunsrpg:r45_assembly"
+    ]
+  },
+  "properties": {
+    "level": 5,
+    "price": 2,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

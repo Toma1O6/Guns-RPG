@@ -1,8 +1,8 @@
 {
-    "attribute": "gunsrpg:vaccine_effect",
-    "scaling": 0.02,
-    "bounds": {
-        "buff": 0.3,
-        "debuff": 0.5
-    }
+  "attribute": "gunsrpg:vaccine_effect",
+  "scaling": 0.02,
+  "bounds": {
+    "buff": 0.3,
+    "debuff": 0.5
+  }
 }

@@ -10,10 +10,10 @@
       "item": "minecraft:netherite_scrap"
     },
     "s": {
-        "item": "minecraft:stick"
+      "item": "minecraft:stick"
     },
     "f": {
-        "item": "gunsrpg:bolt_fletching"
+      "item": "gunsrpg:bolt_fletching"
     }
   },
   "result": {

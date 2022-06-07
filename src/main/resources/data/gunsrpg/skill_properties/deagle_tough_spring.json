@@ -1,14 +1,14 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:desert_eagle_assembly"
-    },
-    "properties": {
-        "level": 0,
-        "price": 1,
-        "transactionValidator": {
-            "type": "gunsrpg:weapon",
-            "data": "gunsrpg:desert_eagle"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:desert_eagle_assembly"
+  },
+  "properties": {
+    "level": 0,
+    "price": 1,
+    "transactionValidator": {
+      "type": "gunsrpg:weapon",
+      "data": "gunsrpg:desert_eagle"
     }
+  }
 }

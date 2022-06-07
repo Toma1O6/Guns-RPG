@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "survival",
-        "parent": "gunsrpg:well_fed_i",
-        "children": [
-            "gunsrpg:well_fed_iii"
-        ],
-        "override": "gunsrpg:well_fed_iii"
-    },
-    "properties": {
-        "level": 35,
-        "price": 3,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "survival",
+    "parent": "gunsrpg:well_fed_i",
+    "children": [
+      "gunsrpg:well_fed_iii"
+    ],
+    "override": "gunsrpg:well_fed_iii"
+  },
+  "properties": {
+    "level": 35,
+    "price": 3,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

@@ -1,30 +1,30 @@
 {
-    "type": "gunsrpg:survival",
-    "tier": 1,
-    "display": {
-        "name": "Pacifist I",
-        "info": "Do not deal damage for 10 minutes"
-    },
-    "data": {
-        "duration": "10m"
-    },
-    "conditions": [
-        {
-            "type": "gunsrpg:no_damage_given"
-        }
-    ],
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ],
-        "exclusions": [
-            "gunsrpg:have_bleed",
-            "gunsrpg:have_poison",
-            "gunsrpg:have_fracture",
-            "gunsrpg:have_infection"
-        ]
+  "type": "gunsrpg:survival",
+  "tier": 1,
+  "display": {
+    "name": "Pacifist I",
+    "info": "Do not deal damage for 10 minutes"
+  },
+  "data": {
+    "duration": "10m"
+  },
+  "conditions": [
+    {
+      "type": "gunsrpg:no_damage_given"
     }
+  ],
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ],
+    "exclusions": [
+      "gunsrpg:have_bleed",
+      "gunsrpg:have_poison",
+      "gunsrpg:have_fracture",
+      "gunsrpg:have_infection"
+    ]
+  }
 }

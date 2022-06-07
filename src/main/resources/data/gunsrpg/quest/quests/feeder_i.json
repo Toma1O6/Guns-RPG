@@ -1,24 +1,24 @@
 {
-    "type": "gunsrpg:handover",
-    "tier": 2,
-    "display": {
-        "name": "Feeder I",
-        "info": "Deliver food items"
-    },
-    "data": {
-        "items": [
-            {
-                "item": "gunsrpg:fruit_salad",
-                "count": 10
-            },
-            {
-                "item": "gunsrpg:fish_and_chips",
-                "count": 5
-            },
-            {
-                "item": "gunsrpg:bacon_burger",
-                "count": 5
-            }
-        ]
-    }
+  "type": "gunsrpg:handover",
+  "tier": 2,
+  "display": {
+    "name": "Feeder I",
+    "info": "Deliver food items"
+  },
+  "data": {
+    "items": [
+      {
+        "item": "gunsrpg:fruit_salad",
+        "count": 10
+      },
+      {
+        "item": "gunsrpg:fish_and_chips",
+        "count": 5
+      },
+      {
+        "item": "gunsrpg:bacon_burger",
+        "count": 5
+      }
+    ]
+  }
 }

@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:bone_grinder_i",
-        "children": [
-            "gunsrpg:bone_grinder_iii"
-        ],
-        "override": "gunsrpg:bone_grinder_iii"
-    },
-    "properties": {
-        "level": 15,
-        "price": 2,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:bone_grinder_i",
+    "children": [
+      "gunsrpg:bone_grinder_iii"
+    ],
+    "override": "gunsrpg:bone_grinder_iii"
+  },
+  "properties": {
+    "level": 15,
+    "price": 2,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

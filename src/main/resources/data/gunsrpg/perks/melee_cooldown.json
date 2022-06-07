@@ -1,8 +1,8 @@
 {
-    "attribute": "gunsrpg:melee_cooldown",
-    "scaling": 0.01,
-    "bounds": {
-        "buff": 0.3,
-        "debuff": 0.6
-    }
+  "attribute": "gunsrpg:melee_cooldown",
+  "scaling": 0.01,
+  "bounds": {
+    "buff": 0.3,
+    "debuff": 0.6
+  }
 }

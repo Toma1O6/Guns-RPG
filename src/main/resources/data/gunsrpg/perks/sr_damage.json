@@ -1,8 +1,8 @@
 {
-    "attribute": "gunsrpg:sr_damage",
-    "scaling": 0.005,
-    "bounds": {
-        "buff": 0.15,
-        "debuff": 0.3
-    }
+  "attribute": "gunsrpg:sr_damage",
+  "scaling": 0.005,
+  "bounds": {
+    "buff": 0.15,
+    "debuff": 0.3
+  }
 }

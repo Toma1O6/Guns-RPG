@@ -1,25 +1,25 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:gun_parts_smith",
-        "extensions": [
-            "gunsrpg:kar98k_scope",
-            "gunsrpg:kar98k_cheekpad",
-            "gunsrpg:kar98k_reliable",
-            "gunsrpg:kar98k_suppressor",
-            "gunsrpg:kar98k_fast_hands",
-            "gunsrpg:kar98k_penetrator",
-            "gunsrpg:kar98k_dead_eye"
-        ],
-        "children": [
-            "gunsrpg:winchester_assembly"
-        ]
-    },
-    "properties": {
-        "level": 35,
-        "price": 6,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:gun_parts_smith",
+    "extensions": [
+      "gunsrpg:kar98k_scope",
+      "gunsrpg:kar98k_cheekpad",
+      "gunsrpg:kar98k_reliable",
+      "gunsrpg:kar98k_suppressor",
+      "gunsrpg:kar98k_fast_hands",
+      "gunsrpg:kar98k_penetrator",
+      "gunsrpg:kar98k_dead_eye"
+    ],
+    "children": [
+      "gunsrpg:winchester_assembly"
+    ]
+  },
+  "properties": {
+    "level": 35,
+    "price": 6,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

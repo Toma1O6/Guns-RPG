@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "survival",
-        "parent": "gunsrpg:iron_buddy_i",
-        "children": [
-            "gunsrpg:iron_buddy_iii"
-        ],
-        "override": "gunsrpg:iron_buddy_iii"
-    },
-    "properties": {
-        "level": 50,
-        "price": 5,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "survival",
+    "parent": "gunsrpg:iron_buddy_i",
+    "children": [
+      "gunsrpg:iron_buddy_iii"
+    ],
+    "override": "gunsrpg:iron_buddy_iii"
+  },
+  "properties": {
+    "level": 50,
+    "price": 5,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

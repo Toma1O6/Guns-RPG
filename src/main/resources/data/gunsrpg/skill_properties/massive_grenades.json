@@ -1,13 +1,13 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:grenades"
-    },
-    "properties": {
-        "level": 30,
-        "price": 5,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:grenades"
+  },
+  "properties": {
+    "level": 30,
+    "price": 5,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

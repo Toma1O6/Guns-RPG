@@ -1,28 +1,28 @@
 {
-    "type": "gunsrpg:handover",
-    "tier": 4,
-    "display": {
-        "name": "Supplier III",
-        "info": "Deliver 30 Diamonds, 25 Leather, 10 Emeralds and 5 Blaze rods"
-    },
-    "data": {
-        "items": [
-            {
-                "item": "minecraft:diamond",
-                "count": 30
-            },
-            {
-                "item": "minecraft:leather",
-                "count": 25
-            },
-            {
-                "item": "minecraft:emerald",
-                "count": 10
-            },
-            {
-                "item": "minecraft:blaze_rod",
-                "count": 5
-            }
-        ]
-    }
+  "type": "gunsrpg:handover",
+  "tier": 4,
+  "display": {
+    "name": "Supplier III",
+    "info": "Deliver 30 Diamonds, 25 Leather, 10 Emeralds and 5 Blaze rods"
+  },
+  "data": {
+    "items": [
+      {
+        "item": "minecraft:diamond",
+        "count": 30
+      },
+      {
+        "item": "minecraft:leather",
+        "count": 25
+      },
+      {
+        "item": "minecraft:emerald",
+        "count": 10
+      },
+      {
+        "item": "minecraft:blaze_rod",
+        "count": 5
+      }
+    ]
+  }
 }

@@ -1,36 +1,36 @@
 {
-    "type": "gunsrpg:culinary",
-    "pattern": [
-      "bcb",
-      "eke",
-      "rrr"
-    ],
-    "key": {
-      "k": {
-        "item": "gunsrpg:schnitzel"
-      },
-      "b": {
-        "item": "gunsrpg:fried_egg"
-      },
-      "r": {
-        "item": "gunsrpg:fries"
-      },
-      "c": {
-        "item": "minecraft:carrot"
-      },
-      "e": {
-        "item": "gunsrpg:chicken_nuggets"
-      }
+  "type": "gunsrpg:culinary",
+  "pattern": [
+    "bcb",
+    "eke",
+    "rrr"
+  ],
+  "key": {
+    "k": {
+      "item": "gunsrpg:schnitzel"
     },
-    "result": {
-      "item": "gunsrpg:deluxe_meal"
+    "b": {
+      "item": "gunsrpg:fried_egg"
     },
-    "requirements": [
-      {
-        "type": "gunsrpg:skill",
-        "predicate": {
-          "skill": "gunsrpg:master_chef"
-        }
+    "r": {
+      "item": "gunsrpg:fries"
+    },
+    "c": {
+      "item": "minecraft:carrot"
+    },
+    "e": {
+      "item": "gunsrpg:chicken_nuggets"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:deluxe_meal"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:master_chef"
       }
-    ]
-  }
+    }
+  ]
+}

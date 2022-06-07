@@ -1,51 +1,51 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 3,
-    "display": {
-        "name": "Cavalry II",
-        "info": "Kill 10 skeleton horses"
-    },
-    "data": {
-        "entities": [
-            "minecraft:skeleton_horse"
-        ],
-        "count": 10,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 15,
-            "spawners": [
+  "type": "gunsrpg:kill_in_area",
+  "tier": 3,
+  "display": {
+    "name": "Cavalry II",
+    "info": "Kill 10 skeleton horses"
+  },
+  "data": {
+    "entities": [
+      "minecraft:skeleton_horse"
+    ],
+    "count": 10,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 15,
+      "spawners": [
+        {
+          "entity": "minecraft:skeleton_horse",
+          "propability": 0.05,
+          "limit": 2,
+          "processors": [
+            {
+              "type": "gunsrpg:controller",
+              "controller": "minecraft:skeleton",
+              "processors": [
                 {
-                    "entity": "minecraft:skeleton_horse",
-                    "propability": 0.05,
-                    "limit": 2,
-                    "processors": [
-                        {
-                            "type": "gunsrpg:controller",
-                            "controller": "minecraft:skeleton",
-                            "processors": [
-                                {
-                                    "type": "gunsrpg:set_equipment",
-                                    "equipment": {
-                                        "head": "minecraft:iron_helmet"
-                                    }
-                                }
-                            ]
-                        }
-                    ]
+                  "type": "gunsrpg:set_equipment",
+                  "equipment": {
+                    "head": "minecraft:iron_helmet"
+                  }
                 }
-            ]
-        }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
+              ]
             }
-        ]
+          ]
+        }
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

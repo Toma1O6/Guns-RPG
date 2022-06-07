@@ -10,16 +10,16 @@
       "item": "gunsrpg:impact_grenade"
     },
     "u": {
-        "item": "minecraft:gunpowder"
+      "item": "minecraft:gunpowder"
     },
     "r": {
-        "item": "gunsrpg:rocket_shell"
+      "item": "gunsrpg:rocket_shell"
     },
     "b": {
-        "item": "minecraft:blaze_powder"
+      "item": "minecraft:blaze_powder"
     },
     "e": {
-        "item": "minecraft:redstone"
+      "item": "minecraft:redstone"
     }
   },
   "result": {

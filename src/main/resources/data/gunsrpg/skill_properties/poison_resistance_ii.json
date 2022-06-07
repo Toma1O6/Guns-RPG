@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "resistance",
-        "parent": "gunsrpg:poison_resistance_i",
-        "children": [
-            "gunsrpg:poison_resistance_iii"
-        ],
-        "override": "gunsrpg:poison_resistance_iii"
-    },
-    "properties": {
-        "level": 20,
-        "price": 3,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "resistance",
+    "parent": "gunsrpg:poison_resistance_i",
+    "children": [
+      "gunsrpg:poison_resistance_iii"
+    ],
+    "override": "gunsrpg:poison_resistance_iii"
+  },
+  "properties": {
+    "level": 20,
+    "price": 3,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

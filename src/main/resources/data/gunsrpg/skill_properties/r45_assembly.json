@@ -1,25 +1,25 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:m1911_assembly",
-        "extensions": [
-            "gunsrpg:r45_fast_hands",
-            "gunsrpg:r45_carbon_barrel",
-            "gunsrpg:r45_extended",
-            "gunsrpg:r45_suppressor",
-            "gunsrpg:r45_light_trigger",
-            "gunsrpg:r45_ace_of_hearts",
-            "gunsrpg:r45_cold_blooded"
-        ],
-        "children": [
-            "gunsrpg:desert_eagle_assembly"
-        ]
-    },
-    "properties": {
-        "level": 25,
-        "price": 4,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:m1911_assembly",
+    "extensions": [
+      "gunsrpg:r45_fast_hands",
+      "gunsrpg:r45_carbon_barrel",
+      "gunsrpg:r45_extended",
+      "gunsrpg:r45_suppressor",
+      "gunsrpg:r45_light_trigger",
+      "gunsrpg:r45_ace_of_hearts",
+      "gunsrpg:r45_cold_blooded"
+    ],
+    "children": [
+      "gunsrpg:desert_eagle_assembly"
+    ]
+  },
+  "properties": {
+    "level": 25,
+    "price": 4,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

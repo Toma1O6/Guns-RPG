@@ -1,14 +1,14 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:awm_assembly"
-    },
-    "properties": {
-        "level": 0,
-        "price": 1,
-        "transactionValidator": {
-            "type": "gunsrpg:weapon",
-            "data": "gunsrpg:awm"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:awm_assembly"
+  },
+  "properties": {
+    "level": 0,
+    "price": 1,
+    "transactionValidator": {
+      "type": "gunsrpg:weapon",
+      "data": "gunsrpg:awm"
     }
+  }
 }

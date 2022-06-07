@@ -1,15 +1,15 @@
 {
-    "hierarchy": {
-        "category": "survival",
-        "children": [
-            "gunsrpg:master_chef"
-        ]
-    },
-    "properties": {
-        "level": 20,
-        "price": 2,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "survival",
+    "children": [
+      "gunsrpg:master_chef"
+    ]
+  },
+  "properties": {
+    "level": 20,
+    "price": 2,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

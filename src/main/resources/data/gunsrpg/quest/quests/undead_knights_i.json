@@ -1,37 +1,37 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 3,
-    "display": {
-        "name": "Undead Knights I",
-        "info": "Kill 5 zombie knights"
-    },
-    "data": {
-        "entities": [
-            "gunsrpg:zombie_knight"
-        ],
-        "count": 5,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 18,
-            "spawners": [
-                {
-                    "entity": "gunsrpg:zombie_knight",
-                    "propability": 0.05,
-                    "limit": 1
-                }
-            ]
+  "type": "gunsrpg:kill_in_area",
+  "tier": 3,
+  "display": {
+    "name": "Undead Knights I",
+    "info": "Kill 5 zombie knights"
+  },
+  "data": {
+    "entities": [
+      "gunsrpg:zombie_knight"
+    ],
+    "count": 5,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 18,
+      "spawners": [
+        {
+          "entity": "gunsrpg:zombie_knight",
+          "propability": 0.05,
+          "limit": 1
         }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

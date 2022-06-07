@@ -1,7 +1,7 @@
 {
-    "variants": {
-        "": {
-            "model": "gunsrpg:block/red_orb_ore"
-        }
+  "variants": {
+    "": {
+      "model": "gunsrpg:block/red_orb_ore"
     }
+  }
 }

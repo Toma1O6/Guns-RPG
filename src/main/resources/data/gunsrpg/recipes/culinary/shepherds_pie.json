@@ -1,33 +1,33 @@
 {
-    "type": "gunsrpg:culinary",
-    "pattern": [
-      "bbb",
-      "cac",
-      "rrr"
-    ],
-    "key": {
-      "b": {
-        "item": "minecraft:brown_mushroom"
-      },
-      "a": {
-        "item": "minecraft:baked_potato"
-      },
-      "r": {
-        "item": "minecraft:bread"
-      },
-      "c": {
-        "item": "minecraft:cooked_mutton"
-      }
+  "type": "gunsrpg:culinary",
+  "pattern": [
+    "bbb",
+    "cac",
+    "rrr"
+  ],
+  "key": {
+    "b": {
+      "item": "minecraft:brown_mushroom"
     },
-    "result": {
-      "item": "gunsrpg:shepherds_pie"
+    "a": {
+      "item": "minecraft:baked_potato"
     },
-    "requirements": [
-      {
-        "type": "gunsrpg:skill",
-        "predicate": {
-          "skill": "gunsrpg:master_chef"
-        }
+    "r": {
+      "item": "minecraft:bread"
+    },
+    "c": {
+      "item": "minecraft:cooked_mutton"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:shepherds_pie"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:master_chef"
       }
-    ]
-  }
+    }
+  ]
+}

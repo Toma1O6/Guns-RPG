@@ -1,16 +1,16 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:diamond_ammo_smith",
-        "children": [
-            "gunsrpg:netherite_ammo_smith"
-        ]
-    },
-    "properties": {
-        "level": 45,
-        "price": 6,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:diamond_ammo_smith",
+    "children": [
+      "gunsrpg:netherite_ammo_smith"
+    ]
+  },
+  "properties": {
+    "level": 45,
+    "price": 6,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

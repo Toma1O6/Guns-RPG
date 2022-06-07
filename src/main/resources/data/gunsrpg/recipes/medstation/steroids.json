@@ -1,36 +1,36 @@
 {
-    "type": "gunsrpg:medical_station",
-    "pattern": [
-      "igo",
-      "grg",
-      "ogs"
-    ],
-    "key": {
-      "r": {
-        "item": "minecraft:redstone_block"
-      },
-      "g": {
-        "item": "minecraft:glass_pane"
-      },
-      "s": {
-        "item": "minecraft:sugar"
-      },
-      "i": {
-        "item": "minecraft:iron_ingot"
-      },
-      "o": {
-        "item": "minecraft:golden_carrot"
-      }
+  "type": "gunsrpg:medical_station",
+  "pattern": [
+    "igo",
+    "grg",
+    "ogs"
+  ],
+  "key": {
+    "r": {
+      "item": "minecraft:redstone_block"
     },
-    "result": {
-      "item": "gunsrpg:steroids"
+    "g": {
+      "item": "minecraft:glass_pane"
     },
-    "requirements": [
-      {
-        "type": "gunsrpg:skill",
-        "predicate": {
-          "skill": "gunsrpg:pharmacist_ii"
-        }
+    "s": {
+      "item": "minecraft:sugar"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "o": {
+      "item": "minecraft:golden_carrot"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:steroids"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:pharmacist_ii"
       }
-    ]
-  }
+    }
+  ]
+}

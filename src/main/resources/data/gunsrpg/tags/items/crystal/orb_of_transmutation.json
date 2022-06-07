@@ -1,11 +1,11 @@
 {
-    "replace": false,
-    "values": [
-        "gunsrpg:black_orb_of_transmutation",
-        "gunsrpg:blue_orb_of_transmutation",
-        "gunsrpg:green_orb_of_transmutation",
-        "gunsrpg:red_orb_of_transmutation",
-        "gunsrpg:white_orb_of_transmutation",
-        "gunsrpg:yellow_orb_of_transmutation"
-    ]
+  "replace": false,
+  "values": [
+    "gunsrpg:black_orb_of_transmutation",
+    "gunsrpg:blue_orb_of_transmutation",
+    "gunsrpg:green_orb_of_transmutation",
+    "gunsrpg:red_orb_of_transmutation",
+    "gunsrpg:white_orb_of_transmutation",
+    "gunsrpg:yellow_orb_of_transmutation"
+  ]
 }

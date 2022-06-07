@@ -1,37 +1,37 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 4,
-    "display": {
-        "name": "Unforgiving Beasts II",
-        "info": "Kill 5 ravagers"
-    },
-    "data": {
-        "entities": [
-            "minecraft:ravager"
-        ],
-        "count": 5,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 30,
-            "spawners": [
-                {
-                    "entity": "minecraft:ravager",
-                    "propability": 0.05,
-                    "limit": 1
-                }
-            ]
+  "type": "gunsrpg:kill_in_area",
+  "tier": 4,
+  "display": {
+    "name": "Unforgiving Beasts II",
+    "info": "Kill 5 ravagers"
+  },
+  "data": {
+    "entities": [
+      "minecraft:ravager"
+    ],
+    "count": 5,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 30,
+      "spawners": [
+        {
+          "entity": "minecraft:ravager",
+          "propability": 0.05,
+          "limit": 1
         }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

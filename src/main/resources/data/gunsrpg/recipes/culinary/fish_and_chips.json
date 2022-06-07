@@ -1,30 +1,30 @@
 {
-    "type": "gunsrpg:culinary",
-    "pattern": [
-      "   ",
-      "bcb",
-      " a "
-    ],
-    "key": {
-      "b": {
-        "item": "gunsrpg:fries"
-      },
-      "a": {
-        "item": "minecraft:carrot"
-      },
-      "c": {
-        "item": "minecraft:cooked_cod"
-      }
+  "type": "gunsrpg:culinary",
+  "pattern": [
+    "   ",
+    "bcb",
+    " a "
+  ],
+  "key": {
+    "b": {
+      "item": "gunsrpg:fries"
     },
-    "result": {
-      "item": "gunsrpg:fish_and_chips"
+    "a": {
+      "item": "minecraft:carrot"
     },
-    "requirements": [
-      {
-        "type": "gunsrpg:skill",
-        "predicate": {
-          "skill": "gunsrpg:local_chef"
-        }
+    "c": {
+      "item": "minecraft:cooked_cod"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:fish_and_chips"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:local_chef"
       }
-    ]
-  }
+    }
+  ]
+}

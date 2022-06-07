@@ -1,14 +1,14 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:winchester_assembly"
-    },
-    "properties": {
-        "level": 7,
-        "price": 1,
-        "transactionValidator": {
-            "type": "gunsrpg:weapon",
-            "data": "gunsrpg:winchester"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:winchester_assembly"
+  },
+  "properties": {
+    "level": 7,
+    "price": 1,
+    "transactionValidator": {
+      "type": "gunsrpg:weapon",
+      "data": "gunsrpg:winchester"
     }
+  }
 }

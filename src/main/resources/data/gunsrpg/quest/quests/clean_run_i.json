@@ -1,27 +1,27 @@
 {
-    "type": "gunsrpg:survival",
-    "tier": 1,
-    "display": {
-        "name": "Clean Run I",
-        "info": "Do not take any damage for 7 minutes"
-    },
-    "data": {
-        "duration": "7m"
-    },
-    "conditions": [
-        {
-            "type": "gunsrpg:no_damage_taken"
-        }
-    ],
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": {
-                    "type": "gunsrpg:no_food"
-                },
-                "tier": 2,
-                "propability": 0.2
-            }
-        ]
+  "type": "gunsrpg:survival",
+  "tier": 1,
+  "display": {
+    "name": "Clean Run I",
+    "info": "Do not take any damage for 7 minutes"
+  },
+  "data": {
+    "duration": "7m"
+  },
+  "conditions": [
+    {
+      "type": "gunsrpg:no_damage_taken"
     }
+  ],
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": {
+          "type": "gunsrpg:no_food"
+        },
+        "tier": 2,
+        "propability": 0.2
+      }
+    ]
+  }
 }

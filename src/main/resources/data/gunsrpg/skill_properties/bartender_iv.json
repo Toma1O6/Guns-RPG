@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "survival",
-        "parent": "gunsrpg:bartender_iii",
-        "children": [
-            "gunsrpg:bartender_v"
-        ],
-        "override": "gunsrpg:bartender_v"
-    },
-    "properties": {
-        "level": 55,
-        "price": 8,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "survival",
+    "parent": "gunsrpg:bartender_iii",
+    "children": [
+      "gunsrpg:bartender_v"
+    ],
+    "override": "gunsrpg:bartender_v"
+  },
+  "properties": {
+    "level": 55,
+    "price": 8,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

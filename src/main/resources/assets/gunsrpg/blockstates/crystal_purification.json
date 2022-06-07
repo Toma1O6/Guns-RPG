@@ -1,7 +1,7 @@
 {
-    "variants": {
-        "": {
-            "model": "gunsrpg:block/crystal_purification"
-        }
+  "variants": {
+    "": {
+      "model": "gunsrpg:block/crystal_purification"
     }
+  }
 }

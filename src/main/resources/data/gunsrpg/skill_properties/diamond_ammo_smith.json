@@ -1,16 +1,16 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:emerald_ammo_smith",
-        "children": [
-            "gunsrpg:amethyst_ammo_smith"
-        ]
-    },
-    "properties": {
-        "level": 30,
-        "price": 4,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:emerald_ammo_smith",
+    "children": [
+      "gunsrpg:amethyst_ammo_smith"
+    ]
+  },
+  "properties": {
+    "level": 30,
+    "price": 4,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

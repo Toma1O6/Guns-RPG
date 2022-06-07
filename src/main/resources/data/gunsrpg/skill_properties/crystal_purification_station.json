@@ -1,16 +1,16 @@
 {
-    "hierarchy": {
-        "category": "mining",
-        "parent": "gunsrpg:crystal_forge",
-        "children": [
-            "gunsrpg:crystalized"
-        ]
-    },
-    "properties": {
-        "level": 35,
-        "price": 5,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "mining",
+    "parent": "gunsrpg:crystal_forge",
+    "children": [
+      "gunsrpg:crystalized"
+    ]
+  },
+  "properties": {
+    "level": 35,
+    "price": 5,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

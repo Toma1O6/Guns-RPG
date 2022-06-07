@@ -1,16 +1,16 @@
 {
-    "variants": {
-        "damage=0": {
-            "model": "gunsrpg:block/spikes_diamond0"
-        },
-        "damage=1": {
-            "model": "gunsrpg:block/spikes_diamond1"
-        },
-        "damage=2": {
-            "model": "gunsrpg:block/spikes_diamond2"
-        },
-        "damage=3": {
-            "model": "gunsrpg:block/spikes_diamond3"
-        }
+  "variants": {
+    "damage=0": {
+      "model": "gunsrpg:block/spikes_diamond0"
+    },
+    "damage=1": {
+      "model": "gunsrpg:block/spikes_diamond1"
+    },
+    "damage=2": {
+      "model": "gunsrpg:block/spikes_diamond2"
+    },
+    "damage=3": {
+      "model": "gunsrpg:block/spikes_diamond3"
     }
+  }
 }

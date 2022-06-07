@@ -1,16 +1,16 @@
 {
-    "hierarchy": {
-        "category": "resistance",
-        "children": [
-            "gunsrpg:fracture_resistance_ii"
-        ],
-        "override": "gunsrpg:fracture_resistance_ii"
-    },
-    "properties": {
-        "level": 5,
-        "price": 2,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "resistance",
+    "children": [
+      "gunsrpg:fracture_resistance_ii"
+    ],
+    "override": "gunsrpg:fracture_resistance_ii"
+  },
+  "properties": {
+    "level": 5,
+    "price": 2,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

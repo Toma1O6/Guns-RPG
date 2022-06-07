@@ -1,39 +1,39 @@
 {
-    "type": "gunsrpg:medical_station",
-    "pattern": [
-      "iso",
-      "sas",
-      "lsg"
-    ],
-    "key": {
-      "a": {
-        "item": "gunsrpg:amethyst"
-      },
-      "g": {
-        "item": "minecraft:golden_apple"
-      },
-      "s": {
-        "item": "minecraft:glass_pane"
-      },
-      "i": {
-        "item": "minecraft:iron_ingot"
-      },
-      "l": {
-        "item": "minecraft:glistering_melon_slice"
-      },
-      "o": {
-        "item": "minecraft:golden_carrot"
-      }
+  "type": "gunsrpg:medical_station",
+  "pattern": [
+    "iso",
+    "sas",
+    "lsg"
+  ],
+  "key": {
+    "a": {
+      "item": "gunsrpg:amethyst"
     },
-    "result": {
-      "item": "gunsrpg:vaccine"
+    "g": {
+      "item": "minecraft:golden_apple"
     },
-    "requirements": [
-      {
-        "type": "gunsrpg:skill",
-        "predicate": {
-          "skill": "gunsrpg:doctor"
-        }
+    "s": {
+      "item": "minecraft:glass_pane"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "l": {
+      "item": "minecraft:glistering_melon_slice"
+    },
+    "o": {
+      "item": "minecraft:golden_carrot"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:vaccine"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:doctor"
       }
-    ]
-  }
+    }
+  ]
+}

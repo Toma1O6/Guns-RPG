@@ -1,8 +1,8 @@
 {
-    "attribute": "gunsrpg:damage_taken",
-    "scaling": 0.01,
-    "bounds": {
-        "buff": 0.25,
-        "debuff": 0.5
-    }
+  "attribute": "gunsrpg:damage_taken",
+  "scaling": 0.01,
+  "bounds": {
+    "buff": 0.25,
+    "debuff": 0.5
+  }
 }

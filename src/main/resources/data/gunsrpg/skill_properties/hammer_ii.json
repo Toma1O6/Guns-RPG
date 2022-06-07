@@ -1,16 +1,16 @@
 {
-    "hierarchy": {
-        "category": "mining",
-        "parent": "gunsrpg:hammer_i",
-        "children": [
-            "gunsrpg:hammer_iii"
-        ]
-    },
-    "properties": {
-        "level": 30,
-        "price": 3,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "mining",
+    "parent": "gunsrpg:hammer_i",
+    "children": [
+      "gunsrpg:hammer_iii"
+    ]
+  },
+  "properties": {
+    "level": 30,
+    "price": 3,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

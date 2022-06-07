@@ -1,7 +1,7 @@
 {
-    "variants": {
-        "": {
-            "model": "gunsrpg:block/death_crate"
-        }
+  "variants": {
+    "": {
+      "model": "gunsrpg:block/death_crate"
     }
+  }
 }

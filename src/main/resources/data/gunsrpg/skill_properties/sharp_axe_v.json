@@ -1,13 +1,13 @@
 {
-    "hierarchy": {
-        "category": "mining",
-        "parent": "gunsrpg:sharp_axe_iv"
-    },
-    "properties": {
-        "level": 50,
-        "price": 5,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "mining",
+    "parent": "gunsrpg:sharp_axe_iv"
+  },
+  "properties": {
+    "level": 50,
+    "price": 5,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

@@ -1,7 +1,7 @@
 {
-    "variants": {
-        "": {
-            "model": "gunsrpg:block/artic_military_crate"
-        }
+  "variants": {
+    "": {
+      "model": "gunsrpg:block/artic_military_crate"
     }
+  }
 }

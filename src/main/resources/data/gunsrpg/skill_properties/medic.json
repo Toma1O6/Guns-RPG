@@ -1,15 +1,15 @@
 {
-    "hierarchy": {
-        "category": "resistance",
-        "children": [
-            "gunsrpg:doctor"
-        ]
-    },
-    "properties": {
-        "level": 10,
-        "price": 4,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "resistance",
+    "children": [
+      "gunsrpg:doctor"
+    ]
+  },
+  "properties": {
+    "level": 10,
+    "price": 4,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

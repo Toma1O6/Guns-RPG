@@ -1,7 +1,7 @@
 {
-	"credit": "Made with Blockbench",
-	"parent": "gunsrpg:block/spikes2",
-	"textures": {
-		"spike": "gunsrpg:block/spikes_wooden"
-	}
+  "credit": "Made with Blockbench",
+  "parent": "gunsrpg:block/spikes2",
+  "textures": {
+    "spike": "gunsrpg:block/spikes_wooden"
+  }
 }

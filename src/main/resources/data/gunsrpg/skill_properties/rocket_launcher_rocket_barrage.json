@@ -1,14 +1,14 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:rocket_launcher_assembly"
-    },
-    "properties": {
-        "level": 7,
-        "price": 1,
-        "transactionValidator": {
-            "type": "gunsrpg:weapon",
-            "data": "gunsrpg:rocket_launcher"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:rocket_launcher_assembly"
+  },
+  "properties": {
+    "level": 7,
+    "price": 1,
+    "transactionValidator": {
+      "type": "gunsrpg:weapon",
+      "data": "gunsrpg:rocket_launcher"
     }
+  }
 }

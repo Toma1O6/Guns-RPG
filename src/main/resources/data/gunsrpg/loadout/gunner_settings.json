@@ -1,916 +1,911 @@
 {
-    "globalProps": {
-        "damageMultiplier": 0.5,
-        "inaccuracy": 0.1,
-        "accuracyBonus": 0.02
+  "globalProps": {
+    "damageMultiplier": 0.5,
+    "inaccuracy": 0.1,
+    "accuracyBonus": 0.02
+  },
+  "loadouts": [
+    {
+      "weight": 80,
+      "gun": "gunsrpg:m1911",
+      "magazine": 7,
+      "reloadTime": 65,
+      "firerate": 30,
+      "ammo": "gunsrpg:wood",
+      "capColor": "7A5125",
+      "shootTask": {
+        "inaccuracy": 2.1,
+        "damageMultiplier": 0.4
+      }
     },
-    "loadouts": [
-        {
-            "weight": 80,
-            "gun": "gunsrpg:m1911",
-            "magazine": 7,
-            "reloadTime": 65,
-            "firerate": 30,
-            "ammo": "gunsrpg:wood",
-            "capColor": "7A5125",
-            "shootTask": {
-                "inaccuracy": 2.1,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 70,
-            "gun": "gunsrpg:m1911",
-            "magazine": 7,
-            "reloadTime": 65,
-            "firerate": 30,
-            "ammo": "gunsrpg:stone",
-            "capColor": "727272",
-            "shootTask": {
-                "inaccuracy": 2.1,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 45,
-            "gun": "gunsrpg:m1911",
-            "magazine": 7,
-            "reloadTime": 65,
-            "firerate": 30,
-            "ammo": "gunsrpg:iron",
-            "capColor": "D3D3D3",
-            "shootTask": {
-                "inaccuracy": 2.1,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 50,
-            "gun": "gunsrpg:m1911",
-            "magazine": 7,
-            "reloadTime": 65,
-            "firerate": 30,
-            "ammo": "gunsrpg:lapis",
-            "capColor": "0020d8",
-            "shootTask": {
-                "inaccuracy": 2.1,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 25,
-            "gun": "gunsrpg:m1911",
-            "magazine": 7,
-            "reloadTime": 65,
-            "firerate": 30,
-            "ammo": "gunsrpg:gold",
-            "capColor": "d3b000",
-            "shootTask": {
-                "inaccuracy": 2.1,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 30,
-            "gun": "gunsrpg:m1911",
-            "magazine": 7,
-            "reloadTime": 65,
-            "firerate": 30,
-            "ammo": "gunsrpg:redstone",
-            "capColor": "e00000",
-            "shootTask": {
-                "inaccuracy": 2.1,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 12,
-            "gun": "gunsrpg:m1911",
-            "magazine": 7,
-            "reloadTime": 65,
-            "firerate": 30,
-            "ammo": "gunsrpg:diamond",
-            "capColor": "00e0e0",
-            "shootTask": {
-                "inaccuracy": 2.1,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 15,
-            "gun": "gunsrpg:m1911",
-            "magazine": 7,
-            "reloadTime": 65,
-            "firerate": 30,
-            "ammo": "gunsrpg:quartz",
-            "capColor": "fcffb2",
-            "shootTask": {
-                "inaccuracy": 2.1,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 15,
-            "gun": "gunsrpg:m1911",
-            "magazine": 7,
-            "reloadTime": 65,
-            "firerate": 30,
-            "ammo": "gunsrpg:emerald",
-            "capColor": "00ff00",
-            "shootTask": {
-                "inaccuracy": 2.1,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 10,
-            "gun": "gunsrpg:m1911",
-            "magazine": 7,
-            "reloadTime": 65,
-            "firerate": 30,
-            "ammo": "gunsrpg:amethyst",
-            "capColor": "dc00e0",
-            "shootTask": {
-                "inaccuracy": 2.1,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 7,
-            "gun": "gunsrpg:m1911",
-            "magazine": 7,
-            "reloadTime": 65,
-            "firerate": 30,
-            "ammo": "gunsrpg:netherite",
-            "capColor": "212121",
-            "shootTask": {
-                "inaccuracy": 2.1,
-                "damageMultiplier": 0.4
-            }
-        },
-
-        {
-            "weight": 80,
-            "gun": "gunsrpg:ump45",
-            "magazine": 30,
-            "reloadTime": 70,
-            "firerate": 1,
-            "ammo": "gunsrpg:wood",
-            "capColor": "7A5125",
-            "shootTask": {
-                "inaccuracy": 3.0,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 40
-            }
-        },
-        {
-            "weight": 70,
-            "gun": "gunsrpg:ump45",
-            "magazine": 30,
-            "reloadTime": 70,
-            "firerate": 1,
-            "ammo": "gunsrpg:stone",
-            "capColor": "727272",
-            "shootTask": {
-                "inaccuracy": 3.0,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 40
-            }
-        },
-        {
-            "weight": 45,
-            "gun": "gunsrpg:ump45",
-            "magazine": 30,
-            "reloadTime": 70,
-            "firerate": 1,
-            "ammo": "gunsrpg:iron",
-            "capColor": "D3D3D3",
-            "shootTask": {
-                "inaccuracy": 3.0,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 40
-            }
-        },
-        {
-            "weight": 50,
-            "gun": "gunsrpg:ump45",
-            "magazine": 30,
-            "reloadTime": 70,
-            "firerate": 1,
-            "ammo": "gunsrpg:lapis",
-            "capColor": "0020d8",
-            "shootTask": {
-                "inaccuracy": 3.0,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 40
-            }
-        },
-        {
-            "weight": 25,
-            "gun": "gunsrpg:ump45",
-            "magazine": 30,
-            "reloadTime": 70,
-            "firerate": 1,
-            "ammo": "gunsrpg:gold",
-            "capColor": "d3b000",
-            "shootTask": {
-                "inaccuracy": 3.0,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 40
-            }
-        },
-        {
-            "weight": 30,
-            "gun": "gunsrpg:ump45",
-            "magazine": 30,
-            "reloadTime": 70,
-            "firerate": 1,
-            "ammo": "gunsrpg:redstone",
-            "capColor": "e00000",
-            "shootTask": {
-                "inaccuracy": 3.0,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 40
-            }
-        },
-        {
-            "weight": 12,
-            "gun": "gunsrpg:ump45",
-            "magazine": 30,
-            "reloadTime": 70,
-            "firerate": 1,
-            "ammo": "gunsrpg:diamond",
-            "capColor": "00e0e0",
-            "shootTask": {
-                "inaccuracy": 3.0,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 40
-            }
-        },
-        {
-            "weight": 15,
-            "gun": "gunsrpg:ump45",
-            "magazine": 30,
-            "reloadTime": 70,
-            "firerate": 1,
-            "ammo": "gunsrpg:quartz",
-            "capColor": "fcffb2",
-            "shootTask": {
-                "inaccuracy": 3.0,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 40
-            }
-        },
-        {
-            "weight": 15,
-            "gun": "gunsrpg:ump45",
-            "magazine": 30,
-            "reloadTime": 70,
-            "firerate": 1,
-            "ammo": "gunsrpg:emerald",
-            "capColor": "00ff00",
-            "shootTask": {
-                "inaccuracy": 3.0,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 40
-            }
-        },
-        {
-            "weight": 10,
-            "gun": "gunsrpg:ump45",
-            "magazine": 30,
-            "reloadTime": 70,
-            "firerate": 1,
-            "ammo": "gunsrpg:amethyst",
-            "capColor": "dc00e0",
-            "shootTask": {
-                "inaccuracy": 3.0,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 40
-            }
-        },
-        {
-            "weight": 7,
-            "gun": "gunsrpg:ump45",
-            "magazine": 30,
-            "reloadTime": 70,
-            "firerate": 1,
-            "ammo": "gunsrpg:netherite",
-            "capColor": "212121",
-            "shootTask": {
-                "inaccuracy": 3.0,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 40
-            }
-        },
-
-        {
-            "weight": 80,
-            "gun": "gunsrpg:s1897",
-            "magazine": 5,
-            "reloadTime": 100,
-            "firerate": 55,
-            "ammo": "gunsrpg:wood",
-            "capColor": "7A5125",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 70,
-            "gun": "gunsrpg:s1897",
-            "magazine": 5,
-            "reloadTime": 100,
-            "firerate": 55,
-            "ammo": "gunsrpg:stone",
-            "capColor": "727272",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 45,
-            "gun": "gunsrpg:s1897",
-            "magazine": 5,
-            "reloadTime": 100,
-            "firerate": 55,
-            "ammo": "gunsrpg:iron",
-            "capColor": "D3D3D3",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 50,
-            "gun": "gunsrpg:s1897",
-            "magazine": 5,
-            "reloadTime": 100,
-            "firerate": 55,
-            "ammo": "gunsrpg:lapis",
-            "capColor": "0020d8",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 25,
-            "gun": "gunsrpg:s1897",
-            "magazine": 5,
-            "reloadTime": 100,
-            "firerate": 55,
-            "ammo": "gunsrpg:gold",
-            "capColor": "d3b000",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 30,
-            "gun": "gunsrpg:s1897",
-            "magazine": 5,
-            "reloadTime": 100,
-            "firerate": 55,
-            "ammo": "gunsrpg:redstone",
-            "capColor": "e00000",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 12,
-            "gun": "gunsrpg:s1897",
-            "magazine": 5,
-            "reloadTime": 100,
-            "firerate": 55,
-            "ammo": "gunsrpg:diamond",
-            "capColor": "00e0e0",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 15,
-            "gun": "gunsrpg:s1897",
-            "magazine": 5,
-            "reloadTime": 100,
-            "firerate": 55,
-            "ammo": "gunsrpg:quartz",
-            "capColor": "fcffb2",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 15,
-            "gun": "gunsrpg:s1897",
-            "magazine": 5,
-            "reloadTime": 100,
-            "firerate": 55,
-            "ammo": "gunsrpg:emerald",
-            "capColor": "00ff00",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 10,
-            "gun": "gunsrpg:s1897",
-            "magazine": 5,
-            "reloadTime": 100,
-            "firerate": 55,
-            "ammo": "gunsrpg:amethyst",
-            "capColor": "dc00e0",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 7,
-            "gun": "gunsrpg:s1897",
-            "magazine": 5,
-            "reloadTime": 100,
-            "firerate": 55,
-            "ammo": "gunsrpg:netherite",
-            "capColor": "212121",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-
-        {
-            "weight": 80,
-            "gun": "gunsrpg:hk416",
-            "magazine": 30,
-            "reloadTime": 80,
-            "firerate": 2,
-            "ammo": "gunsrpg:wood",
-            "capColor": "7A5125",
-            "shootTask": {
-                "inaccuracy": 2.5,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 50
-            }
-        },
-        {
-            "weight": 70,
-            "gun": "gunsrpg:hk416",
-            "magazine": 30,
-            "reloadTime": 80,
-            "firerate": 2,
-            "ammo": "gunsrpg:stone",
-            "capColor": "727272",
-            "shootTask": {
-                "inaccuracy": 2.5,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 50
-            }
-        },
-        {
-            "weight": 45,
-            "gun": "gunsrpg:hk416",
-            "magazine": 30,
-            "reloadTime": 80,
-            "firerate": 2,
-            "ammo": "gunsrpg:iron",
-            "capColor": "D3D3D3",
-            "shootTask": {
-                "inaccuracy": 2.5,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 50
-            }
-        },
-        {
-            "weight": 50,
-            "gun": "gunsrpg:hk416",
-            "magazine": 30,
-            "reloadTime": 80,
-            "firerate": 2,
-            "ammo": "gunsrpg:lapis",
-            "capColor": "0020d8",
-            "shootTask": {
-                "inaccuracy": 2.5,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 50
-            }
-        },
-        {
-            "weight": 25,
-            "gun": "gunsrpg:hk416",
-            "magazine": 30,
-            "reloadTime": 80,
-            "firerate": 2,
-            "ammo": "gunsrpg:gold",
-            "capColor": "d3b000",
-            "shootTask": {
-                "inaccuracy": 2.5,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 50
-            }
-        },
-        {
-            "weight": 30,
-            "gun": "gunsrpg:hk416",
-            "magazine": 30,
-            "reloadTime": 80,
-            "firerate": 2,
-            "ammo": "gunsrpg:redstone",
-            "capColor": "e00000",
-            "shootTask": {
-                "inaccuracy": 2.5,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 50
-            }
-        },
-        {
-            "weight": 12,
-            "gun": "gunsrpg:hk416",
-            "magazine": 30,
-            "reloadTime": 80,
-            "firerate": 2,
-            "ammo": "gunsrpg:diamond",
-            "capColor": "00e0e0",
-            "shootTask": {
-                "inaccuracy": 2.5,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 50
-            }
-        },
-        {
-            "weight": 15,
-            "gun": "gunsrpg:hk416",
-            "magazine": 30,
-            "reloadTime": 80,
-            "firerate": 2,
-            "ammo": "gunsrpg:quartz",
-            "capColor": "fcffb2",
-            "shootTask": {
-                "inaccuracy": 2.5,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 50
-            }
-        },
-        {
-            "weight": 15,
-            "gun": "gunsrpg:hk416",
-            "magazine": 30,
-            "reloadTime": 80,
-            "firerate": 2,
-            "ammo": "gunsrpg:emerald",
-            "capColor": "00ff00",
-            "shootTask": {
-                "inaccuracy": 2.5,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 50
-            }
-        },
-        {
-            "weight": 10,
-            "gun": "gunsrpg:hk416",
-            "magazine": 30,
-            "reloadTime": 80,
-            "firerate": 2,
-            "ammo": "gunsrpg:amethyst",
-            "capColor": "dc00e0",
-            "shootTask": {
-                "inaccuracy": 2.5,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 50
-            }
-        },
-        {
-            "weight": 7,
-            "gun": "gunsrpg:hk416",
-            "magazine": 30,
-            "reloadTime": 80,
-            "firerate": 2,
-            "ammo": "gunsrpg:netherite",
-            "capColor": "212121",
-            "shootTask": {
-                "inaccuracy": 2.5,
-                "damageMultiplier": 0.4,
-                "burstSize": 3,
-                "burstDelay": 50
-            }
-        },
-
-        {
-            "weight": 80,
-            "gun": "gunsrpg:sks",
-            "magazine": 10,
-            "reloadTime": 80,
-            "firerate": 45,
-            "ammo": "gunsrpg:wood",
-            "capColor": "7A5125",
-            "shootTask": {
-                "inaccuracy": 1.7,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 70,
-            "gun": "gunsrpg:sks",
-            "magazine": 10,
-            "reloadTime": 80,
-            "firerate": 45,
-            "ammo": "gunsrpg:stone",
-            "capColor": "727272",
-            "shootTask": {
-                "inaccuracy": 1.7,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 45,
-            "gun": "gunsrpg:sks",
-            "magazine": 10,
-            "reloadTime": 80,
-            "firerate": 45,
-            "ammo": "gunsrpg:iron",
-            "capColor": "D3D3D3",
-            "shootTask": {
-                "inaccuracy": 1.7,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 50,
-            "gun": "gunsrpg:sks",
-            "magazine": 10,
-            "reloadTime": 80,
-            "firerate": 45,
-            "ammo": "gunsrpg:lapis",
-            "capColor": "0020d8",
-            "shootTask": {
-                "inaccuracy": 1.7,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 25,
-            "gun": "gunsrpg:sks",
-            "magazine": 10,
-            "reloadTime": 80,
-            "firerate": 45,
-            "ammo": "gunsrpg:gold",
-            "capColor": "d3b000",
-            "shootTask": {
-                "inaccuracy": 1.7,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 30,
-            "gun": "gunsrpg:sks",
-            "magazine": 10,
-            "reloadTime": 80,
-            "firerate": 45,
-            "ammo": "gunsrpg:redstone",
-            "capColor": "e00000",
-            "shootTask": {
-                "inaccuracy": 1.7,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 12,
-            "gun": "gunsrpg:sks",
-            "magazine": 10,
-            "reloadTime": 80,
-            "firerate": 45,
-            "ammo": "gunsrpg:diamond",
-            "capColor": "00e0e0",
-            "shootTask": {
-                "inaccuracy": 1.7,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 15,
-            "gun": "gunsrpg:sks",
-            "magazine": 10,
-            "reloadTime": 80,
-            "firerate": 45,
-            "ammo": "gunsrpg:quartz",
-            "capColor": "fcffb2",
-            "shootTask": {
-                "inaccuracy": 1.7,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 15,
-            "gun": "gunsrpg:sks",
-            "magazine": 10,
-            "reloadTime": 80,
-            "firerate": 45,
-            "ammo": "gunsrpg:emerald",
-            "capColor": "00ff00",
-            "shootTask": {
-                "inaccuracy": 1.7,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 10,
-            "gun": "gunsrpg:sks",
-            "magazine": 10,
-            "reloadTime": 80,
-            "firerate": 45,
-            "ammo": "gunsrpg:amethyst",
-            "capColor": "dc00e0",
-            "shootTask": {
-                "inaccuracy": 1.7,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 7,
-            "gun": "gunsrpg:sks",
-            "magazine": 10,
-            "reloadTime": 80,
-            "firerate": 45,
-            "ammo": "gunsrpg:netherite",
-            "capColor": "212121",
-            "shootTask": {
-                "inaccuracy": 1.7,
-                "damageMultiplier": 0.4
-            }
-        },
-
-        {
-            "weight": 80,
-            "gun": "gunsrpg:kar98k",
-            "magazine": 5,
-            "reloadTime": 120,
-            "firerate": 80,
-            "ammo": "gunsrpg:wood",
-            "capColor": "7A5125",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 70,
-            "gun": "gunsrpg:kar98k",
-            "magazine": 5,
-            "reloadTime": 120,
-            "firerate": 80,
-            "ammo": "gunsrpg:stone",
-            "capColor": "727272",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 45,
-            "gun": "gunsrpg:kar98k",
-            "magazine": 5,
-            "reloadTime": 120,
-            "firerate": 80,
-            "ammo": "gunsrpg:iron",
-            "capColor": "D3D3D3",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 50,
-            "gun": "gunsrpg:kar98k",
-            "magazine": 5,
-            "reloadTime": 120,
-            "firerate": 80,
-            "ammo": "gunsrpg:lapis",
-            "capColor": "0020d8",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 25,
-            "gun": "gunsrpg:kar98k",
-            "magazine": 5,
-            "reloadTime": 120,
-            "firerate": 80,
-            "ammo": "gunsrpg:gold",
-            "capColor": "d3b000",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 30,
-            "gun": "gunsrpg:kar98k",
-            "magazine": 5,
-            "reloadTime": 120,
-            "firerate": 80,
-            "ammo": "gunsrpg:redstone",
-            "capColor": "e00000",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 12,
-            "gun": "gunsrpg:kar98k",
-            "magazine": 5,
-            "reloadTime": 120,
-            "firerate": 80,
-            "ammo": "gunsrpg:diamond",
-            "capColor": "00e0e0",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 15,
-            "gun": "gunsrpg:kar98k",
-            "magazine": 5,
-            "reloadTime": 120,
-            "firerate": 80,
-            "ammo": "gunsrpg:quartz",
-            "capColor": "fcffb2",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 15,
-            "gun": "gunsrpg:kar98k",
-            "magazine": 5,
-            "reloadTime": 120,
-            "firerate": 80,
-            "ammo": "gunsrpg:emerald",
-            "capColor": "00ff00",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 10,
-            "gun": "gunsrpg:kar98k",
-            "magazine": 5,
-            "reloadTime": 120,
-            "firerate": 80,
-            "ammo": "gunsrpg:amethyst",
-            "capColor": "dc00e0",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        },
-        {
-            "weight": 7,
-            "gun": "gunsrpg:kar98k",
-            "magazine": 5,
-            "reloadTime": 120,
-            "firerate": 80,
-            "ammo": "gunsrpg:netherite",
-            "capColor": "212121",
-            "shootTask": {
-                "inaccuracy": 1.2,
-                "damageMultiplier": 0.4
-            }
-        }
-    ]
+    {
+      "weight": 70,
+      "gun": "gunsrpg:m1911",
+      "magazine": 7,
+      "reloadTime": 65,
+      "firerate": 30,
+      "ammo": "gunsrpg:stone",
+      "capColor": "727272",
+      "shootTask": {
+        "inaccuracy": 2.1,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 45,
+      "gun": "gunsrpg:m1911",
+      "magazine": 7,
+      "reloadTime": 65,
+      "firerate": 30,
+      "ammo": "gunsrpg:iron",
+      "capColor": "D3D3D3",
+      "shootTask": {
+        "inaccuracy": 2.1,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 50,
+      "gun": "gunsrpg:m1911",
+      "magazine": 7,
+      "reloadTime": 65,
+      "firerate": 30,
+      "ammo": "gunsrpg:lapis",
+      "capColor": "0020d8",
+      "shootTask": {
+        "inaccuracy": 2.1,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 25,
+      "gun": "gunsrpg:m1911",
+      "magazine": 7,
+      "reloadTime": 65,
+      "firerate": 30,
+      "ammo": "gunsrpg:gold",
+      "capColor": "d3b000",
+      "shootTask": {
+        "inaccuracy": 2.1,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 30,
+      "gun": "gunsrpg:m1911",
+      "magazine": 7,
+      "reloadTime": 65,
+      "firerate": 30,
+      "ammo": "gunsrpg:redstone",
+      "capColor": "e00000",
+      "shootTask": {
+        "inaccuracy": 2.1,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 12,
+      "gun": "gunsrpg:m1911",
+      "magazine": 7,
+      "reloadTime": 65,
+      "firerate": 30,
+      "ammo": "gunsrpg:diamond",
+      "capColor": "00e0e0",
+      "shootTask": {
+        "inaccuracy": 2.1,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 15,
+      "gun": "gunsrpg:m1911",
+      "magazine": 7,
+      "reloadTime": 65,
+      "firerate": 30,
+      "ammo": "gunsrpg:quartz",
+      "capColor": "fcffb2",
+      "shootTask": {
+        "inaccuracy": 2.1,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 15,
+      "gun": "gunsrpg:m1911",
+      "magazine": 7,
+      "reloadTime": 65,
+      "firerate": 30,
+      "ammo": "gunsrpg:emerald",
+      "capColor": "00ff00",
+      "shootTask": {
+        "inaccuracy": 2.1,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 10,
+      "gun": "gunsrpg:m1911",
+      "magazine": 7,
+      "reloadTime": 65,
+      "firerate": 30,
+      "ammo": "gunsrpg:amethyst",
+      "capColor": "dc00e0",
+      "shootTask": {
+        "inaccuracy": 2.1,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 7,
+      "gun": "gunsrpg:m1911",
+      "magazine": 7,
+      "reloadTime": 65,
+      "firerate": 30,
+      "ammo": "gunsrpg:netherite",
+      "capColor": "212121",
+      "shootTask": {
+        "inaccuracy": 2.1,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 80,
+      "gun": "gunsrpg:ump45",
+      "magazine": 30,
+      "reloadTime": 70,
+      "firerate": 1,
+      "ammo": "gunsrpg:wood",
+      "capColor": "7A5125",
+      "shootTask": {
+        "inaccuracy": 3.0,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 40
+      }
+    },
+    {
+      "weight": 70,
+      "gun": "gunsrpg:ump45",
+      "magazine": 30,
+      "reloadTime": 70,
+      "firerate": 1,
+      "ammo": "gunsrpg:stone",
+      "capColor": "727272",
+      "shootTask": {
+        "inaccuracy": 3.0,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 40
+      }
+    },
+    {
+      "weight": 45,
+      "gun": "gunsrpg:ump45",
+      "magazine": 30,
+      "reloadTime": 70,
+      "firerate": 1,
+      "ammo": "gunsrpg:iron",
+      "capColor": "D3D3D3",
+      "shootTask": {
+        "inaccuracy": 3.0,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 40
+      }
+    },
+    {
+      "weight": 50,
+      "gun": "gunsrpg:ump45",
+      "magazine": 30,
+      "reloadTime": 70,
+      "firerate": 1,
+      "ammo": "gunsrpg:lapis",
+      "capColor": "0020d8",
+      "shootTask": {
+        "inaccuracy": 3.0,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 40
+      }
+    },
+    {
+      "weight": 25,
+      "gun": "gunsrpg:ump45",
+      "magazine": 30,
+      "reloadTime": 70,
+      "firerate": 1,
+      "ammo": "gunsrpg:gold",
+      "capColor": "d3b000",
+      "shootTask": {
+        "inaccuracy": 3.0,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 40
+      }
+    },
+    {
+      "weight": 30,
+      "gun": "gunsrpg:ump45",
+      "magazine": 30,
+      "reloadTime": 70,
+      "firerate": 1,
+      "ammo": "gunsrpg:redstone",
+      "capColor": "e00000",
+      "shootTask": {
+        "inaccuracy": 3.0,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 40
+      }
+    },
+    {
+      "weight": 12,
+      "gun": "gunsrpg:ump45",
+      "magazine": 30,
+      "reloadTime": 70,
+      "firerate": 1,
+      "ammo": "gunsrpg:diamond",
+      "capColor": "00e0e0",
+      "shootTask": {
+        "inaccuracy": 3.0,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 40
+      }
+    },
+    {
+      "weight": 15,
+      "gun": "gunsrpg:ump45",
+      "magazine": 30,
+      "reloadTime": 70,
+      "firerate": 1,
+      "ammo": "gunsrpg:quartz",
+      "capColor": "fcffb2",
+      "shootTask": {
+        "inaccuracy": 3.0,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 40
+      }
+    },
+    {
+      "weight": 15,
+      "gun": "gunsrpg:ump45",
+      "magazine": 30,
+      "reloadTime": 70,
+      "firerate": 1,
+      "ammo": "gunsrpg:emerald",
+      "capColor": "00ff00",
+      "shootTask": {
+        "inaccuracy": 3.0,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 40
+      }
+    },
+    {
+      "weight": 10,
+      "gun": "gunsrpg:ump45",
+      "magazine": 30,
+      "reloadTime": 70,
+      "firerate": 1,
+      "ammo": "gunsrpg:amethyst",
+      "capColor": "dc00e0",
+      "shootTask": {
+        "inaccuracy": 3.0,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 40
+      }
+    },
+    {
+      "weight": 7,
+      "gun": "gunsrpg:ump45",
+      "magazine": 30,
+      "reloadTime": 70,
+      "firerate": 1,
+      "ammo": "gunsrpg:netherite",
+      "capColor": "212121",
+      "shootTask": {
+        "inaccuracy": 3.0,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 40
+      }
+    },
+    {
+      "weight": 80,
+      "gun": "gunsrpg:s1897",
+      "magazine": 5,
+      "reloadTime": 100,
+      "firerate": 55,
+      "ammo": "gunsrpg:wood",
+      "capColor": "7A5125",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 70,
+      "gun": "gunsrpg:s1897",
+      "magazine": 5,
+      "reloadTime": 100,
+      "firerate": 55,
+      "ammo": "gunsrpg:stone",
+      "capColor": "727272",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 45,
+      "gun": "gunsrpg:s1897",
+      "magazine": 5,
+      "reloadTime": 100,
+      "firerate": 55,
+      "ammo": "gunsrpg:iron",
+      "capColor": "D3D3D3",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 50,
+      "gun": "gunsrpg:s1897",
+      "magazine": 5,
+      "reloadTime": 100,
+      "firerate": 55,
+      "ammo": "gunsrpg:lapis",
+      "capColor": "0020d8",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 25,
+      "gun": "gunsrpg:s1897",
+      "magazine": 5,
+      "reloadTime": 100,
+      "firerate": 55,
+      "ammo": "gunsrpg:gold",
+      "capColor": "d3b000",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 30,
+      "gun": "gunsrpg:s1897",
+      "magazine": 5,
+      "reloadTime": 100,
+      "firerate": 55,
+      "ammo": "gunsrpg:redstone",
+      "capColor": "e00000",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 12,
+      "gun": "gunsrpg:s1897",
+      "magazine": 5,
+      "reloadTime": 100,
+      "firerate": 55,
+      "ammo": "gunsrpg:diamond",
+      "capColor": "00e0e0",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 15,
+      "gun": "gunsrpg:s1897",
+      "magazine": 5,
+      "reloadTime": 100,
+      "firerate": 55,
+      "ammo": "gunsrpg:quartz",
+      "capColor": "fcffb2",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 15,
+      "gun": "gunsrpg:s1897",
+      "magazine": 5,
+      "reloadTime": 100,
+      "firerate": 55,
+      "ammo": "gunsrpg:emerald",
+      "capColor": "00ff00",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 10,
+      "gun": "gunsrpg:s1897",
+      "magazine": 5,
+      "reloadTime": 100,
+      "firerate": 55,
+      "ammo": "gunsrpg:amethyst",
+      "capColor": "dc00e0",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 7,
+      "gun": "gunsrpg:s1897",
+      "magazine": 5,
+      "reloadTime": 100,
+      "firerate": 55,
+      "ammo": "gunsrpg:netherite",
+      "capColor": "212121",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 80,
+      "gun": "gunsrpg:hk416",
+      "magazine": 30,
+      "reloadTime": 80,
+      "firerate": 2,
+      "ammo": "gunsrpg:wood",
+      "capColor": "7A5125",
+      "shootTask": {
+        "inaccuracy": 2.5,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 50
+      }
+    },
+    {
+      "weight": 70,
+      "gun": "gunsrpg:hk416",
+      "magazine": 30,
+      "reloadTime": 80,
+      "firerate": 2,
+      "ammo": "gunsrpg:stone",
+      "capColor": "727272",
+      "shootTask": {
+        "inaccuracy": 2.5,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 50
+      }
+    },
+    {
+      "weight": 45,
+      "gun": "gunsrpg:hk416",
+      "magazine": 30,
+      "reloadTime": 80,
+      "firerate": 2,
+      "ammo": "gunsrpg:iron",
+      "capColor": "D3D3D3",
+      "shootTask": {
+        "inaccuracy": 2.5,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 50
+      }
+    },
+    {
+      "weight": 50,
+      "gun": "gunsrpg:hk416",
+      "magazine": 30,
+      "reloadTime": 80,
+      "firerate": 2,
+      "ammo": "gunsrpg:lapis",
+      "capColor": "0020d8",
+      "shootTask": {
+        "inaccuracy": 2.5,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 50
+      }
+    },
+    {
+      "weight": 25,
+      "gun": "gunsrpg:hk416",
+      "magazine": 30,
+      "reloadTime": 80,
+      "firerate": 2,
+      "ammo": "gunsrpg:gold",
+      "capColor": "d3b000",
+      "shootTask": {
+        "inaccuracy": 2.5,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 50
+      }
+    },
+    {
+      "weight": 30,
+      "gun": "gunsrpg:hk416",
+      "magazine": 30,
+      "reloadTime": 80,
+      "firerate": 2,
+      "ammo": "gunsrpg:redstone",
+      "capColor": "e00000",
+      "shootTask": {
+        "inaccuracy": 2.5,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 50
+      }
+    },
+    {
+      "weight": 12,
+      "gun": "gunsrpg:hk416",
+      "magazine": 30,
+      "reloadTime": 80,
+      "firerate": 2,
+      "ammo": "gunsrpg:diamond",
+      "capColor": "00e0e0",
+      "shootTask": {
+        "inaccuracy": 2.5,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 50
+      }
+    },
+    {
+      "weight": 15,
+      "gun": "gunsrpg:hk416",
+      "magazine": 30,
+      "reloadTime": 80,
+      "firerate": 2,
+      "ammo": "gunsrpg:quartz",
+      "capColor": "fcffb2",
+      "shootTask": {
+        "inaccuracy": 2.5,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 50
+      }
+    },
+    {
+      "weight": 15,
+      "gun": "gunsrpg:hk416",
+      "magazine": 30,
+      "reloadTime": 80,
+      "firerate": 2,
+      "ammo": "gunsrpg:emerald",
+      "capColor": "00ff00",
+      "shootTask": {
+        "inaccuracy": 2.5,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 50
+      }
+    },
+    {
+      "weight": 10,
+      "gun": "gunsrpg:hk416",
+      "magazine": 30,
+      "reloadTime": 80,
+      "firerate": 2,
+      "ammo": "gunsrpg:amethyst",
+      "capColor": "dc00e0",
+      "shootTask": {
+        "inaccuracy": 2.5,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 50
+      }
+    },
+    {
+      "weight": 7,
+      "gun": "gunsrpg:hk416",
+      "magazine": 30,
+      "reloadTime": 80,
+      "firerate": 2,
+      "ammo": "gunsrpg:netherite",
+      "capColor": "212121",
+      "shootTask": {
+        "inaccuracy": 2.5,
+        "damageMultiplier": 0.4,
+        "burstSize": 3,
+        "burstDelay": 50
+      }
+    },
+    {
+      "weight": 80,
+      "gun": "gunsrpg:sks",
+      "magazine": 10,
+      "reloadTime": 80,
+      "firerate": 45,
+      "ammo": "gunsrpg:wood",
+      "capColor": "7A5125",
+      "shootTask": {
+        "inaccuracy": 1.7,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 70,
+      "gun": "gunsrpg:sks",
+      "magazine": 10,
+      "reloadTime": 80,
+      "firerate": 45,
+      "ammo": "gunsrpg:stone",
+      "capColor": "727272",
+      "shootTask": {
+        "inaccuracy": 1.7,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 45,
+      "gun": "gunsrpg:sks",
+      "magazine": 10,
+      "reloadTime": 80,
+      "firerate": 45,
+      "ammo": "gunsrpg:iron",
+      "capColor": "D3D3D3",
+      "shootTask": {
+        "inaccuracy": 1.7,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 50,
+      "gun": "gunsrpg:sks",
+      "magazine": 10,
+      "reloadTime": 80,
+      "firerate": 45,
+      "ammo": "gunsrpg:lapis",
+      "capColor": "0020d8",
+      "shootTask": {
+        "inaccuracy": 1.7,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 25,
+      "gun": "gunsrpg:sks",
+      "magazine": 10,
+      "reloadTime": 80,
+      "firerate": 45,
+      "ammo": "gunsrpg:gold",
+      "capColor": "d3b000",
+      "shootTask": {
+        "inaccuracy": 1.7,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 30,
+      "gun": "gunsrpg:sks",
+      "magazine": 10,
+      "reloadTime": 80,
+      "firerate": 45,
+      "ammo": "gunsrpg:redstone",
+      "capColor": "e00000",
+      "shootTask": {
+        "inaccuracy": 1.7,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 12,
+      "gun": "gunsrpg:sks",
+      "magazine": 10,
+      "reloadTime": 80,
+      "firerate": 45,
+      "ammo": "gunsrpg:diamond",
+      "capColor": "00e0e0",
+      "shootTask": {
+        "inaccuracy": 1.7,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 15,
+      "gun": "gunsrpg:sks",
+      "magazine": 10,
+      "reloadTime": 80,
+      "firerate": 45,
+      "ammo": "gunsrpg:quartz",
+      "capColor": "fcffb2",
+      "shootTask": {
+        "inaccuracy": 1.7,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 15,
+      "gun": "gunsrpg:sks",
+      "magazine": 10,
+      "reloadTime": 80,
+      "firerate": 45,
+      "ammo": "gunsrpg:emerald",
+      "capColor": "00ff00",
+      "shootTask": {
+        "inaccuracy": 1.7,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 10,
+      "gun": "gunsrpg:sks",
+      "magazine": 10,
+      "reloadTime": 80,
+      "firerate": 45,
+      "ammo": "gunsrpg:amethyst",
+      "capColor": "dc00e0",
+      "shootTask": {
+        "inaccuracy": 1.7,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 7,
+      "gun": "gunsrpg:sks",
+      "magazine": 10,
+      "reloadTime": 80,
+      "firerate": 45,
+      "ammo": "gunsrpg:netherite",
+      "capColor": "212121",
+      "shootTask": {
+        "inaccuracy": 1.7,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 80,
+      "gun": "gunsrpg:kar98k",
+      "magazine": 5,
+      "reloadTime": 120,
+      "firerate": 80,
+      "ammo": "gunsrpg:wood",
+      "capColor": "7A5125",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 70,
+      "gun": "gunsrpg:kar98k",
+      "magazine": 5,
+      "reloadTime": 120,
+      "firerate": 80,
+      "ammo": "gunsrpg:stone",
+      "capColor": "727272",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 45,
+      "gun": "gunsrpg:kar98k",
+      "magazine": 5,
+      "reloadTime": 120,
+      "firerate": 80,
+      "ammo": "gunsrpg:iron",
+      "capColor": "D3D3D3",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 50,
+      "gun": "gunsrpg:kar98k",
+      "magazine": 5,
+      "reloadTime": 120,
+      "firerate": 80,
+      "ammo": "gunsrpg:lapis",
+      "capColor": "0020d8",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 25,
+      "gun": "gunsrpg:kar98k",
+      "magazine": 5,
+      "reloadTime": 120,
+      "firerate": 80,
+      "ammo": "gunsrpg:gold",
+      "capColor": "d3b000",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 30,
+      "gun": "gunsrpg:kar98k",
+      "magazine": 5,
+      "reloadTime": 120,
+      "firerate": 80,
+      "ammo": "gunsrpg:redstone",
+      "capColor": "e00000",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 12,
+      "gun": "gunsrpg:kar98k",
+      "magazine": 5,
+      "reloadTime": 120,
+      "firerate": 80,
+      "ammo": "gunsrpg:diamond",
+      "capColor": "00e0e0",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 15,
+      "gun": "gunsrpg:kar98k",
+      "magazine": 5,
+      "reloadTime": 120,
+      "firerate": 80,
+      "ammo": "gunsrpg:quartz",
+      "capColor": "fcffb2",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 15,
+      "gun": "gunsrpg:kar98k",
+      "magazine": 5,
+      "reloadTime": 120,
+      "firerate": 80,
+      "ammo": "gunsrpg:emerald",
+      "capColor": "00ff00",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 10,
+      "gun": "gunsrpg:kar98k",
+      "magazine": 5,
+      "reloadTime": 120,
+      "firerate": 80,
+      "ammo": "gunsrpg:amethyst",
+      "capColor": "dc00e0",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    },
+    {
+      "weight": 7,
+      "gun": "gunsrpg:kar98k",
+      "magazine": 5,
+      "reloadTime": 120,
+      "firerate": 80,
+      "ammo": "gunsrpg:netherite",
+      "capColor": "212121",
+      "shootTask": {
+        "inaccuracy": 1.2,
+        "damageMultiplier": 0.4
+      }
+    }
+  ]
 }

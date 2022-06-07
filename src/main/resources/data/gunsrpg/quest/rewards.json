@@ -1,1588 +1,1588 @@
 {
-    "itemGroups": [
+  "itemGroups": [
+    {
+      "id": "wood_ammo",
+      "weight": 18,
+      "items": [
+        "gunsrpg:wooden_9mm",
+        "gunsrpg:wooden_45acp",
+        "gunsrpg:wooden_556mm",
+        "gunsrpg:wooden_762mm",
+        "gunsrpg:wooden_12g",
+        "gunsrpg:wooden_bolt"
+      ],
+      "assemblyFunctions": [
         {
-            "id": "wood_ammo",
-            "weight": 18,
-            "items": [
-                "gunsrpg:wooden_9mm",
-                "gunsrpg:wooden_45acp",
-                "gunsrpg:wooden_556mm",
-                "gunsrpg:wooden_762mm",
-                "gunsrpg:wooden_12g",
-                "gunsrpg:wooden_bolt"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_ammo",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "stone_ammo",
-            "weight": 18,
-            "items": [
-                "gunsrpg:stone_9mm",
-                "gunsrpg:stone_45acp",
-                "gunsrpg:stone_556mm",
-                "gunsrpg:stone_762mm",
-                "gunsrpg:stone_12g",
-                "gunsrpg:stone_bolt"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_ammo",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "iron_ammo",
-            "weight": 18,
-            "items": [
-                "gunsrpg:iron_9mm",
-                "gunsrpg:iron_45acp",
-                "gunsrpg:iron_556mm",
-                "gunsrpg:iron_762mm",
-                "gunsrpg:iron_12g",
-                "gunsrpg:iron_bolt"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_ammo",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "lapis_ammo",
-            "weight": 18,
-            "items": [
-                "gunsrpg:lapis_9mm",
-                "gunsrpg:lapis_45acp",
-                "gunsrpg:lapis_556mm",
-                "gunsrpg:lapis_762mm",
-                "gunsrpg:lapis_12g",
-                "gunsrpg:lapis_bolt"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_ammo",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "gold_ammo",
-            "weight": 18,
-            "items": [
-                "gunsrpg:gold_9mm",
-                "gunsrpg:gold_45acp",
-                "gunsrpg:gold_556mm",
-                "gunsrpg:gold_762mm",
-                "gunsrpg:gold_12g",
-                "gunsrpg:gold_bolt"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_ammo",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "redstone_ammo",
-            "weight": 18,
-            "items": [
-                "gunsrpg:redstone_9mm",
-                "gunsrpg:redstone_45acp",
-                "gunsrpg:redstone_556mm",
-                "gunsrpg:redstone_762mm",
-                "gunsrpg:redstone_12g",
-                "gunsrpg:redstone_bolt"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_ammo",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "diamond_ammo",
-            "weight": 18,
-            "items": [
-                "gunsrpg:diamond_9mm",
-                "gunsrpg:diamond_45acp",
-                "gunsrpg:diamond_556mm",
-                "gunsrpg:diamond_762mm",
-                "gunsrpg:diamond_12g",
-                "gunsrpg:diamond_bolt"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_ammo",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "quartz_ammo",
-            "weight": 18,
-            "items": [
-                "gunsrpg:quartz_9mm",
-                "gunsrpg:quartz_45acp",
-                "gunsrpg:quartz_556mm",
-                "gunsrpg:quartz_762mm",
-                "gunsrpg:quartz_12g",
-                "gunsrpg:quartz_bolt"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_ammo",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "emerald_ammo",
-            "weight": 18,
-            "items": [
-                "gunsrpg:emerald_9mm",
-                "gunsrpg:emerald_45acp",
-                "gunsrpg:emerald_556mm",
-                "gunsrpg:emerald_762mm",
-                "gunsrpg:emerald_12g",
-                "gunsrpg:emerald_bolt"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_ammo",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "amethyst_ammo",
-            "weight": 18,
-            "items": [
-                "gunsrpg:amethyst_9mm",
-                "gunsrpg:amethyst_45acp",
-                "gunsrpg:amethyst_556mm",
-                "gunsrpg:amethyst_762mm",
-                "gunsrpg:amethyst_12g",
-                "gunsrpg:amethyst_bolt"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_ammo",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "netherite_ammo",
-            "weight": 18,
-            "items": [
-                "gunsrpg:netherite_9mm",
-                "gunsrpg:netherite_45acp",
-                "gunsrpg:netherite_556mm",
-                "gunsrpg:netherite_762mm",
-                "gunsrpg:netherite_12g",
-                "gunsrpg:netherite_bolt"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_ammo",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "meds",
-            "weight": 24,
-            "items": [
-                "gunsrpg:antidotum_pills",
-                "gunsrpg:vaccine",
-                "gunsrpg:plaster_cast",
-                "gunsrpg:bandage",
-                "gunsrpg:analgetics",
-                "gunsrpg:adrenaline",
-                "gunsrpg:painkillers",
-                "gunsrpg:morphine",
-                "gunsrpg:steroids"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_meds",
-                    "operation": "gunsrpg:sum"
-                }
-            ]
-        },
-        {
-            "id": "stims",
-            "weight": 24,
-            "items": [
-                "gunsrpg:hemostat",
-                "gunsrpg:vitamins",
-                "gunsrpg:propital",
-                "gunsrpg:calcium_shot"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_meds",
-                    "operation": "gunsrpg:sum"
-                }
-            ]
-        },
-        {
-            "id": "grenades",
-            "weight": 18,
-            "items": [
-                "gunsrpg:grenade",
-                "gunsrpg:massive_grenade",
-                "gunsrpg:impact_grenade"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_explosives",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "mines",
-            "weight": 15,
-            "items": [
-                "gunsrpg:landmine",
-                "gunsrpg:large_landmine",
-                "gunsrpg:hidden_landmine"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_explosives",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "gl",
-            "weight": 18,
-            "items": [
-                "gunsrpg:explosive_grenade_launcher_shell",
-                "gunsrpg:tear_gas_grenade_launcher_shell",
-                "gunsrpg:sticky_grenade_launcher_shell",
-                "gunsrpg:high_explosive_grenade_launcher_shell",
-                "gunsrpg:impact_grenade_launcher_shell"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_explosives",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "rl",
-            "weight": 18,
-            "items": [
-                "gunsrpg:rocket",
-                "gunsrpg:toxin_rocket",
-                "gunsrpg:demolition_rocket",
-                "gunsrpg:napalm_rocket",
-                "gunsrpg:high_explosive_rocket"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_explosives",
-                    "operation": "gunsrpg:mul"
-                }
-            ]
-        },
-        {
-            "id": "crystals",
-            "weight": 18,
-            "items": [
-                "gunsrpg:white_crystal",
-                "gunsrpg:yellow_crystal",
-                "gunsrpg:green_crystal",
-                "gunsrpg:blue_crystal",
-                "gunsrpg:red_crystal",
-                "gunsrpg:black_crystal"
-            ]
-        },
-        {
-            "id": "orbsp",
-            "weight": 18,
-            "items": [
-                "gunsrpg:white_orb_of_purity",
-                "gunsrpg:black_orb_of_purity",
-                "gunsrpg:blue_orb_of_purity",
-                "gunsrpg:green_orb_of_purity",
-                "gunsrpg:red_orb_of_purity",
-                "gunsrpg:yellow_orb_of_purity"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_orbs",
-                    "operation": "gunsrpg:sum"
-                }
-            ]
-        },
-        {
-            "id": "orbst",
-            "weight": 18,
-            "items": [
-                "gunsrpg:white_orb_of_transmutation",
-                "gunsrpg:black_orb_of_transmutation",
-                "gunsrpg:blue_orb_of_transmutation",
-                "gunsrpg:green_orb_of_transmutation",
-                "gunsrpg:red_orb_of_transmutation",
-                "gunsrpg:yellow_orb_of_transmutation"
-            ],
-            "assemblyFunctions": [
-                {
-                    "type": "gunsrpg:output_modifier",
-                    "attribute": "gunsrpg:quests_orbs",
-                    "operation": "gunsrpg:sum"
-                }
-            ]
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_ammo",
+          "operation": "gunsrpg:mul"
         }
-    ],
-    "rewards": [
+      ]
+    },
+    {
+      "id": "stone_ammo",
+      "weight": 18,
+      "items": [
+        "gunsrpg:stone_9mm",
+        "gunsrpg:stone_45acp",
+        "gunsrpg:stone_556mm",
+        "gunsrpg:stone_762mm",
+        "gunsrpg:stone_12g",
+        "gunsrpg:stone_bolt"
+      ],
+      "assemblyFunctions": [
         {
-            "tier": 1,
-            "items": [
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "wood_ammo",
-                    "count": 30
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "stone_ammo",
-                    "count": 25
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "iron_ammo",
-                    "count": 20
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "lapis_ammo",
-                    "count": 20
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "gold_ammo",
-                    "count": 10
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "redstone_ammo",
-                    "count": 10
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "meds",
-                    "count": 1
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "stims",
-                    "count": 1
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbst",
-                    "count": 1
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbsp",
-                    "count": 1
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "grenades",
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "mines",
-                    "count": 2
-                }
-            ]
-        },
-        {
-            "tier": 2,
-            "items": [
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "wood_ammo",
-                    "count": 50
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "stone_ammo",
-                    "count": 40
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "iron_ammo",
-                    "count": 30
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "lapis_ammo",
-                    "count": 30
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "gold_ammo",
-                    "count": 25
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "redstone_ammo",
-                    "count": 25
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "emerald_ammo",
-                    "count": 10
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "quartz_ammo",
-                    "count": 10
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:lunch_box",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "meds",
-                    "count": 1
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "stims",
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:perkpoint_book",
-                    "weight": 18,
-                    "count": 1,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:output_modifier",
-                            "attribute": "gunsrpg:quests_perkbook",
-                            "operation": "gunsrpg:sum"
-                        }
-                    ]
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbst",
-                    "count": 1
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbsp",
-                    "count": 1
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "grenades",
-                    "count": 4
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "mines",
-                    "count": 4
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "gl",
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "crystals",
-                    "count": 1,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:crystal",
-                            "crystal": {
-                                "level": {
-                                    "function": "gunsrpg:const",
-                                    "value": 2
-                                },
-                                "buffs": {
-                                    "function": "gunsrpg:rng",
-                                    "min": 2,
-                                    "max": 5
-                                },
-                                "debuffs": {
-                                    "function": "gunsrpg:rng",
-                                    "min": 0,
-                                    "max": 3
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "tier": 3,
-            "items": [
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "wood_ammo",
-                    "count": 60
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "stone_ammo",
-                    "count": 50
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "iron_ammo",
-                    "count": 40
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "lapis_ammo",
-                    "count": 40
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "gold_ammo",
-                    "count": 30
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "redstone_ammo",
-                    "count": 30
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "emerald_ammo",
-                    "count": 20
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "quartz_ammo",
-                    "count": 20
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "diamond_ammo",
-                    "count": 10
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:lunch_box"
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:ammo_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:crystal_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "meds",
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "stims",
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:ufak",
-                    "weight": 14
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:flare",
-                    "weight": 10,
-                    "count": 1,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:output_modifier",
-                            "attribute": "gunsrpg:quests_flare",
-                            "operation": "gunsrpg:sum"
-                        }
-                    ]
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:skillpoint_book",
-                    "weight": 12
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:perkpoint_book",
-                    "weight": 18,
-                    "count": 2,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:output_modifier",
-                            "attribute": "gunsrpg:quests_perkbook",
-                            "operation": "gunsrpg:sum"
-                        }
-                    ]
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbst",
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbsp",
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "grenades",
-                    "count": 4
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "mines",
-                    "count": 4
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "gl",
-                    "count": 4
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "rl",
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "crystals",
-                    "count": 1,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:crystal",
-                            "crystal": {
-                                "level": {
-                                    "function": "gunsrpg:const",
-                                    "value": 3
-                                },
-                                "buffs": {
-                                    "function": "gunsrpg:rng",
-                                    "min": 2,
-                                    "max": 5
-                                },
-                                "debuffs": {
-                                    "function": "gunsrpg:rng",
-                                    "min": 0,
-                                    "max": 3
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "tier": 4,
-            "items": [
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "wood_ammo",
-                    "count": 80
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "stone_ammo",
-                    "count": 60
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "iron_ammo",
-                    "count": 60
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "lapis_ammo",
-                    "count": 60
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "gold_ammo",
-                    "count": 50
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "redstone_ammo",
-                    "count": 50
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "emerald_ammo",
-                    "count": 40
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "quartz_ammo",
-                    "count": 40
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "diamond_ammo",
-                    "count": 30
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:lunch_box",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:ammo_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:crystal_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:grenade_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:meds_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "meds",
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "stims",
-                    "count": 3
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:ufak",
-                    "weight": 17
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:flare",
-                    "weight": 10,
-                    "count": 1,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:output_modifier",
-                            "attribute": "gunsrpg:quests_flare",
-                            "operation": "gunsrpg:sum"
-                        }
-                    ]
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:skillpoint_book",
-                    "weight": 12,
-                    "count": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:perkpoint_book",
-                    "weight": 18,
-                    "count": 2,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:output_modifier",
-                            "attribute": "gunsrpg:quests_perkbook",
-                            "operation": "gunsrpg:sum"
-                        }
-                    ]
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbst",
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbsp",
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "grenades",
-                    "count": 6
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "mines",
-                    "count": 6
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "gl",
-                    "count": 4
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "rl",
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "crystals",
-                    "count": 1,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:crystal",
-                            "crystal": {
-                                "level": {
-                                    "function": "gunsrpg:const",
-                                    "value": 4
-                                },
-                                "buffs": {
-                                    "function": "gunsrpg:rng",
-                                    "min": 2,
-                                    "max": 5
-                                },
-                                "debuffs": {
-                                    "function": "gunsrpg:rng",
-                                    "min": 0,
-                                    "max": 3
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "tier": 5,
-            "items": [
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "stone_ammo",
-                    "count": 90
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "iron_ammo",
-                    "count": 70
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "lapis_ammo",
-                    "count": 70
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "gold_ammo",
-                    "count": 60
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "redstone_ammo",
-                    "count": 60
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "emerald_ammo",
-                    "count": 50
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "quartz_ammo",
-                    "count": 50
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "diamond_ammo",
-                    "count": 40
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "amethyst_ammo",
-                    "count": 30
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:ammo_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:crystal_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:grenade_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:meds_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:item_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "meds",
-                    "count": 3
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "stims",
-                    "count": 3
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:ufak",
-                    "weight": 17,
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:kodiak",
-                    "weight": 14,
-                    "count": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:flare",
-                    "weight": 10,
-                    "count": 1,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:output_modifier",
-                            "attribute": "gunsrpg:quests_flare",
-                            "operation": "gunsrpg:sum"
-                        }
-                    ]
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:skillpoint_book",
-                    "weight": 12,
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:perkpoint_book",
-                    "weight": 18,
-                    "count": 3,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:output_modifier",
-                            "attribute": "gunsrpg:quests_perkbook",
-                            "operation": "gunsrpg:sum"
-                        }
-                    ]
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbst",
-                    "count": 3
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbsp",
-                    "count": 3
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "grenades",
-                    "count": 6
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "mines",
-                    "count": 6
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "gl",
-                    "count": 6
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "rl",
-                    "count": 4
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "crystals",
-                    "count": 1,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:crystal",
-                            "crystal": {
-                                "level": {
-                                    "function": "gunsrpg:const",
-                                    "value": 5
-                                },
-                                "buffs": {
-                                    "function": "gunsrpg:rng",
-                                    "min": 2,
-                                    "max": 5
-                                },
-                                "debuffs": {
-                                    "function": "gunsrpg:rng",
-                                    "min": 0,
-                                    "max": 3
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "tier": 6,
-            "items": [
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "iron_ammo",
-                    "count": 100
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "lapis_ammo",
-                    "count": 100
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "gold_ammo",
-                    "count": 75
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "redstone_ammo",
-                    "count": 75
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "emerald_ammo",
-                    "count": 65
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "quartz_ammo",
-                    "count": 65
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "diamond_ammo",
-                    "count": 50
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "amethyst_ammo",
-                    "count": 40
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "netherite_ammo",
-                    "count": 15
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:ammo_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:crystal_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:grenade_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:meds_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:item_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "meds",
-                    "count": 3
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "stims",
-                    "count": 4
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:ufak",
-                    "weight": 17,
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:kodiak",
-                    "weight": 14,
-                    "count": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:flare",
-                    "weight": 10,
-                    "count": 1,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:output_modifier",
-                            "attribute": "gunsrpg:quests_flare",
-                            "operation": "gunsrpg:sum"
-                        }
-                    ]
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:skillpoint_book",
-                    "weight": 12,
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:perkpoint_book",
-                    "weight": 18,
-                    "count": 4,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:output_modifier",
-                            "attribute": "gunsrpg:quests_perkbook",
-                            "operation": "gunsrpg:sum"
-                        }
-                    ]
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbst",
-                    "count": 4
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbsp",
-                    "count": 4
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "grenades",
-                    "count": 8
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "mines",
-                    "count": 8
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "gl",
-                    "count": 8
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "rl",
-                    "count": 6
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "crystals",
-                    "count": 1,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:crystal",
-                            "crystal": {
-                                "level": {
-                                    "function": "gunsrpg:const",
-                                    "value": 6
-                                },
-                                "buffs": {
-                                    "function": "gunsrpg:rng",
-                                    "min": 2,
-                                    "max": 5
-                                },
-                                "debuffs": {
-                                    "function": "gunsrpg:rng",
-                                    "min": 0,
-                                    "max": 3
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "tier": 7,
-            "items": [
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "gold_ammo",
-                    "count": 90
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "redstone_ammo",
-                    "count": 90
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "emerald_ammo",
-                    "count": 75
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "quartz_ammo",
-                    "count": 75
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "diamond_ammo",
-                    "count": 65
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "amethyst_ammo",
-                    "count": 50
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "netherite_ammo",
-                    "count": 25
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:crystal_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:grenade_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:meds_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:item_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "meds",
-                    "count": 4
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "stims",
-                    "count": 5
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:kodiak",
-                    "weight": 18,
-                    "count": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:flare",
-                    "weight": 10,
-                    "count": 2,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:output_modifier",
-                            "attribute": "gunsrpg:quests_flare",
-                            "operation": "gunsrpg:sum"
-                        }
-                    ]
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:skillpoint_book",
-                    "weight": 12,
-                    "count": 3
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:perkpoint_book",
-                    "weight": 18,
-                    "count": 5,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:output_modifier",
-                            "attribute": "gunsrpg:quests_perkbook",
-                            "operation": "gunsrpg:sum"
-                        }
-                    ]
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbst",
-                    "count": 5
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbsp",
-                    "count": 5
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "grenades",
-                    "count": 10
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "mines",
-                    "count": 8
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "gl",
-                    "count": 10
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "rl",
-                    "count": 8
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "crystals",
-                    "count": 1,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:crystal",
-                            "crystal": {
-                                "level": {
-                                    "function": "gunsrpg:const",
-                                    "value": 7
-                                },
-                                "buffs": {
-                                    "function": "gunsrpg:rng",
-                                    "min": 2,
-                                    "max": 5
-                                },
-                                "debuffs": {
-                                    "function": "gunsrpg:rng",
-                                    "min": 0,
-                                    "max": 3
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "tier": 8,
-            "items": [
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "emerald_ammo",
-                    "count": 90
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "quartz_ammo",
-                    "count": 90
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "diamond_ammo",
-                    "count": 80
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "amethyst_ammo",
-                    "count": 60
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "netherite_ammo",
-                    "count": 40
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:grenade_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:meds_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:item_case",
-                    "weight": 1
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "meds",
-                    "count": 5
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "stims",
-                    "count": 6
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:kodiak",
-                    "weight": 18,
-                    "count": 2
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:flare",
-                    "weight": 10,
-                    "count": 2,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:output_modifier",
-                            "attribute": "gunsrpg:quests_flare",
-                            "operation": "gunsrpg:sum"
-                        }
-                    ]
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:skillpoint_book",
-                    "weight": 12,
-                    "count": 4
-                },
-                {
-                    "type": "gunsrpg:item",
-                    "item": "gunsrpg:perkpoint_book",
-                    "weight": 18,
-                    "count": 6,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:output_modifier",
-                            "attribute": "gunsrpg:quests_perkbook",
-                            "operation": "gunsrpg:sum"
-                        }
-                    ]
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbst",
-                    "count": 7
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "orbsp",
-                    "count": 7
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "grenades",
-                    "count": 12
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "mines",
-                    "count": 10
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "gl",
-                    "count": 12
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "rl",
-                    "count": 10
-                },
-                {
-                    "type": "gunsrpg:item_group",
-                    "group": "crystals",
-                    "count": 1,
-                    "assemblyFunctions": [
-                        {
-                            "type": "gunsrpg:crystal",
-                            "crystal": {
-                                "level": {
-                                    "function": "gunsrpg:const",
-                                    "value": 8
-                                },
-                                "buffs": {
-                                    "function": "gunsrpg:rng",
-                                    "min": 2,
-                                    "max": 5
-                                },
-                                "debuffs": {
-                                    "function": "gunsrpg:rng",
-                                    "min": 0,
-                                    "max": 3
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_ammo",
+          "operation": "gunsrpg:mul"
         }
-    ]
+      ]
+    },
+    {
+      "id": "iron_ammo",
+      "weight": 18,
+      "items": [
+        "gunsrpg:iron_9mm",
+        "gunsrpg:iron_45acp",
+        "gunsrpg:iron_556mm",
+        "gunsrpg:iron_762mm",
+        "gunsrpg:iron_12g",
+        "gunsrpg:iron_bolt"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_ammo",
+          "operation": "gunsrpg:mul"
+        }
+      ]
+    },
+    {
+      "id": "lapis_ammo",
+      "weight": 18,
+      "items": [
+        "gunsrpg:lapis_9mm",
+        "gunsrpg:lapis_45acp",
+        "gunsrpg:lapis_556mm",
+        "gunsrpg:lapis_762mm",
+        "gunsrpg:lapis_12g",
+        "gunsrpg:lapis_bolt"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_ammo",
+          "operation": "gunsrpg:mul"
+        }
+      ]
+    },
+    {
+      "id": "gold_ammo",
+      "weight": 18,
+      "items": [
+        "gunsrpg:gold_9mm",
+        "gunsrpg:gold_45acp",
+        "gunsrpg:gold_556mm",
+        "gunsrpg:gold_762mm",
+        "gunsrpg:gold_12g",
+        "gunsrpg:gold_bolt"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_ammo",
+          "operation": "gunsrpg:mul"
+        }
+      ]
+    },
+    {
+      "id": "redstone_ammo",
+      "weight": 18,
+      "items": [
+        "gunsrpg:redstone_9mm",
+        "gunsrpg:redstone_45acp",
+        "gunsrpg:redstone_556mm",
+        "gunsrpg:redstone_762mm",
+        "gunsrpg:redstone_12g",
+        "gunsrpg:redstone_bolt"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_ammo",
+          "operation": "gunsrpg:mul"
+        }
+      ]
+    },
+    {
+      "id": "diamond_ammo",
+      "weight": 18,
+      "items": [
+        "gunsrpg:diamond_9mm",
+        "gunsrpg:diamond_45acp",
+        "gunsrpg:diamond_556mm",
+        "gunsrpg:diamond_762mm",
+        "gunsrpg:diamond_12g",
+        "gunsrpg:diamond_bolt"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_ammo",
+          "operation": "gunsrpg:mul"
+        }
+      ]
+    },
+    {
+      "id": "quartz_ammo",
+      "weight": 18,
+      "items": [
+        "gunsrpg:quartz_9mm",
+        "gunsrpg:quartz_45acp",
+        "gunsrpg:quartz_556mm",
+        "gunsrpg:quartz_762mm",
+        "gunsrpg:quartz_12g",
+        "gunsrpg:quartz_bolt"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_ammo",
+          "operation": "gunsrpg:mul"
+        }
+      ]
+    },
+    {
+      "id": "emerald_ammo",
+      "weight": 18,
+      "items": [
+        "gunsrpg:emerald_9mm",
+        "gunsrpg:emerald_45acp",
+        "gunsrpg:emerald_556mm",
+        "gunsrpg:emerald_762mm",
+        "gunsrpg:emerald_12g",
+        "gunsrpg:emerald_bolt"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_ammo",
+          "operation": "gunsrpg:mul"
+        }
+      ]
+    },
+    {
+      "id": "amethyst_ammo",
+      "weight": 18,
+      "items": [
+        "gunsrpg:amethyst_9mm",
+        "gunsrpg:amethyst_45acp",
+        "gunsrpg:amethyst_556mm",
+        "gunsrpg:amethyst_762mm",
+        "gunsrpg:amethyst_12g",
+        "gunsrpg:amethyst_bolt"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_ammo",
+          "operation": "gunsrpg:mul"
+        }
+      ]
+    },
+    {
+      "id": "netherite_ammo",
+      "weight": 18,
+      "items": [
+        "gunsrpg:netherite_9mm",
+        "gunsrpg:netherite_45acp",
+        "gunsrpg:netherite_556mm",
+        "gunsrpg:netherite_762mm",
+        "gunsrpg:netherite_12g",
+        "gunsrpg:netherite_bolt"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_ammo",
+          "operation": "gunsrpg:mul"
+        }
+      ]
+    },
+    {
+      "id": "meds",
+      "weight": 24,
+      "items": [
+        "gunsrpg:antidotum_pills",
+        "gunsrpg:vaccine",
+        "gunsrpg:plaster_cast",
+        "gunsrpg:bandage",
+        "gunsrpg:analgetics",
+        "gunsrpg:adrenaline",
+        "gunsrpg:painkillers",
+        "gunsrpg:morphine",
+        "gunsrpg:steroids"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_meds",
+          "operation": "gunsrpg:sum"
+        }
+      ]
+    },
+    {
+      "id": "stims",
+      "weight": 24,
+      "items": [
+        "gunsrpg:hemostat",
+        "gunsrpg:vitamins",
+        "gunsrpg:propital",
+        "gunsrpg:calcium_shot"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_meds",
+          "operation": "gunsrpg:sum"
+        }
+      ]
+    },
+    {
+      "id": "grenades",
+      "weight": 18,
+      "items": [
+        "gunsrpg:grenade",
+        "gunsrpg:massive_grenade",
+        "gunsrpg:impact_grenade"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_explosives",
+          "operation": "gunsrpg:mul"
+        }
+      ]
+    },
+    {
+      "id": "mines",
+      "weight": 15,
+      "items": [
+        "gunsrpg:landmine",
+        "gunsrpg:large_landmine",
+        "gunsrpg:hidden_landmine"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_explosives",
+          "operation": "gunsrpg:mul"
+        }
+      ]
+    },
+    {
+      "id": "gl",
+      "weight": 18,
+      "items": [
+        "gunsrpg:explosive_grenade_launcher_shell",
+        "gunsrpg:tear_gas_grenade_launcher_shell",
+        "gunsrpg:sticky_grenade_launcher_shell",
+        "gunsrpg:high_explosive_grenade_launcher_shell",
+        "gunsrpg:impact_grenade_launcher_shell"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_explosives",
+          "operation": "gunsrpg:mul"
+        }
+      ]
+    },
+    {
+      "id": "rl",
+      "weight": 18,
+      "items": [
+        "gunsrpg:rocket",
+        "gunsrpg:toxin_rocket",
+        "gunsrpg:demolition_rocket",
+        "gunsrpg:napalm_rocket",
+        "gunsrpg:high_explosive_rocket"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_explosives",
+          "operation": "gunsrpg:mul"
+        }
+      ]
+    },
+    {
+      "id": "crystals",
+      "weight": 18,
+      "items": [
+        "gunsrpg:white_crystal",
+        "gunsrpg:yellow_crystal",
+        "gunsrpg:green_crystal",
+        "gunsrpg:blue_crystal",
+        "gunsrpg:red_crystal",
+        "gunsrpg:black_crystal"
+      ]
+    },
+    {
+      "id": "orbsp",
+      "weight": 18,
+      "items": [
+        "gunsrpg:white_orb_of_purity",
+        "gunsrpg:black_orb_of_purity",
+        "gunsrpg:blue_orb_of_purity",
+        "gunsrpg:green_orb_of_purity",
+        "gunsrpg:red_orb_of_purity",
+        "gunsrpg:yellow_orb_of_purity"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_orbs",
+          "operation": "gunsrpg:sum"
+        }
+      ]
+    },
+    {
+      "id": "orbst",
+      "weight": 18,
+      "items": [
+        "gunsrpg:white_orb_of_transmutation",
+        "gunsrpg:black_orb_of_transmutation",
+        "gunsrpg:blue_orb_of_transmutation",
+        "gunsrpg:green_orb_of_transmutation",
+        "gunsrpg:red_orb_of_transmutation",
+        "gunsrpg:yellow_orb_of_transmutation"
+      ],
+      "assemblyFunctions": [
+        {
+          "type": "gunsrpg:output_modifier",
+          "attribute": "gunsrpg:quests_orbs",
+          "operation": "gunsrpg:sum"
+        }
+      ]
+    }
+  ],
+  "rewards": [
+    {
+      "tier": 1,
+      "items": [
+        {
+          "type": "gunsrpg:item_group",
+          "group": "wood_ammo",
+          "count": 30
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "stone_ammo",
+          "count": 25
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "iron_ammo",
+          "count": 20
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "lapis_ammo",
+          "count": 20
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "gold_ammo",
+          "count": 10
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "redstone_ammo",
+          "count": 10
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "meds",
+          "count": 1
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "stims",
+          "count": 1
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbst",
+          "count": 1
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbsp",
+          "count": 1
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "grenades",
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "mines",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "tier": 2,
+      "items": [
+        {
+          "type": "gunsrpg:item_group",
+          "group": "wood_ammo",
+          "count": 50
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "stone_ammo",
+          "count": 40
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "iron_ammo",
+          "count": 30
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "lapis_ammo",
+          "count": 30
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "gold_ammo",
+          "count": 25
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "redstone_ammo",
+          "count": 25
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "emerald_ammo",
+          "count": 10
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "quartz_ammo",
+          "count": 10
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:lunch_box",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "meds",
+          "count": 1
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "stims",
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:perkpoint_book",
+          "weight": 18,
+          "count": 1,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:output_modifier",
+              "attribute": "gunsrpg:quests_perkbook",
+              "operation": "gunsrpg:sum"
+            }
+          ]
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbst",
+          "count": 1
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbsp",
+          "count": 1
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "grenades",
+          "count": 4
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "mines",
+          "count": 4
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "gl",
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "crystals",
+          "count": 1,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:crystal",
+              "crystal": {
+                "level": {
+                  "function": "gunsrpg:const",
+                  "value": 2
+                },
+                "buffs": {
+                  "function": "gunsrpg:rng",
+                  "min": 2,
+                  "max": 5
+                },
+                "debuffs": {
+                  "function": "gunsrpg:rng",
+                  "min": 0,
+                  "max": 3
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tier": 3,
+      "items": [
+        {
+          "type": "gunsrpg:item_group",
+          "group": "wood_ammo",
+          "count": 60
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "stone_ammo",
+          "count": 50
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "iron_ammo",
+          "count": 40
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "lapis_ammo",
+          "count": 40
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "gold_ammo",
+          "count": 30
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "redstone_ammo",
+          "count": 30
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "emerald_ammo",
+          "count": 20
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "quartz_ammo",
+          "count": 20
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "diamond_ammo",
+          "count": 10
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:lunch_box"
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:ammo_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:crystal_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "meds",
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "stims",
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:ufak",
+          "weight": 14
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:flare",
+          "weight": 10,
+          "count": 1,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:output_modifier",
+              "attribute": "gunsrpg:quests_flare",
+              "operation": "gunsrpg:sum"
+            }
+          ]
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:skillpoint_book",
+          "weight": 12
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:perkpoint_book",
+          "weight": 18,
+          "count": 2,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:output_modifier",
+              "attribute": "gunsrpg:quests_perkbook",
+              "operation": "gunsrpg:sum"
+            }
+          ]
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbst",
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbsp",
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "grenades",
+          "count": 4
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "mines",
+          "count": 4
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "gl",
+          "count": 4
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "rl",
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "crystals",
+          "count": 1,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:crystal",
+              "crystal": {
+                "level": {
+                  "function": "gunsrpg:const",
+                  "value": 3
+                },
+                "buffs": {
+                  "function": "gunsrpg:rng",
+                  "min": 2,
+                  "max": 5
+                },
+                "debuffs": {
+                  "function": "gunsrpg:rng",
+                  "min": 0,
+                  "max": 3
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tier": 4,
+      "items": [
+        {
+          "type": "gunsrpg:item_group",
+          "group": "wood_ammo",
+          "count": 80
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "stone_ammo",
+          "count": 60
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "iron_ammo",
+          "count": 60
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "lapis_ammo",
+          "count": 60
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "gold_ammo",
+          "count": 50
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "redstone_ammo",
+          "count": 50
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "emerald_ammo",
+          "count": 40
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "quartz_ammo",
+          "count": 40
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "diamond_ammo",
+          "count": 30
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:lunch_box",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:ammo_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:crystal_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:grenade_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:meds_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "meds",
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "stims",
+          "count": 3
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:ufak",
+          "weight": 17
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:flare",
+          "weight": 10,
+          "count": 1,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:output_modifier",
+              "attribute": "gunsrpg:quests_flare",
+              "operation": "gunsrpg:sum"
+            }
+          ]
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:skillpoint_book",
+          "weight": 12,
+          "count": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:perkpoint_book",
+          "weight": 18,
+          "count": 2,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:output_modifier",
+              "attribute": "gunsrpg:quests_perkbook",
+              "operation": "gunsrpg:sum"
+            }
+          ]
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbst",
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbsp",
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "grenades",
+          "count": 6
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "mines",
+          "count": 6
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "gl",
+          "count": 4
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "rl",
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "crystals",
+          "count": 1,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:crystal",
+              "crystal": {
+                "level": {
+                  "function": "gunsrpg:const",
+                  "value": 4
+                },
+                "buffs": {
+                  "function": "gunsrpg:rng",
+                  "min": 2,
+                  "max": 5
+                },
+                "debuffs": {
+                  "function": "gunsrpg:rng",
+                  "min": 0,
+                  "max": 3
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tier": 5,
+      "items": [
+        {
+          "type": "gunsrpg:item_group",
+          "group": "stone_ammo",
+          "count": 90
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "iron_ammo",
+          "count": 70
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "lapis_ammo",
+          "count": 70
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "gold_ammo",
+          "count": 60
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "redstone_ammo",
+          "count": 60
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "emerald_ammo",
+          "count": 50
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "quartz_ammo",
+          "count": 50
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "diamond_ammo",
+          "count": 40
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "amethyst_ammo",
+          "count": 30
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:ammo_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:crystal_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:grenade_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:meds_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:item_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "meds",
+          "count": 3
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "stims",
+          "count": 3
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:ufak",
+          "weight": 17,
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:kodiak",
+          "weight": 14,
+          "count": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:flare",
+          "weight": 10,
+          "count": 1,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:output_modifier",
+              "attribute": "gunsrpg:quests_flare",
+              "operation": "gunsrpg:sum"
+            }
+          ]
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:skillpoint_book",
+          "weight": 12,
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:perkpoint_book",
+          "weight": 18,
+          "count": 3,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:output_modifier",
+              "attribute": "gunsrpg:quests_perkbook",
+              "operation": "gunsrpg:sum"
+            }
+          ]
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbst",
+          "count": 3
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbsp",
+          "count": 3
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "grenades",
+          "count": 6
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "mines",
+          "count": 6
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "gl",
+          "count": 6
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "rl",
+          "count": 4
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "crystals",
+          "count": 1,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:crystal",
+              "crystal": {
+                "level": {
+                  "function": "gunsrpg:const",
+                  "value": 5
+                },
+                "buffs": {
+                  "function": "gunsrpg:rng",
+                  "min": 2,
+                  "max": 5
+                },
+                "debuffs": {
+                  "function": "gunsrpg:rng",
+                  "min": 0,
+                  "max": 3
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tier": 6,
+      "items": [
+        {
+          "type": "gunsrpg:item_group",
+          "group": "iron_ammo",
+          "count": 100
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "lapis_ammo",
+          "count": 100
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "gold_ammo",
+          "count": 75
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "redstone_ammo",
+          "count": 75
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "emerald_ammo",
+          "count": 65
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "quartz_ammo",
+          "count": 65
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "diamond_ammo",
+          "count": 50
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "amethyst_ammo",
+          "count": 40
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "netherite_ammo",
+          "count": 15
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:ammo_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:crystal_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:grenade_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:meds_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:item_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "meds",
+          "count": 3
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "stims",
+          "count": 4
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:ufak",
+          "weight": 17,
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:kodiak",
+          "weight": 14,
+          "count": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:flare",
+          "weight": 10,
+          "count": 1,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:output_modifier",
+              "attribute": "gunsrpg:quests_flare",
+              "operation": "gunsrpg:sum"
+            }
+          ]
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:skillpoint_book",
+          "weight": 12,
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:perkpoint_book",
+          "weight": 18,
+          "count": 4,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:output_modifier",
+              "attribute": "gunsrpg:quests_perkbook",
+              "operation": "gunsrpg:sum"
+            }
+          ]
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbst",
+          "count": 4
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbsp",
+          "count": 4
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "grenades",
+          "count": 8
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "mines",
+          "count": 8
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "gl",
+          "count": 8
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "rl",
+          "count": 6
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "crystals",
+          "count": 1,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:crystal",
+              "crystal": {
+                "level": {
+                  "function": "gunsrpg:const",
+                  "value": 6
+                },
+                "buffs": {
+                  "function": "gunsrpg:rng",
+                  "min": 2,
+                  "max": 5
+                },
+                "debuffs": {
+                  "function": "gunsrpg:rng",
+                  "min": 0,
+                  "max": 3
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tier": 7,
+      "items": [
+        {
+          "type": "gunsrpg:item_group",
+          "group": "gold_ammo",
+          "count": 90
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "redstone_ammo",
+          "count": 90
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "emerald_ammo",
+          "count": 75
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "quartz_ammo",
+          "count": 75
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "diamond_ammo",
+          "count": 65
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "amethyst_ammo",
+          "count": 50
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "netherite_ammo",
+          "count": 25
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:crystal_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:grenade_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:meds_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:item_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "meds",
+          "count": 4
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "stims",
+          "count": 5
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:kodiak",
+          "weight": 18,
+          "count": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:flare",
+          "weight": 10,
+          "count": 2,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:output_modifier",
+              "attribute": "gunsrpg:quests_flare",
+              "operation": "gunsrpg:sum"
+            }
+          ]
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:skillpoint_book",
+          "weight": 12,
+          "count": 3
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:perkpoint_book",
+          "weight": 18,
+          "count": 5,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:output_modifier",
+              "attribute": "gunsrpg:quests_perkbook",
+              "operation": "gunsrpg:sum"
+            }
+          ]
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbst",
+          "count": 5
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbsp",
+          "count": 5
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "grenades",
+          "count": 10
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "mines",
+          "count": 8
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "gl",
+          "count": 10
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "rl",
+          "count": 8
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "crystals",
+          "count": 1,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:crystal",
+              "crystal": {
+                "level": {
+                  "function": "gunsrpg:const",
+                  "value": 7
+                },
+                "buffs": {
+                  "function": "gunsrpg:rng",
+                  "min": 2,
+                  "max": 5
+                },
+                "debuffs": {
+                  "function": "gunsrpg:rng",
+                  "min": 0,
+                  "max": 3
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tier": 8,
+      "items": [
+        {
+          "type": "gunsrpg:item_group",
+          "group": "emerald_ammo",
+          "count": 90
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "quartz_ammo",
+          "count": 90
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "diamond_ammo",
+          "count": 80
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "amethyst_ammo",
+          "count": 60
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "netherite_ammo",
+          "count": 40
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:grenade_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:meds_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:item_case",
+          "weight": 1
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "meds",
+          "count": 5
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "stims",
+          "count": 6
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:kodiak",
+          "weight": 18,
+          "count": 2
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:flare",
+          "weight": 10,
+          "count": 2,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:output_modifier",
+              "attribute": "gunsrpg:quests_flare",
+              "operation": "gunsrpg:sum"
+            }
+          ]
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:skillpoint_book",
+          "weight": 12,
+          "count": 4
+        },
+        {
+          "type": "gunsrpg:item",
+          "item": "gunsrpg:perkpoint_book",
+          "weight": 18,
+          "count": 6,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:output_modifier",
+              "attribute": "gunsrpg:quests_perkbook",
+              "operation": "gunsrpg:sum"
+            }
+          ]
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbst",
+          "count": 7
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "orbsp",
+          "count": 7
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "grenades",
+          "count": 12
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "mines",
+          "count": 10
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "gl",
+          "count": 12
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "rl",
+          "count": 10
+        },
+        {
+          "type": "gunsrpg:item_group",
+          "group": "crystals",
+          "count": 1,
+          "assemblyFunctions": [
+            {
+              "type": "gunsrpg:crystal",
+              "crystal": {
+                "level": {
+                  "function": "gunsrpg:const",
+                  "value": 8
+                },
+                "buffs": {
+                  "function": "gunsrpg:rng",
+                  "min": 2,
+                  "max": 5
+                },
+                "debuffs": {
+                  "function": "gunsrpg:rng",
+                  "min": 0,
+                  "max": 3
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

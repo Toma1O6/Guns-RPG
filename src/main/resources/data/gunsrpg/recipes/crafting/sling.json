@@ -1,22 +1,22 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        "#S#",
-        "/ /",
-        " / "
-    ],
-    "key": {
-        "#": {
-            "item": "minecraft:iron_nugget"
-        },
-        "S": {
-            "item": "minecraft:string"
-        },
-        "/": {
-            "item": "minecraft:stick"
-        }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#S#",
+    "/ /",
+    " / "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:iron_nugget"
     },
-    "result": {
-        "item": "gunsrpg:sling"
+    "S": {
+      "item": "minecraft:string"
+    },
+    "/": {
+      "item": "minecraft:stick"
     }
+  },
+  "result": {
+    "item": "gunsrpg:sling"
+  }
 }

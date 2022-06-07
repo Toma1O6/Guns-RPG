@@ -1,28 +1,28 @@
 {
-    "type": "gunsrpg:handover",
-    "tier": 2,
-    "display": {
-        "name": "Supplier I",
-        "info": "Deliver 30 Iron ingots, 25 Bricks, 10 Strings and 5 papers"
-    },
-    "data": {
-        "items": [
-            {
-                "item": "minecraft:iron_ingot",
-                "count": 30
-            },
-            {
-                "item": "minecraft:brick",
-                "count": 25
-            },
-            {
-                "item": "minecraft:string",
-                "count": 10
-            },
-            {
-                "item": "minecraft:paper",
-                "count": 5
-            }
-        ]
-    }
+  "type": "gunsrpg:handover",
+  "tier": 2,
+  "display": {
+    "name": "Supplier I",
+    "info": "Deliver 30 Iron ingots, 25 Bricks, 10 Strings and 5 papers"
+  },
+  "data": {
+    "items": [
+      {
+        "item": "minecraft:iron_ingot",
+        "count": 30
+      },
+      {
+        "item": "minecraft:brick",
+        "count": 25
+      },
+      {
+        "item": "minecraft:string",
+        "count": 10
+      },
+      {
+        "item": "minecraft:paper",
+        "count": 5
+      }
+    ]
+  }
 }

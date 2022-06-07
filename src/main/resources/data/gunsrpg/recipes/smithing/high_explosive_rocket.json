@@ -10,10 +10,10 @@
       "item": "gunsrpg:massive_grenade"
     },
     "u": {
-        "item": "minecraft:gunpowder"
+      "item": "minecraft:gunpowder"
     },
     "r": {
-        "item": "gunsrpg:rocket_shell"
+      "item": "gunsrpg:rocket_shell"
     }
   },
   "result": {

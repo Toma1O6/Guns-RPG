@@ -1,8 +1,8 @@
 {
-    "attribute": "gunsrpg:loud_weapon_damage",
-    "scaling": 0.005,
-    "bounds": {
-        "buff": 0.15,
-        "debuff": 0.3
-    }
+  "attribute": "gunsrpg:loud_weapon_damage",
+  "scaling": 0.005,
+  "bounds": {
+    "buff": 0.15,
+    "debuff": 0.3
+  }
 }

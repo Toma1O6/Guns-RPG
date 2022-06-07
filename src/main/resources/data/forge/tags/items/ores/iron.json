@@ -1,6 +1,6 @@
 {
-    "replace": false,
-    "values": [
-        "gunsrpg:iron_ore_chunk"
-    ]
+  "replace": false,
+  "values": [
+    "gunsrpg:iron_ore_chunk"
+  ]
 }

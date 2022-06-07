@@ -10,10 +10,10 @@
       "item": "minecraft:flint"
     },
     "s": {
-        "item": "minecraft:stick"
+      "item": "minecraft:stick"
     },
     "l": {
-        "tag": "minecraft:wooden_slabs"
+      "tag": "minecraft:wooden_slabs"
     }
   },
   "result": {

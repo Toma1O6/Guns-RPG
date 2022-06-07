@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:iron_ammo_smith",
-        "children": [
-            "gunsrpg:emerald_ammo_smith",
-            "gunsrpg:redstone_ammo_smith"
-        ]
-    },
-    "properties": {
-        "level": 15,
-        "price": 2,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:iron_ammo_smith",
+    "children": [
+      "gunsrpg:emerald_ammo_smith",
+      "gunsrpg:redstone_ammo_smith"
+    ]
+  },
+  "properties": {
+    "level": 15,
+    "price": 2,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

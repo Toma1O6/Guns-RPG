@@ -1,13 +1,13 @@
 {
-    "hierarchy": {
-        "category": "survival",
-        "parent": "gunsrpg:treasure_hunter_ii"
-    },
-    "properties": {
-        "level": 60,
-        "price": 7,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "survival",
+    "parent": "gunsrpg:treasure_hunter_ii"
+  },
+  "properties": {
+    "level": 60,
+    "price": 7,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

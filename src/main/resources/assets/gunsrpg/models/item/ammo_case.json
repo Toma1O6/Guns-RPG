@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:item/ammo_case"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/ammo_case"
+  }
 }

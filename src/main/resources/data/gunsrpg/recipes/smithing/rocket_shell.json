@@ -10,10 +10,10 @@
       "item": "minecraft:blaze_powder"
     },
     "g": {
-        "item": "gunsrpg:grenade_launcher_shell"
+      "item": "gunsrpg:grenade_launcher_shell"
     },
     "r": {
-        "item": "minecraft:iron_bars"
+      "item": "minecraft:iron_bars"
     }
   },
   "result": {

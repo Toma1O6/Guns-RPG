@@ -1,6 +1,6 @@
 {
-    "pack": {
-        "description": "Gunsrpg game data",
-        "pack_format": 3
-    }
+  "pack": {
+    "description": "Gunsrpg game data",
+    "pack_format": 6
+  }
 }

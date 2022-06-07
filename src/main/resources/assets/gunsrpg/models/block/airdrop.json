@@ -1,12 +1,12 @@
 {
-    "parent": "block/orientable",
-    "textures": {
-        "particle": "gunsrpg:block/airdrop_bottom",
-        "down": "gunsrpg:block/airdrop_bottom",
-        "up": "gunsrpg:block/airdrop_top",
-        "east": "gunsrpg:block/airdrop_side",
-        "west": "gunsrpg:block/airdrop_side",
-        "north": "gunsrpg:block/airdrop_side",
-        "south": "gunsrpg:block/airdrop_side"
-    }
+  "parent": "block/orientable",
+  "textures": {
+    "particle": "gunsrpg:block/airdrop_bottom",
+    "down": "gunsrpg:block/airdrop_bottom",
+    "up": "gunsrpg:block/airdrop_top",
+    "east": "gunsrpg:block/airdrop_side",
+    "west": "gunsrpg:block/airdrop_side",
+    "north": "gunsrpg:block/airdrop_side",
+    "south": "gunsrpg:block/airdrop_side"
+  }
 }

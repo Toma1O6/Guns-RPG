@@ -10,10 +10,10 @@
       "item": "minecraft:tnt"
     },
     "i": {
-        "item": "minecraft:iron_ingot"
+      "item": "minecraft:iron_ingot"
     },
     "m": {
-        "item": "gunsrpg:landmine"
+      "item": "gunsrpg:landmine"
     }
   },
   "result": {

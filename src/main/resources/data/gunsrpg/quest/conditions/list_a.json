@@ -1,182 +1,182 @@
 [
-    {
-        "weight": 30,
-        "id": "gunsrpg:empty",
-        "condition": {
-            "type": "gunsrpg:empty"
-        }
-    },
-    {
-        "weight": 13,
-        "id": "gunsrpg:use_specific_weapon",
-        "condition": {
-            "type": "gunsrpg:used_item",
-            "selector": "one",
-            "items": [
-                "minecraft:stone_sword",
-                "minecraft:stone_axe",
-                "minecraft:iron_sword",
-                "minecraft:iron_axe",
-                "minecraft:golden_sword",
-                "minecraft:golden_axe",
-                "minecraft:diamond_sword",
-                "minecraft:diamond_axe",
-                "minecraft:netherite_sword",
-                "minecraft:netherite_axe",
-                "minecraft:bow",
-                "minecraft:crossbow",
-                "gunsrpg:m1911",
-                "gunsrpg:r45",
-                "gunsrpg:desert_eagle",
-                "gunsrpg:ump45",
-                "gunsrpg:thompson",
-                "gunsrpg:vector",
-                "gunsrpg:s1897",
-                "gunsrpg:s686",
-                "gunsrpg:s12k",
-                "gunsrpg:wooden_crossbow",
-                "gunsrpg:chukonu",
-                "gunsrpg:akm",
-                "gunsrpg:hk416",
-                "gunsrpg:aug",
-                "gunsrpg:sks",
-                "gunsrpg:vss",
-                "gunsrpg:mk14ebr",
-                "gunsrpg:kar98k",
-                "gunsrpg:winchester",
-                "gunsrpg:awm",
-                "gunsrpg:grenade_launcher",
-                "gunsrpg:rocket_launcher"
-            ]
-        }
-    },
-    {
-        "weight": 7,
-        "id": "gunsrpg:use_pistol",
-        "condition": {
-            "type": "gunsrpg:used_item",
-            "selector": "any",
-            "group": "Pistols",
-            "items": [
-                "gunsrpg:m1911",
-                "gunsrpg:r45",
-                "gunsrpg:desert_eagle"
-            ]
-        }
-    },
-    {
-        "weight": 7,
-        "id": "gunsrpg:use_smg",
-        "condition": {
-            "type": "gunsrpg:used_item",
-            "selector": "any",
-            "group": "SMGs",
-            "items": [
-                "gunsrpg:ump45",
-                "gunsrpg:thompson",
-                "gunsrpg:vector"
-            ]
-        }
-    },
-    {
-        "weight": 7,
-        "id": "gunsrpg:use_ar",
-        "condition": {
-            "type": "gunsrpg:used_item",
-            "selector": "any",
-            "group": "Assault Rifles",
-            "items": [
-                "gunsrpg:akm",
-                "gunsrpg:hk416",
-                "gunsrpg:aug"
-            ]
-        }
-    },
-    {
-        "weight": 7,
-        "id": "gunsrpg:use_shotgun",
-        "condition": {
-            "type": "gunsrpg:used_item",
-            "selector": "any",
-            "group": "Shotguns",
-            "items": [
-                "gunsrpg:s1897",
-                "gunsrpg:s686",
-                "gunsrpg:s12k"
-            ]
-        }
-    },
-    {
-        "weight": 7,
-        "id": "gunsrpg:use_dmr",
-        "condition": {
-            "type": "gunsrpg:used_item",
-            "selector": "any",
-            "group": "DMRs",
-            "items": [
-                "gunsrpg:sks",
-                "gunsrpg:vss",
-                "gunsrpg:mk14ebr"
-            ]
-        }
-    },
-    {
-        "weight": 7,
-        "id": "gunsrpg:use_sr",
-        "condition": {
-            "type": "gunsrpg:used_item",
-            "selector": "any",
-            "group": "Sniper Rifles",
-            "items": [
-                "gunsrpg:kar98k",
-                "gunsrpg:winchester",
-                "gunsrpg:awm"
-            ]
-        }
-    },
-    {
-        "weight": 7,
-        "id": "gunsrpg:use_bow",
-        "condition": {
-            "type": "gunsrpg:used_item",
-            "selector": "any",
-            "group": "Bows And Crossbows",
-            "items": [
-                "minecraft:bow",
-                "minecraft:crossbow",
-                "gunsrpg:wooden_crossbow",
-                "gunsrpg:chukonu"
-            ]
-        }
-    },
-    {
-        "weight": 10,
-        "id": "gunsrpg:use_melee",
-        "condition": {
-            "type": "gunsrpg:used_item",
-            "selector": "any",
-            "group": "Melee weapons",
-            "items": [
-                "minecraft:wooden_sword",
-                "minecraft:wooden_axe",
-                "minecraft:stone_sword",
-                "minecraft:stone_axe",
-                "minecraft:iron_sword",
-                "minecraft:iron_axe",
-                "minecraft:golden_sword",
-                "minecraft:golden_axe",
-                "minecraft:diamond_sword",
-                "minecraft:diamond_axe",
-                "minecraft:netherite_sword",
-                "minecraft:netherite_axe"
-            ]
-        }
-    },
-    {
-        "weight": 5,
-        "id": "gunsrpg:explode",
-        "condition": {
-            "type": "gunsrpg:explode"
-        }
+  {
+    "weight": 30,
+    "id": "gunsrpg:empty",
+    "condition": {
+      "type": "gunsrpg:empty"
     }
+  },
+  {
+    "weight": 13,
+    "id": "gunsrpg:use_specific_weapon",
+    "condition": {
+      "type": "gunsrpg:used_item",
+      "selector": "one",
+      "items": [
+        "minecraft:stone_sword",
+        "minecraft:stone_axe",
+        "minecraft:iron_sword",
+        "minecraft:iron_axe",
+        "minecraft:golden_sword",
+        "minecraft:golden_axe",
+        "minecraft:diamond_sword",
+        "minecraft:diamond_axe",
+        "minecraft:netherite_sword",
+        "minecraft:netherite_axe",
+        "minecraft:bow",
+        "minecraft:crossbow",
+        "gunsrpg:m1911",
+        "gunsrpg:r45",
+        "gunsrpg:desert_eagle",
+        "gunsrpg:ump45",
+        "gunsrpg:thompson",
+        "gunsrpg:vector",
+        "gunsrpg:s1897",
+        "gunsrpg:s686",
+        "gunsrpg:s12k",
+        "gunsrpg:wooden_crossbow",
+        "gunsrpg:chukonu",
+        "gunsrpg:akm",
+        "gunsrpg:hk416",
+        "gunsrpg:aug",
+        "gunsrpg:sks",
+        "gunsrpg:vss",
+        "gunsrpg:mk14ebr",
+        "gunsrpg:kar98k",
+        "gunsrpg:winchester",
+        "gunsrpg:awm",
+        "gunsrpg:grenade_launcher",
+        "gunsrpg:rocket_launcher"
+      ]
+    }
+  },
+  {
+    "weight": 7,
+    "id": "gunsrpg:use_pistol",
+    "condition": {
+      "type": "gunsrpg:used_item",
+      "selector": "any",
+      "group": "Pistols",
+      "items": [
+        "gunsrpg:m1911",
+        "gunsrpg:r45",
+        "gunsrpg:desert_eagle"
+      ]
+    }
+  },
+  {
+    "weight": 7,
+    "id": "gunsrpg:use_smg",
+    "condition": {
+      "type": "gunsrpg:used_item",
+      "selector": "any",
+      "group": "SMGs",
+      "items": [
+        "gunsrpg:ump45",
+        "gunsrpg:thompson",
+        "gunsrpg:vector"
+      ]
+    }
+  },
+  {
+    "weight": 7,
+    "id": "gunsrpg:use_ar",
+    "condition": {
+      "type": "gunsrpg:used_item",
+      "selector": "any",
+      "group": "Assault Rifles",
+      "items": [
+        "gunsrpg:akm",
+        "gunsrpg:hk416",
+        "gunsrpg:aug"
+      ]
+    }
+  },
+  {
+    "weight": 7,
+    "id": "gunsrpg:use_shotgun",
+    "condition": {
+      "type": "gunsrpg:used_item",
+      "selector": "any",
+      "group": "Shotguns",
+      "items": [
+        "gunsrpg:s1897",
+        "gunsrpg:s686",
+        "gunsrpg:s12k"
+      ]
+    }
+  },
+  {
+    "weight": 7,
+    "id": "gunsrpg:use_dmr",
+    "condition": {
+      "type": "gunsrpg:used_item",
+      "selector": "any",
+      "group": "DMRs",
+      "items": [
+        "gunsrpg:sks",
+        "gunsrpg:vss",
+        "gunsrpg:mk14ebr"
+      ]
+    }
+  },
+  {
+    "weight": 7,
+    "id": "gunsrpg:use_sr",
+    "condition": {
+      "type": "gunsrpg:used_item",
+      "selector": "any",
+      "group": "Sniper Rifles",
+      "items": [
+        "gunsrpg:kar98k",
+        "gunsrpg:winchester",
+        "gunsrpg:awm"
+      ]
+    }
+  },
+  {
+    "weight": 7,
+    "id": "gunsrpg:use_bow",
+    "condition": {
+      "type": "gunsrpg:used_item",
+      "selector": "any",
+      "group": "Bows And Crossbows",
+      "items": [
+        "minecraft:bow",
+        "minecraft:crossbow",
+        "gunsrpg:wooden_crossbow",
+        "gunsrpg:chukonu"
+      ]
+    }
+  },
+  {
+    "weight": 10,
+    "id": "gunsrpg:use_melee",
+    "condition": {
+      "type": "gunsrpg:used_item",
+      "selector": "any",
+      "group": "Melee weapons",
+      "items": [
+        "minecraft:wooden_sword",
+        "minecraft:wooden_axe",
+        "minecraft:stone_sword",
+        "minecraft:stone_axe",
+        "minecraft:iron_sword",
+        "minecraft:iron_axe",
+        "minecraft:golden_sword",
+        "minecraft:golden_axe",
+        "minecraft:diamond_sword",
+        "minecraft:diamond_axe",
+        "minecraft:netherite_sword",
+        "minecraft:netherite_axe"
+      ]
+    }
+  },
+  {
+    "weight": 5,
+    "id": "gunsrpg:explode",
+    "condition": {
+      "type": "gunsrpg:explode"
+    }
+  }
 ]

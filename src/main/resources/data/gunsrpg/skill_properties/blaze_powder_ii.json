@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:blaze_powder_i",
-        "children": [
-            "gunsrpg:blaze_powder_iii"
-        ],
-        "override": "gunsrpg:blaze_powder_iii"
-    },
-    "properties": {
-        "level": 55,
-        "price": 4,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:blaze_powder_i",
+    "children": [
+      "gunsrpg:blaze_powder_iii"
+    ],
+    "override": "gunsrpg:blaze_powder_iii"
+  },
+  "properties": {
+    "level": 55,
+    "price": 4,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

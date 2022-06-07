@@ -1,25 +1,25 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:gun_parts_smith",
-        "extensions": [
-            "gunsrpg:sks_tough_spring",
-            "gunsrpg:sks_vertical_grip",
-            "gunsrpg:sks_extended",
-            "gunsrpg:sks_red_dot",
-            "gunsrpg:sks_suppressor",
-            "gunsrpg:sks_cheekpad",
-            "gunsrpg:sks_adaptive_chambering"
-        ],
-        "children": [
-            "gunsrpg:vss_assembly"
-        ]
-    },
-    "properties": {
-        "level": 30,
-        "price": 5,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:gun_parts_smith",
+    "extensions": [
+      "gunsrpg:sks_tough_spring",
+      "gunsrpg:sks_vertical_grip",
+      "gunsrpg:sks_extended",
+      "gunsrpg:sks_red_dot",
+      "gunsrpg:sks_suppressor",
+      "gunsrpg:sks_cheekpad",
+      "gunsrpg:sks_adaptive_chambering"
+    ],
+    "children": [
+      "gunsrpg:vss_assembly"
+    ]
+  },
+  "properties": {
+    "level": 30,
+    "price": 5,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

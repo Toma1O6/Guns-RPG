@@ -10,10 +10,10 @@
       "item": "minecraft:flint"
     },
     "b": {
-        "item": "minecraft:iron_bars"
+      "item": "minecraft:iron_bars"
     },
     "i": {
-        "item": "minecraft:iron_ingot"
+      "item": "minecraft:iron_ingot"
     }
   },
   "result": {

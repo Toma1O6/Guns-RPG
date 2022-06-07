@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "survival",
-        "parent": "gunsrpg:agility_i",
-        "children": [
-            "gunsrpg:agility_iii"
-        ],
-        "override": "gunsrpg:agility_iii"
-    },
-    "properties": {
-        "level": 20,
-        "price": 3,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "survival",
+    "parent": "gunsrpg:agility_i",
+    "children": [
+      "gunsrpg:agility_iii"
+    ],
+    "override": "gunsrpg:agility_iii"
+  },
+  "properties": {
+    "level": 20,
+    "price": 3,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

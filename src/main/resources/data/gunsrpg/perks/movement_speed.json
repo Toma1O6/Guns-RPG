@@ -1,9 +1,9 @@
 {
-    "attribute": "gunsrpg:movement_speed",
-    "invertCalculation": true,
-    "scaling": 0.01,
-    "bounds": {
-        "buff": 0.25,
-        "debuff": 0.5
-    }
+  "attribute": "gunsrpg:movement_speed",
+  "invertCalculation": true,
+  "scaling": 0.01,
+  "bounds": {
+    "buff": 0.25,
+    "debuff": 0.5
+  }
 }

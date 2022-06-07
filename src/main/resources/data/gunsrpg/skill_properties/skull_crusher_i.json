@@ -1,16 +1,16 @@
 {
-    "hierarchy": {
-        "category": "survival",
-        "children": [
-            "gunsrpg:skull_crusher_ii"
-        ],
-        "override": "gunsrpg:skull_crusher_ii"
-    },
-    "properties": {
-        "level": 20,
-        "price": 2,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "survival",
+    "children": [
+      "gunsrpg:skull_crusher_ii"
+    ],
+    "override": "gunsrpg:skull_crusher_ii"
+  },
+  "properties": {
+    "level": 20,
+    "price": 2,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

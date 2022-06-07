@@ -1,37 +1,37 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 5,
-    "display": {
-        "name": "Vexination III",
-        "info": "Kill 20 vexes"
-    },
-    "data": {
-        "entities": [
-            "minecraft:vex"
-        ],
-        "count": 20,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 12,
-            "spawners": [
-                {
-                    "entity": "minecraft:vex",
-                    "propability": 0.05,
-                    "limit": 2
-                }
-            ]
+  "type": "gunsrpg:kill_in_area",
+  "tier": 5,
+  "display": {
+    "name": "Vexination III",
+    "info": "Kill 20 vexes"
+  },
+  "data": {
+    "entities": [
+      "minecraft:vex"
+    ],
+    "count": 20,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 12,
+      "spawners": [
+        {
+          "entity": "minecraft:vex",
+          "propability": 0.05,
+          "limit": 2
         }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

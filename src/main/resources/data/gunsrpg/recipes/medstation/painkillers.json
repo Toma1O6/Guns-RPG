@@ -1,36 +1,36 @@
 {
-    "type": "gunsrpg:medical_station",
-    "pattern": [
-        "psp",
-        "fff",
-        "nrn"
-    ],
-    "key": {
-        "p": {
-            "item": "minecraft:paper"
-        },
-        "s": {
-            "item": "minecraft:sugar"
-        },
-        "f": {
-            "item": "minecraft:fermented_spider_eye"
-        },
-        "n": {
-            "item": "minecraft:nether_wart"
-        },
-        "r": {
-            "item": "minecraft:redstone_block"
-        }
+  "type": "gunsrpg:medical_station",
+  "pattern": [
+    "psp",
+    "fff",
+    "nrn"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:paper"
     },
-    "result": {
-        "item": "gunsrpg:painkillers"
+    "s": {
+      "item": "minecraft:sugar"
     },
-    "requirements": [
-        {
-            "type": "gunsrpg:skill",
-            "predicate": {
-                "skill": "gunsrpg:pharmacist_iv"
-            }
-        }
-    ]
+    "f": {
+      "item": "minecraft:fermented_spider_eye"
+    },
+    "n": {
+      "item": "minecraft:nether_wart"
+    },
+    "r": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:painkillers"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:pharmacist_iv"
+      }
+    }
+  ]
 }

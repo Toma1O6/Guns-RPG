@@ -1,45 +1,45 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 4,
-    "display": {
-        "name": "Frost Bringers III",
-        "info": "Kill 20 strays"
-    },
-    "data": {
-        "entities": [
-            "minecraft:stray"
-        ],
-        "count": 20,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 9,
-            "spawners": [
-                {
-                    "entity": "minecraft:stray",
-                    "propability": 0.05,
-                    "limit": 3,
-                    "processors": [
-                        {
-                            "type": "gunsrpg:set_equipment",
-                            "equipment": {
-                                "head": "minecraft:leather_helmet"
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    },
-    "tieredConditions": {
-        "conditions": [
+  "type": "gunsrpg:kill_in_area",
+  "tier": 4,
+  "display": {
+    "name": "Frost Bringers III",
+    "info": "Kill 20 strays"
+  },
+  "data": {
+    "entities": [
+      "minecraft:stray"
+    ],
+    "count": 20,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 9,
+      "spawners": [
+        {
+          "entity": "minecraft:stray",
+          "propability": 0.05,
+          "limit": 3,
+          "processors": [
             {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
+              "type": "gunsrpg:set_equipment",
+              "equipment": {
+                "head": "minecraft:leather_helmet"
+              }
             }
-        ]
+          ]
+        }
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

@@ -1,8 +1,8 @@
 {
-    "attribute": "gunsrpg:weapon_durability",
-    "scaling": 0.01,
-    "bounds": {
-        "buff": 0.25,
-        "debuff": 0.5
-    }
+  "attribute": "gunsrpg:weapon_durability",
+  "scaling": 0.01,
+  "bounds": {
+    "buff": 0.25,
+    "debuff": 0.5
+  }
 }

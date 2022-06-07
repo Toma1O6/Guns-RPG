@@ -1,37 +1,37 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 3,
-    "display": {
-        "name": "Rotting Gunmen I",
-        "info": "Kill 7 zombie gunners"
-    },
-    "data": {
-        "entities": [
-            "gunsrpg:zombie_gunner"
-        ],
-        "count": 7,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 13,
-            "spawners": [
-                {
-                    "entity": "gunsrpg:zombie_gunner",
-                    "propability": 0.05,
-                    "limit": 2
-                }
-            ]
+  "type": "gunsrpg:kill_in_area",
+  "tier": 3,
+  "display": {
+    "name": "Rotting Gunmen I",
+    "info": "Kill 7 zombie gunners"
+  },
+  "data": {
+    "entities": [
+      "gunsrpg:zombie_gunner"
+    ],
+    "count": 7,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 13,
+      "spawners": [
+        {
+          "entity": "gunsrpg:zombie_gunner",
+          "propability": 0.05,
+          "limit": 2
         }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

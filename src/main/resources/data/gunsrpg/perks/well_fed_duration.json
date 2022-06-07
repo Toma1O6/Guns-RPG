@@ -1,8 +1,8 @@
 {
-    "attribute": "gunsrpg:well_fed_duration",
-    "scaling": 0.04,
-    "bounds": {
-        "buff": 0.8,
-        "debuff": 0.8
-    }
+  "attribute": "gunsrpg:well_fed_duration",
+  "scaling": 0.04,
+  "bounds": {
+    "buff": 0.8,
+    "debuff": 0.8
+  }
 }

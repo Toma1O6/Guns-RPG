@@ -1,13 +1,13 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:iron_ammo_smith"
-    },
-    "properties": {
-        "level": 10,
-        "price": 3,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:iron_ammo_smith"
+  },
+  "properties": {
+    "level": 10,
+    "price": 3,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

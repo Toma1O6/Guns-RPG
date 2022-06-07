@@ -1,37 +1,37 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 3,
-    "display": {
-        "name": "Explosive Behaviour I",
-        "info": "Kill 5 grenadiers"
-    },
-    "data": {
-        "entities": [
-            "gunsrpg:explosive_skeleton"
-        ],
-        "count": 5,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 15,
-            "spawners": [
-                {
-                    "entity": "gunsrpg:explosive_skeleton",
-                    "propability": 0.05,
-                    "limit": 2
-                }
-            ]
+  "type": "gunsrpg:kill_in_area",
+  "tier": 3,
+  "display": {
+    "name": "Explosive Behaviour I",
+    "info": "Kill 5 grenadiers"
+  },
+  "data": {
+    "entities": [
+      "gunsrpg:explosive_skeleton"
+    ],
+    "count": 5,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 15,
+      "spawners": [
+        {
+          "entity": "gunsrpg:explosive_skeleton",
+          "propability": 0.05,
+          "limit": 2
         }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

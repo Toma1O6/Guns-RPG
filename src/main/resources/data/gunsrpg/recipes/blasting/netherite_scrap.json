@@ -1,11 +1,11 @@
 {
-    "type": "gunsrpg:blasting",
-    "ingredient": {
-        "item": "minecraft:ancient_debris"
-    },
-    "result": {
-        "item": "minecraft:netherite_scrap",
-        "count": 2
-    },
-    "experience": 2.5
+  "type": "gunsrpg:blasting",
+  "ingredient": {
+    "item": "minecraft:ancient_debris"
+  },
+  "result": {
+    "item": "minecraft:netherite_scrap",
+    "count": 2
+  },
+  "experience": 2.5
 }

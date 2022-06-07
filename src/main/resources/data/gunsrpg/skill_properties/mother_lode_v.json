@@ -1,13 +1,13 @@
 {
-    "hierarchy": {
-        "category": "mining",
-        "parent": "gunsrpg:mother_lode_iv"
-    },
-    "properties": {
-        "level": 65,
-        "price": 7,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "mining",
+    "parent": "gunsrpg:mother_lode_iv"
+  },
+  "properties": {
+    "level": 65,
+    "price": 7,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

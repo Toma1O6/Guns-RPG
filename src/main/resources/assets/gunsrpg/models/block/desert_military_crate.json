@@ -1,12 +1,12 @@
 {
-    "parent": "block/orientable",
-    "textures": {
-        "particle": "gunsrpg:block/desert_military_crate_bottom",
-        "down": "gunsrpg:block/desert_military_crate_bottom",
-        "up": "gunsrpg:block/desert_military_crate_top",
-        "east": "gunsrpg:block/desert_military_crate_side",
-        "west": "gunsrpg:block/desert_military_crate_side",
-        "north": "gunsrpg:block/desert_military_crate_side",
-        "south": "gunsrpg:block/desert_military_crate_side"
-    }
+  "parent": "block/orientable",
+  "textures": {
+    "particle": "gunsrpg:block/desert_military_crate_bottom",
+    "down": "gunsrpg:block/desert_military_crate_bottom",
+    "up": "gunsrpg:block/desert_military_crate_top",
+    "east": "gunsrpg:block/desert_military_crate_side",
+    "west": "gunsrpg:block/desert_military_crate_side",
+    "north": "gunsrpg:block/desert_military_crate_side",
+    "south": "gunsrpg:block/desert_military_crate_side"
+  }
 }

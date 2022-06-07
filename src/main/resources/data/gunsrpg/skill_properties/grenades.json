@@ -1,18 +1,18 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "children": [
-            "gunsrpg:grenadier",
-            "gunsrpg:massive_grenades",
-            "gunsrpg:impact_grenades",
-            "gunsrpg:demolisher"
-        ]
-    },
-    "properties": {
-        "level": 15,
-        "price": 3,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "children": [
+      "gunsrpg:grenadier",
+      "gunsrpg:massive_grenades",
+      "gunsrpg:impact_grenades",
+      "gunsrpg:demolisher"
+    ]
+  },
+  "properties": {
+    "level": 15,
+    "price": 3,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

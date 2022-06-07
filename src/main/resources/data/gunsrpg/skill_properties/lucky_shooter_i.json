@@ -1,16 +1,16 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "children": [
-            "gunsrpg:lucky_shooter_ii"
-        ],
-        "override": "gunsrpg:lucky_shooter_ii"
-    },
-    "properties": {
-        "level": 25,
-        "price": 3,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "children": [
+      "gunsrpg:lucky_shooter_ii"
+    ],
+    "override": "gunsrpg:lucky_shooter_ii"
+  },
+  "properties": {
+    "level": 25,
+    "price": 3,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

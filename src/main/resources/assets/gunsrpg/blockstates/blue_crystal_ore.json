@@ -1,7 +1,7 @@
 {
-    "variants": {
-        "": {
-            "model": "gunsrpg:block/blue_crystal_ore"
-        }
+  "variants": {
+    "": {
+      "model": "gunsrpg:block/blue_crystal_ore"
     }
+  }
 }

@@ -1,15 +1,15 @@
 {
-    "hierarchy": {
-        "category": "survival",
-        "children": [
-            "gunsrpg:traps_ii"
-        ]
-    },
-    "properties": {
-        "level": 10,
-        "price": 2,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "survival",
+    "children": [
+      "gunsrpg:traps_ii"
+    ]
+  },
+  "properties": {
+    "level": 10,
+    "price": 2,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

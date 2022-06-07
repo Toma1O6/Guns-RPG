@@ -1,20 +1,20 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:grenade_launcher_assembly",
-        "extensions": [
-            "gunsrpg:rocket_launcher_quickdraw",
-            "gunsrpg:rocket_launcher_homing_missile",
-            "gunsrpg:rocket_launcher_rocket_fuel",
-            "gunsrpg:rocket_launcher_demolition_expert",
-            "gunsrpg:rocket_launcher_rocket_barrage"
-        ]
-    },
-    "properties": {
-        "level": 70,
-        "price": 10,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:grenade_launcher_assembly",
+    "extensions": [
+      "gunsrpg:rocket_launcher_quickdraw",
+      "gunsrpg:rocket_launcher_homing_missile",
+      "gunsrpg:rocket_launcher_rocket_fuel",
+      "gunsrpg:rocket_launcher_demolition_expert",
+      "gunsrpg:rocket_launcher_rocket_barrage"
+    ]
+  },
+  "properties": {
+    "level": 70,
+    "price": 10,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

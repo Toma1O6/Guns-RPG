@@ -1,8 +1,8 @@
 {
-    "attribute": "gunsrpg:skill_book_chance",
-    "scaling": 0.005,
-    "bounds": {
-        "buff": 0.2,
-        "debuff": 0.35
-    }
+  "attribute": "gunsrpg:skill_book_chance",
+  "scaling": 0.005,
+  "bounds": {
+    "buff": 0.2,
+    "debuff": 0.35
+  }
 }

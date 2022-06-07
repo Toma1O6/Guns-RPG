@@ -10,10 +10,10 @@
       "item": "minecraft:stone_button"
     },
     "h": {
-        "item": "minecraft:heavy_weighted_pressure_plate"
+      "item": "minecraft:heavy_weighted_pressure_plate"
     },
     "t": {
-        "item": "minecraft:tnt"
+      "item": "minecraft:tnt"
     }
   },
   "result": {

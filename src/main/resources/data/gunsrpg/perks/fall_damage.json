@@ -1,8 +1,8 @@
 {
-    "attribute": "gunsrpg:fall_damage",
-    "scaling": 0.02,
-    "bounds": {
-        "buff": 0.5,
-        "debuff": 0.8
-    }
+  "attribute": "gunsrpg:fall_damage",
+  "scaling": 0.02,
+  "bounds": {
+    "buff": 0.5,
+    "debuff": 0.8
+  }
 }

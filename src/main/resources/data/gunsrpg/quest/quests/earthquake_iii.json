@@ -1,37 +1,37 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 5,
-    "display": {
-        "name": "Earthquake III",
-        "info": "Kill 7 bloodmoon golems"
-    },
-    "data": {
-        "entities": [
-            "gunsrpg:bloodmoon_golem"
-        ],
-        "count": 7,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 25,
-            "spawners": [
-                {
-                    "entity": "gunsrpg:bloodmoon_golem",
-                    "propability": 0.05,
-                    "limit": 2
-                }
-            ]
+  "type": "gunsrpg:kill_in_area",
+  "tier": 5,
+  "display": {
+    "name": "Earthquake III",
+    "info": "Kill 7 bloodmoon golems"
+  },
+  "data": {
+    "entities": [
+      "gunsrpg:bloodmoon_golem"
+    ],
+    "count": 7,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 25,
+      "spawners": [
+        {
+          "entity": "gunsrpg:bloodmoon_golem",
+          "propability": 0.05,
+          "limit": 2
         }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

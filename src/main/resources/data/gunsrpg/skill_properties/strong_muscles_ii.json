@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "survival",
-        "parent": "gunsrpg:strong_muscles_i",
-        "children": [
-            "gunsrpg:strong_muscles_iii"
-        ],
-        "override": "gunsrpg:strong_muscles_iii"
-    },
-    "properties": {
-        "level": 25,
-        "price": 3,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "survival",
+    "parent": "gunsrpg:strong_muscles_i",
+    "children": [
+      "gunsrpg:strong_muscles_iii"
+    ],
+    "override": "gunsrpg:strong_muscles_iii"
+  },
+  "properties": {
+    "level": 25,
+    "price": 3,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

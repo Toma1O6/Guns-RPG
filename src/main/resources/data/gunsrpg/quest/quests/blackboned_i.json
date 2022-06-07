@@ -1,37 +1,37 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 2,
-    "display": {
-        "name": "Blackboned I",
-        "info": "Kill 7 wither skeletons"
-    },
-    "data": {
-        "entities": [
-            "minecraft:wither_skeleton"
-        ],
-        "count": 7,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 11,
-            "spawners": [
-                {
-                    "entity": "minecraft:wither_skeleton",
-                    "propability": 0.1,
-                    "limit": 4
-                }
-            ]
+  "type": "gunsrpg:kill_in_area",
+  "tier": 2,
+  "display": {
+    "name": "Blackboned I",
+    "info": "Kill 7 wither skeletons"
+  },
+  "data": {
+    "entities": [
+      "minecraft:wither_skeleton"
+    ],
+    "count": 7,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 11,
+      "spawners": [
+        {
+          "entity": "minecraft:wither_skeleton",
+          "propability": 0.1,
+          "limit": 4
         }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

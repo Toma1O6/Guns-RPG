@@ -1,1 +1,28 @@
-{"type":"single_frame","data":{"minecraft:hands.item":{"e":1.0,"ease":13,"pos":{"x":-0.66,"y":0.31,"z":0.23}},"minecraft:hands.left":{"e":1.0,"ease":13,"pos":{"x":0.55,"y":0.0,"z":0.35},"rot":{"x":0.0,"y":25.0,"z":0.0}}}}
+{
+  "type": "single_frame",
+  "data": {
+    "minecraft:hands.item": {
+      "e": 1.0,
+      "ease": 13,
+      "pos": {
+        "x": -0.66,
+        "y": 0.31,
+        "z": 0.23
+      }
+    },
+    "minecraft:hands.left": {
+      "e": 1.0,
+      "ease": 13,
+      "pos": {
+        "x": 0.55,
+        "y": 0.0,
+        "z": 0.35
+      },
+      "rot": {
+        "x": 0.0,
+        "y": 25.0,
+        "z": 0.0
+      }
+    }
+  }
+}

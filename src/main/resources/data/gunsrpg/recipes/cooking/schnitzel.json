@@ -1,9 +1,9 @@
 {
-    "type": "gunsrpg:cooking",
-    "input": "minecraft:porkchop",
-    "output": {
-        "item": "gunsrpg:schnitzel"
-    },
-    "cookTime": 200,
-    "exp": 0.7
+  "type": "gunsrpg:cooking",
+  "input": "minecraft:porkchop",
+  "output": {
+    "item": "gunsrpg:schnitzel"
+  },
+  "cookTime": 200,
+  "exp": 0.7
 }

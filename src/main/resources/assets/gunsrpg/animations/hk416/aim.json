@@ -1,1 +1,14 @@
-{"type":"single_frame","data":{"minecraft:hands.item":{"e":1.0,"ease":13,"pos":{"x":-0.66,"y":0.3,"z":0.43}}}}
+{
+  "type": "single_frame",
+  "data": {
+    "minecraft:hands.item": {
+      "e": 1.0,
+      "ease": 13,
+      "pos": {
+        "x": -0.66,
+        "y": 0.3,
+        "z": 0.43
+      }
+    }
+  }
+}

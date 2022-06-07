@@ -10,13 +10,13 @@
       "item": "minecraft:quartz_block"
     },
     "t": {
-        "item": "minecraft:iron_trapdoor"
+      "item": "minecraft:iron_trapdoor"
     },
     "f": {
-        "item": "minecraft:smoker"
+      "item": "minecraft:smoker"
     },
     "i": {
-        "item": "minecraft:iron_block"
+      "item": "minecraft:iron_block"
     }
   },
   "result": {

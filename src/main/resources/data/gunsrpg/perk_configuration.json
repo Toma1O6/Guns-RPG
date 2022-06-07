@@ -1,133 +1,133 @@
 {
-    "crystals": {
-        "spawns": {
-            "levels": [
-                {
-                    "level": 1,
-                    "weight": 80
-                },
-                {
-                    "level": 2,
-                    "weight": 15
-                },
-                {
-                    "level": 3,
-                    "weight": 5
-                }
-            ],
-            "types": {
-                "buff": {
-                    "function": "gunsrpg:rng",
-                    "min": 1,
-                    "max": 3
-                },
-                "debuff": {
-                    "function": "gunsrpg:rng",
-                    "min": 0,
-                    "max": 6
-                }
-            }
+  "crystals": {
+    "spawns": {
+      "levels": [
+        {
+          "level": 1,
+          "weight": 80
         },
-        "storage": {
-            "buff": 5,
-            "debuff": -1
+        {
+          "level": 2,
+          "weight": 15
+        },
+        {
+          "level": 3,
+          "weight": 5
         }
-    },
-    "fusion": {
-        "upgrades": [
-            {
-                "targetLevel": 2,
-                "chanceOfBreaking": 0.03,
-                "price": 1
-            },
-            {
-                "targetLevel": 3,
-                "chanceOfBreaking": 0.04,
-                "price": 2
-            },
-            {
-                "targetLevel": 4,
-                "chanceOfBreaking": 0.06,
-                "price": 3
-            },
-            {
-                "targetLevel": 5,
-                "chanceOfBreaking": 0.08,
-                "price": 3
-            },
-            {
-                "targetLevel": 6,
-                "chanceOfBreaking": 0.10,
-                "price": 4
-            },
-            {
-                "targetLevel": 7,
-                "chanceOfBreaking": 0.12,
-                "price": 5
-            },
-            {
-                "targetLevel": 8,
-                "chanceOfBreaking": 0.15,
-                "price": 5
-            },
-            {
-                "targetLevel": 9,
-                "chanceOfBreaking": 0.17,
-                "price": 6
-            },
-            {
-                "targetLevel": 10,
-                "chanceOfBreaking": 0.20,
-                "price": 7
-            }
-        ],
-        "crystalSwap": [
-            {
-                "count": 0,
-                "chance": 0.5,
-                "price": 0
-            },
-            {
-                "count": 1,
-                "chance": 0.6,
-                "price": 1
-            },
-            {
-                "count": 2,
-                "chance": 0.7,
-                "price": 1
-            },
-            {
-                "count": 3,
-                "chance": 0.85,
-                "price": 2
-            }
-        ]
-    },
-    "purification": [
-        {
-            "count": 0,
-            "chance": 0.8,
-            "breakChance": 0.09,
-            "price": 1
+      ],
+      "types": {
+        "buff": {
+          "function": "gunsrpg:rng",
+          "min": 1,
+          "max": 3
         },
-        {
-            "count": 1,
-            "chance": 0.85,
-            "breakChance": 0.06,
-            "price": 2
-        },
-        {
-            "count": 2,
-            "chance": 0.9,
-            "breakChance": 0.03,
-            "price": 2
-        },
-        {
-            "count": 3,
-            "chance": 0.95,
-            "breakChance": 0.00,
-            "price": 3
+        "debuff": {
+          "function": "gunsrpg:rng",
+          "min": 0,
+          "max": 6
         }
+      }
+    },
+    "storage": {
+      "buff": 5,
+      "debuff": -1
+    }
+  },
+  "fusion": {
+    "upgrades": [
+      {
+        "targetLevel": 2,
+        "chanceOfBreaking": 0.03,
+        "price": 1
+      },
+      {
+        "targetLevel": 3,
+        "chanceOfBreaking": 0.04,
+        "price": 2
+      },
+      {
+        "targetLevel": 4,
+        "chanceOfBreaking": 0.06,
+        "price": 3
+      },
+      {
+        "targetLevel": 5,
+        "chanceOfBreaking": 0.08,
+        "price": 3
+      },
+      {
+        "targetLevel": 6,
+        "chanceOfBreaking": 0.10,
+        "price": 4
+      },
+      {
+        "targetLevel": 7,
+        "chanceOfBreaking": 0.12,
+        "price": 5
+      },
+      {
+        "targetLevel": 8,
+        "chanceOfBreaking": 0.15,
+        "price": 5
+      },
+      {
+        "targetLevel": 9,
+        "chanceOfBreaking": 0.17,
+        "price": 6
+      },
+      {
+        "targetLevel": 10,
+        "chanceOfBreaking": 0.20,
+        "price": 7
+      }
+    ],
+    "crystalSwap": [
+      {
+        "count": 0,
+        "chance": 0.5,
+        "price": 0
+      },
+      {
+        "count": 1,
+        "chance": 0.6,
+        "price": 1
+      },
+      {
+        "count": 2,
+        "chance": 0.7,
+        "price": 1
+      },
+      {
+        "count": 3,
+        "chance": 0.85,
+        "price": 2
+      }
     ]
+  },
+  "purification": [
+    {
+      "count": 0,
+      "chance": 0.8,
+      "breakChance": 0.09,
+      "price": 1
+    },
+    {
+      "count": 1,
+      "chance": 0.85,
+      "breakChance": 0.06,
+      "price": 2
+    },
+    {
+      "count": 2,
+      "chance": 0.9,
+      "breakChance": 0.03,
+      "price": 2
+    },
+    {
+      "count": 3,
+      "chance": 0.95,
+      "breakChance": 0.00,
+      "price": 3
+    }
+  ]
 }

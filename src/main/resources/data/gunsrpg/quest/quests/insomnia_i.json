@@ -1,47 +1,47 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 2,
-    "display": {
-        "name": "Insomnia I",
-        "info": "Kill 5 phantoms"
-    },
-    "data": {
-        "entities": [
-            "minecraft:phantom"
-        ],
-        "count": 5,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 13,
-            "spawners": [
-                {
-                    "entity": "minecraft:phantom",
-                    "propability": 0.1,
-                    "limit": 2,
-                    "processors": [
-                        {
-                            "type": "gunsrpg:set_effect",
-                            "effect": "fire_resistance",
-                            "duration": 3600,
-                            "amplifier": 0,
-                            "ambient": false,
-                            "visible": false
-                        }
-                    ]
-                }
-            ]
-        }
-    },
-    "tieredConditions": {
-        "conditions": [
+  "type": "gunsrpg:kill_in_area",
+  "tier": 2,
+  "display": {
+    "name": "Insomnia I",
+    "info": "Kill 5 phantoms"
+  },
+  "data": {
+    "entities": [
+      "minecraft:phantom"
+    ],
+    "count": 5,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 13,
+      "spawners": [
+        {
+          "entity": "minecraft:phantom",
+          "propability": 0.1,
+          "limit": 2,
+          "processors": [
             {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
+              "type": "gunsrpg:set_effect",
+              "effect": "fire_resistance",
+              "duration": 3600,
+              "amplifier": 0,
+              "ambient": false,
+              "visible": false
             }
-        ]
+          ]
+        }
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

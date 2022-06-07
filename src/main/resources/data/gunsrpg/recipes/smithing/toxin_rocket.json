@@ -10,13 +10,13 @@
       "item": "gunsrpg:grenade"
     },
     "u": {
-        "item": "minecraft:gunpowder"
+      "item": "minecraft:gunpowder"
     },
     "r": {
-        "item": "gunsrpg:rocket_shell"
+      "item": "gunsrpg:rocket_shell"
     },
     "f": {
-        "item": "minecraft:fermented_spider_eye"
+      "item": "minecraft:fermented_spider_eye"
     }
   },
   "result": {

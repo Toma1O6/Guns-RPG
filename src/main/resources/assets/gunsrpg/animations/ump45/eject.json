@@ -1,1 +1,24 @@
-{"type":"target_back","data":{"target":"gunsrpg:weapon.bullet","mov":{"e":0.4,"ease":13},"ret":{"e":1.0,"ease":13,"pos":{"x":-4.2,"y":0.9,"z":0.0},"rot":{"x":-40.0,"y":45.0,"z":0.0}}}}
+{
+  "type": "target_back",
+  "data": {
+    "target": "gunsrpg:weapon.bullet",
+    "mov": {
+      "e": 0.4,
+      "ease": 13
+    },
+    "ret": {
+      "e": 1.0,
+      "ease": 13,
+      "pos": {
+        "x": -4.2,
+        "y": 0.9,
+        "z": 0.0
+      },
+      "rot": {
+        "x": -40.0,
+        "y": 45.0,
+        "z": 0.0
+      }
+    }
+  }
+}

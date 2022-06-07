@@ -1,27 +1,27 @@
 {
-    "type": "gunsrpg:survival",
-    "tier": 3,
-    "display": {
-        "name": "Clean Run III",
-        "info": "Do not take any damage for 20 minutes"
-    },
-    "data": {
-        "duration": "20m"
-    },
-    "conditions": [
-        {
-            "type": "gunsrpg:no_damage_taken"
-        }
-    ],
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": {
-                    "type": "gunsrpg:no_food"
-                },
-                "tier": 2,
-                "propability": 0.35
-            }
-        ]
+  "type": "gunsrpg:survival",
+  "tier": 3,
+  "display": {
+    "name": "Clean Run III",
+    "info": "Do not take any damage for 20 minutes"
+  },
+  "data": {
+    "duration": "20m"
+  },
+  "conditions": [
+    {
+      "type": "gunsrpg:no_damage_taken"
     }
+  ],
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": {
+          "type": "gunsrpg:no_food"
+        },
+        "tier": 2,
+        "propability": 0.35
+      }
+    ]
+  }
 }

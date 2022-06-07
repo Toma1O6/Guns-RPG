@@ -1,9 +1,9 @@
 {
-    "attribute": "gunsrpg:unjamming_speed",
-    "invertCalculation": true,
-    "scaling": 0.01,
-    "bounds": {
-        "buff": 0.2,
-        "debuff": 0.4
-    }
+  "attribute": "gunsrpg:unjamming_speed",
+  "invertCalculation": true,
+  "scaling": 0.01,
+  "bounds": {
+    "buff": 0.2,
+    "debuff": 0.4
+  }
 }

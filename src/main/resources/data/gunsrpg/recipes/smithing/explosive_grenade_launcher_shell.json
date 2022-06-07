@@ -10,10 +10,10 @@
       "item": "minecraft:gunpowder"
     },
     "g": {
-        "item": "gunsrpg:grenade"
+      "item": "gunsrpg:grenade"
     },
     "s": {
-        "item": "gunsrpg:grenade_launcher_shell"
+      "item": "gunsrpg:grenade_launcher_shell"
     }
   },
   "result": {

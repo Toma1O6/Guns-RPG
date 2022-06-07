@@ -1,31 +1,31 @@
 {
-    "type": "gunsrpg:kill_entities",
-    "tier": 4,
-    "display": {
-        "name": "Sniper III",
-        "info": "Kill 30 mobs over 50 block distance"
-    },
-    "data": {
-        "entities": null,
-        "count": 30
-    },
-    "conditions": [
-        {
-            "type": "gunsrpg:distance",
-            "min": 50
-        }
-    ],
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            }
-        ],
-        "exclusions": [
-            "gunsrpg:use_melee",
-            "gunsrpg:use_shotgun",
-            "gunsrpg:use_specific_weapon",
-            "gunsrpg:explode"
-        ]
+  "type": "gunsrpg:kill_entities",
+  "tier": 4,
+  "display": {
+    "name": "Sniper III",
+    "info": "Kill 30 mobs over 50 block distance"
+  },
+  "data": {
+    "entities": null,
+    "count": 30
+  },
+  "conditions": [
+    {
+      "type": "gunsrpg:distance",
+      "min": 50
     }
+  ],
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      }
+    ],
+    "exclusions": [
+      "gunsrpg:use_melee",
+      "gunsrpg:use_shotgun",
+      "gunsrpg:use_specific_weapon",
+      "gunsrpg:explode"
+    ]
+  }
 }

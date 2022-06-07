@@ -1,13 +1,13 @@
 {
-    "hierarchy": {
-        "category": "resistance",
-        "parent": "gunsrpg:bleeding_resistance_ii"
-    },
-    "properties": {
-        "level": 40,
-        "price": 4,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "resistance",
+    "parent": "gunsrpg:bleeding_resistance_ii"
+  },
+  "properties": {
+    "level": 40,
+    "price": 4,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

@@ -1,9 +1,9 @@
 {
-    "attribute": "gunsrpg:weapon_noise",
-    "invertCalculation": true,
-    "scaling": 0.02,
-    "bounds": {
-        "buff": 0.6,
-        "debuff": 0.8
-    }
+  "attribute": "gunsrpg:weapon_noise",
+  "invertCalculation": true,
+  "scaling": 0.02,
+  "bounds": {
+    "buff": 0.6,
+    "debuff": 0.8
+  }
 }

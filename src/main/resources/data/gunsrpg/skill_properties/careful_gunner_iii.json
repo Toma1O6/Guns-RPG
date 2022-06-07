@@ -1,13 +1,13 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:careful_gunner_ii"
-    },
-    "properties": {
-        "level": 55,
-        "price": 5,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:careful_gunner_ii"
+  },
+  "properties": {
+    "level": 55,
+    "price": 5,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

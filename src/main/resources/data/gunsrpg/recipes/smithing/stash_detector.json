@@ -1,36 +1,36 @@
 {
-    "type": "gunsrpg:smithing_table",
-    "pattern": [
-        "#I#",
-        "CDC",
-        "#R#"
-    ],
-    "key": {
-        "#": {
-            "item": "minecraft:heavy_weighted_pressure_plate"
-        },
-        "I": {
-            "item": "minecraft:iron_bars"
-        },
-        "C": {
-            "item": "minecraft:comparator"
-        },
-        "D": {
-            "item": "minecraft:daylight_detector"
-        },
-        "R": {
-            "item": "minecraft:redstone_lamp"
-        }
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "#I#",
+    "CDC",
+    "#R#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:heavy_weighted_pressure_plate"
     },
-    "result": {
-        "item": "gunsrpg:stash_detector"
+    "I": {
+      "item": "minecraft:iron_bars"
     },
-    "requirements": [
-        {
-            "type": "gunsrpg:skill",
-            "predicate": {
-                "skill": "gunsrpg:treasure_hunter_i"
-            }
-        }
-    ]
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "D": {
+      "item": "minecraft:daylight_detector"
+    },
+    "R": {
+      "item": "minecraft:redstone_lamp"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:stash_detector"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:treasure_hunter_i"
+      }
+    }
+  ]
 }

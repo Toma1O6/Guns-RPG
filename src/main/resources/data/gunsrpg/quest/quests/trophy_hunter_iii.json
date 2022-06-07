@@ -1,24 +1,24 @@
 {
-    "type": "gunsrpg:kill_entities",
-    "tier": 3,
-    "display": {
-        "name": "Trophy Hunter III",
-        "info": "Kill 11 unique hostile mobs"
-    },
-    "data": {
-        "entities": null,
-        "count": 11
-    },
-    "conditions": [
-        {
-            "type": "gunsrpg:unique"
-        }
-    ],
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            }
-        ]
+  "type": "gunsrpg:kill_entities",
+  "tier": 3,
+  "display": {
+    "name": "Trophy Hunter III",
+    "info": "Kill 11 unique hostile mobs"
+  },
+  "data": {
+    "entities": null,
+    "count": 11
+  },
+  "conditions": [
+    {
+      "type": "gunsrpg:unique"
     }
+  ],
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      }
+    ]
+  }
 }

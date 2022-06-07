@@ -1,11 +1,11 @@
 {
-    "replace": false,
-    "values": [
-        "gunsrpg:black_orb_ore",
-        "gunsrpg:blue_orb_ore",
-        "gunsrpg:green_orb_ore",
-        "gunsrpg:red_orb_ore",
-        "gunsrpg:white_orb_ore",
-        "gunsrpg:yellow_orb_ore"
-    ]
+  "replace": false,
+  "values": [
+    "gunsrpg:black_orb_ore",
+    "gunsrpg:blue_orb_ore",
+    "gunsrpg:green_orb_ore",
+    "gunsrpg:red_orb_ore",
+    "gunsrpg:white_orb_ore",
+    "gunsrpg:yellow_orb_ore"
+  ]
 }

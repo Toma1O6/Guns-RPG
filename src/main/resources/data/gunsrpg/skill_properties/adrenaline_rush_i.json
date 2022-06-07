@@ -1,16 +1,16 @@
 {
-    "hierarchy": {
-        "category": "survival",
-        "children": [
-            "gunsrpg:adrenaline_rush_ii"
-        ],
-        "override": "gunsrpg:adrenaline_rush_ii"
-    },
-    "properties": {
-        "level": 15,
-        "price": 2,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "survival",
+    "children": [
+      "gunsrpg:adrenaline_rush_ii"
+    ],
+    "override": "gunsrpg:adrenaline_rush_ii"
+  },
+  "properties": {
+    "level": 15,
+    "price": 2,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "survival",
-        "parent": "gunsrpg:treasure_hunter_i",
-        "children": [
-            "gunsrpg:treasure_hunter_iii"
-        ],
-        "override": "gunsrpg:treasure_hunter_iii"
-    },
-    "properties": {
-        "level": 45,
-        "price": 5,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "survival",
+    "parent": "gunsrpg:treasure_hunter_i",
+    "children": [
+      "gunsrpg:treasure_hunter_iii"
+    ],
+    "override": "gunsrpg:treasure_hunter_iii"
+  },
+  "properties": {
+    "level": 45,
+    "price": 5,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

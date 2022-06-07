@@ -1,22 +1,22 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:crossbow_assembly",
-        "extensions": [
-            "gunsrpg:chukonu_quiver",
-            "gunsrpg:chukonu_poisoned_bolts",
-            "gunsrpg:chukonu_scope",
-            "gunsrpg:chukonu_extended",
-            "gunsrpg:chukonu_tough_bowstring",
-            "gunsrpg:chukonu_gear_grinder",
-            "gunsrpg:chukonu_heavy_bolts"
-        ]
-    },
-    "properties": {
-        "level": 40,
-        "price": 6,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:crossbow_assembly",
+    "extensions": [
+      "gunsrpg:chukonu_quiver",
+      "gunsrpg:chukonu_poisoned_bolts",
+      "gunsrpg:chukonu_scope",
+      "gunsrpg:chukonu_extended",
+      "gunsrpg:chukonu_tough_bowstring",
+      "gunsrpg:chukonu_gear_grinder",
+      "gunsrpg:chukonu_heavy_bolts"
+    ]
+  },
+  "properties": {
+    "level": 40,
+    "price": 6,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

@@ -1,6 +1,6 @@
 {
-    "parent": "block/cube_all",
-    "textures": {
-        "all": "gunsrpg:block/green_crystal_ore"
-    }
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "gunsrpg:block/green_crystal_ore"
+  }
 }

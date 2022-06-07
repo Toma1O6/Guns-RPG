@@ -1,14 +1,14 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:mk14ebr_assembly"
-    },
-    "properties": {
-        "level": 5,
-        "price": 1,
-        "transactionValidator": {
-            "type": "gunsrpg:weapon",
-            "data": "gunsrpg:mk14ebr"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:mk14ebr_assembly"
+  },
+  "properties": {
+    "level": 5,
+    "price": 1,
+    "transactionValidator": {
+      "type": "gunsrpg:weapon",
+      "data": "gunsrpg:mk14ebr"
     }
+  }
 }

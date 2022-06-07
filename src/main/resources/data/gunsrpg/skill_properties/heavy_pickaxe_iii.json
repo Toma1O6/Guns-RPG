@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "mining",
-        "parent": "gunsrpg:heavy_pickaxe_ii",
-        "children": [
-            "gunsrpg:heavy_pickaxe_iv"
-        ],
-        "override": "gunsrpg:heavy_pickaxe_iv"
-    },
-    "properties": {
-        "level": 20,
-        "price": 3,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "mining",
+    "parent": "gunsrpg:heavy_pickaxe_ii",
+    "children": [
+      "gunsrpg:heavy_pickaxe_iv"
+    ],
+    "override": "gunsrpg:heavy_pickaxe_iv"
+  },
+  "properties": {
+    "level": 20,
+    "price": 3,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

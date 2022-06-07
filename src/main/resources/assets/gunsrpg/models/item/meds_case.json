@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "gunsrpg:item/meds_case"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/meds_case"
+  }
 }

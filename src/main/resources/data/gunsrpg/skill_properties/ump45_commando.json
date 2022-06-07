@@ -1,14 +1,14 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:ump45_assembly"
-    },
-    "properties": {
-        "level": 7,
-        "price": 1,
-        "transactionValidator": {
-            "type": "gunsrpg:weapon",
-            "data": "gunsrpg:ump45"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:ump45_assembly"
+  },
+  "properties": {
+    "level": 7,
+    "price": 1,
+    "transactionValidator": {
+      "type": "gunsrpg:weapon",
+      "data": "gunsrpg:ump45"
     }
+  }
 }

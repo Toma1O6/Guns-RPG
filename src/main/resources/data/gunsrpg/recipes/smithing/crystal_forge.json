@@ -1,30 +1,30 @@
 {
-    "type": "gunsrpg:smithing_table",
-    "pattern": [
-        "###",
-        "SGS",
-        " S "
-    ],
-    "key": {
-        "#": {
-            "tag": "gunsrpg:crystal/orb_of_transmutation"
-        },
-        "G": {
-            "item": "minecraft:redstone_block"
-        },
-        "S": {
-            "item": "minecraft:stone_bricks"
-        }
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "###",
+    "SGS",
+    " S "
+  ],
+  "key": {
+    "#": {
+      "tag": "gunsrpg:crystal/orb_of_transmutation"
     },
-    "result": {
-      "item": "gunsrpg:crystal_fuse"
+    "G": {
+      "item": "minecraft:redstone_block"
     },
-    "requirements": [
-      {
-        "type": "gunsrpg:skill",
-        "predicate": {
-          "skill": "gunsrpg:crystal_forge"
-        }
+    "S": {
+      "item": "minecraft:stone_bricks"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:crystal_fuse"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:crystal_forge"
       }
-    ]
-  }
+    }
+  ]
+}

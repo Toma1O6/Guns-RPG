@@ -1,25 +1,25 @@
 {
-    "type": "gunsrpg:survival",
-    "tier": 3,
-    "display": {
-        "name": "Survivor III",
-        "info": "Survive for 40 minutes"
-    },
-    "data": {
-        "duration": "40m"
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ],
-        "exclusions": [
-            "gunsrpg:have_bleeding",
-            "gunsrpg:have_poison",
-            "gunsrpg:have_fracture",
-            "gunsrpg:have_infection"
-        ]
-    }
+  "type": "gunsrpg:survival",
+  "tier": 3,
+  "display": {
+    "name": "Survivor III",
+    "info": "Survive for 40 minutes"
+  },
+  "data": {
+    "duration": "40m"
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ],
+    "exclusions": [
+      "gunsrpg:have_bleeding",
+      "gunsrpg:have_poison",
+      "gunsrpg:have_fracture",
+      "gunsrpg:have_infection"
+    ]
+  }
 }

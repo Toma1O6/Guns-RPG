@@ -1,12 +1,12 @@
 {
-    "type": "minecraft:crafting_shapeless",
-    "ingredients": [
-        {
-            "item": "minecraft:cobblestone"
-        }
-    ],
-    "result": {
-        "item": "gunsrpg:small_stone",
-        "count": 9
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:cobblestone"
     }
+  ],
+  "result": {
+    "item": "gunsrpg:small_stone",
+    "count": 9
+  }
 }

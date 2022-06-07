@@ -1,12 +1,12 @@
 {
-    "parent": "block/orientable",
-    "textures": {
-        "particle": "gunsrpg:block/cooker_side",
-        "north": "gunsrpg:block/cooker_front_lit",
-        "south": "gunsrpg:block/cooker_side",
-        "west": "gunsrpg:block/cooker_side",
-        "east": "gunsrpg:block/cooker_side",
-        "up": "gunsrpg:block/cooker_top",
-        "down": "gunsrpg:block/cooker_bottom"
-    }
+  "parent": "block/orientable",
+  "textures": {
+    "particle": "gunsrpg:block/cooker_side",
+    "north": "gunsrpg:block/cooker_front_lit",
+    "south": "gunsrpg:block/cooker_side",
+    "west": "gunsrpg:block/cooker_side",
+    "east": "gunsrpg:block/cooker_side",
+    "up": "gunsrpg:block/cooker_top",
+    "down": "gunsrpg:block/cooker_bottom"
+  }
 }

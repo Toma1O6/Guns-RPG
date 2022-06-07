@@ -1,37 +1,37 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 5,
-    "display": {
-        "name": "Eye Contact III",
-        "info": "Kill 15 endermen"
-    },
-    "data": {
-        "entities": [
-            "minecraft:enderman"
-        ],
-        "count": 15,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 12,
-            "spawners": [
-                {
-                    "entity": "minecraft:enderman",
-                    "propability": 0.05,
-                    "limit": 3
-                }
-            ]
+  "type": "gunsrpg:kill_in_area",
+  "tier": 5,
+  "display": {
+    "name": "Eye Contact III",
+    "info": "Kill 15 endermen"
+  },
+  "data": {
+    "entities": [
+      "minecraft:enderman"
+    ],
+    "count": 15,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 12,
+      "spawners": [
+        {
+          "entity": "minecraft:enderman",
+          "propability": 0.05,
+          "limit": 3
         }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

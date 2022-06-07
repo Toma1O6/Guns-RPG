@@ -1,11 +1,11 @@
 {
-    "type": "gunsrpg:blasting",
-    "ingredient": {
-        "item": "gunsrpg:gold_ore_chunk"
-    },
-    "result": {
-        "item": "minecraft:gold_ingot",
-        "count": 2
-    },
-    "experience": 1.0
+  "type": "gunsrpg:blasting",
+  "ingredient": {
+    "item": "gunsrpg:gold_ore_chunk"
+  },
+  "result": {
+    "item": "minecraft:gold_ingot",
+    "count": 2
+  },
+  "experience": 1.0
 }

@@ -1,25 +1,25 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:gun_parts_smith",
-        "extensions": [
-            "gunsrpg:ump45_quickdraw",
-            "gunsrpg:ump45_extended",
-            "gunsrpg:ump45_tough_spring",
-            "gunsrpg:ump45_vertical_grip",
-            "gunsrpg:ump45_suppressor",
-            "gunsrpg:ump45_red_dot",
-            "gunsrpg:ump45_commando"
-        ],
-        "children": [
-            "gunsrpg:thompson_assembly"
-        ]
-    },
-    "properties": {
-        "level": 10,
-        "price": 3,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:gun_parts_smith",
+    "extensions": [
+      "gunsrpg:ump45_quickdraw",
+      "gunsrpg:ump45_extended",
+      "gunsrpg:ump45_tough_spring",
+      "gunsrpg:ump45_vertical_grip",
+      "gunsrpg:ump45_suppressor",
+      "gunsrpg:ump45_red_dot",
+      "gunsrpg:ump45_commando"
+    ],
+    "children": [
+      "gunsrpg:thompson_assembly"
+    ]
+  },
+  "properties": {
+    "level": 10,
+    "price": 3,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

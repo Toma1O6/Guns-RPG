@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "resistance",
-        "parent": "gunsrpg:acrobatics_i",
-        "children": [
-            "gunsrpg:acrobatics_iii"
-        ],
-        "override": "gunsrpg:acrobatics_iii"
-    },
-    "properties": {
-        "level": 15,
-        "price": 3,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "resistance",
+    "parent": "gunsrpg:acrobatics_i",
+    "children": [
+      "gunsrpg:acrobatics_iii"
+    ],
+    "override": "gunsrpg:acrobatics_iii"
+  },
+  "properties": {
+    "level": 15,
+    "price": 3,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

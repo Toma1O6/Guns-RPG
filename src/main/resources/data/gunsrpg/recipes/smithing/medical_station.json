@@ -1,36 +1,36 @@
 {
-    "type": "gunsrpg:smithing_table",
-    "pattern": [
-        "#GS",
-        "P_P",
-        "P P"
-    ],
-    "key": {
-        "#": {
-            "item": "minecraft:white_carpet"
-        },
-        "G": {
-            "item": "minecraft:glass_bottle"
-        },
-        "S": {
-            "item": "minecraft:shears"
-        },
-        "P": {
-            "item": "minecraft:polished_andesite"
-        },
-        "_": {
-            "item": "minecraft:smooth_stone_slab"
-        }
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "#GS",
+    "P_P",
+    "P P"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:white_carpet"
     },
-    "result": {
-      "item": "gunsrpg:medical_station"
+    "G": {
+      "item": "minecraft:glass_bottle"
     },
-    "requirements": [
-      {
-        "type": "gunsrpg:skill",
-        "predicate": {
-          "skill": "gunsrpg:medical_station"
-        }
+    "S": {
+      "item": "minecraft:shears"
+    },
+    "P": {
+      "item": "minecraft:polished_andesite"
+    },
+    "_": {
+      "item": "minecraft:smooth_stone_slab"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:medical_station"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:medical_station"
       }
-    ]
-  }
+    }
+  ]
+}

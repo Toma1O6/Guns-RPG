@@ -1,31 +1,31 @@
 {
-    "type": "gunsrpg:smithing_table",
-    "pattern": [
-        " # ",
-        "HRH",
-        "HRH"
-    ],
-    "key": {
-        "#": {
-            "item": "minecraft:light_weighted_pressure_plate"
-        },
-        "H": {
-            "item": "minecraft:heavy_weighted_pressure_plate"
-        },
-        "R": {
-            "item": "minecraft:redstone_block"
-        }
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    " # ",
+    "HRH",
+    "HRH"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:light_weighted_pressure_plate"
     },
-    "result": {
-        "item": "gunsrpg:battery",
-        "count": 2
+    "H": {
+      "item": "minecraft:heavy_weighted_pressure_plate"
     },
-    "requirements": [
-        {
-            "type": "gunsrpg:skill",
-            "predicate": {
-                "skill": "gunsrpg:treasure_hunter_i"
-            }
-        }
-    ]
+    "R": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:battery",
+    "count": 2
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:treasure_hunter_i"
+      }
+    }
+  ]
 }

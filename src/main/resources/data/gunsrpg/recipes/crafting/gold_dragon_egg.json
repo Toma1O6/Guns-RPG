@@ -1,23 +1,23 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        "GSG",
-        "SES",
-        "GSG"
-    ],
-    "key": {
-        "G": {
-            "item": "minecraft:gold_block"
-        },
-        "E": {
-            "item": "minecraft:egg"
-        },
-        "S": {
-            "item": "gunsrpg:gold_egg_shard"
-        }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GSG",
+    "SES",
+    "GSG"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gold_block"
     },
-    "result": {
-        "item": "gunsrpg:gold_dragon_egg",
-        "count": 1
+    "E": {
+      "item": "minecraft:egg"
+    },
+    "S": {
+      "item": "gunsrpg:gold_egg_shard"
     }
+  },
+  "result": {
+    "item": "gunsrpg:gold_dragon_egg",
+    "count": 1
+  }
 }

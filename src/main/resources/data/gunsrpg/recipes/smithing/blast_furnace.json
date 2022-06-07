@@ -1,34 +1,34 @@
 {
-    "type": "gunsrpg:smithing_table",
-    "pattern": [
-        "IRI",
-        "BFB",
-        "IBI"
-    ],
-    "key": {
-        "F": {
-            "item": "minecraft:furnace"
-        },
-        "B": {
-            "item": "minecraft:stone_bricks"
-        },
-        "I": {
-            "item": "minecraft:iron_block"
-        },
-        "R": {
-            "item": "minecraft:iron_bars"
-        }
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "IRI",
+    "BFB",
+    "IBI"
+  ],
+  "key": {
+    "F": {
+      "item": "minecraft:furnace"
     },
-    "result": {
-        "item": "gunsrpg:blast_furnace",
-        "count": 1
+    "B": {
+      "item": "minecraft:stone_bricks"
     },
-    "requirements": [
-        {
-            "type": "gunsrpg:skill",
-            "predicate": {
-                "skill": "gunsrpg:blacksmith"
-            }
-        }
-    ]
+    "I": {
+      "item": "minecraft:iron_block"
+    },
+    "R": {
+      "item": "minecraft:iron_bars"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:blast_furnace",
+    "count": 1
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:blacksmith"
+      }
+    }
+  ]
 }

@@ -10,10 +10,10 @@
       "item": "minecraft:quartz_block"
     },
     "g": {
-        "item": "minecraft:gunpowder"
+      "item": "minecraft:gunpowder"
     },
     "b": {
-        "item": "gunsrpg:large_bullet_casing"
+      "item": "gunsrpg:large_bullet_casing"
     }
   },
   "result": {

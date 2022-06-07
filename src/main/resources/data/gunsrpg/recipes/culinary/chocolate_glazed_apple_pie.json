@@ -1,36 +1,36 @@
 {
-    "type": "gunsrpg:culinary",
-    "pattern": [
-      "aaa",
-      "csc",
-      "ewe"
-    ],
-    "key": {
-      "a": {
-        "item": "minecraft:apple"
-      },
-      "s": {
-        "item": "minecraft:sugar"
-      },
-      "c": {
-        "item": "minecraft:cookie"
-      },
-      "w": {
-        "item": "minecraft:wheat"
-      },
-      "e": {
-        "item": "minecraft:egg"
-      }
+  "type": "gunsrpg:culinary",
+  "pattern": [
+    "aaa",
+    "csc",
+    "ewe"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:apple"
     },
-    "result": {
-      "item": "gunsrpg:chocolate_glazed_apple_pie"
+    "s": {
+      "item": "minecraft:sugar"
     },
-    "requirements": [
-      {
-        "type": "gunsrpg:skill",
-        "predicate": {
-          "skill": "gunsrpg:master_chef"
-        }
+    "c": {
+      "item": "minecraft:cookie"
+    },
+    "w": {
+      "item": "minecraft:wheat"
+    },
+    "e": {
+      "item": "minecraft:egg"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:chocolate_glazed_apple_pie"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:master_chef"
       }
-    ]
-  }
+    }
+  ]
+}

@@ -1,1 +1,35 @@
-{"type":"default","data":{"gunsrpg:weapon.charging_handle":[{"e":0.5,"ease":13,"pos":{"x":0.0,"y":0.0,"z":0.8}},{"e":1.0,"ease":13}],"gunsrpg:weapon.bullet":[{"e":0.4,"ease":13},{"e":1.0,"ease":13,"pos":{"x":-3.5,"y":-0.4,"z":0.0}}]}}
+{
+  "type": "default",
+  "data": {
+    "gunsrpg:weapon.charging_handle": [
+      {
+        "e": 0.5,
+        "ease": 13,
+        "pos": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.8
+        }
+      },
+      {
+        "e": 1.0,
+        "ease": 13
+      }
+    ],
+    "gunsrpg:weapon.bullet": [
+      {
+        "e": 0.4,
+        "ease": 13
+      },
+      {
+        "e": 1.0,
+        "ease": 13,
+        "pos": {
+          "x": -3.5,
+          "y": -0.4,
+          "z": 0.0
+        }
+      }
+    ]
+  }
+}

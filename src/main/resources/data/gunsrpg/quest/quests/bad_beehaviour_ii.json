@@ -1,43 +1,43 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 3,
-    "display": {
-        "name": "Bad \"Bee\"haviour II",
-        "info": "Kill 20 angry bees"
-    },
-    "data": {
-        "entities": [
-            "minecraft:bee"
-        ],
-        "count": 20,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 10,
-            "spawners": [
-                {
-                    "entity": "minecraft:bee",
-                    "propability": 0.05,
-                    "limit": 3
-                }
-            ]
-        }
-    },
-    "conditions": [
-        {
-            "type": "gunsrpg:aggro",
-            "aggro": true
-        }
+  "type": "gunsrpg:kill_in_area",
+  "tier": 3,
+  "display": {
+    "name": "Bad \"Bee\"haviour II",
+    "info": "Kill 20 angry bees"
+  },
+  "data": {
+    "entities": [
+      "minecraft:bee"
     ],
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
+    "count": 20,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 10,
+      "spawners": [
+        {
+          "entity": "minecraft:bee",
+          "propability": 0.05,
+          "limit": 3
+        }
+      ]
     }
+  },
+  "conditions": [
+    {
+      "type": "gunsrpg:aggro",
+      "aggro": true
+    }
+  ],
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

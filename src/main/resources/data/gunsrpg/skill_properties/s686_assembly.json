@@ -1,25 +1,25 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "parent": "gunsrpg:s1897_assembly",
-        "children": [
-            "gunsrpg:s12k_assembly"
-        ],
-        "extensions": [
-            "gunsrpg:s686_bullet_loops",
-            "gunsrpg:s686_hunter",
-            "gunsrpg:s686_choke",
-            "gunsrpg:s686_blazing_pellets",
-            "gunsrpg:s686_cannon_blast",
-            "gunsrpg:s686_reliable",
-            "gunsrpg:s686_extended_barrel"
-        ]
-    },
-    "properties": {
-        "level": 35,
-        "price": 6,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:s1897_assembly",
+    "children": [
+      "gunsrpg:s12k_assembly"
+    ],
+    "extensions": [
+      "gunsrpg:s686_bullet_loops",
+      "gunsrpg:s686_hunter",
+      "gunsrpg:s686_choke",
+      "gunsrpg:s686_blazing_pellets",
+      "gunsrpg:s686_cannon_blast",
+      "gunsrpg:s686_reliable",
+      "gunsrpg:s686_extended_barrel"
+    ]
+  },
+  "properties": {
+    "level": 35,
+    "price": 6,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

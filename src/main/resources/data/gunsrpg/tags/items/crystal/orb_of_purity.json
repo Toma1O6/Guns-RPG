@@ -1,11 +1,11 @@
 {
-    "replace": false,
-    "values": [
-        "gunsrpg:black_orb_of_purity",
-        "gunsrpg:blue_orb_of_purity",
-        "gunsrpg:green_orb_of_purity",
-        "gunsrpg:red_orb_of_purity",
-        "gunsrpg:white_orb_of_purity",
-        "gunsrpg:yellow_orb_of_purity"
-    ]
+  "replace": false,
+  "values": [
+    "gunsrpg:black_orb_of_purity",
+    "gunsrpg:blue_orb_of_purity",
+    "gunsrpg:green_orb_of_purity",
+    "gunsrpg:red_orb_of_purity",
+    "gunsrpg:white_orb_of_purity",
+    "gunsrpg:yellow_orb_of_purity"
+  ]
 }

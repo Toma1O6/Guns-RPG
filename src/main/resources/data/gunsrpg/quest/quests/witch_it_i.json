@@ -1,37 +1,37 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 2,
-    "display": {
-        "name": "Witch It I",
-        "info": "Kill 5 witches"
-    },
-    "data": {
-        "entities": [
-            "minecraft:witch"
-        ],
-        "count": 5,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 15,
-            "spawners": [
-                {
-                    "entity": "minecraft:witch",
-                    "propability": 0.05,
-                    "limit": 2
-                }
-            ]
+  "type": "gunsrpg:kill_in_area",
+  "tier": 2,
+  "display": {
+    "name": "Witch It I",
+    "info": "Kill 5 witches"
+  },
+  "data": {
+    "entities": [
+      "minecraft:witch"
+    ],
+    "count": 5,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 15,
+      "spawners": [
+        {
+          "entity": "minecraft:witch",
+          "propability": 0.05,
+          "limit": 2
         }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

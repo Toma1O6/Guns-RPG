@@ -10,10 +10,10 @@
       "item": "minecraft:redstone_block"
     },
     "g": {
-        "item": "minecraft:gunpowder"
+      "item": "minecraft:gunpowder"
     },
     "h": {
-        "item": "gunsrpg:shotgun_shell"
+      "item": "gunsrpg:shotgun_shell"
     }
   },
   "result": {

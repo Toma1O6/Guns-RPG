@@ -1,33 +1,33 @@
 {
-    "type": "gunsrpg:smithing_table",
-    "pattern": [
-        "###",
-        "_G_",
-        "SSS"
-    ],
-    "key": {
-        "#": {
-            "tag": "gunsrpg:crystal/crystals"
-        },
-        "_": {
-            "item": "minecraft:stone_brick_slab"
-        },
-        "G": {
-            "item": "minecraft:gold_block"
-        },
-        "S": {
-            "item": "minecraft:stone_bricks"
-        }
+  "type": "gunsrpg:smithing_table",
+  "pattern": [
+    "###",
+    "_G_",
+    "SSS"
+  ],
+  "key": {
+    "#": {
+      "tag": "gunsrpg:crystal/crystals"
     },
-    "result": {
-      "item": "gunsrpg:crystal_station"
+    "_": {
+      "item": "minecraft:stone_brick_slab"
     },
-    "requirements": [
-      {
-        "type": "gunsrpg:skill",
-        "predicate": {
-          "skill": "gunsrpg:crystal_station"
-        }
+    "G": {
+      "item": "minecraft:gold_block"
+    },
+    "S": {
+      "item": "minecraft:stone_bricks"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:crystal_station"
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:crystal_station"
       }
-    ]
-  }
+    }
+  ]
+}

@@ -1,30 +1,30 @@
 {
-    "type": "gunsrpg:kill_entities",
-    "tier": 2,
-    "display": {
-        "name": "CQB II",
-        "info": "Kill 20 mobs under 5 block distance"
-    },
-    "data": {
-        "entities": null,
-        "count": 20
-    },
-    "conditions": [
-        {
-            "type": "gunsrpg:distance",
-            "max": 5
-        }
-    ],
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            }
-        ],
-        "exclusions": [
-            "gunsrpg:use_melee",
-            "gunsrpg:use_specific_weapon",
-            "gunsrpg:explode"
-        ]
+  "type": "gunsrpg:kill_entities",
+  "tier": 2,
+  "display": {
+    "name": "CQB II",
+    "info": "Kill 20 mobs under 5 block distance"
+  },
+  "data": {
+    "entities": null,
+    "count": 20
+  },
+  "conditions": [
+    {
+      "type": "gunsrpg:distance",
+      "max": 5
     }
+  ],
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      }
+    ],
+    "exclusions": [
+      "gunsrpg:use_melee",
+      "gunsrpg:use_specific_weapon",
+      "gunsrpg:explode"
+    ]
+  }
 }

@@ -1,16 +1,16 @@
 {
-    "hierarchy": {
-        "category": "survival",
-        "children": [
-            "gunsrpg:second_chance_ii"
-        ],
-        "override": "gunsrpg:second_chance_ii"
-    },
-    "properties": {
-        "level": 50,
-        "price": 7,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "survival",
+    "children": [
+      "gunsrpg:second_chance_ii"
+    ],
+    "override": "gunsrpg:second_chance_ii"
+  },
+  "properties": {
+    "level": 50,
+    "price": 7,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

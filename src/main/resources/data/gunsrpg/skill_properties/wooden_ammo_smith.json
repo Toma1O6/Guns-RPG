@@ -1,15 +1,15 @@
 {
-    "hierarchy": {
-        "category": "gun",
-        "children": [
-            "gunsrpg:stone_ammo_smith"
-        ]
-    },
-    "properties": {
-        "level": 0,
-        "price": 1,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "gun",
+    "children": [
+      "gunsrpg:stone_ammo_smith"
+    ]
+  },
+  "properties": {
+    "level": 0,
+    "price": 1,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

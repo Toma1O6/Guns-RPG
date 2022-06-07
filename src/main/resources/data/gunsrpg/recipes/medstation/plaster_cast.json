@@ -1,31 +1,31 @@
 {
-    "type": "gunsrpg:medical_station",
-    "pattern": [
-        "bcb",
-        "cdc",
-        "bcb"
-    ],
-    "key": {
-        "b": {
-            "item": "minecraft:bone_meal"
-        },
-        "c": {
-            "item": "minecraft:white_carpet"
-        },
-        "d": {
-            "item": "minecraft:diamond"
-        }
+  "type": "gunsrpg:medical_station",
+  "pattern": [
+    "bcb",
+    "cdc",
+    "bcb"
+  ],
+  "key": {
+    "b": {
+      "item": "minecraft:bone_meal"
     },
-    "result": {
-        "item": "gunsrpg:plaster_cast",
-        "count": 1
+    "c": {
+      "item": "minecraft:white_carpet"
     },
-    "requirements": [
-        {
-            "type": "gunsrpg:skill",
-            "predicate": {
-                "skill": "gunsrpg:medic"
-            }
-        }
-    ]
+    "d": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "result": {
+    "item": "gunsrpg:plaster_cast",
+    "count": 1
+  },
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:medic"
+      }
+    }
+  ]
 }

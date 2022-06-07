@@ -1,37 +1,37 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 3,
-    "display": {
-        "name": "Marksmen II",
-        "info": "Kill 13 pillagers"
-    },
-    "data": {
-        "entities": [
-            "minecraft:pillager"
-        ],
-        "count": 13,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 11,
-            "spawners": [
-                {
-                    "entity": "minecraft:pillager",
-                    "propability": 0.05,
-                    "limit": 3
-                }
-            ]
+  "type": "gunsrpg:kill_in_area",
+  "tier": 3,
+  "display": {
+    "name": "Marksmen II",
+    "info": "Kill 13 pillagers"
+  },
+  "data": {
+    "entities": [
+      "minecraft:pillager"
+    ],
+    "count": 13,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 11,
+      "spawners": [
+        {
+          "entity": "minecraft:pillager",
+          "propability": 0.05,
+          "limit": 3
         }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }

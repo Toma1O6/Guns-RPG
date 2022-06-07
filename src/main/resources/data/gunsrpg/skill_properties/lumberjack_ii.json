@@ -1,17 +1,17 @@
 {
-    "hierarchy": {
-        "category": "mining",
-        "parent": "gunsrpg:lumberjack_i",
-        "children": [
-            "gunsrpg:lumberjack_iii"
-        ],
-        "override": "gunsrpg:lumberjack_iii"
-    },
-    "properties": {
-        "level": 10,
-        "price": 3,
-        "transactionValidator": {
-            "type": "gunsrpg:level"
-        }
+  "hierarchy": {
+    "category": "mining",
+    "parent": "gunsrpg:lumberjack_i",
+    "children": [
+      "gunsrpg:lumberjack_iii"
+    ],
+    "override": "gunsrpg:lumberjack_iii"
+  },
+  "properties": {
+    "level": 10,
+    "price": 3,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
     }
+  }
 }

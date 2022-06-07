@@ -1,7 +1,7 @@
 {
-    "variants": {
-        "": {
-            "model": "gunsrpg:block/landmine"
-        }
+  "variants": {
+    "": {
+      "model": "gunsrpg:block/landmine"
     }
+  }
 }

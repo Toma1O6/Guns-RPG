@@ -1,8 +1,8 @@
 {
-    "attribute": "gunsrpg:melee_damage",
-    "scaling": 0.01,
-    "bounds": {
-        "buff": 0.2,
-        "debuff": 0.4
-    }
+  "attribute": "gunsrpg:melee_damage",
+  "scaling": 0.01,
+  "bounds": {
+    "buff": 0.2,
+    "debuff": 0.4
+  }
 }

@@ -1,8 +1,8 @@
 {
-    "attribute": "gunsrpg:woodcutting_speed",
-    "scaling": 0.02,
-    "bounds": {
-        "buff": 0.4,
-        "debuff": 0.8
-    }
+  "attribute": "gunsrpg:woodcutting_speed",
+  "scaling": 0.02,
+  "bounds": {
+    "buff": 0.4,
+    "debuff": 0.8
+  }
 }

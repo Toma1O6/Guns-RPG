@@ -1,37 +1,37 @@
 {
-    "type": "gunsrpg:kill_in_area",
-    "tier": 2,
-    "display": {
-        "name": "Invaders I",
-        "info": "Kill 7 piglins"
-    },
-    "data": {
-        "entities": [
-            "minecraft:piglin"
-        ],
-        "count": 7,
-        "area": {
-            "size": 32,
-            "distance": 200,
-            "spawnInterval": 15,
-            "spawners": [
-                {
-                    "entity": "minecraft:piglin",
-                    "propability": 0.05,
-                    "limit": 3
-                }
-            ]
+  "type": "gunsrpg:kill_in_area",
+  "tier": 2,
+  "display": {
+    "name": "Invaders I",
+    "info": "Kill 7 piglins"
+  },
+  "data": {
+    "entities": [
+      "minecraft:piglin"
+    ],
+    "count": 7,
+    "area": {
+      "size": 32,
+      "distance": 200,
+      "spawnInterval": 15,
+      "spawners": [
+        {
+          "entity": "minecraft:piglin",
+          "propability": 0.05,
+          "limit": 3
         }
-    },
-    "tieredConditions": {
-        "conditions": [
-            {
-                "condition": "@gunsrpg:list_a"
-            },
-            {
-                "condition": "@gunsrpg:list_b",
-                "tier": 2
-            }
-        ]
+      ]
     }
+  },
+  "tieredConditions": {
+    "conditions": [
+      {
+        "condition": "@gunsrpg:list_a"
+      },
+      {
+        "condition": "@gunsrpg:list_b",
+        "tier": 2
+      }
+    ]
+  }
 }
