@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.common.quests.adapters.MobSpawnerAdapter;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
+import dev.toma.gunsrpg.util.math.WeightedRandom;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.JSONUtils;
@@ -15,24 +16,21 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.util.Constants;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public final class QuestAreaScheme {
 
     private final int size;
     private final int distance;
     private final int spawnInterval;
-    private final List<IMobSpawner> mobSpawnerList;
+    private final WeightedRandom<IMobSpawner> spawners;
 
-    public QuestAreaScheme(int size, int distance, int spawnInterval, List<IMobSpawner> mobSpawnerList) {
+    public QuestAreaScheme(int size, int distance, int spawnInterval, IMobSpawner[] spawners) {
         this.size = size;
         this.distance = distance;
         this.spawnInterval = spawnInterval;
-        this.mobSpawnerList = mobSpawnerList;
+        this.spawners = new WeightedRandom<>(IMobSpawner::getWeight, spawners);
     }
 
     public QuestArea getArea(World world, int positionX, int positionZ) {
@@ -72,13 +70,13 @@ public final class QuestAreaScheme {
         return spawnInterval;
     }
 
-    public List<IMobSpawner> getMobSpawnerList() {
-        return mobSpawnerList;
+    public IMobSpawner getSpawner() {
+        return spawners.getRandom();
     }
 
     @Override
     public String toString() {
-        return String.format("Size: %d, MinDistance: %d, SpawnerCount: %d", size, distance, mobSpawnerList.size());
+        return String.format("Size: %d, MinDistance: %d, SpawnerCount: %d", size, distance, spawners.getValueCount());
     }
 
     public CompoundNBT toNbt() {
@@ -87,7 +85,7 @@ public final class QuestAreaScheme {
         nbt.putInt("distance", distance);
         nbt.putInt("spawnInterval", spawnInterval);
         ListNBT spawners = new ListNBT();
-        mobSpawnerList.stream().map(IMobSpawner::toNbt).forEach(spawners::add);
+        Arrays.stream(this.spawners.getValues()).map(IMobSpawner::toNbt).forEach(spawners::add);
         nbt.put("spawners", spawners);
         return nbt;
     }
@@ -101,22 +99,22 @@ public final class QuestAreaScheme {
         int distance = nbt.getInt("distance");
         int spawnInterval = nbt.getInt("spawnInterval");
         ListNBT spawnersNbt = nbt.getList("spawners", Constants.NBT.TAG_COMPOUND);
-        List<IMobSpawner> list = spawnersNbt.stream().map(inbt -> MobSpawner.fromNbt((CompoundNBT) inbt)).collect(Collectors.toList());
-        return new QuestAreaScheme(size, distance, spawnInterval, list);
+        IMobSpawner[] spawners = spawnersNbt.stream().map(inbt -> MobSpawner.fromNbt((CompoundNBT) inbt)).toArray(IMobSpawner[]::new);
+        return new QuestAreaScheme(size, distance, spawnInterval, spawners);
     }
 
     public static QuestAreaScheme fromJson(JsonObject object) throws JsonParseException {
         int size = JSONUtils.getAsInt(object, "size");
         int distance = JSONUtils.getAsInt(object, "distance");
         int spawnInterval = JSONUtils.getAsInt(object, "spawnInterval", 20);
-        List<IMobSpawner> list;
+        IMobSpawner[] spawners;
         if (object.has("spawners")) {
             JsonArray array = JSONUtils.getAsJsonArray(object, "spawners");
             MobSpawnerAdapter adapter = new MobSpawnerAdapter();
-            list = JsonHelper.<List<IMobSpawner>, IMobSpawner>deserialize(array, arr -> new ArrayList<>(arr.size()), adapter::deserialize, List::add);
+            spawners = JsonHelper.deserializeInto(array, IMobSpawner[]::new, adapter::deserialize);
         } else {
-            list = Collections.emptyList();
+            spawners = new IMobSpawner[0];
         }
-        return new QuestAreaScheme(size, distance, spawnInterval, list);
+        return new QuestAreaScheme(size, distance, spawnInterval, spawners);
     }
 }

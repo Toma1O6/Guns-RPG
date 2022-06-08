@@ -17,43 +17,44 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class MobSpawner implements IMobSpawner {
 
     private final EntityType<? extends LivingEntity> entityType;
-    private final float spawnPropability;
-    private final int spawnLimit;
+    private final int weight;
+    private final int minCount;
+    private final int maxCount;
     private final List<IMobSpawnProcessor> processorList;
 
-    public MobSpawner(EntityType<? extends LivingEntity> entityType, float spawnPropability, int spawnLimit, List<IMobSpawnProcessor> processorList) {
+    public MobSpawner(EntityType<? extends LivingEntity> entityType, int weight, int minCount, int maxCount, List<IMobSpawnProcessor> processorList) {
         this.entityType = entityType;
-        this.spawnPropability = spawnPropability;
-        this.spawnLimit = spawnLimit;
+        this.weight = weight;
+        this.minCount = minCount;
+        this.maxCount = maxCount;
         this.processorList = processorList;
+    }
+
+    @Override
+    public int getWeight() {
+        return weight;
     }
 
     @SuppressWarnings("unchecked")
     public static MobSpawner fromNbt(CompoundNBT nbt) {
         ResourceLocation entityId = new ResourceLocation(nbt.getString("livingEntity"));
         EntityType<? extends LivingEntity> entityType = (EntityType<? extends LivingEntity>) ForgeRegistries.ENTITIES.getValue(entityId);
-        float spawnPropability = nbt.getFloat("spawnPropability");
-        int spawnLimit = nbt.getInt("spawnLimit");
+        int weight = nbt.getInt("weight");
+        int minCount = nbt.getInt("minCount");
+        int maxCount = nbt.getInt("maxCount");
         ListNBT listNBT = nbt.getList("processors", Constants.NBT.TAG_COMPOUND);
         List<IMobSpawnProcessor> list = listNBT.stream().<IMobSpawnProcessor>map(inbt -> MobSpawnProcessorType.fromNbt((CompoundNBT) inbt)).collect(Collectors.toList());
-        return new MobSpawner(entityType, spawnPropability, spawnLimit, list);
+        return new MobSpawner(entityType, weight, minCount, maxCount, list);
     }
 
     @Override
-    public boolean canSpawnEntity(World world) {
-        Random random = world.getRandom();
-        return random.nextFloat() < spawnPropability;
-    }
-
-    @Override
-    public void spawnMobRandomly(World world, QuestArea area, PlayerEntity attackTarget) {
-        int toSpawn = 1 + world.getRandom().nextInt(spawnLimit);
+    public void spawnMobsRandomly(World world, QuestArea area, PlayerEntity attackTarget) {
+        int toSpawn = minCount + world.random.nextInt(1 + maxCount - minCount);
         for (int i = 0; i < toSpawn; i++) {
             spawnMob(world, area, attackTarget);
         }
@@ -63,8 +64,9 @@ public class MobSpawner implements IMobSpawner {
     public CompoundNBT toNbt() {
         CompoundNBT nbt = new CompoundNBT();
         nbt.putString("livingEntity", entityType.getRegistryName().toString());
-        nbt.putFloat("spawnPropability", spawnPropability);
-        nbt.putInt("spawnLimit", spawnLimit);
+        nbt.putInt("weight", weight);
+        nbt.putInt("minCount", minCount);
+        nbt.putInt("maxCount", maxCount);
         ListNBT list = new ListNBT();
         processorList.stream().map(this::serializeProcessor).forEach(list::add);
         nbt.put("processors", list);
@@ -81,12 +83,11 @@ public class MobSpawner implements IMobSpawner {
             MobEntity mob = (MobEntity) entity;
             mob.finalizeSpawn((ServerWorld) world, world.getCurrentDifficultyAt(pos), SpawnReason.COMMAND, null, null);
             mob.setTarget(attackTarget);
-
-
             AlwaysAggroOnGoal<?> alwaysAggroOnGoal = new AlwaysAggroOnGoal<>(mob, false, attackTarget);
             mob.targetSelector.addGoal(0, alwaysAggroOnGoal);
         }
-        entity.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(area.getScheme().getSize() * 3);
+        int size = area.getScheme().getSize();
+        entity.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(size * 4);
     }
 
     @SuppressWarnings("unchecked")

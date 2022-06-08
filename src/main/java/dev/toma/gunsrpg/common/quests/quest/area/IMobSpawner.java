@@ -6,9 +6,9 @@ import net.minecraft.world.World;
 
 public interface IMobSpawner {
 
-    boolean canSpawnEntity(World world);
+    int getWeight();
 
-    void spawnMobRandomly(World world, QuestArea area, PlayerEntity attackTarget);
+    void spawnMobsRandomly(World world, QuestArea area, PlayerEntity attackTarget);
 
     CompoundNBT toNbt();
 }

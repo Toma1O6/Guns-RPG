@@ -17,7 +17,6 @@ import net.minecraft.world.gen.Heightmap;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Random;
 
 public class QuestArea {
@@ -28,14 +27,14 @@ public class QuestArea {
     private final Vec2i cornerA;
     private final Vec2i cornerB;
     private final ITextComponent descriptor;
-    private int spawnDelay;
+    private int spawnIntervalTimer;
 
     private Collection<ParticleEntry> edgePositions;
 
     public QuestArea(QuestAreaScheme scheme, BlockPos pos) {
         this.scheme = scheme;
         this.pos = pos;
-        this.spawnDelay = scheme.getSpawnInterval();
+        this.spawnIntervalTimer = scheme.getSpawnInterval();
 
         int radius = scheme.getSize();
         this.cornerA = new Vec2i(pos.getX() - radius, pos.getZ() - radius);
@@ -47,20 +46,16 @@ public class QuestArea {
         BlockPos pos = NBTUtil.readBlockPos(nbt.getCompound("pos"));
         int spawnDelay = nbt.getInt("spawnDelay");
         QuestArea area = new QuestArea(scheme, pos);
-        area.spawnDelay = spawnDelay;
+        area.spawnIntervalTimer = spawnDelay;
         return area;
     }
 
     public void tickArea(World world, PlayerEntity player) {
         if (!world.isClientSide) {
-            if (--spawnDelay < 0) {
-                spawnDelay = scheme.getSpawnInterval();
-                List<IMobSpawner> spawners = scheme.getMobSpawnerList();
-                for (IMobSpawner spawner : spawners) {
-                    if (spawner.canSpawnEntity(world)) {
-                        spawner.spawnMobRandomly(world, this, player);
-                    }
-                }
+            if (--spawnIntervalTimer < 0) {
+                spawnIntervalTimer = scheme.getSpawnInterval();
+                IMobSpawner spawner = scheme.getSpawner();
+                spawner.spawnMobsRandomly(world, this, player);
             }
         } else {
             if (edgePositions == null) {
@@ -126,7 +121,7 @@ public class QuestArea {
     public CompoundNBT toNbt() {
         CompoundNBT nbt = new CompoundNBT();
         nbt.put("pos", NBTUtil.writeBlockPos(pos));
-        nbt.putInt("spawnDelay", spawnDelay);
+        nbt.putInt("spawnDelay", spawnIntervalTimer);
         return nbt;
     }
 

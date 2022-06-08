@@ -64,6 +64,17 @@ public final class JsonHelper {
         return as(element, JsonElement::isJsonArray, JsonElement::getAsJsonArray, "JsonArray");
     }
 
+    public static int getAsBoundedInt(JsonObject object, String key, int fallbackValue, int lowerBound, int upperBound) {
+        int val = JSONUtils.getAsInt(object, key, fallbackValue);
+        if (val < lowerBound) {
+            throw new JsonSyntaxException(key + " must not be smaller than " + lowerBound + ", got " + val);
+        }
+        if (val > upperBound) {
+            throw new JsonSyntaxException(key + " must not be bigger than " + upperBound + ", got" + val);
+        }
+        return val;
+    }
+
     private static <J> J as(JsonElement element, Predicate<JsonElement> condition, Function<JsonElement, J> converter, String type) {
         if (!condition.test(element)) {
             throw new JsonSyntaxException("Not a " + type + ", got " + element.getClass().getName());

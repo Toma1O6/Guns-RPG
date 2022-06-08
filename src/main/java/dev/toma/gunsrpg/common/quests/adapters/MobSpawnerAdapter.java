@@ -20,10 +20,11 @@ public final class MobSpawnerAdapter {
         JsonObject object = JsonHelper.asJsonObject(json);
         ResourceLocation entityId = new ResourceLocation(JSONUtils.getAsString(object, "entity"));
         EntityType<? extends LivingEntity> entityType = tryParseAsLivingEntity(entityId);
-        float spawnPropability = JSONUtils.getAsFloat(object, "propability");
-        int spawnLimit = JSONUtils.getAsInt(object, "limit", 1);
+        int weight = JsonHelper.getAsBoundedInt(object, "weight", 1, 1, Integer.MAX_VALUE);
+        int minCount = JsonHelper.getAsBoundedInt(object, "minCount", 1, 1, 64);
+        int maxCount = JsonHelper.getAsBoundedInt(object, "maxCount", 1, 1, 64);
         List<IMobSpawnProcessor> processors = JsonHelper.deserializeAsList("processors", object, MobSpawnerAdapter::resolveSpawnProcessor);
-        return new MobSpawner(entityType, spawnPropability, spawnLimit, processors);
+        return new MobSpawner(entityType, weight, minCount, maxCount, processors);
     }
 
     public static <P extends IMobSpawnProcessor> P resolveSpawnProcessor(JsonElement element) throws JsonParseException {
