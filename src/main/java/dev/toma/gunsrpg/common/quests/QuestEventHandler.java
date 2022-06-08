@@ -14,11 +14,13 @@ import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.util.properties.PropertyContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.piglin.AbstractPiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingConversionEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -129,6 +131,17 @@ public final class QuestEventHandler {
     @SubscribeEvent
     public static void cancelBlockDestruction(PlayerInteractEvent.LeftClickBlock event) {
         cancelIfPlayerIsInQuestArea(event);
+    }
+
+    @SubscribeEvent
+    public static void cancelEntityConversion(LivingConversionEvent.Pre event) {
+        LivingEntity entity = event.getEntityLiving();
+        if (entity instanceof AbstractPiglinEntity) {
+            AbstractPiglinEntity piglinEntity = (AbstractPiglinEntity) entity;
+            piglinEntity.setImmuneToZombification(true);
+            event.setCanceled(true);
+            event.setConversionTimer(Integer.MIN_VALUE);
+        }
     }
 
     private static void cancelIfPlayerIsInQuestArea(PlayerInteractEvent event) {
