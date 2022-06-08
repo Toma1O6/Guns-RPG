@@ -9,62 +9,78 @@
     "duration": "4m",
     "area": {
       "size": 32,
-      "distance": 200,
-      "spawnInterval": 80,
+      "distance": 150,
+      "spawnInterval": 300,
       "spawners": [
         {
           "entity": "minecraft:spider",
-          "propability": 0.05,
-          "limit": 3
+          "minCount": 2,
+          "maxCount": 3,
+          "weight": 10
         },
         {
           "entity": "minecraft:zombie",
-          "propability": 0.05,
-          "limit": 3
+          "minCount": 2,
+          "maxCount": 3,
+          "weight": 10,
+          "processors": [
+            {
+              "type": "gunsrpg:set_equipment",
+              "equipment": {
+                "head": "minecraft:leather_helmet"
+              }
+            }
+          ]
         },
         {
           "entity": "minecraft:creeper",
-          "propability": 0.05,
-          "limit": 3
+          "minCount": 2,
+          "maxCount": 3,
+          "weight": 8
         },
         {
           "entity": "minecraft:skeleton",
-          "propability": 0.05,
-          "limit": 3
+          "maxCount": 3,
+          "weight": 8,
+          "processors": [
+            {
+              "type": "gunsrpg:set_equipment",
+              "equipment": {
+                "head": "minecraft:leather_helmet"
+              }
+            }
+          ]
         },
         {
           "entity": "minecraft:witch",
-          "propability": 0.05,
-          "limit": 3
+          "maxCount": 2,
+          "weight": 5
         },
         {
           "entity": "minecraft:wither_skeleton",
-          "propability": 0.05,
-          "limit": 3
+          "maxCount": 2,
+          "weight": 8
         },
         {
           "entity": "gunsrpg:zombie_gunner",
-          "propability": 0.05,
-          "limit": 3
+          "maxCount": 2,
+          "weight": 5
         },
         {
           "entity": "gunsrpg:explosive_skeleton",
-          "propability": 0.05,
-          "limit": 3
+          "maxCount": 2,
+          "weight": 3
         },
         {
           "entity": "gunsrpg:bloodmoon_golem",
-          "propability": 0.05,
-          "limit": 3
+          "maxCount": 2,
+          "weight": 1
         }
       ]
     }
   },
   "tieredConditions": {
     "conditions": [
-      {
-        "condition": "@gunsrpg:list_a"
-      },
       {
         "condition": "@gunsrpg:list_b",
         "tier": 2

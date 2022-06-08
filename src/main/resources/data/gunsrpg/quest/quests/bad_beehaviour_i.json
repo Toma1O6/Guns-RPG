@@ -12,13 +12,13 @@
     "count": 10,
     "area": {
       "size": 32,
-      "distance": 200,
-      "spawnInterval": 11,
+      "distance": 150,
+      "spawnInterval": 400,
       "spawners": [
         {
           "entity": "minecraft:bee",
-          "propability": 0.05,
-          "limit": 3
+          "minCount": 2,
+          "maxCount": 3
         }
       ]
     }

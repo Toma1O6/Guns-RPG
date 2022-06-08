@@ -12,13 +12,13 @@
     "count": 13,
     "area": {
       "size": 32,
-      "distance": 200,
-      "spawnInterval": 13,
+      "distance": 150,
+      "spawnInterval": 300,
       "spawners": [
         {
           "entity": "minecraft:piglin",
-          "propability": 0.05,
-          "limit": 3
+          "minCount": 2,
+          "maxCount": 2
         }
       ]
     }

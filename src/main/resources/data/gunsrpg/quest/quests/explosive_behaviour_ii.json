@@ -12,13 +12,12 @@
     "count": 10,
     "area": {
       "size": 32,
-      "distance": 200,
-      "spawnInterval": 13,
+      "distance": 150,
+      "spawnInterval": 300,
       "spawners": [
         {
           "entity": "gunsrpg:explosive_skeleton",
-          "propability": 0.05,
-          "limit": 2
+          "maxCount": 2
         }
       ]
     }
@@ -32,6 +31,9 @@
         "condition": "@gunsrpg:list_b",
         "tier": 2
       }
+    ],
+    "exclusions": [
+      "gunsrpg:use_melee"
     ]
   }
 }

@@ -12,13 +12,12 @@
     "count": 5,
     "area": {
       "size": 32,
-      "distance": 200,
-      "spawnInterval": 25,
+      "distance": 150,
+      "spawnInterval": 400,
       "spawners": [
         {
           "entity": "gunsrpg:rocket_angel",
-          "propability": 0.05,
-          "limit": 2
+          "maxCount": 2
         }
       ]
     }

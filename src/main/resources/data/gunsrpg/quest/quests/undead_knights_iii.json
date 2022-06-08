@@ -12,13 +12,11 @@
     "count": 15,
     "area": {
       "size": 32,
-      "distance": 200,
-      "spawnInterval": 14,
+      "distance": 150,
+      "spawnInterval": 300,
       "spawners": [
         {
-          "entity": "gunsrpg:zombie_knight",
-          "propability": 0.05,
-          "limit": 1
+          "entity": "gunsrpg:zombie_knight"
         }
       ]
     }

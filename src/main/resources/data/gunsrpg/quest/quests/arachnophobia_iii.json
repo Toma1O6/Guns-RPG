@@ -12,13 +12,13 @@
     "count": 20,
     "area": {
       "size": 32,
-      "distance": 200,
-      "spawnInterval": 8,
+      "distance": 150,
+      "spawnInterval": 200,
       "spawners": [
         {
           "entity": "minecraft:spider",
-          "propability": 0.05,
-          "limit": 3
+          "minCount": 2,
+          "maxCount": 3
         }
       ]
     }

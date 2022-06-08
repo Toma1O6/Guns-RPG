@@ -12,13 +12,13 @@
     "count": 13,
     "area": {
       "size": 32,
-      "distance": 200,
-      "spawnInterval": 10,
+      "distance": 150,
+      "spawnInterval": 300,
       "spawners": [
         {
           "entity": "minecraft:wither_skeleton",
-          "propability": 0.07,
-          "limit": 5
+          "minCount": 2,
+          "maxCount": 3
         }
       ]
     }

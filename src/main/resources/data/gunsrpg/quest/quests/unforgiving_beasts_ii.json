@@ -3,22 +3,21 @@
   "tier": 4,
   "display": {
     "name": "Unforgiving Beasts II",
-    "info": "Kill 5 ravagers"
+    "info": "Kill 7 ravagers"
   },
   "data": {
     "entities": [
       "minecraft:ravager"
     ],
-    "count": 5,
+    "count": 7,
     "area": {
       "size": 32,
-      "distance": 200,
-      "spawnInterval": 30,
+      "distance": 150,
+      "spawnInterval": 500,
       "spawners": [
         {
           "entity": "minecraft:ravager",
-          "propability": 0.05,
-          "limit": 1
+          "maxCount": 2
         }
       ]
     }

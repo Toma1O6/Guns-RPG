@@ -12,13 +12,12 @@
     "count": 15,
     "area": {
       "size": 32,
-      "distance": 200,
-      "spawnInterval": 12,
+      "distance": 150,
+      "spawnInterval": 250,
       "spawners": [
         {
           "entity": "minecraft:enderman",
-          "propability": 0.05,
-          "limit": 3
+          "maxCount": 2
         }
       ]
     }

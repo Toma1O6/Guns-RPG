@@ -3,22 +3,21 @@
   "tier": 2,
   "display": {
     "name": "Witch It I",
-    "info": "Kill 5 witches"
+    "info": "Kill 7 witches"
   },
   "data": {
     "entities": [
       "minecraft:witch"
     ],
-    "count": 5,
+    "count": 7,
     "area": {
       "size": 32,
-      "distance": 200,
-      "spawnInterval": 15,
+      "distance": 150,
+      "spawnInterval": 400,
       "spawners": [
         {
           "entity": "minecraft:witch",
-          "propability": 0.05,
-          "limit": 2
+          "maxCount": 3
         }
       ]
     }

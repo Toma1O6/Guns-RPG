@@ -12,13 +12,12 @@
     "count": 3,
     "area": {
       "size": 32,
-      "distance": 200,
-      "spawnInterval": 35,
+      "distance": 150,
+      "spawnInterval": 800,
       "spawners": [
         {
           "entity": "gunsrpg:bloodmoon_golem",
-          "propability": 0.05,
-          "limit": 1
+          "maxCount": 2
         }
       ]
     }
