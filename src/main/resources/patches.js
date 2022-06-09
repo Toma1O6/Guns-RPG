@@ -262,7 +262,7 @@ public addFreshEntity(Lnet/minecraft/entity/Entity;)Z
     ALOAD 0
     ALOAD 1
     // INJECT START ---------------------
-    -- REMOVE -- INVOKESPECIAL net/minecraft/world/server/ServerWorld.addEntity (Lnet/minecraft/entity/Entity;)Z
+    -- REMOVE -- INVOKEVIRTUAL net/minecraft/world/server/ServerWorld.addEntity (Lnet/minecraft/entity/Entity;)Z
     -- ADD --    INVOKESTATIC dev/toma/gunsrpg/asm/Hooks.spawnEntity (Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/entity/Entity;)Z
     // INJECT END -----------------------
     IRETURN
