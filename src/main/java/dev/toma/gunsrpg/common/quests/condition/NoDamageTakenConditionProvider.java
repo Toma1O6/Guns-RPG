@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -27,8 +28,8 @@ public class NoDamageTakenConditionProvider extends AbstractQuestConditionProvid
 
     @Override
     public boolean isValid(PlayerEntity player, IPropertyReader reader) {
-        float initialHealth = reader.getProperty(QuestProperties.HEALTH_STATUS);
-        return player.getHealth() >= initialHealth;
+        DamageSource source = reader.getProperty(QuestProperties.DAMAGE_SOURCE);
+        return source == null;
     }
 
     @Override
