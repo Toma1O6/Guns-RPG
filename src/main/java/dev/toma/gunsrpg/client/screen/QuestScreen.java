@@ -259,7 +259,11 @@ public class QuestScreen extends Screen {
             int offset = 15;
             addTitle(y, TEXT_QUEST_NAME, TextFormatting.YELLOW, TextFormatting.BOLD);
             addDetail(y += offset, displayInfo.getName(), TextFormatting.ITALIC);
-            if (status.shouldShowRewards()) {
+            ActionType actionType = this.getQuestActionType(status);
+            UUID traderId = QuestScreen.this.entity.getUUID();
+            UUID questId = this.selectedQuest.getOriginalAssignerId();
+            boolean isRewardCollectionAllowed = Objects.equals(traderId, questId) || questId.equals(Util.NIL_UUID) || actionType == ActionType.CANCEL;
+            if (status.shouldShowRewards() && isRewardCollectionAllowed) {
                 addTitle(y += offset, TEXT_QUEST_REWARDS, TextFormatting.YELLOW, TextFormatting.BOLD);
                 BartenderSkill bartenderSkill = SkillUtil.getTopHierarchySkill(Skills.BARTENDER_I, provider);
                 int selectionSize = bartenderSkill != null ? bartenderSkill.getRewardCount() : 1;
@@ -291,11 +295,9 @@ public class QuestScreen extends Screen {
             }
 
 
-            ActionType actionType = this.getQuestActionType(status);
+
             if (actionType != null) {
-                UUID traderId = QuestScreen.this.entity.getUUID();
-                UUID questId = this.selectedQuest.getOriginalAssignerId();
-                if (Objects.equals(traderId, questId) || questId.equals(Util.NIL_UUID) || actionType == ActionType.CANCEL) {
+                if (isRewardCollectionAllowed) {
                     actionButton = addWidget(new ActionButton(this.x + this.width - 145, this.height - 25, 140, 20, actionType, this::handleResponse));
                     IQuests quests = QuestScreen.this.questProvider;
                     Optional<Quest<?>> activeQuestOpt = quests.getActiveQuest();
@@ -316,6 +318,7 @@ public class QuestScreen extends Screen {
         }
 
         private void onRewardSelectionChanged(Integer[] choices) {
+            if (actionButton == null) return;
             actionButton.active = choices.length > 0;
             this.selectedIndexes = choices;
         }
