@@ -98,7 +98,7 @@ public class CommonEventHandler {
     public static final Random random = new Random();
     private static final UUID MOVEMENT_SPEED = UUID.fromString("785168CE-6979-421A-ADE7-98461F04D1A0");
     private static final float SKILLBOOK_DROP_CHANCE = 0.02F;
-    private static final float PERKBOOK_DROP_CHANCE = 0.07F;
+    private static final float PERKBOOK_DROP_CHANCE = 0.10F;
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void loadBiomes(BiomeLoadingEvent event) {

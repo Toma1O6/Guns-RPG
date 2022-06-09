@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
+import dev.toma.gunsrpg.ai.QuestPlayerSensor;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.AnimationPaths;
 import dev.toma.gunsrpg.common.attribute.Attribs;
@@ -38,6 +39,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.ai.brain.sensor.SensorType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -70,6 +72,13 @@ public class CommonRegistry {
     public static void createRegistries(RegistryEvent.NewRegistry event) {
         ModRegistries.SKILLS = createGenericRegistry("skill", SkillType.class);
         ModRegistries.DEBUFFS = createGenericRegistry("debuff", DebuffType.class);
+    }
+
+    @SubscribeEvent
+    public static void onSensorsRegister(RegistryEvent.Register<SensorType<?>> event) {
+        event.getRegistry().registerAll(
+                new SensorType<>(QuestPlayerSensor::new).setRegistryName("quest_player_sensor")
+        );
     }
 
     @SubscribeEvent

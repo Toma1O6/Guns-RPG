@@ -1,14 +1,21 @@
 package dev.toma.gunsrpg.common.quests.quest.area;
 
 import dev.toma.gunsrpg.ai.AlwaysAggroOnGoal;
+import dev.toma.gunsrpg.ai.QuestPlayerSensor;
+import dev.toma.gunsrpg.common.init.ModSensors;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.brain.Brain;
+import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
+import net.minecraft.entity.ai.brain.sensor.Sensor;
+import net.minecraft.entity.ai.brain.sensor.SensorType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,7 +23,10 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MobSpawner implements IMobSpawner {
@@ -88,6 +98,14 @@ public class MobSpawner implements IMobSpawner {
         }
         int size = area.getScheme().getSize();
         entity.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(size * 4);
+        Brain<?> brain = entity.getBrain();
+        brain.setMemory(MemoryModuleType.UNIVERSAL_ANGER, true);
+        Map<SensorType<? extends Sensor<?>>, Sensor<?>> sensors = (Map<SensorType<? extends Sensor<?>>, Sensor<?>>) brain.sensors;
+        sensors.remove(SensorType.NEAREST_PLAYERS);
+        SensorType<QuestPlayerSensor> sensorType = ModSensors.QUEST_PLAYER_SENSOR;
+        QuestPlayerSensor questPlayerSensor = sensorType.create();
+        questPlayerSensor.setTarget(attackTarget);
+        sensors.put(sensorType, questPlayerSensor);
     }
 
     @SuppressWarnings("unchecked")
