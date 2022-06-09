@@ -19,6 +19,11 @@ public class PlayerHealItem extends AbstractHealItem<PlayerEntity> {
         return new Builder(name);
     }
 
+    @Override
+    protected boolean shouldApplyHealBonus() {
+        return false;
+    }
+
     public static void onSteroidsUsed(PlayerEntity player) {
         float value = PlayerData.getUnsafe(player).getAttributes().getAttribute(Attribs.STEROIDS_EFFECT).floatValue();
         int length = (int) (1200 * value);

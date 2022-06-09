@@ -30,6 +30,7 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
 
     public GunKillData(PlayerEntity player, GunItem gunItem) {
         this.player = player;
+        this.level = 1;
         ITransactionValidatorFactory<?, ?> factory = TransactionValidatorRegistry.getValidatorFactory(WeaponTransactionValidator.ID);
         ITransactionValidator validator = TransactionValidatorRegistry.getTransactionValidator(factory, JsonHelper.toSimpleJson(gunItem.getRegistryName()));
         this.strategy = ModUtils.firstNonnull(GunsRPG.getModLifecycle().getProgressionStrategyManager().getStrategy(validator), FakeLevelingStrategy.INSTANCE);
@@ -86,7 +87,7 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
 
     @Override
     public int getLevelLimit() {
-        return 8;
+        return 9;
     }
 
     @Override
@@ -98,7 +99,7 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
 
     @Override
     public void doLock() {
-        level = 0;
+        level = 1;
         points = 0;
         killCount = 0;
         requiredKillCount = updateKillRequirement();
@@ -118,7 +119,7 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
     public void deserializeNBT(CompoundNBT nbt) {
         killCount = nbt.getInt("killCount");
         requiredKillCount = nbt.getInt("requiredKillCount");
-        level = nbt.getInt("level");
+        level = Math.max(nbt.getInt("level"), 1);
         points = nbt.getInt("points");
     }
 

@@ -107,7 +107,7 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
                 if (!world.isClientSide) {
                     T target = getTargetObject(world, player, data);
                     applyAction(target);
-                    SkillUtil.heal(player, 0); // will apply raw heal bonus obtained from efficient med skill
+                    if (shouldApplyHealBonus()) SkillUtil.heal(player, 0); // will apply raw heal bonus obtained from efficient med skill
                 }
                 if (!player.isCreative())
                     stack.shrink(1);
@@ -152,6 +152,10 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
 
     protected IAnimation constructAnimation(IKeyframeProvider provider, int length) {
         return new Animation(provider, length);
+    }
+
+    protected boolean shouldApplyHealBonus() {
+        return true;
     }
 
     public static abstract class HealBuilder<T, H extends AbstractHealItem<T>> {

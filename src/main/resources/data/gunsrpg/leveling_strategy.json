@@ -152,46 +152,46 @@
       ]
     },
     "weaponLevel": {
-      "maxLevel": 8,
+      "maxLevel": 9,
       "killRequirements": [
         {
           "function": "equal",
-          "value": 0,
+          "value": 1,
           "require": 20
         },
         {
           "function": "equal",
-          "value": 1,
+          "value": 2,
           "require": 35
         },
         {
           "function": "equal",
-          "value": 2,
+          "value": 3,
           "require": 60
         },
         {
           "function": "equal",
-          "value": 3,
+          "value": 4,
           "require": 95
         },
         {
           "function": "equal",
-          "value": 4,
+          "value": 5,
           "require": 140
         },
         {
           "function": "equal",
-          "value": 5,
+          "value": 6,
           "require": 190
         },
         {
           "function": "equal",
-          "value": 6,
+          "value": 7,
           "require": 250
         },
         {
           "function": "equal",
-          "value": 7,
+          "value": 8,
           "require": 300
         },
         {
@@ -202,7 +202,7 @@
       "rewards": [
         {
           "function": "equal",
-          "value": 8,
+          "value": 9,
           "rewards": [
             {
               "type": "gunsrpg:point",
@@ -218,10 +218,10 @@
         {
           "function": "oneOf",
           "list": [
+            8,
             7,
-            6,
-            4,
-            2
+            5,
+            3
           ],
           "rewards": [
             {
