@@ -50,11 +50,11 @@ public final class QuestConditions {
     static {
         NO_CONDITION_TYPE = register("empty", SimpleProviderSerializer.withConstantResult(() -> NoConditionProvider.NO_CONDITION), (type, nbt) -> NoConditionProvider.NO_CONDITION, false);
         register("used_item", new SpecificWeaponConditionProvider.Serializer(), SpecificWeaponConditionProvider::fromNbt, false, Trigger.ENTITY_KILLED);
-        register("debuff", new ActiveDebuffConditionProvider.Serializer(), ActiveDebuffConditionProvider::fromNbt, false, Trigger.TICK);
+        register("debuff", new ActiveDebuffConditionProvider.Serializer(), ActiveDebuffConditionProvider::fromNbt, false, Trigger.TICK, Trigger.ENTITY_KILLED);
         register("no_food", SimpleProviderSerializer.withResultOf(NoFoodConditionProvider::new), NoFoodConditionProvider::fromNbt, true, Trigger.TICK);
         register("no_heal", SimpleProviderSerializer.withResultOf(NoHealConditionProvider::new), NoHealConditionProvider::fromNbt, true, Trigger.TICK);
         register("explode", SimpleProviderSerializer.withResultOf(ExplodeConditionProvider::new), ExplodeConditionProvider::fromNbt, false, Trigger.ENTITY_KILLED);
-        register("equipment", new EquipmentConditionProvider.Serializer(), EquipmentConditionProvider::fromNbt, false, Trigger.TICK);
+        register("equipment", new EquipmentConditionProvider.Serializer(), EquipmentConditionProvider::fromNbt, false, Trigger.TICK, Trigger.ENTITY_KILLED);
         register("aggro", new HasAggroConditionProvider.Serializer(), HasAggroConditionProvider::fromNbt, false, Trigger.ENTITY_KILLED);
         register("distance", new DistanceConditionProvider.Serializer(), DistanceConditionProvider::fromNbt, false, Trigger.ENTITY_KILLED);
         register("no_damage_taken", SimpleProviderSerializer.withResultOf(NoDamageTakenConditionProvider::new), NoDamageTakenConditionProvider::fromNbt, true, Trigger.DAMAGE_TAKEN);
