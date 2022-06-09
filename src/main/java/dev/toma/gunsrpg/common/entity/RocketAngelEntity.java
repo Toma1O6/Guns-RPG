@@ -33,9 +33,10 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.EnumSet;
 
-public class RocketAngelEntity extends MonsterEntity implements IEntityAdditionalSpawnData {
+public class RocketAngelEntity extends MonsterEntity implements IEntityAdditionalSpawnData, IAlwaysAggroable {
 
     private Type type = Type.SELECTOR.getRandom();
+    private boolean forcedAggro;
 
     public RocketAngelEntity(World world) {
         this(ModEntities.ROCKET_ANGEL.get(), world);
@@ -49,6 +50,16 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return createMonsterAttributes().add(Attributes.MAX_HEALTH, 45.0).add(Attributes.ATTACK_DAMAGE, 4.0).add(Attributes.FOLLOW_RANGE, 48.0);
+    }
+
+    @Override
+    public void setForcedAggro(boolean forcedAggro) {
+        this.forcedAggro = forcedAggro;
+    }
+
+    @Override
+    public boolean isAggroForced() {
+        return forcedAggro;
     }
 
     @Override
@@ -193,7 +204,7 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
             }
             double distance = entity.distanceToSqr(target);
             boolean canSee = entity.getSensing().canSee(target) || WorldData.isBloodMoon(entity.level);
-            if (canSee) {
+            if (canSee || entity.isAggroForced()) {
                 if (distance < 4.0D) {
                     if (cooldown <= 0) {
                         cooldown = 10;

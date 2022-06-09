@@ -3,9 +3,7 @@ package dev.toma.gunsrpg.ai;
 import dev.toma.gunsrpg.common.entity.ExplosiveSkeletonEntity;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.world.cap.WorldData;
-import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
@@ -67,7 +65,7 @@ public class RangedAttackNoSightGoal extends Goal {
         LivingEntity livingEntity = this.entity.getTarget();
         if (livingEntity != null) {
             double distanceToTarget = this.entity.distanceToSqr(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
-            boolean canSee = this.entity.getSensing().canSee(livingEntity) || WorldData.isBloodMoon(entity.level) || entity.hasForcedAggro();
+            boolean canSee = this.entity.getSensing().canSee(livingEntity) || WorldData.isBloodMoon(entity.level) || entity.isAggroForced();
             boolean hasSeen = this.seeTime > 0;
 
             if (canSee != hasSeen) {

@@ -41,7 +41,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.Random;
 
-public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAttackMob, IEntityAdditionalSpawnData {
+public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAttackMob, IEntityAdditionalSpawnData, IAlwaysAggroable {
 
     private final RangedAttackNoSightGoal aiArrowAttack = new RangedAttackNoSightGoal(this, 1.0D, 25, 18.0F);
     private final MeleeAttackGoal aiAttackOnCollide = new MeleeAttackGoal(this, 1.2D, false) {
@@ -68,11 +68,13 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
         return MonsterEntity.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
+    @Override
     public void setForcedAggro(boolean forcedAggro) {
         this.forcedAggro = forcedAggro;
     }
 
-    public boolean hasForcedAggro() {
+    @Override
+    public boolean isAggroForced() {
         return forcedAggro;
     }
 
