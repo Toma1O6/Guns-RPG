@@ -238,11 +238,6 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
     }
 
     @Override
-    public boolean isInvulnerableTo(DamageSource source) {
-        return isInvulnerable() || source.isExplosion();
-    }
-
-    @Override
     public void addAdditionalSaveData(CompoundNBT nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putInt("loadoutType", this.loadoutType.ordinal());
