@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.quests;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IQuests;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
@@ -18,6 +19,9 @@ import net.minecraft.entity.monster.piglin.AbstractPiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingConversionEvent;
@@ -26,6 +30,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
 public final class QuestEventHandler {
@@ -146,17 +152,22 @@ public final class QuestEventHandler {
 
     private static void cancelIfPlayerIsInQuestArea(PlayerInteractEvent event) {
         PlayerEntity player = event.getPlayer();
-        PlayerData.get(player).ifPresent(data -> {
-            IQuests provider = data.getQuests();
-            provider.getActiveQuest().ifPresent(quest -> {
-                if (quest.getStatus() == QuestStatus.ACTIVE && quest instanceof IAreaQuest) {
-                    IAreaQuest areaQuest = (IAreaQuest) quest;
-                    QuestArea area = areaQuest.getQuestArea();
-                    if (area != null && area.isInArea(player)) {
-                        event.setCanceled(true);
+        BlockPos pos = event.getPos();
+        World world = event.getWorld();
+        for (PlayerEntity playerEntity : world.players()) {
+            PlayerData.get(playerEntity).ifPresent(data -> {
+                IQuests provider = data.getQuests();
+                provider.getActiveQuest().ifPresent(quest -> {
+                    if (quest.getStatus() == QuestStatus.ACTIVE && quest instanceof IAreaQuest) {
+                        IAreaQuest areaQuest = (IAreaQuest) quest;
+                        QuestArea area = areaQuest.getQuestArea();
+                        if (area != null && area.isInArea(player) || area.isInArea(pos.getX(), pos.getZ())) {
+                            event.setCanceled(true);
+                        }
                     }
-                }
+                });
             });
-        });
+            if (event.isCanceled()) break;
+        }
     }
 }
