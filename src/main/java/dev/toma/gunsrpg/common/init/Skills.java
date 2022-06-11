@@ -55,6 +55,7 @@ public class Skills {
     public static final SkillType<SimpleSkill> CRYSTAL_PURIFICATION_STATION = null;
     public static final SkillType<SimpleSkill> CRYSTALIZED = null;
     public static final SkillType<BartenderSkill> BARTENDER_I = null;
+    public static final SkillType<SimpleSkill> LOCAL_CHEF = null;
     public static final SkillType<ISkill> M1911_SUPPRESSOR = null;
     public static final SkillType<ISkill> M1911_HEAVY_BULLETS = null;
     public static final SkillType<KillingSpreeSkill> M1911_KILLING_SPREE = null;
