@@ -57,18 +57,21 @@ public class CrystalFusionStationTileEntity extends InventoryTileEntity {
         float breakChance = upgrade.getBreakChance();
         data.getPerkProvider().awardPoints(-price);
         Random random = level.random;
-        if (random.nextFloat() < breakChance) {
+        float randomChance = random.nextFloat();
+        if (randomChance < breakChance) {
             clearInputs();
             return;
         }
         List<PerkVariant> variants = ImmutableList.copyOf(this.getCurrentlyUsedVariants());
         PerkVariant targetVariant = this.getTargetedOrbType();
-        PerkVariant other = targetVariant;
+        PerkVariant other;
         if (targetVariant == null) {
             targetVariant = variants.get(0);
         }
         if (variants.size() != 1) {
             other = variants.get(1);
+        } else {
+            other = targetVariant;
         }
         targetVariant = random.nextFloat() < swapConfig.getChance() ? targetVariant : other;
         Crystal crystal = Crystal.mergeAndLevelUp(crystal1, crystal2, targetLevel);

@@ -17,6 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.piglin.AbstractPiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -136,7 +137,9 @@ public final class QuestEventHandler {
 
     @SubscribeEvent
     public static void cancelAirInteraction(PlayerInteractEvent.RightClickItem event) {
-        cancelIfPlayerIsInQuestArea(event);
+        if (event.getItemStack().getItem() instanceof BucketItem) {
+            cancelIfPlayerIsInQuestArea(event);
+        }
     }
 
     @SubscribeEvent
