@@ -135,6 +135,11 @@ public final class QuestEventHandler {
     }
 
     @SubscribeEvent
+    public static void cancelAirInteraction(PlayerInteractEvent.RightClickItem event) {
+        cancelIfPlayerIsInQuestArea(event);
+    }
+
+    @SubscribeEvent
     public static void cancelBlockDestruction(PlayerInteractEvent.LeftClickBlock event) {
         cancelIfPlayerIsInQuestArea(event);
     }
