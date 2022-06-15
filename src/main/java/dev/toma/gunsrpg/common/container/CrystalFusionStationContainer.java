@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.container;
 
 import com.mojang.datafixers.util.Pair;
-import dev.toma.gunsrpg.common.init.ClientRegistry;
 import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.common.item.perk.PerkVariant;

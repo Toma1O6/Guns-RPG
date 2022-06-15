@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.client.render.infobar;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.common.quests.condition.NoConditionProvider;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
-import dev.toma.gunsrpg.common.quests.quest.area.QuestArea;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.math.IDimensions;
 import net.minecraft.client.gui.FontRenderer;
