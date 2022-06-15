@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.quests;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IQuests;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
@@ -24,9 +23,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ChatType;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -36,8 +32,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
 public final class QuestEventHandler {
@@ -174,11 +168,11 @@ public final class QuestEventHandler {
                     if (quest.getStatus() == QuestStatus.ACTIVE && quest instanceof IAreaQuest) {
                         IAreaQuest areaQuest = (IAreaQuest) quest;
                         QuestArea area = areaQuest.getQuestArea();
-                        if (area != null && area.isInArea(player) || area.isInArea(pos.getX(), pos.getZ())) {
+                        if (area != null && area.isActiveArea() && (area.isInArea(player) || area.isInArea(pos.getX(), pos.getZ()))) {
                             event.setCanceled(true);
                             if (!player.level.isClientSide) {
                                 ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-                                serverPlayer.sendMessage(new StringTextComponent("This type of interaction is disable for quest area").withStyle(TextFormatting.RED), ChatType.GAME_INFO, Util.NIL_UUID);
+                                serverPlayer.sendMessage(QuestArea.INTERACTION_DISABLED, ChatType.GAME_INFO, Util.NIL_UUID);
                             }
                         }
                     }

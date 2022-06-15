@@ -8,9 +8,10 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
@@ -22,12 +23,14 @@ import java.util.Random;
 public class QuestArea {
 
     public static final ITextComponent STAY_IN_AREA = new TranslationTextComponent("quest.stay_in_area");
+    public static final ITextComponent INTERACTION_DISABLED = new TranslationTextComponent("quest.interaction_blocked").withStyle(TextFormatting.RED);
     private final QuestAreaScheme scheme;
     private final BlockPos pos;
     private final Vec2i cornerA;
     private final Vec2i cornerB;
     private final ITextComponent descriptor;
     private int spawnIntervalTimer;
+    private boolean isActiveArea;
 
     private Collection<ParticleEntry> edgePositions;
 
@@ -45,12 +48,15 @@ public class QuestArea {
     public static QuestArea fromNbt(QuestAreaScheme scheme, CompoundNBT nbt) {
         BlockPos pos = NBTUtil.readBlockPos(nbt.getCompound("pos"));
         int spawnDelay = nbt.getInt("spawnDelay");
+        boolean isActive = nbt.getBoolean("activeArea");
         QuestArea area = new QuestArea(scheme, pos);
         area.spawnIntervalTimer = spawnDelay;
+        area.isActiveArea = isActive;
         return area;
     }
 
     public void tickArea(World world, PlayerEntity player) {
+        isActiveArea = true;
         if (!world.isClientSide) {
             if (--spawnIntervalTimer < 0) {
                 spawnIntervalTimer = scheme.getSpawnInterval();
@@ -69,6 +75,10 @@ public class QuestArea {
 
     public QuestAreaScheme getScheme() {
         return scheme;
+    }
+
+    public boolean isActiveArea() {
+        return isActiveArea;
     }
 
     public BlockPos getRandomEgdePosition(Random random, World world) {
@@ -122,6 +132,7 @@ public class QuestArea {
         CompoundNBT nbt = new CompoundNBT();
         nbt.put("pos", NBTUtil.writeBlockPos(pos));
         nbt.putInt("spawnDelay", spawnIntervalTimer);
+        nbt.putBoolean("activeArea", isActiveArea);
         return nbt;
     }
 
@@ -135,18 +146,30 @@ public class QuestArea {
         int minZ = cornerA.y();
         int maxX = cornerB.x();
         int maxZ = cornerB.y();
-        edgePositions.add(ParticleEntry.corner(new Vector3d(minX, height(world, minX, minZ), minZ)));
-        edgePositions.add(ParticleEntry.corner(new Vector3d(minX, height(world, minX, maxZ), maxZ)));
-        edgePositions.add(ParticleEntry.corner(new Vector3d(maxX, height(world, maxX, minZ), minZ)));
-        edgePositions.add(ParticleEntry.corner(new Vector3d(maxX, height(world, maxX, maxZ), maxZ)));
+        edgePositions.add(ParticleEntry.corner(new Vector3i(minX, height(world, minX, minZ), minZ)));
+        edgePositions.add(ParticleEntry.corner(new Vector3i(minX, height(world, minX, maxZ), maxZ)));
+        edgePositions.add(ParticleEntry.corner(new Vector3i(maxX, height(world, maxX, minZ), minZ)));
+        edgePositions.add(ParticleEntry.corner(new Vector3i(maxX, height(world, maxX, maxZ), maxZ)));
 
         for (int i = minX + 1; i < maxX; i += 3) {
-            edgePositions.add(ParticleEntry.edge(new Vector3d(i, height(world, i, minZ), minZ)));
-            edgePositions.add(ParticleEntry.edge(new Vector3d(i, height(world, i, maxZ), maxZ)));
+            edgePositions.add(ParticleEntry.edge(new Vector3i(i, height(world, i, minZ), minZ)));
+            edgePositions.add(ParticleEntry.edge(new Vector3i(i, height(world, i, maxZ), maxZ)));
         }
         for (int i = minZ + 1; i < maxZ; i += 3) {
-            edgePositions.add(ParticleEntry.edge(new Vector3d(minX, height(world, minX, i), i)));
-            edgePositions.add(ParticleEntry.edge(new Vector3d(maxX, height(world, maxX, i), i)));
+            edgePositions.add(ParticleEntry.edge(new Vector3i(minX, height(world, minX, i), i)));
+            edgePositions.add(ParticleEntry.edge(new Vector3i(maxX, height(world, maxX, i), i)));
+        }
+
+        for (ParticleEntry entry : edgePositions) {
+            Vector3i vec = entry.vec;
+            BlockPos.Mutable mutable = new BlockPos.Mutable(vec.getX(), vec.getY() - 1, vec.getZ());
+            while (mutable.getY() > 0) {
+                boolean air = world.isEmptyBlock(mutable);
+                mutable.setY(mutable.getY() - 1);
+                if (air && !world.isEmptyBlock(mutable)) {
+                    edgePositions.add(entry.copy(mutable.above()));
+                }
+            }
         }
     }
 
@@ -157,25 +180,29 @@ public class QuestArea {
     private static final class ParticleEntry {
 
         private final IParticleData data;
-        private final Vector3d vec;
+        private final Vector3i vec;
         private final float power;
 
-        public ParticleEntry(IParticleData data, Vector3d vec, float power) {
+        public ParticleEntry(IParticleData data, Vector3i vec, float power) {
             this.data = data;
             this.vec = vec;
             this.power = power;
         }
 
-        public static ParticleEntry corner(Vector3d vec) {
+        public ParticleEntry copy(Vector3i vector3i) {
+            return new ParticleEntry(data, vector3i, power);
+        }
+
+        public static ParticleEntry corner(Vector3i vec) {
             return new ParticleEntry(ParticleTypes.CLOUD, vec, 0.3F);
         }
 
-        public static ParticleEntry edge(Vector3d vec) {
+        public static ParticleEntry edge(Vector3i vec) {
             return new ParticleEntry(ParticleTypes.CLOUD, vec, 0.05F);
         }
 
         public void makeParticles(World world) {
-            world.addParticle(data, true, vec.x + 0.5, vec.y, vec.z + 0.5, 0.0, power, 0.0);
+            world.addParticle(data, true, vec.getX() + 0.5, vec.getY(), vec.getZ() + 0.5, 0.0, power, 0.0);
         }
     }
 }

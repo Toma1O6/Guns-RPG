@@ -38,15 +38,15 @@ public class UniqueMobKillsConditionProvider extends AbstractQuestConditionProvi
     final class ConditionTracker implements IQuestCondition, ITriggerHandler {
 
         private final Set<EntityType<?>> killedMobs = new HashSet<>();
-        private final ITextComponent descriptor;
+        private final ITextComponent[] descriptors;
 
         public ConditionTracker(UniqueMobKillsConditionProvider provider) {
-            this.descriptor = new TranslationTextComponent(provider.getLocalizationString());
+            this.descriptors = expandWithShortLocalizations(new TranslationTextComponent(provider.getLocalizationString()));
         }
 
         @Override
-        public ITextComponent getDescriptor() {
-            return descriptor;
+        public ITextComponent getDescriptor(boolean shortDesc) {
+            return descriptors[shortDesc ? 1 : 0];
         }
 
         @Override

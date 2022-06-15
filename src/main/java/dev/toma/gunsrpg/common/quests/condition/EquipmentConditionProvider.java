@@ -25,13 +25,13 @@ public class EquipmentConditionProvider extends AbstractQuestConditionProvider<E
 
     private final Map<EquipmentSlotType, Item> map;
     private final String name;
-    private final ITextComponent descriptor;
+    private final ITextComponent[] descriptors;
 
     public EquipmentConditionProvider(QuestConditionProviderType<?> type, Map<EquipmentSlotType, Item> map, String name) {
         super(type);
         this.map = map;
         this.name = name;
-        this.descriptor = new TranslationTextComponent(this.getLocalizationString(), name);
+        this.descriptors = expandWithShortLocalizations(new TranslationTextComponent(this.getLocalizationString(), name));
     }
 
     public static EquipmentConditionProvider fromNbt(QuestConditionProviderType<EquipmentConditionProvider> type, CompoundNBT data) {
@@ -61,8 +61,8 @@ public class EquipmentConditionProvider extends AbstractQuestConditionProvider<E
     }
 
     @Override
-    public ITextComponent getDescriptor() {
-        return descriptor;
+    public ITextComponent getDescriptor(boolean shortDesc) {
+        return descriptors[shortDesc ? 1 : 0];
     }
 
     @Override

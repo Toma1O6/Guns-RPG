@@ -107,7 +107,7 @@ public class SpecificWeaponConditionProvider extends AbstractQuestConditionProvi
     public class Condition implements IQuestCondition {
 
         private Item[] validItems;
-        private ITextComponent descriptor;
+        private ITextComponent[] descriptors;
 
         public Condition(Item[] validItems) {
             this.validItems = validItems;
@@ -121,8 +121,8 @@ public class SpecificWeaponConditionProvider extends AbstractQuestConditionProvi
         }
 
         @Override
-        public ITextComponent getDescriptor() {
-            return descriptor;
+        public ITextComponent getDescriptor(boolean shortDesc) {
+            return descriptors[shortDesc ? 1 : 0];
         }
 
         @Override
@@ -152,7 +152,7 @@ public class SpecificWeaponConditionProvider extends AbstractQuestConditionProvi
         private void updateDescriptor() {
             SpecificWeaponConditionProvider provider = SpecificWeaponConditionProvider.this;
             String text = provider.selector == Selector.ANY ? provider.group : validItems[0].getName(ItemStack.EMPTY).getString();
-            this.descriptor = new TranslationTextComponent(provider.getLocalizationString(), text);
+            this.descriptors = expandWithShortLocalizations(new TranslationTextComponent(provider.getLocalizationString(), text));
         }
     }
 }

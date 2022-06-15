@@ -21,7 +21,7 @@ public class HasAggroConditionProvider extends AbstractQuestConditionProvider<Ha
     protected HasAggroConditionProvider(QuestConditionProviderType<HasAggroConditionProvider> type, boolean status) {
         super(type);
         this.status = status;
-        this.descriptors = new ITextComponent[] { new TranslationTextComponent(this.getLocalizationString() + ".false"), new TranslationTextComponent(this.getLocalizationString() + ".true") };
+        this.descriptors = expandWithShortLocalizations(new TranslationTextComponent(this.getLocalizationString() + ".false"), new TranslationTextComponent(this.getLocalizationString() + ".true"));
     }
 
     public static HasAggroConditionProvider fromNbt(QuestConditionProviderType<HasAggroConditionProvider> type, CompoundNBT data) {
@@ -29,8 +29,12 @@ public class HasAggroConditionProvider extends AbstractQuestConditionProvider<Ha
     }
 
     @Override
-    public ITextComponent getDescriptor() {
-        return descriptors[status ? 1 : 0];
+    public ITextComponent getDescriptor(boolean shortDesc) {
+        int i = status ? 1 : 0;
+        if (shortDesc) {
+            i |= 0b10;
+        }
+        return descriptors[i];
     }
 
     @Override
@@ -39,7 +43,7 @@ public class HasAggroConditionProvider extends AbstractQuestConditionProvider<Ha
         if (entity instanceof MobEntity) {
             MobEntity mobEntity = (MobEntity) entity;
             LivingEntity target = mobEntity.getTarget();
-            return status == (target == player);
+            return status ? target == player : target == null;
         }
         return true;
     }

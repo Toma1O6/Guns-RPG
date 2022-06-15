@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.render.infobar;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.common.quests.condition.NoConditionProvider;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.quest.area.QuestArea;
 import dev.toma.gunsrpg.util.RenderUtils;
@@ -9,6 +10,8 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 
@@ -31,8 +34,11 @@ public class QuestDisplayDataModel implements IDataModel {
         addElement(new DataRowElement<>(quest, title, provider));
     }
 
-    public void addAreaInfo(QuestArea area) {
-        addElement(new DataRowElement<>(area, QuestArea.STAY_IN_AREA, QuestArea::getDescriptor));
+    public void addConditionDisplay(Quest<?> quest) {
+        Arrays.stream(quest.getConditions())
+                .filter(condition -> condition != NoConditionProvider.NO_CONDITION)
+                .sorted(Comparator.comparing(condition -> condition.getProviderType().getType().getId()))
+                .forEach(condition -> addElement(new TextElement(condition.getDescriptor(true))));
     }
 
     @Override

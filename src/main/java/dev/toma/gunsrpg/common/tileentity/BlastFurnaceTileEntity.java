@@ -323,6 +323,8 @@ public class BlastFurnaceTileEntity extends VanillaInventoryTileEntity implement
             if (outputStack.isEmpty()) {
                 ItemStack resultCopy = resultStack.copy();
                 itemHandler.setStackInSlot(SLOT_OUTPUT, resultCopy);
+            } else if (outputStack.getItem() == resultStack.getItem()) {
+                outputStack.grow(resultStack.getCount());
             }
             if (!level.isClientSide) {
                 setRecipeUsed(recipe);

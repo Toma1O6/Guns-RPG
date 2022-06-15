@@ -11,7 +11,7 @@ public interface IQuestCondition {
 
     boolean isValid(PlayerEntity player, IPropertyReader reader);
 
-    ITextComponent getDescriptor();
+    ITextComponent getDescriptor(boolean shortDesc);
 
     default void saveData(CompoundNBT nbt) {}
 

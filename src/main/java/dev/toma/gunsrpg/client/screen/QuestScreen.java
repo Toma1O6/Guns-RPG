@@ -272,7 +272,7 @@ public class QuestScreen extends Screen {
                 if (conditions.length > 0) {
                     addTitle(y += offset, TEXT_QUEST_CONDITIONS, TextFormatting.YELLOW, TextFormatting.BOLD);
                     for (IQuestCondition condition : conditions) {
-                        addDetail(y += offset, condition.getDescriptor());
+                        addDetail(y += offset, condition.getDescriptor(false));
                     }
                 }
                 StringTextComponent tierComponent = new StringTextComponent(TextFormatting.AQUA.toString() + selectedQuest.getRewardTier());

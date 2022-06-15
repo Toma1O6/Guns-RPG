@@ -10,11 +10,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class ExplodeConditionProvider extends AbstractQuestConditionProvider<ExplodeConditionProvider> implements IQuestCondition {
 
-    private final ITextComponent descriptor;
+    private final ITextComponent[] descriptors;
 
     public ExplodeConditionProvider(QuestConditionProviderType<?> type) {
         super(type);
-        this.descriptor = new TranslationTextComponent(this.getLocalizationString());
+        this.descriptors = expandWithShortLocalizations(new TranslationTextComponent(this.getLocalizationString()));
     }
 
     public static ExplodeConditionProvider fromNbt(QuestConditionProviderType<ExplodeConditionProvider> type, CompoundNBT nbt) {
@@ -28,8 +28,8 @@ public class ExplodeConditionProvider extends AbstractQuestConditionProvider<Exp
     }
 
     @Override
-    public ITextComponent getDescriptor() {
-        return descriptor;
+    public ITextComponent getDescriptor(boolean shortDesc) {
+        return descriptors[shortDesc ? 1 : 0];
     }
 
     @Override

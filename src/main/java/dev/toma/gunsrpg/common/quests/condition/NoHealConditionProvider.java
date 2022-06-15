@@ -9,11 +9,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class NoHealConditionProvider extends AbstractQuestConditionProvider<NoHealConditionProvider> implements IQuestCondition {
 
-    private final ITextComponent descriptor;
+    private final ITextComponent[] descriptors;
 
     public NoHealConditionProvider(QuestConditionProviderType<?> type) {
         super(type);
-        this.descriptor = new TranslationTextComponent(this.getLocalizationString());
+        this.descriptors = expandWithShortLocalizations(new TranslationTextComponent(this.getLocalizationString()));
     }
 
     public static NoHealConditionProvider fromNbt(QuestConditionProviderType<NoHealConditionProvider> type, CompoundNBT nbt) {
@@ -21,8 +21,8 @@ public class NoHealConditionProvider extends AbstractQuestConditionProvider<NoHe
     }
 
     @Override
-    public ITextComponent getDescriptor() {
-        return descriptor;
+    public ITextComponent getDescriptor(boolean shortDesc) {
+        return descriptors[shortDesc ? 1 : 0];
     }
 
     @Override

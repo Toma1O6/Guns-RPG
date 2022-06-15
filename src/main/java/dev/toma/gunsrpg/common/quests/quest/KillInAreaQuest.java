@@ -33,6 +33,7 @@ public class KillInAreaQuest extends AbstractAreaBasedQuest<KillInAreaData> {
     @Override
     protected void fillDataModel(QuestDisplayDataModel model) {
         model.addQuestHeader(this, false);
+        model.addConditionDisplay(this);
         model.addInformationRow(this.getScheme().getDisplayInfo().getInfo(), this, q -> new StringTextComponent(q.killCount + "/" + q.getActiveData().getKillTarget()));
         fillAreaDataModel(model);
     }

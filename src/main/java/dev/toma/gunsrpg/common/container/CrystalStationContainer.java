@@ -7,7 +7,6 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.object.PlayerPerkProvider;
-import dev.toma.gunsrpg.common.init.ClientRegistry;
 import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.perk.Crystal;
@@ -65,7 +64,7 @@ public class CrystalStationContainer extends AbstractContainer {
         }
         addPlayerInventory(inventory, 74);
         referenceHolder.set(1);
-        addSlotListener(new ContainerListener(data));
+        addSlotListener(new ContainerListener(data, temporalInventory.getContainerSize()));
         referenceHolder.set(0);
     }
 
@@ -141,9 +140,11 @@ public class CrystalStationContainer extends AbstractContainer {
 
         private final IPlayerData data;
         private boolean acceptingEvents;
+        private final int slotCount;
 
-        public ContainerListener(IPlayerData data) {
+        public ContainerListener(IPlayerData data, int slotCount) {
             this.data = data;
+            this.slotCount = slotCount;
         }
 
         @Override
@@ -153,7 +154,7 @@ public class CrystalStationContainer extends AbstractContainer {
         @Override
         public void slotChanged(Container container, int slot, ItemStack itemStack) {
             if (!acceptingEvents) return;
-            if (slot < 12) {
+            if (slot < slotCount) {
                 IPerkProvider provider = data.getPerkProvider();
                 if (itemStack.isEmpty()) {
                     provider.setCrystal(slot, null);

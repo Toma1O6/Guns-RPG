@@ -22,10 +22,10 @@ public class HeadshotConditionProvider extends AbstractQuestConditionProvider<He
     public HeadshotConditionProvider(QuestConditionProviderType<? extends HeadshotConditionProvider> type, boolean requireHeadshots) {
         super(type);
         this.requireHeadshots = requireHeadshots;
-        this.descriptors = new ITextComponent[] {
+        this.descriptors = expandWithShortLocalizations(
                 new TranslationTextComponent(this.getLocalizationString() + ".false"),
                 new TranslationTextComponent(this.getLocalizationString() + ".true")
-        };
+        );
     }
 
     public static HeadshotConditionProvider fromNbt(QuestConditionProviderType<HeadshotConditionProvider> type, CompoundNBT nbt) {
@@ -34,8 +34,10 @@ public class HeadshotConditionProvider extends AbstractQuestConditionProvider<He
     }
 
     @Override
-    public ITextComponent getDescriptor() {
-        return descriptors[requireHeadshots ? 1 : 0];
+    public ITextComponent getDescriptor(boolean shortDesc) {
+        int i = requireHeadshots ? 1 : 0;
+        i |= shortDesc ? 0b10 : 0;
+        return descriptors[i];
     }
 
     @Override

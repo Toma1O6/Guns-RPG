@@ -8,11 +8,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class NoDamageGivenConditionProvider extends AbstractQuestConditionProvider<NoDamageGivenConditionProvider> implements IQuestCondition {
 
-    private final ITextComponent descriptor;
+    private final ITextComponent[] descriptors;
 
     public NoDamageGivenConditionProvider(QuestConditionProviderType<? extends NoDamageGivenConditionProvider> type) {
         super(type);
-        this.descriptor = new TranslationTextComponent(this.getLocalizationString());
+        this.descriptors = expandWithShortLocalizations(new TranslationTextComponent(this.getLocalizationString()));
     }
 
     public static NoDamageGivenConditionProvider fromNbt(QuestConditionProviderType<NoDamageGivenConditionProvider> type, CompoundNBT nbt) {
@@ -20,8 +20,8 @@ public class NoDamageGivenConditionProvider extends AbstractQuestConditionProvid
     }
 
     @Override
-    public ITextComponent getDescriptor() {
-        return descriptor;
+    public ITextComponent getDescriptor(boolean shortDesc) {
+        return descriptors[shortDesc ? 1 : 0];
     }
 
     @Override

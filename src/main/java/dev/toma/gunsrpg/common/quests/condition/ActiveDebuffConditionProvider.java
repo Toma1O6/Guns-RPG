@@ -22,12 +22,12 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class ActiveDebuffConditionProvider extends AbstractQuestConditionProvider<ActiveDebuffConditionProvider> implements IQuestCondition {
 
     private final IDebuffType<?> debuff;
-    private final ITextComponent descriptor;
+    private final ITextComponent[] descriptors;
 
     public ActiveDebuffConditionProvider(QuestConditionProviderType<?> type, IDebuffType<?> debuff) {
         super(type);
         this.debuff = debuff;
-        this.descriptor = new TranslationTextComponent(this.getLocalizationString(), new TranslationTextComponent("debuff." + ModUtils.convertToLocalization(debuff.getRegistryName())));
+        this.descriptors = expandWithShortLocalizations(new TranslationTextComponent(this.getLocalizationString(), new TranslationTextComponent("debuff." + ModUtils.convertToLocalization(debuff.getRegistryName()))));
     }
 
     public static ActiveDebuffConditionProvider fromNbt(QuestConditionProviderType<ActiveDebuffConditionProvider> type, CompoundNBT nbt) {
@@ -42,8 +42,8 @@ public class ActiveDebuffConditionProvider extends AbstractQuestConditionProvide
     }
 
     @Override
-    public ITextComponent getDescriptor() {
-        return descriptor;
+    public ITextComponent getDescriptor(boolean shortDesc) {
+        return descriptors[shortDesc ? 1 : 0];
     }
 
     @Override

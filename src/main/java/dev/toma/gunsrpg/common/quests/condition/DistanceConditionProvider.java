@@ -15,7 +15,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class DistanceConditionProvider extends AbstractQuestConditionProvider<DistanceConditionProvider> implements IQuestCondition {
 
-    private final ITextComponent descriptor;
+    private final ITextComponent[] descriptors;
     private final double minDistance;
     private final double maxDistance;
 
@@ -24,7 +24,7 @@ public class DistanceConditionProvider extends AbstractQuestConditionProvider<Di
         this.minDistance = minDistance;
         this.maxDistance = maxDistance;
         boolean isMinDistanceDefined = minDistance > 0;
-        this.descriptor = new TranslationTextComponent(this.getLocalizationString() + (isMinDistanceDefined ? ".min" : ".max"), isMinDistanceDefined ? minDistance : maxDistance);
+        this.descriptors = expandWithShortLocalizations(new TranslationTextComponent(this.getLocalizationString() + (isMinDistanceDefined ? ".min" : ".max"), isMinDistanceDefined ? minDistance : maxDistance));
     }
 
     public static DistanceConditionProvider fromNbt(QuestConditionProviderType<DistanceConditionProvider> type, CompoundNBT nbt) {
@@ -42,8 +42,8 @@ public class DistanceConditionProvider extends AbstractQuestConditionProvider<Di
     }
 
     @Override
-    public ITextComponent getDescriptor() {
-        return descriptor;
+    public ITextComponent getDescriptor(boolean shortDesc) {
+        return descriptors[shortDesc ? 1 : 0];
     }
 
     @Override

@@ -234,6 +234,14 @@ public class GunsrpgCommand {
                                                                         )
                                                         )
                                         )
+                                        .then(
+                                                Commands.literal("cooldown")
+                                                        .executes(ctx -> noArgsProvided("cooldownValue"))
+                                                        .then(
+                                                                Commands.argument("cooldownValue", IntegerArgumentType.integer(0))
+                                                                        .executes(GunsrpgCommand::setCrystalUsageCooldown)
+                                                        )
+                                        )
                         )
                         .then(
                                 Commands.literal("quest")
@@ -282,6 +290,19 @@ public class GunsrpgCommand {
                         )
                         .executes(ctx -> noArgsProvided("debuff", "event", "progression", "skill"))
         );
+    }
+
+    private static int setCrystalUsageCooldown(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        int value = IntegerArgumentType.getInteger(context, "cooldownValue");
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        IPlayerData data = PlayerData.getUnsafe(player);
+        IPerkProvider provider = data.getPerkProvider();
+        provider.setCooldown(value);
+        return 0;
     }
 
     private static int startNewQuest(CommandContext<CommandSource> context) throws CommandSyntaxException {
@@ -372,7 +393,7 @@ public class GunsrpgCommand {
             player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "Conditions"), Util.NIL_UUID);
             for (IQuestConditionProvider<?> provider : questConditions) {
                 IQuestCondition condition = provider.makeConditionInstance();
-                ITextComponent text = condition.getDescriptor();
+                ITextComponent text = condition.getDescriptor(false);
                 player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "- " + TextFormatting.AQUA + text.getString()), Util.NIL_UUID);
             }
         }
@@ -386,7 +407,7 @@ public class GunsrpgCommand {
                 player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Added tier: " + TextFormatting.AQUA + tierModifier), Util.NIL_UUID);
                 for (IQuestConditionProvider<?> provider : providers) {
                     IQuestCondition condition = provider.makeConditionInstance();
-                    ITextComponent textComponent = condition.getDescriptor();
+                    ITextComponent textComponent = condition.getDescriptor(false);
                     player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "- " + TextFormatting.AQUA + textComponent.getString()), Util.NIL_UUID);
                 }
                 player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "-------------------------"), Util.NIL_UUID);

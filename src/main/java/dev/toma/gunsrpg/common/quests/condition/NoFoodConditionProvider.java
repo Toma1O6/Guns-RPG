@@ -10,11 +10,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class NoFoodConditionProvider extends AbstractQuestConditionProvider<NoFoodConditionProvider> implements IQuestCondition {
 
-    private final ITextComponent descriptor;
+    private final ITextComponent[] descriptors;
 
     public NoFoodConditionProvider(QuestConditionProviderType<?> type) {
         super(type);
-        this.descriptor = new TranslationTextComponent(this.getLocalizationString());
+        this.descriptors = expandWithShortLocalizations(new TranslationTextComponent(this.getLocalizationString()));
     }
 
     public static NoFoodConditionProvider fromNbt(QuestConditionProviderType<NoFoodConditionProvider> type, CompoundNBT nbt) {
@@ -29,8 +29,8 @@ public class NoFoodConditionProvider extends AbstractQuestConditionProvider<NoFo
     }
 
     @Override
-    public ITextComponent getDescriptor() {
-        return descriptor;
+    public ITextComponent getDescriptor(boolean shortDesc) {
+        return descriptors[shortDesc ? 1 : 0];
     }
 
     @Override
