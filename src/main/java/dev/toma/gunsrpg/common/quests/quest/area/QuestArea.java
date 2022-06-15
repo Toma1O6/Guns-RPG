@@ -18,6 +18,7 @@ import net.minecraft.world.gen.Heightmap;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 public class QuestArea {
@@ -160,6 +161,7 @@ public class QuestArea {
             edgePositions.add(ParticleEntry.edge(new Vector3i(maxX, height(world, maxX, i), i)));
         }
 
+        List<ParticleEntry> blocksBelow = new ArrayList<>();
         for (ParticleEntry entry : edgePositions) {
             Vector3i vec = entry.vec;
             BlockPos.Mutable mutable = new BlockPos.Mutable(vec.getX(), vec.getY() - 1, vec.getZ());
@@ -167,10 +169,11 @@ public class QuestArea {
                 boolean air = world.isEmptyBlock(mutable);
                 mutable.setY(mutable.getY() - 1);
                 if (air && !world.isEmptyBlock(mutable)) {
-                    edgePositions.add(entry.copy(mutable.above()));
+                    blocksBelow.add(entry.copy(mutable.above()));
                 }
             }
         }
+        edgePositions.addAll(blocksBelow);
     }
 
     private int height(World world, int x, int z) {
