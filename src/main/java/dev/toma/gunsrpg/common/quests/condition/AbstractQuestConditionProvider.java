@@ -26,7 +26,7 @@ public abstract class AbstractQuestConditionProvider<C extends IQuestCondition> 
             ITextComponent descriptor = descriptors[i];
             if (descriptor instanceof TranslationTextComponent) {
                 TranslationTextComponent translationTextComponent = (TranslationTextComponent) descriptor;
-                component = new TranslationTextComponent(translationTextComponent.getKey(), translationTextComponent.getArgs());
+                component = new TranslationTextComponent(translationTextComponent.getKey() + ".short", translationTextComponent.getArgs());
             } else {
                 component = new StringTextComponent(descriptor.getString());
             }
