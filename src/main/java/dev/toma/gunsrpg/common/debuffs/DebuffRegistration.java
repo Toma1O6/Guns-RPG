@@ -306,7 +306,7 @@ public final class DebuffRegistration {
 
     private static boolean isEntity(EntityType<?> type, IDebuffContext context) {
         DamageSource source = context.getSource();
-        return source instanceof EntityDamageSource && source.getDirectEntity() != null && source.getDirectEntity().getType() == type;
+        return source instanceof EntityDamageSource && !((EntityDamageSource) source).isThorns() && source.getDirectEntity() != null && source.getDirectEntity().getType() == type;
     }
 
     private static float forEntity(EntityType<?> type, IDebuffContext context, float value) {
@@ -317,6 +317,10 @@ public final class DebuffRegistration {
     private static <E extends Entity, V> float forEntityDynamic(EntityType<E> type, IDebuffContext context, Function<E, V> fetcher, Function<V, Float> calculator) {
         DamageSource source = context.getSource();
         if (source instanceof EntityDamageSource) {
+            EntityDamageSource entityDamageSource = (EntityDamageSource) source;
+            if (entityDamageSource.isThorns()) {
+                return 0.0F;
+            }
             Entity direct = source.getDirectEntity();
             if (direct != null && direct.getType() == type) {
                 E ent = (E) direct;

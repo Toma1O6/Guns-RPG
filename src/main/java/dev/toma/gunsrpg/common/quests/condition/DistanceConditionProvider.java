@@ -24,7 +24,12 @@ public class DistanceConditionProvider extends AbstractQuestConditionProvider<Di
         this.minDistance = minDistance;
         this.maxDistance = maxDistance;
         boolean isMinDistanceDefined = minDistance > 0;
-        this.descriptors = expandWithShortLocalizations(new TranslationTextComponent(this.getLocalizationString() + (isMinDistanceDefined ? ".min" : ".max"), isMinDistanceDefined ? minDistance : maxDistance));
+        boolean isMaxDistanceDefined = maxDistance < Float.MAX_VALUE;
+        if (isMinDistanceDefined && isMaxDistanceDefined) {
+            this.descriptors = expandWithShortLocalizations(new TranslationTextComponent(this.getLocalizationString(), minDistance, maxDistance));
+        } else {
+            this.descriptors = expandWithShortLocalizations(new TranslationTextComponent(this.getLocalizationString() + (isMinDistanceDefined ? ".min" : ".max"), isMinDistanceDefined ? minDistance : maxDistance));
+        }
     }
 
     public static DistanceConditionProvider fromNbt(QuestConditionProviderType<DistanceConditionProvider> type, CompoundNBT nbt) {

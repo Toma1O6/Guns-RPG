@@ -50,8 +50,8 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
     @Override
     protected void fillDataModel(QuestDisplayDataModel model) {
         model.addQuestHeader(this, false);
-        model.addConditionDisplay(this);
         dataMap.forEach((item, remainder) -> model.addInformationRow(new TranslationTextComponent(DELIVER, item.getName(ItemStack.EMPTY)), this, q -> new StringTextComponent(remainder + "x")));
+        model.addConditionDisplay(this);
     }
 
     @Override

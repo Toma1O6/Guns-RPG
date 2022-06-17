@@ -258,7 +258,6 @@ public abstract class Quest<D extends IQuestData> {
 
     protected void fillDataModel(QuestDisplayDataModel model) {
         model.addQuestHeader(this);
-        model.addConditionDisplay(this);
     }
 
     private IDataModel buildDataModel() {

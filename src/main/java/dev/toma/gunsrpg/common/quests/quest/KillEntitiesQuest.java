@@ -29,8 +29,8 @@ public class KillEntitiesQuest extends Quest<KillEntityData> {
     protected void fillDataModel(QuestDisplayDataModel model) {
         int required = this.getActiveData().getKillTarget();
         model.addQuestHeader(this, false);
-        model.addConditionDisplay(this);
         model.addInformationRow(this.getScheme().getDisplayInfo().getInfo(), this, quest -> new StringTextComponent(quest.killCount + "/" + required));
+        model.addConditionDisplay(this);
     }
 
     @Override

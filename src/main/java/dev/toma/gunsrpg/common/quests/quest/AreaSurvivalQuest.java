@@ -29,6 +29,7 @@ public class AreaSurvivalQuest extends AbstractAreaBasedQuest<AreaSurvivalData> 
         Interval.IFormatFactory formatFactory = f -> f.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND).compact();
         model.addInformationRow(SurvivalQuest.TIME_REMAINING, this, q -> new StringTextComponent(Interval.format(q.timeLeft, formatFactory)));
         fillAreaDataModel(model);
+        model.addConditionDisplay(this);
     }
 
     @Override

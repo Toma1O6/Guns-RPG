@@ -40,6 +40,7 @@ public class SurvivalQuest extends Quest<SurvivalData> {
 
         Interval.IFormatFactory formatFactory = f -> f.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND).compact();
         model.addInformationRow(TIME_REMAINING, this, q -> new StringTextComponent(Interval.format(q.timeLeft, formatFactory)));
+        model.addConditionDisplay(this);
     }
 
     @Override
