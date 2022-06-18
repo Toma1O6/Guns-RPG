@@ -3,7 +3,7 @@
   "tier": 3,
   "display": {
     "name": "Head Hunter III",
-    "info": "Kill 30 mobs with headshot"
+    "info": "Kill 30 mobs"
   },
   "data": {
     "entities": null,

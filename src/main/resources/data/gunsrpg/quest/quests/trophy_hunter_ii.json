@@ -3,7 +3,7 @@
   "tier": 2,
   "display": {
     "name": "Trophy Hunter II",
-    "info": "Kill 8 unique hostile mobs"
+    "info": "Kill 8 hostile mobs"
   },
   "data": {
     "entities": null,

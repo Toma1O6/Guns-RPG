@@ -3,7 +3,7 @@
   "tier": 2,
   "display": {
     "name": "Supplier I",
-    "info": "Deliver 30 Iron ingots, 25 Bricks, 10 Strings and 5 papers"
+    "info": "Hand over supplies"
   },
   "data": {
     "items": [

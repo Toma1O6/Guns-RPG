@@ -3,7 +3,7 @@
   "tier": 3,
   "display": {
     "name": "Pacifist III",
-    "info": "Do not deal damage for 30 minutes"
+    "info": "Survive for 30 minutes"
   },
   "data": {
     "duration": "30m"

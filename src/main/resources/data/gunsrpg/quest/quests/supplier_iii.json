@@ -3,7 +3,7 @@
   "tier": 4,
   "display": {
     "name": "Supplier III",
-    "info": "Deliver 30 Diamonds, 25 Leather, 10 Emeralds and 5 Blaze rods"
+    "info": "Hand over supplies"
   },
   "data": {
     "items": [

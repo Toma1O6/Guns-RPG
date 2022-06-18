@@ -3,7 +3,7 @@
   "tier": 1,
   "display": {
     "name": "Clean Run I",
-    "info": "Do not take any damage for 7 minutes"
+    "info": "Survive for 7 minutes"
   },
   "data": {
     "duration": "7m"

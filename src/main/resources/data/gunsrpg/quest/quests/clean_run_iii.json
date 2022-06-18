@@ -3,7 +3,7 @@
   "tier": 3,
   "display": {
     "name": "Clean Run III",
-    "info": "Do not take any damage for 20 minutes"
+    "info": "Survive for 20 minutes"
   },
   "data": {
     "duration": "20m"

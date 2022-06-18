@@ -3,7 +3,7 @@
   "tier": 3,
   "display": {
     "name": "Shadow Killer III",
-    "info": "Kill 20 hostile mobs without aggro"
+    "info": "Kill 20 hostile mobs"
   },
   "data": {
     "entities": null,

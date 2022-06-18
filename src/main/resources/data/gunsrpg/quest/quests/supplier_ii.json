@@ -3,7 +3,7 @@
   "tier": 3,
   "display": {
     "name": "Supplier II",
-    "info": "Deliver 30 Gold ingots, 25 Flints, 10 Nether bricks and 5 books"
+    "info": "Hand over supplies"
   },
   "data": {
     "items": [

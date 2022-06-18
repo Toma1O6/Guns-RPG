@@ -3,7 +3,7 @@
   "tier": 2,
   "display": {
     "name": "Shadow Killer II",
-    "info": "Kill 13 hostile mobs without aggro"
+    "info": "Kill 13 hostile mobs"
   },
   "data": {
     "entities": null,

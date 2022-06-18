@@ -3,7 +3,7 @@
   "tier": 4,
   "display": {
     "name": "Sniper III",
-    "info": "Kill 30 mobs over 50 block distance"
+    "info": "Kill 30 mobs"
   },
   "data": {
     "entities": null,

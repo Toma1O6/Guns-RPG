@@ -3,7 +3,7 @@
   "tier": 4,
   "display": {
     "name": "Horde II",
-    "info": "Survive in area for 6 minutes"
+    "info": "Defend area for 6 minutes"
   },
   "data": {
     "duration": "6m",

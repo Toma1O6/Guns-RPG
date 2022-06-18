@@ -3,7 +3,7 @@
   "tier": 2,
   "display": {
     "name": "CQB II",
-    "info": "Kill 20 mobs under 5 block distance"
+    "info": "Kill 20 mobs"
   },
   "data": {
     "entities": null,
