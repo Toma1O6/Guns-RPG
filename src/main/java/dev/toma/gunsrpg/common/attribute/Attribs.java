@@ -163,8 +163,8 @@ public final class Attribs {
     public static final IAttributeId VSS_HORIZONTAL_RECOIL      = createInternal("vss_horizontal_recoil", 1.7);
     public static final IAttributeId VSS_FIRERATE               = createInternal("vss_firerate", 3);
     public static final IAttributeId MK14_RELOAD_SPEED          = createInternal("mk14_reload_speed", 75);
-    public static final IAttributeId MK14_VERTICAL_RECOIL       = createInternal("mk14_vertical_recoil", 4.4);
-    public static final IAttributeId MK14_HORIZONTAL_RECOIL     = createInternal("mk14_horizontal_recoil", 2.4);
+    public static final IAttributeId MK14_VERTICAL_RECOIL       = createInternal("mk14_vertical_recoil", 3.9);
+    public static final IAttributeId MK14_HORIZONTAL_RECOIL     = createInternal("mk14_horizontal_recoil", 2.0);
     public static final IAttributeId MK14_MAG_CAPACITY          = createInternal("mk14_mag_capacity", 10);
     public static final IAttributeId MK14_FIRERATE              = createInternal("mk14_firerate", 3);
     public static final IAttributeId MK14_LOUDNESS              = createInternal("mk14_loudness");
