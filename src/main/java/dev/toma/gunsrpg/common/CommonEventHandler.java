@@ -308,20 +308,6 @@ public class CommonEventHandler {
     }
 
     @SubscribeEvent
-    public static void onPotionAdded(PotionEvent.PotionAddedEvent event) {
-        LivingEntity entity = event.getEntityLiving();
-        EffectInstance effectInstance = event.getPotionEffect();
-        if (entity instanceof PlayerEntity && effectInstance.getDuration() > 30) {
-            PlayerData.get((PlayerEntity) entity).ifPresent(iPlayerData -> {
-                IAttributeProvider provider = iPlayerData.getAttributes();
-                IAttribute attribute = provider.getAttribute(Attribs.POTION_EFFECT);
-                int value = effectInstance.duration;
-                effectInstance.duration = (int) (value * attribute.value());
-            });
-        }
-    }
-
-    @SubscribeEvent
     public static void changeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         PlayerEntity player = event.getPlayer();
         PlayerData.get(player).ifPresent(data -> data.sync(DataFlags.WILDCARD));

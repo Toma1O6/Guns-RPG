@@ -30,7 +30,6 @@ public final class Attribs {
     public static final IAttributeId ADRENALINE_EFFECT          = createInternal("adrenaline_effect");
     public static final IAttributeId MORPHINE_EFFECT            = createInternal("morphine_effect");
     public static final IAttributeId STEROIDS_EFFECT            = createInternal("steroids_effect");
-    public static final IAttributeId POTION_EFFECT              = createInternal("potion_effect");
     public static final IAttributeId ANTIDOTE_EFFECT            = createInternal("antidote_effect", 40);
     public static final IAttributeId VACCINE_EFFECT             = createInternal("vaccine_effect", 50);
     public static final IAttributeId SPLINT_EFFECT              = createInternal("splint_effect", 35);

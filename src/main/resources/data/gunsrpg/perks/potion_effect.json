@@ -1,8 +1,0 @@
-{
-  "attribute": "gunsrpg:potion_effect",
-  "scaling": 0.02,
-  "bounds": {
-    "buff": 0.3,
-    "debuff": 0.5
-  }
-}
