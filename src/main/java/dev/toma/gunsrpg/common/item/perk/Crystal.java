@@ -155,7 +155,9 @@ public final class Crystal {
         List<CrystalAttribute> collection = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             CompoundNBT attrNbt = list.getCompound(i);
-            collection.add(CrystalAttribute.fromNbt(attrNbt));
+            CrystalAttribute attribute = CrystalAttribute.fromNbt(attrNbt);
+            if (attribute == null) continue;
+            collection.add(attribute);
         }
         collection.sort(compareAttributes());
         return new Crystal(level, collection);

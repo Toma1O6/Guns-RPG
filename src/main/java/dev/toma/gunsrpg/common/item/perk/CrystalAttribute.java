@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.item.perk;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
 import dev.toma.gunsrpg.api.common.attribute.IModifierOp;
 import dev.toma.gunsrpg.common.attribute.AttributeModifier;
@@ -101,6 +102,10 @@ public final class CrystalAttribute {
     public static CrystalAttribute fromNbt(CompoundNBT nbt) {
         ResourceLocation perkId = new ResourceLocation(nbt.getString("perk"));
         Perk perk = PerkRegistry.getRegistry().getPerkById(perkId);
+        if (perk == null) {
+            GunsRPG.log.error("Unknown perk {}", perkId);
+            return null;
+        }
         int level = nbt.getInt("level");
         PerkType type = PerkType.values()[nbt.getInt("type")];
         return new CrystalAttribute(perk, type, level);
