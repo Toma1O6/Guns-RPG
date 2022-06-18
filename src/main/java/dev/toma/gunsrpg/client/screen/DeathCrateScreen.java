@@ -7,13 +7,14 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class DeathCrateScreen extends ContainerScreen<DeathCrateContainer> {
 
     static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/screen/death_crate.png");
 
     public DeathCrateScreen(DeathCrateContainer container, PlayerInventory inventory, ITextComponent component) {
-        super(container, inventory, component);
+        super(container, inventory, new TranslationTextComponent("container.death_crate", container.getTileEntity().getVictimName()));
         imageHeight = 208;
         titleLabelY = 9;
         inventoryLabelY = 115;

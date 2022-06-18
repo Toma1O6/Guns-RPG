@@ -55,7 +55,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
@@ -416,16 +415,30 @@ public class CommonEventHandler {
                 }
                 if (!event.isCanceled()) {
                     data.getDebuffControl().clearActive();
-                    if (ModConfig.worldConfig.createCrateOnPlayerDeath.get() && !player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
-                        BlockPos pos = player.blockPosition();
+                    if (ModConfig.worldConfig.createCrateOnPlayerDeath.get() && !player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) && !player.inventory.isEmpty()) {
+                        BlockPos.Mutable pos = player.blockPosition().mutable();
+                        Direction[] relative = Direction.Plane.HORIZONTAL.stream().toArray(Direction[]::new);
                         World world = player.level;
-                        while (!world.getBlockState(pos).getBlock().getCollisionShape(world.getBlockState(pos), world, pos, ISelectionContext.empty()).isEmpty() && pos.getY() < 255) {
-                            pos = pos.above();
+                        outerLoop: while (pos.getY() < 255) {
+                            if (world.isEmptyBlock(pos)) {
+                                break;
+                            }
+                            for (Direction direction : relative) {
+                                BlockPos relativePos = pos.relative(direction);
+                                if (world.isEmptyBlock(relativePos)) {
+                                    pos = relativePos.mutable();
+                                    break outerLoop;
+                                }
+                            }
+                            pos.setY(pos.getY() + 1);
                         }
-                        world.setBlock(pos, ModBlocks.DEATH_CRATE.defaultBlockState(), 3);
-                        TileEntity tileEntity = world.getBlockEntity(pos);
-                        if (tileEntity instanceof DeathCrateTileEntity) {
-                            ((DeathCrateTileEntity) tileEntity).fillInventory(player);
+                        if (pos != null) {
+                            BlockPos position = pos.immutable();
+                            world.setBlock(position, ModBlocks.DEATH_CRATE.defaultBlockState(), 3);
+                            TileEntity tileEntity = world.getBlockEntity(position);
+                            if (tileEntity instanceof DeathCrateTileEntity) {
+                                ((DeathCrateTileEntity) tileEntity).fillInventory(player);
+                            }
                         }
                     }
                     AvengeMeFriendsSkill avengeSkill = provider.getSkill(Skills.AVENGE_ME_FRIENDS);
