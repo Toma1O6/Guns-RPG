@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.util.object.RGB2TextFormatting;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -120,6 +121,21 @@ public abstract class AbstractGun extends BaseItem {
     @Override
     public boolean isEnchantable(ItemStack p_77616_1_) {
         return false;
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return false;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
+    }
+
+    @Override
+    public float getXpRepairRatio(ItemStack stack) {
+        return 0.0F;
     }
 
     @Override

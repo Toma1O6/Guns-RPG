@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.*;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -135,6 +136,16 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
 
     @Override
     public boolean isEnchantable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return false;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return false;
     }
 

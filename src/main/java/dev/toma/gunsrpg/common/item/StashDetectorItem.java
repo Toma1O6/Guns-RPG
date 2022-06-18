@@ -17,6 +17,7 @@ import lib.toma.animations.api.Animation;
 import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IAnimationPipeline;
 import lib.toma.animations.api.IRenderConfig;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -68,6 +69,16 @@ public class StashDetectorItem extends BaseItem implements IAnimationEntry {
 
     @Override
     public boolean isEnchantable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return false;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return false;
     }
 
