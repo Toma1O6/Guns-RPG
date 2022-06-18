@@ -49,7 +49,7 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 45.0).add(Attributes.ATTACK_DAMAGE, 4.0).add(Attributes.FOLLOW_RANGE, 48.0);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 45.0).add(Attributes.ATTACK_DAMAGE, 4.0).add(Attributes.FOLLOW_RANGE, 96.0);
     }
 
     @Override

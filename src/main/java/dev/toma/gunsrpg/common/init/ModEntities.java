@@ -27,7 +27,7 @@ public class ModEntities {
             builder -> builder.setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).sized(1.4F, 2.7F)
     );
     public static final RegistryObject<EntityType<RocketAngelEntity>> ROCKET_ANGEL = register("rocket_angel", RocketAngelEntity::new, EntityClassification.MONSTER,
-            builder -> builder.setTrackingRange(100).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).sized(0.8F, 1.6F)
+            builder -> builder.setTrackingRange(128).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).sized(0.8F, 1.6F)
     );
     public static final RegistryObject<EntityType<GoldDragonEntity>> GOLD_DRAGON = register("gold_dragon", GoldDragonEntity::new, EntityClassification.MONSTER,
             builder -> builder.setTrackingRange(160).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).fireImmune().sized(16.0F, 8.0F).clientTrackingRange(10)
