@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.properties.Properties;
 import lib.toma.animations.AnimationUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
@@ -55,7 +56,7 @@ public class TracerRenderer<P extends AbstractProjectile> extends EntityRenderer
             MatrixStack.Entry entry = matrix.last();
             Matrix4f pose = entry.pose();
             Matrix3f normal = entry.normal();
-            float scale = 0.1F;
+            float scale = 0.02F;
             int nx = 0;
             int ny = 1;
             int nz = 0;
