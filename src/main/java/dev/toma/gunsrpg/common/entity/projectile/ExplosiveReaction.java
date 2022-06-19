@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.entity.projectile;
 import dev.toma.gunsrpg.util.properties.Properties;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 public class ExplosiveReaction implements IReaction {
@@ -23,7 +24,8 @@ public class ExplosiveReaction implements IReaction {
     public void react(AbstractProjectile projectile, Vector3d impact, World world) {
         if (!world.isClientSide) {
             float power = projectile.getProperty(Properties.EXPLOSION_POWER) + explosionPower;
-            world.explode(projectile, impact.x, impact.y, impact.z, power, mode);
+            boolean allowGriefing = world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+            world.explode(projectile, impact.x, impact.y, impact.z, power, allowGriefing ? mode : Explosion.Mode.NONE);
         }
     }
 }

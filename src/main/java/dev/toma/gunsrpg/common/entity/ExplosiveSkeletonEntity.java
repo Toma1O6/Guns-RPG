@@ -307,6 +307,7 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
 
         @Override
         public void react(AbstractProjectile projectile, Vector3d impact, World world) {
+            if (!world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) return;
             BlockPos pos = new BlockPos(impact.x, impact.y, impact.z);
             destroyBlock(world, pos);
             for (Direction direction : Direction.values()) {
