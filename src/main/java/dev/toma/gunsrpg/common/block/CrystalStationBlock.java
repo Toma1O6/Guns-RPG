@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.container.CrystalStationContainer;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.util.Interval;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -54,7 +55,7 @@ public class CrystalStationBlock extends BaseBlock {
                 ((ServerPlayerEntity) player).sendMessage(new StringTextComponent("You are on cooldown. Wait " + formattedCooldown + " before trying again"), ChatType.GAME_INFO, Util.NIL_UUID);
                 return ActionResultType.CONSUME;
             } else if (!provider.hasSkill(Skills.CRYSTAL_STATION)) {
-                ((ServerPlayerEntity) player).sendMessage(new StringTextComponent("You must have 'crystal station' skill in order to interact with this block"), ChatType.GAME_INFO, Util.NIL_UUID);
+                ((ServerPlayerEntity) player).sendMessage(SkillUtil.getMissingSkillText(Skills.CRYSTAL_STATION), ChatType.GAME_INFO, Util.NIL_UUID);
                 return ActionResultType.CONSUME;
             }
             NetworkHooks.openGui((ServerPlayerEntity) player, this.getMenuProvider(state, world, pos));

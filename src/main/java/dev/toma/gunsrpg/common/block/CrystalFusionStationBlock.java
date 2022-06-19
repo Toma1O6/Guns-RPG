@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.container.CrystalFusionStationContainer;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.tileentity.CrystalFusionStationTileEntity;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -47,7 +48,7 @@ public class CrystalFusionStationBlock extends BaseBlock {
         if (!world.isClientSide) {
             ISkillProvider provider = PlayerData.getUnsafe(player).getSkillProvider();
             if (!provider.hasSkill(Skills.CRYSTAL_FORGE)) {
-                ((ServerPlayerEntity) player).sendMessage(new StringTextComponent("You must have 'crystal forge' skill in order to interact with this block"), ChatType.GAME_INFO, Util.NIL_UUID);
+                ((ServerPlayerEntity) player).sendMessage(SkillUtil.getMissingSkillText(Skills.CRYSTAL_FORGE), ChatType.GAME_INFO, Util.NIL_UUID);
                 return ActionResultType.CONSUME;
             }
             NetworkHooks.openGui((ServerPlayerEntity) player, this.getMenuProvider(state, world, pos), pos);

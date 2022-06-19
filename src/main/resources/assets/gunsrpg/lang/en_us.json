@@ -1189,5 +1189,9 @@
   "debuff.gunsrpg.bleed": "Bleeding",
   "debuff.gunsrpg.fracture": "Fracture",
   "debuff.gunsrpg.poison": "Poison",
-  "debuff.gunsrpg.infection": "Infection"
+  "debuff.gunsrpg.infection": "Infection",
+  "text.skill.missing": "You need to unlock %s skill",
+  "text.weapon.level_up": "%s has leveled up",
+  "text.rocket_lock.locking": "Locking on %s",
+  "text.rocket_lock.locked": "Locked on %s"
 }

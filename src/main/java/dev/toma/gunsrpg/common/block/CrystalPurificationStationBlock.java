@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.container.CrystalPurificationStationContainer;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.tileentity.CrystalPurificationStationTileEntity;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -47,7 +48,7 @@ public class CrystalPurificationStationBlock extends BaseBlock {
         if (!world.isClientSide) {
             ISkillProvider provider = PlayerData.getUnsafe(player).getSkillProvider();
             if (!provider.hasSkill(Skills.CRYSTAL_PURIFICATION_STATION)) {
-                ((ServerPlayerEntity) player).sendMessage(new StringTextComponent("You must have 'crystal purification station' skill in order to interact with this block"), ChatType.GAME_INFO, Util.NIL_UUID);
+                ((ServerPlayerEntity) player).sendMessage(SkillUtil.getMissingSkillText(Skills.CRYSTAL_PURIFICATION_STATION), ChatType.GAME_INFO, Util.NIL_UUID);
                 return ActionResultType.CONSUME;
             }
             NetworkHooks.openGui((ServerPlayerEntity) player, this.getMenuProvider(state, world, pos), pos);

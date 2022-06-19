@@ -15,8 +15,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Util;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public class GunKillData implements IKillData, ILockStateChangeable, INBTSerializable<CompoundNBT> {
@@ -70,8 +71,8 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
         if (level < getLevelLimit() && requiredKillCount <= killCount) {
             killCount = 0;
             advanceLevel(false);
-            String msg = String.format("%s%s has leveled up!", TextFormatting.GREEN, weapon.getDisplayName().getString());
-            player.sendMessage(new StringTextComponent(msg), Util.NIL_UUID);
+            ITextComponent msg = new TranslationTextComponent("text.weapon.level_up", weapon.getDisplayName().getString()).withStyle(TextFormatting.GREEN);
+            player.sendMessage(msg, Util.NIL_UUID);
         }
     }
 

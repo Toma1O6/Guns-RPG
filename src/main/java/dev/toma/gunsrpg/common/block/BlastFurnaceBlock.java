@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.container.BlastFurnaceContainer;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.tileentity.BlastFurnaceTileEntity;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -129,7 +130,7 @@ public class BlastFurnaceBlock extends BaseBlock {
             if (PlayerData.hasActiveSkill(player, Skills.BLACKSMITH)) {
                 NetworkHooks.openGui((ServerPlayerEntity) player, getMenuProvider(state, world, pos), pos);
             } else {
-                player.displayClientMessage(new StringTextComponent(TextFormatting.RED + "You must have Blacksmith skill in order to use blast furnace!"), true);
+                player.displayClientMessage(SkillUtil.getMissingSkillText(Skills.BLACKSMITH), true);
             }
             return ActionResultType.CONSUME;
         }

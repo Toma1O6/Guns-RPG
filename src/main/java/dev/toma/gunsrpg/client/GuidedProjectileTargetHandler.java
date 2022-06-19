@@ -14,8 +14,8 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
@@ -80,8 +80,9 @@ public class GuidedProjectileTargetHandler {
                 locked = false;
                 lockTimer = 0;
             }
-            ITextComponent component = new StringTextComponent(locked ? TextFormatting.RED + ("Locked on: " + entity.getName().getString()) : TextFormatting.YELLOW + ("Locking on: " + entity.getName().getString()));
-            Minecraft.getInstance().gui.handleChat(ChatType.GAME_INFO, component, Util.NIL_UUID);
+            String entityName = entity.getName().getString();
+            ITextComponent message = locked ? new TranslationTextComponent("text.rocket_lock.locked", entityName).withStyle(TextFormatting.RED) : new TranslationTextComponent("text.rocket_lock.locking", entityName).withStyle(TextFormatting.YELLOW);
+            Minecraft.getInstance().gui.handleChat(ChatType.GAME_INFO, message, Util.NIL_UUID);
         } else {
             selectedEntity = -1;
         }

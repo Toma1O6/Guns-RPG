@@ -62,6 +62,10 @@ public class SkillUtil {
         livingEntity.addEffect(new EffectInstance(Effects.ABSORPTION, 200, 0, false, false));
     }
 
+    public static ITextComponent getMissingSkillText(SkillType<?> type) {
+        return new TranslationTextComponent("text.skill.missing", type.getTitle().getString());
+    }
+
     public static void heal(PlayerEntity player, float amount) {
         PlayerData.get(player).ifPresent(data -> {
             IAttributeProvider provider = data.getAttributes();

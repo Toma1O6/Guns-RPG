@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.container.CookerContainer;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.tileentity.CookerTileEntity;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -115,7 +116,7 @@ public class CookerBlock extends BaseBlock {
         if (PlayerData.hasActiveSkill(player, Skills.LOCAL_CHEF)) {
             NetworkHooks.openGui((ServerPlayerEntity) player, this.getMenuProvider(state, world, pos), pos);
         } else {
-            ((ServerPlayerEntity) player).sendMessage(new StringTextComponent("You need to unlock Local Chef skill"), ChatType.GAME_INFO, Util.NIL_UUID);
+            ((ServerPlayerEntity) player).sendMessage(SkillUtil.getMissingSkillText(Skills.LOCAL_CHEF), ChatType.GAME_INFO, Util.NIL_UUID);
         }
         return ActionResultType.PASS;
     }
