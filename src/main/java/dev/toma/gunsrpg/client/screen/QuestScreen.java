@@ -29,6 +29,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.Util;
@@ -51,6 +52,7 @@ public class QuestScreen extends Screen {
     private static final IFormattableTextComponent TEXT_QUEST_CONDITIONS   = new TranslationTextComponent("screen.quests.conditions");         // title for condition overview
     private static final IFormattableTextComponent TEXT_QUEST_REWARDS      = new TranslationTextComponent("screen.quests.rewards");            // title for reward overview
     private static final ITextComponent TEXT_QUEST_OTHER_ACTIVE            = new TranslationTextComponent("screen.quests.has_other_active").withStyle(TextFormatting.RED);
+    private static final ITextComponent TEXT_QUEST_NO_REWARDS              = new TranslationTextComponent("screen.quests.no_rewards").withStyle(TextFormatting.RED);
     private static final IFormattableTextComponent DIALOG_REWARD_HEADER    = new TranslationTextComponent("screen.dialog.quest.reward.header");
     private static final IFormattableTextComponent DIALOG_CANCEL_HEADER    = new TranslationTextComponent("screen.dialog.quest.cancel.header");
     private static final ITextComponent DIALOG_REWARD_INFO                 = new TranslationTextComponent("screen.dialog.quest.reward.info");
@@ -133,10 +135,6 @@ public class QuestScreen extends Screen {
 
     private void questWidgetClicked(QuestWidget widget) {
         Quest<?> quest = widget.quest;
-        if (quest.getScheme().isSpecialTaskQuest()) {
-            return;
-        }
-
         infoPanelWidget.setSelectedQuest(quest);
         selectedQuest = quest;
     }
@@ -189,14 +187,14 @@ public class QuestScreen extends Screen {
     // use for rendering rewards and then for hovered item details
     private static final class ItemStackWidget extends Widget {
 
-        private final ItemStack stack;
+        private final ItemStackDisplay display;
         private final FontRenderer font;
         private final ItemRenderer renderer;
         private final ITooltipRenderer tooltipRenderer;
 
-        public ItemStackWidget(int x, int y, int width, int height, ItemStack stack, FontRenderer font, ItemRenderer renderer, ITooltipRenderer tooltipRenderer) {
+        public ItemStackWidget(int x, int y, int width, int height, ItemStackDisplay stackDisplay, FontRenderer font, ItemRenderer renderer, ITooltipRenderer tooltipRenderer) {
             super(x, y, width, height, StringTextComponent.EMPTY);
-            this.stack = stack;
+            this.display = stackDisplay;
             this.font = font;
             this.renderer = renderer;
             this.tooltipRenderer = tooltipRenderer;
@@ -204,15 +202,15 @@ public class QuestScreen extends Screen {
 
         @Override
         public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-            renderer.renderGuiItem(stack, x, y);
+            renderer.renderGuiItem(display.rendererHolder, x, y);
             matrix.pushPose();
             matrix.translate(0, 0, 400);
-            int count = stack.getCount();
+            int count = display.count;
             if (count > 1) {
                 font.drawShadow(matrix, String.valueOf(count), x + 8, y + 8, 0xffffff);
             }
             if (isHovered) {
-                tooltipRenderer.renderItemTooltip(matrix, stack, mouseX, mouseY);
+                tooltipRenderer.renderItemTooltip(matrix, display.rendererHolder, mouseX, mouseY);
             }
             matrix.popPose();
         }
@@ -254,6 +252,7 @@ public class QuestScreen extends Screen {
             DisplayInfo displayInfo = scheme.getDisplayInfo();
             IQuestCondition[] conditions = selectedQuest.getConditions();
             QuestStatus status = selectedQuest.getStatus();
+            boolean isSpecial = selectedQuest.getScheme().isSpecialTaskQuest();
 
             int y = 0;
             int offset = 15;
@@ -263,7 +262,7 @@ public class QuestScreen extends Screen {
             UUID traderId = QuestScreen.this.entity.getUUID();
             UUID questId = this.selectedQuest.getOriginalAssignerId();
             boolean isRewardCollectionAllowed = Objects.equals(traderId, questId) || questId.equals(Util.NIL_UUID) || actionType == ActionType.CANCEL;
-            if (status.shouldShowRewards() && isRewardCollectionAllowed) {
+            if (status.shouldShowRewards() && isRewardCollectionAllowed && !isSpecial) {
                 addTitle(y += offset, TEXT_QUEST_REWARDS, TextFormatting.YELLOW, TextFormatting.BOLD);
                 BartenderSkill bartenderSkill = SkillUtil.getTopHierarchySkill(Skills.BARTENDER_I, provider);
                 int selectionSize = bartenderSkill != null ? bartenderSkill.getRewardCount() : 1;
@@ -276,7 +275,9 @@ public class QuestScreen extends Screen {
                     }
                 }
                 StringTextComponent tierComponent = new StringTextComponent(TextFormatting.AQUA.toString() + selectedQuest.getRewardTier());
-                addDetail(y += offset, TEXT_QUEST_TIER.apply(tierComponent), 5);
+                if (!isSpecial) {
+                    addDetail(y += offset, TEXT_QUEST_TIER.apply(tierComponent), 5);
+                }
                 addTitle(y += offset, TEXT_QUEST_DETAIL, TextFormatting.YELLOW, TextFormatting.BOLD);
                 List<IReorderingProcessor> list = font.split(displayInfo.getInfo().withStyle(TextFormatting.ITALIC), width - 30);
                 for (IReorderingProcessor processor : list) {
@@ -293,11 +294,11 @@ public class QuestScreen extends Screen {
                     }
                 }
             }
-
-
-
             if (actionType != null) {
-                if (isRewardCollectionAllowed) {
+                if (isSpecial) {
+                    int textWidth = font.width(TEXT_QUEST_NO_REWARDS);
+                    addWidget(new LabelWidget(this.x + this.width - 5 - textWidth, this.height - 15, textWidth, 10, TEXT_QUEST_NO_REWARDS, font));
+                } else if (isRewardCollectionAllowed) {
                     actionButton = addWidget(new ActionButton(this.x + this.width - 145, this.height - 25, 140, 20, actionType, this::handleResponse));
                     IQuests quests = QuestScreen.this.questProvider;
                     Optional<Quest<?>> activeQuestOpt = quests.getActiveQuest();
@@ -338,7 +339,24 @@ public class QuestScreen extends Screen {
                     minecraft.setScreen(cancelDialog);
                     break;
                 case COLLECT:
-                    ConfirmDialog confirmDialog = new ConfirmDialog(QuestScreen.this, DIALOG_REWARD_HEADER, new ITextComponent[] { DIALOG_REWARD_INFO }, screen -> {
+                    QuestReward reward = selectedQuest.getReward();
+                    Integer[] indexes = this.selectedIndexes;
+                    QuestReward.Choice[] choices = new QuestReward.Choice[indexes.length];
+                    int j = 0;
+                    for (int index : indexes) {
+                        QuestReward.Choice choice = reward.getChoices()[index];
+                        choices[j++] = choice;
+                    }
+                    ItemStackDisplay[] displays = ItemStackDisplay.fromSelectedReward(choices);
+                    ITextComponent[] components = new ITextComponent[displays.length + 2];
+                    components[0] = DIALOG_REWARD_INFO;
+                    components[1] = new StringTextComponent(" ");
+                    for (int i = 0; i < displays.length; i++) {
+                        int k = i + 2;
+                        ItemStackDisplay display = displays[i];
+                        components[k] = new StringTextComponent(String.format("%s%dx %s%s", TextFormatting.AQUA, display.count, TextFormatting.GREEN, display.item.getName(ItemStack.EMPTY).getString()));
+                    }
+                    ConfirmDialog confirmDialog = new ConfirmDialog(QuestScreen.this, DIALOG_REWARD_HEADER, components, screen -> {
                         NetworkManager.sendServerPacket(C2S_QuestActionPacket.makeCollectionPacket(entity, selectedIndexes));
                         minecraft.setScreen(screen);
                     });
@@ -448,10 +466,10 @@ public class QuestScreen extends Screen {
             index = 0;
             // render order nonsense
             for (QuestReward.Choice choice : choices) {
-                ItemStack[] itemStacks = choice.getContents();
-                for (int i = 0; i < itemStacks.length; i++) {
-                    ItemStack stack = itemStacks[i];
-                    addWidget(new ItemStackWidget(10 + i * 25, 4 + index * 30, 16, 16, stack, font, itemRenderer, QuestScreen.this::renderItemTooltip));
+                List<ItemStack> items = Arrays.asList(choice.getContents());
+                ItemStackDisplay[] displays = ItemStackDisplay.collapse(items);
+                for (int i = 0; i < displays.length; i++) {
+                    addWidget(new ItemStackWidget(10 + i * 25, 4 + index * 30, 16, 16, displays[i], font, itemRenderer, QuestScreen.this::renderItemTooltip));
                 }
                 ++index;
             }
@@ -562,10 +580,18 @@ public class QuestScreen extends Screen {
         public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
             parent.render(matrix, mouseX, mouseY, partialTicks);
             matrix.pushPose();
-            matrix.translate(0, 0, 800);
-            RenderUtils.drawSolid(matrix.last().pose(), left, top, left + dimensions.getWidth(), top + dimensions.getHeight(), 0xFF << 24);
+            matrix.translate(0, 0, 900);
+            Matrix4f pose = matrix.last().pose();
+            RenderUtils.drawSolid(pose, 0, 0, parent.width, parent.height, 0xDD << 24);
+            RenderUtils.drawGradient(pose, left, top, left + dimensions.getWidth(), top + dimensions.getHeight(), 0xFFCCCC00, 0xFFAAAA00);
+            RenderUtils.drawSolid(pose, left + 1, top + 1, left + dimensions.getWidth() - 1, top + dimensions.getHeight() - 1, 0xFF << 24);
             super.render(matrix, mouseX, mouseY, partialTicks);
             matrix.popPose();
+        }
+
+        @Override
+        public boolean isPauseScreen() {
+            return false;
         }
 
         public void setConfirmText(ITextComponent confirmText) {
@@ -574,6 +600,53 @@ public class QuestScreen extends Screen {
 
         public void setDenyText(ITextComponent denyText) {
             this.denyText = denyText;
+        }
+    }
+
+    private static class ItemStackDisplay {
+
+        private final Item item;
+        private final int count;
+        private final ItemStack rendererHolder;
+
+        public ItemStackDisplay(ItemStack stack) {
+            this.item = stack.getItem();
+            this.count = stack.getCount();
+            this.rendererHolder = stack;
+        }
+
+        private ItemStackDisplay(int count, ItemStack stack) {
+            this.item = stack.getItem();
+            this.count = count;
+            this.rendererHolder = stack;
+        }
+
+        public ItemStackDisplay increment(int count) {
+            return new ItemStackDisplay(this.count + count, rendererHolder);
+        }
+
+        public static ItemStackDisplay[] fromReward(QuestReward reward) {
+            return fromSelectedReward(reward.getChoices());
+        }
+
+        public static ItemStackDisplay[] fromSelectedReward(QuestReward.Choice[] choices) {
+            List<ItemStack> items = Arrays.stream(choices).flatMap(choice -> Arrays.stream(choice.getContents())).collect(Collectors.toList());
+            return collapse(items);
+        }
+
+        public static ItemStackDisplay[] collapse(Collection<ItemStack> itemStacks) {
+            Map<Item, List<ItemStack>> map = itemStacks.stream().collect(Collectors.groupingBy(ItemStack::getItem));
+            int index = 0;
+            ItemStackDisplay[] displays = new ItemStackDisplay[map.size()];
+            for (Map.Entry<Item, List<ItemStack>> entry : map.entrySet()) {
+                List<ItemStack> items = entry.getValue();
+                ItemStackDisplay display = new ItemStackDisplay(items.get(0));
+                for (int i = 1; i < items.size(); i++) {
+                    display = display.increment(items.get(i).getCount());
+                }
+                displays[index++] = display;
+            }
+            return displays;
         }
     }
 

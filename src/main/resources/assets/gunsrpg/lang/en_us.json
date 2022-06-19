@@ -1108,6 +1108,7 @@
   "screen.quests.restock_timer": "New quests in: %s",
   "screen.quests.quest_tier": "Tier %s",
   "screen.quests.has_other_active": "This quest has been assigned by other Mayor",
+  "screen.quests.no_rewards": "This type of quest does not provide any rewards",
   "screen.animation.inspector.easing": "Easing",
   "screen.animator.dialog.new_project": "Create new project",
   "screen.animator.dialog.settings": "Project settings",
