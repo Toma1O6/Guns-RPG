@@ -40,7 +40,7 @@ public abstract class AbstractCrossbow extends GunItem {
     }
 
     @Override
-    protected float getWeaponSoundVolume() {
+    protected float getWeaponSoundVolume(LivingEntity entity) {
         return 1.0F;
     }
 
