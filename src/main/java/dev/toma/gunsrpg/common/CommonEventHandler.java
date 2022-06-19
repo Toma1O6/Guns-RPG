@@ -230,7 +230,7 @@ public class CommonEventHandler {
             ItemStack stack = event.getItem();
             Item item = stack.getItem();
             Food food = item.getFoodProperties();
-            if (food != null) {
+            if (food != null && !player.level.isClientSide) {
                 int nutrition = food.getNutrition();
                 if (nutrition >= ModConfig.skillConfig.getWellFedMinNutrition()) {
                     PlayerData.get(player).ifPresent(data -> {
