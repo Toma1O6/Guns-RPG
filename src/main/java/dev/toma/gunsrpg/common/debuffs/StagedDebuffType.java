@@ -1,8 +1,11 @@
 package dev.toma.gunsrpg.common.debuffs;
 
+import dev.toma.gunsrpg.api.common.attribute.IAttribute;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.common.attribute.ExpiringModifier;
 import dev.toma.gunsrpg.util.function.ToFloatFunction;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -45,6 +48,22 @@ public class StagedDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
             }
         }
         return null;
+    }
+
+    public float getBuffedProgress(IAttributeProvider provider) {
+        IAttribute attribute = provider.getAttribute(blockingAttribute);
+        List<IAttributeModifier> list = attribute.listModifiers();
+        if (list.isEmpty()) {
+            return 0.0F;
+        }
+        IAttributeModifier modifier = list.get(0);
+        if (modifier instanceof ExpiringModifier) {
+            ExpiringModifier expiringModifier = (ExpiringModifier) modifier;
+            int total = expiringModifier.getInitialTime();
+            int left = expiringModifier.getTimeLeft();
+            return (float) left / total;
+        }
+        return 0.0F;
     }
 
     public int getDelay(IPlayerData data) {

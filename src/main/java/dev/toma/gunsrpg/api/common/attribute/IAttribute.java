@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 public interface IAttribute extends INBTSerializable<CompoundNBT> {
@@ -30,7 +31,7 @@ public interface IAttribute extends INBTSerializable<CompoundNBT> {
 
     boolean hasModifier(UUID modifierId);
 
-    Collection<IAttributeModifier> listModifiers();
+    List<IAttributeModifier> listModifiers();
 
     void markChanged();
 

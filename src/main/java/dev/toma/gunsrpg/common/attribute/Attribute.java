@@ -131,7 +131,7 @@ public class Attribute implements IAttribute {
     }
 
     @Override
-    public Collection<IAttributeModifier> listModifiers() {
+    public List<IAttributeModifier> listModifiers() {
         List<IAttributeModifier> list = new ArrayList<>(modifierMap.values());
         list.sort(Comparator.comparingInt(mod -> mod.getOperation().getPriority()));
         return list;
@@ -165,7 +165,11 @@ public class Attribute implements IAttribute {
         ListNBT modifiers = nbt.getList("modifiers", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < modifiers.size(); i++) {
             CompoundNBT data = modifiers.getCompound(i);
-            addModifier(deserializeModifier(data));
+            IAttributeModifier modifier = deserializeModifier(data);
+            modifierMap.put(modifier.getUid(), modifier);
+            if (modifier instanceof ITickableModifier) {
+                temporaryModifiers.add((ITickableModifier) modifier);
+            }
         }
     }
 

@@ -50,6 +50,11 @@ public class StagedDebuff implements IStagedDebuff {
     }
 
     @Override
+    public float getBlockingProgress(IAttributeProvider provider) {
+        return ((StagedDebuffType<?>) this.getType()).getBuffedProgress(provider);
+    }
+
+    @Override
     public boolean isFrozen(IAttributeProvider attributes) {
         return type.isTemporarilyDisabled(attributes);
     }
