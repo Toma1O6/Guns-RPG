@@ -35,9 +35,13 @@ public final class Attribs {
     public static final IAttributeId SPLINT_EFFECT              = createInternal("splint_effect", 35);
     public static final IAttributeId BANDAGE_EFFECT             = createInternal("bandage_effect", 25);
     public static final IAttributeId HEMOSTAT_EFFECT            = createInternal("hemostat_effect", 1200);
+    public static final IAttributeId HEMOSTAT_EFFECTIVENESS      = createInternal("hemostat_effectiveness", 0.5);
     public static final IAttributeId CALCIUM_SHOT_EFFECT        = createInternal("calcium_shot_effect", 1200);
+    public static final IAttributeId CALCIUM_SHOT_EFFECTIVENES  = createInternal("calcium_shot_effectiveness", 0.5);
     public static final IAttributeId VITAMINS_EFFECT            = createInternal("vitamins_effect", 1200);
+    public static final IAttributeId VITAMINS_EFFECTIVENESS     = createInternal("vitamins_effectiveness", 0.5);
     public static final IAttributeId PROPITAL_EFFECT            = createInternal("propital_effect", 1200);
+    public static final IAttributeId PROPITAL_EFFECTIVENESS     = createInternal("propital_effectiveness", 0.5);
     public static final IAttributeId POISON_RESISTANCE          = createInternal("poison_resistance", 0.0);
     public static final IAttributeId POISON_DELAY               = createInternal("poison_delay", 140);
     public static final IAttributeId POISON_BLOCK               = createInternal("poison_block", 0);

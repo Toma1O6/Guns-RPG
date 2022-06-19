@@ -11,6 +11,8 @@ public final class Constants {
         public static final UUID BLAZEPOWEDER_CRAFTING                      = UUID.fromString("95D99500-1C6B-4606-B538-4D2E6BEEE992");
         public static final UUID DEBUFF_RESISTANCE                          = UUID.fromString("350CA2D7-CAF4-45D8-BAB5-6D771B91E730");
         public static final UUID DEBUFF_DELAY                               = UUID.fromString("6A1CA092-663E-4D93-9C2C-293D7F00E8BC");
+        public static final UUID MED_EFFECT                                 = UUID.fromString("EF24A868-49B3-4ADA-A780-E226852CDAC2");
+        public static final UUID MED_DELAY                                  = UUID.fromString("34753EA8-2D60-4C9E-938D-77CA9433D8E1");
         public static final UUID FALL_RESIST                                = UUID.fromString("F5D40845-1AF8-4161-BFE5-CA9FA2E1262D");
         public static final UUID EXPLOSION_RESIST                           = UUID.fromString("CA61F3D5-F9BC-403A-938A-975267FE9BC5");
         public static final UUID CHOPPING_SPEED                             = UUID.fromString("577D3670-CAB2-4F8B-9234-CAB30C9D2A83");

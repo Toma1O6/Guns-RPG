@@ -80,6 +80,7 @@ public class MobSpawner implements IMobSpawner {
         return nbt;
     }
 
+    @SuppressWarnings("unchecked")
     private void spawnMob(World world, QuestArea area, PlayerEntity attackTarget) {
         BlockPos pos = area.getRandomEgdePosition(world.random, world);
         LivingEntity entity = entityType.create(world);

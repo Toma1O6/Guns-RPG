@@ -69,6 +69,12 @@ public final class Modifiers {
     public static final IAttributeModifier DEBUFF_DELAY_II              = new AttributeModifier(DEBUFF_DELAY, AttributeOps.SUM, 40).named("delay", IValueFormatter.SECONDS);
     public static final IAttributeModifier DEBUFF_RESIST_III            = new AttributeModifier(DEBUFF_RESISTANCE, AttributeOps.SUM, 0.45).named("resist", IValueFormatter.PERCENT);
     public static final IAttributeModifier DEBUFF_DELAY_III             = new AttributeModifier(DEBUFF_DELAY, AttributeOps.SUM, 60).named("delay", IValueFormatter.SECONDS);
+    public static final IAttributeModifier MED_EFFECT_I                 = new AttributeModifier(MED_EFFECT, AttributeOps.SUM, 0.10F).named("med_effect", IValueFormatter.PERCENT);
+    public static final IAttributeModifier MED_EFFECT_II                = new AttributeModifier(MED_EFFECT, AttributeOps.SUM, 0.20F).named("med_effect", IValueFormatter.PERCENT);
+    public static final IAttributeModifier MED_EFFECT_III               = new AttributeModifier(MED_EFFECT, AttributeOps.SUM, 0.30F).named("med_effect", IValueFormatter.PERCENT);
+    public static final IAttributeModifier MED_DELAY_I                  = new AttributeModifier(MED_DELAY, AttributeOps.SUM, 200).named("med_delay", IValueFormatter.SECONDS);
+    public static final IAttributeModifier MED_DELAY_II                 = new AttributeModifier(MED_DELAY, AttributeOps.SUM, 400).named("med_delay", IValueFormatter.SECONDS);
+    public static final IAttributeModifier MED_DELAY_III                = new AttributeModifier(MED_DELAY, AttributeOps.SUM, 600).named("med_delay", IValueFormatter.SECONDS);
     /* Common attachments */
     public static final IAttributeModifier TOUGH_SPRING                 = new AttributeModifier("131CDD15-9B12-43BD-9242-F086C915473A", AttributeOps.SUB, 1).named("rate");
     public static final IAttributeModifier QUICKDRAW_MAG                = new AttributeModifier("640F448C-136C-470B-A9DD-95B9D51BF502", AttributeOps.MUL, 0.8).named("speed", IValueFormatter.INV_PERCENT);
