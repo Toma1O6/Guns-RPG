@@ -1183,6 +1183,7 @@
   "quest.deliver.info": "Shift-Right Click with item to deliver it",
   "quest.time_remaining": "Time remaining",
   "quest.stay_in_area": "Be in area:",
+  "quest.return_to_area": "Get back to area! Quest will fail in %s",
   "quest.interaction_blocked": "This type of interaction is disabled for active quest areas",
   "quest.completed": "You have completed the quest. Go claim your rewards",
   "quest.failed": "You have failed the quest",

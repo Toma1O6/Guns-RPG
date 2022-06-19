@@ -103,8 +103,7 @@ public abstract class Quest<D extends IQuestData> {
 
     public void assign(PlayerEntity player) {
         this.player = player;
-        this.initialProperties.setProperty(QuestProperties.FOOD_STATUS, player.getFoodData().getFoodLevel());
-        this.initialProperties.setProperty(QuestProperties.HEALTH_STATUS, (int) player.getHealth());
+        this.savePlayerStatusProperties(player);
         if (reward == null) {
             IPlayerData data = PlayerData.getUnsafe(player);
             IAttributeProvider provider = data.getAttributes();
@@ -122,6 +121,16 @@ public abstract class Quest<D extends IQuestData> {
     }
 
     public void tickQuest(PlayerEntity player) {
+        float health = player.getHealth();
+        int food = player.getFoodData().getFoodLevel();
+        float savedHealth = initialProperties.getProperty(QuestProperties.HEALTH_STATUS);
+        int savedFood = initialProperties.getProperty(QuestProperties.FOOD_STATUS);
+        if (health < savedHealth) {
+            initialProperties.setProperty(QuestProperties.HEALTH_STATUS, health);
+        }
+        if (food < savedFood) {
+            initialProperties.setProperty(QuestProperties.FOOD_STATUS, food);
+        }
     }
 
     public void onCompleted(PlayerEntity player) {
@@ -249,6 +258,11 @@ public abstract class Quest<D extends IQuestData> {
 
     protected void readQuestData(CompoundNBT nbt) {
 
+    }
+
+    protected void savePlayerStatusProperties(PlayerEntity player) {
+        this.initialProperties.setProperty(QuestProperties.FOOD_STATUS, player.getFoodData().getFoodLevel());
+        this.initialProperties.setProperty(QuestProperties.HEALTH_STATUS, player.getHealth());
     }
 
     protected void trySyncClient() {

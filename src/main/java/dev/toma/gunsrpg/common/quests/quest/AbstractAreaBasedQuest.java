@@ -11,7 +11,10 @@ import dev.toma.gunsrpg.common.quests.trigger.TriggerResponseStatus;
 import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -42,13 +45,22 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
     // Ticking
     @Override
     public final void tickQuest(PlayerEntity player) {
+        super.tickQuest(player);
         QuestStatus status = this.getStatus();
         if (status == QuestStatus.ACTIVE && area != null) {
-            if (area.isInArea(player)) {
+            if (areaEntered) {
                 area.tickArea(player.level, player);
+            } else {
+                this.savePlayerStatusProperties(player);
             }
-            if (areaEntered && gracePeriod > 0) {
+            if (area.isInArea(player)) {
+                gracePeriod = this.getGracePeriodDuration();
+            } else if (areaEntered) {
                 --gracePeriod;
+                if (!player.level.isClientSide) {
+                    String time = Interval.format(gracePeriod, f -> f.src(Interval.Unit.TICK).out(Interval.Unit.SECOND));
+                    ((ServerPlayerEntity) player).sendMessage(new TranslationTextComponent("quest.return_to_area", time).withStyle(TextFormatting.RED), ChatType.GAME_INFO, Util.NIL_UUID);
+                }
             }
         }
         this.onQuestTick(player);
@@ -76,8 +88,8 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
     protected abstract void handleSuccessfulTick(Trigger trigger, IPropertyReader reader);
 
     protected TriggerResponseStatus onTick(Trigger trigger, IPropertyReader reader) {
-        this.generateAreaIfMissing();
         PlayerEntity player = reader.getProperty(QuestProperties.PLAYER);
+        this.generateAreaIfMissing(player);
         if (area.isInArea(player)) {
             areaEntered = true;
             return TriggerResponseStatus.OK;
@@ -96,7 +108,7 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
     }
 
     protected int getGracePeriodDuration() {
-        return Interval.seconds(5).getTicks();
+        return Interval.seconds(10).getTicks();
     }
 
     protected boolean isGracePeriodActive() {
@@ -153,7 +165,7 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
     protected void readAddtionalData(CompoundNBT nbt) {
     }
 
-    private void generateAreaIfMissing() {
+    private void generateAreaIfMissing(PlayerEntity player) {
         if (area != null) return;
         D activeData = this.getActiveData();
         this.area = this.generateArea(activeData);
