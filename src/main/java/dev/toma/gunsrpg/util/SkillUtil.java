@@ -11,7 +11,10 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.skills.core.DisplayData;
 import dev.toma.gunsrpg.common.skills.core.DisplayType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -53,6 +56,10 @@ public class SkillUtil {
 
     public static ResourceLocation moddedIcon(String iconPath) {
         return GunsRPG.makeResource("textures/icons/" + iconPath + ".png");
+    }
+
+    public static void applySoulTakerSkill(LivingEntity livingEntity) {
+        livingEntity.addEffect(new EffectInstance(Effects.ABSORPTION, 200, 0, false, false));
     }
 
     public static void heal(PlayerEntity player, float amount) {

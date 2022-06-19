@@ -16,6 +16,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -115,7 +116,7 @@ public class ThompsonItem extends GunItem {
         if (shooter instanceof PlayerEntity && victim instanceof MonsterEntity) {
             PlayerEntity player = (PlayerEntity) shooter;
             if (PlayerData.hasActiveSkill(player, Skills.THOMPSON_SOUL_TAKER)) {
-                player.addEffect(new EffectInstance(Effects.ABSORPTION, 120, 0, false, false));
+                SkillUtil.applySoulTakerSkill(player);
             }
         }
     }
