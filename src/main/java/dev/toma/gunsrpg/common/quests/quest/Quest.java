@@ -104,7 +104,7 @@ public abstract class Quest<D extends IQuestData> {
     public void assign(PlayerEntity player) {
         this.player = player;
         this.initialProperties.setProperty(QuestProperties.FOOD_STATUS, player.getFoodData().getFoodLevel());
-        this.initialProperties.setProperty(QuestProperties.HEALTH_STATUS, player.getHealth());
+        this.initialProperties.setProperty(QuestProperties.HEALTH_STATUS, (int) player.getHealth());
         if (reward == null) {
             IPlayerData data = PlayerData.getUnsafe(player);
             IAttributeProvider provider = data.getAttributes();

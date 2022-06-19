@@ -27,8 +27,8 @@ public class NoHealConditionProvider extends AbstractQuestConditionProvider<NoHe
 
     @Override
     public boolean isValid(PlayerEntity player, IPropertyReader reader) {
-        float healthStat = reader.getProperty(QuestProperties.HEALTH_STATUS);
-        float health = player.getHealth();
+        int healthStat = reader.getProperty(QuestProperties.HEALTH_STATUS);
+        int health = (int) player.getHealth();
         return health <= healthStat;
     }
 
