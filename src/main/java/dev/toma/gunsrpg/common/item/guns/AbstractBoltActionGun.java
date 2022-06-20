@@ -20,10 +20,16 @@ public abstract class AbstractBoltActionGun extends GunItem {
         super(name, properties);
     }
 
+    protected boolean shouldStopAimingAfterShooting() {
+        return true;
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public final void onShoot(PlayerEntity player, ItemStack stack) {
-        NetworkManager.sendServerPacket(new C2S_SetAimingPacket(false));
+        if (shouldStopAimingAfterShooting()) {
+            NetworkManager.sendServerPacket(new C2S_SetAimingPacket(false));
+        }
         ResourceLocation eject = this.getBulletEjectAnimationPath();
         int delay = 6;
         int length = this.getFirerate(PlayerData.getUnsafe(player).getAttributes()) - delay;

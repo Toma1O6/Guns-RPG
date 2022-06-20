@@ -134,6 +134,11 @@ public class WinchesterItem extends AbstractBoltActionGun {
     }
 
     @Override
+    protected boolean shouldStopAimingAfterShooting() {
+        return false;
+    }
+
+    @Override
     public ResourceLocation getReloadAnimation(PlayerEntity player) {
         return RELOAD;
     }
