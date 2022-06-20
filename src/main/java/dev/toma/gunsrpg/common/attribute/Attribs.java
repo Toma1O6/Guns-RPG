@@ -139,7 +139,7 @@ public final class Attribs {
     public static final IAttributeId S12K_MAG_CAPACITY          = createInternal("s12k_mag_capacity", 5);
     public static final IAttributeId S12K_VERTICAL_RECOIL       = createInternal("s12k_vertical_recoil", 4.2);
     public static final IAttributeId S12K_HORIZONTAL_RECOIL     = createInternal("s12k_horizontal_recoil", 2.2);
-    public static final IAttributeId S12K_FIRERATE              = createInternal("s12k_firerate", 6);
+    public static final IAttributeId S12K_FIRERATE              = createInternal("s12k_firerate", 10);
     public static final IAttributeId S12K_LOUDNESS              = createInternal("s12k_loudness");
     public static final IAttributeId AKM_RELOAD_SPEED           = createInternal("akm_reload_speed", 75);
     public static final IAttributeId AKM_MAG_CAPACITY           = createInternal("akm_mag_capacity", 30);
