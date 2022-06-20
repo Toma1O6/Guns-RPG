@@ -125,8 +125,8 @@ public class Rocket extends AbstractExplosive {
             rocket.xRot = this.rotateTowards(x, this.getVerticalDifference(position), 4.5F);
             rocket.yRot = this.rotateTowards(y, this.getHorizontalDifference(position), 6.0F);
             float f = rocket.velocity;
-            if (!rocket.getProperty(Properties.FUELED)) {
-                rocket.xRot = Math.min(90, rocket.xRot + rocket.tickCount * 0.1F);
+            if (!rocket.getProperty(Properties.FUELED) && tickCount > 15) {
+                return;
             }
             Vector3d look = Vector3d.directionFromRotation(rocket.xRot, rocket.yRot);
             setDeltaMovement(look.multiply(f, f, f));
