@@ -366,6 +366,14 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
         return true;
     }
 
+    public float getOpticalRecoilXY() {
+        return 1.0F;
+    }
+
+    public float getOpticalRecoilZ() {
+        return 1.0F;
+    }
+
     @Override
     public double getDurabilityForDisplay(ItemStack stack) {
         return 1.0F - getDurability(stack);

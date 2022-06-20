@@ -154,6 +154,16 @@ public class VssItem extends GunItem {
         return RenderConfigs.VSS_RIGHT;
     }
 
+    @Override
+    public float getOpticalRecoilXY() {
+        return 0.3F;
+    }
+
+    @Override
+    public float getOpticalRecoilZ() {
+        return 0.1F;
+    }
+
     private Firemode switchFiremode(PlayerEntity player, Firemode firemode) {
         boolean canSwitch = firemode == Firemode.FULL_AUTO || PlayerData.hasActiveSkill(player, Skills.VSS_ADAPTIVE_CHAMBERING);
         return canSwitch ? firemode == Firemode.FULL_AUTO ? Firemode.SINGLE : Firemode.FULL_AUTO : firemode;

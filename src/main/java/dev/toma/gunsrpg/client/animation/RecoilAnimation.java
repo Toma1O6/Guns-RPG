@@ -22,9 +22,9 @@ public class RecoilAnimation extends TickableAnimation {
         IWeaponConfig config = source.getWeaponConfig();
         IAimInfo aimInfo = provider.getAimInfo();
         float modifier = aimInfo.isAiming() ? 0.2F + 0.8F * config.getRecoilAnimationScale() : 1.0F;
-        this.x = x * modifier;
-        this.y = y * modifier;
-        this.z = 0.09F * modifier * 0.5F;
+        this.x = x * modifier * source.getOpticalRecoilXY();
+        this.y = y * modifier * source.getOpticalRecoilXY();
+        this.z = 0.09F * modifier * 0.5F * source.getOpticalRecoilZ();
     }
 
     @Override

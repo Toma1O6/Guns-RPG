@@ -132,6 +132,16 @@ public class Mk14EbrItem extends GunItem {
     }
 
     @Override
+    public float getOpticalRecoilXY() {
+        return 0.75F;
+    }
+
+    @Override
+    public float getOpticalRecoilZ() {
+        return 0.4F;
+    }
+
+    @Override
     public IRenderConfig left() {
         return RenderConfigs.MK14_LEFT;
     }
