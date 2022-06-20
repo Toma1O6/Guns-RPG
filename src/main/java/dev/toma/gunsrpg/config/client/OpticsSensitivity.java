@@ -25,9 +25,9 @@ public class OpticsSensitivity extends ObjectType {
         decSeparator.setDecimalSeparator('.');
         DecimalFormat format = new DecimalFormat("0.00", decSeparator);
         this.scope25x = writer.writeBoundedDouble("Sensitivity 2.5x", 0.40F, 0.0F, 1.0F, "Sensitivity for 2.5x optics").setFormatting(format).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER);
-        this.scope30x = writer.writeBoundedDouble("Sensitivity 3.0x", 0.70F, 0.0F, 1.0F, "Sensitivity for 3.0x optics").setFormatting(format).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER);
-        this.scope35x = writer.writeBoundedDouble("Sensitivity 3.5x", 0.85F, 0.0F, 1.0F, "Sensitivity for 3.5x optics").setFormatting(format).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER);
-        this.scope40x = writer.writeBoundedDouble("Sensitivity 4.0x", 0.20F, 0.0F, 1.0F, "Sensitivity for 4.0x optics").setFormatting(format).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER);
-        this.scope60x = writer.writeBoundedDouble("Sensitivity 6.0x", 0.25F, 0.0F, 1.0F, "Sensitivity for 6.0x optics").setFormatting(format).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER);
+        this.scope30x = writer.writeBoundedDouble("Sensitivity 3.0x", 0.45F, 0.0F, 1.0F, "Sensitivity for 3.0x optics").setFormatting(format).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER);
+        this.scope35x = writer.writeBoundedDouble("Sensitivity 3.5x", 0.40F, 0.0F, 1.0F, "Sensitivity for 3.5x optics").setFormatting(format).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER);
+        this.scope40x = writer.writeBoundedDouble("Sensitivity 4.0x", 0.40F, 0.0F, 1.0F, "Sensitivity for 4.0x optics").setFormatting(format).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER);
+        this.scope60x = writer.writeBoundedDouble("Sensitivity 6.0x", 0.15F, 0.0F, 1.0F, "Sensitivity for 6.0x optics").setFormatting(format).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER);
     }
 }
