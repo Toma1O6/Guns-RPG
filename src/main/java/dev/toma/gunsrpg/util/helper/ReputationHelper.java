@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.util.helper;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
@@ -35,7 +36,7 @@ public final class ReputationHelper {
     public static void awardPlayerForReputation(PlayerEntity player) {
         if (player.level.isClientSide) return;
         ItemStack stack = new ItemStack(ModItems.GOLD_EGG_SHARD, 2);
-        player.addItem(stack);
+        ModUtils.addItem(player, stack);
     }
 
     private static void addReputation(ITraderStatus status, Quest<?> quest, Function<Integer, Float> calculator) {

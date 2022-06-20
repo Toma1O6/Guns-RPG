@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.quests.reward;
 
 import com.google.common.collect.Queues;
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -96,7 +97,7 @@ public final class QuestReward {
 
         public void distributeToInventory(PlayerEntity player) {
             for (ItemStack stack : items) {
-                player.addItem(stack);
+                ModUtils.addItem(player, stack);
             }
         }
 

@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.IInventory;
@@ -26,6 +27,8 @@ import net.minecraft.network.IPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
@@ -55,6 +58,26 @@ public class ModUtils {
 
     public static final ISplitter<SkillCategory, SkillType<?>> SKILLS_BY_CATEGORY = ModUtils::splitSkillsIntoCategories;
     public static final DecimalFormatSymbols DOT_DECIMAL_SEPARATOR = new DecimalFormatSymbols();
+
+    public static void addItem(PlayerEntity player, ItemStack stack) {
+        if (player.level.isClientSide) return;
+        boolean flag = player.inventory.add(stack);
+        if (flag && stack.isEmpty()) {
+            stack.setCount(1);
+            ItemEntity itementity1 = player.drop(stack, false);
+            if (itementity1 != null) {
+                itementity1.makeFakeItem();
+            }
+            player.level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            player.inventoryMenu.broadcastChanges();
+        } else {
+            ItemEntity itementity = player.drop(stack, false);
+            if (itementity != null) {
+                itementity.setNoPickUpDelay();
+                itementity.setOwner(player.getUUID());
+            }
+        }
+    }
 
     public static <T> int indexOf(T[] array, T value) {
         int index = 0;

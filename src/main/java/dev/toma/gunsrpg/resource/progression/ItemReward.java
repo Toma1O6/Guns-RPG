@@ -5,6 +5,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import dev.toma.gunsrpg.api.common.data.IKillData;
 import dev.toma.gunsrpg.resource.util.functions.RangedFunction;
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,7 +24,7 @@ public class ItemReward implements ILevelReward {
 
     @Override
     public void applyTo(PlayerEntity player, IKillData data) {
-        player.addItem(stack.copy());
+        ModUtils.addItem(player, stack.copy());
     }
 
     public static class Adapter implements ILevelRewardAdapter<ItemReward> {

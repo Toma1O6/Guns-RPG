@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.common.tileentity.SkilledWorkbenchTileEntity;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import dev.toma.gunsrpg.resource.crafting.OutputModifier;
 import dev.toma.gunsrpg.resource.crafting.SkilledRecipe;
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -83,10 +84,10 @@ public class C2S_RequestSkilledCraftPacket extends AbstractNetworkPacket<C2S_Req
                 if (modifier != null) {
                     modifier.applyRaw(result, PlayerData.getUnsafe(player).getAttributes());
                 }
-                player.addItem(result);
+                ModUtils.addItem(player, result);
                 ItemStack returningItem = recipe.getReturningItem();
                 if (!returningItem.isEmpty()) {
-                    player.addItem(returningItem.copy());
+                    ModUtils.addItem(player, returningItem.copy());
                 }
                 return true;
             }

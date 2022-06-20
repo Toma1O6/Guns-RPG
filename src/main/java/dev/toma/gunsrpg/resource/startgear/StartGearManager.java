@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.resource.SingleJsonFileReloadListener;
 import dev.toma.gunsrpg.resource.adapter.GearAdapter;
 import dev.toma.gunsrpg.resource.adapter.ItemStackAdapter;
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.profiler.IProfiler;
@@ -42,6 +43,6 @@ public class StartGearManager extends SingleJsonFileReloadListener {
             GunsRPG.log.error("Couldn't give player ({}) his starting gear as gear data is null.", player.getDisplayName());
             return;
         }
-        Arrays.stream(gear.getGearItems(player.level)).map(ItemStack::copy).forEach(player::addItem);
+        Arrays.stream(gear.getGearItems(player.level)).map(ItemStack::copy).forEach(item -> ModUtils.addItem(player, item));
     }
 }

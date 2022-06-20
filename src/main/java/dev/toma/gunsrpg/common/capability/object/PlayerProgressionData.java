@@ -78,7 +78,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
         if (!known) {
             known = true;
             if (!player.isCreative())
-                player.addItem(new ItemStack(ModItems.STARTER_GEAR));
+                ModUtils.addItem(player, new ItemStack(ModItems.STARTER_GEAR));
             request.makeSyncRequest();
         }
     }

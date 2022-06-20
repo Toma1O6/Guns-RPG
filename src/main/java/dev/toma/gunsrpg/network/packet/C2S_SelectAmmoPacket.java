@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterialManager;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import dev.toma.gunsrpg.util.Lifecycle;
+import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -66,7 +67,7 @@ public class C2S_SelectAmmoPacket extends AbstractNetworkPacket<C2S_SelectAmmoPa
         }
         if (item != null) {
             ItemStack returnAmmo = new ItemStack(item, ammoAmount);
-            player.addItem(returnAmmo);
+            ModUtils.addItem(player, returnAmmo);
             gun.setAmmoCount(stack, 0);
         }
     }
