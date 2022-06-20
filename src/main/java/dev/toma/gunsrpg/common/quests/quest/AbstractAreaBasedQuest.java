@@ -108,7 +108,7 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
     }
 
     protected int getGracePeriodDuration() {
-        return Interval.seconds(10).getTicks();
+        return Interval.seconds(5).getTicks();
     }
 
     protected boolean isGracePeriodActive() {
