@@ -23,12 +23,6 @@
       ]
     }
   },
-  "conditions": [
-    {
-      "type": "gunsrpg:aggro",
-      "aggro": true
-    }
-  ],
   "tieredConditions": {
     "conditions": [
       {
