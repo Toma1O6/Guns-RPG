@@ -36,7 +36,7 @@ public class SetEquipmentProcessor implements IMobSpawnProcessor {
     }
 
     @Override
-    public void processMobSpawn(LivingEntity entity) {
+    public void processMobSpawn(LivingEntity entity, IMobTargettingContext targettingContext) {
         for (Map.Entry<EquipmentSlotType, Item> entry : equipment.entrySet()) {
             EquipmentSlotType slotType = entry.getKey();
             Item item = entry.getValue();

@@ -83,27 +83,30 @@ public class MobSpawner implements IMobSpawner {
     @SuppressWarnings("unchecked")
     private void spawnMob(World world, QuestArea area, PlayerEntity attackTarget) {
         BlockPos pos = area.getRandomEgdePosition(world.random, world);
-        LivingEntity entity = entityType.create(world);
-        entity.setPos(pos.getX(), pos.getY(), pos.getZ());
-        processorList.forEach(processor -> processor.processMobSpawn(entity));
-        world.addFreshEntity(entity);
-        if (entity instanceof MobEntity) {
-            MobEntity mob = (MobEntity) entity;
-            mob.finalizeSpawn((ServerWorld) world, world.getCurrentDifficultyAt(pos), SpawnReason.COMMAND, null, null);
-            mob.setTarget(attackTarget);
-            AlwaysAggroOnGoal<?> alwaysAggroOnGoal = new AlwaysAggroOnGoal<>(mob, false, attackTarget);
-            mob.targetSelector.addGoal(0, alwaysAggroOnGoal);
-        }
-        int size = area.getScheme().getSize();
-        entity.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(size * 4);
-        Brain<?> brain = entity.getBrain();
-        brain.setMemory(MemoryModuleType.UNIVERSAL_ANGER, true);
-        Map<SensorType<? extends Sensor<?>>, Sensor<?>> sensors = (Map<SensorType<? extends Sensor<?>>, Sensor<?>>) brain.sensors;
-        sensors.remove(SensorType.NEAREST_PLAYERS);
-        SensorType<QuestPlayerSensor> sensorType = ModSensors.QUEST_PLAYER_SENSOR;
-        QuestPlayerSensor questPlayerSensor = sensorType.create();
-        questPlayerSensor.setTarget(attackTarget);
-        sensors.put(sensorType, questPlayerSensor);
+        LivingEntity livingEntity = entityType.create(world);
+        livingEntity.setPos(pos.getX(), pos.getY(), pos.getZ());
+        IMobTargettingContext context = entity -> {
+            ServerWorld serverWorld = (ServerWorld) entity.level;
+            if (entity instanceof MobEntity) {
+                MobEntity mob = (MobEntity) entity;
+                mob.finalizeSpawn(serverWorld, world.getCurrentDifficultyAt(pos), SpawnReason.COMMAND, null, null);
+                mob.setTarget(attackTarget);
+                AlwaysAggroOnGoal<?> alwaysAggroOnGoal = new AlwaysAggroOnGoal<>(mob, false, attackTarget);
+                mob.targetSelector.addGoal(0, alwaysAggroOnGoal);
+            }
+            entity.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(area.getScheme().getSize() * 4);
+            Brain<?> brain = entity.getBrain();
+            brain.setMemory(MemoryModuleType.UNIVERSAL_ANGER, true);
+            Map<SensorType<? extends Sensor<?>>, Sensor<?>> sensors = (Map<SensorType<? extends Sensor<?>>, Sensor<?>>) brain.sensors;
+            sensors.remove(SensorType.NEAREST_PLAYERS);
+            SensorType<QuestPlayerSensor> sensorType = ModSensors.QUEST_PLAYER_SENSOR;
+            QuestPlayerSensor questPlayerSensor = sensorType.create();
+            questPlayerSensor.setTarget(attackTarget);
+            sensors.put(sensorType, questPlayerSensor);
+        };
+        processorList.forEach(processor -> processor.processMobSpawn(livingEntity, context));
+        world.addFreshEntity(livingEntity);
+        context.processMobSpawn(livingEntity);
     }
 
     @SuppressWarnings("unchecked")

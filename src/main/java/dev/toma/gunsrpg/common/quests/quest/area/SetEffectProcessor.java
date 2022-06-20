@@ -37,7 +37,7 @@ public class SetEffectProcessor implements IMobSpawnProcessor {
     }
 
     @Override
-    public void processMobSpawn(LivingEntity entity) {
+    public void processMobSpawn(LivingEntity entity, IMobTargettingContext targettingContext) {
         entity.addEffect(new EffectInstance(effect, duration, amplifier, ambient, visible));
     }
 

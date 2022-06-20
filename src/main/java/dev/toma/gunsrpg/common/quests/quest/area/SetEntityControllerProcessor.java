@@ -40,18 +40,14 @@ public class SetEntityControllerProcessor implements IMobSpawnProcessor {
     }
 
     @Override
-    public void processMobSpawn(LivingEntity entity) {
+    public void processMobSpawn(LivingEntity entity, IMobTargettingContext targettingContext) {
         World world = entity.level;
         LivingEntity controller = controllerType.create(world);
         controller.setPosAndOldPos(entity.getX(), entity.getY(), entity.getZ());
         world.addFreshEntity(controller);
-        if (controller instanceof MobEntity && entity instanceof MobEntity) {
-            MobEntity mob = (MobEntity) controller;
-            mob.setTarget(((MobEntity) entity).getTarget());
-            mob.finalizeSpawn((ServerWorld) world, world.getCurrentDifficultyAt(mob.blockPosition()), SpawnReason.COMMAND, null, null);
-        }
-        processorList.forEach(processor -> processor.processMobSpawn(controller));
+        processorList.forEach(processor -> processor.processMobSpawn(controller, targettingContext));
         controller.startRiding(entity);
+        targettingContext.processMobSpawn(controller);
     }
 
     public static final class Serializer implements IMobSpawnProcessorSerializer<SetEntityControllerProcessor> {

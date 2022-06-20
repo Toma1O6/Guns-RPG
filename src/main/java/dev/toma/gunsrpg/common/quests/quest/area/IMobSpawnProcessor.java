@@ -6,5 +6,5 @@ public interface IMobSpawnProcessor {
 
     MobSpawnProcessorType<?> getType();
 
-    void processMobSpawn(LivingEntity entity);
+    void processMobSpawn(LivingEntity entity, IMobTargettingContext targettingContext);
 }
