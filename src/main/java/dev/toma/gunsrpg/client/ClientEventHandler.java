@@ -71,7 +71,7 @@ public class ClientEventHandler {
                     Firemode firemode = item.getFiremode(stack);
                     InputEventListenerType inputEvent = InputEventListenerType.ON_INPUT;
                     optional.ifPresent(data -> firemode.triggerEvent(inputEvent, player, stack, data));
-                } else if (settings.keyUse.isDown() && pipeline.get(ModAnimations.CHAMBER) == null && !player.isSprinting()) {
+                } else if (settings.keyUse.isDown() && !AnimationUtils.isActiveOrScheduled(pipeline, ModAnimations.CHAMBER) && !player.isSprinting()) {
                     handleAim(optional, settings, player, item, stack, pipeline);
                 }
             }

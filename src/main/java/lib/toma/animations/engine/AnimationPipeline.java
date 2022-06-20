@@ -80,6 +80,17 @@ public final class AnimationPipeline implements IAnimationPipeline {
     }
 
     @Override
+    public boolean hasScheduled(AnimationType<?> type) {
+        for (Schedule<ScheduledAnimation<?>> schedule : scheduledAnimations) {
+            ScheduledAnimation<?> animation = schedule.get();
+            if (animation.getType().equals(type)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void handleGameTick() {
         IProfiler profiler = Minecraft.getInstance().getProfiler();
         profiler.push("animationTick");

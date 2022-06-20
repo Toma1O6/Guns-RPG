@@ -86,6 +86,13 @@ public interface IAnimationPipeline {
     boolean has(AnimationType<?> type);
 
     /**
+     * Determine whether animation is scheduled
+     * @param type Type of animation
+     * @return {@code true} if the animation is currently scheduled
+     */
+    boolean hasScheduled(AnimationType<?> type);
+
+    /**
      * Called every game tick to update animation progress
      */
     void handleGameTick();

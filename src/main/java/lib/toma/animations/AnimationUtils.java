@@ -20,6 +20,10 @@ public class AnimationUtils {
 
     public static final IEasing DEFAULT_EASE_FUNC = Easings.EASE_IN_OUT_SINE;
 
+    public static boolean isActiveOrScheduled(IAnimationPipeline pipeline, AnimationType<?> type) {
+        return pipeline.has(type) || pipeline.hasScheduled(type);
+    }
+
     public static <A extends IAnimation> A createAnimation(ResourceLocation providerPath, Function<IKeyframeProvider, A> creatorFunction) {
         AnimationEngine engine = AnimationEngine.get();
         IAnimationLoader loader = engine.loader();
