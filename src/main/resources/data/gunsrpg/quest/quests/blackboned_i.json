@@ -18,7 +18,16 @@
         {
           "entity": "minecraft:wither_skeleton",
           "minCount": 2,
-          "maxCount": 3
+          "maxCount": 3,
+          "processors": [
+            {
+              "type": "gunsrpg:remove_ai_goals",
+              "goals": [
+                "net.minecraft.entity.ai.goal.RestrictSunGoal",
+                "net.minecraft.entity.ai.goal.FleeSunGoal"
+              ]
+            }
+          ]
         }
       ]
     }

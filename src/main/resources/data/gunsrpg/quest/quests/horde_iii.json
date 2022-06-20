@@ -59,7 +59,16 @@
         {
           "entity": "minecraft:wither_skeleton",
           "maxCount": 2,
-          "weight": 8
+          "weight": 8,
+          "processors": [
+            {
+              "type": "gunsrpg:remove_ai_goals",
+              "goals": [
+                "net.minecraft.entity.ai.goal.RestrictSunGoal",
+                "net.minecraft.entity.ai.goal.FleeSunGoal"
+              ]
+            }
+          ]
         },
         {
           "entity": "gunsrpg:zombie_gunner",
