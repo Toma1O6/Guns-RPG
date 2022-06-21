@@ -7,7 +7,6 @@ import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.properties.Properties;
 import lib.toma.animations.AnimationUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;

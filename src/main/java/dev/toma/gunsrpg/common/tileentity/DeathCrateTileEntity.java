@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.tileentity;
 
 import dev.toma.gunsrpg.common.init.ModBlockEntities;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
