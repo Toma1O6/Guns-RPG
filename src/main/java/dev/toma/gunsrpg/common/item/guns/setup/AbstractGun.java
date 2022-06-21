@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -147,7 +148,9 @@ public abstract class AbstractGun extends BaseItem {
     public void appendHoverText(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flags) {
         IAmmoMaterial material = getMaterialFromNBT(stack);
         TextFormatting formatting = material != null ? RGB2TextFormatting.getClosestFormat(material.getTextColor()) : TextFormatting.GRAY;
-        list.add(new StringTextComponent("Ammo material: " + formatting + (material != null ? material.getDisplayName().getString() : "???")));
+        ITextComponent materialInstance = new StringTextComponent(material != null ? material.getDisplayName().getString() : "???").withStyle(formatting);
+        ITextComponent materialComponent = new TranslationTextComponent("gun.material", materialInstance);
+        list.add(materialComponent);
     }
 
     @Override

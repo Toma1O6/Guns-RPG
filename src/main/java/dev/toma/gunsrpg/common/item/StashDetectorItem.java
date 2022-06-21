@@ -11,6 +11,7 @@ import dev.toma.gunsrpg.common.LootStashDetectorHandler;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.Animation;
@@ -26,7 +27,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ChatType;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -57,7 +57,7 @@ public class StashDetectorItem extends BaseItem implements IAnimationEntry {
         }
         if (!provider.hasSkill(Skills.TREASURE_HUNTER_I)) {
             if (!level.isClientSide) {
-                ((ServerPlayerEntity) player).sendMessage(new StringTextComponent("You need Treasure Hunter skill in order to use this item"), ChatType.GAME_INFO, Util.NIL_UUID);
+                ((ServerPlayerEntity) player).sendMessage(SkillUtil.getMissingSkillText(Skills.TREASURE_HUNTER_I), ChatType.GAME_INFO, Util.NIL_UUID);
             }
             return ActionResult.fail(stack);
         }

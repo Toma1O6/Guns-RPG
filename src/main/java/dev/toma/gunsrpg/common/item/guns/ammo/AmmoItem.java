@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -43,11 +44,11 @@ public class AmmoItem extends BaseItem implements IAmmoProvider {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable World level, List<ITextComponent> text, ITooltipFlag flags) {
-        ITextComponent recoil = formatNumber("Recoil", data.getAddedRecoil());
-        ITextComponent durability = formatNumber("Durability", data.getAddedDurability(), true);
-        ITextComponent jam = formatNumber("Jamming", data.getAddedJamChance());
+        ITextComponent recoil = formatNumber("recoil", data.getAddedRecoil());
+        ITextComponent durability = formatNumber("durability", data.getAddedDurability(), true);
+        ITextComponent jam = formatNumber("jamming", data.getAddedJamChance());
         if (recoil != null || durability != null || jam != null) {
-            text.add(new StringTextComponent("Attributes:"));
+            text.add(new TranslationTextComponent("ammo.stat.attributes"));
             if (recoil != null)
                 text.add(recoil);
             if (durability != null)
@@ -68,7 +69,6 @@ public class AmmoItem extends BaseItem implements IAmmoProvider {
         TextFormatting good = invertColors ? TextFormatting.RED : TextFormatting.GREEN;
         TextFormatting bad = invertColors ? TextFormatting.GREEN : TextFormatting.RED;
         TextFormatting formatting = value < 0 ? good : bad;
-        String raw = String.format("%s%s: %d%%", formatting, key, pct);
-        return new StringTextComponent(raw);
+        return new TranslationTextComponent("ammo.stat." + key, pct).withStyle(formatting);
     }
 }

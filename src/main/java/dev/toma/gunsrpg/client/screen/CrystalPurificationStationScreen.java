@@ -19,11 +19,12 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class CrystalPurificationStationScreen extends ContainerScreen<CrystalPurificationStationContainer> {
 
     private static final ResourceLocation BG = GunsRPG.makeResource("textures/screen/purification_station.png");
+    private static final ITextComponent BUTTON_PURIFY = new TranslationTextComponent("screen.button.purify_crystal");
     private final ItemStack renderItem = new ItemStack(ModItems.PERKPOINT_BOOK);
     private IPlayerData data;
     private Button purifyButton;
@@ -37,7 +38,7 @@ public class CrystalPurificationStationScreen extends ContainerScreen<CrystalPur
     protected void init() {
         super.init();
         data = PlayerData.getUnsafe(minecraft.player);
-        purifyButton = addButton(new Button(leftPos + 26, topPos + 29, 37, 20, new StringTextComponent("Purify"), this::purifyButtonClicked));
+        purifyButton = addButton(new Button(leftPos + 26, topPos + 29, 37, 20, BUTTON_PURIFY, this::purifyButtonClicked));
         updateButtonState();
     }
 

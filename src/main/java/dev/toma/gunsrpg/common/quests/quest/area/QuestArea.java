@@ -10,7 +10,6 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -29,7 +28,6 @@ public class QuestArea {
     private final BlockPos pos;
     private final Vec2i cornerA;
     private final Vec2i cornerB;
-    private final ITextComponent descriptor;
     private int spawnIntervalTimer;
     private boolean isActiveArea;
 
@@ -43,7 +41,6 @@ public class QuestArea {
         int radius = scheme.getSize();
         this.cornerA = new Vec2i(pos.getX() - radius, pos.getZ() - radius);
         this.cornerB = new Vec2i(pos.getX() + radius + 1, pos.getZ() + radius + 1);
-        this.descriptor = new StringTextComponent(String.format("[%d, %d]", pos.getX(), pos.getZ()));
     }
 
     public BlockPos getCenter() {
@@ -139,10 +136,6 @@ public class QuestArea {
         nbt.putInt("spawnDelay", spawnIntervalTimer);
         nbt.putBoolean("activeArea", isActiveArea);
         return nbt;
-    }
-
-    public ITextComponent getDescriptor() {
-        return descriptor;
     }
 
     private void fillEdgePositions(World world) {

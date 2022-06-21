@@ -40,6 +40,7 @@ import java.util.Comparator;
 public class ExtensionsView extends View {
 
     private static final int RESET_PRICE = 15;
+    private static final ITextComponent TEXT_RESET_SKILLS = new TranslationTextComponent("screen.button.reset_skills");
 
     private static final ResourceLocation PERKPOINT_BOOK = GunsRPG.makeResource("textures/item/perkpoint_book.png");
     private final View last;
@@ -77,7 +78,7 @@ public class ExtensionsView extends View {
         footer.setColorSchema(0xFFFF00, 0xCCCC00);
         // info
         skillInfo = addWidget(new SkillInfoWidget(x, y + height - 80, width, 80, manager));
-        reset = addWidget(new SimpleButton(x + width - 75, y + 5, 70, 20, new StringTextComponent("Reset skills"), this::resetSkillsClicked, this::renderResetSkillsButtonTooltip));
+        reset = addWidget(new SimpleButton(x + width - 75, y + 5, 70, 20, TEXT_RESET_SKILLS, this::resetSkillsClicked, this::renderResetSkillsButtonTooltip));
 
         // visibility
         showSkills();

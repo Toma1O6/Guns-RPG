@@ -23,6 +23,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
@@ -81,7 +82,7 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
                 .collect(Collectors.toList());
         int count = newlyAvailableList.size();
         if (count > 0) {
-            player.sendMessage(new StringTextComponent(String.format(TextFormatting.YELLOW + "New skills available: %d", count)), Util.NIL_UUID);
+            player.sendMessage(new TranslationTextComponent("text.player.available_skills", count).withStyle(TextFormatting.YELLOW), Util.NIL_UUID);
             NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_NewSkillsPacket(newlyAvailableList));
         }
         if (!player.level.isClientSide()) {

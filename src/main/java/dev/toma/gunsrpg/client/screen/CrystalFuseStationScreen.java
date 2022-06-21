@@ -23,7 +23,7 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.items.IItemHandler;
 
 import java.util.Arrays;
@@ -31,6 +31,7 @@ import java.util.Arrays;
 public class CrystalFuseStationScreen extends ContainerScreen<CrystalFusionStationContainer> {
 
     private static final ResourceLocation BG = GunsRPG.makeResource("textures/screen/fusion_station.png");
+    private static final ITextComponent BUTTON_FUSE = new TranslationTextComponent("screen.button.fuse_crystals");
     private final ItemStack renderItem = new ItemStack(ModItems.PERKPOINT_BOOK);
     private IPlayerData data;
     private Button fuseButton;
@@ -44,7 +45,7 @@ public class CrystalFuseStationScreen extends ContainerScreen<CrystalFusionStati
     protected void init() {
         super.init();
         data = PlayerData.getUnsafe(minecraft.player);
-        fuseButton = addButton(new Button(leftPos + 61, topPos + 55, 54, 20, new StringTextComponent("Fuse"), this::fuseButtonClicked));
+        fuseButton = addButton(new Button(leftPos + 61, topPos + 55, 54, 20, BUTTON_FUSE, this::fuseButtonClicked));
         updateButtonState();
     }
 

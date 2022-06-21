@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class C2S_ChangeFiremodePacket extends AbstractHandlePacket<C2S_ChangeFiremodePacket> {
@@ -27,7 +28,7 @@ public class C2S_ChangeFiremodePacket extends AbstractHandlePacket<C2S_ChangeFir
             GunItem gun = (GunItem) stack.getItem();
             if (gun.switchFiremode(stack, player)) {
                 Firemode currentMode = gun.getFiremode(stack);
-                player.sendMessage(new StringTextComponent("Firemode: " + currentMode.getName()), ChatType.GAME_INFO, Util.NIL_UUID);
+                player.sendMessage(new TranslationTextComponent("gun.firemode", currentMode.getName()), ChatType.GAME_INFO, Util.NIL_UUID);
                 NetworkManager.sendClientPacket(player, new S2C_AnimationPacket(S2C_AnimationPacket.Action.PLAY, AnimationPaths.FIREMODE_PATH));
             }
         }

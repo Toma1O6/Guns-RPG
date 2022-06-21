@@ -27,6 +27,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -106,8 +107,8 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
         updateRequiredKills();
 
         if (notify) {
-            player.sendMessage(new StringTextComponent(TextFormatting.YELLOW + "=====[ LEVEL UP ]====="), Util.NIL_UUID);
-            player.sendMessage(new StringTextComponent(TextFormatting.YELLOW + "Current level: " + level), Util.NIL_UUID);
+            player.sendMessage(new StringTextComponent(TextFormatting.YELLOW + "=====[ " + new TranslationTextComponent("text.player.level_up").getString() + " ]====="), Util.NIL_UUID);
+            player.sendMessage(new TranslationTextComponent("text.player.current_level", level).withStyle(TextFormatting.YELLOW), Util.NIL_UUID);
             skillProvider.onLevelUp(level, player);
             request.makeSyncRequest();
         }

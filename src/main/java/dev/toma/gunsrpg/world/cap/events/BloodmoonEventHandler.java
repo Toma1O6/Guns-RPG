@@ -7,11 +7,15 @@ import net.minecraft.network.play.server.SPlaySoundEffectPacket;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.Util;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public class BloodmoonEventHandler implements IWorldEventHandler {
+
+    private static final ITextComponent TEXT_BLOODMOON_FALL = new TranslationTextComponent("event.bloodmoon.end").withStyle(TextFormatting.GREEN);
 
     @Override
     public void eventStarted(World world) {
@@ -33,7 +37,7 @@ public class BloodmoonEventHandler implements IWorldEventHandler {
     }
 
     private void notifyBloodmoonEnd(ServerPlayerEntity player) {
-        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Bloodmoon falls"), Util.NIL_UUID);
+        player.sendMessage(TEXT_BLOODMOON_FALL, Util.NIL_UUID);
         player.connection.send(new SPlaySoundEffectPacket(ModSounds.RELAXED_2, SoundCategory.NEUTRAL, player.getX(), player.getY(), player.getZ(), 1.0F, 1.0F));
     }
 }
