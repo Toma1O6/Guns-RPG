@@ -103,6 +103,19 @@ function initializeCoreMod() {
                 addFreshEntitySpawnHook(methodNode.instructions);
                 return methodNode;
             }
+        },
+
+        leapAtTargetCallback: {
+            target: {
+                type: 'METHOD',
+                class: 'net.minecraft.entity.ai.goal.LeapAtTargetGoal',
+                methodName: 'func_75249_e',
+                methodDesc: '()V'
+            },
+            transformer: function (methodNode) {
+                leapAtTargetCallback(methodNode.instructions);
+                return methodNode;
+            }
         }
     }
 }
@@ -283,6 +296,34 @@ function addFreshEntitySpawnHook(instructions) {
                 '(Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/entity/Entity;)Z',
                 false
             ));
+            break;
+        }
+    }
+}
+
+/*
+   L5
+    LINENUMBER 53 L5
+    // INJECT START ---------------------
+    ALOAD 0
+    INVOKESTATIC dev/toma/gunsrpg/asm/Hooks.onMobLeap (Lnet/minecraft/entity/ai/goal/LeapAtTargetGoal;)V
+    // INJECT END -----------------------
+    RETURN
+*/
+function leapAtTargetCallback(instructions) {
+    for (var i = instructions.size() - 1; i >= 0; i--) {
+        var ins = instructions.get(i);
+        if (ins.getOpcode() === RETURN) {
+            var list = new InsnList();
+            list.add(new VarInsnNode(ALOAD, 0));
+            list.add(new MethodInsnNode(
+                INVOKESTATIC,
+                'dev/toma/gunsrpg/asm/Hooks',
+                'onMobLeap',
+                '(Lnet/minecraft/entity/ai/goal/LeapAtTargetGoal;)V',
+                false
+            ));
+            instructions.insertBefore(ins, list);
             break;
         }
     }

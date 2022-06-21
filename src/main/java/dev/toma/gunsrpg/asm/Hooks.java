@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.block.ICustomizableDrops;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.MotherlodeSkill;
 import dev.toma.gunsrpg.config.ModConfig;
@@ -22,7 +23,9 @@ import net.minecraft.entity.IAngerable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -37,6 +40,7 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.Tags;
@@ -140,5 +144,13 @@ public class Hooks {
             }
         }
         return world.addEntity(entity);
+    }
+
+    public static void onMobLeap(LeapAtTargetGoal goal) {
+        MobEntity mob = goal.mob;
+        if (mob instanceof SpiderEntity) {
+            World world = mob.level;
+            world.playSound(null, mob.getX(), mob.getY(), mob.getZ(), ModSounds.CUSTOM_JUMP, SoundCategory.MASTER, 1.0F, 1.0F);
+        }
     }
 }

@@ -1663,5 +1663,14 @@
         "stream": true
       }
     ]
+  },
+  "custom_jump": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "gunsrpg:custom_jump",
+        "stream": true
+      }
+    ]
   }
 }
