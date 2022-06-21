@@ -25,6 +25,7 @@ import java.util.List;
 public class SkilledWorkbenchScreen<T extends VanillaInventoryTileEntity & ISkilledCrafting, C extends SkilledWorkbenchContainer<T>> extends ContainerScreen<C> {
 
     public static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/screen/skilled_workbench.png");
+    private static final ITextComponent TEXT_CRAFT = new TranslationTextComponent("screen.button.craft");
     private static final ITextComponent INFO_LABEL = new TranslationTextComponent("screen.skilled_workbench.condition").withStyle(TextFormatting.BOLD);
     private final T tile;
     private List<IRecipeCondition> failedChecks = Collections.emptyList();
@@ -45,7 +46,7 @@ public class SkilledWorkbenchScreen<T extends VanillaInventoryTileEntity & ISkil
     @Override
     public void init() {
         super.init();
-        craftButton = addButton(new Button(leftPos + 7, topPos + 65, 54, 20, new StringTextComponent("Craft"), this::buttonCraft_Clicked));
+        craftButton = addButton(new Button(leftPos + 7, topPos + 65, 54, 20, TEXT_CRAFT, this::buttonCraft_Clicked));
         craftButton.active = false;
 
         tile.detachCallback();

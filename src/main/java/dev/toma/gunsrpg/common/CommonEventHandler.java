@@ -53,8 +53,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.*;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -157,13 +156,14 @@ public class CommonEventHandler {
                 switch (result.status) {
                     case OUTDATED:
                     case BETA_OUTDATED:
-                        StringTextComponent textComponent = new StringTextComponent(getMessageLogo() + TextFormatting.GREEN + " Your mod is " + TextFormatting.DARK_RED + "outdated" + TextFormatting.GREEN + ". Click " + TextFormatting.BOLD + "HERE" + TextFormatting.RESET + TextFormatting.GREEN + " to get latest update");
-                        String url = "https://www.curseforge.com/minecraft/mc-mods/guns-rpg";
-                        textComponent.getStyle().withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
-                        player.sendMessage(textComponent, Util.NIL_UUID);
-                        break;
-                    case UP_TO_DATE:
-                        player.sendMessage(new StringTextComponent(getMessageLogo() + TextFormatting.GREEN + " Your mod is up to date, enjoy!"), Util.NIL_UUID);
+                        String target = result.target.getCanonical();
+                        String url = "https://www.curseforge.com/minecraft/mc-mods/guns-rpg/files";
+                        ITextComponent message = new StringTextComponent(TextFormatting.YELLOW + "GunsRPG: " + TextFormatting.RED + "out-of-date");
+                        IFormattableTextComponent link = new StringTextComponent(TextFormatting.YELLOW + "Version " + target + " is available for download " + TextFormatting.BOLD + "HERE");
+                        Style style = link.getStyle().withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
+                        link.setStyle(style);
+                        player.sendMessage(message, Util.NIL_UUID);
+                        player.sendMessage(link, Util.NIL_UUID);
                         break;
                 }
             });
@@ -572,10 +572,6 @@ public class CommonEventHandler {
             float newSpeed = baseSpeed * multiplier;
             event.setNewSpeed(newSpeed);
         }
-    }
-
-    private static String getMessageLogo() {
-        return TextFormatting.BLUE + "[" + TextFormatting.YELLOW + "GunsRPG" + TextFormatting.BLUE + "]" + TextFormatting.RESET;
     }
 
     private static void updateMovementSpeedAttribute(PlayerEntity player, IAttributeProvider provider) {

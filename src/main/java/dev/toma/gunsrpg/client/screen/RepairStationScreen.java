@@ -23,6 +23,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 
 public class RepairStationScreen extends ContainerScreen<RepairStationContainer> {
 
+    private static final ITextComponent TEXT_REPAIR = new TranslationTextComponent("screen.button.repair");
     private static final ResourceLocation TEXTURE = GunsRPG.makeResource("textures/screen/repair_station.png");
     private final Map<DamageType, DamageHolder> damageDataMap = Arrays.stream(DamageType.values()).map(DamageHolder::new).collect(Collectors.toMap(DamageHolder::getType, Function.identity()));
     private final IContainerListener listener;
@@ -58,7 +60,7 @@ public class RepairStationScreen extends ContainerScreen<RepairStationContainer>
         ITextComponent inventoryText = inventory.getDisplayName();
         int labelWidth = font.width(inventoryText);
         inventoryLabelX = imageWidth - 8 - labelWidth;
-        repairButton = addButton(new Button(leftPos + 116, topPos + 45, 52, 20, new StringTextComponent("Repair"), this::repair));
+        repairButton = addButton(new Button(leftPos + 116, topPos + 45, 52, 20, TEXT_REPAIR, this::repair));
         slotChanged(0, ItemStack.EMPTY);
         data = PlayerData.getUnsafe(minecraft.player);
     }

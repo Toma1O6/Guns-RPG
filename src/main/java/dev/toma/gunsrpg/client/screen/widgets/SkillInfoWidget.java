@@ -33,6 +33,7 @@ public class SkillInfoWidget extends ContainerWidget {
     private static final ITextComponent PURCHASE = new TranslationTextComponent("view.skill.purchase");
     private static final ITextComponent USE = new TranslationTextComponent("view.skill.use");
     private static final ITextComponent UNKNOWN = new TranslationTextComponent("view.skill.unknown");
+    private static final ITextComponent NO_CONTENT = new TranslationTextComponent("screen.text.no_content");
 
     private final IViewManager manager;
     private SkillType<?> src;
@@ -75,7 +76,7 @@ public class SkillInfoWidget extends ContainerWidget {
     private void init() {
         clear();
         if (src == null) {
-            addWidget(new Label(x, y, width, height, new StringTextComponent("Nothing to show")));
+            addWidget(new Label(x, y, width, height, NO_CONTENT));
             return;
         }
         ISkillProperties properties = src.getProperties();

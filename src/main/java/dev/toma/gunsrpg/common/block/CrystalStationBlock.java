@@ -21,7 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
@@ -52,7 +51,7 @@ public class CrystalStationBlock extends BaseBlock {
             if (perkProvider.isOnCooldown()) {
                 int cooldown = perkProvider.getCooldown();
                 String formattedCooldown = Interval.format(cooldown, format -> format.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND));
-                ((ServerPlayerEntity) player).sendMessage(new StringTextComponent("You are on cooldown. Wait " + formattedCooldown + " before trying again"), ChatType.GAME_INFO, Util.NIL_UUID);
+                ((ServerPlayerEntity) player).sendMessage(new TranslationTextComponent("crystal.station.on_cooldown", formattedCooldown), ChatType.GAME_INFO, Util.NIL_UUID);
                 return ActionResultType.CONSUME;
             } else if (!provider.hasSkill(Skills.CRYSTAL_STATION)) {
                 ((ServerPlayerEntity) player).sendMessage(SkillUtil.getMissingSkillText(Skills.CRYSTAL_STATION), ChatType.GAME_INFO, Util.NIL_UUID);

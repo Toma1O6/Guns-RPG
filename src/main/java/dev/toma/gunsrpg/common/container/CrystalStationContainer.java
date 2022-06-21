@@ -6,13 +6,13 @@ import dev.toma.gunsrpg.api.common.data.IPerkProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.capability.object.PlayerPerkProvider;
 import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.perk.Crystal;
 import dev.toma.gunsrpg.common.item.perk.CrystalItem;
 import dev.toma.gunsrpg.common.item.perk.PerkItem;
 import dev.toma.gunsrpg.common.item.perk.PerkVariant;
+import dev.toma.gunsrpg.config.ModConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -168,7 +168,7 @@ public class CrystalStationContainer extends AbstractContainer {
                         crystal = Crystal.fromNbt(crystalNbt);
                     }
                     provider.setCrystal(slot, crystal);
-                    provider.setCooldown(PlayerPerkProvider.USE_COOLDOWN);
+                    provider.setCooldown(ModConfig.worldConfig.crystalStationUseCooldown.get());
                     provider.awardPoints(-1);
                 }
             }

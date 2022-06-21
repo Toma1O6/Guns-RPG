@@ -4,6 +4,7 @@ import dev.toma.configuration.api.IConfigWriter;
 import dev.toma.configuration.api.IObjectSpec;
 import dev.toma.configuration.api.NumberDisplayType;
 import dev.toma.configuration.api.type.*;
+import dev.toma.gunsrpg.common.capability.object.PlayerPerkProvider;
 
 import java.text.DecimalFormat;
 
@@ -22,6 +23,7 @@ public class WorldConfiguration extends ObjectType {
     public final IntType zombieKnightSpawnDim;
     public final IntType bloodmoonCycle;
     public final IntType airdropFrequency;
+    public final IntType crystalStationUseCooldown;
     public final EnumType<SleepRestriction> sleepRestriction;
     public final DoubleType lootStashChance;
     public final SimpleOreGenConfig amethyst;
@@ -54,6 +56,7 @@ public class WorldConfiguration extends ObjectType {
         zombieKnightSpawnDim = writer.writeBoundedInt("Zombie Knight spawn [D]", 12, 0, 96, "Spawn chance for zombie knight entity", "Applied to non overworld biomes");
         bloodmoonCycle = writer.writeBoundedInt("Bloodmoon cycle", 7, -1, 999, "Defines bloodmoon cycle", "Set to -1 to disable");
         airdropFrequency = writer.writeBoundedInt("Airdrop frequency", 3, -1, 999, "Defines airdrop spawn frequency [days]", "Set to -1 to disable");
+        crystalStationUseCooldown = writer.writeBoundedInt("Crystal station cooldown", PlayerPerkProvider.USE_COOLDOWN.getTicks(), 0, Integer.MAX_VALUE);
         sleepRestriction = writer.writeEnum("Restrict sleep", SleepRestriction.ALWAYS, "Defines when players will be able to sleep");
         lootStashChance = writer.writeBoundedDouble("Loot stash chance", 0.005, 0.0, 0.1, "Chance of loot stash spawn per chunk").setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER).setFormatting(new DecimalFormat("0.0###"));
         amethyst = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 3, 1, 16), "Amethyst ore", "Configure amethyst spawning");

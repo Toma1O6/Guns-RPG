@@ -6,7 +6,6 @@ import dev.toma.gunsrpg.common.perk.PerkRegistry;
 import dev.toma.gunsrpg.common.perk.PerkType;
 import dev.toma.gunsrpg.resource.perks.CrystalConfiguration;
 import dev.toma.gunsrpg.resource.perks.PerkConfiguration;
-import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -39,6 +38,7 @@ public final class Crystal {
         list.addAll(crystal1.attributes);
         list.addAll(crystal2.attributes);
         Map<Perk, List<CrystalAttribute>> map = groupAttributes(list);
+        Set<Perk> sharedPerks = getSharedItems(map);
         List<CrystalAttribute> result = new ArrayList<>();
         for (Map.Entry<Perk, List<CrystalAttribute>> entry : map.entrySet()) {
             CrystalAttribute attribute = CrystalAttribute.flatten(entry.getKey(), entry.getValue());
@@ -51,16 +51,47 @@ public final class Crystal {
         int debuffLimit = storage.getDebuffCapacity() == -1 ? Integer.MAX_VALUE : storage.getDebuffCapacity();
         Random random = new Random();
         if (buffs.size() > buffLimit) {
-            ModUtils.clearRandomItems(buffs, random, buffs.size() - buffLimit);
+            clearRandomItems(buffs, random, buffs.size() - buffLimit, sharedPerks);
         }
         if (debuffs.size() > debuffLimit) {
-            ModUtils.clearRandomItems(debuffs, random, debuffs.size() - debuffLimit);
+            clearRandomItems(debuffs, random, debuffs.size() - debuffLimit, sharedPerks);
         }
         result.clear();
         result.addAll(buffs);
         result.addAll(debuffs);
         result.sort(compareAttributes());
         return new Crystal(level, result);
+    }
+
+    private static Set<Perk> getSharedItems(Map<Perk, List<CrystalAttribute>> map) {
+        Set<Perk> perkSet = new HashSet<>();
+        for (Map.Entry<Perk, List<CrystalAttribute>> entry : map.entrySet()) {
+            Perk perk = entry.getKey();
+            List<CrystalAttribute> attributes = entry.getValue();
+            if (attributes.size() > 1) {
+                perkSet.add(perk);
+            }
+        }
+        return perkSet;
+    }
+
+    private static void clearRandomItems(List<CrystalAttribute> list, Random random, int amount, Collection<Perk> commonItems) {
+        int toRemove = Math.min(amount, list.size());
+        int index = 0;
+        Iterator<CrystalAttribute> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            CrystalAttribute attribute = iterator.next();
+            if (!commonItems.contains(attribute.getPerk())) {
+                iterator.remove();
+                if (++index >= toRemove) {
+                    break;
+                }
+            }
+        }
+        while (index < toRemove) {
+            list.remove(random.nextInt(list.size()));
+            ++index;
+        }
     }
 
     public static Crystal generate() {

@@ -40,7 +40,7 @@ public class GoldenDragonRenderer extends EnderDragonRenderer {
         stack.mulPose(Vector3f.XP.rotationDegrees(f1 * 10.0F));
         stack.translate(0.0D, 0.0D, 1.0D);
         stack.scale(-1.0F, -1.0F, 1.0F);
-        stack.translate(0.0D, (double)-1.501F, 0.0D);
+        stack.translate(0.0D, -1.501F, 0.0D);
         boolean flag = dragon.hurtTime > 0;
         this.model.prepareMobModel(dragon, 0.0F, 0.0F, renderTickTime);
         if (dragon.dragonDeathTime > 0) {
@@ -119,6 +119,6 @@ public class GoldenDragonRenderer extends EnderDragonRenderer {
     }
 
     private static void vertex4(IVertexBuilder p_229063_0_, Matrix4f p_229063_1_, float p_229063_2_, float p_229063_3_) {
-        p_229063_0_.vertex(p_229063_1_, 0.0F, p_229063_2_, 1.0F * p_229063_3_).color(255, 0, 255, 0).endVertex();
+        p_229063_0_.vertex(p_229063_1_, 0.0F, p_229063_2_, p_229063_3_).color(255, 0, 255, 0).endVertex();
     }
 }
