@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.api.common.attribute;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 

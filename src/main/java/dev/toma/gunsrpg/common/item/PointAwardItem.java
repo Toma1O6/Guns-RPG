@@ -8,10 +8,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.Util;
+import net.minecraft.util.*;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -35,7 +32,7 @@ public class PointAwardItem extends BaseItem {
                 data.sync(DataFlags.DATA | DataFlags.PERK);
                 if (!player.isCreative())
                     stack.shrink(1);
-                player.playSound(SoundEvents.PLAYER_LEVELUP, 0.75F, 1.0F);
+                world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, SoundCategory.MASTER, 0.75F, 1.0F);
                 ((ServerPlayerEntity) player).sendMessage(new TranslationTextComponent("point.award.success"), ChatType.GAME_INFO, Util.NIL_UUID);
             });
         }
