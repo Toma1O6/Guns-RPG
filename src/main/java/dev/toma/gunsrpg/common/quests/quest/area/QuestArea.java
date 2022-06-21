@@ -46,6 +46,10 @@ public class QuestArea {
         this.descriptor = new StringTextComponent(String.format("[%d, %d]", pos.getX(), pos.getZ()));
     }
 
+    public BlockPos getCenter() {
+        return pos;
+    }
+
     public static QuestArea fromNbt(QuestAreaScheme scheme, CompoundNBT nbt) {
         BlockPos pos = NBTUtil.readBlockPos(nbt.getCompound("pos"));
         int spawnDelay = nbt.getInt("spawnDelay");

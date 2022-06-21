@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.quests.quest;
 
+import dev.toma.gunsrpg.client.render.infobar.AreaDistanceElement;
 import dev.toma.gunsrpg.client.render.infobar.QuestDisplayDataModel;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.common.quests.quest.area.IAreaQuest;
@@ -14,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -121,7 +123,7 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
 
     protected void fillAreaDataModel(QuestDisplayDataModel dataModel) {
         if (area != null) {
-            dataModel.addInformationRow(QuestArea.STAY_IN_AREA, this, this::fillAreaInfo);
+            dataModel.addElement(new AreaDistanceElement<>(this, QuestArea.STAY_IN_AREA, this::fillAreaInfo, quest -> quest.area != null ? quest.area.getCenter() : BlockPos.ZERO));
         }
     }
 

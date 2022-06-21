@@ -67,6 +67,7 @@ public final class HUDRenderer {
             return;
         }
         Minecraft mc = Minecraft.getInstance();
+        if (mc.screen != null) return;
         PlayerEntity player = mc.player;
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         MatrixStack matrixStack = event.getMatrixStack();
