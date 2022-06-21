@@ -71,9 +71,7 @@ public class SecondChanceSkill extends SimpleSkill implements ICooldown, IDescri
         player.setHealth(this.healAmount);
         player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.SECOND_CHANCE_USE, SoundCategory.MASTER, 1.0F, 1.0F);
         player.addEffect(effectSupplier.get());
-        PlayerData.get(player).ifPresent(data -> {
-            cooldown = (int) (cooldown * data.getAttributes().getAttributeValue(Attribs.SECOND_CHANCE_COOLDOWN));
-        });
+        PlayerData.get(player).ifPresent(data -> cooldown = (int) (cooldown * data.getAttributes().getAttributeValue(Attribs.SECOND_CHANCE_COOLDOWN)));
     }
 
     @Override

@@ -1,29 +1,17 @@
 package dev.toma.gunsrpg.util;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.data.IKillData;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
 import dev.toma.gunsrpg.util.function.ISplitter;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldVertexBufferUploader;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -33,26 +21,20 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.registries.IForgeRegistryEntry;
-import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Array;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
-import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 public class ModUtils {
 
@@ -80,7 +62,6 @@ public class ModUtils {
     }
 
     public static <T> int indexOf(T[] array, T value) {
-        int index = 0;
         for (int i = 0; i < array.length; i++) {
             T t = array[i];
             if (t.equals(value)) {
@@ -135,10 +116,6 @@ public class ModUtils {
         return arr == null || arr.length == 0;
     }
 
-    public static <K, V> Stream<Map.Entry<K, V>> filteredDataStream(Map<K, V> source, Set<K> allowedKeys) {
-        return source.entrySet().stream().filter(kvEntry -> allowedKeys.contains(kvEntry.getKey()));
-    }
-
     public static String convertToLocalization(ResourceLocation location) {
         return location.toString().replaceAll(":", ".");
     }
@@ -146,10 +123,6 @@ public class ModUtils {
     @SuppressWarnings("unchecked")
     public static <T> T[] trimArray(T[] in, Class<T> cls) {
         return Arrays.stream(in).filter(Objects::nonNull).toArray(size -> (T[]) Array.newInstance(cls, size));
-    }
-
-    public static boolean isMaxLevel(IKillData killData) {
-        return killData.getLevel() == killData.getLevelLimit();
     }
 
     public static <T> T init(T t, Consumer<T> initializer) {
@@ -170,45 +143,6 @@ public class ModUtils {
         if (list.isEmpty())
             return null;
         return list.get(random.nextInt(list.size()));
-    }
-
-    public static void sendWorldPacketVanilla(World world, IPacket<?> packet) {
-        if (!world.isClientSide)
-            ((ServerWorld) world).players().forEach(player -> player.connection.send(packet));
-    }
-
-    public static <S, R> List<R> convertToList(Iterable<S> source, Function<S, R> convertor, int count) {
-        List<R> list = new ArrayList<>(count);
-        source.forEach(s -> list.add(convertor.apply(s)));
-        return list;
-    }
-
-    public static <T> T randomElement(T[] array, Random random) {
-        return array[random.nextInt(array.length)];
-    }
-
-    public static <T> T randomElement(T[] array) {
-        return randomElement(array, new Random());
-    }
-
-    public static <T> T randomElement(List<T> list, Random random) {
-        return list.get(random.nextInt(list.size()));
-    }
-
-    public static <T> T randomElement(List<T> list) {
-        return randomElement(list, new Random());
-    }
-
-    public static double randomValue(Random random, double multiplier) {
-        return randomValue(random, Random::nextDouble, d -> d * multiplier);
-    }
-
-    public static float randomValue(Random random, float multiplier) {
-        return randomValue(random, Random::nextFloat, f -> f * multiplier);
-    }
-
-    public static <T extends Number> T randomValue(Random random, Function<Random, T> function, Function<T, T> multiplier) {
-        return multiplier.apply(function.apply(random));
     }
 
     public static void dropInventoryItems(World world, BlockPos pos) {
@@ -235,164 +169,6 @@ public class ModUtils {
             throw new IllegalStateException("Duplicate key: " + key);
     }
 
-    public static float alpha(int color) {
-        return ((color >> 24) & 255) / 255.0F;
-    }
-
-    public static float red(int color) {
-        return ((color >> 16) & 255) / 255.0F;
-    }
-
-    public static float green(int color) {
-        return ((color >> 8) & 255) / 255.0F;
-    }
-
-    public static float blue(int color) {
-        return (color & 255) / 255.0F;
-    }
-
-    public static boolean isOurs(IForgeRegistryEntry<?> entry) {
-        return entry.getRegistryName().getNamespace().equals(GunsRPG.MODID);
-    }
-
-    @Deprecated
-    public static void renderTexture(Matrix4f pose, int x, int y, int x2, int y2, ResourceLocation location) {
-        Minecraft.getInstance().getTextureManager().bind(location);
-        RenderSystem.enableBlend();
-        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder builder = tessellator.getBuilder();
-        builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        builder.vertex(pose, x, y2, 0).uv(0, 1).endVertex();
-        builder.vertex(pose, x2, y2, 0).uv(1, 1).endVertex();
-        builder.vertex(pose, x2, y, 0).uv(1, 0).endVertex();
-        builder.vertex(pose, x, y, 0).uv(0, 0).endVertex();
-        builder.end();
-        WorldVertexBufferUploader.end(builder);
-        RenderSystem.disableBlend();
-    }
-
-    @Deprecated
-    public static void renderTexture(Matrix4f pose, int x, int y, int x2, int y2, float uMin, float vMin, float uMax, float vMax, ResourceLocation location) {
-        Minecraft.getInstance().getTextureManager().bind(location);
-        RenderSystem.enableBlend();
-        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder builder = tessellator.getBuilder();
-        builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        builder.vertex(pose, x, y2, 0).uv(uMin, vMax).endVertex();
-        builder.vertex(pose, x2, y2, 0).uv(uMax, vMax).endVertex();
-        builder.vertex(pose, x2, y, 0).uv(uMax, vMin).endVertex();
-        builder.vertex(pose, x, y, 0).uv(uMin, vMin).endVertex();
-        builder.end();
-        WorldVertexBufferUploader.end(builder);
-        RenderSystem.disableBlend();
-    }
-
-    @Deprecated
-    public static void renderTextureWithColor(Matrix4f pose, int x, int y, int x2, int y2, ResourceLocation location, float r, float g, float b, float a) {
-        Minecraft.getInstance().getTextureManager().bind(location);
-        RenderSystem.enableBlend();
-        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder builder = tessellator.getBuilder();
-        builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-        builder.vertex(pose, x, y2, 0).uv(0, 1).color(r, g, b, a).endVertex();
-        builder.vertex(pose, x2, y2, 0).uv(1, 1).color(r, g, b, a).endVertex();
-        builder.vertex(pose, x2, y, 0).uv(1, 0).color(r, g, b, a).endVertex();
-        builder.vertex(pose, x, y, 0).uv(0, 0).color(r, g, b, a).endVertex();
-        builder.end();
-        WorldVertexBufferUploader.end(builder);
-        RenderSystem.disableBlend();
-    }
-
-    @Deprecated
-    public static void renderColor(Matrix4f pose, int x, int y, int x2, int y2, float r, float g, float b, float a) {
-        RenderSystem.disableTexture();
-        RenderSystem.enableBlend();
-        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder builder = tessellator.getBuilder();
-        builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        builder.vertex(pose, x, y2, 0).color(r, g, b, a).endVertex();
-        builder.vertex(pose, x2, y2, 0).color(r, g, b, a).endVertex();
-        builder.vertex(pose, x2, y, 0).color(r, g, b, a).endVertex();
-        builder.vertex(pose, x, y, 0).color(r, g, b, a).endVertex();
-        builder.end();
-        WorldVertexBufferUploader.end(builder);
-        RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
-    }
-
-    @Deprecated
-    public static void renderLine(Matrix4f pose, int x, int y, int x2, int y2, float r, float g, float b, float a, int width) {
-        RenderSystem.disableTexture();
-        RenderSystem.enableBlend();
-        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder builder = tessellator.getBuilder();
-        RenderSystem.lineWidth(width);
-        builder.begin(3, DefaultVertexFormats.POSITION_COLOR);
-        builder.vertex(pose, x, y, 0).color(r, g, b, a).endVertex();
-        builder.vertex(pose, x2, y2, 0).color(r, g, b, a).endVertex();
-        builder.end();
-        WorldVertexBufferUploader.end(builder);
-        RenderSystem.lineWidth(1);
-        RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
-    }
-
-    public static String formatTicksToTime(int ticks) {
-        StringBuilder builder = new StringBuilder();
-        int toParse = ticks / 20;
-        int hours = toParse / 3600;
-        toParse = toParse % 3600;
-        int minutes = toParse / 60;
-        toParse = toParse % 60;
-        if (hours > 0) {
-            builder.append(hours).append("h:");
-        }
-        if (hours > 0 || minutes > 0) {
-            builder.append(minutes < 10 ? "0" : "").append(minutes).append("m:");
-        }
-        builder.append(toParse < 10 ? "0" : "").append(toParse).append("s");
-        return builder.toString();
-    }
-
-    @SafeVarargs
-    public static <T> List<T> newList(T... ts) {
-        List<T> list = new ArrayList<>();
-        Collections.addAll(list, ts);
-        return list;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <A, B> B[] convert(A[] as, Function<A, B> convert) {
-        B[] arr = (B[]) new Object[as.length];
-        for (int i = 0; i < as.length; i++) {
-            arr[i] = convert.apply(as[i]);
-        }
-        return arr;
-    }
-
-    public static <A> boolean contains(A lookingFor, Collection<A> collection) {
-        for (A a : collection) {
-            if (a == lookingFor) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static <A, B> boolean contains(A a, Collection<B> collection, BiPredicate<A, B> comparator) {
-        for (B b : collection) {
-            if (comparator.test(a, b)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static <A> boolean contains(A obj, A[] array) {
         for (A a : array) {
             if (a == obj) {
@@ -402,36 +178,8 @@ public class ModUtils {
         return false;
     }
 
-    public static <A, B> boolean contains(A obj, B[] array, BiPredicate<A, B> comparator) {
-        for (B b : array) {
-            if (comparator.test(obj, b)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static int clamp(int n, int min, int max) {
         return n < min ? min : Math.min(n, max);
-    }
-
-    public static float clamp(float n, float min, float max) {
-        return n < min ? min : Math.min(n, max);
-    }
-
-    public static double clamp(double n, double min, double max) {
-        return n < min ? min : Math.min(n, max);
-    }
-
-    public static int getItemCountInInventory(Item item, IInventory inventory) {
-        int count = 0;
-        for (int i = 0; i < inventory.getContainerSize(); i++) {
-            ItemStack stack = inventory.getItem(i);
-            if (stack.getItem() == item) {
-                count += stack.getCount();
-            }
-        }
-        return count;
     }
 
     public static <K, V> V getNonnullFromMap(Map<K, V> map, K key, V def) {

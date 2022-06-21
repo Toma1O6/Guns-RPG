@@ -12,7 +12,6 @@ import dev.toma.gunsrpg.common.item.guns.setup.MaterialContainer;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_SelectAmmoPacket;
 import dev.toma.gunsrpg.util.Lifecycle;
-import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import dev.toma.gunsrpg.util.math.IDimensions;
@@ -58,7 +57,7 @@ public class ChooseAmmoScreen extends Screen {
 
     @Override
     public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-        ModUtils.renderColor(matrix.last().pose(), 0, 0, width, height, 0.0F, 0.0F, 0.0F, 0.4F);
+        RenderUtils.drawSolid(matrix.last().pose(), 0, 0, width, height, 0x66 << 24);
         super.render(matrix, mouseX, mouseY, partialTicks);
     }
 
