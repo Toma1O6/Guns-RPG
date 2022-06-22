@@ -21,6 +21,7 @@ import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.world.WorldConfiguration;
 import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.S2C_SyncConfigPacket;
 import dev.toma.gunsrpg.network.packet.S2C_SynchronizationPayloadPacket;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
@@ -146,6 +147,7 @@ public class CommonEventHandler {
         PlayerEntity player = event.getPlayer();
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
         NetworkManager.sendClientPacket(serverPlayer, S2C_SynchronizationPayloadPacket.makePayloadPacket());
+        NetworkManager.sendClientPacket(serverPlayer, new S2C_SyncConfigPacket(ModConfig.worldConfig));
         PlayerData.get(player).ifPresent(data -> {
             data.sync(DataFlags.WILDCARD);
             data.getProgressData().onLogIn();
