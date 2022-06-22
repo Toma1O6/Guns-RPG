@@ -12,6 +12,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.InputEventListenerType;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
+import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_SetAimingPacket;
 import dev.toma.gunsrpg.util.object.PropertyChangeListener;
@@ -28,7 +29,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.common.util.LazyOptional;
@@ -44,6 +47,7 @@ public class ClientEventHandler {
             ClientEventHandler::dispatchSprintAnimation
     );
     public static float partialTicks;
+    public static boolean bloodmoon;
 
     @SubscribeEvent
     public static void cancelHandSwinging(InputEvent.ClickInputEvent event) {
@@ -93,6 +97,13 @@ public class ClientEventHandler {
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
         if (event.phase == TickEvent.Phase.END && player != null) {
+            World world = player.level;
+            long actualDay = world.getDayTime() / 24000L;
+            int cycle = ModConfig.worldConfig.bloodmoonCycle.get();
+            if (cycle == -1) return;
+            boolean isBloodmoonDay = actualDay > 0 && actualDay % cycle == 0;
+            boolean isNight = world.getDayTime() % 24000L >= 12500L;
+            bloodmoon = isBloodmoonDay && isNight;
             LazyOptional<IPlayerData> optional = PlayerData.get(player);
             if (!optional.isPresent())
                 return;
@@ -112,6 +123,47 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onRenderTick(TickEvent.RenderTickEvent event) {
         partialTicks = event.renderTickTime;
+    }
+
+    @SubscribeEvent
+    public static void onSetFogDensity(EntityViewRenderEvent.FogDensity event) {
+        if (bloodmoon) {
+            World world = Minecraft.getInstance().level;
+            long dayTime = world.getDayTime() % 24000L;
+            float diff = 1.0F;
+            if (dayTime < 14000L) {
+                diff = (dayTime - 12500L) / (1500.0F);
+            }
+            if (dayTime > 22500L) {
+                diff = 1.0F - ((dayTime - 22500L) / (1500.0F));
+            }
+            float baseFog = 0.003F;
+            float fog = (0.06F - baseFog) * diff;
+            event.setDensity(baseFog + fog);
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onSetFogColor(EntityViewRenderEvent.FogColors event) {
+        if (!bloodmoon) return;
+        World world = Minecraft.getInstance().level;
+        long dayTime = world.getDayTime() % 24000L;
+        float diff = 1.0F;
+        if (dayTime < 14000L) {
+            diff = (dayTime - 12500L) / (1500.0F);
+        }
+        if (dayTime > 22500L) {
+            diff = 1.0F - ((dayTime - 22500L) / (1500.0F));
+        }
+        float r = event.getRed();
+        float g = event.getGreen();
+        float b = event.getBlue();
+        float r1 = 1.0F - r;
+        float idiff = 1.0F - diff;
+        event.setRed(r + r1 * diff * 0.4F);
+        event.setGreen(g * idiff);
+        event.setBlue(b * idiff);
     }
 
     private static void handleAim(LazyOptional<IPlayerData> optional, GameSettings settings, PlayerEntity player, GunItem item, ItemStack stack, IAnimationPipeline pipeline) {
