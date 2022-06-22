@@ -12,9 +12,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.World;
@@ -99,7 +99,7 @@ public class GoldDragonEntity extends EnderDragonEntity {
 
     @Override
     protected boolean reallyHurt(DamageSource source, float amount) {
-        amount *= 0.35;
+        amount *= 0.6;
         boolean result = super.reallyHurt(source, amount);
         invulnerableTime = 0;
         return result;
@@ -247,13 +247,19 @@ public class GoldDragonEntity extends EnderDragonEntity {
     }
 
     public static class DragonStatsManager {
-        private static final Predicate<Entity> VALID_PLAYERS = EntityPredicates.ENTITY_STILL_ALIVE.and(EntityPredicates.withinDistance(0, 128, 0, 192));
+        private final Predicate<Entity> inRange;
         private final ServerWorld level;
         private final ServerBossInfo bossInfoServer;
+        private Vector3d dragonPos;
         private int ticksSinceLastCheck;
 
         protected DragonStatsManager(ServerWorld _level, ITextComponent displayName) {
             level = _level;
+            inRange = e -> {
+                double maxRange = 192.0 * 192.0;
+                double dist = e.distanceToSqr(dragonPos.x, dragonPos.y, dragonPos.z);
+                return e.isAlive() && dist <= maxRange;
+            };
             bossInfoServer = (ServerBossInfo) (new ServerBossInfo(displayName, BossInfo.Color.YELLOW, BossInfo.Overlay.PROGRESS).setCreateWorldFog(true).setDarkenScreen(true));
             bossInfoServer.setVisible(true);
         }
@@ -261,6 +267,7 @@ public class GoldDragonEntity extends EnderDragonEntity {
         public void tick(GoldDragonEntity dragon) {
             bossInfoServer.setPercent(dragon.getHealth() / dragon.getMaxHealth());
             if (++ticksSinceLastCheck >= 20) {
+                dragonPos = dragon.position();
                 sendStatusUpdateToPlayers();
                 ticksSinceLastCheck = 0;
             }
@@ -273,7 +280,7 @@ public class GoldDragonEntity extends EnderDragonEntity {
 
         private void sendStatusUpdateToPlayers() {
             Set<ServerPlayerEntity> set = new HashSet<>();
-            for (ServerPlayerEntity player : level.getPlayers(VALID_PLAYERS)) {
+            for (ServerPlayerEntity player : level.getPlayers(inRange)) {
                 bossInfoServer.addPlayer(player);
                 set.add(player);
             }
