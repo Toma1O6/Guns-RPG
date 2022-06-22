@@ -103,6 +103,45 @@ function initializeCoreMod() {
                 addFreshEntitySpawnHook(methodNode.instructions);
                 return methodNode;
             }
+        },
+
+        ambientParticle: {
+            target: {
+                type: 'METHOD',
+                class: 'net.minecraft.world.biome.Biome',
+                methodName: 'func_235090_t_',
+                methodDesc: '()Ljava/util/Optional;'
+            },
+            transformer: function (methodNode) {
+                patchAmbientParticle(methodNode.instructions);
+                return methodNode;
+            }
+        },
+
+        ambientSoundLoop: {
+            target: {
+                type: 'METHOD',
+                class: 'net.minecraft.world.biome.Biome',
+                methodName: 'func_235091_u_',
+                methodDesc: '()Ljava/util/Optional;'
+            },
+            transformer: function (methodNode) {
+                patchAmbientLoopSound(methodNode.instructions);
+                return methodNode;
+            }
+        },
+
+        ambientMood: {
+            target: {
+                type: 'METHOD',
+                class: 'net.minecraft.world.biome.Biome',
+                methodName: 'func_235092_v_',
+                methodDesc: '()Ljava/util/Optional;'
+            },
+            transformer: function (methodNode) {
+                patchAmbientMood(methodNode.instructions);
+                return methodNode;
+            }
         }
     }
 }
@@ -281,6 +320,54 @@ function addFreshEntitySpawnHook(instructions) {
                 'dev/toma/gunsrpg/asm/Hooks',
                 'spawnEntity',
                 '(Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/entity/Entity;)Z',
+                false
+            ));
+            break;
+        }
+    }
+}
+
+function patchAmbientParticle(instructions) {
+    for (var i = 0; i < instructions.size(); i++) {
+        var ins = instructions.get(i);
+        if (ins.getOpcode() === INVOKEVIRTUAL) {
+            instructions.set(ins, new MethodInsnNode(
+                INVOKESTATIC,
+                'dev/toma/gunsrpg/asm/Hooks',
+                'getAmbientParticle',
+                '(Lnet/minecraft/world/biome/BiomeAmbience;)Ljava/util/Optional;',
+                false
+            ));
+            break;
+        }
+    }
+}
+
+function patchAmbientLoopSound(instructions) {
+    for (var i = 0; i < instructions.size(); i++) {
+        var ins = instructions.get(i);
+        if (ins.getOpcode() === INVOKEVIRTUAL) {
+            instructions.set(ins, new MethodInsnNode(
+                INVOKESTATIC,
+                'dev/toma/gunsrpg/asm/Hooks',
+                'getAmbientSoundLoop',
+                '(Lnet/minecraft/world/biome/BiomeAmbience;)Ljava/util/Optional;',
+                false
+            ));
+            break;
+        }
+    }
+}
+
+function patchAmbientMood(instructions) {
+    for (var i = 0; i < instructions.size(); i++) {
+        var ins = instructions.get(i);
+        if (ins.getOpcode() === INVOKEVIRTUAL) {
+            instructions.set(ins, new MethodInsnNode(
+                INVOKESTATIC,
+                'dev/toma/gunsrpg/asm/Hooks',
+                'getAmbientMood',
+                '(Lnet/minecraft/world/biome/BiomeAmbience;)Ljava/util/Optional;',
                 false
             ));
             break;

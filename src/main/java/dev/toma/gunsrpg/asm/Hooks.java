@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
+import dev.toma.gunsrpg.client.ClientEventHandler;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.block.ICustomizableDrops;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -12,11 +13,13 @@ import dev.toma.gunsrpg.common.skills.MotherlodeSkill;
 import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.SkillUtil;
+import dev.toma.gunsrpg.util.object.LazyLoader;
 import dev.toma.gunsrpg.util.object.Pair;
 import dev.toma.gunsrpg.world.MobSpawnManager;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IAngerable;
 import net.minecraft.entity.LivingEntity;
@@ -34,10 +37,16 @@ import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.loot.LootTable;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeAmbience;
+import net.minecraft.world.biome.MoodSoundAmbience;
+import net.minecraft.world.biome.ParticleEffectAmbience;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.LazyOptional;
@@ -45,6 +54,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 public class Hooks {
 
@@ -140,5 +150,36 @@ public class Hooks {
             }
         }
         return world.addEntity(entity);
+    }
+
+    public static Optional<ParticleEffectAmbience> getAmbientParticle(BiomeAmbience ambience) {
+        if (ClientEventHandler.bloodmoon) {
+            long time = Minecraft.getInstance().level.dayTime() % 24000L;
+            return time > 13500 && time < 22500 ? Optional.of(BloodmoonAmbience.AMBIENCE.get().effectAmbience) : ambience.getAmbientParticleSettings();
+        }
+        return ambience.getAmbientParticleSettings();
+    }
+
+    public static Optional<SoundEvent> getAmbientSoundLoop(BiomeAmbience ambience) {
+        return ClientEventHandler.bloodmoon ? Optional.of(BloodmoonAmbience.AMBIENCE.get().loopSound) : ambience.getAmbientLoopSoundEvent();
+    }
+
+    public static Optional<MoodSoundAmbience> getAmbientMood(BiomeAmbience ambience) {
+        return ClientEventHandler.bloodmoon ? Optional.of(BloodmoonAmbience.AMBIENCE.get().ambience) : ambience.getAmbientMoodSettings();
+    }
+
+    private static class BloodmoonAmbience {
+
+        private static final LazyLoader<BloodmoonAmbience> AMBIENCE = new LazyLoader<>(() -> new BloodmoonAmbience(new ParticleEffectAmbience(ParticleTypes.WHITE_ASH, 0.10f), SoundEvents.AMBIENT_BASALT_DELTAS_LOOP, new MoodSoundAmbience(SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD, 500, 8, 2)));
+
+        private final ParticleEffectAmbience effectAmbience;
+        private final SoundEvent loopSound;
+        private final MoodSoundAmbience ambience;
+
+        public BloodmoonAmbience(ParticleEffectAmbience effectAmbience, SoundEvent loopSound, MoodSoundAmbience ambience) {
+            this.effectAmbience = effectAmbience;
+            this.loopSound = loopSound;
+            this.ambience = ambience;
+        }
     }
 }
