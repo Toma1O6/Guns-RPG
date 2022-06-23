@@ -6,9 +6,12 @@
     "info": "Kill 10 angry bees"
   },
   "data": {
-    "entities": [
-      "minecraft:bee"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:bee"
+      ]
+    },
     "count": 10,
     "area": {
       "size": 32,

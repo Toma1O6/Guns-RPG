@@ -6,9 +6,12 @@
     "info": "Kill 7 husks"
   },
   "data": {
-    "entities": [
-      "minecraft:husk"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:husk"
+      ]
+    },
     "count": 7,
     "area": {
       "size": 32,

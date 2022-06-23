@@ -6,9 +6,12 @@
     "info": "Kill 20 vexes"
   },
   "data": {
-    "entities": [
-      "minecraft:vex"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:vex"
+      ]
+    },
     "count": 20,
     "area": {
       "size": 32,

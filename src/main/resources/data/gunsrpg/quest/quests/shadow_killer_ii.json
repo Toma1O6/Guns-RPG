@@ -6,7 +6,9 @@
     "info": "Kill 13 hostile mobs"
   },
   "data": {
-    "entities": null,
+    "entities": {
+      "type": "gunsrpg:hostile"
+    },
     "count": 13
   },
   "conditions": [

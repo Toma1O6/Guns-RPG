@@ -6,9 +6,12 @@
     "info": "Kill 20 piglins"
   },
   "data": {
-    "entities": [
-      "minecraft:piglin"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:piglin"
+      ]
+    },
     "count": 20,
     "area": {
       "size": 32,

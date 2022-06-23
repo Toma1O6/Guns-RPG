@@ -6,9 +6,12 @@
     "info": "Kill 8 bloodmoon golems"
   },
   "data": {
-    "entities": [
-      "gunsrpg:bloodmoon_golem"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "gunsrpg:bloodmoon_golem"
+      ]
+    },
     "count": 8,
     "area": {
       "size": 32,

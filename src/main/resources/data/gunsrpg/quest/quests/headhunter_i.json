@@ -6,7 +6,9 @@
     "info": "Kill 10 mobs"
   },
   "data": {
-    "entities": null,
+    "entities": {
+      "type": "gunsrpg:hostile"
+    },
     "count": 10
   },
   "conditions": [

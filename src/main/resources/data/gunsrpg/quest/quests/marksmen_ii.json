@@ -6,9 +6,12 @@
     "info": "Kill 13 pillagers"
   },
   "data": {
-    "entities": [
-      "minecraft:pillager"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:pillager"
+      ]
+    },
     "count": 13,
     "area": {
       "size": 32,

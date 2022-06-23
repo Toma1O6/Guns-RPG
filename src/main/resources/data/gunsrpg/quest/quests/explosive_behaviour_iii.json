@@ -6,9 +6,12 @@
     "info": "Kill 15 grenadiers"
   },
   "data": {
-    "entities": [
-      "gunsrpg:explosive_skeleton"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "gunsrpg:explosive_skeleton"
+      ]
+    },
     "count": 15,
     "area": {
       "size": 32,

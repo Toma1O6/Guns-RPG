@@ -6,9 +6,12 @@
     "info": "Kill 15 zombie gunners"
   },
   "data": {
-    "entities": [
-      "gunsrpg:zombie_gunner"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "gunsrpg:zombie_gunner"
+      ]
+    },
     "count": 15,
     "area": {
       "size": 32,

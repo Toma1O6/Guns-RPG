@@ -6,9 +6,12 @@
     "info": "Kill 13 witches"
   },
   "data": {
-    "entities": [
-      "minecraft:witch"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:witch"
+      ]
+    },
     "count": 13,
     "area": {
       "size": 32,

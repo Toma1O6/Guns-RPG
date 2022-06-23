@@ -6,9 +6,12 @@
     "info": "Kill 13 wither skeletons"
   },
   "data": {
-    "entities": [
-      "minecraft:wither_skeleton"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:wither_skeleton"
+      ]
+    },
     "count": 13,
     "area": {
       "size": 32,

@@ -6,9 +6,12 @@
     "info": "Kill 13 cave spiders"
   },
   "data": {
-    "entities": [
-      "minecraft:cave_spider"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:cave_spider"
+      ]
+    },
     "count": 13,
     "area": {
       "size": 32,

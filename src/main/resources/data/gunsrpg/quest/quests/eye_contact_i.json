@@ -6,9 +6,12 @@
     "info": "Kill 5 endermen"
   },
   "data": {
-    "entities": [
-      "minecraft:enderman"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:enderman"
+      ]
+    },
     "count": 5,
     "area": {
       "size": 32,
