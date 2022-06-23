@@ -138,7 +138,7 @@ public class ClientEventHandler {
                 diff = 1.0F - ((dayTime - 22500L) / (1500.0F));
             }
             float baseFog = 0.003F;
-            float fog = (0.06F - baseFog) * diff;
+            float fog = (0.03F - baseFog) * diff;
             event.setDensity(baseFog + fog);
             event.setCanceled(true);
         }
