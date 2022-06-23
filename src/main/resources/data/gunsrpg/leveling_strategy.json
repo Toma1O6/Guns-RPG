@@ -107,6 +107,10 @@
             {
               "type": "gunsrpg:point",
               "amount": 50
+            },
+            {
+              "type": "gunsrpg:item",
+              "item": "gunsrpg:gold_egg_shard"
             }
           ]
         },
@@ -210,8 +214,7 @@
             },
             {
               "type": "gunsrpg:item",
-              "item": "gunsrpg:gold_egg_shard",
-              "count": 1
+              "item": "gunsrpg:gold_egg_shard"
             }
           ]
         },
