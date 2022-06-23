@@ -6,9 +6,12 @@
     "info": "Kill 20 skeletons"
   },
   "data": {
-    "entities": [
-      "minecraft:skeleton"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:skeleton"
+      ]
+    },
     "count": 20,
     "area": {
       "size": 32,

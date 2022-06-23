@@ -6,9 +6,12 @@
     "info": "Kill 15 skeleton horses"
   },
   "data": {
-    "entities": [
-      "minecraft:skeleton_horse"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:skeleton_horse"
+      ]
+    },
     "count": 15,
     "area": {
       "size": 32,

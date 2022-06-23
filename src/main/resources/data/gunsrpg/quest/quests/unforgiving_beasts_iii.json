@@ -6,9 +6,12 @@
     "info": "Kill 10 ravagers"
   },
   "data": {
-    "entities": [
-      "minecraft:ravager"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:ravager"
+      ]
+    },
     "count": 10,
     "area": {
       "size": 32,

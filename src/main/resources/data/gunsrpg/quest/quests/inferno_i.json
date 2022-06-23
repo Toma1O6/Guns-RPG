@@ -6,9 +6,12 @@
     "info": "Kill 7 blazes"
   },
   "data": {
-    "entities": [
-      "minecraft:blaze"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:blaze"
+      ]
+    },
     "count": 7,
     "area": {
       "size": 32,

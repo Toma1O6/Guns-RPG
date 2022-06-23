@@ -6,9 +6,12 @@
     "info": "Kill 20 strays"
   },
   "data": {
-    "entities": [
-      "minecraft:stray"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:stray"
+      ]
+    },
     "count": 20,
     "area": {
       "size": 32,

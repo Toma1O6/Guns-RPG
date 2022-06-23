@@ -5,19 +5,18 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.common.quests.quest.area.IQuestAreaProvider;
 import dev.toma.gunsrpg.common.quests.quest.area.QuestAreaScheme;
+import dev.toma.gunsrpg.common.quests.quest.filter.EntityFilterType;
+import dev.toma.gunsrpg.common.quests.quest.filter.IEntityFilter;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
-
-import java.util.function.Predicate;
 
 public class KillInAreaData extends KillEntityData implements IQuestAreaProvider {
 
     private final QuestAreaScheme areaScheme;
 
-    public KillInAreaData(Predicate<Entity> entityFilter, int killCount, QuestAreaScheme scheme) {
-        super(entityFilter, killCount);
+    public KillInAreaData(IEntityFilter filter, int killCount, QuestAreaScheme scheme) {
+        super(filter, killCount);
         this.areaScheme = scheme;
     }
 
@@ -37,7 +36,7 @@ public class KillInAreaData extends KillEntityData implements IQuestAreaProvider
         public KillInAreaData resolve(JsonElement element) throws JsonParseException {
             JsonObject object = JsonHelper.asJsonObject(element);
             JsonElement filterElement = object.get("entities");
-            Predicate<Entity> filter = parseEntityFilter(filterElement);
+            IEntityFilter filter = EntityFilterType.resolveJsonFile(filterElement);
             int count = JSONUtils.getAsInt(object, "count", 1);
             QuestAreaScheme areaScheme = QuestAreaScheme.fromJson(JSONUtils.getAsJsonObject(object, "area"));
             return new KillInAreaData(filter, count, areaScheme);
@@ -48,6 +47,7 @@ public class KillInAreaData extends KillEntityData implements IQuestAreaProvider
             CompoundNBT nbt = new CompoundNBT();
             nbt.putInt("kills", data.getKillTarget());
             nbt.put("area", data.areaScheme.toNbt());
+            nbt.put("filter", EntityFilterType.serializeNbt(data.getEntityFilter()));
             return nbt;
         }
 
@@ -55,7 +55,8 @@ public class KillInAreaData extends KillEntityData implements IQuestAreaProvider
         public KillInAreaData deserialize(CompoundNBT nbt) {
             int kills = nbt.getInt("kills");
             QuestAreaScheme scheme = QuestAreaScheme.fromNbt(nbt.getCompound("area"));
-            return new KillInAreaData(ANY_HOSTILE, kills, scheme);
+            IEntityFilter filter = EntityFilterType.deserializeNbt(nbt.getCompound("filter"));
+            return new KillInAreaData(filter, kills, scheme);
         }
     }
 }

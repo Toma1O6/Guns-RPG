@@ -6,9 +6,12 @@
     "info": "Kill 13 creepers"
   },
   "data": {
-    "entities": [
-      "minecraft:creeper"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:creeper"
+      ]
+    },
     "count": 13,
     "area": {
       "size": 32,

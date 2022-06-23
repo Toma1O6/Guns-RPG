@@ -6,9 +6,12 @@
     "info": "Kill 7 vindicators"
   },
   "data": {
-    "entities": [
-      "minecraft:vindicator"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:vindicator"
+      ]
+    },
     "count": 7,
     "area": {
       "size": 32,

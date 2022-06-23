@@ -6,9 +6,12 @@
     "info": "Kill 5 zombie knights"
   },
   "data": {
-    "entities": [
-      "gunsrpg:zombie_knight"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "gunsrpg:zombie_knight"
+      ]
+    },
     "count": 5,
     "area": {
       "size": 32,

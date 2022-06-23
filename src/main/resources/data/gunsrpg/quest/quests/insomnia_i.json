@@ -6,9 +6,12 @@
     "info": "Kill 5 phantoms"
   },
   "data": {
-    "entities": [
-      "minecraft:phantom"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:phantom"
+      ]
+    },
     "count": 5,
     "area": {
       "size": 32,

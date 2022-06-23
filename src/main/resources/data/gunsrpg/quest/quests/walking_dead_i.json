@@ -6,9 +6,12 @@
     "info": "Kill 7 zombies"
   },
   "data": {
-    "entities": [
-      "minecraft:zombie"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:zombie"
+      ]
+    },
     "count": 7,
     "area": {
       "size": 32,

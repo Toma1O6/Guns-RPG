@@ -6,9 +6,12 @@
     "info": "Kill 20 spiders"
   },
   "data": {
-    "entities": [
-      "minecraft:spider"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:spider"
+      ]
+    },
     "count": 20,
     "area": {
       "size": 32,

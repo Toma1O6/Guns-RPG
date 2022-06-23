@@ -6,9 +6,12 @@
     "info": "Kill 5 rocket angels"
   },
   "data": {
-    "entities": [
-      "gunsrpg:rocket_angel"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "gunsrpg:rocket_angel"
+      ]
+    },
     "count": 5,
     "area": {
       "size": 32,

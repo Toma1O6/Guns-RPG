@@ -6,9 +6,12 @@
     "info": "Kill 13 piglin brutes"
   },
   "data": {
-    "entities": [
-      "minecraft:piglin_brute"
-    ],
+    "entities": {
+      "type": "gunsrpg:specific_entity",
+      "filter": [
+        "minecraft:piglin_brute"
+      ]
+    },
     "count": 13,
     "area": {
       "size": 32,
