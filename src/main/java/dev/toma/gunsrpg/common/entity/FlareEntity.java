@@ -89,6 +89,9 @@ public class FlareEntity extends Entity implements IEntityAdditionalSpawnData {
             level.addParticle(ParticleTypes.CLOUD, true, getX(), getY(), getZ(), 0, -0.15, 0);
             level.addParticle(ParticleTypes.CLOUD, true, getX(), getY(), getZ(), 0, -0.05, 0);
         }
+        if (tickCount > 1000) {
+            playerThrown = true;
+        }
         if (playerThrown) {
             if (++timeWaiting >= 400) {
                 summonAirdrop(100, 0);
@@ -98,12 +101,6 @@ public class FlareEntity extends Entity implements IEntityAdditionalSpawnData {
             Vector3d nextTickPhysics = delta.multiply(drag, 1.0, drag).add(0, -0.05, 0);
             this.setDeltaMovement(nextTickPhysics);
         } else {
-            Vector3d start = position();
-            Vector3d end = start.add(getDeltaMovement());
-            BlockRayTraceResult traceResult = level.clip(new RayTraceContext(start, end, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, null));
-            if (traceResult != null && traceResult.getType() != RayTraceResult.Type.MISS) {
-                remove();
-            }
             Vector3d motion = getDeltaMovement();
             boolean reachedHeight = getY() >= startHeight + 125;
             if (!reachedHeight) {

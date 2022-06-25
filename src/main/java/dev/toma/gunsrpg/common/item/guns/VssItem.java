@@ -69,7 +69,7 @@ public class VssItem extends GunItem {
 
     @Override
     protected float getWeaponSoundVolume(LivingEntity entity) {
-        return 1.0F;
+        return 4.0F;
     }
 
     @Override

@@ -60,6 +60,10 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
     private LoadoutType loadoutType = LoadoutType.SELECTOR.getRandom();
     private boolean forcedAggro;
 
+    public ExplosiveSkeletonEntity(World world) {
+        this(ModEntities.EXPLOSIVE_SKELETON.get(), world);
+    }
+
     public ExplosiveSkeletonEntity(EntityType<? extends MonsterEntity> type, World world) {
         super(type, world);
     }
@@ -233,7 +237,7 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
         grenade.setup(1.0f, 1.5f, 0);
         grenade.fire(xRot - dist * 0.1f, yRot, 2.5F);
         grenade.setProperty(Properties.REACTION, reaction);
-        this.playSound(ModSounds.GL_SHOT1, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+        this.playSound(ModSounds.GL_SHOT1, 15.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         this.level.addFreshEntity(grenade);
     }
 
