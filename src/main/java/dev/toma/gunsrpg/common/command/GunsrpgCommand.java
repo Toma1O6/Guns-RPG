@@ -25,6 +25,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import dev.toma.gunsrpg.common.entity.AirdropEntity;
 import dev.toma.gunsrpg.common.init.ModRegistries;
+import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.item.perk.Crystal;
 import dev.toma.gunsrpg.common.item.perk.CrystalAttribute;
 import dev.toma.gunsrpg.common.item.perk.CrystalItem;
@@ -89,6 +90,7 @@ public class GunsrpgCommand {
     private static final DynamicCommandExceptionType DEPENDENT_SKILL_ACTIVE = new DynamicCommandExceptionType(id -> new TranslationTextComponent("command.gunsrpg.exception.active_skill", id));
     private static final SimpleCommandExceptionType NOT_HOLDING_CRYSTAL = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.not_holding_crystal"));
     private static final SimpleCommandExceptionType NO_ACTIVE_QUEST = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.no_quest"));
+    private static final SimpleCommandExceptionType NOT_HOLDING_GUN = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.not_holding_gun"));
 
     public static void registerCommandTree(CommandDispatcher<CommandSource> dispatcher) {
         dispatcher.register(
@@ -288,11 +290,34 @@ public class GunsrpgCommand {
                                                         )
                                         )
                         )
+                        .then(
+                                Commands.literal("weapon")
+                                        .executes(ctx -> noArgsProvided("force_jam"))
+                                        .then(
+                                                Commands.literal("force_jam")
+                                                        .executes(GunsrpgCommand::jamWeapon)
+                                        )
+                        )
                         .executes(ctx -> noArgsProvided("debuff", "event", "progression", "skill"))
         );
     }
 
-    private static int setCrystalUsageCooldown(CommandContext<CommandSource> context) throws CommandSyntaxException {
+    private static int jamWeapon(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        ItemStack stack = player.getMainHandItem();
+        if (!(stack.getItem() instanceof AbstractGun)) {
+            throw NOT_HOLDING_GUN.create();
+        }
+        AbstractGun gun = (AbstractGun) stack.getItem();
+        gun.setJammedState(stack, true);
+        return 0;
+    }
+
+    private static int setCrystalUsageCooldown(CommandContext<CommandSource> context) {
         int value = IntegerArgumentType.getInteger(context, "cooldownValue");
         Entity executor = context.getSource().getEntity();
         if (!(executor instanceof PlayerEntity)) {
