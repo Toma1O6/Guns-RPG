@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.entity;
 
-import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.ai.AlwaysAggroOnGoal;
+import dev.toma.gunsrpg.util.Interval;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -24,7 +25,6 @@ import net.minecraft.world.server.ServerWorld;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -39,6 +39,7 @@ public class GoldDragonEntity extends EnderDragonEntity {
         if (!world.isClientSide) {
             manager = new DragonStatsManager((ServerWorld) world, getDisplayName());
         }
+        this.resetCooldown();
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -77,7 +78,7 @@ public class GoldDragonEntity extends EnderDragonEntity {
     }
 
     public void resetCooldown() {
-        cooldown = 800;
+        cooldown = Interval.minutes(1).getTicks();
     }
 
     @Override
@@ -86,8 +87,10 @@ public class GoldDragonEntity extends EnderDragonEntity {
             setDeltaMovement(0, 0, 0);
         }
         super.tick();
-        if (!level.isClientSide)
+        if (!level.isClientSide) {
             manager.tick(this);
+            trySummonHelp();
+        }
     }
 
     @Override
@@ -159,6 +162,49 @@ public class GoldDragonEntity extends EnderDragonEntity {
         return this.findClosestNode(this.getX(), this.getY(), this.getZ());
     }
 
+    private void trySummonHelp() {
+        if (cooldown == 0) {
+            resetCooldown();
+            List<? extends PlayerEntity> players = level.players();
+            for (PlayerEntity player : players) {
+                if (player.isSpectator() || !player.isAlive()) {
+                    continue;
+                }
+                double distance = this.distanceToSqr(player);
+                if (distance > 256 * 256) continue;
+                BlockPos pos = player.blockPosition();
+                spawnMob(pos, player, new ZombieGunnerEntity(level));
+                spawnMob(pos, player, new ExplosiveSkeletonEntity(level));
+                spawnMob(pos, player, new RocketAngelEntity(level), true);
+                spawnMob(pos, player, new BloodmoonGolemEntity(level));
+            }
+        }
+    }
+
+    private void spawnMob(BlockPos pos, LivingEntity target, MobEntity mob) {
+        spawnMob(pos, target, mob, false);
+    }
+
+    private void spawnMob(BlockPos pos, LivingEntity target, MobEntity mob, boolean airMob) {
+        BlockPos spawnPos = genRandomPos(pos, level, airMob);
+        mob.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
+        mob.setTarget(target);
+        mob.targetSelector.addGoal(0, new AlwaysAggroOnGoal<>(mob, false, target));
+        mob.finalizeSpawn((ServerWorld) level, level.getCurrentDifficultyAt(spawnPos), SpawnReason.REINFORCEMENT, null, null);
+        level.addFreshEntity(mob);
+    }
+
+    private BlockPos genRandomPos(BlockPos pos, World world, boolean inAir) {
+        int minDist = 24;
+        int x = pos.getX() + (random.nextBoolean() ? -minDist : minDist);
+        int z = pos.getZ() + (random.nextBoolean() ? -minDist : minDist);
+        int y = world.getHeight(Heightmap.Type.WORLD_SURFACE, x, z);
+        if (inAir) {
+            y += 16;
+        }
+        return new BlockPos(x, y, z);
+    }
+
     static class ExtendedPhaseManager extends PhaseManager {
 
         private final GoldDragonEntity goldDragon;
@@ -192,57 +238,12 @@ public class GoldDragonEntity extends EnderDragonEntity {
             if (strafe) {
                 if (entitylivingbase != null) {
                     getPhase(PhaseType.STRAFE_PLAYER).setTarget(entitylivingbase);
-                    trySummonHelp(goldDragon.level);
                 }
             } else if (charge) {
                 if (entitylivingbase != null) {
                     getPhase(PhaseType.CHARGING_PLAYER).setTarget(entitylivingbase.position());
-                    trySummonHelp(goldDragon.level);
                 }
             }
-        }
-
-        private void trySummonHelp(World world) {
-            if (goldDragon.cooldown == 0) {
-                goldDragon.resetCooldown();
-                List<? extends PlayerEntity> players = world.players();
-                for (PlayerEntity player : players) {
-                    if (player.isSpectator() || !player.isAlive()) {
-                        continue;
-                    }
-                    double distance = Math.sqrt(goldDragon.distanceToSqr(player));
-                    if (distance > 100) continue;
-                    BlockPos pos = player.blockPosition();
-                    int entitiesAround = world.getEntitiesOfClass(MobEntity.class, player.getBoundingBox().inflate(10)).size();
-                    if (entitiesAround > 15) {
-                        GunsRPG.log.debug("Aborting summoning dragon help at {}, there are too many mobs! ({})", player.getName(), entitiesAround);
-                        continue;
-                    }
-                    spawnMob(pos, player, new ZombieGunnerEntity(world));
-                    spawnMob(pos, player, new ZombieGunnerEntity(world));
-                    spawnMob(pos, player, new RocketAngelEntity(world));
-                }
-            }
-        }
-
-        private void spawnMob(BlockPos pos, LivingEntity target, MobEntity mob) {
-            BlockPos spawnPos = genRandomPos(pos, target.level);
-            mob.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
-            mob.setTarget(target);
-            mob.finalizeSpawn((ServerWorld) target.level, target.level.getCurrentDifficultyAt(spawnPos), SpawnReason.REINFORCEMENT, null, null);
-            target.level.addFreshEntity(mob);
-        }
-
-        private BlockPos genRandomPos(BlockPos pos, World world) {
-            Random random = goldDragon.random;
-            int x = pos.getX() + random.nextInt(15) - random.nextInt(15);
-            int z = pos.getZ() + random.nextInt(15) - random.nextInt(15);
-            int y = pos.getY() + 15;
-            BlockPos.Mutable mutableBlockPos = new BlockPos.Mutable(x, y, z);
-            while (world.isEmptyBlock(mutableBlockPos.below())) {
-                mutableBlockPos.setY(mutableBlockPos.getY() - 1);
-            }
-            return mutableBlockPos.immutable();
         }
     }
 

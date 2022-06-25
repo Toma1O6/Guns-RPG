@@ -60,6 +60,10 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
     private LoadoutType loadoutType = LoadoutType.SELECTOR.getRandom();
     private boolean forcedAggro;
 
+    public ExplosiveSkeletonEntity(World world) {
+        this(ModEntities.EXPLOSIVE_SKELETON.get(), world);
+    }
+
     public ExplosiveSkeletonEntity(EntityType<? extends MonsterEntity> type, World world) {
         super(type, world);
     }
