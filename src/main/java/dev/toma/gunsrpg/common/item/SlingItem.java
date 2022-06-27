@@ -110,9 +110,9 @@ public class SlingItem extends BaseItem {
     }
 
     public static void initAmmoRegistry() {
-        AmmoRegistry.register(ModItems.SMALL_STONE, 2);
-        AmmoRegistry.register(Items.IRON_NUGGET, 3);
-        AmmoRegistry.register(Items.GOLD_NUGGET, 4);
+        AmmoRegistry.register(ModItems.SMALL_STONE, 3);
+        AmmoRegistry.register(Items.IRON_NUGGET, 4);
+        AmmoRegistry.register(Items.GOLD_NUGGET, 5);
     }
 
     public static final class AmmoRegistry {
