@@ -1194,6 +1194,8 @@
   "quest.interaction_blocked": "This type of interaction is disabled for active quest areas",
   "quest.completed": "You have completed the quest. Go claim your rewards",
   "quest.failed": "You have failed the quest",
+  "quest.task.claim_reward": "Visit mayor to claim rewards",
+  "quest.task.completed": "Quest completed",
   "debuff.gunsrpg.bleed": "Bleeding",
   "debuff.gunsrpg.fracture": "Fracture",
   "debuff.gunsrpg.poison": "Poison",
