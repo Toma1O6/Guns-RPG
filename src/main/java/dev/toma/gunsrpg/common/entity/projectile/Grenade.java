@@ -67,7 +67,10 @@ public class Grenade extends AbstractExplosive {
             bounced = true;
             onCollided(this.position());
             if (this.getProperty(Properties.STICKY)) {
-                this.setProperty(STICK_CONTEXT, new BlockStickContext(this.position()));
+                IStickContext context = this.getProperty(STICK_CONTEXT);
+                if (context == null) {
+                    this.setProperty(STICK_CONTEXT, new BlockStickContext(this.position()));
+                }
             }
         }
         if (bounced && this.getProperty(Properties.STICKY)) {
@@ -162,9 +165,8 @@ public class Grenade extends AbstractExplosive {
             if (entity.isAlive()) {
                 Grenade grenade = Grenade.this;
                 EntitySize size = entity.getDimensions(entity.getPose());
-                double xz = size.width / 2.0;
                 double yy = size.height / 2.0;
-                grenade.setPos(entity.getX() + xz, entity.getY() + yy, entity.getZ() + xz);
+                grenade.setPosAndOldPos(entity.getX(), entity.getY() + yy, entity.getZ());
                 grenade.setDeltaMovement(0, 0, 0);
             } else {
                 Grenade.this.setDeltaMovement(0, -0.039, 0);
