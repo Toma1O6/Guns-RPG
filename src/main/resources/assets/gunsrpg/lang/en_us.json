@@ -1172,7 +1172,7 @@
   "quest.condition.gunsrpg.explode.short": "Explosives only",
   "quest.condition.gunsrpg.unique.short": "Uniques only",
   "quest.condition.gunsrpg.aggro.true.short": "Mobs with aggro",
-  "quest.condition.gunsrpg.aggro.false.short": "Mobs without aggro",
+  "quest.condition.gunsrpg.aggro.false.short": "Mobs without any aggro",
   "quest.condition.gunsrpg.distance.short": "Between %sm and %sm",
   "quest.condition.gunsrpg.distance.min.short": "Over %sm",
   "quest.condition.gunsrpg.distance.max.short": "Within %sm",
