@@ -91,7 +91,8 @@ public final class HUDRenderer {
     private void renderQuestOverlay(MatrixStack matrix, FontRenderer font, MainWindow window, IPlayerData data) {
         IQuests quests = data.getQuests();
         quests.getActiveQuest().ifPresent(quest -> {
-            if (quest.getStatus() != QuestStatus.ACTIVE) return;
+            QuestStatus status = quest.getStatus();
+            if (status != QuestStatus.ACTIVE && status != QuestStatus.COMPLETED) return;
             LazyOptional<IDataModel> modelOptional = quest.getDisplayModel();
             modelOptional.ifPresent(model -> {
                 QuestOverlayConfig config = ModConfig.clientConfig.questOverlayConfig;

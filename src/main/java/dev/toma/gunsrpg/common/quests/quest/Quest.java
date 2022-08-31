@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IQuests;
 import dev.toma.gunsrpg.client.render.infobar.IDataModel;
 import dev.toma.gunsrpg.client.render.infobar.QuestDisplayDataModel;
+import dev.toma.gunsrpg.client.render.infobar.TextElement;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModSounds;
@@ -276,7 +277,12 @@ public abstract class Quest<D extends IQuestData> {
 
     private IDataModel buildDataModel() {
         QuestDisplayDataModel dataModel = new QuestDisplayDataModel();
-        this.fillDataModel(dataModel);
+        if (this.getStatus() == QuestStatus.COMPLETED) {
+            dataModel.addElement(new TextElement(new TranslationTextComponent("quest.task.completed").withStyle(TextFormatting.GREEN).withStyle(TextFormatting.BOLD)));
+            dataModel.addElement(new TextElement(new TranslationTextComponent("quest.task.claim_reward")));
+        } else {
+            this.fillDataModel(dataModel);
+        }
         return dataModel;
     }
 
