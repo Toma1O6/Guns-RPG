@@ -39,6 +39,7 @@ public class WorldConfiguration extends ObjectType {
     public final SimpleOreGenConfig redOrb;
     public final SimpleOreGenConfig whiteOrb;
     public final SimpleOreGenConfig yellowOrb;
+    public final MayorHouseGeneratorConfig mayorHouseGenCfg;
 
     public WorldConfiguration(IObjectSpec spec) {
         super(spec);
@@ -72,5 +73,6 @@ public class WorldConfiguration extends ObjectType {
         redOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 4, 1, 56), "Red orb", "Configure red orb spawning");
         whiteOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 4, 1, 56), "White orb", "Configure white orb spawning");
         yellowOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 4, 1, 56), "Yellow orb", "Configure yellow orb spawning");
+        mayorHouseGenCfg = writer.writeObject(MayorHouseGeneratorConfig::new, "Mayor house generation", "Configure spawn weights of mayor house feature");
     }
 }

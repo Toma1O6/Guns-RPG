@@ -2,6 +2,8 @@ package dev.toma.gunsrpg.world.mayor;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
+import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.config.world.MayorHouseGeneratorConfig;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.registry.WorldGenRegistries;
@@ -12,15 +14,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.ToIntFunction;
 
 public final class VillageFeatureMutator {
 
     private static final Map<String, List<VillageVariantEntry>> VARIANTS = Util.make(new HashMap<>(), map -> {
-        registerSingleVariant(map, "desert", 45);
-        registerSingleVariant(map, "savanna", 100);
-        registerSingleVariant(map, "snowy", 100);
-        registerSingleVariant(map, "plains", 100);
-        registerSingleVariant(map, "taiga", 100);
+        registerSingleVariant(map, "desert", MayorHouseGeneratorConfig::getDesertWeight);
+        registerSingleVariant(map, "savanna", MayorHouseGeneratorConfig::getSavannaWeight);
+        registerSingleVariant(map, "snowy", MayorHouseGeneratorConfig::getSnowyWeight);
+        registerSingleVariant(map, "plains", MayorHouseGeneratorConfig::getPlainsWeight);
+        registerSingleVariant(map, "taiga", MayorHouseGeneratorConfig::getTaigaWeight);
     });
 
     public static void mutateVanillaVillages() {
@@ -53,9 +56,10 @@ public final class VillageFeatureMutator {
         });
     }
 
-    private static void registerSingleVariant(Map<String, List<VillageVariantEntry>> map, String variant, int count) {
+    private static void registerSingleVariant(Map<String, List<VillageVariantEntry>> map, String variant, ToIntFunction<MayorHouseGeneratorConfig> func) {
+        MayorHouseGeneratorConfig cfg = ModConfig.worldConfig.mayorHouseGenCfg;
         String templatePool = "village/" + variant + "/houses";
-        VillageVariantEntry entry = new VillageVariantEntry(templatePool, templatePool + "/mayor_home", count);
+        VillageVariantEntry entry = new VillageVariantEntry(templatePool, templatePool + "/mayor_home", func.applyAsInt(cfg));
         List<VillageVariantEntry> list = ImmutableList.of(entry);
         map.put(variant, list);
     }
