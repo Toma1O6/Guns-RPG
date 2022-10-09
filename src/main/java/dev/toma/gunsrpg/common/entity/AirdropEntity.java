@@ -37,7 +37,7 @@ public class AirdropEntity extends Entity {
             if (level.getBlockState(pos).getMaterial().isLiquid()) {
                 onLanding(pos);
             }
-            this.setDeltaMovement(0, -0.25, 0);
+            this.setDeltaMovement(0, -0.10, 0);
         } else {
             if (!level.isClientSide) {
                 if (!level.isEmptyBlock(pos)) {
