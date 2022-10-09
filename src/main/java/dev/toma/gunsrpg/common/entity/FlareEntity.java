@@ -85,9 +85,9 @@ public class FlareEntity extends Entity implements IEntityAdditionalSpawnData {
     public void tick() {
         super.tick();
         if (level.isClientSide) {
-            level.addParticle(ParticleTypes.CLOUD, true, getX(), getY(), getZ(), 0, -0.25, 0);
-            level.addParticle(ParticleTypes.CLOUD, true, getX(), getY(), getZ(), 0, -0.15, 0);
-            level.addParticle(ParticleTypes.CLOUD, true, getX(), getY(), getZ(), 0, -0.05, 0);
+            level.addParticle(ParticleTypes.CLOUD, true, getX(), getY() + 0.2, getZ(), 0, 0.015, 0);
+            level.addParticle(ParticleTypes.CLOUD, true, getX(), getY(), getZ() + 0.2, 0, 0.012, 0);
+            level.addParticle(ParticleTypes.CLOUD, true, getX(), getY() + 0.2, getZ(), 0, 0.01, 0);
         }
         if (tickCount > 1000) {
             playerThrown = true;
