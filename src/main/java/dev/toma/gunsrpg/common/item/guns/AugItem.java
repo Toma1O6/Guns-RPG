@@ -32,6 +32,7 @@ public class AugItem extends GunItem {
             GunsRPG.makeResource("aug/aim"),
             GunsRPG.makeResource("aug/aim_red_dot"),
     };
+    private static final ResourceLocation EJECT = GunsRPG.makeResource("aug/eject");
 
     public AugItem(String name) {
         super(name, new Properties().setISTER(() -> AugRenderer::new).durability(1200));
@@ -128,6 +129,11 @@ public class AugItem extends GunItem {
     @Override
     public ResourceLocation getAimAnimationPath(ItemStack stack, PlayerEntity player) {
         return AIM[PlayerData.hasActiveSkill(player, Skills.AUG_RED_DOT) ? 1 : 0];
+    }
+
+    @Override
+    public ResourceLocation getBulletEjectAnimationPath() {
+        return EJECT;
     }
 
     @Override
