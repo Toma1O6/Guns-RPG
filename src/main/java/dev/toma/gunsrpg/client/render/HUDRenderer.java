@@ -189,7 +189,7 @@ public final class HUDRenderer {
                 String text = this.getAmmoString(gunItem, stack, player.inventory, provider, jammed, broken);
                 barWidth = font.width(text);
                 x = windowWidth - barWidth - 34;
-                renderProgressionBar(killData, pose, x, y, barWidth + 22, y + 7, 0xFFFFFF << 8, 0xFF8888 << 8);
+                renderProgressionBar(killData, matrix, font, x, y, barWidth + 22, y + 7, 0xFFFFFF << 8, 0xFF8888 << 8);
                 Minecraft mc = Minecraft.getInstance();
                 mc.getItemRenderer().renderGuiItem(new ItemStack((Item) provider), x, y - 18);
                 if (jammed || broken)
@@ -206,7 +206,7 @@ public final class HUDRenderer {
             mc.getItemRenderer().renderGuiItem(new ItemStack(ModItems.BATTERY), x, y - 8);
             font.draw(matrix, text, x + 19, y - 2, 0xFFFFFF);
         }
-        renderProgressionBar(progression, pose, x, y + 10, barWidth + 22, y + 17, 0xFF00FFFF, 0xFF008888);
+        renderProgressionBar(progression, matrix, font, x, y + 10, barWidth + 22, y + 17, 0xFF00FFFF, 0xFF008888);
     }
 
     private String getAmmoString(GunItem item, ItemStack stack, IInventory inventory, IAmmoProvider provider, boolean jammed, boolean broken) {
@@ -214,12 +214,18 @@ public final class HUDRenderer {
         return jammed ? "JAMMED" : broken ? "DESTROYED" : loaded + " / " + ItemLocator.countItems(inventory, ItemLocator.compatible(provider));
     }
 
-    private void renderProgressionBar(IKillData data, Matrix4f pose, int left, int top, int width, int bottom, int colorPrimary, int colorSecondary) {
+    private void renderProgressionBar(IKillData data, MatrixStack matrixStack, FontRenderer font, int left, int top, int width, int bottom, int colorPrimary, int colorSecondary) {
+        Matrix4f pose = matrixStack.last().pose();
         int count = data.getKills();
         int required = data.getRequiredKillCount();
-        boolean isMaxLvl = data.getLevel() == data.getLevelLimit();
+        int level = data.getLevel();
+        boolean isMaxLvl = level == data.getLevelLimit();
         float levelProgress = isMaxLvl ? 1.0F : count / (float) required;
         RenderUtils.drawSolid(pose, left, top, left + width, bottom, 0xFF << 24);
         RenderUtils.drawGradient(pose, left + 2, top + 2, left + (int) (levelProgress * (width - 2)), bottom - 2, colorPrimary, colorSecondary);
+        // Level indicator
+        String currentLevel = String.valueOf(level);
+        int currentLevelWidth = font.width(currentLevel);
+        font.draw(matrixStack, currentLevel, left - currentLevelWidth - 2, top, colorPrimary);
     }
 }
