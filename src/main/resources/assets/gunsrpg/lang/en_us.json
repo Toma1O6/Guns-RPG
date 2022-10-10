@@ -1217,5 +1217,7 @@
   "crystal.stat.attributes": "Attributes",
   "crystal.stat.attribute": "%s: %s%%",
   "crystal.station.on_cooldown": "You're on cooldown. Wait %s before trying again",
-  "event.bloodmoon.end": "Bloodmoon falls"
+  "event.bloodmoon.end": "Bloodmoon falls",
+  "item.gunsrpg.food_buff.health": "Heals %s HP",
+  "item.gunsrpg.food_buff.effect": "Gives %s for %ss"
 }
