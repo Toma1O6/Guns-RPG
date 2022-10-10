@@ -1,12 +1,17 @@
 package dev.toma.gunsrpg.config.world;
 
-import dev.toma.configuration.api.IConfigWriter;
-import dev.toma.configuration.api.IObjectSpec;
-import dev.toma.configuration.api.NumberDisplayType;
+import dev.toma.configuration.api.*;
 import dev.toma.configuration.api.type.*;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.capability.object.PlayerPerkProvider;
+import net.minecraft.entity.EntityType;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.text.DecimalFormat;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 public class WorldConfiguration extends ObjectType {
 
@@ -40,6 +45,10 @@ public class WorldConfiguration extends ObjectType {
     public final SimpleOreGenConfig whiteOrb;
     public final SimpleOreGenConfig yellowOrb;
     public final MayorHouseGeneratorConfig mayorHouseGenCfg;
+    private final CollectionType<StringType> skullCrusherIgnoredMobs;
+
+    private boolean reloadEntities = true;
+    private final Set<EntityType<?>> instantKillBlacklist = new HashSet<>();
 
     public WorldConfiguration(IObjectSpec spec) {
         super(spec);
@@ -74,5 +83,38 @@ public class WorldConfiguration extends ObjectType {
         whiteOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 4, 1, 56), "White orb", "Configure white orb spawning");
         yellowOrb = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 4, 1, 56), "Yellow orb", "Configure yellow orb spawning");
         mayorHouseGenCfg = writer.writeObject(MayorHouseGeneratorConfig::new, "Mayor house generation", "Configure spawn weights of mayor house feature");
+        IRestriction<String> restriction = Restrictions.restrictStringByPattern(Pattern.compile("[a-z0-9_.-]+:[a-z0-9/._-]+"), false);
+        // really ugly solution
+        skullCrusherIgnoredMobs = writer.writeApplyList("Skull crusher ignore list", () -> {
+            StringType type = new StringType("", "namespace:path", restriction);
+            type.addListener(this::onMobListReload);
+            return type;
+        }, list -> {
+            StringType bloodmoon = new StringType("", "gunsrpg:bloodmoon_golem", restriction);
+            bloodmoon.addListener(this::onMobListReload);
+            list.add(bloodmoon);
+        }, "List of mobs ignored by skull crusher skill");
+        skullCrusherIgnoredMobs.addListener(this::onMobListReload);
+    }
+
+    public boolean isInstantKillAllowed(EntityType<?> type) {
+        if (reloadEntities) {
+            this.reloadEntities = false;
+            instantKillBlacklist.clear();
+            skullCrusherIgnoredMobs.get().stream().map(AbstractConfigType::get).forEach(id -> {
+                ResourceLocation location = new ResourceLocation(id);
+                if (!ForgeRegistries.ENTITIES.containsKey(location)) {
+                    GunsRPG.log.warn("Found unknown entity in config under property: \"skullCrusherIgnoreMobs\". No such entity exists with ID {}", id);
+                } else {
+                    EntityType<?> entity = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(id));
+                    instantKillBlacklist.add(entity);
+                }
+            });
+        }
+        return !instantKillBlacklist.contains(type);
+    }
+
+    private void onMobListReload(Object obj) {
+        this.reloadEntities = true;
     }
 }

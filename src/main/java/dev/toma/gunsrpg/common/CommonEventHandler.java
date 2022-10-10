@@ -280,14 +280,15 @@ public class CommonEventHandler {
             PlayerEntity player = (PlayerEntity) source.getDirectEntity();
             PlayerData.get(player).ifPresent(data -> {
                 IAttributeProvider provider = data.getAttributes();
-                float health = event.getEntityLiving().getMaxHealth();
+                LivingEntity entity = event.getEntityLiving();
+                float health = entity.getMaxHealth();
                 boolean instantKill = false;
                 boolean isMeleeItem = player.getMainHandItem().getItem() instanceof TieredItem;
-                if (health < 256.0F && isMeleeItem) {
+                if (health < 256.0F && isMeleeItem && ModConfig.worldConfig.isInstantKillAllowed(entity.getType())) {
                     float f = random.nextFloat();
                     boolean b = f < provider.getAttributeValue(Attribs.INSTANT_KILL);
                     if (b) {
-                        event.setAmount(event.getEntityLiving().getHealth());
+                        event.setAmount(entity.getHealth());
                         instantKill = true;
                     }
                 }
