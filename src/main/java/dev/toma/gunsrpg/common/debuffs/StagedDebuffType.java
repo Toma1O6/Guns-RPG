@@ -37,7 +37,7 @@ public class StagedDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
     public D onTrigger(IDebuffContext context, Random random) {
         IAttributeProvider provider = context.getData().getAttributes();
         float resist = provider.getAttribute(resistance).floatValue();
-        if (resist > 0 && random.nextFloat() < resist)
+        if (this.isTemporarilyDisabled(provider) || (resist > 0 && random.nextFloat() < resist))
             return null; // blocked by resistance
         for (ToFloatFunction<IDebuffContext> function : applyConditions) {
             float chance = function.applyAsFloat(context);
