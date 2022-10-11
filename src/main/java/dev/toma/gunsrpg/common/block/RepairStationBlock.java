@@ -1,7 +1,11 @@
 package dev.toma.gunsrpg.common.block;
 
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.container.RepairStationContainer;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.tileentity.RepairStationTileEntity;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,8 +15,10 @@ import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
@@ -33,10 +39,16 @@ public class RepairStationBlock extends BaseHorizontalBlock {
     @Override
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
         if (!world.isClientSide) {
-            NetworkHooks.openGui((ServerPlayerEntity) player, getMenuProvider(state, world, pos), pos);
+            ISkillProvider provider = PlayerData.getUnsafe(player).getSkillProvider();
+            if (provider.hasSkill(Skills.REPAIR_STATION)) {
+                NetworkHooks.openGui((ServerPlayerEntity) player, getMenuProvider(state, world, pos), pos);
+                return ActionResultType.SUCCESS;
+            }
+            player.displayClientMessage(SkillUtil.getMissingSkillText(Skills.REPAIR_STATION), true);
+        } else {
             return ActionResultType.SUCCESS;
         }
-        return ActionResultType.PASS;
+        return ActionResultType.CONSUME;
     }
 
     @Nullable

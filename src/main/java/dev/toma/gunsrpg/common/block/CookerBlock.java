@@ -117,7 +117,7 @@ public class CookerBlock extends BaseBlock {
         } else {
             ((ServerPlayerEntity) player).sendMessage(SkillUtil.getMissingSkillText(Skills.LOCAL_CHEF), ChatType.GAME_INFO, Util.NIL_UUID);
         }
-        return ActionResultType.PASS;
+        return ActionResultType.CONSUME;
     }
 
     @Nullable

@@ -40,7 +40,6 @@ public class Skills {
     public static final SkillType<SecondChanceSkill> SECOND_CHANCE_II = null;
     public static final SkillType<SecondChanceSkill> SECOND_CHANCE_III = null;
     public static final SkillType<GodHelpUsSkill> GOD_HELP_US = null;
-    public static final SkillType<LightHunterSkill> LIGHT_HUNTER = null;
     public static final SkillType<AvengeMeFriendsSkill> AVENGE_ME_FRIENDS = null;
     public static final SkillType<LikeACatSkill> LIKE_A_CAT_I = null;
     public static final SkillType<LikeACatSkill> LIKE_A_CAT_II = null;
@@ -56,6 +55,7 @@ public class Skills {
     public static final SkillType<SimpleSkill> CRYSTALIZED = null;
     public static final SkillType<BartenderSkill> BARTENDER_I = null;
     public static final SkillType<SimpleSkill> LOCAL_CHEF = null;
+    public static final SkillType<SimpleSkill> REPAIR_STATION = null;
     public static final SkillType<ISkill> M1911_SUPPRESSOR = null;
     public static final SkillType<ISkill> M1911_HEAVY_BULLETS = null;
     public static final SkillType<KillingSpreeSkill> M1911_KILLING_SPREE = null;
