@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "compatibilityLevel": "JAVA_8",
+  "package": "dev.toma.gunsrpg.mixin",
+  "mixins": [
+    "AbstractBlockMixin",
+    "PlayerMixin",
+    "ServerWorldMixin",
+    "TargetGoalMixin"
+  ],
+  "client": [
+    "BiomeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "gunsrpg.refmap.json",
+  "minVersion": "0.8.4"
+}
