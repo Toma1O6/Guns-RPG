@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.entity;
 
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -46,6 +47,14 @@ public class ZombieKnightEntity extends ZombieEntity {
         setItemSlot(isLeftHanded() ? EquipmentSlotType.OFFHAND : EquipmentSlotType.MAINHAND, new ItemStack(Items.NETHERITE_SWORD));
         Arrays.fill(armorDropChances, 0.0F);
         Arrays.fill(handDropChances, 0.0F);
+    }
+
+    @Override
+    protected void populateDefaultEquipmentEnchantments(DifficultyInstance p_180483_1_) {
+        ItemStack feetslot = this.getItemBySlot(EquipmentSlotType.FEET);
+        if (!feetslot.isEmpty()) {
+            feetslot.enchant(Enchantments.DEPTH_STRIDER, 3);
+        }
     }
 
     @Override
