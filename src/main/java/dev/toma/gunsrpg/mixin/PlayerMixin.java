@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -25,11 +26,16 @@ public abstract class PlayerMixin extends LivingEntity {
     @Inject(method = "getCurrentItemAttackStrengthDelay", at = @At("HEAD"), cancellable = true)
     public void gunsrpg_getModifiedAttackStrengthDelay(CallbackInfoReturnable<Float> ci) {
         PlayerEntity player = (PlayerEntity) (Object) this;
-        double value = player.getAttributeValue(Attributes.ATTACK_SPEED);
+        double attrValue = player.getAttributeValue(Attributes.ATTACK_SPEED);
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         ci.setReturnValue(optional.map(data -> {
             IAttributeProvider provider = data.getAttributes();
-            return (float) (value * provider.getAttributeValue(Attribs.MELEE_COOLDOWN));
-        }).orElse((float) value));
+            double gunsrpgMeleeCooldown = provider.getAttributeValue(Attribs.MELEE_COOLDOWN);
+            return this.getCurrentCooldownValue(gunsrpgMeleeCooldown * attrValue);
+        }).orElse(this.getCurrentCooldownValue(attrValue)));
+    }
+
+    private float getCurrentCooldownValue(double in) {
+        return (float) ((1.0F / in) * 20.0F);
     }
 }
