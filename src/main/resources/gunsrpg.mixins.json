@@ -6,7 +6,9 @@
     "AbstractBlockMixin",
     "PlayerMixin",
     "ServerWorldMixin",
-    "TargetGoalMixin"
+    "TargetGoalMixin",
+    "NearestAttackableGoalMixin",
+    "LivingEntityMixin"
   ],
   "client": [
     "BiomeMixin"
