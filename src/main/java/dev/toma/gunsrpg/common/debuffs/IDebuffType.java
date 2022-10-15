@@ -3,11 +3,12 @@ package dev.toma.gunsrpg.common.debuffs;
 import dev.toma.gunsrpg.util.IFlags;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public interface IDebuffType<D extends IDebuff> {
 
-    D onTrigger(IDebuffContext context, Random random);
+    D onTrigger(IDebuffContext context, Random random, @Nullable Object data);
 
     D createRaw();
 
@@ -17,10 +18,15 @@ public interface IDebuffType<D extends IDebuff> {
 
     ResourceLocation getRegistryName();
 
+    default boolean isToggleable() {
+        return true;
+    }
+
     enum TriggerFlags implements IFlags {
 
         HURT,
-        RESPAWN;
+        RESPAWN,
+        HEAL;
 
         private final int value;
 

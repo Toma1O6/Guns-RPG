@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.debuffs;
 
 import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.init.Debuffs;
 import dev.toma.gunsrpg.common.init.GunDamageSourceSpecial;
 import dev.toma.gunsrpg.common.init.ModDamageSources;
 import dev.toma.gunsrpg.config.ModConfig;
@@ -121,6 +122,38 @@ public final class DebuffRegistration {
                 .duration(3600)
                 .build()
                 .setRegistryName("respawn");
+    }
+
+    public static DebuffType<?> createPoisonBlockType() {
+        return new DummyDebuffType.DummyBuilder<>()
+                .linkedTo(() -> Debuffs.POISON)
+                .factory(DummyDebuff::new)
+                .build()
+                .setRegistryName("poison_block");
+    }
+
+    public static DebuffType<?> createInfectionBlockType() {
+        return new DummyDebuffType.DummyBuilder<>()
+                .linkedTo(() -> Debuffs.INFECTION)
+                .factory(DummyDebuff::new)
+                .build()
+                .setRegistryName("infection_block");
+    }
+
+    public static DebuffType<?> createFractureBlockType() {
+        return new DummyDebuffType.DummyBuilder<>()
+                .linkedTo(() -> Debuffs.FRACTURE)
+                .factory(DummyDebuff::new)
+                .build()
+                .setRegistryName("fracture_block");
+    }
+
+    public static DebuffType<?> createBleedBlockType() {
+        return new DummyDebuffType.DummyBuilder<>()
+                .linkedTo(() -> Debuffs.BLEED)
+                .factory(DummyDebuff::new)
+                .build()
+                .setRegistryName("bleed_block");
     }
 
     // CONSTRAINTS

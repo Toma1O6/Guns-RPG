@@ -12,6 +12,7 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 
+import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -35,12 +36,13 @@ public class PlayerDebuffs implements IDebuffs {
     }
 
     @Override
-    public void trigger(IDebuffType.TriggerFlags flags, IDebuffContext context) {
-        Random random = context.getPlayer().getRandom();
+    public void trigger(IDebuffType.TriggerFlags flags, IDebuffContext context, @Nullable Object data) {
+        PlayerEntity player = context.getPlayer();
+        Random random = player == null ? null : player.getRandom();
         for (IDebuffType<?> type : ModRegistries.DEBUFFS) {
             if (getDebuff(type) != null) continue; // avoid replacing existing debuffs
             if (!type.isDisabled() && flags.is(type.getFlags())) {
-                if (tryCreate(type, context, random)) {
+                if (tryCreate(type, context, random, data)) {
                     break;
                 }
             }
@@ -144,8 +146,8 @@ public class PlayerDebuffs implements IDebuffs {
             clientSynchReq.makeSyncRequest();
     }
 
-    private <D extends IDebuff> boolean tryCreate(IDebuffType<D> type, IDebuffContext context, Random random) {
-        D debuff = type.onTrigger(context, random);
+    private <D extends IDebuff> boolean tryCreate(IDebuffType<D> type, IDebuffContext context, Random random, @Nullable Object data) {
+        D debuff = type.onTrigger(context, random, data);
         if (debuff != null) {
             add(type, debuff);
             return true;

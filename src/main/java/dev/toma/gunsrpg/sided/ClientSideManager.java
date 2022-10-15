@@ -92,10 +92,14 @@ public class ClientSideManager {
         event.enqueueWork(this::screenSetup);
 
         // debuff renderers
-        debuffRenderManager.registerRenderer(Debuffs.POISON,    new IconDebuffRenderer<>(IconDebuffRenderer.POISON_ICON));
-        debuffRenderManager.registerRenderer(Debuffs.INFECTION, new IconDebuffRenderer<>(IconDebuffRenderer.INFECTION_ICON));
-        debuffRenderManager.registerRenderer(Debuffs.FRACTURE,  new IconDebuffRenderer<>(IconDebuffRenderer.FRACTURE_ICON));
-        debuffRenderManager.registerRenderer(Debuffs.BLEED,     new IconDebuffRenderer<>(IconDebuffRenderer.BLEED_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.POISON,            new IconDebuffRenderer<>(IconDebuffRenderer.POISON_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.INFECTION,         new IconDebuffRenderer<>(IconDebuffRenderer.INFECTION_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.FRACTURE,          new IconDebuffRenderer<>(IconDebuffRenderer.FRACTURE_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.BLEED,             new IconDebuffRenderer<>(IconDebuffRenderer.BLEED_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.POISON_BLOCK,      new IconDebuffRenderer<>(IconDebuffRenderer.POISON_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.INFECTION_BLOCK,   new IconDebuffRenderer<>(IconDebuffRenderer.INFECTION_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.FRACTURE_BLOCK,    new IconDebuffRenderer<>(IconDebuffRenderer.FRACTURE_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.BLEED_BLOCK,       new IconDebuffRenderer<>(IconDebuffRenderer.BLEED_ICON));
 
         // skill renderers
         SkillRendererRegistry.registerRenderers(new SkillCooldownRenderer<>(), Skills.LIKE_A_CAT_I, Skills.LIKE_A_CAT_II, Skills.LIKE_A_CAT_III);

@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.debuffs;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.function.BooleanSupplier;
 
@@ -22,8 +23,13 @@ public class RespawnDebuffType<D extends IDebuff> extends DebuffType<D> {
     }
 
     @Override
-    public D onTrigger(IDebuffContext context, Random random) {
+    public D onTrigger(IDebuffContext context, Random random, @Nullable Object data) {
         return createRaw();
+    }
+
+    @Override
+    public boolean isToggleable() {
+        return false;
     }
 
     public static class RespawnDebuffBuilder<D extends IDebuff> implements IDebuffBuilder<D> {

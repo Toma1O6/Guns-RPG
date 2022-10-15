@@ -64,6 +64,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.IServerWorldInfo;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.server.command.EnumArgument;
 
 import java.util.Collection;
@@ -71,10 +72,14 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class GunsrpgCommand {
 
-    private static final SuggestionProvider<CommandSource> DEBUFF_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(ModRegistries.DEBUFFS.getKeys(), builder);
+    private static final SuggestionProvider<CommandSource> DEBUFF_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(ModRegistries.DEBUFFS.getValues().stream()
+            .filter(IDebuffType::isToggleable)
+            .map(ForgeRegistryEntry::getRegistryName)
+            .collect(Collectors.toSet()), builder);
     private static final SuggestionProvider<CommandSource> TX_VALIDATOR_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(TransactionValidatorRegistry.getRegisteredValidatorTypes(), builder);
     private static final SuggestionProvider<CommandSource> SKILL_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(ModRegistries.SKILLS.getKeys(), builder);
     private static final SuggestionProvider<CommandSource> ATTRIBUTE_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(Attribs.listKeys(), builder);
@@ -647,7 +652,7 @@ public class GunsrpgCommand {
             throw MISSING_KEY_EXCEPTION.create();
         }
         IDebuffType<?> type = ModRegistries.DEBUFFS.getValue(registryKey);
-        if (type == null) throw UNKNOWN_KEY_EXCEPTION.create(registryKey);
+        if (type == null || !type.isToggleable()) throw UNKNOWN_KEY_EXCEPTION.create(registryKey);
         PlayerEntity player = getPlayer(ctx);
         LazyOptional<IPlayerData> optional = PlayerData.get(player);
         optional.ifPresent(data -> {

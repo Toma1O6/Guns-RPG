@@ -408,7 +408,11 @@ public class CommonRegistry {
                 DebuffRegistration.createInfectionType(),
                 DebuffRegistration.createFractureType(),
                 DebuffRegistration.createBleedType(),
-                DebuffRegistration.createRespawnType()
+                DebuffRegistration.createRespawnType(),
+                DebuffRegistration.createPoisonBlockType(),
+                DebuffRegistration.createInfectionBlockType(),
+                DebuffRegistration.createFractureBlockType(),
+                DebuffRegistration.createBleedBlockType()
         );
     }
 
@@ -475,22 +479,22 @@ public class CommonRegistry {
                         .animate(70, AnimationPaths.BANDAGE)
                         .build(),
                 AttributeAccessHealItem.define("hemostat")
-                        .defineModifiers(ModifierFactory::createHemostatModifiers)
+                        .defineModifiers(ModifierFactory::createHemostatModifiers, () -> Debuffs.BLEED)
                         .describe("Bleeding:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(50, AnimationPaths.HEMOSTAT)
                         .build(),
                 AttributeAccessHealItem.define("vitamins")
-                        .defineModifiers(ModifierFactory::createVitaminModifiers)
+                        .defineModifiers(ModifierFactory::createVitaminModifiers, () -> Debuffs.INFECTION)
                         .describe("Infection:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(40, AnimationPaths.VITAMINS)
                         .build(),
                 AttributeAccessHealItem.define("propital")
-                        .defineModifiers(ModifierFactory::createPropitalModifiers)
+                        .defineModifiers(ModifierFactory::createPropitalModifiers, () -> Debuffs.FRACTURE)
                         .describe("Fracture:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(30, AnimationPaths.STIM)
                         .build(),
                 AttributeAccessHealItem.define("calcium_shot")
-                        .defineModifiers(ModifierFactory::createCalciumShotModifiers)
+                        .defineModifiers(ModifierFactory::createCalciumShotModifiers, () -> Debuffs.POISON)
                         .describe("Poison:", "Disabled for 60 seconds", "Spread speed: -50%")
                         .animate(30, AnimationPaths.STIM)
                         .build(),

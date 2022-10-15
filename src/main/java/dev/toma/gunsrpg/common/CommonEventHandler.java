@@ -340,7 +340,7 @@ public class CommonEventHandler {
                 if (amount > 1.0F) {
                     IDebuffs debuffs = data.getDebuffControl();
                     IDebuffContext context = IDebuffContext.of(source, player, data, amount);
-                    debuffs.trigger(IDebuffType.TriggerFlags.HURT, context);
+                    debuffs.trigger(IDebuffType.TriggerFlags.HURT, context, null);
                 }
                 event.setAmount(amount);
             });
@@ -446,7 +446,7 @@ public class CommonEventHandler {
                 provider.getSkill(Skills.WAR_MACHINE).onPurchase(player);
             }
             if (!event.isEndConquered()) {
-                data.getDebuffControl().trigger(IDebuffType.TriggerFlags.RESPAWN, IDebuffContext.of(DamageSource.GENERIC, player, data, 0.0F));
+                data.getDebuffControl().trigger(IDebuffType.TriggerFlags.RESPAWN, IDebuffContext.of(DamageSource.GENERIC, player, data, 0.0F), null);
             }
             data.sync(DataFlags.WILDCARD);
         });

@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.common.attribute.ExpiringModifier;
 import dev.toma.gunsrpg.util.function.ToFloatFunction;
 import net.minecraft.entity.player.PlayerEntity;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -34,7 +35,7 @@ public class StagedDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
     }
 
     @Override
-    public D onTrigger(IDebuffContext context, Random random) {
+    public D onTrigger(IDebuffContext context, Random random, @Nullable Object data) {
         IAttributeProvider provider = context.getData().getAttributes();
         float resist = provider.getAttribute(resistance).floatValue();
         if (this.isTemporarilyDisabled(provider) || (resist > 0 && random.nextFloat() < resist))
@@ -50,7 +51,7 @@ public class StagedDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
         return null;
     }
 
-    public float getBuffedProgress(IAttributeProvider provider) {
+    public static float getBuffedProgress(IAttributeProvider provider, IAttributeId blockingAttribute) {
         IAttribute attribute = provider.getAttribute(blockingAttribute);
         List<IAttributeModifier> list = attribute.listModifiers();
         if (list.isEmpty()) {
@@ -73,6 +74,10 @@ public class StagedDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
 
     public boolean isTemporarilyDisabled(IAttributeProvider provider) {
         return provider.getAttribute(blockingAttribute).intValue() > 0;
+    }
+
+    public IAttributeId getBlockingAttribute() {
+        return blockingAttribute;
     }
 
     public LinkedStage firstStage() {

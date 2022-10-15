@@ -5,13 +5,15 @@ import dev.toma.gunsrpg.common.debuffs.IDebuffContext;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import net.minecraft.entity.player.PlayerEntity;
 
+import javax.annotation.Nullable;
+
 public interface IDebuffs extends IPlayerCapEntry {
 
     <D extends IDebuff> D getDebuff(IDebuffType<D> type);
 
     <D extends IDebuff> void add(IDebuffType<D> type, D instance);
 
-    void trigger(IDebuffType.TriggerFlags flags, IDebuffContext context);
+    void trigger(IDebuffType.TriggerFlags flags, IDebuffContext context, @Nullable Object data);
 
     void toggle(IDebuffType<?> type);
 
