@@ -91,8 +91,6 @@ public class Rocket extends AbstractExplosive {
             if (tickCount > 100) {
                 this.onCollided(this.position());
             }
-            double propelledMultiplier = 1.10D;
-            this.setDeltaMovement(this.getDeltaMovement().multiply(propelledMultiplier, propelledMultiplier, propelledMultiplier));
         } else  {
             applyGravity(0.02F);
             if (level.isClientSide) {
