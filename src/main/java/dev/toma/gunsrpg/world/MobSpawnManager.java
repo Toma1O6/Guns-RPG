@@ -15,6 +15,7 @@ import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.monster.BlazeEntity;
 import net.minecraft.entity.monster.CaveSpiderEntity;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.WitherSkeletonEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -33,6 +34,7 @@ public class MobSpawnManager {
     private final AttributeModifier health2x = new AttributeModifier(HEALTH_BOOST_UUID, "health2x", 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
     private final AttributeModifier health3x = new AttributeModifier(HEALTH_BOOST_UUID, "health3x", 2.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
     private final AttributeModifier health4x = new AttributeModifier(HEALTH_BOOST_UUID, "health4x", 3.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
+    private final AttributeModifier bloodmoon_mobSpeed = new AttributeModifier(UUID.fromString("83B9F7EF-7A89-4C66-A62A-51AC71DB27E8"), "gunsrpg:bloodmoon_mobSpeed", 0.30D, AttributeModifier.Operation.MULTIPLY_TOTAL);
 
     public static MobSpawnManager instance() {
         return INSTANCE;
@@ -87,6 +89,7 @@ public class MobSpawnManager {
     @SuppressWarnings("unchecked")
     public boolean processSpawn(LivingEntity entity, ServerWorld world, boolean isBloodmoon) {
         AttributeModifierManager manager = entity.getAttributes();
+        boolean enemyEntity = entity instanceof MonsterEntity || entity instanceof IAngerable;
         if (isBloodmoon) {
             List<Pair<Integer, BiFunction<ServerWorld, Vector3d, LivingEntity>>> list = ModUtils.getNonnullFromMap(bloodmoonEntries, entity.getType(), Collections.emptyList());
             Random random = world.getRandom();
@@ -98,6 +101,11 @@ public class MobSpawnManager {
                     world.addFreshEntity(replacement);
                     return false;
                 }
+            }
+
+            if (enemyEntity) {
+                ModifiableAttributeInstance speedAttr = manager.getInstance(Attributes.MOVEMENT_SPEED);
+                speedAttr.addTransientModifier(bloodmoon_mobSpeed);
             }
         }
         if (isExluded(entity)) {
