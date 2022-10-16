@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.resource.progression.FakeLevelingStrategy;
 import dev.toma.gunsrpg.resource.progression.IProgressionStrategy;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
+import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -67,12 +68,10 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
 
     @Override
     public void onEnemyKilled(Entity enemy, ItemStack weapon) {
-        ++killCount;
-        if (level < getLevelLimit() && requiredKillCount <= killCount) {
-            killCount = 0;
-            advanceLevel(false);
-            ITextComponent msg = new TranslationTextComponent("text.weapon.level_up", weapon.getDisplayName().getString()).withStyle(TextFormatting.GREEN);
-            player.sendMessage(msg, Util.NIL_UUID);
+        ITextComponent weaponName = weapon.getDisplayName();
+        this.increaseKillCount(weaponName);
+        if (WorldData.isBloodMoon(enemy.level)) {
+            this.increaseKillCount(weaponName);
         }
     }
 
@@ -126,5 +125,15 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
 
     private int updateKillRequirement() {
         return strategy.getRequiredKillCount(level);
+    }
+
+    private void increaseKillCount(ITextComponent weaponName) {
+        ++killCount;
+        if (level < getLevelLimit() && requiredKillCount <= killCount) {
+            killCount = 0;
+            advanceLevel(false);
+            ITextComponent msg = new TranslationTextComponent("text.weapon.level_up", weaponName.getString()).withStyle(TextFormatting.GREEN);
+            player.sendMessage(msg, Util.NIL_UUID);
+        }
     }
 }

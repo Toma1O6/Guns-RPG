@@ -16,6 +16,7 @@ import dev.toma.gunsrpg.common.skills.transaction.WeaponPointTransaction;
 import dev.toma.gunsrpg.resource.progression.FakeLevelingStrategy;
 import dev.toma.gunsrpg.resource.progression.IProgressionStrategy;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.SlimeEntity;
@@ -128,9 +129,9 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     public void onEnemyKilled(Entity enemy, ItemStack weapon) {
         if (!(enemy instanceof IMob) || enemy instanceof SlimeEntity)
             return;
-        ++kills;
-        if (level < getLevelLimit() && requiredKills <= kills) {
-            advanceLevel(true);
+        this.increaseKillCount();
+        if (WorldData.isBloodMoon(enemy.level)) {
+            this.increaseKillCount();
         }
         if (weapon.getItem() instanceof GunItem) {
             GunItem gun = (GunItem) weapon.getItem();
@@ -244,5 +245,12 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
         IKillData data = getWeaponStats(item);
         data.awardPoints(-transaction.total());
         skillProvider.unlock(transaction.getData().skill());
+    }
+
+    private void increaseKillCount() {
+        ++kills;
+        if (level < this.getLevelLimit() && requiredKills <= kills) {
+            advanceLevel(true);
+        }
     }
 }
