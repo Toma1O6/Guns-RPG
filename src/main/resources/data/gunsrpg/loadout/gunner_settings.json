@@ -32,7 +32,7 @@
       }
     },
     {
-      "weight": 45,
+      "weight": 60,
       "gun": "gunsrpg:m1911",
       "magazine": 7,
       "reloadTime": 65,
@@ -45,7 +45,7 @@
       }
     },
     {
-      "weight": 50,
+      "weight": 55,
       "gun": "gunsrpg:m1911",
       "magazine": 7,
       "reloadTime": 65,
@@ -58,7 +58,7 @@
       }
     },
     {
-      "weight": 25,
+      "weight": 40,
       "gun": "gunsrpg:m1911",
       "magazine": 7,
       "reloadTime": 65,
@@ -71,7 +71,7 @@
       }
     },
     {
-      "weight": 30,
+      "weight": 40,
       "gun": "gunsrpg:m1911",
       "magazine": 7,
       "reloadTime": 65,
@@ -84,7 +84,7 @@
       }
     },
     {
-      "weight": 12,
+      "weight": 20,
       "gun": "gunsrpg:m1911",
       "magazine": 7,
       "reloadTime": 65,
@@ -97,7 +97,7 @@
       }
     },
     {
-      "weight": 15,
+      "weight": 25,
       "gun": "gunsrpg:m1911",
       "magazine": 7,
       "reloadTime": 65,
@@ -110,7 +110,7 @@
       }
     },
     {
-      "weight": 15,
+      "weight": 25,
       "gun": "gunsrpg:m1911",
       "magazine": 7,
       "reloadTime": 65,
@@ -123,7 +123,7 @@
       }
     },
     {
-      "weight": 10,
+      "weight": 15,
       "gun": "gunsrpg:m1911",
       "magazine": 7,
       "reloadTime": 65,
@@ -136,7 +136,7 @@
       }
     },
     {
-      "weight": 7,
+      "weight": 15,
       "gun": "gunsrpg:m1911",
       "magazine": 7,
       "reloadTime": 65,
@@ -179,7 +179,7 @@
       }
     },
     {
-      "weight": 45,
+      "weight": 60,
       "gun": "gunsrpg:ump45",
       "magazine": 30,
       "reloadTime": 70,
@@ -194,7 +194,7 @@
       }
     },
     {
-      "weight": 50,
+      "weight": 55,
       "gun": "gunsrpg:ump45",
       "magazine": 30,
       "reloadTime": 70,
@@ -209,7 +209,7 @@
       }
     },
     {
-      "weight": 25,
+      "weight": 40,
       "gun": "gunsrpg:ump45",
       "magazine": 30,
       "reloadTime": 70,
@@ -224,7 +224,7 @@
       }
     },
     {
-      "weight": 30,
+      "weight": 40,
       "gun": "gunsrpg:ump45",
       "magazine": 30,
       "reloadTime": 70,
@@ -239,7 +239,7 @@
       }
     },
     {
-      "weight": 12,
+      "weight": 20,
       "gun": "gunsrpg:ump45",
       "magazine": 30,
       "reloadTime": 70,
@@ -254,7 +254,7 @@
       }
     },
     {
-      "weight": 15,
+      "weight": 25,
       "gun": "gunsrpg:ump45",
       "magazine": 30,
       "reloadTime": 70,
@@ -269,7 +269,7 @@
       }
     },
     {
-      "weight": 15,
+      "weight": 25,
       "gun": "gunsrpg:ump45",
       "magazine": 30,
       "reloadTime": 70,
@@ -284,7 +284,7 @@
       }
     },
     {
-      "weight": 10,
+      "weight": 15,
       "gun": "gunsrpg:ump45",
       "magazine": 30,
       "reloadTime": 70,
@@ -299,7 +299,7 @@
       }
     },
     {
-      "weight": 7,
+      "weight": 15,
       "gun": "gunsrpg:ump45",
       "magazine": 30,
       "reloadTime": 70,
@@ -340,7 +340,7 @@
       }
     },
     {
-      "weight": 45,
+      "weight": 60,
       "gun": "gunsrpg:s1897",
       "magazine": 5,
       "reloadTime": 100,
@@ -353,7 +353,7 @@
       }
     },
     {
-      "weight": 50,
+      "weight": 55,
       "gun": "gunsrpg:s1897",
       "magazine": 5,
       "reloadTime": 100,
@@ -366,7 +366,7 @@
       }
     },
     {
-      "weight": 25,
+      "weight": 40,
       "gun": "gunsrpg:s1897",
       "magazine": 5,
       "reloadTime": 100,
@@ -379,7 +379,7 @@
       }
     },
     {
-      "weight": 30,
+      "weight": 40,
       "gun": "gunsrpg:s1897",
       "magazine": 5,
       "reloadTime": 100,
@@ -392,7 +392,7 @@
       }
     },
     {
-      "weight": 12,
+      "weight": 20,
       "gun": "gunsrpg:s1897",
       "magazine": 5,
       "reloadTime": 100,
@@ -405,7 +405,7 @@
       }
     },
     {
-      "weight": 15,
+      "weight": 25,
       "gun": "gunsrpg:s1897",
       "magazine": 5,
       "reloadTime": 100,
@@ -418,7 +418,7 @@
       }
     },
     {
-      "weight": 15,
+      "weight": 25,
       "gun": "gunsrpg:s1897",
       "magazine": 5,
       "reloadTime": 100,
@@ -431,7 +431,7 @@
       }
     },
     {
-      "weight": 10,
+      "weight": 15,
       "gun": "gunsrpg:s1897",
       "magazine": 5,
       "reloadTime": 100,
@@ -444,7 +444,7 @@
       }
     },
     {
-      "weight": 7,
+      "weight": 15,
       "gun": "gunsrpg:s1897",
       "magazine": 5,
       "reloadTime": 100,
@@ -487,7 +487,7 @@
       }
     },
     {
-      "weight": 45,
+      "weight": 60,
       "gun": "gunsrpg:hk416",
       "magazine": 30,
       "reloadTime": 80,
@@ -502,7 +502,7 @@
       }
     },
     {
-      "weight": 50,
+      "weight": 55,
       "gun": "gunsrpg:hk416",
       "magazine": 30,
       "reloadTime": 80,
@@ -517,7 +517,7 @@
       }
     },
     {
-      "weight": 25,
+      "weight": 40,
       "gun": "gunsrpg:hk416",
       "magazine": 30,
       "reloadTime": 80,
@@ -532,7 +532,7 @@
       }
     },
     {
-      "weight": 30,
+      "weight": 40,
       "gun": "gunsrpg:hk416",
       "magazine": 30,
       "reloadTime": 80,
@@ -547,7 +547,7 @@
       }
     },
     {
-      "weight": 12,
+      "weight": 20,
       "gun": "gunsrpg:hk416",
       "magazine": 30,
       "reloadTime": 80,
@@ -562,7 +562,7 @@
       }
     },
     {
-      "weight": 15,
+      "weight": 25,
       "gun": "gunsrpg:hk416",
       "magazine": 30,
       "reloadTime": 80,
@@ -577,7 +577,7 @@
       }
     },
     {
-      "weight": 15,
+      "weight": 25,
       "gun": "gunsrpg:hk416",
       "magazine": 30,
       "reloadTime": 80,
@@ -592,7 +592,7 @@
       }
     },
     {
-      "weight": 10,
+      "weight": 15,
       "gun": "gunsrpg:hk416",
       "magazine": 30,
       "reloadTime": 80,
@@ -607,7 +607,7 @@
       }
     },
     {
-      "weight": 7,
+      "weight": 15,
       "gun": "gunsrpg:hk416",
       "magazine": 30,
       "reloadTime": 80,
@@ -648,7 +648,7 @@
       }
     },
     {
-      "weight": 45,
+      "weight": 60,
       "gun": "gunsrpg:sks",
       "magazine": 10,
       "reloadTime": 80,
@@ -661,7 +661,7 @@
       }
     },
     {
-      "weight": 50,
+      "weight": 55,
       "gun": "gunsrpg:sks",
       "magazine": 10,
       "reloadTime": 80,
@@ -674,7 +674,7 @@
       }
     },
     {
-      "weight": 25,
+      "weight": 40,
       "gun": "gunsrpg:sks",
       "magazine": 10,
       "reloadTime": 80,
@@ -687,7 +687,7 @@
       }
     },
     {
-      "weight": 30,
+      "weight": 40,
       "gun": "gunsrpg:sks",
       "magazine": 10,
       "reloadTime": 80,
@@ -700,7 +700,7 @@
       }
     },
     {
-      "weight": 12,
+      "weight": 20,
       "gun": "gunsrpg:sks",
       "magazine": 10,
       "reloadTime": 80,
@@ -713,7 +713,7 @@
       }
     },
     {
-      "weight": 15,
+      "weight": 25,
       "gun": "gunsrpg:sks",
       "magazine": 10,
       "reloadTime": 80,
@@ -726,7 +726,7 @@
       }
     },
     {
-      "weight": 15,
+      "weight": 25,
       "gun": "gunsrpg:sks",
       "magazine": 10,
       "reloadTime": 80,
@@ -739,7 +739,7 @@
       }
     },
     {
-      "weight": 10,
+      "weight": 15,
       "gun": "gunsrpg:sks",
       "magazine": 10,
       "reloadTime": 80,
@@ -752,7 +752,7 @@
       }
     },
     {
-      "weight": 7,
+      "weight": 15,
       "gun": "gunsrpg:sks",
       "magazine": 10,
       "reloadTime": 80,
@@ -791,7 +791,7 @@
       }
     },
     {
-      "weight": 45,
+      "weight": 60,
       "gun": "gunsrpg:kar98k",
       "magazine": 5,
       "reloadTime": 120,
@@ -804,7 +804,7 @@
       }
     },
     {
-      "weight": 50,
+      "weight": 55,
       "gun": "gunsrpg:kar98k",
       "magazine": 5,
       "reloadTime": 120,
@@ -817,7 +817,7 @@
       }
     },
     {
-      "weight": 25,
+      "weight": 40,
       "gun": "gunsrpg:kar98k",
       "magazine": 5,
       "reloadTime": 120,
@@ -830,7 +830,7 @@
       }
     },
     {
-      "weight": 30,
+      "weight": 40,
       "gun": "gunsrpg:kar98k",
       "magazine": 5,
       "reloadTime": 120,
@@ -843,7 +843,7 @@
       }
     },
     {
-      "weight": 12,
+      "weight": 20,
       "gun": "gunsrpg:kar98k",
       "magazine": 5,
       "reloadTime": 120,
@@ -856,7 +856,7 @@
       }
     },
     {
-      "weight": 15,
+      "weight": 25,
       "gun": "gunsrpg:kar98k",
       "magazine": 5,
       "reloadTime": 120,
@@ -869,7 +869,7 @@
       }
     },
     {
-      "weight": 15,
+      "weight": 25,
       "gun": "gunsrpg:kar98k",
       "magazine": 5,
       "reloadTime": 120,
@@ -882,7 +882,7 @@
       }
     },
     {
-      "weight": 10,
+      "weight": 15,
       "gun": "gunsrpg:kar98k",
       "magazine": 5,
       "reloadTime": 120,
@@ -895,7 +895,7 @@
       }
     },
     {
-      "weight": 7,
+      "weight": 15,
       "gun": "gunsrpg:kar98k",
       "magazine": 5,
       "reloadTime": 120,
