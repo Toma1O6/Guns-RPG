@@ -147,7 +147,7 @@ public class GunAttackGoal extends Goal {
         public MagazineBasedHandler(ZombieGunnerEntity entity) {
             this.magCapacity = entity::getMagCapacity;
             this.reloadCycleLength = entity::getReloadTime;
-            this.ammoLeft = 0;
+            this.ammoLeft = this.magCapacity.getInt();
             this.firerate = entity::getFirerate;
         }
 
