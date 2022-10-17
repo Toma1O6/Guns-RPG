@@ -32,7 +32,7 @@ public class Mk14EbrItem extends GunItem {
     };
 
     public Mk14EbrItem(String name) {
-        super(name, new Properties().setISTER(() -> Mk14EbrRenderer::new).durability(750));
+        super(name, new Properties().setISTER(() -> Mk14EbrRenderer::new).durability(850));
     }
 
     @Override

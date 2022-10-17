@@ -36,7 +36,7 @@ public class VssItem extends GunItem {
     };
 
     public VssItem(String name) {
-        super(name, new Properties().setISTER(() -> VssRenderer::new).durability(750));
+        super(name, new Properties().setISTER(() -> VssRenderer::new).durability(850));
     }
 
     @Override
