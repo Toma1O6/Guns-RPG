@@ -58,7 +58,7 @@ public class WorldConfiguration extends ObjectType {
         bloodMoonMobAgroRange = writer.writeBoundedInt("Bloodmoon aggro range", 40, 1, 64, "Defines at which range will mobs aggro on you during bloodmoon").setDisplay(NumberDisplayType.SLIDER);
         shootingMobAggroRange = writer.writeBoundedDouble("Gunshot mob aggro range", 28.0, 0.0, 256.0, "Defines at which range will mobs aggro on you after shooting").setFormatting(new DecimalFormat("0.0#")).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER);
         rocketAngelSpawnChance = writer.writeBoundedInt("Rocket angel spawn chance", 2, 0, 16).setDisplay(NumberDisplayType.SLIDER);
-        zombieGunnerSpawn = writer.writeBoundedInt("Zombie Gunner spawn", 20, 0, 96, "Spawn chance for zombie gunner entity");
+        zombieGunnerSpawn = writer.writeBoundedInt("Zombie Gunner spawn", 25, 0, 96, "Spawn chance for zombie gunner entity");
         zombieGunnerSpawnDim = writer.writeBoundedInt("Zombie Gunner spawn [D]", 25, 0, 96, "Spawn chance for zombie gunner entity", "Applies to non overworld biomes");
         explosiveSkeletonSpawn = writer.writeBoundedInt("Grenadier spawn", 16, 0, 96, "Spawn chance for grenadier entity");
         explosiveSkeletonSpawnDim = writer.writeBoundedInt("Grenadier spawn [D]", 20, 0, 96, "Spawn chance for grenadier entity", "Applies to non overworld biomes");
