@@ -37,47 +37,47 @@
     "upgrades": [
       {
         "targetLevel": 2,
-        "chanceOfBreaking": 0.03,
+        "chanceOfBreaking": 0.02,
         "price": 1
       },
       {
         "targetLevel": 3,
-        "chanceOfBreaking": 0.04,
+        "chanceOfBreaking": 0.03,
         "price": 2
       },
       {
         "targetLevel": 4,
-        "chanceOfBreaking": 0.06,
+        "chanceOfBreaking": 0.04,
         "price": 3
       },
       {
         "targetLevel": 5,
-        "chanceOfBreaking": 0.08,
+        "chanceOfBreaking": 0.06,
         "price": 3
       },
       {
         "targetLevel": 6,
-        "chanceOfBreaking": 0.10,
+        "chanceOfBreaking": 0.08,
         "price": 4
       },
       {
         "targetLevel": 7,
-        "chanceOfBreaking": 0.12,
+        "chanceOfBreaking": 0.10,
         "price": 5
       },
       {
         "targetLevel": 8,
-        "chanceOfBreaking": 0.15,
+        "chanceOfBreaking": 0.12,
         "price": 5
       },
       {
         "targetLevel": 9,
-        "chanceOfBreaking": 0.17,
+        "chanceOfBreaking": 0.14,
         "price": 6
       },
       {
         "targetLevel": 10,
-        "chanceOfBreaking": 0.20,
+        "chanceOfBreaking": 0.15,
         "price": 7
       }
     ],
