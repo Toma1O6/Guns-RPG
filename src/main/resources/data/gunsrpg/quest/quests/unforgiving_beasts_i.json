@@ -15,7 +15,7 @@
     "count": 5,
     "area": {
       "size": 32,
-      "distance": 150,
+      "distance": 200,
       "spawnInterval": 700,
       "spawners": [
         {

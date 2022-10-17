@@ -9,7 +9,7 @@
     "duration": "4m",
     "area": {
       "size": 32,
-      "distance": 150,
+      "distance": 200,
       "spawnInterval": 300,
       "spawners": [
         {
