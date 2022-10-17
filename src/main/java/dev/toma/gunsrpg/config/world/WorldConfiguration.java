@@ -19,13 +19,6 @@ public class WorldConfiguration extends ObjectType {
     public final BooleanType disableMobSpawners;
     public final IntType bloodMoonMobAgroRange;
     public final DoubleType shootingMobAggroRange;
-    public final IntType rocketAngelSpawnChance;
-    public final IntType zombieGunnerSpawn;
-    public final IntType zombieGunnerSpawnDim;
-    public final IntType explosiveSkeletonSpawn;
-    public final IntType explosiveSkeletonSpawnDim;
-    public final IntType zombieKnightSpawn;
-    public final IntType zombieKnightSpawnDim;
     public final IntType bloodmoonCycle;
     public final IntType airdropFrequency;
     public final IntType crystalStationUseCooldown;
@@ -46,6 +39,10 @@ public class WorldConfiguration extends ObjectType {
     public final SimpleOreGenConfig yellowOrb;
     public final MayorHouseGeneratorConfig mayorHouseGenCfg;
     private final CollectionType<StringType> skullCrusherIgnoredMobs;
+    public final DimensionalMobSpawnConfig zombieGunnerSpawn;
+    public final DimensionalMobSpawnConfig grenadierSpawn;
+    public final DimensionalMobSpawnConfig zombieKnightSpawn;
+    public final DimensionalMobSpawnConfig rocketAngelSpawn;
 
     private boolean reloadEntities = true;
     private final Set<EntityType<?>> instantKillBlacklist = new HashSet<>();
@@ -57,13 +54,10 @@ public class WorldConfiguration extends ObjectType {
         disableMobSpawners = writer.writeBoolean("Disable mob spawners", true, "Disables mob spawning from spawners", "This prevents xp farming");
         bloodMoonMobAgroRange = writer.writeBoundedInt("Bloodmoon aggro range", 40, 1, 64, "Defines at which range will mobs aggro on you during bloodmoon").setDisplay(NumberDisplayType.SLIDER);
         shootingMobAggroRange = writer.writeBoundedDouble("Gunshot mob aggro range", 28.0, 0.0, 256.0, "Defines at which range will mobs aggro on you after shooting").setFormatting(new DecimalFormat("0.0#")).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER);
-        rocketAngelSpawnChance = writer.writeBoundedInt("Rocket angel spawn chance", 2, 0, 16).setDisplay(NumberDisplayType.SLIDER);
-        zombieGunnerSpawn = writer.writeBoundedInt("Zombie Gunner spawn", 25, 0, 96, "Spawn chance for zombie gunner entity");
-        zombieGunnerSpawnDim = writer.writeBoundedInt("Zombie Gunner spawn [D]", 25, 0, 96, "Spawn chance for zombie gunner entity", "Applies to non overworld biomes");
-        explosiveSkeletonSpawn = writer.writeBoundedInt("Grenadier spawn", 16, 0, 96, "Spawn chance for grenadier entity");
-        explosiveSkeletonSpawnDim = writer.writeBoundedInt("Grenadier spawn [D]", 20, 0, 96, "Spawn chance for grenadier entity", "Applies to non overworld biomes");
-        zombieKnightSpawn = writer.writeBoundedInt("Zombie Knight spawn", 8, 0, 96, "Spawn chance for zombie knight entity");
-        zombieKnightSpawnDim = writer.writeBoundedInt("Zombie Knight spawn [D]", 12, 0, 96, "Spawn chance for zombie knight entity", "Applied to non overworld biomes");
+        zombieGunnerSpawn = writer.writeObject(sp -> new DimensionalMobSpawnConfig(sp, 25, 25, 1), "Zombie Gunner spawning");
+        grenadierSpawn = writer.writeObject(sp -> new DimensionalMobSpawnConfig(sp, 16, 20, 1),"Grenadier spawning");
+        zombieKnightSpawn = writer.writeObject(sp -> new DimensionalMobSpawnConfig(sp, 8, 12, 1), "Zombie Knight spawning");
+        rocketAngelSpawn = writer.writeObject(sp -> new DimensionalMobSpawnConfig(sp, 2, 2, 0), "Rocket Angel spawning");
         bloodmoonCycle = writer.writeBoundedInt("Bloodmoon cycle", 7, -1, 999, "Defines bloodmoon cycle", "Set to -1 to disable");
         airdropFrequency = writer.writeBoundedInt("Airdrop frequency", 3, -1, 999, "Defines airdrop spawn frequency [days]", "Set to -1 to disable");
         crystalStationUseCooldown = writer.writeBoundedInt("Crystal station cooldown", PlayerPerkProvider.USE_COOLDOWN.getTicks(), 0, Integer.MAX_VALUE);

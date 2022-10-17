@@ -34,6 +34,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -102,12 +103,11 @@ public class CommonEventHandler {
         Biome.Category category = event.getCategory();
         BiomeGenerationSettingsBuilder builder = event.getGeneration();
         MobSpawnInfoBuilder mobSpawnBuilder = event.getSpawns();
+        WorldConfiguration config = ModConfig.worldConfig;
         if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
-            WorldConfiguration config = ModConfig.worldConfig;
-            boolean isOtherDim = category == Biome.Category.NETHER || category == Biome.Category.THEEND;
-            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_GUNNER.get(), isOtherDim ? config.zombieGunnerSpawnDim.get() : config.zombieGunnerSpawn.get(), 1, 2));
-            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.EXPLOSIVE_SKELETON.get(), isOtherDim ? config.explosiveSkeletonSpawnDim.get() : config.explosiveSkeletonSpawn.get(), 1, 2));
-            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ZOMBIE_KNIGHT.get(), isOtherDim ? config.zombieKnightSpawnDim.get() : config.zombieKnightSpawn.get(), 1, 2));
+            addMonsterSpawn(mobSpawnBuilder, ModEntities.ZOMBIE_GUNNER.get(), config.zombieGunnerSpawn.choiceFromBiomeCategory(category), 1, 2);
+            addMonsterSpawn(mobSpawnBuilder, ModEntities.EXPLOSIVE_SKELETON.get(), config.grenadierSpawn.choiceFromBiomeCategory(category), 1, 2);
+            addMonsterSpawn(mobSpawnBuilder, ModEntities.ZOMBIE_KNIGHT.get(), config.zombieKnightSpawn.choiceFromBiomeCategory(category), 1, 2);
         }
         if (category != Biome.Category.NETHER && category != Biome.Category.THEEND) {
             if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
@@ -117,8 +117,8 @@ public class CommonEventHandler {
                 builder.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, feature);
             }
         } else {
+            addMonsterSpawn(mobSpawnBuilder, ModEntities.ROCKET_ANGEL.get(), config.rocketAngelSpawn.choiceFromBiomeCategory(category), 1, 2);
             mobSpawnBuilder.addMobCharge(ModEntities.ROCKET_ANGEL.get(), 0.7, 0.15);
-            mobSpawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.ROCKET_ANGEL.get(), 8, 1, 2));
         }
     }
 
@@ -587,5 +587,11 @@ public class CommonEventHandler {
             instance.removeModifier(MOVEMENT_SPEED);
             instance.addTransientModifier(newModifier);
         }
+    }
+
+    private static void addMonsterSpawn(MobSpawnInfoBuilder builder, EntityType<?> type, int weight, int groupMin, int groupMax) {
+        if (weight <= 0)
+            return;
+        builder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(type, weight, groupMin, groupMax));
     }
 }
