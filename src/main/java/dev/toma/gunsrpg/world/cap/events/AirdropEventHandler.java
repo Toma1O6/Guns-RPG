@@ -49,7 +49,7 @@ public class AirdropEventHandler implements IWorldEventHandler {
         int x = (int) (player.getX() + randomInRange(maxDist));
         int z = (int) (player.getZ() + randomInRange(maxDist));
         int y = world.getHeight(Heightmap.Type.WORLD_SURFACE, x, z) + 100;
-        BlockPos pos = new BlockPos(player.getX() + x, y, player.getZ() + z);
+        BlockPos pos = new BlockPos(x, y, z);
         if (!world.isEmptyBlock(pos)) {
             GunsRPG.log.error("Airdrop spawning failed due to position being obstructed at {}", pos);
             return;
@@ -58,7 +58,7 @@ public class AirdropEventHandler implements IWorldEventHandler {
         entity.setPos(pos.getX(), pos.getY(), pos.getZ());
         world.playSound(null, pos.getX(), player.getY(), pos.getZ(), ModSounds.PLANE_FLY_BY, SoundCategory.MASTER, 15.0F, 1.0F);
         world.addFreshEntity(entity);
-        float anotherAirdropChance = 0.005F;
+        float anotherAirdropChance = 0.005F; // TODO configurable (v2 api)
         if (random.nextFloat() < anotherAirdropChance) {
             addAirdrop(world, playerList);
         }
