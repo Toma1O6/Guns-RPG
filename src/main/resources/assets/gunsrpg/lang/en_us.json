@@ -1196,6 +1196,7 @@
   "quest.failed": "You have failed the quest",
   "quest.task.claim_reward": "Visit mayor to claim rewards",
   "quest.task.completed": "Quest completed",
+  "quest.reputation.award_given": "You have reached max reputation with Mayor. You have been awarded with small gift",
   "debuff.gunsrpg.bleed": "Bleeding",
   "debuff.gunsrpg.fracture": "Fracture",
   "debuff.gunsrpg.poison": "Poison",

@@ -305,6 +305,11 @@ public abstract class Quest<D extends IQuestData> {
         return wasValid ? TriggerResponseStatus.OK : type.shouldFailQuest() && !overrideFailureFromCondition() ? TriggerResponseStatus.FAIL : TriggerResponseStatus.PASS;
     }
 
+    @Override
+    public String toString() {
+        return this.scheme.getQuestId().toString();
+    }
+
     public interface ITriggerRegistration {
         void addEntry(Trigger trigger, ITriggerResponder listener, ITriggerHandler handler);
     }

@@ -43,6 +43,7 @@ public class AirdropEventHandler implements IWorldEventHandler {
 
     private void addAirdrop(World world, List<? extends PlayerEntity> playerList) {
         PlayerEntity player = ModUtils.getRandomListElement(playerList, random);
+        GunsRPG.log.debug(WorldEventSpec.MARKER, "Preparing airdrop spawn event");
         if (player == null) return;
         int maxDist = 35;
         int x = (int) (player.getX() + randomInRange(maxDist));
@@ -61,6 +62,7 @@ public class AirdropEventHandler implements IWorldEventHandler {
         if (random.nextFloat() < anotherAirdropChance) {
             addAirdrop(world, playerList);
         }
+        GunsRPG.log.debug(WorldEventSpec.MARKER, "Created new airdrop at {} for player {}", pos, player.getDisplayName().getString());
     }
 
     private int randomInRange(int range) {

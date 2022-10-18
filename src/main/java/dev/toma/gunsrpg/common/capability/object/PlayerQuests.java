@@ -1,9 +1,11 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
 import dev.toma.gunsrpg.api.common.data.IQuests;
 import dev.toma.gunsrpg.api.common.data.ITraderStandings;
+import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.quest.QuestTypes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -47,6 +49,7 @@ public class PlayerQuests implements IQuests, IPlayerCapEntry {
     private void setActiveQuest(Quest<?> quest) {
         this.activeQuest = quest;
         this.syncRequestFactory.makeSyncRequest();
+        GunsRPG.log.debug(QuestSystem.MARKER, "Active quest changed for {} to {}", player.getName().getString(), quest);
     }
 
     @Override

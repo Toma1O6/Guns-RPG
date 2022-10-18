@@ -54,6 +54,7 @@ public class MayorEntity extends CreatureEntity {
         if (diff <= 0) {
             refreshAtWorldTime = level.getGameTime() + REFRESH_LIMIT.getTicks();
             playerQuests.clear();
+            GunsRPG.log.debug(QuestSystem.MARKER, "Mayor {} quests expired", this);
         }
     }
 

@@ -1,7 +1,9 @@
 package dev.toma.gunsrpg.common.quests.mayor;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
 import dev.toma.gunsrpg.common.capability.object.PlayerTraderStandings;
+import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.util.helper.ReputationHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -32,13 +34,13 @@ public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT
             maxedOutReputation = true;
             ReputationHelper.awardPlayerForReputation(player);
         }
-        this.provider.getRequestFactory().makeSyncRequest();
+        this.synchronize();
+        GunsRPG.log.debug(QuestSystem.MARKER, "Updated {}'s reputation to {}", player.getName().getString(), this.reputation);
     }
 
     @Override
     public void onTraderAttacked() {
-        reputation = Math.max(0.0F, reputation - 0.5F);
-        synchronize();
+        this.addReputation(-0.5F);
     }
 
     @Override

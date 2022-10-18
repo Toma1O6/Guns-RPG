@@ -4,10 +4,15 @@ import dev.toma.gunsrpg.api.common.data.IWorldEventHandler;
 import dev.toma.gunsrpg.api.common.data.IWorldEventSpec;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 
 import java.util.function.Supplier;
 
 public class WorldEventSpec implements IWorldEventSpec {
+
+    public static final Marker MARKER = MarkerManager.getMarker("WorldEvent");
+
     private final String name;
     private final Supplier<Integer> cycle;
     private final IWorldEventHandler handler;

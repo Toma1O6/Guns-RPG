@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.world.cap.events;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IWorldEventHandler;
+import dev.toma.gunsrpg.api.common.data.IWorldEventSpec;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.server.SPlaySoundEffectPacket;
@@ -18,11 +20,13 @@ public class BloodmoonEventHandler implements IWorldEventHandler {
 
     @Override
     public void eventStarted(World world) {
+        GunsRPG.log.debug(WorldEventSpec.MARKER, "Sending bloodmoon start notification");
         world.players().stream().map(player -> (ServerPlayerEntity) player).forEach(this::notifyBloodmoonStart);
     }
 
     @Override
     public void eventFinished(World world) {
+        GunsRPG.log.debug(WorldEventSpec.MARKER, "Sending bloodmoon end notification");
         world.players().stream().map(player -> (ServerPlayerEntity) player).forEach(this::notifyBloodmoonEnd);
     }
 

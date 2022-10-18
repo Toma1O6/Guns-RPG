@@ -1,12 +1,16 @@
 package dev.toma.gunsrpg.util.helper;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
 import dev.toma.gunsrpg.common.init.ModItems;
+import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.function.Function;
 
@@ -37,6 +41,8 @@ public final class ReputationHelper {
         if (player.level.isClientSide) return;
         ItemStack stack = new ItemStack(ModItems.GOLD_EGG_SHARD, 2);
         ModUtils.addItem(player, stack);
+        GunsRPG.log.debug(QuestSystem.MARKER, "Added reputation award to {}", player.getName().getString());
+        player.sendMessage(new TranslationTextComponent("quest.reputation.award_given"), Util.NIL_UUID);
     }
 
     private static void addReputation(ITraderStatus status, Quest<?> quest, Function<Integer, Float> calculator) {
