@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.block;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.container.DeathCrateContainer;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -26,6 +27,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -34,6 +37,7 @@ import java.util.Random;
 
 public class DeathCrateBlock extends BaseBlock {
 
+    public static final Marker MARKER = MarkerManager.getMarker("DeathCrates");
     private static final ITextComponent TITLE = new TranslationTextComponent("container.death_crate");
     private static final VoxelShape SHAPE = VoxelShapes.box(0.0, 0.0, 0.0, 1.0, 0.4, 1.0);
 
@@ -93,7 +97,9 @@ public class DeathCrateBlock extends BaseBlock {
 
     @Override
     public void onRemove(BlockState state, World world, BlockPos pos, BlockState oldState, boolean p_196243_5_) {
+        GunsRPG.log.debug(MARKER, "Death crate being removed from {}", pos);
         if (!state.is(oldState.getBlock())) {
+            GunsRPG.log.debug(MARKER, "Dropping crate inventory contents");
             ModUtils.dropInventoryItems(world, pos);
         }
         super.onRemove(state, world, pos, oldState, p_196243_5_);

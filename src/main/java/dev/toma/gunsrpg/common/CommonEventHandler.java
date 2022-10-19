@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.block.DeathCrateBlock;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataProvider;
 import dev.toma.gunsrpg.common.debuffs.IDebuffContext;
@@ -406,6 +407,7 @@ public class CommonEventHandler {
                         BlockPos.Mutable pos = player.blockPosition().mutable();
                         Direction[] relative = Direction.Plane.HORIZONTAL.stream().toArray(Direction[]::new);
                         World world = player.level;
+                        GunsRPG.log.debug(DeathCrateBlock.MARKER, "Generating death crate for {}", player);
                         outerLoop: while (pos.getY() < 255) {
                             if (world.isEmptyBlock(pos)) {
                                 break;
@@ -419,12 +421,16 @@ public class CommonEventHandler {
                             }
                             pos.setY(pos.getY() + 1);
                         }
+                        GunsRPG.log.debug(DeathCrateBlock.MARKER, "Death crate location found at {}", pos);
                         if (pos != null) {
+                            GunsRPG.log.debug(DeathCrateBlock.MARKER, "Creating death crate at {}", pos);
                             BlockPos position = pos.immutable();
                             world.setBlock(position, ModBlocks.DEATH_CRATE.defaultBlockState(), 3);
                             TileEntity tileEntity = world.getBlockEntity(position);
+                            GunsRPG.log.debug(DeathCrateBlock.MARKER, "Preparing death crate item transfer to inventory {}", tileEntity);
                             if (tileEntity instanceof DeathCrateTileEntity) {
                                 ((DeathCrateTileEntity) tileEntity).fillInventory(player);
+                                GunsRPG.log.debug(DeathCrateBlock.MARKER, "Filled death crate inventory");
                             }
                         }
                     }
