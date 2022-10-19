@@ -3,6 +3,8 @@ package dev.toma.gunsrpg.common.tileentity;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
@@ -14,6 +16,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
+import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unchecked")
@@ -64,6 +67,17 @@ public abstract class InventoryTileEntity extends TileEntity {
     @Override
     public CompoundNBT getUpdateTag() {
         return save(new CompoundNBT());
+    }
+
+    @Nullable
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(this.worldPosition, -1, this.getUpdateTag());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        this.load(this.level.getBlockState(pkt.getPos()), pkt.getTag());
     }
 
     public void fill(Supplier<ItemStack> itemSupplier) {
