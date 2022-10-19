@@ -41,7 +41,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.Random;
 
-public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAttackMob, IEntityAdditionalSpawnData, IAlwaysAggroable {
+public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAttackMob, IEntityAdditionalSpawnData {
 
     private final RangedAttackNoSightGoal aiArrowAttack = new RangedAttackNoSightGoal(this, 1.0D, 25, 18.0F);
     private final MeleeAttackGoal aiAttackOnCollide = new MeleeAttackGoal(this, 1.2D, false) {
@@ -58,7 +58,6 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
         }
     };
     private LoadoutType loadoutType = LoadoutType.SELECTOR.getRandom();
-    private boolean forcedAggro;
 
     public ExplosiveSkeletonEntity(World world) {
         this(ModEntities.EXPLOSIVE_SKELETON.get(), world);
@@ -70,16 +69,6 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MonsterEntity.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.25D);
-    }
-
-    @Override
-    public void setForcedAggro(boolean forcedAggro) {
-        this.forcedAggro = forcedAggro;
-    }
-
-    @Override
-    public boolean isAggroForced() {
-        return forcedAggro;
     }
 
     @Override
@@ -98,13 +87,11 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
         buffer.writeEnum(loadoutType);
-        buffer.writeBoolean(forcedAggro);
     }
 
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
         loadoutType = additionalData.readEnum(LoadoutType.class);
-        forcedAggro = additionalData.readBoolean();
     }
 
     @Override
@@ -142,7 +129,7 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolemEntity.class, true));
     }
 
@@ -245,14 +232,12 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
     public void addAdditionalSaveData(CompoundNBT nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putInt("loadoutType", this.loadoutType.ordinal());
-        nbt.putBoolean("forcedAggro", this.forcedAggro);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundNBT nbt) {
         super.readAdditionalSaveData(nbt);
         this.loadoutType = LoadoutType.values()[nbt.getInt("loadoutType")];
-        this.forcedAggro = nbt.getBoolean("forcedAggro");
         this.setCombatTask();
     }
 

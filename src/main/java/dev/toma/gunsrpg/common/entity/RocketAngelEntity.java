@@ -4,7 +4,6 @@ import dev.toma.gunsrpg.common.entity.projectile.*;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.util.math.WeightedRandom;
 import dev.toma.gunsrpg.util.properties.Properties;
-import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -33,10 +32,9 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.EnumSet;
 
-public class RocketAngelEntity extends MonsterEntity implements IEntityAdditionalSpawnData, IAlwaysAggroable {
+public class RocketAngelEntity extends MonsterEntity implements IEntityAdditionalSpawnData {
 
     private Type type = Type.SELECTOR.getRandom();
-    private boolean forcedAggro;
 
     public RocketAngelEntity(World world) {
         this(ModEntities.ROCKET_ANGEL.get(), world);
@@ -50,16 +48,6 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return createMonsterAttributes().add(Attributes.MAX_HEALTH, 45.0).add(Attributes.ATTACK_DAMAGE, 4.0).add(Attributes.FOLLOW_RANGE, 96.0);
-    }
-
-    @Override
-    public void setForcedAggro(boolean forcedAggro) {
-        this.forcedAggro = forcedAggro;
-    }
-
-    @Override
-    public boolean isAggroForced() {
-        return forcedAggro;
     }
 
     @Override
@@ -86,7 +74,7 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtGoal(this, LivingEntity.class, 8.0F));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     }
 
     public int getTextureIndex() {
@@ -203,8 +191,8 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
                 return;
             }
             double distance = entity.distanceToSqr(target);
-            boolean canSee = entity.getSensing().canSee(target) || WorldData.isBloodMoon(entity.level);
-            if (canSee || entity.isAggroForced()) {
+            boolean canSee = entity.getSensing().canSee(target);
+            if (canSee) {
                 if (distance < 4.0D) {
                     if (cooldown <= 0) {
                         cooldown = 10;

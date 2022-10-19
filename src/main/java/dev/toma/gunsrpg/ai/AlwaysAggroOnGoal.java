@@ -1,6 +1,5 @@
 package dev.toma.gunsrpg.ai;
 
-import dev.toma.gunsrpg.common.entity.IAlwaysAggroable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
@@ -16,9 +15,6 @@ public class AlwaysAggroOnGoal<E extends LivingEntity> extends NearestAttackable
 
     @Override
     public void start() {
-        if (this.mob instanceof IAlwaysAggroable) {
-            ((IAlwaysAggroable) mob).setForcedAggro(true);
-        }
         this.mob.setTarget(target);
     }
 
