@@ -268,7 +268,7 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
      * @return If entity is valid for headshots
      */
     boolean canHeadshotEntity(Entity victim) {
-        EntitySize size = victim.getDimensions(victim.getPose());
+        EntitySize size = victim.getDimensionsForge(victim.getPose());
         double ratio = size.height / size.width;
         return ratio > 1.0;
     }
