@@ -31,8 +31,11 @@ import dev.toma.gunsrpg.world.LootStashes;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataProvider;
 import dev.toma.gunsrpg.world.feature.ModConfiguredFeatures;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -53,6 +56,7 @@ import net.minecraft.loot.LootPool;
 import net.minecraft.loot.RandomValueRange;
 import net.minecraft.loot.functions.SetCount;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -247,20 +251,41 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void breakBlock(BlockEvent.BreakEvent event) {
-        PlayerEntity player = event.getPlayer();
+        ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+        PlayerInteractionManager interaction = player.gameMode;
         ItemStack stack = player.getMainHandItem();
+        int fortune = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack);
+        int silk = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack);
         World world = (World) event.getWorld();
         BlockState blockState = event.getState();
         if (stack.getItem() instanceof HammerItem) {
             HammerItem hammer = (HammerItem) stack.getItem();
             if (hammer.getDestroySpeed(stack, blockState) > 1.0f) {
                 Direction facing = ModUtils.getFacing(player);
+                boolean creative = interaction.isCreative();
                 for (BlockPos pos : hammer.gatherBlocks(event.getPos(), facing)) {
                     BlockState state = world.getBlockState(pos);
-                    if (hammer.canHarvestBlock(stack, state) && state.getDestroySpeed(world, pos) >= 0.0F) {
-                        world.destroyBlock(pos, true, player);
-                        stack.mineBlock(world, state, pos, player);
-                        if (stack.getDamageValue() == stack.getMaxDamage()) break;
+                    boolean harvestable = hammer.canHarvestBlock(stack, state);
+                    if (harvestable && state.getDestroySpeed(world, pos) >= 0.0F) {
+                        world.levelEvent(2001, pos, Block.getId(state));
+                        if (creative) {
+                            removeBlockAt(pos, false, world, player);
+                        } else {
+                            ItemStack itemStack = stack.copy();
+                            stack.mineBlock(world, state, pos, player);
+                            if (stack.isEmpty() && !itemStack.isEmpty())
+                                net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(player, itemStack, Hand.MAIN_HAND);
+                            boolean mined = removeBlockAt(pos, true, world, player);
+                            Block block = state.getBlock();
+                            if (mined) {
+                                block.playerDestroy(world, player, pos, state, world.getBlockEntity(pos), itemStack);
+                                int xpDrop = state.getExpDrop(world, pos, fortune, silk);
+                                if (xpDrop > 0) {
+                                    block.popExperience((ServerWorld) world, pos, xpDrop);
+                                }
+                            }
+                            if (stack.getDamageValue() == stack.getMaxDamage()) break;
+                        }
                     }
                 }
             }
@@ -272,6 +297,14 @@ public class CommonEventHandler {
                 }
             });
         }
+    }
+
+    private static boolean removeBlockAt(BlockPos pos, boolean harvest, World level, PlayerEntity player) {
+        BlockState state = level.getBlockState(pos);
+        boolean removed = state.removedByPlayer(level, pos, player, harvest, level.getFluidState(pos));
+        if (removed)
+            state.getBlock().destroy(level, pos, state);
+        return removed;
     }
 
     @SubscribeEvent
