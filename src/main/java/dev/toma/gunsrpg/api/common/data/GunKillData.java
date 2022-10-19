@@ -22,6 +22,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public class GunKillData implements IKillData, ILockStateChangeable, INBTSerializable<CompoundNBT> {
 
+    public static final int SKILL_RESET_PRICE = 25;
     private final PlayerEntity player;
     private final IProgressionStrategy strategy;
     private int killCount;

@@ -3,10 +3,7 @@ package dev.toma.gunsrpg.client.screen.skill;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.data.IKillData;
-import dev.toma.gunsrpg.api.common.data.IPerkProvider;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.ISkillProvider;
+import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 import dev.toma.gunsrpg.client.render.IOrderedRender;
@@ -39,7 +36,6 @@ import java.util.Comparator;
 
 public class ExtensionsView extends View {
 
-    private static final int RESET_PRICE = 15;
     private static final ITextComponent TEXT_RESET_SKILLS = new TranslationTextComponent("screen.button.reset_skills");
 
     private static final ResourceLocation PERKPOINT_BOOK = GunsRPG.makeResource("textures/item/perkpoint_book.png");
@@ -136,7 +132,7 @@ public class ExtensionsView extends View {
     private void updateResetButtonState() {
         IPlayerData data = manager.getContext().getData();
         IPerkProvider provider = data.getPerkProvider();
-        boolean hasFunds = provider.getPoints() >= 15;
+        boolean hasFunds = provider.getPoints() >= GunKillData.SKILL_RESET_PRICE;
         ISkillProvider skillProvider = data.getSkillProvider();
         boolean hasAnySkill = false;
         SkillType<?>[] extensions = head.getHierarchy().getExtensions();
@@ -153,7 +149,7 @@ public class ExtensionsView extends View {
         int x = mouseX + 12;
         int y = mouseY - 12;
         int z = 400;
-        String text = String.valueOf(RESET_PRICE);
+        String text = String.valueOf(GunKillData.SKILL_RESET_PRICE);
         int tooltipWidth = font.width(text) + 25;
         int tooltipHeight = 20;
         if (x + tooltipWidth > this.width) {
