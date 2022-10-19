@@ -91,9 +91,8 @@ public class Bullet extends AbstractPenetratingProjectile {
         Vector3d vec1 = this.position();
         Vector3d vec2 = vec1.add(this.getDeltaMovement());
         AxisAlignedBB hitbox = entity.getBoundingBox();
-        Vector3d impactVec = hitbox.clip(vec1, vec2).orElse(null);
-        if (impactVec == null) return false;
-        double headMinY = entity.getEyeY() - 0.25;
-        return impactVec.y >= headMinY;
+        return hitbox.clip(vec1, vec2)
+                .map(out -> out.y >= entity.getEyeY() - 0.25F)
+                .orElse(false);
     }
 }
