@@ -108,7 +108,7 @@ public final class Attribs {
     public static final IAttributeId R45_FIRERATE               = createInternal("r45_firerate", 15);
     public static final IAttributeId R45_NOISE                  = createInternal("r45_noise");
     public static final IAttributeId DEAGLE_RELOADING           = createInternal("deagle_reloading", 60);
-    public static final IAttributeId DEAGLE_FIRERATE            = createInternal("deagle_firerate", 9);
+    public static final IAttributeId DEAGLE_FIRERATE            = createInternal("deagle_firerate", 8);
     public static final IAttributeId DEAGLE_HORIZONTAL_RECOIL   = createInternal("deagle_horizontal_recoil", 2.0);
     public static final IAttributeId DEAGLE_VERTICAL_RECOIL     = createInternal("deagle_vertical_recoil", 4.4);
     public static final IAttributeId DEAGLE_MAG_CAPACITY        = createInternal("deagle_mag_capacity", 7);
@@ -128,9 +128,9 @@ public final class Attribs {
     public static final IAttributeId VECTOR_LOUDNESS            = createInternal("vector_loudness");
     public static final IAttributeId CROSSBOW_RELOAD_SPEED      = createInternal("crossbow_reload_speed", 60);
     public static final IAttributeId CROSSBOW_MAG_CAPACITY      = createInternal("crossbow_mag_capacity");
-    public static final IAttributeId CHUKONU_RELOAD_SPEED       = createInternal("chukonu_reload_speed", 28);
+    public static final IAttributeId CHUKONU_RELOAD_SPEED       = createInternal("chukonu_reload_speed", 22);
     public static final IAttributeId CHUKONU_MAG_CAPACITY       = createInternal("chukonu_mag_capacity", 6);
-    public static final IAttributeId CHUKONU_FIRERATE           = createInternal("chukonu_firerate", 4);
+    public static final IAttributeId CHUKONU_FIRERATE           = createInternal("chukonu_firerate", 5);
     public static final IAttributeId S1897_RELOAD_SPEED         = createInternal("s1897_reload_speed", 22);
     public static final IAttributeId S1897_MAG_CAPACITY         = createInternal("s1897_mag_capacity", 5);
     public static final IAttributeId S1897_FIRERATE             = createInternal("s1897_firerate", 25);
