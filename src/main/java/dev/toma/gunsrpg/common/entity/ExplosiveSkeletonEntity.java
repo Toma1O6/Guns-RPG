@@ -307,7 +307,7 @@ public class ExplosiveSkeletonEntity extends MonsterEntity implements IRangedAtt
         private void destroyBlock(World world, BlockPos pos) {
             BlockState state = world.getBlockState(pos);
             float speed = state.getDestroySpeed(world, pos);
-            if (speed < 0) {
+            if (speed < 0 || state.getBlock().getExplosionResistance() >= 10000.0F) {
                 return;
             }
             world.destroyBlock(pos, false);
