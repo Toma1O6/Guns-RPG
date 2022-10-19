@@ -24,6 +24,7 @@ public class WorldConfiguration extends ObjectType {
     public final IntType crystalStationUseCooldown;
     public final EnumType<SleepRestriction> sleepRestriction;
     public final DoubleType lootStashChance;
+    public final DoubleType anotherAirdropSpawnChance;
     public final SimpleOreGenConfig amethyst;
     public final SimpleOreGenConfig blackCrystal;
     public final SimpleOreGenConfig blueCrystal;
@@ -62,6 +63,7 @@ public class WorldConfiguration extends ObjectType {
         airdropFrequency = writer.writeBoundedInt("Airdrop frequency", 3, -1, 999, "Defines airdrop spawn frequency [days]", "Set to -1 to disable");
         crystalStationUseCooldown = writer.writeBoundedInt("Crystal station cooldown", PlayerPerkProvider.USE_COOLDOWN.getTicks(), 0, Integer.MAX_VALUE);
         sleepRestriction = writer.writeEnum("Restrict sleep", SleepRestriction.ALWAYS, "Defines when players will be able to sleep");
+        anotherAirdropSpawnChance = writer.writeBoundedDouble("Next airdrop spawn chance", 0.005, 0.0, 1.0);
         lootStashChance = writer.writeBoundedDouble("Loot stash chance", 0.005, 0.0, 0.1, "Chance of loot stash spawn per chunk").setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER).setFormatting(new DecimalFormat("0.0###"));
         amethyst = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 3, 1, 16), "Amethyst ore", "Configure amethyst spawning");
         blackCrystal = writer.writeObject(sp -> new SimpleOreGenConfig(sp, 3, 1, 56), "Black crystal", "Configure black crystal spawning");
