@@ -44,6 +44,7 @@ public class WorldConfiguration extends ObjectType {
     public final DimensionalMobSpawnConfig grenadierSpawn;
     public final DimensionalMobSpawnConfig zombieKnightSpawn;
     public final DimensionalMobSpawnConfig rocketAngelSpawn;
+    public final DimensionalMobSpawnConfig zombieNightmareSpawn;
 
     private boolean reloadEntities = true;
     private final Set<EntityType<?>> instantKillBlacklist = new HashSet<>();
@@ -59,6 +60,7 @@ public class WorldConfiguration extends ObjectType {
         grenadierSpawn = writer.writeObject(sp -> new DimensionalMobSpawnConfig(sp, 16, 20, 1),"Grenadier spawning");
         zombieKnightSpawn = writer.writeObject(sp -> new DimensionalMobSpawnConfig(sp, 8, 12, 1), "Zombie Knight spawning");
         rocketAngelSpawn = writer.writeObject(sp -> new DimensionalMobSpawnConfig(sp, 2, 2, 0), "Rocket Angel spawning");
+        zombieNightmareSpawn = writer.writeObject(sp -> new DimensionalMobSpawnConfig(sp, 1, 0, 0), "Zombie Nightmare spawning");
         bloodmoonCycle = writer.writeBoundedInt("Bloodmoon cycle", 7, -1, 999, "Defines bloodmoon cycle", "Set to -1 to disable");
         airdropFrequency = writer.writeBoundedInt("Airdrop frequency", 3, -1, 999, "Defines airdrop spawn frequency [days]", "Set to -1 to disable");
         crystalStationUseCooldown = writer.writeBoundedInt("Crystal station cooldown", PlayerPerkProvider.USE_COOLDOWN.getTicks(), 0, Integer.MAX_VALUE);

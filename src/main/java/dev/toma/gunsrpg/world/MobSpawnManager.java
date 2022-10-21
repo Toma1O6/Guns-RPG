@@ -45,6 +45,7 @@ public class MobSpawnManager {
         healthExlusions.add(ModEntities.GOLD_DRAGON.get());
         healthExlusions.add(EntityType.WITHER);
         healthExlusions.add(EntityType.IRON_GOLEM);
+        healthExlusions.add(ModEntities.ZOMBIE_NIGHTMARE.get());
         registerBloodmoonEntry(EntityType.SPIDER, 7, (world, vec3d) -> {
             CaveSpiderEntity spider = new CaveSpiderEntity(EntityType.CAVE_SPIDER, world);
             spider.setPos(vec3d.x, vec3d.y, vec3d.z);

@@ -113,6 +113,7 @@ public class CommonEventHandler {
             addMonsterSpawn(mobSpawnBuilder, ModEntities.ZOMBIE_GUNNER.get(), config.zombieGunnerSpawn.choiceFromBiomeCategory(category), 1, 2);
             addMonsterSpawn(mobSpawnBuilder, ModEntities.EXPLOSIVE_SKELETON.get(), config.grenadierSpawn.choiceFromBiomeCategory(category), 1, 2);
             addMonsterSpawn(mobSpawnBuilder, ModEntities.ZOMBIE_KNIGHT.get(), config.zombieKnightSpawn.choiceFromBiomeCategory(category), 1, 2);
+            addMonsterSpawn(mobSpawnBuilder, ModEntities.ZOMBIE_NIGHTMARE.get(), config.zombieNightmareSpawn.choiceFromBiomeCategory(category), 1, 2);
         }
         if (category != Biome.Category.NETHER && category != Biome.Category.THEEND) {
             if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {

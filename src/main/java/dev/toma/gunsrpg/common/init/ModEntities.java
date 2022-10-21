@@ -65,6 +65,9 @@ public class ModEntities {
     public static final RegistryObject<EntityType<ZombieKnightEntity>> ZOMBIE_KNIGHT = register("zombie_knight", ZombieKnightEntity::new, EntityClassification.MONSTER,
             builder -> builder.sized(0.6F, 1.95F).clientTrackingRange(8)
     );
+    public static final RegistryObject<EntityType<ZombieNightmareEntity>> ZOMBIE_NIGHTMARE = register("zombie_nightmare", ZombieNightmareEntity::new, EntityClassification.MONSTER,
+            builder -> builder.sized(0.6F, 1.95F).clientTrackingRange(8)
+    );
 
     private static <E extends Entity> RegistryObject<EntityType<E>> register(
             String name,

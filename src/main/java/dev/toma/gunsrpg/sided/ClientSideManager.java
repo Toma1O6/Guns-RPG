@@ -83,6 +83,7 @@ public class ClientSideManager {
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.ROCKET.get(),              manager -> new ExplosiveProjectileRenderer<>(manager, new RocketModel()));
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.MAYOR.get(),               MayorRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.ZOMBIE_KNIGHT.get(),       ZombieRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.ZOMBIE_NIGHTMARE.get(),    ZombieNightmareRenderer::new);
 
         // keybinds
         ModKeybinds.registerKeybinds();

@@ -709,7 +709,8 @@ public class CommonRegistry {
                 new ForgeSpawnEggItem(ModEntities.ROCKET_ANGEL, 0x6669cc, 0x16a3e8, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("rocket_angel_spawn_egg"),
                 new ForgeSpawnEggItem(ModEntities.ZOMBIE_GUNNER, 0x00a797, 0xff3f19, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("zombie_gunner_spawn_egg"),
                 new ForgeSpawnEggItem(ModEntities.MAYOR, 0x6B2900, 0x6B29AA, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("mayor_spawn_egg"),
-                new ForgeSpawnEggItem(ModEntities.ZOMBIE_KNIGHT, 0xA7004A, 0xDD004A, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("zombie_knight_spawn_egg")
+                new ForgeSpawnEggItem(ModEntities.ZOMBIE_KNIGHT, 0xA7004A, 0xDD004A, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("zombie_knight_spawn_egg"),
+                new ForgeSpawnEggItem(ModEntities.ZOMBIE_NIGHTMARE, 0x2D9900, 0xB20000, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("zombie_nightmare_spawn_egg")
         );
         for (PerkVariant variant : PerkVariant.values()) {
             registry.register(new CrystalItem(variant.getRegistryName("crystal"), variant));
@@ -920,6 +921,7 @@ public class CommonRegistry {
         event.put(ModEntities.GOLD_DRAGON.get(), GoldDragonEntity.createAttributes().build());
         event.put(ModEntities.MAYOR.get(), CreatureEntity.createMobAttributes().build());
         event.put(ModEntities.ZOMBIE_KNIGHT.get(), ZombieKnightEntity.createAttributes().build());
+        event.put(ModEntities.ZOMBIE_NIGHTMARE.get(), ZombieNightmareEntity.createAttributes().build());
     }
 
     protected static SoundEvent sound(String key) {
