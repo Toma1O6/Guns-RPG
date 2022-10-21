@@ -101,6 +101,7 @@ public class MayorEntity extends CreatureEntity {
                 IPropertyHolder holder = PropertyContext.create();
                 holder.setProperty(QuestProperties.PLAYER, player);
                 holder.setProperty(QuestProperties.USED_ITEM, stack);
+                holder.setProperty(QuestProperties.UUID, this.getUUID());
                 quest.trigger(Trigger.ITEM_HANDOVER, holder);
             });
         } else {

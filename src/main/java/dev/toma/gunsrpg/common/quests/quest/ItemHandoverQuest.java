@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -80,6 +81,8 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
 
     private TriggerResponseStatus tryItemHandover(Trigger trigger, IPropertyReader reader) {
         ItemStack itemStack = reader.getProperty(QuestProperties.USED_ITEM);
+        UUID uuid = reader.getProperty(QuestProperties.UUID);
+        UUID questId = this.getOriginalAssignerId();
         if (itemStack.isEmpty()) {
             return TriggerResponseStatus.PASS;
         }
@@ -88,7 +91,10 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
             return TriggerResponseStatus.PASS;
         }
         int remainder = dataMap.getInt(item);
-        return remainder > 0 ? TriggerResponseStatus.OK : TriggerResponseStatus.PASS;
+        if (questId.equals(uuid) || questId.equals(Util.NIL_UUID)) {
+            return remainder > 0 ? TriggerResponseStatus.OK : TriggerResponseStatus.PASS;
+        }
+        return TriggerResponseStatus.PASS;
     }
 
     private void handleSuccessfulHandover(Trigger trigger, IPropertyReader reader) {
