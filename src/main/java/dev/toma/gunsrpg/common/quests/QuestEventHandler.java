@@ -4,7 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IQuests;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
-import dev.toma.gunsrpg.common.init.GunDamageSource;
+import dev.toma.gunsrpg.common.init.WeaponDamageSource;
 import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
 import dev.toma.gunsrpg.common.quests.quest.area.IAreaQuest;
 import dev.toma.gunsrpg.common.quests.quest.area.QuestArea;
@@ -41,13 +41,10 @@ public final class QuestEventHandler {
         DamageSource source = event.getSource();
         LivingEntity victim = event.getEntityLiving();
         Entity entity = source.getEntity();
-        if (source instanceof GunDamageSource) {
-            entity = ((GunDamageSource) source).getSrc();
-        }
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
             Entity directEntity = source.getDirectEntity();
-            ItemStack stack = source instanceof GunDamageSource ? ((GunDamageSource) source).getStacc() : player.getMainHandItem();
+            ItemStack stack = source instanceof WeaponDamageSource ? ((WeaponDamageSource) source).getKillWeapon() : player.getMainHandItem();
             PlayerData.get(player).ifPresent(data -> {
                 IQuests quests = data.getQuests();
                 quests.getActiveQuest().ifPresent(quest -> {
@@ -112,9 +109,6 @@ public final class QuestEventHandler {
         }
         DamageSource source = event.getSource();
         Entity aggressor = source.getEntity();
-        if (source instanceof GunDamageSource) {
-            aggressor = ((GunDamageSource) source).getSrc();
-        }
         if (aggressor instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) aggressor;
             PlayerData.get(player).ifPresent(data -> {

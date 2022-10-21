@@ -2,8 +2,8 @@ package dev.toma.gunsrpg.common.debuffs;
 
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.init.Debuffs;
-import dev.toma.gunsrpg.common.init.GunDamageSourceSpecial;
 import dev.toma.gunsrpg.common.init.ModDamageSources;
+import dev.toma.gunsrpg.common.init.WeaponDamageSource;
 import dev.toma.gunsrpg.config.ModConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -110,7 +110,7 @@ public final class DebuffRegistration {
                 .addApplyConstraint(context -> forEntity(EntityType.WITHER_SKELETON, context, 0.08F))
                 .addApplyConstraint(context -> forSource(context, DamageSource::isExplosion, 0.13F))
                 .addApplyConstraint(context -> forSource(context, src -> src == DamageSource.FALL, 0.05F))
-                .addApplyConstraint(context -> forSource(context, src -> src instanceof GunDamageSourceSpecial, 0.05F))
+                .addApplyConstraint(context -> forSource(context, src -> src instanceof WeaponDamageSource, 0.05F))
                 .build()
                 .setRegistryName("bleed");
     }

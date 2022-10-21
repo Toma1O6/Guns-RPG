@@ -230,6 +230,8 @@
   "block.gunsrpg.yellow_orb_ore": "Yellow Orb Ore",
   "block.gunsrpg.culinary_table": "Culinary Table",
   "block.gunsrpg.medical_station": "Medical Station",
+  "death.attack.gun": "%1$s has been shot",
+  "death.attack.gun.weapon": "%1$s has been shot by %2$s with %3$s",
   "death.attack.poison": "%1$s has died from poisoning",
   "death.attack.infection": "%1$s has died from infection",
   "death.attack.bleeding": "%1$s has bled out",

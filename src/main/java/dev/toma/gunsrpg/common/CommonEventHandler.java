@@ -384,18 +384,13 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onEntityDeath(LivingDeathEvent event) {
-        boolean isWeapon = event.getSource() instanceof GunDamageSource;
-        if (isWeapon) {
-            Entity source = ((GunDamageSource) event.getSource()).getSrc();
-            if (source instanceof PlayerEntity) {
-                PlayerData.get((PlayerEntity) source).ifPresent(data -> data.getProgressData().onEnemyKilled(event.getEntity(), ((GunDamageSource) event.getSource()).getStacc()));
-            }
-        } else {
-            Entity source = event.getSource().getEntity();
-            if (source instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) source;
-                PlayerData.get(player).ifPresent(data -> data.getProgressData().onEnemyKilled(event.getEntity(), player.getMainHandItem()));
-            }
+        DamageSource damageSource = event.getSource();
+        Entity directSource = damageSource.getEntity();
+        if (directSource instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) directSource;
+            ItemStack killWeapon = damageSource instanceof WeaponDamageSource ? ((WeaponDamageSource) damageSource).getKillWeapon() : player.getMainHandItem();
+            Entity victim = event.getEntity();
+            PlayerData.get(player).ifPresent(data -> data.getProgressData().onEnemyKilled(victim, killWeapon));
         }
         if (event.getEntity() instanceof IMob && !(event.getEntity() instanceof SlimeEntity)) {
             if (!event.getEntity().level.isClientSide) {
@@ -495,8 +490,8 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void getLootingLevel(LootingLevelEvent event) {
         DamageSource damageSource = event.getDamageSource();
-        if (damageSource instanceof GunDamageSource) {
-            GunDamageSource source = (GunDamageSource) damageSource;
+        if (damageSource instanceof WeaponDamageSource) {
+            WeaponDamageSource source = (WeaponDamageSource) damageSource;
             Entity projectile = source.getDirectEntity();
             if (projectile instanceof AbstractProjectile) {
                 AbstractProjectile abstractProjectile = (AbstractProjectile) projectile;

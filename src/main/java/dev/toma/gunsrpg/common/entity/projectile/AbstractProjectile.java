@@ -247,8 +247,7 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
     }
 
     protected DamageSource getDamageSource(Entity owner) {
-        int lootingLevel = this.getProperty(Properties.LOOT_LEVEL);
-        return lootingLevel > 0 ? ModDamageSources.dealSpecialWeaponDamage(owner, this, weapon) : ModDamageSources.dealWeaponDamage(owner, this, weapon);
+        return ModDamageSources.gunAttack(owner, this, weapon);
     }
 
     /**
@@ -289,11 +288,11 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
                     gun.onHitEntity(this, livingEntity, weapon, (LivingEntity) owner);
                 }
             } else if (entity instanceof PartEntity<?>) {
-                DamageSource source = ModDamageSources.dealSpecialWeaponDamage(owner, this, weapon);
+                DamageSource source = ModDamageSources.gunAttack(owner, this, weapon);
                 entity.hurt(source, projectileDamage);
             }
         } else {
-            entity.hurt(ModDamageSources.dealSpecialWeaponDamage(owner, entity, weapon), projectileDamage);
+            entity.hurt(ModDamageSources.gunAttack(owner, this, weapon), projectileDamage);
         }
     }
 

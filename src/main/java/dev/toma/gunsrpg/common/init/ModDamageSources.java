@@ -1,7 +1,9 @@
 package dev.toma.gunsrpg.common.init;
 
+import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
@@ -15,12 +17,8 @@ public final class ModDamageSources {
     public static final DamageSource BLEED_DAMAGE = new SimpleDamageSource("bleeding").bypassArmor();
     public static final DamageSource FRACTURE_DAMAGE = new SimpleDamageSource("fracture").bypassArmor();
 
-    public static DamageSource dealWeaponDamage(Entity source, Entity indirectSource, ItemStack stack) {
-        return new GunDamageSource(source, indirectSource, stack);
-    }
-
-    public static DamageSource dealSpecialWeaponDamage(Entity source, Entity indirectSource, ItemStack stack) {
-        return new GunDamageSourceSpecial(source, indirectSource, stack);
+    public static DamageSource gunAttack(Entity owner, AbstractProjectile projectile, ItemStack gun) {
+        return new WeaponDamageSource(owner, projectile, gun);
     }
 
     private ModDamageSources() {}
