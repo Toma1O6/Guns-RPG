@@ -80,6 +80,7 @@ public class ZombieNightmareEntity extends MonsterEntity {
                         .forEach(livingEntity -> {
                             livingEntity.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 40, 0));
                             livingEntity.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 40, 0));
+                            livingEntity.heal(1.0F);
                         });
             }
         }
