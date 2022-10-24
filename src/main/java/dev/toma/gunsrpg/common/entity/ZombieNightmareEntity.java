@@ -47,7 +47,7 @@ public class ZombieNightmareEntity extends MonsterEntity {
                 .add(Attributes.MAX_HEALTH, 150.0D)
                 .add(Attributes.FOLLOW_RANGE, 48.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.29D)
-                .add(Attributes.ATTACK_DAMAGE, 4.0D);
+                .add(Attributes.ATTACK_DAMAGE, 6.0D);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class ZombieNightmareEntity extends MonsterEntity {
                 level.addFreshEntity(entity);
             }
             if (tickCount % 20 == 0) {
-                addEffect(new EffectInstance(Effects.REGENERATION, 40, 1, false, false));
+                addEffect(new EffectInstance(Effects.REGENERATION, 40, 2, false, false));
                 this.level.getEntities(this, this.getBoundingBox().inflate(20.0D), entity -> {
                     EntityType<?> type = entity.getType();
                     return ModUtils.contains(type, BUFFED_MOBS.get()) && entity instanceof LivingEntity;
