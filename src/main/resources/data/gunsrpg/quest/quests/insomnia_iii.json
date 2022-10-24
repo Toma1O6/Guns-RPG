@@ -9,7 +9,7 @@
     "entities": {
       "type": "gunsrpg:specific_entity",
       "filter": [
-        "minecraft:blaze"
+        "minecraft:phantom"
       ]
     },
     "count": 15,
