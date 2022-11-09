@@ -1,34 +1,40 @@
 package dev.toma.gunsrpg.config.world;
 
-import dev.toma.configuration.api.IConfigWriter;
-import dev.toma.configuration.api.IObjectSpec;
-import dev.toma.configuration.api.type.IntType;
-import dev.toma.configuration.api.type.ObjectType;
+import dev.toma.configuration.config.Configurable;
 import dev.toma.gunsrpg.api.common.IGeneratorConfig;
 
-public class SimpleOreGenConfig extends ObjectType implements IGeneratorConfig {
+public class SimpleOreGenConfig implements IGeneratorConfig {
 
-    private final IntType spawns;
-    private final IntType minHeight;
-    private final IntType maxHeight;
+    @Configurable
+    @Configurable.Range(min = 0, max = 128)
+    @Configurable.Comment("Generation attempts per chunk")
+    public final int spawns;
 
-    public SimpleOreGenConfig(IObjectSpec spec, int spawnAttempts, int minGenHeight, int maxGenHeight) {
-        super(spec);
-        IConfigWriter writer = spec.getWriter();
-        spawns = writer.writeBoundedInt("Spawns", spawnAttempts, 0, 128, "Amount of spawn attempts per chunk");
-        minHeight = writer.writeBoundedInt("Min height", minGenHeight, 1, 255, "Defines lowest height at which ore can spawn");
-        maxHeight = writer.writeBoundedInt("Max height", maxGenHeight, 1, 255, "Defines highest height at which ore can spawn");
+    @Configurable
+    @Configurable.Range(min = 1, max = 255)
+    @Configurable.Comment("Minimum generation height")
+    public final int minHeight;
+
+    @Configurable
+    @Configurable.Range(min = 1, max = 255)
+    @Configurable.Comment("Maximum generation height")
+    public final int maxHeight;
+
+    public SimpleOreGenConfig(int spawnAttempts, int minGenHeight, int maxGenHeight) {
+        spawns = spawnAttempts;
+        minHeight = minGenHeight;
+        maxHeight = maxGenHeight;
     }
 
     public int getSpawnAttempts() {
-        return spawns.get();
+        return spawns;
     }
 
     public int getMinHeight() {
-        return minHeight.get();
+        return minHeight;
     }
 
     public int getMaxHeight() {
-        return maxHeight.get();
+        return maxHeight;
     }
 }

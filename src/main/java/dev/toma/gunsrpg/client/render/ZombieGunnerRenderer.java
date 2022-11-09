@@ -4,7 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.ZombieGunnerModel;
 import dev.toma.gunsrpg.client.render.layer.CustomHeldLayer;
 import dev.toma.gunsrpg.common.entity.ZombieGunnerEntity;
-import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import net.minecraft.client.renderer.entity.BipedRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
@@ -20,7 +20,7 @@ public class ZombieGunnerRenderer extends BipedRenderer<ZombieGunnerEntity, Zomb
         layers.clear();
         addLayer(new HeadLayer<>(this, 1.0F, 1.0F, 1.0F));
         addLayer(new BipedArmorLayer<>(this, new ZombieGunnerModel(0.5F, true), new ZombieGunnerModel(1.0F, true)));
-        addLayer(new CustomHeldLayer<>(this, ModConfig.clientConfig.gunnerHeldItemRenderConfig));
+        addLayer(new CustomHeldLayer<>(this, ClientSideManager.config.gunnerHeldItemRender));
     }
 
     @Override

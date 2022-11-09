@@ -70,14 +70,17 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.k-4u.nl"
     }
+    flatDir {
+        dir 'libs'
+    }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
-    implementation fg.deobf("curse.maven:configuration-${configuration_projectId}:${configuration_fileId}")
+    implementation fg.deobf("dev.toma.configuration:configuration-1.16.5:2.0.0")
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
-    testImplementation('org.junit.jupiter:junit-jupiter:5.8.1')
+    testImplementation('org.junit.jupiter:junit-jupiter:5.9.0')
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
 

@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.world.mayor;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.config.world.MayorHouseGeneratorConfig;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
@@ -57,7 +57,7 @@ public final class VillageFeatureMutator {
     }
 
     private static void registerSingleVariant(Map<String, List<VillageVariantEntry>> map, String variant, ToIntFunction<MayorHouseGeneratorConfig> func) {
-        MayorHouseGeneratorConfig cfg = ModConfig.worldConfig.mayorHouseGenCfg;
+        MayorHouseGeneratorConfig cfg = GunsRPG.config.world.mayorHouseGen;
         String templatePool = "village/" + variant + "/houses";
         VillageVariantEntry entry = new VillageVariantEntry(templatePool, templatePool + "/mayor_home", func.applyAsInt(cfg));
         List<VillageVariantEntry> list = ImmutableList.of(entry);

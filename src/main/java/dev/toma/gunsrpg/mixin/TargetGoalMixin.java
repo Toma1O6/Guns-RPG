@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.mixin;
 
-import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -25,7 +25,7 @@ public abstract class TargetGoalMixin extends Goal {
         World world = mob.level;
         double baseFollowDistance = mob.getAttributeValue(Attributes.FOLLOW_RANGE);
         if (WorldData.isBloodMoon(world)) {
-            ci.setReturnValue(Math.max(baseFollowDistance, ModConfig.worldConfig.bloodMoonMobAgroRange.get()));
+            ci.setReturnValue(Math.max(baseFollowDistance, GunsRPG.config.world.bloodMoonMobAgroRange));
         }
     }
 

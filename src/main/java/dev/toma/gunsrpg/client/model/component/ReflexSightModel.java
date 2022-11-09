@@ -3,7 +3,8 @@ package dev.toma.gunsrpg.client.model.component;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.client.render.item.AbstractWeaponRenderer;
-import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.sided.ClientSideManager;
+import dev.toma.gunsrpg.util.RenderUtils;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -38,7 +39,7 @@ public class ReflexSightModel extends AbstractAttachmentModel implements IOptics
 
     @Override
     public Supplier<ResourceLocation> getReticleTextureProvider() {
-        return () -> ModConfig.clientConfig.reticleVariants.getAsResource();
+        return () -> ClientSideManager.config.reticleType.getPath();
     }
 
     @Override
@@ -53,7 +54,7 @@ public class ReflexSightModel extends AbstractAttachmentModel implements IOptics
 
     @Override
     public int getReticleTintARGB() {
-        return ModConfig.clientConfig.reticleColor.getColor();
+        return RenderUtils.parseColor(ClientSideManager.config.reticleColor);
     }
 
     @Override

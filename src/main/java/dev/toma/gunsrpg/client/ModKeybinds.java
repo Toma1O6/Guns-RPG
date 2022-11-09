@@ -20,7 +20,6 @@ import dev.toma.gunsrpg.common.item.StashDetectorItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.*;
 import dev.toma.gunsrpg.util.SkillUtil;
@@ -68,12 +67,12 @@ public class ModKeybinds {
 
     @SuppressWarnings("unchecked")
     public static <S extends ISkill & IClickableSkill, T extends SkillType<S>> void activateSkillSlot(int slotNumber) {
-        List<String> boundSkills = ModConfig.skillConfig.getBoundSkills();
-        if (slotNumber >= boundSkills.size()) {
+        String[] boundSkills = GunsRPG.config.skills.boundSkills;
+        if (slotNumber >= boundSkills.length) {
             GunsRPG.log.warn("Bind skill activation failed: Undefined skill slot {}", slotNumber + 1);
             return;
         }
-        ResourceLocation skillId = new ResourceLocation(boundSkills.get(slotNumber));
+        ResourceLocation skillId = new ResourceLocation(boundSkills[slotNumber]);
         SkillType<?> skillType = ModRegistries.SKILLS.getValue(skillId);
         if (skillType == null) {
             GunsRPG.log.warn("Bind skill activation failed: Unknown skill {}", skillId);

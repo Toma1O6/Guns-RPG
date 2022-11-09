@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.config.client;
 
 import net.minecraft.item.ItemStack;
 
-public interface IHeldLayerConfig {
+public interface IHeldLayerSettings {
 
     Mode getRenderingMode();
 

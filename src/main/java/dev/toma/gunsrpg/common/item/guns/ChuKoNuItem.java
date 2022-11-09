@@ -18,7 +18,6 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,7 +43,7 @@ public class ChuKoNuItem extends AbstractCrossbow {
     @Override
     public void initializeWeapon(WeaponBuilder builder) {
         builder
-                .config(ModConfig.weaponConfig.chukonu)
+                .config(GunsRPG.config.weapon.chukonu)
                 .ammo(WeaponCategory.CROSSBOW)
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 2)

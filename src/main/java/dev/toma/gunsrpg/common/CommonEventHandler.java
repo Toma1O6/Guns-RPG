@@ -19,10 +19,8 @@ import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.skills.AvengeMeFriendsSkill;
 import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.world.WorldConfiguration;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.S2C_SyncConfigPacket;
 import dev.toma.gunsrpg.network.packet.S2C_SynchronizationPayloadPacket;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
@@ -108,7 +106,7 @@ public class CommonEventHandler {
         Biome.Category category = event.getCategory();
         BiomeGenerationSettingsBuilder builder = event.getGeneration();
         MobSpawnInfoBuilder mobSpawnBuilder = event.getSpawns();
-        WorldConfiguration config = ModConfig.worldConfig;
+        WorldConfiguration config = GunsRPG.config.world;
         if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
             addMonsterSpawn(mobSpawnBuilder, ModEntities.ZOMBIE_GUNNER.get(), config.zombieGunnerSpawn.choiceFromBiomeCategory(category), 1, 2);
             addMonsterSpawn(mobSpawnBuilder, ModEntities.EXPLOSIVE_SKELETON.get(), config.grenadierSpawn.choiceFromBiomeCategory(category), 1, 2);
@@ -153,7 +151,6 @@ public class CommonEventHandler {
         PlayerEntity player = event.getPlayer();
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
         NetworkManager.sendClientPacket(serverPlayer, S2C_SynchronizationPayloadPacket.makePayloadPacket());
-        NetworkManager.sendClientPacket(serverPlayer, new S2C_SyncConfigPacket(ModConfig.worldConfig));
         PlayerData.get(player).ifPresent(data -> {
             data.sync(DataFlags.WILDCARD);
             data.getProgressData().onLogIn();
@@ -238,7 +235,7 @@ public class CommonEventHandler {
             Food food = item.getFoodProperties();
             if (food != null && !player.level.isClientSide) {
                 int nutrition = food.getNutrition();
-                if (nutrition >= ModConfig.skillConfig.getWellFedMinNutrition()) {
+                if (nutrition >= GunsRPG.config.skills.wellFedTriggerValue) {
                     PlayerData.get(player).ifPresent(data -> {
                         ISkillProvider provider = data.getSkillProvider();
                         if (provider.hasSkill(Skills.WELL_FED_I)) {
@@ -319,7 +316,7 @@ public class CommonEventHandler {
                 float health = entity.getMaxHealth();
                 boolean instantKill = false;
                 boolean isMeleeItem = player.getMainHandItem().getItem() instanceof TieredItem;
-                if (health < 256.0F && isMeleeItem && ModConfig.worldConfig.isInstantKillAllowed(entity.getType())) {
+                if (health < 256.0F && isMeleeItem && GunsRPG.config.skills.isInstantKillAllowed(entity.getType())) {
                     float f = random.nextFloat();
                     boolean b = f < provider.getAttributeValue(Attribs.INSTANT_KILL);
                     if (b) {
@@ -432,7 +429,7 @@ public class CommonEventHandler {
                 }
                 if (!event.isCanceled()) {
                     data.getDebuffControl().clearActive();
-                    if (ModConfig.worldConfig.createCrateOnPlayerDeath.get() && !player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) && !player.inventory.isEmpty()) {
+                    if (GunsRPG.config.world.createCrateOnPlayerDeath && !player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) && !player.inventory.isEmpty()) {
                         BlockPos.Mutable pos = player.blockPosition().mutable();
                         Direction[] relative = Direction.Plane.HORIZONTAL.stream().toArray(Direction[]::new);
                         World world = player.level;
@@ -504,7 +501,7 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void checkEntitySpawn(LivingSpawnEvent.CheckSpawn event) {
         if (event.isSpawner()) {
-            if (ModConfig.worldConfig.disableMobSpawners.get())
+            if (GunsRPG.config.world.disableMobSpawners)
                 event.setResult(Event.Result.DENY);
         }
     }
@@ -536,7 +533,7 @@ public class CommonEventHandler {
                 ServerPlayerEntity serverplayer = (ServerPlayerEntity) player;
                 serverplayer.setRespawnPosition(serverplayer.level.dimension(), pos.above(), serverplayer.yRot, true, false);
             }
-            PlayerEntity.SleepResult result = ModConfig.worldConfig.sleepRestriction.get().getResult(player.level);
+            PlayerEntity.SleepResult result = GunsRPG.config.world.sleepRestriction.getResult(player.level);
             if (result != null)
                 event.setResult(result);
         }

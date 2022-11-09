@@ -1,38 +1,50 @@
 package dev.toma.gunsrpg.config;
 
-import dev.toma.configuration.api.*;
-import dev.toma.configuration.api.type.*;
+import dev.toma.configuration.config.Configurable;
+import dev.toma.gunsrpg.GunsRPG;
+import net.minecraft.entity.EntityType;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import java.util.*;
 
-public class SkillsConfig extends ObjectType {
+public final class SkillsConfig {
 
-    private final IntType wellFedTriggerValue;
-    private final CollectionType<StringType> boundSkills;
+    @Configurable
+    @Configurable.Range(min = 1, max = 20)
+    @Configurable.Comment("Specify minimum nutrition value for Well Fed skill to be triggered")
+    public final int wellFedTriggerValue = 14;
 
-    public SkillsConfig(IObjectSpec spec) {
-        super(spec);
-        IConfigWriter writer = spec.getWriter();
+    @Configurable
+    @Configurable.StringPattern(value = "[a-z0-9_.-]+:[a-z0-9/._-]+", defaultValue = "gunsrpg:like_a_cat_i")
+    @Configurable.Comment("Skills which can be access via quick-activation, max 5 supported")
+    public final String[] boundSkills = {
+            "gunsrpg:like_a_cat_i",
+            "gunsrpg:iron_buddy_i",
+            "gunsrpg:god_help_us"
+    };
 
-        wellFedTriggerValue = writer.writeBoundedInt("WellFed min nutrition", 14, 1, 20, "Specify minimum nutrition value for Well Fed skill to be triggered").setDisplay(NumberDisplayType.SLIDER);
-        IRestriction<String> patternLimit = Restrictions.restrictStringByPattern(Pattern.compile("[a-z0-9]+:[a-z0-9/\\-_]+"), false, "Invalid resource location format");
-        Supplier<StringType> factory = () -> new StringType("", "namespace:path", patternLimit);
-        List<StringType> list = new ArrayList<>();
-        list.add(new StringType("", "gunsrpg:like_a_cat_i", patternLimit));
-        list.add(new StringType("", "gunsrpg:iron_buddy_i", patternLimit));
-        list.add(new StringType("", "gunsrpg:god_help_us", patternLimit));
-        boundSkills = writer.writeFillList("Bound skills", list, factory);
+    @Configurable
+    @Configurable.StringPattern(value = "[a-z0-9_.-]+:[a-z0-9/._-]+", defaultValue = "minecraft:pig")
+    @Configurable.Comment("Mobs listed here cannot be insta-killed")
+    @Configurable.ChangeCallback(method = "onSkullCrusherBlacklistUpdate")
+    public final String[] skullCrusherIgnoredMobs = { "gunsrpg:bloodmoon_golem" };
+
+    public boolean isInstantKillAllowed(EntityType<?> type) {
+        return !instantKillBlackList.contains(type);
     }
 
-    public int getWellFedMinNutrition() {
-        return wellFedTriggerValue.get();
-    }
-
-    public List<String> getBoundSkills() {
-        return boundSkills.get().stream().map(AbstractConfigType::get).collect(Collectors.toList());
+    private final Set<EntityType<?>> instantKillBlackList = new LinkedHashSet<>();
+    private String[] onSkullCrusherBlacklistUpdate(String[] inputs) {
+        instantKillBlackList.clear();
+        for (String string : inputs) {
+            ResourceLocation id = new ResourceLocation(string);
+            if (ForgeRegistries.ENTITIES.containsKey(id)) {
+                instantKillBlackList.add(ForgeRegistries.ENTITIES.getValue(id));
+            } else {
+                GunsRPG.log.warn("Found unknown entity ID in config under 'skullCrusherIgnoredMobs' field: {}", string);
+            }
+        }
+        return this.instantKillBlackList.stream().map(e -> e.getRegistryName().toString()).toArray(String[]::new);
     }
 }

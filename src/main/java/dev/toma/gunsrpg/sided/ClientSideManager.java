@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.sided;
 
+import dev.toma.configuration.Configuration;
+import dev.toma.configuration.config.format.ConfigFormats;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.ModKeybinds;
 import dev.toma.gunsrpg.client.model.GrenadeShellModel;
@@ -18,7 +20,7 @@ import dev.toma.gunsrpg.common.init.Debuffs;
 import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.Skills;
-import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.config.client.GunsrpgConfigClient;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.AnimationStage;
@@ -42,6 +44,7 @@ public class ClientSideManager {
     private static final ClientSideManager INSTANCE = new ClientSideManager();
 
     private final DebuffRenderManager debuffRenderManager = new DebuffRenderManager();
+    public static GunsrpgConfigClient config;
 
     public DebuffRenderManager getDebuffRenderManager() {
         return debuffRenderManager;
@@ -52,10 +55,11 @@ public class ClientSideManager {
     }
 
     public void clientInit() {
+        config = Configuration.registerConfig(GunsrpgConfigClient.class, ConfigFormats.yaml()).getConfigInstance();
         animationSetup();
         IRenderPipeline renderPipeline = AnimationEngine.get().renderPipeline();
         renderPipeline.register(MinecraftForge.EVENT_BUS);
-        AnimationEngine.get().startEngine(ModConfig.clientConfig.developerMode.get());
+        AnimationEngine.get().startEngine(config.developerMode);
     }
 
     public void animationSetup() {

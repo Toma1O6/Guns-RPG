@@ -2,6 +2,7 @@ package dev.toma.gunsrpg;
 
 import com.mojang.brigadier.CommandDispatcher;
 import dev.toma.configuration.Configuration;
+import dev.toma.configuration.config.format.ConfigFormats;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IWorldData;
 import dev.toma.gunsrpg.common.LootStashDetectorHandler;
@@ -9,7 +10,7 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
 import dev.toma.gunsrpg.common.command.GunsrpgCommand;
 import dev.toma.gunsrpg.common.init.*;
-import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.config.GunsrpgConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.Lifecycle;
@@ -42,8 +43,10 @@ public class GunsRPG {
     public static Logger log = LogManager.getLogger("Guns-RPG");
     private static final Lifecycle modLifecycle = new Lifecycle();
 
+    public static GunsrpgConfig config;
+
     public GunsRPG() {
-        Configuration.loadConfig(new ModConfig());
+        config = Configuration.registerConfig(GunsrpgConfig.class, ConfigFormats.yaml()).getConfigInstance();
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         // deferred registries
         ModEntities.subscribe(eventBus);

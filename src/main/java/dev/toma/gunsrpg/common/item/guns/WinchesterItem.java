@@ -19,7 +19,6 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -50,7 +49,7 @@ public class WinchesterItem extends AbstractBoltActionGun {
     @Override
     public void initializeWeapon(WeaponBuilder builder) {
         builder
-                .config(ModConfig.weaponConfig.winchester)
+                .config(GunsRPG.config.weapon.winchester)
                 .caliber(AmmoType.AMMO_45ACP)
                 .ammo(WeaponCategory.SR)
                     .define(AmmoMaterials.WOOD)

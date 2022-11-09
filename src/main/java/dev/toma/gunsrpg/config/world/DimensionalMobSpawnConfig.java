@@ -1,35 +1,41 @@
 package dev.toma.gunsrpg.config.world;
 
-import dev.toma.configuration.api.IConfigWriter;
-import dev.toma.configuration.api.IObjectSpec;
-import dev.toma.configuration.api.type.IntType;
-import dev.toma.configuration.api.type.ObjectType;
+import dev.toma.configuration.config.Configurable;
 import net.minecraft.world.biome.Biome;
 
-public class DimensionalMobSpawnConfig extends ObjectType {
+public class DimensionalMobSpawnConfig {
 
-    private final IntType overworld;
-    private final IntType nether;
-    private final IntType end;
+    @Configurable
+    @Configurable.Range(min = 0, max = 96)
+    @Configurable.Comment("Overworld spawn chance")
+    public final int overworld;
 
-    public DimensionalMobSpawnConfig(IObjectSpec spec, int overworld, int nether, int end) {
-        super(spec);
-        IConfigWriter writer = spec.getWriter();
-        this.overworld = writer.writeBoundedInt("Overworld", overworld, 0, 96);
-        this.nether = writer.writeBoundedInt("Nether", nether, 0, 96);
-        this.end = writer.writeBoundedInt("End", end, 0, 96);
+    @Configurable
+    @Configurable.Range(min = 0, max = 96)
+    @Configurable.Comment("Nether spawn chance")
+    public final int nether;
+
+    @Configurable
+    @Configurable.Range(min = 0, max = 96)
+    @Configurable.Comment("End spawn chance")
+    public final int end;
+
+    public DimensionalMobSpawnConfig(int overworld, int nether, int end) {
+        this.overworld = overworld;
+        this.nether = nether;
+        this.end = end;
     }
 
     public int overworldChance() {
-        return this.overworld.get();
+        return this.overworld;
     }
 
     public int netherChance() {
-        return this.nether.get();
+        return this.nether;
     }
 
     public int endChance() {
-        return this.end.get();
+        return this.end;
     }
 
     public int choiceFromBiomeCategory(Biome.Category cat) {

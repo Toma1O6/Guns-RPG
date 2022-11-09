@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.client.screen.widgets;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.configuration.api.client.widget.ITickable;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.util.ITickable;
 import dev.toma.gunsrpg.util.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.Widget;

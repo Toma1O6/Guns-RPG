@@ -15,7 +15,6 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -41,7 +40,7 @@ public class AwmItem extends AbstractBoltActionGun {
     public void initializeWeapon(WeaponBuilder builder) {
         builder
                 .category(WeaponCategory.SR)
-                .config(ModConfig.weaponConfig.awm)
+                .config(GunsRPG.config.weapon.awm)
                 .ammo()
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 5)

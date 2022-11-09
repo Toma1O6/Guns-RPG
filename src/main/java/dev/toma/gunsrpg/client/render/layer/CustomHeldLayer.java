@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.client.render.layer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.gunsrpg.config.client.IHeldLayerConfig;
+import dev.toma.gunsrpg.config.client.IHeldLayerSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
@@ -16,19 +16,19 @@ import net.minecraft.util.math.vector.Vector3f;
 
 public class CustomHeldLayer<E extends LivingEntity, M extends EntityModel<E> & IHasArm> extends LayerRenderer<E, M> {
 
-    private final IHeldLayerConfig config;
+    private final IHeldLayerSettings config;
 
-    public CustomHeldLayer(IEntityRenderer<E, M> renderer, IHeldLayerConfig config) {
+    public CustomHeldLayer(IEntityRenderer<E, M> renderer, IHeldLayerSettings config) {
         super(renderer);
         this.config = config;
     }
 
     @Override
     public void render(MatrixStack matrix, IRenderTypeBuffer buffer, int light, E entity, float f0, float f1, float f2, float f3, float f4, float f5) {
-        IHeldLayerConfig.Mode mode = config.getRenderingMode();
-        if (mode == IHeldLayerConfig.Mode.NONE) return;
+        IHeldLayerSettings.Mode mode = config.getRenderingMode();
+        if (mode == IHeldLayerSettings.Mode.NONE) return;
         boolean rightHanded = entity.getMainArm() == HandSide.RIGHT;
-        boolean useStatic = mode == IHeldLayerConfig.Mode.STATIC;
+        boolean useStatic = mode == IHeldLayerSettings.Mode.STATIC;
         ItemStack mainHandItem = useStatic ? config.getRenderItem() : rightHanded ? entity.getMainHandItem() : entity.getOffhandItem();
         ItemStack offHandItem = useStatic ? ItemStack.EMPTY : rightHanded ? entity.getOffhandItem() : entity.getMainHandItem();
         if (!mainHandItem.isEmpty() || !offHandItem.isEmpty()) {

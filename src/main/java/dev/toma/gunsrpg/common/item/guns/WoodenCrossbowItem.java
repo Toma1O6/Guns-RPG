@@ -17,7 +17,6 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -50,7 +49,7 @@ public class WoodenCrossbowItem extends AbstractCrossbow {
     public void initializeWeapon(WeaponBuilder builder) {
         builder
                 .category(WeaponCategory.CROSSBOW)
-                .config(ModConfig.weaponConfig.crossbow)
+                .config(GunsRPG.config.weapon.crossbow)
                 .ammo()
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 3)

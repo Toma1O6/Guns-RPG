@@ -17,7 +17,6 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -51,7 +50,7 @@ public class S686Item extends AbstractShotgun {
     public void initializeWeapon(WeaponBuilder builder) {
         builder
                 .category(WeaponCategory.SG)
-                .config(ModConfig.weaponConfig.s686)
+                .config(GunsRPG.config.weapon.s686)
                 .firemodeSelector(this::switchFiremode)
                 .ammo()
                     .define(AmmoMaterials.WOOD, 0)

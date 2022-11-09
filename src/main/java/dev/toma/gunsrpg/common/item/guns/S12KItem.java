@@ -14,7 +14,6 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -48,7 +47,7 @@ public class S12KItem extends AbstractShotgun {
     public void initializeWeapon(WeaponBuilder builder) {
         builder
                 .category(WeaponCategory.SG)
-                .config(ModConfig.weaponConfig.s12k)
+                .config(GunsRPG.config.weapon.s12k)
                 .ammo()
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 1)

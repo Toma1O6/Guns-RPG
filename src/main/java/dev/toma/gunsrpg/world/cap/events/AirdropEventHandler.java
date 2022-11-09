@@ -4,7 +4,6 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IWorldEventHandler;
 import dev.toma.gunsrpg.common.entity.AirdropEntity;
 import dev.toma.gunsrpg.common.init.ModSounds;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
@@ -59,7 +58,7 @@ public class AirdropEventHandler implements IWorldEventHandler {
         entity.setPos(pos.getX(), pos.getY(), pos.getZ());
         world.playSound(null, pos.getX(), player.getY(), pos.getZ(), ModSounds.PLANE_FLY_BY, SoundCategory.MASTER, 15.0F, 1.0F);
         world.addFreshEntity(entity);
-        if (random.nextFloat() < ModConfig.worldConfig.anotherAirdropSpawnChance.floatValue()) {
+        if (random.nextFloat() < GunsRPG.config.world.anotherAirdropSpawnChance) {
             addAirdrop(world, playerList);
         }
         GunsRPG.log.debug(WorldEventSpec.MARKER, "Created new airdrop at {} for player {}", pos, player.getDisplayName().getString());

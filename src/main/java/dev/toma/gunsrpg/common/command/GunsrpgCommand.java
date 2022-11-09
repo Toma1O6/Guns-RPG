@@ -43,7 +43,6 @@ import dev.toma.gunsrpg.common.quests.reward.QuestRewardList;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardManager;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.helper.CommandHelper;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -685,7 +684,7 @@ public class GunsrpgCommand {
         CommandSource src = ctx.getSource();
         MinecraftServer server = src.getServer();
         IServerWorldInfo worldInfo = server.getWorldData().overworldData();
-        long newGameTime = ModConfig.worldConfig.bloodmoonCycle.get() * 24000L + 13000L;
+        long newGameTime = GunsRPG.config.world.bloodmoonCycle * 24000L + 13000L;
         worldInfo.setGameTime(newGameTime);
         src.getLevel().setDayTime(newGameTime);
         src.sendSuccess(new TranslationTextComponent("command.gunsrpg.set_bloodmoon"), false);

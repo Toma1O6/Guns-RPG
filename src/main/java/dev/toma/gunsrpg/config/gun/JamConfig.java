@@ -1,33 +1,32 @@
 package dev.toma.gunsrpg.config.gun;
 
-import dev.toma.configuration.api.IConfigWriter;
-import dev.toma.configuration.api.IObjectSpec;
-import dev.toma.configuration.api.type.DoubleType;
-import dev.toma.configuration.api.type.EnumType;
-import dev.toma.configuration.api.type.ObjectType;
+import dev.toma.configuration.config.Configurable;
 import dev.toma.gunsrpg.api.common.IJamConfig;
 import lib.toma.animations.Easings;
 import net.minecraft.item.ItemStack;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+public final class JamConfig implements IJamConfig {
 
-public final class JamConfig extends ObjectType implements IJamConfig {
+    @Configurable
+    @Configurable.DecimalRange(min = 0.0, max = 1.0)
+    @Configurable.Comment("Smallest possible weapon jam chance")
+    @Configurable.Gui.NumberFormat("#.###")
+    public final float minChance;
 
-    private final DoubleType minChance;
-    private final DoubleType maxChance;
-    private final EnumType<Easings> easing;
+    @Configurable
+    @Configurable.DecimalRange(min = 0.0, max = 1.0)
+    @Configurable.Comment("Largest possible weapon jam chance")
+    @Configurable.Gui.NumberFormat("#.###")
+    public final float maxChance;
 
-    public JamConfig(IObjectSpec spec, float minChance, float maxChance, Easings easing) {
-        super(spec);
-        IConfigWriter writer = spec.getWriter();
-        DecimalFormat format = new DecimalFormat("#.###");
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setDecimalSeparator('.');
-        format.setDecimalFormatSymbols(symbols);
-        this.minChance = writer.writeBoundedDouble("Base chance", minChance, 0.0, 1.0).setFormatting(format);
-        this.maxChance = writer.writeBoundedDouble("Max chance", maxChance, 0.0, 1.0).setFormatting(format);
-        this.easing = writer.writeEnum("Curve type", easing);
+    @Configurable
+    @Configurable.Comment({"Transformer function for actual jam chance calculations", "See https://easings.net for examples"})
+    public final Easings jamChanceTransformerFunction;
+
+    public JamConfig(float minChance, float maxChance, Easings easing) {
+        this.minChance = maxChance;
+        this.maxChance = minChance;
+        this.jamChanceTransformerFunction = easing;
     }
 
     @Override
@@ -38,8 +37,8 @@ public final class JamConfig extends ObjectType implements IJamConfig {
 
     @Override
     public float getJamChance(float breakProgress) {
-        float progress = easing.get().ease(breakProgress);
-        float diff = maxChance.floatValue() - minChance.floatValue();
-        return minChance.floatValue() + progress * diff;
+        float progress = jamChanceTransformerFunction.ease(breakProgress);
+        float diff = maxChance - minChance;
+        return minChance + progress * diff;
     }
 }

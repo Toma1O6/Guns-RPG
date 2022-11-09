@@ -1,10 +1,10 @@
 package dev.toma.gunsrpg.common.debuffs;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.init.Debuffs;
 import dev.toma.gunsrpg.common.init.ModDamageSources;
 import dev.toma.gunsrpg.common.init.WeaponDamageSource;
-import dev.toma.gunsrpg.config.ModConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.SlimeEntity;
@@ -27,7 +27,7 @@ public final class DebuffRegistration {
     public static DebuffType<?> createPoisonType() {
         return new StagedDebuffType.StagedBuilder<>()
                 .factory(type -> new StagedDebuff((StagedDebuffType<?>) type))
-                .disableOn(() -> ModConfig.debuffConfig.disablePoison())
+                .disableOn(() -> GunsRPG.config.debuffs.disablePoison)
                 .delay(Attribs.POISON_DELAY)
                 .resistance(Attribs.POISON_RESISTANCE)
                 .blockingAttribute(Attribs.POISON_BLOCK)
@@ -49,7 +49,7 @@ public final class DebuffRegistration {
     public static DebuffType<?> createInfectionType() {
         return new StagedDebuffType.StagedBuilder<>()
                 .factory(type -> new StagedDebuff((StagedDebuffType<?>) type))
-                .disableOn(() -> ModConfig.debuffConfig.disableInfection())
+                .disableOn(() -> GunsRPG.config.debuffs.disableInfection)
                 .delay(Attribs.INFECTION_DELAY)
                 .resistance(Attribs.INFECTION_RESISTANCE)
                 .blockingAttribute(Attribs.INFECTION_BLOCK)
@@ -72,7 +72,7 @@ public final class DebuffRegistration {
     public static DebuffType<?> createFractureType() {
         return new StagedDebuffType.StagedBuilder<>()
                 .factory(type -> new StagedDebuff((StagedDebuffType<?>) type))
-                .disableOn(() -> ModConfig.debuffConfig.disableFractures())
+                .disableOn(() -> GunsRPG.config.debuffs.disableFractures)
                 .delay(Attribs.FRACTURE_DELAY)
                 .resistance(Attribs.FRACTURE_RESISTANCE)
                 .blockingAttribute(Attribs.FRACTURE_BLOCK)
@@ -91,7 +91,7 @@ public final class DebuffRegistration {
     public static DebuffType<?> createBleedType() {
         return new StagedDebuffType.StagedBuilder<>()
                 .factory(type -> new StagedDebuff((StagedDebuffType<?>) type))
-                .disableOn(() -> ModConfig.debuffConfig.disableBleeding())
+                .disableOn(() -> GunsRPG.config.debuffs.disableBleeding)
                 .delay(Attribs.BLEED_DELAY)
                 .resistance(Attribs.BLEED_RESISTANCE)
                 .blockingAttribute(Attribs.BLEED_BLOCK)
@@ -118,7 +118,7 @@ public final class DebuffRegistration {
     public static DebuffType<?> createRespawnType() {
         return new RespawnDebuffType.RespawnDebuffBuilder<>()
                 .factory(type -> new ReducedHealthDebuff((RespawnDebuffType<?>) type))
-                .disableOn(() -> ModConfig.debuffConfig.disableRespawnDebuff())
+                .disableOn(() -> GunsRPG.config.debuffs.disableRespawnDebuff)
                 .duration(3600)
                 .build()
                 .setRegistryName("respawn");

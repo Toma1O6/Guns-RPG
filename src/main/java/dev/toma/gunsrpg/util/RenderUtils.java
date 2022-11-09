@@ -91,6 +91,15 @@ public class RenderUtils {
         return combine4i(red, green, blue, alpha);
     }
 
+    public static int parseColor(String input) {
+        try {
+            long color = Long.decode(input);
+            return (int) color;
+        } catch (NumberFormatException nfe) {
+            return 0;
+        }
+    }
+
     public static void fillSolid(IVertexBuilder builder, Matrix4f pose, float x1, float y1, float x2, float y2, int color) {
         int a = alpha_i(color);
         int r = red_i(color);

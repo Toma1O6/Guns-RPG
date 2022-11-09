@@ -1,29 +1,29 @@
 package dev.toma.gunsrpg.util.math;
 
-import dev.toma.configuration.api.IConfigWriter;
-import dev.toma.configuration.api.IObjectSpec;
-import dev.toma.configuration.api.type.IntType;
-import dev.toma.configuration.api.type.ObjectType;
+import dev.toma.configuration.config.Configurable;
 
-public class ConfigurableVec2i extends ObjectType implements IVec2i {
+public class ConfigurableVec2i implements IVec2i {
 
-    private final IntType x;
-    private final IntType y;
+    @Configurable
+    @Configurable.Comment("X coordinate of vector")
+    public final int x;
 
-    public ConfigurableVec2i(IObjectSpec spec, int _x, int _y) {
-        super(spec);
-        IConfigWriter writer = spec.getWriter();
-        x = writer.writeInt("x", _x, "X coordinate of two dimensional vector");
-        y = writer.writeInt("y", _y, "Y coordinate of two dimensional vector");
+    @Configurable
+    @Configurable.Comment("Y coordinate of vector")
+    public final int y;
+
+    public ConfigurableVec2i(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     @Override
     public int x() {
-        return x.get();
+        return x;
     }
 
     @Override
     public int y() {
-        return y.get();
+        return y;
     }
 }

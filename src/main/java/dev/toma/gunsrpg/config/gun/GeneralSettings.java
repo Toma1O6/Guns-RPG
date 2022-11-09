@@ -1,33 +1,24 @@
 package dev.toma.gunsrpg.config.gun;
 
-import dev.toma.configuration.api.IConfigWriter;
-import dev.toma.configuration.api.IObjectSpec;
-import dev.toma.configuration.api.NumberDisplayType;
-import dev.toma.configuration.api.type.DoubleType;
-import dev.toma.configuration.api.type.ObjectType;
+import dev.toma.configuration.config.Configurable;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+public final class GeneralSettings {
 
-public class GeneralSettings extends ObjectType {
+    @Configurable
+    @Configurable.DecimalRange(min = 0.0, max = 1.0)
+    @Configurable.Comment("Recoil multiplier for carbon barrel attachment")
+    @Configurable.Gui.NumberFormat("0.0##")
+    public final double carbonBarrel = 0.65;
 
-    public final DoubleType carbonBarrel;
-    public final DoubleType verticalGrip;
-    public final DoubleType cheekpad;
+    @Configurable
+    @Configurable.DecimalRange(min = 0.0, max = 1.0)
+    @Configurable.Comment("Recoil multiplier for vertical grip attachment")
+    @Configurable.Gui.NumberFormat("0.0##")
+    public final double verticalGrip = 0.7;
 
-    public GeneralSettings(IObjectSpec spec) {
-        super(spec);
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setDecimalSeparator('.');
-        DecimalFormat format = new DecimalFormat("#.###", symbols);
-        IConfigWriter writer = spec.getWriter();
-        carbonBarrel = writer.writeBoundedDouble("Carbon barrel recoil", 0.65, 0.0, 1.0).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER).setFormatting(format);
-        verticalGrip = writer.writeBoundedDouble("Verical grip recoil", 0.7, 0.0, 1.0).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER).setFormatting(format);
-        cheekpad = writer.writeBoundedDouble("Cheekpad recoil", 0.75, 0.0, 1.0).setDisplay(NumberDisplayType.TEXT_FIELD_SLIDER).setFormatting(format);
-    }
-
-    @Override
-    public int getSortIndex() {
-        return -1;
-    }
+    @Configurable
+    @Configurable.DecimalRange(min = 0.0, max = 1.0)
+    @Configurable.Comment("Recoil multiplier for cheekpad attachment")
+    @Configurable.Gui.NumberFormat("0.0##")
+    public final double cheekpad = 0.75;
 }
