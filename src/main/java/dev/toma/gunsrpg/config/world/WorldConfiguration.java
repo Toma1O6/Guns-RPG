@@ -55,7 +55,7 @@ public final class WorldConfiguration {
     public double lootStashChance = 0.005;
 
     @Configurable
-    @Configurable.DecimalRange(min = 0.0, max = 1.0)
+    @Configurable.DecimalRange(min = 0.0, max = 0.9)
     @Configurable.Comment("Chance that multiple airdrops spawn")
     public double anotherAirdropSpawnChance = 0.005;
 

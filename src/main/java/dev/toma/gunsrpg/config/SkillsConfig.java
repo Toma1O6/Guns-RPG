@@ -1,9 +1,13 @@
 package dev.toma.gunsrpg.config;
 
+import dev.toma.configuration.client.IValidationHandler;
 import dev.toma.configuration.config.Configurable;
+import dev.toma.configuration.config.validate.ValidationResult;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.common.init.ModRegistries;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.LinkedHashSet;
@@ -18,6 +22,7 @@ public final class SkillsConfig {
 
     @Configurable
     @Configurable.StringPattern(value = "[a-z0-9_.-]+:[a-z0-9/._-]+", defaultValue = "gunsrpg:like_a_cat_i")
+    @Configurable.ChangeCallback(method = "validateSkillIds")
     @Configurable.Comment("Skills which can be access via quick-activation, max 5 supported")
     public String[] boundSkills = {
             "gunsrpg:like_a_cat_i",
@@ -29,6 +34,7 @@ public final class SkillsConfig {
     @Configurable.StringPattern(value = "[a-z0-9_.-]+:[a-z0-9/._-]+", defaultValue = "minecraft:pig")
     @Configurable.Comment("Mobs listed here cannot be insta-killed")
     @Configurable.ChangeCallback(method = "onSkullCrusherBlacklistUpdate")
+    @Configurable.Gui.CharacterLimit(64)
     public String[] skullCrusherIgnoredMobs = { "gunsrpg:bloodmoon_golem" };
 
     public boolean isInstantKillAllowed(EntityType<?> type) {
@@ -37,15 +43,29 @@ public final class SkillsConfig {
 
     private final Set<EntityType<?>> instantKillBlackList = new LinkedHashSet<>();
 
-    @SuppressWarnings("unused")
-    private void onSkullCrusherBlacklistUpdate(String[] inputs) {
+    private void onSkullCrusherBlacklistUpdate(String[] inputs, IValidationHandler handler) {
         instantKillBlackList.clear();
+        String lastInvalidId = null;
         for (String string : inputs) {
             ResourceLocation id = new ResourceLocation(string);
             if (ForgeRegistries.ENTITIES.containsKey(id)) {
                 instantKillBlackList.add(ForgeRegistries.ENTITIES.getValue(id));
             } else {
+                lastInvalidId = string;
                 GunsRPG.log.warn("Found unknown entity ID '{}' in config under 'skullCrusherIgnoredMobs' field", string);
+            }
+        }
+        if (lastInvalidId != null) {
+            handler.setValidationResult(ValidationResult.warn(new TranslationTextComponent("text.config.validation.invalid_id.entity", lastInvalidId)));
+        }
+    }
+
+    private void validateSkillIds(String[] skills, IValidationHandler handler) {
+        for (String s : skills) {
+            ResourceLocation id = new ResourceLocation(s);
+            if (!ModRegistries.SKILLS.containsKey(id)) {
+                handler.setValidationResult(ValidationResult.warn(new TranslationTextComponent("text.config.validation.invalid_id.skill", s)));
+                break;
             }
         }
     }

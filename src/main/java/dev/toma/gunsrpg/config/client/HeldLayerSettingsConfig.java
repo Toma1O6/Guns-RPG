@@ -1,10 +1,13 @@
 package dev.toma.gunsrpg.config.client;
 
+import dev.toma.configuration.client.IValidationHandler;
 import dev.toma.configuration.config.Configurable;
+import dev.toma.configuration.config.validate.ValidationResult;
 import dev.toma.gunsrpg.util.object.LazyLoader;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class HeldLayerSettingsConfig implements IHeldLayerSettings {
@@ -22,9 +25,11 @@ public class HeldLayerSettingsConfig implements IHeldLayerSettings {
     @Configurable.StringPattern(
             value = "[a-z]+:[a-z0-9]+",
             defaultValue = "minecraft:air",
-            errorDescriptor = "gunsrpg.config.error.invalid_id"
+            errorDescriptor = "text.config.validation.error.format.resourcelocation"
     )
     @Configurable.Comment("ID of item to be rendered with STATIC held item render mode")
+    @Configurable.ChangeCallback(method = "validateItemId")
+    @Configurable.Gui.CharacterLimit(64)
     public String itemId;
     private final LazyLoader<ItemStack> renderItem;
 
@@ -46,5 +51,12 @@ public class HeldLayerSettingsConfig implements IHeldLayerSettings {
     @Override
     public ItemStack getRenderItem() {
         return renderItem.get();
+    }
+
+    private void validateItemId(String itemId, IValidationHandler handler) {
+        ResourceLocation location = new ResourceLocation(itemId);
+        if (!ForgeRegistries.ITEMS.containsKey(location)) {
+            handler.setValidationResult(ValidationResult.warn(new TranslationTextComponent("text.config.validation.invalid_id.item", itemId)));
+        }
     }
 }

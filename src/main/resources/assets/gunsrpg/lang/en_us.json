@@ -1224,5 +1224,12 @@
   "crystal.station.on_cooldown": "You're on cooldown. Wait %s before trying again",
   "event.bloodmoon.end": "Bloodmoon falls",
   "item.gunsrpg.food_buff.health": "Heals %s HP",
-  "item.gunsrpg.food_buff.effect": "Gives %s for %ss"
+  "item.gunsrpg.food_buff.effect": "Gives %s for %ss",
+
+  "text.config.validation.invalid_id.item": "Invalid item ID: %s",
+  "text.config.validation.invalid_id.entity": "Invalid entity ID: %s",
+  "text.config.validation.invalid_id.skill": "Invalid skill ID: %s",
+  "text.config.validation.ore_gen.min_height": "Min height of value %s is bigger or equal to max height %s. This might cause crash of mod",
+  "text.config.validation.ore_gen.max_height": "Max height of value %s is smaller or equal to min height %s. This might cause crash of mod",
+  "text.config.validation.error.format.resourcelocation": "'%s' is not valid ID format. IDs must follow 'namespace:path' pattern - \\%s\\"
 }

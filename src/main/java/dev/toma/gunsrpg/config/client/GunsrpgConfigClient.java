@@ -34,8 +34,9 @@ public final class GunsrpgConfigClient {
 
     @Configurable
     @Configurable.StringPattern("#[A-Fa-f0-9]{1,8}")
-    @Configurable.Gui.ColorValue(isARGB = true)
     @Configurable.Comment("Color of reflex sight reticles in ARGB format")
+    @Configurable.Gui.ColorValue(isARGB = true)
+    @Configurable.Gui.CharacterLimit(9)
     public String reticleColor = "#FFFF0000";
 
     @Configurable
