@@ -256,16 +256,18 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
                 playerJamChanceMultiplier += ammoJamChanceMultiplier;
                 damageChance *= 1.0F - materialData.getAddedDurability();
             }
-            if (damageChance < 1.0F) {
-                if (random.nextFloat() < damageChance) {
-                    stack.hurt(1, random, player);
+            if (!GunsRPG.config.weapon.disableWeaponDurability) {
+                if (damageChance < 1.0F) {
+                    if (random.nextFloat() < damageChance) {
+                        stack.hurt(1, random, player);
+                    }
+                } else {
+                    int amount = 1;
+                    if (random.nextFloat() < damageChance - 1.0F) {
+                        amount = Math.min(stack.getMaxDamage() - stack.getDamageValue(), 2);
+                    }
+                    stack.hurt(amount, random, player);
                 }
-            } else {
-                int amount = 1;
-                if (random.nextFloat() < damageChance - 1.0F) {
-                    amount = Math.min(stack.getMaxDamage() - stack.getDamageValue(), 2);
-                }
-                stack.hurt(amount, random, player);
             }
             float jamChance = baseJamChance * playerJamChanceMultiplier;
             if (random.nextFloat() <= jamChance) {

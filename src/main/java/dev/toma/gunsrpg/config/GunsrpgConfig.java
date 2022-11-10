@@ -12,17 +12,17 @@ public final class GunsrpgConfig {
 
     @Configurable
     @Configurable.Comment("World related configurations")
-    public final WorldConfiguration world = new WorldConfiguration();
+    public WorldConfiguration world = new WorldConfiguration();
 
     @Configurable
     @Configurable.Comment("Debuff related configurations")
-    public final DebuffConfig debuffs = new DebuffConfig();
+    public DebuffConfig debuffs = new DebuffConfig();
 
     @Configurable
     @Configurable.Comment("Skill related configurations")
-    public final SkillsConfig skills = new SkillsConfig();
+    public SkillsConfig skills = new SkillsConfig();
 
     @Configurable
     @Configurable.Comment("Weapon related configurations")
-    public final WeaponConfig weapon = new WeaponConfig();
+    public WeaponConfig weapon = new WeaponConfig();
 }

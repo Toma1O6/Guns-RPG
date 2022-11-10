@@ -11,17 +11,17 @@ public final class SimpleWeaponConfiguration implements IWeaponConfig {
     @Configurable.DecimalRange(min = 1.0, max = 10000.0)
     @Configurable.Comment("Projectile velocity")
     @Configurable.Gui.NumberFormat("0.0###")
-    public final float velocity;
+    public float velocity;
 
     @Configurable
     @Configurable.Comment("Weapon jamming settings")
-    public final IJamConfig jamConfig;
+    public IJamConfig jamConfig;
 
     @Configurable
     @Configurable.DecimalRange(min = 0.0, max = 1.0)
     @Configurable.Comment("Visual recoil multiplier")
     @Configurable.Gui.NumberFormat("0.0##")
-    public final float recoilAnimationScale = 1.0f;
+    public float recoilAnimationScale = 1.0f;
 
     public SimpleWeaponConfiguration(float velocity, float jamMin, float jamMax) {
         this(velocity, jamMin, jamMax, IJamConfig.DEFAULT_EASING);

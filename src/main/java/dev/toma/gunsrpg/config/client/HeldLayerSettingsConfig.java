@@ -10,7 +10,13 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class HeldLayerSettingsConfig implements IHeldLayerSettings {
 
     @Configurable
-    public final Mode mode;
+    @Configurable.Comment({
+            "Rendering mode",
+            "DEFAULT - Renders actual held weapon, might have larger perfomarmance impact",
+            "STATIC - Renders item which is configured below",
+            "NONE - No held item is rendered"
+    })
+    public Mode mode;
 
     @Configurable
     @Configurable.StringPattern(
@@ -18,7 +24,8 @@ public class HeldLayerSettingsConfig implements IHeldLayerSettings {
             defaultValue = "minecraft:air",
             errorDescriptor = "gunsrpg.config.error.invalid_id"
     )
-    public final String itemId;
+    @Configurable.Comment("ID of item to be rendered with STATIC held item render mode")
+    public String itemId;
     private final LazyLoader<ItemStack> renderItem;
 
     public HeldLayerSettingsConfig(Mode mode, String id) {

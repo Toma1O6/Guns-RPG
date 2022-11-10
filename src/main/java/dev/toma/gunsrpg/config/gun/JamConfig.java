@@ -11,21 +11,21 @@ public final class JamConfig implements IJamConfig {
     @Configurable.DecimalRange(min = 0.0, max = 1.0)
     @Configurable.Comment("Smallest possible weapon jam chance")
     @Configurable.Gui.NumberFormat("#.###")
-    public final float minChance;
+    public float minChance;
 
     @Configurable
     @Configurable.DecimalRange(min = 0.0, max = 1.0)
     @Configurable.Comment("Largest possible weapon jam chance")
     @Configurable.Gui.NumberFormat("#.###")
-    public final float maxChance;
+    public float maxChance;
 
     @Configurable
     @Configurable.Comment({"Transformer function for actual jam chance calculations", "See https://easings.net for examples"})
-    public final Easings jamChanceTransformerFunction;
+    public Easings jamChanceTransformerFunction;
 
     public JamConfig(float minChance, float maxChance, Easings easing) {
-        this.minChance = maxChance;
-        this.maxChance = minChance;
+        this.minChance = minChance;
+        this.maxChance = maxChance;
         this.jamChanceTransformerFunction = easing;
     }
 

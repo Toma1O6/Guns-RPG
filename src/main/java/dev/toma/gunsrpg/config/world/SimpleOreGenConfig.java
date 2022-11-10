@@ -8,17 +8,17 @@ public class SimpleOreGenConfig implements IGeneratorConfig {
     @Configurable
     @Configurable.Range(min = 0, max = 128)
     @Configurable.Comment("Generation attempts per chunk")
-    public final int spawns;
+    public int spawns;
 
     @Configurable
     @Configurable.Range(min = 1, max = 255)
     @Configurable.Comment("Minimum generation height")
-    public final int minHeight;
+    public int minHeight;
 
     @Configurable
     @Configurable.Range(min = 1, max = 255)
     @Configurable.Comment("Maximum generation height")
-    public final int maxHeight;
+    public int maxHeight;
 
     public SimpleOreGenConfig(int spawnAttempts, int minGenHeight, int maxGenHeight) {
         spawns = spawnAttempts;

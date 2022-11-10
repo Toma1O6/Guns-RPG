@@ -10,26 +10,26 @@ public class WeaponConfiguration implements IWeaponConfig {
     @Configurable
     @Configurable.Range(min = 0, max = Short.MAX_VALUE)
     @Configurable.Comment("Tick amount for how long projectile is not affected by gravity")
-    public final int gravityDelay;
+    public int gravityDelay;
 
     @Configurable
     @Configurable.Range(min = 1, max = 10000)
     @Configurable.Comment("Projectile velocity in m/s")
-    public final int velocity;
+    public int velocity;
 
     @Configurable
     @Configurable.DecimalRange(min = 1.0)
     @Configurable.Comment("Projectile damage")
-    public final float damage;
+    public float damage;
 
     @Configurable
     @Configurable.DecimalRange(min = 0.0, max = 1.0)
     @Configurable.Comment("Visual recoil multiplier")
-    public final float recoilAnimationScale = 1.0f;
+    public float recoilAnimationScale = 1.0f;
 
     @Configurable
     @Configurable.Comment("Weapon jamming settings")
-    public final IJamConfig jamConfig;
+    public IJamConfig jamConfig;
 
     public WeaponConfiguration(float damage, int velocity, int delay, float jamMin, float jamMax) {
         this(damage, velocity, delay, jamMin, jamMax, IJamConfig.DEFAULT_EASING);

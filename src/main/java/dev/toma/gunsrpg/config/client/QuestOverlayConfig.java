@@ -6,10 +6,10 @@ public final class QuestOverlayConfig {
 
     @Configurable
     @Configurable.Comment("Quest overlay anchor on HUD")
-    public final boolean rightAligned = true;
+    public boolean rightAligned = true;
 
     @Configurable
     @Configurable.Range(min = 0, max = Short.MAX_VALUE)
     @Configurable.Comment("Height offset for quest overlay on HUD")
-    public final int heightOffset = 60;
+    public int heightOffset = 60;
 }

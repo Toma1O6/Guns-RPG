@@ -8,17 +8,17 @@ public class DimensionalMobSpawnConfig {
     @Configurable
     @Configurable.Range(min = 0, max = 96)
     @Configurable.Comment("Overworld spawn chance")
-    public final int overworld;
+    public int overworld;
 
     @Configurable
     @Configurable.Range(min = 0, max = 96)
     @Configurable.Comment("Nether spawn chance")
-    public final int nether;
+    public int nether;
 
     @Configurable
     @Configurable.Range(min = 0, max = 96)
     @Configurable.Comment("End spawn chance")
-    public final int end;
+    public int end;
 
     public DimensionalMobSpawnConfig(int overworld, int nether, int end) {
         this.overworld = overworld;

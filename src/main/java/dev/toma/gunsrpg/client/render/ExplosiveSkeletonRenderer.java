@@ -20,7 +20,7 @@ public class ExplosiveSkeletonRenderer extends BipedRenderer<ExplosiveSkeletonEn
         layers.clear();
         addLayer(new HeadLayer<>(this, 1.0F, 1.0F, 1.0F));
         addLayer(new BipedArmorLayer<>(this, new ExplosiveSkeletonModel(0.5F, true), new ExplosiveSkeletonModel(1.0F, true)));
-        addLayer(new CustomHeldLayer<>(this, ClientSideManager.config.explosiveSkeletonHeldItemRender));
+        addLayer(new CustomHeldLayer<>(this, ClientSideManager.config.grenadierHeldItemRender));
     }
 
     @Override

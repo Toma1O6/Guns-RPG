@@ -11,36 +11,52 @@ import net.minecraft.util.ResourceLocation;
 public final class GunsrpgConfigClient {
 
     @Configurable
-    public final boolean developerMode = false;
+    @Configurable.Comment("Enables developer tools")
+    public boolean developerMode = false;
 
     @Configurable
-    public final boolean alwaysRenderReticles = false;
+    @Configurable.Comment("Reflex sight reticles will be visible even when not aiming")
+    public boolean alwaysRenderReticles = false;
 
     @Configurable
-    public final boolean shaderCompatibilityMode = false;
+    @Configurable.Comment("Renders scope reticles differently which may help with some shaders")
+    public boolean shaderCompatibilityMode = false;
 
     @Configurable
-    public final IVec2i debuffOverlay = new ConfigurableVec2i(0, -60);
+    @Configurable.DecimalRange(min = 0.0, max = 0.5)
+    @Configurable.Comment("Scaling of tracers")
+    @Configurable.Gui.NumberFormat("0.0###")
+    public float tracerScale = 0.02F;
+
+    @Configurable
+    @Configurable.Comment("Debuff overlay offset on HUD")
+    public IVec2i debuffOverlay = new ConfigurableVec2i(0, -60);
 
     @Configurable
     @Configurable.StringPattern("#[A-Fa-f0-9]{1,8}")
     @Configurable.Gui.ColorValue(isARGB = true)
-    public final String reticleColor = "#FFFF0000";
+    @Configurable.Comment("Color of reflex sight reticles in ARGB format")
+    public String reticleColor = "#FFFF0000";
 
     @Configurable
-    public final ReticleType reticleType = ReticleType.DOT;
+    @Configurable.Comment({"Type of reticle texture", "Valid values: DOT, CHEVRON, CROSS"})
+    public ReticleType reticleType = ReticleType.DOT;
 
     @Configurable
-    public final IHeldLayerSettings gunnerHeldItemRender = new HeldLayerSettingsConfig(IHeldLayerSettings.Mode.DEFAULT, "minecraft:crossbow");
+    @Configurable.Comment("Configure held item rendering for Zombie Gunners")
+    public IHeldLayerSettings gunnerHeldItemRender = new HeldLayerSettingsConfig(IHeldLayerSettings.Mode.DEFAULT, "minecraft:crossbow");
 
     @Configurable
-    public final IHeldLayerSettings explosiveSkeletonHeldItemRender = new HeldLayerSettingsConfig(IHeldLayerSettings.Mode.DEFAULT, "minecraft:bow");
+    @Configurable.Comment("Configure held item rendering for Grenadiers")
+    public IHeldLayerSettings grenadierHeldItemRender = new HeldLayerSettingsConfig(IHeldLayerSettings.Mode.DEFAULT, "minecraft:bow");
 
     @Configurable
-    public final OpticsSensitivity optics = new OpticsSensitivity();
+    @Configurable.Comment("Configure sensitivity multipliers for scopes")
+    public OpticsSensitivity optics = new OpticsSensitivity();
 
     @Configurable
-    public final QuestOverlayConfig questOverlay = new QuestOverlayConfig();
+    @Configurable.Comment("Configure positions of quest overlay on HUD")
+    public QuestOverlayConfig questOverlay = new QuestOverlayConfig();
 
     public enum ReticleType {
 

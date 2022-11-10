@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.properties.Properties;
 import lib.toma.animations.AnimationUtils;
@@ -55,7 +56,7 @@ public class TracerRenderer<P extends AbstractProjectile> extends EntityRenderer
             MatrixStack.Entry entry = matrix.last();
             Matrix4f pose = entry.pose();
             Matrix3f normal = entry.normal();
-            float scale = 0.02F;
+            float scale = ClientSideManager.config.tracerScale;
             int nx = 0;
             int ny = 1;
             int nz = 0;

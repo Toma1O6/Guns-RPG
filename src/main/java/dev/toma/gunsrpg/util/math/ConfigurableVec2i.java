@@ -6,11 +6,11 @@ public class ConfigurableVec2i implements IVec2i {
 
     @Configurable
     @Configurable.Comment("X coordinate of vector")
-    public final int x;
+    public int x;
 
     @Configurable
     @Configurable.Comment("Y coordinate of vector")
-    public final int y;
+    public int y;
 
     public ConfigurableVec2i(int x, int y) {
         this.x = x;
