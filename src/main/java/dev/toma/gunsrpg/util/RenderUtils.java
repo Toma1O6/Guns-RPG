@@ -92,7 +92,6 @@ public class RenderUtils {
     }
 
     public static int parseColor(String input) {
-        System.out.println(input);
         try {
             long color = Long.decode(input);
             return (int) color;

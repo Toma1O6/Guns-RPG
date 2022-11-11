@@ -26,12 +26,12 @@ public final class WorldConfiguration {
 
     @Configurable
     @Configurable.Range(min = -1, max = 999)
+    @Configurable.Synchronized
     @Configurable.Comment({"Frequency in days specifying how often bloodmoon happens", "Value -1 means no bloodmoons"})
     public int bloodmoonCycle = 7;
 
     @Configurable
     @Configurable.Range(min = -1, max = 999)
-    @Configurable.Synchronized
     @Configurable.Comment({"Frequency in days specifying how ofter airdrops happen", "Value -1 means no airdrops"})
     public int airdropFrequency = 3;
 

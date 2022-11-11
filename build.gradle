@@ -46,6 +46,7 @@ minecraft {
             properties 'mixin.env.remapRefMap': 'true'
             property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
             arg "-mixin.config=gunsrpg.mixins.json"
+            arg "nogui"
 
             mods {
                 examplemod {
