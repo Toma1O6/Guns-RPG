@@ -14,7 +14,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.1.0'
+version = "${gunsrpg_version}"
 group = 'dev.toma.gunsrpg'
 archivesBaseName = "gunsrpg-${mc_version}"
 
@@ -60,25 +60,15 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    maven {
-        url = "https://www.cursemaven.com"
-    }
-    maven {
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        name = "ModMaven"
-        url = "https://modmaven.k-4u.nl"
-    }
-    flatDir {
-        dir 'libs'
-    }
+    maven { url "https://www.cursemaven.com" }
+    maven { url "https://dvs1.progwml6.com/files/maven/" }
+    maven { url "https://modmaven.k-4u.nl" }
+    flatDir { dir 'libs' }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
-    implementation fg.deobf("dev.toma.configuration:configuration-1.16.5:2.0.0")
+    implementation fg.deobf("curse.maven:configuration-${configuration_projectId}:${configuration_fileId}")
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
     testImplementation('org.junit.jupiter:junit-jupiter:5.9.0')

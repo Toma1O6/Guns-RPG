@@ -22,7 +22,7 @@ public final class SkillsConfig {
 
     @Configurable
     @Configurable.StringPattern(value = "[a-z0-9_.-]+:[a-z0-9/._-]+", defaultValue = "gunsrpg:like_a_cat_i")
-    @Configurable.ChangeCallback(method = "validateSkillIds")
+    @Configurable.ValueUpdateCallback(method = "validateSkillIds")
     @Configurable.Comment("Skills which can be access via quick-activation, max 5 supported")
     public String[] boundSkills = {
             "gunsrpg:like_a_cat_i",
@@ -33,7 +33,7 @@ public final class SkillsConfig {
     @Configurable
     @Configurable.StringPattern(value = "[a-z0-9_.-]+:[a-z0-9/._-]+", defaultValue = "minecraft:pig")
     @Configurable.Comment("Mobs listed here cannot be insta-killed")
-    @Configurable.ChangeCallback(method = "onSkullCrusherBlacklistUpdate")
+    @Configurable.ValueUpdateCallback(method = "onSkullCrusherBlacklistUpdate")
     @Configurable.Gui.CharacterLimit(64)
     public String[] skullCrusherIgnoredMobs = { "gunsrpg:bloodmoon_golem" };
 

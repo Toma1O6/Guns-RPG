@@ -15,13 +15,13 @@ public class SimpleOreGenConfig implements IGeneratorConfig {
 
     @Configurable
     @Configurable.Range(min = 1, max = 255)
-    @Configurable.ChangeCallback(method = "onMinHeightValidate")
+    @Configurable.ValueUpdateCallback(method = "onMinHeightValidate")
     @Configurable.Comment("Minimum generation height")
     public int minHeight;
 
     @Configurable
     @Configurable.Range(min = 1, max = 255)
-    @Configurable.ChangeCallback(method = "onMaxHeightValidate")
+    @Configurable.ValueUpdateCallback(method = "onMaxHeightValidate")
     @Configurable.Comment("Maximum generation height")
     public int maxHeight;
 

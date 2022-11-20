@@ -28,7 +28,7 @@ public class HeldLayerSettingsConfig implements IHeldLayerSettings {
             errorDescriptor = "text.config.validation.error.format.resourcelocation"
     )
     @Configurable.Comment("ID of item to be rendered with STATIC held item render mode")
-    @Configurable.ChangeCallback(method = "validateItemId")
+    @Configurable.ValueUpdateCallback(method = "validateItemId")
     @Configurable.Gui.CharacterLimit(64)
     public String itemId;
     private final LazyLoader<ItemStack> renderItem;
