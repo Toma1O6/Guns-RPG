@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.world.cap;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IWorldData;
 import dev.toma.gunsrpg.api.common.data.IWorldEventSpec;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.world.cap.events.AirdropEventHandler;
 import dev.toma.gunsrpg.world.cap.events.BloodmoonEventHandler;
@@ -25,10 +25,10 @@ public class WorldData implements IWorldData {
 
     public WorldData(World world) {
         this.world = world;
-        IWorldEventSpec bloodmoonEvent = IWorldEventSpec.of("bloodmoon", () -> ModConfig.worldConfig.bloodmoonCycle.get(), new BloodmoonEventHandler());
+        IWorldEventSpec bloodmoonEvent = IWorldEventSpec.of("bloodmoon", () -> GunsRPG.config.world.bloodmoonCycle, new BloodmoonEventHandler());
         addEvent(bloodmoonEvent);
         isBloodmoonSupplier = bloodmoonEvent::isEventActive;
-        addEvent(IWorldEventSpec.of("airdrop", () -> ModConfig.worldConfig.airdropFrequency.get(), new AirdropEventHandler(world)));
+        addEvent(IWorldEventSpec.of("airdrop", () -> GunsRPG.config.world.airdropFrequency, new AirdropEventHandler(world)));
     }
 
     public static IWorldData get(World world) {

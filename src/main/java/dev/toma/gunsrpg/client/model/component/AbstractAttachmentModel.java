@@ -4,7 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.model.AbstractSolidEntityModel;
-import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
@@ -28,7 +28,7 @@ public abstract class AbstractAttachmentModel extends AbstractSolidEntityModel {
         IVertexBuilder reticleVertexBuilder = buffer.getBuffer(renderTypeFunction.apply(path));
         int reticleColor = provider.getReticleTintARGB();
         float cfgA = ((reticleColor >> 24) & 255) / 255.0F;
-        float a = ModConfig.clientConfig.alwaysRenderReticles.get() ? 1.0F : Math.min(cfgA, progress);
+        float a = ClientSideManager.config.alwaysRenderReticles ? 1.0F : Math.min(cfgA, progress);
         float r = ((reticleColor >> 16) & 255) / 255.0F;
         float g = ((reticleColor >>  8) & 255) / 255.0F;
         float b = ( reticleColor        & 255) / 255.0F;

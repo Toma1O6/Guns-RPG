@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.common.item.guns.util;
 
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
-import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.function.FloatSupplier;
 
 import java.util.IdentityHashMap;
@@ -11,11 +11,11 @@ import java.util.function.Predicate;
 
 public final class ScopeDataRegistry {
 
-    public static final FloatSupplier ZOOM_2_5 = () -> ModConfig.clientConfig.optics.scope25x.floatValue();
-    public static final FloatSupplier ZOOM_3_0 = () -> ModConfig.clientConfig.optics.scope30x.floatValue();
-    public static final FloatSupplier ZOOM_3_5 = () -> ModConfig.clientConfig.optics.scope35x.floatValue();
-    public static final FloatSupplier ZOOM_4_0 = () -> ModConfig.clientConfig.optics.scope40x.floatValue();
-    public static final FloatSupplier ZOOM_6_0 = () -> ModConfig.clientConfig.optics.scope60x.floatValue();
+    public static final FloatSupplier ZOOM_2_5 = () -> ClientSideManager.config.optics.scope25x;
+    public static final FloatSupplier ZOOM_3_0 = () -> ClientSideManager.config.optics.scope30x;
+    public static final FloatSupplier ZOOM_3_5 = () -> ClientSideManager.config.optics.scope35x;
+    public static final FloatSupplier ZOOM_4_0 = () -> ClientSideManager.config.optics.scope40x;
+    public static final FloatSupplier ZOOM_6_0 = () -> ClientSideManager.config.optics.scope60x;
 
     private static final ScopeDataRegistry REGISTRY = new ScopeDataRegistry();
     private final Map<AbstractGun, Entry> data = new IdentityHashMap<>();

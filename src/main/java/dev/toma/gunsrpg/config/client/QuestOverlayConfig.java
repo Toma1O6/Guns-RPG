@@ -1,29 +1,15 @@
 package dev.toma.gunsrpg.config.client;
 
-import dev.toma.configuration.api.IConfigWriter;
-import dev.toma.configuration.api.IObjectSpec;
-import dev.toma.configuration.api.type.BooleanType;
-import dev.toma.configuration.api.type.IntType;
-import dev.toma.configuration.api.type.ObjectType;
+import dev.toma.configuration.config.Configurable;
 
-public final class QuestOverlayConfig extends ObjectType {
+public final class QuestOverlayConfig {
 
-    private final BooleanType rightAligned;
-    private final IntType heightOffset;
+    @Configurable
+    @Configurable.Comment("Quest overlay anchor on HUD")
+    public boolean rightAligned = true;
 
-    public QuestOverlayConfig(IObjectSpec spec) {
-        super(spec);
-
-        IConfigWriter writer = spec.getWriter();
-        rightAligned = writer.writeBoolean("Right alignment", true, "Decides whether the overlay is going to be aligned to the right or not");
-        heightOffset = writer.writeBoundedInt("Height offset", 60, 0, Short.MAX_VALUE, "Height offset of quest overlay");
-    }
-
-    public boolean isRightAligned() {
-        return rightAligned.get();
-    }
-
-    public int getOffsetY() {
-        return heightOffset.get();
-    }
+    @Configurable
+    @Configurable.Range(min = 0, max = Short.MAX_VALUE)
+    @Configurable.Comment("Height offset for quest overlay on HUD")
+    public int heightOffset = 60;
 }

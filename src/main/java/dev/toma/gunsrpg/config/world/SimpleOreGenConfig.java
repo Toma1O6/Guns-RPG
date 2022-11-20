@@ -1,34 +1,57 @@
 package dev.toma.gunsrpg.config.world;
 
-import dev.toma.configuration.api.IConfigWriter;
-import dev.toma.configuration.api.IObjectSpec;
-import dev.toma.configuration.api.type.IntType;
-import dev.toma.configuration.api.type.ObjectType;
+import dev.toma.configuration.client.IValidationHandler;
+import dev.toma.configuration.config.Configurable;
+import dev.toma.configuration.config.validate.ValidationResult;
 import dev.toma.gunsrpg.api.common.IGeneratorConfig;
+import net.minecraft.util.text.TranslationTextComponent;
 
-public class SimpleOreGenConfig extends ObjectType implements IGeneratorConfig {
+public class SimpleOreGenConfig implements IGeneratorConfig {
 
-    private final IntType spawns;
-    private final IntType minHeight;
-    private final IntType maxHeight;
+    @Configurable
+    @Configurable.Range(min = 0, max = 128)
+    @Configurable.Comment("Generation attempts per chunk")
+    public int spawns;
 
-    public SimpleOreGenConfig(IObjectSpec spec, int spawnAttempts, int minGenHeight, int maxGenHeight) {
-        super(spec);
-        IConfigWriter writer = spec.getWriter();
-        spawns = writer.writeBoundedInt("Spawns", spawnAttempts, 0, 128, "Amount of spawn attempts per chunk");
-        minHeight = writer.writeBoundedInt("Min height", minGenHeight, 1, 255, "Defines lowest height at which ore can spawn");
-        maxHeight = writer.writeBoundedInt("Max height", maxGenHeight, 1, 255, "Defines highest height at which ore can spawn");
+    @Configurable
+    @Configurable.Range(min = 1, max = 255)
+    @Configurable.ValueUpdateCallback(method = "onMinHeightValidate")
+    @Configurable.Comment("Minimum generation height")
+    public int minHeight;
+
+    @Configurable
+    @Configurable.Range(min = 1, max = 255)
+    @Configurable.ValueUpdateCallback(method = "onMaxHeightValidate")
+    @Configurable.Comment("Maximum generation height")
+    public int maxHeight;
+
+    public SimpleOreGenConfig(int spawnAttempts, int minGenHeight, int maxGenHeight) {
+        spawns = spawnAttempts;
+        minHeight = minGenHeight;
+        maxHeight = maxGenHeight;
     }
 
     public int getSpawnAttempts() {
-        return spawns.get();
+        return spawns;
     }
 
     public int getMinHeight() {
-        return minHeight.get();
+        return minHeight;
     }
 
     public int getMaxHeight() {
-        return maxHeight.get();
+        return maxHeight;
+    }
+
+    public void onMinHeightValidate(int value, IValidationHandler handler) {
+        if (value >= this.maxHeight) {
+            handler.setValidationResult(ValidationResult.warn(new TranslationTextComponent("text.config.validation.ore_gen.min_height", value, maxHeight)));
+        }
+    }
+
+    public void onMaxHeightValidate(int value, IValidationHandler handler) {
+        if (value <= this.minHeight) {
+            handler.setValidationResult(ValidationResult.warn(new TranslationTextComponent("text.config.validation.ore_gen.max_height", value, minHeight)));
+        }
     }
 }

@@ -16,7 +16,6 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,7 +43,7 @@ public class DesertEagleItem extends GunItem {
         builder
                 .category(WeaponCategory.PISTOL)
                 .caliber(AmmoType.AMMO_762MM)
-                .config(ModConfig.weaponConfig.desertEagle)
+                .config(GunsRPG.config.weapon.desertEagle)
                 .ammo()
                     .define(AmmoMaterials.WOOD, 0)
                     .define(AmmoMaterials.STONE, 3)

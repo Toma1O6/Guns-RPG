@@ -1,9 +1,9 @@
 package dev.toma.gunsrpg.client.screen.widgets;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.configuration.api.client.widget.ITickable;
 import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.common.perk.PerkType;
+import dev.toma.gunsrpg.util.ITickable;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;

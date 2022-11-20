@@ -14,7 +14,6 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -45,7 +44,7 @@ public class VectorItem extends GunItem {
     @Override
     public void initializeWeapon(WeaponBuilder builder) {
         builder
-                .config(ModConfig.weaponConfig.vector)
+                .config(GunsRPG.config.weapon.vector)
                 .caliber(AmmoType.AMMO_9MM)
                 .firemodeSelector(Firemode::singleAndFullAuto)
                 .ammo(WeaponCategory.SMG)

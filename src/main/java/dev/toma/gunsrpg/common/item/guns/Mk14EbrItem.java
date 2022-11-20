@@ -14,7 +14,6 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -38,7 +37,7 @@ public class Mk14EbrItem extends GunItem {
     @Override
     public void initializeWeapon(WeaponBuilder builder) {
         builder
-                .config(ModConfig.weaponConfig.mk14)
+                .config(GunsRPG.config.weapon.mk14)
                 .firemodeSelector(Firemode::singleAndFullAuto)
                 .ammo(WeaponCategory.DMR)
                     .define(AmmoMaterials.WOOD)

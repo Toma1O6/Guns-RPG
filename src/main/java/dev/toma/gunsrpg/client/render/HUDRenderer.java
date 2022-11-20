@@ -18,7 +18,6 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.config.client.QuestOverlayConfig;
 import dev.toma.gunsrpg.resource.util.functions.RangedFunction;
 import dev.toma.gunsrpg.sided.ClientSideManager;
@@ -52,7 +51,7 @@ public final class HUDRenderer {
         if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
             Minecraft mc = Minecraft.getInstance();
             PlayerEntity player = mc.player;
-            if (!ModConfig.clientConfig.developerMode.get()) {
+            if (!ClientSideManager.config.developerMode) {
                 ItemStack stack = player.getMainHandItem();
                 if (stack.getItem() instanceof AbstractGun) {
                     event.setCanceled(true);
@@ -95,10 +94,10 @@ public final class HUDRenderer {
             if (status != QuestStatus.ACTIVE && status != QuestStatus.COMPLETED) return;
             LazyOptional<IDataModel> modelOptional = quest.getDisplayModel();
             modelOptional.ifPresent(model -> {
-                QuestOverlayConfig config = ModConfig.clientConfig.questOverlayConfig;
-                boolean rightAlignment = config.isRightAligned();
+                QuestOverlayConfig config = ClientSideManager.config.questOverlay;
+                boolean rightAlignment = config.rightAligned;
                 int posX = rightAlignment ? window.getGuiScaledWidth() : 0;
-                model.renderModel(matrix, font, posX, config.getOffsetY(), rightAlignment);
+                model.renderModel(matrix, font, posX, config.heightOffset, rightAlignment);
             });
         });
     }
@@ -126,7 +125,7 @@ public final class HUDRenderer {
     private void renderBloodmoonInfo(MatrixStack matrixStack, FontRenderer font, MainWindow window, PlayerEntity player) {
         World world = player.level;
         long actualDay = world.getDayTime() / 24000L;
-        int cycle = ModConfig.worldConfig.bloodmoonCycle.get();
+        int cycle = GunsRPG.config.world.bloodmoonCycle;
         if (cycle == -1) return;
         boolean isBloodmoonDay = actualDay > 0 && actualDay % cycle == 0;
         int leftToBloodmoon = isBloodmoonDay ? 0 : (int) (cycle - actualDay % cycle);

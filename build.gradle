@@ -14,7 +14,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.0.6.1'
+version = "${gunsrpg_version}"
 group = 'dev.toma.gunsrpg'
 archivesBaseName = "gunsrpg-${mc_version}"
 
@@ -25,7 +25,7 @@ minecraft {
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     runs {
         client {
-            workingDirectory project.file('run')
+            workingDirectory project.file('run/client')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'info'
             properties 'mixin.env.remapRefMap': 'true'
@@ -40,12 +40,13 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run')
+            workingDirectory project.file('run/server')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'info'
             properties 'mixin.env.remapRefMap': 'true'
             property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
             arg "-mixin.config=gunsrpg.mixins.json"
+            arg "nogui"
 
             mods {
                 examplemod {
@@ -59,17 +60,10 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    maven {
-        url = "https://www.cursemaven.com"
-    }
-    maven {
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        name = "ModMaven"
-        url = "https://modmaven.k-4u.nl"
-    }
+    maven { url "https://www.cursemaven.com" }
+    maven { url "https://dvs1.progwml6.com/files/maven/" }
+    maven { url "https://modmaven.k-4u.nl" }
+    flatDir { dir 'libs' }
 }
 
 dependencies {
@@ -77,7 +71,7 @@ dependencies {
     implementation fg.deobf("curse.maven:configuration-${configuration_projectId}:${configuration_fileId}")
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
-    testImplementation('org.junit.jupiter:junit-jupiter:5.8.1')
+    testImplementation('org.junit.jupiter:junit-jupiter:5.9.0')
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
 

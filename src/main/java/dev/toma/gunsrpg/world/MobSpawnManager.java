@@ -1,10 +1,10 @@
 package dev.toma.gunsrpg.world;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ai.BeAngryDuringBloodmoonGoal;
 import dev.toma.gunsrpg.common.entity.BloodmoonGolemEntity;
 import dev.toma.gunsrpg.common.entity.RocketAngelEntity;
 import dev.toma.gunsrpg.common.init.ModEntities;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.Pair;
 import net.minecraft.entity.*;
@@ -51,7 +51,7 @@ public class MobSpawnManager {
             spider.setPos(vec3d.x, vec3d.y, vec3d.z);
             return spider;
         });
-        registerBloodmoonEntry(EntityType.SPIDER, ModConfig.worldConfig.rocketAngelSpawn.overworldChance(), (world, vec3d) -> {
+        registerBloodmoonEntry(EntityType.SPIDER, GunsRPG.config.world.rocketAngelSpawn.overworldChance(), (world, vec3d) -> {
             RocketAngelEntity rocketAngel = new RocketAngelEntity(world);
             rocketAngel.setPos(vec3d.x, vec3d.y, vec3d.z);
             return rocketAngel;

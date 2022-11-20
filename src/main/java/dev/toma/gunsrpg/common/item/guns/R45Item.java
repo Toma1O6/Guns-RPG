@@ -16,7 +16,6 @@ import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -41,7 +40,7 @@ public class R45Item extends GunItem {
     @Override
     public void initializeWeapon(WeaponBuilder builder) {
         builder
-                .config(ModConfig.weaponConfig.r45)
+                .config(GunsRPG.config.weapon.r45)
                 .caliber(AmmoType.AMMO_45ACP)
                 .ammo(WeaponCategory.PISTOL)
                     .define(AmmoMaterials.WOOD, 0)

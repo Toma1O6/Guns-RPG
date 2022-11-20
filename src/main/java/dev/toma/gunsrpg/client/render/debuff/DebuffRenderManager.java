@@ -5,7 +5,7 @@ import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.common.debuffs.IDebuff;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
-import dev.toma.gunsrpg.config.ModConfig;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.math.IVec2i;
 
 import java.util.IdentityHashMap;
@@ -20,7 +20,7 @@ public final class DebuffRenderManager {
     }
 
     public void drawDebuffsOnScreen(MatrixStack poseStack, IAttributeProvider attributes, IDebuffs debuffs, int left, int top, float partialTicks) {
-        IVec2i positionOffset = ModConfig.clientConfig.debuffOverlay;
+        IVec2i positionOffset = ClientSideManager.config.debuffOverlay;
         int index = 0;
         for (IDebuff debuff : debuffs.getActiveAsIterable()) {
             if (tryRender(debuff, attributes, index, left, top, positionOffset, poseStack, partialTicks)) {

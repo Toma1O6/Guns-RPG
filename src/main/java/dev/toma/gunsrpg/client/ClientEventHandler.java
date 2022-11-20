@@ -13,7 +13,6 @@ import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.InputEventListenerType;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_SetAimingPacket;
 import dev.toma.gunsrpg.util.object.PropertyChangeListener;
@@ -103,7 +102,7 @@ public class ClientEventHandler {
         if (event.phase == TickEvent.Phase.END && player != null) {
             World world = player.level;
             long actualDay = world.getDayTime() / 24000L;
-            int cycle = ModConfig.worldConfig.bloodmoonCycle.get();
+            int cycle = GunsRPG.config.world.bloodmoonCycle;
             if (cycle == -1) return;
             boolean isBloodmoonDay = actualDay > 0 && actualDay % cycle == 0;
             boolean isNight = world.getDayTime() % 24000L >= 12500L;

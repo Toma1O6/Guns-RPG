@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.client.screen.widgets;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import dev.toma.configuration.api.client.widget.ITickable;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.client.ISkillRenderer;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
@@ -11,6 +10,7 @@ import dev.toma.gunsrpg.client.screen.skill.IViewContext;
 import dev.toma.gunsrpg.common.skills.core.DisplayData;
 import dev.toma.gunsrpg.common.skills.core.DisplayType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.util.ITickable;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.math.Mth;

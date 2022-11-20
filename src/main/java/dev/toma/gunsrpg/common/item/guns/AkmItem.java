@@ -16,7 +16,6 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -43,7 +42,7 @@ public class AkmItem extends GunItem {
         builder
                 .category(WeaponCategory.AR)
                 .caliber(AmmoType.AMMO_762MM)
-                .config(ModConfig.weaponConfig.akm)
+                .config(GunsRPG.config.weapon.akm)
                 .firemodeSelector(Firemode::singleAndFullAuto)
                 .ammo()
                     .define(AmmoMaterials.WOOD)

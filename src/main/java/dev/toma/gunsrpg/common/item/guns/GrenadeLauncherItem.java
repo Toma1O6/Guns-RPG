@@ -18,7 +18,6 @@ import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.ModConfig;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,7 +42,7 @@ public class GrenadeLauncherItem extends AbstractExplosiveLauncher {
     @Override
     public void initializeWeapon(WeaponBuilder builder) {
         builder
-                .config(ModConfig.weaponConfig.grenadeLauncher)
+                .config(GunsRPG.config.weapon.grenadeLauncher)
                 .ammo(WeaponCategory.GRENADE_LAUNCHER)
                     .define(AmmoMaterials.GRENADE)
                     .define(AmmoMaterials.TEAR_GAS)
