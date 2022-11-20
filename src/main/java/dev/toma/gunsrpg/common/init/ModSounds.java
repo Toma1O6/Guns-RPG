@@ -57,4 +57,5 @@ public class ModSounds {
     public static final SoundEvent REPAIR = null;
     public static final SoundEvent DETECTOR_BEEP = null;
     public static final SoundEvent DETECTOR_BEEP_LONG = null;
+    public static final SoundEvent EMPTY_GUN_CLICK = null;
 }

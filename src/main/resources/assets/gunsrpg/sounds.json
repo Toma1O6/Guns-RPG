@@ -1663,5 +1663,14 @@
         "stream": true
       }
     ]
+  },
+  "empty_gun_click": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "gunsrpg:empty_gun_click",
+        "stream": false
+      }
+    ]
   }
 }

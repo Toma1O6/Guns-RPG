@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.animation.AimAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
@@ -75,6 +76,9 @@ public class ClientEventHandler {
                     Firemode firemode = item.getFiremode(stack);
                     InputEventListenerType inputEvent = InputEventListenerType.ON_INPUT;
                     optional.ifPresent(data -> firemode.triggerEvent(inputEvent, player, stack, data));
+                    if (!item.hasAmmo(stack)) {
+                        player.playSound(ModSounds.EMPTY_GUN_CLICK, 1.0F, 1.0F);
+                    }
                 } else if (settings.keyUse.isDown() && !AnimationUtils.isActiveOrScheduled(pipeline, ModAnimations.CHAMBER) && !player.isSprinting()) {
                     handleAim(optional, settings, player, item, stack, pipeline);
                 }
