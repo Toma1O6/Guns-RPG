@@ -8,10 +8,12 @@ public final class FusionConfiguration {
 
     private final Upgrades upgrades;
     private final Swaps swaps;
+    private final BreakChanceReductions breakChanceReductions;
 
-    public FusionConfiguration(Upgrades upgrades, Swaps swaps) {
+    public FusionConfiguration(Upgrades upgrades, Swaps swaps, BreakChanceReductions reductions) {
         this.upgrades = upgrades;
         this.swaps = swaps;
+        this.breakChanceReductions = reductions;
     }
 
     public Upgrades getUpgrades() {
@@ -22,15 +24,21 @@ public final class FusionConfiguration {
         return swaps;
     }
 
+    public BreakChanceReductions getBreakChanceReductions() {
+        return breakChanceReductions;
+    }
+
     public void encode(PacketBuffer buffer) {
         upgrades.encode(buffer);
         swaps.encode(buffer);
+        breakChanceReductions.encode(buffer);
     }
 
     public static FusionConfiguration decode(PacketBuffer buffer) {
         return new FusionConfiguration(
                 Upgrades.decode(buffer),
-                Swaps.decode(buffer)
+                Swaps.decode(buffer),
+                BreakChanceReductions.decode(buffer)
         );
     }
 
@@ -155,6 +163,65 @@ public final class FusionConfiguration {
         public static Swap decode(PacketBuffer buffer) {
             return new Swap(
                     buffer.readInt(),
+                    buffer.readInt(),
+                    buffer.readFloat()
+            );
+        }
+    }
+
+    public static final class BreakChanceReductions {
+
+        private final Int2ObjectMap<BreakChanceReduction> map;
+
+        public BreakChanceReductions(Int2ObjectMap<BreakChanceReduction> map) {
+            this.map = map;
+        }
+
+        public BreakChanceReduction getReductionForOrbs(int orbs) {
+            return map.get(orbs);
+        }
+
+        public void encode(PacketBuffer buffer) {
+            buffer.writeInt(map.size());
+            map.values().forEach(reduction -> reduction.encode(buffer));
+        }
+
+        public static BreakChanceReductions decode(PacketBuffer buffer) {
+            int count = buffer.readInt();
+            Int2ObjectMap<BreakChanceReduction> result = new Int2ObjectOpenHashMap<>();
+            for (int i = 0; i < count; i++) {
+                BreakChanceReduction reduction = BreakChanceReduction.decode(buffer);
+                result.put(reduction.orbCount, reduction);
+            }
+            return new BreakChanceReductions(result);
+        }
+    }
+
+    public static final class BreakChanceReduction {
+
+        private final int orbCount;
+        private final float multiplier;
+
+        public BreakChanceReduction(int orbCount, float multiplier) {
+            this.orbCount = orbCount;
+            this.multiplier = multiplier;
+        }
+
+        public int getOrbCount() {
+            return orbCount;
+        }
+
+        public float getMultiplier() {
+            return multiplier;
+        }
+
+        public void encode(PacketBuffer buffer) {
+            buffer.writeInt(orbCount);
+            buffer.writeFloat(multiplier);
+        }
+
+        public static BreakChanceReduction decode(PacketBuffer buffer) {
+            return new BreakChanceReduction(
                     buffer.readInt(),
                     buffer.readFloat()
             );

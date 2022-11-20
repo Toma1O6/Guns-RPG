@@ -53,16 +53,24 @@ public class CrystalFusionStationTileEntity extends InventoryTileEntity {
         Crystal crystal2 = CrystalItem.getCrystal(itemHandler.getStackInSlot(INPUTS[1]));
         int targetLevel = crystal1.getLevel() + crystal2.getLevel();
         FusionConfiguration.Upgrade upgrade = fusionConfig.getUpgrades().getUpgradeStat(targetLevel);
+        FusionConfiguration.BreakChanceReductions reductions = fusionConfig.getBreakChanceReductions();
         int price = upgrade.getPrice() + swapConfig.getPrice();
         float breakChance = upgrade.getBreakChance();
         data.getPerkProvider().awardPoints(-price);
         Random random = level.random;
+        EnumSet<PerkVariant> usedVariants = this.getCurrentlyUsedVariants();
+        if (usedVariants.size() == 1) { // when same only one color is used
+            FusionConfiguration.BreakChanceReduction reduction = reductions.getReductionForOrbs(orbCount);
+            if (reduction != null) {
+                breakChance *= reduction.getMultiplier();
+            }
+        }
         float randomChance = random.nextFloat();
         if (randomChance < breakChance) {
             clearInputs();
             return;
         }
-        List<PerkVariant> variants = ImmutableList.copyOf(this.getCurrentlyUsedVariants());
+        List<PerkVariant> variants = ImmutableList.copyOf(usedVariants);
         PerkVariant targetVariant = this.getTargetedOrbType();
         PerkVariant other;
         if (targetVariant == null) {

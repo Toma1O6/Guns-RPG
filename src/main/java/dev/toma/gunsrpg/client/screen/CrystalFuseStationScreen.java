@@ -26,12 +26,15 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.items.IItemHandler;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 
 public class CrystalFuseStationScreen extends ContainerScreen<CrystalFusionStationContainer> {
 
     private static final ResourceLocation BG = GunsRPG.makeResource("textures/screen/fusion_station.png");
     private static final ITextComponent BUTTON_FUSE = new TranslationTextComponent("screen.button.fuse_crystals");
+    private static final DecimalFormat FORMAT;
     private final ItemStack renderItem = new ItemStack(ModItems.PERKPOINT_BOOK);
     private IPlayerData data;
     private Button fuseButton;
@@ -83,19 +86,26 @@ public class CrystalFuseStationScreen extends ContainerScreen<CrystalFusionStati
 
         Crystal crystal1 = CrystalItem.getCrystal(item1);
         Crystal crystal2 = CrystalItem.getCrystal(item2);
+        PerkVariant variant1 = tileEntity.getItemVariant(item1);
+        PerkVariant variant2 = tileEntity.getItemVariant(item2);
+        boolean areSameInputs = variant1 == variant2;
         if (crystal1 != null && crystal2 != null) {
             int targetLevel = crystal1.getLevel() + crystal2.getLevel();
             FusionConfiguration.Upgrade upgrade = fusionConfig.getUpgrades().getUpgradeStat(targetLevel);
             float breakChance = upgrade.getBreakChance();
-            String breakChanceText = "Break: " + Math.round(breakChance * 100) + "%";
+            if (areSameInputs) {
+                FusionConfiguration.BreakChanceReduction reduction = fusionConfig.getBreakChanceReductions().getReductionForOrbs(orbCount);
+                if (reduction != null) {
+                    breakChance *= reduction.getMultiplier();
+                }
+            }
+            String breakChanceText = "Break: " + FORMAT.format(breakChance * 100.0F) + "%";
             font.draw(matrix, breakChanceText, leftPos + 6, topPos + 58, 0x404040);
         }
 
-        PerkVariant variant1 = tileEntity.getItemVariant(item1);
-        PerkVariant variant2 = tileEntity.getItemVariant(item2);
         PerkVariant targetVariant = tileEntity.getTargetedOrbType();
         float chance1, chance2;
-        if (variant1 == variant2) {
+        if (areSameInputs) {
             return;
         }
         if (targetVariant == null) {
@@ -149,5 +159,11 @@ public class CrystalFuseStationScreen extends ContainerScreen<CrystalFusionStati
             return 0;
         }
         return upgrade.getPrice() + swapConfig.getPrice();
+    }
+
+    static {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator('.');
+        FORMAT = new DecimalFormat("0.0", symbols);
     }
 }

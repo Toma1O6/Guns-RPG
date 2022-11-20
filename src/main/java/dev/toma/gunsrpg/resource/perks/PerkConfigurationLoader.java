@@ -32,6 +32,8 @@ public class PerkConfigurationLoader extends SingleJsonFileReloadListener {
             .registerTypeAdapter(FusionConfiguration.Swap.class, new FusionSwapAdapter())
             .registerTypeAdapter(PurificationConfiguration.class, new PurificationConfigurationAdapter())
             .registerTypeAdapter(PurificationConfiguration.Entry.class, new PurificationEntryAdapter())
+            .registerTypeAdapter(FusionConfiguration.BreakChanceReduction.class, new BreakChanceReductionAdapter())
+            .registerTypeAdapter(FusionConfiguration.BreakChanceReductions.class, new BreakChanceReductionsAdapter())
             .create();
     private PerkConfiguration configuration;
 

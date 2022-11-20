@@ -81,6 +81,24 @@
         "price": 7
       }
     ],
+    "breakChanceReductions": [
+      {
+        "count": 0,
+        "multiplier": 1.0
+      },
+      {
+        "count": 1,
+        "multiplier": 0.85
+      },
+      {
+        "count": 2,
+        "multiplier": 0.70
+      },
+      {
+        "count": 3,
+        "multiplier": 0.55
+      }
+    ],
     "crystalSwap": [
       {
         "count": 0,
@@ -95,12 +113,12 @@
       {
         "count": 2,
         "chance": 0.7,
-        "price": 1
+        "price": 2
       },
       {
         "count": 3,
         "chance": 0.85,
-        "price": 2
+        "price": 3
       }
     ]
   },

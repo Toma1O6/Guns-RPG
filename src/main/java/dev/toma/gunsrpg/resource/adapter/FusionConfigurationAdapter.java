@@ -14,6 +14,7 @@ public class FusionConfigurationAdapter implements JsonDeserializer<FusionConfig
         JsonObject object = JsonHelper.asJsonObject(json);
         FusionConfiguration.Upgrades upgrades = context.deserialize(JSONUtils.getAsJsonArray(object, "upgrades"), FusionConfiguration.Upgrades.class);
         FusionConfiguration.Swaps swaps = context.deserialize(JSONUtils.getAsJsonArray(object, "crystalSwap"), FusionConfiguration.Swaps.class);
-        return new FusionConfiguration(upgrades, swaps);
+        FusionConfiguration.BreakChanceReductions reductions = context.deserialize(JSONUtils.getAsJsonArray(object, "breakChanceReductions"), FusionConfiguration.BreakChanceReductions.class);
+        return new FusionConfiguration(upgrades, swaps, reductions);
     }
 }
