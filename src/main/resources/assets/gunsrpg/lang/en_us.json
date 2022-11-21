@@ -1328,7 +1328,7 @@
   "config.gunsrpg.option.maxChance": "Max Chance",
   "config.gunsrpg.option.jamChanceTransformerFunction": "Jam Chance Transformer Function",
 
-  "config.gunsrpg-client.option.developerMode": "Developer Mod",
+  "config.gunsrpg-client.option.developerMode": "Developer Mode",
   "config.gunsrpg-client.option.alwaysRenderReticles": "Always Render Reticles",
   "config.gunsrpg-client.option.shaderCompatibilityMode": "Shader Compatibility Mode",
   "config.gunsrpg-client.option.tracerScale": "Tracer Scale",
