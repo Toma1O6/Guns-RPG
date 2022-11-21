@@ -1,11 +1,14 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.common.debuffs.IDebuff;
 import dev.toma.gunsrpg.common.debuffs.IDebuffContext;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
+import dev.toma.gunsrpg.common.debuffs.ProgressingDebuff;
 import dev.toma.gunsrpg.common.init.ModRegistries;
+import dev.toma.gunsrpg.config.debuff.DebuffConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -32,7 +35,6 @@ public class PlayerDebuffs implements IDebuffs {
     @Override
     public <D extends IDebuff> void add(IDebuffType<D> type, D instance) {
         debuffMap.put(type, instance);
-        sync();
     }
 
     @Override
@@ -40,11 +42,8 @@ public class PlayerDebuffs implements IDebuffs {
         PlayerEntity player = context.getPlayer();
         Random random = player == null ? null : player.getRandom();
         for (IDebuffType<?> type : ModRegistries.DEBUFFS) {
-            if (getDebuff(type) != null) continue; // avoid replacing existing debuffs
             if (!type.isDisabled() && flags.is(type.getFlags())) {
-                if (tryCreate(type, context, random, data)) {
-                    break;
-                }
+                this.addDebuff(type, context, random, data);
             }
         }
     }
@@ -146,12 +145,17 @@ public class PlayerDebuffs implements IDebuffs {
             clientSynchReq.makeSyncRequest();
     }
 
-    private <D extends IDebuff> boolean tryCreate(IDebuffType<D> type, IDebuffContext context, Random random, @Nullable Object data) {
+    private <D extends IDebuff> void addDebuff(IDebuffType<D> type, IDebuffContext context, Random random, @Nullable Object data) {
         D debuff = type.onTrigger(context, random, data);
         if (debuff != null) {
-            add(type, debuff);
-            return true;
+            IDebuff existing = this.getDebuff(type);
+            if (existing instanceof ProgressingDebuff) {
+                DebuffConfig config = GunsRPG.config.debuffs;
+                ((ProgressingDebuff) existing).incrementProgression(config.additionalDebuffIncrement);
+            } else {
+                this.add(type, debuff);
+            }
+            this.sync();
         }
-        return false;
     }
 }

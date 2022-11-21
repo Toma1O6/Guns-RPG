@@ -5,6 +5,11 @@ import dev.toma.configuration.config.Configurable;
 public final class DebuffConfig {
 
     @Configurable
+    @Configurable.Range(min = 0)
+    @Configurable.Comment("How much of debuff progression is added when catching already existing type again")
+    public int additionalDebuffIncrement = 10;
+
+    @Configurable
     @Configurable.Comment("Disables poison debuff")
     public boolean disablePoison = false;
 

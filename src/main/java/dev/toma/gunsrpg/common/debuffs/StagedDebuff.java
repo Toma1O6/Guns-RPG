@@ -3,15 +3,13 @@ package dev.toma.gunsrpg.common.debuffs;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IDebuffs;
-import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.Objects;
 
-public class StagedDebuff implements IStagedDebuff {
+public class StagedDebuff implements IStagedDebuff, ProgressingDebuff {
 
     private final StagedDebuffType<?> type;
     private StagedDebuffType.LinkedStage current;
@@ -31,21 +29,27 @@ public class StagedDebuff implements IStagedDebuff {
 
     @Override
     public void tick(PlayerEntity player) {
-        LazyOptional<IPlayerData> optional = PlayerData.get(player);
-        if (optional.isPresent()) {
-            updateRenderCounters();
-            IPlayerData data = optional.orElse(null);
+        PlayerData.get(player).ifPresent(data -> {
+            this.updateRenderCounters();
             int delay = type.getDelay(data);
-            if (canSpread() && ++progressionCounter >= delay) {
-                ++progression;
-                progressionCounter = 0;
-                ticksSinceProgressed = 0;
-                updateStage();
+            if (this.canSpread() && ++progressionCounter >= delay) {
+                this.incrementProgression(1);
                 if (!player.level.isClientSide) data.sync(DataFlags.DEBUFF);
             }
             if (!isFrozen(data.getAttributes())) {
                 current.getStageEvent().accept(player);
             }
+        });
+    }
+
+    @Override
+    public void incrementProgression(int count) {
+        int prevProgression = this.progression;
+        this.progression = Math.min(this.getProgressionLimit(), this.progression + count);
+        if (prevProgression != progression) {
+            this.progressionCounter = 0;
+            this.ticksSinceProgressed = 0;
+            this.updateStage();
         }
     }
 
@@ -95,6 +99,10 @@ public class StagedDebuff implements IStagedDebuff {
     @Override
     public int ticksSinceProgressed() {
         return ticksSinceProgressed;
+    }
+
+    protected int getProgressionLimit() {
+        return 100;
     }
 
     @Override
