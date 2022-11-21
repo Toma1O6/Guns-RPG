@@ -6,9 +6,12 @@ import dev.toma.gunsrpg.api.common.data.IPointProvider;
 import dev.toma.gunsrpg.api.common.data.IProgressData;
 import dev.toma.gunsrpg.client.screen.widgets.*;
 import dev.toma.gunsrpg.common.init.ModItems;
+import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.math.IVec2i;
+import dev.toma.gunsrpg.util.math.Mth;
+import lib.toma.animations.Easings;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -16,6 +19,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class SkillsView extends View {
 
@@ -44,10 +49,13 @@ public class SkillsView extends View {
         ITextComponent header = new TranslationTextComponent("view.skill.header", username.getString());
         addWidget(new HeaderWidget(0, 0, width, 20, header, font));
         // add category selector
-        SkillCategory[] navEntries = Arrays.stream(SkillCategory.values()).sorted((o1, o2) -> o2.ordinal() - o1.ordinal()).toArray(SkillCategory[]::new);
+        SkillCategory[] navEntries = Arrays.stream(SkillCategory.values())
+                .sorted((o1, o2) -> o2.ordinal() - o1.ordinal())
+                .toArray(SkillCategory[]::new);
         navigatorWidget = addWidget(new NavigatorWidget<>(x, y + 20, width, 20, navEntries));
         navigatorWidget.setTextFormatter(cat -> cat.name().toLowerCase(Locale.ROOT));
         navigatorWidget.setClickResponder(this::updateCanvasSource);
+        navigatorWidget.setColorProvider(CategoryColorProvider::new);
         // add footer with data
         IViewContext context = manager.getContext();
         IPlayerData data = context.getData();
@@ -121,6 +129,49 @@ public class SkillsView extends View {
             this.viewSwitchWidget.visible = !visibilityState;
             this.skillInfoWidget.visible = visibilityState;
             this.skillViewWidget.updateSize(width, height - (visibilityState ? 120 : 60));
+        }
+    }
+
+    private static final class CategoryColorProvider implements NavigatorWidget.ITextColorProvider<SkillCategory> {
+
+        private final SkillCategory category;
+        private final Set<SkillType<?>> skills;
+        private boolean hasNewSkills;
+        private int animCounter;
+
+        CategoryColorProvider(SkillCategory category) {
+            this.category = category;
+            this.skills = ModRegistries.SKILLS.getValues().stream()
+                    .filter(skillType -> skillType.getHierarchy().getCategory().equals(category))
+                    .collect(Collectors.toSet());
+        }
+
+        @Override
+        public void tick(SkillCategory category) {
+            this.hasNewSkills = false;
+            for (SkillType<?> type : this.skills) {
+                if (type.isFresh()) {
+                    this.hasNewSkills = true;
+                    break;
+                }
+            }
+            if (!this.hasNewSkills) {
+                this.animCounter = 0;
+            } else {
+                ++this.animCounter;
+            }
+        }
+
+        @Override
+        public int getColor(SkillCategory categoryElement, float partialTicks) {
+            if (!this.hasNewSkills) {
+                return 0xFFFFFF;
+            }
+            int timer = this.animCounter % 40;
+            float triangleFn = Mth.triangleFunc(timer / 40.0F);
+            float easedWave = Easings.EASE_IN_OUT_QUAD.ease(triangleFn);
+            int color = (int) (0xFF * (1.0F - easedWave));
+            return 0xFFFF00 | color;
         }
     }
 }

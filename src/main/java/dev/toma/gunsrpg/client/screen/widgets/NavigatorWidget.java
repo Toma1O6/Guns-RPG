@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.screen.widgets;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.util.ITickable;
 import dev.toma.gunsrpg.util.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -11,6 +12,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class NavigatorWidget<T> extends ContainerWidget {
@@ -45,6 +47,12 @@ public class NavigatorWidget<T> extends ContainerWidget {
         }
     }
 
+    public void setColorProvider(Function<T, ITextColorProvider<T>> provider) {
+        for (NavEntry<T> entry : buttons) {
+            entry.setColorProvider(provider.apply(entry.value));
+        }
+    }
+
     private void handleValueClicked(T value, int index) {
         this.selectedIndex = index;
         if (responder != null) {
@@ -73,12 +81,13 @@ public class NavigatorWidget<T> extends ContainerWidget {
         return array;
     }
 
-    private static class NavEntry<V> extends Widget {
+    private static class NavEntry<V> extends Widget implements ITickable {
 
         final int index;
         final V value;
         final Predicate<Integer> isSameIndex;
         IEntryClickResponder<V> responder = (value1, index1) -> {};
+        ITextColorProvider<V> colorProvider = (v, partialTicks) -> 0xFFFFFF;
 
         NavEntry(V value, Predicate<Integer> isSameIndex, int index, int x, int y, int width, int height) {
             super(x, y, width, height, StringTextComponent.EMPTY);
@@ -87,12 +96,21 @@ public class NavigatorWidget<T> extends ContainerWidget {
             this.index = index;
         }
 
+        @Override
+        public void tick() {
+            this.colorProvider.tick(value);
+        }
+
         void updateMessage(ITextFormatter<V> formatter) {
             this.setMessage(new TranslationTextComponent("nav.entry." + formatter.getFormatted(value)));
         }
 
         void setResponder(IEntryClickResponder<V> responder) {
             this.responder = responder;
+        }
+
+        void setColorProvider(ITextColorProvider<V> provider) {
+            this.colorProvider = provider;
         }
 
         @Override
@@ -108,7 +126,7 @@ public class NavigatorWidget<T> extends ContainerWidget {
             ITextComponent text = isHovered || isSameIndex.test(index) ? new StringTextComponent(TextFormatting.BOLD + msg.getString()) : msg;
             FontRenderer renderer = Minecraft.getInstance().font;
             RenderUtils.drawGradient(matrix.last().pose(), x, y, x + width, y + height, 0x44 << 24, 0x07 << 24);
-            RenderUtils.drawCenteredShadowText(matrix, text, renderer, this, 0xFFFFFF);
+            RenderUtils.drawCenteredShadowText(matrix, text, renderer, this, this.colorProvider.getColor(value, partialTicks));
         }
     }
 
@@ -116,5 +134,14 @@ public class NavigatorWidget<T> extends ContainerWidget {
     private interface IEntryClickResponder<T> {
 
         void onClicked(T value, int index);
+    }
+
+    @FunctionalInterface
+    public interface ITextColorProvider<T> {
+
+        default void tick(T t) {
+        }
+
+        int getColor(T t, float partialTicks);
     }
 }
