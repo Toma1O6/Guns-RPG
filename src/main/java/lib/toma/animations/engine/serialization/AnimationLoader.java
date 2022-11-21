@@ -40,7 +40,7 @@ public final class AnimationLoader extends JsonReloadListener implements IAnimat
     private final ILoader loader;
 
     public AnimationLoader() {
-        super(GSON, "animations");
+        super(GSON, "animation");
         this.loader = reader -> GSON.fromJson(reader, IKeyframeProvider.class);
     }
 
