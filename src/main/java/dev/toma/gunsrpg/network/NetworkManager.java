@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 public class NetworkManager {
 
     public static final Marker MARKER = MarkerManager.getMarker("Networking");
-    private static final String VERSION = "gunsrpg-1.1.0";
+    private static final String VERSION = "v2";
     private static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder
             .named(GunsRPG.makeResource("network"))
             .networkProtocolVersion(() -> VERSION)
