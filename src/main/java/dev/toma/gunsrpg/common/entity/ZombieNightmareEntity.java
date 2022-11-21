@@ -92,14 +92,6 @@ public class ZombieNightmareEntity extends MonsterEntity {
     }
 
     @Override
-    public void aiStep() {
-        if (this.isAlive() && isSunBurnTick()) {
-            this.setSecondsOnFire(8);
-        }
-        super.aiStep();
-    }
-
-    @Override
     protected SoundEvent getAmbientSound() {
         return SoundEvents.ZOMBIE_AMBIENT;
     }
