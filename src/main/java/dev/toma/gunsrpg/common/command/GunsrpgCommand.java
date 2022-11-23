@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonParseException;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -32,15 +31,6 @@ import dev.toma.gunsrpg.common.item.perk.CrystalItem;
 import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.common.perk.PerkRegistry;
 import dev.toma.gunsrpg.common.perk.PerkType;
-import dev.toma.gunsrpg.common.quests.QuestSystem;
-import dev.toma.gunsrpg.common.quests.condition.IQuestCondition;
-import dev.toma.gunsrpg.common.quests.condition.IQuestConditionProvider;
-import dev.toma.gunsrpg.common.quests.condition.list.WeightedConditionList;
-import dev.toma.gunsrpg.common.quests.quest.*;
-import dev.toma.gunsrpg.common.quests.reward.IQuestItemProvider;
-import dev.toma.gunsrpg.common.quests.reward.QuestReward;
-import dev.toma.gunsrpg.common.quests.reward.QuestRewardList;
-import dev.toma.gunsrpg.common.quests.reward.QuestRewardManager;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;
 import dev.toma.gunsrpg.util.helper.CommandHelper;
@@ -56,7 +46,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -64,11 +53,9 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.IServerWorldInfo;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-import net.minecraftforge.server.command.EnumArgument;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -83,7 +70,6 @@ public class GunsrpgCommand {
     private static final SuggestionProvider<CommandSource> SKILL_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(ModRegistries.SKILLS.getKeys(), builder);
     private static final SuggestionProvider<CommandSource> ATTRIBUTE_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(Attribs.listKeys(), builder);
     private static final SuggestionProvider<CommandSource> PERK_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(PerkRegistry.getRegistry().getPerkIds(), builder);
-    private static final SuggestionProvider<CommandSource> QUEST_SUGGESTION = (context, builder) -> ISuggestionProvider.suggestResource(GunsRPG.getModLifecycle().quests().getQuestManager().getQuestIds(), builder);
     private static final SimpleCommandExceptionType NO_DATA = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.no_data"));
     private static final SimpleCommandExceptionType MISSING_KEY_EXCEPTION = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.missing_key"));
     private static final DynamicCommandExceptionType MISSING_ARGUMENTS = new DynamicCommandExceptionType(o -> new TranslationTextComponent("command.gunsrpg.exception.missing_args", o));
@@ -250,51 +236,6 @@ public class GunsrpgCommand {
                                         )
                         )
                         .then(
-                                Commands.literal("quest")
-                                        .executes(ctx -> noArgsProvided("reward"))
-                                        .then(
-                                                Commands.literal("reward")
-                                                        .executes(ctx -> addRandomReward(ctx, 1, 1, true))
-                                                        .then(
-                                                                Commands.argument("tier", IntegerArgumentType.integer(1, 8))
-                                                                        .executes(ctx -> addRandomReward(ctx, IntegerArgumentType.getInteger(ctx, "tier"), 1, true))
-                                                                        .then(
-                                                                                Commands.argument("itemCount", IntegerArgumentType.integer(1, 64))
-                                                                                        .executes(ctx -> addRandomReward(ctx, IntegerArgumentType.getInteger(ctx, "tier"), IntegerArgumentType.getInteger(ctx, "itemCount"), true))
-                                                                                        .then(
-                                                                                                Commands.argument("setUnique", BoolArgumentType.bool())
-                                                                                                        .executes(ctx -> addRandomReward(ctx, IntegerArgumentType.getInteger(ctx, "tier"), IntegerArgumentType.getInteger(ctx, "itemCount"), BoolArgumentType.getBool(ctx, "setUnique")))
-                                                                                        )
-                                                                        )
-                                                                        .then(
-                                                                                Commands.literal("list")
-                                                                                        .executes(GunsrpgCommand::listTierRewardPool)
-                                                                        )
-                                                        )
-                                        )
-                                        .then(
-                                                Commands.argument("questId", ResourceLocationArgument.id())
-                                                        .suggests(QUEST_SUGGESTION)
-                                                        .executes(GunsrpgCommand::listQuestInfo)
-                                                        .then(
-                                                                Commands.literal("start")
-                                                                        .executes(GunsrpgCommand::startNewQuest)
-                                                        )
-                                        )
-                                        .then(
-                                                Commands.literal("cancel")
-                                                        .executes(GunsrpgCommand::cancelCurrectQuest)
-                                        )
-                                        .then(
-                                                Commands.literal("changeStatus")
-                                                        .executes(ctx -> noArgsProvided("status"))
-                                                        .then(
-                                                                Commands.argument("status", EnumArgument.enumArgument(QuestStatus.class))
-                                                                        .executes(GunsrpgCommand::updateQuestStatus)
-                                                        )
-                                        )
-                        )
-                        .then(
                                 Commands.literal("weapon")
                                         .executes(ctx -> noArgsProvided("force_jam"))
                                         .then(
@@ -331,169 +272,6 @@ public class GunsrpgCommand {
         IPlayerData data = PlayerData.getUnsafe(player);
         IPerkProvider provider = data.getPerkProvider();
         provider.setCooldown(value);
-        return 0;
-    }
-
-    private static int startNewQuest(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        Entity executor = context.getSource().getEntity();
-        if (!(executor instanceof PlayerEntity)) {
-            return -1;
-        }
-        PlayerEntity player = (PlayerEntity) executor;
-        IPlayerData data = PlayerData.getUnsafe(player);
-        ResourceLocation location = ResourceLocationArgument.getId(context, "questId");
-        QuestSystem system = GunsRPG.getModLifecycle().quests();
-        QuestManager manager = system.getQuestManager();
-        QuestScheme<?> scheme = manager.getScheme(location);
-        if (scheme == null) {
-            throw UNKNOWN_KEY_EXCEPTION.create(location);
-        }
-        Quest<?> quest = newQuest(scheme);
-        IQuests provider = data.getQuests();
-        quest.setStatus(QuestStatus.ACTIVE);
-        provider.assignQuest(quest);
-        quest.assign(player);
-        return 0;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <D extends IQuestData, Q extends Quest<D>> Quest<D> newQuest(QuestScheme<D> scheme) {
-        QuestType<D, Q> type = (QuestType<D, Q>) scheme.getQuestType();
-        return type.newQuestInstance(scheme, Util.NIL_UUID);
-    }
-
-    private static int updateQuestStatus(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        Entity executor = context.getSource().getEntity();
-        if (!(executor instanceof PlayerEntity)) {
-            return -1;
-        }
-        PlayerEntity player = (PlayerEntity) executor;
-        IPlayerData data = PlayerData.getUnsafe(player);
-        Optional<Quest<?>> optional = data.getQuests().getActiveQuest();
-        if (!optional.isPresent()) {
-            throw NO_ACTIVE_QUEST.create();
-        }
-        QuestStatus status = context.getArgument("status", QuestStatus.class);
-        optional.get().setStatus(status);
-        data.sync(DataFlags.QUESTS);
-        return 0;
-    }
-
-    private static int cancelCurrectQuest(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        Entity executor = context.getSource().getEntity();
-        if (!(executor instanceof PlayerEntity)) {
-            return -1;
-        }
-        PlayerEntity player = (PlayerEntity) executor;
-        IPlayerData data = PlayerData.getUnsafe(player);
-        Optional<Quest<?>> optional = data.getQuests().getActiveQuest();
-        if (!optional.isPresent()) {
-            throw NO_ACTIVE_QUEST.create();
-        }
-        data.getQuests().clearActiveQuest();
-        return 0;
-    }
-
-    private static int listQuestInfo(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        Entity executor = context.getSource().getEntity();
-        if (!(executor instanceof PlayerEntity)) {
-            return -1;
-        }
-        PlayerEntity player = (PlayerEntity) executor;
-        ResourceLocation questId = ResourceLocationArgument.getId(context, "questId");
-        QuestSystem system = GunsRPG.getModLifecycle().quests();
-        QuestScheme<?> scheme = system.getQuestManager().getScheme(questId);
-        if (scheme == null) {
-            throw UNKNOWN_KEY_EXCEPTION.create(questId);
-        }
-        QuestType<?, ?> questType = scheme.getQuestType();
-        IQuestData data = scheme.getData();
-        DisplayInfo info = scheme.getDisplayInfo();
-        QuestConditionTierScheme tierScheme = scheme.getConditionTierScheme();
-        player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "Quest: " + TextFormatting.RESET + TextFormatting.YELLOW + scheme.getQuestId()), Util.NIL_UUID);
-        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Type of quest: " + TextFormatting.AQUA + questType.getId()), Util.NIL_UUID);
-        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Tier: " + TextFormatting.AQUA + scheme.getTier()), Util.NIL_UUID);
-        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Data: " + TextFormatting.AQUA + data.toString()), Util.NIL_UUID);
-        player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "Display info"), Util.NIL_UUID);
-        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Name: " + TextFormatting.AQUA + info.getName().getString()), Util.NIL_UUID);
-        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Info: " + TextFormatting.AQUA + info.getInfo().getString()), Util.NIL_UUID);
-        IQuestConditionProvider<?>[] questConditions = scheme.getQuestConditions();
-        if (questConditions.length > 0) {
-            player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "Conditions"), Util.NIL_UUID);
-            for (IQuestConditionProvider<?> provider : questConditions) {
-                IQuestCondition condition = provider.makeConditionInstance();
-                ITextComponent text = condition.getDescriptor(false);
-                player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "- " + TextFormatting.AQUA + text.getString()), Util.NIL_UUID);
-            }
-        }
-        QuestConditionTierScheme.TieredList[] tieredLists = tierScheme.getListProviders();
-        if (tieredLists.length > 0) {
-            player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "Tiered conditions"), Util.NIL_UUID);
-            for (QuestConditionTierScheme.TieredList list : tieredLists) {
-                WeightedConditionList rawList = list.getListRaw();
-                IQuestConditionProvider<?>[] providers = rawList.getProviders();
-                int tierModifier = list.getTier();
-                player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Added tier: " + TextFormatting.AQUA + tierModifier), Util.NIL_UUID);
-                for (IQuestConditionProvider<?> provider : providers) {
-                    IQuestCondition condition = provider.makeConditionInstance();
-                    ITextComponent textComponent = condition.getDescriptor(false);
-                    player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "- " + TextFormatting.AQUA + textComponent.getString()), Util.NIL_UUID);
-                }
-                player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "-------------------------"), Util.NIL_UUID);
-            }
-        }
-        return 0;
-    }
-
-    private static int listTierRewardPool(CommandContext<CommandSource> context) {
-        Entity executor = context.getSource().getEntity();
-        if (!(executor instanceof PlayerEntity)) {
-            return -1;
-        }
-        PlayerEntity player = (PlayerEntity) executor;
-        int tier = CommandHelper.getArgumentOptional(context, "tier", IntegerArgumentType::getInteger).orElse(1);
-        QuestSystem system = GunsRPG.getModLifecycle().quests();
-        QuestRewardManager manager = system.getRewardManager();
-        QuestRewardList list = manager.getTieredRewards(tier);
-        IQuestItemProvider[] providers = list.listProviders();
-        player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "=========[ Tier " + tier + " items ]=========="), Util.NIL_UUID);
-        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Entries: " + TextFormatting.AQUA + providers.length), Util.NIL_UUID);
-        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Items:"), Util.NIL_UUID);
-        for (IQuestItemProvider provider : providers) {
-            IQuestItemProvider.Impl implementation = (IQuestItemProvider.Impl) provider;
-            player.sendMessage(new StringTextComponent(String.format(
-                    "%sItem: %s%s%s, Count: %s%d%s, Weight: %s%d",
-                    TextFormatting.GREEN,
-                    TextFormatting.AQUA,
-                    implementation.getItem().getRegistryName().getPath(),
-                    TextFormatting.GREEN,
-                    TextFormatting.AQUA,
-                    implementation.getCount(),
-                    TextFormatting.GREEN,
-                    TextFormatting.AQUA,
-                    implementation.getWeight()
-            )), Util.NIL_UUID);
-        }
-        return 0;
-    }
-
-    private static int addRandomReward(CommandContext<CommandSource> context, int tier, int itemCount, boolean unique) {
-        Entity executor = context.getSource().getEntity();
-        if (!(executor instanceof PlayerEntity)) {
-            return -1;
-        }
-        PlayerEntity player = (PlayerEntity) executor;
-        QuestSystem questSystem = GunsRPG.getModLifecycle().quests();
-        QuestRewardManager manager = questSystem.getRewardManager();
-        QuestRewardList list = manager.getTieredRewards(tier);
-        QuestReward.Options options = new QuestReward.Options().items(itemCount);
-        if (unique) {
-            options = options.setUnique();
-        }
-        QuestReward reward = QuestReward.generate(list, options, player);
-        for (QuestReward.Choice choice : reward.getChoices()) {
-            choice.distributeToInventory(player);
-        }
         return 0;
     }
 

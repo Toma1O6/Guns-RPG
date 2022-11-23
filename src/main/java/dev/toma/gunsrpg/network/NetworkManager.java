@@ -59,7 +59,6 @@ public class NetworkManager {
         registerNetworkPacket(S2C_SynchronizationPayloadPacket.class);
         registerNetworkPacket(S2C_SetTrackedStashPacket.class);
         registerNetworkPacket(S2C_UseStashDetectorPacket.class);
-        registerNetworkPacket(S2C_OpenQuestScreen.class);
         // server packets
         registerNetworkPacket(C2S_ShootPacket.class);
         registerNetworkPacket(C2S_RequestDataUpdatePacket.class);
@@ -77,7 +76,6 @@ public class NetworkManager {
         registerNetworkPacket(C2S_FusePacket.class);
         registerNetworkPacket(C2S_PurifyPacket.class);
         registerNetworkPacket(C2S_RequestExtensionSkillLockPacket.class);
-        registerNetworkPacket(C2S_QuestActionPacket.class);
     }
 
     private static <P extends INetworkPacket<P>> void registerNetworkPacket(Class<P> packetType) {

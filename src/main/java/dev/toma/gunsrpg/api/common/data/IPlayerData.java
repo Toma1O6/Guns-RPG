@@ -25,8 +25,6 @@ public interface IPlayerData {
 
     IHandState getHandState();
 
-    IQuests getQuests();
-
     List<IPlayerCapEntry> getSaveEntries();
 
     void tick();
