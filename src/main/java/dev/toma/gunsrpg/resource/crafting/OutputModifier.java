@@ -24,22 +24,9 @@ public final class OutputModifier {
         this.operator = operator;
     }
 
-    public ItemStack[] applyAndSplit(ItemStack stack, IAttributeProvider provider) {
-        IAttribute attribute = provider.getAttribute(attributeId);
-        int count = stack.getCount();
-        double attributeValue = attribute.value();
-        int result = (int) Math.round(operator.combine(count, attributeValue));
-        int remain = result % 64 > 0 ? 1 : 0;
-        ItemStack[] results = new ItemStack[result / 64 + remain];
-        int index = 0;
-        while (result > 0) {
-            ItemStack item = stack.copy();
-            int amount = Math.min(64, result);
-            item.setCount(amount);
-            result -= amount;
-            results[index++] = item;
-        }
-        return results;
+    public double getModifiedValue(IAttributeProvider provider, int in) {
+        double f = provider.getAttributeValue(this.attributeId);
+        return this.operator.combine(in, f);
     }
 
     public void applyRaw(ItemStack stack, IAttributeProvider provider) {

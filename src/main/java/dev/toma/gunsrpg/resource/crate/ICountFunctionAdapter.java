@@ -6,7 +6,7 @@ import net.minecraft.network.PacketBuffer;
 
 public interface ICountFunctionAdapter<F extends ICountFunction> {
 
-    ICountFunction deserialize(JsonObject data, IFunction range);
+    F deserialize(JsonObject data, IFunction range);
 
     void encode(F function, PacketBuffer buffer);
 

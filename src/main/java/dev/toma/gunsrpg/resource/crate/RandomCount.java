@@ -22,7 +22,7 @@ public class RandomCount extends AbstractCountFunction {
         this.upperBound = upperBound;
     }
 
-    public static ICountFunction fromInterval(int lower, int upper) {
+    public static RandomCount fromInterval(int lower, int upper) {
         return new RandomCount(lower, upper);
     }
 
@@ -34,7 +34,7 @@ public class RandomCount extends AbstractCountFunction {
     public static class Adapter implements ICountFunctionAdapter<RandomCount> {
 
         @Override
-        public ICountFunction deserialize(JsonObject data, IFunction range) {
+        public RandomCount deserialize(JsonObject data, IFunction range) {
             int lower = JSONUtils.getAsInt(data, "min");
             int upper = JSONUtils.getAsInt(data, "max");
             if (lower == upper) {

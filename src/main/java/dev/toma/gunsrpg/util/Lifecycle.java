@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.ModRecipeTypes;
 import dev.toma.gunsrpg.common.init.ModTags;
+import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.common.item.SlingItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
@@ -53,6 +54,10 @@ public final class Lifecycle {
         ModRecipeTypes.register();
         SlingItem.initAmmoRegistry();
         VillageFeatureMutator.mutateVanillaVillages();
+    }
+
+    public void commonSynchronizedInit() {
+        QuestRegistry.register();
     }
 
     public StartGearManager getStartingGearManager() {

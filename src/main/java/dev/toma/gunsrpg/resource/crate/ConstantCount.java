@@ -15,7 +15,7 @@ public class ConstantCount extends AbstractCountFunction {
         this.value = value;
     }
 
-    public static ICountFunction constant(int value) {
+    public static ConstantCount constant(int value) {
         return new ConstantCount(value);
     }
 
@@ -27,7 +27,7 @@ public class ConstantCount extends AbstractCountFunction {
     public static class Adapter implements ICountFunctionAdapter<ConstantCount> {
 
         @Override
-        public ICountFunction deserialize(JsonObject data, IFunction range) {
+        public ConstantCount deserialize(JsonObject data, IFunction range) {
             int value = JSONUtils.getAsInt(data, "value", 1);
             if (!range.canApplyFor(value)) {
                 throw new JsonSyntaxException("Value is out of bounds.");
