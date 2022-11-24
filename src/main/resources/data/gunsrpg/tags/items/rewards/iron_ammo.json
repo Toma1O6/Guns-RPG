@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gunsrpg:iron_9mm",
+    "gunsrpg:iron_45acp",
+    "gunsrpg:iron_556mm",
+    "gunsrpg:iron_762mm",
+    "gunsrpg:iron_12g",
+    "gunsrpg:iron_bolt"
+  ]
+}

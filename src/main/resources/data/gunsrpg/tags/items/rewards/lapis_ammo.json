@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gunsrpg:lapis_9mm",
+    "gunsrpg:lapis_45acp",
+    "gunsrpg:lapis_556mm",
+    "gunsrpg:lapis_762mm",
+    "gunsrpg:lapis_12g",
+    "gunsrpg:lapis_bolt"
+  ]
+}

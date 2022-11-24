@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "gunsrpg:antidotum_pills",
+    "gunsrpg:vaccine",
+    "gunsrpg:plaster_cast",
+    "gunsrpg:bandage",
+    "gunsrpg:analgetics",
+    "gunsrpg:adrenaline",
+    "gunsrpg:painkillers",
+    "gunsrpg:morphine",
+    "gunsrpg:steroids"
+  ]
+}

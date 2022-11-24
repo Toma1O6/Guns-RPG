@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gunsrpg:amethyst_9mm",
+    "gunsrpg:amethyst_45acp",
+    "gunsrpg:amethyst_556mm",
+    "gunsrpg:amethyst_762mm",
+    "gunsrpg:amethyst_12g",
+    "gunsrpg:amethyst_bolt"
+  ]
+}

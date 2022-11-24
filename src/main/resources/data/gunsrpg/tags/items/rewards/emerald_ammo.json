@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gunsrpg:emerald_9mm",
+    "gunsrpg:emerald_45acp",
+    "gunsrpg:emerald_556mm",
+    "gunsrpg:emerald_762mm",
+    "gunsrpg:emerald_12g",
+    "gunsrpg:emerald_bolt"
+  ]
+}

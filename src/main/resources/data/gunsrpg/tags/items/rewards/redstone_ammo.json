@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gunsrpg:redstone_9mm",
+    "gunsrpg:redstone_45acp",
+    "gunsrpg:redstone_556mm",
+    "gunsrpg:redstone_762mm",
+    "gunsrpg:redstone_12g",
+    "gunsrpg:redstone_bolt"
+  ]
+}

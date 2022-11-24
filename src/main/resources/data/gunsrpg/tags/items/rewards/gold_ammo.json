@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gunsrpg:gold_9mm",
+    "gunsrpg:gold_45acp",
+    "gunsrpg:gold_556mm",
+    "gunsrpg:gold_762mm",
+    "gunsrpg:gold_12g",
+    "gunsrpg:gold_bolt"
+  ]
+}

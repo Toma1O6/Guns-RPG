@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gunsrpg:quartz_9mm",
+    "gunsrpg:quartz_45acp",
+    "gunsrpg:quartz_556mm",
+    "gunsrpg:quartz_762mm",
+    "gunsrpg:quartz_12g",
+    "gunsrpg:quartz_bolt"
+  ]
+}

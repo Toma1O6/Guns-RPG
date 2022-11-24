@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "gunsrpg:rocket",
+    "gunsrpg:toxin_rocket",
+    "gunsrpg:demolition_rocket",
+    "gunsrpg:napalm_rocket",
+    "gunsrpg:high_explosive_rocket"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gunsrpg:netherite_9mm",
+    "gunsrpg:netherite_45acp",
+    "gunsrpg:netherite_556mm",
+    "gunsrpg:netherite_762mm",
+    "gunsrpg:netherite_12g",
+    "gunsrpg:netherite_bolt"
+  ]
+}

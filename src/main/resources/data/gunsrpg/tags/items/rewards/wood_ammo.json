@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gunsrpg:wooden_9mm",
+    "gunsrpg:wooden_45acp",
+    "gunsrpg:wooden_556mm",
+    "gunsrpg:wooden_762mm",
+    "gunsrpg:wooden_12g",
+    "gunsrpg:wooden_bolt"
+  ]
+}

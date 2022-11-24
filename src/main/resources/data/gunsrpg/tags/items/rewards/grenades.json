@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "gunsrpg:grenade",
+    "gunsrpg:massive_grenade",
+    "gunsrpg:impact_grenade"
+  ]
+}

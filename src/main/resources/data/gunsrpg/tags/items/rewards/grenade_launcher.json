@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "gunsrpg:explosive_grenade_launcher_shell",
+    "gunsrpg:tear_gas_grenade_launcher_shell",
+    "gunsrpg:sticky_grenade_launcher_shell",
+    "gunsrpg:high_explosive_grenade_launcher_shell",
+    "gunsrpg:impact_grenade_launcher_shell"
+  ]
+}
