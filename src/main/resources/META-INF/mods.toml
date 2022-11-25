@@ -33,3 +33,10 @@ Hardcore Minecraft mod with RPG elements.
     versionRange="[2.0,3.0)"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.gunsrpg]]
+    modId="questing"
+    mandatory=true
+    versionRange="[0.0,1.0)"
+    ordering="NONE"
+    side="BOTH"

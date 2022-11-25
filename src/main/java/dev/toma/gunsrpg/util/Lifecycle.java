@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.common.item.SlingItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
+import dev.toma.gunsrpg.common.quest.QuestDataManager;
 import dev.toma.gunsrpg.resource.crate.LootManager;
 import dev.toma.gunsrpg.resource.gunner.ZombieGunnerWeaponManager;
 import dev.toma.gunsrpg.resource.perks.PerkManager;
@@ -42,6 +43,7 @@ public final class Lifecycle {
     private final LootManager lootManager = new LootManager();
     private final ProgressionStrategyManager progressionStrategyManager = new ProgressionStrategyManager();
     private final PerkManager perkManager = new PerkManager();
+    private final QuestDataManager questDataManager = new QuestDataManager();
 
     public void modInit() {
         ModTags.init();
@@ -78,6 +80,10 @@ public final class Lifecycle {
 
     public PerkManager getPerkManager() {
         return perkManager;
+    }
+
+    public QuestDataManager getQuestManager() {
+        return questDataManager;
     }
 
     @Nullable
@@ -134,5 +140,7 @@ public final class Lifecycle {
         event.addListener(progressionStrategyManager);
         event.addListener(perkManager);
         event.addListener(perkManager.configLoader);
+
+        questDataManager.registerDatapackLoaders(event);
     }
 }

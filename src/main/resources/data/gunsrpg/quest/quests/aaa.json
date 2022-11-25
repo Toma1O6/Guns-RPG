@@ -1,0 +1,65 @@
+{
+  "type": "gunsrpg:kill_in_area",
+  "identifier": "gunsrpg:arachnophobia_i",
+  "tasks": [
+    {
+      "type": "questing:kill_entities",
+      "filter": "questing:any_of",
+      "entities": [
+        "minecraft:spider"
+      ],
+      "conditions": [],
+      "count": 7
+    }
+  ],
+  "conditions": [],
+  "tierSettings": {
+    "tier": 2,
+    "functions": [
+      {
+        "type": "gunsrpg:tiered_condition",
+        "condition": {
+          "type": "gunsrpg:list_select",
+          "list": "gunsrpg:equipment_list",
+          "exlude": [
+            "gunsrpg:melee"
+          ]
+        }
+      },
+      {
+        "type": "gunsrpg:tiered_condition",
+        "tier": 2,
+        "condition": {
+          "type": "gunsrpg:list_select",
+          "list": "gunsrpg:status_list"
+        }
+      }
+    ]
+  },
+  "reward": {
+    "distributionType": "questing:split",
+    "ownerRewards": [
+      {
+        "reward": "gunsrpg:tiered"
+      }
+    ]
+  },
+  "area": {
+    "type": "gunsrpg:configured",
+    "id": "gunsrpg:area1",
+    "spawners": [
+      {
+        "type": "gunsrpg:wave_based",
+        "interval": "20s",
+        "spawners": [
+          {
+            "type": "gunsrpg:ground_spawn",
+            "entity": "minecraft:spider",
+            "min": 2,
+            "max": 3
+          }
+        ]
+      }
+    ]
+  }
+}
