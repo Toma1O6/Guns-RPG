@@ -21,9 +21,12 @@ public class WeightedReward implements IReward {
 
     @Override
     public void awardPlayer(PlayerEntity player, Quest quest) {
-        WeightedRewardEntry entry = this.entries.getRandom();
-        IReward reward = entry.getRewardEntry();
+        IReward reward = this.chooseReward();
         reward.awardPlayer(player, quest);
+    }
+
+    public IReward chooseReward() {
+        return this.entries.getRandom().getRewardEntry();
     }
 
     public static final class WeightedRewardEntry {

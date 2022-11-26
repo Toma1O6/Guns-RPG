@@ -5,98 +5,8 @@
       "weight": 18,
       "entry": {
         "reward": "questing:tag",
-        "tag": "gunsrpg:rewards/wood_ammo",
-        "count": 50,
-        "countFunctions": [
-          {
-            "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_ammo",
-            "operation": "gunsrpg:mul"
-          }
-        ]
-      }
-    },
-    {
-      "weight": 18,
-      "entry": {
-        "reward": "questing:tag",
-        "tag": "gunsrpg:rewards/stone_ammo",
-        "count": 40,
-        "countFunctions": [
-          {
-            "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_ammo",
-            "operation": "gunsrpg:mul"
-          }
-        ]
-      }
-    },
-    {
-      "weight": 18,
-      "entry": {
-        "reward": "questing:tag",
-        "tag": "gunsrpg:rewards/iron_ammo",
-        "count": 30,
-        "countFunctions": [
-          {
-            "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_ammo",
-            "operation": "gunsrpg:mul"
-          }
-        ]
-      }
-    },
-    {
-      "weight": 18,
-      "entry": {
-        "reward": "questing:tag",
-        "tag": "gunsrpg:rewards/lapis_ammo",
-        "count": 30,
-        "countFunctions": [
-          {
-            "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_ammo",
-            "operation": "gunsrpg:mul"
-          }
-        ]
-      }
-    },
-    {
-      "weight": 18,
-      "entry": {
-        "reward": "questing:tag",
-        "tag": "gunsrpg:rewards/gold_ammo",
-        "count": 25,
-        "countFunctions": [
-          {
-            "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_ammo",
-            "operation": "gunsrpg:mul"
-          }
-        ]
-      }
-    },
-    {
-      "weight": 18,
-      "entry": {
-        "reward": "questing:tag",
-        "tag": "gunsrpg:rewards/redstone_ammo",
-        "count": 25,
-        "countFunctions": [
-          {
-            "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_ammo",
-            "operation": "gunsrpg:mul"
-          }
-        ]
-      }
-    },
-    {
-      "weight": 18,
-      "entry": {
-        "reward": "questing:tag",
         "tag": "gunsrpg:rewards/emerald_ammo",
-        "count": 10,
+        "count": 90,
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
@@ -111,7 +21,52 @@
       "entry": {
         "reward": "questing:tag",
         "tag": "gunsrpg:rewards/quartz_ammo",
-        "count": 10,
+        "count": 90,
+        "countFunctions": [
+          {
+            "type": "gunsrpg:output_modifier",
+            "attribute": "gunsrpg:quests_ammo",
+            "operation": "gunsrpg:mul"
+          }
+        ]
+      }
+    },
+    {
+      "weight": 18,
+      "entry": {
+        "reward": "questing:tag",
+        "tag": "gunsrpg:rewards/diamond_ammo",
+        "count": 80,
+        "countFunctions": [
+          {
+            "type": "gunsrpg:output_modifier",
+            "attribute": "gunsrpg:quests_ammo",
+            "operation": "gunsrpg:mul"
+          }
+        ]
+      }
+    },
+    {
+      "weight": 18,
+      "entry": {
+        "reward": "questing:tag",
+        "tag": "gunsrpg:rewards/amethyst_ammo",
+        "count": 60,
+        "countFunctions": [
+          {
+            "type": "gunsrpg:output_modifier",
+            "attribute": "gunsrpg:quests_ammo",
+            "operation": "gunsrpg:mul"
+          }
+        ]
+      }
+    },
+    {
+      "weight": 18,
+      "entry": {
+        "reward": "questing:tag",
+        "tag": "gunsrpg:rewards/netherite_ammo",
+        "count": 40,
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
@@ -126,7 +81,27 @@
         "reward": "questing:item",
         "items": [
           {
-            "item": "gunsrpg:lunch_box"
+            "item": "gunsrpg:grenade_case"
+          }
+        ]
+      }
+    },
+    {
+      "entry": {
+        "reward": "questing:item",
+        "items": [
+          {
+            "item": "gunsrpg:meds_case"
+          }
+        ]
+      }
+    },
+    {
+      "entry": {
+        "reward": "questing:item",
+        "items": [
+          {
+            "item": "gunsrpg:item_case"
           }
         ]
       }
@@ -136,6 +111,7 @@
       "entry": {
         "reward": "questing:tag",
         "tag": "gunsrpg:rewards/meds",
+        "count": 5,
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
@@ -150,7 +126,7 @@
       "entry": {
         "reward": "questing:tag",
         "tag": "gunsrpg:rewards/stims",
-        "count": 2,
+        "count": 6,
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
@@ -163,8 +139,48 @@
     {
       "weight": 18,
       "entry": {
+        "reward": "questing:item",
+        "items": [
+          {
+            "item": "gunsrpg:kodiak",
+            "count": 2
+          }
+        ]
+      }
+    },
+    {
+      "weight": 10,
+      "entry": {
+        "reward": "questing:item",
+        "items": [
+          {
+            "item": "gunsrpg:flare",
+            "count": 2
+          }
+        ],
+        "countFunctions": [
+          {
+            "type": "gunsrpg:output_modifier",
+            "attribute": "gunsrpg:quests_flare",
+            "operation": "gunsrpg:sum"
+          }
+        ]
+      }
+    },
+    {
+      "weight": 12,
+      "entry": {
+        "reward": "gunsrpg:point",
+        "target": "SKILL",
+        "count": 4
+      }
+    },
+    {
+      "weight": 18,
+      "entry": {
         "reward": "gunsrpg:point",
         "target": "PERK",
+        "count": 6,
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
@@ -179,6 +195,7 @@
       "entry": {
         "reward": "questing:tag",
         "tag": "gunsrpg:crystal/orb_of_transmutation",
+        "count": 7,
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
@@ -193,6 +210,7 @@
       "entry": {
         "reward": "questing:tag",
         "tag": "gunsrpg:crystal/orb_of_purity",
+        "count": 7,
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
@@ -207,7 +225,7 @@
       "entry": {
         "reward": "questing:tag",
         "tag": "gunsrpg:rewards/grenades",
-        "count": 4,
+        "count": 12,
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
@@ -222,7 +240,7 @@
       "entry": {
         "reward": "questing:tag",
         "tag": "gunsrpg:rewards/mines",
-        "count": 4,
+        "count": 10,
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
@@ -237,7 +255,22 @@
       "entry": {
         "reward": "questing:tag",
         "tag": "gunsrpg:rewards/grenade_launcher",
-        "count": 2,
+        "count": 12,
+        "countFunctions": [
+          {
+            "type": "gunsrpg:output_modifier",
+            "attribute": "gunsrpg:quests_explosives",
+            "operation": "gunsrpg:mul"
+          }
+        ]
+      }
+    },
+    {
+      "weight": 18,
+      "entry": {
+        "reward": "questing:tag",
+        "tag": "gunsrpg:rewards/rocket_launcher",
+        "count": 10,
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
@@ -258,7 +291,7 @@
             "crystal": {
               "level": {
                 "function": "gunsrpg:const",
-                "value": 2
+                "value": 8
               },
               "buffs": {
                 "function": "gunsrpg:rng",
