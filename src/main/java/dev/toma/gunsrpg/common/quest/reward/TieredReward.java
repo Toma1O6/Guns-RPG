@@ -4,12 +4,13 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.quest.TieredQuest;
 import dev.toma.gunsrpg.common.quest.loader.QuestRewardLoader;
 import dev.toma.questing.quest.Quest;
-import dev.toma.questing.reward.IReward;
+import dev.toma.questing.reward.NestedReward;
+import dev.toma.questing.reward.Reward;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
-public enum TieredReward implements IReward {
+public enum TieredReward implements NestedReward {
 
     INSTANCE;
 
@@ -17,11 +18,21 @@ public enum TieredReward implements IReward {
     public void awardPlayer(PlayerEntity player, Quest quest) {
         if (quest instanceof TieredQuest) {
             int questTier = ((TieredQuest) quest).getQuestTier();
-            RewardTier rewardTier = RewardTier.getTier(questTier);
-            QuestRewardLoader rewardLoader = GunsRPG.getModLifecycle().getQuestManager().rewardLoader;
-            IReward reward = rewardLoader.getTieredReward(rewardTier);
+            Reward reward = getTieredReward(questTier);
             reward.awardPlayer(player, quest);
         }
+    }
+
+    @Override
+    public Reward getActualReward(PlayerEntity player, Quest quest) {
+        int tier = quest instanceof TieredQuest ? ((TieredQuest) quest).getQuestTier() : 1;
+        return getTieredReward(tier);
+    }
+
+    public static Reward getTieredReward(int tier) {
+        RewardTier rewardTier = RewardTier.getTier(tier);
+        QuestRewardLoader rewardLoader = GunsRPG.getModLifecycle().getQuestManager().rewardLoader;
+        return rewardLoader.getTieredReward(rewardTier);
     }
 
     public enum RewardTier {

@@ -5,11 +5,11 @@ import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.resource.crafting.OutputModifier;
 import dev.toma.questing.quest.Quest;
-import dev.toma.questing.reward.IRewardTransformer;
+import dev.toma.questing.reward.RewardTransformer;
 import dev.toma.questing.reward.RewardTransformerType;
 import net.minecraft.entity.player.PlayerEntity;
 
-public class CountByAttributeTransformer implements IRewardTransformer<Integer> {
+public class CountByAttributeTransformer implements RewardTransformer<Integer> {
 
     private final OutputModifier modifier;
 

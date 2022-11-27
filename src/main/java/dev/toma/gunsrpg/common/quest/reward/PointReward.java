@@ -7,7 +7,7 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IPointProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.questing.quest.Quest;
-import dev.toma.questing.reward.IRewardTransformer;
+import dev.toma.questing.reward.RewardTransformer;
 import dev.toma.questing.reward.RewardType;
 import dev.toma.questing.reward.VolumeBasedReward;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,7 +18,7 @@ public final class PointReward extends VolumeBasedReward {
     private final Target target;
     private final int count;
 
-    public PointReward(IRewardTransformer<Integer>[] countAdjusters, Target target, int count) {
+    public PointReward(RewardTransformer<Integer>[] countAdjusters, Target target, int count) {
         super(countAdjusters);
         this.target = target;
         this.count = count;
@@ -59,7 +59,7 @@ public final class PointReward extends VolumeBasedReward {
                 throw new JsonSyntaxException("Unknown target: " + targetName);
             }
             int count = JSONUtils.getAsInt(data, "count", 1);
-            IRewardTransformer<Integer>[] countFns = resolveCountTransformers(JSONUtils.getAsJsonArray(data, "countFunctions", new JsonArray()));
+            RewardTransformer<Integer>[] countFns = resolveCountTransformers(JSONUtils.getAsJsonArray(data, "countFunctions", new JsonArray()));
             return new PointReward(countFns, target, count);
         }
     }

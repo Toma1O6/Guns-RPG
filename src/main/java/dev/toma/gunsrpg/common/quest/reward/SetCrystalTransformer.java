@@ -8,13 +8,13 @@ import dev.toma.gunsrpg.resource.crate.ICountFunction;
 import dev.toma.gunsrpg.resource.util.functions.IFunction;
 import dev.toma.questing.quest.Quest;
 import dev.toma.questing.reward.AbstractItemReward;
-import dev.toma.questing.reward.IRewardTransformer;
+import dev.toma.questing.reward.RewardTransformer;
 import dev.toma.questing.reward.RewardTransformerType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 
-public class SetCrystalTransformer implements IRewardTransformer<AbstractItemReward.ItemList> {
+public class SetCrystalTransformer implements RewardTransformer<AbstractItemReward.ItemList> {
 
     private final ICountFunction levelFunction;
     private final ICountFunction buffFunction;

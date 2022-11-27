@@ -6,7 +6,7 @@ import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.quest.QuestDataManager;
 import dev.toma.gunsrpg.common.quest.reward.TieredReward;
-import dev.toma.questing.reward.IReward;
+import dev.toma.questing.reward.Reward;
 import dev.toma.questing.reward.RewardType;
 import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.profiler.IProfiler;
@@ -20,17 +20,17 @@ import java.util.Optional;
 public class QuestRewardLoader extends JsonReloadListener {
 
     private static final Gson GSON = new Gson();
-    private final Map<ResourceLocation, IReward> rewardMap = new HashMap<>();
+    private final Map<ResourceLocation, Reward> rewardMap = new HashMap<>();
 
     public QuestRewardLoader() {
         super(GSON, "quest/reward");
     }
 
-    public Optional<IReward> getRewardByIdentifier(ResourceLocation identifier) {
+    public Optional<Reward> getRewardByIdentifier(ResourceLocation identifier) {
         return Optional.ofNullable(this.rewardMap.get(identifier));
     }
 
-    public IReward getTieredReward(TieredReward.RewardTier tier) {
+    public Reward getTieredReward(TieredReward.RewardTier tier) {
         return this.getRewardByIdentifier(tier.getIdentifier()).orElseThrow(NullPointerException::new);
     }
 
@@ -43,7 +43,7 @@ public class QuestRewardLoader extends JsonReloadListener {
             JsonElement element = entry.getValue();
             GunsRPG.log.debug(QuestDataManager.MARKER, "Loading quest reward with ID {}", path);
             try {
-                IReward reward = RewardType.fromJson(element);
+                Reward reward = RewardType.fromJson(element);
                 this.rewardMap.put(path, reward);
                 GunsRPG.log.debug(QuestDataManager.MARKER, "Loaded quest reward with ID {}", path);
             } catch (JsonParseException e) {
