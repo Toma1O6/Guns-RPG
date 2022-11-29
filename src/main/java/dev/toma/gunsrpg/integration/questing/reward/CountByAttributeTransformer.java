@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.quest.reward;
+package dev.toma.gunsrpg.integration.questing.reward;
 
 import com.google.gson.JsonObject;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;

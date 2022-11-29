@@ -10,7 +10,7 @@ import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.common.item.SlingItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.common.quest.QuestDataManager;
+import dev.toma.gunsrpg.integration.questing.QuestDataManager;
 import dev.toma.gunsrpg.resource.crate.LootManager;
 import dev.toma.gunsrpg.resource.gunner.ZombieGunnerWeaponManager;
 import dev.toma.gunsrpg.resource.perks.PerkManager;

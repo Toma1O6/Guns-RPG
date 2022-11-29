@@ -1,7 +1,12 @@
 package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.quest.reward.*;
+import dev.toma.gunsrpg.integration.questing.area.ConfigurableAreaProvider;
+import dev.toma.gunsrpg.integration.questing.area.TargettedEntitySpawner;
+import dev.toma.gunsrpg.integration.questing.area.WeightedSpawner;
+import dev.toma.gunsrpg.integration.questing.reward.*;
+import dev.toma.questing.area.AreaType;
+import dev.toma.questing.area.spawner.SpawnerType;
 import dev.toma.questing.init.QuestingRegistries;
 import dev.toma.questing.init.SimpleRegistry;
 import dev.toma.questing.reward.AbstractItemReward;
@@ -19,6 +24,11 @@ public final class QuestRegistry {
     public static final RewardTransformerType<Integer, CountByAttributeTransformer> COUNT_BY_ATTRIBUTE_TRANSFORMER = new RewardTransformerType<>(internalId("output_modifier"), new CountByAttributeTransformer.Serializer(), Integer.class);
     public static final RewardTransformerType<AbstractItemReward.ItemList, SetCrystalTransformer> SET_CRYSTAL_TRANSFORMER = new RewardTransformerType<>(internalId("crystal"), new SetCrystalTransformer.Serializer(), AbstractItemReward.ItemList.class);
 
+    public static final SpawnerType<WeightedSpawner> WEIGHTED_SPAWNER = new SpawnerType<>(internalId("weighted"), new WeightedSpawner.Serializer());
+    public static final SpawnerType<TargettedEntitySpawner> ENTITY_SPAWNER = new SpawnerType<>(internalId("entity"), new TargettedEntitySpawner.Serializer());
+
+    public static final AreaType<ConfigurableAreaProvider> CONFIGURED_AREA = new AreaType<>(internalId("configured"), new ConfigurableAreaProvider.Serializer());
+
     public static void register() {
         register(QuestingRegistries.REWARDS, WEIGHTED_REWARD);
         register(QuestingRegistries.REWARDS, TIERED_REWARD);
@@ -26,6 +36,11 @@ public final class QuestRegistry {
 
         register(QuestingRegistries.REWARD_TRANSFORMERS, COUNT_BY_ATTRIBUTE_TRANSFORMER);
         register(QuestingRegistries.REWARD_TRANSFORMERS, SET_CRYSTAL_TRANSFORMER);
+
+        register(QuestingRegistries.SPAWNER, WEIGHTED_SPAWNER);
+        register(QuestingRegistries.SPAWNER, ENTITY_SPAWNER);
+
+        register(QuestingRegistries.AREA, CONFIGURED_AREA);
     }
 
     private static <V extends IdentifierHolder> void register(SimpleRegistry<ResourceLocation, V> registry, V value) {

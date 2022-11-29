@@ -1,11 +1,11 @@
-package dev.toma.gunsrpg.common.quest.loader;
+package dev.toma.gunsrpg.integration.questing.loader;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.quest.QuestDataManager;
-import dev.toma.gunsrpg.common.quest.reward.TieredReward;
+import dev.toma.gunsrpg.integration.questing.QuestDataManager;
+import dev.toma.gunsrpg.integration.questing.reward.TieredReward;
 import dev.toma.questing.reward.Reward;
 import dev.toma.questing.reward.RewardType;
 import net.minecraft.client.resources.JsonReloadListener;

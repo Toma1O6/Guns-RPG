@@ -1,0 +1,113 @@
+package dev.toma.gunsrpg.integration.questing.area;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import dev.toma.gunsrpg.ai.AlwaysAggroOnGoal;
+import dev.toma.gunsrpg.ai.QuestPlayerSensor;
+import dev.toma.gunsrpg.common.init.ModSensors;
+import dev.toma.questing.area.Area;
+import dev.toma.questing.area.spawner.EntitySpawner;
+import dev.toma.questing.area.spawner.SpawnerProvider;
+import dev.toma.questing.area.spawner.SpawnerType;
+import dev.toma.questing.area.spawner.processor.SpawnerProcessor;
+import dev.toma.questing.area.spawner.processor.SpawnerProcessorType;
+import dev.toma.questing.party.QuestParty;
+import dev.toma.questing.quest.Quest;
+import dev.toma.questing.utils.JsonHelper;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.brain.Brain;
+import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
+import net.minecraft.entity.ai.brain.sensor.Sensor;
+import net.minecraft.entity.ai.brain.sensor.SensorType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.JSONUtils;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
+public class TargettedEntitySpawner extends EntitySpawner {
+
+    public TargettedEntitySpawner(SpawnMode spawnMode, EntityType<?> entity, int minCount, int maxCount, SpawnerProcessor[] processors) {
+        super(spawnMode, entity, minCount, maxCount, processors);
+    }
+
+    @Override
+    public SpawnerType<?> getType() {
+        return super.getType();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void entityAddedToWorld(World world, Area area, Quest quest, Entity entity) {
+        if (!(entity instanceof LivingEntity)) {
+            return;
+        }
+        LivingEntity livingEntity = (LivingEntity) entity;
+        QuestParty party = quest.getParty();
+        if (world.isClientSide)
+            return;
+        BlockPos pos = entity.blockPosition();
+        this.getClosestPlayer(party, livingEntity).ifPresent(player -> {
+            ServerWorld serverWorld = (ServerWorld) world;
+            if (livingEntity instanceof MobEntity) {
+                MobEntity mob = (MobEntity) livingEntity;
+                mob.finalizeSpawn(serverWorld, world.getCurrentDifficultyAt(pos), SpawnReason.NATURAL, null, null);
+                mob.setTarget(player);
+                AlwaysAggroOnGoal<?> alwaysAggroOnGoal = new AlwaysAggroOnGoal<>(mob, false, player);
+                mob.targetSelector.addGoal(0, alwaysAggroOnGoal);
+            }
+            livingEntity.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(256.0D);
+            Brain<?> brain = livingEntity.getBrain();
+            brain.setMemory(MemoryModuleType.UNIVERSAL_ANGER, true);
+            Map<SensorType<? extends Sensor<?>>, Sensor<?>> sensors = (Map<SensorType<? extends Sensor<?>>, Sensor<?>>) brain.sensors;
+            sensors.remove(SensorType.NEAREST_PLAYERS);
+            SensorType<QuestPlayerSensor> sensorType = ModSensors.QUEST_PLAYER_SENSOR;
+            QuestPlayerSensor questPlayerSensor = sensorType.create();
+            questPlayerSensor.setTarget(player);
+            sensors.put(sensorType, questPlayerSensor);
+        });
+    }
+
+    private Optional<PlayerEntity> getClosestPlayer(QuestParty party, LivingEntity entity) {
+        return party.getMembers().stream()
+                .map(uuid -> entity.level.getPlayerByUUID(uuid))
+                .filter(Objects::nonNull)
+                .min((p1, p2) -> {
+                    int a = (int) entity.distanceToSqr(p1);
+                    int b = (int) entity.distanceToSqr(p2);
+                    return a - b;
+                });
+    }
+
+    public static final class Serializer implements SpawnerType.Serializer<TargettedEntitySpawner> {
+
+        @Override
+        public SpawnerProvider<TargettedEntitySpawner> spawnerFromJson(JsonObject data) {
+            String modeId = JSONUtils.getAsString(data, "spawnMode", SpawnMode.GROUND.name());
+            SpawnMode mode;
+            try {
+                mode = SpawnMode.valueOf(modeId);
+            } catch (IllegalArgumentException e) {
+                throw new JsonSyntaxException("Unknown spawn mode: " + modeId);
+            }
+            ResourceLocation entityId = new ResourceLocation(JSONUtils.getAsString(data, "entity"));
+            if (!ForgeRegistries.ENTITIES.containsKey(entityId)) {
+                throw new JsonSyntaxException("Unknown entity: " + entityId);
+            }
+            EntityType<?> type = ForgeRegistries.ENTITIES.getValue(entityId);
+            int minCount = JSONUtils.getAsInt(data, "min", 1);
+            int maxCount = JSONUtils.getAsInt(data, "max", minCount);
+            JsonArray processorArray = JSONUtils.getAsJsonArray(data, "processors", new JsonArray());
+            SpawnerProcessor[] processors = JsonHelper.mapArray(processorArray, SpawnerProcessor[]::new, SpawnerProcessorType::fromJson);
+            return () -> new TargettedEntitySpawner(mode, type, minCount, maxCount, processors);
+        }
+    }
+}

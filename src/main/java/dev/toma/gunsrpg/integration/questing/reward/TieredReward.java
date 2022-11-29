@@ -1,8 +1,8 @@
-package dev.toma.gunsrpg.common.quest.reward;
+package dev.toma.gunsrpg.integration.questing.reward;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.quest.TieredQuest;
-import dev.toma.gunsrpg.common.quest.loader.QuestRewardLoader;
+import dev.toma.gunsrpg.integration.questing.TieredQuest;
+import dev.toma.gunsrpg.integration.questing.loader.QuestRewardLoader;
 import dev.toma.questing.quest.Quest;
 import dev.toma.questing.reward.NestedReward;
 import dev.toma.questing.reward.Reward;

@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.quest;
+package dev.toma.gunsrpg.integration.questing;
 
 public interface TieredQuest {
 

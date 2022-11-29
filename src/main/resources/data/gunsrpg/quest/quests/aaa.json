@@ -46,14 +46,14 @@
   },
   "area": {
     "type": "gunsrpg:configured",
-    "id": "gunsrpg:area1",
+    "areaLevel": "AREA_LEVEL_2",
     "spawners": [
       {
-        "type": "gunsrpg:wave_based",
-        "interval": "20s",
+        "type": "questing:wave_based",
+        "interval": 600,
         "spawners": [
           {
-            "type": "gunsrpg:ground_spawn",
+            "type": "gunsrpg:entity",
             "entity": "minecraft:spider",
             "min": 2,
             "max": 3

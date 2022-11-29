@@ -1239,6 +1239,7 @@
   "config.gunsrpg.option.debuffs": "Debuffs",
   "config.gunsrpg.option.skills": "Skills",
   "config.gunsrpg.option.weapon": "Weapons",
+  "config.gunsrpg.option.quest": "Quests",
 
   "config.gunsrpg.option.createCrateOnPlayerDeath": "Death Crate",
   "config.gunsrpg.option.disableMobSpawners": "Disable Spawners",
@@ -1328,6 +1329,14 @@
   "config.gunsrpg.option.minChance": "Min Chance",
   "config.gunsrpg.option.maxChance": "Max Chance",
   "config.gunsrpg.option.jamChanceTransformerFunction": "Jam Chance Transformer Function",
+
+  "config.gunsrpg.option.area1": "Area I",
+  "config.gunsrpg.option.area2": "Area II",
+  "config.gunsrpg.option.area3": "Area III",
+
+  "config.gunsrpg.option.minDistance": "Min Distance",
+  "config.gunsrpg.option.maxDistance": "Max Distance",
+  "config.gunsrpg.option.areaSize": "Size",
 
   "config.gunsrpg-client.option.developerMode": "Developer Mode",
   "config.gunsrpg-client.option.alwaysRenderReticles": "Always Render Reticles",

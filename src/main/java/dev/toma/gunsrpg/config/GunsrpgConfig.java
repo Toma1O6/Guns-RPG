@@ -5,6 +5,7 @@ import dev.toma.configuration.config.Configurable;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.config.debuff.DebuffConfig;
 import dev.toma.gunsrpg.config.gun.WeaponConfig;
+import dev.toma.gunsrpg.config.quest.QuestConfig;
 import dev.toma.gunsrpg.config.world.WorldConfiguration;
 
 @Config(id = GunsRPG.MODID)
@@ -25,4 +26,8 @@ public final class GunsrpgConfig {
     @Configurable
     @Configurable.Comment("Weapon related configurations")
     public WeaponConfig weapon = new WeaponConfig();
+
+    @Configurable
+    @Configurable.Comment("Quest related configurations")
+    public QuestConfig quest = new QuestConfig();
 }
