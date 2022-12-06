@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.util;
 
 import dev.toma.gunsrpg.util.helper.NumberHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -55,7 +57,7 @@ public final class Interval implements IIntervalProvider, Comparable<Interval> {
             int unitValue = value / unit.tickValue;
             if (unitValue > 0 || blockSkipping) {
                 value = value % unit.tickValue;
-                builder.append(unitValue).append(compact ? "" : " ").append(unit.getName(compact)).append(!compact && unitValue > 1 ? "s" : "").append(compact ? "" : " ");
+                builder.append(unitValue).append(compact ? "" : " ").append(unit.getText(compact).getString()).append(compact ? "" : " ");
                 blockSkipping = true;
             }
         }
@@ -127,24 +129,28 @@ public final class Interval implements IIntervalProvider, Comparable<Interval> {
 
     public enum Unit {
 
-        TICK(1, 't', "Tick"),
-        SECOND(20, 's', "Second"),
-        MINUTE(60 * 20, 'm', "Minute"),
-        HOUR(60 * 60 * 20, 'h', "Hour"),
-        MC_DAY(24000, 'd', "MC Day");
+        TICK(1, 't', "tick"),
+        SECOND(20, 's', "second"),
+        MINUTE(60 * 20, 'm', "minute"),
+        HOUR(60 * 60 * 20, 'h', "hour"),
+        MC_DAY(24000, 'd', "mc_day");
 
         final int tickValue;
         final char id;
-        final String formattedName;
+        final String key;
 
-        Unit(int tickValue, char id, String formattedName) {
+        Unit(int tickValue, char id, String key) {
             this.tickValue = tickValue;
             this.id = id;
-            this.formattedName = formattedName;
+            this.key = key;
         }
 
-        public String getName(boolean compact) {
-            return compact ? String.valueOf(id) : formattedName.toLowerCase();
+        public ITextComponent getText(boolean isCompact) {
+            String i18nKey = "interval.unit." + this.key;
+            if (isCompact) {
+                i18nKey += ".compact";
+            }
+            return new TranslationTextComponent(i18nKey);
         }
 
         public static Unit getById(String id) {

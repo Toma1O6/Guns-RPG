@@ -1361,7 +1361,16 @@
   "config.gunsrpg-client.option.scope40x": "4.0x Zoom Sensitivity",
   "config.gunsrpg-client.option.scope60x": "6.0x Zoom Sensitivity",
   "config.gunsrpg-client.option.rightAligned": "Right-Aligned",
-  "config.gunsrpg-client.option.heightOffset": "Height Offset"
+  "config.gunsrpg-client.option.heightOffset": "Height Offset",
 
-
+  "interval.unit.tick": "Tick",
+  "interval.unit.tick.compact": "t",
+  "interval.unit.second": "Second",
+  "interval.unit.second.compact": "s",
+  "interval.unit.minute": "Minute",
+  "interval.unit.minute.compact": "Minutes",
+  "interval.unit.hour": "Hour",
+  "interval.unit.hour.compact": "h",
+  "interval.unit.mc_day": "Minecraft Day",
+  "interval.unit.mc_day.compact": "md"
 }

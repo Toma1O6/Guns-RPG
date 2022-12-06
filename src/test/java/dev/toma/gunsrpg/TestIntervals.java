@@ -40,15 +40,6 @@ public class TestIntervals {
     }
 
     @Test
-    public void testSimpleFormatting() {
-        assertEquals("4m", Interval.format(4, f -> f.src(Interval.Unit.MINUTE).out(Interval.Unit.MINUTE).compact()));
-        Interval complex = Interval.minutes(2).append(Interval.seconds(15));
-        assertEquals("2m15s", Interval.format(complex.valueIn(Interval.Unit.SECOND), f -> f.src(Interval.Unit.SECOND).out(Interval.Unit.MINUTE, Interval.Unit.SECOND).compact()));
-        complex = Interval.hours(4).append(Interval.seconds(37));
-        assertEquals("4h0m37s", Interval.format(complex.valueIn(Interval.Unit.SECOND), f -> f.src(Interval.Unit.SECOND).out(Interval.Unit.HOUR, Interval.Unit.MINUTE, Interval.Unit.SECOND).compact()));
-    }
-
-    @Test
     public void testParsing() {
         String in1 = "16m";
         Interval int1 = Interval.parse(in1);
