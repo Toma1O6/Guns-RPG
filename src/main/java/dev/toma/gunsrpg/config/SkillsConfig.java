@@ -21,9 +21,15 @@ public final class SkillsConfig {
     public int wellFedTriggerValue = 14;
 
     @Configurable
+    @Configurable.Range(min = 0)
+    @Configurable.Synchronized
+    @Configurable.Comment("Specify perk point price for weapon attachment reset")
+    public int attachmentResetPrice = 25;
+
+    @Configurable
     @Configurable.StringPattern(value = "[a-z0-9_.-]+:[a-z0-9/._-]+", defaultValue = "gunsrpg:like_a_cat_i")
     @Configurable.ValueUpdateCallback(method = "validateSkillIds")
-    @Configurable.Comment("Skills which can be access via quick-activation, max 5 supported")
+    @Configurable.Comment("Skills which can be accessed via quick-activation, max 5 supported")
     public String[] boundSkills = {
             "gunsrpg:like_a_cat_i",
             "gunsrpg:iron_buddy_i",

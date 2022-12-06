@@ -11,7 +11,6 @@ import dev.toma.gunsrpg.common.item.perk.Crystal;
 import dev.toma.gunsrpg.common.item.perk.CrystalAttribute;
 import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.util.IIntervalProvider;
-import dev.toma.gunsrpg.util.Interval;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.nbt.CompoundNBT;
@@ -21,7 +20,6 @@ import java.util.*;
 
 public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
 
-    public static final Interval USE_COOLDOWN = Interval.minutes(10);
     private final IAttributeProvider attributeProvider;
     private final Int2ObjectMap<Crystal> slot2CrystalMap = new Int2ObjectOpenHashMap<>();
     private final Map<Perk, PerkStat> perkData = new HashMap<>();

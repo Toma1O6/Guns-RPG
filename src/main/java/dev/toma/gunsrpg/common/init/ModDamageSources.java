@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.common.init;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;

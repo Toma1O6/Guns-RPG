@@ -132,7 +132,7 @@ public class ExtensionsView extends View {
     private void updateResetButtonState() {
         IPlayerData data = manager.getContext().getData();
         IPerkProvider provider = data.getPerkProvider();
-        boolean hasFunds = provider.getPoints() >= GunKillData.SKILL_RESET_PRICE;
+        boolean hasFunds = provider.getPoints() >= GunsRPG.config.skills.attachmentResetPrice;
         ISkillProvider skillProvider = data.getSkillProvider();
         boolean hasAnySkill = false;
         SkillType<?>[] extensions = head.getHierarchy().getExtensions();
@@ -149,7 +149,7 @@ public class ExtensionsView extends View {
         int x = mouseX + 12;
         int y = mouseY - 12;
         int z = 400;
-        String text = String.valueOf(GunKillData.SKILL_RESET_PRICE);
+        String text = String.valueOf(GunsRPG.config.skills.attachmentResetPrice);
         int tooltipWidth = font.width(text) + 25;
         int tooltipHeight = 20;
         if (x + tooltipWidth > this.width) {

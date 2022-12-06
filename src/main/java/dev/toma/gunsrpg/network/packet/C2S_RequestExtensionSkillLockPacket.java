@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.network.packet;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
@@ -37,9 +38,10 @@ public class C2S_RequestExtensionSkillLockPacket extends AbstractNetworkPacket<C
     protected void handlePacket(NetworkEvent.Context context) {
         ServerPlayerEntity player = context.getSender();
         PlayerData.get(player).ifPresent(data -> {
+            int price = GunsRPG.config.skills.attachmentResetPrice;
             ISkillProvider skillProvider = data.getSkillProvider();
             IPerkProvider provider = data.getPerkProvider();
-            if (provider.getPoints() < GunKillData.SKILL_RESET_PRICE) {
+            if (provider.getPoints() < price) {
                 return;
             }
             ISkillHierarchy<?> hierarchy = head.getHierarchy();
@@ -59,7 +61,7 @@ public class C2S_RequestExtensionSkillLockPacket extends AbstractNetworkPacket<C
                 }
             }
             if (lockedAny) {
-                provider.awardPoints(-GunKillData.SKILL_RESET_PRICE);
+                provider.awardPoints(-price);
             }
             data.sync(DataFlags.WILDCARD);
         });
