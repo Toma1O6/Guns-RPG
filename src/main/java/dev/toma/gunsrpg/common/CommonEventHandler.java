@@ -171,6 +171,11 @@ public class CommonEventHandler {
                         player.sendMessage(link, Util.NIL_UUID);
                         break;
                 }
+                String discordServerUrl = "https://discord.gg/WEFYxwS8E3";
+                IFormattableTextComponent message = new StringTextComponent("Join our discord server - " + discordServerUrl).withStyle(TextFormatting.AQUA);
+                Style style = message.getStyle().withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, discordServerUrl));
+                message.setStyle(style);
+                player.sendMessage(message, Util.NIL_UUID);
             });
         });
     }
