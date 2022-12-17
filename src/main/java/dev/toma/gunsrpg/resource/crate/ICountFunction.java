@@ -4,7 +4,7 @@ import net.minecraft.util.ResourceLocation;
 
 public interface ICountFunction {
 
-    ResourceLocation getId();
+    CountFunctionType<?> getFunctionType();
 
     int getCount();
 }

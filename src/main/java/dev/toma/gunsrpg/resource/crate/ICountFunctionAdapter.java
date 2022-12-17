@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import dev.toma.gunsrpg.resource.util.functions.IFunction;
 import net.minecraft.network.PacketBuffer;
 
+@Deprecated
 public interface ICountFunctionAdapter<F extends ICountFunction> {
 
     F deserialize(JsonObject data, IFunction range);

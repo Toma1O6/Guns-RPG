@@ -1,11 +1,14 @@
 package dev.toma.gunsrpg.integration.questing.reward;
 
+import com.mojang.serialization.Codec;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.integration.questing.TieredQuest;
 import dev.toma.gunsrpg.integration.questing.loader.QuestRewardLoader;
 import dev.toma.questing.quest.Quest;
 import dev.toma.questing.reward.NestedReward;
 import dev.toma.questing.reward.Reward;
+import dev.toma.questing.reward.RewardType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -29,10 +32,19 @@ public enum TieredReward implements NestedReward {
         return getTieredReward(tier);
     }
 
+    @Override
+    public RewardType<?> getType() {
+        return QuestRegistry.TIERED_REWARD;
+    }
+
     public static Reward getTieredReward(int tier) {
         RewardTier rewardTier = RewardTier.getTier(tier);
         QuestRewardLoader rewardLoader = GunsRPG.getModLifecycle().getQuestManager().rewardLoader;
         return rewardLoader.getTieredReward(rewardTier);
+    }
+
+    public static Codec<TieredReward> codec() {
+        return Codec.unit(INSTANCE);
     }
 
     public enum RewardTier {

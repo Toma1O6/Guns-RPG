@@ -2,21 +2,30 @@ package dev.toma.gunsrpg.resource.crate;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.resource.util.functions.IFunction;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 
-public class ConstantCount extends AbstractCountFunction {
+public class ConstantCount implements ICountFunction {
 
+    public static final Codec<ConstantCount> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.INT.optionalFieldOf("value", 1).forGetter(t -> t.value)
+    ).apply(instance, ConstantCount::new));
     private final int value;
 
     private ConstantCount(int value) {
-        super(CountFunctionRegistry.CONST);
         this.value = value;
     }
 
     public static ConstantCount constant(int value) {
         return new ConstantCount(value);
+    }
+
+    @Override
+    public CountFunctionType<?> getFunctionType() {
+        return CountFunctionRegistry.CONST;
     }
 
     @Override

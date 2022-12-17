@@ -24,6 +24,6 @@ public class CountFunctionAdapter implements JsonDeserializer<ICountFunction> {
 
     @Override
     public ICountFunction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return CountFunctionRegistry.fromJson(json, this.range);
+        return CountFunctionRegistry.INSTANCE.fromJson(json, this.range);
     }
 }

@@ -3,6 +3,9 @@ package dev.toma.gunsrpg.integration.questing.loader;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.JsonOps;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.integration.questing.QuestDataManager;
 import dev.toma.gunsrpg.integration.questing.reward.TieredReward;
@@ -43,7 +46,9 @@ public class QuestRewardLoader extends JsonReloadListener {
             JsonElement element = entry.getValue();
             GunsRPG.log.debug(QuestDataManager.MARKER, "Loading quest reward with ID {}", path);
             try {
-                Reward reward = RewardType.fromJson(element);
+                DataResult<Reward> dataResult = RewardType.CODEC.parse(JsonOps.INSTANCE, element);
+                Reward reward = dataResult.resultOrPartial(s -> GunsRPG.log.error(QuestDataManager.MARKER, s))
+                        .orElseThrow(() -> new JsonSyntaxException("Unable to parse reward"));
                 this.rewardMap.put(path, reward);
                 GunsRPG.log.debug(QuestDataManager.MARKER, "Loaded quest reward with ID {}", path);
             } catch (JsonParseException e) {

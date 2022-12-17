@@ -1,24 +1,32 @@
 package dev.toma.gunsrpg.integration.questing.reward;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IPointProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.questing.quest.Quest;
 import dev.toma.questing.reward.RewardTransformer;
 import dev.toma.questing.reward.RewardType;
 import dev.toma.questing.reward.VolumeBasedReward;
+import dev.toma.questing.utils.Codecs;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.JSONUtils;
+
+import java.util.Collections;
+import java.util.List;
 
 public final class PointReward extends VolumeBasedReward {
 
+    public static final Codec<PointReward> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            VolumeBasedReward.VOLUME_ADJUSTER_CODEC.listOf().optionalFieldOf("countFunctions", Collections.emptyList()).forGetter(VolumeBasedReward::getCountAdjusters),
+            Codecs.enumCodec(Target.class).fieldOf("target").forGetter(t -> t.target),
+            Codec.INT.optionalFieldOf("count", 1).forGetter(t -> t.count)
+    ).apply(instance, PointReward::new));
     private final Target target;
     private final int count;
 
-    public PointReward(RewardTransformer<Integer>[] countAdjusters, Target target, int count) {
+    public PointReward(List<RewardTransformer<Integer>> countAdjusters, Target target, int count) {
         super(countAdjusters);
         this.target = target;
         this.count = count;
@@ -33,6 +41,11 @@ public final class PointReward extends VolumeBasedReward {
         });
     }
 
+    @Override
+    public RewardType<?> getType() {
+        return QuestRegistry.POINT_REWARD;
+    }
+
     public enum Target {
 
         SKILL,
@@ -44,23 +57,6 @@ public final class PointReward extends VolumeBasedReward {
                 case PERK: return data.getPerkProvider();
             }
             throw new UnsupportedOperationException();
-        }
-    }
-
-    public static final class Serializer implements RewardType.RewardSerializer<PointReward> {
-
-        @Override
-        public PointReward rewardFromJson(JsonObject data) {
-            String targetName = JSONUtils.getAsString(data, "target");
-            Target target;
-            try {
-                target = Target.valueOf(targetName);
-            } catch (IllegalArgumentException e) {
-                throw new JsonSyntaxException("Unknown target: " + targetName);
-            }
-            int count = JSONUtils.getAsInt(data, "count", 1);
-            RewardTransformer<Integer>[] countFns = resolveCountTransformers(JSONUtils.getAsJsonArray(data, "countFunctions", new JsonArray()));
-            return new PointReward(countFns, target, count);
         }
     }
 }

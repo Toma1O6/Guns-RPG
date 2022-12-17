@@ -1,30 +1,39 @@
 package dev.toma.gunsrpg.integration.questing.area;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.config.quest.AreaConfig;
 import dev.toma.questing.area.AreaInteractionMode;
 import dev.toma.questing.area.AreaType;
 import dev.toma.questing.area.LandBasedAreaProvider;
-import dev.toma.questing.area.spawner.SpawnerProvider;
+import dev.toma.questing.area.SimpleAreaProvider;
+import dev.toma.questing.area.spawner.Spawner;
 import dev.toma.questing.area.spawner.SpawnerType;
-import net.minecraft.util.JSONUtils;
+import dev.toma.questing.utils.Codecs;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
 public final class ConfigurableAreaProvider extends LandBasedAreaProvider {
 
-    public ConfigurableAreaProvider(AreaLevel level, AreaInteractionMode interactionMode, List<SpawnerProvider<?>> spawners) {
+    public static final Codec<ConfigurableAreaProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codecs.enumCodec(AreaLevel.class).optionalFieldOf("areaLevel", AreaLevel.AREA_LEVEL_1).forGetter(t -> t.level),
+            Codecs.enumCodec(AreaInteractionMode.class).optionalFieldOf("interactionMode", AreaInteractionMode.NO_INTERACTION).forGetter(SimpleAreaProvider::getInteractionMode),
+            SpawnerType.CODEC.listOf().optionalFieldOf("spawners", Collections.emptyList()).forGetter(SimpleAreaProvider::getMobSpawners)
+    ).apply(instance, ConfigurableAreaProvider::new));
+    private final AreaLevel level;
+
+    public ConfigurableAreaProvider(AreaLevel level, AreaInteractionMode interactionMode, List<Spawner> spawners) {
         super(level.configProvider.get().minDistance, level.configProvider.get().maxDistance, level.configProvider.get().areaSize, interactionMode, spawners);
+        this.level = level;
     }
 
     @Override
     public AreaType<?> getAreaType() {
-        return super.getAreaType();
+        return QuestRegistry.CONFIGURED_AREA;
     }
 
     public enum AreaLevel {
@@ -37,34 +46,6 @@ public final class ConfigurableAreaProvider extends LandBasedAreaProvider {
 
         AreaLevel(Supplier<AreaConfig> configProvider) {
             this.configProvider = configProvider;
-        }
-    }
-
-    public static final class Serializer implements AreaType.ProviderSerializer<ConfigurableAreaProvider> {
-
-        @Override
-        public ConfigurableAreaProvider providerFromJson(JsonObject data) {
-            String levelId = JSONUtils.getAsString(data, "areaLevel", AreaLevel.AREA_LEVEL_1.name());
-            AreaLevel level;
-            try {
-                level = AreaLevel.valueOf(levelId);
-            } catch (IllegalArgumentException e) {
-                throw new JsonSyntaxException("Unknown area level: " + levelId);
-            }
-            String interactionId = JSONUtils.getAsString(data, "interactionMode", AreaInteractionMode.NO_INTERACTION.name());
-            AreaInteractionMode interactionMode;
-            try {
-                interactionMode = AreaInteractionMode.valueOf(interactionId);
-            } catch (IllegalArgumentException e) {
-                throw new JsonSyntaxException("Unknown interaction mode: " + interactionId);
-            }
-            JsonArray array = JSONUtils.getAsJsonArray(data, "spawners", new JsonArray());
-            List<SpawnerProvider<?>> providers = new ArrayList<>();
-            array.forEach(element -> {
-                SpawnerProvider<?> provider = SpawnerType.fromJson(element);
-                providers.add(provider);
-            });
-            return new ConfigurableAreaProvider(level, interactionMode, providers);
         }
     }
 }

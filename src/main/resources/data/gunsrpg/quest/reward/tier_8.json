@@ -1,10 +1,10 @@
 {
-  "reward": "gunsrpg:weighted",
+  "type": "gunsrpg:weighted",
   "values": [
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/emerald_ammo",
         "count": 90,
         "countFunctions": [
@@ -19,7 +19,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/quartz_ammo",
         "count": 90,
         "countFunctions": [
@@ -34,7 +34,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/diamond_ammo",
         "count": 80,
         "countFunctions": [
@@ -49,7 +49,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/amethyst_ammo",
         "count": 60,
         "countFunctions": [
@@ -64,7 +64,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/netherite_ammo",
         "count": 40,
         "countFunctions": [
@@ -78,7 +78,7 @@
     },
     {
       "entry": {
-        "reward": "questing:item",
+        "type": "questing:item",
         "items": [
           {
             "item": "gunsrpg:grenade_case"
@@ -88,7 +88,7 @@
     },
     {
       "entry": {
-        "reward": "questing:item",
+        "type": "questing:item",
         "items": [
           {
             "item": "gunsrpg:meds_case"
@@ -98,7 +98,7 @@
     },
     {
       "entry": {
-        "reward": "questing:item",
+        "type": "questing:item",
         "items": [
           {
             "item": "gunsrpg:item_case"
@@ -109,7 +109,7 @@
     {
       "weight": 24,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/meds",
         "count": 5,
         "countFunctions": [
@@ -124,7 +124,7 @@
     {
       "weight": 24,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/stims",
         "count": 6,
         "countFunctions": [
@@ -139,7 +139,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:item",
+        "type": "questing:item",
         "items": [
           {
             "item": "gunsrpg:kodiak",
@@ -151,7 +151,7 @@
     {
       "weight": 10,
       "entry": {
-        "reward": "questing:item",
+        "type": "questing:item",
         "items": [
           {
             "item": "gunsrpg:flare",
@@ -170,7 +170,7 @@
     {
       "weight": 12,
       "entry": {
-        "reward": "gunsrpg:point",
+        "type": "gunsrpg:point",
         "target": "SKILL",
         "count": 4
       }
@@ -178,7 +178,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "gunsrpg:point",
+        "type": "gunsrpg:point",
         "target": "PERK",
         "count": 6,
         "countFunctions": [
@@ -193,7 +193,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:crystal/orb_of_transmutation",
         "count": 7,
         "countFunctions": [
@@ -208,7 +208,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:crystal/orb_of_purity",
         "count": 7,
         "countFunctions": [
@@ -223,7 +223,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/grenades",
         "count": 12,
         "countFunctions": [
@@ -238,7 +238,7 @@
     {
       "weight": 15,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/mines",
         "count": 10,
         "countFunctions": [
@@ -253,7 +253,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/grenade_launcher",
         "count": 12,
         "countFunctions": [
@@ -268,7 +268,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/rocket_launcher",
         "count": 10,
         "countFunctions": [
@@ -283,7 +283,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:crystal/crystals",
         "itemFunctions": [
           {

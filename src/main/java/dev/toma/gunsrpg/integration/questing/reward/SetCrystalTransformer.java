@@ -1,21 +1,26 @@
 package dev.toma.gunsrpg.integration.questing.reward;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.common.item.perk.Crystal;
 import dev.toma.gunsrpg.common.item.perk.CrystalItem;
-import dev.toma.gunsrpg.resource.crate.CountFunctionRegistry;
+import dev.toma.gunsrpg.resource.crate.CountFunctionType;
 import dev.toma.gunsrpg.resource.crate.ICountFunction;
-import dev.toma.gunsrpg.resource.util.functions.IFunction;
 import dev.toma.questing.quest.Quest;
 import dev.toma.questing.reward.AbstractItemReward;
 import dev.toma.questing.reward.RewardTransformer;
 import dev.toma.questing.reward.RewardTransformerType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.JSONUtils;
 
 public class SetCrystalTransformer implements RewardTransformer<AbstractItemReward.ItemList> {
 
+    public static final Codec<SetCrystalTransformer> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            CountFunctionType.CODEC.fieldOf("crystal").forGetter(t -> t.levelFunction),
+            CountFunctionType.CODEC.fieldOf("buffs").forGetter(t -> t.buffFunction),
+            CountFunctionType.CODEC.fieldOf("debuffs").forGetter(t -> t.debuffFunction)
+    ).apply(instance, SetCrystalTransformer::new));
     private final ICountFunction levelFunction;
     private final ICountFunction buffFunction;
     private final ICountFunction debuffFunction;
@@ -38,16 +43,8 @@ public class SetCrystalTransformer implements RewardTransformer<AbstractItemRewa
         return originalValue;
     }
 
-    public static final class Serializer implements RewardTransformerType.Serializer<AbstractItemReward.ItemList, SetCrystalTransformer> {
-
-        @Override
-        public SetCrystalTransformer transformerFromJson(JsonObject data) {
-            JsonObject crystal = JSONUtils.getAsJsonObject(data, "crystal");
-            IFunction positive = i -> i >= 0;
-            ICountFunction level = CountFunctionRegistry.fromJson(JSONUtils.getAsJsonObject(crystal, "level"), positive);
-            ICountFunction buff = CountFunctionRegistry.fromJson(JSONUtils.getAsJsonObject(crystal, "buffs"), positive);
-            ICountFunction debuff = CountFunctionRegistry.fromJson(JSONUtils.getAsJsonObject(crystal, "debuffs"), positive);
-            return new SetCrystalTransformer(level, buff, debuff);
-        }
+    @Override
+    public RewardTransformerType<?, ?> getType() {
+        return QuestRegistry.SET_CRYSTAL_TRANSFORMER;
     }
 }

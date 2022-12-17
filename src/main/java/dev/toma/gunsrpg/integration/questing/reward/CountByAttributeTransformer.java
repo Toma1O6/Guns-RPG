@@ -1,8 +1,9 @@
 package dev.toma.gunsrpg.integration.questing.reward;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.resource.crafting.OutputModifier;
 import dev.toma.questing.quest.Quest;
 import dev.toma.questing.reward.RewardTransformer;
@@ -11,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class CountByAttributeTransformer implements RewardTransformer<Integer> {
 
+    public static final Codec<CountByAttributeTransformer> CODEC = OutputModifier.CODEC.xmap(CountByAttributeTransformer::new, t -> t.modifier);
     private final OutputModifier modifier;
 
     public CountByAttributeTransformer(OutputModifier modifier) {
@@ -25,12 +27,8 @@ public class CountByAttributeTransformer implements RewardTransformer<Integer> {
         }).orElse(originalValue);
     }
 
-    public static final class Serializer implements RewardTransformerType.Serializer<Integer, CountByAttributeTransformer> {
-
-        @Override
-        public CountByAttributeTransformer transformerFromJson(JsonObject data) {
-            OutputModifier modifier = OutputModifier.fromJson(data);
-            return new CountByAttributeTransformer(modifier);
-        }
+    @Override
+    public RewardTransformerType<?, ?> getType() {
+        return QuestRegistry.COUNT_BY_ATTRIBUTE_TRANSFORMER;
     }
 }

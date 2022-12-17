@@ -123,14 +123,14 @@ public final class CrystalConfiguration {
         }
 
         public void encode(PacketBuffer buffer) {
-            CountFunctionRegistry.encode(buff, buffer);
-            CountFunctionRegistry.encode(debuff, buffer);
+            CountFunctionRegistry.INSTANCE.encode(buff, buffer);
+            CountFunctionRegistry.INSTANCE.encode(debuff, buffer);
         }
 
         public static Types decode(PacketBuffer buffer) {
             return new Types(
-                    CountFunctionRegistry.decode(buffer),
-                    CountFunctionRegistry.decode(buffer)
+                    CountFunctionRegistry.INSTANCE.decode(buffer),
+                    CountFunctionRegistry.INSTANCE.decode(buffer)
             );
         }
     }

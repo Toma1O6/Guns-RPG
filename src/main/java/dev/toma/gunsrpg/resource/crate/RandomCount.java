@@ -2,6 +2,8 @@ package dev.toma.gunsrpg.resource.crate;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.resource.util.functions.IFunction;
 import net.minecraft.network.PacketBuffer;
@@ -9,21 +11,29 @@ import net.minecraft.util.JSONUtils;
 
 import java.util.Random;
 
-public class RandomCount extends AbstractCountFunction {
+public class RandomCount implements ICountFunction {
 
+    public static final Codec<RandomCount> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.intRange(0, Integer.MAX_VALUE).fieldOf("min").forGetter(t -> t.lowerBound),
+            Codec.intRange(1, Integer.MAX_VALUE).fieldOf("max").forGetter(t -> t.upperBound)
+    ).apply(instance, RandomCount::new));
     private static final Random RANDOM = new Random();
 
     private final int lowerBound;
     private final int upperBound;
 
     private RandomCount(int lowerBound, int upperBound) {
-        super(CountFunctionRegistry.RNG);
         this.lowerBound = lowerBound;
-        this.upperBound = upperBound;
+        this.upperBound = Math.max(lowerBound, upperBound);
     }
 
     public static RandomCount fromInterval(int lower, int upper) {
         return new RandomCount(lower, upper);
+    }
+
+    @Override
+    public CountFunctionType<?> getFunctionType() {
+        return CountFunctionRegistry.RNG;
     }
 
     @Override

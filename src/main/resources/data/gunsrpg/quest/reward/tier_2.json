@@ -1,10 +1,10 @@
 {
-  "reward": "gunsrpg:weighted",
+  "type": "gunsrpg:weighted",
   "values": [
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/wood_ammo",
         "count": 50,
         "countFunctions": [
@@ -19,7 +19,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/stone_ammo",
         "count": 40,
         "countFunctions": [
@@ -34,7 +34,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/iron_ammo",
         "count": 30,
         "countFunctions": [
@@ -49,7 +49,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/lapis_ammo",
         "count": 30,
         "countFunctions": [
@@ -64,7 +64,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/gold_ammo",
         "count": 25,
         "countFunctions": [
@@ -79,7 +79,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/redstone_ammo",
         "count": 25,
         "countFunctions": [
@@ -94,7 +94,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/emerald_ammo",
         "count": 10,
         "countFunctions": [
@@ -109,7 +109,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/quartz_ammo",
         "count": 10,
         "countFunctions": [
@@ -123,7 +123,7 @@
     },
     {
       "entry": {
-        "reward": "questing:item",
+        "type": "questing:item",
         "items": [
           {
             "item": "gunsrpg:lunch_box"
@@ -134,7 +134,7 @@
     {
       "weight": 24,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/meds",
         "countFunctions": [
           {
@@ -148,7 +148,7 @@
     {
       "weight": 24,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/stims",
         "count": 2,
         "countFunctions": [
@@ -163,7 +163,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "gunsrpg:point",
+        "type": "gunsrpg:point",
         "target": "PERK",
         "countFunctions": [
           {
@@ -177,7 +177,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:crystal/orb_of_transmutation",
         "countFunctions": [
           {
@@ -191,7 +191,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:crystal/orb_of_purity",
         "countFunctions": [
           {
@@ -205,7 +205,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/grenades",
         "count": 4,
         "countFunctions": [
@@ -220,7 +220,7 @@
     {
       "weight": 15,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/mines",
         "count": 4,
         "countFunctions": [
@@ -235,7 +235,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:rewards/grenade_launcher",
         "count": 2,
         "countFunctions": [
@@ -250,7 +250,7 @@
     {
       "weight": 18,
       "entry": {
-        "reward": "questing:tag",
+        "type": "questing:tag",
         "tag": "gunsrpg:crystal/crystals",
         "itemFunctions": [
           {
