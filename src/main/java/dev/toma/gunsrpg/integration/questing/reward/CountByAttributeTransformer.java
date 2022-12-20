@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.integration.questing.reward;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.QuestRegistry;
@@ -12,7 +13,10 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class CountByAttributeTransformer implements RewardTransformer<Integer> {
 
-    public static final Codec<CountByAttributeTransformer> CODEC = OutputModifier.CODEC.xmap(CountByAttributeTransformer::new, t -> t.modifier);
+    public static final Codec<CountByAttributeTransformer> CODEC = OutputModifier.CODEC
+            .xmap(CountByAttributeTransformer::new, t -> t.modifier)
+            .fieldOf("modifier")
+            .codec();
     private final OutputModifier modifier;
 
     public CountByAttributeTransformer(OutputModifier modifier) {

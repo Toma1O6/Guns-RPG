@@ -10,8 +10,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_ammo",
-            "operation": "gunsrpg:mul"
+            "modifier": {
+              "attribute": "gunsrpg:quests_ammo",
+              "operation": "gunsrpg:mul"
+            }
           }
         ]
       }
@@ -25,8 +27,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_ammo",
-            "operation": "gunsrpg:mul"
+            "modifier": {
+              "attribute": "gunsrpg:quests_ammo",
+              "operation": "gunsrpg:mul"
+            }
           }
         ]
       }
@@ -40,8 +44,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_ammo",
-            "operation": "gunsrpg:mul"
+            "modifier": {
+              "attribute": "gunsrpg:quests_ammo",
+              "operation": "gunsrpg:mul"
+            }
           }
         ]
       }
@@ -55,8 +61,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_ammo",
-            "operation": "gunsrpg:mul"
+            "modifier": {
+              "attribute": "gunsrpg:quests_ammo",
+              "operation": "gunsrpg:mul"
+            }
           }
         ]
       }
@@ -70,8 +78,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_ammo",
-            "operation": "gunsrpg:mul"
+            "modifier": {
+              "attribute": "gunsrpg:quests_ammo",
+              "operation": "gunsrpg:mul"
+            }
           }
         ]
       }
@@ -85,8 +95,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_ammo",
-            "operation": "gunsrpg:mul"
+            "modifier": {
+              "attribute": "gunsrpg:quests_ammo",
+              "operation": "gunsrpg:mul"
+            }
           }
         ]
       }
@@ -100,8 +112,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_ammo",
-            "operation": "gunsrpg:mul"
+            "modifier": {
+              "attribute": "gunsrpg:quests_ammo",
+              "operation": "gunsrpg:mul"
+            }
           }
         ]
       }
@@ -155,8 +169,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_meds",
-            "operation": "gunsrpg:sum"
+            "modifier": {
+              "attribute": "gunsrpg:quests_meds",
+              "operation": "gunsrpg:sum"
+            }
           }
         ]
       }
@@ -170,8 +186,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_meds",
-            "operation": "gunsrpg:sum"
+            "modifier": {
+              "attribute": "gunsrpg:quests_meds",
+              "operation": "gunsrpg:sum"
+            }
           }
         ]
       }
@@ -200,8 +218,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_flare",
-            "operation": "gunsrpg:sum"
+            "modifier": {
+              "attribute": "gunsrpg:quests_flare",
+              "operation": "gunsrpg:sum"
+            }
           }
         ]
       }
@@ -223,8 +243,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_perkbook",
-            "operation": "gunsrpg:sum"
+            "modifier": {
+              "attribute": "gunsrpg:quests_perkbook",
+              "operation": "gunsrpg:sum"
+            }
           }
         ]
       }
@@ -238,8 +260,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_orbs",
-            "operation": "gunsrpg:sum"
+            "modifier": {
+              "attribute": "gunsrpg:quests_orbs",
+              "operation": "gunsrpg:sum"
+            }
           }
         ]
       }
@@ -253,8 +277,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_orbs",
-            "operation": "gunsrpg:sum"
+            "modifier": {
+              "attribute": "gunsrpg:quests_orbs",
+              "operation": "gunsrpg:sum"
+            }
           }
         ]
       }
@@ -268,8 +294,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_explosives",
-            "operation": "gunsrpg:mul"
+            "modifier": {
+              "attribute": "gunsrpg:quests_explosives",
+              "operation": "gunsrpg:mul"
+            }
           }
         ]
       }
@@ -283,8 +311,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_explosives",
-            "operation": "gunsrpg:mul"
+            "modifier": {
+              "attribute": "gunsrpg:quests_explosives",
+              "operation": "gunsrpg:mul"
+            }
           }
         ]
       }
@@ -298,8 +328,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_explosives",
-            "operation": "gunsrpg:mul"
+            "modifier": {
+              "attribute": "gunsrpg:quests_explosives",
+              "operation": "gunsrpg:mul"
+            }
           }
         ]
       }
@@ -313,8 +345,10 @@
         "countFunctions": [
           {
             "type": "gunsrpg:output_modifier",
-            "attribute": "gunsrpg:quests_explosives",
-            "operation": "gunsrpg:mul"
+            "modifier": {
+              "attribute": "gunsrpg:quests_explosives",
+              "operation": "gunsrpg:mul"
+            }
           }
         ]
       }
