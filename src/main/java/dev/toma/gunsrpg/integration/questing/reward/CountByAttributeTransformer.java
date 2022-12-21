@@ -1,14 +1,13 @@
 package dev.toma.gunsrpg.integration.questing.reward;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.resource.crafting.OutputModifier;
-import dev.toma.questing.quest.Quest;
-import dev.toma.questing.reward.RewardTransformer;
-import dev.toma.questing.reward.RewardTransformerType;
+import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.reward.RewardTransformer;
+import dev.toma.questing.common.reward.RewardTransformerType;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class CountByAttributeTransformer implements RewardTransformer<Integer> {

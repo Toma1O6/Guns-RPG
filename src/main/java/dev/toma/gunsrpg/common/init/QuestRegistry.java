@@ -5,12 +5,12 @@ import dev.toma.gunsrpg.integration.questing.area.ConfigurableAreaProvider;
 import dev.toma.gunsrpg.integration.questing.area.TargettedEntitySpawner;
 import dev.toma.gunsrpg.integration.questing.area.WeightedSpawner;
 import dev.toma.gunsrpg.integration.questing.reward.*;
-import dev.toma.questing.area.AreaType;
-import dev.toma.questing.area.spawner.SpawnerType;
-import dev.toma.questing.init.QuestingRegistries;
-import dev.toma.questing.reward.AbstractItemReward;
-import dev.toma.questing.reward.RewardTransformerType;
-import dev.toma.questing.reward.RewardType;
+import dev.toma.questing.common.area.AreaType;
+import dev.toma.questing.common.area.spawner.SpawnerType;
+import dev.toma.questing.common.init.QuestingRegistries;
+import dev.toma.questing.common.reward.AbstractItemReward;
+import dev.toma.questing.common.reward.RewardTransformerType;
+import dev.toma.questing.common.reward.RewardType;
 import net.minecraft.util.ResourceLocation;
 
 public final class QuestRegistry {

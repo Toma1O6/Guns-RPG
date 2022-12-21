@@ -6,10 +6,10 @@ import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IPointProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.QuestRegistry;
-import dev.toma.questing.quest.Quest;
-import dev.toma.questing.reward.RewardTransformer;
-import dev.toma.questing.reward.RewardType;
-import dev.toma.questing.reward.VolumeBasedReward;
+import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.reward.RewardTransformer;
+import dev.toma.questing.common.reward.RewardType;
+import dev.toma.questing.common.reward.VolumeBasedReward;
 import dev.toma.questing.utils.Codecs;
 import net.minecraft.entity.player.PlayerEntity;
 

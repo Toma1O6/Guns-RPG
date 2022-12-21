@@ -4,10 +4,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.util.math.WeightedRandom;
-import dev.toma.questing.area.Area;
-import dev.toma.questing.area.spawner.Spawner;
-import dev.toma.questing.area.spawner.SpawnerType;
-import dev.toma.questing.quest.Quest;
+import dev.toma.questing.common.area.Area;
+import dev.toma.questing.common.area.spawner.Spawner;
+import dev.toma.questing.common.area.spawner.SpawnerType;
+import dev.toma.questing.common.quest.Quest;
 import dev.toma.questing.utils.Utils;
 import net.minecraft.world.World;
 

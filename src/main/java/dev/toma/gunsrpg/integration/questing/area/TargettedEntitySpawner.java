@@ -7,14 +7,14 @@ import dev.toma.gunsrpg.ai.AlwaysAggroOnGoal;
 import dev.toma.gunsrpg.ai.QuestPlayerSensor;
 import dev.toma.gunsrpg.common.init.ModSensors;
 import dev.toma.gunsrpg.common.init.QuestRegistry;
-import dev.toma.questing.area.Area;
-import dev.toma.questing.area.spawner.EntitySpawner;
-import dev.toma.questing.area.spawner.Spawner;
-import dev.toma.questing.area.spawner.SpawnerType;
-import dev.toma.questing.area.spawner.processor.SpawnerProcessor;
-import dev.toma.questing.area.spawner.processor.SpawnerProcessorType;
-import dev.toma.questing.party.QuestParty;
-import dev.toma.questing.quest.Quest;
+import dev.toma.questing.common.area.Area;
+import dev.toma.questing.common.area.spawner.EntitySpawner;
+import dev.toma.questing.common.area.spawner.Spawner;
+import dev.toma.questing.common.area.spawner.SpawnerType;
+import dev.toma.questing.common.area.spawner.processor.SpawnerProcessor;
+import dev.toma.questing.common.area.spawner.processor.SpawnerProcessorType;
+import dev.toma.questing.common.party.Party;
+import dev.toma.questing.common.quest.Quest;
 import dev.toma.questing.utils.Codecs;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -68,7 +68,7 @@ public class TargettedEntitySpawner extends EntitySpawner {
             return;
         }
         LivingEntity livingEntity = (LivingEntity) entity;
-        QuestParty party = quest.getParty();
+        Party party = quest.getParty();
         if (world.isClientSide)
             return;
         BlockPos pos = entity.blockPosition();
@@ -93,7 +93,7 @@ public class TargettedEntitySpawner extends EntitySpawner {
         });
     }
 
-    private Optional<PlayerEntity> getClosestPlayer(QuestParty party, LivingEntity entity) {
+    private Optional<PlayerEntity> getClosestPlayer(Party party, LivingEntity entity) {
         return party.getMembers().stream()
                 .map(uuid -> entity.level.getPlayerByUUID(uuid))
                 .filter(Objects::nonNull)

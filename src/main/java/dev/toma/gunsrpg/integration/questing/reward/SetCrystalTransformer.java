@@ -7,10 +7,10 @@ import dev.toma.gunsrpg.common.item.perk.Crystal;
 import dev.toma.gunsrpg.common.item.perk.CrystalItem;
 import dev.toma.gunsrpg.resource.crate.CountFunctionType;
 import dev.toma.gunsrpg.resource.crate.ICountFunction;
-import dev.toma.questing.quest.Quest;
-import dev.toma.questing.reward.AbstractItemReward;
-import dev.toma.questing.reward.RewardTransformer;
-import dev.toma.questing.reward.RewardTransformerType;
+import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.reward.AbstractItemReward;
+import dev.toma.questing.common.reward.RewardTransformer;
+import dev.toma.questing.common.reward.RewardTransformerType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 

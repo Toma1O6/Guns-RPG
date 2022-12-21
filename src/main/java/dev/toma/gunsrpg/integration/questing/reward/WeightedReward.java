@@ -4,10 +4,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.util.math.WeightedRandom;
-import dev.toma.questing.quest.Quest;
-import dev.toma.questing.reward.NestedReward;
-import dev.toma.questing.reward.Reward;
-import dev.toma.questing.reward.RewardType;
+import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.reward.NestedReward;
+import dev.toma.questing.common.reward.Reward;
+import dev.toma.questing.common.reward.RewardType;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.Arrays;
