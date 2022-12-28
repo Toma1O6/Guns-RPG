@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.integration.questing.area.ConfigurableAreaProvider;
 import dev.toma.gunsrpg.integration.questing.area.TargettedEntitySpawner;
 import dev.toma.gunsrpg.integration.questing.area.WeightedSpawner;
+import dev.toma.gunsrpg.integration.questing.condition.DebuffCondition;
 import dev.toma.gunsrpg.integration.questing.condition.UniqueMobKillsCondition;
 import dev.toma.gunsrpg.integration.questing.reward.*;
 import dev.toma.questing.common.area.AreaType;
@@ -30,6 +31,7 @@ public final class QuestRegistry {
     public static final AreaType<ConfigurableAreaProvider> CONFIGURED_AREA = new AreaType<>(internalId("configured"), ConfigurableAreaProvider.CODEC);
 
     public static final ConditionType<UniqueMobKillsCondition> UNIQUE_MOBS_CONDITION = new ConditionType<>(internalId("unique_mobs"), UniqueMobKillsCondition.CODEC);
+    public static final ConditionType<DebuffCondition> DEBUFF_CONDITION = new ConditionType<>(internalId("debuff"), DebuffCondition.CODEC);
 
     public static void register() {
         QuestingRegistries.REWARDS.register(WEIGHTED_REWARD);
@@ -45,6 +47,7 @@ public final class QuestRegistry {
         QuestingRegistries.AREA.register(CONFIGURED_AREA);
 
         QuestingRegistries.CONDITION.register(UNIQUE_MOBS_CONDITION);
+        QuestingRegistries.CONDITION.register(DEBUFF_CONDITION);
     }
 
     private static ResourceLocation internalId(String id) {
