@@ -4,9 +4,11 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.integration.questing.area.ConfigurableAreaProvider;
 import dev.toma.gunsrpg.integration.questing.area.TargettedEntitySpawner;
 import dev.toma.gunsrpg.integration.questing.area.WeightedSpawner;
+import dev.toma.gunsrpg.integration.questing.condition.UniqueMobKillsCondition;
 import dev.toma.gunsrpg.integration.questing.reward.*;
 import dev.toma.questing.common.area.AreaType;
 import dev.toma.questing.common.area.spawner.SpawnerType;
+import dev.toma.questing.common.condition.ConditionType;
 import dev.toma.questing.common.init.QuestingRegistries;
 import dev.toma.questing.common.reward.AbstractItemReward;
 import dev.toma.questing.common.reward.RewardTransformerType;
@@ -27,6 +29,8 @@ public final class QuestRegistry {
 
     public static final AreaType<ConfigurableAreaProvider> CONFIGURED_AREA = new AreaType<>(internalId("configured"), ConfigurableAreaProvider.CODEC);
 
+    public static final ConditionType<UniqueMobKillsCondition> UNIQUE_MOBS_CONDITION = new ConditionType<>(internalId("unique_mobs"), UniqueMobKillsCondition.CODEC);
+
     public static void register() {
         QuestingRegistries.REWARDS.register(WEIGHTED_REWARD);
         QuestingRegistries.REWARDS.register(TIERED_REWARD);
@@ -39,6 +43,8 @@ public final class QuestRegistry {
         QuestingRegistries.SPAWNER.register(ENTITY_SPAWNER);
 
         QuestingRegistries.AREA.register(CONFIGURED_AREA);
+
+        QuestingRegistries.CONDITION.register(UNIQUE_MOBS_CONDITION);
     }
 
     private static ResourceLocation internalId(String id) {
