@@ -2,10 +2,7 @@ package dev.toma.gunsrpg.integration.questing.condition;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.toma.gunsrpg.common.debuffs.DebuffType;
-import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.init.QuestRegistry;
-import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.questing.common.condition.Condition;
 import dev.toma.questing.common.condition.ConditionProvider;
 import dev.toma.questing.common.condition.ConditionRegisterHandler;
@@ -14,25 +11,22 @@ import dev.toma.questing.common.quest.Quest;
 import dev.toma.questing.common.trigger.TriggerResponse;
 import net.minecraft.world.World;
 
-public class DebuffCondition extends ConditionProvider<DebuffCondition.Instance> {
+public class HeadshotCondition extends ConditionProvider<HeadshotCondition.Instance> {
 
-    public static final Codec<DebuffCondition> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<HeadshotCondition> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.comapFlatMap(TriggerResponse::fromString, Enum::name).optionalFieldOf("onFail", TriggerResponse.PASS).forGetter(ConditionProvider::getDefaultFailureResponse),
-            ModUtils.registryObjectCodec(ModRegistries.DEBUFFS).fieldOf("debuff").forGetter(t -> t.debuff),
-            Codec.BOOL.optionalFieldOf("status", true).forGetter(t -> t.status)
-    ).apply(instance, DebuffCondition::new));
-    private final DebuffType<?> debuff;
-    private final boolean status;
+            Codec.BOOL.optionalFieldOf("headshot", true).forGetter(t -> t.headshot)
+    ).apply(instance, HeadshotCondition::new));
+    private final boolean headshot;
 
-    public DebuffCondition(TriggerResponse defaultFailureResponse, DebuffType<?> debuff, boolean status) {
+    public HeadshotCondition(TriggerResponse defaultFailureResponse, boolean headshot) {
         super(defaultFailureResponse);
-        this.debuff = debuff;
-        this.status = status;
+        this.headshot = headshot;
     }
 
     @Override
     public ConditionType<?> getType() {
-        return QuestRegistry.DEBUFF_CONDITION;
+        return QuestRegistry.HEADSHOT_CONDITION;
     }
 
     @Override
@@ -42,7 +36,7 @@ public class DebuffCondition extends ConditionProvider<DebuffCondition.Instance>
 
     static final class Instance extends Condition {
 
-        public Instance(DebuffCondition provider) {
+        public Instance(HeadshotCondition provider) {
             super(provider);
         }
 
