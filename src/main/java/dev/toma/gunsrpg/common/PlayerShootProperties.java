@@ -17,7 +17,7 @@ public class PlayerShootProperties implements IShootProps {
 
     @Override
     public float getInaccuracy() {
-        return data.getAimInfo().isAiming() ? 0.0F : 1.5F;
+        return data.getAimInfo().isAiming() ? 0.0F : 1.75F;
     }
 
     @Override
