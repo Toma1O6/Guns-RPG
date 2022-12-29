@@ -49,8 +49,17 @@ public class DebuffCondition extends ConditionProvider<DebuffCondition.Instance>
 
     static final class Instance extends Condition {
 
+        private static final Codec<Instance> CODEC = DebuffCondition.CODEC
+                .xmap(Instance::new, t -> (DebuffCondition) t.getProvider())
+                .fieldOf("provider").codec();
+
         public Instance(DebuffCondition provider) {
             super(provider);
+        }
+
+        @Override
+        public Codec<? extends Condition> codec() {
+            return CODEC;
         }
 
         @Override

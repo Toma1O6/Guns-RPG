@@ -1,7 +1,9 @@
 package dev.toma.gunsrpg.integration.questing.condition;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.common.init.QuestRegistry;
+import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.questing.common.condition.Condition;
 import dev.toma.questing.common.condition.ConditionProvider;
 import dev.toma.questing.common.condition.ConditionRegisterHandler;
@@ -13,8 +15,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class UniqueMobKillsCondition extends ConditionProvider<UniqueMobKillsCondition.Instance> {
@@ -39,11 +44,25 @@ public class UniqueMobKillsCondition extends ConditionProvider<UniqueMobKillsCon
 
     static final class Instance extends Condition {
 
+        private static final Codec<Instance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                UniqueMobKillsCondition.CODEC.fieldOf("provider").forGetter(t -> (UniqueMobKillsCondition) t.getProvider()),
+                ModUtils.registryObjectCodec(ForgeRegistries.ENTITIES).listOf().fieldOf("entities").forGetter(t -> new ArrayList<>(t.entityTypes))
+        ).apply(instance, Instance::new));
         private final Set<EntityType<?>> entityTypes;
 
         public Instance(UniqueMobKillsCondition provider) {
             super(provider);
             this.entityTypes = new HashSet<>();
+        }
+
+        private Instance(UniqueMobKillsCondition provider, List<EntityType<?>> list) {
+            super(provider);
+            this.entityTypes = new HashSet<>(list);
+        }
+
+        @Override
+        public Codec<? extends Condition> codec() {
+            return CODEC;
         }
 
         @Override

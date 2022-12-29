@@ -42,8 +42,17 @@ public class HeadshotCondition extends ConditionProvider<HeadshotCondition.Insta
 
     static final class Instance extends Condition {
 
+        private static final Codec<Instance> CODEC = HeadshotCondition.CODEC
+                .xmap(Instance::new, t -> (HeadshotCondition) t.getProvider())
+                .fieldOf("provider").codec();
+
         public Instance(HeadshotCondition provider) {
             super(provider);
+        }
+
+        @Override
+        public Codec<? extends Condition> codec() {
+            return CODEC;
         }
 
         @Override
