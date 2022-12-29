@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.init;
 
+import dev.toma.questing.common.condition.UseItemCondition;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -10,7 +11,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
 
-public class WeaponDamageSource extends DamageSource {
+public class WeaponDamageSource extends DamageSource implements UseItemCondition.UsedItemProvider {
 
     private final Entity directSource;
     private final ProjectileEntity indirectSource;
@@ -37,6 +38,12 @@ public class WeaponDamageSource extends DamageSource {
 
     public ItemStack getKillWeapon() {
         return weaponStack;
+    }
+
+    @Override
+    public ItemStack getUsedItem(DamageSource damageSource) {
+        ItemStack weapon = this.getKillWeapon();
+        return weapon == null ? ItemStack.EMPTY : weapon;
     }
 
     @Override
