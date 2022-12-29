@@ -6,14 +6,13 @@ import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.integration.questing.TieredQuest;
 import dev.toma.gunsrpg.integration.questing.loader.QuestRewardLoader;
 import dev.toma.questing.common.quest.Quest;
-import dev.toma.questing.common.reward.NestedReward;
 import dev.toma.questing.common.reward.Reward;
 import dev.toma.questing.common.reward.RewardType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
-public enum TieredReward implements NestedReward {
+public enum TieredReward implements Reward {
 
     INSTANCE;
 
@@ -27,9 +26,12 @@ public enum TieredReward implements NestedReward {
     }
 
     @Override
-    public Reward getActualReward(PlayerEntity player, Quest quest) {
-        int tier = quest instanceof TieredQuest ? ((TieredQuest) quest).getQuestTier() : 1;
-        return getTieredReward(tier);
+    public void generate(PlayerEntity playerEntity, Quest quest) {
+    }
+
+    @Override
+    public Reward copy() {
+        return INSTANCE;
     }
 
     @Override
