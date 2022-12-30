@@ -22,6 +22,7 @@ public final class QuestRegistry {
     public static final RewardType<WeightedReward> WEIGHTED_REWARD = new RewardType<>(internalId("weighted"), WeightedReward.CODEC);
     public static final RewardType<TieredReward> TIERED_REWARD = new RewardType<>(internalId("tiered"), TieredReward.codec());
     public static final RewardType<PointReward> POINT_REWARD = new RewardType<>(internalId("point"), PointReward.CODEC);
+    public static final RewardType<GunsrpgChoiceReward> CHOICE_REWARD = new RewardType<>(internalId("choice"), GunsrpgChoiceReward.CODEC);
 
     public static final RewardTransformerType<Integer, CountByAttributeTransformer> COUNT_BY_ATTRIBUTE_TRANSFORMER = new RewardTransformerType<>(internalId("output_modifier"), CountByAttributeTransformer.CODEC, Integer.class);
     public static final RewardTransformerType<AbstractItemReward.ItemList, SetCrystalTransformer> SET_CRYSTAL_TRANSFORMER = new RewardTransformerType<>(internalId("crystal"), SetCrystalTransformer.CODEC, AbstractItemReward.ItemList.class);
@@ -39,6 +40,7 @@ public final class QuestRegistry {
         QuestingRegistries.REWARDS.register(WEIGHTED_REWARD);
         QuestingRegistries.REWARDS.register(TIERED_REWARD);
         QuestingRegistries.REWARDS.register(POINT_REWARD);
+        QuestingRegistries.REWARDS.register(CHOICE_REWARD);
 
         QuestingRegistries.REWARD_TRANSFORMERS.register(COUNT_BY_ATTRIBUTE_TRANSFORMER);
         QuestingRegistries.REWARD_TRANSFORMERS.register(SET_CRYSTAL_TRANSFORMER);
