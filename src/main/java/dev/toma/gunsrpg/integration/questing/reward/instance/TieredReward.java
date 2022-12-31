@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.integration.questing.TieredQuest;
 import dev.toma.gunsrpg.integration.questing.loader.QuestRewardLoader;
 import dev.toma.gunsrpg.integration.questing.reward.provider.TieredRewardProvider;
 import dev.toma.questing.common.component.reward.RewardType;
+import dev.toma.questing.common.component.reward.instance.EmptyReward;
 import dev.toma.questing.common.component.reward.instance.Reward;
 import dev.toma.questing.common.component.reward.instance.RewardHolder;
 import dev.toma.questing.common.component.reward.provider.RewardProvider;
@@ -34,7 +35,7 @@ public class TieredReward implements Reward, RewardHolder {
             RewardProvider<?> rewardProvider = getTieredReward(questTier);
             this.reward = rewardProvider.createReward(player, quest);
         } else {
-            this.reward = null; // TODO empty reward
+            this.reward = EmptyReward.EMPTY;
         }
     }
 

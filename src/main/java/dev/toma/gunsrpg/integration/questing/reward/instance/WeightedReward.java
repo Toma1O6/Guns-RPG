@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.integration.questing.reward.provider.WeightedRewardProvider;
 import dev.toma.questing.common.component.reward.RewardType;
+import dev.toma.questing.common.component.reward.instance.EmptyReward;
 import dev.toma.questing.common.component.reward.instance.Reward;
 import dev.toma.questing.common.component.reward.instance.RewardHolder;
 import dev.toma.questing.common.quest.Quest;
@@ -23,7 +24,8 @@ public class WeightedReward implements Reward, RewardHolder {
 
     public WeightedReward(WeightedRewardProvider provider, PlayerEntity player, Quest quest) {
         this.provider = provider;
-        this.reward = this.provider.getEntries().getRandom().getRewardEntry().createReward(player, quest); // TODO check empty list
+        WeightedRewardProvider.WeightedRewardEntry entry = this.provider.getEntries().getRandom();
+        this.reward = entry != null ? entry.getRewardEntry().createReward(player, quest) : EmptyReward.EMPTY;
     }
 
     public WeightedReward(WeightedRewardProvider provider, Reward reward) {
