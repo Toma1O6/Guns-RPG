@@ -8,9 +8,9 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.integration.questing.QuestDataManager;
-import dev.toma.gunsrpg.integration.questing.reward.TieredReward;
-import dev.toma.questing.common.reward.Reward;
-import dev.toma.questing.common.reward.RewardType;
+import dev.toma.gunsrpg.integration.questing.reward.instance.TieredReward;
+import dev.toma.questing.common.component.reward.RewardType;
+import dev.toma.questing.common.component.reward.provider.RewardProvider;
 import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
@@ -23,17 +23,17 @@ import java.util.Optional;
 public class QuestRewardLoader extends JsonReloadListener {
 
     private static final Gson GSON = new Gson();
-    private final Map<ResourceLocation, Reward> rewardMap = new HashMap<>();
+    private final Map<ResourceLocation, RewardProvider<?>> rewardMap = new HashMap<>();
 
     public QuestRewardLoader() {
         super(GSON, "quest/reward");
     }
 
-    public Optional<Reward> getRewardByIdentifier(ResourceLocation identifier) {
+    public Optional<RewardProvider<?>> getRewardByIdentifier(ResourceLocation identifier) {
         return Optional.ofNullable(this.rewardMap.get(identifier));
     }
 
-    public Reward getTieredReward(TieredReward.RewardTier tier) {
+    public RewardProvider<?> getTieredReward(TieredReward.RewardTier tier) {
         return this.getRewardByIdentifier(tier.getIdentifier()).orElseThrow(NullPointerException::new);
     }
 
@@ -46,8 +46,8 @@ public class QuestRewardLoader extends JsonReloadListener {
             JsonElement element = entry.getValue();
             GunsRPG.log.debug(QuestDataManager.MARKER, "Loading quest reward with ID {}", path);
             try {
-                DataResult<Reward> dataResult = RewardType.CODEC.parse(JsonOps.INSTANCE, element);
-                Reward reward = dataResult.resultOrPartial(s -> GunsRPG.log.error(QuestDataManager.MARKER, s))
+                DataResult<RewardProvider<?>> dataResult = RewardType.PROVIDER_CODEC.parse(JsonOps.INSTANCE, element);
+                RewardProvider<?> reward = dataResult.resultOrPartial(s -> GunsRPG.log.error(QuestDataManager.MARKER, s))
                         .orElseThrow(() -> new JsonSyntaxException("Unable to parse reward"));
                 this.rewardMap.put(path, reward);
                 GunsRPG.log.debug(QuestDataManager.MARKER, "Loaded quest reward with ID {}", path);

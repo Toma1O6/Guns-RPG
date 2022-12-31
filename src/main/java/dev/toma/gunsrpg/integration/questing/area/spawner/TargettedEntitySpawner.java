@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.integration.questing.area;
+package dev.toma.gunsrpg.integration.questing.area.spawner;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -7,12 +7,12 @@ import dev.toma.gunsrpg.ai.AlwaysAggroOnGoal;
 import dev.toma.gunsrpg.ai.QuestPlayerSensor;
 import dev.toma.gunsrpg.common.init.ModSensors;
 import dev.toma.gunsrpg.common.init.QuestRegistry;
-import dev.toma.questing.common.area.Area;
-import dev.toma.questing.common.area.spawner.EntitySpawner;
-import dev.toma.questing.common.area.spawner.Spawner;
-import dev.toma.questing.common.area.spawner.SpawnerType;
-import dev.toma.questing.common.area.spawner.processor.SpawnerProcessor;
-import dev.toma.questing.common.area.spawner.processor.SpawnerProcessorType;
+import dev.toma.questing.common.component.area.instance.Area;
+import dev.toma.questing.common.component.area.spawner.EntitySpawner;
+import dev.toma.questing.common.component.area.spawner.Spawner;
+import dev.toma.questing.common.component.area.spawner.SpawnerType;
+import dev.toma.questing.common.component.area.spawner.processor.SpawnerProcessor;
+import dev.toma.questing.common.component.area.spawner.processor.SpawnerProcessorType;
 import dev.toma.questing.common.party.Party;
 import dev.toma.questing.common.quest.Quest;
 import dev.toma.questing.utils.Codecs;

@@ -1,12 +1,12 @@
-package dev.toma.gunsrpg.integration.questing.area;
+package dev.toma.gunsrpg.integration.questing.area.spawner;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.util.math.WeightedRandom;
-import dev.toma.questing.common.area.Area;
-import dev.toma.questing.common.area.spawner.Spawner;
-import dev.toma.questing.common.area.spawner.SpawnerType;
+import dev.toma.questing.common.component.area.instance.Area;
+import dev.toma.questing.common.component.area.spawner.Spawner;
+import dev.toma.questing.common.component.area.spawner.SpawnerType;
 import dev.toma.questing.common.quest.Quest;
 import dev.toma.questing.utils.Utils;
 import net.minecraft.world.World;
