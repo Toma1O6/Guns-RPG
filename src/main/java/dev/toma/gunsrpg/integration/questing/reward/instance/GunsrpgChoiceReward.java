@@ -14,7 +14,7 @@ import dev.toma.questing.common.component.reward.RewardType;
 import dev.toma.questing.common.component.reward.instance.Reward;
 import dev.toma.questing.common.component.reward.instance.RewardHolder;
 import dev.toma.questing.common.component.reward.instance.SelectableReward;
-import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.quest.instance.Quest;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import net.minecraft.entity.player.PlayerEntity;

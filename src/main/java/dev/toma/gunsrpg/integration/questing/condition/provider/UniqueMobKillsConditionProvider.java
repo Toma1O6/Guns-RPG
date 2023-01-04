@@ -8,7 +8,7 @@ import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.questing.common.component.condition.ConditionType;
 import dev.toma.questing.common.component.condition.provider.AbstractDefaultConditionProvider;
 import dev.toma.questing.common.component.trigger.ResponseType;
-import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.quest.instance.Quest;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.registries.ForgeRegistries;
 

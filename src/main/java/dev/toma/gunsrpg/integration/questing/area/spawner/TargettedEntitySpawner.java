@@ -14,7 +14,7 @@ import dev.toma.questing.common.component.area.spawner.SpawnerType;
 import dev.toma.questing.common.component.area.spawner.processor.SpawnerProcessor;
 import dev.toma.questing.common.component.area.spawner.processor.SpawnerProcessorType;
 import dev.toma.questing.common.party.Party;
-import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.quest.instance.Quest;
 import dev.toma.questing.utils.Codecs;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.Attributes;

@@ -9,7 +9,7 @@ import dev.toma.gunsrpg.resource.crate.CountFunctionType;
 import dev.toma.gunsrpg.resource.crate.ICountFunction;
 import dev.toma.questing.common.component.reward.transformer.RewardTransformer;
 import dev.toma.questing.common.component.reward.transformer.RewardTransformerType;
-import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.quest.instance.Quest;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 

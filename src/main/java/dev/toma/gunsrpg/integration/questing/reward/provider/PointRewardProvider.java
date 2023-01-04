@@ -9,7 +9,7 @@ import dev.toma.gunsrpg.integration.questing.reward.instance.PointReward;
 import dev.toma.questing.common.component.reward.RewardType;
 import dev.toma.questing.common.component.reward.provider.VolumeBasedRewardProvider;
 import dev.toma.questing.common.component.reward.transformer.RewardTransformer;
-import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.quest.instance.Quest;
 import dev.toma.questing.utils.Codecs;
 import net.minecraft.entity.player.PlayerEntity;
 

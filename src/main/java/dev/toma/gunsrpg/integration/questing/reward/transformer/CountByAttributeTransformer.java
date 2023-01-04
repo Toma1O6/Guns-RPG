@@ -7,7 +7,7 @@ import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.resource.crafting.OutputModifier;
 import dev.toma.questing.common.component.reward.transformer.RewardTransformer;
 import dev.toma.questing.common.component.reward.transformer.RewardTransformerType;
-import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.quest.instance.Quest;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class CountByAttributeTransformer implements RewardTransformer<Integer> {

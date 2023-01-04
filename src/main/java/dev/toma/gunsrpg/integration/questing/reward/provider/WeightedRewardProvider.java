@@ -7,7 +7,7 @@ import dev.toma.gunsrpg.integration.questing.reward.instance.WeightedReward;
 import dev.toma.gunsrpg.util.math.WeightedRandom;
 import dev.toma.questing.common.component.reward.RewardType;
 import dev.toma.questing.common.component.reward.provider.RewardProvider;
-import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.quest.instance.Quest;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.ArrayList;

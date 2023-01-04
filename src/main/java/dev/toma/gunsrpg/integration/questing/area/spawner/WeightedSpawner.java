@@ -7,7 +7,7 @@ import dev.toma.gunsrpg.util.math.WeightedRandom;
 import dev.toma.questing.common.component.area.instance.Area;
 import dev.toma.questing.common.component.area.spawner.Spawner;
 import dev.toma.questing.common.component.area.spawner.SpawnerType;
-import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.quest.instance.Quest;
 import dev.toma.questing.utils.Utils;
 import net.minecraft.world.World;
 
@@ -27,9 +27,9 @@ public class WeightedSpawner implements Spawner {
     }
 
     @Override
-    public void tick(World world, Area area, Quest quest) {
+    public void trySpawn(World world, Area area, Quest quest) {
         WeightedEntry entry = this.values.getRandom();
-        entry.spawners.forEach(spawner -> spawner.tick(world, area, quest));
+        entry.spawners.forEach(spawner -> spawner.trySpawn(world, area, quest));
     }
 
     @Override

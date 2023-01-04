@@ -6,7 +6,7 @@ import dev.toma.gunsrpg.api.common.data.IPointProvider;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.integration.questing.reward.provider.PointRewardProvider;
 import dev.toma.questing.common.component.reward.instance.Reward;
-import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.quest.instance.Quest;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class PointReward implements Reward {

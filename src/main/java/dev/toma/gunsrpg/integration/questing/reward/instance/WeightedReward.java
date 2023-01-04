@@ -7,7 +7,7 @@ import dev.toma.questing.common.component.reward.RewardType;
 import dev.toma.questing.common.component.reward.instance.EmptyReward;
 import dev.toma.questing.common.component.reward.instance.Reward;
 import dev.toma.questing.common.component.reward.instance.RewardHolder;
-import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.quest.instance.Quest;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.Collections;

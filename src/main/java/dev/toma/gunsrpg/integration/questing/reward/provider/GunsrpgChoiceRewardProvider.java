@@ -5,7 +5,7 @@ import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.integration.questing.reward.instance.GunsrpgChoiceReward;
 import dev.toma.questing.common.component.reward.RewardType;
 import dev.toma.questing.common.component.reward.provider.RewardProvider;
-import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.quest.instance.Quest;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.List;

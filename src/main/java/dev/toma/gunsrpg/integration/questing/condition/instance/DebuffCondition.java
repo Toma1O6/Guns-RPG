@@ -4,16 +4,17 @@ import com.mojang.serialization.Codec;
 import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.integration.questing.condition.provider.DebuffConditionProvider;
-import dev.toma.questing.common.component.condition.ConditionRegisterHandler;
 import dev.toma.questing.common.component.condition.instance.Condition;
 import dev.toma.questing.common.component.trigger.Events;
 import dev.toma.questing.common.component.trigger.ResponseType;
 import dev.toma.questing.common.component.trigger.event.DeathEvent;
-import dev.toma.questing.common.quest.Quest;
+import dev.toma.questing.common.quest.ConditionRegisterHandler;
+import dev.toma.questing.common.quest.instance.Quest;
 import dev.toma.questing.utils.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
 
 public class DebuffCondition implements Condition {
 
@@ -36,7 +37,7 @@ public class DebuffCondition implements Condition {
         return provider;
     }
 
-    private ResponseType handleResponse(DeathEvent event, Quest quest) {
+    private ResponseType handleResponse(DeathEvent event, World level, Quest quest) {
         DamageSource source = event.getSource();
         Entity origin = source.getEntity();
         if (Utils.checkIfEntityIsPartyMember(origin, quest.getParty())) {

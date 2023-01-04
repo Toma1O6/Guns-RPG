@@ -4,10 +4,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.integration.questing.condition.provider.UniqueMobKillsConditionProvider;
 import dev.toma.gunsrpg.util.ModUtils;
-import dev.toma.questing.common.component.condition.ConditionRegisterHandler;
 import dev.toma.questing.common.component.condition.instance.Condition;
 import dev.toma.questing.common.component.trigger.Events;
 import dev.toma.questing.common.component.trigger.ResponseType;
+import dev.toma.questing.common.quest.ConditionRegisterHandler;
 import dev.toma.questing.utils.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -40,7 +40,7 @@ public class UniqueMobKillsCondition implements Condition {
 
     @Override
     public void registerTriggerResponders(ConditionRegisterHandler conditionRegisterHandler) {
-        conditionRegisterHandler.registerWithHandler(Events.DEATH_EVENT, (event, quest) -> {
+        conditionRegisterHandler.registerWithHandler(Events.DEATH_EVENT, (event, level, quest) -> {
             DamageSource source = event.getSource();
             Entity origin = source.getEntity();
             if (Utils.checkIfEntityIsPartyMember(origin, quest.getParty())) {
@@ -48,7 +48,7 @@ public class UniqueMobKillsCondition implements Condition {
                 return this.types.contains(victim.getType()) ? this.provider.getDefaultFailureResponse() : ResponseType.OK;
             }
             return ResponseType.SKIP;
-        }, (event, quest) -> {
+        }, (event, level, quest) -> {
             Entity victim = event.getEntity();
             EntityType<?> type = victim.getType();
             this.types.add(type);

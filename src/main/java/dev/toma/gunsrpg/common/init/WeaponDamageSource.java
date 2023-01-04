@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.common.init;
 
-import dev.toma.questing.common.condition.UseItemCondition;
+import dev.toma.questing.common.component.condition.UsedItemProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -11,7 +11,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
 
-public class WeaponDamageSource extends DamageSource implements UseItemCondition.UsedItemProvider {
+public class WeaponDamageSource extends DamageSource implements UsedItemProvider {
 
     private final Entity directSource;
     private final ProjectileEntity indirectSource;
