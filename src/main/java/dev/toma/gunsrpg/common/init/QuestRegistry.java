@@ -21,16 +21,24 @@ import dev.toma.gunsrpg.integration.questing.reward.provider.TieredRewardProvide
 import dev.toma.gunsrpg.integration.questing.reward.provider.WeightedRewardProvider;
 import dev.toma.gunsrpg.integration.questing.reward.transformer.CountByAttributeTransformer;
 import dev.toma.gunsrpg.integration.questing.reward.transformer.SetCrystalTransformer;
+import dev.toma.gunsrpg.integration.questing.task.instance.HandoverItemsTask;
+import dev.toma.gunsrpg.integration.questing.task.item.ItemProviderType;
+import dev.toma.gunsrpg.integration.questing.task.item.ListItemProvider;
+import dev.toma.gunsrpg.integration.questing.task.provider.HandoverItemsTaskProvider;
 import dev.toma.questing.common.component.area.AreaType;
 import dev.toma.questing.common.component.area.spawner.SpawnerType;
 import dev.toma.questing.common.component.condition.ConditionType;
 import dev.toma.questing.common.component.reward.RewardType;
 import dev.toma.questing.common.component.reward.transformer.RewardTransformerType;
+import dev.toma.questing.common.component.task.TaskType;
 import dev.toma.questing.common.init.QuestingRegistries;
+import dev.toma.questing.common.init.Registry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public final class QuestRegistry {
+
+    public static final Registry<ItemProviderType<?>> ITEM_PROVIDERS = new Registry<>("Item providers");
 
     public static final RewardType<WeightedReward, WeightedRewardProvider> WEIGHTED_REWARD = new RewardType<>(internalId("weighted"), WeightedRewardProvider.CODEC, WeightedReward.CODEC);
     public static final RewardType<TieredReward, TieredRewardProvider> TIERED_REWARD = new RewardType<>(internalId("tiered"), TieredRewardProvider.CODEC, TieredReward.CODEC);
@@ -49,6 +57,11 @@ public final class QuestRegistry {
     public static final ConditionType<DebuffCondition, DebuffConditionProvider> DEBUFF_CONDITION = new ConditionType<>(internalId("debuff"), DebuffConditionProvider.CODEC, DebuffCondition.CODEC);
     public static final ConditionType<HeadshotCondition, HeadshotConditionProvider> HEADSHOT_CONDITION = new ConditionType<>(internalId("headshot"), HeadshotConditionProvider.CODEC, HeadshotCondition.CODEC);
 
+    public static final ItemProviderType<ListItemProvider> LIST_ITEM_PROVIDER = new ItemProviderType<>(internalId("item_list"), ListItemProvider.CODEC);
+    // TODO more types
+
+    public static final TaskType<HandoverItemsTask, HandoverItemsTaskProvider> HANDOVER_ITEMS_TASK = new TaskType<>(internalId("handover_items"), HandoverItemsTaskProvider.CODEC, HandoverItemsTask.CODEC);
+
     public static void register() {
         QuestingRegistries.REWARDS.register(WEIGHTED_REWARD);
         QuestingRegistries.REWARDS.register(TIERED_REWARD);
@@ -66,6 +79,10 @@ public final class QuestRegistry {
         QuestingRegistries.CONDITION.register(UNIQUE_MOBS_CONDITION);
         QuestingRegistries.CONDITION.register(DEBUFF_CONDITION);
         QuestingRegistries.CONDITION.register(HEADSHOT_CONDITION);
+
+        QuestingRegistries.TASK.register(HANDOVER_ITEMS_TASK);
+
+        ITEM_PROVIDERS.register(LIST_ITEM_PROVIDER);
     }
 
     private static ResourceLocation internalId(String id) {
