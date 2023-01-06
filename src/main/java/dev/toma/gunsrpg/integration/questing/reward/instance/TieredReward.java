@@ -3,7 +3,7 @@ package dev.toma.gunsrpg.integration.questing.reward.instance;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.integration.questing.TieredQuest;
+import dev.toma.gunsrpg.integration.questing.Tiered;
 import dev.toma.gunsrpg.integration.questing.loader.QuestRewardLoader;
 import dev.toma.gunsrpg.integration.questing.reward.provider.TieredRewardProvider;
 import dev.toma.questing.common.component.reward.RewardType;
@@ -30,8 +30,8 @@ public class TieredReward implements Reward, RewardHolder {
 
     public TieredReward(TieredRewardProvider provider, PlayerEntity player, Quest quest) {
         this.provider = provider;
-        if (quest instanceof TieredQuest) {
-            int questTier = ((TieredQuest) quest).getQuestTier();
+        if (quest instanceof Tiered) {
+            int questTier = ((Tiered) quest).getTier();
             RewardProvider<?> rewardProvider = getTieredReward(questTier);
             this.reward = rewardProvider.createReward(player, quest);
         } else {

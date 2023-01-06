@@ -7,9 +7,11 @@ import dev.toma.gunsrpg.integration.questing.area.spawner.TargettedEntitySpawner
 import dev.toma.gunsrpg.integration.questing.area.spawner.WeightedSpawner;
 import dev.toma.gunsrpg.integration.questing.condition.instance.DebuffCondition;
 import dev.toma.gunsrpg.integration.questing.condition.instance.HeadshotCondition;
+import dev.toma.gunsrpg.integration.questing.condition.instance.TieredCondition;
 import dev.toma.gunsrpg.integration.questing.condition.instance.UniqueMobKillsCondition;
 import dev.toma.gunsrpg.integration.questing.condition.provider.DebuffConditionProvider;
 import dev.toma.gunsrpg.integration.questing.condition.provider.HeadshotConditionProvider;
+import dev.toma.gunsrpg.integration.questing.condition.provider.TieredConditionProvider;
 import dev.toma.gunsrpg.integration.questing.condition.provider.UniqueMobKillsConditionProvider;
 import dev.toma.gunsrpg.integration.questing.reward.instance.GunsrpgChoiceReward;
 import dev.toma.gunsrpg.integration.questing.reward.instance.PointReward;
@@ -56,6 +58,7 @@ public final class QuestRegistry {
     public static final ConditionType<UniqueMobKillsCondition, UniqueMobKillsConditionProvider> UNIQUE_MOBS_CONDITION = new ConditionType<>(internalId("unique_mobs"), UniqueMobKillsConditionProvider.CODEC, UniqueMobKillsCondition.CODEC);
     public static final ConditionType<DebuffCondition, DebuffConditionProvider> DEBUFF_CONDITION = new ConditionType<>(internalId("debuff"), DebuffConditionProvider.CODEC, DebuffCondition.CODEC);
     public static final ConditionType<HeadshotCondition, HeadshotConditionProvider> HEADSHOT_CONDITION = new ConditionType<>(internalId("headshot"), HeadshotConditionProvider.CODEC, HeadshotCondition.CODEC);
+    public static final ConditionType<TieredCondition, TieredConditionProvider> TIERED_CONDITION = new ConditionType<>(internalId("tiered"), TieredConditionProvider.CODEC, TieredCondition.CODEC);
 
     public static final ItemProviderType<ListItemProvider> LIST_ITEM_PROVIDER = new ItemProviderType<>(internalId("item_list"), ListItemProvider.CODEC);
     // TODO more types
@@ -79,6 +82,7 @@ public final class QuestRegistry {
         QuestingRegistries.CONDITION.register(UNIQUE_MOBS_CONDITION);
         QuestingRegistries.CONDITION.register(DEBUFF_CONDITION);
         QuestingRegistries.CONDITION.register(HEADSHOT_CONDITION);
+        QuestingRegistries.CONDITION.register(TIERED_CONDITION);
 
         QuestingRegistries.TASK.register(HANDOVER_ITEMS_TASK);
 
