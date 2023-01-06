@@ -3,11 +3,11 @@ package dev.toma.gunsrpg.integration.questing.condition.instance;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.integration.questing.condition.provider.UniqueMobKillsConditionProvider;
-import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.questing.common.component.condition.instance.Condition;
 import dev.toma.questing.common.component.trigger.Events;
 import dev.toma.questing.common.component.trigger.ResponseType;
 import dev.toma.questing.common.quest.ConditionRegisterHandler;
+import dev.toma.questing.utils.Codecs;
 import dev.toma.questing.utils.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -22,7 +22,7 @@ public class UniqueMobKillsCondition implements Condition {
 
     public static final Codec<UniqueMobKillsCondition> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             UniqueMobKillsConditionProvider.CODEC.fieldOf("provider").forGetter(t -> t.provider),
-            ModUtils.registryObjectCodec(ForgeRegistries.ENTITIES).listOf()
+            Codecs.forgeRegistryCodec(ForgeRegistries.ENTITIES).listOf()
                     .xmap(list -> (Set<EntityType<?>>) new HashSet<>(list), ArrayList::new)
                     .fieldOf("entityTypes").forGetter(t -> t.types)
     ).apply(instance, UniqueMobKillsCondition::new));

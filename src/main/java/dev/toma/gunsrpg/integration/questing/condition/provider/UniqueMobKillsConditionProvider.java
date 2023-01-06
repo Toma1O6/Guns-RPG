@@ -4,11 +4,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.integration.questing.condition.instance.UniqueMobKillsCondition;
-import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.questing.common.component.condition.ConditionType;
 import dev.toma.questing.common.component.condition.provider.AbstractDefaultConditionProvider;
 import dev.toma.questing.common.component.trigger.ResponseType;
 import dev.toma.questing.common.quest.instance.Quest;
+import dev.toma.questing.utils.Codecs;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -19,7 +19,7 @@ public class UniqueMobKillsConditionProvider extends AbstractDefaultConditionPro
 
     public static final Codec<UniqueMobKillsConditionProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.comapFlatMap(ResponseType::fromString, Enum::name).optionalFieldOf("onFail", ResponseType.PASS).forGetter(AbstractDefaultConditionProvider::getDefaultFailureResponse),
-            ModUtils.registryObjectCodec(ForgeRegistries.ENTITIES).listOf().xmap(HashSet::new, ArrayList::new).optionalFieldOf("entityList", new HashSet<>()).forGetter(t -> t.entityTypes)
+            Codecs.forgeRegistryCodec(ForgeRegistries.ENTITIES).listOf().xmap(HashSet::new, ArrayList::new).optionalFieldOf("entityList", new HashSet<>()).forGetter(t -> t.entityTypes)
     ).apply(instance, UniqueMobKillsConditionProvider::new));
 
     private final HashSet<EntityType<?>> entityTypes;

@@ -1,7 +1,5 @@
 package dev.toma.gunsrpg.util;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
@@ -30,8 +28,6 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.lang.reflect.Array;
 import java.text.DecimalFormatSymbols;
@@ -227,16 +223,6 @@ public class ModUtils {
 
     public static int string2colorRgb(String hexCode) {
         return Integer.decode("0x" + hexCode);
-    }
-
-    public static <T extends IForgeRegistryEntry<T>> Codec<T> registryObjectCodec(IForgeRegistry<T> registry) {
-        return ResourceLocation.CODEC.comapFlatMap(location -> {
-            if (!registry.containsKey(location)) {
-                return DataResult.error("Unknown ID: " + location + ", does not exist in " + registry.getRegistryName() + " registry");
-            }
-            T t = registry.getValue(location);
-            return DataResult.success(t);
-        }, IForgeRegistryEntry::getRegistryName);
     }
 
     private static Map<SkillCategory, List<SkillType<?>>> splitSkillsIntoCategories(Iterable<SkillType<?>> iterable) {

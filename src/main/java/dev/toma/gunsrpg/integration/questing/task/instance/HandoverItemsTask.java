@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class HandoverItemsTask extends AbstractTask {
 
@@ -38,7 +37,7 @@ public class HandoverItemsTask extends AbstractTask {
     }
 
     public HandoverItemsTask(HandoverItemsTaskProvider provider, Quest quest) {
-        this(provider, ProgressStatus.ACTIVE, provider.getConditions().stream().map(c -> c.createCondition(quest)).collect(Collectors.toList()), provider.getRequiredItems());
+        this(provider, ProgressStatus.ACTIVE, Utils.getConditions(provider.getConditions(), quest), provider.getRequiredItems());
     }
 
     @Override

@@ -6,17 +6,17 @@ import dev.toma.gunsrpg.common.debuffs.DebuffType;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.integration.questing.condition.instance.DebuffCondition;
-import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.questing.common.component.condition.ConditionType;
 import dev.toma.questing.common.component.condition.provider.AbstractDefaultConditionProvider;
 import dev.toma.questing.common.component.trigger.ResponseType;
 import dev.toma.questing.common.quest.instance.Quest;
+import dev.toma.questing.utils.Codecs;
 
 public class DebuffConditionProvider extends AbstractDefaultConditionProvider<DebuffCondition> {
 
     public static final Codec<DebuffConditionProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.comapFlatMap(ResponseType::fromString, Enum::name).optionalFieldOf("onFail", ResponseType.PASS).forGetter(AbstractDefaultConditionProvider::getDefaultFailureResponse),
-            ModUtils.registryObjectCodec(ModRegistries.DEBUFFS).fieldOf("debuff").forGetter(t -> t.debuff),
+            Codecs.forgeRegistryCodec(ModRegistries.DEBUFFS).fieldOf("debuff").forGetter(t -> t.debuff),
             Codec.BOOL.optionalFieldOf("status", true).forGetter(t -> t.status)
     ).apply(instance, DebuffConditionProvider::new));
     private final DebuffType<?> debuff;
