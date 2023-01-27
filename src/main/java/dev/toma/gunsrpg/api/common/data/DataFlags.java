@@ -5,7 +5,7 @@ public final class DataFlags {
     public static final int WILDCARD    = -1;
     public static final int AIM         = 1;
     public static final int SKILLS      = 1 << 1;
-    public static final int QUESTS      = 1 << 2;
+    public static final int REPUTATION  = 1 << 2;
     public static final int DEBUFF      = 1 << 3;
     public static final int ATTRIB      = 1 << 4;
     public static final int DATA        = 1 << 5;

@@ -9,19 +9,19 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
-public class TieredQuestProvider extends AbstractQuestProvider<TieredQuest> {
+public class MayorQuestProvider extends AbstractQuestProvider<MayorQuest> {
 
-    public TieredQuestProvider(ResourceLocation identifier, List<ConditionProvider<?>> conditions, List<TaskProvider<?>> tasks, RewardDistributor distributor) {
+    public MayorQuestProvider(ResourceLocation identifier, List<ConditionProvider<?>> conditions, List<TaskProvider<?>> tasks, RewardDistributor distributor) {
         super(identifier, conditions, tasks, distributor);
     }
 
     @Override
-    public QuestType<TieredQuest, ?> getType() {
+    public QuestType<MayorQuest, ?> getType() {
         return null;
     }
 
     @Override
-    public TieredQuest createQuest() {
-        return new TieredQuest(this);
+    public MayorQuest createQuest() {
+        return new MayorQuest(this);
     }
 }

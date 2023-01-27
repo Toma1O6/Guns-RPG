@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.util;
 
+import com.mojang.serialization.Codec;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
@@ -11,6 +12,8 @@ import dev.toma.gunsrpg.common.item.SlingItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.integration.questing.QuestDataManager;
+import dev.toma.gunsrpg.integration.questing.engine.MayorQuestsEngine;
+import dev.toma.gunsrpg.integration.questing.engine.TutorialQuestEngine;
 import dev.toma.gunsrpg.resource.crate.LootManager;
 import dev.toma.gunsrpg.resource.gunner.ZombieGunnerWeaponManager;
 import dev.toma.gunsrpg.resource.perks.PerkManager;
@@ -19,6 +22,8 @@ import dev.toma.gunsrpg.resource.skill.SkillPropertyLoader;
 import dev.toma.gunsrpg.resource.startgear.StartGearManager;
 import dev.toma.gunsrpg.util.locate.ILocatorPredicate;
 import dev.toma.gunsrpg.world.mayor.VillageFeatureMutator;
+import dev.toma.questing.Questing;
+import dev.toma.questing.common.engine.QuestEngineManager;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -60,6 +65,9 @@ public final class Lifecycle {
 
     public void commonSynchronizedInit() {
         QuestRegistry.register();
+        QuestEngineManager engineManager = Questing.QUEST_MANAGER.get();
+        engineManager.registerQuestEngine(MayorQuestsEngine.IDENTIFIER, Codec.unit(null), MayorQuestsEngine::new);
+        engineManager.registerQuestEngine(TutorialQuestEngine.IDENTIFIER, Codec.unit(null), TutorialQuestEngine::new);
     }
 
     public StartGearManager getStartingGearManager() {

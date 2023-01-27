@@ -18,18 +18,20 @@ import java.util.stream.Collectors;
 public class WeightedSpawner implements Spawner {
 
     public static final Codec<WeightedSpawner> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            WeightedEntry.ENTRY_CODEC.listOf().fieldOf("values").forGetter(t -> Arrays.asList(t.values.getValues()))
+            WeightedRandom.Entry.codec(SpawnerType.CODEC.listOf()).listOf().fieldOf("values").forGetter(t -> Arrays.asList(t.values.getValues()))
     ).apply(instance, WeightedSpawner::new));
-    private final WeightedRandom<WeightedEntry> values;
+    private final WeightedRandom<WeightedRandom.Entry<List<Spawner>>> values;
 
-    public WeightedSpawner(List<WeightedEntry> values) {
-        this.values = new WeightedRandom<>(WeightedEntry::getWeight, values.toArray(new WeightedEntry[0]));
+    public WeightedSpawner(List<WeightedRandom.Entry<List<Spawner>>> values) {
+        this.values = WeightedRandom.fromEntries(values);
     }
 
     @Override
     public void trySpawn(World world, Area area, Quest quest) {
-        WeightedEntry entry = this.values.getRandom();
-        entry.spawners.forEach(spawner -> spawner.trySpawn(world, area, quest));
+        WeightedRandom.Entry<List<Spawner>> entry = this.values.getRandom();
+        if (entry != null) {
+            entry.get().forEach(spawner -> spawner.trySpawn(world, area, quest));
+        }
     }
 
     @Override
@@ -39,28 +41,9 @@ public class WeightedSpawner implements Spawner {
 
     @Override
     public Spawner copy() {
-        List<WeightedEntry> copied = Arrays.stream(this.values.getValues())
-                .map(t -> new WeightedEntry(t.weight, Utils.instantiate(t.spawners, Spawner::copy)))
+        List<WeightedRandom.Entry<List<Spawner>>> copied = Arrays.stream(this.values.getValues())
+                .map(t -> new WeightedRandom.Entry<>(Utils.instantiate(t.getValue(), Spawner::copy), t.getWeight()))
                 .collect(Collectors.toList());
         return new WeightedSpawner(copied);
-    }
-
-    public static final class WeightedEntry {
-
-        public static final Codec<WeightedEntry> ENTRY_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("weight", 1).forGetter(WeightedEntry::getWeight),
-                SpawnerType.CODEC.listOf().fieldOf("spawners").forGetter(t -> t.spawners)
-        ).apply(instance, WeightedEntry::new));
-        private final int weight;
-        private final List<Spawner> spawners;
-
-        public WeightedEntry(int weight, List<Spawner> spawners) {
-            this.weight = weight;
-            this.spawners = spawners;
-        }
-
-        public int getWeight() {
-            return weight;
-        }
     }
 }

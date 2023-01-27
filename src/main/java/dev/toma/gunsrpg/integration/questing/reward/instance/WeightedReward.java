@@ -3,10 +3,12 @@ package dev.toma.gunsrpg.integration.questing.reward.instance;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.integration.questing.reward.provider.WeightedRewardProvider;
+import dev.toma.gunsrpg.util.math.WeightedRandom;
 import dev.toma.questing.common.component.reward.RewardType;
 import dev.toma.questing.common.component.reward.instance.EmptyReward;
 import dev.toma.questing.common.component.reward.instance.Reward;
 import dev.toma.questing.common.component.reward.instance.RewardHolder;
+import dev.toma.questing.common.component.reward.provider.RewardProvider;
 import dev.toma.questing.common.quest.instance.Quest;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -24,8 +26,8 @@ public class WeightedReward implements Reward, RewardHolder {
 
     public WeightedReward(WeightedRewardProvider provider, PlayerEntity player, Quest quest) {
         this.provider = provider;
-        WeightedRewardProvider.WeightedRewardEntry entry = this.provider.getEntries().getRandom();
-        this.reward = entry != null ? entry.getRewardEntry().createReward(player, quest) : EmptyReward.EMPTY;
+        WeightedRandom.Entry<RewardProvider<?>> entry = this.provider.getEntries().getRandom();
+        this.reward = entry != null ? entry.get().createReward(player, quest) : EmptyReward.EMPTY;
     }
 
     public WeightedReward(WeightedRewardProvider provider, Reward reward) {

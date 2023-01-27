@@ -25,6 +25,8 @@ public interface IPlayerData {
 
     IHandState getHandState();
 
+    IReputationProvider getReputation();
+
     List<IPlayerCapEntry> getSaveEntries();
 
     void tick();

@@ -33,6 +33,7 @@ public class PlayerData implements IPlayerData {
     private final PlayerAttributes attributes;
     private final PlayerPerkProvider perkProvider;
     private final PlayerProgressionData data;
+    private final PlayerReputationProvider reputationProvider;
     private ISynchCallback callback;
 
     public PlayerData() {
@@ -50,6 +51,7 @@ public class PlayerData implements IPlayerData {
         this.skillProvider = new PlayerSkillProvider(player);
         this.perkProvider = new PlayerPerkProvider(attributes);
         this.data = new PlayerProgressionData(player, skillProvider);
+        this.reputationProvider = new PlayerReputationProvider();
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setSyncCallback);
 
@@ -60,6 +62,7 @@ public class PlayerData implements IPlayerData {
         saveHandler.addListener(skillProvider);
         saveHandler.addListener(perkProvider);
         saveHandler.addListener(data);
+        saveHandler.addListener(reputationProvider);
 
         saveHandler.invoke(entry -> entry.setClientSynch(() -> requestSync(entry.getFlag())));
     }
@@ -118,6 +121,11 @@ public class PlayerData implements IPlayerData {
     @Override
     public IProgressData getProgressData() {
         return data;
+    }
+
+    @Override
+    public IReputationProvider getReputation() {
+        return reputationProvider;
     }
 
     @Override

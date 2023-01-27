@@ -4,10 +4,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.toma.gunsrpg.common.init.QuestRegistry;
 import dev.toma.gunsrpg.integration.questing.task.instance.HandoverItemsTask;
-import dev.toma.gunsrpg.integration.questing.task.item.ItemProvider;
-import dev.toma.gunsrpg.integration.questing.task.item.ItemProviderType;
 import dev.toma.questing.common.component.condition.ConditionType;
 import dev.toma.questing.common.component.condition.provider.ConditionProvider;
+import dev.toma.questing.common.component.selector.Selector;
+import dev.toma.questing.common.component.selector.SelectorType;
 import dev.toma.questing.common.component.task.TaskType;
 import dev.toma.questing.common.component.task.provider.AbstractTaskProvider;
 import dev.toma.questing.common.component.trigger.ResponseType;
@@ -24,13 +24,13 @@ public class HandoverItemsTaskProvider extends AbstractTaskProvider<HandoverItem
             Codecs.enumCodecComap(ResponseType.class, ResponseType::fromString, Enum::name, String::toUpperCase).optionalFieldOf("onFail", ResponseType.PASS).forGetter(AbstractTaskProvider::getDefaultResponse),
             ConditionType.PROVIDER_CODEC.listOf().optionalFieldOf("conditions", Collections.emptyList()).forGetter(AbstractTaskProvider::getConditions),
             Codec.BOOL.optionalFieldOf("optional", false).forGetter(AbstractTaskProvider::isOptional),
-            ItemProviderType.CODEC.fieldOf("items").forGetter(t -> t.itemProvider)
+            SelectorType.codec(Codecs.SIMPLIFIED_ITEMSTACK).fieldOf("items").forGetter(t -> t.itemSelector)
     ).apply(instance, HandoverItemsTaskProvider::new));
-    private final ItemProvider itemProvider;
+    private final Selector<ItemStack> itemSelector;
 
-    public HandoverItemsTaskProvider(ResponseType defaultResponse, List<ConditionProvider<?>> conditions, boolean optional, ItemProvider provider) {
+    public HandoverItemsTaskProvider(ResponseType defaultResponse, List<ConditionProvider<?>> conditions, boolean optional, Selector<ItemStack> selector) {
         super(defaultResponse, conditions, optional);
-        this.itemProvider = provider;
+        this.itemSelector = selector;
     }
 
     @Override
@@ -44,6 +44,6 @@ public class HandoverItemsTaskProvider extends AbstractTaskProvider<HandoverItem
     }
 
     public List<ItemStack> getRequiredItems() {
-        return this.itemProvider.getRequiredItems();
+        return this.itemSelector.getElements();
     }
 }
