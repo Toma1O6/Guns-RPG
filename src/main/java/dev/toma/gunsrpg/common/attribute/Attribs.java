@@ -1,5 +1,7 @@
 package dev.toma.gunsrpg.common.attribute;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
 import dev.toma.gunsrpg.api.common.attribute.ICombinedAttribute;
@@ -12,6 +14,10 @@ import java.util.Set;
 
 public final class Attribs {
 
+    public static final Codec<IAttributeId> LOOKUP_CODEC = ResourceLocation.CODEC.comapFlatMap(location -> {
+        IAttributeId id = find(location);
+        return id != null ? DataResult.success(id) : DataResult.error("Unknown attribute: " + location);
+    }, IAttributeId::getId);
     private static final Map<ResourceLocation, IAttributeId> KEY_MAP = new HashMap<>();
 
     // crafting, rewards

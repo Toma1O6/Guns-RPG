@@ -11,8 +11,7 @@ import dev.toma.gunsrpg.common.attribute.ModifierFactory;
 import dev.toma.gunsrpg.common.attribute.Modifiers;
 import dev.toma.gunsrpg.common.block.*;
 import dev.toma.gunsrpg.common.container.*;
-import dev.toma.gunsrpg.common.debuffs.DebuffRegistration;
-import dev.toma.gunsrpg.common.debuffs.DebuffType;
+import dev.toma.gunsrpg.common.debuffs.*;
 import dev.toma.gunsrpg.common.entity.*;
 import dev.toma.gunsrpg.common.item.*;
 import dev.toma.gunsrpg.common.item.guns.*;
@@ -404,15 +403,52 @@ public class CommonRegistry {
     @SubscribeEvent
     public static void onDebuffRegister(RegistryEvent.Register<DebuffType<?>> event) {
         event.getRegistry().registerAll(
-                DebuffRegistration.createPoisonType(),
-                DebuffRegistration.createInfectionType(),
-                DebuffRegistration.createFractureType(),
-                DebuffRegistration.createBleedType(),
-                DebuffRegistration.createRespawnType(),
-                DebuffRegistration.createPoisonBlockType(),
-                DebuffRegistration.createInfectionBlockType(),
-                DebuffRegistration.createFractureBlockType(),
-                DebuffRegistration.createBleedBlockType()
+                new DataDrivenDebuffType.Builder<>()
+                        .factory(type -> new StagedDebuff((DataDrivenDebuffType<?>) type))
+                        .configToggle(() -> GunsRPG.config.debuffs.disablePoison)
+                        .build()
+                        .setRegistryName("poison"),
+                new DataDrivenDebuffType.Builder<>()
+                        .factory(type -> new StagedDebuff((DataDrivenDebuffType<?>) type))
+                        .configToggle(() -> GunsRPG.config.debuffs.disableInfection)
+                        .build()
+                        .setRegistryName("infection"),
+                new DataDrivenDebuffType.Builder<>()
+                        .factory(type -> new StagedDebuff((DataDrivenDebuffType<?>) type))
+                        .configToggle(() -> GunsRPG.config.debuffs.disableFractures)
+                        .build()
+                        .setRegistryName("fracture"),
+                new DataDrivenDebuffType.Builder<>()
+                        .factory(type -> new StagedDebuff((DataDrivenDebuffType<?>) type))
+                        .configToggle(() -> GunsRPG.config.debuffs.disableBleeding)
+                        .build()
+                        .setRegistryName("bleed"),
+                new RespawnDebuffType.RespawnDebuffBuilder<>()
+                        .factory(type -> new ReducedHealthDebuff((RespawnDebuffType<?>) type))
+                        .disableOn(() -> GunsRPG.config.debuffs.disableRespawnDebuff)
+                        .duration(3600)
+                        .build()
+                        .setRegistryName("respawn"),
+                new DummyDebuffType.DummyBuilder<>()
+                        .linkedTo(() -> Debuffs.POISON)
+                        .factory(DummyDebuff::new)
+                        .build()
+                        .setRegistryName("poison_block"),
+                new DummyDebuffType.DummyBuilder<>()
+                        .linkedTo(() -> Debuffs.INFECTION)
+                        .factory(DummyDebuff::new)
+                        .build()
+                        .setRegistryName("infection_block"),
+                new DummyDebuffType.DummyBuilder<>()
+                        .linkedTo(() -> Debuffs.FRACTURE)
+                        .factory(DummyDebuff::new)
+                        .build()
+                        .setRegistryName("fracture_block"),
+                new DummyDebuffType.DummyBuilder<>()
+                        .linkedTo(() -> Debuffs.BLEED)
+                        .factory(DummyDebuff::new)
+                        .build()
+                        .setRegistryName("bleed_block")
         );
     }
 

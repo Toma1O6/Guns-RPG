@@ -27,7 +27,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -86,7 +85,7 @@ public class GunsRPG {
         modLifecycle.commonInit();
         MobSpawnManager.instance().initialize();
 
-        DeferredWorkQueue.runLater(this::registerMobSpawnPlacements);
+        event.enqueueWork(this::registerMobSpawnPlacements);
     }
 
     private void registerMobSpawnPlacements() {

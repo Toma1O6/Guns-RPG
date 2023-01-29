@@ -1,0 +1,105 @@
+{
+  "attributes": {
+    "delay": "gunsrpg:infection_delay",
+    "resist": "gunsrpg:infection_resistance",
+    "block": "gunsrpg:infection_block"
+  },
+  "stages": [
+    {
+      "limit": 35,
+      "events": [
+      ]
+    },
+    {
+      "limit": 60,
+      "events": [
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:wither",
+            "duration": 60,
+            "visible": false
+          }
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:hunger",
+            "duration": 60,
+            "amplifier": 4,
+            "visible": false
+          }
+        }
+      ]
+    },
+    {
+      "limit": 85,
+      "events": [
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:wither",
+            "duration": 60,
+            "amplifier": 1,
+            "visible": false
+          }
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:hunger",
+            "duration": 60,
+            "amplifier": 9,
+            "visible": false
+          }
+        }
+      ]
+    },
+    {
+      "limit": 99,
+      "events": [
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:wither",
+            "duration": 60,
+            "amplifier": 2,
+            "visible": false
+          }
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:hunger",
+            "duration": 60,
+            "amplifier": 14,
+            "visible": false
+          }
+        }
+      ]
+    },
+    {
+      "limit": 100,
+      "events": [
+        {
+          "type": "gunsrpg:infection_damage",
+          "amount": 15.0
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "type": "gunsrpg:hurt_by_entity",
+      "entityMap": {
+        "minecraft:zombie_villager": 0.06,
+        "minecraft:enderman": 0.02,
+        "minecraft:vindicator": 0.03,
+        "minecraft:wither_skeleton": 0.07,
+        "minecraft:husk": 0.07,
+        "minecraft:zombie": 0.06,
+        "minecraft:zombified_piglin": 0.09
+      }
+    }
+  ]
+}

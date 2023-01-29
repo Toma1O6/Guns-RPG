@@ -1,0 +1,186 @@
+{
+  "attributes": {
+    "delay": "gunsrpg:fracture_delay",
+    "resist": "gunsrpg:fracture_resistance",
+    "block": "gunsrpg:fracture_block"
+  },
+  "stages": [
+    {
+      "limit": 30,
+      "events": [
+        {
+          "type": "gunsrpg:hurt_by_sprint",
+          "amount": 1.0,
+          "interval": 20
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:slowness",
+            "duration": 60,
+            "visible": false
+          }
+        }
+      ]
+    },
+    {
+      "limit": 55,
+      "events": [
+        {
+          "type": "gunsrpg:hurt_by_sprint",
+          "amount": 1.0,
+          "interval": 20
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:slowness",
+            "duration": 60,
+            "amplifier": 1,
+            "visible": false
+          }
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:mining_fatigue",
+            "duration": 60,
+            "visible": false
+          }
+        }
+      ]
+    },
+    {
+      "limit": 75,
+      "events": [
+        {
+          "type": "gunsrpg:hurt_by_sprint",
+          "amount": 1.0,
+          "interval": 20
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:slowness",
+            "duration": 60,
+            "amplifier": 2,
+            "visible": false
+          }
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:mining_fatigue",
+            "duration": 60,
+            "visible": false
+          }
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:weakness",
+            "duration": 60,
+            "visible": false
+          }
+        }
+      ]
+    },
+    {
+      "limit": 99,
+      "events": [
+        {
+          "type": "gunsrpg:hurt_by_sprint",
+          "amount": 1.0,
+          "interval": 20
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:slowness",
+            "duration": 60,
+            "amplifier": 3,
+            "visible": false
+          }
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:mining_fatigue",
+            "duration": 60,
+            "amplifier": 1,
+            "visible": false
+          }
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:weakness",
+            "duration": 60,
+            "visible": false
+          }
+        }
+      ]
+    },
+    {
+      "limit": 100,
+      "events": [
+        {
+          "type": "gunsrpg:hurt_by_sprint",
+          "amount": 1.0,
+          "interval": 20
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:slowness",
+            "duration": 60,
+            "amplifier": 3,
+            "visible": false
+          }
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:mining_fatigue",
+            "duration": 60,
+            "amplifier": 2,
+            "visible": false
+          }
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:weakness",
+            "duration": 60,
+            "amplifier": 1,
+            "visible": false
+          }
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:wither",
+            "duration": 60,
+            "visible": false
+          }
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "type": "gunsrpg:entity_melee_damage",
+      "chance": 0.01
+    },
+    {
+      "type": "gunsrpg:explosion_damage",
+      "damageDownscale": 5.0,
+      "multiplier": 0.2
+    },
+    {
+      "type": "gunsrpg:fall_damage",
+      "damageDownscale": 4.0,
+      "multiplier": 0.3
+    }
+  ]
+}

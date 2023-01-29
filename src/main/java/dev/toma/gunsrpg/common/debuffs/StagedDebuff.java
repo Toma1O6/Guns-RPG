@@ -7,12 +7,10 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
-import java.util.Objects;
-
 public class StagedDebuff implements IStagedDebuff, ProgressingDebuff {
 
-    private final StagedDebuffType<?> type;
-    private StagedDebuffType.LinkedStage current;
+    private final DataDrivenDebuffType<?> type;
+    private int stage;
     private int progression; // debuff pct
     private int progressionCounter; // pct incr delay
 
@@ -21,9 +19,9 @@ public class StagedDebuff implements IStagedDebuff, ProgressingDebuff {
     private int ticksSinceProgressed;
     private int ticksSinceHealed;
 
-    public StagedDebuff(StagedDebuffType<?> type) {
+    public StagedDebuff(DataDrivenDebuffType<?> type) {
         this.type = type;
-        this.current = type.firstStage();
+        this.stage = 0;
         this.ticksSinceHealed = 100;
     }
 
@@ -37,7 +35,8 @@ public class StagedDebuff implements IStagedDebuff, ProgressingDebuff {
                 if (!player.level.isClientSide) data.sync(DataFlags.DEBUFF);
             }
             if (!isFrozen(data.getAttributes())) {
-                current.getStageEvent().accept(player);
+                DataDrivenDebuffType.DebuffStage debuffStage = this.type.getStage(this.stage);
+                debuffStage.apply(player);
             }
         });
     }
@@ -55,12 +54,12 @@ public class StagedDebuff implements IStagedDebuff, ProgressingDebuff {
 
     @Override
     public float getBlockingProgress(IAttributeProvider provider) {
-        return StagedDebuffType.getBuffedProgress(provider, this.type.getBlockingAttribute());
+        return DataDrivenDebuffType.getBuffedProgress(provider, this.type.getBlockingAttribute());
     }
 
     @Override
     public boolean isFrozen(IAttributeProvider attributes) {
-        return type.isTemporarilyDisabled(attributes);
+        return type.isDisabledByAttributes(attributes);
     }
 
     @Override
@@ -110,7 +109,6 @@ public class StagedDebuff implements IStagedDebuff, ProgressingDebuff {
         CompoundNBT nbt = new CompoundNBT();
         nbt.putInt("progression", progression);
         nbt.putInt("progressionCounter", progressionCounter);
-        nbt.putInt("stageLimit", current.getLimit());
         saveNonZeroInt(nbt, ticksSinceAdded, "ticksSinceAdded");
         saveNonZeroInt(nbt, ticksSinceProgressed, "ticksSinceProgressed");
         saveNonZeroInt(nbt, ticksSinceHealed, "ticksSinceHealed");
@@ -121,10 +119,10 @@ public class StagedDebuff implements IStagedDebuff, ProgressingDebuff {
     public void fromNbt(CompoundNBT nbt) {
         progression = nbt.getInt("progression");
         progressionCounter = nbt.getInt("progressionCounter");
-        advanceStage(type.firstStage(), nbt.getInt("stageLimit"));
         ticksSinceAdded = nbt.getInt("ticksSinceAdded");
         ticksSinceProgressed = nbt.getInt("ticksSinceProgressed");
         ticksSinceHealed = nbt.getInt("ticksSinceHealed");
+        this.updateStage();
     }
 
     @Override
@@ -133,17 +131,19 @@ public class StagedDebuff implements IStagedDebuff, ProgressingDebuff {
     }
 
     private void updateStage() {
-        int limit = current.getLimit();
-        if (progression > limit) {
-            current = Objects.requireNonNull(current.getNext(), "Next stage was null");
+        int stageIndex = 0;
+        if (this.type.getStages() == null) {
+            this.stage = stageIndex;
+            return;
         }
-    }
-
-    private void advanceStage(StagedDebuffType.LinkedStage stage, int limit) {
-        current = stage;
-        if (current.getLimit() < limit && current.getNext() != null) {
-            advanceStage(current.getNext(), limit);
+        for (int i = 0; i < this.type.getStages().size(); i++) {
+            DataDrivenDebuffType.DebuffStage testStage = this.type.getStage(i);
+            stageIndex = i;
+            if (testStage.isApplicable(this.progression)) {
+                break;
+            }
         }
+        this.stage = stageIndex;
     }
 
     private void updateRenderCounters() {

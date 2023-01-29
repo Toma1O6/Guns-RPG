@@ -1,0 +1,97 @@
+{
+  "attributes": {
+    "delay": "gunsrpg:poison_delay",
+    "resist": "gunsrpg:poison_resistance",
+    "block": "gunsrpg:poison_block"
+  },
+  "stages": [
+    {
+      "limit": 40,
+      "events": [
+      ]
+    },
+    {
+      "limit": 70,
+      "events": [
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:poison",
+            "duration": 60,
+            "visible": false
+          }
+        }
+      ]
+    },
+    {
+      "limit": 85,
+      "events": [
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:poison",
+            "duration": 60,
+            "amplifier": 1,
+            "visible": false
+          }
+        }
+      ]
+    },
+    {
+      "limit": 99,
+      "events": [
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:poison",
+            "duration": 60,
+            "amplifier": 1,
+            "visible": false
+          }
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:nausea",
+            "duration": 260,
+            "visible": false
+          }
+        },
+        {
+          "type": "gunsrpg:add_effect",
+          "effectData": {
+            "effect": "minecraft:blindness",
+            "duration": 260,
+            "visible": false
+          }
+        }
+      ]
+    },
+    {
+      "limit": 100,
+      "events": [
+        {
+          "type": "gunsrpg:poison_damage",
+          "amount": 15.0
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "type": "gunsrpg:hurt_by_entity",
+      "entityMap": {
+        "minecraft:spider": 0.15,
+        "minecraft:cave_spider": 0.20,
+        "minecraft:skeleton": 0.02,
+        "minecraft:guardian": 0.05,
+        "minecraft:elder_guardian": 0.08
+      }
+    },
+    {
+      "type": "gunsrpg:hurt_by_slime",
+      "baseChance": 0.0,
+      "sizeIncrements": 0.03
+    }
+  ]
+}

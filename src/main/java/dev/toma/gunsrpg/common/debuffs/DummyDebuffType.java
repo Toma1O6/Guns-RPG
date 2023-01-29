@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 public final class DummyDebuffType<D extends IStagedDebuff> extends DebuffType<D> {
 
-    private final Supplier<StagedDebuffType<?>> linkedDebuff;
+    private final Supplier<DataDrivenDebuffType<?>> linkedDebuff;
 
     private DummyDebuffType(DummyBuilder<D> builder) {
         super(builder);
@@ -22,12 +22,12 @@ public final class DummyDebuffType<D extends IStagedDebuff> extends DebuffType<D
     public D onTrigger(IDebuffContext context, Random random, @Nullable Object data) {
         IPlayerData playerData = context.getData();
         IDebuffs debuffs = playerData.getDebuffControl();
-        StagedDebuffType<?> linked = this.linkedDebuff.get();
+        DataDrivenDebuffType<?> linked = this.linkedDebuff.get();
         if (debuffs.hasDebuff(linked)) {
             return null;
         }
-        if (data instanceof StagedDebuffType<?>) {
-            StagedDebuffType<?> type = (StagedDebuffType<?>) data;
+        if (data instanceof DataDrivenDebuffType<?>) {
+            DataDrivenDebuffType<?> type = (DataDrivenDebuffType<?>) data;
             if (type == linked) {
                 return this.createRaw();
             }
@@ -45,13 +45,13 @@ public final class DummyDebuffType<D extends IStagedDebuff> extends DebuffType<D
         return false;
     }
 
-    public StagedDebuffType<?> getLinkedType() {
+    public DataDrivenDebuffType<?> getLinkedType() {
         return this.linkedDebuff.get();
     }
 
     public static final class DummyBuilder<D extends IStagedDebuff> implements IDebuffBuilder<D> {
 
-        private Supplier<StagedDebuffType<?>> linkedDebuff;
+        private Supplier<DataDrivenDebuffType<?>> linkedDebuff;
         private IFactory<D> factory;
 
         public DummyBuilder<D> factory(IFactory<D> factory) {
@@ -59,7 +59,7 @@ public final class DummyDebuffType<D extends IStagedDebuff> extends DebuffType<D
             return this;
         }
 
-        public DummyBuilder<D> linkedTo(Supplier<StagedDebuffType<?>> typeSupplier) {
+        public DummyBuilder<D> linkedTo(Supplier<DataDrivenDebuffType<?>> typeSupplier) {
             this.linkedDebuff = typeSupplier;
             return this;
         }

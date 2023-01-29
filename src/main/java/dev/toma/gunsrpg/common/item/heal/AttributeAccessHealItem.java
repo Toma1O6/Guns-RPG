@@ -6,9 +6,9 @@ import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeTarget;
 import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.common.debuffs.DataDrivenDebuffType;
 import dev.toma.gunsrpg.common.debuffs.IDebuffContext;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
-import dev.toma.gunsrpg.common.debuffs.StagedDebuffType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -38,7 +38,7 @@ public class AttributeAccessHealItem extends AbstractHealItem<IPlayerData> {
             super(name);
         }
 
-        public Builder defineModifiers(Function<IAttributeProvider, IAttributeTarget[]> function, @Nullable Supplier<? extends StagedDebuffType<?>> targetDebuff) {
+        public Builder defineModifiers(Function<IAttributeProvider, IAttributeTarget[]> function, @Nullable Supplier<? extends DataDrivenDebuffType<?>> targetDebuff) {
             return (Builder) onUse(data -> {
                 IAttributeProvider provider = data.getAttributes();
                 IAttributeTarget[] targets = function.apply(provider);
@@ -48,9 +48,9 @@ public class AttributeAccessHealItem extends AbstractHealItem<IPlayerData> {
                     provider.getAttribute(id).addModifier(modifier);
                 }
                 if (targetDebuff != null) {
-                    StagedDebuffType<?> stagedDebuffType = targetDebuff.get();
+                    DataDrivenDebuffType<?> debuffType = targetDebuff.get();
                     IDebuffs debuffs = data.getDebuffControl();
-                    debuffs.trigger(IDebuffType.TriggerFlags.HEAL, IDebuffContext.of(DamageSource.GENERIC, null, data, 0.0F), stagedDebuffType);
+                    debuffs.trigger(IDebuffType.TriggerFlags.HEAL, IDebuffContext.of(DamageSource.GENERIC, null, data, 0.0F), debuffType);
                 }
             });
         }

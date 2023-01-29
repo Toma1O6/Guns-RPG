@@ -3,9 +3,8 @@ package dev.toma.gunsrpg.util;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
-import dev.toma.gunsrpg.common.init.ModItems;
-import dev.toma.gunsrpg.common.init.ModRecipeTypes;
-import dev.toma.gunsrpg.common.init.ModTags;
+import dev.toma.gunsrpg.common.debuffs.DebuffDataManager;
+import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.common.item.SlingItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
@@ -43,6 +42,7 @@ public final class Lifecycle {
     private final ProgressionStrategyManager progressionStrategyManager = new ProgressionStrategyManager();
     private final PerkManager perkManager = new PerkManager();
     private final QuestSystem questSystem = new QuestSystem();
+    private final DebuffDataManager debuffDataManager = new DebuffDataManager();
 
     public void modInit() {
         ModTags.init();
@@ -55,6 +55,8 @@ public final class Lifecycle {
         ModRecipeTypes.register();
         SlingItem.initAmmoRegistry();
         VillageFeatureMutator.mutateVanillaVillages();
+        ModDebuffStageEvents.register();
+        ModDebuffSources.register();
     }
 
     public StartGearManager getStartingGearManager() {
@@ -135,6 +137,7 @@ public final class Lifecycle {
         event.addListener(progressionStrategyManager);
         event.addListener(perkManager);
         event.addListener(perkManager.configLoader);
+        event.addListener(debuffDataManager);
         this.questSystem.initialize(event);
     }
 }

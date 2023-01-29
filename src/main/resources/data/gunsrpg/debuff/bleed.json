@@ -1,0 +1,86 @@
+{
+  "attributes": {
+    "delay": "gunsrpg:bleed_delay",
+    "resist": "gunsrpg:bleed_resistance",
+    "block": "gunsrpg:bleed_block"
+  },
+  "stages": [
+    {
+      "limit": 25,
+      "events": [
+        {
+          "type": "gunsrpg:bleed_damage",
+          "amount": 1.0,
+          "interval": 120
+        }
+      ]
+    },
+    {
+      "limit": 50,
+      "events": [
+        {
+          "type": "gunsrpg:bleed_damage",
+          "amount": 1.0,
+          "interval": 80
+        }
+      ]
+    },
+    {
+      "limit": 75,
+      "events": [
+        {
+          "type": "gunsrpg:bleed_damage",
+          "amount": 1.0,
+          "interval": 60
+        }
+      ]
+    },
+    {
+      "limit": 99,
+      "events": [
+        {
+          "type": "gunsrpg:bleed_damage",
+          "amount": 1.0,
+          "interval": 30
+        }
+      ]
+    },
+    {
+      "limit": 100,
+      "events": [
+        {
+          "type": "gunsrpg:bleed_damage",
+          "amount": 1.0,
+          "interval": 15
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "type": "gunsrpg:hurt_by_entity",
+      "entityMap": {
+        "minecraft:spider": 0.05,
+        "minecraft:zombie": 0.06,
+        "minecraft:zombie_villager": 0.06,
+        "minecraft:stray": 0.07,
+        "minecraft:skeleton": 0.07,
+        "minecraft:enderman": 0.05,
+        "minecraft:zombified_piglin": 0.09,
+        "minecraft:wither_skeleton": 0.08
+      }
+    },
+    {
+      "type": "gunsrpg:explosion_damage_constant",
+      "chance": 0.13
+    },
+    {
+      "type": "gunsrpg:fall_damage_constant",
+      "chance": 0.05
+    },
+    {
+      "type": "gunsrpg:weapon_damage",
+      "chance": 0.05
+    }
+  ]
+}

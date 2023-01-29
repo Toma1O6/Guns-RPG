@@ -17,10 +17,10 @@ public class DummyDebuff implements IStagedDebuff {
 
     @Override
     public void tick(PlayerEntity player) {
-        StagedDebuffType<?> link = this.type.getLinkedType();
+        DataDrivenDebuffType<?> link = this.type.getLinkedType();
         PlayerData.get(player).ifPresent(data -> {
             IAttributeProvider provider = data.getAttributes();
-            if (!link.isTemporarilyDisabled(provider)) {
+            if (!link.isDisabledByAttributes(provider)) {
                 this.forRemoval = true;
             }
         });
@@ -53,7 +53,7 @@ public class DummyDebuff implements IStagedDebuff {
 
     @Override
     public float getBlockingProgress(IAttributeProvider provider) {
-        return StagedDebuffType.getBuffedProgress(provider, this.type.getLinkedType().getBlockingAttribute());
+        return DataDrivenDebuffType.getBuffedProgress(provider, this.type.getLinkedType().getBlockingAttribute());
     }
 
     @Override
