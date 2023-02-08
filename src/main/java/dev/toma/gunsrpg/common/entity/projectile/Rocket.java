@@ -91,6 +91,19 @@ public class Rocket extends AbstractExplosive {
             if (tickCount > 100) {
                 this.onCollided(this.position());
             }
+            if (isGuided()) { // Proximity fuse
+                Vector3d currentPos = this.position();
+                Vector3d nextPos = currentPos.add(this.getDeltaMovement());
+                TrackedTarget target = this.getTarget();
+                if (target.entity != null) {
+                    Vector3d targetPos = TrackedTarget.atCenterOfEntity(target.entity);
+                    double distance1 = currentPos.distanceToSqr(targetPos);
+                    double distance2 = nextPos.distanceToSqr(targetPos);
+                    if (distance2 > distance1 && distance1 <= 16.0) {
+                        this.onCollided(currentPos);
+                    }
+                }
+            }
         } else  {
             applyGravity(0.02F);
             if (level.isClientSide) {
@@ -120,10 +133,14 @@ public class Rocket extends AbstractExplosive {
         void update(TrackedTarget target) {
             Rocket rocket = Rocket.this;
             Vector3d position = target.getTrackedPosition();
+            double angleDegrees = getAngleTowardsTarget(rocket.getDeltaMovement(), position.subtract(rocket.position()));
+            boolean hasGuidance = angleDegrees < 90.0;
             float x = rocket.xRot;
             float y = rocket.yRot;
-            rocket.xRot = this.rotateTowards(x, this.getVerticalDifference(position), 4.5F);
-            rocket.yRot = this.rotateTowards(y, this.getHorizontalDifference(position), 6.0F);
+            if (hasGuidance) {
+                rocket.xRot = this.rotateTowards(x, this.getVerticalDifference(position), 8.0F);
+                rocket.yRot = this.rotateTowards(y, this.getHorizontalDifference(position), 8.0F);
+            }
             float f = rocket.velocity;
             if (!rocket.getProperty(Properties.FUELED) && tickCount > 15) {
                 return;
@@ -153,6 +170,15 @@ public class Rocket extends AbstractExplosive {
             float clampedMovement = MathHelper.clamp(difference, -maxStepSize, maxStepSize);
             return currentRotation + clampedMovement;
         }
+
+        double getAngleTowardsTarget(Vector3d vecA, Vector3d vecB) {
+            double aLen = vecA.length();
+            double bLen = vecB.length();
+            double a = vecA.x * vecB.x + vecA.y + vecB.y + vecA.z * vecB.z;
+            double b = aLen * bLen;
+            double angleRad = Math.acos(a / b);
+            return Math.toDegrees(angleRad);
+        }
     }
 
     private static class TrackedTarget {
@@ -176,7 +202,7 @@ public class Rocket extends AbstractExplosive {
             pos = atCenterOfEntity(entity);
         }
 
-        private Vector3d atCenterOfEntity(Entity entity) {
+        static Vector3d atCenterOfEntity(Entity entity) {
             EntitySize size = entity.getDimensions(entity.getPose());
             Vector3d position = entity.position();
             return position.add(size.width / 2.0F, size.height / 2.0F, size.width / 2.0F);
