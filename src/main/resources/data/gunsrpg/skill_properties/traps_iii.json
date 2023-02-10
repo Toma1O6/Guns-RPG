@@ -4,8 +4,8 @@
     "parent": "gunsrpg:traps_ii"
   },
   "properties": {
-    "level": 45,
-    "price": 5,
+    "level": 55,
+    "price": 7,
     "transactionValidator": {
       "type": "gunsrpg:level"
     }

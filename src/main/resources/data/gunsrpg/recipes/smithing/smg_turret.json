@@ -23,7 +23,7 @@
     {
       "type": "gunsrpg:skill",
       "predicate": {
-        "skill": "gunsrpg:traps_ii"
+        "skill": "gunsrpg:traps_i"
       }
     }
   ]
