@@ -13,6 +13,17 @@ public abstract class VanillaInventoryTileEntity extends InventoryTileEntity imp
     }
 
     @Override
+    public boolean isEmpty() {
+        for (int i = 0; i < this.getContainerSize(); i++) {
+            ItemStack stack = this.getItem(i);
+            if (!stack.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
     public int getContainerSize() {
         return itemHandler.getSlots();
     }

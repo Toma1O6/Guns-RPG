@@ -8,10 +8,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -225,6 +227,34 @@ public class ModUtils {
         return Integer.decode("0x" + hexCode);
     }
 
+    public static <E extends Enum<E>> E getEnumByIdSafely(int id, Class<E> type) {
+        E[] values = type.getEnumConstants();
+        return values[id % values.length];
+    }
+
+    public static void encodeInventoryContents(IInventory inventory, PacketBuffer buffer) {
+        List<SerializedSlot> slots = new ArrayList<>();
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
+            ItemStack stack = inventory.getItem(i);
+            if (!stack.isEmpty()) {
+                SerializedSlot serializedSlot = new SerializedSlot(i, stack);
+                slots.add(serializedSlot);
+            }
+        }
+        buffer.writeInt(slots.size());
+        slots.forEach(slot -> slot.encode(buffer));
+    }
+
+    public static SerializedSlot[] decodeInventoryContents(PacketBuffer buffer) {
+        int count = buffer.readInt();
+        SerializedSlot[] slots = new SerializedSlot[count];
+        for (int i = 0; i < count; i++) {
+            SerializedSlot serializedSlot = SerializedSlot.decode(buffer);
+            slots[i] = serializedSlot;
+        }
+        return slots;
+    }
+
     private static Map<SkillCategory, List<SkillType<?>>> splitSkillsIntoCategories(Iterable<SkillType<?>> iterable) {
         Map<SkillCategory, List<SkillType<?>>> map = new EnumMap<>(SkillCategory.class);
         for (SkillType<?> type : iterable) {
@@ -232,6 +262,40 @@ public class ModUtils {
             map.computeIfAbsent(category, cat -> new ArrayList<>()).add(type);
         }
         return map;
+    }
+
+    public static final class SerializedSlot {
+
+        private final int slotIndex;
+        private final ItemStack stack;
+
+        public SerializedSlot(int slotIndex, ItemStack stack) {
+            this.slotIndex = slotIndex;
+            this.stack = stack;
+        }
+
+        public int getSlotIndex() {
+            return slotIndex;
+        }
+
+        public ItemStack getItemStack() {
+            return stack;
+        }
+
+        void encode(PacketBuffer buffer) {
+            buffer.writeInt(slotIndex);
+            buffer.writeItem(stack);
+        }
+
+        static SerializedSlot decode(PacketBuffer buffer) {
+            return new SerializedSlot(buffer.readInt(), buffer.readItem());
+        }
+
+        public static void apply(IInventory inventory, SerializedSlot[] slots) {
+            for (SerializedSlot serializedSlot : slots) {
+                inventory.setItem(serializedSlot.getSlotIndex(), serializedSlot.getItemStack());
+            }
+        }
     }
 
     public interface INBTDeserializer<NBT extends INBT> {

@@ -42,9 +42,14 @@ public class WeaponDamageSource extends DamageSource {
     @Override
     public ITextComponent getLocalizedDeathMessage(LivingEntity victim) {
         String base = "death.attack." + this.msgId;
-        String itemBase = base + ".weapon";
-        return this.weaponStack.isEmpty() ?
-                new TranslationTextComponent(base, victim.getDisplayName(), this.directSource.getDisplayName()) :
-                new TranslationTextComponent(itemBase, victim.getDisplayName(), this.directSource.getDisplayName(), this.weaponStack.getDisplayName());
+        String playerBase = base + ".player";
+        String itemBase = playerBase + ".weapon";
+        if (this.directSource != null) {
+            return this.weaponStack.isEmpty() ?
+                    new TranslationTextComponent(base, victim.getDisplayName(), this.directSource.getDisplayName()) :
+                    new TranslationTextComponent(itemBase, victim.getDisplayName(), this.directSource.getDisplayName(), this.weaponStack.getDisplayName());
+        } else {
+            return new TranslationTextComponent(base, victim.getDisplayName());
+        }
     }
 }

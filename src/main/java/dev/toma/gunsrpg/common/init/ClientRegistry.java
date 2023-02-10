@@ -31,6 +31,9 @@ public class ClientRegistry {
                 .map(item -> (GunItem) item)
                 .forEach(gun -> registry.put(getModelResourceLocation(gun), model));
         registry.put(getModelResourceLocation(ModItems.STASH_DETECTOR), model);
+        registry.put(getModelResourceLocation(ModItems.SMG_TURRET), model);
+        registry.put(getModelResourceLocation(ModItems.AR_TURRET), model);
+        registry.put(getModelResourceLocation(ModItems.ROCKET_TURRET), model);
     }
 
     @SubscribeEvent

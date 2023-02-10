@@ -5,6 +5,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class MultipartReaction implements IReaction {
 
     private final IReaction[] reactions;
@@ -25,7 +27,7 @@ public class MultipartReaction implements IReaction {
     }
 
     @Override
-    public void writeInitialData(AbstractProjectile projectile, IAmmoMaterial material, LivingEntity owner) {
+    public void writeInitialData(AbstractProjectile projectile, IAmmoMaterial material, @Nullable LivingEntity owner) {
         for (IReaction reaction : reactions) {
             reaction.writeInitialData(projectile, material, owner);
         }

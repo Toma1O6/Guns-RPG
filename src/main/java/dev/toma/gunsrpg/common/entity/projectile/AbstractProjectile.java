@@ -39,7 +39,7 @@ import java.util.function.Consumer;
 public abstract class AbstractProjectile extends ProjectileEntity implements IEntityAdditionalSpawnData {
 
     protected final PropertyContext propertyContext = PropertyContext.create();
-    private final Set<UUID> passedPlayers;
+    private final Set<UUID> passedPlayers = new HashSet<>();
     private final ItemStack weapon;
     private float projectileDamage;
     private float velocity;
@@ -48,13 +48,11 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
 
     public AbstractProjectile(EntityType<? extends AbstractProjectile> type, World level) {
         super(type, level);
-        this.passedPlayers = Collections.emptySet();
         this.weapon = ItemStack.EMPTY;
     }
 
     public AbstractProjectile(EntityType<? extends AbstractProjectile> type, World world, LivingEntity owner) {
         super(type, world);
-        this.passedPlayers = new HashSet<>();
         this.setOwner(owner);
         this.passedPlayers.add(owner.getUUID()); // owner will never hear bullet whizz
         this.weapon = owner.getMainHandItem();

@@ -4,8 +4,7 @@ import dev.toma.configuration.Configuration;
 import dev.toma.configuration.config.format.ConfigFormats;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.ModKeybinds;
-import dev.toma.gunsrpg.client.model.GrenadeShellModel;
-import dev.toma.gunsrpg.client.model.RocketModel;
+import dev.toma.gunsrpg.client.model.*;
 import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
 import dev.toma.gunsrpg.client.render.debuff.IconDebuffRenderer;
@@ -88,6 +87,9 @@ public class ClientSideManager {
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.MAYOR.get(),               MayorRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.ZOMBIE_KNIGHT.get(),       ZombieRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.ZOMBIE_NIGHTMARE.get(),    ZombieNightmareRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.SMG_TURRET.get(),          manager -> new TurretRenderer(manager, new SmgTurretModel()));
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.AR_TURRET.get(),           manager -> new TurretRenderer(manager, new ArTurretModel()));
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.ROCKET_TURRET.get(),       manager -> new TurretRenderer(manager, new RocketTurretModel()));
 
         // keybinds
         ModKeybinds.registerKeybinds();
@@ -144,6 +146,7 @@ public class ClientSideManager {
         ScreenManager.register(ModContainers.CRYSTAL_STATION.get(), CrystalStationScreen::new);
         ScreenManager.register(ModContainers.CRYSTAL_FUSE.get(), CrystalFuseStationScreen::new);
         ScreenManager.register(ModContainers.CRYSTAL_PURIFICATION.get(), CrystalPurificationStationScreen::new);
+        ScreenManager.register(ModContainers.TURRET_CONTAINER.get(), TurretScreen::new);
     }
 
     private AnimationType<?>[] gatherAnimationTypes() {

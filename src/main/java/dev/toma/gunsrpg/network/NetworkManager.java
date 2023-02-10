@@ -5,11 +5,13 @@ import dev.toma.gunsrpg.api.common.INetworkPacket;
 import dev.toma.gunsrpg.network.packet.*;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.ReportedException;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
@@ -46,6 +48,10 @@ public class NetworkManager {
                 .forEach(serverPlayerEntity -> sendClientPacket(serverPlayerEntity, packet));
     }
 
+    public static void sendToAllTracking(Entity entity, INetworkPacket<?> packet) {
+        CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), packet);
+    }
+
     public static void sendClientPacket(ServerPlayerEntity user, INetworkPacket<?> packet) {
         CHANNEL.sendTo(packet, user.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
     }
@@ -60,6 +66,7 @@ public class NetworkManager {
         registerNetworkPacket(S2C_SetTrackedStashPacket.class);
         registerNetworkPacket(S2C_UseStashDetectorPacket.class);
         registerNetworkPacket(S2C_OpenQuestScreen.class);
+        registerNetworkPacket(S2C_SendEntityData.class);
         // server packets
         registerNetworkPacket(C2S_ShootPacket.class);
         registerNetworkPacket(C2S_RequestDataUpdatePacket.class);
@@ -78,6 +85,7 @@ public class NetworkManager {
         registerNetworkPacket(C2S_PurifyPacket.class);
         registerNetworkPacket(C2S_RequestExtensionSkillLockPacket.class);
         registerNetworkPacket(C2S_QuestActionPacket.class);
+        registerNetworkPacket(C2S_TurretSettingsPacket.class);
     }
 
     private static <P extends INetworkPacket<P>> void registerNetworkPacket(Class<P> packetType) {

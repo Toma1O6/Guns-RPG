@@ -68,6 +68,15 @@ public class ModEntities {
     public static final RegistryObject<EntityType<ZombieNightmareEntity>> ZOMBIE_NIGHTMARE = register("zombie_nightmare", ZombieNightmareEntity::new, EntityClassification.MONSTER,
             builder -> builder.sized(0.6F, 1.95F).clientTrackingRange(8)
     );
+    public static final RegistryObject<EntityType<TurretEntity>> SMG_TURRET = register("smg_turret", TurretEntity::smg, EntityClassification.MISC,
+            builder -> builder.sized(0.8F, 1.5F).setTrackingRange(256).updateInterval(20).setShouldReceiveVelocityUpdates(true)
+    );
+    public static final RegistryObject<EntityType<TurretEntity>> AR_TURRET = register("ar_turret", TurretEntity::ar, EntityClassification.MISC,
+            builder -> builder.sized(0.8F, 1.5F).setTrackingRange(256).updateInterval(20).setShouldReceiveVelocityUpdates(true)
+    );
+    public static final RegistryObject<EntityType<TurretEntity>> ROCKET_TURRET = register("rocket_turret", TurretEntity::rocket, EntityClassification.MISC,
+            builder -> builder.sized(0.8F, 0.85F).setTrackingRange(256).updateInterval(20).setShouldReceiveVelocityUpdates(true)
+    );
 
     private static <E extends Entity> RegistryObject<EntityType<E>> register(
             String name,

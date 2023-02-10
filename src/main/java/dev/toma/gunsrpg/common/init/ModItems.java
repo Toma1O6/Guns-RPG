@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.init;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.item.*;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
 import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder(GunsRPG.MODID)
@@ -40,4 +41,7 @@ public class ModItems {
     public static final BaseItem WEAPON_REPAIR_KIT = null;
     public static final StashDetectorItem STASH_DETECTOR = null;
     public static final BaseItem BATTERY = null;
+    public static final TurretItem SMG_TURRET = null;
+    public static final TurretItem AR_TURRET = null;
+    public static final TurretItem ROCKET_TURRET = null;
 }

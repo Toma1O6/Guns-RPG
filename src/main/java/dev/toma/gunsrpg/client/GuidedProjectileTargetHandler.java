@@ -18,6 +18,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -73,7 +74,7 @@ public class GuidedProjectileTargetHandler {
         EntityRayTraceResult result = getEntityHitResult(player, position, targetedLocation, axisalignedbb, canTarget, range * range);
         boolean valid = result != null && result.getEntity() != null;
         if (valid) {
-            Entity entity = result.getEntity();
+            Entity entity = getActualEntity(result);
             int lastId = selectedEntity;
             selectedEntity = entity.getId();
             if (lastId != -1 && lastId != selectedEntity) {
@@ -86,6 +87,15 @@ public class GuidedProjectileTargetHandler {
         } else {
             selectedEntity = -1;
         }
+    }
+
+    private static Entity getActualEntity(EntityRayTraceResult result) {
+        Entity entity = result.getEntity();
+        PartEntity<?>[] parts = entity.getParts();
+        if (parts != null && parts.length > 0) {
+            return parts[0];
+        }
+        return entity;
     }
 
     private static EntityRayTraceResult getEntityHitResult(Entity shooter, Vector3d vec1, Vector3d vec2, AxisAlignedBB aabb, Predicate<Entity> predicate, double range) {

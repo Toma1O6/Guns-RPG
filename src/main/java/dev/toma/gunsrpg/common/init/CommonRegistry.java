@@ -739,6 +739,9 @@ public class CommonRegistry {
                 new StarterGearItem("starter_gear"),
                 new StashDetectorItem("stash_detector"),
                 BaseItem.simpleItem("battery"),
+                new TurretItem("smg_turret", ModEntities.SMG_TURRET),
+                new TurretItem("ar_turret", ModEntities.AR_TURRET),
+                new TurretItem("rocket_turret", ModEntities.ROCKET_TURRET),
 
                 new ForgeSpawnEggItem(ModEntities.BLOODMOON_GOLEM, 0x5b5b5b, 0xa30000, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("bloodmoon_golem_spawn_egg"),
                 new ForgeSpawnEggItem(ModEntities.EXPLOSIVE_SKELETON, 0xe1084e, 0xcd0800, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("explosive_skeleton_spawn_egg"),
