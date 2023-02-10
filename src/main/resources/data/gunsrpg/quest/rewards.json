@@ -479,7 +479,7 @@
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:lunch_box",
-          "weight": 1
+          "weight": 3
         },
         {
           "type": "gunsrpg:item_group",
@@ -607,17 +607,18 @@
         },
         {
           "type": "gunsrpg:item",
-          "item": "gunsrpg:lunch_box"
+          "item": "gunsrpg:lunch_box",
+          "weight": 3
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:ammo_case",
-          "weight": 1
+          "weight": 3
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:crystal_case",
-          "weight": 1
+          "weight": 3
         },
         {
           "type": "gunsrpg:item_group",
@@ -774,27 +775,27 @@
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:lunch_box",
-          "weight": 1
+          "weight": 3
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:ammo_case",
-          "weight": 1
+          "weight": 3
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:crystal_case",
-          "weight": 1
+          "weight": 3
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:grenade_case",
-          "weight": 1
+          "weight": 3
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:meds_case",
-          "weight": 1
+          "weight": 3
         },
         {
           "type": "gunsrpg:item_group",
@@ -952,27 +953,27 @@
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:ammo_case",
-          "weight": 1
+          "weight": 4
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:crystal_case",
-          "weight": 1
+          "weight": 4
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:grenade_case",
-          "weight": 1
+          "weight": 4
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:meds_case",
-          "weight": 1
+          "weight": 4
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:item_case",
-          "weight": 1
+          "weight": 3
         },
         {
           "type": "gunsrpg:item_group",
@@ -1137,27 +1138,27 @@
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:ammo_case",
-          "weight": 1
+          "weight": 4
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:crystal_case",
-          "weight": 1
+          "weight": 4
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:grenade_case",
-          "weight": 1
+          "weight": 4
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:meds_case",
-          "weight": 1
+          "weight": 4
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:item_case",
-          "weight": 1
+          "weight": 3
         },
         {
           "type": "gunsrpg:item_group",
@@ -1312,22 +1313,22 @@
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:crystal_case",
-          "weight": 1
+          "weight": 4
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:grenade_case",
-          "weight": 1
+          "weight": 4
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:meds_case",
-          "weight": 1
+          "weight": 4
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:item_case",
-          "weight": 1
+          "weight": 4
         },
         {
           "type": "gunsrpg:item_group",
@@ -1466,17 +1467,17 @@
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:grenade_case",
-          "weight": 1
+          "weight": 5
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:meds_case",
-          "weight": 1
+          "weight": 5
         },
         {
           "type": "gunsrpg:item",
           "item": "gunsrpg:item_case",
-          "weight": 1
+          "weight": 4
         },
         {
           "type": "gunsrpg:item_group",
