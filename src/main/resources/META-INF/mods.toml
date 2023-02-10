@@ -16,7 +16,7 @@ Hardcore Minecraft mod with RPG elements.
 [[dependencies.gunsrpg]]
     modId="forge"
     mandatory=true
-    versionRange="[36.2.39,)"
+    versionRange="[36.2.34,)"
     ordering="NONE"
     side="BOTH"
 
