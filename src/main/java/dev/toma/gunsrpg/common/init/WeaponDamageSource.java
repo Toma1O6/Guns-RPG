@@ -5,6 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -51,5 +52,11 @@ public class WeaponDamageSource extends DamageSource {
         } else {
             return new TranslationTextComponent(base, victim.getDisplayName());
         }
+    }
+
+    @Nullable
+    @Override
+    public Vector3d getSourcePosition() {
+        return indirectSource != null ? indirectSource.position() : null;
     }
 }

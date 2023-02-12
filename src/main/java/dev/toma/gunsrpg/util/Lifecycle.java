@@ -57,6 +57,7 @@ public final class Lifecycle {
         VillageFeatureMutator.mutateVanillaVillages();
         ModDebuffStageEvents.register();
         ModDebuffSources.register();
+        ParrotMobSoundMapCustomizer.customizeParrotMobSoundMap();
     }
 
     public StartGearManager getStartingGearManager() {
