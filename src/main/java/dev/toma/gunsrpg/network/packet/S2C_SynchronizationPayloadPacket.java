@@ -4,9 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.skill.*;
 import dev.toma.gunsrpg.client.screen.skill.SkillTreeScreen;
+import dev.toma.gunsrpg.common.debuffs.DebuffType;
+import dev.toma.gunsrpg.common.debuffs.DynamicDebuff;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.common.perk.PerkRegistry;
@@ -14,14 +18,21 @@ import dev.toma.gunsrpg.common.skills.core.*;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import dev.toma.gunsrpg.resource.perks.PerkConfiguration;
 import dev.toma.gunsrpg.resource.skill.SkillPropertyLoader;
+import dev.toma.gunsrpg.util.Lifecycle;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.NBTDynamicOps;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket<S2C_SynchronizationPayloadPacket> {
@@ -33,22 +44,27 @@ public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket<S2C_
     private final List<Perk> perks;
     // perk cfg
     private final PerkConfiguration configuration;
+    // dynamic debuffs
+    private final Map<ResourceLocation, Object> debuffData;
 
     public S2C_SynchronizationPayloadPacket() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
-    public static S2C_SynchronizationPayloadPacket makePayloadPacket() {
+    public static <T> S2C_SynchronizationPayloadPacket makePayloadPacket() {
+        Lifecycle lifecycle = GunsRPG.getModLifecycle();
         List<DataContext> data = ModRegistries.SKILLS.getValues().stream().filter(S2C_SynchronizationPayloadPacket::filterAndLogInvalid).map(DataContext::new).collect(Collectors.toList());
         List<Perk> perks = new ArrayList<>(PerkRegistry.getRegistry().getPerks());
-        PerkConfiguration configuration = GunsRPG.getModLifecycle().getPerkManager().configLoader.getConfiguration();
-        return new S2C_SynchronizationPayloadPacket(data, perks, configuration);
+        PerkConfiguration configuration = lifecycle.getPerkManager().configLoader.getConfiguration();
+        Map<ResourceLocation, Object> debuffData = lifecycle.getDebuffDataManager().getDebuffData();
+        return new S2C_SynchronizationPayloadPacket(data, perks, configuration, debuffData);
     }
 
-    private S2C_SynchronizationPayloadPacket(List<DataContext> data, List<Perk> perks, PerkConfiguration configuration) {
+    private S2C_SynchronizationPayloadPacket(List<DataContext> data, List<Perk> perks, PerkConfiguration configuration, Map<ResourceLocation, Object> debuffData) {
         this.data = data;
         this.perks = perks;
         this.configuration = configuration;
+        this.debuffData = debuffData;
     }
 
     @Override
@@ -63,6 +79,9 @@ public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket<S2C_
         perks.forEach(perk -> perk.encode(buffer));
         // perk cfg
         configuration.encode(buffer);
+        // debuff data
+        buffer.writeInt(debuffData.size());
+        debuffData.forEach((location, data) -> encodeDebuffData(buffer, location, data));
     }
 
     @Override
@@ -80,7 +99,9 @@ public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket<S2C_
             perks.add(Perk.decode(buffer));
         }
         PerkConfiguration configuration = PerkConfiguration.decode(buffer);
-        return new S2C_SynchronizationPayloadPacket(list, perks, configuration);
+        // debuffs
+        Map<ResourceLocation, Object> map = decodeDebuffData(buffer);
+        return new S2C_SynchronizationPayloadPacket(list, perks, configuration, map);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -97,6 +118,9 @@ public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket<S2C_
 
         // configuration
         GunsRPG.getModLifecycle().getPerkManager().configLoader.setConfiguration(configuration);
+
+        // debuff
+        debuffData.forEach(this::handleDebuffData);
     }
 
     @SuppressWarnings("unchecked")
@@ -104,6 +128,45 @@ public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket<S2C_
         SkillType<S> owner = (SkillType<S>) context.owner;
         SkillPropertyLoader.ILoadResult<S> result = (SkillPropertyLoader.ILoadResult<S>) context.result;
         owner.onDataAssign(result);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <D> void encodeDebuffData(PacketBuffer buffer, ResourceLocation location, D data) {
+        buffer.writeResourceLocation(location);
+
+        DynamicDebuff<D> type = (DynamicDebuff<D>) ModRegistries.DEBUFFS.getValue(location);
+        Codec<D> codec = type.getDataCodec();
+        DataResult<INBT> encodeResult = codec.encodeStart(NBTDynamicOps.INSTANCE, data);
+        CompoundNBT nbt = encodeResult.result()
+                .map(t -> (CompoundNBT) t)
+                .orElse(new CompoundNBT());
+        buffer.writeNbt(nbt);
+    }
+
+    private Map<ResourceLocation, Object> decodeDebuffData(PacketBuffer buffer) {
+        Map<ResourceLocation, Object> map = new HashMap<>();
+        int count = buffer.readInt();
+        for (int i = 0; i < count; i++) {
+            ResourceLocation location = buffer.readResourceLocation();
+            CompoundNBT nbt = buffer.readNbt();
+            Object data = readDebuffData(location, nbt);
+            map.put(location, data);
+        }
+        return map;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <D> D readDebuffData(ResourceLocation location, CompoundNBT nbt) {
+        DynamicDebuff<D> debuff = (DynamicDebuff<D>) ModRegistries.DEBUFFS.getValue(location);
+        Codec<D> codec = debuff.getDataCodec();
+        DataResult<D> result = codec.parse(NBTDynamicOps.INSTANCE, nbt);
+        return result.result().orElseThrow(IllegalStateException::new);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <D> void handleDebuffData(ResourceLocation location, D data) {
+        DynamicDebuff<D> debuff = (DynamicDebuff<D>) ModRegistries.DEBUFFS.getValue(location);
+        debuff.onDataLoaded(data);
     }
 
     private static boolean filterAndLogInvalid(SkillType<?> type) {

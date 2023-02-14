@@ -12,18 +12,25 @@ import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public final class DebuffDataManager extends JsonReloadListener {
 
     private static final Gson GSON = new Gson();
+    private final Map<ResourceLocation, Object> debuffData = new HashMap<>();
 
     public DebuffDataManager() {
         super(GSON, "debuff");
     }
 
+    public Map<ResourceLocation, Object> getDebuffData() {
+        return debuffData;
+    }
+
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> data, IResourceManager manager, IProfiler profiler) {
+        debuffData.clear();
         for (DebuffType<?> type : ModRegistries.DEBUFFS) {
             if (type instanceof DynamicDebuff<?>) {
                 loadDebuffData(data, type);
@@ -44,5 +51,6 @@ public final class DebuffDataManager extends JsonReloadListener {
         DataResult<S> dataResult = dataCodec.parse(JsonOps.INSTANCE, element);
         S dataSource = dataResult.resultOrPartial(GunsRPG.log::error).orElseThrow(() -> new IllegalStateException("Invalid data received for " + identifier + " debuff"));
         dynDebuff.onDataLoaded(dataSource);
+        debuffData.put(identifier, dataSource);
     }
 }

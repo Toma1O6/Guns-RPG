@@ -18,6 +18,7 @@ public class StagedDebuff implements IStagedDebuff, ProgressingDebuff {
     private int ticksSinceAdded;
     private int ticksSinceProgressed;
     private int ticksSinceHealed;
+    private boolean frozen;
 
     public StagedDebuff(DataDrivenDebuffType<?> type) {
         this.type = type;

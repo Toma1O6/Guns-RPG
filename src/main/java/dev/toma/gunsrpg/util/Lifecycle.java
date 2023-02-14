@@ -80,6 +80,10 @@ public final class Lifecycle {
         return perkManager;
     }
 
+    public DebuffDataManager getDebuffDataManager() {
+        return debuffDataManager;
+    }
+
     public QuestSystem quests() {
         return questSystem;
     }
