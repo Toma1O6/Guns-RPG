@@ -35,7 +35,10 @@ public final class SkillsConfig {
     @Configurable.Comment("Mobs listed here cannot be insta-killed")
     @Configurable.ValueUpdateCallback(method = "onSkullCrusherBlacklistUpdate")
     @Configurable.Gui.CharacterLimit(64)
-    public String[] skullCrusherIgnoredMobs = { "gunsrpg:bloodmoon_golem" };
+    public String[] skullCrusherIgnoredMobs = {
+            "gunsrpg:bloodmoon_golem",
+            "gunsrpg:zombie_nightmare"
+    };
 
     public boolean isInstantKillAllowed(EntityType<?> type) {
         return !instantKillBlackList.contains(type);
