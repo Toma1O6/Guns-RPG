@@ -125,7 +125,7 @@ public final class WorldConfiguration {
 
     @Configurable
     @Configurable.Comment("Zombie knight spawn configuration")
-    public DimensionalMobSpawnConfig zombieKnightSpawn = new DimensionalMobSpawnConfig(8, 12, 1);
+    public DimensionalMobSpawnConfig zombieKnightSpawn = new DimensionalMobSpawnConfig(5, 12, 1);
 
     @Configurable
     @Configurable.Comment({"Rocket angel spawn configuration", "Note: Overworld spawn is active only during bloodmoon"})
@@ -133,5 +133,5 @@ public final class WorldConfiguration {
 
     @Configurable
     @Configurable.Comment("Zombie nightmare spawn configuration")
-    public DimensionalMobSpawnConfig zombieNightmareSpawn = new DimensionalMobSpawnConfig(1, 0, 0);
+    public DimensionalMobSpawnConfig zombieNightmareSpawn = new DimensionalMobSpawnConfig(3, 0, 0);
 }
