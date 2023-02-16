@@ -138,7 +138,7 @@ public class ModKeybinds {
             AnimationEngine engine = AnimationEngine.get();
             IAnimationPipeline pipeline = engine.pipeline();
             IAttributeProvider attributeProvider = data.getAttributes();
-            if (stack.getItem() instanceof GunItem && !player.isSprinting() && ShootingManager.isShootingReady()) {
+            if (stack.getItem() instanceof GunItem && ShootingManager.isShootingReady()) {
                 GunItem gun = (GunItem) stack.getItem();
                 if (gun.isJammed(stack)) return;
                 if (info.isReloading()) {
