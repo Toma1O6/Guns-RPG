@@ -42,7 +42,7 @@ public class ModFoodItem extends BaseItem {
     }
 
     public ModFoodItem heal(int amount) {
-        return this.heal(amount, true);
+        return this.heal(amount, false);
     }
 
     public ModFoodItem addCustomBuff(IFoodBuff foodBuff) {
