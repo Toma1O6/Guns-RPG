@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item;
 import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.common.container.GenericStorageContainer;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import dev.toma.gunsrpg.util.math.IDimensions;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -21,7 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class StorageItem extends BaseItem {
+public class StorageItem extends BaseItem implements ItemLocator.SaveInventoryProvider<IInventory> {
 
     private final IDimensions dimensions;
     private final IInputFilter inputFilter;
@@ -34,7 +35,24 @@ public class StorageItem extends BaseItem {
         this.containerProvider = containerProvider;
     }
 
-    public IInventory getInventory(ItemStack stack, Runnable callback) {
+    @Override
+    public ItemLocator.InventoryHolder<IInventory> getInventoryHolder(ItemStack stack) {
+        InventorySaveCallback callback = inv -> saveInventoryContents(stack, inv);
+        IInventory inventory = this.getInventory(stack, callback);
+        return ItemLocator.InventoryProvider.vanilla(inventory, stack);
+    }
+
+    @Override
+    public void insertEditedItem(IInventory inventory, int slot, ItemStack stack) {
+        inventory.setItem(slot, stack.copy());
+    }
+
+    @Override
+    public void saveInventory(IInventory inventory, ItemStack heldItem) {
+        saveInventoryContents(heldItem, inventory);
+    }
+
+    public IInventory getInventory(ItemStack stack, InventorySaveCallback callback) {
         CompoundNBT nbt = stack.getTag();
         if (nbt == null)
             nbt = new CompoundNBT();
@@ -78,7 +96,7 @@ public class StorageItem extends BaseItem {
         boolean isValidInput(ItemStack stack);
     }
 
-    public static IInventory createInventoryFromData(ListNBT items, int requiredSize, Runnable callback) {
+    public static IInventory createInventoryFromData(ListNBT items, int requiredSize, InventorySaveCallback callback) {
         GenericStorageContainer.SavingInventory inventory = new GenericStorageContainer.SavingInventory(requiredSize, callback);
         for (int i = 0; i < items.size(); i++) {
             CompoundNBT data = items.getCompound(i);
@@ -101,5 +119,10 @@ public class StorageItem extends BaseItem {
             list.add(data);
         }
         stack.getOrCreateTag().put("Items", list);
+    }
+
+    @FunctionalInterface
+    public interface InventorySaveCallback {
+        void onSave(IInventory inventory);
     }
 }

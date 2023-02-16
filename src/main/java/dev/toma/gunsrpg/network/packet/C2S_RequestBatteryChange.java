@@ -22,11 +22,13 @@ public class C2S_RequestBatteryChange extends AbstractHandlePacket<C2S_RequestBa
         ServerPlayerEntity player = context.getSender();
         ItemStack held = player.getMainHandItem();
         if (held.getItem() == ModItems.STASH_DETECTOR) {
-            ItemStack battery = ItemLocator.findFirst(player.inventory, StashDetectorItem::isValidBatterySource);
-            if (held.getDamageValue() > 0 && !battery.isEmpty()) {
-                held.setDamageValue(0);
-                battery.shrink(1);
-            }
+            ItemLocator.consume(player.inventory, StashDetectorItem::isValidBatterySource, ctx -> {
+                ItemStack battery = ctx.getCurrectStack();
+                if (held.getDamageValue() > 0 && !battery.isEmpty()) {
+                    held.setDamageValue(0);
+                    battery.shrink(1);
+                }
+            });
         }
     }
 }

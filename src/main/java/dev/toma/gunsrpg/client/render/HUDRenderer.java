@@ -198,7 +198,7 @@ public final class HUDRenderer {
             }
         } else if (stack.getItem() == ModItems.STASH_DETECTOR) {
             Minecraft mc = Minecraft.getInstance();
-            int batteryCount = ItemLocator.countItems(player.inventory, StashDetectorItem::isValidBatterySource);
+            int batteryCount = ItemLocator.sum(player.inventory, StashDetectorItem::isValidBatterySource);
             String text = String.valueOf(batteryCount);
             barWidth = font.width(text);
             x = windowWidth - barWidth - 34;
@@ -210,7 +210,7 @@ public final class HUDRenderer {
 
     private String getAmmoString(GunItem item, ItemStack stack, IInventory inventory, IAmmoProvider provider, boolean jammed, boolean broken) {
         int loaded = item.getAmmo(stack);
-        return jammed ? "JAMMED" : broken ? "DESTROYED" : loaded + " / " + ItemLocator.countItems(inventory, ItemLocator.compatible(provider));
+        return jammed ? "JAMMED" : broken ? "DESTROYED" : loaded + " / " + ItemLocator.sum(inventory, ItemLocator.filterByAmmoTypeAndMaterial(provider));
     }
 
     private void renderProgressionBar(IKillData data, MatrixStack matrixStack, FontRenderer font, int left, int top, int width, int bottom, int colorPrimary, int colorSecondary) {

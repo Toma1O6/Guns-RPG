@@ -31,7 +31,7 @@ public class SlingItem extends BaseItem {
     @Override
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        boolean hasAmmo = player.isCreative() || ItemLocator.hasItem(player.inventory, AmmoRegistry::isValidAmmo);
+        boolean hasAmmo = player.isCreative() || ItemLocator.contains(player.inventory, AmmoRegistry::isValidAmmo);
         if (hasAmmo) {
             player.startUsingItem(hand);
             return ActionResult.consume(stack);
@@ -60,38 +60,40 @@ public class SlingItem extends BaseItem {
             return;
         }
         PlayerEntity player = (PlayerEntity) entity;
-        ItemStack ammoStack = ItemLocator.findFirst(player.inventory, AmmoRegistry::isValidAmmo);
-        boolean hasAmmo = !ammoStack.isEmpty() || player.isCreative();
+        ItemLocator.consume(player.inventory, AmmoRegistry::isValidAmmo, ctx -> {
+            ItemStack ammoStack = ctx.getCurrectStack();
+            boolean hasAmmo = !ammoStack.isEmpty() || player.isCreative();
 
-        int pullTime = getUseDuration(stack) - timeLeft;
-        if (pullTime < 0 || !hasAmmo) {
-            return;
-        }
-
-        float power = getPowerForTime(pullTime);
-        if (power < 0.75) {
-            return;
-        }
-
-        if (!world.isClientSide) {
-            Pebble pebble = new Pebble(ModEntities.PEBBLE.get(), world, entity);
-            int damage = AmmoRegistry.getDamage(ammoStack);
-            if (damage == 0 && player.isCreative()) {
-                damage = 4;
+            int pullTime = getUseDuration(stack) - timeLeft;
+            if (pullTime < 0 || !hasAmmo) {
+                return;
             }
-            pebble.setup(damage * power, power * 1.75F, 0);
-            pebble.fire(player.xRot, player.yRot, 0.5F);
-            pebble.setAmmoSource(ammoStack.isEmpty() ? new ItemStack(ModItems.SMALL_STONE) : ammoStack.copy());
-            world.addFreshEntity(pebble);
+
+            float power = getPowerForTime(pullTime);
+            if (power < 0.75) {
+                return;
+            }
+
+            if (!world.isClientSide) {
+                Pebble pebble = new Pebble(ModEntities.PEBBLE.get(), world, entity);
+                int damage = AmmoRegistry.getDamage(ammoStack);
+                if (damage == 0 && player.isCreative()) {
+                    damage = 4;
+                }
+                pebble.setup(damage * power, power * 1.75F, 0);
+                pebble.fire(player.xRot, player.yRot, 0.5F);
+                pebble.setAmmoSource(ammoStack.isEmpty() ? new ItemStack(ModItems.SMALL_STONE) : ammoStack.copy());
+                world.addFreshEntity(pebble);
+                if (!player.isCreative()) {
+                    stack.hurtAndBreak(1, player, playerArg -> playerArg.broadcastBreakEvent(player.getUsedItemHand()));
+                }
+            }
+
+            world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F) + power * 0.5F);
             if (!player.isCreative()) {
-                stack.hurtAndBreak(1, player, playerArg -> playerArg.broadcastBreakEvent(player.getUsedItemHand()));
+                ammoStack.shrink(1);
             }
-        }
-
-        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F) + power * 0.5F);
-        if (!player.isCreative()) {
-            ammoStack.shrink(1);
-        }
+        });
     }
 
     @Override

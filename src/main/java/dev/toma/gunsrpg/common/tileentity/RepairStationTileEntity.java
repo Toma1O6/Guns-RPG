@@ -70,6 +70,6 @@ public class RepairStationTileEntity extends InventoryTileEntity {
     }
 
     private ItemStack getRepairKit() {
-        return new ItemLocator<>().locateFirst(itemHandler, new SlotInventoryIterator<>(STORAGE, itemHandler, IItemHandler::getStackInSlot), ItemLocator.notEmptyNorDestroyed());
+        return ItemLocator.INSTANCE.findFirst(itemHandler, new SlotInventoryIterator<>(STORAGE, IItemHandler::getStackInSlot), ItemLocator.notDestroyedItem());
     }
 }

@@ -4,12 +4,14 @@ import dev.toma.gunsrpg.common.skills.core.SkillCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
 import dev.toma.gunsrpg.util.function.ISplitter;
+import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -253,6 +255,18 @@ public class ModUtils {
             slots[i] = serializedSlot;
         }
         return slots;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <I> void saveInventoryFromContext(ItemLocator.InventoryContext context) {
+        Object object = context.getInventory();
+        ItemStack parent = context.getParent();
+        if (parent.getItem() instanceof ItemLocator.SaveInventoryProvider) {
+            ItemLocator.SaveInventoryProvider<I> provider = (ItemLocator.SaveInventoryProvider<I>) parent.getItem();
+            I inventory = (I) object;
+            provider.insertEditedItem(inventory, context.getCurrentSlotIndex(), context.getCurrectStack());
+            provider.saveInventory(inventory, context.getParent());
+        }
     }
 
     private static Map<SkillCategory, List<SkillType<?>>> splitSkillsIntoCategories(Iterable<SkillType<?>> iterable) {

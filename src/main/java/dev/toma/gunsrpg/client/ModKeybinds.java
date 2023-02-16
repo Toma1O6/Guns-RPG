@@ -163,8 +163,8 @@ public class ModKeybinds {
                             return;
                         }
                         PlayerInventory inventory = player.inventory;
-                        ILocatorPredicate<ItemStack> typeCheck = ItemLocator.typeAndMaterial(ammoType, material);
-                        if (ItemLocator.hasItem(inventory, typeCheck)) {
+                        ILocatorPredicate<ItemStack> typeCheck = ItemLocator.filterByAmmoTypeAndMaterial(ammoType, material);
+                        if (ItemLocator.contains(inventory, typeCheck)) {
                             int reloadTime = gun.getReloadTime(attributeProvider, stack);
                             info.startReloading(player, gun, stack, inventory.selected);
                             NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(true, reloadTime));

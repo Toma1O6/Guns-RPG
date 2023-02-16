@@ -27,7 +27,7 @@ public final class ReloadManagers {
         int maxAmmo = optional.isPresent() ? item.getMaxAmmo(optional.orElse(null).getAttributes()) : 0;
         int actAmmo = item.getAmmo(stack);
         int remAmmo = maxAmmo - actAmmo;
-        int invAmmo = player.isCreative() ? Integer.MAX_VALUE : ItemLocator.countItems(player.inventory, ItemLocator.typeAndMaterial(type, material));
+        int invAmmo = player.isCreative() ? Integer.MAX_VALUE : ItemLocator.sum(player.inventory, ItemLocator.filterByAmmoTypeAndMaterial(type, material));
         int target = Math.min(remAmmo, invAmmo);
         return new StagedReloadManager(preparationTicks, target, bulletLoadPath);
     }

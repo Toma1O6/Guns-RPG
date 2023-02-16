@@ -44,7 +44,7 @@ public abstract class GenericStorageContainer extends AbstractContainer {
     @Override
     public void removed(PlayerEntity player) {
         super.removed(player);
-        this.onChangedCallback();
+        this.onChangedCallback(inventory);
     }
 
     @Override
@@ -73,7 +73,7 @@ public abstract class GenericStorageContainer extends AbstractContainer {
         return player.isAlive() && stack == player.getMainHandItem();
     }
 
-    private void onChangedCallback() {
+    private void onChangedCallback(IInventory inventory) {
         if (inventory != null)
             StorageItem.saveInventoryContents(stack, inventory);
     }
@@ -106,9 +106,9 @@ public abstract class GenericStorageContainer extends AbstractContainer {
 
     public static class SavingInventory extends Inventory {
 
-        private final Runnable callback;
+        private final StorageItem.InventorySaveCallback callback;
 
-        public SavingInventory(int size, Runnable callback) {
+        public SavingInventory(int size, StorageItem.InventorySaveCallback callback) {
             super(size);
             this.callback = callback;
         }
@@ -116,7 +116,7 @@ public abstract class GenericStorageContainer extends AbstractContainer {
         @Override
         public void setChanged() {
             super.setChanged();
-            callback.run();
+            callback.onSave(this);
         }
     }
 }

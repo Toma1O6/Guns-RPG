@@ -80,11 +80,13 @@ public class StagedReloader implements IReloader {
         if (player.isCreative()) {
             reloadingGun.setAmmoCount(stack, Math.min(reloadingGun.getAmmo(stack) + 1, max));
         } else {
-            ItemStack ammo = ItemLocator.findFirst(player.inventory, ItemLocator.typeAndMaterial(type, material));
-            if (!ammo.isEmpty()) {
-                ammo.shrink(1);
-                reloadingGun.setAmmoCount(stack, Math.min(reloadingGun.getAmmo(stack) + 1, max));
-            }
+            ItemLocator.consume(player.inventory, ItemLocator.filterByAmmoTypeAndMaterial(type, material), ctx -> {
+                ItemStack ammo = ctx.getCurrectStack();
+                if (!ammo.isEmpty()) {
+                    ammo.shrink(1);
+                    reloadingGun.setAmmoCount(stack, Math.min(reloadingGun.getAmmo(stack) + 1, max));
+                }
+            });
         }
     }
 

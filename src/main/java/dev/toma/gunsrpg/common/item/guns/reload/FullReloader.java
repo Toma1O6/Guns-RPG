@@ -83,20 +83,23 @@ public class FullReloader implements IReloader {
         IAmmoMaterial material = gun.getMaterialFromNBT(stack);
         PlayerInventory inventory = player.inventory;
         if (!player.isCreative()) {
-            List<ItemStack> stacks = ItemLocator.findAll(inventory, ItemLocator.typeAndMaterial(ammoType, material)).collect(Collectors.toList());
-            for (ItemStack stack : stacks) {
-                int count = stack.getCount();
-                int load = Math.min(toLoad, count);
-                toLoad -= load;
-                stack.shrink(load);
-                if (toLoad <= 0) {
+            while (true) {
+                boolean consumed = ItemLocator.consume(inventory, ItemLocator.filterByAmmoTypeAndMaterial(ammoType, material), ctx -> {
+                    int ammo = gun.getAmmo(stack);
+                    int remaining = weaponLimit - ammo;
+                    ItemStack stack = ctx.getCurrectStack();
+                    int count = stack.getCount();
+                    int load = Math.min(remaining, count);
+                    stack.shrink(load);
+                    gun.setAmmoCount(player.getMainHandItem(), ammo + load);
+                });
+                if (!consumed || weaponLimit - gun.getAmmo(stack) <= 0) {
                     break;
                 }
             }
         } else {
-            toLoad = 0;
+            gun.setAmmoCount(player.getMainHandItem(), weaponLimit);
         }
-        gun.setAmmoCount(player.getMainHandItem(), weaponLimit - toLoad);
         data.getHandState().freeHands();
     }
 

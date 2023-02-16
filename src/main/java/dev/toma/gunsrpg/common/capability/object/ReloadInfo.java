@@ -43,7 +43,7 @@ public class ReloadInfo implements IReloadInfo {
     public void startReloading(PlayerEntity player, GunItem gun, ItemStack stack, int slot) {
         AmmoType ammoType = gun.getAmmoType();
         IAmmoMaterial material = gun.getMaterialFromNBT(stack);
-        if (material != null && (player.isCreative() || !ItemLocator.findFirst(player.inventory, ItemLocator.typeAndMaterial(ammoType, material)).isEmpty())) {
+        if (material != null && (player.isCreative() || ItemLocator.contains(player.inventory, ItemLocator.filterByAmmoTypeAndMaterial(ammoType, material)))) {
             activeReloadManager = gun.getReloadManager(player, attrRef.getProviderReference()).createReloadHandler();
             activeReloadManager.initiateReload(player, gun, stack);
             reloadingSlot = slot;
