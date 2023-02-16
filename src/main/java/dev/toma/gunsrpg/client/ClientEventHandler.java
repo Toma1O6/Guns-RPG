@@ -26,7 +26,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.ShieldItem;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -89,7 +89,7 @@ public class ClientEventHandler {
     public static void renderHandEvent(RenderHandEvent event) {
         ClientPlayerEntity player = Minecraft.getInstance().player;
         if (event.getHand() == Hand.OFF_HAND) {
-            if (event.getItemStack().getItem() == Items.SHIELD && player.getMainHandItem().getItem() instanceof GunItem) {
+            if (event.getItemStack().getItem() instanceof ShieldItem && player.getMainHandItem().getItem() instanceof GunItem) {
                 event.setCanceled(true);
             }
         }
