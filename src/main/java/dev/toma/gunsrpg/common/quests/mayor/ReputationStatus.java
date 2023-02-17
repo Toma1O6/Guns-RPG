@@ -9,10 +9,10 @@ import java.util.Locale;
 public enum ReputationStatus {
 
     STRANGER(0.0F, TextFormatting.RED),
-    NEUTRAL(5.0F, TextFormatting.YELLOW),
+    NEUTRAL(3.0F, TextFormatting.YELLOW),
     FRIENDLY(10.0F, TextFormatting.GREEN),
-    LOYAL(20.0F, TextFormatting.BLUE),
-    HERO(40.0F, TextFormatting.DARK_PURPLE);
+    LOYAL(25.0F, TextFormatting.BLUE),
+    HERO(50.0F, TextFormatting.DARK_PURPLE);
 
     private final int tierLevel;
     private final float sinceReputation;
