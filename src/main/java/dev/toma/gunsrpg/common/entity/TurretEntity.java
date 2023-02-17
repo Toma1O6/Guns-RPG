@@ -13,6 +13,7 @@ import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.ammo.IReactiveMaterial;
+import dev.toma.gunsrpg.common.item.guns.util.IEntityTrackingGun;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.S2C_SendEntityData;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -608,6 +609,7 @@ public final class TurretEntity extends Entity implements SynchronizableEntity {
             IAmmoMaterial material = provider.getMaterial();
             if (target != null) {
                 rocket.setProperty(Properties.ENTITY_ID, target.getId());
+                rocket.setProperty(Properties.GUIDENANCE, IEntityTrackingGun.GuidenanceProperties.TURRET);
             }
             if (material instanceof IReactiveMaterial) {
                 IReactiveMaterial reactiveMaterial = (IReactiveMaterial) material;

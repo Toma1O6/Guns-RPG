@@ -58,6 +58,11 @@ public class GrenadeLauncherItem extends AbstractExplosiveLauncher {
     }
 
     @Override
+    protected SoundEvent getEntityShootSound(LivingEntity entity) {
+        return ModSounds.GL_SHOT1;
+    }
+
+    @Override
     public int getMaxAmmo(IAttributeProvider provider) {
         return provider.getAttribute(Attribs.GL_MAG_CAPACITY).intValue();
     }

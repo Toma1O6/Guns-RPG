@@ -3,7 +3,10 @@ package dev.toma.gunsrpg.ai;
 import dev.toma.gunsrpg.common.IShootProps;
 import dev.toma.gunsrpg.common.entity.ZombieGunnerEntity;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
+import dev.toma.gunsrpg.common.item.guns.util.IEntityTrackingGun;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.properties.Properties;
+import dev.toma.gunsrpg.util.properties.PropertyContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
@@ -21,7 +24,17 @@ import java.util.EnumSet;
 
 public class GunAttackGoal extends Goal {
 
-    protected static final int[] ATTACK_RANGE_TABLE = {10, 15, 20, 25, 10, 25};
+    protected static final int[] ATTACK_RANGE_TABLE = {
+            10, // Pistol
+            15, // SMG
+            20, // AR
+            25, // DMR
+            25, // SR
+            10, // SG
+            10, // Crossbow
+            15, // Grenade launcher
+            25  // Rocket launcher
+    };
     protected final ZombieGunnerEntity entity;
     private final IShootProps props;
     private IShootingHandler handler;
@@ -123,6 +136,20 @@ public class GunAttackGoal extends Goal {
         @Override
         public float getInaccuracy() {
             return entity.getInaccuracy();
+        }
+
+        @Override
+        public PropertyContext getExtraData() {
+            ItemStack stack = entity.getMainHandItem();
+            LivingEntity target = entity.getTarget();
+            PropertyContext context = PropertyContext.create();
+            if (stack.getItem() instanceof IEntityTrackingGun) {
+                context.setProperty(Properties.FUELED, true);
+                context.setProperty(Properties.ENTITY_ID, target.getId());
+                context.setProperty(Properties.GUIDENANCE, target.isOnGround() ? IEntityTrackingGun.GuidenanceProperties.GUNNER_GROUND : IEntityTrackingGun.GuidenanceProperties.GUNNER_AIR);
+                return context;
+            }
+            return PropertyContext.empty();
         }
     }
 

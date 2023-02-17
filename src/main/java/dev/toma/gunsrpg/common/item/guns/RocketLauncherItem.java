@@ -32,6 +32,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -100,13 +101,13 @@ public class RocketLauncherItem extends AbstractExplosiveLauncher implements IEn
     }
 
     @Override
-    public int getRgb(boolean locked) {
-        return locked ? 0xFF0000 : 0xFFFF00;
+    protected SoundEvent getShootSound(PlayerEntity entity) {
+        return ModSounds.RL_SHOT;
     }
 
     @Override
-    protected SoundEvent getShootSound(PlayerEntity entity) {
-        return ModSounds.RL_SHOT;
+    protected SoundEvent getEntityShootSound(LivingEntity entity) {
+        return SoundEvents.FIREWORK_ROCKET_LAUNCH;
     }
 
     @Override

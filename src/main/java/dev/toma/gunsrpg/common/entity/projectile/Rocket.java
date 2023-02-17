@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.entity.projectile;
 
+import dev.toma.gunsrpg.common.item.guns.util.IEntityTrackingGun;
 import dev.toma.gunsrpg.util.object.LazyLoader;
 import dev.toma.gunsrpg.util.properties.Properties;
 import net.minecraft.entity.Entity;
@@ -99,7 +100,8 @@ public class Rocket extends AbstractExplosive {
                     Vector3d targetPos = TrackedTarget.atCenterOfEntity(target.entity);
                     double distance1 = currentPos.distanceToSqr(targetPos);
                     double distance2 = nextPos.distanceToSqr(targetPos);
-                    if (distance2 > distance1 && distance1 <= 16.0) {
+                    IEntityTrackingGun.GuidenanceProperties properties = getProperty(Properties.GUIDENANCE);
+                    if (distance2 > distance1 && distance1 <= properties.getMaxProximityDistanceSqr()) {
                         this.onCollided(currentPos);
                     }
                 }
@@ -134,12 +136,13 @@ public class Rocket extends AbstractExplosive {
             Rocket rocket = Rocket.this;
             Vector3d position = target.getTrackedPosition();
             double angleDegrees = getAngleTowardsTarget(rocket.getDeltaMovement(), position.subtract(rocket.position()));
-            boolean hasGuidance = angleDegrees < 90.0;
+            IEntityTrackingGun.GuidenanceProperties properties = rocket.getProperty(Properties.GUIDENANCE);
+            boolean hasGuidance = angleDegrees <= properties.getMaxGuidenanceAngle();
             float x = rocket.xRot;
             float y = rocket.yRot;
             if (hasGuidance) {
-                rocket.xRot = this.rotateTowards(x, this.getVerticalDifference(position), 8.0F);
-                rocket.yRot = this.rotateTowards(y, this.getHorizontalDifference(position), 8.0F);
+                rocket.xRot = this.rotateTowards(x, this.getVerticalDifference(position), properties.getMaxPitch());
+                rocket.yRot = this.rotateTowards(y, this.getHorizontalDifference(position), properties.getMaxYaw());
             }
             float f = rocket.velocity;
             if (!rocket.getProperty(Properties.FUELED) && tickCount > 15) {

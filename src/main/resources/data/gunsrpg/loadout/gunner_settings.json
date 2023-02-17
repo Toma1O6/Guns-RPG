@@ -906,6 +906,33 @@
         "inaccuracy": 1.2,
         "damageMultiplier": 0.4
       }
+    },
+    {
+      "weight": 70,
+      "gun": "gunsrpg:rocket_launcher",
+      "magazine": 1,
+      "reloadTime": 5,
+      "firerate": 80,
+      "ammo": "gunsrpg:rocket",
+      "capColor": "F6FF7C"
+    },
+    {
+      "weight": 40,
+      "gun": "gunsrpg:rocket_launcher",
+      "magazine": 1,
+      "reloadTime": 5,
+      "firerate": 80,
+      "ammo": "gunsrpg:he_rocket",
+      "capColor": "00AAFF"
+    },
+    {
+      "weight": 10,
+      "gun": "gunsrpg:rocket_launcher",
+      "magazine": 1,
+      "reloadTime": 5,
+      "firerate": 80,
+      "ammo": "gunsrpg:demolition",
+      "capColor": "1F1400"
     }
   ]
 }
