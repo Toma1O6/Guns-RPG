@@ -49,7 +49,7 @@ public class VssItem extends GunItem {
                     .define(AmmoMaterials.WOOD)
                     .define(AmmoMaterials.STONE, 2)
                     .define(AmmoMaterials.IRON, 4)
-                    .define(AmmoMaterials.LAPIS, 4)
+                    .define(AmmoMaterials.LAPIS, 3)
                     .define(AmmoMaterials.GOLD, 6)
                     .define(AmmoMaterials.REDSTONE, 5)
                     .define(AmmoMaterials.EMERALD, 8)
