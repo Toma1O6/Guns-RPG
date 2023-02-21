@@ -908,7 +908,7 @@
       }
     },
     {
-      "weight": 70,
+      "weight": 105,
       "gun": "gunsrpg:rocket_launcher",
       "magazine": 1,
       "reloadTime": 5,
@@ -917,7 +917,7 @@
       "capColor": "F6FF7C"
     },
     {
-      "weight": 40,
+      "weight": 60,
       "gun": "gunsrpg:rocket_launcher",
       "magazine": 1,
       "reloadTime": 5,
@@ -926,7 +926,7 @@
       "capColor": "00AAFF"
     },
     {
-      "weight": 10,
+      "weight": 15,
       "gun": "gunsrpg:rocket_launcher",
       "magazine": 1,
       "reloadTime": 5,
