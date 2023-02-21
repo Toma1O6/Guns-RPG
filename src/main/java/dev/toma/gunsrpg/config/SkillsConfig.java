@@ -8,8 +8,11 @@ import dev.toma.gunsrpg.common.init.ModRegistries;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -40,24 +43,20 @@ public final class SkillsConfig {
             "gunsrpg:zombie_nightmare"
     };
 
+    private final Lazy<Set<EntityType<?>>> instantKillBlackList = Lazy.of(() -> {
+        Set<EntityType<?>> set = new HashSet<>();
+        loadSkullCrusherBlacklist(set, skullCrusherIgnoredMobs);
+        return set;
+    });
+
     public boolean isInstantKillAllowed(EntityType<?> type) {
-        return !instantKillBlackList.contains(type);
+        return !instantKillBlackList.get().contains(type);
     }
 
-    private final Set<EntityType<?>> instantKillBlackList = new LinkedHashSet<>();
-
     private void onSkullCrusherBlacklistUpdate(String[] inputs, IValidationHandler handler) {
-        instantKillBlackList.clear();
-        String lastInvalidId = null;
-        for (String string : inputs) {
-            ResourceLocation id = new ResourceLocation(string);
-            if (ForgeRegistries.ENTITIES.containsKey(id)) {
-                instantKillBlackList.add(ForgeRegistries.ENTITIES.getValue(id));
-            } else {
-                lastInvalidId = string;
-                GunsRPG.log.warn("Found unknown entity ID '{}' in config under 'skullCrusherIgnoredMobs' field", string);
-            }
-        }
+        Set<EntityType<?>> blacklist = instantKillBlackList.get();
+        blacklist.clear();
+        String lastInvalidId = loadSkullCrusherBlacklist(blacklist, inputs);
         if (lastInvalidId != null) {
             handler.setValidationResult(ValidationResult.warn(new TranslationTextComponent("text.config.validation.invalid_id.entity", lastInvalidId)));
         }
@@ -71,5 +70,19 @@ public final class SkillsConfig {
                 break;
             }
         }
+    }
+
+    private String loadSkullCrusherBlacklist(Collection<EntityType<?>> collection, String[] values) {
+        String lastInvalidId = null;
+        for (String string : values) {
+            ResourceLocation id = new ResourceLocation(string);
+            if (ForgeRegistries.ENTITIES.containsKey(id)) {
+                collection.add(ForgeRegistries.ENTITIES.getValue(id));
+            } else {
+                lastInvalidId = string;
+                GunsRPG.log.warn("Found unknown entity ID '{}' in config under 'skullCrusherIgnoredMobs' field", string);
+            }
+        }
+        return lastInvalidId;
     }
 }
