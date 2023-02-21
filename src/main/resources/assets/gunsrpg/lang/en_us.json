@@ -1241,6 +1241,7 @@
   "text.config.validation.ore_gen.min_height": "Min height of value %s is bigger or equal to max height %s. This might cause crash of mod",
   "text.config.validation.ore_gen.max_height": "Max height of value %s is smaller or equal to min height %s. This might cause crash of mod",
   "text.config.validation.error.format.resourcelocation": "'%s' is not valid ID format. IDs must follow 'namespace:path' pattern - \\%s\\",
+  "text.config.validation.count_trap_kills_warning": "Keeping this option enabled may fail some types of quests",
 
   "config.screen.gunsrpg": "Guns RPG",
   "config.screen.gunsrpg-client": "Client",
@@ -1303,6 +1304,7 @@
   "config.gunsrpg.option.wellFedTriggerValue": "Well Fed Trigger Value",
   "config.gunsrpg.option.boundSkills": "Bound Skills",
   "config.gunsrpg.option.skullCrusherIgnoredMobs": "Skull Crusher - Ignored Mobs",
+  "config.gunsrpg.option.countTrapKills": "Count Trap Kills",
 
   "config.gunsrpg.option.disableWeaponDurability": "Disable Weapon Durability",
   "config.gunsrpg.option.m1911": "M1911",

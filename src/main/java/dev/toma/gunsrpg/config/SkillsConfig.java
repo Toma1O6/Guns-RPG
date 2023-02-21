@@ -43,6 +43,11 @@ public final class SkillsConfig {
             "gunsrpg:zombie_nightmare"
     };
 
+    @Configurable
+    @Configurable.ValueUpdateCallback(method = "onCountTrapKillsSettingChange")
+    @Configurable.Comment({"Kills by traps will be awarded to their owners", "BEWARE: This may fail some of your quests"})
+    public boolean countTrapKills = true;
+
     private final Lazy<Set<EntityType<?>>> instantKillBlackList = Lazy.of(() -> {
         Set<EntityType<?>> set = new HashSet<>();
         loadSkullCrusherBlacklist(set, skullCrusherIgnoredMobs);
@@ -69,6 +74,12 @@ public final class SkillsConfig {
                 handler.setValidationResult(ValidationResult.warn(new TranslationTextComponent("text.config.validation.invalid_id.skill", s)));
                 break;
             }
+        }
+    }
+
+    private void onCountTrapKillsSettingChange(boolean value, IValidationHandler handler) {
+        if (value) {
+            handler.setValidationResult(ValidationResult.warn(new TranslationTextComponent("text.config.validation.count_trap_kills_warning")));
         }
     }
 

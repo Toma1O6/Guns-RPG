@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.entity;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.common.container.TurretContainer;
@@ -100,6 +101,9 @@ public final class TurretEntity extends Entity implements SynchronizableEntity {
                         IAmmoProvider provider = (IAmmoProvider) ammo.getItem();
                         if (!level.isClientSide) {
                             AbstractProjectile projectile = turretType.shootHandler.createProjectile(this, ammo, provider);
+                            if (GunsRPG.config.skills.countTrapKills) {
+                                projectile.setOwner(this.getOwnerEntity());
+                            }
                             level.addFreshEntity(projectile);
                             ammo.shrink(1);
                             level.playSound(null, getX(), getY(), getZ(), turretType.shootSound, SoundCategory.NEUTRAL, turretType.shootSoundVolume, 1.0F);
@@ -280,6 +284,14 @@ public final class TurretEntity extends Entity implements SynchronizableEntity {
             this.owner = owner;
             this.addToWhitelist(owner);
         }
+    }
+
+    @Nullable
+    public Entity getOwnerEntity() {
+        if (this.owner == null) {
+            return null;
+        }
+        return level.getPlayerByUUID(this.owner);
     }
 
     public void addToWhitelist(UUID uuid) {
