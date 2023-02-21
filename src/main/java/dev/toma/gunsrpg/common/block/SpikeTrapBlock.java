@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.block;
 
 import dev.toma.gunsrpg.common.init.ModDamageSources;
+import dev.toma.gunsrpg.common.tileentity.TrapTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -14,6 +15,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -83,8 +85,12 @@ public class SpikeTrapBlock extends TrapBlock {
         }
 
         @Override
-        public boolean applyTrapEffects(World level, BlockPos pos, Entity entity) {
-            boolean hurt = entity.hurt(ModDamageSources.SPIKE_DAMAGE, damage);
+        public boolean applyTrapEffects(World level, BlockPos pos, Entity entity, @Nullable TrapTileEntity tileEntity, boolean countAsPlayerKill) {
+            Entity owner = null;
+            if (countAsPlayerKill && tileEntity != null) {
+                owner = tileEntity.getOwnerAsEntity();
+            }
+            boolean hurt = entity.hurt(ModDamageSources.spikes(owner), damage);
             if (hurt) {
                 action.accept(entity);
             }

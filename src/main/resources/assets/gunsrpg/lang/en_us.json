@@ -241,6 +241,7 @@
   "death.attack.bleeding": "%1$s has bled out",
   "death.attack.fracture": "%1$s has died from pain caused by fracture",
   "death.attack.spikes": "%1$s has fallen into spike trap",
+  "death.attack.spikes.owner": "%1$s has falled into spike trap placed by %2$s",
   "entity.gunsrpg.bullet": "Bullet",
   "entity.gunsrpg.airdrop": "Airdrop",
   "entity.gunsrpg.explosive_skeleton": "Grenadier",

@@ -1,13 +1,18 @@
 package dev.toma.gunsrpg.common.block;
 
+import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.common.tileentity.TrapTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathType;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -21,7 +26,9 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
+import java.util.UUID;
 
 public class TrapBlock extends BaseBlock {
 
@@ -100,19 +107,44 @@ public class TrapBlock extends BaseBlock {
         reaction.onHitByProjectile(world, result.getBlockPos(), entity);
     }
 
-    protected void onEntityCaught(World world, BlockPos pos, Entity victim) {
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
 
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return new TrapTileEntity();
+    }
+
+    @Override
+    public void setPlacedBy(World level, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
+        TileEntity tileEntity = level.getBlockEntity(pos);
+        if (entity != null && tileEntity instanceof TrapTileEntity) {
+            UUID owner = entity.getUUID();
+            ((TrapTileEntity) tileEntity).setOwner(owner);
+        }
+    }
+
+    protected void onEntityCaught(World world, BlockPos pos, Entity victim) {
     }
 
     private void applyTrapEffects(World world, BlockPos pos, Entity victim) {
-        if (reaction.applyTrapEffects(world, pos, victim)) {
+        TileEntity entity = world.getBlockEntity(pos);
+        TrapTileEntity trapTileEntity = null;
+        if (entity instanceof TrapTileEntity) {
+            trapTileEntity = (TrapTileEntity) entity;
+        }
+        boolean countAsPlayerKill = GunsRPG.config.skills.countTrapKills;
+        if (reaction.applyTrapEffects(world, pos, victim, trapTileEntity, countAsPlayerKill)) {
             onEntityCaught(world, pos, victim);
         }
     }
 
     public interface ITrapReaction {
 
-        boolean applyTrapEffects(World level, BlockPos pos, Entity entity);
+        boolean applyTrapEffects(World level, BlockPos pos, Entity entity, @Nullable TrapTileEntity tileEntity, boolean countAsPlayerKill);
 
         boolean requiresSpecialTool();
 
@@ -144,10 +176,14 @@ public class TrapBlock extends BaseBlock {
         }
 
         @Override
-        public boolean applyTrapEffects(World level, BlockPos pos, Entity entity) {
+        public boolean applyTrapEffects(World level, BlockPos pos, Entity entity, @Nullable TrapTileEntity tileEntity, boolean countAsPlayerKill) {
             if (!level.isClientSide) {
+                Entity owner = null;
+                if (countAsPlayerKill && tileEntity != null) {
+                    owner = tileEntity.getOwnerAsEntity();
+                }
                 level.destroyBlock(pos, false);
-                level.explode(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, explosionPower, explosionMode);
+                level.explode(owner, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, explosionPower, explosionMode);
             }
             return true;
         }
@@ -164,7 +200,13 @@ public class TrapBlock extends BaseBlock {
 
         @Override
         public void onHitByProjectile(World level, BlockPos pos, ProjectileEntity projectile) {
-            applyTrapEffects(level, pos, projectile);
+            TileEntity entity = level.getBlockEntity(pos);
+            TrapTileEntity trapTileEntity = null;
+            if (entity instanceof TrapTileEntity) {
+                trapTileEntity = (TrapTileEntity) entity;
+            }
+            boolean countAsPlayerKill = GunsRPG.config.skills.countTrapKills;
+            applyTrapEffects(level, pos, projectile, trapTileEntity, countAsPlayerKill);
         }
     }
 }
