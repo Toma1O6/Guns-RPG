@@ -1336,6 +1336,12 @@
   "config.gunsrpg.option.maxChance": "Max Chance",
   "config.gunsrpg.option.jamChanceTransformerFunction": "Jam Chance Transformer Function",
 
+  "config.gunsrpg.option.quests": "Quests",
+  "config.gunsrpg.option.reputationAwardPerTier": "Reputation award",
+  "config.gunsrpg.option.reputationLossPerTier": "Reputation loss",
+  "config.gunsrpg.option.questRefreshInterval": "Quest refresh interval",
+  "config.gunsrpg.option.disableQuestAreaInteractions": "Disable quest area interactions",
+
   "config.gunsrpg-client.option.developerMode": "Developer Mode",
   "config.gunsrpg-client.option.alwaysRenderReticles": "Always Render Reticles",
   "config.gunsrpg-client.option.shaderCompatibilityMode": "Shader Compatibility Mode",

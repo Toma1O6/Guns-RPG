@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
 import dev.toma.gunsrpg.common.quests.quest.area.IAreaQuest;
 import dev.toma.gunsrpg.common.quests.quest.area.QuestArea;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
+import dev.toma.gunsrpg.config.QuestConfig;
 import dev.toma.gunsrpg.util.properties.IPropertyHolder;
 import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.util.properties.PropertyContext;
@@ -152,6 +153,10 @@ public final class QuestEventHandler {
     }
 
     private static void cancelIfPlayerIsInQuestArea(PlayerInteractEvent event) {
+        boolean areaInteractionDisabled = GunsRPG.config.quests.disableQuestAreaInteractions;
+        if (areaInteractionDisabled) {
+            return;
+        }
         PlayerEntity player = event.getPlayer();
         BlockPos pos = event.getPos();
         World world = event.getWorld();

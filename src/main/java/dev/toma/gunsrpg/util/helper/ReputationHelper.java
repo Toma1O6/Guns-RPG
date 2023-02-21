@@ -18,15 +18,15 @@ public final class ReputationHelper {
 
     public static final float MIN_REPUTATION =  0.0F;
     public static final float MAX_REPUTATION = 50.0F;
-    public static final float COMPLETION_SCALE = 0.2F;
-    public static final float FAILURE_SCALE = -0.3F;
 
     public static void awardReputationForCompletedQuest(ITraderStatus status, Quest<?> quest) {
-        addReputation(status, quest, tier -> tier * COMPLETION_SCALE);
+        float reputationAward = GunsRPG.config.quests.reputationAwardPerTier;
+        addReputation(status, quest, tier -> tier * reputationAward);
     }
 
     public static void takeReputationForFailedQuest(ITraderStatus status, Quest<?> quest) {
-        addReputation(status, quest, tier -> tier * FAILURE_SCALE);
+        float reputationLoss = GunsRPG.config.quests.reputationLossPerTier;
+        addReputation(status, quest, tier -> tier * -reputationLoss);
     }
 
     public static float clampWithinReputationLimits(float in) {

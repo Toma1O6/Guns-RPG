@@ -25,4 +25,8 @@ public final class GunsrpgConfig {
     @Configurable
     @Configurable.Comment("Weapon related configurations")
     public WeaponConfig weapon = new WeaponConfig();
+
+    @Configurable
+    @Configurable.Comment("Quest related configurations")
+    public QuestConfig quests = new QuestConfig();
 }

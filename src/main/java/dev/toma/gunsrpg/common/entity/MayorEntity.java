@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.common.entity;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IQuests;
-import dev.toma.gunsrpg.api.common.data.ITraderStandings;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
@@ -13,8 +12,6 @@ import dev.toma.gunsrpg.common.quests.quest.*;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.S2C_OpenQuestScreen;
-import dev.toma.gunsrpg.util.IIntervalProvider;
-import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.properties.IPropertyHolder;
 import dev.toma.gunsrpg.util.properties.PropertyContext;
 import net.minecraft.entity.CreatureEntity;
@@ -37,7 +34,6 @@ import java.util.*;
 
 public class MayorEntity extends CreatureEntity {
 
-    public static final IIntervalProvider REFRESH_LIMIT = Interval.hours(1);
     private final Map<UUID, ListedQuests> playerQuests;
     private long refreshAtWorldTime;
 
@@ -52,7 +48,7 @@ public class MayorEntity extends CreatureEntity {
         super.tick();
         long diff = this.getRemainingRestockTime();
         if (diff <= 0) {
-            refreshAtWorldTime = level.getGameTime() + REFRESH_LIMIT.getTicks();
+            refreshAtWorldTime = level.getGameTime() + GunsRPG.config.quests.questRefreshInterval;
             playerQuests.clear();
             GunsRPG.log.debug(QuestSystem.MARKER, "Mayor {} quests expired", this);
         }
@@ -78,15 +74,9 @@ public class MayorEntity extends CreatureEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        Entity entity = source.getEntity();
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
-            PlayerData.get(player).ifPresent(data -> {
-                ITraderStandings standings = data.getQuests().getTraderStandings();
-                UUID uuid = this.getUUID();
-                ITraderStatus status = standings.getStatusWithTrader(uuid);
-                status.onTraderAttacked();
-            });
+        if (source == DamageSource.OUT_OF_WORLD) {
+            this.actuallyHurt(source, amount);
+            return true;
         }
         return false;
     }
