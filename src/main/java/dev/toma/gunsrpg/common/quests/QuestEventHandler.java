@@ -154,7 +154,7 @@ public final class QuestEventHandler {
 
     private static void cancelIfPlayerIsInQuestArea(PlayerInteractEvent event) {
         boolean areaInteractionDisabled = GunsRPG.config.quests.disableQuestAreaInteractions;
-        if (areaInteractionDisabled) {
+        if (!areaInteractionDisabled) {
             return;
         }
         PlayerEntity player = event.getPlayer();

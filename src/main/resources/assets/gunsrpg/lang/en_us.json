@@ -1208,6 +1208,8 @@
   "quest.task.claim_reward": "Visit mayor to claim rewards",
   "quest.task.completed": "Quest completed",
   "quest.reputation.award_given": "You have reached max reputation with Mayor. You have been awarded with small gift",
+  "quest.reputation.upgraded": "Your standing with Mayor has leveled up. You're now %s",
+  "quest.reputation.lost": "Your standing with Mayor has been lost. You're now %s",
   "debuff.gunsrpg.bleed": "Bleeding",
   "debuff.gunsrpg.fracture": "Fracture",
   "debuff.gunsrpg.poison": "Poison",

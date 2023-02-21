@@ -7,6 +7,9 @@ import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.util.helper.ReputationHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT> {
@@ -28,8 +31,11 @@ public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT
 
     @Override
     public void addReputation(float reputation) {
+        ReputationStatus previousStatus = ReputationStatus.getStatus(this.reputation);
         float input = this.reputation + reputation;
         this.reputation = ReputationHelper.clampWithinReputationLimits(input);
+        ReputationStatus currentStatus = ReputationStatus.getStatus(this.reputation);
+        this.sendReputationStatusUpdate(previousStatus, currentStatus);
         if (!maxedOutReputation && ReputationHelper.isMaxedOut(this.reputation)) {
             maxedOutReputation = true;
             ReputationHelper.awardPlayerForReputation(player);
@@ -59,5 +65,16 @@ public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT
 
     private void synchronize() {
         provider.getRequestFactory().makeSyncRequest();
+    }
+
+    private void sendReputationStatusUpdate(ReputationStatus prev, ReputationStatus current) {
+        if (prev == current || player.level.isClientSide) {
+            return;
+        }
+        int oldStatusValue = prev.ordinal();
+        int statusValue = current.ordinal();
+        ITextComponent status = current.getStatusDescriptor();
+        ITextComponent message = new TranslationTextComponent(oldStatusValue < statusValue ? "quest.reputation.upgraded" : "quest.reputation.lost", status);
+        player.sendMessage(message, Util.NIL_UUID);
     }
 }
