@@ -20,6 +20,10 @@ public final class MobConfig {
     public double shootingMobAggroRange = 28.0;
 
     @Configurable
+    @Configurable.Comment("Configs for mob health buffs")
+    public MobHealthBuffConfig mobHealthBuffs = new MobHealthBuffConfig();
+
+    @Configurable
     @Configurable.Comment("Zombie gunner spawn configuration")
     public DimensionalMobSpawnConfig zombieGunnerSpawn = new DimensionalMobSpawnConfig(25, 25, 1);
 

@@ -4,7 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ai.BeAngryDuringBloodmoonGoal;
 import dev.toma.gunsrpg.common.entity.BloodmoonGolemEntity;
 import dev.toma.gunsrpg.common.entity.RocketAngelEntity;
-import dev.toma.gunsrpg.common.init.ModEntities;
+import dev.toma.gunsrpg.config.world.MobHealthBuffConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.Pair;
 import net.minecraft.entity.*;
@@ -27,7 +27,6 @@ public class MobSpawnManager {
 
     private static final UUID HEALTH_BOOST_UUID = UUID.fromString("80096B27-0A64-47FF-A22A-06146FC42448");
     private static final MobSpawnManager INSTANCE = new MobSpawnManager();
-    private final List<EntityType<?>> healthExlusions = new ArrayList<>();
     private final Map<EntityType<?>, BooleanConsumer<? extends Entity>> postSpawn = new HashMap<>();
     private final Map<EntityType<?>, List<Pair<Integer, BiFunction<ServerWorld, Vector3d, LivingEntity>>>> bloodmoonEntries = new HashMap<>();
     private final AttributeModifier health2x = new AttributeModifier(HEALTH_BOOST_UUID, "health2x", 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
@@ -39,13 +38,6 @@ public class MobSpawnManager {
     }
 
     public void initialize() {
-        healthExlusions.add(ModEntities.ROCKET_ANGEL.get());
-        healthExlusions.add(ModEntities.BLOODMOON_GOLEM.get());
-        healthExlusions.add(EntityType.ENDER_DRAGON);
-        healthExlusions.add(ModEntities.GOLD_DRAGON.get());
-        healthExlusions.add(EntityType.WITHER);
-        healthExlusions.add(EntityType.IRON_GOLEM);
-        healthExlusions.add(ModEntities.ZOMBIE_NIGHTMARE.get());
         registerBloodmoonEntry(EntityType.SPIDER, 7, (world, vec3d) -> {
             CaveSpiderEntity spider = new CaveSpiderEntity(EntityType.CAVE_SPIDER, world);
             spider.setPos(vec3d.x, vec3d.y, vec3d.z);
@@ -122,7 +114,7 @@ public class MobSpawnManager {
     }
 
     private boolean isExluded(Entity entity) {
-        return healthExlusions.contains(entity.getType());
+        return GunsRPG.config.world.mobConfig.mobHealthBuffs.isHealthBuffDisabled(entity.getType());
     }
 
     private <T extends Entity> void registerPostSpawnAction(EntityType<T> type, BooleanConsumer<T> action) {
@@ -136,7 +128,8 @@ public class MobSpawnManager {
 
     private AttributeModifier getRandomModifier(Random random) {
         float f = random.nextFloat();
-        return f <= 0.04F ? health4x : f <= 0.20F ? health3x : f <= 0.50F ? health2x : null;
+        MobHealthBuffConfig cfg = GunsRPG.config.world.mobConfig.mobHealthBuffs;
+        return f < cfg.health4xChance ? health4x : f < cfg.health3xChance ? health3x : f < cfg.health2xChance ? health2x : null;
     }
 
     private <E extends MobEntity & IAngerable> void addBloodmoonAggroGoal(E entity) {

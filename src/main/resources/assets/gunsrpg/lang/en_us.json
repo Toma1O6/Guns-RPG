@@ -1283,6 +1283,12 @@
   "config.gunsrpg.option.rocketAngelSpawn": "Rocket Angel Spawn Chance",
   "config.gunsrpg.option.zombieNightmareSpawn": "Zombie Nightmare Spawn Chance",
 
+  "config.gunsrpg.option.mobHealthBuffs": "Health Buffs",
+  "config.gunsrpg.option.health2xChance": "x2 Health Chance",
+  "config.gunsrpg.option.health3xChance": "x3 Health Chance",
+  "config.gunsrpg.option.health4xChance": "x4 Health Chance",
+  "config.gunsrpg.option.healthBuffBlacklist": "Health buff blacklist",
+
   "config.gunsrpg.option.spawns": "Per Chunk Probability",
   "config.gunsrpg.option.minHeight": "Min Height",
   "config.gunsrpg.option.maxHeight": "Max Height",
