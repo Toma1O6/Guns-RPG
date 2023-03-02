@@ -312,7 +312,7 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
         if (player.isCreative() || player.isSpectator())
             return;
         PlayerData.get(player).ifPresent(data -> {
-            double mobScareRange = GunsRPG.config.world.shootingMobAggroRange;
+            double mobScareRange = GunsRPG.config.world.mobConfig.shootingMobAggroRange;
             GunItem gun = (GunItem) weapon.getItem();
             double noiseMultiplier = gun.getNoiseMultiplier(data.getAttributes());
             double actualScareRange = mobScareRange * noiseMultiplier;

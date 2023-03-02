@@ -1251,6 +1251,8 @@
   "config.gunsrpg.option.skills": "Skills",
   "config.gunsrpg.option.weapon": "Weapons",
 
+  "config.gunsrpg.option.generationConfig": "World Generation Config",
+  "config.gunsrpg.option.mobConfig": "Mob Config",
   "config.gunsrpg.option.createCrateOnPlayerDeath": "Death Crate",
   "config.gunsrpg.option.disableMobSpawners": "Disable Spawners",
   "config.gunsrpg.option.bloodMoonMobAgroRange": "Bloodmoon Aggro Range",

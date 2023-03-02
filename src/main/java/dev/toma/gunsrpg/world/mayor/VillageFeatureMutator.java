@@ -57,7 +57,7 @@ public final class VillageFeatureMutator {
     }
 
     private static void registerSingleVariant(Map<String, List<VillageVariantEntry>> map, String variant, ToIntFunction<MayorHouseGeneratorConfig> func) {
-        MayorHouseGeneratorConfig cfg = GunsRPG.config.world.mayorHouseGen;
+        MayorHouseGeneratorConfig cfg = GunsRPG.config.world.generationConfig.mayorHouseGen;
         String templatePool = "village/" + variant + "/houses";
         VillageVariantEntry entry = new VillageVariantEntry(templatePool, templatePool + "/mayor_home", func.applyAsInt(cfg));
         List<VillageVariantEntry> list = ImmutableList.of(entry);

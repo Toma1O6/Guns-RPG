@@ -25,7 +25,7 @@ public abstract class TargetGoalMixin extends Goal {
         World world = mob.level;
         double baseFollowDistance = mob.getAttributeValue(Attributes.FOLLOW_RANGE);
         if (WorldData.isBloodMoon(world)) {
-            ci.setReturnValue(Math.max(baseFollowDistance, GunsRPG.config.world.bloodMoonMobAgroRange));
+            ci.setReturnValue(Math.max(baseFollowDistance, GunsRPG.config.world.mobConfig.bloodMoonMobAgroRange));
         }
     }
 

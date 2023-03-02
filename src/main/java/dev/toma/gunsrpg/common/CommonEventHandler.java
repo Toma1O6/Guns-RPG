@@ -108,10 +108,10 @@ public class CommonEventHandler {
         MobSpawnInfoBuilder mobSpawnBuilder = event.getSpawns();
         WorldConfiguration config = GunsRPG.config.world;
         if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
-            addMonsterSpawn(mobSpawnBuilder, ModEntities.ZOMBIE_GUNNER.get(), config.zombieGunnerSpawn.choiceFromBiomeCategory(category), 1, 2);
-            addMonsterSpawn(mobSpawnBuilder, ModEntities.EXPLOSIVE_SKELETON.get(), config.grenadierSpawn.choiceFromBiomeCategory(category), 1, 2);
-            addMonsterSpawn(mobSpawnBuilder, ModEntities.ZOMBIE_KNIGHT.get(), config.zombieKnightSpawn.choiceFromBiomeCategory(category), 1, 2);
-            addMonsterSpawn(mobSpawnBuilder, ModEntities.ZOMBIE_NIGHTMARE.get(), config.zombieNightmareSpawn.choiceFromBiomeCategory(category), 1, 2);
+            addMonsterSpawn(mobSpawnBuilder, ModEntities.ZOMBIE_GUNNER.get(), config.mobConfig.zombieGunnerSpawn.choiceFromBiomeCategory(category), 1, 2);
+            addMonsterSpawn(mobSpawnBuilder, ModEntities.EXPLOSIVE_SKELETON.get(), config.mobConfig.grenadierSpawn.choiceFromBiomeCategory(category), 1, 2);
+            addMonsterSpawn(mobSpawnBuilder, ModEntities.ZOMBIE_KNIGHT.get(), config.mobConfig.zombieKnightSpawn.choiceFromBiomeCategory(category), 1, 2);
+            addMonsterSpawn(mobSpawnBuilder, ModEntities.ZOMBIE_NIGHTMARE.get(), config.mobConfig.zombieNightmareSpawn.choiceFromBiomeCategory(category), 1, 2);
         }
         if (category != Biome.Category.NETHER && category != Biome.Category.THEEND) {
             if (category != Biome.Category.OCEAN && category != Biome.Category.RIVER) {
@@ -121,7 +121,7 @@ public class CommonEventHandler {
                 builder.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, feature);
             }
         } else {
-            addMonsterSpawn(mobSpawnBuilder, ModEntities.ROCKET_ANGEL.get(), config.rocketAngelSpawn.choiceFromBiomeCategory(category), 1, 2);
+            addMonsterSpawn(mobSpawnBuilder, ModEntities.ROCKET_ANGEL.get(), config.mobConfig.rocketAngelSpawn.choiceFromBiomeCategory(category), 1, 2);
             mobSpawnBuilder.addMobCharge(ModEntities.ROCKET_ANGEL.get(), 0.7, 0.15);
         }
     }
@@ -501,7 +501,7 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void checkEntitySpawn(LivingSpawnEvent.CheckSpawn event) {
         if (event.isSpawner()) {
-            if (GunsRPG.config.world.disableMobSpawners)
+            if (GunsRPG.config.world.mobConfig.disableMobSpawners)
                 event.setResult(Event.Result.DENY);
         }
     }

@@ -51,7 +51,7 @@ public class MobSpawnManager {
             spider.setPos(vec3d.x, vec3d.y, vec3d.z);
             return spider;
         });
-        registerBloodmoonEntry(EntityType.SPIDER, GunsRPG.config.world.rocketAngelSpawn.overworldChance(), (world, vec3d) -> {
+        registerBloodmoonEntry(EntityType.SPIDER, GunsRPG.config.world.mobConfig.rocketAngelSpawn.overworldChance(), (world, vec3d) -> {
             RocketAngelEntity rocketAngel = new RocketAngelEntity(world);
             rocketAngel.setPos(vec3d.x, vec3d.y, vec3d.z);
             return rocketAngel;
