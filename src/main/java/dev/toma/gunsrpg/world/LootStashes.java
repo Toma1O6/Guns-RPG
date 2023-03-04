@@ -36,6 +36,10 @@ public class LootStashes {
         TRACKING.remove(uuid);
     }
 
+    public static void initiateImmediateRefresh() {
+        updateScheduler = 0;
+    }
+
     public static void tick(ServerWorld world) {
         if (TRACKING.isEmpty()) {
             return;

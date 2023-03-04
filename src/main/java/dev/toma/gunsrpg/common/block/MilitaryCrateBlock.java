@@ -3,9 +3,13 @@ package dev.toma.gunsrpg.common.block;
 import dev.toma.gunsrpg.common.tileentity.ILootGenerator;
 import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
 import dev.toma.gunsrpg.common.tileentity.MilitaryCrateTileEntity;
+import dev.toma.gunsrpg.world.LootStashes;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
 import java.util.Arrays;
@@ -39,6 +43,12 @@ public class MilitaryCrateBlock extends AbstractCrateBlock {
     @Override
     public <T extends InventoryTileEntity & ILootGenerator> T getNewBlockEntity() {
         return (T) new MilitaryCrateTileEntity();
+    }
+
+    @Override
+    public void onRemove(BlockState state, World world, BlockPos pos, BlockState oldState, boolean p_196243_5_) {
+        super.onRemove(state, world, pos, oldState, p_196243_5_);
+        LootStashes.initiateImmediateRefresh();
     }
 
     public enum BiomeVariant {

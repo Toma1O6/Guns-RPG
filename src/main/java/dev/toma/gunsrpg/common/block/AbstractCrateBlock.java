@@ -52,7 +52,7 @@ public abstract class AbstractCrateBlock extends BaseBlock {
     }
 
     @Override
-    public final void onRemove(BlockState state, World world, BlockPos pos, BlockState oldState, boolean p_196243_5_) {
+    public void onRemove(BlockState state, World world, BlockPos pos, BlockState oldState, boolean p_196243_5_) {
         if (!state.is(oldState.getBlock())) {
             ModUtils.dropInventoryItems(world, pos);
         }
