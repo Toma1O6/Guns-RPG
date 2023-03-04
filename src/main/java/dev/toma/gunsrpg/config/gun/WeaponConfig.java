@@ -10,6 +10,20 @@ public final class WeaponConfig {
     public boolean disableWeaponDurability = false;
 
     @Configurable
+    @Configurable.Synchronized
+    @Configurable.DecimalRange(min = 0.0F, max = 10.0F)
+    @Configurable.Comment("Global weapon recoil multiplier")
+    @Configurable.Gui.NumberFormat("0.0##")
+    public float globalWeaponRecoilMultiplier = 1.0F;
+
+    @Configurable
+    @Configurable.Synchronized
+    @Configurable.DecimalRange(min = 0.0F, max = 1.0F)
+    @Configurable.Comment("Weapon recoil multiplier when crouching")
+    @Configurable.Gui.NumberFormat("0.0##")
+    public float crouchWeaponRecoilMultiplier = 0.85F;
+
+    @Configurable
     @Configurable.Comment("M1911 Weapon configuration")
     public IWeaponConfig m1911 = new WeaponConfiguration(4.0F, 280, 3, 0.008F, 0.11F);
 

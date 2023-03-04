@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.util.object;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.*;
@@ -13,6 +14,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialDataContainer;
 import dev.toma.gunsrpg.common.item.guns.setup.MaterialContainer;
 import dev.toma.gunsrpg.common.item.guns.util.IAdditionalShootData;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
+import dev.toma.gunsrpg.config.gun.WeaponConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_SetReloadingPacket;
 import dev.toma.gunsrpg.network.packet.C2S_ShootPacket;
@@ -86,10 +88,14 @@ public class ShootingManager {
             AmmoType type = gun.getAmmoType();
             IAmmoMaterial material = gun.getMaterialFromNBT(stack);
             IMaterialDataContainer materialDataContainer = type.getContainer();
-            float recoilModifier = 1.0F;
+            WeaponConfig config = GunsRPG.config.weapon;
+            float recoilModifier = config.globalWeaponRecoilMultiplier;
             if (materialDataContainer != null) {
                 IMaterialData materialData = materialDataContainer.getMaterialData(material);
                 recoilModifier += materialData.getAddedRecoil();
+            }
+            if (player.isCrouching()) {
+                recoilModifier *= config.crouchWeaponRecoilMultiplier;
             }
             float xRot = gun.getVerticalRecoil(attributeProvider) * recoilModifier;
             float yRot = gun.getHorizontalRecoil(attributeProvider) * recoilModifier;
