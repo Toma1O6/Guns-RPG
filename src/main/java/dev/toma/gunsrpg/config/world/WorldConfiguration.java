@@ -40,6 +40,11 @@ public final class WorldConfiguration {
     public double lootStashChance = 0.005;
 
     @Configurable
+    @Configurable.Range(min = 20, max = 1000)
+    @Configurable.Comment({"Defines how often will be new stash detection updates sent to players", "This may affect server performance when set to small number"})
+    public int lootStashUpdateInterval = 100;
+
+    @Configurable
     @Configurable.DecimalRange(min = 0.0, max = 0.9)
     @Configurable.Comment("Chance that multiple airdrops spawn")
     public double anotherAirdropSpawnChance = 0.005;

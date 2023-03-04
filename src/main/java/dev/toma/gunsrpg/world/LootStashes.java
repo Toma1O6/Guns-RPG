@@ -46,7 +46,7 @@ public class LootStashes {
         }
         --updateScheduler;
         if (updateScheduler <= 0) {
-            updateScheduler = 100;
+            updateScheduler = GunsRPG.config.world.lootStashUpdateInterval;
             initiateRefreshAsync(world);
         }
     }

@@ -1262,6 +1262,7 @@
   "config.gunsrpg.option.crystalStationUseCooldown": "Crystal Station Use Cooldown",
   "config.gunsrpg.option.sleepRestriction": "Sleep Restriction",
   "config.gunsrpg.option.lootStashChance": "Loot Stash Generation Chance",
+  "config.gunsrpg.option.lootStashUpdateInterval": "Loot Stash Update Interval",
   "config.gunsrpg.option.anotherAirdropSpawnChance": "Extra Airdrop spawn Chance",
   "config.gunsrpg.option.amethyst": "Amethyst Ore",
   "config.gunsrpg.option.blackCrystal": "Black Crystal Ore",
