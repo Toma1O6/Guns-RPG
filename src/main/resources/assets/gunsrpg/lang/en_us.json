@@ -1316,6 +1316,8 @@
   "config.gunsrpg.option.countTrapKills": "Count Trap Kills",
 
   "config.gunsrpg.option.disableWeaponDurability": "Disable Weapon Durability",
+  "config.gunsrpg.option.globalWeaponRecoilMultiplier": "Global Recoil Multiplier",
+  "config.gunsrpg.option.crouchWeaponRecoilMultiplier": "Crouch Recoil Multiplier",
   "config.gunsrpg.option.m1911": "M1911",
   "config.gunsrpg.option.r45": "R45",
   "config.gunsrpg.option.desertEagle": "Desert Eagle",
