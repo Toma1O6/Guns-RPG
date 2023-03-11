@@ -100,14 +100,8 @@ public class ClientEventHandler {
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
         if (event.phase == TickEvent.Phase.END && player != null) {
-            World world = player.level;
-            long actualDay = world.getDayTime() / 24000L;
-            int cycle = GunsRPG.config.world.bloodmoonCycle;
-            if (cycle == -1) return;
-            boolean isBloodmoonDay = actualDay > 0 && actualDay % cycle == 0;
-            boolean isNight = world.getDayTime() % 24000L >= 12500L;
-            bloodmoon = isBloodmoonDay && isNight;
             LazyOptional<IPlayerData> optional = PlayerData.get(player);
+            updateCurrentBloodmoonStatus(player);
             if (!optional.isPresent())
                 return;
             IPlayerData data = optional.orElse(null);
@@ -212,5 +206,15 @@ public class ClientEventHandler {
             Firemode firemode = item.getFiremode(stack);
             firemode.triggerEvent(event, player, stack, data);
         }
+    }
+
+    private static void updateCurrentBloodmoonStatus(PlayerEntity player) {
+        World world = player.level;
+        long actualDay = world.getDayTime() / 24000L;
+        int cycle = GunsRPG.config.world.bloodmoonCycle;
+        if (cycle == -1) return;
+        boolean isBloodmoonDay = actualDay > 0 && actualDay % cycle == 0;
+        boolean isNight = world.getDayTime() % 24000L >= 12500L;
+        bloodmoon = isBloodmoonDay && isNight;
     }
 }
