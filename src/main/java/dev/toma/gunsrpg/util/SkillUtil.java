@@ -76,6 +76,10 @@ public class SkillUtil {
 
     public static class Localizations {
 
+        public static String convertToLocalizationKey(ResourceLocation location) {
+            return location.toString().replaceAll(":", ".");
+        }
+
         public static ITextComponent makeReadable(ResourceLocation location) {
             String[] str = location.toString().split("[.:]");
             String in = str[str.length - 1];

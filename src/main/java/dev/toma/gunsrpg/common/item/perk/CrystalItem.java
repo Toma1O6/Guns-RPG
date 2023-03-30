@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.common.item.perk;
 import dev.toma.gunsrpg.ModTabs;
 import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.common.perk.PerkType;
-import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -51,7 +50,7 @@ public class CrystalItem extends PerkItem implements IPerkHolder {
         list.add(TEXT_ATTRIBUTES);
         for (CrystalAttribute attribute : crystal.listAttributes()) {
             Perk perk = attribute.getPerk();
-            ITextComponent name = SkillUtil.Localizations.makeReadable(perk.getPerkId());
+            ITextComponent name = perk.getDisplayName();
             TextFormatting formatting = attribute.getType() == PerkType.BUFF ? TextFormatting.GREEN : TextFormatting.RED;
             String pct = DECIMAL_FORMAT.format(attribute.getValue() * 100F);
             list.add(new TranslationTextComponent("crystal.stat.attribute", name.getString(), pct).withStyle(formatting));

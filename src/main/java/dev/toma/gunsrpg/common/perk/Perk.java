@@ -2,8 +2,11 @@ package dev.toma.gunsrpg.common.perk;
 
 import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
 import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public final class Perk {
 
@@ -12,6 +15,7 @@ public final class Perk {
     private final float scaling;
     private final PerkValueSpec boundSpec;
     private final boolean invertCalculation;
+    private ITextComponent displayName;
 
     public Perk(IAttributeId attributeId, float scaling, PerkValueSpec boundSpec, boolean invertCalculation) {
         this.attributeId = attributeId;
@@ -22,6 +26,7 @@ public final class Perk {
 
     public void setId(ResourceLocation id) {
         this.id = id;
+        this.displayName = new TranslationTextComponent("perk." + SkillUtil.Localizations.convertToLocalizationKey(id));
     }
 
     public ResourceLocation getPerkId() {
@@ -30,6 +35,10 @@ public final class Perk {
 
     public IAttributeId getAttributeId() {
         return attributeId;
+    }
+
+    public ITextComponent getDisplayName() {
+        return displayName;
     }
 
     public double getModifier(int level, PerkType type) {

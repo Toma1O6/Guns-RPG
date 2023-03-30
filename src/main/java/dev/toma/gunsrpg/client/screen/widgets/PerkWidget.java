@@ -6,7 +6,6 @@ import dev.toma.gunsrpg.common.perk.PerkType;
 import dev.toma.gunsrpg.util.ITickable;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.RenderUtils;
-import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.Easings;
 import net.minecraft.client.Minecraft;
@@ -33,7 +32,7 @@ public class PerkWidget extends Widget implements ITickable {
     private int prevLoadTimer;
 
     public PerkWidget(int x, int y, int width, int height, FontRenderer renderer, Perk perk, float value, State state) {
-        super(x, y, width, height, SkillUtil.Localizations.makeReadable(perk.getPerkId()));
+        super(x, y, width, height, perk.getDisplayName());
         this.perk = perk;
         this.font = renderer;
         this.value = value;
