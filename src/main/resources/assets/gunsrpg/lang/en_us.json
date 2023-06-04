@@ -1411,6 +1411,7 @@
   "config.gunsrpg.option.disableQuestAreaInteractions": "Disable quest area interactions",
 
   "config.gunsrpg-client.option.developerMode": "Developer Mode",
+  "config.gunsrpg-client.option.aimInputType": "Aim Input Type",
   "config.gunsrpg-client.option.alwaysRenderReticles": "Always Render Reticles",
   "config.gunsrpg-client.option.shaderCompatibilityMode": "Shader Compatibility Mode",
   "config.gunsrpg-client.option.tracerScale": "Tracer Scale",

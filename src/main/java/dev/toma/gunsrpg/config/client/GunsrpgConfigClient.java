@@ -15,6 +15,10 @@ public final class GunsrpgConfigClient {
     public boolean developerMode = false;
 
     @Configurable
+    @Configurable.Comment({"Select input type for aimimg", "Values: TOGGLE, HOLD"})
+    public MouseInputType aimInputType = MouseInputType.TOGGLE;
+
+    @Configurable
     @Configurable.Comment("Reflex sight reticles will be visible even when not aiming")
     public boolean alwaysRenderReticles = false;
 

@@ -15,6 +15,7 @@ import dev.toma.gunsrpg.common.item.guns.util.InputEventListenerType;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_SetAimingPacket;
+import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.object.PropertyChangeListener;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import lib.toma.animations.AnimationEngine;
@@ -79,7 +80,12 @@ public class ClientEventHandler {
                         player.playSound(ModSounds.EMPTY_GUN_CLICK, 1.0F, 1.0F);
                     }
                 } else if (settings.keyUse.isDown() && !AnimationUtils.isActiveOrScheduled(pipeline, ModAnimations.CHAMBER) && !player.isSprinting()) {
-                    handleAim(optional, settings, player, item, stack, pipeline);
+                    optional.ifPresent(data -> {
+                        if (!data.getAimInfo().isAiming() || !ClientSideManager.config.aimInputType.isHold()) {
+                            handleAim(optional, settings, player, item, stack, pipeline);
+                        }
+                    });
+
                 }
             }
         }
@@ -113,6 +119,14 @@ public class ClientEventHandler {
             }
             if (ShootingManager.Client.isBurstModeActive()) {
                 dispatchWeaponInputEvent(InputEventListenerType.ON_BURST_TICK, player, data);
+            }
+            ItemStack stack = player.getMainHandItem();
+            if (stack.getItem() instanceof GunItem) {
+                GunItem gun = (GunItem) stack.getItem();
+                if (data.getAimInfo().isAiming() && ClientSideManager.config.aimInputType.isHold() && !settings.keyUse.isDown()) {
+                    IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
+                    handleAim(optional, settings, player, gun, stack, pipeline);
+                }
             }
         }
     }
