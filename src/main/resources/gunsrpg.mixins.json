@@ -11,7 +11,8 @@
     "LivingEntityMixin"
   ],
   "client": [
-    "BiomeMixin"
+    "BiomeMixin",
+    "PlayerModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1
