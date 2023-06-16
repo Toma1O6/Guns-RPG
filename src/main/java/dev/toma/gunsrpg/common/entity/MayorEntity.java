@@ -100,7 +100,7 @@ public class MayorEntity extends CreatureEntity {
                 ListedQuests traderQuests = playerQuests.get(uuid);
                 UUID traderId = this.getUUID();
                 ITraderStatus status = quests.getTraderStandings().getStatusWithTrader(traderId);
-                if (!playerQuests.containsKey(uuid)) {
+                if (!playerQuests.containsKey(uuid) || traderQuests == null) {
                     traderQuests = ListedQuests.generate(traderId, status.getReputation());
                     playerQuests.put(uuid, traderQuests);
                 }
