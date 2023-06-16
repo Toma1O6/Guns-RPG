@@ -19,6 +19,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -56,6 +57,7 @@ public class MayorEntity extends CreatureEntity {
 
     @Override
     protected void registerGoals() {
+        goalSelector.addGoal(0, new SwimGoal(this));
         goalSelector.addGoal(0, new LookAtGoal(this, LivingEntity.class, 8.0F));
     }
 
