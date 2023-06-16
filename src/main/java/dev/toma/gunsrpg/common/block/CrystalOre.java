@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.item.perk.Crystal;
 import dev.toma.gunsrpg.common.skills.MotherlodeSkill;
 import dev.toma.gunsrpg.util.SkillUtil;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -14,6 +15,9 @@ import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.loot.LootTable;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.ToolType;
 
 import java.util.ArrayList;
@@ -55,5 +59,10 @@ public class CrystalOre extends BaseBlock implements ICustomizableDrops {
             stack.setTag(nbt);
         });
         return drops;
+    }
+
+    @Override
+    public int getExpDrop(BlockState state, IWorldReader world, BlockPos pos, int fortune, int silktouch) {
+        return MathHelper.nextInt(RANDOM, 2, 5);
     }
 }

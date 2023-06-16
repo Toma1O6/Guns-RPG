@@ -456,7 +456,7 @@ public class CommonRegistry {
     public static void onBlockRegister(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> registry = event.getRegistry();
         registry.registerAll(
-                new BaseOreBlock("amethyst_ore", AbstractBlock.Properties.of(Material.STONE).strength(2.5F, 10.0F).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops()),
+                new AmethystOreBlock("amethyst_ore", AbstractBlock.Properties.of(Material.STONE).strength(2.5F, 10.0F).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops()),
                 new BlastFurnaceBlock("blast_furnace"),
                 new AirdropBlock("airdrop"),
                 new SmithingTableBlock("smithing_table"),
@@ -481,7 +481,7 @@ public class CommonRegistry {
         );
         for (PerkVariant variant : PerkVariant.values()) {
             registry.register(new CrystalOre(variant.getRegistryName("crystal_ore")));
-            registry.register(new BaseBlock(variant.getRegistryName("orb_ore"), AbstractBlock.Properties.of(Material.STONE).strength(3.3F).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops()));
+            registry.register(new BaseOreBlock(variant.getRegistryName("orb_ore"), AbstractBlock.Properties.of(Material.STONE).strength(3.3F).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops()));
         }
     }
 
