@@ -29,7 +29,7 @@ public class WorldEventSpec implements IWorldEventSpec {
     public void tick(World world, long currentDay) {
         if (disabled()) return;
         int dayCycle = cycle.get();
-        active = currentDay > 0 && currentDay % dayCycle == 0 && handler.canTriggerEvent(world);
+        active = currentDay > 0 && (dayCycle == 0 || currentDay % dayCycle == 0) && handler.canTriggerEvent(world);
         if (active != old) {
             if (active)
                 handler.eventStarted(world);

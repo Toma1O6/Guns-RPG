@@ -227,7 +227,7 @@ public class ClientEventHandler {
         long actualDay = world.getDayTime() / 24000L;
         int cycle = GunsRPG.config.world.bloodmoonCycle;
         if (cycle == -1) return;
-        boolean isBloodmoonDay = actualDay > 0 && actualDay % cycle == 0;
+        boolean isBloodmoonDay = actualDay > 0 && (cycle == 0 || actualDay % cycle == 0);
         boolean isNight = world.getDayTime() % 24000L >= 12500L;
         bloodmoon = isBloodmoonDay && isNight;
     }
