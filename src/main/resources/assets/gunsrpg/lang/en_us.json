@@ -1414,6 +1414,7 @@
   "config.gunsrpg-client.option.aimInputType": "Aim Input Type",
   "config.gunsrpg-client.option.alwaysRenderReticles": "Always Render Reticles",
   "config.gunsrpg-client.option.shaderCompatibilityMode": "Shader Compatibility Mode",
+  "config.gunsrpg-client.option.showBloodmoonRemainingDays": "Show Remaining Bloodmoon Days",
   "config.gunsrpg-client.option.tracerScale": "Tracer Scale",
   "config.gunsrpg-client.option.debuffOverlay": "Debuff Overlay",
   "config.gunsrpg-client.option.reticleColor": "Reticle Color",

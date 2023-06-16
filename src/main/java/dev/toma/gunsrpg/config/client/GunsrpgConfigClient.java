@@ -27,6 +27,10 @@ public final class GunsrpgConfigClient {
     public boolean shaderCompatibilityMode = false;
 
     @Configurable
+    @Configurable.Comment("Will render number with remaining day count to next bloodmoon on upper right corner")
+    public boolean showBloodmoonRemainingDays = true;
+
+    @Configurable
     @Configurable.DecimalRange(min = 0.0, max = 0.5)
     @Configurable.Comment("Scaling of tracers")
     @Configurable.Gui.NumberFormat("0.0###")

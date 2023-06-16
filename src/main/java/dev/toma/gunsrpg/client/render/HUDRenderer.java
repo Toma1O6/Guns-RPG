@@ -18,6 +18,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.client.GunsrpgConfigClient;
 import dev.toma.gunsrpg.config.client.QuestOverlayConfig;
 import dev.toma.gunsrpg.resource.util.functions.RangedFunction;
 import dev.toma.gunsrpg.sided.ClientSideManager;
@@ -126,7 +127,7 @@ public final class HUDRenderer {
         World world = player.level;
         long actualDay = world.getDayTime() / 24000L;
         int cycle = GunsRPG.config.world.bloodmoonCycle;
-        if (cycle == -1) return;
+        if (cycle == -1 || !ClientSideManager.config.showBloodmoonRemainingDays) return;
         boolean isBloodmoonDay = actualDay > 0 && (cycle == 0 || actualDay % cycle == 0);
         int leftToBloodmoon = isBloodmoonDay ? 0 : (int) (cycle - actualDay % cycle);
         boolean isNight = world.getDayTime() % 24000L >= 12500L;
