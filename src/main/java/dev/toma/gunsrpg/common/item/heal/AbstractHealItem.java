@@ -169,6 +169,10 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
         return true;
     }
 
+    protected Predicate<T> getUseCondition() {
+        return useCondition;
+    }
+
     public static abstract class HealBuilder<T, H extends AbstractHealItem<T>> {
 
         protected final String name;
