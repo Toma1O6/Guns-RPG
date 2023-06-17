@@ -53,7 +53,7 @@ public class ContinuousHealingItem extends AbstractHealItem<PlayerEntity> {
             stack.hurtAndBreak(1, player, user -> user.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
             if (!this.getUseCondition().test(player)) {
                 player.stopUsingItem();
-                NetworkManager.sendClientPacket(player, new S2C_AnimationPacket(S2C_AnimationPacket.Action.STOP, ModAnimations.HEAL.getKey()));
+                NetworkManager.sendClientPacket(player, new S2C_AnimationPacket(S2C_AnimationPacket.Action.STOP, ModAnimations.HEAL));
             }
         }
     }

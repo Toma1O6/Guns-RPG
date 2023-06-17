@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.common.AnimationPaths;
+import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.network.AbstractHandlePacket;
@@ -28,7 +28,7 @@ public class C2S_ChangeFiremodePacket extends AbstractHandlePacket<C2S_ChangeFir
             if (gun.switchFiremode(stack, player)) {
                 Firemode currentMode = gun.getFiremode(stack);
                 player.sendMessage(new TranslationTextComponent("gun.firemode", currentMode.getName()), ChatType.GAME_INFO, Util.NIL_UUID);
-                NetworkManager.sendClientPacket(player, new S2C_AnimationPacket(S2C_AnimationPacket.Action.PLAY, AnimationPaths.FIREMODE_PATH));
+                NetworkManager.sendClientPacket(player, new S2C_AnimationPacket(S2C_AnimationPacket.Action.PLAY, ModAnimations.FIREMODE));
             }
         }
     }
