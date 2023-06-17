@@ -7,7 +7,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder(GunsRPG.MODID)
 public class ModBlocks {
-    public static final BaseOreBlock AMETHYST_ORE = null;
+    public static final AmethystOreBlock AMETHYST_ORE = null;
     public static final BlastFurnaceBlock BLAST_FURNACE = null;
     public static final AirdropBlock AIRDROP = null;
     public static final SmithingTableBlock SMITHING_TABLE = null;
@@ -28,12 +28,12 @@ public class ModBlocks {
     public static final CrystalOre RED_CRYSTAL_ORE = null;
     public static final CrystalOre WHITE_CRYSTAL_ORE = null;
     public static final CrystalOre YELLOW_CRYSTAL_ORE = null;
-    public static final BaseBlock BLACK_ORB_ORE = null;
-    public static final BaseBlock BLUE_ORB_ORE = null;
-    public static final BaseBlock GREEN_ORB_ORE = null;
-    public static final BaseBlock RED_ORB_ORE = null;
-    public static final BaseBlock WHITE_ORB_ORE = null;
-    public static final BaseBlock YELLOW_ORB_ORE = null;
+    public static final BaseOreBlock BLACK_ORB_ORE = null;
+    public static final BaseOreBlock BLUE_ORB_ORE = null;
+    public static final BaseOreBlock GREEN_ORB_ORE = null;
+    public static final BaseOreBlock RED_ORB_ORE = null;
+    public static final BaseOreBlock WHITE_ORB_ORE = null;
+    public static final BaseOreBlock YELLOW_ORB_ORE = null;
     public static final SpikeTrapBlock SPIKES_WOODEN = null;
     public static final SpikeTrapBlock SPIKES_IRON = null;
     public static final SpikeTrapBlock SPIKES_DIAMOND = null;
