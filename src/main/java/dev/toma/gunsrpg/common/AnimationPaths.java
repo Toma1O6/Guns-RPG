@@ -16,6 +16,7 @@ public final class AnimationPaths {
     public static final ResourceLocation UFAK = GunsRPG.makeResource("ufak");
     public static final ResourceLocation KODIAK = GunsRPG.makeResource("kodiak");
     public static final ResourceLocation GRENADE = GunsRPG.makeResource("grenade");
+    public static final ResourceLocation HEAL_TYPE = GunsRPG.makeResource("heal");
 
     private AnimationPaths() {}
 }

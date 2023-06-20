@@ -20,11 +20,7 @@ public class S2C_AnimationPacket extends AbstractNetworkPacket<S2C_AnimationPack
     public S2C_AnimationPacket() {
     }
 
-    public S2C_AnimationPacket(Action action, AnimationType<?> type) {
-        this(action, type.getKey());
-    }
-
-    private S2C_AnimationPacket(Action action, ResourceLocation typeId) {
+    public S2C_AnimationPacket(Action action, ResourceLocation typeId) {
         this.action = action;
         this.typeId = typeId;
     }

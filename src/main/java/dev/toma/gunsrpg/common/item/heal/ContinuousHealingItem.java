@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item.heal;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.InfiniteAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
+import dev.toma.gunsrpg.common.AnimationPaths;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.S2C_AnimationPacket;
 import lib.toma.animations.AnimationEngine;
@@ -15,6 +16,8 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ContinuousHealingItem extends AbstractHealItem<PlayerEntity> {
 
@@ -53,7 +56,7 @@ public class ContinuousHealingItem extends AbstractHealItem<PlayerEntity> {
             stack.hurtAndBreak(1, player, user -> user.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
             if (!this.getUseCondition().test(player)) {
                 player.stopUsingItem();
-                NetworkManager.sendClientPacket(player, new S2C_AnimationPacket(S2C_AnimationPacket.Action.STOP, ModAnimations.HEAL));
+                NetworkManager.sendClientPacket(player, new S2C_AnimationPacket(S2C_AnimationPacket.Action.STOP, AnimationPaths.HEAL_TYPE));
             }
         }
     }
@@ -76,6 +79,7 @@ public class ContinuousHealingItem extends AbstractHealItem<PlayerEntity> {
         return new InfiniteAnimation(provider, length);
     }
 
+    @OnlyIn(Dist.CLIENT)
     private void cancelHealAnimation() {
         AnimationEngine engine = AnimationEngine.get();
         IAnimationPipeline pipeline = engine.pipeline();
