@@ -1,6 +1,8 @@
 package lib.toma.animations.api.event;
 
 import com.google.gson.*;
+import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.C2S_PlaySoundFromAnimationEventPacket;
 import lib.toma.animations.api.IAnimation;
 import lib.toma.animations.engine.AbstractAnimationEvent;
 import lib.toma.animations.engine.screen.SelectionButton;
@@ -55,6 +57,7 @@ public class SoundAnimationEvent extends AbstractAnimationEvent {
 
     private void play(Minecraft client) {
         client.player.playSound(sound, volume, pitch);
+        NetworkManager.sendServerPacket(new C2S_PlaySoundFromAnimationEventPacket(sound.getRegistryName(), volume / 2.0f, pitch));
     }
 
     @Override
