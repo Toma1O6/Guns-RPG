@@ -118,8 +118,12 @@ public class CrystalPurificationStationTileEntity extends InventoryTileEntity {
     }
 
     private void clearInputs() {
-        for (int i = 1; i < 5; i++) {
-            itemHandler.setStackInSlot(i, ItemStack.EMPTY);
+        itemHandler.setStackInSlot(IN, ItemStack.EMPTY);
+        for (int slot : ORB) {
+            ItemStack stack = itemHandler.getStackInSlot(slot);
+            if (!stack.isEmpty()) {
+                stack.shrink(1);
+            }
         }
     }
 }

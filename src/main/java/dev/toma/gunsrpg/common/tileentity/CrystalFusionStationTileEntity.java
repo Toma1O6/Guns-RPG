@@ -190,13 +190,14 @@ public class CrystalFusionStationTileEntity extends InventoryTileEntity {
     }
 
     private void clearInputs() {
-        clearSlots(INPUTS);
-        clearSlots(ORBS);
-    }
-
-    private void clearSlots(int[] slots) {
-        for (int slot : slots) {
+        for (int slot : INPUTS) {
             itemHandler.setStackInSlot(slot, ItemStack.EMPTY);
+        }
+        for (int slot : ORBS) {
+            ItemStack stack = itemHandler.getStackInSlot(slot);
+            if (!stack.isEmpty()) {
+                stack.shrink(1);
+            }
         }
     }
 }
