@@ -17,6 +17,6 @@ public class BaseOreBlock extends OreBlock {
 
     @Override
     public int getExpDrop(BlockState state, IWorldReader reader, BlockPos pos, int fortune, int silktouch) {
-        return MathHelper.nextInt(RANDOM, 2, 4);
+        return silktouch == 0 ? MathHelper.nextInt(RANDOM, 2, 4) : 0;
     }
 }
