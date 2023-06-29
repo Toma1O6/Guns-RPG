@@ -11,6 +11,7 @@ import dev.toma.gunsrpg.common.entity.TurretEntity;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_TurretSettingsPacket;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
@@ -74,6 +75,16 @@ public class TurretScreen extends ContainerScreen<TurretContainer> {
             send.active = !value.isEmpty() && isValidPlayerName(value);
         });
         send.active = false;
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        IGuiEventListener listener = this.getFocused();
+        if (listener instanceof TextFieldWidget && ((TextFieldWidget) listener).isFocused()) {
+            listener.keyPressed(keyCode, scanCode, modifiers);
+            return true;
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override
