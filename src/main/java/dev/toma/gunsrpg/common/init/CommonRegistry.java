@@ -405,22 +405,22 @@ public class CommonRegistry {
         event.getRegistry().registerAll(
                 new DataDrivenDebuffType.Builder<>()
                         .factory(type -> new StagedDebuff((DataDrivenDebuffType<?>) type))
-                        .configToggle(() -> GunsRPG.config.debuffs.disablePoison)
+                        .config(() -> GunsRPG.config.debuffs.disablePoison, () -> GunsRPG.config.debuffs.globalPoisonChanceMultiplier)
                         .build()
                         .setRegistryName("poison"),
                 new DataDrivenDebuffType.Builder<>()
                         .factory(type -> new StagedDebuff((DataDrivenDebuffType<?>) type))
-                        .configToggle(() -> GunsRPG.config.debuffs.disableInfection)
+                        .config(() -> GunsRPG.config.debuffs.disableInfection, () -> GunsRPG.config.debuffs.globalInfectionChanceMultiplier)
                         .build()
                         .setRegistryName("infection"),
                 new DataDrivenDebuffType.Builder<>()
                         .factory(type -> new StagedDebuff((DataDrivenDebuffType<?>) type))
-                        .configToggle(() -> GunsRPG.config.debuffs.disableFractures)
+                        .config(() -> GunsRPG.config.debuffs.disableFractures, () -> GunsRPG.config.debuffs.globalFractureChanceMultiplier)
                         .build()
                         .setRegistryName("fracture"),
                 new DataDrivenDebuffType.Builder<>()
                         .factory(type -> new StagedDebuff((DataDrivenDebuffType<?>) type))
-                        .configToggle(() -> GunsRPG.config.debuffs.disableBleeding)
+                        .config(() -> GunsRPG.config.debuffs.disableBleeding, () -> GunsRPG.config.debuffs.globalBleedingChanceMultiplier)
                         .build()
                         .setRegistryName("bleed"),
                 new RespawnDebuffType.RespawnDebuffBuilder<>()

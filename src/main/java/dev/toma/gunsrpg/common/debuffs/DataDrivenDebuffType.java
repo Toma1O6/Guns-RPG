@@ -13,6 +13,7 @@ import dev.toma.gunsrpg.common.debuffs.sources.DebuffSource;
 import dev.toma.gunsrpg.common.debuffs.sources.DebuffSourceType;
 import dev.toma.gunsrpg.common.debuffs.event.DebuffStageEvent;
 import dev.toma.gunsrpg.common.debuffs.event.DebuffStageEventType;
+import dev.toma.gunsrpg.util.function.FloatSupplier;
 import net.minecraft.entity.player.PlayerEntity;
 
 import javax.annotation.Nullable;
@@ -28,26 +29,29 @@ public final class DataDrivenDebuffType<D extends IStagedDebuff> extends DebuffT
             DebuffStage.CODEC.listOf().fieldOf("stages").forGetter(d -> d.stages),
             DebuffSourceType.SOURCE_CODEC.listOf().fieldOf("sources").forGetter(d -> d.sources)
     ).apply(instance, LoadedData::new));
+    private final FloatSupplier globalChanceMultiplier;
     private DebuffAttributes attributes;
     private List<DebuffStage> stages;
     private List<DebuffSource> sources;
 
     public DataDrivenDebuffType(Builder<D> builder) {
         super(builder);
+        this.globalChanceMultiplier = builder.chanceMultiplier;
     }
 
     @Override
     public D onTrigger(IDebuffContext context, Random random, @Nullable Object data) {
         IPlayerData playerData = context.getData();
         IAttributeProvider provider = playerData.getAttributes();
-        float resistChance = attributes != null && attributes.resistAttribute != null ? provider.getAttribute(attributes.resistAttribute).floatValue() : 0.0F;
+        float resistChance = attributes != null && attributes.getResistanceAttribute() != null ? provider.getAttribute(attributes.getResistanceAttribute()).floatValue() : 0.0F;
         if (isDisabledByAttributes(provider) || (random.nextFloat() < resistChance && resistChance > 0)) {
             return null;
         }
         if (sources == null)
             return null;
+        float chanceMultiplier = globalChanceMultiplier.getFloat();
         for (DebuffSource source : sources) {
-            float chance = source.getChance(context);
+            float chance = source.getChance(context) * chanceMultiplier;
             if (chance > 0.0F && random.nextFloat() < chance) {
                 return this.createRaw();
             }
@@ -188,14 +192,16 @@ public final class DataDrivenDebuffType<D extends IStagedDebuff> extends DebuffT
 
         private IFactory<D> factory;
         private BooleanSupplier isConfigDisabled;
+        private FloatSupplier chanceMultiplier;
 
         public Builder<D> factory(IFactory<D> factory) {
             this.factory = factory;
             return this;
         }
 
-        public Builder<D> configToggle(BooleanSupplier supplier) {
+        public Builder<D> config(BooleanSupplier supplier, FloatSupplier chanceMultiplier) {
             this.isConfigDisabled = supplier;
+            this.chanceMultiplier = chanceMultiplier;
             return this;
         }
 

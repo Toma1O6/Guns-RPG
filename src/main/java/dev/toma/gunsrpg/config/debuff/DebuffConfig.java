@@ -28,4 +28,28 @@ public final class DebuffConfig {
     @Configurable
     @Configurable.Comment("Disables reduced health debuff after respawn")
     public boolean disableRespawnDebuff = false;
+
+    @Configurable
+    @Configurable.Comment("Global chance multiplier for catching poison debuff")
+    @Configurable.DecimalRange(min = 0.0F, max = 10.0F)
+    @Configurable.Gui.NumberFormat("0.0##")
+    public float globalPoisonChanceMultiplier = 1.0F;
+
+    @Configurable
+    @Configurable.Comment("Global chance multiplier for catching infection debuff")
+    @Configurable.DecimalRange(min = 0.0F, max = 10.0F)
+    @Configurable.Gui.NumberFormat("0.0##")
+    public float globalInfectionChanceMultiplier = 1.0F;
+
+    @Configurable
+    @Configurable.Comment("Global chance multiplier for catching fracture debuff")
+    @Configurable.DecimalRange(min = 0.0F, max = 10.0F)
+    @Configurable.Gui.NumberFormat("0.0##")
+    public float globalFractureChanceMultiplier = 1.0F;
+
+    @Configurable
+    @Configurable.Comment("Global chance multiplier for catching bleed debuff")
+    @Configurable.DecimalRange(min = 0.0F, max = 10.0F)
+    @Configurable.Gui.NumberFormat("0.0##")
+    public float globalBleedingChanceMultiplier = 1.0F;
 }

@@ -1362,6 +1362,10 @@
   "config.gunsrpg.option.disableFractures": "Disable Fractures",
   "config.gunsrpg.option.disableBleeding": "Disable Bleeding",
   "config.gunsrpg.option.disableRespawnDebuff": "Disable Respawn Debuff",
+  "config.gunsrpg.option.globalPoisonChanceMultiplier": "Global Poison Chance",
+  "config.gunsrpg.option.globalInfectionChanceMultiplier": "Global Infection Chance",
+  "config.gunsrpg.option.globalFractureChanceMultiplier": "Global Fracture Chance",
+  "config.gunsrpg.option.globalBleedingChanceMultiplier": "Global Bleed Chance",
 
   "config.gunsrpg.option.wellFedTriggerValue": "Well Fed Trigger Value",
   "config.gunsrpg.option.boundSkills": "Bound Skills",
