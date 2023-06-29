@@ -16,6 +16,10 @@ public class C2S_PlaySoundFromAnimationEventPacket extends AbstractNetworkPacket
     private final float volume;
     private final float pitch;
 
+    public C2S_PlaySoundFromAnimationEventPacket() {
+        this(null, 0.0F, 0.0F);
+    }
+
     public C2S_PlaySoundFromAnimationEventPacket(ResourceLocation soundId, float volume, float pitch) {
         this.soundId = soundId;
         this.volume = volume;
