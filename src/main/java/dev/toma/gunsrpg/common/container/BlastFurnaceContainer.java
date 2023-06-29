@@ -21,6 +21,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.hooks.BasicEventHooks;
 
+import java.util.List;
+
 public class BlastFurnaceContainer extends RecipeBookContainer<IInventory> {
 
     private final BlastFurnaceTileEntity tileEntity;
@@ -119,7 +121,7 @@ public class BlastFurnaceContainer extends RecipeBookContainer<IInventory> {
                 }
                 slot.onQuickCraft(itemstack1, itemstack);
             } else if (index != 1 && index != 0) {
-                if (isValidInput()) {
+                if (isValidInput(itemstack1)) {
                     if (!moveItemStackTo(itemstack1, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
@@ -173,8 +175,16 @@ public class BlastFurnaceContainer extends RecipeBookContainer<IInventory> {
         return ForgeHooks.getBurnTime(stack, recipeType) > 0;
     }
 
-    boolean isValidInput() {
-        return level.getRecipeManager().getRecipeFor(recipeType, tileEntity, level).isPresent();
+    boolean isValidInput(ItemStack stack) {
+        RecipeManager manager = level.getRecipeManager();
+        List<BlastingRecipe> recipes = manager.getAllRecipesFor(ModRecipeTypes.BLASTING_RECIPE_TYPE);
+        for (BlastingRecipe recipe : recipes) {
+            Ingredient ingredient = recipe.getIngredient();
+            if (ingredient.test(stack)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static class OutputSlot extends Slot {
