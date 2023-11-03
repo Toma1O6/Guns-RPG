@@ -30,6 +30,7 @@ public class ModBlockEntities {
             ModBlocks.SPIKES_WOODEN, ModBlocks.SPIKES_IRON, ModBlocks.SPIKES_DIAMOND,
             ModBlocks.LANDMINE, ModBlocks.LARGE_LANDMINE, ModBlocks.HIDDEN_LANDMINE
     });
+    public static final RegistryObject<TileEntityType<AmmoBenchTileEntity>> AMMO_BENCH = register("ammo_bench", AmmoBenchTileEntity::new, () -> new Block[] {ModBlocks.AMMO_BENCH});
 
     private static <T extends TileEntity> RegistryObject<TileEntityType<T>> register(String name, Supplier<T> supplier, Supplier<Block[]> blockSupplier) {
         return TYPES.register(name, () -> TileEntityType.Builder.of(supplier, blockSupplier.get()).build(null));

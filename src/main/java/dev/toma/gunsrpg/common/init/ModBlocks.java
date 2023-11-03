@@ -40,4 +40,5 @@ public class ModBlocks {
     public static final TrapBlock LANDMINE = null;
     public static final TrapBlock LARGE_LANDMINE = null;
     public static final TrapBlock HIDDEN_LANDMINE = null;
+    public static final AmmoBenchBlock AMMO_BENCH = null;
 }

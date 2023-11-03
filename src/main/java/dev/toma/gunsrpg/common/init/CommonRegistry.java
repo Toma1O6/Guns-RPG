@@ -477,7 +477,8 @@ public class CommonRegistry {
                 new MilitaryCrateBlock("desert_military_crate", MilitaryCrateBlock.BiomeVariant.DESERT),
                 new MilitaryCrateBlock("woodland_military_crate", MilitaryCrateBlock.BiomeVariant.WOODLAND),
                 new CulinaryTableBlock("culinary_table"),
-                new MedstationBlock("medical_station")
+                new MedstationBlock("medical_station"),
+                new AmmoBenchBlock("ammo_bench")
         );
         for (PerkVariant variant : PerkVariant.values()) {
             registry.register(new CrystalOre(variant.getRegistryName("crystal_ore")));
