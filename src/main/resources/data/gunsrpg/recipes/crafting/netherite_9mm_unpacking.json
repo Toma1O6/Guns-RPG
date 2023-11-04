@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gunsrpg:netherite_9mm_pack"
+    }
+  ],
+  "result": {
+    "item": "gunsrpg:netherite_9mm",
+    "count": 30
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gunsrpg:lapis_9mm_pack"
+    }
+  ],
+  "result": {
+    "item": "gunsrpg:lapis_9mm",
+    "count": 30
+  }
+}

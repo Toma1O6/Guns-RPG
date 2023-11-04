@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gunsrpg:netherite_bolts_quiver"
+    }
+  ],
+  "result": {
+    "item": "gunsrpg:netherite_bolt",
+    "count": 25
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gunsrpg:netherite_12g_pack"
+    }
+  ],
+  "result": {
+    "item": "gunsrpg:netherite_12g",
+    "count": 20
+  }
+}

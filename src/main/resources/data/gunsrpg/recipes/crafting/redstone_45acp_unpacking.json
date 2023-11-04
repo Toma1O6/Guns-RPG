@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gunsrpg:redstone_45acp_pack"
+    }
+  ],
+  "result": {
+    "item": "gunsrpg:redstone_45acp",
+    "count": 30
+  }
+}

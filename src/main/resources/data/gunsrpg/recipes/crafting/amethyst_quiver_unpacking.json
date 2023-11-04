@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gunsrpg:amethyst_bolts_quiver"
+    }
+  ],
+  "result": {
+    "item": "gunsrpg:amethyst_bolt",
+    "count": 25
+  }
+}

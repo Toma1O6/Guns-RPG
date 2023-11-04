@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gunsrpg:gold_bolts_quiver"
+    }
+  ],
+  "result": {
+    "item": "gunsrpg:gold_bolt",
+    "count": 25
+  }
+}

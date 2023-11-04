@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gunsrpg:quartz_bolts_quiver"
+    }
+  ],
+  "result": {
+    "item": "gunsrpg:quartz_bolt",
+    "count": 25
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gunsrpg:emerald_12g_pack"
+    }
+  ],
+  "result": {
+    "item": "gunsrpg:emerald_12g",
+    "count": 20
+  }
+}

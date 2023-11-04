@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gunsrpg:amethyst_556mm_pack"
+    }
+  ],
+  "result": {
+    "item": "gunsrpg:amethyst_556mm",
+    "count": 30
+  }
+}

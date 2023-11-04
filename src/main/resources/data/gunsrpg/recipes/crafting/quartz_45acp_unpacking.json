@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gunsrpg:quartz_45acp_pack"
+    }
+  ],
+  "result": {
+    "item": "gunsrpg:quartz_45acp",
+    "count": 30
+  }
+}
