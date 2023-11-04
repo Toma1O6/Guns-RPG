@@ -55,98 +55,98 @@
     "common": [
       {
         "weight": 50,
-        "item": "gunsrpg:wooden_9mm",
+        "item": "gunsrpg:wooden_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:wooden_45acp",
+        "item": "gunsrpg:wooden_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:wooden_556mm",
+        "item": "gunsrpg:wooden_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:wooden_762mm",
+        "item": "gunsrpg:wooden_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:wooden_12g",
+        "item": "gunsrpg:wooden_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:wooden_bolt",
+        "item": "gunsrpg:wooden_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:stone_9mm",
+        "item": "gunsrpg:stone_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:stone_45acp",
+        "item": "gunsrpg:stone_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:stone_556mm",
+        "item": "gunsrpg:stone_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:stone_762mm",
+        "item": "gunsrpg:stone_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:stone_12g",
+        "item": "gunsrpg:stone_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:stone_bolt",
+        "item": "gunsrpg:stone_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
@@ -241,194 +241,194 @@
     "uncommon": [
       {
         "weight": 50,
-        "item": "gunsrpg:wooden_9mm",
+        "item": "gunsrpg:wooden_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:wooden_45acp",
+        "item": "gunsrpg:wooden_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:wooden_556mm",
+        "item": "gunsrpg:wooden_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:wooden_762mm",
+        "item": "gunsrpg:wooden_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:wooden_12g",
+        "item": "gunsrpg:wooden_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:wooden_bolt",
+        "item": "gunsrpg:wooden_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:stone_9mm",
+        "item": "gunsrpg:stone_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:stone_45acp",
+        "item": "gunsrpg:stone_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:stone_556mm",
+        "item": "gunsrpg:stone_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:stone_762mm",
+        "item": "gunsrpg:stone_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:stone_12g",
+        "item": "gunsrpg:stone_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:stone_bolt",
+        "item": "gunsrpg:stone_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:iron_9mm",
+        "item": "gunsrpg:iron_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:iron_45acp",
+        "item": "gunsrpg:iron_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:iron_556mm",
+        "item": "gunsrpg:iron_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:iron_762mm",
+        "item": "gunsrpg:iron_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:iron_12g",
+        "item": "gunsrpg:iron_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:iron_bolt",
+        "item": "gunsrpg:iron_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:lapis_9mm",
+        "item": "gunsrpg:lapis_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:lapis_45acp",
+        "item": "gunsrpg:lapis_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:lapis_556mm",
+        "item": "gunsrpg:lapis_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:lapis_762mm",
+        "item": "gunsrpg:lapis_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:lapis_12g",
+        "item": "gunsrpg:lapis_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:lapis_bolt",
+        "item": "gunsrpg:lapis_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
@@ -555,194 +555,194 @@
     "rare": [
       {
         "weight": 50,
-        "item": "gunsrpg:iron_9mm",
+        "item": "gunsrpg:iron_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:iron_45acp",
+        "item": "gunsrpg:iron_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:iron_556mm",
+        "item": "gunsrpg:iron_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:iron_762mm",
+        "item": "gunsrpg:iron_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:iron_12g",
+        "item": "gunsrpg:iron_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:iron_bolt",
+        "item": "gunsrpg:iron_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:lapis_9mm",
+        "item": "gunsrpg:lapis_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:lapis_45acp",
+        "item": "gunsrpg:lapis_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:lapis_556mm",
+        "item": "gunsrpg:lapis_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:lapis_762mm",
+        "item": "gunsrpg:lapis_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:lapis_12g",
+        "item": "gunsrpg:lapis_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:lapis_bolt",
+        "item": "gunsrpg:lapis_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:gold_9mm",
+        "item": "gunsrpg:gold_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:gold_45acp",
+        "item": "gunsrpg:gold_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:gold_556mm",
+        "item": "gunsrpg:gold_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:gold_762mm",
+        "item": "gunsrpg:gold_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:gold_12g",
+        "item": "gunsrpg:gold_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:gold_bolt",
+        "item": "gunsrpg:gold_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:redstone_9mm",
+        "item": "gunsrpg:redstone_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:redstone_45acp",
+        "item": "gunsrpg:redstone_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:redstone_556mm",
+        "item": "gunsrpg:redstone_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:redstone_762mm",
+        "item": "gunsrpg:redstone_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:redstone_12g",
+        "item": "gunsrpg:redstone_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:redstone_bolt",
+        "item": "gunsrpg:redstone_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
@@ -917,194 +917,194 @@
     "veryrare": [
       {
         "weight": 50,
-        "item": "gunsrpg:gold_9mm",
+        "item": "gunsrpg:gold_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:gold_45acp",
+        "item": "gunsrpg:gold_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:gold_556mm",
+        "item": "gunsrpg:gold_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:gold_762mm",
+        "item": "gunsrpg:gold_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:gold_12g",
+        "item": "gunsrpg:gold_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:gold_bolt",
+        "item": "gunsrpg:gold_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:redstone_9mm",
+        "item": "gunsrpg:redstone_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:redstone_45acp",
+        "item": "gunsrpg:redstone_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:redstone_556mm",
+        "item": "gunsrpg:redstone_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:redstone_762mm",
+        "item": "gunsrpg:redstone_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:redstone_12g",
+        "item": "gunsrpg:redstone_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:redstone_bolt",
+        "item": "gunsrpg:redstone_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:emerald_9mm",
+        "item": "gunsrpg:emerald_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:emerald_45acp",
+        "item": "gunsrpg:emerald_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:emerald_556mm",
+        "item": "gunsrpg:emerald_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:emerald_762mm",
+        "item": "gunsrpg:emerald_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:emerald_12g",
+        "item": "gunsrpg:emerald_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:emerald_bolt",
+        "item": "gunsrpg:emerald_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:quartz_9mm",
+        "item": "gunsrpg:quartz_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:quartz_45acp",
+        "item": "gunsrpg:quartz_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:quartz_556mm",
+        "item": "gunsrpg:quartz_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:quartz_762mm",
+        "item": "gunsrpg:quartz_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:quartz_12g",
+        "item": "gunsrpg:quartz_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:quartz_bolt",
+        "item": "gunsrpg:quartz_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
@@ -1303,146 +1303,146 @@
     "epic": [
       {
         "weight": 50,
-        "item": "gunsrpg:emerald_9mm",
+        "item": "gunsrpg:emerald_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:emerald_45acp",
+        "item": "gunsrpg:emerald_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:emerald_556mm",
+        "item": "gunsrpg:emerald_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:emerald_762mm",
+        "item": "gunsrpg:emerald_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:emerald_12g",
+        "item": "gunsrpg:emerald_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:emerald_bolt",
+        "item": "gunsrpg:emerald_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:quartz_9mm",
+        "item": "gunsrpg:quartz_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:quartz_45acp",
+        "item": "gunsrpg:quartz_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:quartz_556mm",
+        "item": "gunsrpg:quartz_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:quartz_762mm",
+        "item": "gunsrpg:quartz_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:quartz_12g",
+        "item": "gunsrpg:quartz_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:quartz_bolt",
+        "item": "gunsrpg:quartz_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:diamond_9mm",
+        "item": "gunsrpg:diamond_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:diamond_45acp",
+        "item": "gunsrpg:diamond_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:diamond_556mm",
+        "item": "gunsrpg:diamond_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:diamond_762mm",
+        "item": "gunsrpg:diamond_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:diamond_12g",
+        "item": "gunsrpg:diamond_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:diamond_bolt",
+        "item": "gunsrpg:diamond_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
@@ -1657,98 +1657,98 @@
     "legendary": [
       {
         "weight": 50,
-        "item": "gunsrpg:diamond_9mm",
+        "item": "gunsrpg:diamond_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:diamond_45acp",
+        "item": "gunsrpg:diamond_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:diamond_556mm",
+        "item": "gunsrpg:diamond_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:diamond_762mm",
+        "item": "gunsrpg:diamond_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:diamond_12g",
+        "item": "gunsrpg:diamond_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:diamond_bolt",
+        "item": "gunsrpg:diamond_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:amethyst_9mm",
+        "item": "gunsrpg:amethyst_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:amethyst_45acp",
+        "item": "gunsrpg:amethyst_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:amethyst_556mm",
+        "item": "gunsrpg:amethyst_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:amethyst_762mm",
+        "item": "gunsrpg:amethyst_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:amethyst_12g",
+        "item": "gunsrpg:amethyst_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:amethyst_bolt",
+        "item": "gunsrpg:amethyst_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
@@ -1971,146 +1971,146 @@
     "godlike": [
       {
         "weight": 50,
-        "item": "gunsrpg:amethyst_9mm",
+        "item": "gunsrpg:amethyst_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:amethyst_45acp",
+        "item": "gunsrpg:amethyst_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:amethyst_556mm",
+        "item": "gunsrpg:amethyst_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:amethyst_762mm",
+        "item": "gunsrpg:amethyst_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:amethyst_12g",
+        "item": "gunsrpg:amethyst_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:amethyst_bolt",
+        "item": "gunsrpg:amethyst_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:netherite_9mm",
+        "item": "gunsrpg:netherite_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:netherite_45acp",
+        "item": "gunsrpg:netherite_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:netherite_556mm",
+        "item": "gunsrpg:netherite_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:netherite_762mm",
+        "item": "gunsrpg:netherite_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:netherite_12g",
+        "item": "gunsrpg:netherite_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 50,
-        "item": "gunsrpg:netherite_bolt",
+        "item": "gunsrpg:netherite_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 25
+          "value": 1
         }
       },
       {
         "weight": 20,
-        "item": "gunsrpg:netherite_9mm",
+        "item": "gunsrpg:netherite_9mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 20,
-        "item": "gunsrpg:netherite_45acp",
+        "item": "gunsrpg:netherite_45acp_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 20,
-        "item": "gunsrpg:netherite_556mm",
+        "item": "gunsrpg:netherite_556mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 20,
-        "item": "gunsrpg:netherite_762mm",
+        "item": "gunsrpg:netherite_762mm_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 20,
-        "item": "gunsrpg:netherite_12g",
+        "item": "gunsrpg:netherite_12g_pack",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {
         "weight": 20,
-        "item": "gunsrpg:netherite_bolt",
+        "item": "gunsrpg:netherite_bolts_quiver",
         "count": {
           "function": "gunsrpg:const",
-          "value": 50
+          "value": 2
         }
       },
       {

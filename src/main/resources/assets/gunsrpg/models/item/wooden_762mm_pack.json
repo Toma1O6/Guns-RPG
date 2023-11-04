@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gunsrpg:item/wooden_762mm_pack"
+  }
+}
