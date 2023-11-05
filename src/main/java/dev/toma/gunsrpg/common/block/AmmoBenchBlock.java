@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 public class AmmoBenchBlock extends BaseHorizontalBlock {
 
     public AmmoBenchBlock(String name) {
-        super(name, Properties.of(Material.METAL));
+        super(name, Properties.of(Material.METAL).noOcclusion());
     }
 
     @Override

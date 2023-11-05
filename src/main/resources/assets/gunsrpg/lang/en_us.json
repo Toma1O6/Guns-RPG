@@ -332,6 +332,7 @@
   "block.gunsrpg.yellow_orb_ore": "Yellow Orb Ore",
   "block.gunsrpg.culinary_table": "Culinary Table",
   "block.gunsrpg.medical_station": "Medical Station",
+  "block.gunsrpg.ammo_bench": "Ammo Bench",
   "death.attack.gun": "%1$s has been shot",
   "death.attack.gun.player": "%1$s has been shot by %2$s",
   "death.attack.gun.player.weapon": "%1$s has been shot by %2$s with %3$s",
