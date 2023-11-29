@@ -20,10 +20,10 @@ public final class AmmoBenchOutputCountType<C extends AmmoBenchOutputCount> {
 
     private static final Map<ResourceLocation, AmmoBenchOutputCountType<?>> REGISTRY = new HashMap<>();
 
-    // SET
     public static final AmmoBenchOutputCountType<SetRangeOutputCount> SET = register(GunsRPG.makeResource("set"), new SetRangeOutputCount.Serializer());
-    // MULTIPLY
+    public static final AmmoBenchOutputCountType<AddRangeOutputCount> ADD = register(GunsRPG.makeResource("add"), new AddRangeOutputCount.Serializer());
     public static final AmmoBenchOutputCountType<MulRangeOutputCount> MUL = register(GunsRPG.makeResource("multiply"), new MulRangeOutputCount.Serializer());
+    public static final AmmoBenchOutputCountType<WeightedRangeOutputCount> WEIGHTED = register(GunsRPG.makeResource("weighted_select"), new WeightedRangeOutputCount.Serializer());
 
     private final ResourceLocation identifier;
     private final AmmoBenchOutputCountSerializer<C> serializer;

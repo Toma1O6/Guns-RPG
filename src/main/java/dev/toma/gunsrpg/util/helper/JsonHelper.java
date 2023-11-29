@@ -10,7 +10,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -73,6 +75,10 @@ public final class JsonHelper {
             throw new JsonSyntaxException(key + " must not be bigger than " + upperBound + ", got" + val);
         }
         return val;
+    }
+
+    public static <T> Optional<T> optionally(JsonObject object, String key, BiFunction<JsonObject, String, T> function) {
+        return object.has(key) ? Optional.of(function.apply(object, key)) : Optional.empty();
     }
 
     private static <J> J as(JsonElement element, Predicate<JsonElement> condition, Function<JsonElement, J> converter, String type) {
