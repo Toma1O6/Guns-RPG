@@ -36,6 +36,7 @@ public class JeiIntegration implements IModPlugin {
     public static final ResourceLocation MEDSTATION = GunsRPG.makeResource("medstation");
     public static final ResourceLocation BLASTING = GunsRPG.makeResource("blasting");
     public static final ResourceLocation COOKING = GunsRPG.makeResource("cooking");
+    public static final ResourceLocation AMMO_BENCH = GunsRPG.makeResource("ammo_bench");
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
@@ -45,7 +46,8 @@ public class JeiIntegration implements IModPlugin {
                 new BurningRecipeCategory<>(helper, COOKING.getPath(), ModBlocks.COOKER, 200, CookingRecipe.class),
                 new SkilledRecipeCategory(helper, SMITHING.getPath(), ModBlocks.SMITHING_TABLE, SmithingRecipe.class),
                 new SkilledRecipeCategory(helper, CULINARY.getPath(), ModBlocks.CULINARY_TABLE, CulinaryRecipe.class),
-                new SkilledRecipeCategory(helper, MEDSTATION.getPath(), ModBlocks.MEDICAL_STATION, MedRecipe.class)
+                new SkilledRecipeCategory(helper, MEDSTATION.getPath(), ModBlocks.MEDICAL_STATION, MedRecipe.class),
+                new AmmoBenchRecipeCategory(helper)
         );
     }
 
@@ -57,6 +59,7 @@ public class JeiIntegration implements IModPlugin {
         registration.addRecipes(fetcher.getRecipes(ModRecipeTypes.SMITHING_RECIPE_TYPE), SMITHING);
         registration.addRecipes(fetcher.getRecipes(ModRecipeTypes.CULINARY_RECIPE_TYPE), CULINARY);
         registration.addRecipes(fetcher.getRecipes(ModRecipeTypes.MED_RECIPE_TYPE), MEDSTATION);
+        registration.addRecipes(fetcher.getRecipes(ModRecipeTypes.AMMO_BENCH_RECIPE_TYPE), AMMO_BENCH);
     }
 
     @Override
@@ -75,6 +78,7 @@ public class JeiIntegration implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.SMITHING_TABLE), SMITHING);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.CULINARY_TABLE), CULINARY);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.MEDICAL_STATION), MEDSTATION);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.AMMO_BENCH), AMMO_BENCH);
     }
 
     @Override
