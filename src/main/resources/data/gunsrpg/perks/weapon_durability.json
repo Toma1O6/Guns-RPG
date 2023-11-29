@@ -1,5 +1,6 @@
 {
   "attribute": "gunsrpg:weapon_durability",
+  "invertCalculation": true,
   "scaling": 0.01,
   "bounds": {
     "buff": 0.25,
