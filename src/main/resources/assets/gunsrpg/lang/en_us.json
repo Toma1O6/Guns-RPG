@@ -363,6 +363,7 @@
   "gunsrpg.key.sight_type": "Change Sight Shape",
   "gunsrpg.key.firemode": "Change Firemode",
   "gunsrpg.key.unjam": "Unjam Weapon",
+  "gunsrpg.key.group": "View Quests",
   "gunsrpg.key.skill.slot.1": "Skill Slot 1",
   "gunsrpg.key.skill.slot.2": "Skill Slot 2",
   "gunsrpg.key.skill.slot.3": "Skill Slot 3",
@@ -1402,6 +1403,8 @@
   "config.gunsrpg.option.debuffs": "Debuffs",
   "config.gunsrpg.option.skills": "Skills",
   "config.gunsrpg.option.weapon": "Weapons",
+  "config.gunsrpg.option.giveStartingPackage": "Starting package",
+  "config.gunsrpg.option.giveWelcomeBook": "Welcome book",
 
   "config.gunsrpg.option.generationConfig": "World Generation Config",
   "config.gunsrpg.option.mobConfig": "Mob Config",
@@ -1509,6 +1512,7 @@
   "config.gunsrpg.option.jamChanceTransformerFunction": "Jam Chance Transformer Function",
 
   "config.gunsrpg.option.quests": "Quests",
+  "config.gunsrpg.option.groupMemberLimit": "Group member limit",
   "config.gunsrpg.option.reputationAwardPerTier": "Reputation award",
   "config.gunsrpg.option.reputationLossPerTier": "Reputation loss",
   "config.gunsrpg.option.questRefreshInterval": "Quest refresh interval",
@@ -1538,7 +1542,8 @@
   "config.gunsrpg-client.option.scope40x": "4.0x Zoom Sensitivity",
   "config.gunsrpg-client.option.scope60x": "6.0x Zoom Sensitivity",
   "config.gunsrpg-client.option.rightAligned": "Right-Aligned",
-  "config.gunsrpg-client.option.heightOffset": "Height Offset"
+  "config.gunsrpg-client.option.heightOffset": "Height Offset",
 
-
+  "gunsrpg.welcome_book.page.0": "Welcome to GunsRPG, a hardcore survival focused mod with RPG elements\n\nCurrently most features of this mod are locked behind skill progression, but we have prepared simple quest line which will guide you.",
+  "gunsrpg.welcome_book.page.1": "You can see the quest line by pressing 'P' key by default.\n\nWe have also prepared starting package for you to make your first days easier, you should have it in your inventory."
 }

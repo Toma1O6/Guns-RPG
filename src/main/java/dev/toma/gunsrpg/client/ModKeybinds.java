@@ -12,6 +12,7 @@ import dev.toma.gunsrpg.api.common.skill.IClickableSkill;
 import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
 import dev.toma.gunsrpg.client.screen.ChooseAmmoScreen;
+import dev.toma.gunsrpg.client.screen.quest.QuestGroupScreen;
 import dev.toma.gunsrpg.client.screen.skill.SkillTreeScreen;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModItems;
@@ -58,6 +59,7 @@ public class ModKeybinds {
                 NetworkManager.sendServerPacket(new C2S_ChangeFiremodePacket());
             }
         });
+        register("group", GLFW.GLFW_KEY_P, ModKeybinds::showQuestGroupPressed);
         register("skill.slot.1", GLFW.GLFW_KEY_KP_1, () -> activateSkillSlot(0));
         register("skill.slot.2", GLFW.GLFW_KEY_KP_2, () -> activateSkillSlot(1));
         register("skill.slot.3", GLFW.GLFW_KEY_KP_3, () -> activateSkillSlot(2));
@@ -187,6 +189,12 @@ public class ModKeybinds {
         Minecraft mc = Minecraft.getInstance();
         NetworkManager.sendServerPacket(new C2S_RequestDataUpdatePacket(mc.player.getUUID()));
         mc.setScreen(new SkillTreeScreen());
+    }
+
+    private static void showQuestGroupPressed() {
+        Minecraft mc = Minecraft.getInstance();
+        // TODO request server quest data
+        mc.setScreen(new QuestGroupScreen());
     }
 
     private static void register(String name, int key, Runnable onPress) {
