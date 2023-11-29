@@ -11,16 +11,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
@@ -32,13 +28,13 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import java.lang.reflect.Array;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.*;
+import java.util.stream.IntStream;
 
 public class ModUtils {
 
@@ -276,6 +272,80 @@ public class ModUtils {
             map.computeIfAbsent(category, cat -> new ArrayList<>()).add(type);
         }
         return map;
+    }
+
+    public static boolean canFitItems(ItemStack[] items, IInventory container, int... validSlots) {
+        int maxIndex = IntStream.of(validSlots).max().orElse(1);
+        NonNullList<ItemStack> inventory = NonNullList.withSize(maxIndex + 1, ItemStack.EMPTY);
+        for (int slotIndex : validSlots) {
+            ItemStack stack = container.getItem(slotIndex);
+            inventory.set(slotIndex, stack);
+        }
+        return insertItems(items, inventory, container::getMaxStackSize, NonNullList::get, NonNullList::set, validSlots);
+    }
+
+    public static void insertItems(ItemStack[] items, IInventory container, int... outputSlots) {
+        insertItems(items, container, container::getMaxStackSize, IInventory::getItem, IInventory::setItem, outputSlots);
+    }
+
+    private static <T> boolean insertItems(ItemStack[] items, T t, IntSupplier maxSize, BiFunction<T, Integer, ItemStack> itemGetter, TriConsumer<T, Integer, ItemStack> itemSetter, int[] outputSlots) {
+        for (ItemStack itemStack : items) {
+            boolean result = insertItem(itemStack.copy(), t, maxSize, itemGetter, itemSetter, outputSlots);
+            if (!result) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static <T> boolean insertItem(ItemStack item, T target, IntSupplier maxSize, BiFunction<T, Integer, ItemStack> getter, TriConsumer<T, Integer, ItemStack> setter, int[] slots) {
+        // Find best slot for item
+        int max = maxSize.getAsInt();
+        int toInsert = item.getCount();
+        int slot = getSlotForItem(item, target, max, getter, slots);
+        if (slot == -1) {
+            return false;
+        }
+        // Insert item
+        ItemStack itemStack = getter.apply(target, slot);
+        if (itemStack.isEmpty()) {
+            ItemStack inserted = item.copy();
+            inserted.setCount(Math.min(inserted.getCount(), Math.min(toInsert, max)));
+            setter.accept(target, slot, inserted);
+            toInsert -= inserted.getCount();
+        } else if (ItemStack.isSame(itemStack, item)) {
+            ItemStack inserted = item.copy();
+            int emptySpace = Math.max(0, max - itemStack.getCount());
+            int insertAmount = Math.min(emptySpace, toInsert);
+            inserted.setCount(itemStack.getCount() + insertAmount);
+            setter.accept(target, slot, inserted);
+            toInsert -= insertAmount;
+        }
+        // If not everything was inserted, repeat
+        if (toInsert > 0) {
+            item.setCount(toInsert);
+            return insertItem(item, target, maxSize, getter, setter, slots);
+        }
+        return true;
+    }
+
+    private static <T> int getSlotForItem(ItemStack stack, T target, int max, BiFunction<T, Integer, ItemStack> getter, int[] slots) {
+        int slot = -1;
+        for (int i : slots) {
+            ItemStack itemStack = getter.apply(target, i);
+            if (ItemStack.isSame(stack, itemStack)) {
+                if (itemStack.getCount() < max) {
+                    return i;
+                }
+            }
+        }
+        for (int i : slots) {
+            ItemStack itemStack = getter.apply(target, i);
+            if (itemStack.isEmpty()) {
+                return i;
+            }
+        }
+        return slot;
     }
 
     public static final class SerializedSlot {

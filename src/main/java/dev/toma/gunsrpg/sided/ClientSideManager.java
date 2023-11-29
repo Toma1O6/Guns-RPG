@@ -147,6 +147,7 @@ public class ClientSideManager {
         ScreenManager.register(ModContainers.CRYSTAL_FUSE.get(), CrystalFuseStationScreen::new);
         ScreenManager.register(ModContainers.CRYSTAL_PURIFICATION.get(), CrystalPurificationStationScreen::new);
         ScreenManager.register(ModContainers.TURRET_CONTAINER.get(), TurretScreen::new);
+        ScreenManager.register(ModContainers.AMMO_BENCH_CONTAINER.get(), AmmoBenchScreen::new);
     }
 
     private AnimationType<?>[] gatherAnimationTypes() {

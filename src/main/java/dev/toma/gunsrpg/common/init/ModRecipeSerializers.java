@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.init;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.resource.blasting.BlastingRecipe;
 import dev.toma.gunsrpg.resource.cooking.CookingRecipe;
+import dev.toma.gunsrpg.resource.ammobench.AmmoBenchRecipe;
 import dev.toma.gunsrpg.resource.crafting.CulinaryRecipe;
 import dev.toma.gunsrpg.resource.crafting.MedRecipe;
 import dev.toma.gunsrpg.resource.crafting.SmithingRecipe;
@@ -24,6 +25,7 @@ public class ModRecipeSerializers {
     public static final RegistryObject<IRecipeSerializer<CulinaryRecipe>> CULINARY_RECIPE_SERIALIZER = register("culinary", CulinaryRecipe.Serializer::new);
     public static final RegistryObject<IRecipeSerializer<MedRecipe>> MED_RECIPE_SERIALIZER = register("medical_station", MedRecipe.Serializer::new);
     public static final RegistryObject<IRecipeSerializer<BlastingRecipe>> BLASTING_RECIPE_SERIALIZER = register("blasting", BlastingRecipe.Serializer::new);
+    public static final RegistryObject<IRecipeSerializer<AmmoBenchRecipe>> AMMO_BENCH_RECIPE_SERIALIZER = register("ammo_bench", AmmoBenchRecipe.Serializer::new);
 
     public static void subscribe(IEventBus bus) {
         TYPE.register(bus);

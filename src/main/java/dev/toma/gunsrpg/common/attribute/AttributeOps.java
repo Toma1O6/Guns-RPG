@@ -16,6 +16,7 @@ public final class AttributeOps {
     public static final IModifierOp SUB = create("sub", OperationTarget.BEFORE_MULTIPLY, (v1, v2) -> v1 - v2);
     public static final IModifierOp MUL = create("mul", OperationTarget.MULTIPLIER, (v1, v2) -> v1 * v2);
     public static final IModifierOp MULB = create("mulb", OperationTarget.MULTIPLIER, (v1, v2) -> v1 * (1.0F + v2));
+    public static final IModifierOp SET = create("set", OperationTarget.BEFORE_MULTIPLY, (v1, v2) -> v2);
 
     public static IModifierOp register(IModifierOp op) {
         OPERATION_MAP.put(op.getId(), op);

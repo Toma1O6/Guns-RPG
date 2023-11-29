@@ -1,0 +1,59 @@
+{
+  "type": "gunsrpg:ammo_bench",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "gunsrpg:wooden_9mm"
+      },
+      "count": 1
+    }
+  ],
+  "craftingTimer": 240,
+  "outputs": [
+    {
+      "result": {
+        "item": "gunsrpg:wooden_bullet_tip"
+      }
+    },
+    {
+      "result": {
+        "item": "minecraft:gunpowder"
+      },
+      "modifiers": [
+        {
+          "skill": "gunsrpg:wooden_ammo_smith",
+          "active": false,
+          "modifier": {
+            "type": "gunsrpg:set",
+            "min": 0,
+            "max": 3
+          }
+        },
+        {
+          "skill": "gunsrpg:wooden_ammo_smith",
+          "active": true,
+          "modifier": {
+            "type": "gunsrpg:set",
+            "min": 2,
+            "max": 4
+          }
+        },
+        {
+          "skill": "gunsrpg:ammo_smithing_mastery",
+          "modifier": {
+            "type": "gunsrpg:multiply",
+            "value": 1.5
+          }
+        }
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate":{
+        "skill": "gunsrpg:gun_parts_smith"
+      }
+    }
+  ]
+}
