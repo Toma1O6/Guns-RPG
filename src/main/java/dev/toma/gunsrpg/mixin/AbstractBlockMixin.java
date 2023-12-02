@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.common.block.ICustomizableDrops;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.MotherlodeSkill;
+import dev.toma.gunsrpg.config.world.WorldConfiguration;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.object.Pair;
@@ -115,11 +116,17 @@ public abstract class AbstractBlockMixin extends net.minecraftforge.registries.F
         Iterator<ItemStack> iterator = drops.iterator();
         List<ItemStack> extraDrops = new ArrayList<>();
         Lifecycle lifecycle = GunsRPG.getModLifecycle();
+        WorldConfiguration configuration = GunsRPG.config.world;
         while (iterator.hasNext()) {
             ItemStack stack = iterator.next();
             Item dropReplacement = lifecycle.getOreDropReplacement(stack.getItem());
             if (dropReplacement != null) {
-                List<ItemStack> extras = this.multiply(new ItemStack(dropReplacement, stack.getCount()), multiplier);
+                List<ItemStack> extras;
+                if (configuration.replaceOresAsChunks) {
+                    extras = multiply(new ItemStack(dropReplacement, stack.getCount()), multiplier);
+                } else {
+                    extras = Collections.singletonList(stack.copy());
+                }
                 extraDrops.addAll(extras);
                 iterator.remove();
             } else if (stack.getItem() != block.asItem()) {

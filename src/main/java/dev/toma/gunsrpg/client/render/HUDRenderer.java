@@ -110,7 +110,7 @@ public final class HUDRenderer {
         ISkillProvider provider = data.getSkillProvider();
         Set<S> displayables = SkillRendererRegistry.getDisplayableSkills().stream()
                 .map(type -> (S) SkillUtil.getTopHierarchySkill(type, provider))
-                .filter(Objects::nonNull)
+                .filter(skill -> skill != null && !skill.getType().isDisabled())
                 .collect(Collectors.toSet());
         int renderIndex = 0;
         for (S skill : displayables) {

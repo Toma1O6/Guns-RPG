@@ -78,6 +78,9 @@ public class ModKeybinds {
             GunsRPG.log.warn("Bind skill activation failed: Unknown skill {}", skillId);
             return;
         }
+        if (skillType.isDisabled()) {
+            return;
+        }
         PlayerEntity player = Minecraft.getInstance().player;
         PlayerData.get(player).ifPresent(data -> {
             ISkillProvider provider = data.getSkillProvider();

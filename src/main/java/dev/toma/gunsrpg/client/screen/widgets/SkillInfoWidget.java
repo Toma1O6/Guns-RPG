@@ -159,7 +159,7 @@ public class SkillInfoWidget extends ContainerWidget {
         if (provider.hasSkill(src)) {
             return 0;
         } else {
-            return (provider.hasSkill(parentType) || parentType == null) && validator.canUnlock(data, src) ? 1 : 2;
+            return (parentType == null || provider.hasSkill(parentType)) && validator.canUnlock(data, src) ? 1 : 2;
         }
     }
 
