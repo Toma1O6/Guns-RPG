@@ -69,16 +69,20 @@ public final class SkillPropertyLoader extends JsonReloadListener {
         ISkillHierarchy<S> hierarchy();
 
         ISkillProperties properties();
+
+        boolean disabled();
     }
 
     public static class Result<S extends ISkill> implements ILoadResult<S> {
 
         private final ISkillHierarchy<S> hierarchy;
         private final ISkillProperties properties;
+        private boolean disabled;
 
-        public Result(ISkillHierarchy<S> hierarchy, ISkillProperties properties) {
+        public Result(ISkillHierarchy<S> hierarchy, ISkillProperties properties, boolean disabled) {
             this.hierarchy = hierarchy;
             this.properties = properties;
+            this.disabled = disabled;
         }
 
         @Override
@@ -89,6 +93,11 @@ public final class SkillPropertyLoader extends JsonReloadListener {
         @Override
         public ISkillProperties properties() {
             return properties;
+        }
+
+        @Override
+        public boolean disabled() {
+            return disabled;
         }
     }
 }

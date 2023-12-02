@@ -1467,6 +1467,7 @@
   "config.gunsrpg.option.globalFractureChanceMultiplier": "Global Fracture Chance",
   "config.gunsrpg.option.globalBleedingChanceMultiplier": "Global Bleed Chance",
 
+  "config.gunsrpg.option.disableAllSkills": "Disable Skills",
   "config.gunsrpg.option.wellFedTriggerValue": "Well Fed Trigger Value",
   "config.gunsrpg.option.boundSkills": "Bound Skills",
   "config.gunsrpg.option.skullCrusherIgnoredMobs": "Skull Crusher - Ignored Mobs",

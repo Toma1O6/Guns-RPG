@@ -188,15 +188,17 @@ public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket<S2C_
 
         DataContext(PacketBuffer buffer) {
             this.owner = fromResource(buffer.readResourceLocation());
+            boolean disabled = buffer.readBoolean();
             ISkillHierarchy<?> hierarchy = decodeHierarchy(buffer);
             ISkillProperties properties = decodeProperties(buffer);
-            this.result = new SkillPropertyLoader.Result<>(hierarchy, properties);
+            this.result = new SkillPropertyLoader.Result<>(hierarchy, properties, disabled);
         }
 
         public void encode(PacketBuffer to) {
             ISkillHierarchy<?> hierarchy = owner.getHierarchy();
             ISkillProperties properties = owner.getProperties();
             to.writeResourceLocation(owner.getRegistryName());
+            to.writeBoolean(owner.isDisabled());
             encodeHierarchy(hierarchy, to);
             encodeProperties(properties, to);
         }

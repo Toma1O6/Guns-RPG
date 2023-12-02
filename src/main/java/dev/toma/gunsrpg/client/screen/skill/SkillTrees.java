@@ -25,7 +25,7 @@ public class SkillTrees {
 
     public void populate(List<SkillType<?>> list) {
         Set<SkillType<?>> extensions = list.stream().map(SkillType::getHierarchy).filter(this::hasExtensions).flatMap(this::extensionsAsStream).collect(Collectors.toSet());
-        List<SkillType<?>> roots = list.stream().filter(this::isRoot).filter(type -> notAnExtension(type, extensions)).collect(Collectors.toList());
+        List<SkillType<?>> roots = list.stream().filter(this::isRoot).filter(type -> notAnExtension(type, extensions) && !type.isDisabled()).collect(Collectors.toList());
         trees = new Tree[roots.size()];
         for (int i = 0; i < roots.size(); i++) {
             trees[i] = new Tree(category, roots.get(i));

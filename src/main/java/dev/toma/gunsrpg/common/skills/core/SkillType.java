@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.skills.core;
 
 import com.google.common.base.Preconditions;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
@@ -24,6 +25,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
     // datapack controlled data
     private ISkillHierarchy<S> hierarchy;
     private ISkillProperties properties;
+    private boolean disabled;
 
     private SkillType(Builder<S> builder) {
         this.instanceFactory = builder.factory;
@@ -65,6 +67,10 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
         this.state = ClientState.NORMAL;
     }
 
+    public boolean isDisabled() {
+        return disabled || GunsRPG.config.skills.disableAllSkills || (hierarchy != null && hierarchy.getParent() != null && hierarchy.getParent().isDisabled());
+    }
+
     /**
      * Called when data are loaded from datapack for this particular instance.
      * @param result The loaded data
@@ -72,6 +78,7 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
     public void onDataAssign(SkillPropertyLoader.ILoadResult<S> result) {
         hierarchy = result.hierarchy();
         properties = result.properties();
+        disabled = result.disabled();
         displayData = displayDataFactory.apply(this);
     }
 
