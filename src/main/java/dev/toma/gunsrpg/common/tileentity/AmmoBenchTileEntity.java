@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.resource.ammobench.AmmoBenchOutputCountType;
 import dev.toma.gunsrpg.resource.ammobench.AmmoBenchOutputModifier;
 import dev.toma.gunsrpg.resource.ammobench.AmmoBenchRecipe;
 import dev.toma.gunsrpg.util.ModUtils;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.RecipeManager;
@@ -21,10 +22,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -48,7 +46,7 @@ public class AmmoBenchTileEntity extends VanillaInventoryTileEntity implements I
     public void tick() {
         if (crafting) {
             AmmoBenchRecipe recipe = getActiveRecipe();
-            if (image == null || recipe == null) {
+            if (image == null || recipe == null || !recipe.matches(this, level)) {
                 interruptCrafting();
                 return;
             }
@@ -151,10 +149,10 @@ public class AmmoBenchTileEntity extends VanillaInventoryTileEntity implements I
         return recipeSelection.get(selectedRecipeIndex);
     }
 
-    public boolean canCraftCurrentRecipe() {
+    public boolean canCraftCurrentRecipe(PlayerEntity player) {
         AmmoBenchRecipe recipe = getActiveRecipe();
         if (recipe != null) {
-            return recipe.matches(this, level);
+            return recipe.matches(this, level) && recipe.canPlayerCraft(player);
         }
         return false;
     }
@@ -172,10 +170,15 @@ public class AmmoBenchTileEntity extends VanillaInventoryTileEntity implements I
             return;
         RecipeManager manager = level.getRecipeManager();
         List<AmmoBenchRecipe> recipeList = manager.getAllRecipesFor(ModRecipeTypes.AMMO_BENCH_RECIPE_TYPE);
+        AmmoBenchRecipe oldRecipe = getActiveRecipe();
         this.recipeSelection = recipeList.stream()
                 .filter(recipe -> recipe.matches(this, level))
                 .collect(Collectors.toList());
         if (selectedRecipeIndex >= recipeSelection.size()) {
+            setRecipeIndex(0);
+        }
+        AmmoBenchRecipe currentRecipe = getActiveRecipe();
+        if (oldRecipe != currentRecipe) {
             setRecipeIndex(0);
         }
         setChanged();

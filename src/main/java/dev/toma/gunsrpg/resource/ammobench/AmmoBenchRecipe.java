@@ -8,7 +8,6 @@ import dev.toma.gunsrpg.common.init.ModRecipeSerializers;
 import dev.toma.gunsrpg.common.init.ModRecipeTypes;
 import dev.toma.gunsrpg.common.tileentity.AmmoBenchTileEntity;
 import dev.toma.gunsrpg.resource.MultiIngredient;
-import dev.toma.gunsrpg.resource.crafting.OutputModifier;
 import dev.toma.gunsrpg.resource.util.ResourceUtils;
 import dev.toma.gunsrpg.resource.util.conditions.ConditionType;
 import dev.toma.gunsrpg.resource.util.conditions.IRecipeCondition;
@@ -99,6 +98,11 @@ public class AmmoBenchRecipe implements IRecipe<AmmoBenchTileEntity> {
     @Override
     public IRecipeSerializer<?> getSerializer() {
         return ModRecipeSerializers.AMMO_BENCH_RECIPE_SERIALIZER.get();
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return true;
     }
 
     public static final class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<AmmoBenchRecipe> {
