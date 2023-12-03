@@ -8,7 +8,7 @@
       "count": 1
     }
   ],
-  "craftingTimer": 240,
+  "craftingTimer": 100,
   "outputs": [
     {
       "result": {
@@ -21,39 +21,31 @@
       },
       "modifiers": [
         {
-          "skill": "gunsrpg:wooden_ammo_smith",
+          "skill": "gunsrpg:ammo_smithing_mastery",
           "active": false,
           "modifier": {
-            "type": "gunsrpg:set",
-            "min": 0,
-            "max": 3
-          }
-        },
-        {
-          "skill": "gunsrpg:wooden_ammo_smith",
-          "active": true,
-          "modifier": {
-            "type": "gunsrpg:set",
-            "min": 2,
-            "max": 4
-          }
-        },
-        {
-          "skill": "gunsrpg:ammo_smithing_mastery",
-          "modifier": {
             "type": "gunsrpg:multiply",
-            "value": 1.5
+            "value": 0,
+            "chance": 0.35
           }
         }
       ]
-    }
-  ],
-  "requirements": [
+    },
     {
-      "type": "gunsrpg:skill",
-      "predicate":{
-        "skill": "gunsrpg:gun_parts_smith"
-      }
+      "result": {
+        "item": "gunsrpg:small_bullet_casing"
+      },
+      "modifiers": [
+        {
+          "skill": "gunsrpg:ammo_smithing_mastery",
+          "active": false,
+          "modifier": {
+            "type": "gunsrpg:multiply",
+            "value": 0,
+            "chance": 0.25
+          }
+        }
+      ]
     }
   ]
 }

@@ -38,8 +38,8 @@ public class AmmoBenchBlock extends BaseHorizontalBlock {
             TileEntity tileEntity = world.getBlockEntity(pos);
             if (tileEntity instanceof AmmoBenchTileEntity) {
                 AmmoBenchTileEntity ammoBenchTile = (AmmoBenchTileEntity) tileEntity;
-                if (!PlayerData.hasActiveSkill(player, Skills.WOODEN_AMMO_SMITH)) {
-                    player.displayClientMessage(SkillUtil.getMissingSkillText(Skills.WOODEN_AMMO_SMITH), true);
+                if (!PlayerData.hasActiveSkill(player, Skills.GUN_PARTS_SMITH)) {
+                    player.displayClientMessage(SkillUtil.getMissingSkillText(Skills.GUN_PARTS_SMITH), true);
                     return ActionResultType.FAIL;
                 } else {
                     NetworkHooks.openGui((ServerPlayerEntity) player, new SimpleNamedContainerProvider((windowId, playerInventory, interactingPlayer) -> new AmmoBenchContainer(windowId, playerInventory, ammoBenchTile), TITLE), pos);

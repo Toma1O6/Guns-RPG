@@ -1,0 +1,39 @@
+{
+  "type": "gunsrpg:ammo_bench",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "gunsrpg:iron_bullet_tip"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:gunpowder"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "gunsrpg:small_bullet_casing"
+      },
+      "count": 1
+    }
+  ],
+  "craftingTimer": 100,
+  "outputs": [
+    {
+      "result": {
+        "item": "gunsrpg:iron_9mm"
+      }
+    }
+  ],
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate":{
+        "skill": "gunsrpg:iron_ammo_smith"
+      }
+    }
+  ]
+}

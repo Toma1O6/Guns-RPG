@@ -9,6 +9,7 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(GunsRPG.MODID)
 public class Skills {
     public static final SkillType<SimpleSkill> WOODEN_AMMO_SMITH = null;
+    public static final SkillType<SimpleSkill> GUN_PARTS_SMITH = null;
     public static final SkillType<SimpleSkill> M1911_ASSEMBLY = null;
     public static final SkillType<SimpleSkill> R45_ASSEMBLY = null;
     public static final SkillType<SimpleSkill> DESERT_EAGLE_ASSEMBLY = null;

@@ -1,0 +1,73 @@
+{
+  "type": "gunsrpg:ammo_bench",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "gunsrpg:diamond_45acp"
+      },
+      "count": 1
+    }
+  ],
+  "craftingTimer": 100,
+  "outputs": [
+    {
+      "result": {
+        "item": "gunsrpg:diamond_bullet_tip"
+      }
+    },
+    {
+      "result": {
+        "item": "minecraft:gunpowder",
+        "count": 2
+      },
+      "modifiers": [
+        {
+          "skill": "gunsrpg:ammo_smithing_mastery",
+          "active": false,
+          "modifier": {
+            "type": "gunsrpg:weighted_select",
+            "entries": [
+              {
+                "weight": 32,
+                "entry": {
+                  "type": "gunsrpg:add",
+                  "value": 0
+                }
+              },
+              {
+                "weight": 33,
+                "entry": {
+                  "type": "gunsrpg:add",
+                  "value": -1
+                }
+              },
+              {
+                "weight": 35,
+                "entry": {
+                  "type": "gunsrpg:add",
+                  "value": -2
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "result": {
+        "item": "gunsrpg:small_bullet_casing"
+      },
+      "modifiers": [
+        {
+          "skill": "gunsrpg:ammo_smithing_mastery",
+          "active": false,
+          "modifier": {
+            "type": "gunsrpg:multiply",
+            "value": 0,
+            "chance": 0.25
+          }
+        }
+      ]
+    }
+  ]
+}

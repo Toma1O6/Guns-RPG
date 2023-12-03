@@ -1,0 +1,80 @@
+{
+  "type": "gunsrpg:ammo_bench",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "gunsrpg:redstone_762mm"
+      },
+      "count": 1
+    }
+  ],
+  "craftingTimer": 100,
+  "outputs": [
+    {
+      "result": {
+        "item": "gunsrpg:redstone_bullet_tip"
+      }
+    },
+    {
+      "result": {
+        "item": "minecraft:gunpowder",
+        "count": 3
+      },
+      "modifiers": [
+        {
+          "skill": "gunsrpg:ammo_smithing_mastery",
+          "active": false,
+          "modifier": {
+            "type": "gunsrpg:weighted_select",
+            "entries": [
+              {
+                "weight": 22,
+                "entry": {
+                  "type": "gunsrpg:add",
+                  "value": 0
+                }
+              },
+              {
+                "weight": 22,
+                "entry": {
+                  "type": "gunsrpg:add",
+                  "value": -1
+                }
+              },
+              {
+                "weight": 22,
+                "entry": {
+                  "type": "gunsrpg:add",
+                  "value": -2
+                }
+              },
+              {
+                "weight": 35,
+                "entry": {
+                  "type": "gunsrpg:add",
+                  "value": -3
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "result": {
+        "item": "gunsrpg:large_bullet_casing"
+      },
+      "modifiers": [
+        {
+          "skill": "gunsrpg:ammo_smithing_mastery",
+          "active": false,
+          "modifier": {
+            "type": "gunsrpg:multiply",
+            "value": 0,
+            "chance": 0.25
+          }
+        }
+      ]
+    }
+  ]
+}

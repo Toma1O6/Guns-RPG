@@ -1,0 +1,51 @@
+{
+  "type": "gunsrpg:ammo_bench",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "gunsrpg:amethyst_bolt"
+      },
+      "count": 1
+    }
+  ],
+  "craftingTimer": 100,
+  "outputs": [
+    {
+      "result": {
+        "item": "gunsrpg:amethyst_arrowhead"
+      }
+    },
+    {
+      "result": {
+        "item": "gunsrpg:bolt_fletching"
+      },
+      "modifiers": [
+        {
+          "skill": "gunsrpg:ammo_smithing_mastery",
+          "active": false,
+          "modifier": {
+            "type": "gunsrpg:multiply",
+            "value": 0,
+            "chance": 0.35
+          }
+        }
+      ]
+    },
+    {
+      "result": {
+        "item": "minecraft:stick"
+      },
+      "modifiers": [
+        {
+          "skill": "gunsrpg:ammo_smithing_mastery",
+          "active": false,
+          "modifier": {
+            "type": "gunsrpg:multiply",
+            "value": 0,
+            "chance": 0.25
+          }
+        }
+      ]
+    }
+  ]
+}

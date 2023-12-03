@@ -1,0 +1,25 @@
+{
+  "type": "gunsrpg:ammo_bench",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "gunsrpg:diamond_9mm"
+      },
+      "count": 30
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:paper"
+      },
+      "count": 2
+    }
+  ],
+  "craftingTimer": 140,
+  "outputs": [
+    {
+      "result": {
+        "item": "gunsrpg:diamond_9mm_pack"
+      }
+    }
+  ]
+}

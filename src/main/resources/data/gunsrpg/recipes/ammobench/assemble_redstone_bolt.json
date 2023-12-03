@@ -1,0 +1,39 @@
+{
+  "type": "gunsrpg:ammo_bench",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "gunsrpg:redstone_arrowhead"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:stick"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "gunsrpg:bolt_fletching"
+      },
+      "count": 1
+    }
+  ],
+  "craftingTimer": 100,
+  "outputs": [
+    {
+      "result": {
+        "item": "gunsrpg:redstone_bolt"
+      }
+    }
+  ],
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate":{
+        "skill": "gunsrpg:redstone_ammo_smith"
+      }
+    }
+  ]
+}
