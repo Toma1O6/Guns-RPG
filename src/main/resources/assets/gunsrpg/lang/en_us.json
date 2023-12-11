@@ -412,8 +412,8 @@
   "skill.gunsrpg.netherite_ammo_smith.title": "Netherite Ammo Smith",
   "skill.gunsrpg.netherite_ammo_smith.description.0": "Allows crafting of netherite ammo",
   "skill.gunsrpg.ammo_smithing_mastery.title": "Ammo Smithing Mastery",
-  "skill.gunsrpg.ammo_smithing_mastery.description.ammo": "Increases yield of all ammo crafts by %s",
-  "skill.gunsrpg.ammo_smithing_mastery.description.bolt": "Increases yield of all bolt crafts by %s",
+  "skill.gunsrpg.ammo_smithing_mastery.description.0": "Increases yield of bullets, buckshots and arrowheads crafts by 1",
+  "skill.gunsrpg.ammo_smithing_mastery.description.1": "Prevents loss of material when disassembling ammo",
   "skill.gunsrpg.gun_parts_smith.title": "Gun Parts Smith",
   "skill.gunsrpg.gun_parts_smith.description.0": "Allows you to craft weapon parts",
   "skill.gunsrpg.m1911_assembly.title": "M1911",
@@ -1776,5 +1776,7 @@
   "recipe.gunsrpg.ammobench.disassemble_wooden_556mm": "Disassemble Wooden 5.56mm",
   "recipe.gunsrpg.ammobench.disassemble_wooden_762mm": "Disassemble Wooden 7.62mm",
   "recipe.gunsrpg.ammobench.disassemble_wooden_9mm": "Disassemble Wooden 9mm",
-  "recipe.gunsrpg.ammobench.disassemble_wooden_bolt": "Disassemble Wooden Bolt"
+  "recipe.gunsrpg.ammobench.disassemble_wooden_bolt": "Disassemble Wooden Bolt",
+
+  "jei.recipe.category.gunsrpg.ammo_bench": "Ammo Bench"
 }
