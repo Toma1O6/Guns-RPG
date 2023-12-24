@@ -48,7 +48,7 @@ public class AmmoBenchRecipeCategory implements IRecipeCategory<AmmoBenchRecipe>
 
     @Override
     public String getTitle() {
-        return "jei.recipe.category." + SkillUtil.Localizations.convertToLocalizationKey(getUid());
+        return "Ammo Bench";
     }
 
     @Override

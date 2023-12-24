@@ -3,7 +3,7 @@
   "inputs": [
     {
       "ingredient": {
-        "item": "minecraft:quartz"
+        "item": "minecraft:quartz_block"
       },
       "count": 1
     }

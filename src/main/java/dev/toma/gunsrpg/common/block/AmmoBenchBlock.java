@@ -20,6 +20,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -29,7 +30,7 @@ public class AmmoBenchBlock extends BaseHorizontalBlock {
     private static final ITextComponent TITLE = new TranslationTextComponent("screen.gunsrpg.ammo_bench");
 
     public AmmoBenchBlock(String name) {
-        super(name, Properties.of(Material.METAL).noOcclusion());
+        super(name, Properties.of(Material.METAL).strength(2.2F, 18.0F).harvestTool(ToolType.PICKAXE).harvestLevel(1).requiresCorrectToolForDrops().noOcclusion());
     }
 
     @Override

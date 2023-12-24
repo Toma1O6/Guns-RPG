@@ -103,7 +103,7 @@ public class CommonRegistry {
                 SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("emerald_ammo_smith"),
                 SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("amethyst_ammo_smith"),
                 SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("netherite_ammo_smith"),
-                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.MASTER_AMMO, Attribs.AMMO_OUTPUT))).description(0).build().setRegistryName("ammo_smithing_mastery"),
+                SkillType.Builder.<AttributeSkill>create(type -> new AttributeSkill(type, AttributeTarget.create(Modifiers.MASTER_AMMO, Attribs.AMMO_OUTPUT))).description(2, SkillUtil.Localizations::generateSimpleDescription).build().setRegistryName("ammo_smithing_mastery"),
                 SkillType.Builder.create(SimpleSkill::new).build().setRegistryName("gun_parts_smith"),
                 SkillType.Builder.create(SimpleSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModBlocks.REPAIR_STATION))).build().setRegistryName("repair_station"),
                 SkillType.Builder.create(SimpleSkill::new).render(type -> DisplayData.create(DisplayType.ITEM, new ItemStack(ModItems.M1911))).build().setRegistryName("m1911_assembly"),
