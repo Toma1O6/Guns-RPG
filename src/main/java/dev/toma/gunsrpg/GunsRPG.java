@@ -54,6 +54,7 @@ public class GunsRPG {
         ModFeatures.subscribe(eventBus);
         ModFeaturePlacements.subscribe(eventBus);
         ModRecipeSerializers.subscribe(eventBus);
+        ModPotions.subscribe(eventBus);
         // lifecycle events
         eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::commonSetup);

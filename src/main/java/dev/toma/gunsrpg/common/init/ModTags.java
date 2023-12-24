@@ -2,8 +2,10 @@ package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
@@ -13,6 +15,7 @@ public class ModTags {
     public static void init() {
         Blocks.init();
         Items.init();
+        Entities.init();
     }
 
     public static class Blocks {
@@ -55,6 +58,26 @@ public class ModTags {
 
         private static Tags.IOptionalNamedTag<Item> tag(String namespace, String path) {
             return ItemTags.createOptional(new ResourceLocation(namespace, path));
+        }
+    }
+
+    public static final class Entities {
+
+        public static final Tags.IOptionalNamedTag<EntityType<?>> ZOMBIE_NIGHTMARE_COMPANIONS = modded("zombie_nightmare_companions");
+
+        private static void init() {
+        }
+
+        private static Tags.IOptionalNamedTag<EntityType<?>> forge(String path) {
+            return tag("forge", path);
+        }
+
+        private static Tags.IOptionalNamedTag<EntityType<?>> modded(String path) {
+            return tag(GunsRPG.MODID, path);
+        }
+
+        private static Tags.IOptionalNamedTag<EntityType<?>> tag(String namespace, String path) {
+            return EntityTypeTags.createOptional(new ResourceLocation(namespace, path));
         }
     }
 }
