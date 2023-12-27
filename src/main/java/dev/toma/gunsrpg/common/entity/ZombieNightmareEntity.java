@@ -36,6 +36,8 @@ import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.Random;
 import java.util.function.Predicate;
 
 public class ZombieNightmareEntity extends MonsterEntity {
@@ -59,7 +61,8 @@ public class ZombieNightmareEntity extends MonsterEntity {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new RecoverSelfGoal(this, 30.0F, 50.0F));
-        this.goalSelector.addGoal(2, new NightmareMeleeAttackGoal(this, 1.0D, false));
+        this.goalSelector.addGoal(2, new KnockDownPlayerGoal(this, companionFilter()));
+        this.goalSelector.addGoal(3, new NightmareMeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, false));
@@ -305,6 +308,125 @@ public class ZombieNightmareEntity extends MonsterEntity {
         @Override
         public boolean canContinueToUse() {
             return super.canContinueToUse() && !((ZombieNightmareEntity) mob).running;
+        }
+    }
+
+    private static final class KnockDownPlayerGoal extends Goal {
+
+        private final ZombieNightmareEntity nightmareEntity;
+        private final Predicate<Entity> selector;
+
+        private boolean cancelled;
+        private int refreshTimer;
+        private Entity pickEntity;
+
+        public KnockDownPlayerGoal(ZombieNightmareEntity nightmareEntity, Predicate<Entity> selector) {
+            this.nightmareEntity = nightmareEntity;
+            this.selector = e -> e.getVehicle() == null && selector.test(e);
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            if (nightmareEntity.running || nightmareEntity.getTarget() == null) {
+                return false;
+            }
+            List<Entity> pickableEntities = getEntitiesForPickup();
+            if (pickableEntities.isEmpty()) {
+                return false;
+            }
+            Path path = nightmareEntity.navigation.createPath(nightmareEntity.getTarget(), 0);
+            return path != null && !path.canReach();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            if (nightmareEntity.getTarget() != null) {
+                return !nightmareEntity.running && nightmareEntity.getTarget() != null && nightmareEntity.getTarget().isAlive() && !cancelled;
+            }
+            return false;
+        }
+
+        @Override
+        public void start() {
+            cancelled = false;
+            refreshTimer = 0;
+        }
+
+        @Override
+        public void stop() {
+            cancelled = true;
+            if (nightmareEntity.isAlive() && nightmareEntity.getVehicle() == null) {
+                nightmareEntity.ejectPassengers();
+            }
+        }
+
+        @Override
+        public void tick() {
+            if (--refreshTimer <= 0) {
+                List<Entity> heldEntities = nightmareEntity.getPassengers();
+                if (heldEntities.isEmpty()) {
+                    List<Entity> pickableEntities = getEntitiesForPickup();
+                    if (pickableEntities.isEmpty()) {
+                        cancelled = true;
+                        refreshTimer = 20;
+                        return;
+                    }
+                    if (pickEntity == null || !pickEntity.isAlive()) {
+                        this.pickEntity = pickableEntities.get(nightmareEntity.random.nextInt(pickableEntities.size()));
+                    }
+                    nightmareEntity.navigation.moveTo(pickEntity, 1.0F);
+
+                    double distance = nightmareEntity.distanceToSqr(pickEntity);
+                    if (distance < 16) {
+                        pickEntity.startRiding(nightmareEntity);
+                        pickEntity = null;
+                    }
+                } else {
+                    LivingEntity target = nightmareEntity.getTarget();
+                    if (target == null) {
+                        cancelled = true;
+                        return;
+                    }
+                    double distance = nightmareEntity.distanceToSqr(target);
+                    if (distance < 64) {
+                        Vector3d vec = target.getDeltaMovement();
+                        double x = target.getX() + vec.x - nightmareEntity.getX();
+                        double y = target.getEyeY() - 1.1F - nightmareEntity.getY();
+                        double z = target.getZ() + vec.z - nightmareEntity.getZ();
+                        float dist = MathHelper.sqrt(x * x + z * z);
+                        for (Entity passenger : nightmareEntity.getPassengers()) {
+                            passenger.stopRiding();
+                            throwEntityAtTarget(passenger, x, y + dist * 0.2F, z, 7.5F + nightmareEntity.level.random.nextFloat(), 0.6F);
+                        }
+                        cancelled = true;
+                    }
+                }
+                refreshTimer = 20;
+            }
+        }
+
+        private List<Entity> getEntitiesForPickup() {
+            return nightmareEntity.level.getEntities(nightmareEntity, nightmareEntity.getBoundingBox().inflate(24), selector);
+        }
+
+        private void throwEntityAtTarget(Entity entity, double x, double y, double z, float power, float multiplier) {
+            if (entity instanceof MobEntity) {
+                ((MobEntity) entity).setTarget(nightmareEntity.getTarget());
+            }
+            Random random = entity.level.random;
+            float constant = 0.0075F;
+            Vector3d delta = new Vector3d(x, y, z).normalize().add(
+                    random.nextGaussian() * constant * power,
+                    random.nextGaussian() * constant * power,
+                    random.nextGaussian() * constant * power
+            ).scale(multiplier);
+            entity.setDeltaMovement(delta);
+            float f = MathHelper.sqrt(getHorizontalDistanceSqr(delta));
+            entity.yRot = (float)(MathHelper.atan2(delta.x, delta.z) * (double)(180F / (float)Math.PI));
+            entity.xRot = (float)(MathHelper.atan2(delta.y, f) * (double)(180F / (float)Math.PI));
+            entity.yRotO = entity.yRot;
+            entity.xRotO = entity.xRot;
         }
     }
 }
