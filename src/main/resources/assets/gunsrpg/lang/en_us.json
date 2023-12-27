@@ -1391,6 +1391,7 @@
   "event.bloodmoon.end": "Bloodmoon falls",
   "item.gunsrpg.food_buff.health": "Heals %s HP",
   "item.gunsrpg.food_buff.effect": "Gives %s for %ss",
+  "debuff.text.resist": "RESIST",
 
   "text.config.validation.invalid_id.item": "Invalid item ID: %s",
   "text.config.validation.invalid_id.entity": "Invalid entity ID: %s",

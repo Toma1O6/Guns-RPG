@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.client.model.*;
 import dev.toma.gunsrpg.client.render.*;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
 import dev.toma.gunsrpg.client.render.debuff.IconDebuffRenderer;
+import dev.toma.gunsrpg.client.render.debuff.ResistDebuffRenderer;
 import dev.toma.gunsrpg.client.render.skill.SkillCooldownRenderer;
 import dev.toma.gunsrpg.client.render.skill.SkillRendererRegistry;
 import dev.toma.gunsrpg.client.screen.*;
@@ -103,10 +104,10 @@ public class ClientSideManager {
         debuffRenderManager.registerRenderer(Debuffs.INFECTION,         new IconDebuffRenderer<>(IconDebuffRenderer.INFECTION_ICON));
         debuffRenderManager.registerRenderer(Debuffs.FRACTURE,          new IconDebuffRenderer<>(IconDebuffRenderer.FRACTURE_ICON));
         debuffRenderManager.registerRenderer(Debuffs.BLEED,             new IconDebuffRenderer<>(IconDebuffRenderer.BLEED_ICON));
-        debuffRenderManager.registerRenderer(Debuffs.POISON_BLOCK,      new IconDebuffRenderer<>(IconDebuffRenderer.POISON_ICON));
-        debuffRenderManager.registerRenderer(Debuffs.INFECTION_BLOCK,   new IconDebuffRenderer<>(IconDebuffRenderer.INFECTION_ICON));
-        debuffRenderManager.registerRenderer(Debuffs.FRACTURE_BLOCK,    new IconDebuffRenderer<>(IconDebuffRenderer.FRACTURE_ICON));
-        debuffRenderManager.registerRenderer(Debuffs.BLEED_BLOCK,       new IconDebuffRenderer<>(IconDebuffRenderer.BLEED_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.POISON_BLOCK,      new ResistDebuffRenderer<>(IconDebuffRenderer.POISON_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.INFECTION_BLOCK,   new ResistDebuffRenderer<>(IconDebuffRenderer.INFECTION_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.FRACTURE_BLOCK,    new ResistDebuffRenderer<>(IconDebuffRenderer.FRACTURE_ICON));
+        debuffRenderManager.registerRenderer(Debuffs.BLEED_BLOCK,       new ResistDebuffRenderer<>(IconDebuffRenderer.BLEED_ICON));
 
         // skill renderers
         SkillRendererRegistry.registerRenderers(new SkillCooldownRenderer<>(), Skills.LIKE_A_CAT_I, Skills.LIKE_A_CAT_II, Skills.LIKE_A_CAT_III);
