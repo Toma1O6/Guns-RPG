@@ -149,7 +149,7 @@ public final class DataDrivenDebuffType<D extends IStagedDebuff> extends DebuffT
 
         public static final Codec<DebuffAttributes> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Attribs.LOOKUP_CODEC.fieldOf("delay").forGetter(DebuffAttributes::getDelayAttribute),
-                Attribs.LOOKUP_CODEC.fieldOf("resist").forGetter(DebuffAttributes::getDelayAttribute),
+                Attribs.LOOKUP_CODEC.fieldOf("resist").forGetter(DebuffAttributes::getResistanceAttribute),
                 Attribs.LOOKUP_CODEC.fieldOf("block").forGetter(DebuffAttributes::getBlockingAttribute)
         ).apply(instance, DebuffAttributes::new));
         private final IAttributeId delayAttribute;

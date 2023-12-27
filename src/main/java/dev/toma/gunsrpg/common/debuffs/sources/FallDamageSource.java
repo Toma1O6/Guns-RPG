@@ -25,7 +25,7 @@ public class FallDamageSource extends AbstractFallDamageSource {
         float amount = context.getReceivedDamage();
         float f = amount / this.damageDownscale;
         float resist = context.getData().getAttributes().getAttribute(Attribs.FALL_RESISTANCE).floatValue();
-        return f * this.multiplier * (Math.max(0.0F, 1.0F - resist));
+        return f * this.multiplier * (Math.max(0.0F, resist));
     }
 
     @Override
