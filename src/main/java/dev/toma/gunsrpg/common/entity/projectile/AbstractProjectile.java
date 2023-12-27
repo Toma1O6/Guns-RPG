@@ -9,10 +9,7 @@ import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.util.properties.PropertyContext;
 import dev.toma.gunsrpg.util.properties.PropertyKey;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -319,7 +316,12 @@ public abstract class AbstractProjectile extends ProjectileEntity implements IEn
             Entity owner = getOwner();
             List<MonsterEntity> list = level.getEntitiesOfClass(MonsterEntity.class, getBoundingBox().inflate(actualScareRange), ent -> ent != owner);
             for (MonsterEntity entity : list) {
-                entity.setTarget((PlayerEntity) owner);
+                if (entity.getTarget() == null) {
+                    entity.getNavigation().moveTo(player.getX(), player.getY(), player.getZ(), 1.0);
+                }
+                if (entity.distanceToSqr(player) < 256 && entity instanceof IAngerable) {
+                    entity.setTarget(player);
+                }
             }
         });
     }
