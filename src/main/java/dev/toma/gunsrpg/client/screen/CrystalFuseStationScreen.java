@@ -92,15 +92,17 @@ public class CrystalFuseStationScreen extends ContainerScreen<CrystalFusionStati
         if (crystal1 != null && crystal2 != null) {
             int targetLevel = crystal1.getLevel() + crystal2.getLevel();
             FusionConfiguration.Upgrade upgrade = fusionConfig.getUpgrades().getUpgradeStat(targetLevel);
-            float breakChance = upgrade.getBreakChance();
-            if (areSameInputs) {
-                FusionConfiguration.BreakChanceReduction reduction = fusionConfig.getBreakChanceReductions().getReductionForOrbs(orbCount);
-                if (reduction != null) {
-                    breakChance *= reduction.getMultiplier();
+            if (upgrade != null) {
+                float breakChance = upgrade.getBreakChance();
+                if (areSameInputs) {
+                    FusionConfiguration.BreakChanceReduction reduction = fusionConfig.getBreakChanceReductions().getReductionForOrbs(orbCount);
+                    if (reduction != null) {
+                        breakChance *= reduction.getMultiplier();
+                    }
                 }
+                String breakChanceText = "Break: " + FORMAT.format(breakChance * 100.0F) + "%";
+                font.draw(matrix, breakChanceText, leftPos + 6, topPos + 58, 0x404040);
             }
-            String breakChanceText = "Break: " + FORMAT.format(breakChance * 100.0F) + "%";
-            font.draw(matrix, breakChanceText, leftPos + 6, topPos + 58, 0x404040);
         }
 
         PerkVariant targetVariant = tileEntity.getTargetedOrbType();
