@@ -19,6 +19,11 @@ import java.util.Set;
 public final class SkillsConfig {
 
     @Configurable
+    @Configurable.Synchronized
+    @Configurable.Comment("Allows you to disable all skills for players")
+    public boolean disableAllSkills = false;
+
+    @Configurable
     @Configurable.Range(min = 1, max = 20)
     @Configurable.Comment("Specify minimum nutrition value for Well Fed skill to be triggered")
     public int wellFedTriggerValue = 14;

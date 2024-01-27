@@ -52,7 +52,7 @@ public class IconDebuffRenderer<D extends IStagedDebuff> implements IDebuffRende
         manager.bind(iconTexture);
         RenderUtils.drawColoredTex(pose, left + 2, top + 2, left + 18, top + 18, 0xFFFFFF | iconFadeIn);
         boolean isDisabled = debuff.isFrozen(attributes);
-        String text = debuff.getCurrentProgress() + " %";
+        String text = getDebuffText(debuff);
         int textWidth = font.width(text);
         int resultColor = getTextColor(debuff, textFadeIn, colorFadeInEffect, isDisabled);
         if (isDisabled) {
@@ -62,7 +62,11 @@ public class IconDebuffRenderer<D extends IStagedDebuff> implements IDebuffRende
         font.draw(poseStack, text, left + width - 5 - textWidth, top + 6.5F, resultColor);
     }
 
-    private int getTextColor(D debuff, int textFadeIn, int colorFadeIn, boolean isDisabled) {
+    protected String getDebuffText(D debuff) {
+        return debuff.getCurrentProgress() + " %";
+    }
+
+    protected int getTextColor(D debuff, int textFadeIn, int colorFadeIn, boolean isDisabled) {
         int healProgress = debuff.ticksSinceHealed();
         int damageProgress = debuff.ticksSinceProgressed();
         boolean isHealing = healProgress < damageProgress && healProgress < 15;

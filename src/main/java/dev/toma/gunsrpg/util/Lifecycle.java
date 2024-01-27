@@ -8,7 +8,6 @@ import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.common.item.SlingItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.resource.crate.LootManager;
 import dev.toma.gunsrpg.resource.gunner.ZombieGunnerWeaponManager;
 import dev.toma.gunsrpg.resource.perks.PerkManager;
@@ -41,7 +40,6 @@ public final class Lifecycle {
     private final LootManager lootManager = new LootManager();
     private final ProgressionStrategyManager progressionStrategyManager = new ProgressionStrategyManager();
     private final PerkManager perkManager = new PerkManager();
-    private final QuestSystem questSystem = new QuestSystem();
     private final DebuffDataManager debuffDataManager = new DebuffDataManager();
 
     public void modInit() {
@@ -82,10 +80,6 @@ public final class Lifecycle {
 
     public DebuffDataManager getDebuffDataManager() {
         return debuffDataManager;
-    }
-
-    public QuestSystem quests() {
-        return questSystem;
     }
 
     @Nullable
@@ -143,6 +137,5 @@ public final class Lifecycle {
         event.addListener(perkManager);
         event.addListener(perkManager.configLoader);
         event.addListener(debuffDataManager);
-        this.questSystem.initialize(event);
     }
 }

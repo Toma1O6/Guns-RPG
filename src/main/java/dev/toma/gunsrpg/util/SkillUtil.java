@@ -35,6 +35,9 @@ public class SkillUtil {
         S value = provider.getSkill(head);
         if (value == null)
             return null;
+        if (head.isDisabled()) {
+            return null;
+        }
         ISkillHierarchy<S> hierarchy = head.getHierarchy();
         SkillType<S> override = hierarchy.getOverride();
         if (override != null && provider.hasSkill(override)) {

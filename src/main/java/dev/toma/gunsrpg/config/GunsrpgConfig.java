@@ -29,12 +29,4 @@ public final class GunsrpgConfig {
     @Configurable
     @Configurable.Comment("Quest related configurations")
     public QuestConfig quests = new QuestConfig();
-
-    @Configurable
-    @Configurable.Comment("Control whether new players will get starter package")
-    public boolean giveStartingPackage = true;
-
-    @Configurable
-    @Configurable.Comment("Control whether welcome book is given to new players")
-    public boolean giveWelcomeBook = true;
 }

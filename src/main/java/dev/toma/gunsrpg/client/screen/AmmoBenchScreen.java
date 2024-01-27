@@ -60,9 +60,13 @@ public class AmmoBenchScreen extends ContainerScreen<AmmoBenchContainer> {
         font.draw(matrix, title, titleLabelX, titleLabelY, 0x404040);
 
         AmmoBenchRecipe recipe = menu.getTileEntity().getActiveRecipe();
+        matrix.pushPose();
+        float textScale = 0.8F;
+        matrix.scale(textScale, textScale, textScale);
         ITextComponent recipeLabel = recipe != null ? new TranslationTextComponent("recipe." + recipe.getId().toString().replaceAll("[:/]", ".")) : NONE_LABEL;
         ITextComponent selectedRecipeLabel = new TranslationTextComponent(SELECTED_RECIPE_LABEL_KEY, recipeLabel);
-        font.draw(matrix, selectedRecipeLabel, titleLabelX, titleLabelY + 10, 0x404040);
+        font.draw(matrix, selectedRecipeLabel, titleLabelX + 1, titleLabelY + 12, 0x404040);
+        matrix.popPose();
     }
 
     @Override
@@ -98,7 +102,7 @@ public class AmmoBenchScreen extends ContainerScreen<AmmoBenchContainer> {
             previousRecipeButton.active = false;
             nextRecipeButton.active = false;
         } else {
-            craftButton.active = !tileEntity.isCrafting() && tileEntity.canCraftCurrentRecipe();
+            craftButton.active = !tileEntity.isCrafting() && tileEntity.canCraftCurrentRecipe(minecraft.player);
             previousRecipeButton.active = tileEntity.canSelectPreviousRecipe();
             nextRecipeButton.active = tileEntity.canSelectNextRecipe();
         }

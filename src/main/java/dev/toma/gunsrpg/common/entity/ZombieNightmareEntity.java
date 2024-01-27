@@ -1,42 +1,49 @@
 package dev.toma.gunsrpg.common.entity;
 
-import dev.toma.gunsrpg.common.init.ModEntities;
+import dev.toma.gunsrpg.common.init.ModPotions;
+import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.util.Interval;
-import dev.toma.gunsrpg.util.ModUtils;
-import dev.toma.gunsrpg.util.object.LazyLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Random;
+import java.util.function.Predicate;
 
 public class ZombieNightmareEntity extends MonsterEntity {
 
-    private final LazyLoader<EntityType<?>[]> BUFFED_MOBS = new LazyLoader<>(() -> new EntityType<?>[] {EntityType.ZOMBIE, EntityType.HUSK, EntityType.ZOMBIE_VILLAGER, EntityType.DROWNED, ModEntities.ZOMBIE_KNIGHT.get(), ModEntities.ZOMBIE_GUNNER.get()});
     private float healthLost;
+    private boolean running;
 
     public ZombieNightmareEntity(EntityType<? extends MonsterEntity> type, World world) {
         super(type, world);
@@ -53,7 +60,9 @@ public class ZombieNightmareEntity extends MonsterEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
+        this.goalSelector.addGoal(1, new RecoverSelfGoal(this, 30.0F, 50.0F));
+        this.goalSelector.addGoal(2, new KnockDownPlayerGoal(this, companionFilter()));
+        this.goalSelector.addGoal(3, new NightmareMeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, false));
@@ -65,16 +74,11 @@ public class ZombieNightmareEntity extends MonsterEntity {
         if (!level.isClientSide) {
             while (healthLost >= 30.0F) {
                 healthLost =- 30.0F;
-                ZombieEntity entity = new ZombieEntity(EntityType.ZOMBIE, level);
-                entity.setPos(this.getX(), this.getY(), this.getZ());
-                level.addFreshEntity(entity);
+                spawnReinforcementMob();
             }
             if (tickCount % 20 == 0) {
                 addEffect(new EffectInstance(Effects.REGENERATION, 40, 2, false, false));
-                this.level.getEntities(this, this.getBoundingBox().inflate(20.0D), entity -> {
-                    EntityType<?> type = entity.getType();
-                    return ModUtils.contains(type, BUFFED_MOBS.get()) && entity instanceof LivingEntity;
-                })
+                this.level.getEntities(this, this.getBoundingBox().inflate(20.0D), companionFilter())
                         .stream()
                         .map(entity -> (LivingEntity) entity)
                         .forEach(livingEntity -> {
@@ -158,5 +162,271 @@ public class ZombieNightmareEntity extends MonsterEntity {
             living.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, Interval.seconds(10).getTicks(), 0));
         }
         return attacked;
+    }
+
+    protected void spawnReinforcements(int count) {
+        for (int i = 0; i < count; i++) {
+            spawnReinforcementMob();
+        }
+    }
+
+    protected void spawnReinforcementMob() {
+        if (level.isClientSide)
+            return;
+        ServerWorld world = (ServerWorld) level;
+        ZombieEntity entity = new ZombieEntity(EntityType.ZOMBIE, level);
+        entity.setPos(this.getX(), this.getY(), this.getZ());
+        entity.finalizeSpawn(world, world.getCurrentDifficultyAt(blockPosition()), SpawnReason.REINFORCEMENT, null, null);
+        entity.setTarget(this.getTarget());
+        level.addFreshEntity(entity);
+    }
+
+    public static Predicate<Entity> companionFilter() {
+        return e -> e instanceof LivingEntity && e.getType().is(ModTags.Entities.ZOMBIE_NIGHTMARE_COMPANIONS);
+    }
+
+    public void setRunning(boolean running) {
+        this.setSprinting(running);
+        this.running = running;
+    }
+
+    private static final class RecoverSelfGoal extends Goal {
+
+        private final ZombieNightmareEntity nightmareEntity;
+        private final float initiateAtHealth;
+        private final float stopAtHealth;
+
+        private boolean active;
+        private int taskCooldown;
+        private LivingEntity lastTarget;
+
+        public RecoverSelfGoal(ZombieNightmareEntity nightmareEntity, float initiateAtHealth, float stopAtHealth) {
+            this.nightmareEntity = nightmareEntity;
+            this.initiateAtHealth = initiateAtHealth;
+            this.stopAtHealth = stopAtHealth;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            return !active && nightmareEntity.getHealth() <= initiateAtHealth && nightmareEntity.getLastHurtByMob() != null && taskCooldown <= 0;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return active && nightmareEntity.getHealth() < stopAtHealth && lastTarget != null && lastTarget.isAlive();
+        }
+
+        @Override
+        public void start() {
+            this.active = true;
+            this.nightmareEntity.setRunning(true);
+            this.nightmareEntity.setTarget(null);
+            this.nightmareEntity.navigation.stop();
+            this.throwPotionIfApplicable();
+            this.runAway();
+            this.nightmareEntity.spawnReinforcements(3);
+            this.nightmareEntity.level.getEntities(nightmareEntity, nightmareEntity.getBoundingBox().inflate(60), companionFilter())
+                    .stream()
+                    .filter(entity -> entity instanceof MonsterEntity)
+                    .map(entity -> (MonsterEntity) entity)
+                    .forEach(entity -> {
+                        entity.setTarget(nightmareEntity.getTarget());
+                        entity.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, Integer.MAX_VALUE, 1, false, true));
+                    });
+            this.taskCooldown = Interval.minutes(2).getTicks();
+            this.lastTarget = this.nightmareEntity.getLastHurtByMob();
+        }
+
+        @Override
+        public void stop() {
+            this.active = false;
+            this.nightmareEntity.setRunning(false);
+            this.lastTarget = null;
+        }
+
+        @Override
+        public void tick() {
+            if (this.taskCooldown > 0) {
+                --this.taskCooldown;
+            }
+            this.runAway();
+        }
+
+        private void runAway() {
+            if (lastTarget != null) {
+                Path path = nightmareEntity.navigation.getPath();
+                if (path == null || !path.isDone() || !path.canReach()) {
+                    Vector3d hidePosition = RandomPositionGenerator.getPosAvoid(nightmareEntity, 16, 7, lastTarget.position());
+                    if (hidePosition != null && lastTarget.distanceToSqr(hidePosition) > nightmareEntity.distanceToSqr(hidePosition)) {
+                        nightmareEntity.getNavigation().moveTo(hidePosition.x, hidePosition.y, hidePosition.z, 1.3F);
+                        nightmareEntity.setSprinting(true);
+                    } else {
+                        nightmareEntity.setSprinting(false);
+                    }
+                } else {
+                    nightmareEntity.navigation.moveTo(path, 1.3F);
+                }
+            }
+        }
+
+        private void throwPotionIfApplicable() {
+            if (nightmareEntity.level.isClientSide)
+                return;
+            LivingEntity attacker = nightmareEntity.getLastHurtByMob();
+            if (attacker != null && nightmareEntity.distanceToSqr(attacker) < 64) {
+                Vector3d vec = attacker.getDeltaMovement();
+                double x = attacker.getX() + vec.x - nightmareEntity.getX();
+                double y = attacker.getEyeY() - 1.1F - nightmareEntity.getY();
+                double z = attacker.getZ() + vec.z - nightmareEntity.getZ();
+                float dist = MathHelper.sqrt(x * x + z * z);
+                PotionEntity potionentity = new PotionEntity(nightmareEntity.level, nightmareEntity);
+                potionentity.setItem(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), ModPotions.ZOMBIE_NIGHTMARE_DEFENSIVE_POTION.get()));
+                potionentity.xRot -= -20.0F;
+                potionentity.shoot(x, y + dist * 0.2F, z, 0.4F, 8.0F);
+                if (!nightmareEntity.isSilent()) {
+                    nightmareEntity.level.playSound(null, nightmareEntity.getX(), nightmareEntity.getY(), nightmareEntity.getZ(), SoundEvents.WITCH_THROW, nightmareEntity.getSoundSource(), 1.0F, 0.8F + nightmareEntity.random.nextFloat() * 0.4F);
+                }
+
+                nightmareEntity.level.addFreshEntity(potionentity);
+            }
+        }
+    }
+
+    private static final class NightmareMeleeAttackGoal extends MeleeAttackGoal {
+
+        public NightmareMeleeAttackGoal(ZombieNightmareEntity entity, double speed, boolean followHidden) {
+            super(entity, speed, followHidden);
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            return super.canUse() && !((ZombieNightmareEntity) mob).running;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return super.canContinueToUse() && !((ZombieNightmareEntity) mob).running;
+        }
+    }
+
+    private static final class KnockDownPlayerGoal extends Goal {
+
+        private final ZombieNightmareEntity nightmareEntity;
+        private final Predicate<Entity> selector;
+
+        private boolean cancelled;
+        private int refreshTimer;
+        private Entity pickEntity;
+
+        public KnockDownPlayerGoal(ZombieNightmareEntity nightmareEntity, Predicate<Entity> selector) {
+            this.nightmareEntity = nightmareEntity;
+            this.selector = e -> e.getVehicle() == null && selector.test(e);
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            if (nightmareEntity.running || nightmareEntity.getTarget() == null) {
+                return false;
+            }
+            List<Entity> pickableEntities = getEntitiesForPickup();
+            if (pickableEntities.isEmpty()) {
+                return false;
+            }
+            Path path = nightmareEntity.navigation.createPath(nightmareEntity.getTarget(), 0);
+            return path != null && !path.canReach();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            if (nightmareEntity.getTarget() != null) {
+                return !nightmareEntity.running && nightmareEntity.getTarget() != null && nightmareEntity.getTarget().isAlive() && !cancelled;
+            }
+            return false;
+        }
+
+        @Override
+        public void start() {
+            cancelled = false;
+            refreshTimer = 0;
+        }
+
+        @Override
+        public void stop() {
+            cancelled = true;
+            if (nightmareEntity.isAlive() && nightmareEntity.getVehicle() == null) {
+                nightmareEntity.ejectPassengers();
+            }
+        }
+
+        @Override
+        public void tick() {
+            if (--refreshTimer <= 0) {
+                List<Entity> heldEntities = nightmareEntity.getPassengers();
+                if (heldEntities.isEmpty()) {
+                    List<Entity> pickableEntities = getEntitiesForPickup();
+                    if (pickableEntities.isEmpty()) {
+                        cancelled = true;
+                        refreshTimer = 20;
+                        return;
+                    }
+                    if (pickEntity == null || !pickEntity.isAlive()) {
+                        this.pickEntity = pickableEntities.get(nightmareEntity.random.nextInt(pickableEntities.size()));
+                    }
+                    nightmareEntity.navigation.moveTo(pickEntity, 1.0F);
+
+                    double distance = nightmareEntity.distanceToSqr(pickEntity);
+                    if (distance < 16) {
+                        pickEntity.startRiding(nightmareEntity);
+                        pickEntity = null;
+                    }
+                } else {
+                    LivingEntity target = nightmareEntity.getTarget();
+                    if (target == null) {
+                        cancelled = true;
+                        return;
+                    }
+                    double distance = nightmareEntity.distanceToSqr(target);
+                    if (distance < 64) {
+                        Vector3d vec = target.getDeltaMovement();
+                        double x = target.getX() + vec.x - nightmareEntity.getX();
+                        double y = target.getEyeY() - 1.1F - nightmareEntity.getY();
+                        double z = target.getZ() + vec.z - nightmareEntity.getZ();
+                        float dist = MathHelper.sqrt(x * x + z * z);
+                        for (Entity passenger : nightmareEntity.getPassengers()) {
+                            passenger.stopRiding();
+                            throwEntityAtTarget(passenger, x, y + dist * 0.2F, z, 7.5F + nightmareEntity.level.random.nextFloat(), 0.6F);
+                        }
+                        cancelled = true;
+                    }
+                }
+                refreshTimer = 20;
+            }
+        }
+
+        private List<Entity> getEntitiesForPickup() {
+            return nightmareEntity.level.getEntities(nightmareEntity, nightmareEntity.getBoundingBox().inflate(24), selector);
+        }
+
+        private void throwEntityAtTarget(Entity entity, double x, double y, double z, float power, float multiplier) {
+            if (entity instanceof MobEntity) {
+                ((MobEntity) entity).setTarget(nightmareEntity.getTarget());
+            }
+            Random random = entity.level.random;
+            float constant = 0.0075F;
+            Vector3d delta = new Vector3d(x, y, z).normalize().add(
+                    random.nextGaussian() * constant * power,
+                    random.nextGaussian() * constant * power,
+                    random.nextGaussian() * constant * power
+            ).scale(multiplier);
+            entity.setDeltaMovement(delta);
+            float f = MathHelper.sqrt(getHorizontalDistanceSqr(delta));
+            entity.yRot = (float)(MathHelper.atan2(delta.x, delta.z) * (double)(180F / (float)Math.PI));
+            entity.xRot = (float)(MathHelper.atan2(delta.y, f) * (double)(180F / (float)Math.PI));
+            entity.yRotO = entity.yRot;
+            entity.xRotO = entity.xRot;
+        }
     }
 }

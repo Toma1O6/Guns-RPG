@@ -1,0 +1,51 @@
+{
+  "type": "gunsrpg:ammo_bench",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "gunsrpg:quartz_9mm"
+      },
+      "count": 1
+    }
+  ],
+  "craftingTimer": 100,
+  "outputs": [
+    {
+      "result": {
+        "item": "gunsrpg:quartz_bullet_tip"
+      }
+    },
+    {
+      "result": {
+        "item": "minecraft:gunpowder"
+      },
+      "modifiers": [
+        {
+          "skill": "gunsrpg:ammo_smithing_mastery",
+          "active": false,
+          "modifier": {
+            "type": "gunsrpg:multiply",
+            "value": 0,
+            "chance": 0.35
+          }
+        }
+      ]
+    },
+    {
+      "result": {
+        "item": "gunsrpg:small_bullet_casing"
+      },
+      "modifiers": [
+        {
+          "skill": "gunsrpg:ammo_smithing_mastery",
+          "active": false,
+          "modifier": {
+            "type": "gunsrpg:multiply",
+            "value": 0,
+            "chance": 0.25
+          }
+        }
+      ]
+    }
+  ]
+}

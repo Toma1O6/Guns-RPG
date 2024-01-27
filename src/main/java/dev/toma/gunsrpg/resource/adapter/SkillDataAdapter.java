@@ -16,6 +16,7 @@ public class SkillDataAdapter implements JsonDeserializer<SkillPropertyLoader.IL
         JsonObject object = JsonHelper.asJsonObject(json);
         ISkillHierarchy<?> hierarchy = context.deserialize(JSONUtils.getAsJsonObject(object, "hierarchy"), ISkillHierarchy.class);
         ISkillProperties properties = context.deserialize(JSONUtils.getAsJsonObject(object, "properties"), ISkillProperties.class);
-        return new SkillPropertyLoader.Result<>(hierarchy, properties);
+        boolean disabled = JSONUtils.getAsBoolean(object, "disabled", false);
+        return new SkillPropertyLoader.Result<>(hierarchy, properties, disabled);
     }
 }

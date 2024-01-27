@@ -1,0 +1,39 @@
+{
+  "type": "gunsrpg:ammo_bench",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "gunsrpg:amethyst_bullet_tip"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:gunpowder"
+      },
+      "count": 2
+    },
+    {
+      "ingredient": {
+        "item": "gunsrpg:large_bullet_casing"
+      },
+      "count": 1
+    }
+  ],
+  "craftingTimer": 100,
+  "outputs": [
+    {
+      "result": {
+        "item": "gunsrpg:amethyst_556mm"
+      }
+    }
+  ],
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate":{
+        "skill": "gunsrpg:amethyst_ammo_smith"
+      }
+    }
+  ]
+}

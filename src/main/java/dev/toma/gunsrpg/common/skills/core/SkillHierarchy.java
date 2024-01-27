@@ -3,6 +3,8 @@ package dev.toma.gunsrpg.common.skills.core;
 import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 
+import java.util.Arrays;
+
 public class SkillHierarchy<S extends ISkill> implements ISkillHierarchy<S> {
 
     private final SkillCategory category;
@@ -36,7 +38,7 @@ public class SkillHierarchy<S extends ISkill> implements ISkillHierarchy<S> {
 
     @Override
     public SkillType<?>[] getChildren() {
-        return children;
+        return children != null ? Arrays.stream(children).filter(child -> !child.isDisabled()).toArray(SkillType[]::new) : null;
     }
 
     @Override

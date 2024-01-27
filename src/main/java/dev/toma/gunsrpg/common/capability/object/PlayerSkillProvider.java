@@ -50,7 +50,7 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
 
     @Override
     public boolean hasSkill(SkillType<?> type) {
-        return unlockedSkills.containsKey(type);
+        return !type.isDisabled() && unlockedSkills.containsKey(type);
     }
 
     @SuppressWarnings("unchecked")
@@ -77,7 +77,7 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
     @Override
     public void onLevelUp(int level, PlayerEntity player) {
         List<SkillType<?>> newlyAvailableList = ModRegistries.SKILLS.getValues().stream()
-                .filter(type -> type.getProperties().getTransactionValidator().getId() == PlayerLevelTransactionValidator.ID && type.getProperties().getRequiredLevel() == level)
+                .filter(type -> type.getProperties().getTransactionValidator().getId() == PlayerLevelTransactionValidator.ID && type.getProperties().getRequiredLevel() == level && !type.isDisabled())
                 .collect(Collectors.toList());
         int count = newlyAvailableList.size();
         if (count > 0) {
@@ -113,6 +113,8 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
 
     @Override
     public void unlock(SkillType<?> skillType, boolean sync) {
+        if (skillType.isDisabled())
+            return;
         ISkill skill = skillType.instantiate();
         skill.onPurchase(player);
         unlockedSkills.put(skillType, skill);

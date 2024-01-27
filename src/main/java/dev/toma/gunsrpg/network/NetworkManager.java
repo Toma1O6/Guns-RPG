@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 public class NetworkManager {
 
     public static final Marker MARKER = MarkerManager.getMarker("Networking");
-    private static final String VERSION = "v10";
+    private static final String VERSION = "v15";
     private static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder
             .named(GunsRPG.makeResource("network"))
             .networkProtocolVersion(() -> VERSION)
@@ -65,7 +65,6 @@ public class NetworkManager {
         registerNetworkPacket(S2C_SynchronizationPayloadPacket.class);
         registerNetworkPacket(S2C_SetTrackedStashPacket.class);
         registerNetworkPacket(S2C_UseStashDetectorPacket.class);
-        registerNetworkPacket(S2C_OpenQuestScreen.class);
         registerNetworkPacket(S2C_SendEntityData.class);
         // server packets
         registerNetworkPacket(C2S_ShootPacket.class);
@@ -84,7 +83,6 @@ public class NetworkManager {
         registerNetworkPacket(C2S_FusePacket.class);
         registerNetworkPacket(C2S_PurifyPacket.class);
         registerNetworkPacket(C2S_RequestExtensionSkillLockPacket.class);
-        registerNetworkPacket(C2S_QuestActionPacket.class);
         registerNetworkPacket(C2S_TurretSettingsPacket.class);
         registerNetworkPacket(C2S_PlaySoundFromAnimationEventPacket.class);
         registerNetworkPacket(C2S_AmmoBenchEventPacket.class);

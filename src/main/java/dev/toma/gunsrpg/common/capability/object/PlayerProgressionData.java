@@ -13,7 +13,6 @@ import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;
 import dev.toma.gunsrpg.common.skills.transaction.TransactionManager;
 import dev.toma.gunsrpg.common.skills.transaction.TransactionTypes;
 import dev.toma.gunsrpg.common.skills.transaction.WeaponPointTransaction;
-import dev.toma.gunsrpg.config.GunsrpgConfig;
 import dev.toma.gunsrpg.resource.progression.FakeLevelingStrategy;
 import dev.toma.gunsrpg.resource.progression.IProgressionStrategy;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -23,13 +22,9 @@ import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -83,24 +78,8 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     public void onLogIn() {
         if (!known) {
             known = true;
-            GunsrpgConfig config = GunsRPG.config;
-            if (!player.isCreative() && config.giveStartingPackage) {
+            if (!player.isCreative())
                 ModUtils.addItem(player, new ItemStack(ModItems.STARTER_GEAR));
-            }
-            if (config.giveWelcomeBook) {
-                ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-                CompoundNBT tag = book.getOrCreateTag();
-                tag.putString("title", "Welcome to GunsRPG mod");
-                tag.putInt("generation", 0);
-                tag.putString("author", "TnT-Team");
-
-                ListNBT pages = new ListNBT();
-                pages.add(StringNBT.valueOf(ITextComponent.Serializer.toJson(new TranslationTextComponent("gunsrpg.welcome_book.page.0"))));
-                pages.add(StringNBT.valueOf(ITextComponent.Serializer.toJson(new TranslationTextComponent("gunsrpg.welcome_book.page.1"))));
-                tag.put("pages", pages);
-
-                ModUtils.addItem(player, book);
-            }
             request.makeSyncRequest();
         }
     }

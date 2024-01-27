@@ -20,6 +20,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -29,7 +30,7 @@ public class AmmoBenchBlock extends BaseHorizontalBlock {
     private static final ITextComponent TITLE = new TranslationTextComponent("screen.gunsrpg.ammo_bench");
 
     public AmmoBenchBlock(String name) {
-        super(name, Properties.of(Material.METAL).noOcclusion());
+        super(name, Properties.of(Material.METAL).strength(2.2F, 18.0F).harvestTool(ToolType.PICKAXE).harvestLevel(1).requiresCorrectToolForDrops().noOcclusion());
     }
 
     @Override
@@ -38,8 +39,8 @@ public class AmmoBenchBlock extends BaseHorizontalBlock {
             TileEntity tileEntity = world.getBlockEntity(pos);
             if (tileEntity instanceof AmmoBenchTileEntity) {
                 AmmoBenchTileEntity ammoBenchTile = (AmmoBenchTileEntity) tileEntity;
-                if (!PlayerData.hasActiveSkill(player, Skills.WOODEN_AMMO_SMITH)) {
-                    player.displayClientMessage(SkillUtil.getMissingSkillText(Skills.WOODEN_AMMO_SMITH), true);
+                if (!PlayerData.hasActiveSkill(player, Skills.GUN_PARTS_SMITH)) {
+                    player.displayClientMessage(SkillUtil.getMissingSkillText(Skills.GUN_PARTS_SMITH), true);
                     return ActionResultType.FAIL;
                 } else {
                     NetworkHooks.openGui((ServerPlayerEntity) player, new SimpleNamedContainerProvider((windowId, playerInventory, interactingPlayer) -> new AmmoBenchContainer(windowId, playerInventory, ammoBenchTile), TITLE), pos);

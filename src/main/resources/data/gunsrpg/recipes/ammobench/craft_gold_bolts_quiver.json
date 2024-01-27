@@ -1,0 +1,25 @@
+{
+  "type": "gunsrpg:ammo_bench",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "gunsrpg:gold_bolt"
+      },
+      "count": 25
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:leather"
+      },
+      "count": 1
+    }
+  ],
+  "craftingTimer": 140,
+  "outputs": [
+    {
+      "result": {
+        "item": "gunsrpg:gold_bolts_quiver"
+      }
+    }
+  ]
+}

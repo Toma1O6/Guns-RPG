@@ -7,19 +7,13 @@ import dev.toma.gunsrpg.util.helper.ReputationHelper;
 public final class QuestConfig {
 
     @Configurable
-    @Configurable.Range(min = 1)
-    @Configurable.Comment("Limit of members per single quest group")
-    @Configurable.Synchronized
-    public int groupMemberLimit = 4;
-
-    @Configurable
-    @Configurable.DecimalRange(min = 0.0F, max = ReputationHelper.MAX_REPUTATION)
+    @Configurable.DecimalRange(min = ReputationHelper.MIN_REPUTATION, max = ReputationHelper.MAX_REPUTATION)
     @Configurable.Comment({"Amount of reputation awarded when quest is completed", "Value is multiplied by quest tier"})
     @Configurable.Gui.NumberFormat("0.0###")
     public float reputationAwardPerTier = 0.2F;
 
     @Configurable
-    @Configurable.DecimalRange(min = 0.0F, max = ReputationHelper.MAX_REPUTATION)
+    @Configurable.DecimalRange(min = ReputationHelper.MIN_REPUTATION, max = ReputationHelper.MAX_REPUTATION)
     @Configurable.Comment({"Amount of reputation lost when quest is failed", "Value is multiplied by quest tier"})
     @Configurable.Gui.NumberFormat("0.0###")
     public float reputationLossPerTier = 0.3F;

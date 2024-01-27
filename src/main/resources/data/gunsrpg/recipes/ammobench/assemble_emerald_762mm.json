@@ -1,0 +1,39 @@
+{
+  "type": "gunsrpg:ammo_bench",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "gunsrpg:emerald_bullet_tip"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:gunpowder"
+      },
+      "count": 3
+    },
+    {
+      "ingredient": {
+        "item": "gunsrpg:large_bullet_casing"
+      },
+      "count": 1
+    }
+  ],
+  "craftingTimer": 100,
+  "outputs": [
+    {
+      "result": {
+        "item": "gunsrpg:emerald_762mm"
+      }
+    }
+  ],
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate":{
+        "skill": "gunsrpg:emerald_ammo_smith"
+      }
+    }
+  ]
+}

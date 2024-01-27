@@ -1,0 +1,37 @@
+{
+  "type": "gunsrpg:ammo_bench",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "minecraft:lapis_lazuli"
+      },
+      "count": 3
+    }
+  ],
+  "craftingTimer": 100,
+  "outputs": [
+    {
+      "result": {
+        "item": "gunsrpg:lapis_buckshot"
+      },
+      "modifiers": [
+        {
+          "skill": "gunsrpg:ammo_smithing_mastery",
+          "active": true,
+          "modifier": {
+            "type": "gunsrpg:set",
+            "min": 2
+          }
+        }
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate": {
+        "skill": "gunsrpg:lapis_ammo_smith"
+      }
+    }
+  ]
+}

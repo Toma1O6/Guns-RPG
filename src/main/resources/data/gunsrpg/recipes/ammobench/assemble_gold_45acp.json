@@ -1,0 +1,39 @@
+{
+  "type": "gunsrpg:ammo_bench",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "gunsrpg:gold_bullet_tip"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:gunpowder"
+      },
+      "count": 2
+    },
+    {
+      "ingredient": {
+        "item": "gunsrpg:small_bullet_casing"
+      },
+      "count": 1
+    }
+  ],
+  "craftingTimer": 100,
+  "outputs": [
+    {
+      "result": {
+        "item": "gunsrpg:gold_45acp"
+      }
+    }
+  ],
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate":{
+        "skill": "gunsrpg:gold_ammo_smith"
+      }
+    }
+  ]
+}

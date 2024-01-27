@@ -1,0 +1,39 @@
+{
+  "type": "gunsrpg:ammo_bench",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "gunsrpg:quartz_buckshot"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:gunpowder"
+      },
+      "count": 3
+    },
+    {
+      "ingredient": {
+        "item": "gunsrpg:shotgun_shell"
+      },
+      "count": 1
+    }
+  ],
+  "craftingTimer": 100,
+  "outputs": [
+    {
+      "result": {
+        "item": "gunsrpg:quartz_12g"
+      }
+    }
+  ],
+  "requirements": [
+    {
+      "type": "gunsrpg:skill",
+      "predicate":{
+        "skill": "gunsrpg:quartz_ammo_smith"
+      }
+    }
+  ]
+}
