@@ -25,21 +25,21 @@ public final class MobConfig {
 
     @Configurable
     @Configurable.Comment("Zombie gunner spawn configuration")
-    public DimensionalMobSpawnConfig zombieGunnerSpawn = new DimensionalMobSpawnConfig(25, 25, 1);
+    public DimensionalMobSpawnConfig zombieGunnerSpawn = new DimensionalMobSpawnConfig(25, 25, 1, 3);
 
     @Configurable
     @Configurable.Comment("Grenadier spawn configuration")
-    public DimensionalMobSpawnConfig grenadierSpawn = new DimensionalMobSpawnConfig(16, 20, 1);
+    public DimensionalMobSpawnConfig grenadierSpawn = new DimensionalMobSpawnConfig(16, 20, 1, 3);
 
     @Configurable
     @Configurable.Comment("Zombie knight spawn configuration")
-    public DimensionalMobSpawnConfig zombieKnightSpawn = new DimensionalMobSpawnConfig(5, 12, 1);
+    public DimensionalMobSpawnConfig zombieKnightSpawn = new DimensionalMobSpawnConfig(5, 12, 1, 7);
 
     @Configurable
     @Configurable.Comment({"Rocket angel spawn configuration", "Note: Overworld spawn is active only during bloodmoon"})
-    public DimensionalMobSpawnConfig rocketAngelSpawn = new DimensionalMobSpawnConfig(2, 2, 0);
+    public DimensionalMobSpawnConfig rocketAngelSpawn = new DimensionalMobSpawnConfig(2, 2, 0, 0);
 
     @Configurable
     @Configurable.Comment("Zombie nightmare spawn configuration")
-    public DimensionalMobSpawnConfig zombieNightmareSpawn = new DimensionalMobSpawnConfig(3, 0, 0);
+    public DimensionalMobSpawnConfig zombieNightmareSpawn = new DimensionalMobSpawnConfig(3, 0, 0, 5);
 }

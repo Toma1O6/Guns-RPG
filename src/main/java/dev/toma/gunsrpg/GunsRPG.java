@@ -11,6 +11,8 @@ import dev.toma.gunsrpg.common.capability.PlayerDataStorage;
 import dev.toma.gunsrpg.common.command.GunsrpgCommand;
 import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.config.GunsrpgConfig;
+import dev.toma.gunsrpg.config.world.DimensionalMobSpawnConfig;
+import dev.toma.gunsrpg.config.world.MobConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.Lifecycle;
@@ -21,7 +23,9 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.storage.IWorldInfo;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -34,6 +38,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.function.Supplier;
 
 @Mod(GunsRPG.MODID)
 public class GunsRPG {
@@ -90,11 +96,22 @@ public class GunsRPG {
     }
 
     private void registerMobSpawnPlacements() {
-        EntitySpawnPlacementRegistry.register(ModEntities.ZOMBIE_GUNNER.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
-        EntitySpawnPlacementRegistry.register(ModEntities.EXPLOSIVE_SKELETON.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
-        EntitySpawnPlacementRegistry.register(ModEntities.ZOMBIE_KNIGHT.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
-        EntitySpawnPlacementRegistry.register(ModEntities.ROCKET_ANGEL.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
-        EntitySpawnPlacementRegistry.register(ModEntities.ZOMBIE_NIGHTMARE.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
+        MobConfig mobCfg = config.world.mobConfig;
+        EntitySpawnPlacementRegistry.register(ModEntities.ZOMBIE_GUNNER.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, this.createSpawnRule(() -> mobCfg.zombieGunnerSpawn));
+        EntitySpawnPlacementRegistry.register(ModEntities.EXPLOSIVE_SKELETON.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, this.createSpawnRule(() -> mobCfg.grenadierSpawn));
+        EntitySpawnPlacementRegistry.register(ModEntities.ZOMBIE_KNIGHT.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, this.createSpawnRule(() -> mobCfg.zombieKnightSpawn));
+        EntitySpawnPlacementRegistry.register(ModEntities.ROCKET_ANGEL.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, this.createSpawnRule(() -> mobCfg.rocketAngelSpawn));
+        EntitySpawnPlacementRegistry.register(ModEntities.ZOMBIE_NIGHTMARE.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, this.createSpawnRule(() -> mobCfg.zombieNightmareSpawn));
+    }
+
+    private <T extends MonsterEntity> EntitySpawnPlacementRegistry.IPlacementPredicate<T> createSpawnRule(Supplier<DimensionalMobSpawnConfig> configProvider) {
+        return (entityType, iServerWorld, spawnReason, blockPos, random) -> {
+            Biome biome = iServerWorld.getBiome(blockPos);
+            Biome.Category category = biome.getBiomeCategory();
+            IWorldInfo info = iServerWorld.getLevelData();
+            DimensionalMobSpawnConfig spawnConfig = configProvider.get();
+            return spawnConfig.canSpawn(info, category) && MonsterEntity.checkMonsterSpawnRules(entityType, iServerWorld, spawnReason, blockPos, random);
+        };
     }
 
     private void registerCommands(RegisterCommandsEvent event) {
