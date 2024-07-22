@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.config.world;
 
 import dev.toma.configuration.config.Configurable;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.IWorldInfo;
 
@@ -54,8 +53,8 @@ public class DimensionalMobSpawnConfig {
         if (this.spawnStartDay == 0 || category == Biome.Category.NETHER || category == Biome.Category.THEEND) {
             return true;
         }
-        long gametime = info.getGameTime();
-        long day = gametime % 24_000L;
+        long gametime = info.getDayTime();
+        long day = gametime / 24_000L;
         return day >= this.spawnStartDay;
     }
 }

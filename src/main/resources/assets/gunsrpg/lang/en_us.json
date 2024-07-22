@@ -1461,6 +1461,7 @@
   "config.gunsrpg.option.overworld": "Overworld",
   "config.gunsrpg.option.nether": "Nether",
   "config.gunsrpg.option.end": "End",
+  "config.gunsrpg.option.spawnStartDay": "Spawn Start Day",
 
   "config.gunsrpg.option.additionalDebuffIncrement": "Debuff Increment",
   "config.gunsrpg.option.disablePoison": "Disable Poison",
