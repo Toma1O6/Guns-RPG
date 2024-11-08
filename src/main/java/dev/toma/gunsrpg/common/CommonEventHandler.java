@@ -26,6 +26,7 @@ import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.world.LootStashes;
+import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataProvider;
 import dev.toma.gunsrpg.world.feature.ModConfiguredFeatures;
@@ -144,6 +145,7 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void attachLevelCapabilities(AttachCapabilitiesEvent<World> event) {
         event.addCapability(GunsRPG.makeResource("worldcap"), new WorldDataProvider(event.getObject()));
+        event.addCapability(GunsRPG.makeResource("questing"), new QuestingDataProvider(event.getObject()));
     }
 
     @SubscribeEvent
@@ -151,6 +153,7 @@ public class CommonEventHandler {
         PlayerEntity player = event.getPlayer();
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
         NetworkManager.sendClientPacket(serverPlayer, S2C_SynchronizationPayloadPacket.makePayloadPacket());
+        QuestingDataProvider.getData(player.level).ifPresent(data -> data.sendData(serverPlayer));
         PlayerData.get(player).ifPresent(data -> {
             data.sync(DataFlags.WILDCARD);
             data.getProgressData().onLogIn();

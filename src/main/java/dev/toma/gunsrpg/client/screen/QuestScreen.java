@@ -2,7 +2,7 @@ package dev.toma.gunsrpg.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.IQuests;
+import dev.toma.gunsrpg.api.common.data.IQuestingData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.screen.widgets.ContainerWidget;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -20,6 +20,7 @@ import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.math.IDimensions;
+import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import lib.toma.animations.engine.screen.animator.widget.LabelWidget;
 import lib.toma.animations.engine.screen.animator.widget.WidgetContainer;
 import net.minecraft.client.MainWindow;
@@ -72,7 +73,7 @@ public class QuestScreen extends Screen {
     private final ReputationStatus status;
     private final Quest<?>[] quests;
     private final MayorEntity entity;
-    private IQuests questProvider;
+    private IQuestingData questProvider;
     private boolean hasActiveQuest;
 
     private QuestInfoPanelWidget infoPanelWidget;
@@ -89,15 +90,18 @@ public class QuestScreen extends Screen {
     @Override
     protected void init() {
         IPlayerData data = PlayerData.getUnsafe(minecraft.player);
-        questProvider = data.getQuests();
+        questProvider = QuestingDataProvider.getData(minecraft.level).orElse(null);
         ISkillProvider skillProvider = data.getSkillProvider();
-        this.hasActiveQuest = questProvider.getActiveQuest().isPresent();
+        Quest<?> activeQuest = this.questProvider.getActiveQuestForPlayer(minecraft.player);
+        this.hasActiveQuest = activeQuest != null;
 
         for (int i = 0; i < quests.length; i++) {
             Quest<?> quest = quests[i];
             addButton(new QuestWidget(10, 25 + i * 30, width / 3, 25, quest, this::questWidgetClicked));
         }
-        questProvider.getActiveQuest().ifPresent(quest -> addButton(new QuestWidget(10, height - 30, width / 3, 25, quest, this::questWidgetClicked)));
+        if (this.hasActiveQuest) {
+            this.addButton(new QuestWidget(10, height - 30, width / 3, 25, activeQuest, this::questWidgetClicked));
+        }
         int panelLeft = 30 + width / 3;
         int panelWidth = width - panelLeft - 10;
         infoPanelWidget = addButton(new QuestInfoPanelWidget(panelLeft, 0, panelWidth, height, skillProvider, font));
@@ -259,7 +263,7 @@ public class QuestScreen extends Screen {
             addTitle(y, TEXT_QUEST_NAME, TextFormatting.YELLOW, TextFormatting.BOLD);
             addDetail(y += offset, displayInfo.getName(), TextFormatting.ITALIC);
             ActionType actionType = this.getQuestActionType(status);
-            UUID traderId = QuestScreen.this.entity.getUUID();
+            UUID traderId = entity.getUUID();
             UUID questId = this.selectedQuest.getOriginalAssignerId();
             boolean isRewardCollectionAllowed = Objects.equals(traderId, questId) || questId.equals(Util.NIL_UUID) || actionType == ActionType.CANCEL;
             if (status.shouldShowRewards() && isRewardCollectionAllowed && !isSpecial) {
@@ -300,9 +304,8 @@ public class QuestScreen extends Screen {
                     addWidget(new LabelWidget(this.x + this.width - 5 - textWidth, this.height - 15, textWidth, 10, TEXT_QUEST_NO_REWARDS, font));
                 } else if (isRewardCollectionAllowed) {
                     actionButton = addWidget(new ActionButton(this.x + this.width - 145, this.height - 25, 140, 20, actionType, this::handleResponse));
-                    IQuests quests = QuestScreen.this.questProvider;
-                    Optional<Quest<?>> activeQuestOpt = quests.getActiveQuest();
-                    if (actionType == ActionType.COLLECT || (actionType == ActionType.ASSIGN && activeQuestOpt.isPresent() && activeQuestOpt.get() != selectedQuest)) {
+                    Quest<?> activeQuest = questProvider.getActiveQuestForPlayer(minecraft.player);
+                    if ((activeQuest != null && !activeQuest.isOwner(minecraft.player.getUUID())) || actionType == ActionType.COLLECT || (actionType == ActionType.ASSIGN && activeQuest != null && activeQuest != selectedQuest)) {
                         actionButton.active = false;
                     }
                 } else {

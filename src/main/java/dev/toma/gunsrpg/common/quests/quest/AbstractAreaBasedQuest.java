@@ -20,6 +20,7 @@ import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.UUID;
@@ -30,8 +31,8 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
     protected boolean areaEntered;
     protected QuestArea area;
 
-    public AbstractAreaBasedQuest(QuestScheme<D> scheme, UUID traderId) {
-        super(scheme, traderId);
+    public AbstractAreaBasedQuest(World level, QuestScheme<D> scheme, UUID traderId) {
+        super(level, scheme, traderId);
         this.gracePeriod = this.getGracePeriodDuration();
     }
 
@@ -46,29 +47,28 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
 
     // Ticking
     @Override
-    public final void tickQuest(PlayerEntity player) {
-        super.tickQuest(player);
+    public void tickQuest() {
         QuestStatus status = this.getStatus();
         if (status == QuestStatus.ACTIVE && area != null) {
             if (areaEntered) {
-                area.tickArea(player.level, player);
+                area.tickArea(this.level, this.group);
             } else {
-                this.savePlayerStatusProperties(player);
+                super.tickQuest();
             }
-            if (area.isInArea(player)) {
+            if (area.isInArea(this.group, this.level)) {
                 gracePeriod = this.getGracePeriodDuration();
             } else if (areaEntered) {
                 --gracePeriod;
-                if (!player.level.isClientSide) {
+                if (!this.level.isClientSide) {
                     String time = Interval.format(gracePeriod, f -> f.src(Interval.Unit.TICK).out(Interval.Unit.SECOND));
-                    ((ServerPlayerEntity) player).sendMessage(new TranslationTextComponent("quest.return_to_area", time).withStyle(TextFormatting.RED), ChatType.GAME_INFO, Util.NIL_UUID);
+                    this.group.acceptActive(this.level, member -> {
+                        ServerPlayerEntity player = (ServerPlayerEntity) member;
+                        player.sendMessage(new TranslationTextComponent("quest.return_to_area", time).withStyle(TextFormatting.RED), ChatType.GAME_INFO, Util.NIL_UUID);
+                    });
                 }
             }
         }
-        this.onQuestTick(player);
     }
-
-    protected void onQuestTick(PlayerEntity player) {}
 
     // Trigger registration
     @Override
@@ -90,9 +90,9 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
     protected abstract void handleSuccessfulTick(Trigger trigger, IPropertyReader reader);
 
     protected TriggerResponseStatus onTick(Trigger trigger, IPropertyReader reader) {
-        PlayerEntity player = reader.getProperty(QuestProperties.PLAYER);
-        this.generateAreaIfMissing(player);
-        if (area.isInArea(player)) {
+        World level = reader.getProperty(QuestProperties.LEVEL);
+        this.generateAreaIfMissing(level);
+        if (area.isInArea(this.group, level)) {
             areaEntered = true;
             return TriggerResponseStatus.OK;
         }
@@ -117,18 +117,19 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
         return gracePeriod > 0;
     }
 
-    protected QuestArea generateArea(D activeData) {
-        return activeData.getAreaScheme().getArea(player.level, (int) player.getX(), (int) player.getZ());
+    protected QuestArea generateArea(D activeData, World world) {
+        PlayerEntity leader = world.getPlayerByUUID(this.group.getGroupId());
+        return activeData.getAreaScheme().getArea(world, (int) leader.getX(), (int) leader.getZ());
     }
 
     protected void fillAreaDataModel(QuestDisplayDataModel dataModel) {
         if (area != null) {
-            dataModel.addElement(new AreaDistanceElement<>(this, QuestArea.STAY_IN_AREA, this::fillAreaInfo, quest -> quest.area != null ? quest.area.getCenter() : BlockPos.ZERO));
+            dataModel.addElement(new AreaDistanceElement<>(this, QuestArea.STAY_IN_AREA, quest -> fillAreaInfo(quest, dataModel.getClientId()), quest -> quest.area != null ? quest.area.getCenter() : BlockPos.ZERO));
         }
     }
 
-    protected ITextComponent fillAreaInfo(AbstractAreaBasedQuest<D> quest) {
-        PlayerEntity player = quest.player;
+    protected ITextComponent fillAreaInfo(AbstractAreaBasedQuest<D> quest, UUID clientId) {
+        PlayerEntity player = this.level.getPlayerByUUID(clientId);
         QuestArea area = quest.area;
         double distance = area.getDistance(player);
         int intDist = (int) distance;
@@ -167,10 +168,10 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
     protected void readAddtionalData(CompoundNBT nbt) {
     }
 
-    private void generateAreaIfMissing(PlayerEntity player) {
+    private void generateAreaIfMissing(World world) {
         if (area != null) return;
         D activeData = this.getActiveData();
-        this.area = this.generateArea(activeData);
-        trySyncClient();
+        this.area = this.generateArea(activeData, world);
+        trySyncClient(world);
     }
 }

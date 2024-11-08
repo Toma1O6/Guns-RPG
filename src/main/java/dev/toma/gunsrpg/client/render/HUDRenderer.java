@@ -16,6 +16,7 @@ import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.item.StashDetectorItem;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
+import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.client.GunsrpgConfigClient;
@@ -26,6 +27,7 @@ import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
+import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -82,25 +84,28 @@ public final class HUDRenderer {
             renderDebuffs(matrixStack, attributeProvider, debuffs, 0, height - 50, partialTicks);
             renderProgressionOnScreen(matrixStack, font, window, data, player);
             renderSkillsOnHUD(matrixStack, window, data);
-            renderQuestOverlay(matrixStack, font, window, data);
+        });
+        QuestingDataProvider.getData(mc.level).ifPresent(questing -> {
+            renderQuestOverlay(matrixStack, font, window, questing, player);
         });
     }
 
     // QUEST ---------------------------------------------
 
-    private void renderQuestOverlay(MatrixStack matrix, FontRenderer font, MainWindow window, IPlayerData data) {
-        IQuests quests = data.getQuests();
-        quests.getActiveQuest().ifPresent(quest -> {
-            QuestStatus status = quest.getStatus();
-            if (status != QuestStatus.ACTIVE && status != QuestStatus.COMPLETED) return;
-            LazyOptional<IDataModel> modelOptional = quest.getDisplayModel();
-            modelOptional.ifPresent(model -> {
-                QuestOverlayConfig config = ClientSideManager.config.questOverlay;
-                boolean rightAlignment = config.rightAligned;
-                int posX = rightAlignment ? window.getGuiScaledWidth() : 0;
-                model.renderModel(matrix, font, posX, config.heightOffset, rightAlignment);
-            });
-        });
+    private void renderQuestOverlay(MatrixStack matrix, FontRenderer font, MainWindow window, IQuestingData data, PlayerEntity player) {
+        Quest<?> quest = data.getActiveQuestForPlayer(player);
+        if (quest == null)
+            return;
+        QuestStatus status = quest.getStatus();
+        if (status != QuestStatus.ACTIVE && status != QuestStatus.COMPLETED)
+            return;
+        IDataModel display = quest.getDisplayModel(player.getUUID());
+        if (display != null) {
+            QuestOverlayConfig overlayCfg = ClientSideManager.config.questOverlay;
+            boolean rightAlignment = overlayCfg.rightAligned;
+            int posX = rightAlignment ? window.getGuiScaledWidth() : 0;
+            display.renderModel(matrix, font, posX, overlayCfg.heightOffset, rightAlignment);
+        }
     }
 
     // SKILLS --------------------------------------------

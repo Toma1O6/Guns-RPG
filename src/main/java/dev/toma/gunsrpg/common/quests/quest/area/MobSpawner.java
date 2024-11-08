@@ -3,6 +3,8 @@ package dev.toma.gunsrpg.common.quests.quest.area;
 import dev.toma.gunsrpg.ai.AlwaysAggroOnGoal;
 import dev.toma.gunsrpg.ai.QuestPlayerSensor;
 import dev.toma.gunsrpg.common.init.ModSensors;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -24,6 +26,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class MobSpawner implements IMobSpawner {
@@ -60,10 +63,10 @@ public class MobSpawner implements IMobSpawner {
     }
 
     @Override
-    public void spawnMobsRandomly(World world, QuestArea area, PlayerEntity attackTarget) {
+    public void spawnMobsRandomly(World world, QuestArea area, QuestingGroup group) {
         int toSpawn = minCount + world.random.nextInt(1 + maxCount - minCount);
         for (int i = 0; i < toSpawn; i++) {
-            spawnMob(world, area, attackTarget);
+            spawnMob(world, area, group);
         }
     }
 
@@ -81,10 +84,12 @@ public class MobSpawner implements IMobSpawner {
     }
 
     @SuppressWarnings("unchecked")
-    private void spawnMob(World world, QuestArea area, PlayerEntity attackTarget) {
+    private void spawnMob(World world, QuestArea area, QuestingGroup group) {
         BlockPos pos = area.getRandomEgdePosition(world.random, world);
         LivingEntity livingEntity = entityType.create(world);
         livingEntity.setPos(pos.getX(), pos.getY(), pos.getZ());
+        List<PlayerEntity> players = group.getMembers().stream().map(world::getPlayerByUUID).filter(Objects::nonNull).collect(Collectors.toList());
+        PlayerEntity attackTarget = ModUtils.getRandomListElement(players, world.random);
         IMobTargettingContext context = entity -> {
             ServerWorld serverWorld = (ServerWorld) entity.level;
             if (entity instanceof MobEntity) {

@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.World;
 
 import java.util.UUID;
 
@@ -14,8 +15,8 @@ public class AreaSurvivalQuest extends AbstractAreaBasedQuest<AreaSurvivalData> 
     public static final IQuestFactory<AreaSurvivalData, AreaSurvivalQuest> FACTORY = IQuestFactory.of(AreaSurvivalQuest::new, AreaSurvivalQuest::new);
     private int timeLeft;
 
-    public AreaSurvivalQuest(QuestScheme<AreaSurvivalData> scheme, UUID traderId) {
-        super(scheme, traderId);
+    public AreaSurvivalQuest(World world, QuestScheme<AreaSurvivalData> scheme, UUID traderId) {
+        super(world, scheme, traderId);
         this.timeLeft = this.getActiveData().getTicks();
     }
 

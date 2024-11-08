@@ -17,6 +17,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -29,8 +30,8 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
     public static final IQuestFactory<ItemHandoverData, ItemHandoverQuest> FACTORY = IQuestFactory.of(ItemHandoverQuest::new, ItemHandoverQuest::new);
     private final Object2IntMap<Item> dataMap = new Object2IntAVLTreeMap<>(this::compareItems);
 
-    public ItemHandoverQuest(QuestScheme<ItemHandoverData> scheme, UUID traderId) {
-        super(scheme, traderId);
+    public ItemHandoverQuest(World world, QuestScheme<ItemHandoverData> scheme, UUID traderId) {
+        super(world, scheme, traderId);
         this.initializeData();
     }
 
@@ -114,7 +115,7 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
         if (dataMap.isEmpty()) {
             setStatus(QuestStatus.COMPLETED);
         }
-        trySyncClient();
+        trySyncClient(this.level); // TODO sync to group instead
     }
 
     private void initializeData() {

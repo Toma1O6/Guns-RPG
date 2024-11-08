@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.quests.mayor;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
-import dev.toma.gunsrpg.common.capability.object.PlayerTraderStandings;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.util.helper.ReputationHelper;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,15 +12,17 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.INBTSerializable;
 
+import java.util.function.Supplier;
+
 public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT> {
 
-    private final PlayerTraderStandings.IRequestFactoryProvider provider;
+    private final Runnable synchronizationTrigger;
     private final PlayerEntity player;
     private float reputation;
     private boolean maxedOutReputation;
 
-    public TraderStatus(PlayerTraderStandings.IRequestFactoryProvider provider, PlayerEntity player) {
-        this.provider = provider;
+    public TraderStatus(Runnable synchronizationTrigger, PlayerEntity player) {
+        this.synchronizationTrigger = synchronizationTrigger;
         this.player = player;
     }
 
@@ -40,7 +42,7 @@ public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT
             maxedOutReputation = true;
             ReputationHelper.awardPlayerForReputation(player);
         }
-        this.synchronize();
+        this.synchronizationTrigger.run();
         GunsRPG.log.debug(QuestSystem.MARKER, "Updated {}'s reputation to {}", player.getName().getString(), this.reputation);
     }
 
@@ -61,10 +63,6 @@ public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT
     public void deserializeNBT(CompoundNBT nbt) {
         reputation = nbt.getFloat("reputation");
         maxedOutReputation = nbt.getBoolean("maxedOutReputation");
-    }
-
-    private void synchronize() {
-        provider.getRequestFactory().makeSyncRequest();
     }
 
     private void sendReputationStatusUpdate(ReputationStatus prev, ReputationStatus current) {

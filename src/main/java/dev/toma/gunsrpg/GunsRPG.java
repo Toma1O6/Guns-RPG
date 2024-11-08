@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import dev.toma.configuration.Configuration;
 import dev.toma.configuration.config.format.ConfigFormats;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IQuestingData;
 import dev.toma.gunsrpg.api.common.data.IWorldData;
 import dev.toma.gunsrpg.common.LootStashDetectorHandler;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -17,8 +18,9 @@ import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.world.MobSpawnManager;
+import dev.toma.gunsrpg.world.cap.NbtCapabilityStorage;
+import dev.toma.gunsrpg.world.cap.QuestingData;
 import dev.toma.gunsrpg.world.cap.WorldData;
-import dev.toma.gunsrpg.world.cap.WorldDataStorage;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -88,7 +90,8 @@ public class GunsRPG {
     private void commonSetup(FMLCommonSetupEvent event) {
         NetworkManager.init();
         CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData::new);
-        CapabilityManager.INSTANCE.register(IWorldData.class, new WorldDataStorage(), WorldData::new);
+        CapabilityManager.INSTANCE.register(IWorldData.class, new NbtCapabilityStorage<>(), WorldData::new);
+        CapabilityManager.INSTANCE.register(IQuestingData.class, new NbtCapabilityStorage<>(), QuestingData::new);
         modLifecycle.commonInit();
         MobSpawnManager.instance().initialize();
 

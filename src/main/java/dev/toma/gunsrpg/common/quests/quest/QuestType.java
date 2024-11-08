@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 import java.util.UUID;
 
@@ -35,8 +36,8 @@ public final class QuestType<D extends IQuestData, Q extends Quest<D>> {
         return resolver.resolve(element);
     }
 
-    public Q newQuestInstance(QuestScheme<D> scheme, UUID traderId) {
-        return factory.makeQuestInstance(scheme, traderId);
+    public Q newQuestInstance(World world, QuestScheme<D> scheme, UUID traderId) {
+        return factory.makeQuestInstance(world, scheme, traderId);
     }
 
     public Q fromContext(QuestDeserializationContext<D> context) {

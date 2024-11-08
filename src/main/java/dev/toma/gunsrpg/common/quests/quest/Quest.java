@@ -4,9 +4,9 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
-import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.IQuests;
+import dev.toma.gunsrpg.api.common.data.IQuestingData;
+import dev.toma.gunsrpg.api.common.data.ITraderStandings;
 import dev.toma.gunsrpg.client.render.infobar.IDataModel;
 import dev.toma.gunsrpg.client.render.infobar.QuestDisplayDataModel;
 import dev.toma.gunsrpg.client.render.infobar.TextElement;
@@ -22,10 +22,13 @@ import dev.toma.gunsrpg.common.quests.condition.QuestConditions;
 import dev.toma.gunsrpg.common.quests.reward.QuestReward;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardList;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardManager;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.quests.trigger.*;
 import dev.toma.gunsrpg.util.properties.IPropertyHolder;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import dev.toma.gunsrpg.util.properties.PropertyContext;
+import dev.toma.gunsrpg.util.properties.PropertyKey;
+import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -38,34 +41,36 @@ import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.LazyOptional;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Function;
 
 public abstract class Quest<D extends IQuestData> {
 
     private static final ITextComponent QUEST_COMPLETED = new TranslationTextComponent("quest.completed").withStyle(TextFormatting.GREEN);
     private static final ITextComponent QUEST_FAILED = new TranslationTextComponent("quest.failed").withStyle(TextFormatting.RED);
+    protected final World level;
     private final Multimap<Trigger, TriggerContext> triggerListeners = ArrayListMultimap.create();
     private final QuestScheme<D> scheme;
     private final IQuestCondition[] conditions;
     private final int rewardTier;
-    private final UUID uuid;
-    private final LazyOptional<IDataModel> displayModel = LazyOptional.of(this::buildDataModel);
+    private final UUID mayorId;
+    private final DataHolder<IDataModel> displayModelHolder = new DataHolder<>(this::buildDataModel);
     private final IPropertyHolder initialProperties = PropertyContext.create();
+    private final Map<UUID, IPropertyHolder> memberInitialProperties = new HashMap<>();
+    private final PlayerDataAccess access;
 
-    protected PlayerEntity player;
+    protected QuestingGroup group;
     protected QuestReward reward;
     protected QuestStatus status = QuestStatus.CREATED;
 
-    public Quest(QuestScheme<D> scheme, UUID traderId) {
+    public Quest(World level, QuestScheme<D> scheme, UUID traderId) {
+        this.level = level;
         this.scheme = scheme;
-        this.uuid = traderId;
+        this.mayorId = traderId;
         QuestConditionTierScheme tierScheme = scheme.getConditionTierScheme();
         QuestConditionTierScheme.Result result = tierScheme.getModifiedConditions();
         this.rewardTier = scheme.getTier() + result.getTierModifier();
@@ -78,13 +83,15 @@ public abstract class Quest<D extends IQuestData> {
             allConditions[tieredConditions.length + i] = condition;
         }
         this.conditions = allConditions;
+        this.access = this::getPlayerProperty;
 
         registerAllTriggers();
     }
 
     public Quest(QuestDeserializationContext<D> context) {
+        this.level = context.getWorld();
         this.scheme = context.getScheme();
-        this.uuid = context.getTraderId();
+        this.mayorId = context.getTraderId();
         this.conditions = context.getConditions();
         this.rewardTier = context.getRewardTier();
         this.status = context.getStatus();
@@ -92,6 +99,7 @@ public abstract class Quest<D extends IQuestData> {
         if (reward != null) {
             this.reward = reward;
         }
+        this.access = this::getPlayerProperty;
 
         registerAllTriggers();
     }
@@ -102,10 +110,16 @@ public abstract class Quest<D extends IQuestData> {
         return scheme.getData();
     }
 
-    public void assign(PlayerEntity player) {
-        this.player = player;
-        this.savePlayerStatusProperties(player);
+    public void assign(QuestingGroup group, World world) {
+        this.group = group;
+        //this.savePlayerStatusProperties(player); // TODO save status properties for each member
         if (reward == null) {
+            UUID partyOwner = this.group.getGroupId();
+            PlayerEntity player = world.getPlayerByUUID(partyOwner);
+            if (player == null) {
+                GunsRPG.log.error("Party owner not found, quest cannot be assigned!");
+                return;
+            }
             IPlayerData data = PlayerData.getUnsafe(player);
             IAttributeProvider provider = data.getAttributes();
             int rewardChoices = provider.getAttribute(Attribs.QUEST_VISIBLE_REWARD).intValue();
@@ -118,47 +132,57 @@ public abstract class Quest<D extends IQuestData> {
     }
 
     public UUID getOriginalAssignerId() {
-        return uuid;
+        return mayorId;
     }
 
-    public void tickQuest(PlayerEntity player) {
-        float health = player.getHealth();
-        int food = player.getFoodData().getFoodLevel();
-        float savedHealth = initialProperties.getProperty(QuestProperties.HEALTH_STATUS);
-        int savedFood = initialProperties.getProperty(QuestProperties.FOOD_STATUS);
-        if (health < savedHealth) {
-            initialProperties.setProperty(QuestProperties.HEALTH_STATUS, health);
-        }
-        if (food < savedFood) {
-            initialProperties.setProperty(QuestProperties.FOOD_STATUS, food);
+    public void tickQuest() {
+        this.group.acceptActive(this.level, player -> {
+            float health = player.getHealth();
+            int foodLevel = player.getFoodData().getFoodLevel();
+            IPropertyHolder holder = this.memberInitialProperties.computeIfAbsent(player.getUUID(), key -> PropertyContext.create());
+            float savedHealth = holder.getProperty(QuestProperties.HEALTH_STATUS);
+            int savedFoodLevel = holder.getProperty(QuestProperties.FOOD_STATUS);
+            if (savedHealth != health || savedFoodLevel != foodLevel) {
+                holder.setProperty(QuestProperties.HEALTH_STATUS, savedHealth);
+                holder.setProperty(QuestProperties.FOOD_STATUS, savedFoodLevel);
+            }
+        });
+    }
+
+    public void onCompleted() {
+        if (!level.isClientSide) {
+            this.group.acceptActive(this.level, member -> {
+                ServerPlayerEntity player = (ServerPlayerEntity) member;
+                player.connection.send(new SPlaySoundEffectPacket(SoundEvents.PLAYER_LEVELUP, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 0.75F, 1.0F));
+                player.sendMessage(QUEST_COMPLETED, ChatType.GAME_INFO, Util.NIL_UUID);
+                PlayerData.get(member).ifPresent(data -> {
+                    ITraderStandings standings = data.getMayorReputationProvider();
+                    standings.questFinished(this.mayorId, this);
+                });
+            });
         }
     }
 
-    public void onCompleted(PlayerEntity player) {
-        if (!player.level.isClientSide) {
-            ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-            serverPlayer.connection.send(new SPlaySoundEffectPacket(SoundEvents.PLAYER_LEVELUP, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 0.75F, 1.0F));
-            serverPlayer.sendMessage(QUEST_COMPLETED, ChatType.GAME_INFO, Util.NIL_UUID);
-            PlayerData.get(player).ifPresent(data -> data.getQuests().getTraderStandings().questFinished(uuid, this));
-        }
-    }
-
-    public void onFailed(PlayerEntity player) {
-        if (!player.level.isClientSide) {
-            ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-            serverPlayer.connection.send(new SPlaySoundEffectPacket(ModSounds.USE_AVENGE_ME_FRIENDS, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 0.75F, 1.0F));
-            serverPlayer.sendMessage(QUEST_FAILED, ChatType.GAME_INFO, Util.NIL_UUID);
-            PlayerData.get(player).ifPresent(data -> {
-                IQuests quests = data.getQuests();
-                quests.getTraderStandings().questFailed(uuid, this);
-                quests.clearActiveQuest();
+    public void onFailed() {
+        if (!level.isClientSide) {
+            this.group.acceptActive(this.level, member -> {
+                ServerPlayerEntity player = (ServerPlayerEntity) member;
+                player.connection.send(new SPlaySoundEffectPacket(ModSounds.USE_AVENGE_ME_FRIENDS, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 0.75F, 1.0F));
+                player.sendMessage(QUEST_FAILED, ChatType.GAME_INFO, Util.NIL_UUID);
+                PlayerData.get(member).ifPresent(data -> {
+                    ITraderStandings standings = data.getMayorReputationProvider();
+                    standings.questFailed(this.mayorId, this);
+                });
+            });
+            QuestingDataProvider.getData(this.level).ifPresent(questing -> {
+                questing.unassignQuest(this.group);
+                questing.sendData();
             });
         }
     }
 
     public void trigger(Trigger trigger, IPropertyReader reader) {
-        if (this.getStatus() != QuestStatus.ACTIVE) return;
-        this.initialProperties.moveContents((IPropertyHolder) reader);
+        this.initialProperties.moveContents((IPropertyHolder) reader); // TODO rework
         Collection<TriggerContext> contexts = triggerListeners.get(trigger);
         if (contexts != null) {
             TriggerResponseStatus response = TriggerResponseStatus.OK;
@@ -180,10 +204,10 @@ public abstract class Quest<D extends IQuestData> {
             }
             switch (status) {
                 case COMPLETED:
-                    onCompleted(player);
+                    onCompleted();
                     break;
                 case FAILED:
-                    onFailed(player);
+                    onFailed();
                     break;
             }
         }
@@ -195,7 +219,7 @@ public abstract class Quest<D extends IQuestData> {
         ListNBT conditionList = new ListNBT();
         Arrays.stream(conditions).map(QuestConditions::saveConditionToNbt).forEach(conditionList::add);
         nbt.put("conditions", conditionList);
-        nbt.putUUID("createdBy", uuid);
+        nbt.putUUID("createdBy", mayorId);
         nbt.putInt("rewardTier", rewardTier);
         if (reward != null) {
             nbt.put("reward", reward.toNbt());
@@ -231,9 +255,17 @@ public abstract class Quest<D extends IQuestData> {
         return reward;
     }
 
+    public PlayerDataAccess getDataAccess() {
+        return this.access;
+    }
+
+    public final boolean isOwner(UUID playerId) {
+        return this.group.getGroupId().equals(playerId);
+    }
+
     @OnlyIn(Dist.CLIENT)
-    public LazyOptional<IDataModel> getDisplayModel() {
-        return displayModel;
+    public IDataModel getDisplayModel(UUID clientId) {
+        return displayModelHolder.getOrBuild(clientId);
     }
 
     @Override
@@ -261,22 +293,17 @@ public abstract class Quest<D extends IQuestData> {
 
     }
 
-    protected void savePlayerStatusProperties(PlayerEntity player) {
-        this.initialProperties.setProperty(QuestProperties.FOOD_STATUS, player.getFoodData().getFoodLevel());
-        this.initialProperties.setProperty(QuestProperties.HEALTH_STATUS, player.getHealth());
-    }
-
-    protected void trySyncClient() {
-        if (player == null) return;
-        PlayerData.get(player).ifPresent(data -> data.sync(DataFlags.QUESTS));
+    protected void trySyncClient(World world) {
+        if (group == null) return;
+        QuestingDataProvider.getData(world).ifPresent(IQuestingData::sendData);
     }
 
     protected void fillDataModel(QuestDisplayDataModel model) {
         model.addQuestHeader(this);
     }
 
-    private IDataModel buildDataModel() {
-        QuestDisplayDataModel dataModel = new QuestDisplayDataModel();
+    private IDataModel buildDataModel(UUID clientId) {
+        QuestDisplayDataModel dataModel = new QuestDisplayDataModel(clientId);
         if (this.getStatus() == QuestStatus.COMPLETED) {
             dataModel.addElement(new TextElement(new TranslationTextComponent("quest.task.completed").withStyle(TextFormatting.GREEN).withStyle(TextFormatting.BOLD)));
             dataModel.addElement(new TextElement(new TranslationTextComponent("quest.task.claim_reward")));
@@ -301,7 +328,7 @@ public abstract class Quest<D extends IQuestData> {
     }
 
     private TriggerResponseStatus handleQuestCondition(QuestConditionProviderType<?> type, IQuestCondition condition, IPropertyReader reader) {
-        boolean wasValid = condition.isValid(player, reader);
+        boolean wasValid = condition.isValid(group, reader);
         return wasValid ? TriggerResponseStatus.OK : type.shouldFailQuest() && !overrideFailureFromCondition() ? TriggerResponseStatus.FAIL : TriggerResponseStatus.PASS;
     }
 
@@ -310,7 +337,33 @@ public abstract class Quest<D extends IQuestData> {
         return this.scheme.getQuestId().toString();
     }
 
+    private <T> T getPlayerProperty(PlayerEntity player, PropertyKey<T> key) {
+        return memberInitialProperties.getOrDefault(player.getUUID(), PropertyContext.empty()).getProperty(key);
+    }
+
     public interface ITriggerRegistration {
         void addEntry(Trigger trigger, ITriggerResponder listener, ITriggerHandler handler);
+    }
+
+    @FunctionalInterface
+    public interface PlayerDataAccess {
+        <T> T get(PlayerEntity player, PropertyKey<T> key);
+    }
+
+    public static class DataHolder<T> {
+
+        private final Function<UUID, T> constructor;
+        private T instance;
+
+        public DataHolder(Function<UUID, T> constructor) {
+            this.constructor = constructor;
+        }
+
+        public T getOrBuild(UUID uuid) {
+            if (this.instance == null) {
+                this.instance = constructor.apply(uuid);
+            }
+            return this.instance;
+        }
     }
 }

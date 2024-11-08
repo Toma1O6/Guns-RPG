@@ -4,11 +4,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import dev.toma.gunsrpg.util.properties.Properties;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.text.ITextComponent;
@@ -41,7 +41,7 @@ public class HeadshotConditionProvider extends AbstractQuestConditionProvider<He
     }
 
     @Override
-    public boolean isValid(PlayerEntity player, IPropertyReader reader) {
+    public boolean isValid(QuestingGroup group, IPropertyReader reader) {
         Entity entity = reader.getProperty(QuestProperties.DIRECT_ENTITY);
         if (entity instanceof AbstractProjectile) {
             AbstractProjectile projectile = (AbstractProjectile) entity;

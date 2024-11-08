@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 
 import java.util.UUID;
 
@@ -19,8 +20,8 @@ public class SurvivalQuest extends Quest<SurvivalData> {
     public static final ITextComponent TIME_REMAINING = new TranslationTextComponent("quest.time_remaining");
     private int timeLeft;
 
-    public SurvivalQuest(QuestScheme<SurvivalData> scheme, UUID traderId) {
-        super(scheme, traderId);
+    public SurvivalQuest(World world, QuestScheme<SurvivalData> scheme, UUID traderId) {
+        super(world, scheme, traderId);
         this.timeLeft = this.getActiveData().getTicks();
     }
 

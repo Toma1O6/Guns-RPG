@@ -1,16 +1,19 @@
 package dev.toma.gunsrpg.common.quests;
 
+import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.util.properties.PropertyKey;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
 
 import java.util.UUID;
 
 public final class QuestProperties {
 
+    public static final PropertyKey<World> LEVEL = PropertyKey.newKey("level");
     public static final PropertyKey<PlayerEntity> PLAYER = PropertyKey.newKey("player");
     public static final PropertyKey<ItemStack> USED_ITEM = PropertyKey.newKey("used_item", ItemStack.EMPTY);
     public static final PropertyKey<LivingEntity> ENTITY = PropertyKey.newKey("entity");
@@ -19,4 +22,5 @@ public final class QuestProperties {
     public static final PropertyKey<Integer> FOOD_STATUS = PropertyKey.newKey("food_status", 0);
     public static final PropertyKey<DamageSource> DAMAGE_SOURCE = PropertyKey.newKey("damage_source", DamageSource.GENERIC);
     public static final PropertyKey<UUID> UUID = PropertyKey.newKey("uuid");
+    public static final PropertyKey<Quest.PlayerDataAccess> ACCESS = PropertyKey.newKey("access");
 }

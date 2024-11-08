@@ -18,16 +18,16 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class S2C_OpenQuestScreen extends AbstractNetworkPacket<S2C_OpenQuestScreen> {
 
     private ReputationStatus status;
-    private MayorEntity.ListedQuests quests;
+    private ListNBT questsNbt;
     private int entityId;
     private long timer;
 
     public S2C_OpenQuestScreen() {
     }
 
-    public S2C_OpenQuestScreen(ReputationStatus status, MayorEntity.ListedQuests quests, int entityId, long timer) {
+    public S2C_OpenQuestScreen(ReputationStatus status, ListNBT questsNbt, int entityId, long timer) {
         this.status = status;
-        this.quests = quests;
+        this.questsNbt = questsNbt;
         this.entityId = entityId;
         this.timer = timer;
     }
@@ -36,7 +36,7 @@ public class S2C_OpenQuestScreen extends AbstractNetworkPacket<S2C_OpenQuestScre
     public void encode(PacketBuffer buffer) {
         buffer.writeEnum(status);
         CompoundNBT wrap = new CompoundNBT();
-        wrap.put("contents", quests.toNbt());
+        wrap.put("contents", questsNbt);
         buffer.writeNbt(wrap);
         buffer.writeInt(entityId);
         buffer.writeLong(timer);
@@ -47,8 +47,7 @@ public class S2C_OpenQuestScreen extends AbstractNetworkPacket<S2C_OpenQuestScre
         ReputationStatus status = buffer.readEnum(ReputationStatus.class);
         CompoundNBT wrap = buffer.readNbt();
         ListNBT content = wrap.getList("contents", Constants.NBT.TAG_COMPOUND);
-        MayorEntity.ListedQuests quests = MayorEntity.ListedQuests.loadNbt(content);
-        return new S2C_OpenQuestScreen(status, quests, buffer.readInt(), buffer.readLong());
+        return new S2C_OpenQuestScreen(status, content, buffer.readInt(), buffer.readLong());
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -58,6 +57,7 @@ public class S2C_OpenQuestScreen extends AbstractNetworkPacket<S2C_OpenQuestScre
         World world = mc.level;
         Entity entity = world.getEntity(entityId);
         if (!(entity instanceof MayorEntity)) return;
+        MayorEntity.ListedQuests quests = MayorEntity.ListedQuests.loadNbt(world, questsNbt);
         mc.setScreen(new QuestScreen(status, quests.getQuests(), (MayorEntity) entity, timer));
     }
 }

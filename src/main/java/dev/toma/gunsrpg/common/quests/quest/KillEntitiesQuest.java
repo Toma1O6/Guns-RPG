@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.World;
 
 import java.util.UUID;
 
@@ -17,8 +18,8 @@ public class KillEntitiesQuest extends Quest<KillEntityData> {
     public static final IQuestFactory<KillEntityData, KillEntitiesQuest> FACTORY = IQuestFactory.of(KillEntitiesQuest::new, KillEntitiesQuest::new);
     private int killCount;
 
-    public KillEntitiesQuest(QuestScheme<KillEntityData> scheme, UUID traderId) {
-        super(scheme, traderId);
+    public KillEntitiesQuest(World world, QuestScheme<KillEntityData> scheme, UUID traderId) {
+        super(world, scheme, traderId);
     }
 
     public KillEntitiesQuest(QuestDeserializationContext<KillEntityData> context) {
@@ -61,7 +62,7 @@ public class KillEntitiesQuest extends Quest<KillEntityData> {
         if (++killCount >= this.getActiveData().getKillTarget()) {
             setStatus(QuestStatus.COMPLETED);
         }
-        trySyncClient();
+        trySyncClient(this.level); // TODO sync group status
     }
 
     private TriggerResponseStatus onPlayerDied(Trigger trigger, IPropertyReader reader) {

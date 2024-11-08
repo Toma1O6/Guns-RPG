@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.quests.condition;
 
 import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.quest.Quest;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -22,8 +24,10 @@ public class NoFoodConditionProvider extends AbstractQuestConditionProvider<NoFo
     }
 
     @Override
-    public boolean isValid(PlayerEntity player, IPropertyReader reader) {
-        int foodStat = reader.getProperty(QuestProperties.FOOD_STATUS);
+    public boolean isValid(QuestingGroup group, IPropertyReader reader) {
+        Quest.PlayerDataAccess access = reader.getProperty(QuestProperties.ACCESS);
+        PlayerEntity player = reader.getProperty(QuestProperties.PLAYER);
+        int foodStat = access.get(player, QuestProperties.FOOD_STATUS);
         FoodStats stats = player.getFoodData();
         return stats.getFoodLevel() <= foodStat;
     }

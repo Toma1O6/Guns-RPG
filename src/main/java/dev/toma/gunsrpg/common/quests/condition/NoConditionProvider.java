@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.quests.condition;
 
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -21,7 +21,7 @@ public class NoConditionProvider extends AbstractQuestConditionProvider<NoCondit
     }
 
     @Override
-    public boolean isValid(PlayerEntity player, IPropertyReader reader) {
+    public boolean isValid(QuestingGroup group, IPropertyReader reader) {
         return true;
     }
 

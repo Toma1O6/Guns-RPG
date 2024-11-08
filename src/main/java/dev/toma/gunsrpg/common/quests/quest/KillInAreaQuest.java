@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.World;
 
 import java.util.UUID;
 
@@ -17,8 +18,8 @@ public class KillInAreaQuest extends AbstractAreaBasedQuest<KillInAreaData> {
     public static final IQuestFactory<KillInAreaData, KillInAreaQuest> FACTORY = IQuestFactory.of(KillInAreaQuest::new, KillInAreaQuest::new);
     private int killCount;
 
-    public KillInAreaQuest(QuestScheme<KillInAreaData> scheme, UUID traderId) {
-        super(scheme, traderId);
+    public KillInAreaQuest(World world, QuestScheme<KillInAreaData> scheme, UUID traderId) {
+        super(world, scheme, traderId);
     }
 
     public KillInAreaQuest(QuestDeserializationContext<KillInAreaData> context) {
@@ -64,7 +65,7 @@ public class KillInAreaQuest extends AbstractAreaBasedQuest<KillInAreaData> {
         if (++killCount >= this.getActiveData().getKillTarget()) {
             setStatus(QuestStatus.COMPLETED);
         }
-        trySyncClient();
+        trySyncClient(this.level); // TODO sync group
     }
 
     @Override

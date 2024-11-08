@@ -9,6 +9,8 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.debuffs.DebuffType;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import dev.toma.gunsrpg.common.init.ModRegistries;
+import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
@@ -52,10 +54,11 @@ public class ActiveDebuffConditionProvider extends AbstractQuestConditionProvide
     }
 
     @Override
-    public boolean isValid(PlayerEntity player, IPropertyReader reader) {
+    public boolean isValid(QuestingGroup group, IPropertyReader reader) {
+        PlayerEntity player = reader.getProperty(QuestProperties.PLAYER);
         IPlayerData data = PlayerData.getUnsafe(player);
         IDebuffs debuffs = data.getDebuffControl();
-        return debuffs.hasDebuff(debuff);
+        return debuffs.hasDebuff(this.debuff);
     }
 
     @Override

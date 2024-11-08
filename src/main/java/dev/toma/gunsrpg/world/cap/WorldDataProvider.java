@@ -19,10 +19,6 @@ public class WorldDataProvider implements ICapabilitySerializable<CompoundNBT> {
         instance = LazyOptional.of(() -> new WorldData(world));
     }
 
-    public WorldDataProvider() {
-        this(null);
-    }
-
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
         return cap == CAP ? instance.cast() : LazyOptional.empty();

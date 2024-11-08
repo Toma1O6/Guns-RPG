@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.quests.quest.area;
 
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.math.Vec2i;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,10 +16,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class QuestArea {
 
@@ -57,13 +55,13 @@ public class QuestArea {
         return area;
     }
 
-    public void tickArea(World world, PlayerEntity player) {
+    public void tickArea(World world, QuestingGroup group) {
         isActiveArea = true;
         if (!world.isClientSide) {
             if (--spawnIntervalTimer < 0) {
                 spawnIntervalTimer = scheme.getSpawnInterval();
                 IMobSpawner spawner = scheme.getSpawner();
-                spawner.spawnMobsRandomly(world, this, player);
+                spawner.spawnMobsRandomly(world, this, group);
             }
         } else {
             if (edgePositions == null) {
@@ -112,6 +110,16 @@ public class QuestArea {
                 return new BlockPos(minX, y, maxZ);
             }
         }
+    }
+
+    public boolean isInArea(QuestingGroup group, World level) {
+        for (UUID member : group.getMembers()) {
+            PlayerEntity player = level.getPlayerByUUID(member);
+            if (player != null && !isInArea(player)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean isInArea(Entity entity) {

@@ -67,6 +67,7 @@ public class NetworkManager {
         registerNetworkPacket(S2C_UseStashDetectorPacket.class);
         registerNetworkPacket(S2C_OpenQuestScreen.class);
         registerNetworkPacket(S2C_SendEntityData.class);
+        registerNetworkPacket(S2C_SendQuestingData.class);
         // server packets
         registerNetworkPacket(C2S_ShootPacket.class);
         registerNetworkPacket(C2S_RequestDataUpdatePacket.class);

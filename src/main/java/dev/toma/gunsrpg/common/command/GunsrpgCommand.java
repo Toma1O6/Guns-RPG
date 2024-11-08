@@ -41,9 +41,11 @@ import dev.toma.gunsrpg.common.quests.reward.IQuestItemProvider;
 import dev.toma.gunsrpg.common.quests.reward.QuestReward;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardList;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardManager;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;
 import dev.toma.gunsrpg.util.helper.CommandHelper;
+import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
@@ -60,6 +62,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.IServerWorldInfo;
 import net.minecraftforge.common.util.LazyOptional;
@@ -340,7 +343,7 @@ public class GunsrpgCommand {
             return -1;
         }
         PlayerEntity player = (PlayerEntity) executor;
-        IPlayerData data = PlayerData.getUnsafe(player);
+        IQuestingData questing = QuestingDataProvider.getData(player.level).orElse(null);
         ResourceLocation location = ResourceLocationArgument.getId(context, "questId");
         QuestSystem system = GunsRPG.getModLifecycle().quests();
         QuestManager manager = system.getQuestManager();
@@ -348,18 +351,19 @@ public class GunsrpgCommand {
         if (scheme == null) {
             throw UNKNOWN_KEY_EXCEPTION.create(location);
         }
-        Quest<?> quest = newQuest(scheme);
-        IQuests provider = data.getQuests();
+        // TODO validation for group leader!
+        Quest<?> quest = newQuest(scheme, player.level);
+        QuestingGroup group = questing.getOrCreateGroup(player);
         quest.setStatus(QuestStatus.ACTIVE);
-        provider.assignQuest(quest);
-        quest.assign(player);
+        questing.assignQuest(quest, group);
+        questing.sendData();
         return 0;
     }
 
     @SuppressWarnings("unchecked")
-    private static <D extends IQuestData, Q extends Quest<D>> Quest<D> newQuest(QuestScheme<D> scheme) {
+    private static <D extends IQuestData, Q extends Quest<D>> Quest<D> newQuest(QuestScheme<D> scheme, World world) {
         QuestType<D, Q> type = (QuestType<D, Q>) scheme.getQuestType();
-        return type.newQuestInstance(scheme, Util.NIL_UUID);
+        return type.newQuestInstance(world, scheme, Util.NIL_UUID);
     }
 
     private static int updateQuestStatus(CommandContext<CommandSource> context) throws CommandSyntaxException {
@@ -368,14 +372,14 @@ public class GunsrpgCommand {
             return -1;
         }
         PlayerEntity player = (PlayerEntity) executor;
-        IPlayerData data = PlayerData.getUnsafe(player);
-        Optional<Quest<?>> optional = data.getQuests().getActiveQuest();
-        if (!optional.isPresent()) {
+        IQuestingData questing = QuestingDataProvider.getData(player.level).orElse(null);
+        Quest<?> quest = questing.getActiveQuestForPlayer(player);
+        if (quest == null) {
             throw NO_ACTIVE_QUEST.create();
         }
         QuestStatus status = context.getArgument("status", QuestStatus.class);
-        optional.get().setStatus(status);
-        data.sync(DataFlags.QUESTS);
+        quest.setStatus(status);
+        questing.sendData();
         return 0;
     }
 
@@ -385,12 +389,14 @@ public class GunsrpgCommand {
             return -1;
         }
         PlayerEntity player = (PlayerEntity) executor;
-        IPlayerData data = PlayerData.getUnsafe(player);
-        Optional<Quest<?>> optional = data.getQuests().getActiveQuest();
-        if (!optional.isPresent()) {
+        IQuestingData questing = QuestingDataProvider.getData(player.level).orElse(null);
+        Quest<?> quest = questing.getActiveQuestForPlayer(player);
+        if (quest == null) {
             throw NO_ACTIVE_QUEST.create();
         }
-        data.getQuests().clearActiveQuest();
+        QuestingGroup group = questing.getOrCreateGroup(player);
+        questing.unassignQuest(group);
+        questing.sendData();
         return 0;
     }
 

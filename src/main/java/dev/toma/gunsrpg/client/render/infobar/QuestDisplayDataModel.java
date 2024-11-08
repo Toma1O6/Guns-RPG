@@ -8,18 +8,20 @@ import dev.toma.gunsrpg.util.math.IDimensions;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.text.ITextComponent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 public class QuestDisplayDataModel implements IDataModel {
 
     private final List<IDataElement> list = new ArrayList<>();
+    private final UUID clientId;
     private boolean resized;
     private int width;
     private int height;
+
+    public QuestDisplayDataModel(UUID clientId) {
+        this.clientId = clientId;
+    }
 
     public void addQuestHeader(Quest<?> quest) {
         addQuestHeader(quest, true);
@@ -38,6 +40,10 @@ public class QuestDisplayDataModel implements IDataModel {
                 .filter(condition -> condition != NoConditionProvider.NO_CONDITION)
                 .sorted(Comparator.comparing(condition -> condition.getProviderType().getType().getId()))
                 .forEach(condition -> addElement(new TextElement(condition.getDescriptor(true))));
+    }
+
+    public UUID getClientId() {
+        return clientId;
     }
 
     @Override

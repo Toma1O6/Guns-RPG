@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.quests.condition;
 
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -9,7 +10,7 @@ public interface IQuestCondition {
 
     IQuestConditionProvider<?> getProviderType();
 
-    boolean isValid(PlayerEntity player, IPropertyReader reader);
+    boolean isValid(QuestingGroup group, IPropertyReader reader);
 
     ITextComponent getDescriptor(boolean shortDesc);
 

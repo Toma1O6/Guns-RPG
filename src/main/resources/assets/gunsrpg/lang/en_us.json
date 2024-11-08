@@ -1780,5 +1780,10 @@
   "recipe.gunsrpg.ammobench.disassemble_wooden_9mm": "Disassemble Wooden 9mm",
   "recipe.gunsrpg.ammobench.disassemble_wooden_bolt": "Disassemble Wooden Bolt",
 
-  "jei.recipe.category.gunsrpg.ammo_bench": "Ammo Bench"
+  "jei.recipe.category.gunsrpg.ammo_bench": "Ammo Bench",
+
+  "gunsrpg.quest.party.already_member": "Player %s is already member of this party",
+  "gunsrpg.quest.party.already_invited": "Player %s has been already invited",
+  "gunsrpg.quest.party.not_invited": "There is no active invite for you pending in this party",
+  "gunsrpg.quest.party.full": "Party is full"
 }
