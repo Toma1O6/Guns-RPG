@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.init;
 
-import dev.toma.gunsrpg.common.debuffs.sources.DebuffSourceType;
-import dev.toma.gunsrpg.common.debuffs.event.DebuffStageEventType;
 import dev.toma.gunsrpg.common.debuffs.DebuffType;
+import dev.toma.gunsrpg.common.debuffs.event.DebuffStageEventType;
+import dev.toma.gunsrpg.common.debuffs.sources.DebuffSourceType;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.SimpleRegistry;
 import net.minecraftforge.registries.IForgeRegistry;

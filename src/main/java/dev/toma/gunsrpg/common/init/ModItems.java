@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.common.init;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.item.*;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
-import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
 import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder(GunsRPG.MODID)

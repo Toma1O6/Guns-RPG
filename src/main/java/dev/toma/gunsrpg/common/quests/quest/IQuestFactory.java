@@ -4,7 +4,6 @@ import dev.toma.gunsrpg.util.function.TriFunction;
 import net.minecraft.world.World;
 
 import java.util.UUID;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public interface IQuestFactory<D extends IQuestData, Q extends Quest<D>> {

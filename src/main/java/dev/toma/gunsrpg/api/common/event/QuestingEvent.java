@@ -1,9 +1,7 @@
 package dev.toma.gunsrpg.api.common.event;
 
-import dev.toma.gunsrpg.common.quests.sharing.GroupInvite;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.object.Interaction;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.eventbus.api.Event;
 

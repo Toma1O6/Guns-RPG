@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.quests.mayor;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.util.helper.ReputationHelper;
@@ -11,8 +10,6 @@ import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.INBTSerializable;
-
-import java.util.function.Supplier;
 
 public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT> {
 
