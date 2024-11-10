@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IQuestingData;
 import dev.toma.gunsrpg.api.common.event.QuestingEvent;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
+import dev.toma.gunsrpg.config.QuestConfig;
 import dev.toma.gunsrpg.util.helper.NbtHelper;
 import dev.toma.gunsrpg.util.object.Interaction;
 import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
@@ -11,7 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.StringNBT;
-import net.minecraft.util.Util;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -57,11 +57,17 @@ public final class QuestingGroup {
         if (this.isInvited(playerId)) {
             return Interaction.failure(new TranslationTextComponent("gunsrpg.quest.party.already_invited", player.getDisplayName()));
         }
+        IQuestingData questing = QuestingDataProvider.getQuesting(player.level);
+        QuestingGroup group = questing.getOrCreateGroup(player);
+        QuestConfig config = GunsRPG.config.quests;
+        if (!config.allowInvitePlayersInGroup && group.getMemberCount() > 1) {
+            return Interaction.failure(new TranslationTextComponent("gunsrpg.quest.party.cannot_invite"));
+        }
         int currentPartySize = this.members.size();
         if (currentPartySize >= this.getMaxMemberCount()) {
             return Interaction.failure(new TranslationTextComponent("gunsrpg.quest.party.full"));
         }
-        Quest<?> quest = this.getActiveQuest(player.level);
+        Quest<?> quest = questing.getActiveQuest(this);
         if (quest != null && quest.isStarted()) {
             return Interaction.failure(new TranslationTextComponent("gunsrpg.quest.party.cannot_join"));
         }
@@ -71,7 +77,6 @@ public final class QuestingGroup {
             return event.getInteractionResult().failed();
         }
         GroupInvite invite = new GroupInvite(this.groupId, playerId);
-        player.sendMessage(new TranslationTextComponent("gunsrpg.quest.party.invite_received", this.getName()), Util.NIL_UUID);
         this.activeInvites.put(playerId, invite);
         return Interaction.success(invite);
     }
@@ -103,7 +108,6 @@ public final class QuestingGroup {
         questing.addToGroup(this, player);
         UUID playerId = player.getUUID();
         String displayName = player.getDisplayName().getString();
-        this.accept(player.level, member -> member.sendMessage(new TranslationTextComponent("gunsrpg.quest.party.invite_accepted", displayName), Util.NIL_UUID));
         this.usernames.put(playerId, displayName);
         this.members.add(playerId);
         this.deleteInvite(invite);
@@ -168,6 +172,10 @@ public final class QuestingGroup {
 
     public Collection<UUID> getMembers() {
         return this.members;
+    }
+
+    public int getMemberCount() {
+        return this.members.size();
     }
 
     public void accept(World world, Consumer<PlayerEntity> consumer) {

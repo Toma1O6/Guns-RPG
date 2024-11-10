@@ -5,7 +5,6 @@ import dev.toma.gunsrpg.common.quests.quest.area.QuestArea;
 import dev.toma.gunsrpg.common.quests.sharing.GroupInvite;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
-import dev.toma.gunsrpg.util.object.Interaction;
 import dev.toma.gunsrpg.util.properties.IPropertyHolder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;

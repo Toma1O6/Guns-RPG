@@ -1,10 +1,13 @@
 package dev.toma.gunsrpg.util.object;
 
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class Interaction<R> {
 
@@ -26,6 +29,10 @@ public final class Interaction<R> {
         return new Interaction<>(Status.FAILURE, null, message);
     }
 
+    public static <R> Interaction<R> failure(final String message) {
+        return failure(new StringTextComponent(message));
+    }
+
     public <X extends Throwable> void validate(Function<ITextComponent, X> throwableConstructor) throws X {
         if (this.isFailure()) {
             throw throwableConstructor.apply(this.getMessage());
@@ -37,6 +44,21 @@ public final class Interaction<R> {
             throw throwableConstructor.apply(this.getMessage());
         }
         return this.getResult();
+    }
+
+    public R getOrElse(R orElse) {
+        return this.isFailure() ? orElse : this.getResult();
+    }
+
+    public Optional<R> optional() {
+        return Optional.ofNullable(this.result);
+    }
+
+    public void ifSuccessOrElse(Consumer<R> success, Consumer<ITextComponent> failure) {
+        if (this.isSuccessful())
+            success.accept(this.getResult());
+        else
+            failure.accept(this.getMessage());
     }
 
     public boolean isSuccessful() {

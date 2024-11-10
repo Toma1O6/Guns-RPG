@@ -111,9 +111,12 @@ public class InviteMemberView extends View implements ScreenDataEventListener {
         if (!this.filter.isEmpty() && !profile.getName().startsWith(this.filter)) {
             return false;
         }
+        if (group.getInvite(profile.getId()) != null) {
+            return false;
+        }
         QuestConfig config = GunsRPG.config.quests;
         QuestingGroup playerGroup = questing.getGroup(profile.getId());
-        return playerGroup == null || config.allowInvitePlayersInGroup || playerGroup.getMembers().size() <= 1;
+        return playerGroup == null || config.allowInvitePlayersInGroup || playerGroup.getMemberCount() <= 1;
     }
 
     private static final class PlayerInviteWidget extends Widget {
@@ -148,7 +151,7 @@ public class InviteMemberView extends View implements ScreenDataEventListener {
 
             IQuestingData questing = QuestingDataProvider.getQuesting(client.level);
             QuestingGroup group = questing.getGroup(profile.getId());
-            if (group != null && group.getMembers().size() > 1) {
+            if (group != null && group.getMemberCount() > 1) {
                 font.draw(stack, IN_GROUP, this.x + 37, this.y + 26, 0xFFFFFF);
             }
         }

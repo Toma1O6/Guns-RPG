@@ -374,6 +374,9 @@ public class GunsrpgCommand {
         PlayerEntity player = (PlayerEntity) executor;
         World level = player.level;
         IQuestingData questing = QuestingDataProvider.getData(level).orElse(null);
+        QuestingGroup group = questing.getOrCreateGroup(player);
+        if (group.getMemberCount() == 1)
+            return 0;
         questing.removeFromGroup(player.getUUID());
         questing.sendData();
         return 0;

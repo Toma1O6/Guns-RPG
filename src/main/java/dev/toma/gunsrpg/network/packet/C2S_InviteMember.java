@@ -48,12 +48,10 @@ public class C2S_InviteMember extends AbstractNetworkPacket<C2S_InviteMember> {
             GunsRPG.log.warn(QuestSystem.MARKER, "Attempted to invite unknown player by ID {}", this.inviteeId);
             return;
         }
-        Interaction<GroupInvite> interaction = group.invite(invitee);
-        if (interaction.isFailure()){
-            sender.sendMessage(interaction.getMessage(), Util.NIL_UUID);
-            return;
-        }
-        invitee.sendMessage(new TranslationTextComponent("gunsrpg.quest.party.invite_received", group.getName()), Util.NIL_UUID);
-        sender.sendMessage(new TranslationTextComponent("gunsrpg.quest.party.invite_sent", invitee.getName()), Util.NIL_UUID);
+        group.invite(invitee).ifSuccessOrElse(invite -> {
+            invitee.sendMessage(new TranslationTextComponent("gunsrpg.quest.party.invite_received", group.getName()), Util.NIL_UUID);
+            sender.sendMessage(new TranslationTextComponent("gunsrpg.quest.party.invite_sent", invitee.getName()), Util.NIL_UUID);
+            questing.sendData();
+        }, error -> sender.sendMessage(error, Util.NIL_UUID));
     }
 }

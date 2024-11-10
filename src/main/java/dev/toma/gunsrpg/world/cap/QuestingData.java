@@ -161,13 +161,11 @@ public class QuestingData implements IQuestingData {
 
     @Override
     public void removeFromGroup(UUID playerId) {
-        GunsRPG.log.debug("Attempting to remove player from their active group");
+        GunsRPG.log.debug(QuestSystem.MARKER, "Attempting to remove player from their active group");
         QuestingGroup group = this.getGroup(playerId);
         if (group == null)
             return;
         if (group.isLeader(playerId)) {
-            if (group.getMembers().size() == 1)
-                return;
             Quest<?> activeQuest = this.getActiveQuest(group);
             List<UUID> remainingMembers = new ArrayList<>(group.getMembers());
             remainingMembers.remove(playerId);
@@ -221,7 +219,7 @@ public class QuestingData implements IQuestingData {
     public void handlePlayerLogOut(PlayerEntity player) {
         GunsRPG.log.debug(QuestSystem.MARKER, "Handling player {} disconnect", player.getUUID());
         QuestingGroup group = this.getOrCreateGroup(player);
-        if (group.isLeader(player.getUUID()) && group.getMembers().size() > 1) {
+        if (group.isLeader(player.getUUID()) && group.getMemberCount() > 1) {
             this.removeFromGroup(player.getUUID());
         }
     }
