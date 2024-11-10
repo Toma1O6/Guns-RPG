@@ -30,12 +30,10 @@ public final class QuestScheme<D extends IQuestData> {
         ResourceLocation questId = new ResourceLocation(nbt.getString("questId"));
         ResourceLocation questTypeId = new ResourceLocation(nbt.getString("questType"));
         QuestType<D, ?> questType = QuestTypes.getTypeById(questTypeId);
-        String name = nbt.getString("data.name");
-        String info = nbt.getString("data.info");
         D data = questType.readData(nbt.getCompound("questData"));
         int tier = nbt.getInt("tier");
         boolean isSpecialTask = nbt.getBoolean("special");
-        DisplayInfo displayInfo = new DisplayInfo(name, info);
+        DisplayInfo displayInfo = DisplayInfo.create(questId);
         return new QuestScheme<>(questId, questType, data, tier, isSpecialTask, displayInfo, new IQuestConditionProvider[0], QuestConditionTierScheme.EMPTY_SCHEME);
     }
 
@@ -76,8 +74,6 @@ public final class QuestScheme<D extends IQuestData> {
         CompoundNBT nbt = new CompoundNBT();
         nbt.putString("questId", questId.toString());
         nbt.putString("questType", questType.getId().toString());
-        nbt.putString("data.name", displayInfo.getName().getString());
-        nbt.putString("data.info", displayInfo.getInfo().getString());
         nbt.putInt("tier", tier);
         nbt.putBoolean("special", isSpecialTaskQuest);
         nbt.put("questData", questType.writeData(data));

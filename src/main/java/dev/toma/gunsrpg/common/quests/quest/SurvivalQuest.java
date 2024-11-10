@@ -41,11 +41,20 @@ public class SurvivalQuest extends Quest<SurvivalData> {
     }
 
     @Override
-    protected void fillDataModel(QuestDisplayDataModel model) {
-        super.fillDataModel(model);
+    public Object[] getDescriptionArguments() {
+        SurvivalData data = this.getActiveData();
+        return new Object[] { Interval.format(data.getTicks(), f -> f.src(Interval.Unit.TICK).out(Interval.Unit.HOUR, Interval.Unit.MINUTE, Interval.Unit.SECOND).skipAllEmptyValues()) };
+    }
 
+    @Override
+    protected void fillDataModel(QuestDisplayDataModel model) {
+        model.addQuestHeaderWithObjective(this, this.getDescriptionArguments());
         Interval.IFormatFactory formatFactory = f -> f.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND).compact();
-        model.addInformationRow(TIME_REMAINING, this, q -> new StringTextComponent(Interval.format(q.timeLeft, formatFactory)));
+        model.addInformationRow(
+                this,
+                q -> TIME_REMAINING,
+                q -> new StringTextComponent(Interval.format(q.timeLeft, formatFactory))
+        );
         model.addConditionDisplay(this);
     }
 

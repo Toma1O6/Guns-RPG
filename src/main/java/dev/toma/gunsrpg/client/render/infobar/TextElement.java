@@ -14,6 +14,10 @@ public class TextElement implements IDataElement {
     }
 
     @Override
+    public void recalculate(FontRenderer font, int width, int height) {
+    }
+
+    @Override
     public void draw(MatrixStack matrix, FontRenderer font, int x, int y, int width, int height) {
         this.width = font.width(component);
         font.draw(matrix, component, x, y, 0xFFFFFF);

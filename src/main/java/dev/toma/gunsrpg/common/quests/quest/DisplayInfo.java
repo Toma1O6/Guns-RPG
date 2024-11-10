@@ -1,32 +1,35 @@
 package dev.toma.gunsrpg.common.quests.quest;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+
+import java.io.File;
+import java.util.Locale;
 
 public class DisplayInfo {
 
-    private final IFormattableTextComponent name;
-    private final IFormattableTextComponent info;
+    private final TextComponent name;
+    private final String infoKey;
 
-    public DisplayInfo(String title, String description) {
-        this.name = new StringTextComponent(title);
-        this.info = new StringTextComponent(description);
+    private DisplayInfo(String title, String infoKey) {
+        this.name = new TranslationTextComponent(title);
+        this.infoKey = infoKey;
     }
 
-    public IFormattableTextComponent getName() {
+    public TextComponent getName() {
         return name;
     }
 
-    public IFormattableTextComponent getInfo() {
-        return info;
+    public TextComponent getInfo(Object... args) {
+        return new TranslationTextComponent(this.infoKey, args);
     }
 
-    public static DisplayInfo fromJson(JsonObject object) throws JsonParseException {
-        String name = JSONUtils.getAsString(object, "name");
-        String info = JSONUtils.getAsString(object, "info");
-        return new DisplayInfo(name, info);
+    public static DisplayInfo create(ResourceLocation questId) {
+        String prefix = String.format(Locale.ROOT, "quest.%s.%s", questId.getNamespace(), questId.getPath().replaceAll(File.pathSeparator, "_"));
+        return new DisplayInfo(
+                prefix + ".header",
+                prefix + ".description"
+        );
     }
 }

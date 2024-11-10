@@ -8,11 +8,11 @@ import java.util.function.Function;
 
 public class DataRowElement<T> extends DataSourcedElement<T> {
 
-    private final ITextComponent column1;
+    private final Function<T, ITextComponent> column1;
     private final Function<T, ITextComponent> column2Provider;
     private int width;
 
-    public DataRowElement(T dataSource, ITextComponent column1, Function<T, ITextComponent> column2Provider) {
+    public DataRowElement(T dataSource, Function<T, ITextComponent> column1, Function<T, ITextComponent> column2Provider) {
         super(dataSource);
         this.column1 = column1;
         this.column2Provider = column2Provider;
@@ -21,11 +21,16 @@ public class DataRowElement<T> extends DataSourcedElement<T> {
     @Override
     public void draw(MatrixStack matrix, FontRenderer font, int x, int y, int width, int height) {
         calculateDimensions(font);
-        font.draw(matrix, column1, x, y, 0xFFFFFF);
         T src = this.getDataSource();
+        font.draw(matrix, column1.apply(src), x, y, 0xFFFFFF);
         ITextComponent col2 = column2Provider.apply(src);
         int col2Width = font.width(col2);
         font.draw(matrix, col2, x + width - col2Width - 3, y, 0xFFFFFF);
+    }
+
+    @Override
+    public void recalculate(FontRenderer font, int width, int height) {
+        this.calculateDimensions(font);
     }
 
     @Override
@@ -41,7 +46,7 @@ public class DataRowElement<T> extends DataSourcedElement<T> {
     private void calculateDimensions(FontRenderer font) {
         T source = this.getDataSource();
         ITextComponent column2 = column2Provider.apply(source);
-        int leftWidth = font.width(column1);
+        int leftWidth = font.width(column1.apply(source));
         int spacing = 15;
         int rightWidth = font.width(column2);
         this.width = leftWidth + spacing + rightWidth;

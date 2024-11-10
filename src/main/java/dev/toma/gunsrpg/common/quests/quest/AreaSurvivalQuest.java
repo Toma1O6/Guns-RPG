@@ -30,10 +30,20 @@ public class AreaSurvivalQuest extends AbstractAreaBasedQuest<AreaSurvivalData> 
     }
 
     @Override
+    public Object[] getDescriptionArguments() {
+        AreaSurvivalData data = this.getActiveData();
+        return new Object[] { Interval.format(data.getTicks(), f -> f.src(Interval.Unit.TICK).out(Interval.Unit.HOUR, Interval.Unit.MINUTE, Interval.Unit.SECOND).skipAllEmptyValues()) };
+    }
+
+    @Override
     protected void fillDataModel(QuestDisplayDataModel model) {
-        super.fillDataModel(model);
+        model.addQuestHeader(this, true, this.getDescriptionArguments());
         Interval.IFormatFactory formatFactory = f -> f.src(Interval.Unit.TICK).out(Interval.Unit.MINUTE, Interval.Unit.SECOND).compact();
-        model.addInformationRow(SurvivalQuest.TIME_REMAINING, this, q -> new StringTextComponent(Interval.format(q.timeLeft, formatFactory)));
+        model.addInformationRow(
+                this,
+                q -> SurvivalQuest.TIME_REMAINING,
+                q -> new StringTextComponent(Interval.format(q.timeLeft, formatFactory))
+        );
         fillAreaDataModel(model);
         model.addConditionDisplay(this);
     }

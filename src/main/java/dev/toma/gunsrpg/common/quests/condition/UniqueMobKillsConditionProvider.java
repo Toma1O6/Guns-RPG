@@ -72,6 +72,11 @@ public class UniqueMobKillsConditionProvider extends AbstractQuestConditionProvi
         }
 
         @Override
+        public boolean allowTargetMultipliers() {
+            return false;
+        }
+
+        @Override
         public void saveData(CompoundNBT nbt) {
             ListNBT list = new ListNBT();
             killedMobs.stream().map(type -> StringNBT.valueOf(type.getRegistryName().toString())).forEach(list::add);

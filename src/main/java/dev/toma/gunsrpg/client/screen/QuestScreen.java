@@ -268,7 +268,7 @@ public class QuestScreen extends Screen implements ScreenDataEventListener {
             int y = 0;
             int offset = 15;
             addTitle(y, TEXT_QUEST_NAME, TextFormatting.YELLOW, TextFormatting.BOLD);
-            addDetail(y += offset, displayInfo.getName(), TextFormatting.ITALIC);
+            addDetail(y += offset, displayInfo.getName().copy(), TextFormatting.ITALIC);
             ActionType actionType = this.getQuestActionType(status);
             UUID traderId = entity.getUUID();
             UUID questId = this.selectedQuest.getMayorUUID();
@@ -292,7 +292,7 @@ public class QuestScreen extends Screen implements ScreenDataEventListener {
                     addDetail(y += offset, TEXT_QUEST_TIER.apply(tierComponent), 5);
                 }
                 addTitle(y += offset, TEXT_QUEST_DETAIL, TextFormatting.YELLOW, TextFormatting.BOLD);
-                List<IReorderingProcessor> list = font.split(displayInfo.getInfo().withStyle(TextFormatting.ITALIC), width - 30);
+                List<IReorderingProcessor> list = font.split(displayInfo.getInfo(selectedQuest.getDescriptionArguments()).withStyle(TextFormatting.ITALIC), width - 30);
                 for (IReorderingProcessor processor : list) {
                     y += offset;
                     addWidget(new ReorderedTextWidget(this.x + 15, this.y + 30 + y, this.width - 30, 10, processor, font));

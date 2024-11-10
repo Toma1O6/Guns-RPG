@@ -212,6 +212,10 @@ public class QuestingData implements IQuestingData {
     @Override
     public void handlePlayerLogIn(PlayerEntity player) {
         this.getOrCreateGroup(player);
+        Quest<?> activeQuest = this.getActiveQuestForPlayer(player);
+        if (activeQuest != null && activeQuest.getStatus() == QuestStatus.ACTIVE) {
+            activeQuest.playerJoined(player);
+        }
         this.sendData();
     }
 

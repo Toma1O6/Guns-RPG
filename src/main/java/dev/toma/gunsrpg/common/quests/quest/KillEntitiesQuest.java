@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.quests.quest;
 
 import dev.toma.gunsrpg.client.render.infobar.QuestDisplayDataModel;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.quests.trigger.ITriggerHandler;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.common.quests.trigger.TriggerResponseStatus;
@@ -16,6 +17,7 @@ import java.util.UUID;
 public class KillEntitiesQuest extends Quest<KillEntityData> {
 
     public static final IQuestFactory<KillEntityData, KillEntitiesQuest> FACTORY = IQuestFactory.of(KillEntitiesQuest::new, KillEntitiesQuest::new);
+    private int requiredKillCount;
     private int killCount;
 
     public KillEntitiesQuest(World world, QuestScheme<KillEntityData> scheme, UUID traderId) {
@@ -27,10 +29,23 @@ public class KillEntitiesQuest extends Quest<KillEntityData> {
     }
 
     @Override
+    public Object[] getDescriptionArguments() {
+        return new Object[] { KillEntityData.formatKillRequirement(this.requiredKillCount, this) };
+    }
+
+    @Override
+    protected void onAssigned(QuestingGroup group) {
+        this.requiredKillCount = this.getScheme().getData().getKillTarget(group, this.allowTargetMultipliers());
+    }
+
+    @Override
     protected void fillDataModel(QuestDisplayDataModel model) {
-        int required = this.getActiveData().getKillTarget();
         model.addQuestHeader(this, false);
-        model.addInformationRow(this.getScheme().getDisplayInfo().getInfo(), this, quest -> new StringTextComponent(quest.killCount + "/" + required));
+        model.addInformationRow(
+                this,
+                quest -> quest.getScheme().getDisplayInfo().getInfo(quest.getDescriptionArguments()),
+                quest -> new StringTextComponent(quest.killCount + "/" + KillEntityData.formatKillRequirement(quest.requiredKillCount, quest))
+        );
         model.addConditionDisplay(this);
     }
 
@@ -43,11 +58,13 @@ public class KillEntitiesQuest extends Quest<KillEntityData> {
     @Override
     protected void writeQuestData(CompoundNBT nbt) {
         nbt.putInt("kills", killCount);
+        nbt.putInt("required", requiredKillCount);
     }
 
     @Override
     protected void readQuestData(CompoundNBT nbt) {
         killCount = nbt.getInt("kills");
+        requiredKillCount = nbt.getInt("required");
     }
 
     private TriggerResponseStatus handleEntityKilled(Trigger trigger, IPropertyReader reader) {
@@ -59,7 +76,7 @@ public class KillEntitiesQuest extends Quest<KillEntityData> {
     }
 
     private void onSuccessfulKill(Trigger trigger, IPropertyReader reader) {
-        if (++killCount >= this.getActiveData().getKillTarget()) {
+        if (++killCount >= this.requiredKillCount) {
             setStatus(QuestStatus.COMPLETED);
         }
         trySyncClient(this.level);

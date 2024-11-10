@@ -86,6 +86,10 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
 
     }
 
+    protected void onAreaEntered() {
+
+    }
+
     // Trigger handlers
     protected abstract void handleSuccessfulTick(Trigger trigger, IPropertyReader reader);
 
@@ -93,7 +97,11 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
         World level = reader.getProperty(QuestProperties.LEVEL);
         this.generateAreaIfMissing(level);
         if (area.isInArea(this.group, level)) {
+            boolean wasEntered = areaEntered;
             areaEntered = true;
+            if (!wasEntered) {
+                this.onAreaEntered();
+            }
             return TriggerResponseStatus.OK;
         }
         return areaEntered && !isGracePeriodActive() ? TriggerResponseStatus.FAIL : TriggerResponseStatus.PASS;

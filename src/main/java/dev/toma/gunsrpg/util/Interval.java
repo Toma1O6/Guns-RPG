@@ -47,16 +47,20 @@ public final class Interval implements IIntervalProvider, Comparable<Interval> {
     }
 
     public String format(boolean compact, Unit... values) {
+        return this.format(compact, false, values);
+    }
+
+    public String format(boolean compact, boolean skipAllEmpty, Unit... values) {
         StringBuilder builder = new StringBuilder();
         Unit[] sorted = Arrays.stream(values).sorted((o1, o2) -> o2.tickValue - o1.tickValue).toArray(Unit[]::new);
         int value = this.value * this.unit.tickValue;
-        boolean blockSkipping = !compact;
+        boolean blockSkipping = !compact && !skipAllEmpty;
         for (Unit unit : sorted) {
             int unitValue = value / unit.tickValue;
             if (unitValue > 0 || blockSkipping) {
                 value = value % unit.tickValue;
                 builder.append(unitValue).append(compact ? "" : " ").append(unit.getName(compact)).append(!compact && unitValue > 1 ? "s" : "").append(compact ? "" : " ");
-                blockSkipping = true;
+                blockSkipping = !skipAllEmpty;
             }
         }
         return builder.toString().trim();
@@ -101,7 +105,7 @@ public final class Interval implements IIntervalProvider, Comparable<Interval> {
     public static String format(int value, IFormatFactory formatFactory) {
         Format format = formatFactory.configure(new Format());
         Interval interval = new Interval(format.source, value);
-        return interval.format(format.compact, format.output);
+        return interval.format(format.compact, format.skipAllEmpty, format.output);
     }
 
     public static Interval parse(String input) {
@@ -164,6 +168,7 @@ public final class Interval implements IIntervalProvider, Comparable<Interval> {
         private Unit source;
         private Unit[] output;
         private boolean compact;
+        private boolean skipAllEmpty;
 
         public Format src(Unit unit) {
             this.source = unit;
@@ -177,6 +182,11 @@ public final class Interval implements IIntervalProvider, Comparable<Interval> {
 
         public Format compact() {
             this.compact = true;
+            return this;
+        }
+
+        public Format skipAllEmptyValues() {
+            this.skipAllEmpty = true;
             return this;
         }
     }

@@ -45,6 +45,11 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
     }
 
     @Override
+    public Object[] getDescriptionArguments() {
+        return new Object[0];
+    }
+
+    @Override
     public ITextComponent[] getAdditionalNotes() {
         return NOTES;
     }
@@ -52,7 +57,11 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
     @Override
     protected void fillDataModel(QuestDisplayDataModel model) {
         model.addQuestHeader(this, false);
-        dataMap.forEach((item, remainder) -> model.addInformationRow(new TranslationTextComponent(DELIVER, item.getName(ItemStack.EMPTY)), this, q -> new StringTextComponent(remainder + "x")));
+        dataMap.forEach((item, remainder) -> model.addInformationRow(
+                this,
+                q -> new TranslationTextComponent(DELIVER, item.getName(ItemStack.EMPTY)),
+                q -> new StringTextComponent(remainder + "x"))
+        );
         model.addConditionDisplay(this);
     }
 

@@ -23,15 +23,15 @@ public class QuestDisplayDataModel implements IDataModel {
         this.clientId = clientId;
     }
 
-    public void addQuestHeader(Quest<?> quest) {
-        addQuestHeader(quest, true);
+    public void addQuestHeaderWithObjective(Quest<?> quest, Object... args) {
+        addQuestHeader(quest, true, args);
     }
 
-    public void addQuestHeader(Quest<?> quest, boolean objective) {
-        addElement(new QuestInfoElement(quest, objective));
+    public void addQuestHeader(Quest<?> quest, boolean objective, Object... args) {
+        addElement(new QuestInfoElement(quest, objective, args));
     }
 
-    public <Q extends Quest<?>> void addInformationRow(ITextComponent title, Q quest, Function<Q, ITextComponent> provider) {
+    public <Q extends Quest<?>> void addInformationRow(Q quest, Function<Q, ITextComponent> title, Function<Q, ITextComponent> provider) {
         addElement(new DataRowElement<>(quest, title, provider));
     }
 
@@ -55,9 +55,8 @@ public class QuestDisplayDataModel implements IDataModel {
     @Override
     public void renderModel(MatrixStack matrix, FontRenderer font, int x, int y, boolean rightSided, boolean renderBackground) {
         if (resized) {
-            // redraw so all dimension properties are recalculated before proper draw call
             for (IDataElement element : list) {
-                element.draw(matrix, font, x, y, width, height);
+                element.recalculate(font, width, height);
             }
             width = getWidth();
             height = getHeight();

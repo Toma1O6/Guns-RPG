@@ -13,6 +13,10 @@ public interface IQuestCondition {
 
     ITextComponent getDescriptor(boolean shortDesc);
 
+    default boolean allowTargetMultipliers() {
+        return true;
+    }
+
     default void saveData(CompoundNBT nbt) {}
 
     default void loadData(CompoundNBT nbt) {}

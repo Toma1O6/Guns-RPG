@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.quests.quest;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.quests.quest.area.IQuestAreaProvider;
 import dev.toma.gunsrpg.common.quests.quest.area.QuestAreaScheme;
 import dev.toma.gunsrpg.common.quests.quest.filter.EntityFilterType;
@@ -15,8 +16,8 @@ public class KillInAreaData extends KillEntityData implements IQuestAreaProvider
 
     private final QuestAreaScheme areaScheme;
 
-    public KillInAreaData(IEntityFilter filter, int killCount, QuestAreaScheme scheme) {
-        super(filter, killCount);
+    public KillInAreaData(IEntityFilter filter, int killCount, float memberScale, QuestAreaScheme scheme) {
+        super(filter, killCount, memberScale);
         this.areaScheme = scheme;
     }
 
@@ -27,7 +28,7 @@ public class KillInAreaData extends KillEntityData implements IQuestAreaProvider
 
     @Override
     public String toString() {
-        return String.format("KillEntitiesInArea - Filter: %s, Count: %d, Area: { %s }", this.getEntityFilter().toString(), this.getKillTarget(), areaScheme.toString());
+        return String.format("KillEntitiesInArea - Filter: %s, Count: %d, Area: { %s }", this.getEntityFilter().toString(), this.getKillTargetUnmodified(), areaScheme.toString());
     }
 
     public static final class Serializer implements QuestType.IQuestDataResolver<KillInAreaData> {
@@ -38,25 +39,28 @@ public class KillInAreaData extends KillEntityData implements IQuestAreaProvider
             JsonElement filterElement = object.get("entities");
             IEntityFilter filter = EntityFilterType.resolveJsonFile(filterElement);
             int count = JSONUtils.getAsInt(object, "count", 1);
+            float scale = JSONUtils.getAsFloat(object, "memberScale", GunsRPG.config.quests.defaultKillMemberMultiplier);
             QuestAreaScheme areaScheme = QuestAreaScheme.fromJson(JSONUtils.getAsJsonObject(object, "area"));
-            return new KillInAreaData(filter, count, areaScheme);
+            return new KillInAreaData(filter, count, scale, areaScheme);
         }
 
         @Override
         public CompoundNBT serialize(KillInAreaData data) {
             CompoundNBT nbt = new CompoundNBT();
-            nbt.putInt("kills", data.getKillTarget());
+            nbt.putInt("kills", data.kills);
+            nbt.putFloat("memberScale", data.memberScaling);
             nbt.put("area", data.areaScheme.toNbt());
-            nbt.put("filter", EntityFilterType.serializeNbt(data.getEntityFilter()));
+            nbt.put("filter", EntityFilterType.serializeNbt(data.filter));
             return nbt;
         }
 
         @Override
         public KillInAreaData deserialize(CompoundNBT nbt) {
             int kills = nbt.getInt("kills");
+            float memberScale = nbt.getFloat("memberScale");
             QuestAreaScheme scheme = QuestAreaScheme.fromNbt(nbt.getCompound("area"));
             IEntityFilter filter = EntityFilterType.deserializeNbt(nbt.getCompound("filter"));
-            return new KillInAreaData(filter, kills, scheme);
+            return new KillInAreaData(filter, kills, memberScale, scheme);
         }
     }
 }

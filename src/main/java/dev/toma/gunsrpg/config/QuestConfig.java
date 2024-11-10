@@ -17,6 +17,11 @@ public final class QuestConfig {
     public boolean allowInvitePlayersInGroup = true;
 
     @Configurable
+    @Configurable.DecimalRange(min = 1.0, max = 100.0)
+    @Configurable.Comment("Additional kill multiplier for kill tasks for quests. Applied based on your group size")
+    public float defaultKillMemberMultiplier = 1.5F;
+
+    @Configurable
     @Configurable.DecimalRange(min = 0.0F, max = ReputationHelper.MAX_REPUTATION)
     @Configurable.Comment({"Amount of reputation awarded when quest is completed", "Value is multiplied by quest tier"})
     @Configurable.Gui.NumberFormat("0.0###")

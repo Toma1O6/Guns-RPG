@@ -109,6 +109,8 @@ public abstract class Quest<D extends IQuestData> {
 
     public abstract void registerTriggers(ITriggerRegistration registration);
 
+    public abstract Object[] getDescriptionArguments();
+
     public D getActiveData() {
         return scheme.getData();
     }
@@ -131,7 +133,12 @@ public abstract class Quest<D extends IQuestData> {
             QuestRewardList rewardList = manager.getTieredRewards(this.rewardTier);
             QuestReward.Options options = new QuestReward.Options().items(1).choiceCount(rewardChoices).setUnique();
             this.reward = QuestReward.generate(rewardList, options, player);
+            this.onAssigned(group);
         }
+    }
+
+    public void playerJoined(PlayerEntity player) {
+        this.storeStatusProperties(player);
     }
 
     public UUID getMayorUUID() {
@@ -140,6 +147,9 @@ public abstract class Quest<D extends IQuestData> {
 
     public void tickQuest() {
         this.group.accept(this.level, this::storeStatusProperties);
+    }
+
+    protected void onAssigned(QuestingGroup group) {
     }
 
     protected void storeStatusProperties(PlayerEntity player) {
@@ -294,6 +304,10 @@ public abstract class Quest<D extends IQuestData> {
         return getScheme().hashCode();
     }
 
+    protected final boolean allowTargetMultipliers() {
+        return Arrays.stream(this.conditions).allMatch(IQuestCondition::allowTargetMultipliers);
+    }
+
     protected boolean overrideFailureFromCondition() {
         return false;
     }
@@ -312,7 +326,7 @@ public abstract class Quest<D extends IQuestData> {
     }
 
     protected void fillDataModel(QuestDisplayDataModel model) {
-        model.addQuestHeader(this);
+        model.addQuestHeaderWithObjective(this);
     }
 
     private IDataModel buildDataModel(UUID clientId) {

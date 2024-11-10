@@ -31,7 +31,7 @@ public class QuestSchemeAdapter {
             throw new JsonSyntaxException("Invalid quest tier: " + tier + ", must be bigger than 0");
         }
         boolean isSpecialTask = JSONUtils.getAsBoolean(object, "isSpecial", false);
-        DisplayInfo displayInfo = DisplayInfo.fromJson(JSONUtils.getAsJsonObject(object, "display"));
+        DisplayInfo displayInfo = DisplayInfo.create(filePath);
         D data = questType.resolveJson(object.get("data"));
         IQuestConditionProvider<?>[] conditions = object.has("conditions") ?
                 JsonHelper.deserializeInto(JSONUtils.getAsJsonArray(object, "conditions"), IQuestConditionProvider[]::new, loader::loadCondition) :
