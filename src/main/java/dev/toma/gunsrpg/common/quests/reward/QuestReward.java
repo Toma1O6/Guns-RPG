@@ -97,7 +97,7 @@ public final class QuestReward {
 
         public void distributeToInventory(PlayerEntity player) {
             for (ItemStack stack : items) {
-                ModUtils.addItem(player, stack);
+                ModUtils.addItem(player, stack.copy());
             }
         }
 

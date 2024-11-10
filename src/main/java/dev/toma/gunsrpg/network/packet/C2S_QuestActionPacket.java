@@ -194,6 +194,16 @@ public class C2S_QuestActionPacket extends AbstractNetworkPacket<C2S_QuestAction
                     choice.distributeToInventory(player);
                 }
             }
+            if (choices.length > 0) {
+                // TODO use entire reward pool for given tier
+                group.accept(player.level, member -> {
+                    if (member == player)
+                        return;
+                    int randomItemIndex = player.level.random.nextInt(choices.length);
+                    QuestReward.Choice choice = choices[randomItemIndex];
+                    choice.distributeToInventory(player);
+                });
+            }
         }
         activeQuest.setStatus(QuestStatus.CLAIMED);
         questing.unassignQuest(group);
