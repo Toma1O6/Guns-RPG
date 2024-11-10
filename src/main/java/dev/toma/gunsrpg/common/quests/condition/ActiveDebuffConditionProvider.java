@@ -10,10 +10,12 @@ import dev.toma.gunsrpg.common.debuffs.DebuffType;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
@@ -56,6 +58,16 @@ public class ActiveDebuffConditionProvider extends AbstractQuestConditionProvide
     @Override
     public boolean isValid(QuestingGroup group, IPropertyReader reader) {
         World level = reader.getProperty(QuestProperties.LEVEL);
+        return this.isValid(group, level);
+    }
+
+    @Override
+    public Boolean isValidInClientContext(Quest<?> quest, PlayerEntity player) {
+        QuestingGroup group = quest.getGroup();
+        return group != null && this.isValid(group, player.level);
+    }
+
+    private boolean isValid(QuestingGroup group, World level) {
         return group.predicate(level, player -> {
             IPlayerData data = PlayerData.getUnsafe(player);
             IDebuffs debuffs = data.getDebuffControl();

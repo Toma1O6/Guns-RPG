@@ -7,20 +7,26 @@ import net.minecraft.util.text.ITextComponent;
 public class TextElement implements IDataElement {
 
     private final ITextComponent component;
+    private final boolean rightAlignment;
     private int width;
 
     public TextElement(ITextComponent component) {
-        this.component = component;
+        this(component, false);
     }
 
-    @Override
-    public void recalculate(FontRenderer font, int width, int height) {
+    public TextElement(ITextComponent component, boolean rightAlignment) {
+        this.component = component;
+        this.rightAlignment = rightAlignment;
     }
 
     @Override
     public void draw(MatrixStack matrix, FontRenderer font, int x, int y, int width, int height) {
         this.width = font.width(component);
-        font.draw(matrix, component, x, y, 0xFFFFFF);
+        if (this.rightAlignment) {
+            font.draw(matrix, component, x + width - font.width(component), y, 0xFFFFFF);
+        } else {
+            font.draw(matrix, component, x, y, 0xFFFFFF);
+        }
     }
 
     @Override

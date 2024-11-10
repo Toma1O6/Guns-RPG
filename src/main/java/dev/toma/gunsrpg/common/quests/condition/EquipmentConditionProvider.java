@@ -4,9 +4,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -52,6 +54,18 @@ public class EquipmentConditionProvider extends AbstractQuestConditionProvider<E
     @Override
     public boolean isValid(QuestingGroup group, IPropertyReader reader) {
         World level = reader.getProperty(QuestProperties.LEVEL);
+        return this.isValid(group, level);
+    }
+
+    @Override
+    public Boolean isValidInClientContext(Quest<?> quest, PlayerEntity player) {
+        QuestingGroup group = quest.getGroup();
+        if (group == null)
+            return false;
+        return this.isValid(group, player.level);
+    }
+
+    private boolean isValid(QuestingGroup group, World level) {
         return group.predicate(level, player -> {
             for (Map.Entry<EquipmentSlotType, Item> entry : map.entrySet()) {
                 EquipmentSlotType slotType = entry.getKey();

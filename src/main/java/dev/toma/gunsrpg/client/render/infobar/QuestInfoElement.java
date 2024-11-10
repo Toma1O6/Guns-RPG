@@ -5,7 +5,6 @@ import dev.toma.gunsrpg.common.quests.quest.DisplayInfo;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 public class QuestInfoElement extends DataSourcedElement<Quest<?>> {
@@ -23,11 +22,6 @@ public class QuestInfoElement extends DataSourcedElement<Quest<?>> {
         DisplayInfo info = quest.getScheme().getDisplayInfo();
         this.title = info.getName().copy().withStyle(TextFormatting.BOLD, TextFormatting.YELLOW);
         this.objective = info.getInfo(args);
-    }
-
-    @Override
-    public void recalculate(FontRenderer font, int width, int height) {
-        calculateWidthAndHeight(font);
     }
 
     @Override

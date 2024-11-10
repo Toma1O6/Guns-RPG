@@ -1,17 +1,24 @@
 package dev.toma.gunsrpg.client.render.infobar;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.common.quests.condition.IQuestCondition;
 import dev.toma.gunsrpg.common.quests.condition.NoConditionProvider;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.math.IDimensions;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.text.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.*;
 import java.util.function.Function;
 
 public class QuestDisplayDataModel implements IDataModel {
+
+    private static final ITextComponent CONDITIONS_HEADER = new TranslationTextComponent("screen.quests.conditions").withStyle(TextFormatting.BOLD);
 
     private final List<IDataElement> list = new ArrayList<>();
     private final UUID clientId;
@@ -35,11 +42,22 @@ public class QuestDisplayDataModel implements IDataModel {
         addElement(new DataRowElement<>(quest, title, provider));
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void addConditionDisplay(Quest<?> quest) {
-        Arrays.stream(quest.getConditions())
+        IQuestCondition[] conditions = quest.getConditions();
+        if (conditions.length > 0)
+            addElement(new TextElement(CONDITIONS_HEADER));
+        Arrays.stream(conditions)
                 .filter(condition -> condition != NoConditionProvider.NO_CONDITION)
                 .sorted(Comparator.comparing(condition -> condition.getProviderType().getType().getId()))
-                .forEach(condition -> addElement(new TextElement(condition.getDescriptor(true))));
+                .forEach(condition -> addElement(new DataTextElement<>(quest, q -> {
+                    IFormattableTextComponent descriptor = condition.getDescriptor(true).copy();
+                    Style style = descriptor.getStyle();
+                    PlayerEntity player = Minecraft.getInstance().player;
+                    Boolean conditionState = condition.isValidInClientContext(q, player);
+                    style = style.withItalic(true).withColor(conditionState != null ? conditionState ? TextFormatting.GREEN : TextFormatting.RED : TextFormatting.GRAY);
+                    return new StringTextComponent("- ").append(descriptor.setStyle(style));
+                })));
     }
 
     public UUID getClientId() {
@@ -55,9 +73,12 @@ public class QuestDisplayDataModel implements IDataModel {
     @Override
     public void renderModel(MatrixStack matrix, FontRenderer font, int x, int y, boolean rightSided, boolean renderBackground) {
         if (resized) {
+            matrix.pushPose();
+            matrix.scale(0, 0, 0); // workaround for reposition "twitching"
             for (IDataElement element : list) {
-                element.recalculate(font, width, height);
+                element.draw(matrix, font, x, y, width, height);
             }
+            matrix.popPose();
             width = getWidth();
             height = getHeight();
             resized = false;

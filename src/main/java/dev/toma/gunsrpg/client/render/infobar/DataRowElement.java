@@ -29,11 +29,6 @@ public class DataRowElement<T> extends DataSourcedElement<T> {
     }
 
     @Override
-    public void recalculate(FontRenderer font, int width, int height) {
-        this.calculateDimensions(font);
-    }
-
-    @Override
     public int getWidth() {
         return width;
     }

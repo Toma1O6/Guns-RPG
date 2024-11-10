@@ -67,7 +67,7 @@ public class QuestArea {
             if (edgePositions == null) {
                 fillEdgePositions(world);
             }
-            if (world.getDayTime() % 10 == 0) {
+            if (world.getGameTime() % 10 == 0) {
                 edgePositions.forEach(particle -> particle.makeParticles(world));
             }
         }

@@ -282,6 +282,10 @@ public abstract class Quest<D extends IQuestData> {
         return this.group != null;
     }
 
+    public final QuestingGroup getGroup() {
+        return this.group;
+    }
+
     public final boolean isOwner(UUID playerId) {
         return this.isAssigned() && this.group.isLeader(playerId);
     }

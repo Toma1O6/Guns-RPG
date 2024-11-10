@@ -3,10 +3,12 @@ package dev.toma.gunsrpg.common.quests.condition;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -118,6 +120,16 @@ public class SpecificWeaponConditionProvider extends AbstractQuestConditionProvi
         public boolean isValid(QuestingGroup group, IPropertyReader reader) {
             ItemStack stack = reader.getProperty(QuestProperties.USED_ITEM);
             return ModUtils.contains(stack.getItem(), validItems);
+        }
+
+        @Override
+        public Boolean isValidInClientContext(Quest<?> quest, PlayerEntity player) {
+            ItemStack itemStack = player.getMainHandItem();
+            for (Item item : validItems) {
+                if (itemStack.getItem() == item)
+                    return true;
+            }
+            return false;
         }
 
         @Override
