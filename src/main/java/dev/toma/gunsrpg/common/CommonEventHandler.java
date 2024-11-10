@@ -391,7 +391,8 @@ public class CommonEventHandler {
             Entity victim = event.getEntity();
             PlayerData.get(player).ifPresent(data -> data.getProgressData().onEnemyKilled(victim, killWeapon));
         }
-        if (event.getEntity() instanceof IMob && !(event.getEntity() instanceof SlimeEntity)) {
+        GameRules gameRules = event.getEntity().level.getGameRules();
+        if (gameRules.getBoolean(GameRules.RULE_DOMOBLOOT) && event.getEntity() instanceof IMob && !(event.getEntity() instanceof SlimeEntity)) {
             if (!event.getEntity().level.isClientSide) {
                 Entity entity = event.getEntity();
                 Item item = null;
