@@ -11,7 +11,6 @@ import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.quest.QuestScheme;
 import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
-import dev.toma.gunsrpg.common.quests.reward.IQuestItemProvider;
 import dev.toma.gunsrpg.common.quests.reward.QuestReward;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardList;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardManager;
@@ -24,7 +23,6 @@ import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -204,14 +202,14 @@ public class C2S_QuestActionPacket extends AbstractNetworkPacket<C2S_QuestAction
             QuestRewardManager manager = system.getRewardManager();
             QuestRewardList list = manager.getTieredRewards(tier);
             group.accept(player.level, member -> {
-                if (member == player)
+                if (group.isLeader(member.getUUID()))
                     return;
                 QuestReward memberReward = QuestReward.generate(list, new QuestReward.Options().choiceCount(1).items(1), member);
                 QuestReward.Choice[] memberChoices = memberReward.getChoices();
                 if (memberChoices.length > 0) {
-                    int randomItemIndex = player.level.random.nextInt(choices.length);
+                    int randomItemIndex = member.level.random.nextInt(choices.length);
                     QuestReward.Choice choice = choices[randomItemIndex];
-                    choice.distributeToInventory(player);
+                    choice.distributeToInventory(member);
                 }
             });
         }
