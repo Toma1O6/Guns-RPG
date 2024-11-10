@@ -422,7 +422,7 @@ public class CommonEventHandler {
                 ISkillProvider provider = data.getSkillProvider();
                 if (provider.hasSkill(Skills.SECOND_CHANCE_I)) {
                     SecondChanceSkill secondChanceSkill = SkillUtil.getTopHierarchySkill(Skills.SECOND_CHANCE_I, provider);
-                    if (secondChanceSkill.canApply(player)) {
+                    if (secondChanceSkill.canApply(player) && !damageSource.isBypassInvul()) {
                         event.setCanceled(true);
                         secondChanceSkill.setOnCooldown();
                         secondChanceSkill.onUse(player);
