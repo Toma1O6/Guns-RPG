@@ -7,5 +7,5 @@ public interface IDataModel {
 
     void addElement(IDataElement element);
 
-    void renderModel(MatrixStack matrix, FontRenderer font, int x, int y, boolean rightSided);
+    void renderModel(MatrixStack matrix, FontRenderer font, int x, int y, boolean rightSided, boolean renderBackground);
 }

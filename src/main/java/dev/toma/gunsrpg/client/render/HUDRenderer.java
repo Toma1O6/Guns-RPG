@@ -19,7 +19,6 @@ import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.client.GunsrpgConfigClient;
 import dev.toma.gunsrpg.config.client.QuestOverlayConfig;
 import dev.toma.gunsrpg.resource.util.functions.RangedFunction;
 import dev.toma.gunsrpg.sided.ClientSideManager;
@@ -43,7 +42,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -104,7 +102,7 @@ public final class HUDRenderer {
             QuestOverlayConfig overlayCfg = ClientSideManager.config.questOverlay;
             boolean rightAlignment = overlayCfg.rightAligned;
             int posX = rightAlignment ? window.getGuiScaledWidth() : 0;
-            display.renderModel(matrix, font, posX, overlayCfg.heightOffset, rightAlignment);
+            display.renderModel(matrix, font, posX, overlayCfg.heightOffset, rightAlignment, true);
         }
     }
 

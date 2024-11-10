@@ -24,6 +24,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingConversionEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -116,6 +117,16 @@ public final class QuestEventHandler {
             event.setCanceled(true);
             event.setConversionTimer(Integer.MIN_VALUE);
         }
+    }
+
+    @SubscribeEvent
+    public static void playerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        QuestingDataProvider.getData(event.getPlayer().level).ifPresent(questing -> questing.handlePlayerLogIn(event.getPlayer()));
+    }
+
+    @SubscribeEvent
+    public static void playerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+        QuestingDataProvider.getData(event.getPlayer().level).ifPresent(questing -> questing.handlePlayerLogOut(event.getPlayer()));
     }
 
     private static void cancelIfPlayerIsInQuestArea(PlayerInteractEvent event) {

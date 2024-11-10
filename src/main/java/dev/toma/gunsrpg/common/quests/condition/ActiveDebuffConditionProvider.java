@@ -20,6 +20,7 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 
 public class ActiveDebuffConditionProvider extends AbstractQuestConditionProvider<ActiveDebuffConditionProvider> implements IQuestCondition {
 
@@ -55,10 +56,12 @@ public class ActiveDebuffConditionProvider extends AbstractQuestConditionProvide
 
     @Override
     public boolean isValid(QuestingGroup group, IPropertyReader reader) {
-        PlayerEntity player = reader.getProperty(QuestProperties.PLAYER);
-        IPlayerData data = PlayerData.getUnsafe(player);
-        IDebuffs debuffs = data.getDebuffControl();
-        return debuffs.hasDebuff(this.debuff);
+        World level = reader.getProperty(QuestProperties.LEVEL);
+        return group.predicate(level, player -> {
+            IPlayerData data = PlayerData.getUnsafe(player);
+            IDebuffs debuffs = data.getDebuffControl();
+            return debuffs.hasDebuff(this.debuff);
+        });
     }
 
     @Override

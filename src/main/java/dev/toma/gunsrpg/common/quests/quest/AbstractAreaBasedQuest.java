@@ -61,7 +61,7 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
                 --gracePeriod;
                 if (!this.level.isClientSide) {
                     String time = Interval.format(gracePeriod, f -> f.src(Interval.Unit.TICK).out(Interval.Unit.SECOND));
-                    this.group.acceptActive(this.level, member -> {
+                    this.group.accept(this.level, member -> {
                         ServerPlayerEntity player = (ServerPlayerEntity) member;
                         player.sendMessage(new TranslationTextComponent("quest.return_to_area", time).withStyle(TextFormatting.RED), ChatType.GAME_INFO, Util.NIL_UUID);
                     });
@@ -107,6 +107,11 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
     @Override
     protected boolean overrideFailureFromCondition() {
         return !areaEntered;
+    }
+
+    @Override
+    public boolean isStarted() {
+        return this.areaEntered;
     }
 
     protected int getGracePeriodDuration() {

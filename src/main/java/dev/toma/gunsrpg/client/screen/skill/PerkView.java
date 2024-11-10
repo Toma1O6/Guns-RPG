@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.common.perk.PerkRegistry;
 import dev.toma.gunsrpg.common.perk.PerkType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -22,7 +23,8 @@ public class PerkView extends View {
 
     private PannableWidget pannableWidget;
     private FooterWidget footerWidget;
-    private ViewSwitchWidget viewSwitchWidget;
+    private ViewSwitchWidget skillViewSwitch;
+    private ViewSwitchWidget questView;
 
     public PerkView(int windowWidth, int windowHeight, IViewManager manager) {
         super(windowWidth, windowHeight, manager);
@@ -32,9 +34,12 @@ public class PerkView extends View {
     protected void init() {
         clear();
         // view switch
-        viewSwitchWidget = addWidget(new ViewSwitchWidget(x + width - 42, height - 62, 32, 32, new ItemStack(ModItems.SKILLPOINT_BOOK)));
-        viewSwitchWidget.setClickEvent(this::openSkillView);
-        viewSwitchWidget.setColorSchema(0x49A1FF, 0x49D8FF);
+        skillViewSwitch = addWidget(new ViewSwitchWidget(x + width - 42, height - 62, 32, 32, new ItemStack(ModItems.SKILLPOINT_BOOK)));
+        skillViewSwitch.setClickEvent(this::openSkillView);
+        skillViewSwitch.setColorSchema(0xFFA60C, 0xFFD21E);
+        questView = addWidget(new ViewSwitchWidget(x + width - 42, height - 99, 32, 32, new ItemStack(Items.WRITABLE_BOOK)));
+        questView.setClickEvent(() -> manager.setView(new QuestsView(width, height, manager)));
+        questView.setColorSchema(0xFF0000, 0xFF3333);
         // perk widgets
         pannableWidget = addWidget(new PannableWidget(x, y + 20, width, height - 40));
         pannableWidget.fill((handler, px, py) -> {

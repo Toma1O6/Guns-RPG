@@ -30,6 +30,13 @@ minecraft {
             property 'forge.logging.console.level', 'info'
             properties 'mixin.env.remapRefMap': 'true'
             property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
+
+            // Workaround for new Mojang Authlib, See https://github.com/FabricMC/fabric-loom/issues/915#issuecomment-1609154390
+            property 'minecraft.api.auth.host', 'https://nope.invalid'
+            property 'minecraft.api.account.host', 'https://nope.invalid'
+            property 'minecraft.api.session.host', 'https://nope.invalid'
+            property 'minecraft.api.services.host', 'https://nope.invalid'
+
             arg "-mixin.config=gunsrpg.mixins.json"
 
             mods {
@@ -42,9 +49,16 @@ minecraft {
         server {
             workingDirectory project.file('run/server')
             property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'info'
+            property 'forge.logging.console.level', 'debug'
             properties 'mixin.env.remapRefMap': 'true'
             property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
+
+            // Workaround for new Mojang Authlib, See https://github.com/FabricMC/fabric-loom/issues/915#issuecomment-1609154390
+            property 'minecraft.api.auth.host', 'https://nope.invalid'
+            property 'minecraft.api.account.host', 'https://nope.invalid'
+            property 'minecraft.api.session.host', 'https://nope.invalid'
+            property 'minecraft.api.services.host', 'https://nope.invalid'
+
             arg "-mixin.config=gunsrpg.mixins.json"
             arg "nogui"
 

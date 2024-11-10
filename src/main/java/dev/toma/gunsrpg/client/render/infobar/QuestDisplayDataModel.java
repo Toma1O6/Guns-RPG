@@ -53,7 +53,7 @@ public class QuestDisplayDataModel implements IDataModel {
     }
 
     @Override
-    public void renderModel(MatrixStack matrix, FontRenderer font, int x, int y, boolean rightSided) {
+    public void renderModel(MatrixStack matrix, FontRenderer font, int x, int y, boolean rightSided, boolean renderBackground) {
         if (resized) {
             // redraw so all dimension properties are recalculated before proper draw call
             for (IDataElement element : list) {
@@ -67,7 +67,8 @@ public class QuestDisplayDataModel implements IDataModel {
             x -= width + 3;
         }
         int heightOffset = 0;
-        RenderUtils.drawSolid(matrix.last().pose(), x - 3, y - 3, x + width + 3, y + height + 3, 0x66 << 24);
+        if (renderBackground)
+            RenderUtils.drawSolid(matrix.last().pose(), x - 3, y - 3, x + width + 3, y + height + 3, 0x66 << 24);
         for (IDataElement element : list) {
             element.draw(matrix, font, x, y + heightOffset, width, height);
             heightOffset += element.getHeight();

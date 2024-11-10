@@ -26,6 +26,10 @@ public class QuestingDataProvider implements ICapabilitySerializable<CompoundNBT
         return world.getCapability(QUESTING_DATA_CAPABILITY);
     }
 
+    public static IQuestingData getQuesting(World world) {
+        return getData(world).orElse(null);
+    }
+
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {

@@ -83,7 +83,7 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
     private TriggerResponseStatus tryItemHandover(Trigger trigger, IPropertyReader reader) {
         ItemStack itemStack = reader.getProperty(QuestProperties.USED_ITEM);
         UUID uuid = reader.getProperty(QuestProperties.UUID);
-        UUID questId = this.getOriginalAssignerId();
+        UUID questId = this.getMayorUUID();
         if (itemStack.isEmpty()) {
             return TriggerResponseStatus.PASS;
         }
@@ -115,7 +115,7 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
         if (dataMap.isEmpty()) {
             setStatus(QuestStatus.COMPLETED);
         }
-        trySyncClient(this.level); // TODO sync to group instead
+        trySyncClient(this.level);
     }
 
     private void initializeData() {

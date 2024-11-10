@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.api.client.ScreenDataEventListener;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IQuestingData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
@@ -13,6 +14,7 @@ import dev.toma.gunsrpg.common.quests.condition.IQuestCondition;
 import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.common.quests.quest.*;
 import dev.toma.gunsrpg.common.quests.reward.QuestReward;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.skills.BartenderSkill;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_QuestActionPacket;
@@ -42,7 +44,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class QuestScreen extends Screen {
+public class QuestScreen extends Screen implements ScreenDataEventListener {
 
     // Simple localizations
     private static final IFormattableTextComponent TEXT_AVAILABLE_QUESTS   = new TranslationTextComponent("screen.quests.available_quests");   // title for available quests
@@ -84,7 +86,12 @@ public class QuestScreen extends Screen {
         this.status = status;
         this.quests = quests;
         this.entity = entity;
-        this.entity.setClientTimer(timer);
+        this.entity.setRefreshTimer(timer);
+    }
+
+    @Override
+    public void onQuestingDataReceived(IQuestingData questingData) {
+        this.init(this.minecraft, this.width, this.height);
     }
 
     @Override
@@ -264,13 +271,15 @@ public class QuestScreen extends Screen {
             addDetail(y += offset, displayInfo.getName(), TextFormatting.ITALIC);
             ActionType actionType = this.getQuestActionType(status);
             UUID traderId = entity.getUUID();
-            UUID questId = this.selectedQuest.getOriginalAssignerId();
+            UUID questId = this.selectedQuest.getMayorUUID();
             boolean isRewardCollectionAllowed = Objects.equals(traderId, questId) || questId.equals(Util.NIL_UUID) || actionType == ActionType.CANCEL;
             if (status.shouldShowRewards() && isRewardCollectionAllowed && !isSpecial) {
-                addTitle(y += offset, TEXT_QUEST_REWARDS, TextFormatting.YELLOW, TextFormatting.BOLD);
-                BartenderSkill bartenderSkill = SkillUtil.getTopHierarchySkill(Skills.BARTENDER_I, provider);
-                int selectionSize = bartenderSkill != null ? bartenderSkill.getRewardCount() : 1;
-                addWidget(new RewardsWidget(this.x + 5, y + 45, width - 10, height - 75 - y, selectedQuest, selectionSize, this::onRewardSelectionChanged));
+                if (this.selectedQuest.isOwner(minecraft.player.getUUID())) {
+                    addTitle(y += offset, TEXT_QUEST_REWARDS, TextFormatting.YELLOW, TextFormatting.BOLD);
+                    BartenderSkill bartenderSkill = SkillUtil.getTopHierarchySkill(Skills.BARTENDER_I, provider);
+                    int selectionSize = bartenderSkill != null ? bartenderSkill.getRewardCount() : 1;
+                    addWidget(new RewardsWidget(this.x + 5, y + 45, width - 10, height - 75 - y, selectedQuest, selectionSize, this::onRewardSelectionChanged));
+                }
             } else {
                 if (conditions.length > 0) {
                     addTitle(y += offset, TEXT_QUEST_CONDITIONS, TextFormatting.YELLOW, TextFormatting.BOLD);
@@ -389,6 +398,10 @@ public class QuestScreen extends Screen {
         }
 
         private ActionType getQuestActionType(QuestStatus status) {
+            IQuestingData questingData = QuestingDataProvider.getData(minecraft.level).orElse(null);
+            QuestingGroup group = questingData.getGroup(minecraft.player.getUUID());
+            if (group == null || !group.isLeader(minecraft.player.getUUID()))
+                return null;
             switch (status) {
                 case ACTIVE:
                     return ActionType.CANCEL;

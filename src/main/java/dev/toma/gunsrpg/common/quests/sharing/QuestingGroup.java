@@ -1,12 +1,17 @@
 package dev.toma.gunsrpg.common.quests.sharing;
 
+import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.data.IQuestingData;
 import dev.toma.gunsrpg.api.common.event.QuestingEvent;
+import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.util.helper.NbtHelper;
 import dev.toma.gunsrpg.util.object.Interaction;
+import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.StringNBT;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -17,11 +22,10 @@ import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
-// TODO leave party on game logout
 public final class QuestingGroup {
 
-    public static final int PARTY_LIMIT = 5;
     private final UUID groupId;
     private final Set<UUID> members = new LinkedHashSet<>();
     private final Map<UUID, String> usernames = new HashMap<>();
@@ -45,7 +49,6 @@ public final class QuestingGroup {
         return group;
     }
 
-    // Invite management
     public Interaction<GroupInvite> invite(PlayerEntity player) {
         UUID playerId = player.getUUID();
         if (this.isMember(playerId)) {
@@ -55,8 +58,12 @@ public final class QuestingGroup {
             return Interaction.failure(new TranslationTextComponent("gunsrpg.quest.party.already_invited", player.getDisplayName()));
         }
         int currentPartySize = this.members.size();
-        if (currentPartySize >= PARTY_LIMIT) {
+        if (currentPartySize >= this.getMaxMemberCount()) {
             return Interaction.failure(new TranslationTextComponent("gunsrpg.quest.party.full"));
+        }
+        Quest<?> quest = this.getActiveQuest(player.level);
+        if (quest != null && quest.isStarted()) {
+            return Interaction.failure(new TranslationTextComponent("gunsrpg.quest.party.cannot_join"));
         }
         QuestingEvent.OnInviteSending event = new QuestingEvent.OnInviteSending(player.level, this, this.groupId, player.getUUID());
         MinecraftForge.EVENT_BUS.post(event);
@@ -64,6 +71,7 @@ public final class QuestingGroup {
             return event.getInteractionResult().failed();
         }
         GroupInvite invite = new GroupInvite(this.groupId, playerId);
+        player.sendMessage(new TranslationTextComponent("gunsrpg.quest.party.invite_received", this.getName()), Util.NIL_UUID);
         this.activeInvites.put(playerId, invite);
         return Interaction.success(invite);
     }
@@ -77,11 +85,25 @@ public final class QuestingGroup {
             return Interaction.failure(new TranslationTextComponent("gunsrpg.quest.party.already_member", player.getDisplayName()));
         }
         int currentPartySize = this.members.size();
-        if (currentPartySize >= PARTY_LIMIT) {
+        if (currentPartySize >= this.getMaxMemberCount()) {
+            this.deleteInvite(invite);
             return Interaction.failure(new TranslationTextComponent("gunsrpg.quest.party.full"));
         }
+        IQuestingData questing = QuestingDataProvider.getQuesting(player.level);
+        Quest<?> quest = questing.getActiveQuest(this);
+        if (quest != null && quest.isStarted()) {
+            return Interaction.failure(new TranslationTextComponent("gunsrpg.quest.party.cannot_join"));
+        }
+
+        Quest<?> inviteeActiveQuest = questing.getActiveQuestForPlayer(player);
+        if (inviteeActiveQuest != null) {
+            return Interaction.failure(new TranslationTextComponent("gunsrpg.quest.party.already_questing"));
+        }
+        questing.clearInvitesForPlayer(player);
+        questing.addToGroup(this, player);
         UUID playerId = player.getUUID();
         String displayName = player.getDisplayName().getString();
+        this.accept(player.level, member -> member.sendMessage(new TranslationTextComponent("gunsrpg.quest.party.invite_accepted", displayName), Util.NIL_UUID));
         this.usernames.put(playerId, displayName);
         this.members.add(playerId);
         this.deleteInvite(invite);
@@ -98,15 +120,35 @@ public final class QuestingGroup {
         return Interaction.success(null);
     }
 
-    private void deleteInvite(GroupInvite invite) {
-        this.activeInvites.remove(invite.getPlayerId());
+    public Stream<GroupInvite> listInvitesForPlayer(UUID playerId) {
+        GroupInvite invite = this.activeInvites.get(playerId);
+        return invite != null ? Stream.of(invite) : Stream.empty();
     }
 
-    // Party management
-    // TODO member removal - self/kick
-    // TODO party disband
+    public void deleteInviteFor(UUID playerId) {
+        this.activeInvites.remove(playerId);
+    }
 
-    // Utils
+    public GroupInvite getInvite(UUID inviteeId) {
+        return this.activeInvites.get(inviteeId);
+    }
+
+    private void deleteInvite(GroupInvite invite) {
+        this.deleteInviteFor(invite.getPlayerId());
+    }
+
+    public void removeMember(UUID memberId) {
+        if (this.isLeader(memberId)) {
+            throw new UnsupportedOperationException("Cannot remove team leader from party!");
+        }
+        this.members.remove(memberId);
+        this.usernames.remove(memberId);
+    }
+
+    public Quest<?> getActiveQuest(World world) {
+        IQuestingData questingData = QuestingDataProvider.getData(world).orElse(null);
+        return questingData.getActiveQuest(this.groupId);
+    }
 
     public boolean isLeader(UUID playerId) {
         return this.groupId.equals(playerId);
@@ -128,7 +170,7 @@ public final class QuestingGroup {
         return this.members;
     }
 
-    public void acceptActive(World world, Consumer<PlayerEntity> consumer) {
+    public void accept(World world, Consumer<PlayerEntity> consumer) {
         this.members.stream().map(world::getPlayerByUUID).filter(Objects::nonNull).forEach(consumer);
     }
 
@@ -147,7 +189,19 @@ public final class QuestingGroup {
                 .reduce(identity, acc);
     }
 
-    // Serialization
+    public String getName(UUID playerId) {
+        return this.usernames.getOrDefault(playerId, "N/A");
+    }
+
+    public String getName() {
+        return this.getName(this.groupId);
+    }
+
+    public int getMaxMemberCount() {
+        return GunsRPG.config.quests.maxPartySize;
+    }
+
+
     public CompoundNBT serialize() {
         CompoundNBT tag = new CompoundNBT();
         tag.putString("id", this.groupId.toString());

@@ -134,7 +134,9 @@ public class PlayerData implements IPlayerData {
             ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
             if (serverPlayer.connection == null)
                 return;
-            NetworkManager.sendClientPacket(serverPlayer, new S2C_UpdateCapabilityPacket(player.getUUID(), toNbt(flags), flags));
+            S2C_UpdateCapabilityPacket syncPacket = new S2C_UpdateCapabilityPacket(player.getUUID(), toNbt(flags), flags);
+            NetworkManager.sendClientPacket(serverPlayer, syncPacket);
+            NetworkManager.sendToAllTracking(serverPlayer, syncPacket);
         }
     }
 

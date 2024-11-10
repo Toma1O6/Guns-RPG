@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.quests.quest;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.ISyncRequestDispatcher;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IQuestingData;
@@ -59,9 +60,9 @@ public abstract class Quest<D extends IQuestData> {
     private final int rewardTier;
     private final UUID mayorId;
     private final DataHolder<IDataModel> displayModelHolder = new DataHolder<>(this::buildDataModel);
-    private final IPropertyHolder initialProperties = PropertyContext.create();
     private final Map<UUID, IPropertyHolder> memberInitialProperties = new HashMap<>();
     private final PlayerDataAccess access;
+    protected final ISyncRequestDispatcher requestTemplateFactory;
 
     protected QuestingGroup group;
     protected QuestReward reward;
@@ -84,6 +85,7 @@ public abstract class Quest<D extends IQuestData> {
         }
         this.conditions = allConditions;
         this.access = this::getPlayerProperty;
+        this.requestTemplateFactory = () -> QuestingDataProvider.getData(level).ifPresent(IQuestingData::sendData);
 
         registerAllTriggers();
     }
@@ -100,6 +102,7 @@ public abstract class Quest<D extends IQuestData> {
             this.reward = reward;
         }
         this.access = this::getPlayerProperty;
+        this.requestTemplateFactory = () -> QuestingDataProvider.getData(level).ifPresent(IQuestingData::sendData);
 
         registerAllTriggers();
     }
@@ -112,7 +115,7 @@ public abstract class Quest<D extends IQuestData> {
 
     public void assign(QuestingGroup group, World world) {
         this.group = group;
-        //this.savePlayerStatusProperties(player); // TODO save status properties for each member
+        this.group.accept(world, this::storeStatusProperties);
         if (reward == null) {
             UUID partyOwner = this.group.getGroupId();
             PlayerEntity player = world.getPlayerByUUID(partyOwner);
@@ -131,27 +134,29 @@ public abstract class Quest<D extends IQuestData> {
         }
     }
 
-    public UUID getOriginalAssignerId() {
+    public UUID getMayorUUID() {
         return mayorId;
     }
 
     public void tickQuest() {
-        this.group.acceptActive(this.level, player -> {
-            float health = player.getHealth();
-            int foodLevel = player.getFoodData().getFoodLevel();
-            IPropertyHolder holder = this.memberInitialProperties.computeIfAbsent(player.getUUID(), key -> PropertyContext.create());
-            float savedHealth = holder.getProperty(QuestProperties.HEALTH_STATUS);
-            int savedFoodLevel = holder.getProperty(QuestProperties.FOOD_STATUS);
-            if (savedHealth != health || savedFoodLevel != foodLevel) {
-                holder.setProperty(QuestProperties.HEALTH_STATUS, savedHealth);
-                holder.setProperty(QuestProperties.FOOD_STATUS, savedFoodLevel);
-            }
-        });
+        this.group.accept(this.level, this::storeStatusProperties);
+    }
+
+    protected void storeStatusProperties(PlayerEntity player) {
+        IPropertyHolder holder = this.memberInitialProperties.computeIfAbsent(player.getUUID(), key -> PropertyContext.create());
+        float savedHealth = holder.getProperty(QuestProperties.HEALTH_STATUS);
+        int savedFoodLevel = holder.getProperty(QuestProperties.FOOD_STATUS);
+        float health = player.getHealth();
+        int foodLevel = player.getFoodData().getFoodLevel();
+        if (savedHealth != health || savedFoodLevel != foodLevel) {
+            holder.setProperty(QuestProperties.HEALTH_STATUS, health);
+            holder.setProperty(QuestProperties.FOOD_STATUS, foodLevel);
+        }
     }
 
     public void onCompleted() {
         if (!level.isClientSide) {
-            this.group.acceptActive(this.level, member -> {
+            this.group.accept(this.level, member -> {
                 ServerPlayerEntity player = (ServerPlayerEntity) member;
                 player.connection.send(new SPlaySoundEffectPacket(SoundEvents.PLAYER_LEVELUP, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 0.75F, 1.0F));
                 player.sendMessage(QUEST_COMPLETED, ChatType.GAME_INFO, Util.NIL_UUID);
@@ -160,12 +165,13 @@ public abstract class Quest<D extends IQuestData> {
                     standings.questFinished(this.mayorId, this);
                 });
             });
+            this.requestTemplateFactory.sendSyncRequest();
         }
     }
 
     public void onFailed() {
         if (!level.isClientSide) {
-            this.group.acceptActive(this.level, member -> {
+            this.group.accept(this.level, member -> {
                 ServerPlayerEntity player = (ServerPlayerEntity) member;
                 player.connection.send(new SPlaySoundEffectPacket(ModSounds.USE_AVENGE_ME_FRIENDS, SoundCategory.MASTER, player.getX(), player.getY(), player.getZ(), 0.75F, 1.0F));
                 player.sendMessage(QUEST_FAILED, ChatType.GAME_INFO, Util.NIL_UUID);
@@ -182,7 +188,6 @@ public abstract class Quest<D extends IQuestData> {
     }
 
     public void trigger(Trigger trigger, IPropertyReader reader) {
-        this.initialProperties.moveContents((IPropertyHolder) reader); // TODO rework
         Collection<TriggerContext> contexts = triggerListeners.get(trigger);
         if (contexts != null) {
             TriggerResponseStatus response = TriggerResponseStatus.OK;
@@ -259,8 +264,16 @@ public abstract class Quest<D extends IQuestData> {
         return this.access;
     }
 
+    public boolean isStarted() {
+        return true;
+    }
+
+    public final boolean isAssigned() {
+        return this.group != null;
+    }
+
     public final boolean isOwner(UUID playerId) {
-        return this.group.getGroupId().equals(playerId);
+        return this.isAssigned() && this.group.isLeader(playerId);
     }
 
     @OnlyIn(Dist.CLIENT)

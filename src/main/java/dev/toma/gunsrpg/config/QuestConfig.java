@@ -7,6 +7,16 @@ import dev.toma.gunsrpg.util.helper.ReputationHelper;
 public final class QuestConfig {
 
     @Configurable
+    @Configurable.Range(min = 1, max = 16)
+    @Configurable.Synchronized
+    public int maxPartySize = 5;
+
+    @Configurable
+    @Configurable.Comment("Will allow sending invites to players who are already in group with other players")
+    @Configurable.Synchronized
+    public boolean allowInvitePlayersInGroup = true;
+
+    @Configurable
     @Configurable.DecimalRange(min = 0.0F, max = ReputationHelper.MAX_REPUTATION)
     @Configurable.Comment({"Amount of reputation awarded when quest is completed", "Value is multiplied by quest tier"})
     @Configurable.Gui.NumberFormat("0.0###")

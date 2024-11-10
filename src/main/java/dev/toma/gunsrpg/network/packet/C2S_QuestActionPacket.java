@@ -143,7 +143,6 @@ public class C2S_QuestActionPacket extends AbstractNetworkPacket<C2S_QuestAction
                 quest.setStatus(QuestStatus.ACTIVE);
                 listedQuests.filterActive();
                 questingData.assignQuest(quest, group);
-                quest.assign(group, player.level);
                 questingData.sendData();
             }
         }

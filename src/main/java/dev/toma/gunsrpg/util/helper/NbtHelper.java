@@ -30,6 +30,7 @@ public final class NbtHelper {
     }
 
     public static <K, V, M extends Map<K, V>> M deserializeMap(M dest, CompoundNBT src, Function<String, K> keyDeserializer, Function<INBT, V> valueDeserializer) {
+        dest.clear();
         Set<String> keySet = src.getAllKeys();
         for (String objKey : keySet) {
             K key = keyDeserializer.apply(objKey);
@@ -40,6 +41,7 @@ public final class NbtHelper {
     }
 
     public static <V, C extends Collection<V>> C deserializeCollection(C dest, ListNBT src, Function<INBT, V> deserializer) {
+        dest.clear();
         for (INBT inbt : src) {
             dest.add(deserializer.apply(inbt));
         }

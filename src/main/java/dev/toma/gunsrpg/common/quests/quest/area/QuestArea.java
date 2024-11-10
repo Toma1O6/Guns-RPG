@@ -115,7 +115,7 @@ public class QuestArea {
     public boolean isInArea(QuestingGroup group, World level) {
         for (UUID member : group.getMembers()) {
             PlayerEntity player = level.getPlayerByUUID(member);
-            if (player != null && !isInArea(player)) {
+            if (player == null || !isInArea(player)) {
                 return false;
             }
         }

@@ -13,6 +13,7 @@ import dev.toma.gunsrpg.util.math.IVec2i;
 import dev.toma.gunsrpg.util.math.Mth;
 import lib.toma.animations.Easings;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -28,7 +29,8 @@ public class SkillsView extends View {
     private PannableWidget skillViewWidget;
     private FooterWidget footerWidget;
     private SkillInfoWidget skillInfoWidget;
-    private ViewSwitchWidget viewSwitchWidget;
+    private ViewSwitchWidget perkView;
+    private ViewSwitchWidget questView;
 
     public SkillsView(int windowWidth, int windowHeight, IViewManager manager) {
         super(windowWidth, windowHeight, manager);
@@ -38,9 +40,13 @@ public class SkillsView extends View {
     protected void init() {
         clear();
         // add perk/skill switch
-        viewSwitchWidget = addWidget(new ViewSwitchWidget(x + width - 42, height - 62, 32, 32, new ItemStack(ModItems.PERKPOINT_BOOK)));
-        viewSwitchWidget.setClickEvent(this::openPerkView);
-        viewSwitchWidget.setColorSchema(0xFFA60C, 0xFFD21E);
+        perkView = addWidget(new ViewSwitchWidget(x + width - 42, height - 62, 32, 32, new ItemStack(ModItems.PERKPOINT_BOOK)));
+        perkView.setClickEvent(this::openPerkView);
+        perkView.setColorSchema(0x49A1FF, 0x49D8FF);
+        // add quest view switch
+        questView = addWidget(new ViewSwitchWidget(x + width - 42, height - 99, 32, 32, new ItemStack(Items.WRITABLE_BOOK)));
+        questView.setClickEvent(() -> manager.setView(new QuestsView(width, height, manager)));
+        questView.setColorSchema(0xFF0000, 0xFF3333);
         // add skill view
         skillViewWidget = addWidget(new PannableWidget(x, y + 40, width, height - 60));
         skillViewWidget.setEmptyClickResponder(this::skillClicked);
@@ -126,7 +132,7 @@ public class SkillsView extends View {
     private void updateSkillInformationVisibility(boolean visibilityState) {
         synchronized (lock) {
             this.footerWidget.visible = !visibilityState;
-            this.viewSwitchWidget.visible = !visibilityState;
+            this.perkView.visible = !visibilityState;
             this.skillInfoWidget.visible = visibilityState;
             this.skillViewWidget.updateSize(width, height - (visibilityState ? 120 : 60));
         }

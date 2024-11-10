@@ -153,7 +153,6 @@ public class CommonEventHandler {
         PlayerEntity player = event.getPlayer();
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
         NetworkManager.sendClientPacket(serverPlayer, S2C_SynchronizationPayloadPacket.makePayloadPacket());
-        QuestingDataProvider.getData(player.level).ifPresent(data -> data.sendData(serverPlayer));
         PlayerData.get(player).ifPresent(data -> {
             data.sync(DataFlags.WILDCARD);
             data.getProgressData().onLogIn();

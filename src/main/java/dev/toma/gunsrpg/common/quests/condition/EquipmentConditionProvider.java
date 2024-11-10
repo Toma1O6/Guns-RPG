@@ -7,7 +7,6 @@ import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -52,16 +51,18 @@ public class EquipmentConditionProvider extends AbstractQuestConditionProvider<E
 
     @Override
     public boolean isValid(QuestingGroup group, IPropertyReader reader) {
-        PlayerEntity player = reader.getProperty(QuestProperties.PLAYER);
-        for (Map.Entry<EquipmentSlotType, Item> entry : map.entrySet()) {
-            EquipmentSlotType slotType = entry.getKey();
-            Item item = entry.getValue();
-            ItemStack current = player.getItemBySlot(slotType);
-            if (current.getItem() != item) {
-                return false;
+        World level = reader.getProperty(QuestProperties.LEVEL);
+        return group.predicate(level, player -> {
+            for (Map.Entry<EquipmentSlotType, Item> entry : map.entrySet()) {
+                EquipmentSlotType slotType = entry.getKey();
+                Item item = entry.getValue();
+                ItemStack current = player.getItemBySlot(slotType);
+                if (current.getItem() != item) {
+                    return false;
+                }
             }
-        }
-        return true;
+            return true;
+        });
     }
 
     @Override

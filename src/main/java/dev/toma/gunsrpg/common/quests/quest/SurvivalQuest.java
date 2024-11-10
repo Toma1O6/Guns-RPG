@@ -1,16 +1,21 @@
 package dev.toma.gunsrpg.common.quests.quest;
 
 import dev.toma.gunsrpg.client.render.infobar.QuestDisplayDataModel;
+import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.common.quests.trigger.ITriggerHandler;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.common.quests.trigger.TriggerResponseStatus;
 import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.UUID;
 
@@ -63,8 +68,22 @@ public class SurvivalQuest extends Quest<SurvivalData> {
     }
 
     private void handleSuccessfulTick(Trigger trigger, IPropertyReader reader) {
-        if (--timeLeft < 0) {
+        PlayerEntity player = reader.getProperty(QuestProperties.PLAYER);
+        World level = reader.getProperty(QuestProperties.LEVEL);
+        if (!level.isClientSide() && !this.group.isLeader(player.getUUID()))
+            return;
+        if (level.isClientSide())
+            if (!shouldTick(player))
+                return;
+        if (timeLeft % 100 == 0)
+            this.requestTemplateFactory.sendSyncRequest();
+        if (--timeLeft < 0)
             setStatus(QuestStatus.COMPLETED);
-        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private boolean shouldTick(PlayerEntity player) {
+        Minecraft client = Minecraft.getInstance();
+        return player == client.player;
     }
 }

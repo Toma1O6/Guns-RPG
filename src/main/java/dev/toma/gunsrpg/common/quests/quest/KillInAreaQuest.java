@@ -65,7 +65,7 @@ public class KillInAreaQuest extends AbstractAreaBasedQuest<KillInAreaData> {
         if (++killCount >= this.getActiveData().getKillTarget()) {
             setStatus(QuestStatus.COMPLETED);
         }
-        trySyncClient(this.level); // TODO sync group
+        trySyncClient(this.level);
     }
 
     @Override

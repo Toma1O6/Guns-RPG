@@ -62,7 +62,7 @@ public class KillEntitiesQuest extends Quest<KillEntityData> {
         if (++killCount >= this.getActiveData().getKillTarget()) {
             setStatus(QuestStatus.COMPLETED);
         }
-        trySyncClient(this.level); // TODO sync group status
+        trySyncClient(this.level);
     }
 
     private TriggerResponseStatus onPlayerDied(Trigger trigger, IPropertyReader reader) {

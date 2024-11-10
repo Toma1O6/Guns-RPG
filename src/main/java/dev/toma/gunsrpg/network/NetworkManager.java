@@ -89,6 +89,7 @@ public class NetworkManager {
         registerNetworkPacket(C2S_TurretSettingsPacket.class);
         registerNetworkPacket(C2S_PlaySoundFromAnimationEventPacket.class);
         registerNetworkPacket(C2S_AmmoBenchEventPacket.class);
+        registerNetworkPacket(C2S_InviteMember.class);
     }
 
     private static <P extends INetworkPacket<P>> void registerNetworkPacket(Class<P> packetType) {

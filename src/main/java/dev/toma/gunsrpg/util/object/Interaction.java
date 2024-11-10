@@ -4,6 +4,7 @@ import net.minecraft.util.text.ITextComponent;
 
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public final class Interaction<R> {
 
@@ -25,21 +26,17 @@ public final class Interaction<R> {
         return new Interaction<>(Status.FAILURE, null, message);
     }
 
-    public void on(Consumer<R> onSuccess, Consumer<ITextComponent> onFailure) {
-        this.onSuccess(onSuccess);
-        this.onFailure(onFailure);
-    }
-
-    public void onSuccess(Consumer<R> onSuccess) {
-        if (this.isSuccessful()) {
-            onSuccess.accept(this.result);
-        }
-    }
-
-    public void onFailure(Consumer<ITextComponent> onFailure) {
+    public <X extends Throwable> void validate(Function<ITextComponent, X> throwableConstructor) throws X {
         if (this.isFailure()) {
-            onFailure.accept(this.message);
+            throw throwableConstructor.apply(this.getMessage());
         }
+    }
+
+    public <X extends Throwable> R getOrThrow(Function<ITextComponent, X> throwableConstructor) throws X {
+        if (this.isFailure()) {
+            throw throwableConstructor.apply(this.getMessage());
+        }
+        return this.getResult();
     }
 
     public boolean isSuccessful() {
