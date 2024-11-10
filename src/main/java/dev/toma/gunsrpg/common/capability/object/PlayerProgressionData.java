@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.capability.object;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.ISyncRequestDispatcher;
 import dev.toma.gunsrpg.api.common.ITransaction;
 import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
@@ -41,7 +42,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     private final ITransactionManager transactionManager = new TransactionManager();
     private final Map<GunItem, GunKillData> weaponStats = new HashMap<>();
     private final IProgressionStrategy strategy;
-    private IClientSynchReq request = () -> {};
+    private ISyncRequestDispatcher request = () -> {};
     private boolean known;
     private int level;
     private int skillPoints;
@@ -80,7 +81,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
             known = true;
             if (!player.isCreative())
                 ModUtils.addItem(player, new ItemStack(ModItems.STARTER_GEAR));
-            request.makeSyncRequest();
+            request.sendSyncRequest();
         }
     }
 
@@ -110,7 +111,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
             player.sendMessage(new StringTextComponent(TextFormatting.YELLOW + "=====[ " + new TranslationTextComponent("text.player.level_up").getString() + " ]====="), Util.NIL_UUID);
             player.sendMessage(new TranslationTextComponent("text.player.current_level", level).withStyle(TextFormatting.YELLOW), Util.NIL_UUID);
             skillProvider.onLevelUp(level, player);
-            request.makeSyncRequest();
+            request.sendSyncRequest();
         }
     }
 
@@ -136,7 +137,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
             GunItem gun = (GunItem) weapon.getItem();
             getWeaponStats(gun).onEnemyKilled(enemy, weapon);
         }
-        request.makeSyncRequest();
+        request.sendSyncRequest();
     }
 
     @Override
@@ -216,7 +217,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     }
 
     @Override
-    public void setClientSynch(IClientSynchReq request) {
+    public void setSyncRequestTemplate(ISyncRequestDispatcher request) {
         this.request = request;
     }
 

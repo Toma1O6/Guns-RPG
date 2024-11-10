@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.api.common.ISyncRequestDispatcher;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
@@ -25,7 +26,7 @@ public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
     private final IAttributeProvider attributeProvider;
     private final Int2ObjectMap<Crystal> slot2CrystalMap = new Int2ObjectOpenHashMap<>();
     private final Map<Perk, PerkStat> perkData = new HashMap<>();
-    private IClientSynchReq syncRequestFactory;
+    private ISyncRequestDispatcher syncRequestFactory;
     private int perkPoints;
     private int cooldown;
 
@@ -53,7 +54,7 @@ public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
             slot2CrystalMap.remove(slot);
         }
         computePerkData();
-        syncRequestFactory.makeSyncRequest();
+        syncRequestFactory.sendSyncRequest();
     }
 
     @Override
@@ -64,13 +65,13 @@ public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
     @Override
     public void awardPoints(int amount) {
         perkPoints += amount;
-        syncRequestFactory.makeSyncRequest();
+        syncRequestFactory.sendSyncRequest();
     }
 
     @Override
     public void setCooldown(int cooldown) {
         this.cooldown = cooldown;
-        this.syncRequestFactory.makeSyncRequest();
+        this.syncRequestFactory.sendSyncRequest();
     }
 
     @Override
@@ -121,7 +122,7 @@ public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
     }
 
     @Override
-    public void setClientSynch(IClientSynchReq request) {
+    public void setSyncRequestTemplate(ISyncRequestDispatcher request) {
         syncRequestFactory = request;
     }
 

@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.capability.object;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.ISyncRequestDispatcher;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.common.debuffs.IDebuff;
@@ -24,7 +25,7 @@ import java.util.Random;
 public class PlayerDebuffs implements IDebuffs {
 
     private final Map<IDebuffType<?>, IDebuff> debuffMap = new LinkedHashMap<>();
-    private IClientSynchReq clientSynchReq;
+    private ISyncRequestDispatcher clientSynchReq;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -81,7 +82,7 @@ public class PlayerDebuffs implements IDebuffs {
         if (debuff != null) {
             debuff.heal(amount, this);
         }
-        clientSynchReq.makeSyncRequest();
+        clientSynchReq.sendSyncRequest();
     }
 
     @Override
@@ -126,7 +127,7 @@ public class PlayerDebuffs implements IDebuffs {
     }
 
     @Override
-    public void setClientSynch(IClientSynchReq request) {
+    public void setSyncRequestTemplate(ISyncRequestDispatcher request) {
         clientSynchReq = request;
     }
 
@@ -142,7 +143,7 @@ public class PlayerDebuffs implements IDebuffs {
 
     private void sync() {
         if (clientSynchReq != null)
-            clientSynchReq.makeSyncRequest();
+            clientSynchReq.sendSyncRequest();
     }
 
     private <D extends IDebuff> void addDebuff(IDebuffType<D> type, IDebuffContext context, Random random, @Nullable Object data) {

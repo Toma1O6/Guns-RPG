@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.api.common.ISyncRequestDispatcher;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IHandState;
 import dev.toma.gunsrpg.api.common.data.IJamInfo;
@@ -19,7 +20,7 @@ public class JamInfo implements IJamInfo, IPlayerCapEntry {
 
     private final IHandState handState;
     private final PlayerEntity player;
-    private IClientSynchReq syncRequestFactory = () -> {};
+    private ISyncRequestDispatcher syncTemplate = () -> {};
     private boolean unjamming;
     private int activeSlot;
     private int remainingTime;
@@ -35,7 +36,7 @@ public class JamInfo implements IJamInfo, IPlayerCapEntry {
         this.activeSlot = slot;
         this.remainingTime = time;
         setUnjamming(true);
-        syncRequestFactory.makeSyncRequest();
+        syncTemplate.sendSyncRequest();
     }
 
     @Override
@@ -85,8 +86,8 @@ public class JamInfo implements IJamInfo, IPlayerCapEntry {
     }
 
     @Override
-    public void setClientSynch(IClientSynchReq request) {
-        this.syncRequestFactory = request;
+    public void setSyncRequestTemplate(ISyncRequestDispatcher request) {
+        this.syncTemplate = request;
     }
 
     private void completeUnjamming() {
@@ -101,7 +102,7 @@ public class JamInfo implements IJamInfo, IPlayerCapEntry {
     private void interruptUnjam() {
         setUnjamming(false);
         handState.freeHands();
-        syncRequestFactory.makeSyncRequest();
+        syncTemplate.sendSyncRequest();
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -64,7 +64,7 @@ public class PlayerData implements IPlayerData {
         saveHandler.addListener(data);
         saveHandler.addListener(standings);
 
-        saveHandler.invoke(entry -> entry.setClientSynch(() -> requestSync(entry.getFlag())));
+        saveHandler.invoke(entry -> entry.setSyncRequestTemplate(() -> requestSync(entry.getFlag())));
     }
 
     @Override

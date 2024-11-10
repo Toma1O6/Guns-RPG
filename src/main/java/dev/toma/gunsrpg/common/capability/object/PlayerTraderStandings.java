@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.api.common.ISyncRequestDispatcher;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
 import dev.toma.gunsrpg.api.common.data.ITraderStandings;
@@ -20,7 +21,7 @@ public class PlayerTraderStandings implements ITraderStandings, IPlayerCapEntry 
 
     private final Map<UUID, TraderStatus> statusMap = new HashMap<>();
     private final PlayerEntity player;
-    private IClientSynchReq synchReq;
+    private ISyncRequestDispatcher syncReq;
 
     public PlayerTraderStandings(PlayerEntity player) {
         this.player = player;
@@ -62,8 +63,8 @@ public class PlayerTraderStandings implements ITraderStandings, IPlayerCapEntry 
     }
 
     @Override
-    public void setClientSynch(IClientSynchReq request) {
-        this.synchReq = request;
+    public void setSyncRequestTemplate(ISyncRequestDispatcher request) {
+        this.syncReq = request;
     }
 
     @Override
@@ -86,8 +87,8 @@ public class PlayerTraderStandings implements ITraderStandings, IPlayerCapEntry 
     }
 
     private void synchronize() {
-        if (this.synchReq != null) {
-            this.synchReq.makeSyncRequest();
+        if (this.syncReq != null) {
+            this.syncReq.sendSyncRequest();
         }
     }
 }
