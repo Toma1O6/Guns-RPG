@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_entities",
   "tier": 2,
-  "display": {
-    "name": "Shadow Killer II",
-    "info": "Kill 13 hostile mobs"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:hostile"

@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:survival",
   "tier": 3,
-  "display": {
-    "name": "Survivor III",
-    "info": "Survive for 40 minutes"
-  },
   "data": {
     "duration": "40m"
   },

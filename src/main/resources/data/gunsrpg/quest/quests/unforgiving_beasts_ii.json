@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 4,
-  "display": {
-    "name": "Unforgiving Beasts II",
-    "info": "Kill 7 ravagers"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

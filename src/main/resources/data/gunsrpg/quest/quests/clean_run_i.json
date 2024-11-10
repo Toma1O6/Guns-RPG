@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:survival",
   "tier": 1,
-  "display": {
-    "name": "Clean Run I",
-    "info": "Survive for 7 minutes"
-  },
   "data": {
     "duration": "7m"
   },

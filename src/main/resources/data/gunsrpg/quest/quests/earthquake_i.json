@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 3,
-  "display": {
-    "name": "Earthquake I",
-    "info": "Kill 3 bloodmoon golems"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

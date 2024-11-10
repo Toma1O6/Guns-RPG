@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:area_survival",
   "tier": 4,
-  "display": {
-    "name": "Horde II",
-    "info": "Defend area for 6 minutes"
-  },
   "data": {
     "duration": "6m",
     "area": {

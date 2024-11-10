@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 2,
-  "display": {
-    "name": "Witch It I",
-    "info": "Kill 7 witches"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

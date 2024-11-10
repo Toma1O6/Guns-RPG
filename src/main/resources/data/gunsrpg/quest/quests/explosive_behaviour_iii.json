@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 5,
-  "display": {
-    "name": "Explosive Behaviour III",
-    "info": "Kill 15 grenadiers"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

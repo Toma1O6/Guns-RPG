@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 3,
-  "display": {
-    "name": "Eye Contact I",
-    "info": "Kill 5 endermen"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 3,
-  "display": {
-    "name": "Marksmen II",
-    "info": "Kill 13 pillagers"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

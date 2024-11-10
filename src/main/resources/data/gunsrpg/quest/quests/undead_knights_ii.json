@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 4,
-  "display": {
-    "name": "Undead Knights II",
-    "info": "Kill 10 zombie knights"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

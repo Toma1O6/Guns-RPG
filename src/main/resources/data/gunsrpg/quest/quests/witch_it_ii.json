@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 3,
-  "display": {
-    "name": "Witch It II",
-    "info": "Kill 13 witches"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

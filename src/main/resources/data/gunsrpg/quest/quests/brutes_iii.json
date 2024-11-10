@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 5,
-  "display": {
-    "name": "Brutes III",
-    "info": "Kill 20 piglin brutes"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

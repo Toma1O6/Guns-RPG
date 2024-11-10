@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:area_survival",
   "tier": 5,
-  "display": {
-    "name": "Horde III",
-    "info": "Defend area for 9 minutes"
-  },
   "data": {
     "duration": "9m",
     "area": {

@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 3,
-  "display": {
-    "name": "Sand Eaters III",
-    "info": "Kill 20 husks"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

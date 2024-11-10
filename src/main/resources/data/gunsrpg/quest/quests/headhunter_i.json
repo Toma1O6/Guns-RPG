@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_entities",
   "tier": 1,
-  "display": {
-    "name": "Head Hunter I",
-    "info": "Kill 10 mobs"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:hostile"

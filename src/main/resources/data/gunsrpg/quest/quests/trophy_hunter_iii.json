@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_entities",
   "tier": 3,
-  "display": {
-    "name": "Trophy Hunter III",
-    "info": "Kill 11 hostile mobs"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:hostile"

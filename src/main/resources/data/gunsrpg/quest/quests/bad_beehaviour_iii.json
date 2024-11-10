@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 4,
-  "display": {
-    "name": "Bad \"Bee\"haviour III",
-    "info": "Kill 30 angry bees"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

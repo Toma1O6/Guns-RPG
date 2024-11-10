@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:survival",
   "tier": 1,
-  "display": {
-    "name": "Pacifist I",
-    "info": "Survive for 10 minutes"
-  },
   "data": {
     "duration": "10m"
   },
