@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.config.QuestConfig;
 import dev.toma.gunsrpg.util.helper.NbtHelper;
 import dev.toma.gunsrpg.util.object.Interaction;
 import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -103,6 +104,11 @@ public final class QuestingGroup {
         Quest<?> inviteeActiveQuest = questing.getActiveQuestForPlayer(player);
         if (inviteeActiveQuest != null) {
             return Interaction.failure(new TranslationTextComponent("gunsrpg.quest.party.already_questing"));
+        }
+        QuestingEvent.OnInviteAccept event = new QuestingEvent.OnInviteAccept(player.level, this, invite, player);
+        MinecraftForge.EVENT_BUS.post(event);
+        if (event.getInteractionResult().isFailure()) {
+            return event.getInteractionResult().failed();
         }
         questing.clearInvitesForPlayer(player);
         questing.addToGroup(this, player);

@@ -22,6 +22,14 @@ public final class QuestConfig {
     public float defaultKillMemberMultiplier = 1.5F;
 
     @Configurable
+    @Configurable.Comment("Will increase mob spawn waves for bigger questing groups")
+    public boolean adjustSpawnWavesForGroup = true;
+
+    @Configurable
+    @Configurable.Comment("Will add additional effects such as Speed/Strength/Resistance to spawned mobs for bigger questing groups")
+    public boolean buffSpawnedMobsForGroup = true;
+
+    @Configurable
     @Configurable.DecimalRange(min = 0.0F, max = ReputationHelper.MAX_REPUTATION)
     @Configurable.Comment({"Amount of reputation awarded when quest is completed", "Value is multiplied by quest tier"})
     @Configurable.Gui.NumberFormat("0.0###")

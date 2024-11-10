@@ -2,9 +2,11 @@ package dev.toma.gunsrpg.common.quests;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IQuestingData;
+import dev.toma.gunsrpg.api.common.event.QuestingEvent;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.WeaponDamageSource;
 import dev.toma.gunsrpg.common.quests.quest.area.QuestArea;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
@@ -15,9 +17,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
@@ -29,6 +34,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = GunsRPG.MODID)
 public final class QuestEventHandler {
@@ -127,6 +134,44 @@ public final class QuestEventHandler {
     @SubscribeEvent
     public static void playerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
         QuestingDataProvider.getData(event.getPlayer().level).ifPresent(questing -> questing.handlePlayerLogOut(event.getPlayer()));
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void adjustSpawnWave(QuestingEvent.MobSpawnPreparingEvent event) {
+        if (!GunsRPG.config.quests.adjustSpawnWavesForGroup)
+            return;
+        QuestingGroup group = event.getGroup();
+        int count = group.getMemberCount();
+        // 50% increase from base value per member
+        int newMin = MathHelper.ceil(event.getMinAmount() * (1.0F + 0.5F * (count - 1)));
+        int newMax = MathHelper.ceil(event.getMaxAmount() * (1.0F + 0.5F * (count - 1)));
+        Random random = event.getLevel().getRandom();
+        event.setToSpawn(newMin + random.nextInt(1 + newMax - newMin));
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void adjustSpawnedMob(QuestingEvent.MobPostProcessingEvent event) {
+        if (!GunsRPG.config.quests.buffSpawnedMobsForGroup)
+            return;
+        QuestingGroup group = event.getGroup();
+        int count = group.getMemberCount();
+        LivingEntity entity = event.getEntity();
+        if (count >= 2) {
+            int amplifier = MathHelper.clamp(count / 2 - 1, 0, 4);
+            entity.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, Integer.MAX_VALUE, amplifier, true, false));
+        }
+        if (count >= 3) {
+            int amplifier = MathHelper.clamp(count / 3 - 1, 0, 2);
+            entity.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, Integer.MAX_VALUE, amplifier, true, false));
+        }
+        if (count >= 5) {
+            int amplifier = MathHelper.clamp(count / 5 - 1, 0, 2);
+            entity.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, Integer.MAX_VALUE, amplifier, true, false));
+        }
+        if (count >= 8) {
+            int amplifier = MathHelper.clamp(count / 8 - 1, 0, 2);
+            entity.addEffect(new EffectInstance(Effects.REGENERATION, Integer.MAX_VALUE, amplifier, true, false));
+        }
     }
 
     private static void cancelIfPlayerIsInQuestArea(PlayerInteractEvent event) {
