@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.entity;
 
 import dev.toma.gunsrpg.common.entity.projectile.*;
+import dev.toma.gunsrpg.common.init.ModEffects;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.util.math.WeightedRandom;
 import dev.toma.gunsrpg.util.properties.Properties;
@@ -128,8 +129,8 @@ public class RocketAngelEntity extends MonsterEntity implements IEntityAdditiona
         STANDARD(35, 0xFFFF9B, new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY)),
         HE(10, 0x63C0FF, new ExplosiveReaction(3.0f, Explosion.Mode.DESTROY)),
         INCENDIARY(8, 0xFF8968, MultipartReaction.multi(new ExplosiveReaction(2.0f, Explosion.Mode.DESTROY), new NapalmReaction(3.0, 0.3f))),
-        TOXIN(16, 0xB993FF, MultipartReaction.multi(new ExplosiveReaction(2.0f, Explosion.Mode.NONE), new EffectSpreadReaction(0xB993FF, () -> new EffectInstance(Effects.WITHER, 120, 1)))),
-        STUN(12, 0xD3D3D3, MultipartReaction.multi(new ExplosiveReaction(2.0f, Explosion.Mode.NONE), new EffectSpreadReaction(0xD3D3D3, () -> new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 80, 9))));
+        TOXIN(16, 0xB993FF, MultipartReaction.multi(new ExplosiveReaction(2.0f, Explosion.Mode.NONE), new EffectSpreadReaction(0xB993FF, () -> new EffectInstance(Effects.WITHER, 120, 1), () -> new EffectInstance(Effects.CONFUSION, 300)))),
+        STUN(12, 0xD3D3D3, MultipartReaction.multi(new ExplosiveReaction(2.0f, Explosion.Mode.NONE), new EffectSpreadReaction(0xD3D3D3, () -> new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 80, 9), () -> new EffectInstance(ModEffects.STUN.get(), 80), () -> new EffectInstance(Effects.BLINDNESS, 80), () -> new EffectInstance(Effects.CONFUSION, 300))));
 
         private static final WeightedRandom<Type> SELECTOR = new WeightedRandom<>(Type::getWeight, Type.values());
         private final int weight;

@@ -298,6 +298,7 @@
   "item.gunsrpg.wooden_bolts_quiver": "Wooden Bolts Quiver",
   "item.gunsrpg.wooden_buckshot": "Wooden Buckshot",
   "item.gunsrpg.wooden_bullet_tip": "Wooden Bullet Tip",
+
   "block.gunsrpg.amethyst_ore": "Amethyst Ore",
   "block.gunsrpg.blast_furnace": "Blast Furnace",
   "block.gunsrpg.airdrop": "Airdrop",
@@ -333,6 +334,7 @@
   "block.gunsrpg.culinary_table": "Culinary Table",
   "block.gunsrpg.medical_station": "Medical Station",
   "block.gunsrpg.ammo_bench": "Ammo Bench",
+
   "death.attack.gun": "%1$s has been shot",
   "death.attack.gun.player": "%1$s has been shot by %2$s",
   "death.attack.gun.player.weapon": "%1$s has been shot by %2$s with %3$s",
@@ -342,6 +344,9 @@
   "death.attack.fracture": "%1$s has died from pain caused by fracture",
   "death.attack.spikes": "%1$s has fallen into spike trap",
   "death.attack.spikes.owner": "%1$s has falled into spike trap placed by %2$s",
+
+  "effect.gunsrpg.stun": "Stun",
+
   "entity.gunsrpg.bullet": "Bullet",
   "entity.gunsrpg.airdrop": "Airdrop",
   "entity.gunsrpg.explosive_skeleton": "Grenadier",
@@ -353,9 +358,11 @@
   "entity.gunsrpg.zombie_nightmare": "Zombie Nightmare",
   "entity.gunsrpg.mayor": "Mayor",
   "entity.gunsrpg.gold_dragon": "Golden Dragon",
+
   "itemGroup.gunsrpg.items": "GunsRPG: Items",
   "itemGroup.gunsrpg.weapons": "GunsRPG: Weapons",
   "itemGroup.gunsrpg.blocks": "GunsRPG: Blocks",
+
   "gunsrpg.category.keys": "GunsRPG Binds",
   "gunsrpg.key.class_list": "View Skill Tree",
   "gunsrpg.key.reload": "Reload/Change batteries",
@@ -368,6 +375,7 @@
   "gunsrpg.key.skill.slot.3": "Skill Slot 3",
   "gunsrpg.key.skill.slot.4": "Skill Slot 4",
   "gunsrpg.key.skill.slot.5": "Skill Slot 5",
+
   "container.airdrop": "Airdrop",
   "container.blast_furnace": "Blast Furnace",
   "container.cooker": "Stove",
@@ -377,6 +385,7 @@
   "container.medstation": "Medstation",
   "container.repair_station": "Repair Station",
   "container.death_crate": "%s's death crate",
+
   "skill.gunsrpg.bone_grinder_i.title": "Bone Grinder I",
   "skill.gunsrpg.bone_grinder_i.description.count": "Allows to craft bone meal with yield of %s",
   "skill.gunsrpg.bone_grinder_ii.title": "Bone Grinder II",
@@ -1117,6 +1126,7 @@
   "skill.gunsrpg.iron_buddy_iii.title": "Iron Buddy III",
   "skill.gunsrpg.iron_buddy_iii.description.info": "Spawn the strongest friendly Iron golem with %sHP",
   "skill.gunsrpg.iron_buddy_iii.description.cooldown": "Cooldown: %s",
+
   "recipe.gunsrpg.ammobench.assemble_amethyst_12g": "Assemble Amethyst 12g",
   "recipe.gunsrpg.ammobench.assemble_amethyst_45acp": "Assemble Amethyst .45acp",
   "recipe.gunsrpg.ammobench.assemble_amethyst_556mm": "Assemble Amethyst 5.56mm",
