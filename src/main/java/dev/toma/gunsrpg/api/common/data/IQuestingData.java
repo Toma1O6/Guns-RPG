@@ -13,6 +13,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public interface IQuestingData extends INBTSerializable<CompoundNBT> {
@@ -43,11 +44,15 @@ public interface IQuestingData extends INBTSerializable<CompoundNBT> {
 
     Stream<QuestArea> getActiveQuestAreas();
 
+    Stream<Quest<?>> getActiveQuests();
+
     void assignQuest(Quest<?> quest, QuestingGroup group);
 
     void unassignQuest(QuestingGroup group);
 
     void trigger(Trigger trigger, PlayerEntity player, Consumer<IPropertyHolder> holderBuilder);
+
+    void triggerAll(Trigger trigger, PlayerEntity source, Consumer<IPropertyHolder> holderBuilder, Predicate<Quest<?>> filter);
 
     void tickQuests();
 

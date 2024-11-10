@@ -28,6 +28,7 @@ import net.minecraft.world.World;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -148,8 +149,33 @@ public class QuestingData implements IQuestingData {
     }
 
     @Override
+    public void triggerAll(Trigger trigger, PlayerEntity source, Consumer<IPropertyHolder> holderBuilder, Predicate<Quest<?>> filter) {
+        this.activeQuests.values().forEach(quest -> {
+            if (quest.getStatus() != QuestStatus.ACTIVE || !filter.test(quest)) {
+                return;
+            }
+            IPropertyHolder holder = PropertyContext.create();
+            holderBuilder.accept(holder);
+            holder.setProperty(QuestProperties.PLAYER, source);
+            holder.setProperty(QuestProperties.LEVEL, source.level);
+            holder.setProperty(QuestProperties.ACCESS, quest.getDataAccess());
+            quest.trigger(trigger, holder);
+        });
+    }
+
+    @Override
+    public Stream<Quest<?>> getActiveQuests() {
+        return activeQuests.values().stream()
+                .filter(quest -> quest.isAssigned() && quest.getStatus() == QuestStatus.ACTIVE);
+    }
+
+    @Override
     public void tickQuests() {
-        this.activeQuests.values().forEach(Quest::tickQuest);
+        this.activeQuests.values().forEach(quest -> {
+            if (quest.getStatus() != QuestStatus.PAUSED) {
+                quest.tickQuest();
+            }
+        });
     }
 
     @Override
@@ -213,8 +239,9 @@ public class QuestingData implements IQuestingData {
     public void handlePlayerLogIn(PlayerEntity player) {
         this.getOrCreateGroup(player);
         Quest<?> activeQuest = this.getActiveQuestForPlayer(player);
-        if (activeQuest != null && activeQuest.getStatus() == QuestStatus.ACTIVE) {
+        if (activeQuest != null && (activeQuest.getStatus() == QuestStatus.ACTIVE || activeQuest.getStatus() == QuestStatus.PAUSED)) {
             activeQuest.playerJoined(player);
+            activeQuest.setStatus(QuestStatus.ACTIVE);
         }
         this.sendData();
     }
@@ -223,8 +250,12 @@ public class QuestingData implements IQuestingData {
     public void handlePlayerLogOut(PlayerEntity player) {
         GunsRPG.log.debug(QuestSystem.MARKER, "Handling player {} disconnect", player.getUUID());
         QuestingGroup group = this.getOrCreateGroup(player);
+        Quest<?> activeQuest = this.getActiveQuestForPlayer(player);
         if (group.isLeader(player.getUUID()) && group.getMemberCount() > 1) {
             this.removeFromGroup(player.getUUID());
+        } else if (activeQuest != null && activeQuest.getStatus() == QuestStatus.ACTIVE) {
+            activeQuest.setStatus(QuestStatus.PAUSED);
+            sendData();
         }
     }
 

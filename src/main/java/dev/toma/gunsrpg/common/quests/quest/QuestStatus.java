@@ -6,7 +6,8 @@ public enum QuestStatus {
     ACTIVE(),
     COMPLETED(true),
     FAILED(),
-    CLAIMED();
+    CLAIMED(),
+    PAUSED();
 
     private final boolean showRewards;
 
