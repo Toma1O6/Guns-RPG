@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 3,
-  "display": {
-    "name": "Bombardment I",
-    "info": "Kill 3 rocket angels"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

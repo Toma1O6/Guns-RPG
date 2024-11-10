@@ -25,7 +25,7 @@ public interface IPlayerData {
 
     IHandState getHandState();
 
-    IQuests getQuests();
+    ITraderStandings getMayorReputationProvider();
 
     List<IPlayerCapEntry> getSaveEntries();
 

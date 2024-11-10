@@ -2,7 +2,10 @@ package dev.toma.gunsrpg.common.quests.quest.area;
 
 import dev.toma.gunsrpg.ai.AlwaysAggroOnGoal;
 import dev.toma.gunsrpg.ai.QuestPlayerSensor;
+import dev.toma.gunsrpg.api.common.event.QuestingEvent;
 import dev.toma.gunsrpg.common.init.ModSensors;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
+import dev.toma.gunsrpg.util.ModUtils;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -19,11 +22,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class MobSpawner implements IMobSpawner {
@@ -60,10 +65,15 @@ public class MobSpawner implements IMobSpawner {
     }
 
     @Override
-    public void spawnMobsRandomly(World world, QuestArea area, PlayerEntity attackTarget) {
+    public void spawnMobsRandomly(World world, QuestArea area, QuestingGroup group) {
+        QuestingEvent.MobSpawnPreparingEvent event = new QuestingEvent.MobSpawnPreparingEvent(world, group, this.minCount, this.maxCount);
         int toSpawn = minCount + world.random.nextInt(1 + maxCount - minCount);
+        event.setToSpawn(toSpawn);
+        if (MinecraftForge.EVENT_BUS.post(event))
+            return;
+        toSpawn = event.getToSpawn();
         for (int i = 0; i < toSpawn; i++) {
-            spawnMob(world, area, attackTarget);
+            spawnMob(world, area, group);
         }
     }
 
@@ -81,10 +91,12 @@ public class MobSpawner implements IMobSpawner {
     }
 
     @SuppressWarnings("unchecked")
-    private void spawnMob(World world, QuestArea area, PlayerEntity attackTarget) {
+    private void spawnMob(World world, QuestArea area, QuestingGroup group) {
         BlockPos pos = area.getRandomEgdePosition(world.random, world);
         LivingEntity livingEntity = entityType.create(world);
         livingEntity.setPos(pos.getX(), pos.getY(), pos.getZ());
+        List<PlayerEntity> players = group.getMembers().stream().map(world::getPlayerByUUID).filter(Objects::nonNull).collect(Collectors.toList());
+        PlayerEntity attackTarget = ModUtils.getRandomListElement(players, world.random);
         IMobTargettingContext context = entity -> {
             ServerWorld serverWorld = (ServerWorld) entity.level;
             if (entity instanceof MobEntity) {
@@ -105,6 +117,7 @@ public class MobSpawner implements IMobSpawner {
             sensors.put(sensorType, questPlayerSensor);
         };
         processorList.forEach(processor -> processor.processMobSpawn(livingEntity, context));
+        MinecraftForge.EVENT_BUS.post(new QuestingEvent.MobPostProcessingEvent(world, group, livingEntity, area));
         world.addFreshEntity(livingEntity);
         context.processMobSpawn(livingEntity);
     }

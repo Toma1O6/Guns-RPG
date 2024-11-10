@@ -3,11 +3,11 @@ package dev.toma.gunsrpg.common.quests.condition;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.text.ITextComponent;
@@ -38,12 +38,12 @@ public class HasAggroConditionProvider extends AbstractQuestConditionProvider<Ha
     }
 
     @Override
-    public boolean isValid(PlayerEntity player, IPropertyReader reader) {
+    public boolean isValid(QuestingGroup group, IPropertyReader reader) {
         LivingEntity entity = reader.getProperty(QuestProperties.ENTITY);
         if (entity instanceof MobEntity) {
             MobEntity mobEntity = (MobEntity) entity;
             LivingEntity target = mobEntity.getTarget();
-            return status ? target == player : target == null;
+            return this.status && target != null ? group.isMember(target.getUUID()) : target == null;
         }
         return true;
     }

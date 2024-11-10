@@ -44,7 +44,7 @@ public class S2C_UpdateCapabilityPacket extends AbstractNetworkPacket<S2C_Update
     @Override
     protected void handlePacket(NetworkEvent.Context context) {
         Minecraft mc = Minecraft.getInstance();
-        PlayerEntity player = mc.player;
+        PlayerEntity player = mc.level.getPlayerByUUID(this.uuid);
         if (player == null)
             return;
         PlayerData.get(player).ifPresent(data -> {

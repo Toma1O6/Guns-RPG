@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.quests.condition;
 
 import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
@@ -27,7 +27,7 @@ public class NoDamageTakenConditionProvider extends AbstractQuestConditionProvid
     }
 
     @Override
-    public boolean isValid(PlayerEntity player, IPropertyReader reader) {
+    public boolean isValid(QuestingGroup group, IPropertyReader reader) {
         DamageSource source = reader.getProperty(QuestProperties.DAMAGE_SOURCE);
         return source == null;
     }

@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 2,
-  "display": {
-    "name": "Frost Bringers I",
-    "info": "Kill 7 strays"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

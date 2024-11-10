@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.api.common.data;
 
+import dev.toma.gunsrpg.api.common.ISyncRequestDispatcher;
 import net.minecraft.nbt.CompoundNBT;
 
 public interface IPlayerCapEntry {
@@ -10,9 +11,5 @@ public interface IPlayerCapEntry {
 
     void fromNbt(CompoundNBT nbt);
 
-    void setClientSynch(IClientSynchReq request);
-
-    interface IClientSynchReq {
-        void makeSyncRequest();
-    }
+    void setSyncRequestTemplate(ISyncRequestDispatcher request);
 }

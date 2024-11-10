@@ -1,13 +1,13 @@
 package dev.toma.gunsrpg.common.quests.condition;
 
 import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.quests.trigger.ITriggerHandler;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
@@ -50,7 +50,7 @@ public class UniqueMobKillsConditionProvider extends AbstractQuestConditionProvi
         }
 
         @Override
-        public boolean isValid(PlayerEntity player, IPropertyReader reader) {
+        public boolean isValid(QuestingGroup group, IPropertyReader reader) {
             Entity entity = reader.getProperty(QuestProperties.ENTITY);
             if (entity instanceof MonsterEntity) {
                 EntityType<?> type = entity.getType();
@@ -69,6 +69,11 @@ public class UniqueMobKillsConditionProvider extends AbstractQuestConditionProvi
         @Override
         public IQuestConditionProvider<?> getProviderType() {
             return UniqueMobKillsConditionProvider.this;
+        }
+
+        @Override
+        public boolean allowTargetMultipliers() {
+            return false;
         }
 
         @Override

@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.capability.object;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.ISyncRequestDispatcher;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.ILockStateChangeable;
 import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
@@ -37,7 +38,7 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
     private final PlayerEntity player;
     private final Map<SkillType<?>, ISkill> unlockedSkills = new HashMap<>();
     private final SkillCache cache = new SkillCache();
-    private IClientSynchReq request = () -> {};
+    private ISyncRequestDispatcher request = () -> {};
 
     public PlayerSkillProvider(PlayerEntity player) {
         this.player = player;
@@ -66,11 +67,11 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
         skill.onDeactivate(player);
         unlockedSkills.remove(type);
         cache.compute();
-        request.makeSyncRequest();
+        request.sendSyncRequest();
     }
 
     @Override
-    public void setClientSynch(IClientSynchReq request) {
+    public void setSyncRequestTemplate(ISyncRequestDispatcher request) {
         this.request = request;
     }
 
@@ -119,7 +120,7 @@ public class PlayerSkillProvider implements ISkillProvider, ILockStateChangeable
         skill.onPurchase(player);
         unlockedSkills.put(skillType, skill);
         if (sync) {
-            request.makeSyncRequest();
+            request.sendSyncRequest();
             cache.compute();
         }
     }

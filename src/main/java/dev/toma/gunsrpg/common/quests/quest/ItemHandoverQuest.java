@@ -17,6 +17,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -29,8 +30,8 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
     public static final IQuestFactory<ItemHandoverData, ItemHandoverQuest> FACTORY = IQuestFactory.of(ItemHandoverQuest::new, ItemHandoverQuest::new);
     private final Object2IntMap<Item> dataMap = new Object2IntAVLTreeMap<>(this::compareItems);
 
-    public ItemHandoverQuest(QuestScheme<ItemHandoverData> scheme, UUID traderId) {
-        super(scheme, traderId);
+    public ItemHandoverQuest(World world, QuestScheme<ItemHandoverData> scheme, UUID traderId) {
+        super(world, scheme, traderId);
         this.initializeData();
     }
 
@@ -44,6 +45,11 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
     }
 
     @Override
+    public Object[] getDescriptionArguments() {
+        return new Object[0];
+    }
+
+    @Override
     public ITextComponent[] getAdditionalNotes() {
         return NOTES;
     }
@@ -51,7 +57,11 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
     @Override
     protected void fillDataModel(QuestDisplayDataModel model) {
         model.addQuestHeader(this, false);
-        dataMap.forEach((item, remainder) -> model.addInformationRow(new TranslationTextComponent(DELIVER, item.getName(ItemStack.EMPTY)), this, q -> new StringTextComponent(remainder + "x")));
+        dataMap.forEach((item, remainder) -> model.addInformationRow(
+                this,
+                q -> new TranslationTextComponent(DELIVER, item.getName(ItemStack.EMPTY)),
+                q -> new StringTextComponent(remainder + "x"))
+        );
         model.addConditionDisplay(this);
     }
 
@@ -82,7 +92,7 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
     private TriggerResponseStatus tryItemHandover(Trigger trigger, IPropertyReader reader) {
         ItemStack itemStack = reader.getProperty(QuestProperties.USED_ITEM);
         UUID uuid = reader.getProperty(QuestProperties.UUID);
-        UUID questId = this.getOriginalAssignerId();
+        UUID questId = this.getMayorUUID();
         if (itemStack.isEmpty()) {
             return TriggerResponseStatus.PASS;
         }
@@ -114,7 +124,7 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
         if (dataMap.isEmpty()) {
             setStatus(QuestStatus.COMPLETED);
         }
-        trySyncClient();
+        trySyncClient(this.level);
     }
 
     private void initializeData() {

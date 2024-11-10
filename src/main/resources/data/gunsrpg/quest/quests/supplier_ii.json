@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:handover",
   "tier": 3,
-  "display": {
-    "name": "Supplier II",
-    "info": "Hand over supplies"
-  },
   "data": {
     "items": [
       {

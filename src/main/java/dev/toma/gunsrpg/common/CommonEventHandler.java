@@ -26,6 +26,7 @@ import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.world.LootStashes;
+import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataProvider;
 import dev.toma.gunsrpg.world.feature.ModConfiguredFeatures;
@@ -144,6 +145,7 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void attachLevelCapabilities(AttachCapabilitiesEvent<World> event) {
         event.addCapability(GunsRPG.makeResource("worldcap"), new WorldDataProvider(event.getObject()));
+        event.addCapability(GunsRPG.makeResource("questing"), new QuestingDataProvider(event.getObject()));
     }
 
     @SubscribeEvent
@@ -420,7 +422,7 @@ public class CommonEventHandler {
                 ISkillProvider provider = data.getSkillProvider();
                 if (provider.hasSkill(Skills.SECOND_CHANCE_I)) {
                     SecondChanceSkill secondChanceSkill = SkillUtil.getTopHierarchySkill(Skills.SECOND_CHANCE_I, provider);
-                    if (secondChanceSkill.canApply(player)) {
+                    if (secondChanceSkill.canApply(player) && !damageSource.isBypassInvul()) {
                         event.setCanceled(true);
                         secondChanceSkill.setOnCooldown();
                         secondChanceSkill.onUse(player);

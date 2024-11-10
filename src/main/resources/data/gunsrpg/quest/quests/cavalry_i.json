@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 2,
-  "display": {
-    "name": "Cavalry I",
-    "info": "Kill 5 skeleton horses"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

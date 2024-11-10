@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 4,
-  "display": {
-    "name": "Insomnia III",
-    "info": "Kill 15 phantoms"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

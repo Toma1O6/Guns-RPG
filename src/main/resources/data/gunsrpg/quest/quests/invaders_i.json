@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 2,
-  "display": {
-    "name": "Invaders I",
-    "info": "Kill 7 piglins"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

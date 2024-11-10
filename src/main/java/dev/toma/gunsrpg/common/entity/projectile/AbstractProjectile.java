@@ -30,7 +30,10 @@ import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public abstract class AbstractProjectile extends ProjectileEntity implements IEntityAdditionalSpawnData {

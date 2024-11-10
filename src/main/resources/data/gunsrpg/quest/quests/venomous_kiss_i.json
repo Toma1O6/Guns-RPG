@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 2,
-  "display": {
-    "name": "Venomous Kiss I",
-    "info": "Kill 7 cave spiders"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

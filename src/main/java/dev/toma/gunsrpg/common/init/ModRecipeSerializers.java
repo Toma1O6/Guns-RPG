@@ -1,9 +1,9 @@
 package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.resource.ammobench.AmmoBenchRecipe;
 import dev.toma.gunsrpg.resource.blasting.BlastingRecipe;
 import dev.toma.gunsrpg.resource.cooking.CookingRecipe;
-import dev.toma.gunsrpg.resource.ammobench.AmmoBenchRecipe;
 import dev.toma.gunsrpg.resource.crafting.CulinaryRecipe;
 import dev.toma.gunsrpg.resource.crafting.MedRecipe;
 import dev.toma.gunsrpg.resource.crafting.SmithingRecipe;

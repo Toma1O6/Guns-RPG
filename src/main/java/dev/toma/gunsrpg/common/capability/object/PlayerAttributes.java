@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.capability.object;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.ISyncRequestDispatcher;
 import dev.toma.gunsrpg.api.common.attribute.*;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
@@ -18,7 +19,7 @@ public class PlayerAttributes implements IAttributeProvider, IPlayerCapEntry {
 
     private final Map<IAttributeId, IAttribute> attributeMap = new HashMap<>();
     private final AttributeListener listener = new AttributeListener();
-    private IClientSynchReq syncRequest;
+    private ISyncRequestDispatcher syncRequest;
 
     @Override
     public IAttribute getAttribute(IAttributeId id) {
@@ -84,7 +85,7 @@ public class PlayerAttributes implements IAttributeProvider, IPlayerCapEntry {
     }
 
     @Override
-    public void setClientSynch(IClientSynchReq request) {
+    public void setSyncRequestTemplate(ISyncRequestDispatcher request) {
         this.syncRequest = request;
     }
 
@@ -95,7 +96,7 @@ public class PlayerAttributes implements IAttributeProvider, IPlayerCapEntry {
 
     private void safeSync() {
         if (syncRequest != null)
-            syncRequest.makeSyncRequest();
+            syncRequest.sendSyncRequest();
     }
 
     public class AttributeListener implements IAttributeListener {

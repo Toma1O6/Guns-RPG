@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.quests.quest;
 import dev.toma.gunsrpg.GunsRPG;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,8 +24,8 @@ public final class QuestTypes {
     }
 
     @SuppressWarnings("unchecked")
-    public static <D extends IQuestData, Q extends Quest<D>> Q getFromNbt(CompoundNBT nbt) {
-        QuestDeserializationContext<D> context = QuestDeserializationContext.fromNbt(nbt);
+    public static <D extends IQuestData, Q extends Quest<D>> Q getFromNbt(World world, CompoundNBT nbt) {
+        QuestDeserializationContext<D> context = QuestDeserializationContext.fromNbt(world, nbt);
         QuestType<D, Q> type = (QuestType<D, Q>) context.getScheme().getQuestType();
         Q quest = type.fromContext(context);
         quest.readQuestData(context.getInternalData());

@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 1,
-  "display": {
-    "name": "Walking Dead I",
-    "info": "Kill 7 zombies"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

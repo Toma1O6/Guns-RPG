@@ -2,7 +2,9 @@ package dev.toma.gunsrpg.client.screen.skill;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.client.ScreenDataEventListener;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IQuestingData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillCategory;
@@ -21,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-public class SkillTreeScreen extends Screen implements IViewContext {
+public class SkillTreeScreen extends Screen implements IViewContext, ScreenDataEventListener {
 
     private static final ITextComponent TITLE = new TranslationTextComponent("screen.skill_tree");
     private final IViewManager manager;
@@ -31,6 +33,13 @@ public class SkillTreeScreen extends Screen implements IViewContext {
         super(TITLE);
         this.manager = this.new ViewManager();
         this.queryCache();
+    }
+
+    @Override
+    public void onQuestingDataReceived(IQuestingData questingData) {
+        if (this.manager.getView() instanceof ScreenDataEventListener) {
+            ((ScreenDataEventListener) this.manager.getView()).onQuestingDataReceived(questingData);
+        }
     }
 
     @Override

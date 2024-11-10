@@ -9,7 +9,6 @@ import com.mojang.serialization.DataResult;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.skill.*;
 import dev.toma.gunsrpg.client.screen.skill.SkillTreeScreen;
-import dev.toma.gunsrpg.common.debuffs.DebuffType;
 import dev.toma.gunsrpg.common.debuffs.DynamicDebuff;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.perk.Perk;
@@ -27,7 +26,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.HashMap;

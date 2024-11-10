@@ -92,7 +92,7 @@ public class AnimatorScreen extends Screen {
         addButton(new IconButton(55, 5, 20, 20, 4, this::buttonSetBackgroundAnimation, (btn, poses, mx, my) -> renderTooltip(poses, SET_BACKGROUND, mx, my)));
         addButton(new IconButton(80, 5, 20, 20, 5, this::buttonMerge_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, MERGE, mx, my)));
         Widget widget = addButton(new IconButton(105, 5, 20, 20, 2, this::buttonSave_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SAVE, mx, my)));
-        widget.active = false; // TODO fix saving
+        widget.active = false;
         addButton(new IconButton(130, 5, 20, 20, 2, this::buttonSaveAs_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SAVE_AS, mx, my)));
         addButton(new IconButton(155, 5, 20, 20, 3, this::buttonSettings_Clicked, (btn, poses, mx, my) -> renderTooltip(poses, SETTINGS, mx, my)));
         addButton(new ControlButton(width - 70, 5, 65, 20, PAUSED, this::isPaused, this::setPaused));

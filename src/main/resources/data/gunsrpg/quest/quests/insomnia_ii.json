@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 3,
-  "display": {
-    "name": "Insomnia II",
-    "info": "Kill 10 phantoms"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

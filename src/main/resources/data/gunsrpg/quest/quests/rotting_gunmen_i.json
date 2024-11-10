@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 3,
-  "display": {
-    "name": "Rotting Gunmen I",
-    "info": "Kill 7 zombie gunners"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

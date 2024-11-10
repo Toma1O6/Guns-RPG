@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 3,
-  "display": {
-    "name": "Inferno II",
-    "info": "Kill 13 blazes"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

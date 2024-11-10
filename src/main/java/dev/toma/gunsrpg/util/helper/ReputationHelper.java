@@ -41,7 +41,7 @@ public final class ReputationHelper {
         if (player.level.isClientSide) return;
         ItemStack stack = new ItemStack(ModItems.GOLD_EGG_SHARD, 2);
         ModUtils.addItem(player, stack);
-        GunsRPG.log.debug(QuestSystem.MARKER, "Added reputation award to {}", player.getName().getString());
+        GunsRPG.log.info(QuestSystem.MARKER, "Added reputation award to {}", player.getName().getString());
         player.sendMessage(new TranslationTextComponent("quest.reputation.award_given"), Util.NIL_UUID);
     }
 

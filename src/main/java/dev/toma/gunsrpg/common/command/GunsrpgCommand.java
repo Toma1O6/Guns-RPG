@@ -24,6 +24,8 @@ import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import dev.toma.gunsrpg.common.entity.AirdropEntity;
+import dev.toma.gunsrpg.common.entity.MayorEntity;
+import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.item.perk.Crystal;
@@ -41,15 +43,22 @@ import dev.toma.gunsrpg.common.quests.reward.IQuestItemProvider;
 import dev.toma.gunsrpg.common.quests.reward.QuestReward;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardList;
 import dev.toma.gunsrpg.common.quests.reward.QuestRewardManager;
+import dev.toma.gunsrpg.common.quests.sharing.GroupInvite;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;
 import dev.toma.gunsrpg.util.helper.CommandHelper;
+import dev.toma.gunsrpg.util.object.Interaction;
+import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
+import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.command.arguments.ResourceLocationArgument;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
@@ -60,6 +69,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.IServerWorldInfo;
 import net.minecraftforge.common.util.LazyOptional;
@@ -68,7 +78,7 @@ import net.minecraftforge.server.command.EnumArgument;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Optional;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -94,7 +104,13 @@ public class GunsrpgCommand {
     private static final DynamicCommandExceptionType DEPENDENT_SKILL_ACTIVE = new DynamicCommandExceptionType(id -> new TranslationTextComponent("command.gunsrpg.exception.active_skill", id));
     private static final SimpleCommandExceptionType NOT_HOLDING_CRYSTAL = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.not_holding_crystal"));
     private static final SimpleCommandExceptionType NO_ACTIVE_QUEST = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.no_quest"));
-    private static final SimpleCommandExceptionType NOT_HOLDING_GUN = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.not_holding_gun"));
+    private static final SimpleCommandExceptionType NOT_HOLDING_GUN = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.not_holding_weapon"));
+    private static final SimpleCommandExceptionType NOT_A_GROUP_LEADER = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.not_group_leader"));
+    private static final DynamicCommandExceptionType GROUP_INVITE_FAILED = new DynamicCommandExceptionType(msg -> new TranslationTextComponent("command.gunsrpg.exception.group_invite_failed", msg));
+    private static final SimpleCommandExceptionType INVITE_NOT_FOUND = new SimpleCommandExceptionType(new TranslationTextComponent("command.gunsrpg.exception.invite_not_found"));
+    private static final DynamicCommandExceptionType INVITE_ACCEPT_FAILED = new DynamicCommandExceptionType(msg -> new TranslationTextComponent("command.gunsrpg.exception.invite_accept_failed", msg));
+    private static final DynamicCommandExceptionType INVITE_REJECT_FAILED = new DynamicCommandExceptionType(msg -> new TranslationTextComponent("command.gunsrpg.exception.invite_reject_failed", msg));
+    private static final DynamicCommandExceptionType INVITE_CANCEL_FAILED = new DynamicCommandExceptionType(msg -> new TranslationTextComponent("command.gunsrpg.exception.invite_cancel_failed", msg));
 
     public static void registerCommandTree(CommandDispatcher<CommandSource> dispatcher) {
         dispatcher.register(
@@ -251,7 +267,7 @@ public class GunsrpgCommand {
                         )
                         .then(
                                 Commands.literal("quest")
-                                        .executes(ctx -> noArgsProvided("reward"))
+                                        .executes(ctx -> noArgsProvided("reward", "cancel", "changeStatus", "group", "refresh"))
                                         .then(
                                                 Commands.literal("reward")
                                                         .executes(ctx -> addRandomReward(ctx, 1, 1, true))
@@ -293,6 +309,50 @@ public class GunsrpgCommand {
                                                                         .executes(GunsrpgCommand::updateQuestStatus)
                                                         )
                                         )
+                                        .then(
+                                                Commands.literal("refresh")
+                                                        .executes(GunsrpgCommand::refreshMayorQuests)
+                                        )
+                                        .then(
+                                                Commands.literal("group")
+                                                        .executes(ctx -> noArgsProvided("invite", "leave", "accept", "reject", "cancel"))
+                                                        .then(
+                                                                Commands.literal("invite")
+                                                                        .executes(ctx -> noArgsProvided("player"))
+                                                                        .then(
+                                                                                Commands.argument("player", EntityArgument.player())
+                                                                                        .executes(GunsrpgCommand::invitePlayerToGroup)
+                                                                        )
+                                                        )
+                                                        .then(
+                                                                Commands.literal("leave")
+                                                                        .executes(GunsrpgCommand::leaveCurrentGroup)
+                                                        )
+                                                        .then(
+                                                                Commands.literal("accept")
+                                                                        .executes(ctx -> noArgsProvided("player"))
+                                                                        .then(
+                                                                                Commands.argument("player", EntityArgument.player())
+                                                                                        .executes(GunsrpgCommand::acceptGroupInvite)
+                                                                        )
+                                                        )
+                                                        .then(
+                                                                Commands.literal("reject")
+                                                                        .executes(ctx -> noArgsProvided("player"))
+                                                                        .then(
+                                                                                Commands.argument("player", EntityArgument.player())
+                                                                                        .executes(GunsrpgCommand::rejectGroupInvite)
+                                                                        )
+                                                        )
+                                                        .then(
+                                                                Commands.literal("cancel")
+                                                                        .executes(ctx -> noArgsProvided("player"))
+                                                                        .then(
+                                                                                Commands.argument("player", EntityArgument.player())
+                                                                                        .executes(GunsrpgCommand::cancelGroupInvite)
+                                                                        )
+                                                        )
+                                        )
                         )
                         .then(
                                 Commands.literal("weapon")
@@ -304,6 +364,104 @@ public class GunsrpgCommand {
                         )
                         .executes(ctx -> noArgsProvided("debuff", "event", "progression", "skill"))
         );
+    }
+
+    private static int leaveCurrentGroup(CommandContext<CommandSource> context) {
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        World level = player.level;
+        IQuestingData questing = QuestingDataProvider.getData(level).orElse(null);
+        QuestingGroup group = questing.getOrCreateGroup(player);
+        if (group.getMemberCount() == 1)
+            return 0;
+        questing.removeFromGroup(player.getUUID());
+        questing.sendData();
+        return 0;
+    }
+
+    private static int invitePlayerToGroup(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        World level = player.level;
+        IQuestingData questing = QuestingDataProvider.getData(level).orElse(null);
+        QuestingGroup group = questing.getOrCreateGroup(player);
+        if (!group.isLeader(player.getUUID())) {
+            throw NOT_A_GROUP_LEADER.create();
+        }
+        ServerPlayerEntity invitee = EntityArgument.getPlayer(context, "player");
+        Interaction<GroupInvite> interaction = group.invite(invitee);
+        interaction.validate(GROUP_INVITE_FAILED::create);
+        questing.sendData();
+        return 0;
+    }
+
+    private static int acceptGroupInvite(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        World level = player.level;
+        IQuestingData questing = QuestingDataProvider.getData(level).orElse(null);
+        PlayerEntity leader = EntityArgument.getPlayer(context, "player");
+        QuestingGroup targetGroup = questing.getOrCreateGroup(leader);
+        GroupInvite invite = targetGroup.getInvite(player.getUUID());
+        if (invite == null) {
+            throw INVITE_NOT_FOUND.create();
+        }
+        Interaction<?> interaction = targetGroup.onInviteAccepted(invite, player);
+        interaction.validate(INVITE_ACCEPT_FAILED::create);
+        questing.sendData();
+        return 0;
+    }
+
+    private static int rejectGroupInvite(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        World level = player.level;
+        IQuestingData questing = QuestingDataProvider.getData(level).orElse(null);
+        PlayerEntity leader = EntityArgument.getPlayer(context, "player");
+        QuestingGroup targetGroup = questing.getOrCreateGroup(leader);
+        GroupInvite invite = targetGroup.getInvite(player.getUUID());
+        if (invite == null) {
+            throw INVITE_NOT_FOUND.create();
+        }
+        Interaction<?> interaction = targetGroup.onInviteRejected(invite);
+        interaction.validate(INVITE_REJECT_FAILED::create);
+        questing.sendData();
+        return 0;
+    }
+
+    private static int cancelGroupInvite(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        World level = player.level;
+        IQuestingData questing = QuestingDataProvider.getData(level).orElse(null);
+        QuestingGroup currentGroup = questing.getOrCreateGroup(player);
+        if (!currentGroup.isLeader(player.getUUID())) {
+            throw NOT_A_GROUP_LEADER.create();
+        }
+        PlayerEntity invitee = EntityArgument.getPlayer(context, "player");
+        GroupInvite invite = currentGroup.getInvite(invitee.getUUID());
+        if (invite == null) {
+            throw INVITE_NOT_FOUND.create();
+        }
+        Interaction<?> interaction = currentGroup.onInviteCancelled(invite);
+        interaction.validate(INVITE_CANCEL_FAILED::create);
+        questing.sendData();
+        return 0;
     }
 
     private static int jamWeapon(CommandContext<CommandSource> context) throws CommandSyntaxException {
@@ -340,7 +498,7 @@ public class GunsrpgCommand {
             return -1;
         }
         PlayerEntity player = (PlayerEntity) executor;
-        IPlayerData data = PlayerData.getUnsafe(player);
+        IQuestingData questing = QuestingDataProvider.getData(player.level).orElse(null);
         ResourceLocation location = ResourceLocationArgument.getId(context, "questId");
         QuestSystem system = GunsRPG.getModLifecycle().quests();
         QuestManager manager = system.getQuestManager();
@@ -348,18 +506,34 @@ public class GunsrpgCommand {
         if (scheme == null) {
             throw UNKNOWN_KEY_EXCEPTION.create(location);
         }
-        Quest<?> quest = newQuest(scheme);
-        IQuests provider = data.getQuests();
+        QuestingGroup group = questing.getOrCreateGroup(player);
+        if (!group.isLeader(player.getUUID())) {
+            throw NOT_A_GROUP_LEADER.create();
+        }
+        Quest<?> quest = newQuest(scheme, player.level);
         quest.setStatus(QuestStatus.ACTIVE);
-        provider.assignQuest(quest);
-        quest.assign(player);
+        questing.assignQuest(quest, group);
+        questing.sendData();
+        return 0;
+    }
+
+    private static int refreshMayorQuests(CommandContext<CommandSource> context) {
+        Entity executor = context.getSource().getEntity();
+        if (!(executor instanceof PlayerEntity)) {
+            return -1;
+        }
+        PlayerEntity player = (PlayerEntity) executor;
+        World level = player.level;
+        List<MayorEntity> mayorEntities = level.getEntities(ModEntities.MAYOR.get(), player.getBoundingBox().inflate(16), LivingEntity::isAlive);
+        mayorEntities.forEach(mayor -> mayor.setRefreshTimer(0L));
+        player.sendMessage(new StringTextComponent("Quests have been refreshed by " + mayorEntities.size() + " mayors"), Util.NIL_UUID);
         return 0;
     }
 
     @SuppressWarnings("unchecked")
-    private static <D extends IQuestData, Q extends Quest<D>> Quest<D> newQuest(QuestScheme<D> scheme) {
+    private static <D extends IQuestData, Q extends Quest<D>> Quest<D> newQuest(QuestScheme<D> scheme, World world) {
         QuestType<D, Q> type = (QuestType<D, Q>) scheme.getQuestType();
-        return type.newQuestInstance(scheme, Util.NIL_UUID);
+        return type.newQuestInstance(world, scheme, Util.NIL_UUID);
     }
 
     private static int updateQuestStatus(CommandContext<CommandSource> context) throws CommandSyntaxException {
@@ -368,14 +542,14 @@ public class GunsrpgCommand {
             return -1;
         }
         PlayerEntity player = (PlayerEntity) executor;
-        IPlayerData data = PlayerData.getUnsafe(player);
-        Optional<Quest<?>> optional = data.getQuests().getActiveQuest();
-        if (!optional.isPresent()) {
+        IQuestingData questing = QuestingDataProvider.getData(player.level).orElse(null);
+        Quest<?> quest = questing.getActiveQuestForPlayer(player);
+        if (quest == null) {
             throw NO_ACTIVE_QUEST.create();
         }
         QuestStatus status = context.getArgument("status", QuestStatus.class);
-        optional.get().setStatus(status);
-        data.sync(DataFlags.QUESTS);
+        quest.setStatus(status);
+        questing.sendData();
         return 0;
     }
 
@@ -385,12 +559,14 @@ public class GunsrpgCommand {
             return -1;
         }
         PlayerEntity player = (PlayerEntity) executor;
-        IPlayerData data = PlayerData.getUnsafe(player);
-        Optional<Quest<?>> optional = data.getQuests().getActiveQuest();
-        if (!optional.isPresent()) {
+        IQuestingData questing = QuestingDataProvider.getData(player.level).orElse(null);
+        Quest<?> quest = questing.getActiveQuestForPlayer(player);
+        if (quest == null) {
             throw NO_ACTIVE_QUEST.create();
         }
-        data.getQuests().clearActiveQuest();
+        QuestingGroup group = questing.getOrCreateGroup(player);
+        questing.unassignQuest(group);
+        questing.sendData();
         return 0;
     }
 

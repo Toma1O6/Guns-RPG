@@ -5,7 +5,6 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.init.ModBlocks;
 import dev.toma.gunsrpg.resource.MultiIngredient;
 import dev.toma.gunsrpg.resource.ammobench.AmmoBenchRecipe;
-import dev.toma.gunsrpg.util.SkillUtil;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;

@@ -67,6 +67,7 @@ public class NetworkManager {
         registerNetworkPacket(S2C_UseStashDetectorPacket.class);
         registerNetworkPacket(S2C_OpenQuestScreen.class);
         registerNetworkPacket(S2C_SendEntityData.class);
+        registerNetworkPacket(S2C_SendQuestingData.class);
         // server packets
         registerNetworkPacket(C2S_ShootPacket.class);
         registerNetworkPacket(C2S_RequestDataUpdatePacket.class);
@@ -88,6 +89,9 @@ public class NetworkManager {
         registerNetworkPacket(C2S_TurretSettingsPacket.class);
         registerNetworkPacket(C2S_PlaySoundFromAnimationEventPacket.class);
         registerNetworkPacket(C2S_AmmoBenchEventPacket.class);
+        registerNetworkPacket(C2S_InviteMember.class);
+        registerNetworkPacket(C2S_InviteEvent.class);
+        registerNetworkPacket(C2S_RemoveFromGroup.class);
     }
 
     private static <P extends INetworkPacket<P>> void registerNetworkPacket(Class<P> packetType) {

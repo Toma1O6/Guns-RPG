@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.common.quests.quest.Quest;
 
 import java.util.Optional;
 
+@Deprecated
 public interface IQuests {
 
     ITraderStandings getTraderStandings();

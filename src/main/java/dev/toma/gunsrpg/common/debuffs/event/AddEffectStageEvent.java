@@ -33,7 +33,7 @@ public class AddEffectStageEvent implements DebuffStageEvent {
         return ModDebuffStageEvents.ADD_EFFECT;
     }
 
-    private static final class EffectData implements Supplier<EffectInstance> { // TODO replace with type from Questing library
+    private static final class EffectData implements Supplier<EffectInstance> {
 
         private static final Codec<EffectData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Registry.MOB_EFFECT.fieldOf("effect").forGetter(t -> t.effect),

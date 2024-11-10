@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 4,
-  "display": {
-    "name": "Vexination II",
-    "info": "Kill 13 vexes"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import dev.toma.gunsrpg.api.common.ISyncRequestDispatcher;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
 import dev.toma.gunsrpg.api.common.data.IAimInfo;
 import dev.toma.gunsrpg.api.common.data.IHandState;
@@ -12,7 +13,7 @@ import net.minecraftforge.common.util.Constants;
 public class AimInfo implements IAimInfo, IPlayerCapEntry {
 
     private final IHandState handState;
-    private IClientSynchReq request = () -> {};
+    private ISyncRequestDispatcher request = () -> {};
     private int slot;
     private boolean aiming;
     private float progress;
@@ -28,7 +29,7 @@ public class AimInfo implements IAimInfo, IPlayerCapEntry {
         int slotIn = player.inventory.selected;
         if (server && aiming && (slotIn != slot || player.getMainHandItem().isEmpty() || player.isSprinting() || handState.areHandsBusy())) {
             setAiming(false, player);
-            request.makeSyncRequest();
+            request.sendSyncRequest();
         }
         float aimingSpeed = 0.175F;
         progressOld = progress;
@@ -90,7 +91,7 @@ public class AimInfo implements IAimInfo, IPlayerCapEntry {
     }
 
     @Override
-    public void setClientSynch(IClientSynchReq request) {
+    public void setSyncRequestTemplate(ISyncRequestDispatcher request) {
         this.request = request;
     }
 }

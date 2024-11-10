@@ -20,9 +20,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class FullReloader implements IReloader {
 
     private IAnimationProvider animationProvider;

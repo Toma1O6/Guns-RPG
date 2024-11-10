@@ -2,18 +2,19 @@ package dev.toma.gunsrpg.common.entity;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.IQuests;
+import dev.toma.gunsrpg.api.common.data.IQuestingData;
+import dev.toma.gunsrpg.api.common.data.ITraderStandings;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.common.quests.quest.*;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.S2C_OpenQuestScreen;
-import dev.toma.gunsrpg.util.properties.IPropertyHolder;
-import dev.toma.gunsrpg.util.properties.PropertyContext;
+import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -22,7 +23,6 @@ import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ActionResultType;
@@ -51,7 +51,7 @@ public class MayorEntity extends CreatureEntity {
         if (diff <= 0) {
             refreshAtWorldTime = level.getGameTime() + GunsRPG.config.quests.questRefreshInterval;
             playerQuests.clear();
-            GunsRPG.log.debug(QuestSystem.MARKER, "Mayor {} quests expired", this);
+            GunsRPG.log.info(QuestSystem.MARKER, "Mayor {} quests expired", this);
         }
     }
 
@@ -85,29 +85,30 @@ public class MayorEntity extends CreatureEntity {
 
     @Override
     protected ActionResultType mobInteract(PlayerEntity player, Hand hand) {
-        IPlayerData data = PlayerData.getUnsafe(player);
-        IQuests quests = data.getQuests();
+        IQuestingData questing = QuestingDataProvider.getData(level).orElse(null);
+        QuestingGroup group = questing.getOrCreateGroup(player);
+        PlayerEntity owner = level.getPlayerByUUID(group.getGroupId());
+        if (owner == null)
+            return ActionResultType.FAIL;
         if (player.isCrouching()) {
-            quests.getActiveQuest().ifPresent(quest -> {
-                ItemStack stack = player.getItemInHand(hand);
-                IPropertyHolder holder = PropertyContext.create();
-                holder.setProperty(QuestProperties.PLAYER, player);
-                holder.setProperty(QuestProperties.USED_ITEM, stack);
+            questing.trigger(Trigger.ITEM_HANDOVER, player, holder -> {
+                holder.setProperty(QuestProperties.USED_ITEM, player.getItemInHand(hand));
                 holder.setProperty(QuestProperties.UUID, this.getUUID());
-                quest.trigger(Trigger.ITEM_HANDOVER, holder);
             });
         } else {
             if (!level.isClientSide) {
-                UUID uuid = player.getUUID();
+                IPlayerData playerData = PlayerData.getUnsafe(owner);
+                UUID uuid = group.getGroupId();
                 ListedQuests traderQuests = playerQuests.get(uuid);
                 UUID traderId = this.getUUID();
-                ITraderStatus status = quests.getTraderStandings().getStatusWithTrader(traderId);
+                ITraderStandings standings = playerData.getMayorReputationProvider();
+                ITraderStatus status = standings.getStatusWithTrader(traderId);
                 if (!playerQuests.containsKey(uuid) || traderQuests == null) {
-                    traderQuests = ListedQuests.generate(traderId, status.getReputation());
+                    traderQuests = ListedQuests.generate(level, traderId, status.getReputation());
                     playerQuests.put(uuid, traderQuests);
                 }
                 ReputationStatus reputationStatus = ReputationStatus.getStatus(status.getReputation());
-                NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_OpenQuestScreen(reputationStatus, traderQuests, this.getId(), refreshAtWorldTime));
+                NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_OpenQuestScreen(reputationStatus, traderQuests.toNbt(), this.getId(), refreshAtWorldTime));
             }
         }
         return ActionResultType.sidedSuccess(level.isClientSide);
@@ -138,7 +139,7 @@ public class MayorEntity extends CreatureEntity {
             CompoundNBT data = list.getCompound(i);
             UUID player = data.getUUID("player");
             ListNBT listedQuests = data.getList("quests", Constants.NBT.TAG_COMPOUND);
-            playerQuests.put(player, ListedQuests.loadNbt(listedQuests));
+            playerQuests.put(player, ListedQuests.loadNbt(level, listedQuests));
         }
         refreshAtWorldTime = nbt.getLong("plannedRefresh");
     }
@@ -151,7 +152,7 @@ public class MayorEntity extends CreatureEntity {
         return playerQuests.get(playerId);
     }
 
-    public void setClientTimer(long refreshAtWorldTime) {
+    public void setRefreshTimer(long refreshAtWorldTime) {
         this.refreshAtWorldTime = refreshAtWorldTime;
     }
 
@@ -168,15 +169,15 @@ public class MayorEntity extends CreatureEntity {
             this.quests = quests;
         }
 
-        public static ListedQuests loadNbt(ListNBT nbt) {
-            return new ListedQuests(nbt.stream().<Quest<?>>map(inbt -> QuestTypes.getFromNbt((CompoundNBT) inbt)).toArray(Quest[]::new));
+        public static ListedQuests loadNbt(World world, ListNBT nbt) {
+            return new ListedQuests(nbt.stream().<Quest<?>>map(inbt -> QuestTypes.getFromNbt(world, (CompoundNBT) inbt)).toArray(Quest[]::new));
         }
 
-        public static ListedQuests generate(UUID traderId, float reputation) {
+        public static ListedQuests generate(World world, UUID traderId, float reputation) {
             QuestSystem system = GunsRPG.getModLifecycle().quests();
             QuestManager manager = system.getQuestManager();
             Set<QuestScheme<?>> schemes = manager.getSchemes(QUEST_COUNT, reputation);
-            Quest<?>[] quests = schemes.stream().<Quest<?>>map(scheme -> makeQuestFromScheme(scheme, traderId)).toArray(Quest[]::new);
+            Quest<?>[] quests = schemes.stream().<Quest<?>>map(scheme -> makeQuestFromScheme(world, scheme, traderId)).toArray(Quest[]::new);
             return new ListedQuests(quests);
         }
 
@@ -195,9 +196,9 @@ public class MayorEntity extends CreatureEntity {
         }
 
         @SuppressWarnings("unchecked")
-        private static <D extends IQuestData, Q extends Quest<D>> Q makeQuestFromScheme(QuestScheme<D> scheme, UUID traderId) {
+        private static <D extends IQuestData, Q extends Quest<D>> Q makeQuestFromScheme(World world, QuestScheme<D> scheme, UUID traderId) {
             QuestType<D, Q> type = (QuestType<D, Q>) scheme.getQuestType();
-            return type.newQuestInstance(scheme, traderId);
+            return type.newQuestInstance(world, scheme, traderId);
         }
     }
 }

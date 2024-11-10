@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:handover",
   "tier": 2,
-  "display": {
-    "name": "Feeder I",
-    "info": "Hand over food supplies"
-  },
   "data": {
     "items": [
       {

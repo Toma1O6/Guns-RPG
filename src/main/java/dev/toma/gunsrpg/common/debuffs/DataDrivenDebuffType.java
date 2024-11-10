@@ -9,10 +9,10 @@ import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.attribute.ExpiringModifier;
-import dev.toma.gunsrpg.common.debuffs.sources.DebuffSource;
-import dev.toma.gunsrpg.common.debuffs.sources.DebuffSourceType;
 import dev.toma.gunsrpg.common.debuffs.event.DebuffStageEvent;
 import dev.toma.gunsrpg.common.debuffs.event.DebuffStageEventType;
+import dev.toma.gunsrpg.common.debuffs.sources.DebuffSource;
+import dev.toma.gunsrpg.common.debuffs.sources.DebuffSourceType;
 import dev.toma.gunsrpg.util.function.FloatSupplier;
 import net.minecraft.entity.player.PlayerEntity;
 

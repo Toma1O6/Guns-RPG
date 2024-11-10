@@ -11,6 +11,7 @@ public class LabelWidget extends Widget {
     public float horizontalOffset;
     public float verticalOffset;
     public boolean castShadow = true;
+    public Integer hoverBackgroundColor = null;
 
     private final FontRenderer font;
 
@@ -22,6 +23,9 @@ public class LabelWidget extends Widget {
 
     @Override
     public void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+        if (this.isHovered && this.hoverBackgroundColor != null) {
+            fill(stack, x - 1, y - 2, x + width + 1, y + height, this.hoverBackgroundColor);
+        }
         if (castShadow) {
             font.drawShadow(stack, getMessage(), x + horizontalOffset, y + verticalOffset, foregroundColor);
         } else {

@@ -1,8 +1,9 @@
 package dev.toma.gunsrpg.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import dev.toma.gunsrpg.api.client.ScreenDataEventListener;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
-import dev.toma.gunsrpg.api.common.data.IQuests;
+import dev.toma.gunsrpg.api.common.data.IQuestingData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.screen.widgets.ContainerWidget;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -13,6 +14,7 @@ import dev.toma.gunsrpg.common.quests.condition.IQuestCondition;
 import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.common.quests.quest.*;
 import dev.toma.gunsrpg.common.quests.reward.QuestReward;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.skills.BartenderSkill;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_QuestActionPacket;
@@ -20,6 +22,7 @@ import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.math.IDimensions;
+import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import lib.toma.animations.engine.screen.animator.widget.LabelWidget;
 import lib.toma.animations.engine.screen.animator.widget.WidgetContainer;
 import net.minecraft.client.MainWindow;
@@ -41,7 +44,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class QuestScreen extends Screen {
+public class QuestScreen extends Screen implements ScreenDataEventListener {
 
     // Simple localizations
     private static final IFormattableTextComponent TEXT_AVAILABLE_QUESTS   = new TranslationTextComponent("screen.quests.available_quests");   // title for available quests
@@ -72,7 +75,7 @@ public class QuestScreen extends Screen {
     private final ReputationStatus status;
     private final Quest<?>[] quests;
     private final MayorEntity entity;
-    private IQuests questProvider;
+    private IQuestingData questProvider;
     private boolean hasActiveQuest;
 
     private QuestInfoPanelWidget infoPanelWidget;
@@ -83,21 +86,29 @@ public class QuestScreen extends Screen {
         this.status = status;
         this.quests = quests;
         this.entity = entity;
-        this.entity.setClientTimer(timer);
+        this.entity.setRefreshTimer(timer);
+    }
+
+    @Override
+    public void onQuestingDataReceived(IQuestingData questingData) {
+        this.init(this.minecraft, this.width, this.height);
     }
 
     @Override
     protected void init() {
         IPlayerData data = PlayerData.getUnsafe(minecraft.player);
-        questProvider = data.getQuests();
+        questProvider = QuestingDataProvider.getData(minecraft.level).orElse(null);
         ISkillProvider skillProvider = data.getSkillProvider();
-        this.hasActiveQuest = questProvider.getActiveQuest().isPresent();
+        Quest<?> activeQuest = this.questProvider.getActiveQuestForPlayer(minecraft.player);
+        this.hasActiveQuest = activeQuest != null;
 
         for (int i = 0; i < quests.length; i++) {
             Quest<?> quest = quests[i];
             addButton(new QuestWidget(10, 25 + i * 30, width / 3, 25, quest, this::questWidgetClicked));
         }
-        questProvider.getActiveQuest().ifPresent(quest -> addButton(new QuestWidget(10, height - 30, width / 3, 25, quest, this::questWidgetClicked)));
+        if (this.hasActiveQuest) {
+            this.addButton(new QuestWidget(10, height - 30, width / 3, 25, activeQuest, this::questWidgetClicked));
+        }
         int panelLeft = 30 + width / 3;
         int panelWidth = width - panelLeft - 10;
         infoPanelWidget = addButton(new QuestInfoPanelWidget(panelLeft, 0, panelWidth, height, skillProvider, font));
@@ -257,16 +268,18 @@ public class QuestScreen extends Screen {
             int y = 0;
             int offset = 15;
             addTitle(y, TEXT_QUEST_NAME, TextFormatting.YELLOW, TextFormatting.BOLD);
-            addDetail(y += offset, displayInfo.getName(), TextFormatting.ITALIC);
+            addDetail(y += offset, displayInfo.getName().copy(), TextFormatting.ITALIC);
             ActionType actionType = this.getQuestActionType(status);
-            UUID traderId = QuestScreen.this.entity.getUUID();
-            UUID questId = this.selectedQuest.getOriginalAssignerId();
+            UUID traderId = entity.getUUID();
+            UUID questId = this.selectedQuest.getMayorUUID();
             boolean isRewardCollectionAllowed = Objects.equals(traderId, questId) || questId.equals(Util.NIL_UUID) || actionType == ActionType.CANCEL;
             if (status.shouldShowRewards() && isRewardCollectionAllowed && !isSpecial) {
-                addTitle(y += offset, TEXT_QUEST_REWARDS, TextFormatting.YELLOW, TextFormatting.BOLD);
-                BartenderSkill bartenderSkill = SkillUtil.getTopHierarchySkill(Skills.BARTENDER_I, provider);
-                int selectionSize = bartenderSkill != null ? bartenderSkill.getRewardCount() : 1;
-                addWidget(new RewardsWidget(this.x + 5, y + 45, width - 10, height - 75 - y, selectedQuest, selectionSize, this::onRewardSelectionChanged));
+                if (this.selectedQuest.isOwner(minecraft.player.getUUID())) {
+                    addTitle(y += offset, TEXT_QUEST_REWARDS, TextFormatting.YELLOW, TextFormatting.BOLD);
+                    BartenderSkill bartenderSkill = SkillUtil.getTopHierarchySkill(Skills.BARTENDER_I, provider);
+                    int selectionSize = bartenderSkill != null ? bartenderSkill.getRewardCount() : 1;
+                    addWidget(new RewardsWidget(this.x + 5, y + 45, width - 10, height - 75 - y, selectedQuest, selectionSize, this::onRewardSelectionChanged));
+                }
             } else {
                 if (conditions.length > 0) {
                     addTitle(y += offset, TEXT_QUEST_CONDITIONS, TextFormatting.YELLOW, TextFormatting.BOLD);
@@ -279,7 +292,7 @@ public class QuestScreen extends Screen {
                     addDetail(y += offset, TEXT_QUEST_TIER.apply(tierComponent), 5);
                 }
                 addTitle(y += offset, TEXT_QUEST_DETAIL, TextFormatting.YELLOW, TextFormatting.BOLD);
-                List<IReorderingProcessor> list = font.split(displayInfo.getInfo().withStyle(TextFormatting.ITALIC), width - 30);
+                List<IReorderingProcessor> list = font.split(displayInfo.getInfo(selectedQuest.getDescriptionArguments()).withStyle(TextFormatting.ITALIC), width - 30);
                 for (IReorderingProcessor processor : list) {
                     y += offset;
                     addWidget(new ReorderedTextWidget(this.x + 15, this.y + 30 + y, this.width - 30, 10, processor, font));
@@ -300,9 +313,8 @@ public class QuestScreen extends Screen {
                     addWidget(new LabelWidget(this.x + this.width - 5 - textWidth, this.height - 15, textWidth, 10, TEXT_QUEST_NO_REWARDS, font));
                 } else if (isRewardCollectionAllowed) {
                     actionButton = addWidget(new ActionButton(this.x + this.width - 145, this.height - 25, 140, 20, actionType, this::handleResponse));
-                    IQuests quests = QuestScreen.this.questProvider;
-                    Optional<Quest<?>> activeQuestOpt = quests.getActiveQuest();
-                    if (actionType == ActionType.COLLECT || (actionType == ActionType.ASSIGN && activeQuestOpt.isPresent() && activeQuestOpt.get() != selectedQuest)) {
+                    Quest<?> activeQuest = questProvider.getActiveQuestForPlayer(minecraft.player);
+                    if ((activeQuest != null && !activeQuest.isOwner(minecraft.player.getUUID())) || actionType == ActionType.COLLECT || (actionType == ActionType.ASSIGN && activeQuest != null && activeQuest != selectedQuest)) {
                         actionButton.active = false;
                     }
                 } else {
@@ -386,6 +398,10 @@ public class QuestScreen extends Screen {
         }
 
         private ActionType getQuestActionType(QuestStatus status) {
+            IQuestingData questingData = QuestingDataProvider.getData(minecraft.level).orElse(null);
+            QuestingGroup group = questingData.getGroup(minecraft.player.getUUID());
+            if (group == null || !group.isLeader(minecraft.player.getUUID()))
+                return null;
             switch (status) {
                 case ACTIVE:
                     return ActionType.CANCEL;

@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:survival",
   "tier": 3,
-  "display": {
-    "name": "Clean Run III",
-    "info": "Survive for 20 minutes"
-  },
   "data": {
     "duration": "20m"
   },

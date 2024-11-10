@@ -4,12 +4,14 @@ import dev.toma.gunsrpg.common.quests.condition.IQuestCondition;
 import dev.toma.gunsrpg.common.quests.condition.QuestConditions;
 import dev.toma.gunsrpg.common.quests.reward.QuestReward;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.UUID;
 
 public final class QuestDeserializationContext<D extends IQuestData> {
 
+    private final World world;
     private final QuestScheme<D> scheme;
     private final UUID traderId;
     private final int rewardTier;
@@ -18,7 +20,8 @@ public final class QuestDeserializationContext<D extends IQuestData> {
     private final QuestStatus status;
     private final CompoundNBT internalData;
 
-    public QuestDeserializationContext(QuestScheme<D> scheme, UUID traderId, int rewardTier, IQuestCondition[] conditions, QuestReward reward, QuestStatus status, CompoundNBT internalData) {
+    public QuestDeserializationContext(World world, QuestScheme<D> scheme, UUID traderId, int rewardTier, IQuestCondition[] conditions, QuestReward reward, QuestStatus status, CompoundNBT internalData) {
+        this.world = world;
         this.scheme = scheme;
         this.traderId = traderId;
         this.rewardTier = rewardTier;
@@ -28,7 +31,7 @@ public final class QuestDeserializationContext<D extends IQuestData> {
         this.internalData = internalData;
     }
 
-    public static <D extends IQuestData> QuestDeserializationContext<D> fromNbt(CompoundNBT nbt) {
+    public static <D extends IQuestData> QuestDeserializationContext<D> fromNbt(World world, CompoundNBT nbt) {
         QuestScheme<D> scheme = QuestScheme.read(nbt.getCompound("scheme"));
         UUID createdBy = nbt.getUUID("createdBy");
         int rewardTier = nbt.getInt("rewardTier");
@@ -42,7 +45,11 @@ public final class QuestDeserializationContext<D extends IQuestData> {
         }
         QuestStatus status = QuestStatus.values()[nbt.getInt("status")];
         CompoundNBT internalData = nbt.getCompound("internalData");
-        return new QuestDeserializationContext<>(scheme, createdBy, rewardTier, conditions, reward, status, internalData);
+        return new QuestDeserializationContext<>(world, scheme, createdBy, rewardTier, conditions, reward, status, internalData);
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     public QuestScheme<D> getScheme() {

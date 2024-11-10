@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 4,
-  "display": {
-    "name": "Evil Axemen III",
-    "info": "Kill 20 vindicators"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

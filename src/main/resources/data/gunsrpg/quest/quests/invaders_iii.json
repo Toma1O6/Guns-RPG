@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 4,
-  "display": {
-    "name": "Invaders III",
-    "info": "Kill 20 piglins"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

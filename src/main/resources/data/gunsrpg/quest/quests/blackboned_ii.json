@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 3,
-  "display": {
-    "name": "Blackboned II",
-    "info": "Kill 13 wither skeletons"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",

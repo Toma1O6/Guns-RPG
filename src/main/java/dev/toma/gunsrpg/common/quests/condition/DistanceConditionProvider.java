@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.LivingEntity;
@@ -39,9 +40,10 @@ public class DistanceConditionProvider extends AbstractQuestConditionProvider<Di
     }
 
     @Override
-    public boolean isValid(PlayerEntity player, IPropertyReader reader) {
+    public boolean isValid(QuestingGroup group, IPropertyReader reader) {
         LivingEntity entity = reader.getProperty(QuestProperties.ENTITY);
-        double sqrDist = player.distanceToSqr(entity);
+        PlayerEntity origin = reader.getProperty(QuestProperties.PLAYER);
+        double sqrDist = origin.distanceToSqr(entity);
         double distance = Math.sqrt(sqrDist);
         return distance >= minDistance && distance <= maxDistance;
     }

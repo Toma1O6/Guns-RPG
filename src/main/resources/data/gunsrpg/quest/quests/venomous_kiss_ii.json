@@ -1,10 +1,6 @@
 {
   "type": "gunsrpg:kill_in_area",
   "tier": 3,
-  "display": {
-    "name": "Venomous Kiss II",
-    "info": "Kill 13 cave spiders"
-  },
   "data": {
     "entities": {
       "type": "gunsrpg:specific_entity",
