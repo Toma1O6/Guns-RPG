@@ -21,7 +21,7 @@ import java.util.*;
 public class QuestArea {
 
     public static final ITextComponent STAY_IN_AREA = new TranslationTextComponent("quest.stay_in_area");
-    public static final ITextComponent INTERACTION_DISABLED = new TranslationTextComponent("quest.interaction_blocked").withStyle(TextFormatting.RED);
+    public static final ITextComponent INTERACTION_DISABLED = new TranslationTextComponent("quest.interaction_blocked").withStyle(TextFormatting.YELLOW);
     private final QuestAreaScheme scheme;
     private final BlockPos pos;
     private final Vec2i cornerA;

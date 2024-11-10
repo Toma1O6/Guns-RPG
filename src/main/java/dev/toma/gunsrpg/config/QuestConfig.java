@@ -26,6 +26,10 @@ public final class QuestConfig {
     public boolean adjustSpawnWavesForGroup = true;
 
     @Configurable
+    @Configurable.DecimalRange(min = 1.0, max = 32.0)
+    public float waveScalingMultiplier = 1.5F;
+
+    @Configurable
     @Configurable.Comment("Will add additional effects such as Speed/Strength/Resistance to spawned mobs for bigger questing groups")
     public boolean buffSpawnedMobsForGroup = true;
 

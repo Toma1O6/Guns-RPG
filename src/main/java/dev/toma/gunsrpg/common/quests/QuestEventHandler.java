@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.common.init.WeaponDamageSource;
 import dev.toma.gunsrpg.common.quests.quest.area.QuestArea;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
+import dev.toma.gunsrpg.config.QuestConfig;
 import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import net.minecraft.entity.Entity;
@@ -138,13 +139,15 @@ public final class QuestEventHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void adjustSpawnWave(QuestingEvent.MobSpawnPreparingEvent event) {
-        if (!GunsRPG.config.quests.adjustSpawnWavesForGroup)
+        QuestConfig quests = GunsRPG.config.quests;
+        if (!quests.adjustSpawnWavesForGroup)
             return;
         QuestingGroup group = event.getGroup();
         int count = group.getMemberCount();
-        // 50% increase from base value per member
-        int newMin = MathHelper.ceil(event.getMinAmount() * (1.0F + 0.5F * (count - 1)));
-        int newMax = MathHelper.ceil(event.getMaxAmount() * (1.0F + 0.5F * (count - 1)));
+        float scale = quests.waveScalingMultiplier;
+        float multiplier = 1.0F + (scale - 1.0F) * (count - 1);
+        int newMin = MathHelper.floor(event.getMinAmount() * multiplier);
+        int newMax = MathHelper.ceil(event.getMaxAmount() * multiplier);
         Random random = event.getLevel().getRandom();
         event.setToSpawn(newMin + random.nextInt(1 + newMax - newMin));
     }

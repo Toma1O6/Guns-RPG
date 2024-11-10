@@ -1980,6 +1980,12 @@
   "config.gunsrpg.option.jamChanceTransformerFunction": "Jam Chance Transformer Function",
 
   "config.gunsrpg.option.quests": "Quests",
+  "config.gunsrpg.option.maxPartySize": "Max party size",
+  "config.gunsrpg.option.allowInvitePlayersInGroup": "Allow invites to players in groups",
+  "config.gunsrpg.option.defaultKillMemberMultiplier": "Kill objective scaling",
+  "config.gunsrpg.option.adjustSpawnWavesForGroup": "Spawn wave scaling changes",
+  "config.gunsrpg.option.waveScalingMultiplier": "Wave scaling multiplier",
+  "config.gunsrpg.option.buffSpawnedMobsForGroup": "Buff spawned mobs",
   "config.gunsrpg.option.reputationAwardPerTier": "Reputation award",
   "config.gunsrpg.option.reputationLossPerTier": "Reputation loss",
   "config.gunsrpg.option.questRefreshInterval": "Quest refresh interval",
