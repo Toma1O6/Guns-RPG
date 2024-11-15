@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.api.common.skill.ICooldown;
 import dev.toma.gunsrpg.api.common.skill.ISkill;
+import dev.toma.gunsrpg.client.OverlayPlacement;
 import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
 import dev.toma.gunsrpg.client.render.infobar.IDataModel;
 import dev.toma.gunsrpg.client.render.skill.SkillRendererRegistry;
@@ -19,13 +20,14 @@ import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
-import dev.toma.gunsrpg.config.client.QuestOverlayConfig;
+import dev.toma.gunsrpg.config.client.ConfigurableOverlay;
 import dev.toma.gunsrpg.resource.util.functions.RangedFunction;
 import dev.toma.gunsrpg.sided.ClientSideManager;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
+import dev.toma.gunsrpg.util.math.IVec2i;
 import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
@@ -79,12 +81,13 @@ public final class HUDRenderer {
             IDebuffs debuffs = data.getDebuffControl();
             renderBloodmoonInfo(matrixStack, font, window, player);
             int height = window.getGuiScaledHeight();
-            renderDebuffs(matrixStack, attributeProvider, debuffs, 0, height - 50, partialTicks);
+            renderDebuffs(matrixStack, window, attributeProvider, debuffs, 0, height - 50, partialTicks);
             renderProgressionOnScreen(matrixStack, font, window, data, player);
             renderSkillsOnHUD(matrixStack, window, data);
         });
         QuestingDataProvider.getData(mc.level).ifPresent(questing -> {
             renderQuestOverlay(matrixStack, font, window, questing, player);
+            // TODO render current party info
         });
     }
 
@@ -97,12 +100,15 @@ public final class HUDRenderer {
         QuestStatus status = quest.getStatus();
         if (status != QuestStatus.ACTIVE && status != QuestStatus.COMPLETED)
             return;
+        ConfigurableOverlay overlay = ClientSideManager.config.questOverlay;
+        if (!overlay.enabled)
+            return;
         IDataModel display = quest.getDisplayModel(player.getUUID());
         if (display != null) {
-            QuestOverlayConfig overlayCfg = ClientSideManager.config.questOverlay;
-            boolean rightAlignment = overlayCfg.rightAligned;
-            int posX = rightAlignment ? window.getGuiScaledWidth() : 0;
-            display.renderModel(matrix, font, posX, overlayCfg.heightOffset, rightAlignment, true);
+            int width = window.getGuiScaledWidth();
+            int height = window.getGuiScaledHeight();
+            IVec2i position = OverlayPlacement.getPlacement(overlay, 0, 0, width, height, display.getModelWidth(), display.getModelHeight());
+            display.renderModel(matrix, font, position.x(), position.y(), true);
         }
     }
 
@@ -130,27 +136,29 @@ public final class HUDRenderer {
         World world = player.level;
         long actualDay = world.getDayTime() / 24000L;
         int cycle = GunsRPG.config.world.bloodmoonCycle;
-        if (cycle == -1 || !ClientSideManager.config.showBloodmoonRemainingDays) return;
+        ConfigurableOverlay bloodmoonOverlay = ClientSideManager.config.bloodmoonCounterOverlay;
+        if (cycle == -1 || !bloodmoonOverlay.enabled) return;
         boolean isBloodmoonDay = actualDay > 0 && (cycle == 0 || actualDay % cycle == 0);
         int leftToBloodmoon = isBloodmoonDay ? 0 : (int) (cycle - actualDay % cycle);
         boolean isNight = world.getDayTime() % 24000L >= 12500L;
         String dayString = isNight && isBloodmoonDay ? leftToBloodmoon + "!" : String.valueOf(leftToBloodmoon);
         int dayStringWidth = font.width(dayString);
-        int xPos = window.getGuiScaledWidth() - 9;
+        IVec2i placement = OverlayPlacement.getPlacement(bloodmoonOverlay, 0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight(), dayStringWidth, 13);
         boolean shouldRenderBackground = hasActiveVisibleEffect(player);
         int color = isBloodmoonDay ? 0xff << 16 : RangedFunction.BETWEEN_EXCLUSIVE.isWithinRange(leftToBloodmoon, 0, 3) ? 0xffff << 8 : 0xffffff;
+        int xPos = placement.x();
+        int yPos = placement.y();
         if (shouldRenderBackground) {
             Matrix4f pose = matrixStack.last().pose();
-            renderBloodmoonWarningBackground(pose, xPos, dayStringWidth, color);
+            renderBloodmoonWarningBackground(pose, xPos, yPos, dayStringWidth, color);
         }
-        font.drawShadow(matrixStack, dayString, 0.5F + xPos - dayStringWidth / 2.0F, 6, color);
+        font.drawShadow(matrixStack, dayString, xPos, yPos, color);
     }
 
-    private void renderBloodmoonWarningBackground(Matrix4f pose, int x, int textWidth, int color) {
-        float left = x - textWidth / 2.0F;
+    private void renderBloodmoonWarningBackground(Matrix4f pose, int left, int top, int textWidth, int color) {
         float right = left + textWidth;
-        RenderUtils.drawSolid(pose, left - 3, 3, right + 3, 16, 0xFF << 24 | color);
-        RenderUtils.drawSolid(pose, left - 2, 4, right + 2, 15, 0xFF << 24);
+        RenderUtils.drawSolid(pose, left - 3, top - 3, right + 2, top + 10, 0xFF << 24 | color);
+        RenderUtils.drawSolid(pose, left - 2, top - 2, right + 1, top + 9, 0xFF << 24);
     }
 
     private boolean hasActiveVisibleEffect(LivingEntity entity) {
@@ -164,10 +172,10 @@ public final class HUDRenderer {
 
     // DEBUFFS ------------------------------------------------------
 
-    private void renderDebuffs(MatrixStack poseStack, IAttributeProvider attributeProvider, IDebuffs debuffs, int left, int top, float partialTicks) {
+    private void renderDebuffs(MatrixStack poseStack, MainWindow window, IAttributeProvider attributeProvider, IDebuffs debuffs, int left, int top, float partialTicks) {
         ClientSideManager manager = ClientSideManager.instance();
         DebuffRenderManager renderManager = manager.getDebuffRenderManager();
-        renderManager.drawDebuffsOnScreen(poseStack, attributeProvider, debuffs, left, top, partialTicks);
+        renderManager.drawDebuffsOnScreen(poseStack, window, attributeProvider, debuffs, left, top, partialTicks);
     }
 
     // PROGRESSION -------------------------------------------------
@@ -176,12 +184,15 @@ public final class HUDRenderer {
         int windowWidth = window.getGuiScaledWidth();
         int windowHeight = window.getGuiScaledHeight();
         int barWidth = 26;
+        ConfigurableOverlay overlay = ClientSideManager.config.levelProgressOverlay;
+        if (!overlay.enabled) // TODO implement position configuration
+            return;
+        ItemStack stack = player.getMainHandItem();
+        boolean renderWeaponProgression = stack.getItem() instanceof GunItem;
         int x = windowWidth - barWidth - 34;
         int y = windowHeight - 22;
-        ItemStack stack = player.getMainHandItem();
-        Matrix4f pose = matrix.last().pose();
         IProgressData progression = data.getProgressData();
-        if (stack.getItem() instanceof GunItem) {
+        if (renderWeaponProgression) {
             GunItem gunItem = (GunItem) stack.getItem();
             IKillData killData = progression.getWeaponStats(gunItem);
             Lifecycle lifecycle = GunsRPG.getModLifecycle();

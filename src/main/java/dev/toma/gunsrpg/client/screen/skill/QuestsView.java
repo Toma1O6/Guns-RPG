@@ -128,7 +128,7 @@ public class QuestsView extends View implements ScreenDataEventListener {
     protected void renderView(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         if (this.quest != null) {
             IDataModel model = this.quest.getDisplayModel(this.client.player.getUUID());
-            model.renderModel(stack, this.font, 5, 40, false, false);
+            model.renderModel(stack, this.font, 5, 40, false);
         }
     }
 

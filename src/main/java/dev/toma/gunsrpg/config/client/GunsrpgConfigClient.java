@@ -3,8 +3,7 @@ package dev.toma.gunsrpg.config.client;
 import dev.toma.configuration.config.Config;
 import dev.toma.configuration.config.Configurable;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.util.math.ConfigurableVec2i;
-import dev.toma.gunsrpg.util.math.IVec2i;
+import dev.toma.gunsrpg.client.OverlayPlacement;
 import net.minecraft.util.ResourceLocation;
 
 @Config(id = "gunsrpg-client", group = GunsRPG.MODID)
@@ -28,7 +27,7 @@ public final class GunsrpgConfigClient {
 
     @Configurable
     @Configurable.Comment("Will render number with remaining day count to next bloodmoon on upper right corner")
-    public boolean showBloodmoonRemainingDays = true;
+    public ConfigurableOverlay bloodmoonCounterOverlay = new ConfigurableOverlay(true, OverlayPlacement.HorizontalAlignment.RIGHT, OverlayPlacement.VerticalAlignment.TOP, 5, 5);
 
     @Configurable
     @Configurable.DecimalRange(min = 0.0, max = 0.5)
@@ -38,7 +37,7 @@ public final class GunsrpgConfigClient {
 
     @Configurable
     @Configurable.Comment("Debuff overlay offset on HUD")
-    public IVec2i debuffOverlay = new ConfigurableVec2i(0, -60);
+    public ConfigurableOverlay debuffOverlay = new ConfigurableOverlay(true, OverlayPlacement.HorizontalAlignment.LEFT, OverlayPlacement.VerticalAlignment.BOTTOM, 0, 60);
 
     @Configurable
     @Configurable.StringPattern("#[A-Fa-f0-9]{1,8}")
@@ -64,8 +63,16 @@ public final class GunsrpgConfigClient {
     public OpticsSensitivity optics = new OpticsSensitivity();
 
     @Configurable
-    @Configurable.Comment("Configure positions of quest overlay on HUD")
-    public QuestOverlayConfig questOverlay = new QuestOverlayConfig();
+    @Configurable.Comment("Configure position of quest overlay on HUD")
+    public ConfigurableOverlay questOverlay = new ConfigurableOverlay(true, OverlayPlacement.HorizontalAlignment.RIGHT, OverlayPlacement.VerticalAlignment.CENTER, 0, 0);
+
+    @Configurable
+    @Configurable.Comment("Configure position of active useable skills on HUD")
+    public ConfigurableOverlay activeSkillOverlay = new ConfigurableOverlay(true, OverlayPlacement.HorizontalAlignment.LEFT, OverlayPlacement.VerticalAlignment.BOTTOM, 10, 0);
+
+    @Configurable
+    @Configurable.Comment("Configure position of skill progress on HUD")
+    public ConfigurableOverlay levelProgressOverlay = new ConfigurableOverlay(true, OverlayPlacement.HorizontalAlignment.RIGHT, OverlayPlacement.VerticalAlignment.BOTTOM, 10, 10);
 
     public enum ReticleType {
 

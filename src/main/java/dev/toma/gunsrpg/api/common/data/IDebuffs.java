@@ -6,6 +6,7 @@ import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import net.minecraft.entity.player.PlayerEntity;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 
 public interface IDebuffs extends IPlayerCapEntry {
 
@@ -27,5 +28,5 @@ public interface IDebuffs extends IPlayerCapEntry {
 
     void tick(PlayerEntity player);
 
-    Iterable<IDebuff> getActiveAsIterable();
+    Collection<IDebuff> getActiveDebuffs();
 }

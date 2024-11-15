@@ -71,7 +71,7 @@ public class QuestDisplayDataModel implements IDataModel {
     }
 
     @Override
-    public void renderModel(MatrixStack matrix, FontRenderer font, int x, int y, boolean rightSided, boolean renderBackground) {
+    public void renderModel(MatrixStack matrix, FontRenderer font, int x, int y, boolean renderBackground) {
         if (resized) {
             matrix.pushPose();
             matrix.scale(0, 0, 0); // workaround for reposition "twitching"
@@ -79,12 +79,9 @@ public class QuestDisplayDataModel implements IDataModel {
                 element.draw(matrix, font, x, y, width, height);
             }
             matrix.popPose();
-            width = getWidth();
-            height = getHeight();
+            width = calculateWidth();
+            height = calculateHeight();
             resized = false;
-        }
-        if (rightSided) {
-            x -= width + 3;
         }
         int heightOffset = 0;
         if (renderBackground)
@@ -95,11 +92,21 @@ public class QuestDisplayDataModel implements IDataModel {
         }
     }
 
-    private int getWidth() {
+    @Override
+    public int getModelWidth() {
+        return this.width;
+    }
+
+    @Override
+    public int getModelHeight() {
+        return this.height;
+    }
+
+    private int calculateWidth() {
         return list.stream().mapToInt(IDimensions::getWidth).max().orElse(0);
     }
 
-    private int getHeight() {
+    private int calculateHeight() {
         return list.stream().mapToInt(IDimensions::getHeight).reduce(Integer::sum).orElse(0);
     }
 }

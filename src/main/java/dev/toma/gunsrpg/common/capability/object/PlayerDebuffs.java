@@ -17,10 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class PlayerDebuffs implements IDebuffs {
 
@@ -132,7 +129,7 @@ public class PlayerDebuffs implements IDebuffs {
     }
 
     @Override
-    public Iterable<IDebuff> getActiveAsIterable() {
+    public Collection<IDebuff> getActiveDebuffs() {
         return debuffMap.values();
     }
 
