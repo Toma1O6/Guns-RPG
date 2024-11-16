@@ -52,32 +52,32 @@
       },
       {
         "targetLevel": 5,
-        "chanceOfBreaking": 0.06,
+        "chanceOfBreaking": 0.05,
         "price": 3
       },
       {
         "targetLevel": 6,
-        "chanceOfBreaking": 0.08,
+        "chanceOfBreaking": 0.06,
         "price": 4
       },
       {
         "targetLevel": 7,
-        "chanceOfBreaking": 0.10,
+        "chanceOfBreaking": 0.07,
         "price": 5
       },
       {
         "targetLevel": 8,
-        "chanceOfBreaking": 0.12,
+        "chanceOfBreaking": 0.08,
         "price": 5
       },
       {
         "targetLevel": 9,
-        "chanceOfBreaking": 0.14,
+        "chanceOfBreaking": 0.09,
         "price": 6
       },
       {
         "targetLevel": 10,
-        "chanceOfBreaking": 0.15,
+        "chanceOfBreaking": 0.1,
         "price": 7
       }
     ],
@@ -126,13 +126,13 @@
     {
       "count": 0,
       "chance": 0.8,
-      "breakChance": 0.09,
+      "breakChance": 0.08,
       "price": 1
     },
     {
       "count": 1,
       "chance": 0.85,
-      "breakChance": 0.06,
+      "breakChance": 0.05,
       "price": 2
     },
     {
