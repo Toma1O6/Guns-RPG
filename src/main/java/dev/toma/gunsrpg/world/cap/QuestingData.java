@@ -180,8 +180,14 @@ public class QuestingData implements IQuestingData {
         if (this.world.isClientSide())
             return;
         if (this.world.getGameTime() % 30L == 0L) {
-            this.groupsById.values().forEach(group -> group.updateHealthData((ServerWorld) this.world));
-            this.sendData();
+            boolean shouldUpdateData = false;
+            for (QuestingGroup group : this.groupsById.values()) {
+                if (group.updateHealthData((ServerWorld) world)) {
+                    shouldUpdateData = true;
+                }
+            }
+            if (shouldUpdateData)
+                this.sendData();
         }
     }
 

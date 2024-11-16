@@ -7,6 +7,8 @@ public interface IDataModel {
 
     void addElement(IDataElement element);
 
+    void prepare(MatrixStack matrix, FontRenderer font);
+
     void renderModel(MatrixStack matrix, FontRenderer font, int x, int y, boolean renderBackground);
 
     int getModelWidth();

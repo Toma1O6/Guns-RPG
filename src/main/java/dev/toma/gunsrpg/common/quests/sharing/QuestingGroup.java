@@ -156,7 +156,7 @@ public final class QuestingGroup {
         this.deleteInviteFor(invite.getPlayerId());
     }
 
-    public void updateHealthData(ServerWorld world) {
+    public boolean updateHealthData(ServerWorld world) {
         MinecraftServer server = world.getServer();
         PlayerList playerList = server.getPlayerList();
         this.members.forEach(uuid -> {
@@ -165,6 +165,7 @@ public final class QuestingGroup {
                 this.playerHealthData.put(uuid, MathHelper.ceil(player.getHealth()));
             }
         });
+        return this.getMemberCount() > 1;
     }
 
     public void removeMember(UUID memberId) {

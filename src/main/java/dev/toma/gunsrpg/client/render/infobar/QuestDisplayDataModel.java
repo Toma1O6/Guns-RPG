@@ -22,7 +22,6 @@ public class QuestDisplayDataModel implements IDataModel {
 
     private final List<IDataElement> list = new ArrayList<>();
     private final UUID clientId;
-    private boolean resized;
     private int width;
     private int height;
 
@@ -67,22 +66,16 @@ public class QuestDisplayDataModel implements IDataModel {
     @Override
     public void addElement(IDataElement element) {
         list.add(element);
-        resized = true;
+    }
+
+    @Override
+    public void prepare(MatrixStack matrix, FontRenderer font) {
+        this.list.forEach(el -> el.draw(matrix, font, -1000, 0, width, height));
+        this.update();
     }
 
     @Override
     public void renderModel(MatrixStack matrix, FontRenderer font, int x, int y, boolean renderBackground) {
-        if (resized) {
-            matrix.pushPose();
-            matrix.scale(0, 0, 0); // workaround for reposition "twitching"
-            for (IDataElement element : list) {
-                element.draw(matrix, font, x, y, width, height);
-            }
-            matrix.popPose();
-            width = calculateWidth();
-            height = calculateHeight();
-            resized = false;
-        }
         int heightOffset = 0;
         if (renderBackground)
             RenderUtils.drawSolid(matrix.last().pose(), x - 3, y - 3, x + width + 3, y + height + 3, 0x66 << 24);
@@ -100,6 +93,11 @@ public class QuestDisplayDataModel implements IDataModel {
     @Override
     public int getModelHeight() {
         return this.height;
+    }
+
+    private void update() {
+        this.width = this.calculateWidth();
+        this.height = this.calculateHeight();
     }
 
     private int calculateWidth() {

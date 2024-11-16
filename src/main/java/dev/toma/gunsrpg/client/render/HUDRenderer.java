@@ -109,6 +109,7 @@ public final class HUDRenderer {
         if (display != null) {
             int width = window.getGuiScaledWidth();
             int height = window.getGuiScaledHeight();
+            display.prepare(matrix, font);
             IVec2i position = OverlayPlacement.getPlacement(overlay, 0, 0, width, height, display.getModelWidth(), display.getModelHeight());
             display.renderModel(matrix, font, position.x(), position.y(), true);
         }
