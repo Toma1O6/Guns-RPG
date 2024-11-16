@@ -8,13 +8,18 @@ import dev.toma.gunsrpg.config.QuestConfig;
 import dev.toma.gunsrpg.util.helper.NbtHelper;
 import dev.toma.gunsrpg.util.object.Interaction;
 import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.IntNBT;
 import net.minecraft.nbt.StringNBT;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.PlayerList;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 
@@ -31,6 +36,7 @@ public final class QuestingGroup {
     private final Set<UUID> members = new LinkedHashSet<>();
     private final Map<UUID, String> usernames = new HashMap<>();
     private final Map<UUID, GroupInvite> activeInvites = new HashMap<>();
+    private final Map<UUID, Integer> playerHealthData = new HashMap<>();
 
     public QuestingGroup(UUID owner) {
         this.groupId = owner;
@@ -41,12 +47,14 @@ public final class QuestingGroup {
         NbtHelper.deserializeCollection(this.members, tag.getList("members", Constants.NBT.TAG_STRING), inbt -> UUID.fromString(inbt.getAsString()));
         NbtHelper.deserializeMap(this.usernames, tag.getCompound("usernames"), UUID::fromString, INBT::getAsString);
         NbtHelper.deserializeMap(this.activeInvites, tag.getCompound("invites"), UUID::fromString, inbt -> GroupInvite.fromNbt((CompoundNBT) inbt));
+        NbtHelper.deserializeMap(this.playerHealthData, tag.getCompound("healthData"), UUID::fromString, inbt -> ((IntNBT) inbt).getAsInt());
     }
 
     public static QuestingGroup create(PlayerEntity player) {
         QuestingGroup group = new QuestingGroup(player.getUUID());
         group.members.add(player.getUUID());
         group.usernames.put(player.getUUID(), player.getDisplayName().getString());
+        group.playerHealthData.put(player.getUUID(), MathHelper.ceil(player.getHealth()));
         return group;
     }
 
@@ -116,6 +124,7 @@ public final class QuestingGroup {
         String displayName = player.getDisplayName().getString();
         this.usernames.put(playerId, displayName);
         this.members.add(playerId);
+        this.playerHealthData.put(playerId, MathHelper.ceil(player.getHealth()));
         this.deleteInvite(invite);
         return Interaction.success(null);
     }
@@ -147,12 +156,24 @@ public final class QuestingGroup {
         this.deleteInviteFor(invite.getPlayerId());
     }
 
+    public void updateHealthData(ServerWorld world) {
+        MinecraftServer server = world.getServer();
+        PlayerList playerList = server.getPlayerList();
+        this.members.forEach(uuid -> {
+            ServerPlayerEntity player = playerList.getPlayer(uuid);
+            if (player != null) {
+                this.playerHealthData.put(uuid, MathHelper.ceil(player.getHealth()));
+            }
+        });
+    }
+
     public void removeMember(UUID memberId) {
         if (this.isLeader(memberId)) {
             throw new UnsupportedOperationException("Cannot remove team leader from party!");
         }
         this.members.remove(memberId);
         this.usernames.remove(memberId);
+        this.playerHealthData.remove(memberId);
     }
 
     public Quest<?> getActiveQuest(World world) {
@@ -182,6 +203,13 @@ public final class QuestingGroup {
 
     public int getMemberCount() {
         return this.members.size();
+    }
+
+    public int getHealth(World world, UUID playerId) {
+        PlayerEntity player = world.getPlayerByUUID(playerId);
+        if (player == null)
+            return this.playerHealthData.getOrDefault(playerId, 20);
+        return MathHelper.ceil(player.getHealth());
     }
 
     public void accept(World world, Consumer<PlayerEntity> consumer) {
@@ -222,6 +250,7 @@ public final class QuestingGroup {
         tag.put("members", NbtHelper.serializeCollection(this.members, uuid -> StringNBT.valueOf(uuid.toString())));
         tag.put("usernames", NbtHelper.serializeMap(this.usernames, UUID::toString, StringNBT::valueOf));
         tag.put("invites", NbtHelper.serializeMap(this.activeInvites, UUID::toString, GroupInvite::serialize));
+        tag.put("healthData", NbtHelper.serializeMap(this.playerHealthData, UUID::toString, IntNBT::valueOf));
         return tag;
     }
 }

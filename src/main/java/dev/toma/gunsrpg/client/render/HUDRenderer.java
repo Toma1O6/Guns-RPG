@@ -38,7 +38,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -228,9 +227,8 @@ public final class HUDRenderer {
         IVec2i pos = OverlayPlacement.getPlacement(overlay, 0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight(), width, height);
         Matrix4f pose = matrix.last().pose();
         for (UUID uuid : members) {
-            PlayerEntity member = level.getPlayerByUUID(uuid);
             String name = party.getName(uuid);
-            int health = member != null ? MathHelper.ceil(member.getHealth()) : 20; // TODO obtain health from party
+            int health = party.getHealth(level, uuid);
             int x = pos.x();
             int y = pos.y() + singleEntryHeight * index;
             String healthStatus = String.valueOf(health);

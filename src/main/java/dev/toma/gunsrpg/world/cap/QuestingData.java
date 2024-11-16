@@ -25,6 +25,7 @@ import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -176,6 +177,12 @@ public class QuestingData implements IQuestingData {
                 quest.tickQuest();
             }
         });
+        if (this.world.isClientSide())
+            return;
+        if (this.world.getGameTime() % 30L == 0L) {
+            this.groupsById.values().forEach(group -> group.updateHealthData((ServerWorld) this.world));
+            this.sendData();
+        }
     }
 
     @Override
@@ -251,7 +258,7 @@ public class QuestingData implements IQuestingData {
         GunsRPG.log.debug(QuestSystem.MARKER, "Handling player {} disconnect", player.getUUID());
         QuestingGroup group = this.getOrCreateGroup(player);
         Quest<?> activeQuest = this.getActiveQuestForPlayer(player);
-        if (group.isLeader(player.getUUID()) && group.getMemberCount() > 1) {
+        if (!group.isLeader(player.getUUID()) || group.getMemberCount() > 1) {
             this.removeFromGroup(player.getUUID());
         } else if (activeQuest != null && activeQuest.getStatus() == QuestStatus.ACTIVE) {
             activeQuest.setStatus(QuestStatus.PAUSED);
