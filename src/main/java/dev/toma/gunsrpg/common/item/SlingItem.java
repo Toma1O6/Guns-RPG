@@ -60,7 +60,7 @@ public class SlingItem extends BaseItem {
             return;
         }
         PlayerEntity player = (PlayerEntity) entity;
-        ItemLocator.consume(player.inventory, AmmoRegistry::isValidAmmo, ctx -> {
+        ItemLocator.consume(player.inventory, itemStack -> player.isCreative() || AmmoRegistry.isValidAmmo(itemStack), ctx -> {
             ItemStack ammoStack = ctx.getCurrectStack();
             boolean hasAmmo = !ammoStack.isEmpty() || player.isCreative();
 
@@ -82,7 +82,7 @@ public class SlingItem extends BaseItem {
                 }
                 pebble.setup(damage * power, power * 1.75F, 0);
                 pebble.fire(player.xRot, player.yRot, 0.5F);
-                pebble.setAmmoSource(ammoStack.isEmpty() ? new ItemStack(ModItems.SMALL_STONE) : ammoStack.copy());
+                pebble.setAmmoSource(ammoStack.isEmpty() || !AmmoRegistry.isValidAmmo(ammoStack) ? new ItemStack(ModItems.SMALL_STONE) : ammoStack.copy());
                 world.addFreshEntity(pebble);
                 if (!player.isCreative()) {
                     stack.hurtAndBreak(1, player, playerArg -> playerArg.broadcastBreakEvent(player.getUsedItemHand()));

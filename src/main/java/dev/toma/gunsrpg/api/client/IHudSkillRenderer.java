@@ -10,12 +10,11 @@ import net.minecraft.util.math.vector.Matrix4f;
 
 public interface IHudSkillRenderer<S extends ISkill & ICooldown> extends ISkillRenderer<S> {
 
-    default void renderOnHUD(MatrixStack stack, S skill, int left, int top, int index) {
+    default void renderOnHUD(MatrixStack stack, S skill, int x, int y, int width, int height) {
         Matrix4f pose = stack.last().pose();
         SkillType<?> type = skill.getType();
         DisplayData displayData = type.getDisplayData();
-        int x = left + index * 20;
-        RenderUtils.drawSolid(pose, x, top, x + 20, top + 20, 0x77 << 24);
-        displayData.renderAt(stack, x + 2, top + 2);
+        RenderUtils.drawSolid(pose, x, y, x + width, y + height, 0x77 << 24);
+        displayData.renderAt(stack, x + 2, y + 2);
     }
 }

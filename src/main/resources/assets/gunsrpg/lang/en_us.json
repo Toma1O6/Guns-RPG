@@ -2005,7 +2005,7 @@
   "config.gunsrpg-client.option.aimInputType": "Aim Input Type",
   "config.gunsrpg-client.option.alwaysRenderReticles": "Always Render Reticles",
   "config.gunsrpg-client.option.shaderCompatibilityMode": "Shader Compatibility Mode",
-  "config.gunsrpg-client.option.showBloodmoonRemainingDays": "Show Remaining Bloodmoon Days",
+  "config.gunsrpg-client.option.bloodmoonCounterOverlay": "Bloodmoon Overlay",
   "config.gunsrpg-client.option.tracerScale": "Tracer Scale",
   "config.gunsrpg-client.option.debuffOverlay": "Debuff Overlay",
   "config.gunsrpg-client.option.reticleColor": "Reticle Color",
@@ -2014,6 +2014,9 @@
   "config.gunsrpg-client.option.grenadierHeldItemRender": "Grenadier Held Item Render",
   "config.gunsrpg-client.option.optics": "Optics",
   "config.gunsrpg-client.option.questOverlay": "Quest Overlay",
+  "config.gunsrpg-client.option.activeSkillOverlay": "Active Skill Overlay",
+  "config.gunsrpg-client.option.levelProgressOverlay": "Progression Overlay",
+  "config.gunsrpg-client.option.partyOverlay": "Party Overlay",
 
   "config.gunsrpg-client.option.x": "Position X",
   "config.gunsrpg-client.option.y": "Position Y",
@@ -2026,6 +2029,13 @@
   "config.gunsrpg-client.option.scope60x": "6.0x Zoom Sensitivity",
   "config.gunsrpg-client.option.rightAligned": "Right-Aligned",
   "config.gunsrpg-client.option.heightOffset": "Height Offset",
+
+  "config.gunsrpg-client.option.enabled": "Enabled",
+  "config.gunsrpg-client.option.horizontalAlignment": "Horizontal Alignment",
+  "config.gunsrpg-client.option.verticalAlignment": "Vertical Alignment",
+  "config.gunsrpg-client.option.xOffset": "X Coordinate Offset",
+  "config.gunsrpg-client.option.yOffset": "Y Coordinate Offset",
+  "config.gunsrpg-client.option.requireActiveQuest": "Require Active Quest",
 
   "jei.recipe.category.gunsrpg.ammo_bench": "Ammo Bench",
 
@@ -2052,5 +2062,9 @@
 
   "label.gunsrpg.accept": "Accept",
   "label.gunsrpg.reject": "Reject",
-  "label.gunsrpg.group": "%s's group"
+  "label.gunsrpg.group": "%s's group",
+  "label.gunsrpg.infinite.short": "Inf",
+  "label.gunsrpg.weapon.destroyed": "Destroyed",
+  "label.gunsrpg.weapon.jammed": "Jammed",
+  "label.gunsrpg.weapon.ammo_status": "%s / %s"
 }

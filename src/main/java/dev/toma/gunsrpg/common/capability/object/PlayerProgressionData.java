@@ -1,11 +1,14 @@
 package dev.toma.gunsrpg.common.capability.object;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.ISyncRequestDispatcher;
 import dev.toma.gunsrpg.api.common.ITransaction;
 import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidatorFactory;
+import dev.toma.gunsrpg.client.OverlayPlacement;
+import dev.toma.gunsrpg.client.render.ProgressionRenderer;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.PlayerLevelTransactionValidator;
@@ -17,6 +20,8 @@ import dev.toma.gunsrpg.common.skills.transaction.WeaponPointTransaction;
 import dev.toma.gunsrpg.resource.progression.FakeLevelingStrategy;
 import dev.toma.gunsrpg.resource.progression.IProgressionStrategy;
 import dev.toma.gunsrpg.util.ModUtils;
+import dev.toma.gunsrpg.util.math.IVec2i;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.SlimeEntity;
@@ -29,6 +34,8 @@ import net.minecraft.util.Util;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -219,6 +226,24 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     @Override
     public void setSyncRequestTemplate(ISyncRequestDispatcher request) {
         this.request = request;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void draw(MatrixStack matrix, FontRenderer font, IVec2i position, int xOffset, int yOffset, int width, int height, PlayerEntity player, IPlayerData data) {
+        ProgressionRenderer.renderProgressionBar(matrix, this, font, position.x() + xOffset, position.y() + yOffset, width, height, OverlayPlacement.VerticalAlignment.BOTTOM, 0xFF00FFFF, 0xFF008888);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public int getWidth(FontRenderer font, PlayerEntity player, IPlayerData data) {
+        return ProgressionRenderer.getProgressBarWidth(font, this);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public int getHeight(FontRenderer font, PlayerEntity player, IPlayerData data) {
+        return ProgressionRenderer.getProgressBarHeight();
     }
 
     private void updateRequiredKills() {

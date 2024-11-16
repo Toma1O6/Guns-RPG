@@ -10,11 +10,11 @@ public class ConfigurableOverlay {
     public boolean enabled;
 
     @Configurable
-    @Configurable.Comment("Horizontal alignment of this overlay")
+    @Configurable.Comment({"Horizontal alignment of this overlay", "Accepted values: [LEFT, CENTER, RIGHT]"})
     public OverlayPlacement.HorizontalAlignment horizontalAlignment;
 
     @Configurable
-    @Configurable.Comment("Vertical alignment of this overlay")
+    @Configurable.Comment({"Vertical alignment of this overlay", "Accepted values: [TOP, CENTER, BOTTOM]"})
     public OverlayPlacement.VerticalAlignment verticalAlignment;
 
     @Configurable

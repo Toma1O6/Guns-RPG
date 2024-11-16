@@ -1,8 +1,11 @@
 package dev.toma.gunsrpg.api.common.data;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidatorFactory;
+import dev.toma.gunsrpg.client.OverlayPlacement;
+import dev.toma.gunsrpg.client.render.ProgressionRenderer;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.TransactionValidatorRegistry;
 import dev.toma.gunsrpg.common.skills.core.WeaponTransactionValidator;
@@ -10,6 +13,8 @@ import dev.toma.gunsrpg.resource.progression.FakeLevelingStrategy;
 import dev.toma.gunsrpg.resource.progression.IProgressionStrategy;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
+import dev.toma.gunsrpg.util.math.IVec2i;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -18,6 +23,8 @@ import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public class GunKillData implements IKillData, ILockStateChangeable, INBTSerializable<CompoundNBT> {
@@ -123,6 +130,24 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
         requiredKillCount = nbt.getInt("requiredKillCount");
         level = Math.max(nbt.getInt("level"), 1);
         points = nbt.getInt("points");
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void draw(MatrixStack matrix, FontRenderer font, IVec2i position, int xOffset, int yOffset, int width, int height, PlayerEntity player, IPlayerData data) {
+        ProgressionRenderer.renderProgressionBar(matrix, this, font, position.x() + xOffset, position.y() + yOffset, width, height, OverlayPlacement.VerticalAlignment.BOTTOM, 0xFFFFFF << 8, 0xFF8888 << 8);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public int getWidth(FontRenderer font, PlayerEntity player, IPlayerData data) {
+        return ProgressionRenderer.getProgressBarWidth(font, this);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public int getHeight(FontRenderer font, PlayerEntity player, IPlayerData data) {
+        return ProgressionRenderer.getProgressBarHeight();
     }
 
     private int updateKillRequirement() {

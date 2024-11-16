@@ -1,7 +1,9 @@
 package dev.toma.gunsrpg.common.item;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
+import dev.toma.gunsrpg.api.client.IProgressionDetailProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
@@ -11,13 +13,18 @@ import dev.toma.gunsrpg.common.LootStashDetectorHandler;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.Skills;
+import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.util.SkillUtil;
+import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
+import dev.toma.gunsrpg.util.math.IVec2i;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.Animation;
 import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IAnimationPipeline;
 import lib.toma.animations.api.IRenderConfig;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -33,7 +40,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.UUID;
 
-public class StashDetectorItem extends BaseItem implements IAnimationEntry {
+@OnlyIn(value = Dist.CLIENT, _interface = IProgressionDetailProvider.class)
+public class StashDetectorItem extends BaseItem implements IAnimationEntry, IProgressionDetailProvider {
 
     public static final ResourceLocation CHARGE_BATTERY_ANIMATION = GunsRPG.makeResource("stash_detector/change_batteries");
     public static final ResourceLocation TURN_ON_ANIMATION = GunsRPG.makeResource("stash_detector/turn_on");
@@ -112,6 +120,29 @@ public class StashDetectorItem extends BaseItem implements IAnimationEntry {
     @Override
     public int getRGBDurabilityForDisplay(ItemStack stack) {
         return 0xffff00;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void draw(MatrixStack matrix, FontRenderer font, IVec2i position, int xOffset, int yOffset, int width, int height, PlayerEntity player, IPlayerData data) {
+        String label = player.isCreative() ? GunItem.LABEL_INF.getString() : String.valueOf(ItemLocator.sum(player.inventory, StashDetectorItem::isValidBatterySource));
+        Minecraft client = Minecraft.getInstance();
+        int labelLeft = position.x() + xOffset + width - font.width(label);
+        font.draw(matrix, label, labelLeft, position.y() + yOffset + 6, 0xFFFFFF);
+        client.getItemRenderer().renderGuiItem(ModItems.BATTERY.getDefaultInstance(), labelLeft - 18, position.y() + yOffset);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public int getWidth(FontRenderer font, PlayerEntity player, IPlayerData data) {
+        String label = player.isCreative() ? GunItem.LABEL_INF.getString() : String.valueOf(ItemLocator.sum(player.inventory, StashDetectorItem::isValidBatterySource));
+        return 18 + font.width(label);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public int getHeight(FontRenderer font, PlayerEntity player, IPlayerData data) {
+        return 16;
     }
 
     public enum StatusEvent {

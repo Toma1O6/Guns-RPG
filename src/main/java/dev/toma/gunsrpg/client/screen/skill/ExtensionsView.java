@@ -12,6 +12,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_RequestExtensionSkillLockPacket;
 import dev.toma.gunsrpg.util.RenderUtils;
+import dev.toma.gunsrpg.util.math.IVec2i;
 import dev.toma.gunsrpg.util.object.LazyLoader;
 import lib.toma.animations.QuickSort;
 import net.minecraft.client.Minecraft;
@@ -22,12 +23,15 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.lwjgl.opengl.GL11;
 
@@ -277,6 +281,23 @@ public class ExtensionsView extends View {
         @Override
         public void awardPoints(int amount) {
             throw new UnsupportedOperationException("Cannot perform this operation on read-only provider");
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public void draw(MatrixStack matrix, FontRenderer font, IVec2i position, int xOffset, int yOffset, int width, int height, PlayerEntity player, IPlayerData data) {
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public int getWidth(FontRenderer font, PlayerEntity player, IPlayerData data) {
+            return 0;
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public int getHeight(FontRenderer font, PlayerEntity player, IPlayerData data) {
+            return 0;
         }
     }
 }

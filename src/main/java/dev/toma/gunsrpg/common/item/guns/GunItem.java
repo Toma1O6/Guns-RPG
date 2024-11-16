@@ -1,13 +1,13 @@
 package dev.toma.gunsrpg.common.item.guns;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ModTabs;
-import dev.toma.gunsrpg.api.common.IAmmoMaterial;
-import dev.toma.gunsrpg.api.common.IJamConfig;
-import dev.toma.gunsrpg.api.common.IReloadManager;
-import dev.toma.gunsrpg.api.common.IWeaponConfig;
+import dev.toma.gunsrpg.api.client.IProgressionDetailProvider;
+import dev.toma.gunsrpg.api.common.*;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
+import dev.toma.gunsrpg.api.common.data.IKillData;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.BulletEjectAnimation;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
@@ -28,20 +28,29 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.util.Lifecycle;
+import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
+import dev.toma.gunsrpg.util.math.IVec2i;
 import dev.toma.gunsrpg.util.properties.PropertyContext;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.Easings;
 import lib.toma.animations.api.AnimationList;
 import lib.toma.animations.api.IAnimationEntry;
 import lib.toma.animations.api.IRenderConfig;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -53,7 +62,12 @@ import java.util.function.BiFunction;
 import static dev.toma.gunsrpg.util.properties.Properties.PENETRATION;
 import static dev.toma.gunsrpg.util.properties.Properties.TRACER;
 
-public abstract class GunItem extends AbstractGun implements IAnimationEntry {
+@OnlyIn(value = Dist.CLIENT, _interface = IProgressionDetailProvider.class)
+public abstract class GunItem extends AbstractGun implements IAnimationEntry, IProgressionDetailProvider {
+
+    public static final ITextComponent LABEL_DESTROYED = new TranslationTextComponent("label.gunsrpg.weapon.destroyed");
+    public static final ITextComponent LABEL_JAMMED = new TranslationTextComponent("label.gunsrpg.weapon.jammed");
+    public static final ITextComponent LABEL_INF = new TranslationTextComponent("label.gunsrpg.infinite.short");
 
     private final WeaponCategory weaponCategory;
     private final IWeaponConfig config;
@@ -385,6 +399,91 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry {
     public int getRGBDurabilityForDisplay(ItemStack stack) {
         float damage = this.getDurability(stack);
         return getDurabilityColor(1.0F - damage);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void draw(MatrixStack matrix, FontRenderer font, IVec2i position, int xOffset, int yOffset, int width, int height, PlayerEntity player, IPlayerData data) {
+        IProgressionDetailProvider provider = this.getProgressionForItem(data, player);
+        if (provider != null) {
+            provider.draw(matrix, font, position, xOffset, yOffset, width, height, player, data);
+        }
+        ItemStack itemStack = player.getMainHandItem();
+        ITextComponent label = this.getStatusLabel(itemStack);
+        if (label != null) {
+            // weapon is jammed or destroyed
+            int labelWidth = font.width(label);
+            int labelLeft = position.x() + xOffset + width - labelWidth;
+            font.draw(matrix, label, labelLeft, position.y() + yOffset, 0xCC << 16);
+        } else {
+            // no status on weapon, render ammo
+            Lifecycle lifecycle = GunsRPG.getModLifecycle();
+            IAmmoProvider ammoProvider = lifecycle.getAmmoForWeapon(this, itemStack);
+            if (ammoProvider != null) {
+                Minecraft client = Minecraft.getInstance();
+                Item ammo = (Item) ammoProvider;
+                ITextComponent ammoStatusLabel = new TranslationTextComponent(
+                        "label.gunsrpg.weapon.ammo_status",
+                        this.getAmmo(itemStack),
+                        player.isCreative() ? LABEL_INF : ItemLocator.sum(player.inventory, ItemLocator.filterByAmmoTypeAndMaterial(ammoProvider))
+                );
+                int ammoLabelWidth = font.width(ammoStatusLabel);
+                int ammoLabelLeft = position.x() + xOffset + width - ammoLabelWidth;
+                font.draw(matrix, ammoStatusLabel, ammoLabelLeft, position.y() + yOffset + 6, 0xFFFFFF);
+                client.getItemRenderer().renderGuiItem(ammo.getDefaultInstance(), ammoLabelLeft - 18, position.y() + yOffset);
+            }
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public int getWidth(FontRenderer font, PlayerEntity player, IPlayerData data) {
+        IProgressionDetailProvider provider = this.getProgressionForItem(data, player);
+        int width = 0;
+        if (provider != null) {
+            width = Math.max(provider.getWidth(font, player, data), width);
+        }
+        return width;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public int getHeight(FontRenderer font, PlayerEntity player, IPlayerData data) {
+        IProgressionDetailProvider provider = this.getProgressionForItem(data, player);
+        ItemStack stack = player.getMainHandItem();
+        int height = font.lineHeight;
+        ITextComponent label = this.getStatusLabel(stack);
+        if (label == null) {
+            IAmmoProvider ammoProvider = GunsRPG.getModLifecycle().getAmmoForWeapon(this, stack);
+            if (ammoProvider != null) {
+                height = 16;
+            }
+        }
+        if (provider != null) {
+            height += provider.getHeight(font, player, data);
+        }
+        return height;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private IProgressionDetailProvider getProgressionForItem(IPlayerData playerData, PlayerEntity player) {
+        ItemStack itemStack = player.getMainHandItem();
+        if (itemStack.getItem() instanceof GunItem) {
+            IKillData killData = playerData.getProgressData().getWeaponStats((GunItem) itemStack.getItem());
+            if (killData instanceof IProgressionDetailProvider) {
+                return killData;
+            }
+        }
+        return null;
+    }
+
+    public ITextComponent getStatusLabel(ItemStack stack) {
+        if (this.isJammed(stack)) {
+            return LABEL_JAMMED;
+        } else if (stack.getDamageValue() == stack.getMaxDamage()) {
+            return LABEL_DESTROYED;
+        }
+        return null;
     }
 
     public static int getDurabilityColor(float durability) {

@@ -3,9 +3,12 @@ package dev.toma.gunsrpg.client.render;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.client.IHudSkillRenderer;
-import dev.toma.gunsrpg.api.common.IAmmoProvider;
+import dev.toma.gunsrpg.api.client.IProgressionDetailProvider;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
-import dev.toma.gunsrpg.api.common.data.*;
+import dev.toma.gunsrpg.api.common.data.IDebuffs;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IQuestingData;
+import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.api.common.skill.ICooldown;
 import dev.toma.gunsrpg.api.common.skill.ISkill;
 import dev.toma.gunsrpg.client.OverlayPlacement;
@@ -13,38 +16,38 @@ import dev.toma.gunsrpg.client.render.debuff.DebuffRenderManager;
 import dev.toma.gunsrpg.client.render.infobar.IDataModel;
 import dev.toma.gunsrpg.client.render.skill.SkillRendererRegistry;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.init.ModItems;
-import dev.toma.gunsrpg.common.item.StashDetectorItem;
-import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.client.ConfigurableOverlay;
+import dev.toma.gunsrpg.config.client.PartyOverlayConfiguration;
 import dev.toma.gunsrpg.resource.util.functions.RangedFunction;
 import dev.toma.gunsrpg.sided.ClientSideManager;
-import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
-import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import dev.toma.gunsrpg.util.math.IVec2i;
 import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import java.util.Set;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public final class HUDRenderer {
@@ -87,7 +90,7 @@ public final class HUDRenderer {
         });
         QuestingDataProvider.getData(mc.level).ifPresent(questing -> {
             renderQuestOverlay(matrixStack, font, window, questing, player);
-            // TODO render current party info
+            renderPartyOverlay(matrixStack, font, window, questing, player);
         });
     }
 
@@ -116,17 +119,23 @@ public final class HUDRenderer {
 
     @SuppressWarnings("unchecked")
     private <S extends ISkill & ICooldown> void renderSkillsOnHUD(MatrixStack stack, MainWindow window, IPlayerData data) {
+        ConfigurableOverlay overlay = ClientSideManager.config.activeSkillOverlay;
+        if (!overlay.enabled)
+            return;
         ISkillProvider provider = data.getSkillProvider();
-        Set<S> displayables = SkillRendererRegistry.getDisplayableSkills().stream()
+        List<S> displayables = SkillRendererRegistry.getDisplayableSkills().stream()
                 .map(type -> (S) SkillUtil.getTopHierarchySkill(type, provider))
-                .filter(skill -> skill != null && !skill.getType().isDisabled())
-                .collect(Collectors.toSet());
-        int renderIndex = 0;
-        for (S skill : displayables) {
-            if (skill.getCooldown() > 0) continue;
+                .filter(skill -> skill != null && !skill.getType().isDisabled() && skill.getCooldown() <= 0)
+                .distinct()
+                .collect(Collectors.toList());
+        int skillsWidth = displayables.size() * 20;
+        int skillsHeight = 20;
+        IVec2i position = OverlayPlacement.getPlacement(overlay, 0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight(), skillsWidth, skillsHeight);
+        for (int i = 0; i < displayables.size(); i++) {
+            S skill = displayables.get(i);
             SkillType<S> type = (SkillType<S>) skill.getType();
             IHudSkillRenderer<S> renderer = SkillRendererRegistry.getHudRenderer(type);
-            renderer.renderOnHUD(stack, skill, 5, window.getGuiScaledHeight() - 20, renderIndex++);
+            renderer.renderOnHUD(stack, skill, position.x() + i * 20, position.y(), 20, 20);
         }
     }
 
@@ -181,65 +190,57 @@ public final class HUDRenderer {
     // PROGRESSION -------------------------------------------------
 
     private void renderProgressionOnScreen(MatrixStack matrix, FontRenderer font, MainWindow window, IPlayerData data, PlayerEntity player) {
-        int windowWidth = window.getGuiScaledWidth();
-        int windowHeight = window.getGuiScaledHeight();
-        int barWidth = 26;
         ConfigurableOverlay overlay = ClientSideManager.config.levelProgressOverlay;
-        if (!overlay.enabled) // TODO implement position configuration
+        if (!overlay.enabled)
             return;
+        ProgressionRenderer buffer = ProgressionRenderer.getBuffer();
         ItemStack stack = player.getMainHandItem();
-        boolean renderWeaponProgression = stack.getItem() instanceof GunItem;
-        int x = windowWidth - barWidth - 34;
-        int y = windowHeight - 22;
-        IProgressData progression = data.getProgressData();
-        if (renderWeaponProgression) {
-            GunItem gunItem = (GunItem) stack.getItem();
-            IKillData killData = progression.getWeaponStats(gunItem);
-            Lifecycle lifecycle = GunsRPG.getModLifecycle();
-            IAmmoProvider provider = lifecycle.getAmmoForWeapon(gunItem, stack);
-            if (provider != null) {
-                boolean jammed = gunItem.isJammed(stack);
-                boolean broken = stack.getDamageValue() == stack.getMaxDamage();
-                String text = this.getAmmoString(gunItem, stack, player.inventory, provider, jammed, broken);
-                barWidth = font.width(text);
-                x = windowWidth - barWidth - 34;
-                renderProgressionBar(killData, matrix, font, x, y, barWidth + 22, y + 7, 0xFFFFFF << 8, 0xFF8888 << 8);
-                Minecraft mc = Minecraft.getInstance();
-                mc.getItemRenderer().renderGuiItem(new ItemStack((Item) provider), x, y - 18);
-                if (jammed || broken)
-                    font.drawShadow(matrix, text, x + 19, y - 14, 0xCC << 16);
-                else
-                    font.draw(matrix, text, x + 19, y - 14, 0xFFFFFF);
-            }
-        } else if (stack.getItem() == ModItems.STASH_DETECTOR) {
-            Minecraft mc = Minecraft.getInstance();
-            int batteryCount = ItemLocator.sum(player.inventory, StashDetectorItem::isValidBatterySource);
-            String text = String.valueOf(batteryCount);
-            barWidth = font.width(text);
-            x = windowWidth - barWidth - 34;
-            mc.getItemRenderer().renderGuiItem(new ItemStack(ModItems.BATTERY), x, y - 8);
-            font.draw(matrix, text, x + 19, y - 2, 0xFFFFFF);
+        if (stack.getItem() instanceof IProgressionDetailProvider) {
+            IProgressionDetailProvider detailProvider = (IProgressionDetailProvider) stack.getItem();
+            buffer.add(detailProvider);
         }
-        renderProgressionBar(progression, matrix, font, x, y + 10, barWidth + 22, y + 17, 0xFF00FFFF, 0xFF008888);
+        buffer.add(data.getProgressData());
+        buffer.draw(matrix, font, window, player, data);
     }
 
-    private String getAmmoString(GunItem item, ItemStack stack, IInventory inventory, IAmmoProvider provider, boolean jammed, boolean broken) {
-        int loaded = item.getAmmo(stack);
-        return jammed ? "JAMMED" : broken ? "DESTROYED" : loaded + " / " + ItemLocator.sum(inventory, ItemLocator.filterByAmmoTypeAndMaterial(provider));
-    }
+    // PARTY -------------------------------------------------
 
-    private void renderProgressionBar(IKillData data, MatrixStack matrixStack, FontRenderer font, int left, int top, int width, int bottom, int colorPrimary, int colorSecondary) {
-        Matrix4f pose = matrixStack.last().pose();
-        int count = data.getKills();
-        int required = data.getRequiredKillCount();
-        int level = data.getLevel();
-        boolean isMaxLvl = level == data.getLevelLimit();
-        float levelProgress = isMaxLvl ? 1.0F : count / (float) required;
-        RenderUtils.drawSolid(pose, left, top, left + width, bottom, 0xFF << 24);
-        RenderUtils.drawGradient(pose, left + 2, top + 2, left + (int) (levelProgress * (width - 2)), bottom - 2, colorPrimary, colorSecondary);
-        // Level indicator
-        String currentLevel = String.valueOf(level);
-        int currentLevelWidth = font.width(currentLevel);
-        font.draw(matrixStack, currentLevel, left - currentLevelWidth - 2, top, colorPrimary);
+    private void renderPartyOverlay(MatrixStack matrix, FontRenderer font, MainWindow window, IQuestingData questing, PlayerEntity player) {
+        PartyOverlayConfiguration overlay = ClientSideManager.config.partyOverlay;
+        if (!overlay.enabled)
+            return;
+        QuestingGroup party = questing.getOrCreateGroup(player);
+        Quest<?> quest = questing.getActiveQuest(party);
+        if (party.getMemberCount() <= 1 || (overlay.requireActiveQuest && quest == null))
+            return;
+        Collection<UUID> members = party.getMembers();
+        int index = 0;
+        int width = 60;
+        int singleEntryHeight = 11;
+        int height = members.size() * singleEntryHeight;
+        Minecraft client = Minecraft.getInstance();
+        for (UUID uuid : members) {
+            String name = party.getName(uuid);
+            width = Math.max(width, font.width(name));
+        }
+        width += 20; // extra space for icon and health count
+        ClientWorld level = client.level;
+        IVec2i pos = OverlayPlacement.getPlacement(overlay, 0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight(), width, height);
+        Matrix4f pose = matrix.last().pose();
+        for (UUID uuid : members) {
+            PlayerEntity member = level.getPlayerByUUID(uuid);
+            String name = party.getName(uuid);
+            int health = member != null ? MathHelper.ceil(member.getHealth()) : 20; // TODO obtain health from party
+            int x = pos.x();
+            int y = pos.y() + singleEntryHeight * index;
+            String healthStatus = String.valueOf(health);
+            int healthWidth = font.width(healthStatus);
+            RenderUtils.drawSolid(pose, x, y, x + width, y + singleEntryHeight, 0x66 << 24);
+            client.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
+            RenderUtils.drawTex(pose, x + width - healthWidth - 11, y + 1, x + width - healthWidth - 2, y + 10, 52.0F / 255.0F, 0.0F, 61.0F / 255.0F, 9.0F / 255.0F);
+            font.draw(matrix, name, x + 2, y + 2, 0xFFFFFF);
+            font.draw(matrix, healthStatus, x + width - healthWidth, y + 2, health <= 5 ? 0xCC0000 : 0xFFFFFF);
+            ++index;
+        }
     }
 }

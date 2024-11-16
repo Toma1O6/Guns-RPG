@@ -68,11 +68,15 @@ public final class GunsrpgConfigClient {
 
     @Configurable
     @Configurable.Comment("Configure position of active useable skills on HUD")
-    public ConfigurableOverlay activeSkillOverlay = new ConfigurableOverlay(true, OverlayPlacement.HorizontalAlignment.LEFT, OverlayPlacement.VerticalAlignment.BOTTOM, 10, 0);
+    public ConfigurableOverlay activeSkillOverlay = new ConfigurableOverlay(true, OverlayPlacement.HorizontalAlignment.LEFT, OverlayPlacement.VerticalAlignment.BOTTOM, 5, 0);
 
     @Configurable
     @Configurable.Comment("Configure position of skill progress on HUD")
     public ConfigurableOverlay levelProgressOverlay = new ConfigurableOverlay(true, OverlayPlacement.HorizontalAlignment.RIGHT, OverlayPlacement.VerticalAlignment.BOTTOM, 10, 10);
+
+    @Configurable
+    @Configurable.Comment("Configure position of party overlay on HUD")
+    public PartyOverlayConfiguration partyOverlay = new PartyOverlayConfiguration(false, OverlayPlacement.HorizontalAlignment.LEFT, OverlayPlacement.VerticalAlignment.TOP, 0, 10);
 
     public enum ReticleType {
 
