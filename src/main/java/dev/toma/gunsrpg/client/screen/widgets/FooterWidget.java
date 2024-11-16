@@ -11,11 +11,15 @@ import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FooterWidget extends Widget {
 
     final FontRenderer renderer;
     final IPointProvider data;
     final IKillData killData;
+    final List<IPointProvider> externalPoints = new ArrayList<>();
 
     int progressColor1;
     int progressColor2;
@@ -33,6 +37,10 @@ public class FooterWidget extends Widget {
         this.progressColor2 = secondaryColor;
     }
 
+    public void addExternalPointProvider(IPointProvider provider) {
+        this.externalPoints.add(provider);
+    }
+
     public void setPointColor(int pointColor) {
         this.pointColor = pointColor;
     }
@@ -43,7 +51,8 @@ public class FooterWidget extends Widget {
         // background
         RenderUtils.drawSolid(pose, x, y, x + width, y + height, 0x44 << 24);
         // points
-        ITextComponent component = new StringTextComponent(data.getPoints() + " pts");
+        String externalLabel = this.getExternalPointsLabel();
+        ITextComponent component = new StringTextComponent(data.getPoints() + externalLabel + " pts");
         float yCenter = y + (height - renderer.lineHeight) / 2.0F;
         renderer.drawShadow(matrix, component, x + width - renderer.width(component) - 10, yCenter, pointColor);
         // level
@@ -69,5 +78,14 @@ public class FooterWidget extends Widget {
             levelInfo.append(" - ").append(killData.getKills()).append(" kills");
         }
         renderer.drawShadow(matrix, levelInfo.toString(), right + 5, yCenter, 0xFFFFFF);
+    }
+
+    private String getExternalPointsLabel() {
+        if (this.externalPoints.isEmpty())
+            return "";
+        int value = this.externalPoints.stream().mapToInt(IPointProvider::getPoints).sum();
+        if (value <= 0)
+            return "";
+        return " (" + value + " universal)";
     }
 }

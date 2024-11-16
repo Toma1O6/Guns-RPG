@@ -64,7 +64,7 @@ public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkill
                 return;
             }
             validator.onUnlocked(data.getProgressData(), toUnlock);
-            data.sync(DataFlags.SKILLS | DataFlags.DATA);
+            data.sync(DataFlags.SKILLS | DataFlags.DATA | DataFlags.WEAPON_POOL);
         });
     }
 

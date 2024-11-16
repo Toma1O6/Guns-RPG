@@ -215,7 +215,7 @@ public class PlayerData implements IPlayerData {
         return get(player).orElseThrow(NullPointerException::new);
     }
 
-    private static final class WeaponSharedPool implements IPointProvider, IPlayerCapEntry {
+    private static final class WeaponSharedPool implements IPointProvider, IPlayerCapEntry, ILockStateChangeable {
 
         private int availablePoints;
         private ISyncRequestDispatcher dispatcher;
@@ -250,6 +250,16 @@ public class PlayerData implements IPlayerData {
         @Override
         public void setSyncRequestTemplate(ISyncRequestDispatcher request) {
             this.dispatcher = request;
+        }
+
+        @Override
+        public void doUnlock() {
+            this.availablePoints = Short.MAX_VALUE;
+        }
+
+        @Override
+        public void doLock() {
+            this.availablePoints = 0;
         }
     }
 }

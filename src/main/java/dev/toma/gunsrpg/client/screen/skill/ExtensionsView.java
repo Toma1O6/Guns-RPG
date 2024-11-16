@@ -13,7 +13,6 @@ import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_RequestExtensionSkillLockPacket;
 import dev.toma.gunsrpg.util.RenderUtils;
 import dev.toma.gunsrpg.util.math.IVec2i;
-import dev.toma.gunsrpg.util.object.LazyLoader;
 import lib.toma.animations.QuickSort;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -37,6 +36,7 @@ import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
+import java.util.function.Supplier;
 
 public class ExtensionsView extends View {
 
@@ -76,6 +76,7 @@ public class ExtensionsView extends View {
         ReadOnlyPointProvider pointProvider = new ReadOnlyPointProvider(validator, data);
         footer = addWidget(new FooterWidget(x, y + height - 20, width, 20, font, pointProvider));
         footer.setColorSchema(0xFFFF00, 0xCCCC00);
+        footer.addExternalPointProvider(data.getSharedWeaponPoints());
         // info
         skillInfo = addWidget(new SkillInfoWidget(x, y + height - 80, width, 80, manager));
         reset = addWidget(new SimpleButton(x + width - 75, y + 5, 70, 20, TEXT_RESET_SKILLS, this::resetSkillsClicked, this::renderResetSkillsButtonTooltip));
@@ -232,10 +233,10 @@ public class ExtensionsView extends View {
 
     private static class ReadOnlyPointProvider implements IKillData {
 
-        private final LazyLoader<IKillData> loader;
+        private final Supplier<IKillData> loader;
 
         public ReadOnlyPointProvider(ITransactionValidator validator, IPlayerData data) {
-            this.loader = new LazyLoader<>(() -> validator.getData(data));
+            this.loader = () -> validator.getData(data);
         }
 
         @Override

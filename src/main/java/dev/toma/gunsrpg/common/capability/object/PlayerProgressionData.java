@@ -152,7 +152,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     @Override
     public void doUnlock() {
         level = getLevelLimit();
-        skillPoints = Integer.MAX_VALUE;
+        skillPoints = Short.MAX_VALUE;
         ForgeRegistries.ITEMS.getValues().stream()
                 .filter(item -> item instanceof GunItem)
                 .map(item -> (GunItem) item)

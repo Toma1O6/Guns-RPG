@@ -48,7 +48,7 @@ public class ProgressionRenderer {
         String text = String.valueOf(data.getLevel());
         int textWidth = font.width(text);
         int textLeft = x + width - PROGRESS_BAR_WIDTH - PROGRESS_BAR_SPACING_X - textWidth;
-        font.draw(matrix, text, textLeft, position.y() - 1, mainColor);
+        font.draw(matrix, text, textLeft, position.y(), mainColor);
         // Right column
         int barLeft = textLeft + PROGRESS_BAR_SPACING_X + textWidth;
         RenderUtils.drawSolid(pose, barLeft, position.y(), barLeft + PROGRESS_BAR_WIDTH, position.y() + PROGRESS_BAR_HEIGHT, 0xFF << 24); // background
