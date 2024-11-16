@@ -37,18 +37,26 @@ public final class ReputationHelper {
         return reputation >= MAX_REPUTATION;
     }
 
-    public static void awardPlayerForReputation(PlayerEntity player) {
-        if (player.level.isClientSide) return;
-        ItemStack stack = new ItemStack(ModItems.GOLD_EGG_SHARD, 2);
-        ModUtils.addItem(player, stack);
-        GunsRPG.log.info(QuestSystem.MARKER, "Added reputation award to {}", player.getName().getString());
-        player.sendMessage(new TranslationTextComponent("quest.reputation.award_given"), Util.NIL_UUID);
+    public static void awardPlayerWeaponBook(PlayerEntity player) {
+        award(player, new ItemStack(ModItems.WEAPON_BOOK));
+    }
+
+    public static void awardPlayerForMaxReputation(PlayerEntity player) {
+        award(player, new ItemStack(ModItems.GOLD_EGG_SHARD, 2));
     }
 
     private static void addReputation(ITraderStatus status, Quest<?> quest, Function<Integer, Float> calculator) {
         int tier = quest.getRewardTier();
         float reputation = calculator.apply(tier);
         status.addReputation(reputation);
+    }
+
+    private static void award(PlayerEntity player, ItemStack itemStack) {
+        if (player.level.isClientSide) return;
+        ItemStack stack = new ItemStack(ModItems.GOLD_EGG_SHARD, 2);
+        ModUtils.addItem(player, stack);
+        GunsRPG.log.info(QuestSystem.MARKER, "Added reputation award {} to {}", itemStack, player.getName().getString());
+        player.sendMessage(new TranslationTextComponent("quest.reputation.award_given"), Util.NIL_UUID);
     }
 
     private ReputationHelper() {}

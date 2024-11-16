@@ -46,6 +46,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
 
     private final PlayerEntity player;
     private final ISkillProvider skillProvider;
+    private final IPointProvider weaponPool;
     private final ITransactionManager transactionManager = new TransactionManager();
     private final Map<GunItem, GunKillData> weaponStats = new HashMap<>();
     private final IProgressionStrategy strategy;
@@ -56,9 +57,10 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     private int kills;
     private int requiredKills;
 
-    public PlayerProgressionData(PlayerEntity player, ISkillProvider skillProvider) {
+    public PlayerProgressionData(PlayerEntity player, ISkillProvider skillProvider, IPointProvider weaponPool) {
         this.player = player;
         this.skillProvider = skillProvider;
+        this.weaponPool = weaponPool;
         this.transactionManager.registerHandler(TransactionTypes.SKILLPOINT_TRANSACTION, this::hasEnoughSkillpoints, this::handleSkillpointTransaction);
         this.transactionManager.registerHandler(TransactionTypes.WEAPON_POINT_TRANSACTION, this::hasEnoughWeaponPoints, this::handleWeaponPointTransaction);
         ITransactionValidatorFactory<?, ?> factory = TransactionValidatorRegistry.getValidatorFactory(PlayerLevelTransactionValidator.ID);
@@ -69,7 +71,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
 
     @Override
     public IKillData getWeaponStats(GunItem item) {
-        return weaponStats.computeIfAbsent(item, k -> new GunKillData(player, item));
+        return weaponStats.computeIfAbsent(item, k -> new GunKillData(player, item, this.weaponPool));
     }
 
     @Override
@@ -155,7 +157,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
                 .filter(item -> item instanceof GunItem)
                 .map(item -> (GunItem) item)
                 .forEach(gun -> {
-                    GunKillData killData = weaponStats.computeIfAbsent(gun, k -> new GunKillData(player, gun));
+                    GunKillData killData = weaponStats.computeIfAbsent(gun, k -> new GunKillData(player, gun, this.weaponPool));
                     killData.doUnlock();
                 });
     }
@@ -215,7 +217,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
             if (item instanceof GunItem) {
                 GunItem gun = (GunItem) item;
-                GunKillData data = new GunKillData(player, gun);
+                GunKillData data = new GunKillData(player, gun, this.weaponPool);
                 CompoundNBT dataNbt = killData.getCompound(key);
                 data.deserializeNBT(dataNbt);
                 weaponStats.put(gun, data);

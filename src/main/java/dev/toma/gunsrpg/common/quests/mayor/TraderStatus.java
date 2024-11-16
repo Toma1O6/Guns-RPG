@@ -16,6 +16,7 @@ public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT
     private final Runnable synchronizationTrigger;
     private final PlayerEntity player;
     private float reputation;
+    private boolean rewardedWeaponBook;
     private boolean maxedOutReputation;
 
     public TraderStatus(Runnable synchronizationTrigger, PlayerEntity player) {
@@ -37,7 +38,10 @@ public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT
         this.sendReputationStatusUpdate(previousStatus, currentStatus);
         if (!maxedOutReputation && ReputationHelper.isMaxedOut(this.reputation)) {
             maxedOutReputation = true;
-            ReputationHelper.awardPlayerForReputation(player);
+            ReputationHelper.awardPlayerForMaxReputation(player);
+        } else if (!rewardedWeaponBook && ReputationStatus.is(ReputationStatus.LOYAL, this.reputation)) {
+            this.rewardedWeaponBook = true;
+            ReputationHelper.awardPlayerWeaponBook(player);
         }
         this.synchronizationTrigger.run();
         GunsRPG.log.debug(QuestSystem.MARKER, "Updated {}'s reputation to {}", player.getName().getString(), this.reputation);
@@ -53,6 +57,7 @@ public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT
         CompoundNBT nbt = new CompoundNBT();
         nbt.putFloat("reputation", reputation);
         nbt.putBoolean("maxedOutReputation", maxedOutReputation);
+        nbt.putBoolean("rewardedWeaponBook", rewardedWeaponBook);
         return nbt;
     }
 
@@ -60,6 +65,7 @@ public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT
     public void deserializeNBT(CompoundNBT nbt) {
         reputation = nbt.getFloat("reputation");
         maxedOutReputation = nbt.getBoolean("maxedOutReputation");
+        rewardedWeaponBook = nbt.getBoolean("rewardedWeaponBook");
     }
 
     private void sendReputationStatusUpdate(ReputationStatus prev, ReputationStatus current) {

@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.capability;
 
+import dev.toma.gunsrpg.api.common.ISyncRequestDispatcher;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.api.common.skill.ISkill;
@@ -32,6 +33,7 @@ public class PlayerData implements IPlayerData {
     private final PlayerDebuffs debuffs;
     private final PlayerAttributes attributes;
     private final PlayerPerkProvider perkProvider;
+    private final WeaponSharedPool weaponSharedPool;
     private final PlayerProgressionData data;
     private final PlayerTraderStandings standings;
     private ISynchCallback callback;
@@ -50,7 +52,8 @@ public class PlayerData implements IPlayerData {
         this.attributes = new PlayerAttributes();
         this.skillProvider = new PlayerSkillProvider(player);
         this.perkProvider = new PlayerPerkProvider(attributes);
-        this.data = new PlayerProgressionData(player, skillProvider);
+        this.weaponSharedPool = new WeaponSharedPool();
+        this.data = new PlayerProgressionData(player, skillProvider, this.weaponSharedPool);
         this.standings = new PlayerTraderStandings(this.player);
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setSyncCallback);
@@ -63,6 +66,7 @@ public class PlayerData implements IPlayerData {
         saveHandler.addListener(perkProvider);
         saveHandler.addListener(data);
         saveHandler.addListener(standings);
+        saveHandler.addListener(weaponSharedPool);
 
         saveHandler.invoke(entry -> entry.setSyncRequestTemplate(() -> requestSync(entry.getFlag())));
     }
@@ -106,6 +110,11 @@ public class PlayerData implements IPlayerData {
     @Override
     public IPerkProvider getPerkProvider() {
         return perkProvider;
+    }
+
+    @Override
+    public IPointProvider getSharedWeaponPoints() {
+        return this.weaponSharedPool;
     }
 
     @Override
@@ -204,5 +213,43 @@ public class PlayerData implements IPlayerData {
 
     public static IPlayerData getUnsafe(PlayerEntity player) {
         return get(player).orElseThrow(NullPointerException::new);
+    }
+
+    private static final class WeaponSharedPool implements IPointProvider, IPlayerCapEntry {
+
+        private int availablePoints;
+        private ISyncRequestDispatcher dispatcher;
+
+        @Override
+        public void awardPoints(int amount) {
+            this.availablePoints = Math.max(this.availablePoints + amount, 0);
+            if (this.dispatcher != null)
+                this.dispatcher.sendSyncRequest();
+        }
+
+        @Override
+        public int getPoints() {
+            return this.availablePoints;
+        }
+
+        @Override
+        public int getFlag() {
+            return DataFlags.WEAPON_POOL;
+        }
+
+        @Override
+        public void toNbt(CompoundNBT nbt) {
+            nbt.putInt("points", this.availablePoints);
+        }
+
+        @Override
+        public void fromNbt(CompoundNBT nbt) {
+            this.availablePoints = nbt.getInt("points");
+        }
+
+        @Override
+        public void setSyncRequestTemplate(ISyncRequestDispatcher request) {
+            this.dispatcher = request;
+        }
     }
 }

@@ -11,6 +11,7 @@ public final class DataFlags {
     public static final int DATA        = 1 << 5;
     public static final int JAMS        = 1 << 6;
     public static final int PERK        = 1 << 7;
+    public static final int WEAPON_POOL = 1 << 8;
 
     public static boolean isWildcard(int flags) {
         return flags == WILDCARD;

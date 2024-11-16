@@ -804,6 +804,7 @@ public class CommonRegistry {
                 BaseItem.simpleItem("gold_ore_chunk"),
                 new PointAwardItem("skillpoint_book", IPlayerData::getProgressData),
                 new PointAwardItem("perkpoint_book", IPlayerData::getPerkProvider),
+                new PointAwardItem("weapon_book", IPlayerData::getSharedWeaponPoints),
                 new HammerItem("wooden_hammer", HammerItem.WOOD_HAMMER_MATERIAL),
                 new HammerItem("stone_hammer", HammerItem.STONE_HAMMER_MATERIAL),
                 new HammerItem("iron_hammer", HammerItem.IRON_HAMMER_MATERIAL),

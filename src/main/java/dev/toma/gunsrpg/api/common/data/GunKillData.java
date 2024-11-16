@@ -32,14 +32,16 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
     public static final int SKILL_RESET_PRICE = 25;
     private final PlayerEntity player;
     private final IProgressionStrategy strategy;
+    private final IPointProvider weaponPool;
     private int killCount;
     private int requiredKillCount;
     private int level;
     private int points;
 
-    public GunKillData(PlayerEntity player, GunItem gunItem) {
+    public GunKillData(PlayerEntity player, GunItem gunItem, IPointProvider weaponPool) {
         this.player = player;
         this.level = 1;
+        this.weaponPool = weaponPool;
         ITransactionValidatorFactory<?, ?> factory = TransactionValidatorRegistry.getValidatorFactory(WeaponTransactionValidator.ID);
         ITransactionValidator validator = TransactionValidatorRegistry.getTransactionValidator(factory, JsonHelper.toSimpleJson(gunItem.getRegistryName()));
         this.strategy = ModUtils.firstNonnull(GunsRPG.getModLifecycle().getProgressionStrategyManager().getStrategy(validator), FakeLevelingStrategy.INSTANCE);
@@ -65,11 +67,17 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
 
     @Override
     public int getPoints() {
-        return points;
+        return points + this.weaponPool.getPoints();
     }
 
     @Override
     public void awardPoints(int points) {
+        int weaponSharedPoints = this.weaponPool.getPoints();
+        if (points < 0 && weaponSharedPoints > 0) {
+            int substraction = Math.max(Math.abs(points), weaponSharedPoints);
+            this.weaponPool.awardPoints(-substraction);
+            points += substraction;
+        }
         this.points += points;
     }
 

@@ -29,7 +29,7 @@ public class PointAwardItem extends BaseItem {
             PlayerData.get(player).ifPresent(data -> {
                 IPointProvider provider = this.pointSource.getProvider(data);
                 provider.awardPoints(1);
-                data.sync(DataFlags.DATA | DataFlags.PERK);
+                data.sync(DataFlags.DATA | DataFlags.PERK | DataFlags.WEAPON_POOL);
                 if (!player.isCreative())
                     stack.shrink(1);
                 world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, SoundCategory.MASTER, 0.75F, 1.0F);

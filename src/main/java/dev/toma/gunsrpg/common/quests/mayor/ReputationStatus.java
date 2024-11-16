@@ -40,6 +40,10 @@ public enum ReputationStatus {
         return status;
     }
 
+    public static boolean is(ReputationStatus status, float reputation) {
+        return reputation >= status.sinceReputation;
+    }
+
     public int getBaseTier() {
         return tierLevel;
     }

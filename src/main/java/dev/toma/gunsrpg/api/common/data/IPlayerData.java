@@ -23,6 +23,8 @@ public interface IPlayerData {
 
     IProgressData getProgressData();
 
+    IPointProvider getSharedWeaponPoints();
+
     IHandState getHandState();
 
     ITraderStandings getMayorReputationProvider();

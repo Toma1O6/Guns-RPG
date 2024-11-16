@@ -33,6 +33,7 @@ public class ModItems {
     public static final BaseItem GOLD_ORE_CHUNK = null;
     public static final PointAwardItem SKILLPOINT_BOOK = null;
     public static final PointAwardItem PERKPOINT_BOOK = null;
+    public static final PointAwardItem WEAPON_BOOK = null;
     public static final BaseItem GOLD_EGG_SHARD = null;
     public static final CookingOilItem COOKING_OIL = null;
     public static final BaseItem SMALL_STONE = null;
