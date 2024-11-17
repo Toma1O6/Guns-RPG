@@ -55,11 +55,11 @@ public class C2S_RequestExtensionSkillLockPacket extends AbstractNetworkPacket<C
                     skillProvider.lock(type);
                     ITransactionValidator validator = childProps.getTransactionValidator();
                     IPointProvider pointProvider = validator.getData(data);
-                    pointProvider.awardPoints(childProps.getPrice());
+                    pointProvider.addPoints(childProps.getPrice());
                 }
             }
             if (lockedAny) {
-                provider.awardPoints(-GunKillData.SKILL_RESET_PRICE);
+                provider.addPoints(-GunKillData.SKILL_RESET_PRICE);
             }
             data.sync(DataFlags.WILDCARD);
         });

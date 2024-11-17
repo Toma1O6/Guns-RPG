@@ -168,7 +168,7 @@ public class CrystalStationContainer extends AbstractContainer {
                     }
                     provider.setCrystal(slot, crystal);
                     provider.setCooldown(GunsRPG.config.world.crystalStationUseCooldown);
-                    provider.awardPoints(-1);
+                    provider.addPoints(-1);
                 }
             }
         }

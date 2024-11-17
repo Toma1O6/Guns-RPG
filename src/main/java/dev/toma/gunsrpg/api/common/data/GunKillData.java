@@ -71,14 +71,20 @@ public class GunKillData implements IKillData, ILockStateChangeable, INBTSeriali
     }
 
     @Override
-    public void awardPoints(int points) {
-        int weaponSharedPoints = this.weaponPool.getPoints();
-        if (points < 0 && weaponSharedPoints > 0) {
-            int substraction = Math.min(Math.abs(points), weaponSharedPoints);
-            this.weaponPool.awardPoints(-substraction);
-            points += substraction;
+    public void addPoints(int points) {
+        if (points >= 0) {
+            this.points += points;
+        } else {
+            int value = Math.abs(points);
+            if (this.points > 0) {
+                int subtraction = Math.min(value, this.points);
+                this.points -= subtraction;
+                value -= subtraction;
+            }
+            if (value > 0) {
+                this.weaponPool.addPoints(-value);
+            }
         }
-        this.points += points;
     }
 
     @Override

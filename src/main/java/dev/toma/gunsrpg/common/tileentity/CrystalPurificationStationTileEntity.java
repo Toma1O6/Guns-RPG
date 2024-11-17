@@ -47,7 +47,7 @@ public class CrystalPurificationStationTileEntity extends InventoryTileEntity {
         int orbCount = getOrbCount();
         PurificationConfiguration.Entry entry = puficationConfig.getValueForAmount(orbCount);
         int price = entry.getPrice();
-        provider.awardPoints(-price);
+        provider.addPoints(-price);
         Random random = player.getRandom();
         float breakChance = entry.getBreakChance();
         if (random.nextFloat() < breakChance) {

@@ -899,18 +899,18 @@ public class GunsrpgCommand {
     }
 
     private static int addPoint(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        return modifyProgression(context, 1, JsonNull.INSTANCE, IPointProvider::awardPoints);
+        return modifyProgression(context, 1, JsonNull.INSTANCE, IPointProvider::addPoints);
     }
 
     private static int addPoints(CommandContext<CommandSource> context) throws CommandSyntaxException {
         int amount = IntegerArgumentType.getInteger(context, "amount");
-        return modifyProgression(context, amount, JsonNull.INSTANCE, IPointProvider::awardPoints);
+        return modifyProgression(context, amount, JsonNull.INSTANCE, IPointProvider::addPoints);
     }
 
     private static int addPointsSpecific(CommandContext<CommandSource> context) throws CommandSyntaxException {
         int amount = IntegerArgumentType.getInteger(context, "amount");
         JsonElement data = JsonArgumentType.getJson(context, "txData");
-        return modifyProgression(context, amount, data, IPointProvider::awardPoints);
+        return modifyProgression(context, amount, data, IPointProvider::addPoints);
     }
 
     private static int modifyProgression(CommandContext<CommandSource> context, int amount, JsonElement jsonData, BiConsumer<IKillData, Integer> action) throws CommandSyntaxException {

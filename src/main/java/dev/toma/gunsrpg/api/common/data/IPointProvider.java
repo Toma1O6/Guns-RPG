@@ -4,5 +4,5 @@ public interface IPointProvider {
 
     int getPoints();
 
-    void awardPoints(int amount);
+    void addPoints(int amount);
 }

@@ -280,7 +280,7 @@ public class ExtensionsView extends View {
         }
 
         @Override
-        public void awardPoints(int amount) {
+        public void addPoints(int amount) {
             throw new UnsupportedOperationException("Cannot perform this operation on read-only provider");
         }
 

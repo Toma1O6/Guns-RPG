@@ -221,7 +221,7 @@ public class PlayerData implements IPlayerData {
         private ISyncRequestDispatcher dispatcher;
 
         @Override
-        public void awardPoints(int amount) {
+        public void addPoints(int amount) {
             this.availablePoints = Math.max(this.availablePoints + amount, 0);
             if (this.dispatcher != null)
                 this.dispatcher.sendSyncRequest();

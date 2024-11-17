@@ -56,7 +56,7 @@ public class CrystalFusionStationTileEntity extends InventoryTileEntity {
         FusionConfiguration.BreakChanceReductions reductions = fusionConfig.getBreakChanceReductions();
         int price = upgrade.getPrice() + swapConfig.getPrice();
         float breakChance = upgrade.getBreakChance();
-        data.getPerkProvider().awardPoints(-price);
+        data.getPerkProvider().addPoints(-price);
         Random random = level.random;
         EnumSet<PerkVariant> usedVariants = this.getCurrentlyUsedVariants();
         if (usedVariants.size() == 1) { // when same only one color is used

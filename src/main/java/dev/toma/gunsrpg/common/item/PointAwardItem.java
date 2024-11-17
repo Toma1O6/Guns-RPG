@@ -28,7 +28,7 @@ public class PointAwardItem extends BaseItem {
         if (!world.isClientSide) {
             PlayerData.get(player).ifPresent(data -> {
                 IPointProvider provider = this.pointSource.getProvider(data);
-                provider.awardPoints(1);
+                provider.addPoints(1);
                 data.sync(DataFlags.DATA | DataFlags.PERK | DataFlags.WEAPON_POOL);
                 if (!player.isCreative())
                     stack.shrink(1);

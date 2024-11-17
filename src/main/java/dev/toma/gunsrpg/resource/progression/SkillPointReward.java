@@ -16,7 +16,7 @@ public class SkillPointReward implements ILevelReward {
 
     @Override
     public void applyTo(PlayerEntity player, IKillData data) {
-        data.awardPoints(amount);
+        data.addPoints(amount);
     }
 
     public static class Adapter implements ILevelRewardAdapter<SkillPointReward> {

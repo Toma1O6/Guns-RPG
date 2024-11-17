@@ -63,7 +63,7 @@ public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
     }
 
     @Override
-    public void awardPoints(int amount) {
+    public void addPoints(int amount) {
         perkPoints += amount;
         syncRequestFactory.sendSyncRequest();
     }

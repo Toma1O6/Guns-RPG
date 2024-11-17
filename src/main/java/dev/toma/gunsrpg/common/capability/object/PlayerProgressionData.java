@@ -130,7 +130,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     }
 
     @Override
-    public void awardPoints(int points) {
+    public void addPoints(int points) {
         skillPoints += points;
     }
 
@@ -270,7 +270,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     private void handleWeaponPointTransaction(ITransaction<WeaponPointTransaction.IWeaponData> transaction) {
         GunItem item = transaction.getData().item();
         IKillData data = getWeaponStats(item);
-        data.awardPoints(-transaction.total());
+        data.addPoints(-transaction.total());
         skillProvider.unlock(transaction.getData().skill());
     }
 }
