@@ -36,7 +36,7 @@ public abstract class LivingEntityMixin extends Entity {
         gunsrpg$lastDamageSource = damageSource;
     }
 
-    @Inject(method = "knockback", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraftforge/event/entity/living/LivingKnockBackEvent;getStrength()F"), cancellable = true, remap = false)
+    @Inject(method = "knockback", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraftforge/event/entity/living/LivingKnockBackEvent;getStrength()F", remap = false), cancellable = true)
     private void gunsrpg_disableKnockback(float strength, double x, double z, CallbackInfo ci) {
         if (gunsrpg$lastDamageSource instanceof WeaponDamageSource) {
             ci.cancel();
