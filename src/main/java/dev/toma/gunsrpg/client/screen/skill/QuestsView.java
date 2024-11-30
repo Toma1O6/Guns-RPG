@@ -164,7 +164,7 @@ public class QuestsView extends View implements ScreenDataEventListener {
         public InviteWidget(int x, int y, int width, int height, GroupInvite invite) {
             super(x, y, width, height);
             this.invite = invite;
-            this.source = this.getSource(invite.getPlayerId());
+            this.source = this.getSource(invite.getGroupId());
             if (this.source == null) {
                 NetworkManager.sendServerPacket(new C2S_InviteEvent(false, invite.getGroupId()));
             } else {
