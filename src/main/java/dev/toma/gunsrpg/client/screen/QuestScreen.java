@@ -80,6 +80,7 @@ public class QuestScreen extends Screen implements ScreenDataEventListener {
 
     private QuestInfoPanelWidget infoPanelWidget;
     private Quest<?> selectedQuest;
+    private Integer[] selectedRewards = new Integer[0];
 
     public QuestScreen(ReputationStatus status, Quest<?>[] quests, MayorEntity entity, long timer) {
         super(new TranslationTextComponent("screen.gunsrpg.quests"));
@@ -113,6 +114,8 @@ public class QuestScreen extends Screen implements ScreenDataEventListener {
         int panelWidth = width - panelLeft - 10;
         infoPanelWidget = addButton(new QuestInfoPanelWidget(panelLeft, 0, panelWidth, height, skillProvider, font));
         infoPanelWidget.setSelectedQuest(selectedQuest);
+        infoPanelWidget.setSelectedIndexes(selectedRewards);
+        infoPanelWidget.setOnSelectionChanged(indexes -> this.selectedRewards = indexes);
     }
 
     @Override
@@ -239,13 +242,26 @@ public class QuestScreen extends Screen implements ScreenDataEventListener {
 
         private Quest<?> selectedQuest;
         private Integer[] selectedIndexes = new Integer[0];
+        private Consumer<Integer[]> onSelectionChanged = (idxs) -> {};
 
         private ActionButton actionButton;
+        private RewardsWidget rewardsWidget;
 
         public QuestInfoPanelWidget(int x, int y, int width, int height, ISkillProvider provider, FontRenderer font) {
             super(x, y, width, height);
             this.provider = provider;
             this.font = font;
+        }
+
+        public void setSelectedIndexes(Integer[] selectedIndexes) {
+            this.selectedIndexes = selectedIndexes;
+            if (this.rewardsWidget != null) {
+                this.rewardsWidget.addSelection(selectedIndexes);
+            }
+        }
+
+        public void setOnSelectionChanged(Consumer<Integer[]> onSelectionChanged) {
+            this.onSelectionChanged = onSelectionChanged;
         }
 
         @Override
@@ -278,7 +294,8 @@ public class QuestScreen extends Screen implements ScreenDataEventListener {
                     addTitle(y += offset, TEXT_QUEST_REWARDS, TextFormatting.YELLOW, TextFormatting.BOLD);
                     BartenderSkill bartenderSkill = SkillUtil.getTopHierarchySkill(Skills.BARTENDER_I, provider);
                     int selectionSize = bartenderSkill != null ? bartenderSkill.getRewardCount() : 1;
-                    addWidget(new RewardsWidget(this.x + 5, y + 45, width - 10, height - 75 - y, selectedQuest, selectionSize, this::onRewardSelectionChanged));
+                    rewardsWidget = addWidget(new RewardsWidget(this.x + 5, y + 45, width - 10, height - 75 - y, selectedQuest, selectionSize, this::onRewardSelectionChanged));
+                    rewardsWidget.addSelection(this.selectedIndexes);
                 }
             } else {
                 if (conditions.length > 0) {
@@ -334,6 +351,7 @@ public class QuestScreen extends Screen implements ScreenDataEventListener {
             if (actionButton == null) return;
             actionButton.active = choices.length > 0;
             this.selectedIndexes = choices;
+            this.onSelectionChanged.accept(this.selectedIndexes);
         }
 
         private void handleResponse(ActionType type) {
@@ -461,7 +479,8 @@ public class QuestScreen extends Screen implements ScreenDataEventListener {
 
         private final int selectionSize;
         private final Consumer<Integer[]> selectionIndexConsumer;
-        private final Set<ChoiceWidget> choices = new HashSet<>();
+        private final List<ChoiceWidget> choices = new ArrayList<>();
+        private ChoiceWidget[] choiceWidgets;
 
         public RewardsWidget(int x, int y, int width, int height, Quest<?> quest, int selectionSize, Consumer<Integer[]> selectionIndexConsumer) {
             super(x, y, width, height);
@@ -475,8 +494,9 @@ public class QuestScreen extends Screen implements ScreenDataEventListener {
             Minecraft mc = Minecraft.getInstance();
             FontRenderer font = mc.font;
             ItemRenderer itemRenderer = mc.getItemRenderer();
+            this.choiceWidgets = new ChoiceWidget[choices.length];
             for (int i = 0; i < choices.length; i++) {
-                addWidget(new ChoiceWidget(5, index * 30, oneThird, 25, index, font, this::trySelectChoice));
+                choiceWidgets[i] = addWidget(new ChoiceWidget(5, index * 30, oneThird, 25, index, font, this::trySelectChoice));
                 ++index;
             }
             index = 0;
@@ -489,6 +509,17 @@ public class QuestScreen extends Screen implements ScreenDataEventListener {
                 }
                 ++index;
             }
+        }
+
+        public void addSelection(Integer[] choices) {
+            this.choices.clear();
+            for (Integer choice : choices) {
+                if (choice != null && choice >= 0 && choice < this.choiceWidgets.length) {
+                    this.choiceWidgets[choice].setSelected(true);
+                    this.choices.add(this.choiceWidgets[choice]);
+                }
+            }
+            this.selectionIndexConsumer.accept(choices);
         }
 
         @Override
