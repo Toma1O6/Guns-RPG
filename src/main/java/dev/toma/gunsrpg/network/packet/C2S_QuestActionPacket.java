@@ -207,8 +207,8 @@ public class C2S_QuestActionPacket extends AbstractNetworkPacket<C2S_QuestAction
                 QuestReward memberReward = QuestReward.generate(list, new QuestReward.Options().choiceCount(1).items(1), member);
                 QuestReward.Choice[] memberChoices = memberReward.getChoices();
                 if (memberChoices.length > 0) {
-                    int randomItemIndex = member.level.random.nextInt(choices.length);
-                    QuestReward.Choice choice = choices[randomItemIndex];
+                    int randomItemIndex = member.level.random.nextInt(memberChoices.length);
+                    QuestReward.Choice choice = memberChoices[randomItemIndex];
                     choice.distributeToInventory(member);
                 }
             });
