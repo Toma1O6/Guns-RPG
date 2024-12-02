@@ -187,7 +187,7 @@ public final class QuestEventHandler {
         World world = event.getWorld();
         QuestingDataProvider.getData(world).ifPresent(questing -> {
             QuestArea activeArea = questing.getActiveQuestAreas()
-                    .filter(area -> area.isActiveArea() && (area.isInArea(player) || area.isInArea(pos.getX(), pos.getZ())))
+                    .filter(area -> area.isInArea(player) || area.isInArea(pos.getX(), pos.getZ()))
                     .findFirst()
                     .orElse(null);
             if (activeArea != null) {
