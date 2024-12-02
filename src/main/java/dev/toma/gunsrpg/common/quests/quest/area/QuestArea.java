@@ -77,10 +77,6 @@ public class QuestArea {
         return scheme;
     }
 
-    public boolean isActiveArea() {
-        return isActiveArea;
-    }
-
     public BlockPos getRandomEgdePosition(Random random, World world) {
         int mode = random.nextInt(4);
         int minX = cornerA.x();

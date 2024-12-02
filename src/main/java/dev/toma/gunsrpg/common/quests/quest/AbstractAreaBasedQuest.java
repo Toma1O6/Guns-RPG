@@ -117,11 +117,6 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
         return !areaEntered;
     }
 
-    @Override
-    public boolean isStarted() {
-        return this.areaEntered;
-    }
-
     protected int getGracePeriodDuration() {
         return Interval.seconds(5).getTicks();
     }
