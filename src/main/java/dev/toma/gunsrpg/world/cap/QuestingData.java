@@ -132,7 +132,8 @@ public class QuestingData implements IQuestingData {
     public Stream<QuestArea> getActiveQuestAreas() {
         return this.activeQuests.values().stream()
                 .filter(quest -> quest.getStatus() == QuestStatus.ACTIVE && quest instanceof IAreaQuest)
-                .map(quest -> ((IAreaQuest) quest).getQuestArea());
+                .map(quest -> ((IAreaQuest) quest).getQuestArea())
+                .filter(Objects::nonNull);
     }
 
     @Override
