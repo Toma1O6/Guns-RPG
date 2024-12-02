@@ -30,7 +30,7 @@ public final class QuestConfig {
     public float waveScalingMultiplier = 1.5F;
 
     @Configurable
-    @Configurable.Comment("Will add additional effects such as Speed/Strength/Resistance to spawned mobs for bigger questing groups")
+    @Configurable.Comment("Will add additional Resistance potion effect to spawned mobs for bigger questing groups")
     public boolean buffSpawnedMobsForGroup = true;
 
     @Configurable

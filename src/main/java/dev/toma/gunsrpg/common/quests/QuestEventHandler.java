@@ -158,23 +158,11 @@ public final class QuestEventHandler {
             return;
         QuestingGroup group = event.getGroup();
         int count = group.getMemberCount();
+        if (count < 3)
+            return;
+        int amplifier = Math.min(5, count / 3) - 1;
         LivingEntity entity = event.getEntity();
-        if (count >= 2) {
-            int amplifier = MathHelper.clamp(count / 2 - 1, 0, 4);
-            entity.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, Integer.MAX_VALUE, amplifier, true, false));
-        }
-        if (count >= 3) {
-            int amplifier = MathHelper.clamp(count / 3 - 1, 0, 2);
-            entity.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, Integer.MAX_VALUE, amplifier, true, false));
-        }
-        if (count >= 5) {
-            int amplifier = MathHelper.clamp(count / 5 - 1, 0, 2);
-            entity.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, Integer.MAX_VALUE, amplifier, true, false));
-        }
-        if (count >= 8) {
-            int amplifier = MathHelper.clamp(count / 8 - 1, 0, 2);
-            entity.addEffect(new EffectInstance(Effects.REGENERATION, Integer.MAX_VALUE, amplifier, true, false));
-        }
+        entity.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, Integer.MAX_VALUE, amplifier, true, false));
     }
 
     private static void cancelIfPlayerIsInQuestArea(PlayerInteractEvent event) {
