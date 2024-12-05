@@ -171,7 +171,7 @@ public class R45Item extends GunItem {
         if (PlayerData.hasActiveSkill(player, Skills.R45_ACE_OF_HEARTS)) {
             boolean headshot = projectile.getProperty(dev.toma.gunsrpg.util.properties.Properties.IS_HEADSHOT);
             if (headshot) {
-                SkillUtil.heal(player, 1.0F);
+                player.heal(1.0F);
             }
         }
     }

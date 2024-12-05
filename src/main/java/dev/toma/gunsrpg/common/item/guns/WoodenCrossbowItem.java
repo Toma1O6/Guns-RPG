@@ -107,7 +107,7 @@ public class WoodenCrossbowItem extends AbstractCrossbow {
     @Override
     public void onKillEntity(AbstractProjectile bullet, LivingEntity victim, ItemStack stack, LivingEntity shooter) {
         if (shooter instanceof PlayerEntity && PlayerData.hasActiveSkill((PlayerEntity) shooter, Skills.CROSSBOW_HUNTER) && victim instanceof MonsterEntity) {
-            SkillUtil.heal((PlayerEntity) shooter, 2.0F);
+            shooter.heal(2.0F);
         }
     }
 
