@@ -10,10 +10,6 @@ public final class WorldConfiguration {
     public boolean createCrateOnPlayerDeath = false;
 
     @Configurable
-    @Configurable.Comment({"Disables replacement of iron ore / gold ore to chunks", "BEWARE: This also disables extra drops from skills"})
-    public boolean replaceOresAsChunks = true;
-
-    @Configurable
     @Configurable.Range(min = -1, max = 999)
     @Configurable.Synchronized
     @Configurable.Comment({"Frequency in days specifying how often bloodmoon happens", "Value -1 means no bloodmoons"})

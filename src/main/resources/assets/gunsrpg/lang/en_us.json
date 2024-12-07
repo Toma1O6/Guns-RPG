@@ -1885,7 +1885,6 @@
   "config.gunsrpg.option.generationConfig": "World Generation Config",
   "config.gunsrpg.option.mobConfig": "Mob Config",
   "config.gunsrpg.option.createCrateOnPlayerDeath": "Death Crate",
-  "config.gunsrpg.option.replaceOresAsChunks": "Replace Ores As Chunks",
   "config.gunsrpg.option.disableMobSpawners": "Disable Spawners",
   "config.gunsrpg.option.bloodMoonMobAgroRange": "Bloodmoon Aggro Range",
   "config.gunsrpg.option.shootingMobAggroRange": "Ranged Mobs Aggro Range",
