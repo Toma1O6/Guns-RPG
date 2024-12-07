@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.quests.mayor;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
+import dev.toma.gunsrpg.config.QuestConfig;
 import dev.toma.gunsrpg.util.helper.ReputationHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -36,12 +37,15 @@ public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT
         this.reputation = ReputationHelper.clampWithinReputationLimits(input);
         ReputationStatus currentStatus = ReputationStatus.getStatus(this.reputation);
         this.sendReputationStatusUpdate(previousStatus, currentStatus);
-        if (!maxedOutReputation && ReputationHelper.isMaxedOut(this.reputation)) {
-            maxedOutReputation = true;
-            ReputationHelper.awardPlayerForMaxReputation(player);
-        } else if (!rewardedWeaponBook && ReputationStatus.is(ReputationStatus.LOYAL, this.reputation)) {
-            this.rewardedWeaponBook = true;
-            ReputationHelper.awardPlayerWeaponBook(player);
+        QuestConfig config = GunsRPG.config.quests;
+        if (config.mayorRewardsForReputation) {
+            if (!maxedOutReputation && ReputationStatus.is(config.eggShardRewardStatus, this.reputation)) {
+                maxedOutReputation = true;
+                ReputationHelper.awardPlayerForMaxReputation(player);
+            } else if (!rewardedWeaponBook && ReputationStatus.is(config.weaponBookRewardStatus, this.reputation)) {
+                this.rewardedWeaponBook = true;
+                ReputationHelper.awardPlayerWeaponBook(player);
+            }
         }
         this.synchronizationTrigger.run();
         GunsRPG.log.debug(QuestSystem.MARKER, "Updated {}'s reputation to {}", player.getName().getString(), this.reputation);

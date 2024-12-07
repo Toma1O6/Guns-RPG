@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.config;
 
 import dev.toma.configuration.config.Configurable;
+import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.util.Interval;
 import dev.toma.gunsrpg.util.helper.ReputationHelper;
 
@@ -55,4 +56,16 @@ public final class QuestConfig {
     @Configurable.Synchronized
     @Configurable.Comment("Will block all possible interaction types inside quest areas")
     public boolean disableQuestAreaInteractions = true;
+
+    @Configurable
+    @Configurable.Comment("Enables various rewards given by mayor for reaching certain reputation levels")
+    public boolean mayorRewardsForReputation = true;
+
+    @Configurable
+    @Configurable.Comment("At which reputation status weapon book is awarded")
+    public ReputationStatus weaponBookRewardStatus = ReputationStatus.FRIENDLY;
+
+    @Configurable
+    @Configurable.Comment("At which reputation status egg shards are awarded")
+    public ReputationStatus eggShardRewardStatus = ReputationStatus.HERO;
 }

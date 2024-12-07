@@ -2001,6 +2001,9 @@
   "config.gunsrpg.option.reputationLossPerTier": "Reputation loss",
   "config.gunsrpg.option.questRefreshInterval": "Quest refresh interval",
   "config.gunsrpg.option.disableQuestAreaInteractions": "Disable quest area interactions",
+  "config.gunsrpg.option.mayorRewardsForReputation": "Mayor reputation rewards",
+  "config.gunsrpg.option.weaponBookRewardStatus": "Weapon book reward status",
+  "config.gunsrpg.option.eggShardRewardStatus": "Egg shard reward status",
 
   "config.gunsrpg-client.option.developerMode": "Developer Mode",
   "config.gunsrpg-client.option.aimInputType": "Aim Input Type",
