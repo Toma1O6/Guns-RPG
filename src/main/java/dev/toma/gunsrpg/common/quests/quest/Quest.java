@@ -199,7 +199,7 @@ public abstract class Quest<D extends IQuestData> {
 
     public void trigger(Trigger trigger, IPropertyReader reader) {
         Collection<TriggerContext> contexts = triggerListeners.get(trigger);
-        if (contexts != null) {
+        if (contexts != null && this.isStarted()) {
             TriggerResponseStatus response = TriggerResponseStatus.OK;
             for (TriggerContext context : contexts) {
                 TriggerResponseStatus status = context.getResponse(trigger, reader);
