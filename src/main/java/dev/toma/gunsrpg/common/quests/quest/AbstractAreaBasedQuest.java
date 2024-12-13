@@ -45,6 +45,11 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
         return area;
     }
 
+    @Override
+    public boolean isStarted() {
+        return this.areaEntered;
+    }
+
     // Ticking
     @Override
     public void tickQuest() {
@@ -177,7 +182,7 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
     }
 
     private void generateAreaIfMissing(World world) {
-        if (area != null) return;
+        if (area != null || world.isClientSide()) return;
         D activeData = this.getActiveData();
         this.area = this.generateArea(activeData, world);
         trySyncClient(world);
