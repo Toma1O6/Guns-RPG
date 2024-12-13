@@ -26,6 +26,7 @@ import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.world.LootStashes;
+import dev.toma.gunsrpg.world.WeaponDamageSource;
 import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataProvider;
@@ -387,7 +388,7 @@ public class CommonEventHandler {
         Entity directSource = damageSource.getEntity();
         if (directSource instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) directSource;
-            ItemStack killWeapon = damageSource instanceof WeaponDamageSource ? ((WeaponDamageSource) damageSource).getKillWeapon() : player.getMainHandItem();
+            ItemStack killWeapon = damageSource instanceof WeaponDamageSource ? ((WeaponDamageSource) damageSource).getKillWeapon() : ItemStack.EMPTY;
             Entity victim = event.getEntity();
             PlayerData.get(player).ifPresent(data -> data.getProgressData().onEnemyKilled(victim, killWeapon));
         }

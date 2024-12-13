@@ -1,4 +1,4 @@
-package dev.toma.gunsrpg.common.init;
+package dev.toma.gunsrpg.world;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

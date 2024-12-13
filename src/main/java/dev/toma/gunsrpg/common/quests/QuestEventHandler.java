@@ -4,7 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IQuestingData;
 import dev.toma.gunsrpg.api.common.event.QuestingEvent;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
-import dev.toma.gunsrpg.common.init.WeaponDamageSource;
+import dev.toma.gunsrpg.world.WeaponDamageSource;
 import dev.toma.gunsrpg.common.quests.quest.area.QuestArea;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;

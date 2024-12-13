@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.mixin;
 
-import dev.toma.gunsrpg.common.init.WeaponDamageSource;
+import dev.toma.gunsrpg.world.WeaponDamageSource;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

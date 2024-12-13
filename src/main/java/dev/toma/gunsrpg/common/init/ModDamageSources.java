@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
+import dev.toma.gunsrpg.world.WeaponDamageSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;

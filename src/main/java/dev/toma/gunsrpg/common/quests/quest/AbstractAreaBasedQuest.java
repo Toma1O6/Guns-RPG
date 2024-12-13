@@ -1,8 +1,8 @@
 package dev.toma.gunsrpg.common.quests.quest;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.client.render.infobar.AreaDistanceElement;
 import dev.toma.gunsrpg.client.render.infobar.QuestDisplayDataModel;
-import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.common.quests.quest.area.IAreaQuest;
 import dev.toma.gunsrpg.common.quests.quest.area.IQuestAreaProvider;
 import dev.toma.gunsrpg.common.quests.quest.area.QuestArea;
@@ -53,8 +53,19 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
     // Ticking
     @Override
     public void tickQuest() {
+        this.generateAreaIfMissing(level);
+        if (this.area == null)
+            return;
+
+        if (this.area.isInArea(this.group, this.level)) {
+            boolean wasEntered = this.areaEntered;
+            this.areaEntered = true;
+            if (!wasEntered) {
+                this.onAreaEntered();
+            }
+        }
         QuestStatus status = this.getStatus();
-        if (status == QuestStatus.ACTIVE && area != null) {
+        if (status == QuestStatus.ACTIVE) {
             if (areaEntered) {
                 area.tickArea(this.level, this.group);
             } else {
@@ -99,17 +110,10 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
     protected abstract void handleSuccessfulTick(Trigger trigger, IPropertyReader reader);
 
     protected TriggerResponseStatus onTick(Trigger trigger, IPropertyReader reader) {
-        World level = reader.getProperty(QuestProperties.LEVEL);
-        this.generateAreaIfMissing(level);
-        if (area.isInArea(this.group, level)) {
-            boolean wasEntered = areaEntered;
-            areaEntered = true;
-            if (!wasEntered) {
-                this.onAreaEntered();
-            }
+        if (this.area != null && this.area.isInArea(this.group, this.level)) {
             return TriggerResponseStatus.OK;
         }
-        return areaEntered && !isGracePeriodActive() ? TriggerResponseStatus.FAIL : TriggerResponseStatus.PASS;
+        return this.areaEntered && !isGracePeriodActive() ? TriggerResponseStatus.FAIL : TriggerResponseStatus.PASS;
     }
 
     protected TriggerResponseStatus onPlayerDeath(Trigger trigger, IPropertyReader reader) {
@@ -132,7 +136,7 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
 
     protected QuestArea generateArea(D activeData, World world) {
         PlayerEntity leader = world.getPlayerByUUID(this.group.getGroupId());
-        return activeData.getAreaScheme().getArea(world, (int) leader.getX(), (int) leader.getZ());
+        return leader != null ? activeData.getAreaScheme().getArea(world, (int) leader.getX(), (int) leader.getZ()) : null;
     }
 
     protected void fillAreaDataModel(QuestDisplayDataModel dataModel) {
@@ -185,6 +189,9 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
         if (area != null || world.isClientSide()) return;
         D activeData = this.getActiveData();
         this.area = this.generateArea(activeData, world);
-        trySyncClient(world);
+        if (this.area != null) {
+            GunsRPG.log.debug("Generated area at [{}; {}]", this.area.getCenter().getX(), this.area.getCenter().getZ());
+            trySyncClient(world);
+        }
     }
 }

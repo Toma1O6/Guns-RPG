@@ -16,7 +16,7 @@ public class WeaponDamageSource extends AbstractDamageSource {
 
     @Override
     public boolean isValid(IDebuffContext context) {
-        return context.getSource() instanceof dev.toma.gunsrpg.common.init.WeaponDamageSource;
+        return context.getSource() instanceof dev.toma.gunsrpg.world.WeaponDamageSource;
     }
 
     @Override

@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
@@ -15,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.play.server.SExplosionPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -22,11 +24,14 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.items.IItemHandler;
 import org.apache.logging.log4j.util.TriConsumer;
 
@@ -40,6 +45,25 @@ public class ModUtils {
 
     public static final ISplitter<SkillCategory, SkillType<?>> SKILLS_BY_CATEGORY = ModUtils::splitSkillsIntoCategories;
     public static final DecimalFormatSymbols DOT_DECIMAL_SEPARATOR = new DecimalFormatSymbols();
+
+    public static Explosion explode(ServerWorld world, Explosion explosion) {
+        if (ForgeEventFactory.onExplosionStart(world, explosion))
+            return explosion;
+        explosion.explode();
+        explosion.finalizeExplosion(false);
+        if (explosion.blockInteraction == Explosion.Mode.NONE)
+            explosion.clearToBlow();
+
+        Vector3d explosionVec = explosion.getPosition();
+        for (ServerPlayerEntity player : world.players()) {
+            if (player.distanceToSqr(explosionVec) < 4096) {
+                Vector3d playerKnockback = explosion.getHitPlayers().get(player);
+                player.connection.send(new SExplosionPacket(explosionVec.x, explosionVec.y, explosionVec.z, explosion.radius, explosion.getToBlow(), playerKnockback));
+            }
+        }
+
+        return explosion;
+    }
 
     public static void addItem(PlayerEntity player, ItemStack stack) {
         if (player.level.isClientSide) return;

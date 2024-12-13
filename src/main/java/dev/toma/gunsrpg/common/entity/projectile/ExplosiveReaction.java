@@ -1,10 +1,14 @@
 package dev.toma.gunsrpg.common.entity.projectile;
 
+import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.properties.Properties;
+import dev.toma.gunsrpg.world.WeaponExplosiveDamageSource;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class ExplosiveReaction implements IReaction {
 
@@ -25,7 +29,9 @@ public class ExplosiveReaction implements IReaction {
         if (!world.isClientSide) {
             float power = projectile.getProperty(Properties.EXPLOSION_POWER) + explosionPower;
             boolean allowGriefing = world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-            world.explode(projectile, impact.x, impact.y, impact.z, power, allowGriefing ? mode : Explosion.Mode.NONE);
+            DamageSource source = new WeaponExplosiveDamageSource(projectile.getOwner(), projectile, projectile.getWeaponSource());
+            Explosion explosion = new Explosion(world, projectile, source, null, impact.x, impact.y, impact.z, power, false, allowGriefing ? mode : Explosion.Mode.NONE);
+            ModUtils.explode((ServerWorld) world, explosion);
         }
     }
 }
