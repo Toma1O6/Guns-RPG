@@ -13,7 +13,8 @@
   "client": [
     "BiomeMixin",
     "PlayerModelMixin",
-    "MinecraftMixin"
+    "MinecraftMixin",
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
