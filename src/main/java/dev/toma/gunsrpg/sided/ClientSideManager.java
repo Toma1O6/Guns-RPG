@@ -21,7 +21,7 @@ import dev.toma.gunsrpg.common.init.ModContainers;
 import dev.toma.gunsrpg.common.init.ModEntities;
 import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.config.client.GunsrpgConfigClient;
-import dev.toma.gunsrpg.util.object.ShootingManager;
+import dev.toma.gunsrpg.client.ClientShootingManager;
 import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.AnimationStage;
 import lib.toma.animations.api.AnimationType;
@@ -123,7 +123,7 @@ public class ClientSideManager {
         return () -> {
             Minecraft mc = Minecraft.getInstance();
             if (!PlayerData.getUnsafe(mc.player).getAimInfo().startedAiming()) {
-                ShootingManager.Client.loadSettings(mc.options);
+                ClientShootingManager.loadSettings(mc.options);
             }
         };
     }

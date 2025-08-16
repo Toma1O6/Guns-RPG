@@ -106,6 +106,7 @@ public class ClientEventHandler {
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
         if (event.phase == TickEvent.Phase.END && player != null) {
+            ClientShootingManager.update();
             LazyOptional<IPlayerData> optional = PlayerData.get(player);
             updateCurrentBloodmoonStatus(player);
             if (!optional.isPresent())
@@ -117,7 +118,7 @@ public class ClientEventHandler {
             if (settings.keyAttack.isDown()) {
                 dispatchWeaponInputEvent(InputEventListenerType.ON_TICK, player, data);
             }
-            if (ShootingManager.Client.isBurstModeActive()) {
+            if (ClientShootingManager.isBurstModeActive()) {
                 dispatchWeaponInputEvent(InputEventListenerType.ON_BURST_TICK, player, data);
             }
             ItemStack stack = player.getMainHandItem();
@@ -180,12 +181,12 @@ public class ClientEventHandler {
     private static void handleAim(LazyOptional<IPlayerData> optional, GameSettings settings, PlayerEntity player, GunItem item, ItemStack stack, IAnimationPipeline pipeline) {
         boolean aim = optional.isPresent() && optional.orElse(null).getAimInfo().startedAiming();
         if (!aim) {
-            ShootingManager.Client.saveSettings(settings);
+            ClientShootingManager.saveSettings(settings);
             ScopeDataRegistry.Entry entry = ScopeDataRegistry.getRegistry().getRegistryEntry(item);
             optional.ifPresent(data -> {
                 ISkillProvider provider = data.getSkillProvider();
                 if (entry.isApplicable(provider)) {
-                    ShootingManager.Client.applySettings(settings, entry);
+                    ClientShootingManager.applySettings(settings, entry);
                 }
             });
             ResourceLocation aimAnimationPath = item.getAimAnimationPath(stack, player);
@@ -193,7 +194,7 @@ public class ClientEventHandler {
                 pipeline.insert(ModAnimations.AIM_ANIMATION, AnimationUtils.createAnimation(aimAnimationPath, AimAnimation::new));
             }
         } else {
-            ShootingManager.Client.loadSettings(settings);
+            ClientShootingManager.loadSettings(settings);
         }
         NetworkManager.sendServerPacket(new C2S_SetAimingPacket(!aim));
     }

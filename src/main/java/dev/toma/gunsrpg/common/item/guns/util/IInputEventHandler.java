@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item.guns.util;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
+import dev.toma.gunsrpg.client.ClientShootingManager;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -42,8 +43,8 @@ public interface IInputEventHandler {
         }
 
         private void handleInput(ItemStack stack) {
-            if (!ShootingManager.Client.isBurstModeActive()) {
-                ShootingManager.Client.setBurstActive(true);
+            if (!ClientShootingManager.isBurstModeActive()) {
+                ClientShootingManager.setBurstActive(true);
                 shotsLeft = 3;
                 heldItem = stack.getItem();
             }
@@ -52,12 +53,12 @@ public interface IInputEventHandler {
         private void handleTick(PlayerEntity player, ItemStack stack, IPlayerData data) {
             if (shootReady.getAsBoolean()) {
                 if (heldItem == stack.getItem() && ShootingManager.canShoot(player, stack)) {
-                    ShootingManager.Client.shoot(player, stack, data);
+                    ClientShootingManager.shoot(player, stack, data);
                     if (--shotsLeft <= 0) {
-                        ShootingManager.Client.setBurstActive(false);
+                        ClientShootingManager.setBurstActive(false);
                     }
                 } else {
-                    ShootingManager.Client.setBurstActive(false);
+                    ClientShootingManager.setBurstActive(false);
                 }
             }
         }
@@ -79,7 +80,7 @@ public interface IInputEventHandler {
             boolean canShootSecond = ammo > 1;
             Utils.shootWithValidation(player, stack, data);
             if (canShootSecond && Utils.isWeaponInShootableState(stack)) {
-                ShootingManager.Client.shoot(player, stack, data);
+                ClientShootingManager.shoot(player, stack, data);
             }
         }
     }
@@ -89,8 +90,8 @@ public interface IInputEventHandler {
         @Override
         public void invokeEvent(InputEventListenerType event, PlayerEntity player, ItemStack stack, IPlayerData data) {
             if (ShootingManager.canShoot(player, stack)) {
-                ShootingManager.Client.shoot(player, stack, data);
-                ShootingManager.Client.forceShootDelay(3);
+                ClientShootingManager.shoot(player, stack, data);
+                ClientShootingManager.forceShootDelay(3);
             }
         }
     }
@@ -103,7 +104,7 @@ public interface IInputEventHandler {
 
         static void shootWithValidation(PlayerEntity player, ItemStack stack, IPlayerData data) {
             if (ShootingManager.canShoot(player, stack)) {
-                ShootingManager.Client.shoot(player, stack, data);
+                ClientShootingManager.shoot(player, stack, data);
             }
         }
     }

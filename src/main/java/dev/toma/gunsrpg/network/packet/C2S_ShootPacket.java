@@ -15,30 +15,38 @@ import java.util.function.Consumer;
 public class C2S_ShootPacket extends AbstractNetworkPacket<C2S_ShootPacket> {
 
     private final PropertyContext context;
+    private final float x;
+    private final float y;
 
     public C2S_ShootPacket() {
-        this(ctx -> {});
+        this(ctx -> {}, 0, 0);
     }
 
-    public C2S_ShootPacket(Consumer<PropertyContext> consumer) {
-        this(PropertyContext.create());
+    public C2S_ShootPacket(Consumer<PropertyContext> consumer, float x, float y) {
+        this(PropertyContext.create(), x, y);
         consumer.accept(this.context);
     }
 
-    private C2S_ShootPacket(PropertyContext context) {
+    private C2S_ShootPacket(PropertyContext context, float x, float y) {
         this.context = context;
+        this.x = x;
+        this.y = y;
     }
 
     @Override
     public void encode(PacketBuffer buffer) {
         context.encode(buffer);
+        buffer.writeFloat(x);
+        buffer.writeFloat(y);
     }
 
     @Override
     public C2S_ShootPacket decode(PacketBuffer buffer) {
         PropertyContext context = PropertyContext.create();
         context.decode(buffer);
-        return new C2S_ShootPacket(context);
+        float x = buffer.readFloat();
+        float y = buffer.readFloat();
+        return new C2S_ShootPacket(context, x, y);
     }
 
     @Override
@@ -48,7 +56,7 @@ public class C2S_ShootPacket extends AbstractNetworkPacket<C2S_ShootPacket> {
         Item item = stack.getItem();
         if (item instanceof GunItem) {
             GunItem gun = (GunItem) item;
-            gun.shoot(player.level, player, stack, new PlayerShootProperties(player, this.context));
+            gun.shoot(player.level, player, stack, new PlayerShootProperties(player, this.context, this.x, this.y));
         }
     }
 }

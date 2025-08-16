@@ -152,8 +152,8 @@ public final class Attribs {
     public static final IAttributeId AKM_LOUDNESS               = createInternal("akm_loudness");
     public static final IAttributeId AKM_FIRERATE               = createInternal("akm_firerate", 3);
     public static final IAttributeId HK416_RELOAD_SPEED         = createInternal("hk416_reload_speed", 70);
-    public static final IAttributeId HK416_VERTICAL_RECOIL      = createInternal("hk416_vertical_recoil", 2.6);
-    public static final IAttributeId HK416_HORIZONTAL_RECOIL    = createInternal("hk416_horizontal_recoil", 1.4);
+    public static final IAttributeId HK416_VERTICAL_RECOIL      = createInternal("hk416_vertical_recoil", 1.4);
+    public static final IAttributeId HK416_HORIZONTAL_RECOIL    = createInternal("hk416_horizontal_recoil", 0.8);
     public static final IAttributeId HK416_MAG_CAPACITY         = createInternal("hk416_mag_capacity", 30);
     public static final IAttributeId HK416_LOUDNESS             = createInternal("hk416_loudness");
     public static final IAttributeId AUG_RELOAD_SPEED           = createInternal("aug_reload_speed", 75);

@@ -18,6 +18,13 @@ public final class WeaponConfig {
 
     @Configurable
     @Configurable.Synchronized
+    @Configurable.DecimalRange(min = 0.0F, max = 0.25F)
+    @Configurable.Comment("Global camera recoil scale")
+    @Configurable.Gui.NumberFormat("0.0##")
+    public float globalCameraRecoilScale = 0.1F;
+
+    @Configurable
+    @Configurable.Synchronized
     @Configurable.DecimalRange(min = 0.0F, max = 1.0F)
     @Configurable.Comment("Weapon recoil multiplier when crouching")
     @Configurable.Gui.NumberFormat("0.0##")
@@ -73,7 +80,7 @@ public final class WeaponConfig {
 
     @Configurable
     @Configurable.Comment("HK-416 weapon configuration")
-    public IWeaponConfig hk416 = new WeaponConfiguration(5.0F, 380, 6, 0.005F, 0.05F);
+    public IWeaponConfig hk416 = new WeaponConfiguration(5.0F, 380, 6, 0.005F, 0.05F, new RecoilConfiguration(5.0F, 6.0F, 0.4F, 0.65F));
 
     @Configurable
     @Configurable.Comment("AUG weapon configuration")

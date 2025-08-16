@@ -17,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
@@ -126,6 +127,11 @@ public class GunAttackGoal extends Goal {
 
         public GunnerProjectileProperties(ZombieGunnerEntity entity) {
             this.entity = entity;
+        }
+
+        @Override
+        public Vector2f weaponAngle() {
+            return Vector2f.ZERO;
         }
 
         @Override

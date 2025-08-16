@@ -31,15 +31,19 @@ public class WeaponConfiguration implements IWeaponConfig {
     @Configurable.Comment("Weapon jamming settings")
     public IJamConfig jamConfig;
 
-    public WeaponConfiguration(float damage, int velocity, int delay, float jamMin, float jamMax) {
-        this(damage, velocity, delay, jamMin, jamMax, IJamConfig.DEFAULT_EASING);
-    }
+    @Configurable
+    public RecoilConfiguration recoilConfig;
 
-    public WeaponConfiguration(float damage, int velocity, int delay, float jamMin, float jamMax, Easings easing) {
+    public WeaponConfiguration(float damage, int velocity, int delay, float jamMin, float jamMax, RecoilConfiguration recoil) {
         this.gravityDelay = delay;
         this.damage = damage;
         this.velocity = velocity;
-        this.jamConfig = new JamConfig(jamMin, jamMax, easing);
+        this.jamConfig = new JamConfig(jamMin, jamMax, IJamConfig.DEFAULT_EASING);
+        this.recoilConfig = recoil;
+    }
+
+    public WeaponConfiguration(float damage, int velocity, int delay, float jamMin, float jamMax) {
+        this(damage, velocity, delay, jamMin, jamMax, new RecoilConfiguration());
     }
 
     @Override
@@ -65,5 +69,10 @@ public class WeaponConfiguration implements IWeaponConfig {
     @Override
     public float getRecoilAnimationScale() {
         return recoilAnimationScale;
+    }
+
+    @Override
+    public RecoilConfiguration recoil() {
+        return this.recoilConfig;
     }
 }

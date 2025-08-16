@@ -48,6 +48,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -65,6 +66,7 @@ import static dev.toma.gunsrpg.util.properties.Properties.TRACER;
 @OnlyIn(value = Dist.CLIENT, _interface = IProgressionDetailProvider.class)
 public abstract class GunItem extends AbstractGun implements IAnimationEntry, IProgressionDetailProvider {
 
+    public static final float PARALLAX_CORRECTION = 3.0F;
     public static final ITextComponent LABEL_DESTROYED = new TranslationTextComponent("label.gunsrpg.weapon.destroyed");
     public static final ITextComponent LABEL_JAMMED = new TranslationTextComponent("label.gunsrpg.weapon.jammed");
     public static final ITextComponent LABEL_INF = new TranslationTextComponent("label.gunsrpg.infinite.short");
@@ -187,7 +189,8 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry, IP
         float velocity = this.getInitialVelocity(config, shooter);
         int delay = config.getGravityDelay();
         projectile.setup(damage, velocity, delay);
-        projectile.fire(shooter.xRot, shooter.yRot, this.getInaccuracy(props, shooter));
+        Vector2f recoilAngle = props.weaponAngle();
+        projectile.fire(shooter.xRot - (recoilAngle.x * PARALLAX_CORRECTION), shooter.yRot - recoilAngle.y, this.getInaccuracy(props, shooter));
         this.prepareForShooting(projectile, shooter);
         IAmmoMaterial material = this.getMaterialFromNBT(stack);
         if (material != null) {

@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 public final class AnimationPipeline implements IAnimationPipeline {
 
@@ -34,6 +35,13 @@ public final class AnimationPipeline implements IAnimationPipeline {
             return;
         }
         playingAnimations.put(Objects.requireNonNull(type), animation);
+    }
+
+    @Override
+    public <A extends IAnimation> void insertIfMissing(AnimationType<A> type, Supplier<A> animationProvider) {
+        if (!this.playingAnimations.containsKey(type)) {
+            this.playingAnimations.put(type, animationProvider.get());
+        }
     }
 
     @Override

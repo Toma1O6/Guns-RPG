@@ -76,7 +76,6 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     maven { url "https://www.cursemaven.com" }
     maven { url "https://dvs1.progwml6.com/files/maven/" }
-    maven { url "https://modmaven.k-4u.nl" }
     flatDir { dir 'libs' }
 }
 

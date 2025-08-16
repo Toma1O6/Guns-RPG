@@ -3,6 +3,8 @@ package lib.toma.animations.api;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 
+import java.util.function.Supplier;
+
 /**
  * Handles animation playing, scheduling and removing.
  *
@@ -30,6 +32,8 @@ public interface IAnimationPipeline {
      * @param <A> Type of animation
      */
     <A extends IAnimation> void insert(AnimationType<A> type, A animation);
+
+    <A extends IAnimation> void insertIfMissing(AnimationType<A> type, Supplier<A> animation);
 
     /**
      * Schedules animation for playing in specified amount of ticks (20 ticks = 1 second).
