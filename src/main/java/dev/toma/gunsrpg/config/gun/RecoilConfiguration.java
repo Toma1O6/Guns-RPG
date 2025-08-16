@@ -40,6 +40,6 @@ public class RecoilConfiguration {
     }
 
     public RecoilConfiguration() {
-        this(5.0F, 8.0F, 2.5F, 0.8F);
+        this(4.0F, 2.5F, 2.5F, 0.8F);
     }
 }
