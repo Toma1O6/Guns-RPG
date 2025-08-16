@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.common.attribute.IAttributeId;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeModifier;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.DataFlags;
+import dev.toma.gunsrpg.api.common.data.ILockStateChangeable;
 import dev.toma.gunsrpg.api.common.data.IPerkProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerCapEntry;
 import dev.toma.gunsrpg.api.common.perk.IPerkStat;
@@ -20,9 +21,8 @@ import net.minecraftforge.common.util.Constants;
 
 import java.util.*;
 
-public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
+public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry, ILockStateChangeable {
 
-    public static final Interval USE_COOLDOWN = Interval.minutes(10);
     private final IAttributeProvider attributeProvider;
     private final Int2ObjectMap<Crystal> slot2CrystalMap = new Int2ObjectOpenHashMap<>();
     private final Map<Perk, PerkStat> perkData = new HashMap<>();
@@ -32,6 +32,19 @@ public class PlayerPerkProvider implements IPerkProvider, IPlayerCapEntry {
 
     public PlayerPerkProvider(IAttributeProvider provider) {
         this.attributeProvider = provider;
+    }
+
+    @Override
+    public void doLock() {
+        perkPoints = 0;
+        cooldown = 0;
+        slot2CrystalMap.clear();
+    }
+
+    @Override
+    public void doUnlock() {
+        perkPoints = Short.MAX_VALUE;
+        cooldown = 0;
     }
 
     @Override
