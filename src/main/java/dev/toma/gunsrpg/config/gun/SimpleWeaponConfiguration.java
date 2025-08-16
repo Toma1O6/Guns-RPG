@@ -19,12 +19,6 @@ public final class SimpleWeaponConfiguration implements IWeaponConfig {
     @Configurable.Comment("Weapon jamming settings")
     public IJamConfig jamConfig;
 
-    @Configurable
-    @Configurable.DecimalRange(min = 0.0, max = 1.0)
-    @Configurable.Comment("Visual recoil multiplier")
-    @Configurable.Gui.NumberFormat("0.0##")
-    public float recoilAnimationScale = 1.0f;
-
     public SimpleWeaponConfiguration(float velocity, float jamMin, float jamMax) {
         this(velocity, jamMin, jamMax, IJamConfig.DEFAULT_EASING);
     }
@@ -57,10 +51,5 @@ public final class SimpleWeaponConfiguration implements IWeaponConfig {
     @Override
     public IJamConfig getJamConfig() {
         return jamConfig;
-    }
-
-    @Override
-    public float getRecoilAnimationScale() {
-        return recoilAnimationScale;
     }
 }

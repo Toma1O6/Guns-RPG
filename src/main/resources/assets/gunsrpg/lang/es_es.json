@@ -1397,7 +1397,6 @@
   "config.gunsrpg.option.gravityDelay": "Retardo de Gravedad",
   "config.gunsrpg.option.velocity": "Velocidad",
   "config.gunsrpg.option.damage": "Daño Base",
-  "config.gunsrpg.option.recoilAnimationScale": "Escala de Animación de Retroceso",
   "config.gunsrpg.option.jamConfig": "Configuración de Atasco",
 
   "config.gunsrpg.option.minChance": "Probabilidad Mínima",

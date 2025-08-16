@@ -1955,6 +1955,7 @@
 
   "config.gunsrpg.option.disableWeaponDurability": "Disable Weapon Durability",
   "config.gunsrpg.option.globalWeaponRecoilMultiplier": "Global Recoil Multiplier",
+  "config.gunsrpg.option.globalCameraRecoilScale": "Global Camera Recoil Scale",
   "config.gunsrpg.option.crouchWeaponRecoilMultiplier": "Crouch Recoil Multiplier",
   "config.gunsrpg.option.m1911": "M1911",
   "config.gunsrpg.option.r45": "R45",
@@ -1982,12 +1983,17 @@
   "config.gunsrpg.option.gravityDelay": "Gravity Delay",
   "config.gunsrpg.option.velocity": "Velocity",
   "config.gunsrpg.option.damage": "Base Damage",
-  "config.gunsrpg.option.recoilAnimationScale": "Recoil Animation Scale",
   "config.gunsrpg.option.jamConfig": "Jam Config",
+  "config.gunsrpg.option.recoilConfig": "Recoil Config",
 
   "config.gunsrpg.option.minChance": "Min Chance",
   "config.gunsrpg.option.maxChance": "Max Chance",
   "config.gunsrpg.option.jamChanceTransformerFunction": "Jam Chance Transformer Function",
+
+  "config.gunsrpg.option.maxRecoilYaw": "Max Recoil Yaw",
+  "config.gunsrpg.option.maxRecoilPitch": "Max Recoil Pitch",
+  "config.gunsrpg.option.maxKick": "Max Recoil Kick",
+  "config.gunsrpg.option.recoilDecay": "Recoil Decay",
 
   "config.gunsrpg.option.quests": "Quests",
   "config.gunsrpg.option.maxPartySize": "Max party size",

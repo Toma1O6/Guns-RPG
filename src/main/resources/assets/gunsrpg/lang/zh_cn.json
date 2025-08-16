@@ -1374,7 +1374,6 @@
   "config.gunsrpg.option.gravityDelay": "重力开始作用于子弹的时间",
   "config.gunsrpg.option.velocity": "速度",
   "config.gunsrpg.option.damage": "基础伤害",
-  "config.gunsrpg.option.recoilAnimationScale": "后坐力动画规模",
   "config.gunsrpg.option.jamConfig": "卡壳配置",
 
   "config.gunsrpg.option.minChance": "最低几率",

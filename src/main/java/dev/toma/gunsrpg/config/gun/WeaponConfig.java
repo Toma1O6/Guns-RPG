@@ -18,10 +18,10 @@ public final class WeaponConfig {
 
     @Configurable
     @Configurable.Synchronized
-    @Configurable.DecimalRange(min = 0.0F, max = 0.25F)
+    @Configurable.DecimalRange(min = 0.0F, max = 1.0F)
     @Configurable.Comment("Global camera recoil scale")
     @Configurable.Gui.NumberFormat("0.0##")
-    public float globalCameraRecoilScale = 0.1F;
+    public float globalCameraRecoilScale = 0.25F;
 
     @Configurable
     @Configurable.Synchronized

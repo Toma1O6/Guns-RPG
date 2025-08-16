@@ -23,11 +23,6 @@ public class WeaponConfiguration implements IWeaponConfig {
     public float damage;
 
     @Configurable
-    @Configurable.DecimalRange(min = 0.0, max = 1.0)
-    @Configurable.Comment("Visual recoil multiplier")
-    public float recoilAnimationScale = 1.0f;
-
-    @Configurable
     @Configurable.Comment("Weapon jamming settings")
     public IJamConfig jamConfig;
 
@@ -64,11 +59,6 @@ public class WeaponConfiguration implements IWeaponConfig {
     @Override
     public IJamConfig getJamConfig() {
         return jamConfig;
-    }
-
-    @Override
-    public float getRecoilAnimationScale() {
-        return recoilAnimationScale;
     }
 
     @Override
