@@ -18,6 +18,7 @@ import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.AnimationUtils;
 import lib.toma.animations.api.Animation;
@@ -40,6 +41,7 @@ public class S1897Item extends AbstractShotgun {
     private static final ResourceLocation LOAD_BULLET_ANIMATION = GunsRPG.makeResource("s1897/load_bullet");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("s1897/unjam");
     private static final ResourceLocation PUMP = GunsRPG.makeResource("s1897/pump");
+    private static final RecoilParameters RECOIL = new RecoilParameters().kick(0.1F);
 
     public S1897Item(String name) {
         super(name, new Properties().setISTER(() -> S1897Renderer::new).durability(320));
@@ -63,6 +65,11 @@ public class S1897Item extends AbstractShotgun {
                     .define(AmmoMaterials.AMETHYST, 8)
                     .define(AmmoMaterials.NETHERITE, 10)
                 .build();
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override

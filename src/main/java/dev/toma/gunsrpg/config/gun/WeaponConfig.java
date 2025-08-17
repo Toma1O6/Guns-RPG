@@ -80,7 +80,7 @@ public final class WeaponConfig {
 
     @Configurable
     @Configurable.Comment("HK-416 weapon configuration")
-    public IWeaponConfig hk416 = new WeaponConfiguration(5.0F, 380, 6, 0.005F, 0.05F, new RecoilConfiguration(4.0F, 2.5F, 0.4F, 0.65F));
+    public IWeaponConfig hk416 = new WeaponConfiguration(5.0F, 380, 6, 0.005F, 0.05F);
 
     @Configurable
     @Configurable.Comment("AUG weapon configuration")

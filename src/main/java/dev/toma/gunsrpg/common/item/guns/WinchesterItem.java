@@ -19,6 +19,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -41,6 +42,7 @@ public class WinchesterItem extends AbstractBoltActionGun {
             GunsRPG.makeResource("winchester/aim_scoped")
     };
     private static final PenetrationData.Factory FACTORY = new PenetrationData.Factory(0.3f);
+    private static final RecoilParameters RECOIL = new RecoilParameters().kick(0.2F);
 
     public WinchesterItem(String name) {
         super(name, new Properties().setISTER(() -> WinchesterRenderer::new).durability(400));
@@ -65,6 +67,11 @@ public class WinchesterItem extends AbstractBoltActionGun {
                     .define(AmmoMaterials.NETHERITE, 23)
                 .build();
         ScopeDataRegistry.getRegistry().register(this, 20.0F, ScopeDataRegistry.ZOOM_3_5, provider -> provider.hasSkill(Skills.WINCHESTER_SCOPE));
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override

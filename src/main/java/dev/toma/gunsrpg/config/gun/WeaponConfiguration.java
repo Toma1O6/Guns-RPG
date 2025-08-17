@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.config.gun;
 import dev.toma.configuration.config.Configurable;
 import dev.toma.gunsrpg.api.common.IJamConfig;
 import dev.toma.gunsrpg.api.common.IWeaponConfig;
-import lib.toma.animations.Easings;
 
 public class WeaponConfiguration implements IWeaponConfig {
 
@@ -26,19 +25,11 @@ public class WeaponConfiguration implements IWeaponConfig {
     @Configurable.Comment("Weapon jamming settings")
     public IJamConfig jamConfig;
 
-    @Configurable
-    public RecoilConfiguration recoilConfig;
-
-    public WeaponConfiguration(float damage, int velocity, int delay, float jamMin, float jamMax, RecoilConfiguration recoil) {
+    public WeaponConfiguration(float damage, int velocity, int delay, float jamMin, float jamMax) {
         this.gravityDelay = delay;
         this.damage = damage;
         this.velocity = velocity;
         this.jamConfig = new JamConfig(jamMin, jamMax, IJamConfig.DEFAULT_EASING);
-        this.recoilConfig = recoil;
-    }
-
-    public WeaponConfiguration(float damage, int velocity, int delay, float jamMin, float jamMax) {
-        this(damage, velocity, delay, jamMin, jamMax, new RecoilConfiguration());
     }
 
     @Override
@@ -59,10 +50,5 @@ public class WeaponConfiguration implements IWeaponConfig {
     @Override
     public IJamConfig getJamConfig() {
         return jamConfig;
-    }
-
-    @Override
-    public RecoilConfiguration recoil() {
-        return this.recoilConfig;
     }
 }

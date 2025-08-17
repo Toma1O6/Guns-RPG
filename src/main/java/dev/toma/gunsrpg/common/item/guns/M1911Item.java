@@ -16,6 +16,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.KillingSpreeSkill;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -34,6 +35,7 @@ public class M1911Item extends GunItem {
     private static final ResourceLocation AIM_ANIMATION = GunsRPG.makeResource("m1911/aim");
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("m1911/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("m1911/unjam");
+    private static final RecoilParameters RECOIL = new RecoilParameters().decay(0.6F);
 
     public M1911Item(String name) {
         super(name, new Properties().setISTER(() -> M1911Renderer::new).durability(550));
@@ -56,6 +58,11 @@ public class M1911Item extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 11)
                     .define(AmmoMaterials.NETHERITE, 13)
                 .build();
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override

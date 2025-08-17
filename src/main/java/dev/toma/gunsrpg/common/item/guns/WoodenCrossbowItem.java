@@ -17,6 +17,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -43,6 +44,11 @@ public class WoodenCrossbowItem extends AbstractCrossbow {
 
     public WoodenCrossbowItem(String name) {
         super(name, new Properties().setISTER(() -> WoodenCrossbowRenderer::new).durability(300));
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RecoilParameters.DEFAULT;
     }
 
     @Override

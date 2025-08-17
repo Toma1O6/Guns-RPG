@@ -14,6 +14,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,6 +33,7 @@ public class SksItem extends GunItem {
     };
     private static final ResourceLocation RELOAD_ANIMATION = GunsRPG.makeResource("sks/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("sks/unjam");
+    private static final RecoilParameters RECOIL = new RecoilParameters().decay(0.7F).kick(0.3F);
 
     public SksItem(String name) {
         super(name, new Properties().setISTER(() -> SksRenderer::new).durability(600));
@@ -57,6 +59,11 @@ public class SksItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 15)
                     .define(AmmoMaterials.NETHERITE, 18)
                 .build();
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override

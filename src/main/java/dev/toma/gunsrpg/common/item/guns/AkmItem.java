@@ -16,6 +16,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -32,6 +33,7 @@ public class AkmItem extends GunItem {
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("akm/unjam");
     private static final ResourceLocation EJECT = GunsRPG.makeResource("akm/eject");
     private static final ResourceLocation AIM = GunsRPG.makeResource("akm/aim");
+    private static final RecoilParameters RECOIL = new RecoilParameters().kick(0.3F).decay(0.65F);
 
     public AkmItem(String name) {
         super(name, new Properties().setISTER(() -> AkmRenderer::new).durability(1000));
@@ -57,6 +59,11 @@ public class AkmItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 14)
                     .define(AmmoMaterials.NETHERITE, 17)
                 .build();
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override
@@ -86,12 +93,12 @@ public class AkmItem extends GunItem {
 
     @Override
     public float getVerticalRecoil(IAttributeProvider provider) {
-        return 3.3F * super.getVerticalRecoil(provider);
+        return 1.75F * super.getVerticalRecoil(provider);
     }
 
     @Override
     public float getHorizontalRecoil(IAttributeProvider provider) {
-        return 1.8F * super.getHorizontalRecoil(provider);
+        return 0.8F * super.getHorizontalRecoil(provider);
     }
 
     @Override

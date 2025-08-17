@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.client;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
-import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.client.animation.ModAnimations;
@@ -13,7 +12,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialData;
 import dev.toma.gunsrpg.common.item.guns.ammo.IMaterialDataContainer;
 import dev.toma.gunsrpg.common.item.guns.util.IAdditionalShootData;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
-import dev.toma.gunsrpg.config.gun.RecoilConfiguration;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.config.gun.WeaponConfig;
 import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.network.packet.C2S_ShootPacket;
@@ -94,13 +93,12 @@ public class ClientShootingManager {
         boolean invertDirection = random.nextBoolean();
         if (hasRecoil) {
             float mz = 0.1F * xRot * yRot;
-            IWeaponConfig weaponConfig = gun.getWeaponConfig();
-            RecoilConfiguration recoil = weaponConfig.recoil();
+            RecoilParameters params = gun.getRecoilParameters();
             angleX = weaponRotation.x;
             angleY = weaponRotation.y;
-            weaponPositionZ = MathHelper.clamp(weaponPositionZ + mz, 0, recoil.maxKick);
-            addWeaponRecoil(xRot, invertDirection ? -yRot : yRot, recoil.maxRecoilPitch, recoil.maxRecoilYaw);
-            recoilDecay = recoil.recoilDecay;
+            weaponPositionZ = MathHelper.clamp(weaponPositionZ + mz, 0, params.maxKick());
+            addWeaponRecoil(xRot, invertDirection ? -yRot : yRot, params.maxPitch(), params.maxYaw());
+            recoilDecay = params.decay();
             IAnimationPipeline pipeline = AnimationEngine.get().pipeline();
             pipeline.insertIfMissing(ModAnimations.RECOIL, RecoilAnimation::new);
         }

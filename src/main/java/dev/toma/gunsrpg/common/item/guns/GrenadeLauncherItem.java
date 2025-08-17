@@ -18,6 +18,7 @@ import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -37,6 +38,11 @@ public class GrenadeLauncherItem extends AbstractExplosiveLauncher {
 
     public GrenadeLauncherItem(String name) {
         super(name, new Properties().setISTER(() -> GrenadeLauncherRenderer::new).durability(220));
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RecoilParameters.DEFAULT;
     }
 
     @Override

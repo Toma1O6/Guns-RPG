@@ -18,6 +18,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,9 +36,15 @@ public class ChuKoNuItem extends AbstractCrossbow {
             GunsRPG.makeResource("chukonu/aim"),
             GunsRPG.makeResource("chukonu/aim_scoped")
     };
+    private static final RecoilParameters RECOIL = new RecoilParameters().decay(0.6F);
 
     public ChuKoNuItem(String name) {
         super(name, new Properties().setISTER(() -> ChuKoNuRenderer::new).durability(450));
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override

@@ -17,6 +17,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -36,6 +37,7 @@ public class S686Item extends AbstractShotgun {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("s686/reload_both");
     private static final ResourceLocation RELOAD_SINGLE = GunsRPG.makeResource("s686/reload_single");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("s686/unjam");
+    private static final RecoilParameters RECOIL = new RecoilParameters().kick(0.3F);
 
     public S686Item(String name) {
         super(name, new Properties().setISTER(() -> S686Renderer::new).durability(230));
@@ -65,6 +67,11 @@ public class S686Item extends AbstractShotgun {
                     .define(AmmoMaterials.AMETHYST, 8)
                     .define(AmmoMaterials.NETHERITE, 10)
                 .build();
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override

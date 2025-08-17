@@ -28,6 +28,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.Lifecycle;
 import dev.toma.gunsrpg.util.locate.ammo.ItemLocator;
 import dev.toma.gunsrpg.util.math.IVec2i;
@@ -50,7 +51,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -94,6 +94,8 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry, IP
     public abstract void initializeWeapon(WeaponBuilder builder);
 
     public abstract SkillType<?> getRequiredSkill();
+
+    public abstract RecoilParameters getRecoilParameters();
 
     /* PROPERTIES FOR OVERRIDES ---------------------------------------------- */
 
@@ -190,7 +192,7 @@ public abstract class GunItem extends AbstractGun implements IAnimationEntry, IP
         int delay = config.getGravityDelay();
         projectile.setup(damage, velocity, delay);
         Vector2f recoilAngle = props.weaponAngle();
-        projectile.fire(shooter.xRot - (recoilAngle.x * PARALLAX_CORRECTION), shooter.yRot - recoilAngle.y, this.getInaccuracy(props, shooter));
+        projectile.fire(shooter.xRot - (recoilAngle.x * PARALLAX_CORRECTION), shooter.yRot - (recoilAngle.y * PARALLAX_CORRECTION), this.getInaccuracy(props, shooter));
         this.prepareForShooting(projectile, shooter);
         IAmmoMaterial material = this.getMaterialFromNBT(stack);
         if (material != null) {

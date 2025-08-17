@@ -17,6 +17,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -36,6 +37,7 @@ public class Kar98kItem extends AbstractBoltActionGun {
     private static final ResourceLocation RELOAD_CLIP_ANIMATION = GunsRPG.makeResource("kar98k/reload_clip");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("kar98k/unjam");
     private static final PenetrationData.Factory PENETRATION_DATA_FACTORY = new PenetrationData.Factory(0.5f);
+    private static final RecoilParameters RECOIL = new RecoilParameters().kick(0.2F);
 
     public Kar98kItem(String name) {
         super(name, new Properties().setISTER(() -> Kar98kRenderer::new).durability(300));
@@ -61,6 +63,11 @@ public class Kar98kItem extends AbstractBoltActionGun {
                 .build();
 
         ScopeDataRegistry.getRegistry().register(this, 15.0F, ScopeDataRegistry.ZOOM_4_0, provider -> provider.hasSkill(Skills.KAR98K_SCOPE));
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override

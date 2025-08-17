@@ -25,6 +25,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.IEntityTrackingGun;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.properties.PropertyContext;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -56,6 +57,11 @@ public class RocketLauncherItem extends AbstractExplosiveLauncher implements IEn
 
     public RocketLauncherItem(String name) {
         super(name, new Properties().setISTER(() -> RocketLauncherRenderer::new).durability(180));
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RecoilParameters.DEFAULT;
     }
 
     @Override

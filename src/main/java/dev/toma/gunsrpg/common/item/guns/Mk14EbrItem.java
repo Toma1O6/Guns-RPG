@@ -14,6 +14,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -29,6 +30,7 @@ public class Mk14EbrItem extends GunItem {
             GunsRPG.makeResource("mk14/aim"),
             GunsRPG.makeResource("mk14/aim_scoped")
     };
+    private static final RecoilParameters RECOIL = new RecoilParameters().kick(0.1F).decay(0.6F);
 
     public Mk14EbrItem(String name) {
         super(name, new Properties().setISTER(() -> Mk14EbrRenderer::new).durability(850));
@@ -53,6 +55,11 @@ public class Mk14EbrItem extends GunItem {
                     .define(AmmoMaterials.NETHERITE, 22)
                 .build();
         ScopeDataRegistry.getRegistry().register(this, 15.0F, ScopeDataRegistry.ZOOM_4_0, provider -> provider.hasSkill(Skills.MK14EBR_SCOPE));
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override

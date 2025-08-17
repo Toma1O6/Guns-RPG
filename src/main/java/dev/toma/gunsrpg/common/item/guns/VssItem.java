@@ -16,6 +16,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.item.guns.util.ScopeDataRegistry;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -33,6 +34,7 @@ public class VssItem extends GunItem {
             GunsRPG.makeResource("vss/aim"),
             GunsRPG.makeResource("vss/aim_scoped")
     };
+    private static final RecoilParameters RECOIL = new RecoilParameters().decay(0.55F).kick(0.025F);
 
     public VssItem(String name) {
         super(name, new Properties().setISTER(() -> VssRenderer::new).durability(850));
@@ -59,6 +61,11 @@ public class VssItem extends GunItem {
                     .define(AmmoMaterials.NETHERITE, 14)
                 .build();
         ScopeDataRegistry.getRegistry().register(this, 25.0F, ScopeDataRegistry.ZOOM_3_0, provider -> provider.hasSkill(Skills.VSS_SCOPE));
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override

@@ -13,6 +13,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -32,6 +33,7 @@ public class Hk416Item extends GunItem {
             GunsRPG.makeResource("hk416/aim"),
             GunsRPG.makeResource("hk416/aim_red_dot"),
     };
+    private static final RecoilParameters RECOIL = new RecoilParameters(4.0F, 2.5F, 0.4F, 0.65F);
 
     public Hk416Item(String name) {
         super(name, new Properties().setISTER(() -> Hk416Renderer::new).durability(1050));
@@ -56,6 +58,11 @@ public class Hk416Item extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 12)
                     .define(AmmoMaterials.NETHERITE, 15)
                 .build();
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override

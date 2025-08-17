@@ -1984,16 +1984,10 @@
   "config.gunsrpg.option.velocity": "Velocity",
   "config.gunsrpg.option.damage": "Base Damage",
   "config.gunsrpg.option.jamConfig": "Jam Config",
-  "config.gunsrpg.option.recoilConfig": "Recoil Config",
 
   "config.gunsrpg.option.minChance": "Min Chance",
   "config.gunsrpg.option.maxChance": "Max Chance",
   "config.gunsrpg.option.jamChanceTransformerFunction": "Jam Chance Transformer Function",
-
-  "config.gunsrpg.option.maxRecoilYaw": "Max Recoil Yaw",
-  "config.gunsrpg.option.maxRecoilPitch": "Max Recoil Pitch",
-  "config.gunsrpg.option.maxKick": "Max Recoil Kick",
-  "config.gunsrpg.option.recoilDecay": "Recoil Decay",
 
   "config.gunsrpg.option.quests": "Quests",
   "config.gunsrpg.option.maxPartySize": "Max party size",

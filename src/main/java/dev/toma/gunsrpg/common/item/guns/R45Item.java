@@ -16,6 +16,7 @@ import dev.toma.gunsrpg.common.item.guns.reload.ReloadManagers;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -32,6 +33,7 @@ public class R45Item extends GunItem {
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("r45/reload");
     private static final ResourceLocation RELOAD_BULLET = GunsRPG.makeResource("r45/load_bullet");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("r45/unjam");
+    private static final RecoilParameters RECOIL = new RecoilParameters().kick(1.5F);
 
     public R45Item(String name) {
         super(name, new Properties().setISTER(() -> R45Renderer::new).durability(350));
@@ -55,6 +57,11 @@ public class R45Item extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 14)
                     .define(AmmoMaterials.NETHERITE, 17)
                 .build();
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override

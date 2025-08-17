@@ -14,6 +14,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -33,6 +34,7 @@ public class S12KItem extends AbstractShotgun {
             GunsRPG.makeResource("s12k/aim"),
             GunsRPG.makeResource("s12k/aim_red_dot")
     };
+    private static final RecoilParameters RECOIL = new RecoilParameters().kick(0.15F);
 
     public S12KItem(String name) {
         super(name, new Properties().setISTER(() -> S12KRenderer::new).durability(370));
@@ -61,6 +63,11 @@ public class S12KItem extends AbstractShotgun {
                     .define(AmmoMaterials.AMETHYST, 8)
                     .define(AmmoMaterials.NETHERITE, 10)
                 .build();
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override

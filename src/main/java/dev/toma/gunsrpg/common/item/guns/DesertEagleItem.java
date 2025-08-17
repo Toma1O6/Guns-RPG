@@ -16,6 +16,7 @@ import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,6 +34,7 @@ public class DesertEagleItem extends GunItem {
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("deagle/unjam");
     private static final ResourceLocation EJECT = GunsRPG.makeResource("deagle/eject");
     private static final PenetrationData.Factory PEN_DATA = new PenetrationData.Factory(0.3F);
+    private static final RecoilParameters RECOIL = new RecoilParameters().kick(0.4F);
 
     public DesertEagleItem(String name) {
         super(name, new Properties().setISTER(() -> DesertEagleRenderer::new).durability(450));
@@ -57,6 +59,11 @@ public class DesertEagleItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 20)
                     .define(AmmoMaterials.NETHERITE, 23)
                 .build();
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override

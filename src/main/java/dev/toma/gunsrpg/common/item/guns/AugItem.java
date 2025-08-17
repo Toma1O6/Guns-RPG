@@ -14,6 +14,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -32,6 +33,7 @@ public class AugItem extends GunItem {
             GunsRPG.makeResource("aug/aim_red_dot"),
     };
     private static final ResourceLocation EJECT = GunsRPG.makeResource("aug/eject");
+    private static final RecoilParameters RECOIL = new RecoilParameters().decay(0.65F);
 
     public AugItem(String name) {
         super(name, new Properties().setISTER(() -> AugRenderer::new).durability(1200));
@@ -56,6 +58,11 @@ public class AugItem extends GunItem {
                     .define(AmmoMaterials.AMETHYST, 13)
                     .define(AmmoMaterials.NETHERITE, 17)
                 .build();
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override

@@ -7,8 +7,6 @@ import lib.toma.animations.Easings;
 
 public final class SimpleWeaponConfiguration implements IWeaponConfig {
 
-    public static final RecoilConfiguration RECOIL = new RecoilConfiguration();
-
     @Configurable
     @Configurable.DecimalRange(min = 1.0, max = 10000.0)
     @Configurable.Comment("Projectile velocity")
@@ -26,11 +24,6 @@ public final class SimpleWeaponConfiguration implements IWeaponConfig {
     public SimpleWeaponConfiguration(float velocity, float jamMin, float jamMax, Easings easing) {
         this.velocity = velocity;
         this.jamConfig = new JamConfig(jamMin, jamMax, easing);
-    }
-
-    @Override
-    public RecoilConfiguration recoil() {
-        return RECOIL;
     }
 
     @Override

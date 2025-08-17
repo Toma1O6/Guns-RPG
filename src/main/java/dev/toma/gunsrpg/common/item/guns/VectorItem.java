@@ -14,6 +14,7 @@ import dev.toma.gunsrpg.common.item.guns.setup.WeaponBuilder;
 import dev.toma.gunsrpg.common.item.guns.setup.WeaponCategory;
 import dev.toma.gunsrpg.common.item.guns.util.Firemode;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.SkillUtil;
 import lib.toma.animations.api.IRenderConfig;
 import net.minecraft.entity.LivingEntity;
@@ -31,9 +32,15 @@ public class VectorItem extends GunItem {
     private static final ResourceLocation EJECT = GunsRPG.makeResource("vector/eject");
     private static final ResourceLocation RELOAD = GunsRPG.makeResource("vector/reload");
     private static final ResourceLocation UNJAM = GunsRPG.makeResource("vector/unjam");
+    private static final RecoilParameters RECOIL = new RecoilParameters(1.0F, 2.5F, 1.5F, 0.6F);
 
     public VectorItem(String name) {
         super(name, new Properties().setISTER(() -> VectorRenderer::new).durability(1100));
+    }
+
+    @Override
+    public RecoilParameters getRecoilParameters() {
+        return RECOIL;
     }
 
     @Override
@@ -95,6 +102,11 @@ public class VectorItem extends GunItem {
     @Override
     public float getVerticalRecoil(IAttributeProvider provider) {
         return Attribs.VECTOR_VERTICAL.floatValue(provider);
+    }
+
+    @Override
+    public float getHorizontalRecoil(IAttributeProvider provider) {
+        return 0.1F * super.getHorizontalRecoil(provider);
     }
 
     @Override
