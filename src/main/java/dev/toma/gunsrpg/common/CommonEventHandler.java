@@ -16,6 +16,8 @@ import dev.toma.gunsrpg.common.item.HammerItem;
 import dev.toma.gunsrpg.common.item.ICustomUseDuration;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
+import dev.toma.gunsrpg.common.quests.quest.Quest;
+import dev.toma.gunsrpg.common.quests.quest.area.IAreaQuest;
 import dev.toma.gunsrpg.common.skills.AvengeMeFriendsSkill;
 import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
@@ -27,6 +29,7 @@ import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.world.LootStashes;
 import dev.toma.gunsrpg.world.WeaponDamageSource;
+import dev.toma.gunsrpg.world.cap.QuestingData;
 import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataProvider;
@@ -390,7 +393,12 @@ public class CommonEventHandler {
             PlayerEntity player = (PlayerEntity) directSource;
             ItemStack killWeapon = damageSource instanceof WeaponDamageSource ? ((WeaponDamageSource) damageSource).getKillWeapon() : ItemStack.EMPTY;
             Entity victim = event.getEntity();
-            PlayerData.get(player).ifPresent(data -> data.getProgressData().onEnemyKilled(victim, killWeapon));
+            IQuestingData questingData = QuestingDataProvider.getQuesting(player.level);
+            Quest<?> quest = questingData.getActiveQuestForPlayer(player);
+            // count only non-quest related kills
+            if (!(quest instanceof IAreaQuest) || !((IAreaQuest) quest).getQuestArea().isInArea(player)) {
+                PlayerData.get(player).ifPresent(data -> data.getProgressData().onEnemyKilled(victim, killWeapon));
+            }
         }
         GameRules gameRules = event.getEntity().level.getGameRules();
         if (gameRules.getBoolean(GameRules.RULE_DOMOBLOOT) && event.getEntity() instanceof IMob && !(event.getEntity() instanceof SlimeEntity)) {
