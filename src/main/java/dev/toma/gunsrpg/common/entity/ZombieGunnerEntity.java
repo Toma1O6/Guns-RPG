@@ -51,7 +51,7 @@ public class ZombieGunnerEntity extends MonsterEntity {
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MonsterEntity.createMonsterAttributes()
-                .add(Attributes.FOLLOW_RANGE, 35.0)
+                .add(Attributes.FOLLOW_RANGE, 48.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.23)
                 .add(Attributes.ATTACK_DAMAGE, 3.0)
                 .add(Attributes.ARMOR, 2.0);
