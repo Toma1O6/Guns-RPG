@@ -817,7 +817,7 @@ public class CommonRegistry {
                 new ModFoodItem("deluxe_meal", ModFoods.DELUXE_MEAL).heal(3),
                 new ModFoodItem("meaty_stew_xxl", ModFoods.MEATY_STEW_XXL).heal(5),
                 new ModFoodItem("rabbit_creamy_soup", ModFoods.RABBIT_CREAMY_SOUP).heal(3),
-                new ModFoodItem("shepherds_pie", ModFoods.SHEPHERDS_PIE),
+                new ModFoodItem("shepherds_pie", ModFoods.SHEPHERDS_PIE).heal(4),
                 new ModFoodItem("fruit_salad", ModFoods.FRUIT_SALAD).heal(2),
                 new ModFoodItem("egg_salad", ModFoods.EGG_SALAD),
                 new ModFoodItem("chocolate_glazed_apple_pie", ModFoods.CHOCOLATE_GLAZED_APPLE_PIE).heal(3),
