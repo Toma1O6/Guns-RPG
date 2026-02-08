@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IAmmoProvider;
 import dev.toma.gunsrpg.common.debuffs.DebuffDataManager;
+import dev.toma.gunsrpg.common.experience.MobExpRewardManager;
 import dev.toma.gunsrpg.common.init.ModDebuffSources;
 import dev.toma.gunsrpg.common.init.ModDebuffStageEvents;
 import dev.toma.gunsrpg.common.init.ModRecipeTypes;
@@ -44,6 +45,7 @@ public final class Lifecycle {
     private final PerkManager perkManager = new PerkManager();
     private final QuestSystem questSystem = new QuestSystem();
     private final DebuffDataManager debuffDataManager = new DebuffDataManager();
+    private final MobExpRewardManager mobExpRewardManager = new MobExpRewardManager();
 
     public void modInit() {
         ModTags.init();
@@ -82,6 +84,10 @@ public final class Lifecycle {
 
     public DebuffDataManager getDebuffDataManager() {
         return debuffDataManager;
+    }
+
+    public MobExpRewardManager getMobExpRewardManager() {
+        return mobExpRewardManager;
     }
 
     public QuestSystem quests() {
@@ -133,6 +139,7 @@ public final class Lifecycle {
         event.addListener(perkManager);
         event.addListener(perkManager.configLoader);
         event.addListener(debuffDataManager);
+        event.addListener(mobExpRewardManager);
         this.questSystem.initialize(event);
     }
 }

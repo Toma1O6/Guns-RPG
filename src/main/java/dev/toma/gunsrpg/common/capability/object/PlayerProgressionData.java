@@ -9,6 +9,8 @@ import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidatorFactory;
 import dev.toma.gunsrpg.client.OverlayPlacement;
 import dev.toma.gunsrpg.client.render.ProgressionRenderer;
+import dev.toma.gunsrpg.common.experience.MobExpReward;
+import dev.toma.gunsrpg.common.experience.MobExpRewardManager;
 import dev.toma.gunsrpg.common.init.ModItems;
 import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
@@ -112,9 +114,9 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     @Override
     public void advanceLevel(boolean notify) {
         this.level = Math.min(level + 1, getLevelLimit());
-        this.kills = 0;
-        strategy.applyRewards(player, this, level);
-        updateRequiredKills();
+        this.kills = this.kills - this.requiredKills;
+        this.strategy.applyRewards(player, this, level);
+        this.updateRequiredKills();
 
         if (notify) {
             player.sendMessage(new StringTextComponent(TextFormatting.YELLOW + "=====[ " + new TranslationTextComponent("text.player.level_up").getString() + " ]====="), Util.NIL_UUID);
@@ -138,15 +140,18 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
     public void onEnemyKilled(Entity enemy, ItemStack weapon) {
         if (!(enemy instanceof IMob) || enemy.getType().is(ModTags.Entities.SKILL_PROGRESS_EXCLUSION))
             return;
-        ++kills;
-        if (level < getLevelLimit() && requiredKills <= kills) {
+        MobExpRewardManager manager = GunsRPG.getModLifecycle().getMobExpRewardManager();
+        MobExpReward reward = manager.getReward(enemy);
+        int expAmount = reward.getExp();
+        this.kills += expAmount;
+        if (this.level < getLevelLimit() && this.requiredKills <= this.kills) {
             advanceLevel(true);
         }
         if (weapon.getItem() instanceof GunItem) {
             GunItem gun = (GunItem) weapon.getItem();
-            getWeaponStats(gun).onEnemyKilled(enemy, weapon);
+            this.getWeaponStats(gun).onEnemyKilled(enemy, weapon);
         }
-        request.sendSyncRequest();
+        this.request.sendSyncRequest();
     }
 
     @Override

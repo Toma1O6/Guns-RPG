@@ -3,16 +3,16 @@ package dev.toma.gunsrpg.util.helper;
 import com.google.gson.*;
 import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -58,17 +58,23 @@ public final class JsonHelper {
     }
 
     public static Item resolveItem(JsonElement element) throws JsonParseException {
-        ResourceLocation itemId = new ResourceLocation(element.getAsString());
-        Item item = ForgeRegistries.ITEMS.getValue(itemId);
-        if (item == null || item == Items.AIR) throw new JsonSyntaxException("Unknown item: " + itemId);
-        return item;
+        return resolveRegistryEntry(element, ForgeRegistries.ITEMS);
+    }
+
+    public static EntityType<?> resolveEntityType(JsonElement element) throws JsonParseException {
+        return resolveRegistryEntry(element, ForgeRegistries.ENTITIES);
     }
 
     public static SkillType<?> resolveSkill(JsonElement element) throws JsonParseException {
-        ResourceLocation skillId = new ResourceLocation(element.getAsString());
-        SkillType<?> skill = ModRegistries.SKILLS.getValue(skillId);
-        if (skill == null) throw new JsonSyntaxException("Unknown skill: " + skillId);
-        return skill;
+        return resolveRegistryEntry(element, ModRegistries.SKILLS);
+    }
+
+    public static <T extends IForgeRegistryEntry<T>> T resolveRegistryEntry(JsonElement element, IForgeRegistry<T> registry) {
+        ResourceLocation entryId = new ResourceLocation(element.getAsString());
+        if (!registry.containsKey(entryId)) {
+            throw new JsonSyntaxException(String.format(Locale.ROOT, "Unable to find \"%s\" item in registry %s", entryId, registry.getRegistryName()));
+        }
+        return registry.getValue(entryId);
     }
 
     public static JsonElement toSimpleJson(ResourceLocation location) {
