@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.api.common.skill.ITransactionValidatorFactory;
 import dev.toma.gunsrpg.client.OverlayPlacement;
 import dev.toma.gunsrpg.client.render.ProgressionRenderer;
 import dev.toma.gunsrpg.common.init.ModItems;
+import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.PlayerLevelTransactionValidator;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
@@ -24,7 +25,6 @@ import dev.toma.gunsrpg.util.math.IVec2i;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -136,7 +136,7 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
 
     @Override
     public void onEnemyKilled(Entity enemy, ItemStack weapon) {
-        if (!(enemy instanceof IMob) || enemy instanceof SlimeEntity)
+        if (!(enemy instanceof IMob) || enemy.getType().is(ModTags.Entities.SKILL_PROGRESS_EXCLUSION))
             return;
         ++kills;
         if (level < getLevelLimit() && requiredKills <= kills) {
