@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IDebuffs;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.common.attribute.Attribs;
+import dev.toma.gunsrpg.common.attribute.ModifierFactory;
 import dev.toma.gunsrpg.common.debuffs.DebuffType;
 import dev.toma.gunsrpg.common.init.Debuffs;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,18 +23,22 @@ public class DebuffHealItem extends AbstractHealItem<IPlayerData> {
 
     public static void healPoison(IPlayerData data) {
         heal(data, Debuffs.POISON, Attribs.ANTIDOTE_EFFECT);
+        AttributeAccessHealItem.applyProtection(data, ModifierFactory::createCalciumShotModifiers, () -> Debuffs.POISON);
     }
 
     public static void healInfection(IPlayerData data) {
         heal(data, Debuffs.INFECTION, Attribs.VACCINE_EFFECT);
+        AttributeAccessHealItem.applyProtection(data, ModifierFactory::createVitaminModifiers, () -> Debuffs.INFECTION);
     }
 
     public static void healFracture(IPlayerData data) {
         heal(data, Debuffs.FRACTURE, Attribs.SPLINT_EFFECT);
+        AttributeAccessHealItem.applyProtection(data, ModifierFactory::createPropitalModifiers, () -> Debuffs.FRACTURE);
     }
 
     public static void healBleed(IPlayerData data) {
         heal(data, Debuffs.BLEED, Attribs.BANDAGE_EFFECT);
+        AttributeAccessHealItem.applyProtection(data, ModifierFactory::createHemostatModifiers, () -> Debuffs.BLEED);
     }
 
     private static void heal(IPlayerData data, DebuffType<?> type, IAttributeId attributeId) {

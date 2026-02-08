@@ -32,6 +32,21 @@ public class AttributeAccessHealItem extends AbstractHealItem<IPlayerData> {
         return data;
     }
 
+    public static void applyProtection(IPlayerData data, Function<IAttributeProvider, IAttributeTarget[]> function, Supplier<? extends DataDrivenDebuffType<?>> debuff) {
+        IAttributeProvider provider = data.getAttributes();
+        IAttributeTarget[] targets = function.apply(provider);
+        for (IAttributeTarget target : targets) {
+            IAttributeModifier modifier = target.getModifier();
+            IAttributeId id = target.getTargetAttribute();
+            provider.getAttribute(id).addModifier(modifier);
+        }
+        if (debuff != null) {
+            DataDrivenDebuffType<?> debuffType = debuff.get();
+            IDebuffs debuffs = data.getDebuffControl();
+            debuffs.trigger(IDebuffType.TriggerFlags.HEAL, IDebuffContext.of(DamageSource.GENERIC, null, data, 0.0F), debuffType);
+        }
+    }
+
     public static class Builder extends HealBuilder<IPlayerData, AttributeAccessHealItem> {
 
         protected Builder(String name) {
@@ -39,20 +54,7 @@ public class AttributeAccessHealItem extends AbstractHealItem<IPlayerData> {
         }
 
         public Builder defineModifiers(Function<IAttributeProvider, IAttributeTarget[]> function, @Nullable Supplier<? extends DataDrivenDebuffType<?>> targetDebuff) {
-            return (Builder) onUse(data -> {
-                IAttributeProvider provider = data.getAttributes();
-                IAttributeTarget[] targets = function.apply(provider);
-                for (IAttributeTarget target : targets) {
-                    IAttributeModifier modifier = target.getModifier();
-                    IAttributeId id = target.getTargetAttribute();
-                    provider.getAttribute(id).addModifier(modifier);
-                }
-                if (targetDebuff != null) {
-                    DataDrivenDebuffType<?> debuffType = targetDebuff.get();
-                    IDebuffs debuffs = data.getDebuffControl();
-                    debuffs.trigger(IDebuffType.TriggerFlags.HEAL, IDebuffContext.of(DamageSource.GENERIC, null, data, 0.0F), debuffType);
-                }
-            });
+            return (Builder) onUse(data -> applyProtection(data, function, targetDebuff));
         }
 
         @Override
