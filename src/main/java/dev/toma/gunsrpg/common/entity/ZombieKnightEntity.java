@@ -1,7 +1,9 @@
 package dev.toma.gunsrpg.common.entity;
 
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -55,6 +57,11 @@ public class ZombieKnightEntity extends ZombieEntity {
         if (!feetslot.isEmpty()) {
             feetslot.enchant(Enchantments.DEPTH_STRIDER, 3);
         }
+    }
+
+    @Override
+    protected boolean canRide(Entity entity) {
+        return entity instanceof LivingEntity;
     }
 
     @Override

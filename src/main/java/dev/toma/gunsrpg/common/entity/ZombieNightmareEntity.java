@@ -181,6 +181,11 @@ public class ZombieNightmareEntity extends MonsterEntity {
         level.addFreshEntity(entity);
     }
 
+    @Override
+    protected boolean canRide(Entity entity) {
+        return entity instanceof LivingEntity;
+    }
+
     public static Predicate<Entity> companionFilter() {
         return e -> e instanceof LivingEntity && e.getType().is(ModTags.Entities.ZOMBIE_NIGHTMARE_COMPANIONS);
     }
