@@ -72,9 +72,9 @@ public class KillInAreaQuest extends AbstractAreaBasedQuest<KillInAreaData> {
     private TriggerResponseStatus onEntityKilled(Trigger trigger, IPropertyReader reader) {
         PlayerEntity player = reader.getProperty(QuestProperties.PLAYER);
         Entity entity = reader.getProperty(QuestProperties.ENTITY);
-        if (area.isInArea(player)) {
+        if (this.area.isInArea(player)) {
             KillInAreaData data = this.getActiveData();
-            if (data.getEntityFilter().test(entity)) {
+            if (data.getEntityFilter().test(entity) && this.area.isInArea(entity)) {
                 return TriggerResponseStatus.OK;
             }
         }
