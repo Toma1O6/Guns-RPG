@@ -135,7 +135,7 @@ public class Rocket extends AbstractExplosive {
         void update(TrackedTarget target) {
             Rocket rocket = Rocket.this;
             Vector3d position = target.getTrackedPosition();
-            double angleDegrees = getAngleTowardsTarget(rocket.getDeltaMovement(), position.subtract(rocket.position()));
+            double angleDegrees = getAngleTowardsTarget(rocket.getLookAngle(), position.subtract(rocket.position()));
             IEntityTrackingGun.GuidenanceProperties properties = rocket.getProperty(Properties.GUIDENANCE);
             boolean hasGuidance = angleDegrees <= properties.getMaxGuidenanceAngle();
             float x = rocket.xRot;
@@ -177,9 +177,9 @@ public class Rocket extends AbstractExplosive {
         double getAngleTowardsTarget(Vector3d vecA, Vector3d vecB) {
             double aLen = vecA.length();
             double bLen = vecB.length();
-            double a = vecA.x * vecB.x + vecA.y + vecB.y + vecA.z * vecB.z;
-            double b = aLen * bLen;
-            double angleRad = Math.acos(a / b);
+            double dot = vecA.dot(vecB);
+            double cos = MathHelper.clamp(dot / (aLen * bLen), -1.0, 1.0);
+            double angleRad = Math.acos(cos);
             return Math.toDegrees(angleRad);
         }
     }
@@ -206,9 +206,7 @@ public class Rocket extends AbstractExplosive {
         }
 
         static Vector3d atCenterOfEntity(Entity entity) {
-            EntitySize size = entity.getDimensions(entity.getPose());
-            Vector3d position = entity.position();
-            return position.add(size.width / 2.0F, size.height / 2.0F, size.width / 2.0F);
+            return entity.getBoundingBox().getCenter();
         }
     }
 }
