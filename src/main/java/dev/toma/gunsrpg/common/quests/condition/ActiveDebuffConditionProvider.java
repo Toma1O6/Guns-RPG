@@ -41,7 +41,7 @@ public class ActiveDebuffConditionProvider extends AbstractQuestConditionProvide
     }
 
     @Override
-    public ActiveDebuffConditionProvider makeConditionInstance() {
+    public ActiveDebuffConditionProvider createDefaultInstance() {
         return this;
     }
 

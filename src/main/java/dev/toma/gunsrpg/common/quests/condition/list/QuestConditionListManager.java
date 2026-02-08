@@ -35,18 +35,18 @@ public class QuestConditionListManager extends JsonReloadListener {
     protected void apply(Map<ResourceLocation, JsonElement> map, IResourceManager resourceManager, IProfiler profiler) {
         logger.info("Loading condition lists");
         this.map.clear();
-        try {
-            for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
-                ResourceLocation id = entry.getKey();
-                JsonElement value = entry.getValue();
+        for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
+            ResourceLocation id = entry.getKey();
+            JsonElement value = entry.getValue();
+            try {
                 WeightedConditionList list = WeightedConditionList.resolve(value, conditionManager);
                 this.map.put(id, list);
+            } catch (JsonParseException e) {
+                logger.err("Failed to load {} condition list", id, e);
+            } catch (Exception e) {
+                logger.fatal("Fatal error while loading condition list {}", id, e);
             }
-            logger.info("Condition lists loaded");
-        } catch (JsonParseException e) {
-            logger.err("Error loading condition lists, " + e.getMessage());
-        } catch (Exception e) {
-            logger.fatal("Fatal error while loading condition lists: " + e);
         }
+        logger.info("Condition lists loaded");
     }
 }

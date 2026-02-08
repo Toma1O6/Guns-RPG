@@ -10,9 +10,6 @@ import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
-
-import java.util.UUID;
 
 public class KillEntitiesQuest extends Quest<KillEntityData> {
 
@@ -20,8 +17,8 @@ public class KillEntitiesQuest extends Quest<KillEntityData> {
     private int requiredKillCount;
     private int killCount;
 
-    public KillEntitiesQuest(World world, QuestScheme<KillEntityData> scheme, UUID traderId) {
-        super(world, scheme, traderId);
+    public KillEntitiesQuest(IQuestFactory.InstanceContext<KillEntityData, ?> context) {
+        super(context);
     }
 
     public KillEntitiesQuest(QuestDeserializationContext<KillEntityData> context) {

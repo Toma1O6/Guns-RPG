@@ -38,7 +38,7 @@ public final class QuestConditions {
         ResourceLocation questTypeId = new ResourceLocation(nbt.getString("type"));
         QuestConditionProviderType<P> type = getByKey(questTypeId);
         P provider = type.fromNbt(nbt);
-        C condition = provider.makeConditionInstance();
+        C condition = provider.createDefaultInstance();
         condition.loadData(nbt);
         return condition;
     }

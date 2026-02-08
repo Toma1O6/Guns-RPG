@@ -37,7 +37,7 @@ public class NoHealConditionProvider extends AbstractQuestConditionProvider<NoHe
     }
 
     @Override
-    public NoHealConditionProvider makeConditionInstance() {
+    public NoHealConditionProvider createDefaultInstance() {
         return this;
     }
 

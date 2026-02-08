@@ -31,8 +31,8 @@ public abstract class AbstractAreaBasedQuest<D extends IQuestData & IQuestAreaPr
     protected boolean areaEntered;
     protected QuestArea area;
 
-    public AbstractAreaBasedQuest(World level, QuestScheme<D> scheme, UUID traderId) {
-        super(level, scheme, traderId);
+    public AbstractAreaBasedQuest(IQuestFactory.InstanceContext<D, ?> context) {
+        super(context);
         this.gracePeriod = this.getGracePeriodDuration();
     }
 

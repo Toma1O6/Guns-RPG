@@ -10,9 +10,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
-
-import java.util.UUID;
 
 public class KillInAreaQuest extends AbstractAreaBasedQuest<KillInAreaData> {
 
@@ -20,8 +17,8 @@ public class KillInAreaQuest extends AbstractAreaBasedQuest<KillInAreaData> {
     private int killCount;
     private int requiredKillCount;
 
-    public KillInAreaQuest(World world, QuestScheme<KillInAreaData> scheme, UUID traderId) {
-        super(world, scheme, traderId);
+    public KillInAreaQuest(IQuestFactory.InstanceContext<KillInAreaData, ?> context) {
+        super(context);
     }
 
     public KillInAreaQuest(QuestDeserializationContext<KillInAreaData> context) {

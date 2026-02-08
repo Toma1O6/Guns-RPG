@@ -13,15 +13,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.UUID;
-
 public class AreaSurvivalQuest extends AbstractAreaBasedQuest<AreaSurvivalData> {
 
     public static final IQuestFactory<AreaSurvivalData, AreaSurvivalQuest> FACTORY = IQuestFactory.of(AreaSurvivalQuest::new, AreaSurvivalQuest::new);
     private int timeLeft;
 
-    public AreaSurvivalQuest(World world, QuestScheme<AreaSurvivalData> scheme, UUID traderId) {
-        super(world, scheme, traderId);
+    public AreaSurvivalQuest(IQuestFactory.InstanceContext<AreaSurvivalData, ?> context) {
+        super(context);
         this.timeLeft = this.getActiveData().getTicks();
     }
 

@@ -30,16 +30,16 @@ public final class QuestConditionTierScheme {
         return listProviders;
     }
 
-    public Result getModifiedConditions() {
+    public Result getModifiedConditions(IQuestFactory.InstanceContext<?, ?> context) {
         int tierModifier = 0;
         IQuestCondition[] conditions = new IQuestCondition[listProviders.length];
         for (int i = 0; i < listProviders.length; i++) {
             TieredList tieredList = listProviders[i];
-            IQuestConditionProvider<?> provider = tieredList.getList().getProvider();
+            IQuestConditionProvider<?> provider = tieredList.getList().getProvider(context.getPartyLeader());
             if (provider != NoConditionProvider.NO_CONDITION) {
                 tierModifier += tieredList.tier;
             }
-            conditions[i] = provider.makeConditionInstance();
+            conditions[i] = provider.createWithContext(context);
         }
         return new Result(Arrays.stream(conditions).filter(condition -> condition.getProviderType() != NoConditionProvider.NO_CONDITION).toArray(IQuestCondition[]::new), tierModifier);
     }

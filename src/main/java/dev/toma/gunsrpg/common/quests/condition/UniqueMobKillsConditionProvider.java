@@ -31,7 +31,7 @@ public class UniqueMobKillsConditionProvider extends AbstractQuestConditionProvi
     }
 
     @Override
-    public ConditionTracker makeConditionInstance() {
+    public ConditionTracker createDefaultInstance() {
         return new ConditionTracker(this);
     }
 

@@ -52,7 +52,7 @@ public class HeadshotConditionProvider extends AbstractQuestConditionProvider<He
     }
 
     @Override
-    public HeadshotConditionProvider makeConditionInstance() {
+    public HeadshotConditionProvider createDefaultInstance() {
         return this;
     }
 

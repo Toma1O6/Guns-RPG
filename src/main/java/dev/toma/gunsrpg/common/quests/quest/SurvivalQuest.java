@@ -17,16 +17,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.UUID;
-
 public class SurvivalQuest extends Quest<SurvivalData> {
 
     public static final IQuestFactory<SurvivalData, SurvivalQuest> FACTORY = IQuestFactory.of(SurvivalQuest::new, SurvivalQuest::new);
     public static final ITextComponent TIME_REMAINING = new TranslationTextComponent("quest.time_remaining");
     private int timeLeft;
 
-    public SurvivalQuest(World world, QuestScheme<SurvivalData> scheme, UUID traderId) {
-        super(world, scheme, traderId);
+    public SurvivalQuest(IQuestFactory.InstanceContext<SurvivalData, ?> context) {
+        super(context);
         this.timeLeft = this.getActiveData().getTicks();
     }
 

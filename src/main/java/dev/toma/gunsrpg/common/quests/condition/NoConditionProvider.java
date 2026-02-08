@@ -26,7 +26,7 @@ public class NoConditionProvider extends AbstractQuestConditionProvider<NoCondit
     }
 
     @Override
-    public NoConditionProvider makeConditionInstance() {
+    public NoConditionProvider createDefaultInstance() {
         return this;
     }
 

@@ -510,7 +510,7 @@ public class GunsrpgCommand {
         if (!group.isLeader(player.getUUID())) {
             throw NOT_A_GROUP_LEADER.create();
         }
-        Quest<?> quest = newQuest(scheme, player.level);
+        Quest<?> quest = newQuest(scheme, player.level, player);
         quest.setStatus(QuestStatus.ACTIVE);
         questing.assignQuest(quest, group);
         questing.sendData();
@@ -531,9 +531,10 @@ public class GunsrpgCommand {
     }
 
     @SuppressWarnings("unchecked")
-    private static <D extends IQuestData, Q extends Quest<D>> Quest<D> newQuest(QuestScheme<D> scheme, World world) {
+    private static <D extends IQuestData, Q extends Quest<D>> Quest<D> newQuest(QuestScheme<D> scheme, World world, PlayerEntity player) {
         QuestType<D, Q> type = (QuestType<D, Q>) scheme.getQuestType();
-        return type.newQuestInstance(world, scheme, Util.NIL_UUID);
+        IQuestFactory.InstanceContext<D, Q> context = new IQuestFactory.InstanceContext<>(world, scheme, Util.NIL_UUID, player);
+        return type.newQuestInstance(context);
     }
 
     private static int updateQuestStatus(CommandContext<CommandSource> context) throws CommandSyntaxException {
@@ -594,10 +595,11 @@ public class GunsrpgCommand {
         player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Name: " + TextFormatting.AQUA + info.getName().getString()), Util.NIL_UUID);
         player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Info: " + TextFormatting.AQUA + info.getInfo().getString()), Util.NIL_UUID);
         IQuestConditionProvider<?>[] questConditions = scheme.getQuestConditions();
+        IQuestFactory.InstanceContext<?, ?> ctx = new IQuestFactory.InstanceContext<>(player.level, scheme, Util.NIL_UUID, player);
         if (questConditions.length > 0) {
             player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "Conditions"), Util.NIL_UUID);
             for (IQuestConditionProvider<?> provider : questConditions) {
-                IQuestCondition condition = provider.makeConditionInstance();
+                IQuestCondition condition = provider.createWithContext(ctx);
                 ITextComponent text = condition.getDescriptor(false);
                 player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "- " + TextFormatting.AQUA + text.getString()), Util.NIL_UUID);
             }
@@ -611,7 +613,7 @@ public class GunsrpgCommand {
                 int tierModifier = list.getTier();
                 player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Added tier: " + TextFormatting.AQUA + tierModifier), Util.NIL_UUID);
                 for (IQuestConditionProvider<?> provider : providers) {
-                    IQuestCondition condition = provider.makeConditionInstance();
+                    IQuestCondition condition = provider.createWithContext(ctx);
                     ITextComponent textComponent = condition.getDescriptor(false);
                     player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "- " + TextFormatting.AQUA + textComponent.getString()), Util.NIL_UUID);
                 }

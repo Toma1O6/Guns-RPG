@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.util.helper;
 
 import com.google.gson.*;
+import dev.toma.gunsrpg.common.init.ModRegistries;
+import dev.toma.gunsrpg.common.skills.core.SkillType;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.JSONUtils;
@@ -47,11 +49,26 @@ public final class JsonHelper {
         return object.has(arrayKey) ? deserialize(JSONUtils.getAsJsonArray(object, arrayKey), arr -> new ArrayList<>(), parser, List::add) : Collections.emptyList();
     }
 
+    public static <R> List<R> deserializeAsList(JsonArray array, Function<JsonElement, R> parser) {
+        List<R> list = new ArrayList<>();
+        for (JsonElement element : array) {
+            list.add(parser.apply(element));
+        }
+        return list;
+    }
+
     public static Item resolveItem(JsonElement element) throws JsonParseException {
         ResourceLocation itemId = new ResourceLocation(element.getAsString());
         Item item = ForgeRegistries.ITEMS.getValue(itemId);
         if (item == null || item == Items.AIR) throw new JsonSyntaxException("Unknown item: " + itemId);
         return item;
+    }
+
+    public static SkillType<?> resolveSkill(JsonElement element) throws JsonParseException {
+        ResourceLocation skillId = new ResourceLocation(element.getAsString());
+        SkillType<?> skill = ModRegistries.SKILLS.getValue(skillId);
+        if (skill == null) throw new JsonSyntaxException("Unknown skill: " + skillId);
+        return skill;
     }
 
     public static JsonElement toSimpleJson(ResourceLocation location) {

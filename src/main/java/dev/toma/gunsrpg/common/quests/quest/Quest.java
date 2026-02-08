@@ -68,19 +68,19 @@ public abstract class Quest<D extends IQuestData> {
     protected QuestReward reward;
     protected QuestStatus status = QuestStatus.CREATED;
 
-    public Quest(World level, QuestScheme<D> scheme, UUID traderId) {
-        this.level = level;
-        this.scheme = scheme;
-        this.mayorId = traderId;
+    public Quest(IQuestFactory.InstanceContext<D, ?> context) {
+        this.level = context.getWorld();
+        this.scheme = context.getScheme();
+        this.mayorId = context.getTraderId();
         QuestConditionTierScheme tierScheme = scheme.getConditionTierScheme();
-        QuestConditionTierScheme.Result result = tierScheme.getModifiedConditions();
+        QuestConditionTierScheme.Result result = tierScheme.getModifiedConditions(context);
         this.rewardTier = scheme.getTier() + result.getTierModifier();
         IQuestCondition[] tieredConditions = result.getConditions();
         IQuestConditionProvider<?>[] schemeConditions = scheme.getQuestConditions();
         IQuestCondition[] allConditions = new IQuestCondition[tieredConditions.length + schemeConditions.length];
         System.arraycopy(tieredConditions, 0, allConditions, 0, tieredConditions.length);
         for (int i = 0; i < schemeConditions.length; i++) {
-            IQuestCondition condition = schemeConditions[i].makeConditionInstance();
+            IQuestCondition condition = schemeConditions[i].createWithContext(context);
             allConditions[tieredConditions.length + i] = condition;
         }
         this.conditions = allConditions;

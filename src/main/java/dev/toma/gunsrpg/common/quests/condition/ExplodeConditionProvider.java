@@ -33,7 +33,7 @@ public class ExplodeConditionProvider extends AbstractQuestConditionProvider<Exp
     }
 
     @Override
-    public ExplodeConditionProvider makeConditionInstance() {
+    public ExplodeConditionProvider createDefaultInstance() {
         return this;
     }
 

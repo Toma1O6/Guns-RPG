@@ -33,7 +33,7 @@ public class NoDamageTakenConditionProvider extends AbstractQuestConditionProvid
     }
 
     @Override
-    public NoDamageTakenConditionProvider makeConditionInstance() {
+    public NoDamageTakenConditionProvider createDefaultInstance() {
         return this;
     }
 

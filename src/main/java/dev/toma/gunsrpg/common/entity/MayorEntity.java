@@ -104,7 +104,7 @@ public class MayorEntity extends CreatureEntity {
                 ITraderStandings standings = playerData.getMayorReputationProvider();
                 ITraderStatus status = standings.getStatusWithTrader(traderId);
                 if (!playerQuests.containsKey(uuid) || traderQuests == null) {
-                    traderQuests = ListedQuests.generate(level, traderId, status.getReputation());
+                    traderQuests = ListedQuests.generate(level, traderId, status.getReputation(), owner);
                     playerQuests.put(uuid, traderQuests);
                 }
                 ReputationStatus reputationStatus = ReputationStatus.getStatus(status.getReputation());
@@ -173,11 +173,11 @@ public class MayorEntity extends CreatureEntity {
             return new ListedQuests(nbt.stream().<Quest<?>>map(inbt -> QuestTypes.getFromNbt(world, (CompoundNBT) inbt)).toArray(Quest[]::new));
         }
 
-        public static ListedQuests generate(World world, UUID traderId, float reputation) {
+        public static ListedQuests generate(World world, UUID traderId, float reputation, PlayerEntity player) {
             QuestSystem system = GunsRPG.getModLifecycle().quests();
             QuestManager manager = system.getQuestManager();
             Set<QuestScheme<?>> schemes = manager.getSchemes(QUEST_COUNT, reputation);
-            Quest<?>[] quests = schemes.stream().<Quest<?>>map(scheme -> makeQuestFromScheme(world, scheme, traderId)).toArray(Quest[]::new);
+            Quest<?>[] quests = schemes.stream().<Quest<?>>map(scheme -> makeQuestFromScheme(new IQuestFactory.InstanceContext<>(world, scheme, traderId, player))).toArray(Quest[]::new);
             return new ListedQuests(quests);
         }
 
@@ -195,10 +195,9 @@ public class MayorEntity extends CreatureEntity {
             return nbt;
         }
 
-        @SuppressWarnings("unchecked")
-        private static <D extends IQuestData, Q extends Quest<D>> Q makeQuestFromScheme(World world, QuestScheme<D> scheme, UUID traderId) {
-            QuestType<D, Q> type = (QuestType<D, Q>) scheme.getQuestType();
-            return type.newQuestInstance(world, scheme, traderId);
+        private static <D extends IQuestData, Q extends Quest<D>> Q makeQuestFromScheme(IQuestFactory.InstanceContext<D, Q> ctx) {
+            QuestType<D, Q> type = ctx.getQuestType();
+            return type.newQuestInstance(ctx);
         }
     }
 }

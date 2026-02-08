@@ -49,7 +49,7 @@ public class HasAggroConditionProvider extends AbstractQuestConditionProvider<Ha
     }
 
     @Override
-    public HasAggroConditionProvider makeConditionInstance() {
+    public HasAggroConditionProvider createDefaultInstance() {
         return this;
     }
 

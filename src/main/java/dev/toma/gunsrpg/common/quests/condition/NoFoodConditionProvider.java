@@ -38,7 +38,7 @@ public class NoFoodConditionProvider extends AbstractQuestConditionProvider<NoFo
     }
 
     @Override
-    public NoFoodConditionProvider makeConditionInstance() {
+    public NoFoodConditionProvider createDefaultInstance() {
         return this;
     }
 

@@ -54,7 +54,7 @@ public class DistanceConditionProvider extends AbstractQuestConditionProvider<Di
     }
 
     @Override
-    public DistanceConditionProvider makeConditionInstance() {
+    public DistanceConditionProvider createDefaultInstance() {
         return this;
     }
 

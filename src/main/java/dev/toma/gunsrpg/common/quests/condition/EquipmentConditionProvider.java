@@ -85,7 +85,7 @@ public class EquipmentConditionProvider extends AbstractQuestConditionProvider<E
     }
 
     @Override
-    public EquipmentConditionProvider makeConditionInstance() {
+    public EquipmentConditionProvider createDefaultInstance() {
         return this;
     }
 

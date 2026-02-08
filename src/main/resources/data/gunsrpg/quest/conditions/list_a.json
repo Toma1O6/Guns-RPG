@@ -12,41 +12,199 @@
     "condition": {
       "type": "gunsrpg:used_item",
       "selector": "one",
-      "items": [
-        "minecraft:stone_sword",
-        "minecraft:stone_axe",
-        "minecraft:iron_sword",
-        "minecraft:iron_axe",
-        "minecraft:golden_sword",
-        "minecraft:golden_axe",
-        "minecraft:diamond_sword",
-        "minecraft:diamond_axe",
-        "minecraft:netherite_sword",
-        "minecraft:netherite_axe",
-        "minecraft:bow",
-        "minecraft:crossbow",
-        "gunsrpg:m1911",
-        "gunsrpg:r45",
-        "gunsrpg:desert_eagle",
-        "gunsrpg:ump45",
-        "gunsrpg:thompson",
-        "gunsrpg:vector",
-        "gunsrpg:s1897",
-        "gunsrpg:s686",
-        "gunsrpg:s12k",
-        "gunsrpg:wooden_crossbow",
-        "gunsrpg:chukonu",
-        "gunsrpg:akm",
-        "gunsrpg:hk416",
-        "gunsrpg:aug",
-        "gunsrpg:sks",
-        "gunsrpg:vss",
-        "gunsrpg:mk14ebr",
-        "gunsrpg:kar98k",
-        "gunsrpg:winchester",
-        "gunsrpg:awm",
-        "gunsrpg:grenade_launcher",
-        "gunsrpg:rocket_launcher"
+      "item_groups": [
+        {
+          "items": [
+            "minecraft:stone_sword",
+            "minecraft:stone_axe",
+            "minecraft:iron_sword",
+            "minecraft:iron_axe",
+            "minecraft:golden_sword",
+            "minecraft:golden_axe",
+            "minecraft:diamond_sword",
+            "minecraft:diamond_axe",
+            "minecraft:netherite_sword",
+            "minecraft:netherite_axe",
+            "minecraft:bow",
+            "minecraft:crossbow"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:m1911"
+          ],
+          "requirements": [
+            "gunsrpg:m1911_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:r45"
+          ],
+          "requirements": [
+            "gunsrpg:r45_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:desert_eagle"
+          ],
+          "requirements": [
+            "gunsrpg:desert_eagle_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:ump45"
+          ],
+          "requirements": [
+            "gunsrpg:ump45_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:thompson"
+          ],
+          "requirements": [
+            "gunsrpg:thompson_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:vector"
+          ],
+          "requirements": [
+            "gunsrpg:vector_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:s1897"
+          ],
+          "requirements": [
+            "gunsrpg:s1897_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:s686"
+          ],
+          "requirements": [
+            "gunsrpg:s686_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:s12k"
+          ],
+          "requirements": [
+            "gunsrpg:s12k_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:wooden_crossbow"
+          ],
+          "requirements": [
+            "gunsrpg:crossbow_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:chukonu"
+          ],
+          "requirements": [
+            "gunsrpg:chukonu_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:akm"
+          ],
+          "requirements": [
+            "gunsrpg:akm_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:hk416"
+          ],
+          "requirements": [
+            "gunsrpg:hk416_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:aug"
+          ],
+          "requirements": [
+            "gunsrpg:aug_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:sks"
+          ],
+          "requirements": [
+            "gunsrpg:sks_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:vss"
+          ],
+          "requirements": [
+            "gunsrpg:vss_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:mk14ebr"
+          ],
+          "requirements": [
+            "gunsrpg:mk14ebr_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:kar98k"
+          ],
+          "requirements": [
+            "gunsrpg:kar98k_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:winchester"
+          ],
+          "requirements": [
+            "gunsrpg:winchester_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:awm"
+          ],
+          "requirements": [
+            "gunsrpg:awm_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:grenade_launcher"
+          ],
+          "requirements": [
+            "gunsrpg:grenade_launcher_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:rocket_launcher"
+          ],
+          "requirements": [
+            "gunsrpg:rocket_launcher_assembly"
+          ]
+        }
       ]
     }
   },
@@ -57,12 +215,19 @@
       "type": "gunsrpg:used_item",
       "selector": "any",
       "group": "Pistols",
-      "items": [
-        "gunsrpg:m1911",
-        "gunsrpg:r45",
-        "gunsrpg:desert_eagle"
+      "item_groups": [
+        {
+          "items": [
+            "gunsrpg:m1911",
+            "gunsrpg:r45",
+            "gunsrpg:desert_eagle"
+          ]
+        }
       ]
-    }
+    },
+    "required_skills": [
+      "gunsrpg:m1911_assembly"
+    ]
   },
   {
     "weight": 7,
@@ -71,12 +236,19 @@
       "type": "gunsrpg:used_item",
       "selector": "any",
       "group": "SMGs",
-      "items": [
-        "gunsrpg:ump45",
-        "gunsrpg:thompson",
-        "gunsrpg:vector"
+      "item_groups": [
+        {
+          "items": [
+            "gunsrpg:ump45",
+            "gunsrpg:thompson",
+            "gunsrpg:vector"
+          ]
+        }
       ]
-    }
+    },
+    "required_skills": [
+      "gunsrpg:ump45_assembly"
+    ]
   },
   {
     "weight": 7,
@@ -85,12 +257,19 @@
       "type": "gunsrpg:used_item",
       "selector": "any",
       "group": "Assault Rifles",
-      "items": [
-        "gunsrpg:akm",
-        "gunsrpg:hk416",
-        "gunsrpg:aug"
+      "item_groups": [
+        {
+          "items": [
+            "gunsrpg:akm",
+            "gunsrpg:hk416",
+            "gunsrpg:aug"
+          ]
+        }
       ]
-    }
+    },
+    "required_skills": [
+      "gunsrpg:akm_assembly"
+    ]
   },
   {
     "weight": 7,
@@ -99,12 +278,19 @@
       "type": "gunsrpg:used_item",
       "selector": "any",
       "group": "Shotguns",
-      "items": [
-        "gunsrpg:s1897",
-        "gunsrpg:s686",
-        "gunsrpg:s12k"
+      "item_groups": [
+        {
+          "items": [
+            "gunsrpg:s1897",
+            "gunsrpg:s686",
+            "gunsrpg:s12k"
+          ]
+        }
       ]
-    }
+    },
+    "required_skills": [
+      "gunsrpg:s1897_assembly"
+    ]
   },
   {
     "weight": 7,
@@ -113,12 +299,19 @@
       "type": "gunsrpg:used_item",
       "selector": "any",
       "group": "DMRs",
-      "items": [
-        "gunsrpg:sks",
-        "gunsrpg:vss",
-        "gunsrpg:mk14ebr"
+      "item_groups": [
+        {
+          "items": [
+            "gunsrpg:sks",
+            "gunsrpg:vss",
+            "gunsrpg:mk14ebr"
+          ]
+        }
       ]
-    }
+    },
+    "required_skills": [
+      "gunsrpg:sks_assembly"
+    ]
   },
   {
     "weight": 7,
@@ -127,12 +320,19 @@
       "type": "gunsrpg:used_item",
       "selector": "any",
       "group": "Sniper Rifles",
-      "items": [
-        "gunsrpg:kar98k",
-        "gunsrpg:winchester",
-        "gunsrpg:awm"
+      "item_groups": [
+        {
+          "items": [
+            "gunsrpg:kar98k",
+            "gunsrpg:winchester",
+            "gunsrpg:awm"
+          ]
+        }
       ]
-    }
+    },
+    "required_skills": [
+      "gunsrpg:kar98k_assembly"
+    ]
   },
   {
     "weight": 7,
@@ -141,11 +341,29 @@
       "type": "gunsrpg:used_item",
       "selector": "any",
       "group": "Bows And Crossbows",
-      "items": [
-        "minecraft:bow",
-        "minecraft:crossbow",
-        "gunsrpg:wooden_crossbow",
-        "gunsrpg:chukonu"
+      "item_groups": [
+        {
+          "items": [
+            "minecraft:bow",
+            "minecraft:crossbow"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:wooden_crossbow"
+          ],
+          "requirements": [
+            "gunsrpg:crossbow_assembly"
+          ]
+        },
+        {
+          "items": [
+            "gunsrpg:chukonu"
+          ],
+          "requirements": [
+            "gunsrpg:chukonu_assembly"
+          ]
+        }
       ]
     }
   },
@@ -156,19 +374,23 @@
       "type": "gunsrpg:used_item",
       "selector": "any",
       "group": "Melee weapons",
-      "items": [
-        "minecraft:wooden_sword",
-        "minecraft:wooden_axe",
-        "minecraft:stone_sword",
-        "minecraft:stone_axe",
-        "minecraft:iron_sword",
-        "minecraft:iron_axe",
-        "minecraft:golden_sword",
-        "minecraft:golden_axe",
-        "minecraft:diamond_sword",
-        "minecraft:diamond_axe",
-        "minecraft:netherite_sword",
-        "minecraft:netherite_axe"
+      "item_groups": [
+        {
+          "items": [
+            "minecraft:wooden_sword",
+            "minecraft:wooden_axe",
+            "minecraft:stone_sword",
+            "minecraft:stone_axe",
+            "minecraft:iron_sword",
+            "minecraft:iron_axe",
+            "minecraft:golden_sword",
+            "minecraft:golden_axe",
+            "minecraft:diamond_sword",
+            "minecraft:diamond_axe",
+            "minecraft:netherite_sword",
+            "minecraft:netherite_axe"
+          ]
+        }
       ]
     }
   },
