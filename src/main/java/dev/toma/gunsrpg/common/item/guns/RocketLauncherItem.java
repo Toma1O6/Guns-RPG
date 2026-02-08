@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.item.guns;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.IReloadManager;
+import dev.toma.gunsrpg.api.common.IWeaponConfig;
 import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IAimInfo;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
@@ -28,6 +29,7 @@ import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.config.gun.RecoilParameters;
 import dev.toma.gunsrpg.util.properties.PropertyContext;
 import lib.toma.animations.api.IRenderConfig;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -124,6 +126,13 @@ public class RocketLauncherItem extends AbstractExplosiveLauncher implements IEn
     @Override
     public int getReloadTime(IAttributeProvider provider, ItemStack stack) {
         return Attribs.RL_RELOAD.intValue(provider);
+    }
+
+    @Override
+    protected float getInitialVelocity(IWeaponConfig config, LivingEntity shooter) {
+        return shooter.getType() == EntityType.PLAYER
+                ? super.getInitialVelocity(config, shooter)
+                : 0.9F;
     }
 
     @Override

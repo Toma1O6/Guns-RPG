@@ -14,10 +14,10 @@ public interface IEntityTrackingGun extends IAdditionalShootData {
 
     class GuidenanceProperties {
 
-        public static final GuidenanceProperties PLAYER = new GuidenanceProperties(7.0F, 7.0F, 4.0F, 75.0F);
-        public static final GuidenanceProperties GUNNER_AIR = new GuidenanceProperties(6.0F, 6.0F, 8.0F, 90.0F);
-        public static final GuidenanceProperties GUNNER_GROUND = new GuidenanceProperties(0.5F, 1.3F, 0.0F, 90.0F);
-        public static final GuidenanceProperties TURRET = new GuidenanceProperties(8.5F, 8.5F, 16.0F, 90.0F);
+        public static final GuidenanceProperties PLAYER = new GuidenanceProperties(7.0F, 7.0F, 4.0F, 45.0F);
+        public static final GuidenanceProperties GUNNER_AIR = new GuidenanceProperties(6.0F, 6.0F, 8.0F, 70.0F);
+        public static final GuidenanceProperties GUNNER_GROUND = new GuidenanceProperties(2.0F, 2.0F, 0.0F, 30.0F);
+        public static final GuidenanceProperties TURRET = new GuidenanceProperties(8.5F, 8.5F, 16.0F, 80.0F);
         public static final IPropertySerializer<GuidenanceProperties> SERIALIZER = new Serializer();
 
         private final float maxPitch;

@@ -20,21 +20,22 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.Heightmap;
 
 import java.util.EnumSet;
 
 public class GunAttackGoal extends Goal {
 
     protected static final int[] ATTACK_RANGE_TABLE = {
-            10, // Pistol
-            15, // SMG
-            20, // AR
-            25, // DMR
-            25, // SR
-            10, // SG
-            10, // Crossbow
-            15, // Grenade launcher
-            25  // Rocket launcher
+            24, // Pistol
+            32, // SMG
+            32, // AR
+            32, // DMR
+            32, // SR
+            14, // SG
+            16, // Crossbow
+            24, // Grenade launcher
+            48  // Rocket launcher
     };
     protected final ZombieGunnerEntity entity;
     private final IShootProps props;
@@ -150,9 +151,11 @@ public class GunAttackGoal extends Goal {
             LivingEntity target = entity.getTarget();
             PropertyContext context = PropertyContext.create();
             if (stack.getItem() instanceof IEntityTrackingGun) {
+                int heightMap = target.level.getHeight(Heightmap.Type.WORLD_SURFACE, (int) target.getX(), (int) target.getZ());
+                double heightDiff = target.getY() - heightMap;
                 context.setProperty(Properties.FUELED, true);
                 context.setProperty(Properties.ENTITY_ID, target.getId());
-                context.setProperty(Properties.GUIDENANCE, target.isOnGround() ? IEntityTrackingGun.GuidenanceProperties.GUNNER_GROUND : IEntityTrackingGun.GuidenanceProperties.GUNNER_AIR);
+                context.setProperty(Properties.GUIDENANCE, heightDiff < 6.0 ? IEntityTrackingGun.GuidenanceProperties.GUNNER_GROUND : IEntityTrackingGun.GuidenanceProperties.GUNNER_AIR);
                 return context;
             }
             return PropertyContext.empty();
