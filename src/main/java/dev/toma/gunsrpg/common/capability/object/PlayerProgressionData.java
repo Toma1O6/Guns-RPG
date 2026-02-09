@@ -138,11 +138,14 @@ public class PlayerProgressionData implements IProgressData, IPlayerCapEntry {
 
     @Override
     public void onEnemyKilled(Entity enemy, ItemStack weapon) {
-        if (!(enemy instanceof IMob) || enemy.getType().is(ModTags.Entities.SKILL_PROGRESS_EXCLUSION))
+        if (!(enemy instanceof IMob))
             return;
         MobExpRewardManager manager = GunsRPG.getModLifecycle().getMobExpRewardManager();
         MobExpReward reward = manager.getReward(enemy);
         int expAmount = reward.getExp();
+        if (expAmount <= 0) {
+            return;
+        }
         this.kills += expAmount;
         if (this.level < getLevelLimit() && this.requiredKills <= this.kills) {
             advanceLevel(true);

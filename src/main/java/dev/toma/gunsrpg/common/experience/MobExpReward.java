@@ -3,6 +3,7 @@ package dev.toma.gunsrpg.common.experience;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.JSONUtils;
@@ -31,6 +32,9 @@ public final class MobExpReward {
         JsonObject object = JsonHelper.asJsonObject(jsonElement);
         EntityType<?> type = JsonHelper.resolveEntityType(object.get("entity"));
         int exp = JSONUtils.getAsInt(object, "exp", 1);
+        if (exp < 0) {
+            throw new JsonSyntaxException("Experience amount cannot be negative number!");
+        }
         return new MobExpReward(type, exp);
     }
 }

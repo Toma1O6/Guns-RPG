@@ -2,7 +2,6 @@ package dev.toma.gunsrpg.common.experience;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.GunsRPG;
 import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.entity.Entity;
