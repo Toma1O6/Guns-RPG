@@ -23,5 +23,8 @@
       "gunsrpg:explode",
       "gunsrpg:use_specific_weapon"
     ]
-  }
+  },
+  "preconditions": [
+    "#gunsrpg:weapon_assembly"
+  ]
 }
