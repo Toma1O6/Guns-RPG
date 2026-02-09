@@ -1,0 +1,12 @@
+{
+  "values": [
+    "#gunsrpg:pistols",
+    "#gunsrpg:smgs",
+    "#gunsrpg:shotguns",
+    "#gunsrpg:bows",
+    "#gunsrpg:assault",
+    "#gunsrpg:dmrs",
+    "#gunsrpg:sniper",
+    "#gunsrpg:explosives"
+  ]
+}

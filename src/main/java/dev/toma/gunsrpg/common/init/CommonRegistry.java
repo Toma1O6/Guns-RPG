@@ -55,6 +55,7 @@ import net.minecraftforge.registries.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 @Mod.EventBusSubscriber(modid = GunsRPG.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonRegistry {
@@ -69,7 +70,7 @@ public class CommonRegistry {
 
     @SubscribeEvent
     public static void createRegistries(RegistryEvent.NewRegistry event) {
-        ModRegistries.SKILLS = createGenericRegistry("skill", SkillType.class);
+        ModRegistries.SKILLS = createGenericRegistry("skill", SkillType.class, builder -> builder.tagFolder("gunsrpg/skill_type"));
         ModRegistries.DEBUFFS = createGenericRegistry("debuff", DebuffType.class);
     }
 
@@ -1070,14 +1071,18 @@ public class CommonRegistry {
         return new SoundEvent(name).setRegistryName(name);
     }
 
-    protected static <V extends IForgeRegistryEntry<V>> RegistryBuilder<V> createRegistry(ResourceLocation location, Class<V> type) {
-        return new RegistryBuilder<V>().setName(location).setType(type).setMaxID(Integer.MAX_VALUE - 1);
+    protected static <V extends IForgeRegistryEntry<V>> RegistryBuilder<V> createRegistry(ResourceLocation location, Class<V> type, UnaryOperator<RegistryBuilder<V>> builder) {
+        return builder.apply(new RegistryBuilder<V>().setName(location).setType(type).setMaxID(Integer.MAX_VALUE - 1));
+    }
+
+    private static <V extends ForgeRegistryEntry<V>> IForgeRegistry<V> createGenericRegistry(String name, Class<?> type) {
+        return createGenericRegistry(name, type, UnaryOperator.identity());
     }
 
     @SuppressWarnings("unchecked")
-    private static <V extends ForgeRegistryEntry<V>> IForgeRegistry<V> createGenericRegistry(String name, Class<?> vClass) {
+    private static <V extends ForgeRegistryEntry<V>> IForgeRegistry<V> createGenericRegistry(String name, Class<?> vClass, UnaryOperator<RegistryBuilder<V>> builder) {
         ResourceLocation location = GunsRPG.makeResource(name);
-        createRegistry(location, (Class<V>) vClass).create();
+        createRegistry(location, (Class<V>) vClass, builder).create();
         return RegistryManager.ACTIVE.getRegistry(location);
     }
 }

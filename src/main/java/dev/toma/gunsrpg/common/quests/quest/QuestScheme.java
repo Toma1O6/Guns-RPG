@@ -1,8 +1,13 @@
 package dev.toma.gunsrpg.common.quests.quest;
 
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.quests.condition.IQuestConditionProvider;
+import dev.toma.gunsrpg.common.quests.condition.SkillPrecondition;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants;
 
 public final class QuestScheme<D extends IQuestData> {
 
@@ -14,8 +19,9 @@ public final class QuestScheme<D extends IQuestData> {
     private final DisplayInfo displayInfo;
     private final IQuestConditionProvider<?>[] questConditions;
     private final QuestConditionTierScheme conditionTierScheme;
+    private final SkillPrecondition preconditions;
 
-    public QuestScheme(ResourceLocation questId, QuestType<D, ?> questType, D data, int tier, boolean isSpecialTaskQuest, DisplayInfo displayInfo, IQuestConditionProvider<?>[] questConditions, QuestConditionTierScheme conditionTierScheme) {
+    public QuestScheme(ResourceLocation questId, QuestType<D, ?> questType, D data, int tier, boolean isSpecialTaskQuest, DisplayInfo displayInfo, IQuestConditionProvider<?>[] questConditions, QuestConditionTierScheme conditionTierScheme, SkillPrecondition preconditions) {
         this.questId = questId;
         this.questType = questType;
         this.data = data;
@@ -24,6 +30,7 @@ public final class QuestScheme<D extends IQuestData> {
         this.displayInfo = displayInfo;
         this.questConditions = questConditions;
         this.conditionTierScheme = conditionTierScheme;
+        this.preconditions = preconditions;
     }
 
     public static <D extends IQuestData> QuestScheme<D> read(CompoundNBT nbt) {
@@ -34,7 +41,13 @@ public final class QuestScheme<D extends IQuestData> {
         int tier = nbt.getInt("tier");
         boolean isSpecialTask = nbt.getBoolean("special");
         DisplayInfo displayInfo = DisplayInfo.create(questId);
-        return new QuestScheme<>(questId, questType, data, tier, isSpecialTask, displayInfo, new IQuestConditionProvider[0], QuestConditionTierScheme.EMPTY_SCHEME);
+        SkillPrecondition precondition = SkillPrecondition.fromNbt(nbt.getList("precondition", Constants.NBT.TAG_STRING), false);
+        return new QuestScheme<>(questId, questType, data, tier, isSpecialTask, displayInfo, new IQuestConditionProvider[0], QuestConditionTierScheme.EMPTY_SCHEME, precondition);
+    }
+
+    public boolean canAssign(PlayerEntity player) {
+        IPlayerData data = PlayerData.getUnsafe(player);
+        return this.preconditions.test(data.getSkillProvider());
     }
 
     public ResourceLocation getQuestId() {
@@ -77,6 +90,7 @@ public final class QuestScheme<D extends IQuestData> {
         nbt.putInt("tier", tier);
         nbt.putBoolean("special", isSpecialTaskQuest);
         nbt.put("questData", questType.writeData(data));
+        nbt.put("precondition", preconditions.toNbt());
         return nbt;
     }
 

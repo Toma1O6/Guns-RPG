@@ -7,12 +7,13 @@ import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.resource.skill.SkillPropertyLoader;
 import dev.toma.gunsrpg.util.SkillUtil;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import java.util.function.Function;
 
-public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>> {
+public final class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>> {
 
     // builder configurable data
     private final IFactory<S> instanceFactory;
@@ -88,6 +89,10 @@ public class SkillType<S extends ISkill> extends ForgeRegistryEntry<SkillType<?>
 
     public ITextComponent[] getDescription() {
         return localization.getDescription();
+    }
+
+    public boolean is(ITag<SkillType<?>> tag) {
+        return tag.contains(this);
     }
 
     @Override

@@ -1,11 +1,9 @@
 package dev.toma.gunsrpg.common.quests.adapters;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 import dev.toma.gunsrpg.common.quests.condition.IQuestConditionProvider;
 import dev.toma.gunsrpg.common.quests.condition.QuestConditionLoader;
+import dev.toma.gunsrpg.common.quests.condition.SkillPrecondition;
 import dev.toma.gunsrpg.common.quests.quest.*;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.util.JSONUtils;
@@ -41,6 +39,8 @@ public class QuestSchemeAdapter {
             JsonObject tieredConditions = JSONUtils.getAsJsonObject(object, "tieredConditions");
             tierScheme = QuestConditionTierScheme.fromJson(tieredConditions);
         }
-        return new QuestScheme<>(filePath, questType, data, tier, isSpecialTask, displayInfo, conditions, tierScheme);
+        JsonArray preconditions = JSONUtils.getAsJsonArray(object, "preconditions", new JsonArray());
+        SkillPrecondition precondition = SkillPrecondition.parse(preconditions, false);
+        return new QuestScheme<>(filePath, questType, data, tier, isSpecialTask, displayInfo, conditions, tierScheme, precondition);
     }
 }

@@ -9,6 +9,7 @@ import dev.toma.gunsrpg.common.quests.condition.QuestConditionLoader;
 import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.util.ILogHandler;
 import net.minecraft.client.resources.JsonReloadListener;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
@@ -38,16 +39,24 @@ public final class QuestManager extends JsonReloadListener {
         return quests.keySet();
     }
 
-    public Set<QuestScheme<?>> getSchemes(int count, float reputation) {
+    public Set<QuestScheme<?>> getSchemes(int count, float reputation, PlayerEntity player) {
         ReputationStatus status = ReputationStatus.getStatus(reputation);
         int maxTier = status.getBaseTier();
         List<QuestScheme<?>> schemePool = new LinkedList<>();
-        quests.values().stream().filter(scheme -> !scheme.isSpecialTaskQuest() && scheme.getTier() <= maxTier).forEach(schemePool::add);
+        this.quests.values().stream()
+                .filter(scheme -> !scheme.isSpecialTaskQuest() && scheme.getTier() <= maxTier && scheme.canAssign(player))
+                .forEach(schemePool::add);
         Set<QuestScheme<?>> results = new HashSet<>();
         Random random = new Random();
         for (int i = 0; i < count; i++) {
-            int schemeIndex = random.nextInt(schemePool.size());
-            results.add(schemePool.get(schemeIndex));
+            int poolSize = schemePool.size();
+            if (poolSize == 0) {
+                this.log.warning("Unable to generate full quest list due to insufficient quests, skipping generation. Generated {}/{}", results.size(), count);
+                break;
+            }
+            int schemeIndex = random.nextInt(poolSize);
+            QuestScheme<?> randomScheme = schemePool.get(schemeIndex);
+            results.add(randomScheme);
             schemePool.remove(schemeIndex);
         }
         return results;
