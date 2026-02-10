@@ -15,13 +15,8 @@
   "tieredConditions": {
     "conditions": [
       {
-        "condition": "@gunsrpg:list_a"
+        "condition": "@gunsrpg:headhunter_conditions"
       }
-    ],
-    "exclusions": [
-      "gunsrpg:use_melee",
-      "gunsrpg:explode",
-      "gunsrpg:use_specific_weapon"
     ]
   },
   "preconditions": [
