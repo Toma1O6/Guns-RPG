@@ -5,6 +5,9 @@
     "minecraft:husk",
     "minecraft:zombie_villager",
     "minecraft:drowned",
+    "minecraft:skeleton",
+    "minecraft:stray",
+    "minecraft:creeper",
     "gunsrpg:zombie_knight",
     "gunsrpg:zombie_gunner"
   ]
