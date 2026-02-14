@@ -32,7 +32,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public final class NewQuestScreen extends Screen implements ScreenDataEventListener {
+public final class QuestScreen extends Screen implements ScreenDataEventListener {
 
     public static final ITextComponent TITLE = new TranslationTextComponent("screen.gunsrpg.quests");
     private static final ITextComponent TEXT_AVAILABLE_QUESTS = new TranslationTextComponent("screen.quests.available_quests").withStyle(TextFormatting.UNDERLINE);
@@ -66,7 +66,7 @@ public final class NewQuestScreen extends Screen implements ScreenDataEventListe
     private int rewardChoiceCount;
     private int rewardsTop;
 
-    public NewQuestScreen(MayorEntity entity, ReputationStatus status, List<Quest<?>> quests, QuestReward pendingReward) {
+    public QuestScreen(MayorEntity entity, ReputationStatus status, List<Quest<?>> quests, QuestReward pendingReward) {
         super(TITLE);
         this.entity = entity;
         this.status = status;
@@ -216,6 +216,7 @@ public final class NewQuestScreen extends Screen implements ScreenDataEventListe
         DialogScreen dialog = DialogScreen.create(this, DIALOG_START_HEADER);
         dialog.setContent(DIALOG_START_INFO, new StringTextComponent(" "), DIALOG_START_DANGER);
         dialog.setConfirmHandler(this::startSelectedQuestConfirmed);
+        dialog.setOpenParentOnConfirm(false);
         dialog.setActive(this.minecraft);
     }
 

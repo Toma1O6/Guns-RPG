@@ -25,6 +25,8 @@ public class DialogScreen extends Screen {
     private ITextComponent confirmText = new TranslationTextComponent("screen.dialog.confirm");
     private ITextComponent denyText = new TranslationTextComponent("screen.dialog.deny");
     private List<IReorderingProcessor> formattedContents;
+    private boolean openParentOnConfirm = true;
+    private boolean openParentOnCancel = true;
 
     private int left, top;
 
@@ -60,6 +62,14 @@ public class DialogScreen extends Screen {
         this.denyText = denyText;
     }
 
+    public void setOpenParentOnConfirm(boolean openParentOnConfirm) {
+        this.openParentOnConfirm = openParentOnConfirm;
+    }
+
+    public void setOpenParentOnCancel(boolean openParentOnCancel) {
+        this.openParentOnCancel = openParentOnCancel;
+    }
+
     public void setActive(Minecraft client) {
         client.setScreen(this);
     }
@@ -77,7 +87,7 @@ public class DialogScreen extends Screen {
         this.top = (this.height - this.dialogHeight) / 2;
 
         int btnWidth = (this.dialogWidth - 15) / 2;
-        addButton(new Button(this.left + 5, this.top + this.dialogHeight - 25, btnWidth, 20, this.denyText, btn -> this.navigateToParentScreen()));
+        addButton(new Button(this.left + 5, this.top + this.dialogHeight - 25, btnWidth, 20, this.denyText, this::rejected));
         addButton(new Button(this.left + this.dialogWidth - 5 - btnWidth, this.top + this.dialogHeight - 25, btnWidth, 20, this.confirmText, this::accepted));
     }
 
@@ -89,7 +99,17 @@ public class DialogScreen extends Screen {
         if (this.onConfirm != null) {
             this.onConfirm.onButtonEvent();
         }
-        this.navigateToParentScreen();
+        if (this.openParentOnConfirm)
+            this.navigateToParentScreen();
+        else
+            this.minecraft.setScreen(null);
+    }
+
+    private void rejected(Button button) {
+        if (this.openParentOnCancel)
+            this.navigateToParentScreen();
+        else
+            this.minecraft.setScreen(null);
     }
 
     @Override

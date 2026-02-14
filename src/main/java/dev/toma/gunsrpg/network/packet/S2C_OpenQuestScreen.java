@@ -1,6 +1,6 @@
 package dev.toma.gunsrpg.network.packet;
 
-import dev.toma.gunsrpg.client.screen.quest.NewQuestScreen;
+import dev.toma.gunsrpg.client.screen.quest.QuestScreen;
 import dev.toma.gunsrpg.common.entity.MayorEntity;
 import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
@@ -77,6 +77,6 @@ public class S2C_OpenQuestScreen extends AbstractNetworkPacket<S2C_OpenQuestScre
         MayorEntity.ListedQuests mayorQuestList = MayorEntity.ListedQuests.loadNbt(world, this.questsNbt);
         List<Quest<?>> quests = Arrays.asList(mayorQuestList.getQuests());
 
-        mc.setScreen(new NewQuestScreen(mayor, this.status, quests, this.pendingReward));
+        mc.setScreen(new QuestScreen(mayor, this.status, quests, this.pendingReward));
     }
 }

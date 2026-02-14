@@ -93,6 +93,7 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
         private static final UUID ORBS = UUID.fromString("A8F1394A-6E77-4F46-9DC1-23438B60203E");
         private static final UUID BOOKS = UUID.fromString("28ABF8DA-049F-4B98-BAEE-7F68F3DA7E5B");
         private static final UUID FLARES = UUID.fromString("DE956C1C-4E5A-45DB-87B6-C84F31D38D05");
+        private static final UUID QUESTS = UUID.fromString("56AF97DA-AC7C-4D19-92E0-551ECF17f8E7");
 
         private final float ammoMultiplier;
         private final float explosiveAmmo;
@@ -102,6 +103,7 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
         private final int perkBookReward;
         private final int airdropFlare;
         private final int rewardCount;
+        private final int questCount;
 
         private TieredReward(Builder builder) {
             ammoMultiplier = builder.ammoMultiplier;
@@ -112,6 +114,7 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
             perkBookReward = builder.perkBookReward;
             airdropFlare = builder.airdropFlare;
             rewardCount = builder.rewardCount;
+            questCount = builder.questCount;
         }
 
         public IAttributeTarget[] toAttributes() {
@@ -122,7 +125,8 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
                     AttributeTarget.create(new AttributeModifier(MEDS, AttributeOps.SUM, medReward), Attribs.QUEST_MEDS),
                     AttributeTarget.create(new AttributeModifier(ORBS, AttributeOps.SUM, orbReward), Attribs.QUEST_ORBS),
                     AttributeTarget.create(new AttributeModifier(BOOKS, AttributeOps.SUM, perkBookReward), Attribs.QUEST_PERKBOOK),
-                    AttributeTarget.create(new AttributeModifier(FLARES, AttributeOps.SUM, airdropFlare), Attribs.QUEST_FLARE)
+                    AttributeTarget.create(new AttributeModifier(FLARES, AttributeOps.SUM, airdropFlare), Attribs.QUEST_FLARE),
+                    AttributeTarget.create(new AttributeModifier(QUESTS, AttributeOps.SUM, questCount), Attribs.QUEST_COUNT)
             };
         }
 
@@ -131,20 +135,21 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
         }
 
         public static void bartender2(Builder builder) {
-            builder.defaults(0.10F, 0.0F, 0, 0, 0, 0, 0)
+            builder.defaults(0.10F, 0.0F, 0, 0, 0, 0, 0, 0)
                     .ammoMultiplier(0.20F)
                     .showCount(1);
         }
 
         public static void bartender3(Builder builder) {
-            builder.defaults(0.20F, 0.0F, 1, 0, 0, 0, 0)
+            builder.defaults(0.20F, 0.0F, 1, 0, 0, 0, 0, 0)
                     .ammoMultiplier(0.30F)
                     .meds(1)
-                    .orbs(1);
+                    .orbs(1)
+                    .extraQuests(1);
         }
 
         public static void bartender4(Builder builder) {
-            builder.defaults(0.30F, 0.0F, 1, 1, 1, 0, 0)
+            builder.defaults(0.30F, 0.0F, 1, 1, 1, 0, 0, 1)
                     .ammoMultiplier(0.40F)
                     .showCount(2)
                     .perkBook(1)
@@ -152,11 +157,12 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
         }
 
         public static void bartender5(Builder builder) {
-            builder.defaults(0.40F, 0.5F, 2, 1, 1, 1, 0)
+            builder.defaults(0.40F, 0.5F, 2, 1, 1, 1, 0, 1)
                     .ammoMultiplier(0.50F)
                     .flare(1)
                     .orbs(2)
-                    .rewardCount(2);
+                    .rewardCount(2)
+                    .extraQuests(2);
         }
 
         public static class Builder {
@@ -170,6 +176,7 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
             private int perkBookReward;
             private int airdropFlare;
             private int rewardCount;
+            private int questCount;
 
             private Builder(DescriptionContainer container) {
                 this.ref = container;
@@ -223,7 +230,13 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
                 return this;
             }
 
-            public Builder defaults(float ammoMultiplier, float explosiveAmmo, int shownRewards, int medReward, int orbReward, int perkBookReward, int airdropFlare) {
+            public Builder extraQuests(int questCount) {
+                this.ref.addProperty("quests", questCount + (int) Attribs.QUEST_COUNT.getBaseValue());
+                this.questCount = questCount;
+                return this;
+            }
+
+            public Builder defaults(float ammoMultiplier, float explosiveAmmo, int shownRewards, int medReward, int orbReward, int perkBookReward, int airdropFlare, int questCount) {
                 this.ammoMultiplier = ammoMultiplier;
                 this.explosiveAmmo = explosiveAmmo;
                 this.shownRewards = shownRewards;
@@ -231,6 +244,7 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
                 this.orbReward = orbReward;
                 this.perkBookReward = perkBookReward;
                 this.airdropFlare = airdropFlare;
+                this.questCount = questCount;
                 return this;
             }
 

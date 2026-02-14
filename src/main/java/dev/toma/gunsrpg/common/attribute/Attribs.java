@@ -26,6 +26,7 @@ public final class Attribs {
     public static final IAttributeId BLAZEPOWDER_OUTPUT         = createInternal("blazepowder_out", 0);
     public static final IAttributeId AMMO_OUTPUT                = createInternal("ammo_output", 0);
     public static final IAttributeId QUEST_AMMO                 = createInternal("quests_ammo");
+    public static final IAttributeId QUEST_COUNT                = createInternal("quests_count", 5);
     public static final IAttributeId QUEST_EXPLOSIVES           = createInternal("quests_explosives");
     public static final IAttributeId QUEST_VISIBLE_REWARD       = createInternal("quests_visible_reward", 3);
     public static final IAttributeId QUEST_MEDS                 = createInternal("quests_meds", 0);

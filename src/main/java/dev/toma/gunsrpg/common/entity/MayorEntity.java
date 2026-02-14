@@ -1,10 +1,12 @@
 package dev.toma.gunsrpg.common.entity;
 
 import dev.toma.gunsrpg.GunsRPG;
+import dev.toma.gunsrpg.api.common.attribute.IAttributeProvider;
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IQuestingData;
 import dev.toma.gunsrpg.api.common.data.ITraderStandings;
 import dev.toma.gunsrpg.api.common.data.ITraderStatus;
+import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
@@ -225,7 +227,6 @@ public class MayorEntity extends CreatureEntity {
 
     public static final class ListedQuests {
 
-        public static final int QUEST_COUNT = 5;
         private Quest<?>[] quests;
 
         public ListedQuests(Quest<?>[] quests) {
@@ -239,7 +240,10 @@ public class MayorEntity extends CreatureEntity {
         public static ListedQuests generate(World world, UUID traderId, float reputation, PlayerEntity player) {
             QuestSystem system = GunsRPG.getModLifecycle().quests();
             QuestManager manager = system.getQuestManager();
-            Set<QuestScheme<?>> schemes = manager.getSchemes(QUEST_COUNT, reputation, player);
+            IPlayerData data = PlayerData.getUnsafe(player);
+            IAttributeProvider provider = data.getAttributes();
+            int count = provider.getAttribute(Attribs.QUEST_COUNT).intValue();
+            Set<QuestScheme<?>> schemes = manager.getSchemes(count, reputation, player);
             Quest<?>[] quests = schemes.stream().<Quest<?>>map(scheme -> makeQuestFromScheme(new IQuestFactory.InstanceContext<>(world, scheme, traderId, player))).toArray(Quest[]::new);
             return new ListedQuests(quests);
         }

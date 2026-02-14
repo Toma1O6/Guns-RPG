@@ -74,6 +74,5 @@ public final class C2S_QuestStartRequest extends AbstractNetworkPacket<C2S_Quest
         quests.refreshList();
         questing.assignQuest(quest, group);
         questing.sendData();
-        NetworkManager.sendClientPacket(sender, QuestingDataProvider.createQuestScreenRequest(mayor, sender));
     }
 }

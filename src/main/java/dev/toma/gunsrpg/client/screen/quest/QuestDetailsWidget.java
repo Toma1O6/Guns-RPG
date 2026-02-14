@@ -54,17 +54,17 @@ public class QuestDetailsWidget extends Widget {
         font.drawShadow(matrix, questName, left, this.y + 12, 0xFFFFFF);
 
         // description
-        font.drawShadow(matrix, QUEST_DESCRIPTION, left, this.y + 27, 0xFFFFFF);
-        font.drawShadow(matrix, detail, left, this.y + 37, 0xFFFFFF);
+        font.drawShadow(matrix, QUEST_DESCRIPTION, left, this.y + 37, 0xFFFFFF);
+        font.drawShadow(matrix, detail, left, this.y + 47, 0xFFFFFF);
 
         // conditions
         IQuestCondition[] conditions = this.quest.getConditions();
         if (conditions.length > 0) {
-            font.drawShadow(matrix, QUEST_CONDITIONS, left, this.y + 52, 0xFFFFFF);
+            font.drawShadow(matrix, QUEST_CONDITIONS, left, this.y + 72, 0xFFFFFF);
             for (int i = 0; i < conditions.length; i++) {
                 IQuestCondition condition = conditions[i];
                 String conditionInfo = condition.getDescriptor(false).getString();
-                font.drawShadow(matrix, "- " + conditionInfo, left, this.y + 62 + i * 11, 0xFFFFFF);
+                font.drawShadow(matrix, "- " + conditionInfo, left, this.y + 82 + i * 11, 0xFFFFFF);
             }
         }
 
