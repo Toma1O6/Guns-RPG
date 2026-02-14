@@ -7,7 +7,6 @@ import dev.toma.gunsrpg.api.common.skill.ISkillHierarchy;
 import dev.toma.gunsrpg.api.common.skill.ISkillProperties;
 import dev.toma.gunsrpg.api.common.skill.ITransactionValidator;
 import dev.toma.gunsrpg.common.capability.PlayerData;
-import dev.toma.gunsrpg.common.init.ModRegistries;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -16,10 +15,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkillPacket> {
 
-    private SkillType<?> toUnlock;
-
-    public C2S_UnlockSkillPacket() {
-    }
+    private final SkillType<?> toUnlock;
 
     public C2S_UnlockSkillPacket(SkillType<?> toUnlock) {
         this.toUnlock = toUnlock;
@@ -27,13 +23,11 @@ public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkill
 
     @Override
     public void encode(PacketBuffer buffer) {
-        buffer.writeResourceLocation(toUnlock.getRegistryName());
+        buffer.writeRegistryId(this.toUnlock);
     }
 
-    @Override
-    public C2S_UnlockSkillPacket decode(PacketBuffer buffer) {
-        SkillType<?> toUnlock = ModRegistries.SKILLS.getValue(buffer.readResourceLocation());
-        return new C2S_UnlockSkillPacket(toUnlock);
+    public static C2S_UnlockSkillPacket decode(PacketBuffer buffer) {
+        return new C2S_UnlockSkillPacket(buffer.readRegistryId());
     }
 
     @Override

@@ -186,6 +186,10 @@ public final class QuestingGroup {
         return this.groupId.equals(playerId);
     }
 
+    public boolean isLeader(PlayerEntity player) {
+        return this.isLeader(player.getUUID());
+    }
+
     public boolean isMember(UUID playerId) {
         return members.contains(playerId);
     }

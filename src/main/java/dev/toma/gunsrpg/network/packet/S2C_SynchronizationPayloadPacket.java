@@ -45,11 +45,7 @@ public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket<S2C_
     // dynamic debuffs
     private final Map<ResourceLocation, Object> debuffData;
 
-    public S2C_SynchronizationPayloadPacket() {
-        this(null, null, null, null);
-    }
-
-    public static <T> S2C_SynchronizationPayloadPacket makePayloadPacket() {
+    public static S2C_SynchronizationPayloadPacket makePayloadPacket() {
         Lifecycle lifecycle = GunsRPG.getModLifecycle();
         List<DataContext> data = ModRegistries.SKILLS.getValues().stream().filter(S2C_SynchronizationPayloadPacket::filterAndLogInvalid).map(DataContext::new).collect(Collectors.toList());
         List<Perk> perks = new ArrayList<>(PerkRegistry.getRegistry().getPerks());
@@ -82,8 +78,7 @@ public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket<S2C_
         debuffData.forEach((location, data) -> encodeDebuffData(buffer, location, data));
     }
 
-    @Override
-    public S2C_SynchronizationPayloadPacket decode(PacketBuffer buffer) {
+    public static S2C_SynchronizationPayloadPacket decode(PacketBuffer buffer) {
         // skill props
         int l = buffer.readInt();
         List<DataContext> list = new ArrayList<>();
@@ -129,7 +124,7 @@ public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket<S2C_
     }
 
     @SuppressWarnings("unchecked")
-    private <D> void encodeDebuffData(PacketBuffer buffer, ResourceLocation location, D data) {
+    private static <D> void encodeDebuffData(PacketBuffer buffer, ResourceLocation location, D data) {
         buffer.writeResourceLocation(location);
 
         DynamicDebuff<D> type = (DynamicDebuff<D>) ModRegistries.DEBUFFS.getValue(location);
@@ -141,7 +136,7 @@ public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket<S2C_
         buffer.writeNbt(nbt);
     }
 
-    private Map<ResourceLocation, Object> decodeDebuffData(PacketBuffer buffer) {
+    private static Map<ResourceLocation, Object> decodeDebuffData(PacketBuffer buffer) {
         Map<ResourceLocation, Object> map = new HashMap<>();
         int count = buffer.readInt();
         for (int i = 0; i < count; i++) {
@@ -154,7 +149,7 @@ public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket<S2C_
     }
 
     @SuppressWarnings("unchecked")
-    private <D> D readDebuffData(ResourceLocation location, CompoundNBT nbt) {
+    private static <D> D readDebuffData(ResourceLocation location, CompoundNBT nbt) {
         DynamicDebuff<D> debuff = (DynamicDebuff<D>) ModRegistries.DEBUFFS.getValue(location);
         Codec<D> codec = debuff.getDataCodec();
         DataResult<D> result = codec.parse(NBTDynamicOps.INSTANCE, nbt);

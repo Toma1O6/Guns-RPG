@@ -13,8 +13,8 @@ public class C2S_FusePacket extends AbstractNetworkPacket<C2S_FusePacket> {
 
     private final BlockPos pos;
 
-    public C2S_FusePacket() {
-        this.pos = null;
+    public C2S_FusePacket(PacketBuffer buffer) {
+        this.pos = buffer.readBlockPos();
     }
 
     public C2S_FusePacket(CrystalFusionStationTileEntity tile) {
@@ -28,11 +28,6 @@ public class C2S_FusePacket extends AbstractNetworkPacket<C2S_FusePacket> {
     @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeBlockPos(pos);
-    }
-
-    @Override
-    public C2S_FusePacket decode(PacketBuffer buffer) {
-        return new C2S_FusePacket(buffer.readBlockPos());
     }
 
     @Override

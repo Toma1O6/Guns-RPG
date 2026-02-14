@@ -14,10 +14,11 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class S2C_AnimationPacket extends AbstractNetworkPacket<S2C_AnimationPacket> {
 
-    private Action action;
-    private ResourceLocation typeId;
+    private final Action action;
+    private final ResourceLocation typeId;
 
-    public S2C_AnimationPacket() {
+    public S2C_AnimationPacket(PacketBuffer buffer) {
+        this(buffer.readEnum(Action.class), buffer.readResourceLocation());
     }
 
     public S2C_AnimationPacket(Action action, ResourceLocation typeId) {
@@ -29,11 +30,6 @@ public class S2C_AnimationPacket extends AbstractNetworkPacket<S2C_AnimationPack
     public void encode(PacketBuffer buffer) {
         buffer.writeEnum(action);
         buffer.writeResourceLocation(typeId);
-    }
-
-    @Override
-    public S2C_AnimationPacket decode(PacketBuffer buffer) {
-        return new S2C_AnimationPacket(buffer.readEnum(Action.class), buffer.readResourceLocation());
     }
 
     @OnlyIn(Dist.CLIENT)

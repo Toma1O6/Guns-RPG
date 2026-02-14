@@ -6,6 +6,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.*;
@@ -95,9 +97,19 @@ public final class QuestReward {
             return items;
         }
 
+        public DisplayData getDisplayInfo() {
+            int count = Arrays.stream(this.items)
+                    .mapToInt(ItemStack::getCount)
+                    .sum();
+            ItemStack item = this.items.length > 0 ? this.items[0].copy() : ItemStack.EMPTY;
+            if (!item.isEmpty())
+                item.setCount(1);
+            return new DisplayData(item, count);
+        }
+
         public void distributeToInventory(PlayerEntity player) {
             for (ItemStack stack : items) {
-                ModUtils.addItem(player, stack);
+                ModUtils.addItem(player, stack.copy());
             }
         }
 
@@ -107,6 +119,30 @@ public final class QuestReward {
                 list.add(stack.serializeNBT());
             }
             return list;
+        }
+
+        public static class DisplayData {
+
+            private final ItemStack itemStack;
+            private final int count;
+
+            public DisplayData(ItemStack itemStack, int count) {
+                this.itemStack = itemStack;
+                this.count = count;
+            }
+
+            public ItemStack getItemStack() {
+                return itemStack;
+            }
+
+            public int getCount() {
+                return count;
+            }
+
+            public ITextComponent getText() {
+                ITextComponent itemStackDisplay = this.itemStack.getHoverName().plainCopy();
+                return new StringTextComponent(this.count + "x ").append(itemStackDisplay);
+            }
         }
     }
 

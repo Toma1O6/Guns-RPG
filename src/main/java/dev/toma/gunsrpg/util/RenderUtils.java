@@ -20,6 +20,10 @@ public class RenderUtils {
 
     public static final int MAX_COLOR_INT_VALUE = 0xff;
 
+    public static boolean isVisible(int color) {
+        return alpha_i(color) > 0;
+    }
+
     public static int asInt(float value) {
         return MathHelper.ceil(value * 255);
     }

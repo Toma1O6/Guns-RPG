@@ -12,8 +12,8 @@ public class C2S_RequestStashDetectorStatus extends AbstractNetworkPacket<C2S_Re
 
     private final StashDetectorItem.StatusEvent event;
 
-    public C2S_RequestStashDetectorStatus() {
-        this(null);
+    public C2S_RequestStashDetectorStatus(PacketBuffer buffer) {
+        this(buffer.readEnum(StashDetectorItem.StatusEvent.class));
     }
 
     public C2S_RequestStashDetectorStatus(StashDetectorItem.StatusEvent event) {
@@ -23,11 +23,6 @@ public class C2S_RequestStashDetectorStatus extends AbstractNetworkPacket<C2S_Re
     @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeEnum(event);
-    }
-
-    @Override
-    public C2S_RequestStashDetectorStatus decode(PacketBuffer buffer) {
-        return new C2S_RequestStashDetectorStatus(buffer.readEnum(StashDetectorItem.StatusEvent.class));
     }
 
     @Override

@@ -15,10 +15,6 @@ public class C2S_RequestExtensionSkillLockPacket extends AbstractNetworkPacket<C
 
     private final SkillType<?> head;
 
-    public C2S_RequestExtensionSkillLockPacket() {
-        this(null);
-    }
-
     public C2S_RequestExtensionSkillLockPacket(SkillType<?> head) {
         this.head = head;
     }
@@ -28,8 +24,7 @@ public class C2S_RequestExtensionSkillLockPacket extends AbstractNetworkPacket<C
         buffer.writeRegistryId(head);
     }
 
-    @Override
-    public C2S_RequestExtensionSkillLockPacket decode(PacketBuffer buffer) {
+    public static C2S_RequestExtensionSkillLockPacket decode(PacketBuffer buffer) {
         return new C2S_RequestExtensionSkillLockPacket(buffer.readRegistryId());
     }
 

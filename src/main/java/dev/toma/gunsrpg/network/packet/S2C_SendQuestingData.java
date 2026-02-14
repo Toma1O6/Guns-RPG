@@ -16,8 +16,8 @@ public class S2C_SendQuestingData extends AbstractNetworkPacket<S2C_SendQuesting
 
     private final CompoundNBT nbt;
 
-    public S2C_SendQuestingData() {
-        this(null);
+    public S2C_SendQuestingData(PacketBuffer buffer) {
+        this(buffer.readNbt());
     }
 
     public S2C_SendQuestingData(CompoundNBT nbt) {
@@ -27,11 +27,6 @@ public class S2C_SendQuestingData extends AbstractNetworkPacket<S2C_SendQuesting
     @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeNbt(this.nbt);
-    }
-
-    @Override
-    public S2C_SendQuestingData decode(PacketBuffer buffer) {
-        return new S2C_SendQuestingData(buffer.readNbt());
     }
 
     @Override

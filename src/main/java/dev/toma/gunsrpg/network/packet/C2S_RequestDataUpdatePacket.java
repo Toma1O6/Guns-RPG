@@ -13,9 +13,10 @@ import java.util.UUID;
 
 public class C2S_RequestDataUpdatePacket extends AbstractNetworkPacket<C2S_RequestDataUpdatePacket> {
 
-    private UUID uuid;
+    private final UUID uuid;
 
-    public C2S_RequestDataUpdatePacket() {
+    public C2S_RequestDataUpdatePacket(PacketBuffer buffer) {
+        this(buffer.readUUID());
     }
 
     public C2S_RequestDataUpdatePacket(UUID uuid) {
@@ -25,11 +26,6 @@ public class C2S_RequestDataUpdatePacket extends AbstractNetworkPacket<C2S_Reque
     @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeUUID(uuid);
-    }
-
-    @Override
-    public C2S_RequestDataUpdatePacket decode(PacketBuffer buffer) {
-        return new C2S_RequestDataUpdatePacket(buffer.readUUID());
     }
 
     @Override

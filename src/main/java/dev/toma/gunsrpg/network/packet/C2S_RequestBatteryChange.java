@@ -8,14 +8,11 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class C2S_RequestBatteryChange extends AbstractHandlePacket<C2S_RequestBatteryChange> {
+public final class C2S_RequestBatteryChange extends AbstractHandlePacket<C2S_RequestBatteryChange> {
 
-    public C2S_RequestBatteryChange() {}
+    public static final C2S_RequestBatteryChange INSTANCE = new C2S_RequestBatteryChange();
 
-    @Override
-    public C2S_RequestBatteryChange recreate() {
-        return new C2S_RequestBatteryChange();
-    }
+    private C2S_RequestBatteryChange() {}
 
     @Override
     protected void handlePacket(NetworkEvent.Context context) {

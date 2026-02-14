@@ -13,10 +13,10 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class C2S_PurifyPacket extends AbstractNetworkPacket<C2S_PurifyPacket> {
 
-    final BlockPos pos;
+    private final BlockPos pos;
 
-    public C2S_PurifyPacket() {
-        this(null);
+    public C2S_PurifyPacket(PacketBuffer buffer) {
+        this(buffer.readBlockPos());
     }
 
     public C2S_PurifyPacket(BlockPos pos) {
@@ -26,11 +26,6 @@ public class C2S_PurifyPacket extends AbstractNetworkPacket<C2S_PurifyPacket> {
     @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeBlockPos(pos);
-    }
-
-    @Override
-    public C2S_PurifyPacket decode(PacketBuffer buffer) {
-        return new C2S_PurifyPacket(buffer.readBlockPos());
     }
 
     @Override

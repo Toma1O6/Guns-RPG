@@ -18,8 +18,8 @@ public class C2S_InviteMember extends AbstractNetworkPacket<C2S_InviteMember> {
 
     private final UUID inviteeId;
 
-    public C2S_InviteMember() {
-        this(null);
+    public C2S_InviteMember(PacketBuffer buffer) {
+        this(buffer.readUUID());
     }
 
     public C2S_InviteMember(UUID inviteeId) {
@@ -29,11 +29,6 @@ public class C2S_InviteMember extends AbstractNetworkPacket<C2S_InviteMember> {
     @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeUUID(this.inviteeId);
-    }
-
-    @Override
-    public C2S_InviteMember decode(PacketBuffer buffer) {
-        return new C2S_InviteMember(buffer.readUUID());
     }
 
     @Override

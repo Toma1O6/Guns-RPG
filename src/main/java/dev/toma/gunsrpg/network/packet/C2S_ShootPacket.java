@@ -18,10 +18,6 @@ public class C2S_ShootPacket extends AbstractNetworkPacket<C2S_ShootPacket> {
     private final float x;
     private final float y;
 
-    public C2S_ShootPacket() {
-        this(ctx -> {}, 0, 0);
-    }
-
     public C2S_ShootPacket(Consumer<PropertyContext> consumer, float x, float y) {
         this(PropertyContext.create(), x, y);
         consumer.accept(this.context);
@@ -40,8 +36,7 @@ public class C2S_ShootPacket extends AbstractNetworkPacket<C2S_ShootPacket> {
         buffer.writeFloat(y);
     }
 
-    @Override
-    public C2S_ShootPacket decode(PacketBuffer buffer) {
+    public static C2S_ShootPacket decode(PacketBuffer buffer) {
         PropertyContext context = PropertyContext.create();
         context.decode(buffer);
         float x = buffer.readFloat();

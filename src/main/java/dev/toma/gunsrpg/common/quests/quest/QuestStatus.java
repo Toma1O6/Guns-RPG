@@ -4,22 +4,12 @@ public enum QuestStatus {
 
     CREATED(),
     ACTIVE(),
-    COMPLETED(true),
+    COMPLETED(),
     FAILED(),
     CLAIMED(),
     PAUSED();
 
-    private final boolean showRewards;
-
-    QuestStatus(boolean showRewards) {
-        this.showRewards = showRewards;
-    }
-
-    QuestStatus() {
-        this(false);
-    }
-
-    public boolean shouldShowRewards() {
-        return showRewards;
+    public boolean isActiveOrCompleted() {
+        return this == ACTIVE || this == COMPLETED;
     }
 }

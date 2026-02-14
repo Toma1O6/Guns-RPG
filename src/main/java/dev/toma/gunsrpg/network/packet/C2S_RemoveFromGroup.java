@@ -16,8 +16,8 @@ public class C2S_RemoveFromGroup extends AbstractNetworkPacket<C2S_RemoveFromGro
 
     private final UUID targetId;
 
-    public C2S_RemoveFromGroup() {
-        this(null);
+    public C2S_RemoveFromGroup(PacketBuffer buffer) {
+        this.targetId = buffer.readUUID();
     }
 
     public C2S_RemoveFromGroup(UUID targetId) {
@@ -27,11 +27,6 @@ public class C2S_RemoveFromGroup extends AbstractNetworkPacket<C2S_RemoveFromGro
     @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeUUID(this.targetId);
-    }
-
-    @Override
-    public C2S_RemoveFromGroup decode(PacketBuffer buffer) {
-        return new C2S_RemoveFromGroup(buffer.readUUID());
     }
 
     @Override

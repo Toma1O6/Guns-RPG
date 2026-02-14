@@ -13,8 +13,8 @@ public class C2S_RequestRepairPacket extends AbstractNetworkPacket<C2S_RequestRe
 
     private final BlockPos pos;
 
-    public C2S_RequestRepairPacket() {
-        this(null);
+    public C2S_RequestRepairPacket(PacketBuffer buffer) {
+        this(buffer.readBlockPos());
     }
 
     public C2S_RequestRepairPacket(BlockPos pos) {
@@ -24,11 +24,6 @@ public class C2S_RequestRepairPacket extends AbstractNetworkPacket<C2S_RequestRe
     @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeBlockPos(pos);
-    }
-
-    @Override
-    public C2S_RequestRepairPacket decode(PacketBuffer buffer) {
-        return new C2S_RequestRepairPacket(buffer.readBlockPos());
     }
 
     @Override

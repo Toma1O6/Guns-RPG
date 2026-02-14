@@ -19,8 +19,10 @@ public class C2S_TurretSettingsPacket extends AbstractNetworkPacket<C2S_TurretSe
     private final WhitelistOperation whitelistOperation;
     private final UUID playerId;
 
-    public C2S_TurretSettingsPacket() {
-        this(0, null, null, null, null);
+    public static C2S_TurretSettingsPacket decode(PacketBuffer buffer) {
+        int turretId = buffer.readInt();
+        SettingsType settingsType = buffer.readEnum(SettingsType.class);
+        return settingsType.decoder.decode(turretId, settingsType, buffer);
     }
 
     private C2S_TurretSettingsPacket(int turretId, SettingsType settingsType, TurretEntity.TargettingMode targettingMode, WhitelistOperation whitelistOperation, UUID playerId) {
@@ -44,13 +46,6 @@ public class C2S_TurretSettingsPacket extends AbstractNetworkPacket<C2S_TurretSe
         buffer.writeInt(turretId);
         buffer.writeEnum(settingsType);
         settingsType.encoder.accept(this, buffer);
-    }
-
-    @Override
-    public C2S_TurretSettingsPacket decode(PacketBuffer buffer) {
-        int turretId = buffer.readInt();
-        SettingsType settingsType = buffer.readEnum(SettingsType.class);
-        return settingsType.decoder.decode(turretId, settingsType, buffer);
     }
 
     @Override

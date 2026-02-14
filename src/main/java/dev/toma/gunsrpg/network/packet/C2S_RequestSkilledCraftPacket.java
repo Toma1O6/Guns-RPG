@@ -25,8 +25,8 @@ public class C2S_RequestSkilledCraftPacket extends AbstractNetworkPacket<C2S_Req
     private final BlockPos pos;
     private final boolean shiftKey;
 
-    public C2S_RequestSkilledCraftPacket() {
-        this(null, false);
+    public C2S_RequestSkilledCraftPacket(PacketBuffer buffer) {
+        this(buffer.readBlockPos(), buffer.readBoolean());
     }
 
     public C2S_RequestSkilledCraftPacket(BlockPos pos, boolean shiftKey) {
@@ -38,11 +38,6 @@ public class C2S_RequestSkilledCraftPacket extends AbstractNetworkPacket<C2S_Req
     public void encode(PacketBuffer buffer) {
         buffer.writeBlockPos(pos);
         buffer.writeBoolean(shiftKey);
-    }
-
-    @Override
-    public C2S_RequestSkilledCraftPacket decode(PacketBuffer buffer) {
-        return new C2S_RequestSkilledCraftPacket(buffer.readBlockPos(), buffer.readBoolean());
     }
 
     @Override

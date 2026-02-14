@@ -20,10 +20,11 @@ import java.util.UUID;
 
 public class C2S_InviteEvent extends AbstractNetworkPacket<C2S_InviteEvent> {
 
-    private boolean accepted;
-    private UUID targetId;
+    private final boolean accepted;
+    private final UUID targetId;
 
-    public C2S_InviteEvent() {
+    public C2S_InviteEvent(PacketBuffer buffer) {
+        this(buffer.readBoolean(), buffer.readUUID());
     }
 
     public C2S_InviteEvent(boolean accepted, UUID targetId) {
@@ -35,13 +36,6 @@ public class C2S_InviteEvent extends AbstractNetworkPacket<C2S_InviteEvent> {
     public void encode(PacketBuffer buffer) {
         buffer.writeBoolean(this.accepted);
         buffer.writeUUID(this.targetId);
-    }
-
-    @Override
-    public C2S_InviteEvent decode(PacketBuffer buffer) {
-        boolean accepted = buffer.readBoolean();
-        UUID targetId = buffer.readUUID();
-        return new C2S_InviteEvent(accepted, targetId);
     }
 
     @Override

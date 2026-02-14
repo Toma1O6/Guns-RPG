@@ -33,8 +33,7 @@ public class S2C_SetTrackedStashPacket extends AbstractNetworkPacket<S2C_SetTrac
         }
     }
 
-    @Override
-    public S2C_SetTrackedStashPacket decode(PacketBuffer buffer) {
+    public static S2C_SetTrackedStashPacket decode(PacketBuffer buffer) {
         Type type = buffer.readEnum(Type.class);
         if (type == Type.SET) {
             return new S2C_SetTrackedStashPacket(buffer.readBlockPos());

@@ -55,7 +55,7 @@ public class ModKeybinds {
         register("firemode", GLFW.GLFW_KEY_B, () -> {
             PlayerEntity player = Minecraft.getInstance().player;
             if (player.getMainHandItem().getItem() instanceof GunItem) {
-                NetworkManager.sendServerPacket(new C2S_ChangeFiremodePacket());
+                NetworkManager.sendServerPacket(C2S_ChangeFiremodePacket.INSTANCE);
             }
         });
         register("skill.slot.1", GLFW.GLFW_KEY_KP_1, () -> activateSkillSlot(0));
@@ -180,7 +180,7 @@ public class ModKeybinds {
                 ItemStack batteryItem = ItemLocator.findFirst(player.inventory, StashDetectorItem::isValidBatterySource);
                 if (stack.getDamageValue() > 0 && !batteryItem.isEmpty()) {
                     pipeline.insert(ModAnimations.STASH_DETECTOR, AnimationUtils.createAnimation(StashDetectorItem.CHARGE_BATTERY_ANIMATION, provider -> new Animation(provider, 120)));
-                    NetworkManager.sendServerPacket(new C2S_RequestBatteryChange());
+                    NetworkManager.sendServerPacket(C2S_RequestBatteryChange.INSTANCE);
                 }
             }
         }

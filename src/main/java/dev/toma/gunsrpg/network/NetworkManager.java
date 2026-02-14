@@ -3,10 +3,9 @@ package dev.toma.gunsrpg.network;
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.INetworkPacket;
 import dev.toma.gunsrpg.network.packet.*;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.ReportedException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -16,6 +15,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class NetworkManager {
@@ -58,49 +58,46 @@ public class NetworkManager {
 
     public static void init() {
         // client packets
-        registerNetworkPacket(S2C_UpdateCapabilityPacket.class);
-        registerNetworkPacket(S2C_AnimationPacket.class);
-        registerNetworkPacket(S2C_NewSkillsPacket.class);
-        registerNetworkPacket(S2C_SynchBlockEntityPacket.class);
-        registerNetworkPacket(S2C_SynchronizationPayloadPacket.class);
-        registerNetworkPacket(S2C_SetTrackedStashPacket.class);
-        registerNetworkPacket(S2C_UseStashDetectorPacket.class);
-        registerNetworkPacket(S2C_OpenQuestScreen.class);
-        registerNetworkPacket(S2C_SendEntityData.class);
-        registerNetworkPacket(S2C_SendQuestingData.class);
+        registerNetworkPacket(S2C_UpdateCapabilityPacket.class, S2C_UpdateCapabilityPacket::new);
+        registerNetworkPacket(S2C_AnimationPacket.class, S2C_AnimationPacket::new);
+        registerNetworkPacket(S2C_NewSkillsPacket.class, S2C_NewSkillsPacket::decode);
+        registerNetworkPacket(S2C_SynchBlockEntityPacket.class, S2C_SynchBlockEntityPacket::new);
+        registerNetworkPacket(S2C_SynchronizationPayloadPacket.class, S2C_SynchronizationPayloadPacket::decode);
+        registerNetworkPacket(S2C_SetTrackedStashPacket.class, S2C_SetTrackedStashPacket::decode);
+        registerNetworkPacket(S2C_UseStashDetectorPacket.class, S2C_UseStashDetectorPacket::new);
+        registerNetworkPacket(S2C_OpenQuestScreen.class, S2C_OpenQuestScreen::decode);
+        registerNetworkPacket(S2C_SendEntityData.class, S2C_SendEntityData::new);
+        registerNetworkPacket(S2C_SendQuestingData.class, S2C_SendQuestingData::new);
         // server packets
-        registerNetworkPacket(C2S_ShootPacket.class);
-        registerNetworkPacket(C2S_RequestDataUpdatePacket.class);
-        registerNetworkPacket(C2S_SelectAmmoPacket.class);
-        registerNetworkPacket(C2S_SetAimingPacket.class);
-        registerNetworkPacket(C2S_SetReloadingPacket.class);
-        registerNetworkPacket(C2S_ChangeFiremodePacket.class);
-        registerNetworkPacket(C2S_UnlockSkillPacket.class);
-        registerNetworkPacket(C2S_RequestSkilledCraftPacket.class);
-        registerNetworkPacket(C2S_SkillClickedPacket.class);
-        registerNetworkPacket(C2S_PacketSetJamming.class);
-        registerNetworkPacket(C2S_RequestRepairPacket.class);
-        registerNetworkPacket(C2S_RequestBatteryChange.class);
-        registerNetworkPacket(C2S_RequestStashDetectorStatus.class);
-        registerNetworkPacket(C2S_FusePacket.class);
-        registerNetworkPacket(C2S_PurifyPacket.class);
-        registerNetworkPacket(C2S_RequestExtensionSkillLockPacket.class);
-        registerNetworkPacket(C2S_QuestActionPacket.class);
-        registerNetworkPacket(C2S_TurretSettingsPacket.class);
-        registerNetworkPacket(C2S_PlaySoundFromAnimationEventPacket.class);
-        registerNetworkPacket(C2S_AmmoBenchEventPacket.class);
-        registerNetworkPacket(C2S_InviteMember.class);
-        registerNetworkPacket(C2S_InviteEvent.class);
-        registerNetworkPacket(C2S_RemoveFromGroup.class);
+        registerNetworkPacket(C2S_ShootPacket.class, C2S_ShootPacket::decode);
+        registerNetworkPacket(C2S_RequestDataUpdatePacket.class, C2S_RequestDataUpdatePacket::new);
+        registerNetworkPacket(C2S_SelectAmmoPacket.class, C2S_SelectAmmoPacket::decode);
+        registerNetworkPacket(C2S_SetAimingPacket.class, C2S_SetAimingPacket::new);
+        registerNetworkPacket(C2S_SetReloadingPacket.class, C2S_SetReloadingPacket::new);
+        registerNetworkPacket(C2S_ChangeFiremodePacket.class, buf -> C2S_ChangeFiremodePacket.INSTANCE);
+        registerNetworkPacket(C2S_UnlockSkillPacket.class, C2S_UnlockSkillPacket::decode);
+        registerNetworkPacket(C2S_RequestSkilledCraftPacket.class, C2S_RequestSkilledCraftPacket::new);
+        registerNetworkPacket(C2S_SkillClickedPacket.class, C2S_SkillClickedPacket::decode);
+        registerNetworkPacket(C2S_PacketSetJamming.class, C2S_PacketSetJamming::decode);
+        registerNetworkPacket(C2S_RequestRepairPacket.class, C2S_RequestRepairPacket::new);
+        registerNetworkPacket(C2S_RequestBatteryChange.class, buffer -> C2S_RequestBatteryChange.INSTANCE);
+        registerNetworkPacket(C2S_RequestStashDetectorStatus.class, C2S_RequestStashDetectorStatus::new);
+        registerNetworkPacket(C2S_FusePacket.class, C2S_FusePacket::new);
+        registerNetworkPacket(C2S_PurifyPacket.class, C2S_PurifyPacket::new);
+        registerNetworkPacket(C2S_RequestExtensionSkillLockPacket.class, C2S_RequestExtensionSkillLockPacket::decode);
+        registerNetworkPacket(C2S_TurretSettingsPacket.class, C2S_TurretSettingsPacket::decode);
+        registerNetworkPacket(C2S_PlaySoundFromAnimationEventPacket.class, C2S_PlaySoundFromAnimationEventPacket::new);
+        registerNetworkPacket(C2S_AmmoBenchEventPacket.class, C2S_AmmoBenchEventPacket::new);
+        registerNetworkPacket(C2S_InviteMember.class, C2S_InviteMember::new);
+        registerNetworkPacket(C2S_InviteEvent.class, C2S_InviteEvent::new);
+        registerNetworkPacket(C2S_RemoveFromGroup.class, C2S_RemoveFromGroup::new);
+        registerNetworkPacket(C2S_QuestStartRequest.class, C2S_QuestStartRequest::new);
+        registerNetworkPacket(C2S_QuestCancelRequest.class, C2S_QuestCancelRequest::new);
+        registerNetworkPacket(C2S_QuestCompleteRequest.class, C2S_QuestCompleteRequest::new);
+        registerNetworkPacket(C2S_QuestClaimRequest.class, C2S_QuestClaimRequest::new);
     }
 
-    private static <P extends INetworkPacket<P>> void registerNetworkPacket(Class<P> packetType) {
-        P packet;
-        try {
-            packet = packetType.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new ReportedException(CrashReport.forThrowable(e, "Couldn't instantiate packet for registration. Make sure you have provided public constructor with no parameters."));
-        }
-        CHANNEL.registerMessage(ID++, packetType, INetworkPacket::encode, packet::decode, INetworkPacket::handle);
+    private static <P extends INetworkPacket<P>> void registerNetworkPacket(Class<P> packetType, Function<PacketBuffer, P> decoder) {
+        CHANNEL.registerMessage(ID++, packetType, INetworkPacket::encode, decoder, INetworkPacket::handle);
     }
 }

@@ -10,9 +10,10 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class C2S_SetAimingPacket extends AbstractNetworkPacket<C2S_SetAimingPacket> {
 
-    private boolean aim;
+    private final boolean aim;
 
-    public C2S_SetAimingPacket() {
+    public C2S_SetAimingPacket(PacketBuffer buffer) {
+        this(buffer.readBoolean());
     }
 
     public C2S_SetAimingPacket(boolean aim) {
@@ -22,11 +23,6 @@ public class C2S_SetAimingPacket extends AbstractNetworkPacket<C2S_SetAimingPack
     @Override
     public void encode(PacketBuffer buf) {
         buf.writeBoolean(aim);
-    }
-
-    @Override
-    public C2S_SetAimingPacket decode(PacketBuffer buf) {
-        return new C2S_SetAimingPacket(buf.readBoolean());
     }
 
     @Override

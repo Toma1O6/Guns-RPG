@@ -13,6 +13,7 @@ import dev.toma.gunsrpg.client.render.infobar.QuestDisplayDataModel;
 import dev.toma.gunsrpg.client.render.infobar.TextElement;
 import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.entity.MayorEntity;
 import dev.toma.gunsrpg.common.init.ModSounds;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
@@ -143,6 +144,18 @@ public abstract class Quest<D extends IQuestData> {
 
     public UUID getMayorUUID() {
         return mayorId;
+    }
+
+    public boolean isSystemQuest() {
+        return Util.NIL_UUID.equals(this.mayorId);
+    }
+
+    public boolean isManageableByMayor(UUID mayorId) {
+        return this.isSystemQuest() || mayorId.equals(this.mayorId);
+    }
+
+    public boolean isManageableByMayor(MayorEntity entity) {
+        return this.isManageableByMayor(entity.getUUID());
     }
 
     public void tickQuest() {

@@ -15,8 +15,8 @@ public class S2C_SynchBlockEntityPacket extends AbstractNetworkPacket<S2C_SynchB
 
     private final BlockPos pos;
 
-    public S2C_SynchBlockEntityPacket() {
-        this(null);
+    public S2C_SynchBlockEntityPacket(PacketBuffer buffer) {
+        this(buffer.readBlockPos());
     }
 
     public S2C_SynchBlockEntityPacket(BlockPos tilePos) {
@@ -26,11 +26,6 @@ public class S2C_SynchBlockEntityPacket extends AbstractNetworkPacket<S2C_SynchB
     @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeBlockPos(pos);
-    }
-
-    @Override
-    public S2C_SynchBlockEntityPacket decode(PacketBuffer buffer) {
-        return new S2C_SynchBlockEntityPacket(buffer.readBlockPos());
     }
 
     @OnlyIn(Dist.CLIENT)

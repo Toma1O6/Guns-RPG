@@ -16,10 +16,6 @@ public class S2C_NewSkillsPacket extends AbstractNetworkPacket<S2C_NewSkillsPack
 
     private final List<SkillType<?>> unlocked;
 
-    public S2C_NewSkillsPacket() {
-        this(null);
-    }
-
     public S2C_NewSkillsPacket(List<SkillType<?>> list) {
         unlocked = list;
     }
@@ -32,8 +28,7 @@ public class S2C_NewSkillsPacket extends AbstractNetworkPacket<S2C_NewSkillsPack
         }
     }
 
-    @Override
-    public S2C_NewSkillsPacket decode(PacketBuffer buffer) {
+    public static S2C_NewSkillsPacket decode(PacketBuffer buffer) {
         List<SkillType<?>> unlocked = new ArrayList<>();
         int n = buffer.readVarInt();
         for (int i = 0; i < n; i++) {

@@ -16,8 +16,8 @@ public class C2S_PlaySoundFromAnimationEventPacket extends AbstractNetworkPacket
     private final float volume;
     private final float pitch;
 
-    public C2S_PlaySoundFromAnimationEventPacket() {
-        this(null, 0.0F, 0.0F);
+    public C2S_PlaySoundFromAnimationEventPacket(PacketBuffer buffer) {
+        this(buffer.readResourceLocation(), buffer.readFloat(), buffer.readFloat());
     }
 
     public C2S_PlaySoundFromAnimationEventPacket(ResourceLocation soundId, float volume, float pitch) {
@@ -31,14 +31,6 @@ public class C2S_PlaySoundFromAnimationEventPacket extends AbstractNetworkPacket
         buffer.writeResourceLocation(soundId);
         buffer.writeFloat(volume);
         buffer.writeFloat(pitch);
-    }
-
-    @Override
-    public C2S_PlaySoundFromAnimationEventPacket decode(PacketBuffer buffer) {
-        ResourceLocation soundId = buffer.readResourceLocation();
-        float volume = buffer.readFloat();
-        float pitch = buffer.readFloat();
-        return new C2S_PlaySoundFromAnimationEventPacket(soundId, volume, pitch);
     }
 
     @Override

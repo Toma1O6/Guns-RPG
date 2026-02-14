@@ -15,10 +15,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class C2S_SkillClickedPacket extends AbstractNetworkPacket<C2S_SkillClickedPacket> {
 
-    private SkillType<?> type;
-
-    public C2S_SkillClickedPacket() {
-    }
+    private final SkillType<?> type;
 
     public <S extends ISkill & IClickableSkill, T extends SkillType<S>>  C2S_SkillClickedPacket(T type) {
         this.type = type;
@@ -29,8 +26,7 @@ public class C2S_SkillClickedPacket extends AbstractNetworkPacket<C2S_SkillClick
         buffer.writeResourceLocation(type.getRegistryName());
     }
 
-    @Override
-    public C2S_SkillClickedPacket decode(PacketBuffer buffer) {
+    public static C2S_SkillClickedPacket decode(PacketBuffer buffer) {
         ResourceLocation path = buffer.readResourceLocation();
         return new C2S_SkillClickedPacket(fromRegistry(path));
     }

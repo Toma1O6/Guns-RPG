@@ -550,6 +550,14 @@ public class GunsrpgCommand {
         }
         QuestStatus status = context.getArgument("status", QuestStatus.class);
         quest.setStatus(status);
+        switch (status) {
+            case COMPLETED:
+                quest.onCompleted();
+                break;
+            case FAILED:
+                quest.onFailed();
+                break;
+        }
         questing.sendData();
         return 0;
     }

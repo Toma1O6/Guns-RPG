@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.skills;
 
 import dev.toma.gunsrpg.api.common.attribute.*;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.ISkillProvider;
 import dev.toma.gunsrpg.api.common.skill.IDescriptionProvider;
 import dev.toma.gunsrpg.common.attribute.Attribs;
@@ -8,6 +9,7 @@ import dev.toma.gunsrpg.common.attribute.AttributeModifier;
 import dev.toma.gunsrpg.common.attribute.AttributeOps;
 import dev.toma.gunsrpg.common.attribute.AttributeTarget;
 import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.init.Skills;
 import dev.toma.gunsrpg.common.skills.core.DescriptionContainer;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -32,6 +34,13 @@ public class BartenderSkill extends SimpleSkill implements IDescriptionProvider 
         TieredReward reward = builder.build();
         this.targets = reward.toAttributes();
         this.rewardCount = reward.rewardCount;
+    }
+
+    public static int getRewardClaimSize(PlayerEntity player) {
+        IPlayerData data = PlayerData.getUnsafe(player);
+        ISkillProvider provider = data.getSkillProvider();
+        BartenderSkill skill = SkillUtil.getTopHierarchySkill(Skills.BARTENDER_I, provider);
+        return skill != null ? skill.getRewardCount() : 1;
     }
 
     public int getRewardCount() {

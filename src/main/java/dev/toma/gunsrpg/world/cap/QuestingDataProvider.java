@@ -1,6 +1,16 @@
 package dev.toma.gunsrpg.world.cap;
 
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IQuestingData;
+import dev.toma.gunsrpg.api.common.data.ITraderStandings;
+import dev.toma.gunsrpg.api.common.data.ITraderStatus;
+import dev.toma.gunsrpg.common.capability.PlayerData;
+import dev.toma.gunsrpg.common.entity.MayorEntity;
+import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
+import dev.toma.gunsrpg.common.quests.reward.QuestReward;
+import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
+import dev.toma.gunsrpg.network.packet.S2C_OpenQuestScreen;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
@@ -28,6 +38,18 @@ public class QuestingDataProvider implements ICapabilitySerializable<CompoundNBT
 
     public static IQuestingData getQuesting(World world) {
         return getData(world).orElse(null);
+    }
+
+    public static S2C_OpenQuestScreen createQuestScreenRequest(MayorEntity mayor, PlayerEntity player) {
+        IQuestingData questing = getQuesting(player.level);
+        QuestingGroup group = questing.getOrCreateGroup(player);
+        IPlayerData data = PlayerData.getUnsafe(player);
+        ITraderStandings standings = data.getMayorReputationProvider();
+        ITraderStatus traderStatus = standings.getStatusWithTrader(mayor.getUUID());
+        ReputationStatus status = ReputationStatus.getStatus(traderStatus.getReputation());
+        MayorEntity.ListedQuests quests = mayor.getQuestsForGroup(group.getGroupId());
+        QuestReward pendingReward = mayor.findReward(player.getUUID());
+        return new S2C_OpenQuestScreen(status, quests.toNbt(), mayor.getId(), mayor.getCurrentRefreshTarget(), pendingReward);
     }
 
     @Nonnull

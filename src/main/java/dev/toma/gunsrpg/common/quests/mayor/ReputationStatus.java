@@ -1,6 +1,7 @@
 package dev.toma.gunsrpg.common.quests.mayor;
 
 import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -48,7 +49,7 @@ public enum ReputationStatus {
         return tierLevel;
     }
 
-    public IFormattableTextComponent getStatusDescriptor() {
+    public ITextComponent getStatusDescriptor() {
         return statusDescriptor;
     }
 

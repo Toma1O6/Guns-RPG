@@ -9,7 +9,5 @@ public interface INetworkPacket<P> {
 
     void encode(PacketBuffer buffer);
 
-    P decode(PacketBuffer buffer);
-
     void handle(Supplier<NetworkEvent.Context> contextSupplier);
 }

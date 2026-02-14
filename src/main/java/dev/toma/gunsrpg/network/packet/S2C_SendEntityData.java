@@ -16,8 +16,8 @@ public class S2C_SendEntityData extends AbstractNetworkPacket<S2C_SendEntityData
     private final int entity;
     private final CompoundNBT data;
 
-    public S2C_SendEntityData() {
-        this(0, null);
+    public S2C_SendEntityData(PacketBuffer buffer) {
+        this(buffer.readInt(), buffer.readNbt());
     }
 
     private S2C_SendEntityData(int entity, CompoundNBT data) {
@@ -33,11 +33,6 @@ public class S2C_SendEntityData extends AbstractNetworkPacket<S2C_SendEntityData
     public void encode(PacketBuffer buffer) {
         buffer.writeInt(entity);
         buffer.writeNbt(data);
-    }
-
-    @Override
-    public S2C_SendEntityData decode(PacketBuffer buffer) {
-        return new S2C_SendEntityData(buffer.readInt(), buffer.readNbt());
     }
 
     @OnlyIn(Dist.CLIENT)

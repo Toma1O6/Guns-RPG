@@ -11,10 +11,11 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class C2S_SetReloadingPacket extends AbstractNetworkPacket<C2S_SetReloadingPacket> {
 
-    boolean reloading;
-    int time;
+    private final boolean reloading;
+    private final int time;
 
-    public C2S_SetReloadingPacket() {
+    public C2S_SetReloadingPacket(PacketBuffer buffer) {
+        this(buffer.readBoolean(), buffer.readInt());
     }
 
     public C2S_SetReloadingPacket(boolean reload, int time) {
@@ -26,11 +27,6 @@ public class C2S_SetReloadingPacket extends AbstractNetworkPacket<C2S_SetReloadi
     public void encode(PacketBuffer buffer) {
         buffer.writeBoolean(reloading);
         buffer.writeInt(time);
-    }
-
-    @Override
-    public C2S_SetReloadingPacket decode(PacketBuffer buffer) {
-        return new C2S_SetReloadingPacket(buffer.readBoolean(), buffer.readInt());
     }
 
     @Override

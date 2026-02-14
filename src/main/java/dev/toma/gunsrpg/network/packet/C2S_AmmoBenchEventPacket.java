@@ -15,8 +15,14 @@ public class C2S_AmmoBenchEventPacket extends AbstractNetworkPacket<C2S_AmmoBenc
     private final boolean recipeSelection;
     private final int direction;
 
-    public C2S_AmmoBenchEventPacket() {
-        this(null, false, 0);
+    public C2S_AmmoBenchEventPacket(PacketBuffer buffer) {
+        this.pos = buffer.readBlockPos();
+        this.recipeSelection = buffer.readBoolean();
+        if (this.recipeSelection) {
+            this.direction = buffer.readInt();
+        } else {
+            this.direction = 0;
+        }
     }
 
     private C2S_AmmoBenchEventPacket(BlockPos pos, boolean recipeSelectionMode, int direction) {
@@ -44,14 +50,6 @@ public class C2S_AmmoBenchEventPacket extends AbstractNetworkPacket<C2S_AmmoBenc
         if (recipeSelection) {
             buffer.writeInt(direction);
         }
-    }
-
-    @Override
-    public C2S_AmmoBenchEventPacket decode(PacketBuffer buffer) {
-        BlockPos pos = buffer.readBlockPos();
-        boolean recipeSelection = buffer.readBoolean();
-        int direction = recipeSelection ? buffer.readInt() : 0;
-        return new C2S_AmmoBenchEventPacket(pos, recipeSelection, direction);
     }
 
     @Override

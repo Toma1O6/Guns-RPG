@@ -19,10 +19,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class C2S_SelectAmmoPacket extends AbstractNetworkPacket<C2S_SelectAmmoPacket> {
 
-    private IAmmoMaterial material;
-
-    public C2S_SelectAmmoPacket() {
-    }
+    private final IAmmoMaterial material;
 
     public C2S_SelectAmmoPacket(IAmmoMaterial material) {
         this.material = material;
@@ -33,8 +30,7 @@ public class C2S_SelectAmmoPacket extends AbstractNetworkPacket<C2S_SelectAmmoPa
         buffer.writeResourceLocation(material.getMaterialID());
     }
 
-    @Override
-    public C2S_SelectAmmoPacket decode(PacketBuffer buffer) {
+    public static C2S_SelectAmmoPacket decode(PacketBuffer buffer) {
         IAmmoMaterial material = AmmoMaterialManager.get().findMaterial(buffer.readResourceLocation());
         return new C2S_SelectAmmoPacket(material);
     }

@@ -14,8 +14,8 @@ public class S2C_UseStashDetectorPacket extends AbstractNetworkPacket<S2C_UseSta
 
     private final StashDetectorItem.StatusEvent event;
 
-    public S2C_UseStashDetectorPacket() {
-        this(null);
+    public S2C_UseStashDetectorPacket(PacketBuffer buffer) {
+        this(buffer.readEnum(StashDetectorItem.StatusEvent.class));
     }
 
     public S2C_UseStashDetectorPacket(StashDetectorItem.StatusEvent event) {
@@ -25,11 +25,6 @@ public class S2C_UseStashDetectorPacket extends AbstractNetworkPacket<S2C_UseSta
     @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeEnum(event);
-    }
-
-    @Override
-    public S2C_UseStashDetectorPacket decode(PacketBuffer buffer) {
-        return new S2C_UseStashDetectorPacket(buffer.readEnum(StashDetectorItem.StatusEvent.class));
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -18,8 +18,8 @@ public class S2C_UpdateCapabilityPacket extends AbstractNetworkPacket<S2C_Update
     private final CompoundNBT nbt;
     private final int flags;
 
-    public S2C_UpdateCapabilityPacket() {
-        this(null, null, -1);
+    public S2C_UpdateCapabilityPacket(PacketBuffer buffer) {
+        this(buffer.readUUID(), buffer.readNbt(), buffer.readInt());
     }
 
     public S2C_UpdateCapabilityPacket(UUID uuid, CompoundNBT nbt, int flags) {
@@ -33,11 +33,6 @@ public class S2C_UpdateCapabilityPacket extends AbstractNetworkPacket<S2C_Update
         buffer.writeUUID(uuid);
         buffer.writeNbt(nbt);
         buffer.writeInt(flags);
-    }
-
-    @Override
-    public S2C_UpdateCapabilityPacket decode(PacketBuffer buffer) {
-        return new S2C_UpdateCapabilityPacket(buffer.readUUID(), buffer.readNbt(), buffer.readInt());
     }
 
     @OnlyIn(Dist.CLIENT)

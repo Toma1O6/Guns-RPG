@@ -39,8 +39,7 @@ public class C2S_PacketSetJamming extends AbstractNetworkPacket<C2S_PacketSetJam
         }
     }
 
-    @Override
-    public C2S_PacketSetJamming decode(PacketBuffer buffer) {
+    public static C2S_PacketSetJamming decode(PacketBuffer buffer) {
         boolean state = buffer.readBoolean();
         return state ? new C2S_PacketSetJamming(buffer.readInt(), buffer.readInt()) : new C2S_PacketSetJamming();
     }

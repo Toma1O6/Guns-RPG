@@ -10,6 +10,7 @@ import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.common.quests.QuestSystem;
 import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.common.quests.quest.*;
+import dev.toma.gunsrpg.common.quests.reward.QuestReward;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.network.NetworkManager;
@@ -31,17 +32,35 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class MayorEntity extends CreatureEntity {
 
-    private final Map<UUID, ListedQuests> playerQuests;
+    private final Map<UUID, ListedQuests> groupQuests;
+    private final Map<UUID, Queue<QuestReward>> rewardStorage;
     private long refreshAtWorldTime;
 
     public MayorEntity(EntityType<? extends MayorEntity> type, World world) {
         super(type, world);
         setPersistenceRequired();
-        this.playerQuests = new HashMap<>();
+        this.groupQuests = new HashMap<>();
+        this.rewardStorage = new HashMap<>();
+    }
+
+    public void storeReward(UUID owner, QuestReward reward) {
+        Queue<QuestReward> rewards = this.rewardStorage.computeIfAbsent(owner, k -> new LinkedList<>());
+        rewards.offer(reward);
+    }
+
+    public QuestReward findReward(UUID owner) {
+        Queue<QuestReward> rewards = this.rewardStorage.get(owner);
+        return rewards == null ? null : rewards.peek();
+    }
+
+    public QuestReward claimReward(UUID owner) {
+        Queue<QuestReward> rewards = this.rewardStorage.get(owner);
+        return rewards == null ? null : rewards.poll();
     }
 
     @Override
@@ -50,7 +69,7 @@ public class MayorEntity extends CreatureEntity {
         long diff = this.getRemainingRestockTime();
         if (diff <= 0) {
             refreshAtWorldTime = level.getGameTime() + GunsRPG.config.quests.questRefreshInterval;
-            playerQuests.clear();
+            groupQuests.clear();
             GunsRPG.log.info(QuestSystem.MARKER, "Mayor {} quests expired", this);
         }
     }
@@ -99,16 +118,19 @@ public class MayorEntity extends CreatureEntity {
             if (!level.isClientSide) {
                 IPlayerData playerData = PlayerData.getUnsafe(owner);
                 UUID uuid = group.getGroupId();
-                ListedQuests traderQuests = playerQuests.get(uuid);
+                ListedQuests traderQuests = groupQuests.get(uuid);
                 UUID traderId = this.getUUID();
                 ITraderStandings standings = playerData.getMayorReputationProvider();
                 ITraderStatus status = standings.getStatusWithTrader(traderId);
-                if (!playerQuests.containsKey(uuid) || traderQuests == null) {
+
+                UUID interactionId = player.getUUID();
+                Queue<QuestReward> storage = this.rewardStorage.get(interactionId);
+                QuestReward reward = storage != null ? storage.peek() : null;
+                if (!this.groupQuests.containsKey(uuid) || traderQuests == null) {
                     traderQuests = ListedQuests.generate(level, traderId, status.getReputation(), owner);
-                    playerQuests.put(uuid, traderQuests);
+                    this.groupQuests.put(uuid, traderQuests);
                 }
-                ReputationStatus reputationStatus = ReputationStatus.getStatus(status.getReputation());
-                NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_OpenQuestScreen(reputationStatus, traderQuests.toNbt(), this.getId(), refreshAtWorldTime));
+                this.openQuestScreen(player, status, traderQuests, reward);
             }
         }
         return ActionResultType.sidedSuccess(level.isClientSide);
@@ -118,7 +140,7 @@ public class MayorEntity extends CreatureEntity {
     public void addAdditionalSaveData(CompoundNBT nbt) {
         super.addAdditionalSaveData(nbt);
         ListNBT list = new ListNBT();
-        for (Map.Entry<UUID, ListedQuests> entry : playerQuests.entrySet()) {
+        for (Map.Entry<UUID, ListedQuests> entry : groupQuests.entrySet()) {
             UUID uuid = entry.getKey();
             ListedQuests quests = entry.getValue();
             CompoundNBT data = new CompoundNBT();
@@ -128,28 +150,60 @@ public class MayorEntity extends CreatureEntity {
         }
         nbt.put("questListings", list);
         nbt.putLong("plannedRefresh", refreshAtWorldTime);
+
+        ListNBT rewardStorage = new ListNBT();
+        for (Map.Entry<UUID, Queue<QuestReward>> entry : this.rewardStorage.entrySet()) {
+            UUID key = entry.getKey();
+            Queue<QuestReward> queue = entry.getValue();
+            if (queue.isEmpty())
+                continue;
+            CompoundNBT rewardEntry = new CompoundNBT();
+            rewardEntry.putString("owner", key.toString());
+            ListNBT rewardList = new ListNBT();
+            for (QuestReward reward : queue) {
+                rewardList.add(reward.toNbt());
+            }
+            rewardEntry.put("rewards", rewardList);
+            rewardStorage.add(rewardEntry);
+        }
+        nbt.put("rewardStorage", rewardStorage);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundNBT nbt) {
         super.readAdditionalSaveData(nbt);
-        playerQuests.clear();
+        groupQuests.clear();
         ListNBT list = nbt.getList("questListings", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < list.size(); i++) {
             CompoundNBT data = list.getCompound(i);
             UUID player = data.getUUID("player");
             ListNBT listedQuests = data.getList("quests", Constants.NBT.TAG_COMPOUND);
-            playerQuests.put(player, ListedQuests.loadNbt(level, listedQuests));
+            groupQuests.put(player, ListedQuests.loadNbt(level, listedQuests));
         }
         refreshAtWorldTime = nbt.getLong("plannedRefresh");
+
+        this.rewardStorage.clear();
+        ListNBT rewardStorage = nbt.getList("rewardStorage", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < rewardStorage.size(); i++) {
+            CompoundNBT rewardEntry = rewardStorage.getCompound(i);
+            UUID owner = UUID.fromString(rewardEntry.getString("owner"));
+            ListNBT rewardList = rewardEntry.getList("rewards", Constants.NBT.TAG_COMPOUND);
+            Queue<QuestReward> rewards = new LinkedList<>();
+            for (int j = 0; j < rewardList.size(); j++) {
+                CompoundNBT rewardNBT = rewardList.getCompound(j);
+                QuestReward reward = new QuestReward(rewardNBT);
+                rewards.add(reward);
+            }
+            this.rewardStorage.put(owner, rewards);
+        }
     }
 
     public long getRemainingRestockTime() {
         return refreshAtWorldTime - level.getGameTime();
     }
 
-    public ListedQuests getQuests(UUID playerId) {
-        return playerQuests.get(playerId);
+    public ListedQuests getQuestsForGroup(UUID groupId) {
+        return groupQuests.get(groupId);
     }
 
     public void setRefreshTimer(long refreshAtWorldTime) {
@@ -158,6 +212,15 @@ public class MayorEntity extends CreatureEntity {
 
     public long getCurrentRefreshTarget() {
         return refreshAtWorldTime;
+    }
+
+    private void openRewardClaimScreen(PlayerEntity entity, QuestReward reward, int pendingCount) {
+
+    }
+
+    private void openQuestScreen(PlayerEntity player, ITraderStatus status, ListedQuests traderQuests, @Nullable QuestReward pendingReward) {
+        ReputationStatus reputationStatus = ReputationStatus.getStatus(status.getReputation());
+        NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_OpenQuestScreen(reputationStatus, traderQuests.toNbt(), this.getId(), this.refreshAtWorldTime, pendingReward));
     }
 
     public static final class ListedQuests {
@@ -185,7 +248,15 @@ public class MayorEntity extends CreatureEntity {
             return quests;
         }
 
-        public void filterActive() {
+        public Quest<?> getQuest(int index) {
+            return this.quests[index];
+        }
+
+        public int getQuestCount() {
+            return this.quests.length;
+        }
+
+        public void refreshList() {
             quests = Arrays.stream(quests).filter(quest -> quest.getStatus() == QuestStatus.CREATED).toArray(Quest[]::new);
         }
 
