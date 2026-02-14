@@ -41,7 +41,8 @@ public class BloodmoonGolemEntity extends MonsterEntity implements IMob {
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
                 .add(Attributes.ATTACK_DAMAGE, 15.0D)
-                .add(Attributes.ARMOR, 10.0D);
+                .add(Attributes.ARMOR, 10.0D)
+                .add(Attributes.FOLLOW_RANGE, 40.0D);
     }
 
     @Override
@@ -136,8 +137,7 @@ public class BloodmoonGolemEntity extends MonsterEntity implements IMob {
 
         @Override
         protected double getAttackReachSqr(LivingEntity attackTarget) {
-            float f = mob.getBbWidth() - 0.6F;
-            return f * 2F * f * 2F + attackTarget.getBbWidth();
+            return super.getAttackReachSqr(attackTarget) + 0.6;
         }
     }
 }
