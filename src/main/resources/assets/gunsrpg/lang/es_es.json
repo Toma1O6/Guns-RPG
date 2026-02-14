@@ -1365,7 +1365,6 @@
 
   "config.gunsrpg.option.wellFedTriggerValue": "Valor de Activación de Bien Alimentado",
   "config.gunsrpg.option.boundSkills": "Habilidades Vinculadas",
-  "config.gunsrpg.option.skullCrusherIgnoredMobs": "Skull Crusher - Mobs Ignorados",
   "config.gunsrpg.option.countTrapKills": "Contar Muertes por Trampas",
 
   "config.gunsrpg.option.disableWeaponDurability": "Desactivar Durabilidad de Armas",

@@ -38,38 +38,9 @@ public final class SkillsConfig {
     };
 
     @Configurable
-    @Configurable.StringPattern(value = "[a-z0-9_.-]+:[a-z0-9/._-]+", defaultValue = "minecraft:pig")
-    @Configurable.Comment("Mobs listed here cannot be insta-killed")
-    @Configurable.ValueUpdateCallback(method = "onSkullCrusherBlacklistUpdate")
-    @Configurable.Gui.CharacterLimit(64)
-    public String[] skullCrusherIgnoredMobs = {
-            "gunsrpg:bloodmoon_golem",
-            "gunsrpg:zombie_nightmare"
-    };
-
-    @Configurable
     @Configurable.ValueUpdateCallback(method = "onCountTrapKillsSettingChange")
     @Configurable.Comment({"Kills by traps will be awarded to their owners", "BEWARE: This may fail some of your quests"})
     public boolean countTrapKills = true;
-
-    private final Lazy<Set<EntityType<?>>> instantKillBlackList = Lazy.of(() -> {
-        Set<EntityType<?>> set = new HashSet<>();
-        loadSkullCrusherBlacklist(set, skullCrusherIgnoredMobs);
-        return set;
-    });
-
-    public boolean isInstantKillAllowed(EntityType<?> type) {
-        return !instantKillBlackList.get().contains(type);
-    }
-
-    private void onSkullCrusherBlacklistUpdate(String[] inputs, IValidationHandler handler) {
-        Set<EntityType<?>> blacklist = instantKillBlackList.get();
-        blacklist.clear();
-        String lastInvalidId = loadSkullCrusherBlacklist(blacklist, inputs);
-        if (lastInvalidId != null) {
-            handler.setValidationResult(ValidationResult.warn(new TranslationTextComponent("text.config.validation.invalid_id.entity", lastInvalidId)));
-        }
-    }
 
     private void validateSkillIds(String[] skills, IValidationHandler handler) {
         for (String s : skills) {
@@ -85,19 +56,5 @@ public final class SkillsConfig {
         if (value) {
             handler.setValidationResult(ValidationResult.warn(new TranslationTextComponent("text.config.validation.count_trap_kills_warning")));
         }
-    }
-
-    private String loadSkullCrusherBlacklist(Collection<EntityType<?>> collection, String[] values) {
-        String lastInvalidId = null;
-        for (String string : values) {
-            ResourceLocation id = new ResourceLocation(string);
-            if (ForgeRegistries.ENTITIES.containsKey(id)) {
-                collection.add(ForgeRegistries.ENTITIES.getValue(id));
-            } else {
-                lastInvalidId = string;
-                GunsRPG.log.warn("Found unknown entity ID '{}' in config under 'skullCrusherIgnoredMobs' field", string);
-            }
-        }
-        return lastInvalidId;
     }
 }

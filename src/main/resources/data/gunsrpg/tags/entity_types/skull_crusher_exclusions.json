@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gunsrpg:bloodmoon_golem",
+    "gunsrpg:zombie_nightmare",
+    "gunsrpg:zombie_knight",
+    "minecraft:wither",
+    "minecraft:ender_dragon",
+    "minecraft:iron_golem"
+  ]
+}

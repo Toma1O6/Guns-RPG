@@ -69,6 +69,7 @@ public class ModTags {
     public static final class Entities {
 
         public static final Tags.IOptionalNamedTag<EntityType<?>> ZOMBIE_NIGHTMARE_COMPANIONS = modded("zombie_nightmare_companions");
+        public static final Tags.IOptionalNamedTag<EntityType<?>> SKULL_CRUSHER_EXCLUSIONS = modded("skull_crusher_exclusions");
 
         private static void init() {
         }

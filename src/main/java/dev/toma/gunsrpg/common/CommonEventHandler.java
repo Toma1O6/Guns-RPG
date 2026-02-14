@@ -319,14 +319,13 @@ public class CommonEventHandler {
             PlayerData.get(player).ifPresent(data -> {
                 IAttributeProvider provider = data.getAttributes();
                 LivingEntity entity = event.getEntityLiving();
-                float health = entity.getMaxHealth();
                 boolean instantKill = false;
                 boolean isMeleeItem = player.getMainHandItem().getItem() instanceof TieredItem;
-                if (health < 256.0F && isMeleeItem && GunsRPG.config.skills.isInstantKillAllowed(entity.getType())) {
+                if (isMeleeItem && !entity.getType().is(ModTags.Entities.SKULL_CRUSHER_EXCLUSIONS)) {
                     float f = random.nextFloat();
                     boolean b = f < provider.getAttributeValue(Attribs.INSTANT_KILL);
                     if (b) {
-                        event.setAmount(entity.getHealth());
+                        event.setAmount(Math.min(entity.getHealth(), 160.0F));
                         instantKill = true;
                     }
                 }

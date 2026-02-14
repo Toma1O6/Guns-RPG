@@ -1345,7 +1345,6 @@
 
   "config.gunsrpg.option.wellFedTriggerValue": "吃饱饱效果触发值",
   "config.gunsrpg.option.boundSkills": "绑定技能",
-  "config.gunsrpg.option.skullCrusherIgnoredMobs": "碎颅者效果忽略的怪物",
 
   "config.gunsrpg.option.disableWeaponDurability": "关闭武器耐久",
   "config.gunsrpg.option.m1911": "M1911",
