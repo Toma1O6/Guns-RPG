@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IQuestingData;
 import dev.toma.gunsrpg.api.common.event.QuestingEvent;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
+import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.world.WeaponDamageSource;
 import dev.toma.gunsrpg.common.quests.quest.area.QuestArea;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
@@ -11,6 +12,7 @@ import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.config.QuestConfig;
 import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.piglin.AbstractPiglinEntity;
@@ -32,6 +34,7 @@ import net.minecraftforge.event.entity.living.LivingConversionEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -113,7 +116,11 @@ public final class QuestEventHandler {
 
     @SubscribeEvent
     public static void cancelBlockDestruction(PlayerInteractEvent.LeftClickBlock event) {
-        cancelIfPlayerIsInQuestArea(event);
+        BlockPos pos = event.getPos();
+        BlockState state = event.getWorld().getBlockState(pos);
+        if (!state.is(ModTags.Blocks.AREA_DESCTRUCTIBLE_BLOCKS)) {
+            cancelIfPlayerIsInQuestArea(event);
+        }
     }
 
     @SubscribeEvent

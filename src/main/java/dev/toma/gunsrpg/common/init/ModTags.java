@@ -21,12 +21,17 @@ public class ModTags {
     public static class Blocks {
 
         public static final Tags.IOptionalNamedTag<Block> ORES_AMETHYST = forge("ores/amethyst");
+        public static final Tags.IOptionalNamedTag<Block> AREA_DESCTRUCTIBLE_BLOCKS = modded("area_destructible_blocks");
 
         private static void init() {
         }
 
         private static Tags.IOptionalNamedTag<Block> forge(String path) {
             return tag("forge", path);
+        }
+
+        private static Tags.IOptionalNamedTag<Block> modded(String path) {
+            return tag(GunsRPG.MODID, path);
         }
 
         private static Tags.IOptionalNamedTag<Block> tag(String namespace, String path) {
