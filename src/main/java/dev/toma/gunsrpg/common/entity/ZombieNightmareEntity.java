@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.entity;
 
+import dev.toma.gunsrpg.ai.OpenDoorWithoutClosingGoal;
 import dev.toma.gunsrpg.common.init.ModPotions;
 import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.util.Interval;
@@ -18,6 +19,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -47,6 +49,7 @@ public class ZombieNightmareEntity extends MonsterEntity {
 
     public ZombieNightmareEntity(EntityType<? extends MonsterEntity> type, World world) {
         super(type, world);
+        ((GroundPathNavigator) this.navigation).setCanOpenDoors(true);
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -60,6 +63,7 @@ public class ZombieNightmareEntity extends MonsterEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(0, new OpenDoorWithoutClosingGoal(this));
         this.goalSelector.addGoal(1, new RecoverSelfGoal(this, 30.0F, 50.0F));
         this.goalSelector.addGoal(2, new KnockDownPlayerGoal(this, companionFilter()));
         this.goalSelector.addGoal(3, new NightmareMeleeAttackGoal(this, 1.0D, false));

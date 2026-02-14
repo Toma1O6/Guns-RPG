@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.common.entity;
 
+import dev.toma.gunsrpg.ai.OpenDoorWithoutClosingGoal;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -12,6 +13,7 @@ import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
@@ -21,6 +23,7 @@ public class ZombieKnightEntity extends ZombieEntity {
 
     public ZombieKnightEntity(EntityType<? extends ZombieKnightEntity> type, World world) {
         super(type, world);
+        ((GroundPathNavigator) this.navigation).setCanOpenDoors(true);
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -37,7 +40,8 @@ public class ZombieKnightEntity extends ZombieEntity {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(0, new OpenDoorWithoutClosingGoal(this));
+        this.goalSelector.addGoal(0, new SwimGoal(this));
     }
 
     @Override
