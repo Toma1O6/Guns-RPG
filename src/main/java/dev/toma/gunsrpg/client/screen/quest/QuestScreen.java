@@ -119,7 +119,7 @@ public final class QuestScreen extends Screen implements ScreenDataEventListener
                 int width = this.sidebarWidth - 10;
                 int questButtonHeight = 36;
                 QuestButtonWidget widget = this.addButton(new QuestButtonWidget(5, 20 + i * questButtonHeight, width, questButtonHeight, this.font, quest, () -> this.selectQuest(quest, index)));
-                widget.setHighlighted(this.selectedQuest == quest);
+                widget.setHighlighted(quest.equals(this.selectedQuest));
                 widget.setFadeOutAnim(new FadeAnimation(250L));
             }
             // Quest details
@@ -191,7 +191,7 @@ public final class QuestScreen extends Screen implements ScreenDataEventListener
     }
 
     private boolean isViewingActiveQuest() {
-        return this.activeQuest != null && this.selectedQuest == this.activeQuest;
+        return this.activeQuest != null && this.activeQuest.equals(this.selectedQuest);
     }
 
     private void selectQuest(Quest<?> quest, int index) {

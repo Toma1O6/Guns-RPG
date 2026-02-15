@@ -308,19 +308,6 @@ public abstract class Quest<D extends IQuestData> {
         return displayModelHolder.getOrBuild(clientId);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Quest<?> quest = (Quest<?>) o;
-        return getScheme().equals(quest.getScheme());
-    }
-
-    @Override
-    public int hashCode() {
-        return getScheme().hashCode();
-    }
-
     protected final boolean allowTargetMultipliers() {
         return Arrays.stream(this.conditions).allMatch(IQuestCondition::allowTargetMultipliers);
     }
@@ -379,6 +366,18 @@ public abstract class Quest<D extends IQuestData> {
     @Override
     public String toString() {
         return this.scheme.getQuestId().toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Quest)) return false;
+        Quest<?> quest = (Quest<?>) o;
+        return Objects.equals(scheme, quest.scheme) && Objects.equals(mayorId, quest.mayorId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(scheme, mayorId);
     }
 
     private <T> T getPlayerProperty(PlayerEntity player, PropertyKey<T> key) {
