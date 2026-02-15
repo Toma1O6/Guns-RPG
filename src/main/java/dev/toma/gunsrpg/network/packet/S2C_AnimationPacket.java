@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class S2C_AnimationPacket extends AbstractNetworkPacket<S2C_AnimationPacket> {
+public class S2C_AnimationPacket extends AbstractNetworkPacket {
 
     private final Action action;
     private final ResourceLocation typeId;

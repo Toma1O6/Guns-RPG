@@ -5,7 +5,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public interface INetworkPacket<P> {
+public interface INetworkPacket {
 
     void encode(PacketBuffer buffer);
 

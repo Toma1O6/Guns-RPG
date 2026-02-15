@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class S2C_SendQuestingData extends AbstractNetworkPacket<S2C_SendQuestingData> {
+public class S2C_SendQuestingData extends AbstractNetworkPacket {
 
     private final CompoundNBT nbt;
 

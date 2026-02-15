@@ -10,7 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class S2C_SetTrackedStashPacket extends AbstractNetworkPacket<S2C_SetTrackedStashPacket> {
+public class S2C_SetTrackedStashPacket extends AbstractNetworkPacket {
 
     private final Type type;
     private final BlockPos pos;

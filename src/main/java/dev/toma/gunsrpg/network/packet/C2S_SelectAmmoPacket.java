@@ -17,7 +17,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class C2S_SelectAmmoPacket extends AbstractNetworkPacket<C2S_SelectAmmoPacket> {
+public class C2S_SelectAmmoPacket extends AbstractNetworkPacket {
 
     private final IAmmoMaterial material;
 

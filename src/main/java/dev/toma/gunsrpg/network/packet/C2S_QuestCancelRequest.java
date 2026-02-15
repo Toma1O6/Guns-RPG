@@ -15,7 +15,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public final class C2S_QuestCancelRequest extends AbstractNetworkPacket<C2S_QuestCancelRequest> {
+public final class C2S_QuestCancelRequest extends AbstractNetworkPacket {
 
     private final int entityId;
 

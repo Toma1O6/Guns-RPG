@@ -11,7 +11,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.UUID;
 
-public class C2S_RequestDataUpdatePacket extends AbstractNetworkPacket<C2S_RequestDataUpdatePacket> {
+public class C2S_RequestDataUpdatePacket extends AbstractNetworkPacket {
 
     private final UUID uuid;
 

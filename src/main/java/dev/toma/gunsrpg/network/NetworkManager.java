@@ -30,15 +30,15 @@ public class NetworkManager {
             .simpleChannel();
     private static byte ID;
 
-    public static void sendServerPacket(INetworkPacket<?> packet) {
+    public static void sendServerPacket(INetworkPacket packet) {
         CHANNEL.sendToServer(packet);
     }
 
-    public static void sendWorldPacket(World world, INetworkPacket<?> packet) {
+    public static void sendWorldPacket(World world, INetworkPacket packet) {
         sendWorldPacket(world, packet, player -> true);
     }
 
-    public static void sendWorldPacket(World world, INetworkPacket<?> packet, Predicate<ServerPlayerEntity> condition) {
+    public static void sendWorldPacket(World world, INetworkPacket packet, Predicate<ServerPlayerEntity> condition) {
         if (!(world instanceof ServerWorld)) {
             throw new UnsupportedOperationException("Cannot send world packet from client!");
         }
@@ -48,11 +48,11 @@ public class NetworkManager {
                 .forEach(serverPlayerEntity -> sendClientPacket(serverPlayerEntity, packet));
     }
 
-    public static void sendToAllTracking(Entity entity, INetworkPacket<?> packet) {
+    public static void sendToAllTracking(Entity entity, INetworkPacket packet) {
         CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), packet);
     }
 
-    public static void sendClientPacket(ServerPlayerEntity user, INetworkPacket<?> packet) {
+    public static void sendClientPacket(ServerPlayerEntity user, INetworkPacket packet) {
         CHANNEL.sendTo(packet, user.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
     }
 
@@ -68,6 +68,8 @@ public class NetworkManager {
         registerNetworkPacket(S2C_OpenQuestScreen.class, S2C_OpenQuestScreen::decode);
         registerNetworkPacket(S2C_SendEntityData.class, S2C_SendEntityData::new);
         registerNetworkPacket(S2C_SendQuestingData.class, S2C_SendQuestingData::new);
+        registerNetworkPacket(S2C_CloseScreen.class, buf -> S2C_CloseScreen.INSTANCE);
+        registerNetworkPacket(S2C_InitiateLockpicking.class, S2C_InitiateLockpicking::new);
         // server packets
         registerNetworkPacket(C2S_ShootPacket.class, C2S_ShootPacket::decode);
         registerNetworkPacket(C2S_RequestDataUpdatePacket.class, C2S_RequestDataUpdatePacket::new);
@@ -95,9 +97,10 @@ public class NetworkManager {
         registerNetworkPacket(C2S_QuestCancelRequest.class, C2S_QuestCancelRequest::new);
         registerNetworkPacket(C2S_QuestCompleteRequest.class, C2S_QuestCompleteRequest::new);
         registerNetworkPacket(C2S_QuestClaimRequest.class, C2S_QuestClaimRequest::new);
+        registerNetworkPacket(C2S_TestPinCombination.class, C2S_TestPinCombination::new);
     }
 
-    private static <P extends INetworkPacket<P>> void registerNetworkPacket(Class<P> packetType, Function<PacketBuffer, P> decoder) {
+    private static <P extends INetworkPacket> void registerNetworkPacket(Class<P> packetType, Function<PacketBuffer, P> decoder) {
         CHANNEL.registerMessage(ID++, packetType, INetworkPacket::encode, decoder, INetworkPacket::handle);
     }
 }

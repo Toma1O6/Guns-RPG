@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class S2C_SynchBlockEntityPacket extends AbstractNetworkPacket<S2C_SynchBlockEntityPacket> {
+public class S2C_SynchBlockEntityPacket extends AbstractNetworkPacket {
 
     private final BlockPos pos;
 

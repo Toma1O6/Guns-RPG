@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.world.feature;
 
 import dev.toma.gunsrpg.common.block.MilitaryCrateBlock;
 import dev.toma.gunsrpg.common.tileentity.ILootGenerator;
+import dev.toma.gunsrpg.common.tileentity.MilitaryCrateTileEntity;
 import dev.toma.gunsrpg.util.locate.IterableLocator;
 import dev.toma.gunsrpg.util.object.LazyLoader;
 import net.minecraft.block.Block;
@@ -50,9 +51,12 @@ public class LootStashFeature extends Feature<NoFeatureConfig> {
         MilitaryCrateBlock militaryCrateBlock = MAP.get().get(variant);
         seedReader.setBlock(pos, militaryCrateBlock.defaultBlockState(), 2);
         TileEntity tile = seedReader.getBlockEntity(pos);
-        if (tile instanceof ILootGenerator) {
-            ILootGenerator lootGenerator = (ILootGenerator) tile;
-            lootGenerator.generateLoot();
+        if (tile instanceof MilitaryCrateTileEntity) {
+            MilitaryCrateTileEntity tileEntity = (MilitaryCrateTileEntity) tile;
+            tileEntity.generateLoot();
+            if (tileEntity.isLockable()) {
+                tileEntity.generateDefaultLockCombination();
+            }
         }
         return true;
     }

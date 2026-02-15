@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class S2C_SendEntityData extends AbstractNetworkPacket<S2C_SendEntityData> {
+public class S2C_SendEntityData extends AbstractNetworkPacket {
 
     private final int entity;
     private final CompoundNBT data;

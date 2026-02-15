@@ -20,7 +20,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import java.util.Arrays;
 import java.util.List;
 
-public class S2C_OpenQuestScreen extends AbstractNetworkPacket<S2C_OpenQuestScreen> {
+public class S2C_OpenQuestScreen extends AbstractNetworkPacket {
 
     private final ReputationStatus status;
     private final ListNBT questsNbt;

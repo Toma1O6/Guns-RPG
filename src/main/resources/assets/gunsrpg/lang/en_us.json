@@ -299,6 +299,7 @@
   "item.gunsrpg.wooden_bolts_quiver": "Wooden Bolts Quiver",
   "item.gunsrpg.wooden_buckshot": "Wooden Buckshot",
   "item.gunsrpg.wooden_bullet_tip": "Wooden Bullet Tip",
+  "item.gunsrpg.lockpick": "Lockpick",
 
   "block.gunsrpg.amethyst_ore": "Amethyst Ore",
   "block.gunsrpg.blast_furnace": "Blast Furnace",
@@ -1716,6 +1717,7 @@
   "screen.ammo_bench.label.none_selected": "None",
   "screen.ammo_bench.label.craft": "Craft",
   "condition.crafting.skill": "%1$s skill",
+  "screen.gunsrpg.lockpicking": "Lockpicking - press pins in correct order",
   "screen.animator.new_project": "New Project",
   "screen.animator.open": "Open Project",
   "screen.animator.set_background": "Background Animation",
@@ -1896,6 +1898,8 @@
   "config.gunsrpg.option.weapon": "Weapons",
 
   "config.gunsrpg.option.generationConfig": "World Generation Config",
+  "config.gunsrpg.option.airdropLockPinSize": "Airdrop lock pin amount",
+  "config.gunsrpg.option.stashLockPinSize": "Stash lock pin amount",
   "config.gunsrpg.option.mobConfig": "Mob Config",
   "config.gunsrpg.option.createCrateOnPlayerDeath": "Death Crate",
   "config.gunsrpg.option.disableMobSpawners": "Disable Spawners",
@@ -2074,6 +2078,8 @@
   "gunsrpg.quest.party.group_disbanded": "Your party has been disbanded by a leader",
   "gunsrpg.quest.party.member_left": "%s has left your party",
   "gunsrpg.quest.party.party_left": "You have left your party",
+  "gunsrpg.lock.password": "Crate lock password: %s",
+  "gunsrpg.lock.need_lockpick": "You need lockpick in order to open this crate",
 
   "label.gunsrpg.accept": "Accept",
   "label.gunsrpg.reject": "Reject",

@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class C2S_SetReloadingPacket extends AbstractNetworkPacket<C2S_SetReloadingPacket> {
+public class C2S_SetReloadingPacket extends AbstractNetworkPacket {
 
     private final boolean reloading;
     private final int time;

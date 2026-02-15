@@ -20,7 +20,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.Optional;
 
-public class C2S_RequestSkilledCraftPacket extends AbstractNetworkPacket<C2S_RequestSkilledCraftPacket> {
+public class C2S_RequestSkilledCraftPacket extends AbstractNetworkPacket {
 
     private final BlockPos pos;
     private final boolean shiftKey;

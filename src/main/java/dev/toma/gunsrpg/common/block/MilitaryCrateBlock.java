@@ -1,7 +1,7 @@
 package dev.toma.gunsrpg.common.block;
 
 import dev.toma.gunsrpg.common.tileentity.ILootGenerator;
-import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
+import dev.toma.gunsrpg.common.tileentity.LockableInventoryTileEntity;
 import dev.toma.gunsrpg.common.tileentity.MilitaryCrateTileEntity;
 import dev.toma.gunsrpg.world.LootStashes;
 import net.minecraft.block.BlockState;
@@ -41,7 +41,7 @@ public class MilitaryCrateBlock extends AbstractCrateBlock {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends InventoryTileEntity & ILootGenerator> T getNewBlockEntity() {
+    public <T extends LockableInventoryTileEntity & ILootGenerator> T getNewBlockEntity() {
         return (T) new MilitaryCrateTileEntity();
     }
 

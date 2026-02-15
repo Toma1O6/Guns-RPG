@@ -12,7 +12,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Consumer;
 
-public class C2S_ShootPacket extends AbstractNetworkPacket<C2S_ShootPacket> {
+public class C2S_ShootPacket extends AbstractNetworkPacket {
 
     private final PropertyContext context;
     private final float x;

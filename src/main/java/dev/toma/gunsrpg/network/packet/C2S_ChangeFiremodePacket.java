@@ -12,7 +12,7 @@ import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public final class C2S_ChangeFiremodePacket extends AbstractHandlePacket<C2S_ChangeFiremodePacket> {
+public final class C2S_ChangeFiremodePacket extends AbstractHandlePacket {
 
     public static final C2S_ChangeFiremodePacket INSTANCE = new C2S_ChangeFiremodePacket();
 

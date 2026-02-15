@@ -14,7 +14,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.UUID;
 
-public class C2S_InviteMember extends AbstractNetworkPacket<C2S_InviteMember> {
+public class C2S_InviteMember extends AbstractNetworkPacket {
 
     private final UUID inviteeId;
 

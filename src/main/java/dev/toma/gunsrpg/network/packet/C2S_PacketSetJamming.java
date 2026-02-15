@@ -10,7 +10,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class C2S_PacketSetJamming extends AbstractNetworkPacket<C2S_PacketSetJamming> {
+public class C2S_PacketSetJamming extends AbstractNetworkPacket {
 
     private final boolean state;
     private final int time;

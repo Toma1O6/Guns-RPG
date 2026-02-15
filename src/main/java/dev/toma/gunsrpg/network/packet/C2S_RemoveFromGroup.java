@@ -12,7 +12,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.UUID;
 
-public class C2S_RemoveFromGroup extends AbstractNetworkPacket<C2S_RemoveFromGroup> {
+public class C2S_RemoveFromGroup extends AbstractNetworkPacket {
 
     private final UUID targetId;
 

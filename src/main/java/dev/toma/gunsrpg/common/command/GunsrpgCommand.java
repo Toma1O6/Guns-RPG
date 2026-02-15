@@ -859,7 +859,7 @@ public class GunsrpgCommand {
         if (!world.isEmptyBlock(pos)) {
             throw LOCATION_OBSTRUCTED.create();
         }
-        AirdropEntity airdrop = new AirdropEntity(world);
+        AirdropEntity airdrop = new AirdropEntity(world, null, AirdropEntity.SpawnSource.EVENT);
         airdrop.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
         world.addFreshEntity(airdrop);
         source.sendSuccess(new TranslationTextComponent("command.gunsrpg.airdrop"), false);

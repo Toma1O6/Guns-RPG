@@ -16,7 +16,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class C2S_QuestClaimRequest extends AbstractNetworkPacket<C2S_QuestClaimRequest> {
+public final class C2S_QuestClaimRequest extends AbstractNetworkPacket {
 
     private final int entityId;
     private final List<Integer> rewardIndices;

@@ -3,7 +3,11 @@ package dev.toma.gunsrpg.common.block;
 import dev.toma.gunsrpg.common.container.CrateContainer;
 import dev.toma.gunsrpg.common.tileentity.ILootGenerator;
 import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
+import dev.toma.gunsrpg.common.tileentity.LockableInventoryTileEntity;
+import dev.toma.gunsrpg.network.NetworkManager;
+import dev.toma.gunsrpg.network.packet.S2C_InitiateLockpicking;
 import dev.toma.gunsrpg.util.ModUtils;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -17,6 +21,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -36,7 +41,7 @@ public abstract class AbstractCrateBlock extends BaseBlock {
 
     public abstract boolean shouldDestroyEmptyBlock();
 
-    public abstract <T extends InventoryTileEntity & ILootGenerator> T getNewBlockEntity();
+    public abstract <T extends LockableInventoryTileEntity & ILootGenerator> T getNewBlockEntity();
 
     @Override
     public final void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
@@ -81,10 +86,18 @@ public abstract class AbstractCrateBlock extends BaseBlock {
     public final ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
         if (world.isClientSide)
             return ActionResultType.SUCCESS;
-        else {
-            NetworkHooks.openGui((ServerPlayerEntity) player, state.getMenuProvider(world, pos), pos);
+        LockableInventoryTileEntity tileEntity = (LockableInventoryTileEntity) world.getBlockEntity(pos);
+        if (tileEntity.isLocked()) {
+            if (tileEntity.canLockpick(player, hand)) {
+                IntList combination = tileEntity.getLockConfiguration();
+                NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_InitiateLockpicking(pos, combination.size()));
+                return ActionResultType.CONSUME;
+            }
+            player.displayClientMessage(new TranslationTextComponent("gunsrpg.lock.need_lockpick"), true);
             return ActionResultType.CONSUME;
         }
+        NetworkHooks.openGui((ServerPlayerEntity) player, state.getMenuProvider(world, pos), pos);
+        return ActionResultType.CONSUME;
     }
 
     @Override

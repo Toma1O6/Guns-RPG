@@ -58,4 +58,7 @@ public class ModSounds {
     public static final SoundEvent DETECTOR_BEEP = null;
     public static final SoundEvent DETECTOR_BEEP_LONG = null;
     public static final SoundEvent EMPTY_GUN_CLICK = null;
+    public static final SoundEvent LOCKPICK_SUCCESS = null;
+    public static final SoundEvent LOCKPICK_FAILED = null;
+    public static final SoundEvent LOCKPICK_COMPLETED = null;
 }

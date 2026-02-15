@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class C2S_PurifyPacket extends AbstractNetworkPacket<C2S_PurifyPacket> {
+public class C2S_PurifyPacket extends AbstractNetworkPacket {
 
     private final BlockPos pos;
 

@@ -11,7 +11,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
-public class C2S_TurretSettingsPacket extends AbstractNetworkPacket<C2S_TurretSettingsPacket> {
+public class C2S_TurretSettingsPacket extends AbstractNetworkPacket {
 
     private final int turretId;
     private final SettingsType settingsType;

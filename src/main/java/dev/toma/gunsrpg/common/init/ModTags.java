@@ -49,6 +49,7 @@ public class ModTags {
         public static final Tags.IOptionalNamedTag<Item> ORB_OF_PURITY = modded("crystal/orb_of_purity");
         public static final Tags.IOptionalNamedTag<Item> ORB_OF_TRANSMUTATION = modded("crystal/orb_of_transmutation");
         public static final Tags.IOptionalNamedTag<Item> PERK = modded("crystal/perk");
+        public static final Tags.IOptionalNamedTag<Item> LOCKPICKS = modded("lockpicks");
 
         private static void init() {
         }

@@ -11,7 +11,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class C2S_RequestExtensionSkillLockPacket extends AbstractNetworkPacket<C2S_RequestExtensionSkillLockPacket> {
+public class C2S_RequestExtensionSkillLockPacket extends AbstractNetworkPacket {
 
     private final SkillType<?> head;
 

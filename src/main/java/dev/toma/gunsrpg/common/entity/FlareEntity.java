@@ -16,11 +16,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import java.util.UUID;
+
 public class FlareEntity extends Entity implements IEntityAdditionalSpawnData {
 
     private int startHeight;
     private int timeWaiting;
     private boolean playerThrown;
+    private UUID owner;
 
     public FlareEntity(EntityType<? extends FlareEntity> type, World world) {
         super(type, world);
@@ -29,14 +32,15 @@ public class FlareEntity extends Entity implements IEntityAdditionalSpawnData {
 
     public FlareEntity(World world, PlayerEntity owner) {
         this(ModEntities.FLARE.get(), world);
-        setPos(owner.getX(), owner.getY(), owner.getZ());
-        startHeight = (int) getY();
+        this.setPos(owner.getX(), owner.getY(), owner.getZ());
+        this.startHeight = (int) getY();
+        this.owner = owner.getUUID();
     }
 
     public void setThrownByPlayer(PlayerEntity player) {
         this.playerThrown = true;
         float power = 1.5f;
-        setPos(getX(), getY() + player.getEyeHeight(), getZ());
+        this.setPos(getX(), getY() + player.getEyeHeight(), getZ());
         Vector3d look = Vector3d.directionFromRotation(player.xRot, player.yRot).scale(power);
         this.setDeltaMovement(look.x, look.y, look.z);
     }
@@ -69,6 +73,9 @@ public class FlareEntity extends Entity implements IEntityAdditionalSpawnData {
         nbt.putInt("startHeight", startHeight);
         nbt.putInt("timeWaiting", timeWaiting);
         nbt.putBoolean("byPlayer", playerThrown);
+        if (this.owner != null) {
+            nbt.putUUID("owner", this.owner);
+        }
     }
 
     @Override
@@ -76,6 +83,9 @@ public class FlareEntity extends Entity implements IEntityAdditionalSpawnData {
         startHeight = nbt.getInt("startHeight");
         timeWaiting = nbt.getInt("timeWaiting");
         playerThrown = nbt.getBoolean("byPlayer");
+        if (nbt.contains("owner")) {
+            this.owner = nbt.getUUID("owner");
+        }
     }
 
     @Override
@@ -114,7 +124,7 @@ public class FlareEntity extends Entity implements IEntityAdditionalSpawnData {
 
     public void summonAirdrop(int heightDiff, int soundDiff) {
         if (!level.isClientSide) {
-            AirdropEntity entity = new AirdropEntity(level);
+            AirdropEntity entity = new AirdropEntity(this.level, this.owner, AirdropEntity.SpawnSource.PERSONAL);
             entity.setPos(this.getX(), this.getY() + heightDiff, this.getZ());
             level.addFreshEntity(entity);
             level.playSound(null, getX(), getY() - soundDiff, getZ(), ModSounds.PLANE_FLY_BY, SoundCategory.MASTER, 7.0F, 1.0F);

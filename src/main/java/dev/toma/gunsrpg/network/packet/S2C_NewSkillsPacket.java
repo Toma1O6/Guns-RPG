@@ -12,7 +12,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class S2C_NewSkillsPacket extends AbstractNetworkPacket<S2C_NewSkillsPacket> {
+public class S2C_NewSkillsPacket extends AbstractNetworkPacket {
 
     private final List<SkillType<?>> unlocked;
 

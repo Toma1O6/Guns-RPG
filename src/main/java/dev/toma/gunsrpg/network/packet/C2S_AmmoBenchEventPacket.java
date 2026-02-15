@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class C2S_AmmoBenchEventPacket extends AbstractNetworkPacket<C2S_AmmoBenchEventPacket> {
+public class C2S_AmmoBenchEventPacket extends AbstractNetworkPacket {
 
     private final BlockPos pos;
     private final boolean recipeSelection;

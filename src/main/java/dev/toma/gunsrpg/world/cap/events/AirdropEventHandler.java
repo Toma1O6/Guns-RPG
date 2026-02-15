@@ -54,7 +54,7 @@ public class AirdropEventHandler implements IWorldEventHandler {
             GunsRPG.log.error("Airdrop spawning failed due to position being obstructed at {}", pos);
             return;
         }
-        AirdropEntity entity = new AirdropEntity(world);
+        AirdropEntity entity = new AirdropEntity(world, null, AirdropEntity.SpawnSource.EVENT);
         entity.setPos(pos.getX(), pos.getY(), pos.getZ());
         world.playSound(null, pos.getX(), player.getY(), pos.getZ(), ModSounds.PLANE_FLY_BY, SoundCategory.MASTER, 15.0F, 1.0F);
         world.addFreshEntity(entity);

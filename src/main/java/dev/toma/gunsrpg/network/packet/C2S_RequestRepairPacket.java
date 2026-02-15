@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class C2S_RequestRepairPacket extends AbstractNetworkPacket<C2S_RequestRepairPacket> {
+public class C2S_RequestRepairPacket extends AbstractNetworkPacket {
 
     private final BlockPos pos;
 

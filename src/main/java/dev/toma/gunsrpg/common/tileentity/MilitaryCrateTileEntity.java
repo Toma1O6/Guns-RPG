@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class MilitaryCrateTileEntity extends InventoryTileEntity implements ILootGenerator {
+public class MilitaryCrateTileEntity extends LockableInventoryTileEntity implements ILootGenerator {
 
     public static final ResourceLocation CRATE_CONFIGURATION = GunsRPG.makeResource("military_crate");
 
@@ -21,6 +21,11 @@ public class MilitaryCrateTileEntity extends InventoryTileEntity implements ILoo
 
     protected MilitaryCrateTileEntity(TileEntityType<? extends MilitaryCrateTileEntity> type) {
         super(type);
+    }
+
+    @Override
+    public int getLockPinSize() {
+        return GunsRPG.config.world.stashLockPinSize;
     }
 
     @Override

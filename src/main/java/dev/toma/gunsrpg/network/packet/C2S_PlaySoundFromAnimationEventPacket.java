@@ -10,7 +10,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
-public class C2S_PlaySoundFromAnimationEventPacket extends AbstractNetworkPacket<C2S_PlaySoundFromAnimationEventPacket> {
+public class C2S_PlaySoundFromAnimationEventPacket extends AbstractNetworkPacket {
 
     private final ResourceLocation soundId;
     private final float volume;

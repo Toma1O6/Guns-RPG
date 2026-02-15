@@ -56,4 +56,14 @@ public final class WorldConfiguration {
     @Configurable
     @Configurable.Comment("World generation related configs for ores etc")
     public WorldGenConfig generationConfig = new WorldGenConfig();
+
+    @Configurable
+    @Configurable.Range(min = 0, max = 9)
+    @Configurable.Comment("Defines how many pins will be set on all airdrops. Set to 0 to disable")
+    public int airdropLockPinSize = 7;
+
+    @Configurable
+    @Configurable.Range(min = 0, max = 9)
+    @Configurable.Comment("Defines how many pins will be set on all stashes. Set to 0 to disable")
+    public int stashLockPinSize = 5;
 }

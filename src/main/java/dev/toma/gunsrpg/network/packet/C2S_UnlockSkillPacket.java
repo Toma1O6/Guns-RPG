@@ -13,7 +13,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class C2S_UnlockSkillPacket extends AbstractNetworkPacket<C2S_UnlockSkillPacket> {
+public class C2S_UnlockSkillPacket extends AbstractNetworkPacket {
 
     private final SkillType<?> toUnlock;
 

@@ -8,7 +8,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class C2S_SetAimingPacket extends AbstractNetworkPacket<C2S_SetAimingPacket> {
+public class C2S_SetAimingPacket extends AbstractNetworkPacket {
 
     private final boolean aim;
 

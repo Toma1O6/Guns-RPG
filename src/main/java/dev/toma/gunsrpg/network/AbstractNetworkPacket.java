@@ -5,7 +5,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public abstract class AbstractNetworkPacket<P> implements INetworkPacket<P> {
+public abstract class AbstractNetworkPacket implements INetworkPacket {
 
     protected abstract void handlePacket(NetworkEvent.Context context);
 

@@ -1,8 +1,6 @@
 package dev.toma.gunsrpg.common.block;
 
-import dev.toma.gunsrpg.common.tileentity.AirdropTileEntity;
-import dev.toma.gunsrpg.common.tileentity.ILootGenerator;
-import dev.toma.gunsrpg.common.tileentity.InventoryTileEntity;
+import dev.toma.gunsrpg.common.tileentity.*;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.text.ITextComponent;
@@ -28,7 +26,7 @@ public class AirdropBlock extends AbstractCrateBlock {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends InventoryTileEntity & ILootGenerator> T getNewBlockEntity() {
+    public <T extends LockableInventoryTileEntity & ILootGenerator> T getNewBlockEntity() {
         return (T) new AirdropTileEntity();
     }
 }

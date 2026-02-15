@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket<S2C_SynchronizationPayloadPacket> {
+public class S2C_SynchronizationPayloadPacket extends AbstractNetworkPacket {
 
     private static final Gson GSON = new GsonBuilder().create();
     // skills

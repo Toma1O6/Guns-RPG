@@ -18,7 +18,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public final class C2S_QuestCompleteRequest extends AbstractNetworkPacket<C2S_QuestCompleteRequest> {
+public final class C2S_QuestCompleteRequest extends AbstractNetworkPacket {
 
     private final int entityId;
 

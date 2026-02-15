@@ -12,7 +12,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.UUID;
 
-public class S2C_UpdateCapabilityPacket extends AbstractNetworkPacket<S2C_UpdateCapabilityPacket> {
+public class S2C_UpdateCapabilityPacket extends AbstractNetworkPacket {
 
     private final UUID uuid;
     private final CompoundNBT nbt;

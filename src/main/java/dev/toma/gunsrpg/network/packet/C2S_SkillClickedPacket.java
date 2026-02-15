@@ -13,7 +13,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class C2S_SkillClickedPacket extends AbstractNetworkPacket<C2S_SkillClickedPacket> {
+public class C2S_SkillClickedPacket extends AbstractNetworkPacket {
 
     private final SkillType<?> type;
 

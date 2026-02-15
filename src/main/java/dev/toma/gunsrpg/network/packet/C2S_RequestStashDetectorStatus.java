@@ -8,7 +8,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class C2S_RequestStashDetectorStatus extends AbstractNetworkPacket<C2S_RequestStashDetectorStatus> {
+public class C2S_RequestStashDetectorStatus extends AbstractNetworkPacket {
 
     private final StashDetectorItem.StatusEvent event;
 

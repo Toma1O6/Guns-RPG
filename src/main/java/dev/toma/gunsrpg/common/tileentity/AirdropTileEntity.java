@@ -14,7 +14,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class AirdropTileEntity extends InventoryTileEntity implements ILootGenerator, ITickableTileEntity {
+public class AirdropTileEntity extends LockableInventoryTileEntity implements ILootGenerator, ITickableTileEntity {
 
     public static final ResourceLocation AIRDROP_CONFIGURATION = GunsRPG.makeResource("airdrops");
 
@@ -24,6 +24,11 @@ public class AirdropTileEntity extends InventoryTileEntity implements ILootGener
 
     protected AirdropTileEntity(TileEntityType<? extends AirdropTileEntity> type) {
         super(type);
+    }
+
+    @Override
+    public int getLockPinSize() {
+        return GunsRPG.config.world.airdropLockPinSize;
     }
 
     @Override
