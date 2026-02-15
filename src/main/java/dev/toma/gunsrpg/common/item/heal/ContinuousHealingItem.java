@@ -10,14 +10,21 @@ import lib.toma.animations.AnimationEngine;
 import lib.toma.animations.api.IAnimation;
 import lib.toma.animations.api.IAnimationPipeline;
 import lib.toma.animations.api.IKeyframeProvider;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.List;
 
 public class ContinuousHealingItem extends AbstractHealItem<PlayerEntity> {
 
@@ -67,6 +74,15 @@ public class ContinuousHealingItem extends AbstractHealItem<PlayerEntity> {
             cancelHealAnimation();
         }
         return stack;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, World level, List<ITextComponent> list, ITooltipFlag flag) {
+        int currentDamage = stack.getDamageValue();
+        int maxDamageAmount = stack.getMaxDamage();
+        ITextComponent usesLabel = new StringTextComponent((maxDamageAmount - currentDamage) + "/" + maxDamageAmount).withStyle(TextFormatting.RED);
+        list.add(new TranslationTextComponent("item.stat.uses", usesLabel).withStyle(TextFormatting.DARK_GRAY));
+        super.appendHoverText(stack, level, list, flag);
     }
 
     @Override

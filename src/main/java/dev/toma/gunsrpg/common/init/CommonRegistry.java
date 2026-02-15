@@ -18,10 +18,7 @@ import dev.toma.gunsrpg.common.item.guns.*;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoItem;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoMaterials;
 import dev.toma.gunsrpg.common.item.guns.ammo.AmmoType;
-import dev.toma.gunsrpg.common.item.heal.AttributeAccessHealItem;
-import dev.toma.gunsrpg.common.item.heal.ContinuousHealingItem;
-import dev.toma.gunsrpg.common.item.heal.DebuffHealItem;
-import dev.toma.gunsrpg.common.item.heal.PlayerHealItem;
+import dev.toma.gunsrpg.common.item.heal.*;
 import dev.toma.gunsrpg.common.item.perk.CrystalItem;
 import dev.toma.gunsrpg.common.item.perk.PerkItem;
 import dev.toma.gunsrpg.common.item.perk.PerkVariant;
@@ -43,6 +40,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -495,45 +493,45 @@ public class CommonRegistry {
                 DebuffHealItem.define("antidotum_pills")
                         .canUse(data -> data.getDebuffControl().hasDebuff(Debuffs.POISON))
                         .onUse(DebuffHealItem::healPoison)
-                        .describe("Heals 40% of poison progress")
+                        .describe(DebuffHealItem.createLabel(AbstractHealItem.DEBUFF_POISON, 40))
                         .animate(60, AnimationPaths.PILLS)
                         .build(),
                 DebuffHealItem.define("vaccine")
                         .canUse(data -> data.getDebuffControl().hasDebuff(Debuffs.INFECTION))
                         .onUse(DebuffHealItem::healInfection)
-                        .describe("Heals 50% of infection progress")
+                        .describe(DebuffHealItem.createLabel(AbstractHealItem.DEBUFF_INFECTION, 50))
                         .animate(75, AnimationPaths.INJECTION)
                         .build(),
                 DebuffHealItem.define("plaster_cast")
                         .canUse(data -> data.getDebuffControl().hasDebuff(Debuffs.FRACTURE))
                         .onUse(DebuffHealItem::healFracture)
-                        .describe("Heals 35% of fracture progress")
+                        .describe(DebuffHealItem.createLabel(AbstractHealItem.DEBUFF_FRACTURE, 35))
                         .animate(65, AnimationPaths.SPLINT)
                         .build(),
                 DebuffHealItem.define("bandage")
                         .canUse(data -> data.getDebuffControl().hasDebuff(Debuffs.BLEED))
                         .onUse(DebuffHealItem::healBleed)
-                        .describe("Heals 25% of bleeding progress")
+                        .describe(DebuffHealItem.createLabel(AbstractHealItem.DEBUFF_BLEED, 25))
                         .animate(70, AnimationPaths.BANDAGE)
                         .build(),
                 AttributeAccessHealItem.define("hemostat")
                         .defineModifiers(ModifierFactory::createHemostatModifiers, () -> Debuffs.BLEED)
-                        .describe("Bleeding:", "Disabled for 60 seconds", "Spread speed: -50%")
+                        .describe(AttributeAccessHealItem.createLabel(AbstractHealItem.DEBUFF_BLEED))
                         .animate(50, AnimationPaths.HEMOSTAT)
                         .build(),
                 AttributeAccessHealItem.define("vitamins")
                         .defineModifiers(ModifierFactory::createVitaminModifiers, () -> Debuffs.INFECTION)
-                        .describe("Infection:", "Disabled for 60 seconds", "Spread speed: -50%")
+                        .describe(AttributeAccessHealItem.createLabel(AbstractHealItem.DEBUFF_INFECTION))
                         .animate(40, AnimationPaths.VITAMINS)
                         .build(),
                 AttributeAccessHealItem.define("propital")
                         .defineModifiers(ModifierFactory::createPropitalModifiers, () -> Debuffs.FRACTURE)
-                        .describe("Fracture:", "Disabled for 60 seconds", "Spread speed: -50%")
+                        .describe(AttributeAccessHealItem.createLabel(AbstractHealItem.DEBUFF_FRACTURE))
                         .animate(30, AnimationPaths.STIM)
                         .build(),
                 AttributeAccessHealItem.define("calcium_shot")
                         .defineModifiers(ModifierFactory::createCalciumShotModifiers, () -> Debuffs.POISON)
-                        .describe("Poison:", "Disabled for 60 seconds", "Spread speed: -50%")
+                        .describe(AttributeAccessHealItem.createLabel(AbstractHealItem.DEBUFF_POISON))
                         .animate(30, AnimationPaths.STIM)
                         .build(),
                 ContinuousHealingItem.define("ufak")
@@ -541,7 +539,7 @@ public class CommonRegistry {
                         .prepareIn(45)
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> player.heal(1))
-                        .describe("Recovers 0.5 hearts")
+                        .describe(AbstractHealItem.createHealingLabel(1))
                         .animate(20, AnimationPaths.UFAK)
                         .build(),
                 ContinuousHealingItem.define("kodiak")
@@ -549,41 +547,51 @@ public class CommonRegistry {
                         .prepareIn(60)
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> player.heal(1))
-                        .describe("Recovers 0.5 hearts")
+                        .describe(AbstractHealItem.createHealingLabel(1))
                         .animate(30, AnimationPaths.KODIAK)
                         .build(),
                 PlayerHealItem.define("field_bandage")
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> player.heal(3.0F))
-                        .describe("Recovers 1.5 hearts")
+                        .describe(AbstractHealItem.createHealingLabel(3))
                         .animate(50, AnimationPaths.BANDAGE)
                         .build(),
                 PlayerHealItem.define("analgetics")
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> SkillUtil.heal(player, 5))
-                        .describe("Recovers 2.5 hearts")
+                        .describe(AbstractHealItem.createHealingLabel(5))
                         .animate(60, AnimationPaths.PILLS)
                         .build(),
                 PlayerHealItem.define("steroids")
                         .onUse(PlayerHealItem::onSteroidsUsed)
-                        .describe("Effects:", "Strength I for 60 seconds", "Jump Boost II for 60 seconds")
+                        .describe(
+                                PlayerHealItem.createMobEffectLabel(Effects.DAMAGE_BOOST, 1, 60),
+                                PlayerHealItem.createMobEffectLabel(Effects.JUMP, 2, 60)
+                        )
                         .animate(75, AnimationPaths.INJECTION)
                         .build(),
                 PlayerHealItem.define("adrenaline")
                         .onUse(PlayerHealItem::onAdrenalineUsed)
-                        .describe("Effects:", "Regeneration I for 35 seconds", "Speed I for 60 seconds")
+                        .describe(
+                                PlayerHealItem.createMobEffectLabel(Effects.REGENERATION, 1, 35),
+                                PlayerHealItem.createMobEffectLabel(Effects.MOVEMENT_SPEED, 1, 60)
+                        )
                         .animate(75, AnimationPaths.INJECTION)
                         .build(),
                 PlayerHealItem.define("painkillers")
                         .canUse(player -> player.getHealth() < player.getMaxHealth())
                         .onUse(player -> SkillUtil.heal(player, 12.0F))
-                        .describe("Recovers 6 hearts")
+                        .describe(AbstractHealItem.createHealingLabel(12))
                         .animate(60, AnimationPaths.PILLS)
                         .build(),
                 PlayerHealItem.define("morphine")
                         .onUse(PlayerHealItem::onMorphineUsed)
-                        .describe("Recovers 7 hearts", "Effects:", "Regeneration II for 15 seconds", "Strength II for 45 seconds",
-                                "Resistance I for 60 seconds")
+                        .describe(
+                                AbstractHealItem.createHealingLabel(14),
+                                PlayerHealItem.createMobEffectLabel(Effects.REGENERATION, 2, 15),
+                                PlayerHealItem.createMobEffectLabel(Effects.DAMAGE_BOOST, 2, 45),
+                                PlayerHealItem.createMobEffectLabel(Effects.DAMAGE_RESISTANCE, 1, 60)
+                        )
                         .animate(75, AnimationPaths.INJECTION)
                         .build(),
                 new AmmoItem("wooden_9mm", AmmoType.AMMO_9MM, AmmoMaterials.WOOD),

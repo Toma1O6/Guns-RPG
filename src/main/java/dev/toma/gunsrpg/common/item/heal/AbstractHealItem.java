@@ -21,18 +21,25 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 
 public abstract class AbstractHealItem<T> extends BaseItem implements IAnimationEntry {
+
+    public static final ITextComponent DEBUFF_POISON = new TranslationTextComponent("debuff.gunsrpg.poison");
+    public static final ITextComponent DEBUFF_INFECTION = new TranslationTextComponent("debuff.gunsrpg.infection");
+    public static final ITextComponent DEBUFF_FRACTURE = new TranslationTextComponent("debuff.gunsrpg.fracture");
+    public static final ITextComponent DEBUFF_BLEED = new TranslationTextComponent("debuff.gunsrpg.bleed");
 
     private final int useTime;
     private final ITextComponent[] description;
@@ -173,6 +180,12 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
         return useCondition;
     }
 
+    public static ITextComponent createHealingLabel(int hp) {
+        String hearts = String.format(Locale.ROOT, "%.1f", hp / 2.0F);
+        ITextComponent heartsLabel = new TranslationTextComponent("stat.hearts", hearts).withStyle(TextFormatting.RED);
+        return new TranslationTextComponent("heal.stat.recover", heartsLabel).withStyle(TextFormatting.DARK_GRAY);
+    }
+
     public static abstract class HealBuilder<T, H extends AbstractHealItem<T>> {
 
         protected final String name;
@@ -211,6 +224,10 @@ public abstract class AbstractHealItem<T> extends BaseItem implements IAnimation
         public HealBuilder<T, H> describe(ITextComponent... lines) {
             this.description = lines;
             return this;
+        }
+
+        public HealBuilder<T, H> describe(List<ITextComponent> lines) {
+            return describe(lines.toArray(new ITextComponent[0]));
         }
 
         public HealBuilder<T, H> describe(String... lines) {

@@ -147,9 +147,9 @@ public abstract class AbstractGun extends BaseItem {
     @Override
     public void appendHoverText(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flags) {
         IAmmoMaterial material = getMaterialFromNBT(stack);
-        TextFormatting formatting = material != null ? RGB2TextFormatting.getClosestFormat(material.getTextColor()) : TextFormatting.GRAY;
+        TextFormatting formatting = material != null ? RGB2TextFormatting.getClosestFormat(material.getTextColor()) : TextFormatting.RED;
         ITextComponent materialInstance = new StringTextComponent(material != null ? material.getDisplayName().getString() : "???").withStyle(formatting);
-        ITextComponent materialComponent = new TranslationTextComponent("gun.material", materialInstance);
+        ITextComponent materialComponent = new TranslationTextComponent("gun.material", materialInstance).withStyle(TextFormatting.DARK_GRAY);
         list.add(materialComponent);
     }
 

@@ -5,14 +5,30 @@ import dev.toma.gunsrpg.common.attribute.Attribs;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.util.SkillUtil;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public class PlayerHealItem extends AbstractHealItem<PlayerEntity> {
 
     protected PlayerHealItem(Builder builder) {
         super(builder);
+    }
+
+    public static ITextComponent createMobEffectLabel(Effect effect, int effectLevel, int durationSeconds) {
+        TextFormatting titleFormat = TextFormatting.YELLOW;
+        switch (effect.getCategory()) {
+            case HARMFUL: titleFormat = TextFormatting.RED; break;
+            case BENEFICIAL: titleFormat = TextFormatting.GREEN; break;
+        }
+        ITextComponent amplifier = new TranslationTextComponent("enchantment.level." + effectLevel).withStyle(titleFormat);
+        ITextComponent title = new TranslationTextComponent(effect.getDescriptionId()).withStyle(titleFormat).append(" ").append(amplifier);
+        ITextComponent secondsLabel = new TranslationTextComponent("stat.seconds", durationSeconds).withStyle(TextFormatting.YELLOW);
+        return new TranslationTextComponent("stat.use.mob_effect", title, secondsLabel).withStyle(TextFormatting.DARK_GRAY);
     }
 
     public static HealBuilder<PlayerEntity, PlayerHealItem> define(String name) {

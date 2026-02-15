@@ -9,6 +9,10 @@ import dev.toma.gunsrpg.common.attribute.ModifierFactory;
 import dev.toma.gunsrpg.common.debuffs.DebuffType;
 import dev.toma.gunsrpg.common.init.Debuffs;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public class DebuffHealItem extends AbstractHealItem<IPlayerData> {
@@ -19,6 +23,12 @@ public class DebuffHealItem extends AbstractHealItem<IPlayerData> {
 
     public static HealBuilder<IPlayerData, DebuffHealItem> define(String name) {
         return new Builder(name);
+    }
+
+    public static ITextComponent createLabel(ITextComponent debuff, int removeAmount) {
+        ITextComponent valueLabel = new StringTextComponent(removeAmount + "%").withStyle(TextFormatting.GREEN);
+        ITextComponent debuffLabel = debuff.plainCopy().withStyle(TextFormatting.UNDERLINE, TextFormatting.YELLOW);
+        return new TranslationTextComponent("stat.debuff.remove", valueLabel, debuffLabel).withStyle(TextFormatting.DARK_GRAY);
     }
 
     public static void healPoison(IPlayerData data) {

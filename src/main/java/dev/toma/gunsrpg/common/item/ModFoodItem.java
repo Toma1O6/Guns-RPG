@@ -92,7 +92,7 @@ public class ModFoodItem extends BaseItem {
             this.amount = amount;
             this.applyAttributes = applyAttributes;
             ITextComponent hpComponent = new StringTextComponent(String.valueOf(amount)).withStyle(TextFormatting.GREEN);
-            this.tooltip = new TranslationTextComponent("item.gunsrpg.food_buff.health", hpComponent).withStyle(TextFormatting.GRAY);
+            this.tooltip = new TranslationTextComponent("item.gunsrpg.food_buff.health", hpComponent).withStyle(TextFormatting.DARK_GRAY);
         }
 
         @Override
@@ -119,7 +119,7 @@ public class ModFoodItem extends BaseItem {
             int amplifierVal = instance.getAmplifier() + 1;
             ITextComponent effectComponent = new StringTextComponent(effect.getDisplayName().getString() + " " + NumberHelper.toRomanLiteral(amplifierVal)).withStyle(TextFormatting.YELLOW);
             ITextComponent timeComponent = new StringTextComponent(String.valueOf(instance.getDuration() / 20)).withStyle(TextFormatting.GREEN);
-            this.tooltip = new TranslationTextComponent("item.gunsrpg.food_buff.effect", effectComponent, timeComponent).withStyle(TextFormatting.GRAY);
+            this.tooltip = new TranslationTextComponent("item.gunsrpg.food_buff.effect", effectComponent, timeComponent).withStyle(TextFormatting.DARK_GRAY);
         }
 
         @Override

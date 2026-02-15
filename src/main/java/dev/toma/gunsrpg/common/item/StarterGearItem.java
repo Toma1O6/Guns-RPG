@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -36,6 +37,6 @@ public class StarterGearItem extends BaseItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag tooltipFlag) {
-        tooltip.add(new TranslationTextComponent("item.gunsrpg.starter_gear.use"));
+        tooltip.add(new TranslationTextComponent("item.gunsrpg.starter_gear.use").withStyle(TextFormatting.DARK_GRAY));
     }
 }

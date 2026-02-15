@@ -11,9 +11,15 @@ import dev.toma.gunsrpg.common.debuffs.IDebuffContext;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -21,6 +27,17 @@ public class AttributeAccessHealItem extends AbstractHealItem<IPlayerData> {
 
     protected AttributeAccessHealItem(Builder builder) {
         super(builder);
+    }
+
+    public static List<ITextComponent> createLabel(ITextComponent title) {
+        ITextComponent duration = new TranslationTextComponent("stat.seconds", 60).withStyle(TextFormatting.GREEN);
+        ITextComponent disabled = new TranslationTextComponent("stat.debuff.disabled", duration).withStyle(TextFormatting.DARK_GRAY);
+        ITextComponent spread = new StringTextComponent("-50%").withStyle(TextFormatting.GREEN);
+        return Arrays.asList(
+                title.plainCopy().withStyle(TextFormatting.YELLOW, TextFormatting.BOLD),
+                disabled,
+                new TranslationTextComponent("stat.debuff.spread", spread).withStyle(TextFormatting.DARK_GRAY)
+        );
     }
 
     public static Builder define(String name) {

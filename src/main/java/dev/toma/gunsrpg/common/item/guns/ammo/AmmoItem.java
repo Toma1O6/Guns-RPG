@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.common.item.BaseItem;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -47,7 +48,6 @@ public class AmmoItem extends BaseItem implements IAmmoProvider {
         ITextComponent durability = formatNumber("durability", data.getAddedDurability(), true);
         ITextComponent jam = formatNumber("jamming", data.getAddedJamChance());
         if (recoil != null || durability != null || jam != null) {
-            text.add(new TranslationTextComponent("ammo.stat.attributes"));
             if (recoil != null)
                 text.add(recoil);
             if (durability != null)
@@ -68,6 +68,8 @@ public class AmmoItem extends BaseItem implements IAmmoProvider {
         TextFormatting good = invertColors ? TextFormatting.RED : TextFormatting.GREEN;
         TextFormatting bad = invertColors ? TextFormatting.GREEN : TextFormatting.RED;
         TextFormatting formatting = value < 0 ? good : bad;
-        return new TranslationTextComponent("ammo.stat." + key, pct).withStyle(formatting);
+        String prefix = value >= 0 ? "+" : "";
+        ITextComponent valueLabel = new StringTextComponent(prefix + pct + "%").withStyle(formatting);
+        return new TranslationTextComponent("ammo.stat." + key, valueLabel).withStyle(TextFormatting.DARK_GRAY);
     }
 }
