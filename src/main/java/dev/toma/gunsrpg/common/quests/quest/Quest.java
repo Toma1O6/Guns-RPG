@@ -350,7 +350,7 @@ public abstract class Quest<D extends IQuestData> {
         QuestDisplayDataModel dataModel = new QuestDisplayDataModel(clientId);
         if (this.getStatus() == QuestStatus.COMPLETED) {
             dataModel.addElement(new TextElement(new TranslationTextComponent("quest.task.completed").withStyle(TextFormatting.GREEN).withStyle(TextFormatting.BOLD)));
-            dataModel.addElement(new TextElement(new TranslationTextComponent("quest.task.claim_reward")));
+            dataModel.addElement(new TextElement(new TranslationTextComponent("quest.task.claim_reward_hud")));
         } else {
             this.fillDataModel(dataModel);
         }
