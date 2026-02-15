@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.util.object;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.IAmmoMaterial;
 import dev.toma.gunsrpg.api.common.data.*;
 import dev.toma.gunsrpg.common.capability.PlayerData;
@@ -30,6 +31,7 @@ public class ShootingManager {
             if (material == null) return false;
             if (reloadInfo.isReloading()) {
                 reloadInfo.enqueueCancel();
+                GunsRPG.log.debug("Player {} attempted to shoot while reload, cancelling reload", player);
                 if (player.level.isClientSide) {
                     NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(false, 0));
                 }

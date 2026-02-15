@@ -147,6 +147,7 @@ public class ModKeybinds {
                 if (info.isReloading()) {
                     IReloadManager manager = gun.getReloadManager(player, data.getAttributes());
                     if (manager.isCancelable()) {
+                        GunsRPG.log.debug("Reload keybind pressed while reloading, cancelling current reload");
                         info.enqueueCancel();
                         NetworkManager.sendServerPacket(new C2S_SetReloadingPacket(false, 0));
                         return;

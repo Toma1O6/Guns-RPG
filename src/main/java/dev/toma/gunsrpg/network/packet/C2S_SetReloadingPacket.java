@@ -1,5 +1,6 @@
 package dev.toma.gunsrpg.network.packet;
 
+import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.api.common.data.IReloadInfo;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
@@ -40,6 +41,7 @@ public class C2S_SetReloadingPacket extends AbstractNetworkPacket {
                 if (reloading) {
                     info.startReloading(player, gun, stack, player.inventory.selected);
                 } else {
+                    GunsRPG.log.debug("Received reload cancel request from {}, proceeding", player);
                     info.enqueueCancel();
                 }
             }
