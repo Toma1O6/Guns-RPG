@@ -12,7 +12,8 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -64,7 +65,7 @@ public abstract class LockableInventoryTileEntity extends InventoryTileEntity im
     }
 
     @Override
-    public boolean canLockpick(PlayerEntity player, Hand hand) {
+    public boolean canLockpick(PlayerEntity player) {
         ItemStack itemStack = player.getMainHandItem();
         return itemStack.getItem().is(ModTags.Items.LOCKPICKS);
     }
@@ -77,10 +78,12 @@ public abstract class LockableInventoryTileEntity extends InventoryTileEntity im
 
     @Override
     public void onUnlockFailed(ServerPlayerEntity player, IntList testedCombination) {
-        ItemStack lockpick = player.getItemInHand(player.getUsedItemHand());
+        ItemStack lockpick = player.getMainHandItem();
         Random random = player.getRandom();
-        if (!lockpick.isEmpty() && random.nextFloat() < 0.4F) {
+        if (!lockpick.isEmpty() && lockpick.getItem().is(ModTags.Items.LOCKPICKS) && random.nextFloat() < 0.4F) {
             lockpick.shrink(1);
+            ServerWorld level = player.getLevel();
+            level.playSound(null, player.blockPosition(), SoundEvents.ITEM_BREAK, player.getSoundSource(), 1.0F, 1.0F);
         }
         NetworkManager.sendClientPacket(player, S2C_CloseScreen.INSTANCE);
     }

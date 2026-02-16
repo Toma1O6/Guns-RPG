@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.common.tileentity;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.Hand;
 
 import javax.annotation.Nullable;
 
@@ -11,7 +10,7 @@ public interface ILockable {
 
     boolean isLocked();
 
-    boolean canLockpick(PlayerEntity player, Hand hand);
+    boolean canLockpick(PlayerEntity player);
 
     void unlock(ServerPlayerEntity player);
 
