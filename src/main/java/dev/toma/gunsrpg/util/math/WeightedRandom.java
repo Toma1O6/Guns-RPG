@@ -1,18 +1,23 @@
 package dev.toma.gunsrpg.util.math;
 
+import com.google.common.collect.Iterators;
 import dev.toma.gunsrpg.util.object.LazyLoader;
 
-import java.util.Random;
+import java.util.*;
 import java.util.function.ToIntFunction;
 
-public class WeightedRandom<T> {
+public class WeightedRandom<T> implements Iterable<T> {
 
     protected static Random random = new Random();
-    protected final T[] values;
+    protected final List<T> values;
     protected final ToIntFunction<T> toIntFunction;
     private final LazyLoader<Integer> totalValue;
 
     public WeightedRandom(ToIntFunction<T> toIntFunction, T[] values) {
+        this(toIntFunction, Arrays.asList(values));
+    }
+
+    public WeightedRandom(ToIntFunction<T> toIntFunction, List<T> values) {
         this.toIntFunction = toIntFunction;
         this.values = values;
         this.totalValue = new LazyLoader<>(this::gatherAll);
@@ -21,8 +26,8 @@ public class WeightedRandom<T> {
     public T getRandom() {
         int total = totalValue.get();
         int weight = random.nextInt(total);
-        for (int idx = values.length - 1; idx >= 0; idx--) {
-            T t = values[idx];
+        for (int idx = values.size() - 1; idx >= 0; idx--) {
+            T t = values.get(idx);
             weight -= toIntFunction.applyAsInt(t);
             if (weight < 0) {
                 return t;
@@ -31,12 +36,17 @@ public class WeightedRandom<T> {
         return null;
     }
 
-    public T[] getValues() {
+    public List<T> getValues() {
         return values;
     }
 
     public int getValueCount() {
-        return values.length;
+        return values.size();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return this.values.iterator();
     }
 
     private int gatherAll() {

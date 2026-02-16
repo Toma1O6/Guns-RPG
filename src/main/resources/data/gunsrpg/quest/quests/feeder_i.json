@@ -2,18 +2,19 @@
   "type": "gunsrpg:handover",
   "tier": 2,
   "data": {
-    "items": [
+    "min": 3,
+    "max": 5,
+    "groups": [
       {
-        "item": "gunsrpg:fruit_salad",
-        "count": 5
+        "tag": "gunsrpg:quest/vanilla_foods",
+        "weight": 4,
+        "min": 5,
+        "max": 15
       },
       {
-        "item": "gunsrpg:fish_and_chips",
-        "count": 10
-      },
-      {
-        "item": "gunsrpg:bacon_burger",
-        "count": 5
+        "tag": "gunsrpg:quest/simple_foods",
+        "min": 3,
+        "max": 8
       }
     ]
   }

@@ -641,9 +641,9 @@ public class GunsrpgCommand {
         QuestSystem system = GunsRPG.getModLifecycle().quests();
         QuestRewardManager manager = system.getRewardManager();
         QuestRewardList list = manager.getTieredRewards(tier);
-        IQuestItemProvider[] providers = list.listProviders();
+        List<IQuestItemProvider> providers = list.listProviders();
         player.sendMessage(new StringTextComponent(TextFormatting.YELLOW.toString() + TextFormatting.BOLD + "=========[ Tier " + tier + " items ]=========="), Util.NIL_UUID);
-        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Entries: " + TextFormatting.AQUA + providers.length), Util.NIL_UUID);
+        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Entries: " + TextFormatting.AQUA + providers.size()), Util.NIL_UUID);
         player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Items:"), Util.NIL_UUID);
         for (IQuestItemProvider provider : providers) {
             IQuestItemProvider.Impl implementation = (IQuestItemProvider.Impl) provider;

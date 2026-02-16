@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:ingots/nether_brick",
+    "minecraft:blaze_rod",
+    "minecraft:prismarine_shard"
+  ]
+}

@@ -2,18 +2,25 @@
   "type": "gunsrpg:handover",
   "tier": 4,
   "data": {
-    "items": [
+    "min": 5,
+    "max": 8,
+    "groups": [
       {
-        "item": "gunsrpg:deluxe_meal",
-        "count": 15
+        "tag": "gunsrpg:quest/simple_foods",
+        "min": 5,
+        "max": 12
       },
       {
-        "item": "gunsrpg:shepherds_pie",
-        "count": 15
+        "tag": "gunsrpg:quest/complex_foods",
+        "weight": 6,
+        "min": 3,
+        "max": 10
       },
       {
-        "item": "gunsrpg:meaty_stew_xxl",
-        "count": 15
+        "tag": "gunsrpg:quest/complex_vanilla_foods",
+        "weight": 4,
+        "min": 5,
+        "max": 15
       }
     ]
   }

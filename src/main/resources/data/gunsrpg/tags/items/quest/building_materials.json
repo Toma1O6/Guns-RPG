@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:planks",
+    "#minecraft:logs_that_burn",
+    "minecraft:stone",
+    "minecraft:cobblestone",
+    "#minecraft:wool"
+  ]
+}

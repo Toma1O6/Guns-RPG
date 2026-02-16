@@ -5,6 +5,8 @@ import dev.toma.gunsrpg.resource.crate.ICountFunction;
 import dev.toma.gunsrpg.util.math.WeightedRandom;
 import net.minecraft.network.PacketBuffer;
 
+import java.util.List;
+
 public final class CrystalConfiguration {
 
     private final Spawns spawns;
@@ -54,8 +56,8 @@ public final class CrystalConfiguration {
         }
 
         public void encode(PacketBuffer buffer) {
-            Spawn[] spawns = this.spawns.getValues();
-            int l = spawns.length;
+            List<Spawn> spawns = this.spawns.getValues();
+            int l = spawns.size();
             buffer.writeInt(l);
             for (Spawn spawn : spawns) {
                 spawn.encode(buffer);

@@ -2,22 +2,31 @@
   "type": "gunsrpg:handover",
   "tier": 4,
   "data": {
-    "items": [
+    "min": 4,
+    "max": 10,
+    "groups": [
       {
-        "item": "minecraft:diamond",
-        "count": 30
+        "tag": "gunsrpg:quest/ingots",
+        "weight": 5,
+        "min": 15,
+        "max": 40
       },
       {
-        "item": "minecraft:leather",
-        "count": 25
+        "tag": "gunsrpg:quest/rare_resources",
+        "weight": 5,
+        "min": 5,
+        "max": 25
       },
       {
-        "item": "minecraft:emerald",
-        "count": 10
+        "tag": "gunsrpg:quest/building_materials",
+        "min": 20,
+        "max": 60
       },
       {
-        "item": "minecraft:blaze_rod",
-        "count": 5
+        "tag": "gunsrpg:quest/gems",
+        "weight": 3,
+        "min": 3,
+        "max": 10
       }
     ]
   }

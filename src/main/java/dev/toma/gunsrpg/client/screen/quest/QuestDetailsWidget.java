@@ -3,10 +3,7 @@ package dev.toma.gunsrpg.client.screen.quest;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.common.entity.MayorEntity;
 import dev.toma.gunsrpg.common.quests.condition.IQuestCondition;
-import dev.toma.gunsrpg.common.quests.quest.DisplayInfo;
-import dev.toma.gunsrpg.common.quests.quest.Quest;
-import dev.toma.gunsrpg.common.quests.quest.QuestScheme;
-import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
+import dev.toma.gunsrpg.common.quests.quest.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.Widget;
@@ -14,6 +11,9 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+
+import java.util.Collections;
+import java.util.List;
 
 public class QuestDetailsWidget extends Widget {
 
@@ -24,6 +24,7 @@ public class QuestDetailsWidget extends Widget {
 
     private final Quest<?> quest;
     private final MayorEntity mayor;
+    private final List<ITextComponent> extendedInfo;
     private int textMargin = 5;
     private boolean showExtendedInfo;
 
@@ -31,6 +32,12 @@ public class QuestDetailsWidget extends Widget {
         super(x, y, width, height, StringTextComponent.EMPTY);
         this.quest = quest;
         this.mayor = mayor;
+        if (this.quest instanceof AdditionalObjectiveInfo) {
+            AdditionalObjectiveInfo info = (AdditionalObjectiveInfo) this.quest;
+            this.extendedInfo = info.additionalInfo();
+        } else {
+            this.extendedInfo = Collections.emptyList();
+        }
     }
 
     public void setTextMargin(int textMargin) {
@@ -56,15 +63,19 @@ public class QuestDetailsWidget extends Widget {
         // description
         font.drawShadow(matrix, QUEST_DESCRIPTION, left, this.y + 37, 0xFFFFFF);
         font.drawShadow(matrix, detail, left, this.y + 47, 0xFFFFFF);
+        for (int i = 0; i < this.extendedInfo.size(); i++) {
+            ITextComponent info = this.extendedInfo.get(i);
+            font.drawShadow(matrix, info, left, this.y + 57 + i * 10, 0xFFFFFF);
+        }
 
         // conditions
         IQuestCondition[] conditions = this.quest.getConditions();
         if (conditions.length > 0) {
-            font.drawShadow(matrix, QUEST_CONDITIONS, left, this.y + 72, 0xFFFFFF);
+            font.drawShadow(matrix, QUEST_CONDITIONS, left, this.y + 72 + this.extendedInfo.size() * 10, 0xFFFFFF);
             for (int i = 0; i < conditions.length; i++) {
                 IQuestCondition condition = conditions[i];
                 String conditionInfo = condition.getDescriptor(false).getString();
-                font.drawShadow(matrix, "- " + conditionInfo, left, this.y + 82 + i * 11, 0xFFFFFF);
+                font.drawShadow(matrix, "- " + conditionInfo, left, this.y + 82 + i * 11 + this.extendedInfo.size() * 10, 0xFFFFFF);
             }
         }
 

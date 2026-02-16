@@ -2,6 +2,8 @@ package dev.toma.gunsrpg.common.quests.reward;
 
 import dev.toma.gunsrpg.util.math.WeightedRandom;
 
+import java.util.List;
+
 public final class QuestRewardList {
 
     public static final QuestRewardList EMPTY_LIST = new QuestRewardList(new IQuestItemProvider[0]);
@@ -11,7 +13,7 @@ public final class QuestRewardList {
         this.itemProviders = new WeightedRandom<>(IQuestItemProvider::getWeight, itemProviders);
     }
 
-    public IQuestItemProvider[] listProviders() {
+    public List<IQuestItemProvider> listProviders() {
         return itemProviders.getValues();
     }
 

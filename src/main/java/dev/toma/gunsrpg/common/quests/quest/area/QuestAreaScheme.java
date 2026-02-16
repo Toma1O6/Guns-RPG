@@ -85,7 +85,7 @@ public final class QuestAreaScheme {
         nbt.putInt("distance", distance);
         nbt.putInt("spawnInterval", spawnInterval);
         ListNBT spawners = new ListNBT();
-        Arrays.stream(this.spawners.getValues()).map(IMobSpawner::toNbt).forEach(spawners::add);
+        this.spawners.getValues().stream().map(IMobSpawner::toNbt).forEach(spawners::add);
         nbt.put("spawners", spawners);
         return nbt;
     }

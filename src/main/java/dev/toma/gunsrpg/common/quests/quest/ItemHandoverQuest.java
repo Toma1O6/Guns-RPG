@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.client.render.infobar.QuestDisplayDataModel;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.common.quests.trigger.TriggerResponseStatus;
+import dev.toma.gunsrpg.util.math.WeightedRandom;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import it.unimi.dsi.fastutil.objects.Object2IntAVLTreeMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -20,14 +21,16 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAdditionalClientInfo {
+public class ItemHandoverQuest extends Quest<ItemHandoverData> implements AdditionalObjectiveInfo {
 
     public static final String DELIVER = "quest.deliver";
-    private static final ITextComponent[] NOTES = { new TranslationTextComponent("quest.deliver.info").withStyle(TextFormatting.ITALIC) };
+    private static final ITextComponent NOTE = new TranslationTextComponent("quest.deliver.info").withStyle(TextFormatting.ITALIC);
     public static final IQuestFactory<ItemHandoverData, ItemHandoverQuest> FACTORY = IQuestFactory.of(ItemHandoverQuest::new, ItemHandoverQuest::new);
     private final Object2IntMap<Item> dataMap = new Object2IntAVLTreeMap<>(this::compareItems);
+    private final Random random = new Random();
 
     public ItemHandoverQuest(IQuestFactory.InstanceContext<ItemHandoverData, ?> context) {
         super(context);
@@ -49,8 +52,17 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
     }
 
     @Override
-    public ITextComponent[] getAdditionalNotes() {
-        return NOTES;
+    public List<ITextComponent> additionalInfo() {
+        List<ITextComponent> list = this.dataMap.object2IntEntrySet().stream()
+                .map(entry -> {
+                    Item item = entry.getKey();
+                    int count = entry.getIntValue();
+                    return new StringTextComponent("- " + count + "x").append(" ").append(item.getName(ItemStack.EMPTY));
+                })
+                .collect(Collectors.toList());
+        list.add(new StringTextComponent(" "));
+        list.add(NOTE);
+        return list;
     }
 
     @Override
@@ -128,9 +140,19 @@ public class ItemHandoverQuest extends Quest<ItemHandoverData> implements IAddit
 
     private void initializeData() {
         ItemHandoverData data = this.getActiveData();
-        ItemStack[] itemStacks = data.getItems();
-        for (ItemStack stack : itemStacks) {
-            dataMap.put(stack.getItem(), stack.getCount());
+        int min = data.getMinItems();
+        int max = data.getMaxItems();
+        int items = min + this.random.nextInt(Math.max(0, max - min) + 1);
+        int maxRolls = items * 2;
+        int currentRolls = 0;
+        while (this.dataMap.size() < items && currentRolls < maxRolls) {
+            WeightedRandom<ItemHandoverData.ResourceGroup> groups = data.getGroups();
+            ItemHandoverData.ResourceGroup group = groups.getRandom();
+            ItemStack itemStack = group.generate(this.random);
+            if (!this.dataMap.containsKey(itemStack.getItem())) {
+                this.dataMap.put(itemStack.getItem(), itemStack.getCount());
+            }
+            ++currentRolls;
         }
     }
 

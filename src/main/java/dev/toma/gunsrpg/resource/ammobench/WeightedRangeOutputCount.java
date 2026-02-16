@@ -12,6 +12,8 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraftforge.common.util.Constants;
 
+import java.util.List;
+
 public class WeightedRangeOutputCount implements AmmoBenchOutputCount {
 
     private final WeightedRandom<Entry> weightedRandom;
@@ -53,8 +55,8 @@ public class WeightedRangeOutputCount implements AmmoBenchOutputCount {
 
         @Override
         public void toNetwork(WeightedRangeOutputCount weightedRangeOutputCount, PacketBuffer buffer) {
-            Entry[] entries = weightedRangeOutputCount.weightedRandom.getValues();
-            buffer.writeInt(entries.length);
+            List<Entry> entries = weightedRangeOutputCount.weightedRandom.getValues();
+            buffer.writeInt(entries.size());
             for (Entry entry : entries) {
                 buffer.writeInt(entry.weight);
                 AmmoBenchOutputCountType.toNetwork(entry.modifier, buffer);
@@ -75,7 +77,7 @@ public class WeightedRangeOutputCount implements AmmoBenchOutputCount {
         public CompoundNBT toNbt(WeightedRangeOutputCount weightedRangeOutputCount) {
             CompoundNBT nbt = new CompoundNBT();
             ListNBT list = new ListNBT();
-            Entry[] entries = weightedRangeOutputCount.weightedRandom.getValues();
+            List<Entry> entries = weightedRangeOutputCount.weightedRandom.getValues();
             for (Entry entry : entries) {
                 CompoundNBT tag = new CompoundNBT();
                 tag.putInt("weight", entry.weight);

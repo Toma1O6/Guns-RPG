@@ -180,7 +180,11 @@ public class MayorEntity extends CreatureEntity {
             CompoundNBT data = list.getCompound(i);
             UUID player = data.getUUID("player");
             ListNBT listedQuests = data.getList("quests", Constants.NBT.TAG_COMPOUND);
-            groupQuests.put(player, ListedQuests.loadNbt(level, listedQuests));
+            try {
+                groupQuests.put(player, ListedQuests.loadNbt(level, listedQuests));
+            } catch (Exception e){
+                GunsRPG.log.error(QuestSystem.MARKER, "Failed to load quests for mayor, owner {}", player, e);
+            }
         }
         refreshAtWorldTime = nbt.getLong("plannedRefresh");
 

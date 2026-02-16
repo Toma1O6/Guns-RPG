@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:string",
+    "minecraft:paper",
+    "minecraft:flint",
+    "minecraft:book",
+    "minecraft:sugar",
+    "#forge:ingots/brick",
+    "#forge:leather",
+    "#forge:gunpowder",
+    "#forge:nuggets"
+  ]
+}

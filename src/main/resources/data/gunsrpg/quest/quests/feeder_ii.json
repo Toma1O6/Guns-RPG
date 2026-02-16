@@ -2,18 +2,31 @@
   "type": "gunsrpg:handover",
   "tier": 3,
   "data": {
-    "items": [
+    "min": 3,
+    "max": 6,
+    "groups": [
       {
-        "item": "gunsrpg:garden_soup",
-        "count": 10
+        "tag": "gunsrpg:quest/vanilla_foods",
+        "weight": 2,
+        "min": 10,
+        "max": 20
       },
       {
-        "item": "gunsrpg:chicken_dinner",
-        "count": 10
+        "tag": "gunsrpg:quest/simple_foods",
+        "weight": 3,
+        "min": 5,
+        "max": 12
       },
       {
-        "item": "gunsrpg:chocolate_glazed_apple_pie",
-        "count": 10
+        "tag": "gunsrpg:quest/complex_foods",
+        "min": 1,
+        "max": 5
+      },
+      {
+        "tag": "gunsrpg:quest/complex_vanilla_foods",
+        "weight": 4,
+        "min": 3,
+        "max": 10
       }
     ]
   }
