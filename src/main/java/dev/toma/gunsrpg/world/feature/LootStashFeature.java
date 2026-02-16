@@ -53,9 +53,10 @@ public class LootStashFeature extends Feature<NoFeatureConfig> {
         TileEntity tile = seedReader.getBlockEntity(pos);
         if (tile instanceof MilitaryCrateTileEntity) {
             MilitaryCrateTileEntity tileEntity = (MilitaryCrateTileEntity) tile;
-            tileEntity.generateLoot();
             if (tileEntity.isLockable()) {
                 tileEntity.generateDefaultLockCombination();
+            } else {
+                tileEntity.generateLoot();
             }
         }
         return true;

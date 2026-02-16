@@ -48,9 +48,9 @@ public abstract class AbstractCrateBlock extends BaseBlock {
         if (!shouldDestroyEmptyBlock())
             return;
         TileEntity entity = world.getBlockEntity(pos);
-        if (entity instanceof ILootGenerator) {
-            ILootGenerator generator = (ILootGenerator) entity;
-            if (generator.isEmptyInventory()) {
+        if (entity instanceof InventoryTileEntity) {
+            InventoryTileEntity inventory = (InventoryTileEntity) entity;
+            if (inventory.isEmpty()) {
                 world.destroyBlock(pos, false);
             }
         }
@@ -88,7 +88,7 @@ public abstract class AbstractCrateBlock extends BaseBlock {
             return ActionResultType.SUCCESS;
         LockableInventoryTileEntity tileEntity = (LockableInventoryTileEntity) world.getBlockEntity(pos);
         if (tileEntity.isLocked()) {
-            if (tileEntity.canLockpick(player, hand)) {
+            if (tileEntity.canLockpick(player)) {
                 IntList combination = tileEntity.getLockConfiguration();
                 NetworkManager.sendClientPacket((ServerPlayerEntity) player, new S2C_InitiateLockpicking(pos, combination.size()));
                 return ActionResultType.CONSUME;

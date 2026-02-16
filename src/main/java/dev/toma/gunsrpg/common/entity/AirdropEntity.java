@@ -86,14 +86,18 @@ public class AirdropEntity extends Entity {
             return;
         }
         AirdropTileEntity airdrop = (AirdropTileEntity) tileEntity;
-        airdrop.generateLoot();
+        boolean locked = false;
         if (!this.level.isClientSide() && airdrop.isLockable()) {
             airdrop.generateDefaultLockCombination();
+            locked = true;
             PlayerEntity owner = this.getOwner();
             if (this.spawnSource.isPersonal() && owner != null) {
                 IntList combination = airdrop.getLockConfiguration();
                 owner.sendMessage(new TranslationTextComponent("gunsrpg.lock.password", combination.toString()), Util.NIL_UUID);
             }
+        }
+        if (!locked) {
+            airdrop.generateLoot();
         }
     }
 

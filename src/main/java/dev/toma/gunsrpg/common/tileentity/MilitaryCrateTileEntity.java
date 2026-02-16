@@ -5,6 +5,7 @@ import dev.toma.gunsrpg.common.init.ModBlockEntities;
 import dev.toma.gunsrpg.resource.crate.ILootContentProvider;
 import dev.toma.gunsrpg.resource.crate.LootManager;
 import dev.toma.gunsrpg.util.Lifecycle;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
@@ -24,6 +25,12 @@ public class MilitaryCrateTileEntity extends LockableInventoryTileEntity impleme
     }
 
     @Override
+    public void unlock(ServerPlayerEntity player) {
+        this.generateLoot();
+        super.unlock(player);
+    }
+
+    @Override
     public int getLockPinSize() {
         return GunsRPG.config.world.stashLockPinSize;
     }
@@ -31,11 +38,6 @@ public class MilitaryCrateTileEntity extends LockableInventoryTileEntity impleme
     @Override
     public IItemHandlerModifiable createInventory() {
         return new ItemStackHandler(9);
-    }
-
-    @Override
-    public boolean isEmptyInventory() {
-        return isEmpty();
     }
 
     @Override
