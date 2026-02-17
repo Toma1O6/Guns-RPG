@@ -48,9 +48,9 @@ public abstract class AbstractCrateBlock extends BaseBlock {
         if (!shouldDestroyEmptyBlock())
             return;
         TileEntity entity = world.getBlockEntity(pos);
-        if (entity instanceof InventoryTileEntity) {
-            InventoryTileEntity inventory = (InventoryTileEntity) entity;
-            if (inventory.isEmpty()) {
+        if (entity instanceof LockableInventoryTileEntity) {
+            LockableInventoryTileEntity inventory = (LockableInventoryTileEntity) entity;
+            if (inventory.isEmpty() && !inventory.isLocked()) {
                 world.destroyBlock(pos, false);
             }
         }
