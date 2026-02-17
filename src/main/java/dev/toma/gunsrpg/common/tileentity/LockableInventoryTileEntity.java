@@ -80,7 +80,7 @@ public abstract class LockableInventoryTileEntity extends InventoryTileEntity im
     public void onUnlockFailed(ServerPlayerEntity player, IntList testedCombination) {
         ItemStack lockpick = player.getMainHandItem();
         Random random = player.getRandom();
-        if (!lockpick.isEmpty() && lockpick.getItem().is(ModTags.Items.LOCKPICKS) && random.nextFloat() < 0.4F) {
+        if (!player.isCreative() && !lockpick.isEmpty() && lockpick.getItem().is(ModTags.Items.LOCKPICKS) && random.nextFloat() < 0.4F) {
             lockpick.shrink(1);
             ServerWorld level = player.getLevel();
             level.playSound(null, player.blockPosition(), SoundEvents.ITEM_BREAK, player.getSoundSource(), 1.0F, 1.0F);
