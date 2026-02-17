@@ -53,7 +53,7 @@ public class MobSpawnManager {
             blaze.setPos(vec3d.x, vec3d.y, vec3d.z);
             return blaze;
         });
-        registerBloodmoonEntry(EntityType.ZOMBIE, 4, (world, vec3d) -> {
+        registerBloodmoonEntry(EntityType.ZOMBIE, 2, (world, vec3d) -> {
             BloodmoonGolemEntity golem = new BloodmoonGolemEntity(world);
             golem.setPos(vec3d.x, vec3d.y, vec3d.z);
             return golem;
