@@ -2,8 +2,10 @@ package dev.toma.gunsrpg.world;
 
 import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ai.BeAngryDuringBloodmoonGoal;
+import dev.toma.gunsrpg.ai.OpenDoorWithoutClosingGoal;
 import dev.toma.gunsrpg.common.entity.BloodmoonGolemEntity;
 import dev.toma.gunsrpg.common.entity.RocketAngelEntity;
+import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.config.world.MobHealthBuffConfig;
 import dev.toma.gunsrpg.util.ModUtils;
 import dev.toma.gunsrpg.util.object.Pair;
@@ -16,6 +18,8 @@ import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.monster.BlazeEntity;
 import net.minecraft.entity.monster.CaveSpiderEntity;
 import net.minecraft.entity.monster.WitherSkeletonEntity;
+import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
@@ -107,8 +111,18 @@ public class MobSpawnManager {
         if (consumer != null) {
             consumer.acceptBoolean(isBloodmoon, entity);
         }
-        if (entity instanceof MobEntity && entity instanceof IAngerable) {
-            addBloodmoonAggroGoal((MobEntity & IAngerable) entity);
+        if (entity instanceof MobEntity) {
+            if (entity instanceof IAngerable) {
+                addBloodmoonAggroGoal((MobEntity & IAngerable) entity);
+            }
+            if (isBloodmoon && entity.getType().is(ModTags.Entities.BLOODMOON_DOOR_OPENING)) {
+                MobEntity mob = (MobEntity) entity;
+                PathNavigator navigator = mob.getNavigation();
+                if (navigator instanceof GroundPathNavigator) {
+                    ((GroundPathNavigator) navigator).setCanOpenDoors(true);
+                    mob.goalSelector.addGoal(0, new OpenDoorWithoutClosingGoal(mob));
+                }
+            }
         }
         return true;
     }
