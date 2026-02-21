@@ -36,15 +36,22 @@ public interface IQuestItemProvider {
 
         @Override
         public ItemStack[] assembleItem(PlayerEntity player) {
-            ItemStack stack = new ItemStack(itemSupplier.get(), count);
             List<ItemStack> items = new ArrayList<>();
-            if (functions != null) {
-                for (IAssemblyFunction function : functions) {
-                    items.addAll(Arrays.asList(function.onAssembly(stack, player)));
+            Item item = this.itemSupplier.get();
+            int remainderAmount = this.count;
+            while (remainderAmount > 0) {
+                int take = Math.min(remainderAmount, item.getMaxStackSize());
+                ItemStack itemStack = new ItemStack(item, take);
+                items.add(itemStack);
+                if (this.functions != null) {
+                    for (IAssemblyFunction function : this.functions) {
+                        items.addAll(Arrays.asList(function.onAssembly(itemStack, player)));
+                    }
                 }
+                remainderAmount -= take;
             }
             if (items.isEmpty()) {
-                items.add(stack);
+                items.add(item.getDefaultInstance());
             }
             return items.toArray(new ItemStack[0]);
         }
