@@ -12,6 +12,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 
+import java.util.List;
+
 public class CrystalAssemblyFunction implements IAssemblyFunction {
 
     private final ICountFunction levelFunction;
@@ -25,13 +27,13 @@ public class CrystalAssemblyFunction implements IAssemblyFunction {
     }
 
     @Override
-    public ItemStack[] onAssembly(ItemStack stack, PlayerEntity player) {
+    public boolean onAssembly(ItemStack stack, PlayerEntity player, List<ItemStack> output) {
         int crystalLevel = levelFunction.getCount();
         int buffCount = buffFunction.getCount();
         int debuffCount = debuffFunction.getCount();
         Crystal crystal = Crystal.generate(crystalLevel, buffCount, debuffCount);
         CrystalItem.addCrystal(stack, crystal);
-        return new ItemStack[0]; // we are modifying the existing itemstack
+        return true; // we are modifying the existing itemstack
     }
 
     public static class Serializer implements IAssemblyFunctionSerializer {

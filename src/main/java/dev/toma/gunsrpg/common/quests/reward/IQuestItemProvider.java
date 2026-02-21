@@ -42,11 +42,16 @@ public interface IQuestItemProvider {
             while (remainderAmount > 0) {
                 int take = Math.min(remainderAmount, item.getMaxStackSize());
                 ItemStack itemStack = new ItemStack(item, take);
-                items.add(itemStack);
+                boolean addToOutput = true;
                 if (this.functions != null) {
                     for (IAssemblyFunction function : this.functions) {
-                        items.addAll(Arrays.asList(function.onAssembly(itemStack, player)));
+                        if (!function.onAssembly(itemStack, player, items)) {
+                            addToOutput = false;
+                        }
                     }
+                }
+                if (addToOutput) {
+                    items.add(0, itemStack);
                 }
                 remainderAmount -= take;
             }

@@ -10,6 +10,9 @@ import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class OutputAssemblyFunction implements IAssemblyFunction {
 
     private final OutputModifier modifier;
@@ -19,9 +22,10 @@ public class OutputAssemblyFunction implements IAssemblyFunction {
     }
 
     @Override
-    public ItemStack[] onAssembly(ItemStack stack, PlayerEntity player) {
+    public boolean onAssembly(ItemStack stack, PlayerEntity player, List<ItemStack> output) {
         IAttributeProvider provider = PlayerData.getUnsafe(player).getAttributes();
-        return modifier.applyAndSplit(stack, provider);
+        output.addAll(Arrays.asList(modifier.applyAndSplit(stack, provider)));
+        return false;
     }
 
     public static final class Serializer implements IAssemblyFunctionSerializer {
