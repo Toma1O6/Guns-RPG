@@ -2,6 +2,7 @@ package dev.toma.gunsrpg.common.quests.quest.area;
 
 import dev.toma.gunsrpg.ai.AlwaysAggroOnGoal;
 import dev.toma.gunsrpg.ai.QuestPlayerSensor;
+import dev.toma.gunsrpg.ai.StayWithinQuestAreaGoal;
 import dev.toma.gunsrpg.api.common.event.QuestingEvent;
 import dev.toma.gunsrpg.common.init.ModSensors;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
@@ -105,6 +106,7 @@ public class MobSpawner implements IMobSpawner {
                 mob.setTarget(attackTarget);
                 AlwaysAggroOnGoal<?> alwaysAggroOnGoal = new AlwaysAggroOnGoal<>(mob, false, attackTarget);
                 mob.targetSelector.addGoal(0, alwaysAggroOnGoal);
+                mob.goalSelector.addGoal(0, new StayWithinQuestAreaGoal(mob, area));
             }
             entity.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(area.getScheme().getSize() * 4);
             Brain<?> brain = entity.getBrain();
