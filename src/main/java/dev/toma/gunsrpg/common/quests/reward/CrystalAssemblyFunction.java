@@ -31,7 +31,7 @@ public class CrystalAssemblyFunction implements IAssemblyFunction {
         int debuffCount = debuffFunction.getCount();
         Crystal crystal = Crystal.generate(crystalLevel, buffCount, debuffCount);
         CrystalItem.addCrystal(stack, crystal);
-        return new ItemStack[] { stack };
+        return new ItemStack[0]; // we are modifying the existing itemstack
     }
 
     public static class Serializer implements IAssemblyFunctionSerializer {
