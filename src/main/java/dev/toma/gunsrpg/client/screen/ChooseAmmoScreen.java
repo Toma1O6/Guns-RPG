@@ -52,7 +52,7 @@ public class ChooseAmmoScreen extends Screen {
             double cos = Math.cos(Math.PI - angle);
             int btnX = (int) (sin * scale) - 16;
             int btnY = (int) (cos * scale) - 16;
-            addButton(new AmmoButton(x + btnX, y + btnY, items[i], dimensions));
+            addButton(new AmmoButton(x + btnX, y + btnY, items[i], dimensions, this::onAmmoMaterialSelected));
         }
     }
 
@@ -68,23 +68,30 @@ public class ChooseAmmoScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_) {
-        minecraft.setScreen(null);
+    public boolean keyPressed(int keycode, int scanCode, int modifiers) {
+        this.minecraft.setScreen(null);
         return true;
+    }
+
+    private void onAmmoMaterialSelected(IAmmoMaterial material) {
+        NetworkManager.sendServerPacket(new C2S_SelectAmmoPacket(material));
+        this.minecraft.setScreen(null);
     }
 
     private static class AmmoButton extends Widget {
 
         private final IDimensions parentDimensions;
         private final IAmmoProvider ammo;
+        private final ClickHandler clickHandler;
         private final int count;
         private int requiredLevel;
         private ItemStack stack;
 
-        public AmmoButton(int x, int y, IAmmoProvider ammo, IDimensions parentDimensions) {
+        public AmmoButton(int x, int y, IAmmoProvider ammo, IDimensions parentDimensions, ClickHandler handler) {
             super(x, y, 32, 32, StringTextComponent.EMPTY);
             this.ammo = ammo;
             this.parentDimensions = parentDimensions;
+            this.clickHandler = handler;
             PlayerEntity player = Minecraft.getInstance().player;
             ItemStack stack = player.getMainHandItem();
             boolean isGun = stack.getItem() instanceof GunItem;
@@ -140,7 +147,12 @@ public class ChooseAmmoScreen extends Screen {
 
         @Override
         public void onClick(double p_230982_1_, double p_230982_3_) {
-            NetworkManager.sendServerPacket(new C2S_SelectAmmoPacket(ammo.getMaterial()));
+            this.clickHandler.onClick(this.ammo.getMaterial());
+        }
+
+        @FunctionalInterface
+        interface ClickHandler {
+            void onClick(IAmmoMaterial material);
         }
     }
 }
