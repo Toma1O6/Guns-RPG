@@ -92,6 +92,7 @@ import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -597,6 +598,14 @@ public class CommonEventHandler {
             int defaultDuration = event.getDuration();
             event.setDuration(useDuration.getUseDuration(defaultDuration, stack, player));
         }
+    }
+
+    @SubscribeEvent
+    public static void onEntityConverted(LivingConversionEvent.Post event) {
+        LivingEntity entity = event.getEntityLiving();
+        Collection<EntityFlag> flags = EntityFlag.listFlags(entity);
+        LivingEntity converted = event.getOutcome();
+        flags.forEach(flag -> EntityFlag.addFlag(converted, flag));
     }
 
     private static void cancelIfPlayerHoldsGun(PlayerInteractEvent event) {

@@ -2,6 +2,9 @@ package dev.toma.gunsrpg.common.entity;
 
 import net.minecraft.entity.Entity;
 
+import java.util.Collection;
+import java.util.Collections;
+
 public enum EntityFlag {
 
     QUEST_ARENA,
@@ -12,6 +15,12 @@ public enum EntityFlag {
             return false;
         EntityFlagHolder holder = (EntityFlagHolder) entity;
         return holder.gunsrpg$hasFlag(flag);
+    }
+
+    public static Collection<EntityFlag> listFlags(Entity entity) {
+        if (!(entity instanceof EntityFlagHolder))
+            return Collections.emptyList();
+        return ((EntityFlagHolder) entity).getFlags();
     }
 
     public static void addFlag(Entity entity, EntityFlag flag) {
