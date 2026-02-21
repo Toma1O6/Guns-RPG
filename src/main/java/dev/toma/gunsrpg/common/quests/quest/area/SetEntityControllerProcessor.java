@@ -6,7 +6,6 @@ import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.common.quests.adapters.MobSpawnerAdapter;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;

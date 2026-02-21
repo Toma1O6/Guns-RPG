@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.world.feature;
 
 import dev.toma.gunsrpg.common.block.MilitaryCrateBlock;
-import dev.toma.gunsrpg.common.tileentity.ILootGenerator;
 import dev.toma.gunsrpg.common.tileentity.MilitaryCrateTileEntity;
 import dev.toma.gunsrpg.util.locate.IterableLocator;
 import dev.toma.gunsrpg.util.object.LazyLoader;

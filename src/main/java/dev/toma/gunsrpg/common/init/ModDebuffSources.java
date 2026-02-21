@@ -1,7 +1,6 @@
 package dev.toma.gunsrpg.common.init;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.common.debuffs.sources.WeaponDamageSource;
 import dev.toma.gunsrpg.common.debuffs.sources.*;
 
 public final class ModDebuffSources {

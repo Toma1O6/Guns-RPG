@@ -1,6 +1,8 @@
 package dev.toma.gunsrpg.common.block;
 
-import dev.toma.gunsrpg.common.tileentity.*;
+import dev.toma.gunsrpg.common.tileentity.AirdropTileEntity;
+import dev.toma.gunsrpg.common.tileentity.ILootGenerator;
+import dev.toma.gunsrpg.common.tileentity.LockableInventoryTileEntity;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.text.ITextComponent;

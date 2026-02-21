@@ -10,7 +10,6 @@ import dev.toma.gunsrpg.util.math.WeightedRandom;
 import dev.toma.gunsrpg.util.properties.Properties;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;

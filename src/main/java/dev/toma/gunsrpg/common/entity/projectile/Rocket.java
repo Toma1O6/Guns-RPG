@@ -4,7 +4,6 @@ import dev.toma.gunsrpg.common.item.guns.util.IEntityTrackingGun;
 import dev.toma.gunsrpg.util.object.LazyLoader;
 import dev.toma.gunsrpg.util.properties.Properties;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.PacketBuffer;

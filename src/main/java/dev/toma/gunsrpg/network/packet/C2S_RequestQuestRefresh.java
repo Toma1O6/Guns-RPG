@@ -1,7 +1,10 @@
 package dev.toma.gunsrpg.network.packet;
 
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.api.common.data.*;
+import dev.toma.gunsrpg.api.common.data.DataFlags;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.api.common.data.IPointProvider;
+import dev.toma.gunsrpg.api.common.data.IQuestingData;
 import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.MayorEntity;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;

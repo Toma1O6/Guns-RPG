@@ -3,7 +3,6 @@ package dev.toma.gunsrpg.mixin;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.toma.gunsrpg.GunsRPG;
-import dev.toma.gunsrpg.world.cap.WorldData;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.resources.IResourceManagerReloadListener;

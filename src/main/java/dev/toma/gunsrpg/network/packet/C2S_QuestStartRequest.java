@@ -7,7 +7,6 @@ import dev.toma.gunsrpg.common.quests.quest.Quest;
 import dev.toma.gunsrpg.common.quests.quest.QuestStatus;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.network.AbstractNetworkPacket;
-import dev.toma.gunsrpg.network.NetworkManager;
 import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;

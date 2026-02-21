@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.util.Constants;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public final class QuestAreaScheme {

@@ -7,7 +7,6 @@ import com.google.gson.JsonSyntaxException;
 import dev.toma.gunsrpg.common.quests.quest.area.*;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;

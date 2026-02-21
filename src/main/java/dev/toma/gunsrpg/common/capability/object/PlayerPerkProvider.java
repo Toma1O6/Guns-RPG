@@ -13,7 +13,6 @@ import dev.toma.gunsrpg.common.item.perk.Crystal;
 import dev.toma.gunsrpg.common.item.perk.CrystalAttribute;
 import dev.toma.gunsrpg.common.perk.Perk;
 import dev.toma.gunsrpg.util.IIntervalProvider;
-import dev.toma.gunsrpg.util.Interval;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.nbt.CompoundNBT;

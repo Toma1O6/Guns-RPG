@@ -1,9 +1,9 @@
 package dev.toma.gunsrpg.common.item.guns.util;
 
 import dev.toma.gunsrpg.api.common.data.IPlayerData;
+import dev.toma.gunsrpg.client.ClientShootingManager;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
-import dev.toma.gunsrpg.client.ClientShootingManager;
 import dev.toma.gunsrpg.util.object.ShootingManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

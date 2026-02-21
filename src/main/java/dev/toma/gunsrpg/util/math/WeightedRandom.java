@@ -1,9 +1,11 @@
 package dev.toma.gunsrpg.util.math;
 
-import com.google.common.collect.Iterators;
 import dev.toma.gunsrpg.util.object.LazyLoader;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 import java.util.function.ToIntFunction;
 
 public class WeightedRandom<T> implements Iterable<T> {

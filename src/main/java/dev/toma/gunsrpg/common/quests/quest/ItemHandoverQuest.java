@@ -21,7 +21,9 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ItemHandoverQuest extends Quest<ItemHandoverData> implements AdditionalObjectiveInfo {

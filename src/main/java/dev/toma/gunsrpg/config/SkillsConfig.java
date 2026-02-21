@@ -3,17 +3,9 @@ package dev.toma.gunsrpg.config;
 import dev.toma.configuration.client.IValidationHandler;
 import dev.toma.configuration.config.Configurable;
 import dev.toma.configuration.config.validate.ValidationResult;
-import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.common.init.ModRegistries;
-import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 public final class SkillsConfig {
 
