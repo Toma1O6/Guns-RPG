@@ -44,13 +44,14 @@ public class ChooseAmmoScreen extends Screen {
         int y = height / 2;
         double horizontalScale = x / 2.4f;
         double verticalScale = y / 1.5f;
+        double scale = Math.min(horizontalScale, verticalScale);
         IDimensions dimensions = IDimensions.of(width, height);
         for (int i = 0; i < items.length; i++) {
             double angle = Math.toRadians(i * diff * 360.0);
             double sin = Math.sin(angle);
             double cos = Math.cos(Math.PI - angle);
-            int btnX = (int) (sin * horizontalScale) - 16;
-            int btnY = (int) (cos * verticalScale) - 16;
+            int btnX = (int) (sin * scale) - 16;
+            int btnY = (int) (cos * scale) - 16;
             addButton(new AmmoButton(x + btnX, y + btnY, items[i], dimensions));
         }
     }
@@ -115,13 +116,14 @@ public class ChooseAmmoScreen extends Screen {
             } else {
                 RenderUtils.drawGradient(pose, x + 1, y + 1, x + width - 1, y + height - 1, 0xFF444444, 0xFF333333);
             }
-            mc.getItemRenderer().renderGuiItem(stack, x + 8, y + 8);
-            int countWidth = font.width(String.valueOf(count)) / 2;
+            mc.getItemRenderer().renderGuiItem(stack, x + 8, y + 5);
+            String countLabel = this.count + "x";
+            int countWidth = font.width(countLabel);
             IAmmoMaterial material = ammo.getMaterial();
             ITextComponent name = material.getDisplayName();
             int nameWidth = font.width(name) / 2;
             font.drawShadow(matrix, name, x + 16 - nameWidth, y + height + 1, material.getTextColor());
-            font.drawShadow(matrix, count + "", x + 25 - countWidth, y + height - 11, 0xffffff);
+            font.drawShadow(matrix, countLabel, x + 1 + (width - countWidth) / 2.0F, y + height - 11, material.getTextColor());
             if (isHovered && !active) {
                 String text = String.format("Requires weapon level %d", requiredLevel);
                 int textWidth = font.width(text);
