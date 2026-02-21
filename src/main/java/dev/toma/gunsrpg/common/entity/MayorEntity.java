@@ -39,6 +39,7 @@ import java.util.*;
 
 public class MayorEntity extends CreatureEntity {
 
+    public static final int REFRESH_PRICE = 15;
     private final Map<UUID, ListedQuests> groupQuests;
     private final Map<UUID, Queue<QuestReward>> rewardStorage;
     private long refreshAtWorldTime;
@@ -48,6 +49,15 @@ public class MayorEntity extends CreatureEntity {
         setPersistenceRequired();
         this.groupQuests = new HashMap<>();
         this.rewardStorage = new HashMap<>();
+    }
+
+    public void reloadQuests(UUID groupOwner, ServerPlayerEntity owner) {
+        IPlayerData data = PlayerData.getUnsafe(owner);
+        ITraderStandings standings = data.getMayorReputationProvider();
+        ITraderStatus status = standings.getStatusWithTrader(this.getUUID());
+        ListedQuests quests = ListedQuests.generate(this.level, this.getUUID(), status.getReputation(), this.level.getPlayerByUUID(groupOwner));
+        GunsRPG.log.info(QuestSystem.MARKER, "Refreshing mayor '{}' quests for group {}, triggered by {}", this, groupOwner, owner);
+        this.groupQuests.put(groupOwner, quests);
     }
 
     public void storeReward(UUID owner, QuestReward reward) {
@@ -120,7 +130,7 @@ public class MayorEntity extends CreatureEntity {
             if (!level.isClientSide) {
                 IPlayerData playerData = PlayerData.getUnsafe(owner);
                 UUID uuid = group.getGroupId();
-                ListedQuests traderQuests = groupQuests.get(uuid);
+                ListedQuests traderQuests = this.groupQuests.get(uuid);
                 UUID traderId = this.getUUID();
                 ITraderStandings standings = playerData.getMayorReputationProvider();
                 ITraderStatus status = standings.getStatusWithTrader(traderId);
@@ -129,8 +139,8 @@ public class MayorEntity extends CreatureEntity {
                 Queue<QuestReward> storage = this.rewardStorage.get(interactionId);
                 QuestReward reward = storage != null ? storage.peek() : null;
                 if (!this.groupQuests.containsKey(uuid) || traderQuests == null) {
-                    traderQuests = ListedQuests.generate(level, traderId, status.getReputation(), owner);
-                    this.groupQuests.put(uuid, traderQuests);
+                    this.reloadQuests(uuid, (ServerPlayerEntity) player);
+                    traderQuests = this.groupQuests.get(uuid);
                 }
                 this.openQuestScreen(player, status, traderQuests, reward);
             }

@@ -2,9 +2,13 @@ package dev.toma.gunsrpg.client.screen.quest;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.toma.gunsrpg.api.client.ScreenDataEventListener;
+import dev.toma.gunsrpg.api.common.data.IPerkProvider;
+import dev.toma.gunsrpg.api.common.data.IPlayerData;
 import dev.toma.gunsrpg.api.common.data.IQuestingData;
 import dev.toma.gunsrpg.client.screen.DialogScreen;
 import dev.toma.gunsrpg.client.screen.animation.FadeAnimation;
+import dev.toma.gunsrpg.client.screen.animation.Tooltip;
+import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.entity.MayorEntity;
 import dev.toma.gunsrpg.common.quests.mayor.ReputationStatus;
 import dev.toma.gunsrpg.common.quests.quest.Quest;
@@ -13,10 +17,7 @@ import dev.toma.gunsrpg.common.quests.reward.QuestReward;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.skills.BartenderSkill;
 import dev.toma.gunsrpg.network.NetworkManager;
-import dev.toma.gunsrpg.network.packet.C2S_QuestCancelRequest;
-import dev.toma.gunsrpg.network.packet.C2S_QuestClaimRequest;
-import dev.toma.gunsrpg.network.packet.C2S_QuestCompleteRequest;
-import dev.toma.gunsrpg.network.packet.C2S_QuestStartRequest;
+import dev.toma.gunsrpg.network.packet.*;
 import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
@@ -38,6 +39,7 @@ public final class QuestScreen extends Screen implements ScreenDataEventListener
     private static final ITextComponent TEXT_AVAILABLE_QUESTS = new TranslationTextComponent("screen.quests.available_quests").withStyle(TextFormatting.UNDERLINE);
     private static final ITextComponent TEXT_ACTIVE_QUESTS = new TranslationTextComponent("screen.quests.active_quests").withStyle(TextFormatting.UNDERLINE);
     private static final ITextComponent START_QUEST = new TranslationTextComponent("screen.quests.start_quest").withStyle(TextFormatting.GREEN);
+    private static final ITextComponent REFRESH_QUESTS = new TranslationTextComponent("screen.quests.refresh_quests").withStyle(TextFormatting.YELLOW);
     private static final ITextComponent CANCEL_QUEST = new TranslationTextComponent("screen.quests.cancel_quest").withStyle(TextFormatting.RED);
     private static final ITextComponent COMPLETE_QUEST = new TranslationTextComponent("screen.quests.complete_quest").withStyle(TextFormatting.GREEN);
     private static final ITextComponent CLAIM_REWARDS = new TranslationTextComponent("screen.quests.claim_rewards").withStyle(TextFormatting.GREEN);
@@ -50,6 +52,10 @@ public final class QuestScreen extends Screen implements ScreenDataEventListener
     private static final ITextComponent DIALOG_CLAIM_REWARD_HEADER = new TranslationTextComponent("screen.dialog.quest.claim.header").withStyle(TextFormatting.BOLD);
     private static final ITextComponent DIALOG_CLAIM_REWARD_INFO = new TranslationTextComponent("screen.dialog.quest.claim.info");
     private static final ITextComponent DIALOG_CLAIM_REWARD_WARNING = new TranslationTextComponent("screen.dialog.quest.claim.warning").withStyle(TextFormatting.ITALIC, TextFormatting.YELLOW);
+    private static final ITextComponent DIALOG_REFRESH_QUESTS_HEADER = new TranslationTextComponent("screen.dialog.quest.refresh.header").withStyle(TextFormatting.BOLD);
+    private static final ITextComponent DIALOG_REFRESH_QUESTS_INFO = new TranslationTextComponent("screen.dialog.quest.refresh.info", new StringTextComponent(String.valueOf(MayorEntity.REFRESH_PRICE)).withStyle(TextFormatting.GREEN));
+    private static final ITextComponent DIALOG_REFRESH_QUESTS_WARNING = new TranslationTextComponent("screen.dialog.quest.refresh.warning").withStyle(TextFormatting.YELLOW);
+    private static final ITextComponent TOOLTIP_INSUFFICIENT_POINTS = new TranslationTextComponent("screen.quests.tooltip.insufficient_points").withStyle(TextFormatting.RED);
 
     private final MayorEntity entity;
     private final ReputationStatus status;
@@ -76,6 +82,7 @@ public final class QuestScreen extends Screen implements ScreenDataEventListener
 
     @Override
     protected void init() {
+        IPlayerData data = PlayerData.getUnsafe(this.minecraft.player);
         this.questData = QuestingDataProvider.getQuesting(this.minecraft.level);
         QuestingGroup group = this.questData.getOrCreateGroup(this.minecraft.player);
         this.activeQuest = this.questData.getActiveQuest(group);
@@ -128,8 +135,8 @@ public final class QuestScreen extends Screen implements ScreenDataEventListener
                 widget.setTextMargin(0);
                 widget.setExtendedInformation(this.isViewingActiveQuest());
             }
+            UUID clientId = this.minecraft.player.getUUID();
             if (this.selectedQuest != null) {
-                UUID clientId = this.minecraft.player.getUUID();
                 if (this.isViewingActiveQuest()) {
                     if (this.selectedQuest.isOwner(clientId)) {
                         if (this.selectedQuest.isManageableByMayor(this.entity)) {
@@ -152,7 +159,11 @@ public final class QuestScreen extends Screen implements ScreenDataEventListener
                     // start quest button
                     SolidColorButton button = this.addButton(new SolidColorButton(this.width - 10 - buttonWidth, this.height - buttonHeight - 10, buttonWidth, buttonHeight, START_QUEST, this::startSelectedQuest));
                     button.setFadeOutAnim(FadeAnimation.createDefault());
+
+                    this.addRefreshQuestButton(this.width - 20 - 2 * buttonWidth, this.height - buttonHeight - 10, buttonWidth, buttonHeight, data);
                 }
+            } else if (group.isLeader(clientId)) {
+                this.addRefreshQuestButton(this.width - 10 - buttonWidth, this.height - buttonHeight - 10, buttonWidth, buttonHeight, data);
             }
         }
     }
@@ -194,6 +205,17 @@ public final class QuestScreen extends Screen implements ScreenDataEventListener
         return this.activeQuest != null && this.activeQuest.equals(this.selectedQuest);
     }
 
+    private void addRefreshQuestButton(int x, int y, int width, int height, IPlayerData data) {
+        IPerkProvider provider = data.getPerkProvider();
+        int points = provider.getPoints();
+        SolidColorButton refreshQuests = this.addButton(new SolidColorButton(x, y, width, height, REFRESH_QUESTS, this::refreshQuestsClicked));
+        refreshQuests.active = points >= MayorEntity.REFRESH_PRICE;
+        if (!refreshQuests.active) {
+            refreshQuests.setTooltip(Tooltip.create(this::renderTooltip, TOOLTIP_INSUFFICIENT_POINTS));
+        }
+        refreshQuests.setFadeOutAnim(FadeAnimation.createDefault());
+    }
+
     private void selectQuest(Quest<?> quest, int index) {
         this.selectedQuest = this.selectedQuest == quest ? null : quest;
         this.selectedQuestIndex = index;
@@ -233,6 +255,17 @@ public final class QuestScreen extends Screen implements ScreenDataEventListener
 
     private void startSelectedQuestConfirmed() {
         NetworkManager.sendServerPacket(new C2S_QuestStartRequest(this.entity.getId(), this.selectedQuestIndex));
+    }
+
+    private void refreshQuestsClicked() {
+        DialogScreen dialog = DialogScreen.create(this, DIALOG_REFRESH_QUESTS_HEADER);
+        dialog.setContent(DIALOG_REFRESH_QUESTS_INFO, new StringTextComponent(" "), DIALOG_REFRESH_QUESTS_WARNING);
+        dialog.setConfirmHandler(this::refreshQuestsConfirmed);
+        dialog.setActive(this.minecraft);
+    }
+
+    private void refreshQuestsConfirmed() {
+        NetworkManager.sendServerPacket(new C2S_RequestQuestRefresh(this.entity.getId()));
     }
 
     private void cancelSelectedQuestConfirmed() {

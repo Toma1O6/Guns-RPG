@@ -98,6 +98,7 @@ public class NetworkManager {
         registerNetworkPacket(C2S_QuestCompleteRequest.class, C2S_QuestCompleteRequest::new);
         registerNetworkPacket(C2S_QuestClaimRequest.class, C2S_QuestClaimRequest::new);
         registerNetworkPacket(C2S_TestPinCombination.class, C2S_TestPinCombination::new);
+        registerNetworkPacket(C2S_RequestQuestRefresh.class, C2S_RequestQuestRefresh::new);
     }
 
     private static <P extends INetworkPacket> void registerNetworkPacket(Class<P> packetType, Function<PacketBuffer, P> decoder) {
