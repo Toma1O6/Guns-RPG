@@ -547,9 +547,8 @@
                   "max": 5
                 },
                 "debuffs": {
-                  "function": "gunsrpg:rng",
-                  "min": 0,
-                  "max": 3
+                  "function": "gunsrpg:const",
+                  "value": 0
                 }
               }
             }
@@ -714,9 +713,8 @@
                   "max": 5
                 },
                 "debuffs": {
-                  "function": "gunsrpg:rng",
-                  "min": 0,
-                  "max": 3
+                  "function": "gunsrpg:const",
+                  "value": 0
                 }
               }
             }
@@ -892,9 +890,8 @@
                   "max": 5
                 },
                 "debuffs": {
-                  "function": "gunsrpg:rng",
-                  "min": 0,
-                  "max": 3
+                  "function": "gunsrpg:const",
+                  "value": 0
                 }
               }
             }
@@ -1077,9 +1074,8 @@
                   "max": 5
                 },
                 "debuffs": {
-                  "function": "gunsrpg:rng",
-                  "min": 0,
-                  "max": 3
+                  "function": "gunsrpg:const",
+                  "value": 0
                 }
               }
             }
@@ -1262,9 +1258,8 @@
                   "max": 5
                 },
                 "debuffs": {
-                  "function": "gunsrpg:rng",
-                  "min": 0,
-                  "max": 3
+                  "function": "gunsrpg:const",
+                  "value": 0
                 }
               }
             }
@@ -1426,9 +1421,8 @@
                   "max": 5
                 },
                 "debuffs": {
-                  "function": "gunsrpg:rng",
-                  "min": 0,
-                  "max": 3
+                  "function": "gunsrpg:const",
+                  "value": 0
                 }
               }
             }
@@ -1575,9 +1569,8 @@
                   "max": 5
                 },
                 "debuffs": {
-                  "function": "gunsrpg:rng",
-                  "min": 0,
-                  "max": 3
+                  "function": "gunsrpg:const",
+                  "value": 0
                 }
               }
             }
