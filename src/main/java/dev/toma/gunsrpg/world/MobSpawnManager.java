@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.GunsRPG;
 import dev.toma.gunsrpg.ai.BeAngryDuringBloodmoonGoal;
 import dev.toma.gunsrpg.ai.OpenDoorWithoutClosingGoal;
 import dev.toma.gunsrpg.common.entity.BloodmoonGolemEntity;
+import dev.toma.gunsrpg.common.entity.EntityFlag;
 import dev.toma.gunsrpg.common.entity.RocketAngelEntity;
 import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.config.world.MobHealthBuffConfig;
@@ -92,10 +93,12 @@ public class MobSpawnManager {
                 if (random.nextInt(20) < pair.getLeft()) {
                     entity.remove();
                     LivingEntity replacement = pair.getRight().apply(world, vec3d);
+                    EntityFlag.addFlag(replacement, EntityFlag.BLOODMOON);
                     world.addFreshEntity(replacement);
                     return false;
                 }
             }
+            EntityFlag.addFlag(entity, EntityFlag.BLOODMOON);
         }
         if (isExluded(entity)) {
             return true;

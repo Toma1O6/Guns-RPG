@@ -7,6 +7,7 @@ import dev.toma.gunsrpg.common.quests.adapters.MobSpawnerAdapter;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.JSONUtils;
@@ -22,10 +23,10 @@ import java.util.stream.Collectors;
 public class SetEntityControllerProcessor implements IMobSpawnProcessor {
 
     private final MobSpawnProcessorType<SetEntityControllerProcessor> type;
-    private final EntityType<? extends LivingEntity> controllerType;
+    private final EntityType<? extends MobEntity> controllerType;
     private final List<IMobSpawnProcessor> processorList;
 
-    private SetEntityControllerProcessor(MobSpawnProcessorType<SetEntityControllerProcessor> type, EntityType<? extends LivingEntity> controllerType, List<IMobSpawnProcessor> processorList) {
+    private SetEntityControllerProcessor(MobSpawnProcessorType<SetEntityControllerProcessor> type, EntityType<? extends MobEntity> controllerType, List<IMobSpawnProcessor> processorList) {
         this.type = type;
         this.controllerType = controllerType;
         this.processorList = processorList;
@@ -37,9 +38,9 @@ public class SetEntityControllerProcessor implements IMobSpawnProcessor {
     }
 
     @Override
-    public void processMobSpawn(LivingEntity entity, IMobTargettingContext targettingContext) {
+    public void processMobSpawn(MobEntity entity, IMobTargettingContext targettingContext) {
         World world = entity.level;
-        LivingEntity controller = controllerType.create(world);
+        MobEntity controller = controllerType.create(world);
         controller.setPosAndOldPos(entity.getX(), entity.getY(), entity.getZ());
         world.addFreshEntity(controller);
         processorList.forEach(processor -> processor.processMobSpawn(controller, targettingContext));
@@ -53,7 +54,7 @@ public class SetEntityControllerProcessor implements IMobSpawnProcessor {
         public SetEntityControllerProcessor deserialize(MobSpawnProcessorType<SetEntityControllerProcessor> type, JsonElement element) throws JsonParseException {
             JsonObject object = JsonHelper.asJsonObject(element);
             ResourceLocation id = new ResourceLocation(JSONUtils.getAsString(object, "controller"));
-            EntityType<? extends LivingEntity> entity = MobSpawnerAdapter.tryParseAsLivingEntity(id);
+            EntityType<? extends MobEntity> entity = MobSpawnerAdapter.tryParseAsMobEntity(id);
             List<IMobSpawnProcessor> processorList = Collections.emptyList();
             if (object.has("processors")) {
                 processorList = JsonHelper.deserializeAsList("processors", object, MobSpawnerAdapter::resolveSpawnProcessor);
@@ -76,7 +77,7 @@ public class SetEntityControllerProcessor implements IMobSpawnProcessor {
             EntityType<?> entityType = ForgeRegistries.ENTITIES.getValue(entityId);
             ListNBT listNBT = nbt.getList("processors", Constants.NBT.TAG_COMPOUND);
             List<IMobSpawnProcessor> list = listNBT.stream().<IMobSpawnProcessor>map(inbt -> MobSpawnProcessorType.fromNbt((CompoundNBT) inbt)).collect(Collectors.toList());
-            return new SetEntityControllerProcessor(type, (EntityType<? extends LivingEntity>) entityType, list);
+            return new SetEntityControllerProcessor(type, (EntityType<? extends MobEntity>) entityType, list);
         }
 
         @SuppressWarnings("unchecked")

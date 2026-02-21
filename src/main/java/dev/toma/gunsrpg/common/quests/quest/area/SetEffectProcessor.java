@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
@@ -37,7 +37,7 @@ public class SetEffectProcessor implements IMobSpawnProcessor {
     }
 
     @Override
-    public void processMobSpawn(LivingEntity entity, IMobTargettingContext targettingContext) {
+    public void processMobSpawn(MobEntity entity, IMobTargettingContext targettingContext) {
         entity.addEffect(new EffectInstance(effect, duration, amplifier, ambient, visible));
     }
 

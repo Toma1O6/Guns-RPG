@@ -1,13 +1,13 @@
 package dev.toma.gunsrpg.common.quests.quest;
 
 import dev.toma.gunsrpg.client.render.infobar.QuestDisplayDataModel;
+import dev.toma.gunsrpg.common.entity.EntityFlag;
 import dev.toma.gunsrpg.common.quests.QuestProperties;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.common.quests.trigger.Trigger;
 import dev.toma.gunsrpg.common.quests.trigger.TriggerResponseStatus;
 import dev.toma.gunsrpg.util.properties.IPropertyReader;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.StringTextComponent;
 
@@ -70,9 +70,8 @@ public class KillInAreaQuest extends AbstractAreaBasedQuest<KillInAreaData> {
     }
 
     private TriggerResponseStatus onEntityKilled(Trigger trigger, IPropertyReader reader) {
-        PlayerEntity player = reader.getProperty(QuestProperties.PLAYER);
         Entity entity = reader.getProperty(QuestProperties.ENTITY);
-        if (this.area.isInArea(player)) {
+        if (EntityFlag.hasFlag(entity, EntityFlag.QUEST_ARENA)) {
             KillInAreaData data = this.getActiveData();
             if (data.getEntityFilter().test(entity)) {
                 return TriggerResponseStatus.OK;

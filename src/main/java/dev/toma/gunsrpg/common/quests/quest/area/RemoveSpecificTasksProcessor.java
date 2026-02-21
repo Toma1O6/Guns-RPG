@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.GoalSelector;
@@ -39,7 +38,7 @@ public class RemoveSpecificTasksProcessor implements IMobSpawnProcessor {
     }
 
     @Override
-    public void processMobSpawn(LivingEntity entity, IMobTargettingContext targettingContext) {
+    public void processMobSpawn(MobEntity entity, IMobTargettingContext targettingContext) {
         if (!(entity instanceof MobEntity)) return;
         MobEntity mob = (MobEntity) entity;
         List<Goal> goalsToRemove = findGoalsByClasses(mob.goalSelector, goalSelectorClasses);

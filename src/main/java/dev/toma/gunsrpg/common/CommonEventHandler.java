@@ -10,14 +10,13 @@ import dev.toma.gunsrpg.common.capability.PlayerData;
 import dev.toma.gunsrpg.common.capability.PlayerDataProvider;
 import dev.toma.gunsrpg.common.debuffs.IDebuffContext;
 import dev.toma.gunsrpg.common.debuffs.IDebuffType;
+import dev.toma.gunsrpg.common.entity.EntityFlag;
 import dev.toma.gunsrpg.common.entity.projectile.AbstractProjectile;
 import dev.toma.gunsrpg.common.init.*;
 import dev.toma.gunsrpg.common.item.HammerItem;
 import dev.toma.gunsrpg.common.item.ICustomUseDuration;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.item.guns.setup.AbstractGun;
-import dev.toma.gunsrpg.common.quests.quest.Quest;
-import dev.toma.gunsrpg.common.quests.quest.area.IAreaQuest;
 import dev.toma.gunsrpg.common.skills.AvengeMeFriendsSkill;
 import dev.toma.gunsrpg.common.skills.SecondChanceSkill;
 import dev.toma.gunsrpg.common.tileentity.DeathCrateTileEntity;
@@ -29,7 +28,6 @@ import dev.toma.gunsrpg.util.SkillUtil;
 import dev.toma.gunsrpg.util.properties.Properties;
 import dev.toma.gunsrpg.world.LootStashes;
 import dev.toma.gunsrpg.world.WeaponDamageSource;
-import dev.toma.gunsrpg.world.cap.QuestingData;
 import dev.toma.gunsrpg.world.cap.QuestingDataProvider;
 import dev.toma.gunsrpg.world.cap.WorldData;
 import dev.toma.gunsrpg.world.cap.WorldDataProvider;
@@ -392,10 +390,7 @@ public class CommonEventHandler {
             PlayerEntity player = (PlayerEntity) directSource;
             ItemStack killWeapon = damageSource instanceof WeaponDamageSource ? ((WeaponDamageSource) damageSource).getKillWeapon() : ItemStack.EMPTY;
             Entity victim = event.getEntity();
-            IQuestingData questingData = QuestingDataProvider.getQuesting(player.level);
-            Quest<?> quest = questingData.getActiveQuestForPlayer(player);
-            // count only non-quest related kills
-            if (!(quest instanceof IAreaQuest) || !((IAreaQuest) quest).getQuestArea().isInArea(player)) {
+            if (!EntityFlag.hasFlag(victim, EntityFlag.QUEST_ARENA)) {
                 PlayerData.get(player).ifPresent(data -> data.getProgressData().onEnemyKilled(victim, killWeapon));
             }
         }

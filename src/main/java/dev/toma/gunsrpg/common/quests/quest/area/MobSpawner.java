@@ -4,6 +4,7 @@ import dev.toma.gunsrpg.ai.AlwaysAggroOnGoal;
 import dev.toma.gunsrpg.ai.QuestPlayerSensor;
 import dev.toma.gunsrpg.ai.StayWithinQuestAreaGoal;
 import dev.toma.gunsrpg.api.common.event.QuestingEvent;
+import dev.toma.gunsrpg.common.entity.EntityFlag;
 import dev.toma.gunsrpg.common.init.ModSensors;
 import dev.toma.gunsrpg.common.quests.sharing.QuestingGroup;
 import dev.toma.gunsrpg.util.ModUtils;
@@ -34,13 +35,13 @@ import java.util.stream.Collectors;
 
 public class MobSpawner implements IMobSpawner {
 
-    private final EntityType<? extends LivingEntity> entityType;
+    private final EntityType<? extends MobEntity> entityType;
     private final int weight;
     private final int minCount;
     private final int maxCount;
     private final List<IMobSpawnProcessor> processorList;
 
-    public MobSpawner(EntityType<? extends LivingEntity> entityType, int weight, int minCount, int maxCount, List<IMobSpawnProcessor> processorList) {
+    public MobSpawner(EntityType<? extends MobEntity> entityType, int weight, int minCount, int maxCount, List<IMobSpawnProcessor> processorList) {
         this.entityType = entityType;
         this.weight = weight;
         this.minCount = minCount;
@@ -56,7 +57,7 @@ public class MobSpawner implements IMobSpawner {
     @SuppressWarnings("unchecked")
     public static MobSpawner fromNbt(CompoundNBT nbt) {
         ResourceLocation entityId = new ResourceLocation(nbt.getString("livingEntity"));
-        EntityType<? extends LivingEntity> entityType = (EntityType<? extends LivingEntity>) ForgeRegistries.ENTITIES.getValue(entityId);
+        EntityType<? extends MobEntity> entityType = (EntityType<? extends MobEntity>) ForgeRegistries.ENTITIES.getValue(entityId);
         int weight = nbt.getInt("weight");
         int minCount = nbt.getInt("minCount");
         int maxCount = nbt.getInt("maxCount");
@@ -94,20 +95,17 @@ public class MobSpawner implements IMobSpawner {
     @SuppressWarnings("unchecked")
     private void spawnMob(World world, QuestArea area, QuestingGroup group) {
         BlockPos pos = area.getRandomEgdePosition(world.random, world);
-        LivingEntity livingEntity = entityType.create(world);
-        livingEntity.setPos(pos.getX(), pos.getY(), pos.getZ());
+        MobEntity mob = entityType.create(world);
+        mob.setPos(pos.getX(), pos.getY(), pos.getZ());
         List<PlayerEntity> players = group.getMembers().stream().map(world::getPlayerByUUID).filter(Objects::nonNull).collect(Collectors.toList());
         PlayerEntity attackTarget = ModUtils.getRandomListElement(players, world.random);
         IMobTargettingContext context = entity -> {
             ServerWorld serverWorld = (ServerWorld) entity.level;
-            if (entity instanceof MobEntity) {
-                MobEntity mob = (MobEntity) entity;
-                mob.finalizeSpawn(serverWorld, world.getCurrentDifficultyAt(pos), SpawnReason.COMMAND, null, null);
-                mob.setTarget(attackTarget);
-                AlwaysAggroOnGoal<?> alwaysAggroOnGoal = new AlwaysAggroOnGoal<>(mob, false, attackTarget);
-                mob.targetSelector.addGoal(0, alwaysAggroOnGoal);
-                mob.goalSelector.addGoal(0, new StayWithinQuestAreaGoal(mob, area));
-            }
+            entity.finalizeSpawn(serverWorld, world.getCurrentDifficultyAt(pos), SpawnReason.COMMAND, null, null);
+            entity.setTarget(attackTarget);
+            AlwaysAggroOnGoal<?> alwaysAggroOnGoal = new AlwaysAggroOnGoal<>(entity, false, attackTarget);
+            entity.targetSelector.addGoal(0, alwaysAggroOnGoal);
+            entity.goalSelector.addGoal(0, new StayWithinQuestAreaGoal(entity, area));
             entity.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(area.getScheme().getSize() * 4);
             Brain<?> brain = entity.getBrain();
             brain.setMemory(MemoryModuleType.UNIVERSAL_ANGER, true);
@@ -118,10 +116,11 @@ public class MobSpawner implements IMobSpawner {
             questPlayerSensor.setTarget(attackTarget);
             sensors.put(sensorType, questPlayerSensor);
         };
-        processorList.forEach(processor -> processor.processMobSpawn(livingEntity, context));
-        MinecraftForge.EVENT_BUS.post(new QuestingEvent.MobPostProcessingEvent(world, group, livingEntity, area));
-        world.addFreshEntity(livingEntity);
-        context.processMobSpawn(livingEntity);
+        processorList.forEach(processor -> processor.processMobSpawn(mob, context));
+        MinecraftForge.EVENT_BUS.post(new QuestingEvent.MobPostProcessingEvent(world, group, mob, area));
+        EntityFlag.addFlag(mob, EntityFlag.QUEST_ARENA);
+        world.addFreshEntity(mob);
+        context.processMobSpawn(mob);
     }
 
     @SuppressWarnings("unchecked")

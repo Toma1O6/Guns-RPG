@@ -8,6 +8,7 @@ import dev.toma.gunsrpg.common.quests.quest.area.*;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -19,7 +20,7 @@ public final class MobSpawnerAdapter {
     public IMobSpawner deserialize(JsonElement json) throws JsonParseException {
         JsonObject object = JsonHelper.asJsonObject(json);
         ResourceLocation entityId = new ResourceLocation(JSONUtils.getAsString(object, "entity"));
-        EntityType<? extends LivingEntity> entityType = tryParseAsLivingEntity(entityId);
+        EntityType<? extends MobEntity> entityType = tryParseAsMobEntity(entityId);
         int weight = JsonHelper.getAsBoundedInt(object, "weight", 1, 1, Integer.MAX_VALUE);
         int minCount = JsonHelper.getAsBoundedInt(object, "minCount", 1, 1, 64);
         int maxCount = JsonHelper.getAsBoundedInt(object, "maxCount", 1, 1, 64);
@@ -39,14 +40,14 @@ public final class MobSpawnerAdapter {
     }
 
     @SuppressWarnings("unchecked")
-    public static EntityType<? extends LivingEntity> tryParseAsLivingEntity(ResourceLocation location) throws JsonParseException {
+    public static EntityType<? extends MobEntity> tryParseAsMobEntity(ResourceLocation location) throws JsonParseException {
         EntityType<?> type = ForgeRegistries.ENTITIES.getValue(location);
         if (type == null)
             throw new JsonSyntaxException("Unknown entity: " + location);
         try {
-            return (EntityType<? extends LivingEntity>) type;
+            return (EntityType<? extends MobEntity>) type;
         } catch (ClassCastException e) {
-            throw new JsonSyntaxException("Not a living entity: " + location);
+            throw new JsonSyntaxException("Not a mob entity: " + location);
         }
     }
 }

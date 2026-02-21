@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import dev.toma.gunsrpg.util.helper.JsonHelper;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,7 +36,7 @@ public class SetEquipmentProcessor implements IMobSpawnProcessor {
     }
 
     @Override
-    public void processMobSpawn(LivingEntity entity, IMobTargettingContext targettingContext) {
+    public void processMobSpawn(MobEntity entity, IMobTargettingContext targettingContext) {
         for (Map.Entry<EquipmentSlotType, Item> entry : equipment.entrySet()) {
             EquipmentSlotType slotType = entry.getKey();
             Item item = entry.getValue();

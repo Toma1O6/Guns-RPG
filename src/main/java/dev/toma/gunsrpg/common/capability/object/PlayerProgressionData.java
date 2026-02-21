@@ -12,7 +12,6 @@ import dev.toma.gunsrpg.client.render.ProgressionRenderer;
 import dev.toma.gunsrpg.common.experience.MobExpReward;
 import dev.toma.gunsrpg.common.experience.MobExpRewardManager;
 import dev.toma.gunsrpg.common.init.ModItems;
-import dev.toma.gunsrpg.common.init.ModTags;
 import dev.toma.gunsrpg.common.item.guns.GunItem;
 import dev.toma.gunsrpg.common.skills.core.PlayerLevelTransactionValidator;
 import dev.toma.gunsrpg.common.skills.core.SkillType;
