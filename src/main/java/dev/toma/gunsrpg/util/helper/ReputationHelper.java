@@ -42,7 +42,8 @@ public final class ReputationHelper {
     }
 
     public static void awardPlayerForMaxReputation(PlayerEntity player) {
-        award(player, new ItemStack(ModItems.GOLD_EGG_SHARD, 2));
+        award(player, new ItemStack(ModItems.GOLD_EGG_SHARD));
+        awardPlayerWeaponBook(player);
     }
 
     private static void addReputation(ITraderStatus status, Quest<?> quest, Function<Integer, Float> calculator) {

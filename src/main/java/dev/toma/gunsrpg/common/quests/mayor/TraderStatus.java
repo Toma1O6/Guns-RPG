@@ -52,11 +52,6 @@ public class TraderStatus implements ITraderStatus, INBTSerializable<CompoundNBT
     }
 
     @Override
-    public void onTraderAttacked() {
-        this.addReputation(-0.5F);
-    }
-
-    @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
         nbt.putFloat("reputation", reputation);

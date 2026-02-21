@@ -5,6 +5,4 @@ public interface ITraderStatus {
     float getReputation();
 
     void addReputation(float reputation);
-
-    void onTraderAttacked();
 }
