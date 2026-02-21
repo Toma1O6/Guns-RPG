@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 public class AmmoItem extends BaseItem implements IAmmoProvider {
 
@@ -22,11 +23,19 @@ public class AmmoItem extends BaseItem implements IAmmoProvider {
     private final IMaterialData data;
 
     public AmmoItem(String name, AmmoType ammoType, IAmmoMaterial material) {
-        this(name, ammoType, material, 64);
+        this(name, ammoType, material, UnaryOperator.identity());
+    }
+
+    public AmmoItem(String name, AmmoType ammoType, IAmmoMaterial material, UnaryOperator<Properties> propertiesModifier) {
+        this(name, ammoType, material, 64, propertiesModifier);
     }
 
     public AmmoItem(String name, AmmoType ammoType, IAmmoMaterial material, int ammo) {
-        super(name, new Properties().tab(ModTabs.WEAPON_TAB).stacksTo(ammo));
+        this(name, ammoType, material, ammo, UnaryOperator.identity());
+    }
+
+    public AmmoItem(String name, AmmoType ammoType, IAmmoMaterial material, int ammo, UnaryOperator<Properties> propertiesModifier) {
+        super(name, propertiesModifier.apply(new Properties().tab(ModTabs.WEAPON_TAB).stacksTo(ammo)));
         this.material = material;
         this.ammoType = ammoType;
         this.data = ammoType.container != null ? ammoType.container.getMaterialData(material) : MaterialData.EMPTY;
