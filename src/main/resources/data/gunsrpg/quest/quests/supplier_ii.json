@@ -2,38 +2,38 @@
   "type": "gunsrpg:handover",
   "tier": 3,
   "data": {
-    "min": 4,
+    "min": 3,
     "max": 7,
     "groups": [
       {
         "tag": "gunsrpg:quest/ingots",
         "weight": 5,
-        "min": 15,
-        "max": 40
+        "min": 8,
+        "max": 25
       },
       {
         "tag": "gunsrpg:quest/materials",
         "weight": 4,
-        "min": 20,
-        "max": 50
+        "min": 10,
+        "max": 30
       },
       {
         "tag": "gunsrpg:quest/rare_resources",
         "weight": 2,
         "min": 5,
-        "max": 25
+        "max": 15
       },
       {
         "tag": "gunsrpg:quest/building_materials",
         "weight": 5,
-        "min": 20,
-        "max": 60
+        "min": 10,
+        "max": 40
       },
       {
         "tag": "gunsrpg:quest/gems",
         "weight": 2,
-        "min": 3,
-        "max": 10
+        "min": 2,
+        "max": 5
       }
     ]
   }
