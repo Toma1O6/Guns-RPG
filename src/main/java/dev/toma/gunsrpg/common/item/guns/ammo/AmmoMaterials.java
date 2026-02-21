@@ -20,17 +20,17 @@ public final class AmmoMaterials {
 
     // grenade launcher
     public static final IAmmoMaterial GRENADE = AmmoMaterialManager.get().createReactiveMaterial("grenade", 0xFFFF00, 1, ExplosiveReaction.EXPLOSION);
-    public static final IAmmoMaterial TEAR_GAS = AmmoMaterialManager.get().createReactiveMaterial("tear_gas", 0x74E074, 2, EffectSpreadReaction.TEAR_GAS);
-    public static final IAmmoMaterial STICKY = AmmoMaterialManager.get().createReactiveMaterial("sticky", 0xFFFFFF, 4, MultipartReaction.multi(ExplosiveReaction.EXPLOSION, PropertyTriggerReaction.STICKY));
-    public static final IAmmoMaterial HE_GRENADE = AmmoMaterialManager.get().createReactiveMaterial("he_grenade", 0xAFAFAF, 6, ExplosiveReaction.HE_EXPLOSION);
-    public static final IAmmoMaterial IMPACT = AmmoMaterialManager.get().createReactiveMaterial("impact_grenade", 0xFF0000, 7, MultipartReaction.multi(ExplosiveReaction.EXPLOSION, PropertyTriggerReaction.IMPACT));
+    public static final IAmmoMaterial TEAR_GAS = AmmoMaterialManager.get().createReactiveMaterial("tear_gas", 0x74E074, 1, EffectSpreadReaction.TEAR_GAS);
+    public static final IAmmoMaterial STICKY = AmmoMaterialManager.get().createReactiveMaterial("sticky", 0xFFFFFF, 1, MultipartReaction.multi(ExplosiveReaction.EXPLOSION, PropertyTriggerReaction.STICKY));
+    public static final IAmmoMaterial HE_GRENADE = AmmoMaterialManager.get().createReactiveMaterial("he_grenade", 0xAFAFAF, 1, ExplosiveReaction.HE_EXPLOSION);
+    public static final IAmmoMaterial IMPACT = AmmoMaterialManager.get().createReactiveMaterial("impact_grenade", 0xFF0000, 1, MultipartReaction.multi(ExplosiveReaction.EXPLOSION, PropertyTriggerReaction.IMPACT));
 
     // rocket launcher
     public static final IAmmoMaterial ROCKET = AmmoMaterialManager.get().createReactiveMaterial("rocket", 0xFF0000, 1, ExplosiveReaction.EXPLOSION);
-    public static final IAmmoMaterial TOXIN = AmmoMaterialManager.get().createReactiveMaterial("toxin", 0x8400C1, 2, MultipartReaction.multi(ExplosiveReaction.EXPLOSION, EffectSpreadReaction.TOXIN));
-    public static final IAmmoMaterial DEMOLITION = AmmoMaterialManager.get().createReactiveMaterial("demolition", 0x565656, 4, ExplosiveReaction.DESTRUCTIVE_EXPLOSION);
-    public static final IAmmoMaterial NAPALM = AmmoMaterialManager.get().createReactiveMaterial("napalm", 0xFF6A00, 6, MultipartReaction.multi(ExplosiveReaction.EXPLOSION, NapalmReaction.NAPALM));
-    public static final IAmmoMaterial HE_ROCKET = AmmoMaterialManager.get().createReactiveMaterial("he_rocket", 0x298FAD, 7, ExplosiveReaction.HE_EXPLOSION);
+    public static final IAmmoMaterial TOXIN = AmmoMaterialManager.get().createReactiveMaterial("toxin", 0x8400C1, 1, MultipartReaction.multi(ExplosiveReaction.EXPLOSION, EffectSpreadReaction.TOXIN));
+    public static final IAmmoMaterial DEMOLITION = AmmoMaterialManager.get().createReactiveMaterial("demolition", 0x565656, 1, ExplosiveReaction.DESTRUCTIVE_EXPLOSION);
+    public static final IAmmoMaterial NAPALM = AmmoMaterialManager.get().createReactiveMaterial("napalm", 0xFF6A00, 1, MultipartReaction.multi(ExplosiveReaction.EXPLOSION, NapalmReaction.NAPALM));
+    public static final IAmmoMaterial HE_ROCKET = AmmoMaterialManager.get().createReactiveMaterial("he_rocket", 0x298FAD, 1, ExplosiveReaction.HE_EXPLOSION);
 
     private AmmoMaterials() {}
 }
