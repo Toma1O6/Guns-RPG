@@ -10,7 +10,7 @@ public interface EntityFlagHolder {
 
     void gunsrpg$clearFlags();
 
-    Collection<EntityFlag> getFlags();
+    Collection<EntityFlag> gunsrpg$getFlags();
 
     boolean gunsrpg$hasFlag(EntityFlag flag);
 }

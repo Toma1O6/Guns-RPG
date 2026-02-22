@@ -20,7 +20,7 @@ public enum EntityFlag {
     public static Collection<EntityFlag> listFlags(Entity entity) {
         if (!(entity instanceof EntityFlagHolder))
             return Collections.emptyList();
-        return ((EntityFlagHolder) entity).getFlags();
+        return ((EntityFlagHolder) entity).gunsrpg$getFlags();
     }
 
     public static void addFlag(Entity entity, EntityFlag flag) {

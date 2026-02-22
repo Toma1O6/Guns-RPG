@@ -16,6 +16,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 
 @Mixin(MobEntity.class)
@@ -68,6 +70,11 @@ public abstract class MobEntityFlagExtension extends LivingEntity implements Ent
     @Override
     public void gunsrpg$clearFlags() {
         this.gunsrpg$entityFlags.clear();
+    }
+
+    @Override
+    public Collection<EntityFlag> gunsrpg$getFlags() {
+        return this.gunsrpg$entityFlags;
     }
 
     @Override
