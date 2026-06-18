@@ -1,0 +1,16 @@
+{
+    "type":  "gunsrpg:gunsmith",
+    "pattern":  [
+                    " bb"
+                ],
+    "key":  {
+                "b":  {
+                          "item":  "minecraft:iron_ingot"
+                      }
+            },
+    "result":  {
+                   "count":  1,
+                   "item":  "gunsrpg:long_barrel"
+               },
+    "skill":  "gun_parts_smith"
+}

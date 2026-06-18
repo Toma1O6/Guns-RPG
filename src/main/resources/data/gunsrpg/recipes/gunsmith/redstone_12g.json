@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m  ", "ggg", "s  "],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "s": { "item": "gunsrpg:shotgun_shell" },
+    "m": { "item": "minecraft:redstone" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:redstone_12g" },
+  "skill": "redstone_ammo_smith"
+}

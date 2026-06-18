@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["MMM", "GGG", "LLL"],
+  "key": {
+    "L": { "item": "gunsrpg:large_bullet_casing" },
+    "G": { "item": "minecraft:gunpowder" },
+    "M": { "item": "mmt:invar_ingot" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:invar_magnum" },
+  "skill": "invar_ammo_smith"
+}

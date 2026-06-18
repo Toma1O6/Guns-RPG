@@ -1,0 +1,15 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "ingredients": [
+    { "tag": "minecraft:coals" },
+    { "item": "minecraft:iron_ingot" },
+    { "item": "minecraft:iron_ingot" },
+    { "item": "minecraft:paper" },
+    { "item": "minecraft:paper" }
+  ],
+  "result": {
+    "count": 8,
+    "item": "gunsrpg:large_bullet_casing"
+  },
+  "skill": "wooden_ammo_smith"
+}

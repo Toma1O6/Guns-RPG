@@ -1,0 +1,18 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "lgl",
+    "gmg",
+    "t81"
+  ],
+  "key": {
+    "l": { "item": "gunsrpg:long_barrel" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "m": { "item": "gunsrpg:magazine" },
+    "t": { "item": "minecraft:iron_ingot" },
+    "8": { "item": "minecraft:redstone" },
+    "1": { "item": "gunsrpg:large_iron_stock" }
+  },
+  "result": { "item": "gunsrpg:type_81", "count": 1 },
+  "skill": "type_81_assembly"
+}

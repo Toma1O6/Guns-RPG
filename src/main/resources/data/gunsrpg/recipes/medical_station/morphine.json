@@ -1,0 +1,32 @@
+{
+    "type":  "gunsrpg:medical_station",
+    "pattern":  [
+                    "igs",
+                    "gpg",
+                    "age"
+                ],
+    "key":  {
+                "a":  {
+                          "item":  "gunsrpg:adrenaline"
+                      },
+                "p":  {
+                          "item":  "gunsrpg:painkillers"
+                      },
+                "g":  {
+                          "item":  "minecraft:glass_pane"
+                      },
+                "s":  {
+                          "item":  "gunsrpg:steroids"
+                      },
+                "i":  {
+                          "item":  "minecraft:iron_ingot"
+                      },
+                "e":  {
+                          "item":  "minecraft:ender_eye"
+                      }
+            },
+    "result":  {
+                   "item":  "gunsrpg:morphine"
+               },
+    "skill":  "pharmacist_v"
+}

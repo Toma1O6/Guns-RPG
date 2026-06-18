@@ -1,0 +1,32 @@
+{
+    "type":  "gunsrpg:medical_station",
+    "pattern":  [
+                    "iso",
+                    "sas",
+                    "lsg"
+                ],
+    "key":  {
+                "a":  {
+                          "item":  "minecraft:amethyst_shard"
+                      },
+                "g":  {
+                          "item":  "minecraft:golden_apple"
+                      },
+                "s":  {
+                          "item":  "minecraft:glass_pane"
+                      },
+                "i":  {
+                          "item":  "minecraft:iron_ingot"
+                      },
+                "l":  {
+                          "item":  "minecraft:glistering_melon_slice"
+                      },
+                "o":  {
+                          "item":  "minecraft:golden_carrot"
+                      }
+            },
+    "result":  {
+                   "item":  "gunsrpg:vaccine"
+               },
+    "skill":  "doctor"
+}

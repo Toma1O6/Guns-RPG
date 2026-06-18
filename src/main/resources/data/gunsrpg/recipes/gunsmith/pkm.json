@@ -1,0 +1,18 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "lgl",
+    "gmg",
+    "rpk"
+  ],
+  "key": {
+    "l": { "item": "gunsrpg:long_barrel" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "m": { "item": "gunsrpg:magazine" },
+    "r": { "item": "minecraft:redstone" },
+    "p": { "item": "minecraft:iron_ingot" },
+    "k": { "item": "minecraft:netherite_ingot" }
+  },
+  "result": { "item": "gunsrpg:pkm", "count": 1 },
+  "skill": "pkm_assembly"
+}

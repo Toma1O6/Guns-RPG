@@ -1,0 +1,21 @@
+{
+    "type":  "gunsrpg:gunsmith",
+    "pattern":  [
+                    "sss",
+                    "sts",
+                    " t "
+                ],
+    "key":  {
+                "s":  {
+                          "item":  "minecraft:stone"
+                      },
+                "t":  {
+                          "item":  "minecraft:stick"
+                      }
+            },
+    "result":  {
+                   "count":  1,
+                   "item":  "minecraft:stone_pickaxe"
+               },
+    "skill":  "hammer_ii"
+}

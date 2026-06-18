@@ -1,0 +1,11 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "sss"
+  ],
+  "key": {
+    "s": { "item": "minecraft:sunflower" }
+  },
+  "result": { "item": "gunsrpg:cooking_oil", "count": 1 },
+  "skill": "gun_parts_smith"
+}

@@ -1,0 +1,18 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "lgl",
+    "gmg",
+    "uzi"
+  ],
+  "key": {
+    "l": { "item": "gunsrpg:long_barrel" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "m": { "item": "gunsrpg:magazine" },
+    "u": { "item": "minecraft:iron_ingot" },
+    "z": { "item": "minecraft:redstone" },
+    "i": { "item": "gunsrpg:small_iron_stock" }
+  },
+  "result": { "item": "gunsrpg:uzi", "count": 1 },
+  "skill": "uzi_assembly"
+}

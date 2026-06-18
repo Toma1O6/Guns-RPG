@@ -1,0 +1,18 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "lgl",
+    "gmg",
+    "p90"
+  ],
+  "key": {
+    "l": { "item": "gunsrpg:long_barrel" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "m": { "item": "gunsrpg:magazine" },
+    "p": { "item": "minecraft:iron_ingot" },
+    "9": { "item": "minecraft:redstone" },
+    "0": { "item": "gunsrpg:small_iron_stock" }
+  },
+  "result": { "item": "gunsrpg:p90", "count": 1 },
+  "skill": "p90_assembly"
+}

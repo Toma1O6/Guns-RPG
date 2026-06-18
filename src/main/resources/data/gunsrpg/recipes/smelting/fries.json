@@ -1,0 +1,7 @@
+﻿{
+  "type": "minecraft:smelting",
+  "ingredient": { "item": "minecraft:potato" },
+  "result": "gunsrpg:fries",
+  "experience": 0.35,
+  "cookingtime": 200
+}

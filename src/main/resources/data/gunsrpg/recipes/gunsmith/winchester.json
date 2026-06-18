@@ -1,0 +1,16 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "lgw",
+    " ge",
+    "   "
+  ],
+  "key": {
+    "w": { "item": "gunsrpg:wooden_stock" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "e": { "item": "minecraft:lever" },
+    "l": { "item": "gunsrpg:long_barrel" }
+  },
+  "result": { "item": "gunsrpg:winchester", "count": 1 },
+  "skill": "winchester_assembly"
+}

@@ -1,32 +1,26 @@
-{
-  "type": "gunsrpg:culinary",
-  "pattern": [
-    "asa",
-    "mpm"
-  ],
-  "key": {
-    "a": {
-      "item": "minecraft:apple"
-    },
-    "p": {
-      "item": "minecraft:pumpkin"
-    },
-    "s": {
-      "item": "minecraft:sugar"
-    },
-    "m": {
-      "item": "minecraft:melon_slice"
-    }
-  },
-  "result": {
-    "item": "gunsrpg:fruit_salad"
-  },
-  "requirements": [
-    {
-      "type": "gunsrpg:skill",
-      "predicate": {
-        "skill": "gunsrpg:local_chef"
-      }
-    }
-  ]
+﻿{
+    "type":  "gunsrpg:culinary",
+    "pattern":  [
+                    "asa",
+                    "mpm"
+                ],
+    "key":  {
+                "a":  {
+                          "item":  "minecraft:apple"
+                      },
+                "p":  {
+                          "item":  "minecraft:pumpkin"
+                      },
+                "s":  {
+                          "item":  "minecraft:sugar"
+                      },
+                "m":  {
+                          "item":  "minecraft:melon_slice"
+                      }
+            },
+    "result":  {
+                   "item":  "gunsrpg:fruit_salad"
+               },
+    "skill":  "local_chef"
 }
+

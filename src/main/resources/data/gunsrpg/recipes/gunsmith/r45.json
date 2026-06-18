@@ -1,0 +1,16 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "bgc",
+    "   ",
+    "   "
+  ],
+  "key": {
+    "s": { "item": "gunsrpg:small_iron_stock" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "b": { "item": "gunsrpg:barrel" },
+    "c": { "item": "minecraft:copper_ingot" }
+  },
+  "result": { "item": "gunsrpg:r45", "count": 1 },
+  "skill": "r45_assembly"
+}

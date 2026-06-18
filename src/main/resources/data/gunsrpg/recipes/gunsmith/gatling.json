@@ -1,0 +1,16 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "lll",
+    "gmg",
+    "ngn"
+  ],
+  "key": {
+    "l": { "item": "gunsrpg:long_barrel" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "m": { "item": "gunsrpg:magazine" },
+    "n": { "item": "minecraft:netherite_ingot" }
+  },
+  "result": { "item": "gunsrpg:gatling", "count": 1 },
+  "skill": "gatling_assembly"
+}

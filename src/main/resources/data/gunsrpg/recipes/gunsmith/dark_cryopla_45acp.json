@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m", "g", "s"],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "s": { "item": "gunsrpg:small_bullet_casing" },
+    "m": { "item": "mmt:dark_cryopla_ingot" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:dark_cryopla_45acp" },
+  "skill": "dark_cryopla_ammo_smith"
+}

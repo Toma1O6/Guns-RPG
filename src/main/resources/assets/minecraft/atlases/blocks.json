@@ -1,0 +1,8 @@
+{
+  "sources": [
+    {
+      "type": "single",
+      "resource": "gunsrpg:item/weapon_texture_map"
+    }
+  ]
+}

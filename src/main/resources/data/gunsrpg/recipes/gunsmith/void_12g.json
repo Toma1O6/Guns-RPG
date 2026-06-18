@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m  ", "ggg", "s  "],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "s": { "item": "gunsrpg:shotgun_shell" },
+    "m": { "item": "mmt:void_ingot" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:void_12g" },
+  "skill": "void_ammo_smith"
+}

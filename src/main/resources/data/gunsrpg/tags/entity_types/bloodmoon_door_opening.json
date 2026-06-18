@@ -4,11 +4,11 @@
     "minecraft:zombie",
     "minecraft:zombie_villager",
     "minecraft:husk",
+    "minecraft:drowned",
     "minecraft:skeleton",
     "minecraft:stray",
+    "minecraft:wither_skeleton",
     "minecraft:creeper",
-    "minecraft:witch",
-    "gunsrpg:zombie_gunner",
-    "gunsrpg:explosive_skeleton"
+    "minecraft:witch"
   ]
 }

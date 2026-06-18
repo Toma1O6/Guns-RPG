@@ -1,9 +1,0 @@
-{
-  "attribute": "gunsrpg:iron_buddy_cooldown",
-  "invertCalculation": true,
-  "scaling": 0.01,
-  "bounds": {
-    "buff": 0.25,
-    "debuff": 0.4
-  }
-}

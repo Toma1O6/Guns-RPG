@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m  ", "ggg", "s  "],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "s": { "item": "gunsrpg:shotgun_shell" },
+    "m": { "item": "minecraft:lapis_lazuli" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:lapis_12g" },
+  "skill": "lapis_ammo_smith"
+}

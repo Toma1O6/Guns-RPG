@@ -1,0 +1,21 @@
+{
+    "type":  "gunsrpg:gunsmith",
+    "pattern":  [
+                    "ooo",
+                    "oso",
+                    " s "
+                ],
+    "key":  {
+                "o":  {
+                          "tag":  "minecraft:logs_that_burn"
+                      },
+                "s":  {
+                          "item":  "minecraft:stick"
+                      }
+            },
+    "result":  {
+                   "count":  1,
+                   "item":  "minecraft:wooden_pickaxe"
+               },
+    "skill":  "hammer_i"
+}

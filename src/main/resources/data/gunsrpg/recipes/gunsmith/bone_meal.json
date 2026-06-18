@@ -1,0 +1,16 @@
+{
+    "type":  "gunsrpg:gunsmith",
+    "pattern":  [
+                    "b"
+                ],
+    "key":  {
+                "b":  {
+                          "item":  "minecraft:bone"
+                      }
+            },
+    "result":  {
+                   "count":  1,
+                   "item":  "minecraft:bone_meal"
+               },
+    "skill":  "bone_grinder_i"
+}

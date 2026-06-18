@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m ", "gg", "l "],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "l": { "item": "gunsrpg:large_bullet_casing" },
+    "m": { "item": "minecraft:emerald" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:emerald_556mm" },
+  "skill": "emerald_ammo_smith"
+}

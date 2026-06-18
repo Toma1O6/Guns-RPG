@@ -1,0 +1,24 @@
+{
+    "type":  "gunsrpg:medical_station",
+    "pattern":  [
+                    "c c",
+                    "psp",
+                    " p "
+                ],
+    "key":  {
+                "c":  {
+                          "item":  "minecraft:clay_ball"
+                      },
+                "p":  {
+                          "item":  "minecraft:paper"
+                      },
+                "s":  {
+                          "item":  "minecraft:slime_ball"
+                      }
+            },
+    "result":  {
+                   "item":  "gunsrpg:hemostat",
+                   "count":  2
+               },
+    "skill":  "medic"
+}

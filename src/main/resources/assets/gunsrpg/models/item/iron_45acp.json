@@ -1,6 +1,4 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "gunsrpg:item/iron_45acp"
-  }
+  "parent": "minecraft:item/generated",
+  "textures": { "layer0": "gunsrpg:item/iron_45acp" }
 }

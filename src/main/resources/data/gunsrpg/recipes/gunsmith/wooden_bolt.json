@@ -1,0 +1,24 @@
+{
+    "type":  "gunsrpg:gunsmith",
+    "pattern":  [
+                    "o",
+                    "s",
+                    "b"
+                ],
+    "key":  {
+                "o":  {
+                          "tag":  "minecraft:planks"
+                      },
+                "s":  {
+                          "item":  "minecraft:stick"
+                      },
+                "b":  {
+                          "item":  "minecraft:feather"
+                      }
+            },
+    "result":  {
+                   "count":  2,
+                   "item":  "minecraft:arrow"
+               },
+    "skill":  "wooden_ammo_smith"
+}

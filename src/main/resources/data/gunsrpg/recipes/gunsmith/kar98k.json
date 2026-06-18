@@ -1,0 +1,16 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "lgi",
+    " g ",
+    "   "
+  ],
+  "key": {
+    "w": { "item": "gunsrpg:wooden_stock" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "l": { "item": "gunsrpg:long_barrel" },
+    "i": { "item": "minecraft:iron_ingot" }
+  },
+  "result": { "item": "gunsrpg:kar98k", "count": 1 },
+  "skill": "kar98k_assembly"
+}

@@ -1,0 +1,27 @@
+{
+    "type":  "gunsrpg:gunsmith",
+    "pattern":  [
+                    " b ",
+                    "hgw",
+                    " b "
+                ],
+    "key":  {
+                "g":  {
+                          "item":  "minecraft:iron_ingot"
+                      },
+                "w":  {
+                          "item":  "minecraft:stick"
+                      },
+                "b":  {
+                          "item":  "minecraft:bow"
+                      },
+                "h":  {
+                          "item":  "minecraft:tripwire_hook"
+                      }
+            },
+    "result":  {
+                   "count":  1,
+                   "item":  "minecraft:bow"
+               },
+    "skill":  "crossbow_assembly"
+}

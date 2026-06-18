@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m", "g", "s"],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "s": { "item": "gunsrpg:small_bullet_casing" },
+    "m": { "item": "minecraft:iron_ingot" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:iron_45acp" },
+  "skill": "iron_ammo_smith"
+}

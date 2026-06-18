@@ -1,0 +1,26 @@
+{
+    "type":  "gunsrpg:gunsmith",
+    "pattern":  [
+                    "ooi",
+                    " af"
+                ],
+    "key":  {
+                "o":  {
+                          "tag":  "minecraft:logs_that_burn"
+                      },
+                "i":  {
+                          "item":  "minecraft:iron_ingot"
+                      },
+                "f":  {
+                          "item":  "minecraft:flint_and_steel"
+                      },
+                "a":  {
+                          "tag":  "minecraft:wooden_slabs"
+                      }
+            },
+    "result":  {
+                   "count":  1,
+                   "item":  "gunsrpg:wooden_stock"
+               },
+    "skill":  "gun_parts_smith"
+}

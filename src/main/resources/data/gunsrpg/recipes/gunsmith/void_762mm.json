@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m  ", "ggg", "l  "],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "l": { "item": "gunsrpg:large_bullet_casing" },
+    "m": { "item": "mmt:void_ingot" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:void_762mm" },
+  "skill": "void_ammo_smith"
+}

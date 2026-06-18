@@ -1,39 +1,30 @@
-{
-  "type": "gunsrpg:culinary",
-  "pattern": [
-    " b ",
-    "cec",
-    "pwp"
-  ],
-  "key": {
-    "b": {
-      "item": "minecraft:brown_mushroom"
-    },
-    "p": {
-      "item": "minecraft:potato"
-    },
-    "c": {
-      "item": "minecraft:carrot"
-    },
-    "w": {
-      "item": "minecraft:water_bucket"
-    },
-    "e": {
-      "item": "minecraft:beetroot"
-    }
-  },
-  "returningItem": {
-    "item": "minecraft:bucket"
-  },
-  "result": {
-    "item": "gunsrpg:garden_soup"
-  },
-  "requirements": [
-    {
-      "type": "gunsrpg:skill",
-      "predicate": {
-        "skill": "gunsrpg:local_chef"
-      }
-    }
-  ]
+﻿{
+    "type":  "gunsrpg:culinary",
+    "pattern":  [
+                    " b ",
+                    "cec",
+                    "pwp"
+                ],
+    "key":  {
+                "b":  {
+                          "item":  "minecraft:brown_mushroom"
+                      },
+                "p":  {
+                          "item":  "minecraft:potato"
+                      },
+                "c":  {
+                          "item":  "minecraft:carrot"
+                      },
+                "w":  {
+                          "item":  "minecraft:water_bucket"
+                      },
+                "e":  {
+                          "item":  "minecraft:beetroot"
+                      }
+            },
+    "result":  {
+                   "item":  "gunsrpg:garden_soup"
+               },
+    "skill":  "local_chef"
 }
+

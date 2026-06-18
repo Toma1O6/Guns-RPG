@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m", "g", "s"],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "s": { "item": "gunsrpg:small_bullet_casing" },
+    "m": { "item": "minecraft:cobblestone" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:stone_45acp" },
+  "skill": "stone_ammo_smith"
+}

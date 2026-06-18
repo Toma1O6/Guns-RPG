@@ -1,0 +1,15 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "lgw",
+    "l  ",
+    "   "
+  ],
+  "key": {
+    "g": { "item": "gunsrpg:gun_parts" },
+    "w": { "item": "gunsrpg:wooden_stock" },
+    "l": { "item": "gunsrpg:long_barrel" }
+  },
+  "result": { "item": "gunsrpg:s686", "count": 1 },
+  "skill": "s686_assembly"
+}

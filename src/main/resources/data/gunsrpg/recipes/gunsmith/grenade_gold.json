@@ -1,0 +1,17 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    " o ",
+    "ptp",
+    "nfn"
+  ],
+  "key": {
+    "o": { "item": "minecraft:gold_ingot" },
+    "p": { "item": "minecraft:gold_ingot" },
+    "t": { "item": "minecraft:tnt" },
+    "n": { "item": "minecraft:gold_nugget" },
+    "f": { "item": "minecraft:flint_and_steel" }
+  },
+  "result": { "item": "gunsrpg:grenade_gold", "count": 1 },
+  "skill": "grenades"
+}

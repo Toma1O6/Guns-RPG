@@ -1,0 +1,17 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "l  ",
+    " g ",
+    "miw"
+  ],
+  "key": {
+    "w": { "item": "gunsrpg:wooden_stock" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "m": { "item": "gunsrpg:magazine" },
+    "l": { "item": "gunsrpg:long_barrel" },
+    "i": { "item": "minecraft:iron_ingot" }
+  },
+  "result": { "item": "gunsrpg:akm", "count": 1 },
+  "skill": "akm_assembly"
+}

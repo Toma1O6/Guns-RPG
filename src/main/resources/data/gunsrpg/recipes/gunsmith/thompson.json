@@ -1,0 +1,17 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "big",
+    " i ",
+    "   "
+  ],
+  "key": {
+    "w": { "item": "gunsrpg:wooden_stock" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "m": { "item": "gunsrpg:magazine" },
+    "b": { "item": "gunsrpg:barrel" },
+    "i": { "item": "minecraft:iron_ingot" }
+  },
+  "result": { "item": "gunsrpg:thompson", "count": 1 },
+  "skill": "thompson_assembly"
+}

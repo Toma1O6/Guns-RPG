@@ -1,0 +1,7 @@
+﻿{
+  "type": "minecraft:smelting",
+  "ingredient": { "item": "minecraft:egg" },
+  "result": "gunsrpg:fried_egg",
+  "experience": 0.35,
+  "cookingtime": 200
+}

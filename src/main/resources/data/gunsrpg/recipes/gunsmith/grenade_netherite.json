@@ -1,0 +1,17 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    " n ",
+    "ptp",
+    "sfs"
+  ],
+  "key": {
+    "n": { "item": "minecraft:netherite_ingot" },
+    "p": { "item": "minecraft:netherite_ingot" },
+    "t": { "item": "minecraft:tnt" },
+    "s": { "item": "minecraft:netherite_scrap" },
+    "f": { "item": "minecraft:flint_and_steel" }
+  },
+  "result": { "item": "gunsrpg:grenade_netherite", "count": 1 },
+  "skill": "grenades"
+}

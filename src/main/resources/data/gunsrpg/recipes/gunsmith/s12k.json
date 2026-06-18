@@ -1,0 +1,17 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "lgi",
+    " m ",
+    " n "
+  ],
+  "key": {
+    "i": { "item": "gunsrpg:small_iron_stock" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "m": { "item": "gunsrpg:magazine" },
+    "l": { "item": "gunsrpg:long_barrel" },
+    "n": { "item": "minecraft:netherite_ingot" }
+  },
+  "result": { "item": "gunsrpg:s12k", "count": 1 },
+  "skill": "s12k_assembly"
+}

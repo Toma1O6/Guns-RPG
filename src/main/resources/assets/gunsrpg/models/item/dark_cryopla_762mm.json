@@ -1,0 +1,4 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": { "layer0": "gunsrpg:item/dark_cryopla_762mm" }
+}

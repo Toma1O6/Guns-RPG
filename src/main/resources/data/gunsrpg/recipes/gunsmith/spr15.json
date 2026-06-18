@@ -1,0 +1,17 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "lgi",
+    "mg ",
+    "   "
+  ],
+  "key": {
+    "w": { "item": "gunsrpg:wooden_stock" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "l": { "item": "gunsrpg:long_barrel" },
+    "m": { "item": "gunsrpg:magazine" },
+    "i": { "item": "minecraft:iron_ingot" }
+  },
+  "result": { "item": "gunsrpg:spr15", "count": 1 },
+  "skill": "spr15_assembly"
+}

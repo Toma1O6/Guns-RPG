@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m ", "gg", "l "],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "l": { "item": "gunsrpg:large_bullet_casing" },
+    "m": { "item": "mmt:ultimate_ingot" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:ultimate_556mm" },
+  "skill": "ultimate_ammo_smith"
+}

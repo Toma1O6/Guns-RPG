@@ -1,0 +1,15 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "lgw",
+    " w ",
+    "   "
+  ],
+  "key": {
+    "w": { "item": "gunsrpg:wooden_stock" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "l": { "item": "gunsrpg:long_barrel" }
+  },
+  "result": { "item": "gunsrpg:s1897", "count": 1 },
+  "skill": "s1897_assembly"
+}

@@ -1,6 +1,4 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "gunsrpg:item/quartz_556mm"
-  }
+  "parent": "minecraft:item/generated",
+  "textures": { "layer0": "gunsrpg:item/quartz_556mm" }
 }

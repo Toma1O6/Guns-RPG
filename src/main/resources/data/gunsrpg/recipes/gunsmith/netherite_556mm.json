@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m ", "gg", "l "],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "l": { "item": "gunsrpg:large_bullet_casing" },
+    "m": { "item": "minecraft:netherite_ingot" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:netherite_556mm" },
+  "skill": "netherite_ammo_smith"
+}

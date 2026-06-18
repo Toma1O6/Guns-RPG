@@ -1,0 +1,18 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    " g ",
+    "lgw",
+    "mdi"
+  ],
+  "key": {
+    "w": { "item": "gunsrpg:wooden_stock" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "m": { "item": "gunsrpg:magazine" },
+    "l": { "item": "gunsrpg:long_barrel" },
+    "i": { "item": "minecraft:iron_ingot" },
+    "d": { "item": "minecraft:diamond" }
+  },
+  "result": { "item": "gunsrpg:vss", "count": 1 },
+  "skill": "vss_assembly"
+}

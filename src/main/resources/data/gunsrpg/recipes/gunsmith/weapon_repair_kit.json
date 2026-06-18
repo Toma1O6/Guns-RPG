@@ -1,0 +1,15 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    " l ",
+    "ogo",
+    " l "
+  ],
+  "key": {
+    "o": { "item": "gunsrpg:cooking_oil" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "l": { "item": "minecraft:leather" }
+  },
+  "result": { "item": "gunsrpg:weapon_repair_kit", "count": 1 },
+  "skill": "repair_station"
+}

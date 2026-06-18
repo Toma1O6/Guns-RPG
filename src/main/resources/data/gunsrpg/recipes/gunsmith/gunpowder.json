@@ -1,0 +1,23 @@
+{
+    "type":  "gunsrpg:gunsmith",
+    "pattern":  [
+                    "ci",
+                    "sc"
+                ],
+    "key":  {
+                "c":  {
+                          "item":  "minecraft:charcoal"
+                      },
+                "s":  {
+                          "item":  "minecraft:sugar"
+                      },
+                "i":  {
+                          "item":  "minecraft:bone_meal"
+                      }
+            },
+    "result":  {
+                   "count":  1,
+                   "item":  "minecraft:gunpowder"
+               },
+    "skill":  "gunpowder_novice"
+}

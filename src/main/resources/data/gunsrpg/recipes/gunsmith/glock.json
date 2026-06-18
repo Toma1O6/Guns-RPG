@@ -1,0 +1,16 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "bgs",
+    " m ",
+    "   "
+  ],
+  "key": {
+    "s": { "item": "gunsrpg:small_iron_stock" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "m": { "item": "gunsrpg:magazine" },
+    "b": { "item": "gunsrpg:barrel" }
+  },
+  "result": { "item": "gunsrpg:glock", "count": 1 },
+  "skill": "glock_assembly"
+}

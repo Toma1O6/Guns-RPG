@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m  ", "ggg", "s  "],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "s": { "item": "gunsrpg:shotgun_shell" },
+    "m": { "item": "mmt:abiding_alloy" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:abiding_alloy_12g" },
+  "skill": "abiding_alloy_ammo_smith"
+}

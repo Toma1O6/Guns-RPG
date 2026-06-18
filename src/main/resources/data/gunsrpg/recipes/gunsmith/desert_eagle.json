@@ -1,0 +1,17 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "bgo",
+    " og",
+    "   "
+  ],
+  "key": {
+    "s": { "item": "gunsrpg:small_iron_stock" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "m": { "item": "gunsrpg:magazine" },
+    "b": { "item": "gunsrpg:barrel" },
+    "o": { "item": "minecraft:gold_ingot" }
+  },
+  "result": { "item": "gunsrpg:desert_eagle", "count": 1 },
+  "skill": "desert_eagle_assembly"
+}

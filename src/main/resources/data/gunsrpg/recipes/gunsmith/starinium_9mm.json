@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m", "g", "s"],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "s": { "item": "gunsrpg:small_bullet_casing" },
+    "m": { "item": "mmt:starinium_ingot" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:starinium_9mm" },
+  "skill": "starinium_ammo_smith"
+}

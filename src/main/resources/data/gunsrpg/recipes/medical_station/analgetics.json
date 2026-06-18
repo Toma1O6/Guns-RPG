@@ -1,0 +1,32 @@
+{
+    "type":  "gunsrpg:medical_station",
+    "pattern":  [
+                    "psp",
+                    "dgo",
+                    "yyy"
+                ],
+    "key":  {
+                "p":  {
+                          "item":  "minecraft:paper"
+                      },
+                "g":  {
+                          "item":  "minecraft:green_dye"
+                      },
+                "s":  {
+                          "item":  "minecraft:sugar"
+                      },
+                "y":  {
+                          "item":  "minecraft:lapis_lazuli"
+                      },
+                "d":  {
+                          "item":  "minecraft:dandelion"
+                      },
+                "o":  {
+                          "item":  "minecraft:poppy"
+                      }
+            },
+    "result":  {
+                   "item":  "gunsrpg:analgetics"
+               },
+    "skill":  "pharmacist_i"
+}

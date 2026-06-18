@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m", "g", "s"],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "s": { "item": "gunsrpg:small_bullet_casing" },
+    "m": { "item": "minecraft:quartz" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:quartz_9mm" },
+  "skill": "quartz_ammo_smith"
+}

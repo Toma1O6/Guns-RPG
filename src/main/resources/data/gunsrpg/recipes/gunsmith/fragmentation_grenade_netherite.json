@@ -1,0 +1,14 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "ppp",
+    "pgp",
+    "ppp"
+  ],
+  "key": {
+    "p": { "item": "minecraft:netherite_ingot" },
+    "g": { "item": "gunsrpg:grenade_netherite" }
+  },
+  "result": { "item": "gunsrpg:fragmentation_grenade_netherite", "count": 1 },
+  "skill": "impact_grenades"
+}

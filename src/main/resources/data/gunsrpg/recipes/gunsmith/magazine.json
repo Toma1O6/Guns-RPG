@@ -1,0 +1,18 @@
+{
+    "type":  "gunsrpg:gunsmith",
+    "pattern":  [
+                    " ii",
+                    " ii",
+                    "ii "
+                ],
+    "key":  {
+                "i":  {
+                          "item":  "minecraft:iron_ingot"
+                      }
+            },
+    "result":  {
+                   "count":  1,
+                   "item":  "gunsrpg:magazine"
+               },
+    "skill":  "gun_parts_smith"
+}

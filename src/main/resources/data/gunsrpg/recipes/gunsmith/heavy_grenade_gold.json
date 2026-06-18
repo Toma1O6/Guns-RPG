@@ -1,0 +1,15 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "ptp",
+    "tgt",
+    "ptp"
+  ],
+  "key": {
+    "p": { "item": "minecraft:gold_ingot" },
+    "t": { "item": "minecraft:tnt" },
+    "g": { "item": "gunsrpg:grenade_gold" }
+  },
+  "result": { "item": "gunsrpg:heavy_grenade_gold", "count": 1 },
+  "skill": "massive_grenades"
+}

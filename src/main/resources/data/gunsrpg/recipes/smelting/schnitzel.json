@@ -1,0 +1,7 @@
+﻿{
+  "type": "minecraft:smelting",
+  "ingredient": { "item": "minecraft:porkchop" },
+  "result": "gunsrpg:schnitzel",
+  "experience": 0.35,
+  "cookingtime": 200
+}

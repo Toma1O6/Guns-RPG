@@ -1,0 +1,12 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["ugu"],
+  "key": {
+    "g": { "item": "minecraft:green_dye" },
+    "u": { "item": "gunsrpg:large_bullet_casing" }
+  },
+  "result": { "item": "gunsrpg:grenade_launcher_shell", "count": 2 },
+  "requirements": [
+    { "type": "gunsrpg:skill", "predicate": { "skill": "gunsrpg:grenade_launcher_assembly" } }
+  ]
+}

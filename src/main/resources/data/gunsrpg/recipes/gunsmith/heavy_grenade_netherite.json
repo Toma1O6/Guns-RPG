@@ -1,0 +1,15 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "ptp",
+    "tgt",
+    "ptp"
+  ],
+  "key": {
+    "p": { "item": "minecraft:netherite_ingot" },
+    "t": { "item": "minecraft:tnt" },
+    "g": { "item": "gunsrpg:grenade_netherite" }
+  },
+  "result": { "item": "gunsrpg:heavy_grenade_netherite", "count": 1 },
+  "skill": "massive_grenades"
+}

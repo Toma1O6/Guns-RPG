@@ -1,0 +1,14 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "ingredients": [
+    { "item": "minecraft:red_dye" },
+    { "item": "minecraft:paper" },
+    { "item": "minecraft:paper" },
+    { "item": "minecraft:iron_ingot" }
+  ],
+  "result": {
+    "count": 4,
+    "item": "gunsrpg:shotgun_shell"
+  },
+  "skill": "wooden_ammo_smith"
+}

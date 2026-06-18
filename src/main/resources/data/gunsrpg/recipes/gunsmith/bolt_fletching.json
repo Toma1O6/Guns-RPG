@@ -1,0 +1,24 @@
+{
+    "type":  "gunsrpg:gunsmith",
+    "pattern":  [
+                    "i",
+                    "f",
+                    "g"
+                ],
+    "key":  {
+                "g":  {
+                          "item":  "minecraft:gold_nugget"
+                      },
+                "f":  {
+                          "item":  "minecraft:feather"
+                      },
+                "i":  {
+                          "item":  "minecraft:iron_nugget"
+                      }
+            },
+    "result":  {
+                   "count":  1,
+                   "item":  "gunsrpg:bolt_fletching"
+               },
+    "skill":  "wooden_ammo_smith"
+}

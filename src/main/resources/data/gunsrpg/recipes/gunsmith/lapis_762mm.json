@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m  ", "ggg", "l  "],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "l": { "item": "gunsrpg:large_bullet_casing" },
+    "m": { "item": "minecraft:lapis_lazuli" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:lapis_762mm" },
+  "skill": "lapis_ammo_smith"
+}

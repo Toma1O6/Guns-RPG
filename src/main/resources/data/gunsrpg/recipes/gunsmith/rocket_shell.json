@@ -1,0 +1,13 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["r", "u", "g"],
+  "key": {
+    "r": { "item": "minecraft:redstone" },
+    "u": { "item": "gunsrpg:large_bullet_casing" },
+    "g": { "item": "minecraft:gunpowder" }
+  },
+  "result": { "item": "gunsrpg:rocket_shell", "count": 1 },
+  "requirements": [
+    { "type": "gunsrpg:skill", "predicate": { "skill": "gunsrpg:rocket_launcher_assembly" } }
+  ]
+}

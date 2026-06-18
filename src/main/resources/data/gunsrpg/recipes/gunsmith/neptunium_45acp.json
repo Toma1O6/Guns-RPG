@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m", "g", "s"],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "s": { "item": "gunsrpg:small_bullet_casing" },
+    "m": { "item": "mmt:neptunium_ingot" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:neptunium_45acp" },
+  "skill": "neptunium_ammo_smith"
+}

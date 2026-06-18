@@ -1,0 +1,7 @@
+﻿{
+  "type": "minecraft:smelting",
+  "ingredient": { "item": "gunsrpg:raw_doughnut" },
+  "result": "gunsrpg:doughnut",
+  "experience": 0.35,
+  "cookingtime": 200
+}

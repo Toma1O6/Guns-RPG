@@ -1,0 +1,11 @@
+﻿{
+  "type": "gunsrpg:gunsmith",
+  "pattern": ["m  ", "ggg", "l  "],
+  "key": {
+    "g": { "item": "minecraft:gunpowder" },
+    "l": { "item": "gunsrpg:large_bullet_casing" },
+    "m": { "item": "mmt:abiding_alloy" }
+  },
+  "result": { "count": 1, "item": "gunsrpg:abiding_alloy_762mm" },
+  "skill": "abiding_alloy_ammo_smith"
+}

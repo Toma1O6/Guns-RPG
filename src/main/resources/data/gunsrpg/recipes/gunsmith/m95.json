@@ -1,0 +1,17 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "nlg",
+    "ngmi",
+    " ng"
+  ],
+  "key": {
+    "n": { "item": "minecraft:netherite_ingot" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "m": { "item": "gunsrpg:magazine" },
+    "l": { "item": "gunsrpg:long_barrel" },
+    "i": { "item": "gunsrpg:small_iron_stock" }
+  },
+  "result": { "item": "gunsrpg:m95", "count": 1 },
+  "skill": "m95_assembly"
+}

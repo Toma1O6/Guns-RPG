@@ -1,0 +1,46 @@
+{
+  "suffix_zh": "子弹",
+  "suffix_en": "Round",
+  "caliber_label_zh": {
+    "9mm": "9mm",
+    "45acp": ".45 ACP",
+    "556mm": "5.56mm",
+    "762mm": "7.62mm",
+    "magnum": "马格南",
+    "12g": "12 号霰弹"
+  },
+  "caliber_label_en": {
+    "9mm": "9mm",
+    "45acp": ".45 ACP",
+    "556mm": "5.56mm",
+    "762mm": "7.62mm",
+    "magnum": "Magnum",
+    "12g": "12g"
+  },
+  "materials": [
+    { "prefix": "wooden", "skill": "wooden_ammo_smith", "item": {"tag": "minecraft:planks"}, "zh": "木制", "en": "Wooden", "color": "8B6914" },
+    { "prefix": "stone", "skill": "stone_ammo_smith", "item": "minecraft:cobblestone", "zh": "石制", "en": "Stone", "color": "808080" },
+    { "prefix": "copper", "skill": "stone_ammo_smith", "item": "minecraft:copper_ingot", "zh": "铜制", "en": "Copper", "color": "B87333" },
+    { "prefix": "iron", "skill": "iron_ammo_smith", "item": "minecraft:iron_ingot", "zh": "铁制", "en": "Iron", "color": "C0C0C0" },
+    { "prefix": "lapis", "skill": "lapis_ammo_smith", "item": "minecraft:lapis_lazuli", "zh": "青金石", "en": "Lapis", "color": "2244AA" },
+    { "prefix": "gold", "skill": "gold_ammo_smith", "item": "minecraft:gold_ingot", "zh": "金质", "en": "Gold", "color": "FFD700" },
+    { "prefix": "redstone", "skill": "redstone_ammo_smith", "item": "minecraft:redstone", "zh": "红石", "en": "Redstone", "color": "AA0000" },
+    { "prefix": "emerald", "skill": "emerald_ammo_smith", "item": "minecraft:emerald", "zh": "绿宝石", "en": "Emerald", "color": "00AA44" },
+    { "prefix": "quartz", "skill": "quartz_ammo_smith", "item": "minecraft:quartz", "zh": "石英", "en": "Quartz", "color": "E8E8E8" },
+    { "prefix": "diamond", "skill": "diamond_ammo_smith", "item": "minecraft:diamond", "zh": "钻石", "en": "Diamond", "color": "55FFFF" },
+    { "prefix": "netherite", "skill": "netherite_ammo_smith", "item": "minecraft:netherite_ingot", "zh": "下界合金", "en": "Netherite", "color": "4A4A4A" },
+    { "prefix": "bronze", "skill": "iron_ammo_smith", "item": "mmt:bronze_ingot", "zh": "青铜", "en": "Bronze", "color": "CD7F32" },
+    { "prefix": "brass", "skill": "iron_ammo_smith", "item": "mmt:brass_ingot", "zh": "黄铜", "en": "Brass", "color": "B5A642" },
+    { "prefix": "invar", "skill": "lapis_ammo_smith", "item": "mmt:invar_ingot", "zh": "因瓦", "en": "Invar", "color": "A8B8C8" },
+    { "prefix": "steel", "skill": "gold_ammo_smith", "item": "mmt:steel_ingot", "zh": "钢", "en": "Steel", "color": "71797E" },
+    { "prefix": "neptunium", "skill": "emerald_ammo_smith", "item": "mmt:neptunium_ingot", "zh": "海王", "en": "Neptunium", "color": "0088AA" },
+    { "prefix": "starinium", "skill": "emerald_ammo_smith", "item": "mmt:starinium_ingot", "zh": "星陨", "en": "Starinium", "color": "8844FF" },
+    { "prefix": "ultimate", "skill": "emerald_ammo_smith", "item": "mmt:ultimate_ingot", "zh": "终极", "en": "Ultimate", "color": "FFAA00" },
+    { "prefix": "void", "skill": "diamond_ammo_smith", "item": "mmt:void_ingot", "zh": "虚空", "en": "Void", "color": "220033" },
+    { "prefix": "stellar", "skill": "diamond_ammo_smith", "item": "mmt:stellar_ingot", "zh": "恒星", "en": "Stellar", "color": "FFEE88" },
+    { "prefix": "starlight_mythril", "skill": "diamond_ammo_smith", "item": "mmt:starlight_mythril_ingot", "zh": "星光秘银", "en": "Starlight Mythril", "color": "CCDDFF" },
+    { "prefix": "dark_cryopla", "skill": "diamond_ammo_smith", "item": "mmt:dark_cryopla_ingot", "zh": "暗冰晶", "en": "Dark Cryopla", "color": "3366AA" },
+    { "prefix": "cosmos_aurora", "skill": "netherite_ammo_smith", "item": "mmt:cosmos_aurora_ingot", "zh": "宇宙极光", "en": "Cosmos Aurora", "color": "66FFCC" },
+    { "prefix": "abiding_alloy", "skill": "netherite_ammo_smith", "item": "mmt:abiding_alloy", "zh": "永恒合金", "en": "Abiding Alloy", "color": "AA88FF" }
+  ]
+}

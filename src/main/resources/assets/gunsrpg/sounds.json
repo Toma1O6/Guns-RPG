@@ -1672,32 +1672,5 @@
         "stream": false
       }
     ]
-  },
-  "lockpick_success": {
-    "category": "master",
-    "sounds": [
-      {
-        "name": "gunsrpg:lockpick_success",
-        "stream": false
-      }
-    ]
-  },
-  "lockpick_failed": {
-    "category": "master",
-    "sounds": [
-      {
-        "name": "gunsrpg:lockpick_failed",
-        "stream": false
-      }
-    ]
-  },
-  "lockpick_completed": {
-    "category": "master",
-    "sounds": [
-      {
-        "name": "gunsrpg:lockpick_completed",
-        "stream": false
-      }
-    ]
   }
 }

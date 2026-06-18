@@ -1,0 +1,14 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "ppp",
+    "pgp",
+    "ppp"
+  ],
+  "key": {
+    "p": { "item": "minecraft:iron_ingot" },
+    "g": { "item": "gunsrpg:grenade_iron" }
+  },
+  "result": { "item": "gunsrpg:fragmentation_grenade_iron", "count": 1 },
+  "skill": "impact_grenades"
+}

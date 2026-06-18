@@ -1,0 +1,17 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "lgl",
+    "gmi",
+    "nin"
+  ],
+  "key": {
+    "l": { "item": "gunsrpg:long_barrel" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "m": { "item": "gunsrpg:magazine" },
+    "i": { "item": "gunsrpg:small_iron_stock" },
+    "n": { "item": "minecraft:netherite_ingot" }
+  },
+  "result": { "item": "gunsrpg:minigun", "count": 1 },
+  "skill": "minigun_assembly"
+}

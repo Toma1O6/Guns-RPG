@@ -1,0 +1,17 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    "bgs",
+    "mig",
+    "   "
+  ],
+  "key": {
+    "s": { "item": "gunsrpg:small_iron_stock" },
+    "g": { "item": "gunsrpg:gun_parts" },
+    "m": { "item": "gunsrpg:magazine" },
+    "b": { "item": "gunsrpg:barrel" },
+    "i": { "item": "minecraft:iron_ingot" }
+  },
+  "result": { "item": "gunsrpg:vector", "count": 1 },
+  "skill": "vector_assembly"
+}

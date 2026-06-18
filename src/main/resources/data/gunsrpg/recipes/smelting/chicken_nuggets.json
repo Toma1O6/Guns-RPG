@@ -1,0 +1,7 @@
+﻿{
+  "type": "minecraft:smelting",
+  "ingredient": { "item": "minecraft:chicken" },
+  "result": "gunsrpg:chicken_nuggets",
+  "experience": 0.35,
+  "cookingtime": 200
+}

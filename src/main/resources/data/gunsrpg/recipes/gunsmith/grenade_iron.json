@@ -1,0 +1,17 @@
+{
+  "type": "gunsrpg:gunsmith",
+  "pattern": [
+    " i ",
+    "ptp",
+    "nfn"
+  ],
+  "key": {
+    "i": { "item": "minecraft:iron_ingot" },
+    "p": { "item": "minecraft:iron_ingot" },
+    "t": { "item": "minecraft:tnt" },
+    "n": { "item": "minecraft:iron_nugget" },
+    "f": { "item": "minecraft:flint_and_steel" }
+  },
+  "result": { "item": "gunsrpg:grenade_iron", "count": 1 },
+  "skill": "grenades"
+}
