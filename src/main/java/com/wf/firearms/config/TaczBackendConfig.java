@@ -1,6 +1,5 @@
 package com.wf.firearms.config;
 
-import com.wf.firearms.compat.TaczCompat;
 import com.wf.firearms.config.settings.TaczBackendSettings;
 
 import java.util.Map;
@@ -16,7 +15,7 @@ public final class TaczBackendConfig {
     }
 
     public static boolean useTaczShooting() {
-        return cfg().useTaczAsShootingBackend && TaczCompat.isTaczLoaded();
+        return cfg().useTaczAsShootingBackend;
     }
 
     public static boolean disableTaczNativeCrafting() {

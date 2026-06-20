@@ -1,0 +1,14 @@
+﻿{
+    "properties":  {
+                       "price":  12,
+                       "level":  100,
+                       "transactionValidator":  {
+                                                    "type":  "gunsrpg:level"
+                                                }
+                   },
+    "hierarchy":  {
+                      "parent":  "gunsrpg:second_chance_iv",
+                      "category":  "survival"
+                  }
+}
+

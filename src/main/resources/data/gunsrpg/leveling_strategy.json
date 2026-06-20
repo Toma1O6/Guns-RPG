@@ -1,0 +1,197 @@
+{
+  "types": [
+    "playerLevel",
+    "weaponLevel"
+  ],
+  "targets": [
+    {
+      "key": "gunsrpg:level",
+      "identification": [
+        null
+      ],
+      "strategy": "playerLevel"
+    },
+    {
+      "key": "gunsrpg:weapon",
+      "identification": [
+        "gunsrpg:glock",
+        "gunsrpg:m1911",
+        "gunsrpg:r45",
+        "gunsrpg:desert_eagle",
+        "gunsrpg:ump45",
+        "gunsrpg:vector",
+        "gunsrpg:uzi",
+        "gunsrpg:p90",
+        "gunsrpg:akm",
+        "gunsrpg:hk416",
+        "gunsrpg:type_81",
+        "gunsrpg:aug",
+        "gunsrpg:fn_fal",
+        "gunsrpg:sks",
+        "gunsrpg:spr15",
+        "gunsrpg:mk14ebr",
+        "gunsrpg:kar98k",
+        "gunsrpg:winchester",
+        "gunsrpg:awm",
+        "gunsrpg:m95",
+        "gunsrpg:db2",
+        "gunsrpg:s1897",
+        "gunsrpg:s12k",
+        "gunsrpg:s686",
+        "gunsrpg:pkm",
+        "gunsrpg:m249",
+        "gunsrpg:gatling",
+        "gunsrpg:wooden_crossbow",
+        "gunsrpg:chukonu",
+        "gunsrpg:grenade_launcher",
+        "gunsrpg:rocket_launcher"
+      ],
+      "strategy": "weaponLevel"
+    }
+  ],
+  "definitions": {
+    "playerLevel": {
+      "maxLevel": 100,
+      "progression": {
+        "type": "tieredLinear",
+        "killsForFirstLevel": 5,
+        "_comment": "0→1需5杀，1→2需10杀…L-1→L需5*L杀；满级100累计25250杀"
+      },
+      "rewards": [
+        {
+          "function": "equal",
+          "value": 100,
+          "rewards": [
+            {
+              "type": "gunsrpg:point",
+              "amount": 50
+            },
+            {
+              "type": "gunsrpg:item",
+              "item": "gunsrpg:gold_egg_shard"
+            }
+          ]
+        },
+        {
+          "function": "equal",
+          "value": 50,
+          "rewards": [
+            {
+              "type": "gunsrpg:point",
+              "amount": 35
+            }
+          ]
+        },
+        {
+          "function": "each",
+          "value": 10,
+          "rewards": [
+            {
+              "type": "gunsrpg:point",
+              "amount": 10
+            }
+          ]
+        },
+        {
+          "function": "each",
+          "value": 5,
+          "rewards": [
+            {
+              "type": "gunsrpg:point",
+              "amount": 5
+            }
+          ]
+        },
+        {
+          "function": "true",
+          "rewards": [
+            {
+              "type": "gunsrpg:point",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    "weaponLevel": {
+      "maxLevel": 9,
+      "killRequirements": [
+        {
+          "function": "equal",
+          "value": 1,
+          "require": 5
+        },
+        {
+          "function": "equal",
+          "value": 2,
+          "require": 20
+        },
+        {
+          "function": "equal",
+          "value": 3,
+          "require": 40
+        },
+        {
+          "function": "equal",
+          "value": 4,
+          "require": 70
+        },
+        {
+          "function": "equal",
+          "value": 5,
+          "require": 110
+        },
+        {
+          "function": "equal",
+          "value": 6,
+          "require": 160
+        },
+        {
+          "function": "equal",
+          "value": 7,
+          "require": 220
+        },
+        {
+          "function": "equal",
+          "value": 8,
+          "require": 300
+        },
+        {
+          "function": "true",
+          "require": 2147483647
+        }
+      ],
+      "rewards": [
+        {
+          "function": "equal",
+          "value": 9,
+          "rewards": [
+            {
+              "type": "gunsrpg:point",
+              "amount": 1
+            },
+            {
+              "type": "gunsrpg:item",
+              "item": "gunsrpg:gold_egg_shard"
+            }
+          ]
+        },
+        {
+          "function": "oneOf",
+          "list": [
+            1,
+            3,
+            5,
+            7
+          ],
+          "rewards": [
+            {
+              "type": "gunsrpg:point",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "children": [
+      "gunsrpg:m1911_assembly",
+      "gunsrpg:ump45_assembly",
+      "gunsrpg:db2_assembly",
+      "gunsrpg:fn_fal_assembly",
+      "gunsrpg:akm_assembly",
+      "gunsrpg:kar98k_assembly",
+      "gunsrpg:pkm_assembly",
+      "gunsrpg:grenade_launcher_assembly"
+    ]
+  },
+  "properties": {
+    "level": 0,
+    "price": 1,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

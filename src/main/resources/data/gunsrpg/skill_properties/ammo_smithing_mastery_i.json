@@ -1,0 +1,16 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "children": [
+      "gunsrpg:ammo_smithing_mastery_ii"
+    ],
+    "override": "gunsrpg:ammo_smithing_mastery_v"
+  },
+  "properties": {
+    "level": 20,
+    "price": 2,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

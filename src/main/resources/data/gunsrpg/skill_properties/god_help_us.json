@@ -1,0 +1,12 @@
+{
+  "hierarchy": {
+    "category": "survival"
+  },
+  "properties": {
+    "level": 30,
+    "price": 8,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

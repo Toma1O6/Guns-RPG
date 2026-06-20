@@ -1,0 +1,26 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:ump45_assembly",
+    "children": [
+      "gunsrpg:uzi_assembly"
+    ],
+    "extensions": [
+      "gunsrpg:vector_quickdraw",
+      "gunsrpg:vector_vertical",
+      "gunsrpg:vector_red_dot",
+      "gunsrpg:vector_extended",
+      "gunsrpg:vector_suppressor",
+      "gunsrpg:vector_overloaded",
+      "gunsrpg:vector_armor_bane",
+      "gunsrpg:vector_unarmored_loot"
+    ]
+  },
+  "properties": {
+    "level": 25,
+    "price": 7,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

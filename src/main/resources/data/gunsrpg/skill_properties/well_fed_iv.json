@@ -1,0 +1,18 @@
+﻿{
+    "properties":  {
+                       "price":  6,
+                       "level":  68,
+                       "transactionValidator":  {
+                                                    "type":  "gunsrpg:level"
+                                                }
+                   },
+    "hierarchy":  {
+                      "parent":  "gunsrpg:well_fed_iii",
+                      "category":  "survival",
+                      "override":  "gunsrpg:well_fed_v",
+                      "children":  [
+                                       "gunsrpg:well_fed_v"
+                                   ]
+                  }
+}
+

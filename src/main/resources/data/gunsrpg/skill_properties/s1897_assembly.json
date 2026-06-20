@@ -1,0 +1,26 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:db2_assembly",
+    "extensions": [
+      "gunsrpg:s1897_bullet_loops",
+      "gunsrpg:s1897_extended",
+      "gunsrpg:s1897_pump_in_action",
+      "gunsrpg:s1897_choke",
+      "gunsrpg:s1897_never_give_up",
+      "gunsrpg:s1897_extended_barrel",
+      "gunsrpg:s1897_reliable",
+      "gunsrpg:s1897_blazing_pellets"
+    ],
+    "children": [
+      "gunsrpg:s12k_assembly"
+    ]
+  },
+  "properties": {
+    "level": 20,
+    "price": 4,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

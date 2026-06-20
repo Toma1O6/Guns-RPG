@@ -1,0 +1,26 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:desert_eagle_assembly",
+    "children": [],
+    "extensions": [
+      "gunsrpg:r45_fast_hands",
+      "gunsrpg:r45_carbon_barrel",
+      "gunsrpg:r45_extended",
+      "gunsrpg:r45_suppressor",
+      "gunsrpg:r45_light_trigger",
+      "gunsrpg:r45_ace_of_hearts",
+      "gunsrpg:r45_cold_blooded",
+      "gunsrpg:r45_cruel",
+      "gunsrpg:r45_dead_eye"
+    ],
+    "children": []
+  },
+  "properties": {
+    "level": 70,
+    "price": 4,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

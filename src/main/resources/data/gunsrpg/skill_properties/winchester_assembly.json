@@ -1,0 +1,27 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:kar98k_assembly",
+    "extensions": [
+      "gunsrpg:winchester_bullet_loops",
+      "gunsrpg:winchester_hunter",
+      "gunsrpg:winchester_scope",
+      "gunsrpg:winchester_extended",
+      "gunsrpg:winchester_fast_hands",
+      "gunsrpg:winchester_penetrator",
+      "gunsrpg:winchester_cold_blooded",
+      "gunsrpg:winchester_bandolier",
+      "gunsrpg:winchester_quick_mover"
+    ],
+    "children": [
+      "gunsrpg:awm_assembly"
+    ]
+  },
+  "properties": {
+    "level": 40,
+    "price": 7,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

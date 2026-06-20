@@ -1,0 +1,18 @@
+﻿{
+    "properties":  {
+                       "price":  6,
+                       "level":  52,
+                       "transactionValidator":  {
+                                                    "type":  "gunsrpg:level"
+                                                }
+                   },
+    "hierarchy":  {
+                      "parent":  "gunsrpg:strong_muscles_iii",
+                      "category":  "survival",
+                      "override":  "gunsrpg:strong_muscles_v",
+                      "children":  [
+                                       "gunsrpg:strong_muscles_v"
+                                   ]
+                  }
+}
+

@@ -1,0 +1,18 @@
+﻿{
+    "properties":  {
+                       "price":  7,
+                       "level":  75,
+                       "transactionValidator":  {
+                                                    "type":  "gunsrpg:level"
+                                                }
+                   },
+    "hierarchy":  {
+                      "parent":  "gunsrpg:skull_crusher_iii",
+                      "category":  "survival",
+                      "override":  "gunsrpg:skull_crusher_v",
+                      "children":  [
+                                       "gunsrpg:skull_crusher_v"
+                                   ]
+                  }
+}
+

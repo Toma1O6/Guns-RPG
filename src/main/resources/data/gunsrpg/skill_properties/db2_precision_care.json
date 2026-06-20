@@ -1,0 +1,14 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:db2_assembly"
+  },
+  "properties": {
+    "level": 1,
+    "price": 1,
+    "transactionValidator": {
+      "type": "gunsrpg:weapon",
+      "data": "gunsrpg:db2"
+    }
+  }
+}

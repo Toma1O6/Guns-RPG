@@ -1,0 +1,14 @@
+﻿{
+    "hierarchy":  {
+                      "category":  "gun",
+                      "parent":  "gunsrpg:spr15_assembly"
+                  },
+    "properties":  {
+                       "level":  5,
+                       "price":  1,
+                       "transactionValidator":  {
+                                                    "type":  "gunsrpg:weapon",
+                                                    "data":  "gunsrpg:spr15"
+                                                }
+                   }
+}

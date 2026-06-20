@@ -1,0 +1,9 @@
+{
+  "attribute": "gunsrpg:airdrop_call_cooldown",
+  "invertCalculation": true,
+  "scaling": 0.005,
+  "bounds": {
+    "buff": 0.8,
+    "debuff": 0.4
+  }
+}

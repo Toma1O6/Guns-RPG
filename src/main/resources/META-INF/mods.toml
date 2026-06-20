@@ -9,7 +9,7 @@ displayName="${mod_name}"
 authors="Toma (port WF Pack)"
 description='''
 Guns RPG for Minecraft 1.20.1 — skill tree, gunsmith, firearms (ported from 1.16.5).
-Requires Configuration library.
+Requires Configuration library and TaCZ (Timeless and Classics Guns: Zero).
 '''
 
 [[dependencies.${mod_id}]]
@@ -42,7 +42,7 @@ side="CLIENT"
 
 [[dependencies.${mod_id}]]
 modId="tacz"
-mandatory=false
-versionRange="[1.0,)"
+mandatory=true
+versionRange="[1.1.0,)"
 ordering="AFTER"
 side="BOTH"

@@ -1,0 +1,14 @@
+﻿{
+    "properties":  {
+                       "price":  8,
+                       "level":  70,
+                       "transactionValidator":  {
+                                                    "type":  "gunsrpg:level"
+                                                }
+                   },
+    "hierarchy":  {
+                      "parent":  "gunsrpg:adrenaline_rush_iv",
+                      "category":  "survival"
+                  }
+}
+

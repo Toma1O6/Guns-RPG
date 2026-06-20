@@ -1,0 +1,24 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:s12k_assembly",
+    "children": [],
+    "extensions": [
+      "gunsrpg:s686_bullet_loops",
+      "gunsrpg:s686_hunter",
+      "gunsrpg:s686_choke",
+      "gunsrpg:s686_cannon_blast",
+      "gunsrpg:s686_reliable",
+      "gunsrpg:s686_extended_barrel",
+      "gunsrpg:s686_shrapnel",
+      "gunsrpg:s686_atrocity"
+    ]
+  },
+  "properties": {
+    "level": 75,
+    "price": 8,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

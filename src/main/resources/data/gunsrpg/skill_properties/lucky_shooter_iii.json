@@ -1,0 +1,17 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:lucky_shooter_ii",
+    "children": [
+      "gunsrpg:lucky_shooter_iv"
+    ],
+    "override": "gunsrpg:lucky_shooter_iv"
+  },
+  "properties": {
+    "level": 60,
+    "price": 5,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

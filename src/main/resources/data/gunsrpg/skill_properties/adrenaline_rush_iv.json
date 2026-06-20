@@ -1,0 +1,18 @@
+﻿{
+    "properties":  {
+                       "price":  6,
+                       "level":  55,
+                       "transactionValidator":  {
+                                                    "type":  "gunsrpg:level"
+                                                }
+                   },
+    "hierarchy":  {
+                      "parent":  "gunsrpg:adrenaline_rush_iii",
+                      "category":  "survival",
+                      "override":  "gunsrpg:adrenaline_rush_v",
+                      "children":  [
+                                       "gunsrpg:adrenaline_rush_v"
+                                   ]
+                  }
+}
+

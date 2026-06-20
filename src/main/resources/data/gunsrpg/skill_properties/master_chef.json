@@ -1,0 +1,18 @@
+﻿{
+    "hierarchy":  {
+                      "category":  "survival",
+                      "parent":  "gunsrpg:local_chef",
+                      "children":  [
+                                       "gunsrpg:sous_chef_iii"
+                                   ],
+                      "override":  "gunsrpg:sous_chef_iii"
+                  },
+    "properties":  {
+                       "level":  50,
+                       "price":  5,
+                       "transactionValidator":  {
+                                                    "type":  "gunsrpg:level"
+                                                }
+                   }
+}
+

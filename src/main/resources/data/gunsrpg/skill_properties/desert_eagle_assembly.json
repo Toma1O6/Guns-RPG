@@ -1,0 +1,27 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:glock_assembly",
+    "children": [
+      "gunsrpg:r45_assembly"
+    ],
+    "extensions": [
+      "gunsrpg:deagle_quickdraw",
+      "gunsrpg:deagle_tough_spring",
+      "gunsrpg:deagle_compensator",
+      "gunsrpg:deagle_extended",
+      "gunsrpg:deagle_red_dot",
+      "gunsrpg:deagle_penetrator",
+      "gunsrpg:deagle_finisher",
+      "gunsrpg:deagle_hot_hands",
+      "gunsrpg:deagle_back_three"
+    ]
+  },
+  "properties": {
+    "level": 40,
+    "price": 6,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

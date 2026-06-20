@@ -1,0 +1,9 @@
+{
+  "attribute": "gunsrpg:bleed_resistance",
+  "invertCalculation": true,
+  "scaling": 0.005,
+  "bounds": {
+    "buff": 1.0,
+    "debuff": 0.75
+  }
+}

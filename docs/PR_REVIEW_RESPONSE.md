@@ -31,11 +31,11 @@ Existing facade classes (`AirdropConfig`, `BloodmoonConfig`, …) now read from 
 
 ## TaCZ dependency
 
-**Design intent:** TaCZ is **optional** (`mods.toml` → `optionalDependency`). Guns RPG keeps its own gun items, gunsmith, skills, and damage logic.
+**Updated per review:** TaCZ is now a **mandatory** dependency (`mods.toml` → `mandatory=true`, version `[1.1.0,)`).
 
-When TaCZ is present **and** `use_tacz_as_shooting_backend` is true, we use reflection (`TaczBridge`) for shooting/reload UX only — no compile-time dependency on the TaCZ jar.
-
-Without TaCZ, the mod remains fully playable with the built-in firearm system.
+- `build.gradle`: `compileOnly` via CurseMaven (`curse.maven:tacz-1028108:…`) so integration code can move off pure reflection.
+- Shooting backend no longer checks `ModList.isLoaded("tacz")` — the mod is required to load.
+- **Follow-up:** Replace `TaczBridge` reflection calls with direct TaCZ API usage now that the jar is on the compile classpath.
 
 ---
 

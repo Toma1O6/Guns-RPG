@@ -1,0 +1,13 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:ammo_smithing_mastery_iv"
+  },
+  "properties": {
+    "level": 100,
+    "price": 6,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

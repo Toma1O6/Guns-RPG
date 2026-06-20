@@ -1,0 +1,14 @@
+﻿{
+    "properties":  {
+                       "price":  7,
+                       "level":  65,
+                       "transactionValidator":  {
+                                                    "type":  "gunsrpg:level"
+                                                }
+                   },
+    "hierarchy":  {
+                      "parent":  "gunsrpg:agility_iv",
+                      "category":  "survival"
+                  }
+}
+

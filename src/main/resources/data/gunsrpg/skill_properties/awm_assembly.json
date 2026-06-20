@@ -1,0 +1,26 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:winchester_assembly",
+    "extensions": [
+      "gunsrpg:awm_quickdraw",
+      "gunsrpg:awm_scope",
+      "gunsrpg:awm_extended",
+      "gunsrpg:awm_cheekpad",
+      "gunsrpg:awm_suppressor",
+      "gunsrpg:awm_fast_hands",
+      "gunsrpg:awm_penetrator",
+      "gunsrpg:awm_dead_eye"
+    ],
+    "children": [
+      "gunsrpg:m95_assembly"
+    ]
+  },
+  "properties": {
+    "level": 55,
+    "price": 9,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

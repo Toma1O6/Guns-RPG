@@ -1,0 +1,26 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:s1897_assembly",
+    "children": [
+      "gunsrpg:s686_assembly"
+    ],
+    "extensions": [
+      "gunsrpg:s12k_quickdraw",
+      "gunsrpg:s12k_choke",
+      "gunsrpg:s12k_tough_spring",
+      "gunsrpg:s12k_red_dot",
+      "gunsrpg:s12k_suppressor",
+      "gunsrpg:s12k_never_give_up",
+      "gunsrpg:s12k_extended_drum",
+      "gunsrpg:s12k_veteran_hunter"
+    ]
+  },
+  "properties": {
+    "level": 45,
+    "price": 7,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

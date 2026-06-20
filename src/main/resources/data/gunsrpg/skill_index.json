@@ -1,0 +1,277 @@
+{
+    "source":  "gunsrpg-1.16.5-1.1.0",
+    "node_count":  314,
+    "perk_count":  52,
+    "categories":  {
+                       "gun":  215,
+                       "survival":  41,
+                       "mining":  34,
+                       "resistance":  24
+                   },
+    "roots_by_category":  {
+                              "gun":  [
+                                          "gunpowder_novice",
+                                          "bone_grinder_i",
+                                          "gun_parts_smith",
+                                          "careful_gunner_i",
+                                          "lucky_shooter_i",
+                                          "ammo_smithing_mastery_i",
+                                          "grenades",
+                                          "wooden_ammo_smith",
+                                          "repair_station",
+                                          "repair_man_i"
+                                      ],
+                              "survival":  [
+                                               "local_chef",
+                                               "adrenaline_rush_i",
+                                               "second_chance_i",
+                                               "well_fed_i",
+                                               "skull_crusher_i",
+                                               "strong_muscles_i",
+                                               "agility_i",
+                                               "god_help_us"
+                                           ],
+                              "mining":  [
+                                             "mother_lode_i",
+                                             "grave_digger_i",
+                                             "heavy_pickaxe_i",
+                                             "sharp_axe_i"
+                                         ],
+                              "resistance":  [
+                                                 "acrobatics_i",
+                                                 "bleeding_resistance_i",
+                                                 "medical_station",
+                                                 "medic",
+                                                 "fracture_resistance_i",
+                                                 "poison_resistance_i",
+                                                 "pharmacist_i",
+                                                 "infection_resistance_i"
+                                             ]
+                          },
+    "assemblies":  {
+                       "s686_assembly":  [
+                                             "s12k_assembly",
+                                             "s686_atrocity",
+                                             "s686_bullet_loops",
+                                             "s686_cannon_blast",
+                                             "s686_choke",
+                                             "s686_extended_barrel",
+                                             "s686_hunter",
+                                             "s686_reliable",
+                                             "s686_shrapnel"
+                                         ],
+                       "winchester_assembly":  [
+                                                   "kar98k_assembly",
+                                                   "winchester_bandolier",
+                                                   "winchester_bullet_loops",
+                                                   "winchester_cold_blooded",
+                                                   "winchester_extended",
+                                                   "winchester_fast_hands",
+                                                   "winchester_hunter",
+                                                   "winchester_penetrator",
+                                                   "winchester_quick_mover",
+                                                   "winchester_scope"
+                                               ],
+                       "mk14ebr_assembly":  [
+                                                "mk14ebr_cheekpad",
+                                                "mk14ebr_dead_eye",
+                                                "mk14ebr_extended",
+                                                "mk14ebr_extended_mk2",
+                                                "mk14ebr_power_knockback",
+                                                "mk14ebr_quickdraw",
+                                                "mk14ebr_scope",
+                                                "mk14ebr_suppressor",
+                                                "mk14ebr_tough_spring",
+                                                "mk14ebr_vertical"
+                                            ],
+                       "m1911_assembly":  [
+                                              "m1911_carbon_barrel",
+                                              "m1911_every_bullet_counts",
+                                              "m1911_extended",
+                                              "m1911_heavy_bullets",
+                                              "m1911_killing_spree",
+                                              "m1911_quickdraw",
+                                              "m1911_suppressor",
+                                              "m1911_tough_spring",
+                                              "r45_assembly"
+                                          ],
+                       "chukonu_assembly":  [
+                                                "chukonu_extended",
+                                                "chukonu_gear_grinder",
+                                                "chukonu_heavy_bolts",
+                                                "chukonu_poisoned_bolts",
+                                                "chukonu_quiver",
+                                                "chukonu_scope",
+                                                "chukonu_tough_bowstring"
+                                            ],
+                       "s1897_assembly":  [
+                                              "s1897_blazing_pellets",
+                                              "s1897_bullet_loops",
+                                              "s1897_choke",
+                                              "s1897_extended",
+                                              "s1897_extended_barrel",
+                                              "s1897_never_give_up",
+                                              "s1897_pump_in_action",
+                                              "s1897_reliable",
+                                              "s686_assembly"
+                                          ],
+                       "s12k_assembly":  [
+                                             "s12k_choke",
+                                             "s12k_extended_drum",
+                                             "s12k_never_give_up",
+                                             "s12k_quickdraw",
+                                             "s12k_red_dot",
+                                             "s12k_suppressor",
+                                             "s12k_tough_spring",
+                                             "s12k_veteran_hunter"
+                                         ],
+                       "hk416_assembly":  [
+                                              "aug_assembly",
+                                              "hk416_cheekpad",
+                                              "hk416_extended",
+                                              "hk416_extended_mk2",
+                                              "hk416_overloaded",
+                                              "hk416_quickdraw",
+                                              "hk416_red_dot",
+                                              "hk416_suppressor",
+                                              "hk416_vertical"
+                                          ],
+                       "aug_assembly":  [
+                                            "aug_compensator",
+                                            "aug_extended",
+                                            "aug_extended_mk2",
+                                            "aug_quickdraw",
+                                            "aug_red_dot",
+                                            "aug_soul_taker",
+                                            "aug_suppressor",
+                                            "aug_vertical"
+                                        ],
+                       "vss_assembly":  [
+                                            "mk14ebr_assembly",
+                                            "vss_adaptive_chambering",
+                                            "vss_cheekpad",
+                                            "vss_every_bullet_counts",
+                                            "vss_extended",
+                                            "vss_quickdraw",
+                                            "vss_scope"
+                                        ],
+                       "grenade_launcher_assembly":  [
+                                                         "grenade_launcher_better_cartridge",
+                                                         "grenade_launcher_demolition_expert",
+                                                         "grenade_launcher_extended",
+                                                         "grenade_launcher_fast_hands",
+                                                         "grenade_launcher_gear_grinder",
+                                                         "rocket_launcher_assembly"
+                                                     ],
+                       "kar98k_assembly":  [
+                                               "awm_assembly",
+                                               "kar98k_cheekpad",
+                                               "kar98k_dead_eye",
+                                               "kar98k_fast_hands",
+                                               "kar98k_penetrator",
+                                               "kar98k_reliable",
+                                               "kar98k_scope",
+                                               "kar98k_suppressor"
+                                           ],
+                       "akm_assembly":  [
+                                            "akm_every_bullet_counts",
+                                            "akm_scalding_hot",
+                                            "akm_extended",
+                                            "akm_heavy_bullets",
+                                            "akm_quickdraw",
+                                            "akm_reliable",
+                                            "akm_suppressor",
+                                            "akm_tough_spring",
+                                            "hk416_assembly"
+                                        ],
+                       "ump45_assembly":  [
+                                              "thompson_assembly",
+                                              "ump45_commando",
+                                              "ump45_extended",
+                                              "ump45_quickdraw",
+                                              "ump45_red_dot",
+                                              "ump45_suppressor",
+                                              "ump45_tough_spring",
+                                              "ump45_vertical_grip"
+                                          ],
+                       "sks_assembly":  [
+                                            "sks_adaptive_chambering",
+                                            "sks_cheekpad",
+                                            "sks_extended",
+                                            "sks_red_dot",
+                                            "sks_suppressor",
+                                            "sks_tough_spring",
+                                            "sks_vertical_grip",
+                                            "vss_assembly"
+                                        ],
+                       "thompson_assembly":  [
+                                                 "thompson_extended",
+                                                 "thompson_quickdraw",
+                                                 "thompson_red_dot",
+                                                 "thompson_soul_taker",
+                                                 "thompson_suppressor",
+                                                 "thompson_tough_spring",
+                                                 "thompson_vertical",
+                                                 "vector_assembly"
+                                             ],
+                       "desert_eagle_assembly":  [
+                                                     "deagle_compensator",
+                                                     "deagle_extended",
+                                                     "deagle_finisher",
+                                                     "deagle_penetrator",
+                                                     "deagle_quickdraw",
+                                                     "deagle_red_dot",
+                                                     "deagle_tough_spring"
+                                                 ],
+                       "rocket_launcher_assembly":  [
+                                                        "rocket_launcher_demolition_expert",
+                                                        "rocket_launcher_homing_missile",
+                                                        "rocket_launcher_quickdraw",
+                                                        "rocket_launcher_rocket_barrage",
+                                                        "rocket_launcher_rocket_fuel"
+                                                    ],
+                       "vector_assembly":  [
+                                               "vector_armor_bane",
+                                               "vector_extended",
+                                               "vector_overloaded",
+                                               "vector_quickdraw",
+                                               "vector_red_dot",
+                                               "vector_suppressor",
+                                               "vector_unarmored_loot",
+                                               "vector_vertical"
+                                           ],
+                       "r45_assembly":  [
+                                            "desert_eagle_assembly",
+                                            "r45_ace_of_hearts",
+                                            "r45_carbon_barrel",
+                                            "r45_cold_blooded",
+                                            "r45_cruel",
+                                            "r45_dead_eye",
+                                            "r45_extended",
+                                            "r45_fast_hands",
+                                            "r45_light_trigger",
+                                            "r45_suppressor"
+                                        ],
+                       "crossbow_assembly":  [
+                                                 "chukonu_assembly",
+                                                 "crossbow_hunter",
+                                                 "crossbow_penetrator",
+                                                 "crossbow_poisoned_bolts",
+                                                 "crossbow_quiver",
+                                                 "crossbow_repeater",
+                                                 "crossbow_scope",
+                                                 "crossbow_tough_bowstring"
+                                             ],
+                       "awm_assembly":  [
+                                            "awm_cheekpad",
+                                            "awm_dead_eye",
+                                            "awm_extended",
+                                            "awm_fast_hands",
+                                            "awm_penetrator",
+                                            "awm_quickdraw",
+                                            "awm_scope",
+                                            "awm_suppressor"
+                                        ]
+                   }
+}
+

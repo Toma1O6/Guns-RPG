@@ -1,0 +1,13 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:careful_gunner_iv"
+  },
+  "properties": {
+    "level": 85,
+    "price": 7,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

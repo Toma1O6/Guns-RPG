@@ -1,0 +1,14 @@
+﻿{
+    "properties":  {
+                       "price":  9,
+                       "level":  88,
+                       "transactionValidator":  {
+                                                    "type":  "gunsrpg:level"
+                                                }
+                   },
+    "hierarchy":  {
+                      "parent":  "gunsrpg:skull_crusher_iv",
+                      "category":  "survival"
+                  }
+}
+

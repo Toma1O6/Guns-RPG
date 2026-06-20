@@ -39,7 +39,7 @@ public final class SkillDatabase {
         loaded = false;
 
         if (!PortPaths.isPortPresent()) {
-            loadError = "缺少 config/gunsrpg/port_from_gunsrpg/（请先运行数据导出）";
+            loadError = "缺少技能数据（jar 内 data/gunsrpg 或 config/gunsrpg/port_from_gunsrpg）";
             GunsRpg.LOGGER.warn("[gunsrpg] {}", loadError);
             return;
         }

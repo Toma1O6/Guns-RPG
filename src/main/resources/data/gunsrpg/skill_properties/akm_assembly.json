@@ -1,0 +1,26 @@
+{
+  "hierarchy": {
+    "category": "gun",
+    "parent": "gunsrpg:gun_parts_smith",
+    "children": [
+      "gunsrpg:hk416_assembly"
+    ],
+    "extensions": [
+      "gunsrpg:akm_quickdraw",
+      "gunsrpg:akm_extended",
+      "gunsrpg:akm_suppressor",
+      "gunsrpg:akm_heavy_bullets",
+      "gunsrpg:akm_tough_spring",
+      "gunsrpg:akm_reliable",
+      "gunsrpg:akm_every_bullet_counts",
+      "gunsrpg:akm_scalding_hot"
+    ]
+  },
+  "properties": {
+    "level": 25,
+    "price": 4,
+    "transactionValidator": {
+      "type": "gunsrpg:level"
+    }
+  }
+}

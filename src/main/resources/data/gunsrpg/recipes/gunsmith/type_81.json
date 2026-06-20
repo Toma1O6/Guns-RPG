@@ -3,7 +3,7 @@
   "pattern": [
     "lgl",
     "gmg",
-    "t81"
+    "tw8"
   ],
   "key": {
     "l": { "item": "gunsrpg:long_barrel" },
@@ -11,7 +11,7 @@
     "m": { "item": "gunsrpg:magazine" },
     "t": { "item": "minecraft:iron_ingot" },
     "8": { "item": "minecraft:redstone" },
-    "1": { "item": "gunsrpg:large_iron_stock" }
+    "w": { "item": "gunsrpg:wooden_stock" }
   },
   "result": { "item": "gunsrpg:type_81", "count": 1 },
   "skill": "type_81_assembly"

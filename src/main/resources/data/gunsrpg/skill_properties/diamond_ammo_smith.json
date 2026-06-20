@@ -1,0 +1,16 @@
+﻿{
+    "hierarchy":  {
+                      "category":  "gun",
+                      "parent":  "gunsrpg:bronze_ammo_smith",
+                      "children":  [
+                                       "gunsrpg:steel_ammo_smith"
+                                   ]
+                  },
+    "properties":  {
+                       "level":  40,
+                       "price":  4,
+                       "transactionValidator":  {
+                                                    "type":  "gunsrpg:level"
+                                                }
+                   }
+}

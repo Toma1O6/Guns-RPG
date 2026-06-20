@@ -1,0 +1,8 @@
+{
+  "attribute": "gunsrpg:pistol_damage",
+  "scaling": 0.005,
+  "bounds": {
+    "buff": 1.0,
+    "debuff": 0.3
+  }
+}

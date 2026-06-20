@@ -53,6 +53,9 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     implementation fg.deobf("curse.maven:configuration-444699:${configuration_file_id}")
 
+    // TaCZ — required at runtime (mods.toml); compileOnly for integration (replaces pure reflection over time)
+    compileOnly fg.deobf("curse.maven:tacz-1028108:${tacz_file_id}")
+
     // JEI — compileOnly; runtime optional via mods.toml
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
