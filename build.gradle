@@ -52,28 +52,13 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     implementation fg.deobf("curse.maven:configuration-444699:${configuration_file_id}")
-    def jeiJar = file("${project.projectDir}/../mods").listFiles()?.find {
-        it.name.toLowerCase().contains('jei-1.20.1-forge') && it.name.endsWith('.jar')
-    }
-    if (jeiJar != null) {
-        compileOnly files(jeiJar)
-        println "[gunsrpg] JEI compileOnly: ${jeiJar.name}"
-    } else {
-        compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
-    }
-    def sbCoreJar = file("${project.projectDir}/../mods").listFiles()?.find {
-        it.name.contains('sophisticatedcore') && it.name.endsWith('.jar')
-    }
-    def sbJar = file("${project.projectDir}/../mods").listFiles()?.find {
-        it.name.contains('sophisticatedbackpacks') && it.name.endsWith('.jar')
-    }
-    if (sbCoreJar != null && sbJar != null) {
-        compileOnly files(sbCoreJar)
-        compileOnly files(sbJar)
-        println "[gunsrpg] Sophisticated Backpacks compileOnly: ${sbJar.name}"
-    }
+
+    // JEI — compileOnly; runtime optional via mods.toml
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
 }
 
+// Merge split lang shards at build time (cross-platform Gradle; no PowerShell).
 tasks.register('mergeLangFiles') {
     def inDir = file('src/main/resources/assets/gunsrpg/lang')
     def outDir = file('build/generated/resources/assets/gunsrpg/lang')
@@ -95,114 +80,19 @@ tasks.register('mergeLangFiles') {
     }
 }
 
+// Optional dev-only asset generators (Windows PowerShell). Not required to build the mod jar.
 tasks.register('sliceQGunIcons') {
-    def sheet = file('tools/gunsrpg_q_guns_sheet.png')
-    inputs.file('tools/slice_q_gun_icons.ps1')
-    inputs.file(sheet)
-    outputs.dir('src/main/resources/assets/gunsrpg/textures/item')
+    onlyIf { System.getProperty('os.name').toLowerCase().contains('windows') }
     doLast {
-        if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-            exec {
-                workingDir project.projectDir
-                commandLine 'powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'tools/slice_q_gun_icons.ps1'
-            }
-        }
-    }
-}
-
-tasks.register('importUserGunIcons') {
-    dependsOn sliceQGunIcons
-    inputs.file('tools/import_user_gun_icons.ps1')
-    outputs.files(
-            'src/main/resources/assets/gunsrpg/textures/item/m1911_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/desert_eagle_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/ump45_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/thompson_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/vector_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/akm_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/hk416_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/aug_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/sks_gun_icon.png'
-    )
-    doLast {
-        if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-            exec {
-                workingDir project.projectDir
-                commandLine 'powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'tools/import_user_gun_icons.ps1'
-            }
-        }
-    }
-}
-
-tasks.register('importUserGunIconsBatch2') {
-    dependsOn importUserGunIcons
-    inputs.file('tools/import_user_gun_icons_batch2.ps1')
-    outputs.files(
-            'src/main/resources/assets/gunsrpg/textures/item/vss_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/mk14ebr_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/kar98k_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/winchester_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/awm_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/s1897_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/s686_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/s12k_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/grenade_launcher_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/item/rocket_launcher_gun_icon.png',
-            'src/main/resources/assets/gunsrpg/textures/icons/grenade_launcher_assembly.png',
-            'src/main/resources/assets/gunsrpg/textures/icons/rocket_launcher_assembly.png'
-    )
-    doLast {
-        if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-            exec {
-                workingDir project.projectDir
-                commandLine 'powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'tools/import_user_gun_icons_batch2.ps1'
-            }
-        }
-    }
-}
-
-tasks.register('importResistanceIcons') {
-    inputs.file('tools/import_resistance_icons.ps1')
-    outputs.dir('src/main/resources/assets/gunsrpg/textures/icons')
-    doLast {
-        if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-            exec {
-                workingDir project.projectDir
-                commandLine 'powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'tools/import_resistance_icons.ps1'
-            }
-        }
-    }
-}
-
-tasks.register('genResistanceTiers') {
-    dependsOn importResistanceIcons
-    inputs.file('tools/gen_resistance_tiers.ps1')
-    outputs.dir('src/main/resources/assets/gunsrpg/textures/icons')
-    doLast {
-        if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-            exec {
-                workingDir project.projectDir
-                commandLine 'powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'tools/gen_resistance_tiers.ps1'
-            }
-        }
-    }
-}
-
-tasks.register('portMedstationRecipes') {
-    inputs.file('tools/port_medstation_recipes.ps1')
-    outputs.dir('src/main/resources/data/gunsrpg/recipes/medical_station')
-    doLast {
-        if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-            exec {
-                workingDir project.projectDir
-                commandLine 'powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'tools/port_medstation_recipes.ps1'
-            }
+        exec {
+            workingDir project.projectDir
+            commandLine 'powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'tools/slice_q_gun_icons.ps1'
         }
     }
 }
 
 tasks.named('processResources', ProcessResources).configure {
-    dependsOn mergeLangFiles, sliceQGunIcons, importUserGunIcons, importUserGunIconsBatch2, genResistanceTiers, portMedstationRecipes
+    dependsOn mergeLangFiles
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from(layout.buildDirectory.dir('generated/resources')) {
         include 'assets/gunsrpg/lang/zh_cn.json'

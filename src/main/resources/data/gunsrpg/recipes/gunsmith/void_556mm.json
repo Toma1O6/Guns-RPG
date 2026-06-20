@@ -1,11 +1,37 @@
-﻿{
-  "type": "gunsrpg:gunsmith",
-  "pattern": ["m ", "gg", "l "],
-  "key": {
-    "g": { "item": "minecraft:gunpowder" },
-    "l": { "item": "gunsrpg:large_bullet_casing" },
-    "m": { "item": "mmt:void_ingot" }
-  },
-  "result": { "count": 1, "item": "gunsrpg:void_556mm" },
-  "skill": "void_ammo_smith"
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "mmt"
+        }
+      ],
+      "recipe": {
+        "type": "gunsrpg:gunsmith",
+        "pattern": [
+          "m ",
+          "gg",
+          "l "
+        ],
+        "key": {
+          "g": {
+            "item": "minecraft:gunpowder"
+          },
+          "l": {
+            "item": "gunsrpg:large_bullet_casing"
+          },
+          "m": {
+            "item": "mmt:void_ingot"
+          }
+        },
+        "result": {
+          "count": 1,
+          "item": "gunsrpg:void_556mm"
+        },
+        "skill": "void_ammo_smith"
+      }
+    }
+  ]
 }

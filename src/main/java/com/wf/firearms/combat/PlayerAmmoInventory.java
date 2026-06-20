@@ -1,10 +1,10 @@
 package com.wf.firearms.combat;
 
-import com.wf.firearms.compat.backpack.SophisticatedBackpackAmmoAccess;
+import com.wf.firearms.compat.backpack.SophisticatedBackpackBridge;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fml.ModList;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -22,8 +22,8 @@ public final class PlayerAmmoInventory {
 
     public static int countItem(Player player, Item item) {
         int total = countInVanilla(player, item);
-        if (sophisticatedBackpacksLoaded()) {
-            total += SophisticatedBackpackAmmoAccess.countItem(player, item);
+        if (SophisticatedBackpackBridge.isLoaded()) {
+            total += SophisticatedBackpackBridge.countItem(player, item);
         }
         return total;
     }
@@ -43,8 +43,8 @@ public final class PlayerAmmoInventory {
             return 0;
         }
         int remaining = max;
-        if (sophisticatedBackpacksLoaded()) {
-            remaining = SophisticatedBackpackAmmoAccess.transfer(player, ammoItem, remaining);
+        if (SophisticatedBackpackBridge.isLoaded()) {
+            remaining = SophisticatedBackpackBridge.transfer(player, ammoItem, remaining);
         }
         remaining = transferFromVanilla(player, ammoItem, remaining);
         return max - remaining;
@@ -66,8 +66,8 @@ public final class PlayerAmmoInventory {
     }
 
     private static Item findFirstInOrder(Player player, Predicate<ItemStack> matcher) {
-        if (sophisticatedBackpacksLoaded()) {
-            Item fromBackpack = SophisticatedBackpackAmmoAccess.findFirst(player, matcher);
+        if (SophisticatedBackpackBridge.isLoaded()) {
+            Item fromBackpack = SophisticatedBackpackBridge.findFirst(player, matcher);
             if (fromBackpack != null) {
                 return fromBackpack;
             }
@@ -105,7 +105,4 @@ public final class PlayerAmmoInventory {
         return remaining;
     }
 
-    private static boolean sophisticatedBackpacksLoaded() {
-        return ModList.get().isLoaded("sophisticatedbackpacks");
-    }
 }

@@ -1,0 +1,24 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:false"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "item": "minecraft:bone_block"
+          }
+        ],
+        "result": {
+          "item": "minecraft:bone_meal",
+          "count": 9
+        }
+      }
+    }
+  ]
+}

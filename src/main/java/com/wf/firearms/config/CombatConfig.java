@@ -36,32 +36,21 @@ public final class CombatConfig {
     private CombatConfig() {}
 
     public static void reload() {
-        loaded = false;
-        useScriptDamage = true;
-        disableCrit = true;
-        testDamageBonus = 0;
-        defaultBulletBase = 5;
+        loaded = true;
+        useScriptDamage = GunsRpgConfigs.COMBAT.useScriptDamage;
+        disableCrit = GunsRpgConfigs.COMBAT.disableCritForGuns;
+        testDamageBonus = GunsRpgConfigs.COMBAT.testDamageBonus;
+        defaultBulletBase = GunsRpgConfigs.COMBAT.defaultBulletBase;
         GUN_CLASSES.clear();
 
-        Path file = Path.of("config", "wf_gun", "combat.json");
+        Path file = Path.of("config", "gunsrpg", "combat.json");
         if (!Files.isRegularFile(file)) {
-            loaded = true;
+            GunsRpg.LOGGER.info("[gunsrpg] combat falloff: 无 combat.json 覆盖，使用内置默认");
             return;
         }
         try (Reader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
             JsonObject root = JsonParser.parseReader(reader).getAsJsonObject();
-            if (root.has("use_script_damage")) {
-                useScriptDamage = root.get("use_script_damage").getAsBoolean();
-            }
-            if (root.has("disable_crit_for_guns")) {
-                disableCrit = root.get("disable_crit_for_guns").getAsBoolean();
-            }
-            if (root.has("test_damage_bonus")) {
-                testDamageBonus = root.get("test_damage_bonus").getAsInt();
-            }
-            if (root.has("default_bullet_base")) {
-                defaultBulletBase = root.get("default_bullet_base").getAsInt();
-            }
+            // Scalar combat toggles are owned by Configuration library (GunsRpgConfigs.COMBAT).
             if (root.has("gun_classes")) {
                 JsonObject guns = root.getAsJsonObject("gun_classes");
                 for (var e : guns.entrySet()) {

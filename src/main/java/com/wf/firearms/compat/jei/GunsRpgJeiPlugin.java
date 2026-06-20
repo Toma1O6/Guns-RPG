@@ -51,14 +51,14 @@ public class GunsRpgJeiPlugin implements IModPlugin {
         List<MedicalStationRecipe> medical =
                 level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.MEDICAL_STATION.get());
         registration.addRecipes(MedicalStationRecipeCategory.RECIPE_TYPE, medical);
-        registration.addIngredientInfo(
-                ModBlocks.GUNSMITH_TABLE_ITEM.get(),
+        registration.addItemStackInfo(
+                new ItemStack(ModBlocks.GUNSMITH_TABLE_ITEM.get()),
                 Component.translatable("jei.gunsrpg.gunsmith_table.info"));
-        registration.addIngredientInfo(
-                ModBlocks.CULINARY_TABLE_ITEM.get(),
+        registration.addItemStackInfo(
+                new ItemStack(ModBlocks.CULINARY_TABLE_ITEM.get()),
                 Component.translatable("jei.gunsrpg.culinary_table.info"));
-        registration.addIngredientInfo(
-                ModBlocks.MEDICAL_STATION_ITEM.get(),
+        registration.addItemStackInfo(
+                new ItemStack(ModBlocks.MEDICAL_STATION_ITEM.get()),
                 Component.translatable("jei.gunsrpg.medical_station.info"));
     }
 

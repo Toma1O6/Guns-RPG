@@ -1,11 +1,37 @@
-﻿{
-  "type": "gunsrpg:gunsmith",
-  "pattern": ["m  ", "ggg", "s  "],
-  "key": {
-    "g": { "item": "minecraft:gunpowder" },
-    "s": { "item": "gunsrpg:shotgun_shell" },
-    "m": { "item": "mmt:invar_ingot" }
-  },
-  "result": { "count": 1, "item": "gunsrpg:invar_12g" },
-  "skill": "invar_ammo_smith"
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "mmt"
+        }
+      ],
+      "recipe": {
+        "type": "gunsrpg:gunsmith",
+        "pattern": [
+          "m  ",
+          "ggg",
+          "s  "
+        ],
+        "key": {
+          "g": {
+            "item": "minecraft:gunpowder"
+          },
+          "s": {
+            "item": "gunsrpg:shotgun_shell"
+          },
+          "m": {
+            "item": "mmt:invar_ingot"
+          }
+        },
+        "result": {
+          "count": 1,
+          "item": "gunsrpg:invar_12g"
+        },
+        "skill": "invar_ammo_smith"
+      }
+    }
+  ]
 }

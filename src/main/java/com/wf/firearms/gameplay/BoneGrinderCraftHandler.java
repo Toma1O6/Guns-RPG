@@ -33,8 +33,8 @@ public final class BoneGrinderCraftHandler {
         }
 
         int craftedCount = crafted.getCount();
-        removeFromInventory(player, Items.BONE_MEAL, craftedCount);
-        refundBones(player, event.getInventory());
+        removeBoneMeal(player, craftedCount);
+        refundConsumedBones(player, craftedCount);
         player.sendSystemMessage(
                 Component.literal("§c[火器]§r 骨粉只能在「枪械台」制作，请先在技能树解锁「磨骨机 I」"),
                 true);
@@ -53,13 +53,34 @@ public final class BoneGrinderCraftHandler {
         return 0;
     }
 
-    private static void refundBones(ServerPlayer player, Container inv) {
-        for (int i = 0; i < inv.getContainerSize(); i++) {
-            ItemStack stack = inv.getItem(i);
-            if (stack.is(Items.BONE) || stack.is(Items.BONE_BLOCK)) {
-                player.getInventory().add(stack.copy());
+    /** 工作台合成已消耗原料，按原版产出数量退回（勿复制合成格内剩余物品，否则会刷物品）。 */
+    private static void refundConsumedBones(ServerPlayer player, int craftedCount) {
+        ItemStack refund = ItemStack.EMPTY;
+        if (craftedCount == 9) {
+            refund = new ItemStack(Items.BONE_BLOCK);
+        } else if (craftedCount > 0 && craftedCount % 3 == 0) {
+            refund = new ItemStack(Items.BONE, craftedCount / 3);
+        }
+        if (refund.isEmpty()) {
+            return;
+        }
+        if (!player.getInventory().add(refund)) {
+            player.drop(refund, false);
+        }
+    }
+
+    private static void removeBoneMeal(ServerPlayer player, int count) {
+        int left = count;
+        ItemStack carried = player.containerMenu.getCarried();
+        if (!carried.isEmpty() && carried.is(Items.BONE_MEAL)) {
+            int take = Math.min(left, carried.getCount());
+            carried.shrink(take);
+            left -= take;
+            if (carried.isEmpty()) {
+                player.containerMenu.setCarried(ItemStack.EMPTY);
             }
         }
+        removeFromInventory(player, Items.BONE_MEAL, left);
     }
 
     private static boolean craftedFromBoneIngredients(Container inv, int craftedCount) {

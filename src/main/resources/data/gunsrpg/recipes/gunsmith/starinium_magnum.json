@@ -1,11 +1,37 @@
-﻿{
-  "type": "gunsrpg:gunsmith",
-  "pattern": ["MMM", "GGG", "LLL"],
-  "key": {
-    "L": { "item": "gunsrpg:large_bullet_casing" },
-    "G": { "item": "minecraft:gunpowder" },
-    "M": { "item": "mmt:starinium_ingot" }
-  },
-  "result": { "count": 1, "item": "gunsrpg:starinium_magnum" },
-  "skill": "starinium_ammo_smith"
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "mmt"
+        }
+      ],
+      "recipe": {
+        "type": "gunsrpg:gunsmith",
+        "pattern": [
+          "MMM",
+          "GGG",
+          "LLL"
+        ],
+        "key": {
+          "L": {
+            "item": "gunsrpg:large_bullet_casing"
+          },
+          "G": {
+            "item": "minecraft:gunpowder"
+          },
+          "M": {
+            "item": "mmt:starinium_ingot"
+          }
+        },
+        "result": {
+          "count": 1,
+          "item": "gunsrpg:starinium_magnum"
+        },
+        "skill": "starinium_ammo_smith"
+      }
+    }
+  ]
 }

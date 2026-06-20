@@ -18,6 +18,7 @@ import com.wf.firearms.compat.tacz.TaczGunsrpgAmmoBridge;
 import com.wf.firearms.compat.tacz.TaczPerkBridge;
 import com.wf.firearms.compat.tacz.TaczWeaponUseBridge;
 import com.wf.firearms.config.CombatConfig;
+import com.wf.firearms.config.GunsRpgConfigs;
 import com.wf.firearms.config.TaczBackendConfig;
 import com.wf.firearms.config.WeaponCaliberOverrides;
 import com.wf.firearms.config.AirdropConfig;
@@ -51,6 +52,7 @@ public class GunsRpg {
     public static final Logger LOGGER = LogManager.getLogger();
 
     public GunsRpg() {
+        GunsRpgConfigs.register();
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModBlocks.BLOCKS.register(modBus);
         ModBlocks.ITEMS.register(modBus);
@@ -72,14 +74,10 @@ public class GunsRpg {
             SkillDatabase.reload();
             DebuffConfig.reload();
             DebuffCureRegistry.reload();
-            TaczBackendConfig.reload();
             WeaponCaliberOverrides.reload();
-            AirdropConfig.reload();
-            BloodmoonConfig.reload();
             WeaponLevelConfig.reload();
             GunnerLoadoutConfig.reload();
             MobSpawnConfig.reload();
-            GunshotAlertConfig.reload();
             CombatConfig.reload();
             WeaponMapping.reload();
             TaczBridge.registerKillListener();
