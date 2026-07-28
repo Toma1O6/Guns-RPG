@@ -8,7 +8,7 @@ version="${file.jarVersion}"
 displayName="Guns RPG"
 updateJSONURL="https://raw.githubusercontent.com/Toma1O6/Guns-RPG/refs/heads/1.16.5/update.json"
 authors="Toma,Tomano123"
-credits="Weapons models created by OfficialMajonaise"
+credits="OfficialMajonaise - for weapon models. Clexus, ASKMOUNTAIN, Praimys - for localizations"
 description='''
 Hardcore Minecraft mod with RPG elements.
 '''
